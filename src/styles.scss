@@ -867,17 +867,6 @@ app-workflow-sidebar-accordion
   > .mat-tab-label-container
   > .mat-tab-list
   > .mat-tab-labels
-  .mat-tab-label[role^='tab'],
-app-github-app-tools-accordion
-  .mat-accordion
-  > .mat-expansion-panel
-  > .mat-expansion-panel-content
-  > .mat-expansion-panel-body
-  > .mat-tab-group
-  > .mat-tab-header
-  > .mat-tab-label-container
-  > .mat-tab-list
-  > .mat-tab-labels
   .mat-tab-label[role^='tab'] {
   min-width: 80px;
 }

@@ -82,7 +82,9 @@ mat-expansion-panel {
 }
 
 // Selected entry style
-.selected {
+.selected,
+.selectedWorkflow,
+.selectedGitHubAppTool {
   a {
     color: #181f40;
     text-decoration: none;

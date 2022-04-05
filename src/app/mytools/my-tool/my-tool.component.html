@@ -61,11 +61,11 @@
               <p *ngIf="(hasGroupEntriesObject$ | async) === false && (hasGroupGitHubAppToolEntriesObjects$ | async) === false">
                 You have not registered any tools
               </p>
-              <app-github-app-tools-accordion
+              <app-workflow-sidebar-accordion
                 [openOneAtATime]="oneAtATime"
                 [groupEntriesObject]="groupAppToolEntryObjects$ | async"
                 [refreshMessage]="isRefreshing$ | async"
-              ></app-github-app-tools-accordion>
+              ></app-workflow-sidebar-accordion>
               <app-sidebar-accordion
                 [openOneAtATime]="oneAtATime"
                 [groupEntriesObject]="groupEntriesObject$ | async"

@@ -35,17 +35,9 @@ import { SharedWorkflowServicesModule } from '../shared-workflow-services/shared
 import { IsAppToolPipe } from '../search/is-app-tool.pipe';
 import { WorkflowModule } from '../shared/modules/workflow.module';
 import { MySidebarModule } from '../shared/modules/my-sidebar.module';
-import { GithubAppToolsAccordionComponent } from './sidebar-accordion/github-app-tools-accordion/github-app-tools-accordion.component';
 
 @NgModule({
-  declarations: [
-    MyToolsComponent,
-    RegisterToolComponent,
-    RefreshToolOrganizationComponent,
-    MyToolComponent,
-    SidebarAccordionComponent,
-    GithubAppToolsAccordionComponent,
-  ],
+  declarations: [MyToolsComponent, RegisterToolComponent, RefreshToolOrganizationComponent, MyToolComponent, SidebarAccordionComponent],
   imports: [
     CommonModule,
     ContainerModule,

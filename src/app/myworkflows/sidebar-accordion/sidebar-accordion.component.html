@@ -9,17 +9,25 @@
       [expanded]="orgObj.expanded"
       class="mat-elevation-z"
       *ngFor="let orgObj of sourceObj.value.groupEntryInfo; trackBy: trackByOrgWorkflowObject"
+      [class.gitHubAppTool]="isGitHubAppTool()"
     >
-      <mat-expansion-panel-header class="pt-2">
+      <mat-expansion-panel-header class="pt-2" [class.gitHubAppTool]="isGitHubAppTool()">
         {{ orgObj?.organization }}
       </mat-expansion-panel-header>
 
-      <mat-tab-group mat-stretch-tabs class="workflow-tab-group" [selectedIndex]="orgObj | selectTab: (workflowId$ | async)">
+      <mat-tab-group
+        mat-stretch-tabs
+        [ngClass]="isGitHubAppTool() ? 'tool-tab-group' : 'workflow-tab-group'"
+        [selectedIndex]="orgObj | selectTab: (workflowId$ | async)"
+      >
         <mat-tab label="Published">
           <mat-list class="org-accordion-list">
             <mat-list-item
               *ngFor="let workflowObj of orgObj?.published; trackBy: trackByWorkflowId"
-              [ngClass]="{ selected: (workflowId$ | async) === workflowObj?.id }"
+              [ngClass]="{
+                selectedWorkflow: !isGitHubAppTool() && (workflowId$ | async) === workflowObj?.id,
+                selectedGitHubAppTool: isGitHubAppTool() && (workflowId$ | async) === workflowObj?.id
+              }"
             >
               <mat-icon class="arrow mat-icon-sm">arrow_forward</mat-icon>
               <a
@@ -39,7 +47,10 @@
           <mat-list class="org-accordion-list">
             <mat-list-item
               *ngFor="let workflowObj of orgObj?.unpublished; trackBy: trackByWorkflowId"
-              [ngClass]="{ selected: (workflowId$ | async) === workflowObj?.id }"
+              [ngClass]="{
+                selectedWorkflow: !isGitHubAppTool() && (workflowId$ | async) === workflowObj?.id,
+                selectedGitHubAppTool: isGitHubAppTool() && (workflowId$ | async) === workflowObj?.id
+              }"
             >
               <mat-icon class="arrow mat-icon-sm">arrow_forward</mat-icon>
               <a

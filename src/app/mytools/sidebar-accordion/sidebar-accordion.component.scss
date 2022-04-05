@@ -1,16 +1,20 @@
+@use '@angular/material' as mat;
+
+@import '/src/materialColorScheme.scss';
+
 // Header style - Expanded
 mat-expansion-panel-header,
 mat-expansion-panel-header[aria-expanded='true']:hover,
 mat-expansion-panel-header[aria-expanded='true']:focus {
-  background-color: #f3fbff;
+  background-color: $tool-background-color;
 }
 
-// Expansion body expanded
+// Expansion body
 :host ::ng-deep mat-expansion-panel .mat-expansion-panel-content {
-  background-color: #f3fbff;
+  background-color: $tool-background-color;
 }
 
 // Selected tool style
 .selected {
-  background-color: #d0effd;
+  background-color: $tool-selection-color;
 }

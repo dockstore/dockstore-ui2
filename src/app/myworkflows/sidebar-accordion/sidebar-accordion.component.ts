@@ -91,7 +91,19 @@ export class SidebarAccordionComponent implements OnInit, OnChanges {
   trackByOrgWorkflowObject(index: number, orgWorkflowObject: OrgWorkflowObject<Workflow>) {
     return orgWorkflowObject.sourceControl + '/' + orgWorkflowObject.organization;
   }
+
   openGitHubAppsLogs(organization: string) {
     this.dialog.open(GithubAppsLogsComponent, { width: bootstrap4largeModalSize, data: organization });
+  }
+
+  /**
+   * If GitHub app tool, apply tool style (blue theme)
+   */
+  isGitHubAppTool(): boolean {
+    let isAppTool: boolean = false;
+    this.entryType$.subscribe((value) => {
+      if (value === this.EntryType.Tool) isAppTool = true;
+    }).unsubscribe;
+    return isAppTool;
   }
 }
