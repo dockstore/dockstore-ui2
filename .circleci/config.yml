@@ -357,9 +357,8 @@ workflows:
       # Upload builds for tags and branches to s3.
       - upload_to_s3:
           requires:
-            - integration_test_1
-            - integration_test_2
-            - integration_test_3
+            - audit
+            - lint_license_unit_test_coverage
           filters:
             tags:
               only: /.*/
