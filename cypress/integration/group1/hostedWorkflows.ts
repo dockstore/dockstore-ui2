@@ -13,7 +13,6 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Dockstore } from '../../../src/app/shared/dockstore.model';
 import {
   clickFirstActionsButtonPublic,
   clickFirstActionsButtonPrivate,

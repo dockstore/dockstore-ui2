@@ -13,6 +13,7 @@ import { RefreshToolOrganizationComponent } from './../../container/refresh-tool
 import { ContainerService } from './../../shared/container.service';
 import { ContainerStubService, RegisterToolStubService } from './../../test/service-stubs';
 import { SidebarAccordionComponent } from './sidebar-accordion.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('SidebarAccordionComponent', () => {
   let component: SidebarAccordionComponent;
@@ -31,6 +32,7 @@ describe('SidebarAccordionComponent', () => {
           MatListModule,
           MatTooltipModule,
           RouterTestingModule,
+          HttpClientTestingModule,
         ],
         providers: [
           { provide: RegisterToolService, useClass: RegisterToolStubService },
