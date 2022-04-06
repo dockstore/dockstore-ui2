@@ -29,7 +29,6 @@ executors:
           - network.host: 127.0.0.1
           - http.port: 9200
           - discovery.type: single-node
-    resource_class: medium+
 
 jobs:
   # Specify the webpage url (https://dev.dockstore.net or https://staging.dockstore.org or https://dockstore.org)
@@ -232,6 +231,22 @@ jobs:
           key: cypress-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
       - run:
           name: Test
+          command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/integration/group2/**/*'
+          environment:
+            MOCHA_FILE: integration-tests/test-results/junit/test-results-[hash].xml
+          when: always
+      - upload_artifacts
+  integration_test_4:
+    executor: integration_test_exec
+    working_directory: ~/repo
+    steps:
+      - browser-tools/install-chrome
+      - browser-tools/install-chromedriver
+      - setup_integration_test
+      - restore_cache:
+          key: cypress-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
+      - run:
+          name: Test
           command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/integration/immutableDatabaseTests/**/*'
           environment:
             MOCHA_FILE: integration-tests/test-results/junit/test-results-[hash].xml
@@ -340,6 +355,14 @@ workflows:
           context:
             - dockerhub
       - integration_test_3:
+          filters:
+            tags:
+              only: /.*/
+          requires:
+            - lint_license_unit_test_coverage
+          context:
+            - dockerhub
+      - integration_test_4:
           filters:
             tags:
               only: /.*/
