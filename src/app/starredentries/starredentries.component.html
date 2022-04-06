@@ -86,7 +86,7 @@
 
         <ng-template #workflowSummary let-workflow="workflow" let-isAppTool="isAppTool">
           <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-between">
-            <a routerLink="{{ isAppTool ? '/containers/' : '/workflows/' }}{{ workflow.full_workflow_path }}" class="no-underline">
+            <a [routerLink]="(isAppTool ? entryType.AppTool : entryType.BioWorkflow) | routerLink: workflow" class="no-underline">
               <mat-card-header>
                 <mat-card-title fxLayoutAlign="space-between" fxLayoutGap="1rem">
                   <img
@@ -101,44 +101,46 @@
             </a>
             <app-starring class="pull-right" [workflow]="workflow" (starGazersChange)="starGazersChange()"></app-starring>
           </div>
-          <mat-card-header>
-            <div *ngIf="workflow?.starredUsers.length !== 0" fxLayout="row" fxLayoutAlign="end center"></div>
-            <mat-card-subtitle class="truncate-text-1">{{ workflow?.description }}</mat-card-subtitle>
-          </mat-card-header>
-          <div>
-            <hr />
-            <div fxLayout="row" fxLayoutAlign="space-between stretch">
-              <div fxLayout="row" fxLayoutAlign="flex-start" fxLayoutGap="1rem">
-                <small class="spacing">Last updated {{ workflow?.lastUpdated | date }}</small>
-                <div fxLayout="row wrap" fxLayoutGap="1rem">
-                  <span>
-                    <mat-chip-list>
-                      <mat-chip class="bubble workflow-background" *ngFor="let label of workflow?.labels | slice: 0:3">{{
-                        label.value
-                      }}</mat-chip>
-                      <mat-chip class="bubble" *ngIf="workflow.versionVerified === true">
-                        <span class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">
-                          <mat-icon class="verified-icon">done</mat-icon>
-                          <span>Verified</span>
-                        </span>
-                      </mat-chip>
-                      <mat-chip class="bubble">
-                        {{ workflow?.descriptorType | uppercase }}
-                      </mat-chip>
-                      <mat-chip class="bubble" *ngIf="workflow.versionVerified === true">
-                        <span class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">
-                          <mat-icon class="verified-icon">done</mat-icon>
-                          <span>Verified</span>
-                        </span>
-                      </mat-chip>
-                    </mat-chip-list>
-                  </span>
-                </div>
-              </div>
-              <a routerLink="{{ isAppTool ? '/containers/' : '/workflows/' }}{{ workflow.full_workflow_path }}" class="no-underline">
-                <button mat-raised-button class="small-mat-btn-skin small-btn-structure" color="accent">View</button>
-              </a>
+          <div class="ml-4 mr-2">
+            <div class="truncate-text-3 mb-3">
+              <app-markdown-wrapper
+                [data]="workflow?.description"
+                [baseUrl]="workflow?.providerUrl | baseUrl: workflow?.defaultVersion"
+              ></app-markdown-wrapper>
             </div>
+            <hr />
+          </div>
+          <div fxLayout="row" fxLayoutAlign="space-between stretch">
+            <div fxLayout="row" fxLayoutAlign="flex-start" fxLayoutGap="1rem">
+              <small class="spacing">Last updated {{ workflow?.lastUpdated | date }}</small>
+              <div fxLayout="row wrap" fxLayoutGap="1rem">
+                <span>
+                  <mat-chip-list>
+                    <mat-chip class="bubble workflow-background" *ngFor="let label of workflow?.labels | slice: 0:3">{{
+                      label.value
+                    }}</mat-chip>
+                    <mat-chip class="bubble" *ngIf="workflow.versionVerified === true">
+                      <span class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">
+                        <mat-icon class="verified-icon">done</mat-icon>
+                        <span>Verified</span>
+                      </span>
+                    </mat-chip>
+                    <mat-chip class="bubble">
+                      {{ workflow?.descriptorType | uppercase }}
+                    </mat-chip>
+                    <mat-chip class="bubble" *ngIf="workflow.versionVerified === true">
+                      <span class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">
+                        <mat-icon class="verified-icon">done</mat-icon>
+                        <span>Verified</span>
+                      </span>
+                    </mat-chip>
+                  </mat-chip-list>
+                </span>
+              </div>
+            </div>
+            <a [routerLink]="(isAppTool ? entryType.AppTool : entryType.BioWorkflow) | routerLink: workflow" class="no-underline">
+              <button mat-raised-button class="small-mat-btn-skin small-btn-structure" color="accent">View</button>
+            </a>
           </div>
         </ng-template>
 
