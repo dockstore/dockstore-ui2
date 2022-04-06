@@ -338,6 +338,8 @@ workflows:
               only: /.*/
           context:
             - dockerhub
+          requires:
+            - audit
       - integration_test_1:
           filters:
             tags:
