@@ -231,7 +231,7 @@ jobs:
           key: cypress-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
       - run:
           name: Test
-          command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/integration/group2/**/*'
+          command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/integration/group3/**/*'
           environment:
             MOCHA_FILE: integration-tests/test-results/junit/test-results-[hash].xml
           when: always
