@@ -1,0 +1,75 @@
+<div fxFlex.lt-md="100" class="p-3">
+  <div fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="1rem" class="pt-2 pb-4">
+    <div fxLayout fxLayoutAlign="start start" class="w-100 ml-2">
+      <strong *ngIf="user?.isAdmin" id="account-is-admin" class="bubble">Administrator</strong>
+      <strong *ngIf="user?.curator && !user.isAdmin" id="account-is-curator" class="bubble">Curator</strong>
+    </div>
+    <img src="{{ user?.avatarUrl }}" alt="Dockstore avatar" />
+    <h4>{{ user?.name }}</h4>
+    <button mat-button class="private-btn small-btn-structure">
+      <img src="../../../../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit Dockstore Username" />
+      Edit Dockstore Username
+    </button>
+  </div>
+  <hr />
+
+  <div *ngIf="gitHubProfile" class="pl-2 pr-2">
+    <div fxLayout fxLayoutAlign="space-between start">
+      <div fxLayout>
+        <h5 class="weight-bold">GitHub Profile</h5>
+        <p *ngIf="syncBadgeGit" class="bubble mt-2 ml-3">
+          <img src="../../../../assets/svg/icons-checkmark.svg" alt="Synced" />
+          Synced
+        </p>
+      </div>
+      <img src="{{ gitHubProfile.avatarURL }}" alt="GitHub avatar" />
+    </div>
+    <table *ngFor="let githubEntry of githubTable" class="size-small">
+      <tr *ngIf="gitHubProfile[githubEntry]">
+        <th class="weight-bold">{{ githubEntry | titlecase }}</th>
+        <td class="p-0">{{ gitHubProfile[githubEntry] }}</td>
+      </tr>
+    </table>
+    <button
+      mat-button
+      class="private-btn small-btn-structure ml-1 mt-2"
+      matTooltip="Sync profile with GitHub"
+      [disabled]="syncing"
+      (click)="sync(TokenSource.GITHUB)"
+    >
+      <img src="../../../../assets/svg/sync.svg" alt="Sync with GitHub" class="pb-1 pr-1" />
+      Sync Dockstore with GitHub
+    </button>
+    <hr class="mt-3" />
+  </div>
+
+  <div *ngIf="googleProfile" class="pl-2 pr-2">
+    <div fxLayout fxLayoutAlign="space-between start">
+      <div fxLayout>
+        <h5 class="weight-bold">Google Profile</h5>
+        <p *ngIf="syncBadgeGoogle" class="bubble mt-2 ml-3">
+          <img src="../../../../assets/svg/icons-checkmark.svg" alt="Synced" />
+          Synced
+        </p>
+      </div>
+      <img src="{{ googleProfile.avatarURL }}" alt="Google avatar" />
+    </div>
+    <table *ngFor="let googleEntry of googleTable" class="size-small">
+      <tr *ngIf="googleProfile[googleEntry]">
+        <th class="weight-bold">{{ googleEntry | titlecase }}</th>
+        <td class="p-0">{{ googleProfile[googleEntry] }}</td>
+      </tr>
+    </table>
+    <button
+      mat-button
+      class="private-btn small-btn-structure ml-1 mt-2"
+      matTooltip="Sync profile with Google"
+      [disabled]="syncing"
+      (click)="sync(TokenSource.GOOGLE)"
+    >
+      <img src="../../../../assets/svg/sync.svg" alt="Sync with Google" class="pb-1 pr-1" />
+      Sync Dockstore with Google
+    </button>
+    <hr class="mt-3" />
+  </div>
+</div>

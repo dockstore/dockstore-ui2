@@ -10,11 +10,12 @@ import { Base } from '../../shared/base';
 @Component({
   selector: 'app-accounts',
   templateUrl: './accounts.component.html',
+  styleUrls: ['./accounts.component.scss'],
 })
 export class AccountsComponent extends Base implements OnInit {
   public currentTab = 'accounts'; // default to the 'accounts' tab
   selected = new FormControl();
-  validTabs = ['linked accounts and tokens', 'profiles', 'dockstore account and preferences', 'requests'];
+  validTabs = ['linked accounts and tokens', 'dockstore account and preferences', 'requests'];
   constructor(private location: Location, private activatedRoute: ActivatedRoute) {
     super();
   }

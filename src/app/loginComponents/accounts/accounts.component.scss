@@ -1,0 +1,8 @@
+.w-100 {
+  overflow-x: hidden;
+}
+
+// To accommodate for long titles when resizing
+:host ::ng-deep .mat-tab-label {
+  min-width: min-content;
+}

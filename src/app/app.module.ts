@@ -52,7 +52,6 @@ import { DeleteAccountDialogComponent } from './loginComponents/accounts/control
 import { AccountsExternalComponent } from './loginComponents/accounts/external/accounts.component';
 import { AccountsService } from './loginComponents/accounts/external/accounts.service';
 import { GetTokenUsernamePipe } from './loginComponents/accounts/external/getTokenUsername.pipe';
-import { AccountsInternalComponent } from './loginComponents/accounts/internal/accounts.component';
 import { ChangeUsernameComponent } from './loginComponents/accounts/internal/change-username/change-username.component';
 import { AuthComponent } from './loginComponents/auth/auth.component';
 import { DownloadCLIClientComponent } from './loginComponents/onboarding/downloadcliclient/downloadcliclient.component';
@@ -110,6 +109,7 @@ import { ExporterStepComponent } from './workflow/snapshot-exporter-modal/export
 import { SnaphotExporterModalComponent } from './workflow/snapshot-exporter-modal/snaphot-exporter-modal.component';
 import { ViewService } from './workflow/view/view.service';
 import { MySidebarModule } from './shared/modules/my-sidebar.module';
+import { AccountSidebarModule } from './loginComponents/accounts/account-sidebar/account-sidebar.module';
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   showDelay: 500,
@@ -139,7 +139,6 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     OnboardingComponent,
     QuickStartComponent,
     AccountsComponent,
-    AccountsInternalComponent,
     AccountsExternalComponent,
     AuthComponent,
     GetTokenUsernamePipe,
@@ -195,6 +194,7 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     ImgFallbackModule,
     PipeModule,
     MySidebarModule,
+    AccountSidebarModule,
   ],
   providers: [
     AccountsService,

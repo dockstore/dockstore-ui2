@@ -1,0 +1,64 @@
+/*
+ * Copyright 2022 OICR and UCSC
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
+@use '@angular/material' as mat;
+
+@import 'materialColorScheme.scss';
+
+div.p-3 {
+  width: 18vw;
+  min-width: 28rem;
+  height: 100%;
+  min-height: 100rem;
+  border-right: 0.1rem solid mat.get-color-from-palette($kim-gray, 4);
+  box-shadow: 1px 2px 1px rgba(0, 0, 0, 0.1);
+}
+
+.bubble {
+  background-color: mat.get-color-from-palette($kim-accent1-success, 5);
+}
+
+img[alt='Dockstore avatar'] {
+  width: 18rem;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1), 0 2px 3px 0 rgba(0, 0, 0, 0.05);
+}
+
+// Synced badge
+.bubble.mt-2 {
+  border-radius: 1rem !important;
+  color: white !important;
+  background-color: $accent-3-dark;
+}
+
+img[alt='GitHub avatar'],
+img[alt='Google avatar'] {
+  width: 4.8rem;
+  border-radius: 50%;
+}
+
+table {
+  border: none;
+
+  th {
+    color: $header-color;
+    padding: 0rem 1.5rem 0rem 0rem;
+  }
+
+  td {
+    color: mat.get-color-from-palette($kim-gray, 1);
+  }
+}
