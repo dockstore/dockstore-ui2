@@ -8,6 +8,7 @@ import { Profile, User } from '../../../shared/swagger';
 import { UsersService } from '../../../shared/swagger/api/users.service';
 import { UserQuery } from '../../../shared/user/user.query';
 import { UserService } from '../../../shared/user/user.service';
+import { GravatarService } from '../../../gravatar/gravatar.service';
 
 @Component({
   selector: 'app-account-sidebar',
@@ -26,6 +27,7 @@ export class AccountSidebarComponent implements OnInit {
   public syncBadgeGoogle: boolean = false;
   public githubTable: string[] = ['name', 'email', 'company', 'location', 'bio'];
   public googleTable: string[] = ['name', 'email'];
+  private gravatarService: GravatarService;
   constructor(
     private userService: UserService,
     private usersService: UsersService,
@@ -64,6 +66,7 @@ export class AccountSidebarComponent implements OnInit {
     this.userQuery.user$.subscribe((user: User) => {
       this.user = user;
       if (user) {
+        if (!this.user.avatarUrl) this.user.avatarUrl = this.userService.gravatarUrl(null, null);
         const userProfiles = user.userProfiles;
         if (userProfiles) {
           this.googleProfile = userProfiles[TokenSource.GOOGLE];

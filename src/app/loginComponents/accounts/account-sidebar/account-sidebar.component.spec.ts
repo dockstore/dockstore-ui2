@@ -8,6 +8,7 @@ import { MatTableModule } from '@angular/material/table';
 import { UsersService } from '../../../shared/swagger/api/users.service';
 import { UserService } from '../../../shared/user/user.service';
 import { UsersStubService, UserStubService } from '../../../test/service-stubs';
+import { GravatarService } from '../../../gravatar/gravatar.service';
 
 describe('AccountSidebarComponent', () => {
   let component: AccountSidebarComponent;
@@ -20,6 +21,7 @@ describe('AccountSidebarComponent', () => {
       providers: [
         { provide: UsersService, useClass: UsersStubService },
         { provide: UserService, useClass: UserStubService },
+        { provide: GravatarService, useClass: GravatarService },
       ],
     }).compileComponents();
   });
