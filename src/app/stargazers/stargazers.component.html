@@ -23,14 +23,14 @@
     There are no stargazers for this <span>{{ organization !== null ? 'organization' : 'entry' }}.</span>
   </mat-card-content>
 </mat-card>
-<mat-card *ngIf="starGazers?.length > 0" class="mb-3">
+<div *ngIf="starGazers?.length > 0" class="mb-3 p-4">
   <mat-card-content>
     <mat-card-header>
       <mat-card-title>Stargazers</mat-card-title>
     </mat-card-header>
     <div fxLayout="row wrap" fxLayoutAlign="start" fxLayoutGap="1rem grid">
       <div *ngFor="let stargazer of starGazers" fxFlex="20" fxFlex.lt-lg="33.3" fxFlex.lt-md="100">
-        <mat-card style="height: 280px" class="my-1 mat-elevation-z3">
+        <mat-card style="height: 280px" class="my-1">
           <div class="h-100" fxLayout="column" fxLayoutAlign="start center">
             <img src="{{ stargazer.avatarUrl }}" class="stargazer-img" alt="{{ altAvatarImg }}" />
             <div class="text-break" fxLayout="column" fxLayoutAlign="space-between center">
@@ -45,4 +45,4 @@
       </div>
     </div>
   </mat-card-content>
-</mat-card>
+</div>

@@ -44,36 +44,24 @@
 
 <div class="container search-container">
   <div class="row">
-    <div class="col-md-3">
-      <div class="pb-3">
+    <div class="col-md-3 mb-5">
+      <div class="p-2">
         <div fxLayout="row wrap" fxLayoutAlign="space-between center">
-          <button
-            fxFlex="1 0 auto"
-            class="m-1 small-mat-btn-skin small-btn-structure"
-            mat-raised-button
-            color="accent"
-            (click)="accordion.openAll()"
-          >
+          <button fxFlex="1 0 auto" class="m-1 private-btn mat-accent small-btn-structure" mat-button (click)="accordion.openAll()">
             Expand All
           </button>
-          <button
-            fxFlex="1 0 auto"
-            class="m-1 small-mat-btn-skin small-btn-structure"
-            mat-raised-button
-            color="accent"
-            (click)="accordion.closeAll()"
-          >
+          <button fxFlex="1 0 auto" class="m-1 private-btn mat-accent small-btn-structure" mat-button (click)="accordion.closeAll()">
             Collapse All
           </button>
           <!-- For some reason w-100 doesn't work exactly, using fxFlex instead -->
           <button
             fxFlex="1 0 auto"
-            class="m-1 small-mat-btn-skin small-btn-structure"
-            mat-raised-button
-            color="accent"
+            class="m-1 private-btn mat-accent small-btn-structure"
+            mat-button
             (click)="resetFilters()"
             type="button"
           >
+            <img src="../assets/svg/reset.svg" alt="Reset filters" class="pb-1 pr-1" />
             Reset
           </button>
         </div>

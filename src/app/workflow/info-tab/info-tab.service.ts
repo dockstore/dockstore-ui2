@@ -265,13 +265,36 @@ export class InfoTabService {
    * @memberof InfoTabService
    */
   getTRSLink(path: string, versionName: string, descriptorType: string, descriptorPath: string, entryType: EntryType): string {
-    const prefix: string = entryType === EntryType.BioWorkflow ? ga4ghWorkflowIdPrefix : ga4ghServiceIdPrefix;
     return (
-      `${Dockstore.API_URI}${ga4ghPath}/tools/${encodeURIComponent(prefix + path)}` +
+      `${Dockstore.API_URI}${ga4ghPath}/tools/${encodeURIComponent(this.getTRSIDFromPath(path, entryType))}` +
       `/versions/${encodeURIComponent(versionName)}/plain-` +
       descriptorType.toUpperCase() +
       `/descriptor/` +
       descriptorPath
     );
+  }
+
+  getTRSId(workflow: Workflow | undefined, entryType: EntryType): string {
+    if (!workflow) {
+      return '';
+    }
+    return this.getTRSIDFromPath(workflow.full_workflow_path, entryType);
+  }
+
+  private getTRSIDFromPath(fullWorkflowPath: string, entryType: EntryType): string {
+    return this.getTRSPrefix(entryType) + fullWorkflowPath;
+  }
+
+  private getTRSPrefix(entryType: EntryType): string {
+    switch (entryType) {
+      case EntryType.BioWorkflow:
+        return ga4ghWorkflowIdPrefix;
+      case EntryType.Service:
+        return ga4ghServiceIdPrefix;
+      case EntryType.Tool: // This one shouldn't get invoked from this code
+      case EntryType.AppTool:
+      default:
+        return '';
+    }
   }
 }

@@ -329,7 +329,7 @@ h3.available-containers {
 }
 
 #container-header {
-  box-shadow: 0px 3px 6px #cfd1d7;
+  box-shadow: 0px 3px 6px mat.get-color-from-palette($dockstore-app-gray, 7);
   position: relative;
   z-index: 1;
 }
@@ -486,7 +486,7 @@ table {
 }
 
 table {
-  border: 1px solid #cfd1d7;
+  border: 1px solid mat.get-color-from-palette($dockstore-app-gray, 7);
 }
 
 // Decided to not do horizontal scroll. Just wrap no matter what.
@@ -501,7 +501,7 @@ td {
   /*height: auto;*/
   height: 65px;
   background-color: mat.get-color-from-palette($dockstore-app-gray, 6);
-  border: 1px solid #cfd1d7;
+  border: 1px solid mat.get-color-from-palette($dockstore-app-gray, 7);
   /*margin:0;*/
 }
 
@@ -672,7 +672,7 @@ div.tabs {
   position: relative;
   line-height: 1;
   z-index: 0;
-  border: solid 1px #cfd1d7;
+  border: solid 1px mat.get-color-from-palette($dockstore-app-gray, 7);
   max-width: 802px;
 }
 
@@ -680,7 +680,7 @@ div.tabs > div {
   display: inline-block;
   padding: 12px 0px 12px 0px;
   min-width: 156px;
-  border-bottom: solid 1px #cfd1d7;
+  border-bottom: solid 1px mat.get-color-from-palette($dockstore-app-gray, 7);
   text-align: center;
 }
 
@@ -689,7 +689,7 @@ div.tabs > div {
 #dockerfile,
 #descriptor,
 #sharing {
-  border-right: solid 1px #cfd1d7;
+  border-right: solid 1px mat.get-color-from-palette($dockstore-app-gray, 7);
 }
 
 #info a,
@@ -1262,4 +1262,10 @@ a.small-btn-structure {
 button.small-mat-btn-skin:not([class*='mat-elevation-z']),
 a.small-mat-btn-skin:not([class*='mat-elevation-z']) {
   box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.08);
+}
+
+// Updated mat-card style matching Zeplin redesign
+.mat-card:not([class*='mat-elevation-z']) {
+  border: solid 1px mat.get-color-from-palette($dockstore-app-gray, 7);
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1), 0 2px 3px 0 rgba(0, 0, 0, 0.08) !important;
 }
