@@ -44,10 +44,7 @@ export class CodeEditorListService {
           .descriptorFileTypes.includes(sourcefileType);
       }
       case 'testParam': {
-        return (
-          this.descriptorLanguageService.toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorType).testParameterFileType ===
-          sourcefileType
-        );
+        return this.descriptorLanguageService.toolDescriptorTypeEnumTotestParameterFileType(descriptorType) === sourcefileType;
       }
     }
   }
@@ -284,18 +281,14 @@ export class CodeEditorListService {
    * @memberof CodeEditorListService
    */
   private hasPrimaryDescriptor(descriptorType: ToolDescriptor.TypeEnum, sourcefiles: SourceFile[]): boolean {
-    const pathToFind =
-      this.descriptorLanguageService.toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorType).defaultDescriptorPath;
-    switch (descriptorType) {
-      case ToolDescriptor.TypeEnum.NFL: {
-        return (
-          CodeEditorListService.hasFilePath(CodeEditorListService.NEXTFLOW_PATH, sourcefiles) &&
-          CodeEditorListService.hasFilePath(CodeEditorListService.NEXTFLOW_CONFIG_PATH, sourcefiles)
-        );
-      }
-      default: {
-        return CodeEditorListService.hasFilePath(pathToFind, sourcefiles);
-      }
+    if (descriptorType === ToolDescriptor.TypeEnum.NFL) {
+      return (
+        CodeEditorListService.hasFilePath(CodeEditorListService.NEXTFLOW_PATH, sourcefiles) &&
+        CodeEditorListService.hasFilePath(CodeEditorListService.NEXTFLOW_CONFIG_PATH, sourcefiles)
+      );
+    } else {
+      const pathToFind = this.descriptorLanguageService.toolDescriptorTypeEnumToDefaultDescriptorPath(descriptorType);
+      return CodeEditorListService.hasFilePath(pathToFind, sourcefiles);
     }
   }
 
