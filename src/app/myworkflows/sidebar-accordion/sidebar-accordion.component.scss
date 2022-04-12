@@ -2,16 +2,11 @@
 
 @import '/src/materialColorScheme.scss';
 
-// Header style - Expanded - Workflow
+// // Expansion panel background - Workflow
 mat-expansion-panel-header,
 mat-expansion-panel-header[aria-expanded='true']:hover,
 mat-expansion-panel-header[aria-expanded='true']:focus,
 :host ::ng-deep mat-expansion-panel .mat-expansion-panel-content {
-  background-color: $workflow-background-color;
-}
-
-// Expansion body - Workflow
-:host ::ng-deep mat-expansion-panel.gitHubAppTool .mat-expansion-panel-content {
   background-color: $workflow-background-color;
 }
 
@@ -20,15 +15,10 @@ mat-expansion-panel-header[aria-expanded='true']:focus,
   background-color: $workflow-selection-color;
 }
 
-// Header style - Expanded - GitHub App Tool
+// // Expansion panel background - GitHub App Tool
 mat-expansion-panel-header.gitHubAppTool,
 mat-expansion-panel-header.gitHubAppTool[aria-expanded='true']:hover,
 mat-expansion-panel-header.gitHubAppTool[aria-expanded='true']:focus,
-:host ::ng-deep mat-expansion-panel.gitHubAppTool .mat-expansion-panel-content {
-  background-color: $tool-background-color;
-}
-
-// Expansion body - GitHub App Tool
 :host ::ng-deep mat-expansion-panel.gitHubAppTool .mat-expansion-panel-content {
   background-color: $tool-background-color;
 }

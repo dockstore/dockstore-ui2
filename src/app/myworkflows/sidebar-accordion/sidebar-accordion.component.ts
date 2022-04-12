@@ -52,7 +52,7 @@ export class SidebarAccordionComponent implements OnInit, OnChanges {
   /**
    * Display in original ordering when iterating through keys
    */
-  public defaultOrdering(left: KeyValue<string, GroupEntriesBySource>, right: KeyValue<string, GroupEntriesBySource>): number {
+  public defaultOrdering(_left: KeyValue<string, GroupEntriesBySource>, _right: KeyValue<string, GroupEntriesBySource>): number {
     return 0;
   }
 

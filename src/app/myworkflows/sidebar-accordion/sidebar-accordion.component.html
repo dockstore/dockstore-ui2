@@ -25,7 +25,7 @@
             <mat-list-item
               *ngFor="let workflowObj of orgObj?.published; trackBy: trackByWorkflowId"
               [ngClass]="{
-                selectedWorkflow: !(isAppTool$ | async) && (workflowId$ | async) === workflowObj?.id,
+                selectedWorkflow: (isAppTool$ | async) === false && (workflowId$ | async) === workflowObj?.id,
                 selectedTool: (isAppTool$ | async) && (workflowId$ | async) === workflowObj?.id
               }"
             >
@@ -48,7 +48,7 @@
             <mat-list-item
               *ngFor="let workflowObj of orgObj?.unpublished; trackBy: trackByWorkflowId"
               [ngClass]="{
-                selectedWorkflow: !(isAppTool$ | async) && (workflowId$ | async) === workflowObj?.id,
+                selectedWorkflow: (isAppTool$ | async) === false && (workflowId$ | async) === workflowObj?.id,
                 selectedTool: (isAppTool$ | async) && (workflowId$ | async) === workflowObj?.id
               }"
             >
