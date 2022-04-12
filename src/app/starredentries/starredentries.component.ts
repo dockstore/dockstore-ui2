@@ -11,6 +11,7 @@ import { ExtendedDockstoreTool } from 'app/shared/models/ExtendedDockstoreTool';
 import { ExtendedWorkflow } from 'app/shared/models/ExtendedWorkflow';
 // import { DockstoreService } from 'app/shared/dockstore.service';
 import { OrgLogoService } from '../shared/org-logo.service';
+import { EntryType } from '../shared/enum/entry-type';
 
 @Component({
   selector: 'app-starredentries',
@@ -26,6 +27,7 @@ export class StarredEntriesComponent extends Base implements OnInit {
   user: any;
   starGazersClicked = false;
   organizationStarGazersClicked = false;
+  readonly entryType = EntryType;
 
   constructor(
     private userQuery: UserQuery,

@@ -101,6 +101,7 @@ import { UrlResolverService } from './shared/url-resolver.service';
 import { VerifiedByService } from './shared/verified-by.service';
 import { SitemapComponent } from './sitemap/sitemap.component';
 import { StargazersModule } from './stargazers/stargazers.module';
+import { MarkdownWrapperModule } from './shared/modules/markdown-wrapper.module';
 import { StarredEntriesComponent } from './starredentries/starredentries.component';
 import { StarringModule } from './starring/starring.module';
 import { TosBannerService } from './tosBanner/state/tos-banner.service';
@@ -182,6 +183,7 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     routing,
     StargazersModule,
     MarkdownModule.forRoot(),
+    MarkdownWrapperModule,
     ReactiveFormsModule,
     ApiModule.forRoot(getApiConfig),
     ApiModule2.forRoot(getApiConfig),

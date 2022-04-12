@@ -145,18 +145,24 @@ describe('GitHub App Tools', () => {
     });
 
     it('Public view', () => {
+      cy.wait(1000);
       selectGitHubAppTool('test-github-app-tools/md5sum');
+      cy.wait(1000);
       cy.get('[data-cy=viewPublicWorkflowButton]').click();
       cy.get('[data-cy=tool-icon]').should('exist');
       cy.contains('Tool Information');
       cy.contains('Tool Version Information');
       cy.get('[data-cy=workflowTitle]').contains('github.com/C/test-github-app-tools/md5sum:invalidTool');
+      cy.wait(1000);
       goToTab('Versions');
+      cy.wait(1000);
       cy.contains('main').click();
       cy.get('[data-cy=workflowTitle]').contains('github.com/C/test-github-app-tools/md5sum:main');
       cy.get('#starringButton').click();
       cy.get('#starCountButton').should('contain', '1');
+      cy.wait(1000);
       goToTab('Info');
+      cy.wait(1000);
       cy.get('[data-cy=trs-link]').contains('TRS: github.com/C/test-github-app-tools/md5sum');
     });
 

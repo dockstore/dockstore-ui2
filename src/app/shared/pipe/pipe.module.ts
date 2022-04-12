@@ -9,6 +9,7 @@ import { GetFacetSearchResultsPipe } from '../../search/facet-search/facet-searc
 import { GetHistogramStylePipe } from '../../search/get-histogram-style.pipe';
 import { MapFriendlyValuesPipe } from '../../search/map-friendly-values.pipe';
 import { SelectTabPipe } from '../entry/select-tab.pipe';
+import { BaseUrlPipe } from '../entry/base-url.pipe';
 
 const DECLARATIONS: any[] = [
   FilePathPipe,
@@ -20,6 +21,7 @@ const DECLARATIONS: any[] = [
   GetFacetSearchUpdatePipe,
   GravatarPipe,
   RouterLinkPipe,
+  BaseUrlPipe,
 ];
 @NgModule({
   imports: [CommonModule],
