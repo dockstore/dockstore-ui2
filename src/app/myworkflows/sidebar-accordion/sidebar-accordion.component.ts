@@ -11,7 +11,6 @@ import { OrgWorkflowObject } from '../my-workflow/my-workflow.component';
 import { GithubAppsLogsComponent } from './github-apps-logs/github-apps-logs.component';
 import { KeyValue } from '@angular/common';
 import { MetadataService } from '../../shared/swagger/api/metadata.service';
-import { SourceControlBean } from '../../shared/swagger';
 
 interface GroupEntriesBySource {
   groupEntryInfo: OrgWorkflowObject<Workflow>[];
@@ -31,9 +30,9 @@ export class SidebarAccordionComponent implements OnInit, OnChanges {
   activeTab = 0;
   entryType$: Observable<EntryType>;
   EntryType = EntryType;
+  isAppTool$: Observable<boolean>;
   public isRefreshing$: Observable<boolean>;
-  private sourceControlMap: Array<SourceControlBean> = [];
-  public sourceControlToWorkflows: Map<string, GroupEntriesBySource> = new Map<string, GroupEntriesBySource>([]);
+  public sourceControlToWorkflows: Map<string, GroupEntriesBySource> = new Map<string, GroupEntriesBySource>();
 
   constructor(
     private workflowQuery: WorkflowQuery,
@@ -43,8 +42,7 @@ export class SidebarAccordionComponent implements OnInit, OnChanges {
     private metadataService: MetadataService
   ) {
     this.metadataService.getSourceControlList().subscribe((map) => {
-      this.sourceControlMap = map;
-      this.sourceControlMap.forEach((source) => {
+      map.forEach((source) => {
         this.sourceControlToWorkflows.set(source.value, { groupEntryInfo: [], sourceControlTitle: source.friendlyName.toUpperCase() });
       });
       this.sortBySourceControl();
@@ -54,7 +52,7 @@ export class SidebarAccordionComponent implements OnInit, OnChanges {
   /**
    * Display in original ordering when iterating through keys
    */
-  public defaultOrdering(_left: KeyValue<any, any>, _right: KeyValue<any, any>): number {
+  public defaultOrdering(left: KeyValue<string, GroupEntriesBySource>, right: KeyValue<string, GroupEntriesBySource>): number {
     return 0;
   }
 
@@ -69,7 +67,7 @@ export class SidebarAccordionComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.groupEntriesObject && this.groupEntriesObject) {
-      for (let key of this.sourceControlToWorkflows.keys()) {
+      for (const key of this.sourceControlToWorkflows.keys()) {
         this.sourceControlToWorkflows.get(key).groupEntryInfo = [];
       }
       if (this.sourceControlToWorkflows.size != 0) {
@@ -82,6 +80,7 @@ export class SidebarAccordionComponent implements OnInit, OnChanges {
     this.isRefreshing$ = this.alertQuery.showInfo$;
     this.entryType$ = this.sessionQuery.entryType$;
     this.workflowId$ = this.workflowQuery.workflowId$;
+    this.isAppTool$ = this.sessionQuery.isAppTool$;
   }
 
   trackByWorkflowId(index: number, workflow: Workflow) {
@@ -94,20 +93,5 @@ export class SidebarAccordionComponent implements OnInit, OnChanges {
 
   openGitHubAppsLogs(organization: string) {
     this.dialog.open(GithubAppsLogsComponent, { width: bootstrap4largeModalSize, data: organization });
-  }
-
-  /**
-   * If GitHub app tool, apply tool style (blue theme)
-   */
-  isGitHubAppTool(): boolean {
-    let isAppTool: boolean = false;
-    this.entryType$
-      .subscribe((value) => {
-        if (value === this.EntryType.Tool) {
-          isAppTool = true;
-        }
-      })
-      .unsubscribe();
-    return isAppTool;
   }
 }

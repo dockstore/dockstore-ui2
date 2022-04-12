@@ -1,11 +1,11 @@
-<div *ngFor="let registeryObj of registryToTools | keyvalue: defaultOrdering">
-  <div *ngIf="registeryObj.value.groupEntryInfo.length" class="registryTitle">
-    <img src="../../../assets/images/registries/{{ registeryObj.value.registryTitle }}.svg" class="mb-2" alt="Registry" />
-    {{ registeryObj.value?.registryTitle }}
+<div *ngFor="let registryObj of registryToTools | keyvalue: defaultOrdering">
+  <div *ngIf="registryObj.value.groupEntryInfo.length" class="registryTitle">
+    <img src="../../../assets/images/registries/{{ registryObj.value.registryTitle }}.svg" class="mb-2" alt="Registry" />
+    {{ registryObj.value?.registryTitle }}
   </div>
 
   <mat-accordion multi="true">
-    <mat-expansion-panel [expanded]="orgObj.expanded" class="mat-elevation-z" *ngFor="let orgObj of registeryObj.value.groupEntryInfo">
+    <mat-expansion-panel [expanded]="orgObj.expanded" class="mat-elevation-z" *ngFor="let orgObj of registryObj.value.groupEntryInfo">
       <mat-expansion-panel-header class="pt-2">
         {{ orgObj?.namespace }}
       </mat-expansion-panel-header>
@@ -13,7 +13,7 @@
       <mat-tab-group mat-stretch-tabs class="tool-tab-group" [selectedIndex]="orgObj | selectTab: (toolId$ | async)">
         <mat-tab label="Published">
           <mat-list class="org-accordion-list">
-            <mat-list-item *ngFor="let toolObj of orgObj?.published" [ngClass]="{ selected: (toolId$ | async) === toolObj?.id }">
+            <mat-list-item *ngFor="let toolObj of orgObj?.published" [ngClass]="{ selectedTool: (toolId$ | async) === toolObj?.id }">
               <mat-icon class="arrow mat-icon-sm">arrow_forward</mat-icon>
               <a
                 class="no-wrap"
@@ -30,7 +30,7 @@
         </mat-tab>
         <mat-tab label="Unpublished">
           <mat-list class="org-accordion-list">
-            <mat-list-item *ngFor="let toolObj of orgObj?.unpublished" [ngClass]="{ selected: (toolId$ | async) === toolObj?.id }">
+            <mat-list-item *ngFor="let toolObj of orgObj?.unpublished" [ngClass]="{ selectedTool: (toolId$ | async) === toolObj?.id }">
               <mat-icon class="arrow mat-icon-sm">arrow_forward</mat-icon>
               <a
                 class="no-wrap"

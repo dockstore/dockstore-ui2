@@ -21,16 +21,14 @@ export class SidebarAccordionComponent implements OnInit, OnChanges {
   @Input() groupEntriesObject: OrgToolObject<DockstoreTool>[];
   @Input() refreshMessage;
   public toolId$: Observable<number>;
-  private dockerRegistryMap = [];
-  public registryToTools: Map<string, GroupEntriesByRegistry> = new Map<string, GroupEntriesByRegistry>([]);
+  public registryToTools: Map<string, GroupEntriesByRegistry> = new Map<string, GroupEntriesByRegistry>();
   activeTab = 0;
 
   constructor(private toolQuery: ToolQuery, private metadataService: MetadataService) {
     this.metadataService.getDockerRegistries().subscribe((map) => {
-      this.dockerRegistryMap = map;
-      this.dockerRegistryMap.forEach((registry) => {
+      map.forEach((registry) => {
         // Do not create new keys for amazon and seven bridges, to be put in additional category
-        if (registry.dockerPath !== null && registry.dockerPath !== 'public.ecr.aws')
+        if (registry.dockerPath !== null && registry.dockerPath !== 'public.ecr.aws' && registry._enum !== 'SEVEN_BRIDGES')
           this.registryToTools.set(registry.dockerPath, { groupEntryInfo: [], registryTitle: registry.friendlyName.toUpperCase() });
       });
       // For additional tools, to be removed once amazon and seven bridges have their own groupings
@@ -42,7 +40,7 @@ export class SidebarAccordionComponent implements OnInit, OnChanges {
   /**
    * Display in original ordering when iterating through keys
    */
-  public defaultOrdering(_left: KeyValue<any, any>, _right: KeyValue<any, any>): number {
+  public defaultOrdering(left: KeyValue<string, GroupEntriesByRegistry>, right: KeyValue<string, GroupEntriesByRegistry>): number {
     return 0;
   }
 
@@ -53,7 +51,7 @@ export class SidebarAccordionComponent implements OnInit, OnChanges {
     this.groupEntriesObject.forEach((groupEntryObject) => {
       if (this.registryToTools.has(groupEntryObject.registry)) {
         this.registryToTools.get(groupEntryObject.registry).groupEntryInfo.push(groupEntryObject);
-      } else {
+      } else if (this.registryToTools.has('additional')) {
         this.registryToTools.get('additional').groupEntryInfo.push(groupEntryObject);
       }
     });
@@ -61,7 +59,7 @@ export class SidebarAccordionComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.groupEntriesObject && this.groupEntriesObject) {
-      for (let key of this.registryToTools.keys()) {
+      for (const key of this.registryToTools.keys()) {
         this.registryToTools.get(key).groupEntryInfo = [];
       }
       this.sortByRegistries();

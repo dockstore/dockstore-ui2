@@ -2,7 +2,7 @@
 
 @import 'materialColorScheme.scss';
 
-// Grouping titles by registery/source control
+// Grouping titles by registry/source control
 div.registryTitle,
 div.sourceTitle {
   font-size: 14px;
@@ -82,9 +82,8 @@ mat-expansion-panel {
 }
 
 // Selected entry style
-.selected,
-.selectedWorkflow,
-.selectedGitHubAppTool {
+.selectedTool,
+.selectedWorkflow {
   a {
     color: #181f40;
     text-decoration: none;
