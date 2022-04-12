@@ -1,9 +1,12 @@
+@use '@angular/material' as mat;
+@import '/src/materialColorScheme.scss';
+
 .widget-section {
   width: 100%;
 }
 
 .twitter {
-  border: 1px solid #cfd1d7;
+  border: 1px solid mat.get-color-from-palette($dockstore-app-gray, 7);
 }
 
 mat-sidenav-container {

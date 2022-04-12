@@ -26,7 +26,7 @@
             <mat-error *ngIf="name.hasError('minlength')">Name should be at least 3 characters long</mat-error>
             <mat-error *ngIf="name.hasError('maxlength')">Name should be at most 39 characters long</mat-error>
             <mat-error *ngIf="name.hasError('pattern')"
-              >Name can only contain alphanumeric characters. It must begin with a letter.</mat-error
+              >Name can only contain alphanumeric characters and internal nonconsecutive dashes. It must begin with a letter.</mat-error
             >
             <mat-hint>The name of the collection</mat-hint>
           </mat-form-field>

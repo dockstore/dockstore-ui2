@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
+@use '@angular/material' as mat;
 @import '/src/materialColorScheme.scss';
 
 .mat-tab-content {
@@ -21,7 +21,7 @@
   background-color: #fff;
   margin: 1rem 1rem 2rem;
   padding: 0.8rem;
-  border: 0.0625rem solid #cfd1d7;
+  border: 0.0625rem solid mat.get-color-from-palette($dockstore-app-gray, 7);
   border-radius: 0.3rem;
 }
 
@@ -37,11 +37,11 @@
   z-index: 1;
   border-radius: 4px;
   background-color: #fff;
-  box-shadow: 0 0 10px 0px #cfd1d7;
+  box-shadow: 0 0 10px 0px mat.get-color-from-palette($dockstore-app-gray, 7);
 }
 
 .tagCloud-btn {
-  box-shadow: 1px 3px 5px 0px #cfd1d7;
+  box-shadow: 1px 3px 5px 0px mat.get-color-from-palette($dockstore-app-gray, 7);
   color: $header-color;
   border: none;
   &.tool {

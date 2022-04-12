@@ -16,7 +16,7 @@
 <app-loading [loading]="loading$ | async">
   <div class="pt-2" fxLayout="row wrap">
     <div fxFlex="50" fxFlex.lt-sm="100" *ngFor="let organizationUser of organizationMembers$ | async; let index = index">
-      <mat-card fxFlex class="m-2 mat-elevation-z2" *ngIf="organizationUser?.accepted">
+      <mat-card fxFlex class="m-2" *ngIf="organizationUser?.accepted">
         <div fxLayout="row" fxLayoutAlign="space-between stretch">
           <div fxFlex fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="center center">
             <img *ngIf="organizationUser.user?.avatarUrl" mat-card-avatar class="header-image" [src]="organizationUser.user?.avatarUrl" />

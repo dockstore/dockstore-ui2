@@ -104,6 +104,7 @@ describe('Test search page functionality', () => {
     cy.contains('mat-checkbox', 'Nextflow').click();
     cy.get('[data-cy=workflowColumn] a');
     cy.contains('mat-checkbox', 'Nextflow'); // wait for the checkbox to reappear, indicating the filtering is almost complete
+    cy.wait(3000);
     cy.get('[data-cy=descriptorType]').each(($el, index, $list) => {
       cy.wrap($el).contains('NFL');
     });
@@ -180,6 +181,8 @@ function testWorkflow(url: string, version1: string, version2: string, trsUrl: s
     cy.visit('/workflows/' + url + ':' + version1);
     goToTab('Launch');
     cy.url().should('contain', '?tab=launch');
+    goToTab('Info');
+    cy.url().should('contain', '?tab=info');
     cy.contains('mat-card-header', 'Workflow Information');
   });
 
@@ -198,17 +201,8 @@ function testWorkflow(url: string, version1: string, version2: string, trsUrl: s
     cy.contains('Descriptor Files');
     cy.get('.ace_editor').should('be.visible');
     goToTab('Test Parameter Files');
-    if (Cypress.config('baseUrl') === 'https://dev.dockstore.net' || Cypress.config('baseUrl') === 'http://localhost:4200') {
-      if (type === ToolDescriptor.TypeEnum.NFL) {
-        cy.contains('This version has no files of this type.');
-        cy.get('.ace_editor').should('not.be.visible');
-      }
-    } else {
-      if (type === ToolDescriptor.TypeEnum.NFL) {
-        cy.contains('Nextflow does not have the concept of a test parameter file.');
-      } else {
-        cy.get('[data-cy=testParamFiles]');
-      }
+    if (type === ToolDescriptor.TypeEnum.NFL) {
+      cy.contains('This version has no files of this type.');
     }
   });
 
@@ -264,3 +258,28 @@ function testWorkflow(url: string, version1: string, version2: string, trsUrl: s
     });
   });
 }
+
+// TODO: uncomment after tooltester logs are fixed
+// describe('Test existence of Logs', () => {
+//   it('Find Logs in Workflows', () => {
+//     cy.visit('/workflows/github.com/DataBiosphere/topmed-workflows/UM_variant_caller_wdl:1.32.0?tab=info');
+//     cy.get('[data-cy=verificationLogsDialog]').click();
+//
+//     cy.contains('.mat-card-title', 'Verification Information');
+//     cy.get('.mat-table')
+//       .first()
+//       .within(() => {
+//         cy.get('.mat-row').should('have.length.of.at.least', 1);
+//         cy.contains('Dockstore CLI');
+//       });
+//
+//     cy.contains('.mat-card-title', 'Logs');
+//     cy.get('.mat-table')
+//       .eq(1)
+//       .within(() => {
+//         cy.get('.mat-row').should('have.length.of.at.least', 3);
+//         cy.contains('variant-caller/variant-caller-wdl/topmed_freeze3_calling.json');
+//         cy.contains('View FULL log');
+//       });
+//   });
+// });
