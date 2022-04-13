@@ -103,12 +103,12 @@ export class ChangeUsernameComponent implements OnInit {
    * Enable or disable form input if user can or cannot update username
    */
   enableDisableFormControl() {
-    this.canChangeUsername$.subscribe((canChangeUsername: boolean) => {
+    this.canChangeUsername$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((canChangeUsername: boolean) => {
       if (!canChangeUsername) {
         this.usernameFormControl.disable();
       } else {
         this.usernameFormControl.enable();
       }
-    }).unsubscribe;
+    });
   }
 }
