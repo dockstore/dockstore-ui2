@@ -24,10 +24,26 @@
       </div>
       <img src="{{ gitHubProfile.avatarURL }}" alt="GitHub avatar" />
     </div>
-    <table *ngFor="let githubEntry of githubTable" class="size-small">
-      <tr *ngIf="gitHubProfile[githubEntry]">
-        <th class="weight-bold">{{ githubEntry | titlecase }}</th>
-        <td class="p-0">{{ gitHubProfile[githubEntry] }}</td>
+    <table class="size-small">
+      <tr *ngIf="gitHubProfile.name">
+        <th>Name</th>
+        <td>{{ gitHubProfile.name }}</td>
+      </tr>
+      <tr *ngIf="gitHubProfile.email">
+        <th>Email</th>
+        <td>{{ gitHubProfile.email }}</td>
+      </tr>
+      <tr *ngIf="gitHubProfile.company">
+        <th>Company</th>
+        <td>{{ gitHubProfile.company }}</td>
+      </tr>
+      <tr *ngIf="gitHubProfile.location">
+        <th>Location</th>
+        <td>{{ gitHubProfile.location }}</td>
+      </tr>
+      <tr *ngIf="gitHubProfile.bio">
+        <th>Bio</th>
+        <td>{{ gitHubProfile.bio }}</td>
       </tr>
     </table>
     <button
@@ -54,10 +70,14 @@
       </div>
       <img src="{{ googleProfile.avatarURL }}" alt="Google avatar" />
     </div>
-    <table *ngFor="let googleEntry of googleTable" class="size-small">
-      <tr *ngIf="googleProfile[googleEntry]">
-        <th class="weight-bold">{{ googleEntry | titlecase }}</th>
-        <td class="p-0">{{ googleProfile[googleEntry] }}</td>
+    <table class="size-small">
+      <tr *ngIf="googleProfile.name">
+        <th>Name</th>
+        <td>{{ googleProfile.name }}</td>
+      </tr>
+      <tr *ngIf="googleProfile.email">
+        <th>Email</th>
+        <td>{{ googleProfile.email }}</td>
       </tr>
     </table>
     <button
