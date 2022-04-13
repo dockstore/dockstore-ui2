@@ -138,19 +138,11 @@ export class MapFriendlyValuesPipe implements PipeTransform {
       case 'descriptor_type':
         const shortFriendlyName =
           this.descriptorLanguageService.descriptorLanguageBeanValueToExtendedDescriptorLanguageBean(subBucketString).shortFriendlyName;
-        if (shortFriendlyName) {
-          return shortFriendlyName;
-        } else {
-          return subBucketString;
-        }
+        return shortFriendlyName ?? subBucketString;
       case 'descriptor_tooltip':
         const friendlyName =
           this.descriptorLanguageService.descriptorLanguageBeanValueToExtendedDescriptorLanguageBean(subBucketString).friendlyName;
-        if (friendlyName) {
-          return friendlyName;
-        } else {
-          return subBucketString;
-        }
+        return friendlyName ?? subBucketString;
       case 'SourceFile.TypeEnum': {
         // Get the specific ExtendedDescriptorLanguageBean using subBucketString, which is the SourceFile.TypeEnum
         // Search through the file tabs
@@ -160,11 +152,7 @@ export class MapFriendlyValuesPipe implements PipeTransform {
         const fileTabsSchematic =
           this.descriptorLanguageService.sourceFileTypeStringToExtendedDescriptorLanguageBean(subBucketString).fileTabs;
         const fileTypes = fileTabsSchematic.find((fileTab) => fileTab.fileTypes.find((fileType) => fileType === subBucketString));
-        if (fileTypes) {
-          return fileTypes.tabName;
-        } else {
-          return subBucketString;
-        }
+        return fileTypes?.tabName ?? subBucketString;
       }
       default:
         // Handle string
