@@ -8,6 +8,7 @@ import { FileStubService, SourceFileTabsStubService } from 'app/test/service-stu
 import { SourceFileTabsComponent } from './source-file-tabs.component';
 import { SourceFileTabsService } from './source-file-tabs.service';
 import { MatDialogModule } from '@angular/material/dialog';
+import { DescriptorLanguageService } from '../shared/entry/descriptor-language.service';
 
 describe('SourceFileTabsComponent', () => {
   let component: SourceFileTabsComponent;
@@ -17,10 +18,11 @@ describe('SourceFileTabsComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [SourceFileTabsComponent, MapFriendlyValuesPipe],
-        imports: [HttpClientTestingModule, MatDialogModule],
+        imports: [HttpClientTestingModule, MatDialogModule, HttpClientTestingModule],
         providers: [
           { provide: SourceFileTabsService, useClass: SourceFileTabsStubService },
           { provide: FileService, useClass: FileStubService },
+          { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
         ],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();

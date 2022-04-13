@@ -38,6 +38,7 @@ import {
   AccountsStubService,
   AuthStubService,
   ConfigurationStub,
+  MetadataStubService,
   RefreshStubService,
   RegisterWorkflowModalStubService,
   TrackLoginStubService,
@@ -51,6 +52,8 @@ import { MyBioWorkflowsService } from '../my-bio-workflows.service';
 import { MyServicesService } from '../my-services.service';
 import { MyWorkflowsService } from '../myworkflows.service';
 import { MyWorkflowComponent } from './my-workflow.component';
+import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
+import { MetadataService } from '../../shared/swagger';
 
 describe('MyWorkflowsComponent', () => {
   let component: MyWorkflowComponent;
@@ -63,6 +66,8 @@ describe('MyWorkflowsComponent', () => {
         schemas: [NO_ERRORS_SCHEMA],
         imports: [RouterTestingModule, HttpClientTestingModule, BrowserAnimationsModule, CustomMaterialModule, MyEntriesModule],
         providers: [
+          { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
+          { provide: MetadataService, useClass: MetadataStubService },
           UserQuery,
           { provide: Configuration, useClass: ConfigurationStub },
           { provide: UsersService, useClass: UsersStubService },
@@ -77,7 +82,7 @@ describe('MyWorkflowsComponent', () => {
           { provide: AccountsService, useClass: AccountsStubService },
           { provide: WorkflowsService, useClass: WorkflowsStubService },
           { provide: UrlResolverService, useClass: UrlResolverStubService },
-          { provide: TrackLoginService, useClass: TrackLoginStubService},
+          { provide: TrackLoginService, useClass: TrackLoginStubService },
           {
             provide: MatDialogRef,
             useValue: {

@@ -25,6 +25,8 @@ import { RefreshService } from './../../shared/refresh.service';
 import { HostedService } from './../../shared/swagger/api/hosted.service';
 import { ContainerStubService, HostedStubService, RefreshStubService, WorkflowStubService } from './../../test/service-stubs';
 import { ToolFileEditorComponent } from './tool-file-editor.component';
+import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('ToolFileEditorComponent', () => {
   let component: ToolFileEditorComponent;
@@ -48,6 +50,7 @@ describe('ToolFileEditorComponent', () => {
           BrowserAnimationsModule,
           ClipboardModule,
           HttpClientModule,
+          HttpClientTestingModule,
         ],
         providers: [
           { provide: HostedService, useClass: HostedStubService },
@@ -55,6 +58,7 @@ describe('ToolFileEditorComponent', () => {
           { provide: RefreshService, useClass: RefreshStubService },
           { provide: WorkflowService, useClass: WorkflowStubService },
           { provide: FileService, useClass: FileStubService },
+          { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
         ],
       }).compileComponents();
     })

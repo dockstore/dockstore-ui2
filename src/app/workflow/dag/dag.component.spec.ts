@@ -24,6 +24,7 @@ import { CwlViewerComponent } from './cwl-viewer/cwl-viewer.component';
 import { DagComponent } from './dag.component';
 import { DagQuery } from './state/dag.query';
 import { DagStore } from './state/dag.store';
+import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
 
 describe('DagComponent', () => {
   let component: DagComponent;
@@ -40,6 +41,7 @@ describe('DagComponent', () => {
           DagQuery,
           { provide: WorkflowsService, useClass: WorkflowsStubService },
           { provide: WorkflowService, useClass: WorkflowStubService },
+          { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
         ],
       }).compileComponents();
     })

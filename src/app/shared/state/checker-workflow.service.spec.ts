@@ -22,17 +22,20 @@ import { ContainersService } from '../swagger/api/containers.service';
 import { WorkflowsService } from '../swagger/api/workflows.service';
 import { CheckerWorkflowService } from './checker-workflow.service';
 import { WorkflowService } from './workflow.service';
+import { DescriptorLanguageService } from '../entry/descriptor-language.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('Service: Service: CheckerWorkflow', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
+      imports: [RouterTestingModule, HttpClientTestingModule],
       providers: [
         CheckerWorkflowService,
         { provide: WorkflowsService, useClass: WorkflowsStubService },
         { provide: WorkflowService, useClass: WorkflowStubService },
         { provide: ContainerService, useClass: ContainerStubService },
         { provide: ContainersService, useClass: ContainersStubService },
+        { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
       ],
     });
   });

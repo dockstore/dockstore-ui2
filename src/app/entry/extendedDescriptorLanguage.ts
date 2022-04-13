@@ -24,6 +24,7 @@ export interface ExtendedDescriptorLanguageBean extends DescriptorLanguageBean {
   descriptorPathPlaceholder: string;
   toolDescriptorEnum: ToolDescriptor.TypeEnum;
   workflowDescriptorEnum: Workflow.DescriptorTypeEnum;
+  languageDocumentationURL: string;
   plainTRS: string;
   descriptorFileTypes: SourceFile.TypeEnum[];
   toolTab: {
@@ -47,6 +48,7 @@ export const extendedUnknownDescriptor: ExtendedDescriptorLanguageBean = {
   descriptorPathPlaceholder: '',
   toolDescriptorEnum: null,
   workflowDescriptorEnum: null,
+  languageDocumentationURL: null,
   plainTRS: null,
   descriptorFileTypes: [],
   toolTab: {

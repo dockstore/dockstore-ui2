@@ -14,7 +14,8 @@ export class SourceFileTabsService {
   constructor(
     private workflowsService: WorkflowsService,
     private fileService: FileService,
-    private descriptorTypeCompatService: DescriptorTypeCompatService
+    private descriptorTypeCompatService: DescriptorTypeCompatService,
+    private descriptorLanguageService: DescriptorLanguageService
   ) {}
 
   /**
@@ -32,7 +33,8 @@ export class SourceFileTabsService {
     descriptorLanguage: ToolDescriptor.TypeEnum
   ): Map<string, SourceFile[]> {
     let fileTabs = new Map<string, SourceFile[]>();
-    const fileTabsSchematic = DescriptorLanguageService.toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorLanguage).fileTabs;
+    const fileTabsSchematic =
+      this.descriptorLanguageService.toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorLanguage).fileTabs;
 
     // Always have the Descriptor Files Tab and Test Parameter Files tab
     fileTabs.set(fileTabsSchematic[0].tabName, []);

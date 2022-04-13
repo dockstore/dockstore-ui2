@@ -17,14 +17,19 @@ import { Injectable } from '@angular/core';
 import { transaction } from '@datorama/akita';
 import { FilesService } from '../../workflow/files/state/files.service';
 import { GA4GHV20Service } from '../openapi';
-import { ToolDescriptor } from '../swagger';
 import { GA4GHFilesStore } from './ga4gh-files.store';
+import { DescriptorLanguageService } from '../entry/descriptor-language.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class GA4GHFilesService {
-  constructor(private ga4ghFilesStore: GA4GHFilesStore, private ga4ghService: GA4GHV20Service, private filesService: FilesService) {}
+  constructor(
+    private ga4ghFilesStore: GA4GHFilesStore,
+    private ga4ghService: GA4GHV20Service,
+    private filesService: FilesService,
+    private descriptorLanguageService: DescriptorLanguageService
+  ) {}
 
   /**
    * Updates all GA4GH files from all descriptor types unless specific ones provided
@@ -43,14 +48,7 @@ export class GA4GHFilesService {
     this.clearFiles();
     this.filesService.removeAll();
     if (!descriptorTypes) {
-      descriptorTypes = [
-        ToolDescriptor.TypeEnum.SMK,
-        ToolDescriptor.TypeEnum.CWL,
-        ToolDescriptor.TypeEnum.WDL,
-        // DOCKSTORE-2428 - demo how to add new workflow language
-        // ToolDescriptor.TypeEnum.SWL,
-        ToolDescriptor.TypeEnum.NFL,
-      ];
+      descriptorTypes = this.descriptorLanguageService.getDescriptorLanguagesToolTypes();
     }
     this.injectAuthorizationToken(this.ga4ghService);
     descriptorTypes.forEach((descriptorType) => {
