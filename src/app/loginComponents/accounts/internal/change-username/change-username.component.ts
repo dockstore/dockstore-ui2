@@ -109,6 +109,6 @@ export class ChangeUsernameComponent implements OnInit {
       } else {
         this.usernameFormControl.enable();
       }
-    });
+    }).unsubscribe;
   }
 }
