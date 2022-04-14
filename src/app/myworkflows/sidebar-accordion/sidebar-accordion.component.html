@@ -9,15 +9,15 @@
       [expanded]="orgObj.expanded"
       class="mat-elevation-z"
       *ngFor="let orgObj of sourceObj.value.groupEntryInfo; trackBy: trackByOrgWorkflowObject"
-      [class.gitHubAppTool]="isAppTool$ | async"
+      [class.gitHubAppTool]="isTool$ | async"
     >
-      <mat-expansion-panel-header class="pt-2" [class.gitHubAppTool]="isAppTool$ | async">
+      <mat-expansion-panel-header class="pt-2" [class.gitHubAppTool]="isTool$ | async">
         {{ orgObj?.organization }}
       </mat-expansion-panel-header>
 
       <mat-tab-group
         mat-stretch-tabs
-        [ngClass]="(isAppTool$ | async) ? 'tool-tab-group' : 'workflow-tab-group'"
+        [ngClass]="(isTool$ | async) ? 'tool-tab-group' : 'workflow-tab-group'"
         [selectedIndex]="orgObj | selectTab: (workflowId$ | async)"
       >
         <mat-tab label="Published">
@@ -25,8 +25,8 @@
             <mat-list-item
               *ngFor="let workflowObj of orgObj?.published; trackBy: trackByWorkflowId"
               [ngClass]="{
-                selectedWorkflow: (isAppTool$ | async) === false && (workflowId$ | async) === workflowObj?.id,
-                selectedTool: (isAppTool$ | async) && (workflowId$ | async) === workflowObj?.id
+                selectedWorkflow: (isTool$ | async) === false && (workflowId$ | async) === workflowObj?.id,
+                selectedTool: (isTool$ | async) && (workflowId$ | async) === workflowObj?.id
               }"
             >
               <mat-icon class="arrow mat-icon-sm">arrow_forward</mat-icon>
@@ -48,8 +48,8 @@
             <mat-list-item
               *ngFor="let workflowObj of orgObj?.unpublished; trackBy: trackByWorkflowId"
               [ngClass]="{
-                selectedWorkflow: (isAppTool$ | async) === false && (workflowId$ | async) === workflowObj?.id,
-                selectedTool: (isAppTool$ | async) && (workflowId$ | async) === workflowObj?.id
+                selectedWorkflow: (isTool$ | async) === false && (workflowId$ | async) === workflowObj?.id,
+                selectedTool: (isTool$ | async) && (workflowId$ | async) === workflowObj?.id
               }"
             >
               <mat-icon class="arrow mat-icon-sm">arrow_forward</mat-icon>

@@ -30,7 +30,7 @@ export class SidebarAccordionComponent implements OnInit, OnChanges {
   activeTab = 0;
   entryType$: Observable<EntryType>;
   EntryType = EntryType;
-  isAppTool$: Observable<boolean>;
+  isTool$: Observable<boolean>;
   public isRefreshing$: Observable<boolean>;
   public sourceControlToWorkflows: Map<string, GroupEntriesBySource> = new Map<string, GroupEntriesBySource>();
 
@@ -80,7 +80,7 @@ export class SidebarAccordionComponent implements OnInit, OnChanges {
     this.isRefreshing$ = this.alertQuery.showInfo$;
     this.entryType$ = this.sessionQuery.entryType$;
     this.workflowId$ = this.workflowQuery.workflowId$;
-    this.isAppTool$ = this.sessionQuery.isAppTool$;
+    this.isTool$ = this.sessionQuery.isTool$;
   }
 
   trackByWorkflowId(index: number, workflow: Workflow) {
