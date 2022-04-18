@@ -122,9 +122,12 @@
       <span *ngIf="!labelsEditMode && !starGazersClicked" class="inline-block mt-1 mb-1">
         <span *ngIf="workflowEditData?.labels.length > 0" class="size-small mr-2">Labels</span>
         <mat-chip-list class="bubble-list">
-          <mat-chip class="bubble workflow-background pointer" *ngFor="let label of workflowEditData?.labels" (click)="goToSearch(label)">{{
-            label
-          }}</mat-chip>
+          <mat-chip
+            class="bubble workflow-background pointer"
+            *ngFor="let label of workflowEditData?.labels"
+            (click)="goToSearch(label, entryType)"
+            >{{ label }}</mat-chip
+          >
           <button
             type="button"
             *ngIf="!labelsEditMode && !isWorkflowPublic"

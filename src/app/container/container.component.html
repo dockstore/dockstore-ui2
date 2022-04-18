@@ -122,7 +122,7 @@
           <mat-chip
             class="bubble container-background pointer"
             *ngFor="let label of containerEditData?.labels"
-            (click)="goToSearch(label)"
+            (click)="goToSearch(label, Entry.Type.Tool)"
             >{{ label }}</mat-chip
           >
           <button
