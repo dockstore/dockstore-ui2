@@ -493,6 +493,8 @@ export abstract class Entry implements OnDestroy {
    * @param {EntryType} entryType Type of entry to search for
    */
   goToSearch(searchValue: string, entryType: EntryType): void {
+    // If the entry type is a tool or workflow, search for that particular type of entry
+    // Otherwise, perform the default type of search
     let searchType: string = undefined;
     if (entryType === EntryType.Tool || entryType == EntryType.AppTool) {
       searchType = 'tools';
