@@ -501,6 +501,7 @@ export abstract class Entry implements OnDestroy {
     } else if (entryType == EntryType.BioWorkflow) {
       searchType = 'workflows';
     }
+    // construct the url, adding parameters in an order that will remain the same when the search page later rewrites it
     let url = '/search?labels.value.keyword=' + searchValue;
     if (searchType !== undefined) {
       url += '&entryType=' + searchType;
