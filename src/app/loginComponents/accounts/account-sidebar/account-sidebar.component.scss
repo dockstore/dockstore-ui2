@@ -49,18 +49,3 @@ img[alt='Google avatar'] {
   width: 4.8rem;
   border-radius: 50%;
 }
-
-table {
-  border: none;
-
-  th {
-    font-weight: 500;
-    color: $header-color;
-    padding: 0rem 1.5rem 0rem 0rem;
-  }
-
-  td {
-    color: mat.get-color-from-palette($kim-gray, 1);
-    padding: 0rem;
-  }
-}
