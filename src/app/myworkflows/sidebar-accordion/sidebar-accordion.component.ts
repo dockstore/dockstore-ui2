@@ -20,7 +20,11 @@ interface GroupEntriesBySource {
 @Component({
   selector: 'app-workflow-sidebar-accordion',
   templateUrl: './sidebar-accordion.component.html',
-  styleUrls: ['./sidebar-accordion.component.scss', '../../shared/styles/my-entry-sidebar.scss'],
+  styleUrls: [
+    './sidebar-accordion.component.scss',
+    '../../mytools/sidebar-accordion/sidebar-accordion.component.scss',
+    '../../shared/styles/my-entry-sidebar.scss',
+  ],
 })
 export class SidebarAccordionComponent implements OnInit, OnChanges {
   @Input() openOneAtATime;

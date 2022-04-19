@@ -5,8 +5,8 @@
   </div>
 
   <mat-accordion multi="true">
-    <mat-expansion-panel [expanded]="orgObj.expanded" class="mat-elevation-z" *ngFor="let orgObj of registryObj.value.groupEntryInfo">
-      <mat-expansion-panel-header class="pt-2">
+    <mat-expansion-panel [expanded]="orgObj.expanded" class="mat-elevation-z tool" *ngFor="let orgObj of registryObj.value.groupEntryInfo">
+      <mat-expansion-panel-header class="tool pt-2">
         {{ orgObj?.namespace }}
       </mat-expansion-panel-header>
 

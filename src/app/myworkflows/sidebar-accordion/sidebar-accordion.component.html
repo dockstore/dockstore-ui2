@@ -9,9 +9,9 @@
       [expanded]="orgObj.expanded"
       class="mat-elevation-z"
       *ngFor="let orgObj of sourceObj.value.groupEntryInfo; trackBy: trackByOrgWorkflowObject"
-      [class.gitHubAppTool]="isTool$ | async"
+      [class.tool]="isTool$ | async"
     >
-      <mat-expansion-panel-header class="pt-2" [class.gitHubAppTool]="isTool$ | async">
+      <mat-expansion-panel-header class="pt-2" [class.tool]="isTool$ | async">
         {{ orgObj?.organization }}
       </mat-expansion-panel-header>
 

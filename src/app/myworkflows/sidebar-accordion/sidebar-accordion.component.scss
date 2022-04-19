@@ -14,16 +14,3 @@ mat-expansion-panel-header[aria-expanded='true']:focus,
 .selectedWorkflow {
   background-color: $workflow-selection-color;
 }
-
-// // Expansion panel background - GitHub App Tool
-mat-expansion-panel-header.gitHubAppTool,
-mat-expansion-panel-header.gitHubAppTool[aria-expanded='true']:hover,
-mat-expansion-panel-header.gitHubAppTool[aria-expanded='true']:focus,
-:host ::ng-deep mat-expansion-panel.gitHubAppTool .mat-expansion-panel-content {
-  background-color: $tool-background-color;
-}
-
-// Selected GitHub App Tool style
-.selectedTool {
-  background-color: $tool-selection-color;
-}

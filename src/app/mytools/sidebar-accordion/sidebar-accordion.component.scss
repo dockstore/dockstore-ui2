@@ -3,10 +3,10 @@
 @import '/src/materialColorScheme.scss';
 
 // Expansion panel background
-mat-expansion-panel-header,
-mat-expansion-panel-header[aria-expanded='true']:hover,
-mat-expansion-panel-header[aria-expanded='true']:focus,
-:host ::ng-deep mat-expansion-panel .mat-expansion-panel-content {
+mat-expansion-panel-header.tool,
+mat-expansion-panel-header.tool[aria-expanded='true']:hover,
+mat-expansion-panel-header.tool[aria-expanded='true']:focus,
+:host ::ng-deep mat-expansion-panel.tool .mat-expansion-panel-content {
   background-color: $tool-background-color;
 }
 
