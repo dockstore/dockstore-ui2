@@ -855,10 +855,20 @@ app-sidebar-accordion
   > .mat-tab-header
   > .mat-tab-label-container
   > .mat-tab-list
-  > .mat-tab-labels {
+  > .mat-tab-labels
+  .mat-tab-label[role^='tab'],
+app-workflow-sidebar-accordion
+  .mat-accordion
+  > .mat-expansion-panel
+  > .mat-expansion-panel-content
+  > .mat-expansion-panel-body
+  > .mat-tab-group
+  > .mat-tab-header
+  > .mat-tab-label-container
+  > .mat-tab-list
+  > .mat-tab-labels
   .mat-tab-label[role^='tab'] {
-    min-width: 80px;
-  }
+  min-width: 80px;
 }
 
 .tool-tab-group.mat-primary .mat-ink-bar {

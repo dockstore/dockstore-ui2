@@ -13,7 +13,6 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Dockstore } from '../../../src/app/shared/dockstore.model';
 import {
   clickFirstActionsButtonPublic,
   clickFirstActionsButtonPrivate,
@@ -30,17 +29,14 @@ describe('Dockstore hosted workflows', () => {
   beforeEach(() => {
     cy.visit('/my-workflows');
 
-    cy.server();
-
-    cy.route({
+    cy.intercept({
       method: 'GET',
       url: /workflows\/.+\/zip\/.+/,
-      response: 200,
     }).as('downloadZip');
   });
 
   function getWorkflow() {
-    goToUnexpandedSidebarEntry('dockstore.org/A', /hosted/);
+    goToUnexpandedSidebarEntry('A2', /hosted/);
   }
 
   // using an ugly name to flex workflow naming functionality a bit
@@ -79,7 +75,7 @@ describe('Dockstore hosted workflows', () => {
       });
 
       cy.get('#saveNewVersionButton').click();
-      cy.get('#workflow-path').contains('dockstore.org/A/hosted-workflow:1');
+      cy.get('#workflow-path').contains('dockstore.org/A2/hosted-workflow:1');
       // Should have a version 1
       goToTab('Versions');
       cy.get('table').contains('span', /\b1\b/);
@@ -93,7 +89,7 @@ describe('Dockstore hosted workflows', () => {
       // https://github.com/ga4gh/dockstore/issues/2050
       cy.get('#downloadZipButton').click();
 
-      cy.wait('@downloadZip').its('url').should('include', Dockstore.API_URI);
+      cy.wait('@downloadZip').its('response.statusCode').should('eq', 200);
 
       // Add a new version with a second descriptor and a test json
       goToTab('Files');
@@ -119,7 +115,7 @@ describe('Dockstore hosted workflows', () => {
       });
 
       cy.get('#saveNewVersionButton').click();
-      cy.get('#workflow-path').contains('dockstore.org/A/hosted-workflow:2');
+      cy.get('#workflow-path').contains('dockstore.org/A2/hosted-workflow:2');
       // Should have a version 2
       goToTab('Versions');
       cy.get('table').contains('span', /\b2\b/);
@@ -132,7 +128,7 @@ describe('Dockstore hosted workflows', () => {
       cy.get('#editFilesButton').click();
       cy.get('.delete-editor-file').first().click();
       cy.get('#saveNewVersionButton').click();
-      cy.get('#workflow-path').contains('dockstore.org/A/hosted-workflow:3');
+      cy.get('#workflow-path').contains('dockstore.org/A2/hosted-workflow:3');
 
       // Testing for one ace editor as mat-tab hides the second element due to it being in a different tab
       cy.get('.ace_editor').should('have.length', 1);
@@ -145,7 +141,7 @@ describe('Dockstore hosted workflows', () => {
       clickFirstActionsButtonPrivate();
       cy.contains('Delete').click();
       // Automatically selects the newest version that wasn't the one that was just deleted
-      cy.get('#workflow-path').contains('dockstore.org/A/hosted-workflow:2');
+      cy.get('#workflow-path').contains('dockstore.org/A2/hosted-workflow:2');
       // Version 3 should no longer exist since it was just deleted
       goToTab('Versions');
       cy.get('table').find('a').should('not.contain', '3');
@@ -165,8 +161,8 @@ describe('Dockstore hosted workflows', () => {
     });
     it('Add files to hosted workflow', () => {
       // navigate to workflow
-      cy.get('.mat-expanded');
-      cy.contains('dockstore.org/user_A').click();
+      cy.get('.mat-expansion-panel');
+      cy.contains('.mat-expansion-panel', 'user_A').click();
       cy.contains('a', NEW_WORKFLOW_NAME).click();
 
       // Check content of the info tab

@@ -133,7 +133,13 @@ $dockstore-app-theme: map_merge(
 // It is not placed in styles.scss to prevent importing styles.scss multiple times
 
 $tool-color: #29b6f6;
+$tool-background-color: #f3fbff;
+$tool-selection-color: #d0effd;
+
 $workflow-color: #26bfa5;
+$workflow-background-color: #f6fefc;
+$workflow-selection-color: #d2fbf0;
+
 $service-color: #ff6c44;
 
 // Color used to indicate success in general (of an operation, verified badge, etc).

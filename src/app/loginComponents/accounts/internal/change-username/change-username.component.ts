@@ -57,6 +57,7 @@ export class ChangeUsernameComponent implements OnInit {
       }
     });
     this.canChangeUsername$ = this.userQuery.canChangeUsername$;
+    this.enableDisableFormControl();
     this.usernameFormControl.valueChanges.pipe(debounceTime(formInputDebounceTime), takeUntil(this.ngUnsubscribe)).subscribe((value) => {
       if (this.usernameFormControl.valid) {
         this.checkIfUsernameExists(value);
@@ -96,5 +97,18 @@ export class ChangeUsernameComponent implements OnInit {
    */
   updateUsername() {
     this.userService.updateUsername(this.username);
+  }
+
+  /**
+   * Enable or disable form input if user can or cannot update username
+   */
+  enableDisableFormControl() {
+    this.canChangeUsername$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((canChangeUsername: boolean) => {
+      if (!canChangeUsername) {
+        this.usernameFormControl.disable();
+      } else {
+        this.usernameFormControl.enable();
+      }
+    });
   }
 }

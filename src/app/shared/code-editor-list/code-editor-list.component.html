@@ -85,7 +85,7 @@
   <button
     class="ml-2"
     mat-raised-button
-    color="primary"
+    class="accent-1-dark-btn"
     (click)="addFile()"
     *ngIf="editing && (fileType !== 'dockerfile' || (fileType === 'dockerfile' && sourcefiles?.length === 0))"
   >
