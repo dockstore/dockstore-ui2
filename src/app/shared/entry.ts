@@ -496,9 +496,9 @@ export abstract class Entry implements OnDestroy {
     // If the entry type is a tool or workflow, search for that particular type of entry
     // Otherwise, perform the default type of search
     let searchType: string = undefined;
-    if (entryType === EntryType.Tool || entryType == EntryType.AppTool) {
+    if (entryType === EntryType.Tool || entryType === EntryType.AppTool) {
       searchType = 'tools';
-    } else if (entryType == EntryType.BioWorkflow) {
+    } else if (entryType === EntryType.BioWorkflow) {
       searchType = 'workflows';
     }
     // construct the url, adding parameters in an order that will remain the same when the search page later rewrites it
