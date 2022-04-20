@@ -35,50 +35,42 @@
       <mat-sidenav-container fxLayout autosize class="sidebar-set-height">
         <mat-sidenav
           #sidenav
-          fxFlex="27"
+          fxFlex="18"
           fxFlex.lt-md="calc(100vw - 11rem)"
-          class="container-fluid"
+          class="container-fluid p-0"
           mode="side"
           [(opened)]="showSidebar"
           *ngIf="(refreshingMyEntries$ | async) === false"
         >
           <div id="parent">
             <div id="child">
-              <div class="clearfix sidebar-header">
-                <mat-toolbar>
-                  <mat-toolbar-row>
-                    <div fxLayout="row" fxLayoutAlign="space-between center" class="w-100">
-                      <span>My tools</span>
-                      <span>
-                        <button
-                          mat-icon-button
-                          color="primary"
-                          id="register_tool_button"
-                          matTooltip="Register tool"
-                          matTooltipPosition="after"
-                          (click)="showRegisterEntryModal()"
-                          [disabled]="isRefreshing$ | async"
-                        >
-                          <mat-icon>add</mat-icon>
-                        </button>
-                      </span>
-                    </div>
-                  </mat-toolbar-row>
-                </mat-toolbar>
+              <div class="clearfix sidebar-header w-100">
+                <button
+                  mat-button
+                  class="private-btn small-btn-structure ml-3 mb-3"
+                  id="register_tool_button"
+                  matTooltip="Register tool"
+                  matTooltipPosition="after"
+                  (click)="showRegisterEntryModal()"
+                  [disabled]="isRefreshing$ | async"
+                >
+                  <img src="../../../assets/svg/icons-plus.svg" alt="Register a tool" class="pr-2 pb-1" />
+                  Register a Tool
+                </button>
               </div>
               <p *ngIf="(hasGroupEntriesObject$ | async) === false && (hasGroupGitHubAppToolEntriesObjects$ | async) === false">
                 You have not registered any tools
               </p>
-              <app-sidebar-accordion
-                [openOneAtATime]="oneAtATime"
-                [groupEntriesObject]="groupEntriesObject$ | async"
-                [refreshMessage]="isRefreshing$ | async"
-              ></app-sidebar-accordion>
               <app-workflow-sidebar-accordion
                 [openOneAtATime]="oneAtATime"
                 [groupEntriesObject]="groupAppToolEntryObjects$ | async"
                 [refreshMessage]="isRefreshing$ | async"
               ></app-workflow-sidebar-accordion>
+              <app-sidebar-accordion
+                [openOneAtATime]="oneAtATime"
+                [groupEntriesObject]="groupEntriesObject$ | async"
+                [refreshMessage]="isRefreshing$ | async"
+              ></app-sidebar-accordion>
             </div>
           </div>
         </mat-sidenav>

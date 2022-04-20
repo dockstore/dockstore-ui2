@@ -1,7 +1,16 @@
-mat-expansion-panel {
-  margin: 0px 2px;
+@use '@angular/material' as mat;
+
+@import '/src/materialColorScheme.scss';
+
+// Expansion panel background
+mat-expansion-panel-header.tool,
+mat-expansion-panel-header.tool[aria-expanded='true']:hover,
+mat-expansion-panel-header.tool[aria-expanded='true']:focus,
+:host ::ng-deep mat-expansion-panel.tool .mat-expansion-panel-content {
+  background-color: $tool-background-color;
 }
 
-.mat-expansion-panel-spacing {
-  margin: 16px 2px !important;
+// Selected tool style
+.selectedTool {
+  background-color: $tool-selection-color;
 }

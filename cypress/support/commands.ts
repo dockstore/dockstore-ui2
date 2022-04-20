@@ -95,7 +95,7 @@ export function goToUnexpandedSidebarEntry(organization: string, repo: RegExp | 
   // All expansion panels are shown before any of them are expanded (after some logic of choosing which to expanded).
   // If the user expands a panel before the above happens, their choice gets overwritten
   cy.get('.mat-expanded');
-  cy.contains(organization).click();
+  cy.contains(organization).parent().click();
   // Can't seem to select the mat-expansion-panel for some reason without triple parent
   cy.contains(organization).parent().parent().parent().contains('div .no-wrap', repo).should('be.visible').click();
 }

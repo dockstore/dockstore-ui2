@@ -1,59 +1,100 @@
-<mat-accordion multi-true>
-  <mat-expansion-panel *ngFor="let orgObj of groupEntriesObject; trackBy: trackByOrgWorkflowObject" [expanded]="orgObj.expanded">
-    <mat-expansion-panel-header>
-      <mat-panel-title class="org-accordion-header">
-        {{ orgObj?.sourceControl + '/' + orgObj?.organization }}
-      </mat-panel-title>
-    </mat-expansion-panel-header>
-    <mat-tab-group mat-stretch-tabs [selectedIndex]="orgObj | selectTab: (workflowId$ | async)">
-      <mat-tab label="Published">
-        <mat-list class="org-accordion-list">
-          <mat-list-item
-            *ngFor="let workflowObj of orgObj?.published; trackBy: trackByWorkflowId"
-            [ngClass]="{ selected: (workflowId$ | async) === workflowObj?.id }"
-          >
-            <a
-              class="no-wrap"
-              title="{{ workflowObj?.repository + (workflowObj?.workflowName ? '/' + workflowObj?.workflowName : '') }}"
-              [routerLink]="'/my-' + (entryType$ | async) + 's/' + workflowObj.full_workflow_path"
+<div *ngFor="let sourceObj of sourceControlToWorkflows | keyvalue: defaultOrdering">
+  <div *ngIf="sourceObj.value.groupEntryInfo.length" class="sourceTitle">
+    <img src="../../../assets/images/registries/{{ sourceObj.value.sourceControlTitle }}.svg" class="mb-2 mr-1" alt="Source Control" />
+    {{ sourceObj.value?.sourceControlTitle }}
+  </div>
+
+  <mat-accordion multi="true">
+    <mat-expansion-panel
+      [expanded]="orgObj.expanded"
+      class="mat-elevation-z"
+      *ngFor="let orgObj of sourceObj.value.groupEntryInfo; trackBy: trackByOrgWorkflowObject"
+      [class.tool]="isTool$ | async"
+    >
+      <mat-expansion-panel-header class="pt-2" [class.tool]="isTool$ | async">
+        {{ orgObj?.organization }}
+      </mat-expansion-panel-header>
+
+      <mat-tab-group
+        mat-stretch-tabs
+        [ngClass]="(isTool$ | async) ? 'tool-tab-group' : 'workflow-tab-group'"
+        [selectedIndex]="orgObj | selectTab: (workflowId$ | async)"
+      >
+        <mat-tab label="Published">
+          <mat-list class="org-accordion-list">
+            <mat-list-item
+              *ngFor="let workflowObj of orgObj?.published; trackBy: trackByWorkflowId"
+              [ngClass]="{
+                selectedWorkflow: (isTool$ | async) === false && (workflowId$ | async) === workflowObj?.id,
+                selectedTool: (isTool$ | async) && (workflowId$ | async) === workflowObj?.id
+              }"
             >
-              {{ workflowObj?.repository + (workflowObj?.workflowName ? '/' + workflowObj?.workflowName : '') }}
-            </a>
-          </mat-list-item>
-          <mat-list-item *ngIf="!orgObj || orgObj?.published.length === 0">
-            <p class="text-center">No published workflows.</p>
-          </mat-list-item>
-        </mat-list>
-      </mat-tab>
-      <mat-tab label="Unpublished">
-        <mat-list class="org-accordion-list">
-          <mat-list-item
-            *ngFor="let workflowObj of orgObj?.unpublished; trackBy: trackByWorkflowId"
-            [ngClass]="{ selected: (workflowId$ | async) === workflowObj?.id }"
-          >
-            <a
-              class="no-wrap"
-              title="{{ workflowObj?.repository + (workflowObj?.workflowName ? '/' + workflowObj?.workflowName : '') }}"
-              [routerLink]="'/my-' + (entryType$ | async) + 's/' + workflowObj.full_workflow_path"
+              <mat-icon class="arrow mat-icon-sm">arrow_forward</mat-icon>
+              <a
+                class="no-wrap"
+                title="{{ workflowObj?.repository + (workflowObj?.workflowName ? '/' + workflowObj?.workflowName : '') }}"
+                [routerLink]="'/my-' + (entryType$ | async) + 's/' + workflowObj.full_workflow_path"
+              >
+                {{ workflowObj?.repository + (workflowObj?.workflowName ? '/' + workflowObj?.workflowName : '') }}
+              </a>
+            </mat-list-item>
+            <mat-list-item *ngIf="!orgObj || orgObj?.published.length === 0">
+              <p class="text-center size-small">No published workflows.</p>
+            </mat-list-item>
+          </mat-list>
+        </mat-tab>
+        <mat-tab label="Unpublished">
+          <mat-list class="org-accordion-list">
+            <mat-list-item
+              *ngFor="let workflowObj of orgObj?.unpublished; trackBy: trackByWorkflowId"
+              [ngClass]="{
+                selectedWorkflow: (isTool$ | async) === false && (workflowId$ | async) === workflowObj?.id,
+                selectedTool: (isTool$ | async) && (workflowId$ | async) === workflowObj?.id
+              }"
             >
-              {{ workflowObj?.repository + (workflowObj?.workflowName ? '/' + workflowObj?.workflowName : '') }}
-            </a>
-          </mat-list-item>
-          <mat-list-item *ngIf="!orgObj || orgObj?.unpublished.length === 0">
-            <p class="text-center">No unpublished workflows.</p>
-          </mat-list-item>
-        </mat-list>
-      </mat-tab>
-    </mat-tab-group>
-    <mat-action-row *ngIf="(entryType$ | async) === EntryType.BioWorkflow || (entryType$ | async) === EntryType.Tool">
-      <div>
-        <span *ngIf="orgObj.sourceControl.startsWith('github.com')">
-          <button color="accent" (click)="openGitHubAppsLogs(orgObj.organization)" mat-button>See GitHub Apps Logs</button>
-        </span>
-        <span *ngIf="!orgObj?.sourceControl.startsWith('dockstore.org') && (entryType$ | async) !== EntryType.Tool">
-          <app-refresh-workflow-organization [orgWorkflowObject]="orgObj"></app-refresh-workflow-organization>
-        </span>
-      </div>
-    </mat-action-row>
-  </mat-expansion-panel>
-</mat-accordion>
+              <mat-icon class="arrow mat-icon-sm">arrow_forward</mat-icon>
+              <a
+                class="no-wrap"
+                title="{{ workflowObj?.repository + (workflowObj?.workflowName ? '/' + workflowObj?.workflowName : '') }}"
+                [routerLink]="'/my-' + (entryType$ | async) + 's/' + workflowObj.full_workflow_path"
+              >
+                {{ workflowObj?.repository + (workflowObj?.workflowName ? '/' + workflowObj?.workflowName : '') }}
+              </a>
+            </mat-list-item>
+            <mat-list-item *ngIf="!orgObj || orgObj?.unpublished.length === 0">
+              <p class="text-center size-small">No unpublished workflows.</p>
+            </mat-list-item>
+          </mat-list>
+        </mat-tab>
+      </mat-tab-group>
+      <mat-action-row
+        *ngIf="
+          ((entryType$ | async) === EntryType.BioWorkflow || (entryType$ | async) === EntryType.Tool) &&
+          (orgObj.sourceControl.startsWith('github.com') ||
+            (!orgObj?.sourceControl.startsWith('dockstore.org') && (entryType$ | async) !== EntryType.Tool))
+        "
+      >
+        <div fxFlex>
+          <span fxLayout fxLayoutAlign="start" *ngIf="orgObj.sourceControl.startsWith('github.com')">
+            <button
+              mat-button
+              class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z mr-1 mt-2 mb-2"
+              (click)="openGitHubAppsLogs(orgObj.organization)"
+            >
+              <img src="../../../assets/svg/git-hub.svg" alt="GitHub app logs" class="pr-2" />
+              Apps Logs
+            </button>
+          </span>
+          <span
+            fxFlex
+            fxLayout
+            fxLayoutAlign="end"
+            *ngIf="!orgObj?.sourceControl.startsWith('dockstore.org') && (entryType$ | async) !== EntryType.Tool"
+          >
+            <app-refresh-workflow-organization [orgWorkflowObject]="orgObj"></app-refresh-workflow-organization>
+          </span>
+        </div>
+      </mat-action-row>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>

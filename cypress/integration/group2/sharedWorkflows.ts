@@ -200,15 +200,15 @@ describe('Shared with me workflow test from my-workflows', () => {
   }
 
   function getReadOnlyWorkflow() {
-    goToUnexpandedSidebarEntry('dockstore.org/user_B', /readertest/);
+    goToUnexpandedSidebarEntry('user_B', /readertest/);
   }
 
   function getWriteOnlyWorkflow() {
-    goToUnexpandedSidebarEntry('dockstore.org/user_B', /writertest/);
+    goToUnexpandedSidebarEntry('user_B', /writertest/);
   }
 
   function getOwnerWorkflow() {
-    goToUnexpandedSidebarEntry('dockstore.org/user_B', /ownertest/);
+    goToUnexpandedSidebarEntry('user_B', /ownertest/);
   }
 
   describe('Should be able to perform operations on shared with me workflows based on permissions', () => {
