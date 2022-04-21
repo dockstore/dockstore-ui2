@@ -32,9 +32,7 @@ describe('Admin UI', () => {
   describe('Profile', () => {
     it('Admin status indicated on profile page', () => {
       cy.get('#dropdown-accounts').click();
-      cy.get('#mat-tab-label-0-1').click();
       cy.get('#account-is-admin').should('exist');
-      cy.get('#account-is-admin > .mat-icon').contains('lock');
     });
   });
 });

@@ -10,11 +10,11 @@ import { UserQuery } from '../../../shared/user/user.query';
 import { UserService } from '../../../shared/user/user.service';
 
 @Component({
-  selector: 'app-accounts-internal',
-  templateUrl: './accounts.component.html',
-  styleUrls: ['./accounts.component.scss'],
+  selector: 'app-account-sidebar',
+  templateUrl: './account-sidebar.component.html',
+  styleUrls: ['./account-sidebar.component.scss'],
 })
-export class AccountsInternalComponent implements OnInit {
+export class AccountSidebarComponent implements OnInit {
   user: User;
   TokenSource = TokenSource;
   googleProfile: Profile;
@@ -22,6 +22,8 @@ export class AccountsInternalComponent implements OnInit {
   hasGitHubToken$: Observable<boolean>;
   hasGoogleToken$: Observable<boolean>;
   public isRefreshing$: Observable<boolean>;
+  public syncBadgeGit: boolean = false;
+  public syncBadgeGoogle: boolean = false;
   constructor(
     private userService: UserService,
     private usersService: UsersService,
@@ -39,7 +41,7 @@ export class AccountsInternalComponent implements OnInit {
    * Update user metadata for a service
    *
    * @param {TokenSource} service  TokenSource.GITHUB or TokenSource.GOOGLE
-   * @memberof AccountsInternalComponent
+   * @memberof AccountSidebarComponent
    */
   sync(service: TokenSource.GOOGLE | TokenSource.GITHUB) {
     this.alertService.start('Updating user metadata');
@@ -47,6 +49,12 @@ export class AccountsInternalComponent implements OnInit {
       (user: User) => {
         this.userService.updateUser(user);
         this.alertService.simpleSuccess();
+        if (service === TokenSource.GITHUB) {
+          this.syncBadgeGit = true;
+        }
+        if (service === TokenSource.GOOGLE) {
+          this.syncBadgeGoogle = true;
+        }
       },
       (error) => {
         this.alertService.simpleError();
@@ -58,6 +66,9 @@ export class AccountsInternalComponent implements OnInit {
     this.userQuery.user$.subscribe((user: User) => {
       this.user = user;
       if (user) {
+        if (!this.user.avatarUrl) {
+          this.user.avatarUrl = this.userService.gravatarUrl(null, null);
+        }
         const userProfiles = user.userProfiles;
         if (userProfiles) {
           this.googleProfile = userProfiles[TokenSource.GOOGLE];
@@ -74,7 +85,7 @@ export class AccountsInternalComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.getUser();
   }
 }

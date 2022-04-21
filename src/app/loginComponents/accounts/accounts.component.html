@@ -9,29 +9,32 @@
       Profiles, Accounts and Controls
     </app-header>
 
-    <div class="container">
-      <mat-tab-group
-        [selectedIndex]="selected.value"
-        (selectedIndexChange)="selected.setValue($event)"
-        (selectedTabChange)="selectedTabChange($event)"
-        mat-stretch-tabs
-        class="purple-tab-group"
-      >
-        <mat-tab label="Linked Accounts & Tokens">
-          <app-accounts-external></app-accounts-external>
-        </mat-tab>
-        <mat-tab label="Profiles">
-          <app-accounts-internal></app-accounts-internal>
-        </mat-tab>
-        <mat-tab label="Dockstore Account & Preferences">
-          <ng-template matTabContent>
-            <app-controls></app-controls>
-          </ng-template>
-        </mat-tab>
-        <mat-tab label="Requests">
-          <app-requests></app-requests>
-        </mat-tab>
-      </mat-tab-group>
+    <div fxLayout="row" fxLayout.lt-md="column">
+      <app-account-sidebar></app-account-sidebar>
+
+      <div class="w-100" fxLayoutAlign="center none">
+        <div class="container">
+          <mat-tab-group
+            [selectedIndex]="selected.value"
+            (selectedIndexChange)="selected.setValue($event)"
+            (selectedTabChange)="selectedTabChange($event)"
+            mat-stretch-tabs
+            class="purple-tab-group"
+          >
+            <mat-tab label="Linked Accounts & Tokens">
+              <app-accounts-external></app-accounts-external>
+            </mat-tab>
+            <mat-tab label="Dockstore Account & Preferences">
+              <ng-template matTabContent>
+                <app-controls></app-controls>
+              </ng-template>
+            </mat-tab>
+            <mat-tab label="Requests">
+              <app-requests></app-requests>
+            </mat-tab>
+          </mat-tab-group>
+        </div>
+      </div>
     </div>
   </div>
 </div>
