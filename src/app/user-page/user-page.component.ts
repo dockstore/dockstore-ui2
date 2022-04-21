@@ -3,7 +3,9 @@ import { TokenSource } from '../shared/enum/token-source.enum';
 import { Profile } from '../shared/swagger';
 import { UsersService } from '../shared/swagger/api/users.service';
 import { UserService } from '../shared/user/user.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-user-page',
@@ -12,10 +14,20 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class UserPageComponent implements OnInit {
   public user: any;
-  TokenSource = TokenSource;
-  googleProfile: Profile;
-  gitHubProfile: Profile;
-  constructor(private userService: UserService, private usersService: UsersService, private activatedRoute: ActivatedRoute) {}
+  public username: string;
+  public TokenSource = TokenSource;
+  public googleProfile: Profile;
+  public gitHubProfile: Profile;
+  protected ngUnsubscribe: Subject<{}> = new Subject();
+  constructor(
+    private userService: UserService,
+    private usersService: UsersService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router
+  ) {
+    this.username = this.activatedRoute.snapshot.paramMap.get('username');
+    this.checkIfUsernameExists(this.username);
+  }
 
   getUserInfo(username: string): void {
     this.usersService.listUser(username, 'userProfiles').subscribe(
@@ -45,8 +57,27 @@ export class UserPageComponent implements OnInit {
     );
   }
 
+  /**
+   * Checks if username exists, if not, navigates to homepage
+   */
+  checkIfUsernameExists(value: string): void {
+    const username = value;
+    this.usersService
+      .checkUserExists(username)
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(
+        (userExists: boolean) => {
+          if (!userExists) {
+            this.router.navigateByUrl('');
+          }
+        },
+        (error) => {
+          console.error(error);
+        }
+      );
+  }
+
   ngOnInit(): void {
-    const username = this.activatedRoute.snapshot.paramMap.get('username');
-    this.getUserInfo(username);
+    this.getUserInfo(this.username);
   }
 }
