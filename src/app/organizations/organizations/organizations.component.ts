@@ -29,6 +29,10 @@ import { OrganizationsStateService } from '../state/organizations.service';
 import { RequireAccountsModalComponent } from '../registerOrganization/requireAccountsModal/require-accounts-modal.component';
 import { OrgLogoService } from '../../shared/org-logo.service';
 
+function help(org) {
+  return 'help' + org.name;
+}
+
 @Component({
   selector: 'app-organizations',
   templateUrl: './organizations.component.html',
@@ -107,5 +111,9 @@ export class OrganizationsComponent extends Base implements OnInit {
 
   clearSearch() {
     this.organizationSearchForm.get('name').setValue('');
+  }
+
+  brace(org) {
+    return '{' + org.name + '}';
   }
 }
