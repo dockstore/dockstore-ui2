@@ -80,9 +80,7 @@ export class ChangeUsernameComponent implements OnInit {
       )
       .subscribe(
         (userExists: boolean) => {
-          if (userExists) {
-            this.usernameTaken = userExists;
-          }
+          this.usernameTaken = userExists;
         },
         (error) => {
           console.error(error);

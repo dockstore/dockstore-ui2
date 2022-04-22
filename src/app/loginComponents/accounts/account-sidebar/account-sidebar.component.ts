@@ -8,7 +8,6 @@ import { Profile, User } from '../../../shared/swagger';
 import { UsersService } from '../../../shared/swagger/api/users.service';
 import { UserQuery } from '../../../shared/user/user.query';
 import { UserService } from '../../../shared/user/user.service';
-import { takeUntil } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { ChangeUsernameComponent } from '../../../../app/loginComponents/accounts/internal/change-username/change-username.component';
 
@@ -87,6 +86,8 @@ export class AccountSidebarComponent implements OnInit {
             this.gitHubProfile.avatarURL = this.userService.gravatarUrl(this.gitHubProfile.email, this.gitHubProfile.avatarURL);
           }
         }
+        // Check username to display warning on sidebar
+        this.showEmailWarning = this.user.username.includes('@');
       }
     });
   }
@@ -97,8 +98,5 @@ export class AccountSidebarComponent implements OnInit {
 
   ngOnInit(): void {
     this.getUser();
-    this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((user) => {
-      this.showEmailWarning = this.user.username.includes('@');
-    });
   }
 }

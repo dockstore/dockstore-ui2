@@ -19,11 +19,11 @@ import { CustomMaterialModule } from 'app/shared/modules/material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { CommonModule } from '@angular/common';
 import { ChangeUsernameComponent } from './change-username.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [ChangeUsernameComponent],
-  imports: [CustomMaterialModule, FlexLayoutModule, CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [CustomMaterialModule, FlexLayoutModule, CommonModule, ReactiveFormsModule],
   providers: [],
   exports: [ChangeUsernameComponent],
 })
