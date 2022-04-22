@@ -1,20 +1,61 @@
+@use '@angular/material' as mat;
+
+@import '/src/materialColorScheme.scss';
+
 .change-username-form {
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
 }
 
-.change-username-form-buttons {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+mat-form-field {
+  width: 60%;
 }
 
-#updateUsername {
-  width: 200px;
+mat-error {
+  line-height: 2rem;
 }
 
 .vertical-center {
   display: flex;
   align-items: center;
+}
+
+// Form field inner
+:host ::ng-deep .mat-form-field-wrapper .mat-form-field-infix {
+  border: 0rem;
+  padding: 0rem;
+}
+
+//Form field box
+:host ::ng-deep .mat-form-field-wrapper {
+  margin: 0rem;
+  padding-bottom: 0.8rem;
+  line-height: 4rem;
+}
+
+// Form field label
+:host ::ng-deep .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-infix .mat-form-field-label-wrapper .mat-form-field-label {
+  top: 1.8rem;
+}
+
+// Form field text animation re-implementation
+:host ::ng-deep .mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+  transform: translateY(-1.1em) scale(0.75);
+  width: 133.33333%;
+  top: 1.84375em;
+}
+
+// Purple outline and text
+:host ::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline,
+:host ::ng-deep .mat-form-field:not(.mat-form-field-invalid) .mat-form-field-label,
+:host ::ng-deep .mat-form-field.mat-focused:not(.mat-form-field-invalid) .mat-form-field-label {
+  color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
+}
+
+// Disabled form field
+:host ::ng-deep .mat-form-field-appearance-outline.mat-form-field-disabled .mat-form-field-outline {
+  color: mat.get-color-from-palette($dockstore-app-primary, 4);
+  background-color: mat.get-color-from-palette($dockstore-app-gray, 5);
+  border-radius: 5px;
 }

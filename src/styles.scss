@@ -1287,3 +1287,29 @@ a.small-mat-btn-skin:not([class*='mat-elevation-z']) {
   border: solid 1px mat.get-color-from-palette($dockstore-app-gray, 7);
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1), 0 2px 3px 0 rgba(0, 0, 0, 0.08) !important;
 }
+
+// Alert and Warning styles
+.alert-warning {
+  background-color: mat.get-color-from-palette($dockstore-app-warn, 6) !important;
+  border: solid 1px mat.get-color-from-palette($dockstore-app-warn, 3) !important;
+  box-shadow: none !important;
+}
+
+.alert-warning-icon {
+  color: mat.get-color-from-palette($dockstore-app-warn, 1) !important;
+}
+
+.alert-info {
+  background-color: #d9edf7 !important;
+  border-color: #bce8f1 !important;
+  border: 0px !important;
+}
+
+.alert-danger {
+  background-color: mat.get-color-from-palette($dockstore-app-error, 5) !important;
+  border: solid 1px mat.get-color-from-palette($dockstore-app-error, 4) !important;
+}
+
+.alert-danger-icon {
+  color: mat.get-color-from-palette($dockstore-app-error, 2) !important;
+}

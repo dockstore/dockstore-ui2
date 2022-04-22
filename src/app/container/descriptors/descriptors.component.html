@@ -14,12 +14,14 @@
   ~    limitations under the License.
   -->
 <div *ngIf="!_selectedVersion" class="p-3">
-  <mat-card class="alert alert-warning" role="alert"> <mat-icon>warning</mat-icon> No versions exist for this tool. </mat-card>
+  <mat-card class="alert alert-warning mat-elevation-z" role="alert">
+    <mat-icon class="alert-warning-icon">warning</mat-icon> No versions exist for this tool.
+  </mat-card>
 </div>
 <div *ngIf="_selectedVersion" class="p-3">
   <span *ngIf="!publicPage">
-    <mat-card *ngIf="validationMessage" class="alert alert-warning">
-      <mat-icon>warning</mat-icon>
+    <mat-card *ngIf="validationMessage" class="alert alert-warning mat-elevation-z">
+      <mat-icon class="alert-warning-icon">warning</mat-icon>
       &nbsp;
       <span *ngFor="let item of validationMessage | keyvalue">
         <strong>{{ item.key }}</strong
@@ -43,8 +45,8 @@
       </span>
     </div>
 
-    <mat-card class="alert alert-warning" role="alert" *ngIf="!content">
-      <mat-icon>warning</mat-icon>
+    <mat-card class="alert alert-warning mat-elevation-z" role="alert" *ngIf="!content">
+      <mat-icon class="alert-warning-icon">warning</mat-icon>
       &nbsp;A Descriptor File associated with this Docker container could not be found.
     </mat-card>
 

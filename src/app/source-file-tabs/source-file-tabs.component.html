@@ -1,7 +1,7 @@
 <app-loading class="w-100" [loading]="loading">
   <div *ngIf="version" class="p-3">
-    <mat-card class="alert alert-warning" *ngIf="validationMessage">
-      <mat-icon>warning</mat-icon>
+    <mat-card class="alert alert-warning mat-elevation-z" *ngIf="validationMessage">
+      <mat-icon class="alert-warning-icon">warning</mat-icon>
       &nbsp;
       <span *ngFor="let item of validationMessage | keyvalue">
         <strong>{{ item.key }}</strong
@@ -10,19 +10,24 @@
     </mat-card>
   </div>
   <div *ngIf="!loading && (!fileTabs || fileTabs.size === 0) && !displayError" class="p-3">
-    <mat-card class="alert alert-warning"> <mat-icon>warning</mat-icon>This version has no files.</mat-card>
+    <mat-card class="alert alert-warning mat-elevation-z">
+      <mat-icon class="alert-warning-icon">warning</mat-icon>This version has no files.</mat-card
+    >
   </div>
 
   <div *ngIf="displayError" class="p-3">
-    <mat-card class="alert alert-warning">
-      <mat-icon>warning</mat-icon>There was an error retrieving the files for this version. Please reload the page.</mat-card
+    <mat-card class="alert alert-warning mat-elevation-z">
+      <mat-icon class="alert-warning-icon">warning</mat-icon>There was an error retrieving the files for this version. Please reload the
+      page.</mat-card
     >
   </div>
   <mat-tab-group mat-stretch-tabs (selectedTabChange)="matTabChange($event)">
     <mat-tab *ngFor="let fileTab of fileTabs | keyvalue: originalOrder" [label]="fileTab.key">
       <ng-template matTabContent>
         <div class="p-3" *ngIf="fileTab.value.length === 0">
-          <mat-card class="alert alert-warning"> <mat-icon>warning</mat-icon>This version has no files of this type.</mat-card>
+          <mat-card class="alert alert-warning mat-elevation-z">
+            <mat-icon class="alert-warning-icon">warning</mat-icon>This version has no files of this type.</mat-card
+          >
         </div>
         <div *ngIf="fileTab.value.length > 0">
           <mat-toolbar color="primary">

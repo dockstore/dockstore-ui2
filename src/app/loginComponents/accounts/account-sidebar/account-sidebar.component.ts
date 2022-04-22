@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { AlertQuery } from '../../../shared/alert/state/alert.query';
 import { AlertService } from '../../../shared/alert/state/alert.service';
 import { TokenSource } from '../../../shared/enum/token-source.enum';
@@ -8,6 +8,9 @@ import { Profile, User } from '../../../shared/swagger';
 import { UsersService } from '../../../shared/swagger/api/users.service';
 import { UserQuery } from '../../../shared/user/user.query';
 import { UserService } from '../../../shared/user/user.service';
+import { takeUntil } from 'rxjs/operators';
+import { MatDialog } from '@angular/material/dialog';
+import { ChangeUsernameComponent } from '../../../../app/loginComponents/accounts/internal/change-username/change-username.component';
 
 @Component({
   selector: 'app-account-sidebar',
@@ -24,13 +27,16 @@ export class AccountSidebarComponent implements OnInit {
   public isRefreshing$: Observable<boolean>;
   public syncBadgeGit: boolean = false;
   public syncBadgeGoogle: boolean = false;
+  public showEmailWarning = false;
+  protected ngUnsubscribe: Subject<{}> = new Subject();
   constructor(
     private userService: UserService,
     private usersService: UsersService,
     private tokenQuery: TokenQuery,
     private userQuery: UserQuery,
     private alertQuery: AlertQuery,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private dialog: MatDialog
   ) {
     this.hasGitHubToken$ = this.tokenQuery.hasGitHubToken$;
     this.hasGoogleToken$ = this.tokenQuery.hasGoogleToken$;
@@ -85,7 +91,14 @@ export class AccountSidebarComponent implements OnInit {
     });
   }
 
+  editUsernameModal() {
+    this.dialog.open(ChangeUsernameComponent, { width: '776px' });
+  }
+
   ngOnInit(): void {
     this.getUser();
+    this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((user) => {
+      this.showEmailWarning = this.user.username.includes('@');
+    });
   }
 }

@@ -6,10 +6,13 @@
     </div>
     <img src="{{ user?.avatarUrl }}" alt="Dockstore avatar" />
     <h4>{{ user?.name }}</h4>
-    <button mat-button class="private-btn small-btn-structure">
-      <img src="../../../../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit Dockstore Username" />
-      Edit Dockstore Username
-    </button>
+    <span fxLayoutGap="1rem">
+      <mat-icon *ngIf="showEmailWarning" class="alert-danger-icon">warning</mat-icon>
+      <button mat-button class="private-btn small-btn-structure" (click)="editUsernameModal()">
+        <img src="../../../../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit Dockstore Username" />
+        Edit Dockstore Username
+      </button>
+    </span>
   </div>
   <hr />
 

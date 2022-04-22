@@ -220,13 +220,13 @@
                 </span>
               </div>
               <div *ngIf="formErrors.cwlTestParameterFilePath" class="form-error-messages">
-                <mat-card class="alert alert-danger" role="alert">
-                  <mat-icon>error</mat-icon> {{ formErrors.cwlTestParameterFilePath }}
+                <mat-card class="alert alert-danger mat-elevation-z" role="alert">
+                  <mat-icon class="alert-danger-icon">error</mat-icon> {{ formErrors.cwlTestParameterFilePath }}
                 </mat-card>
               </div>
               <div *ngIf="hasDuplicateTestJson(DescriptorType.CWL)">
-                <mat-card class="alert alert-danger" role="alert">
-                  <mat-icon>error</mat-icon> Duplicate test json files are not allowed.
+                <mat-card class="alert alert-danger mat-elevation-z" role="alert">
+                  <mat-icon class="alert-danger-icon">error</mat-icon> Duplicate test json files are not allowed.
                 </mat-card>
               </div>
             </div>
@@ -316,13 +316,13 @@
                 </span>
               </div>
               <div *ngIf="formErrors.wdlTestParameterFilePath" class="form-error-messages">
-                <mat-card class="alert alert-danger" role="alert">
-                  <mat-icon>error</mat-icon> {{ formErrors.wdlTestParameterFilePath }}
+                <mat-card class="alert alert-danger mat-elevation-z" role="alert">
+                  <mat-icon class="alert-danger-icon">error</mat-icon> {{ formErrors.wdlTestParameterFilePath }}
                 </mat-card>
               </div>
               <div *ngIf="hasDuplicateTestJson(DescriptorType.WDL)">
-                <mat-card class="alert alert-danger" role="alert">
-                  <mat-icon>error</mat-icon> Duplicate test json files are not allowed.
+                <mat-card class="alert alert-danger mat-elevation-z" role="alert">
+                  <mat-icon class="alert-danger-icon">error</mat-icon> Duplicate test json files are not allowed.
                 </mat-card>
               </div>
             </div>

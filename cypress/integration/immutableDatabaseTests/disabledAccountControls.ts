@@ -30,6 +30,7 @@ describe('Go to disabled Dockstore Account & Preferences', () => {
     cy.contains('Delete Dockstore Account').should('be.disabled');
   });
   it('Should have the change username button disabled', () => {
-    cy.contains('Update Username').should('be.disabled');
+    cy.contains('Edit Dockstore Username').click();
+    cy.contains('Save').should('be.disabled');
   });
 });
