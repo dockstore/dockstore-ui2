@@ -490,9 +490,24 @@ export abstract class Entry implements OnDestroy {
   /**
    * Go to the search page with a query preloaded
    * @param {string} searchValue Value to search for
+   * @param {EntryType} entryType Type of entry to search for
    */
-  goToSearch(searchValue: string): void {
-    window.location.href = '/search?labels.value.keyword=' + searchValue + '&searchMode=files';
+  goToSearch(searchValue: string, entryType: EntryType): void {
+    // If the entry type is a tool or workflow, search for that particular type of entry
+    // Otherwise, perform the default type of search
+    let searchType: string = undefined;
+    if (entryType === EntryType.Tool || entryType === EntryType.AppTool) {
+      searchType = 'tools';
+    } else if (entryType === EntryType.BioWorkflow) {
+      searchType = 'workflows';
+    }
+    // construct the url, adding parameters in an order that will remain the same when the search page later rewrites it
+    let url = '/search?labels.value.keyword=' + searchValue;
+    if (searchType !== undefined) {
+      url += '&entryType=' + searchType;
+    }
+    url += '&searchMode=files';
+    window.location.href = url;
   }
 
   /**
