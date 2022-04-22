@@ -55,9 +55,9 @@
     <div *ngIf="organizations.length > 0; else noOrganizationsFound">
       <div fxLayoutAlign="start" fxLayout="row wrap" fxLayoutGap="2rem grid">
         <div *ngFor="let org of organizations" fxFlex="33.3" fxFlex.lt-lg="50" fxFlex.lt-md="100">
-          {{ this | call: brace:org }}
-          {{ org | pipe: this:brace | uppercase }}
-          {{ org | call: org.getLink }}
+          {{ org | function: this:brace | uppercase }}
+          {{ org | method: org.getLink }}
+          {{ org | method: 'getLink' }}
           <mat-card style="height: 340px" class="pb-3">
             <div class="h-100" fxLayout="column" fxLayoutAlign="space-between stretch">
               <div fxLayout="column" fxLayoutGap="2rem">

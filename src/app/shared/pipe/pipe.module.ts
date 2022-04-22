@@ -10,8 +10,8 @@ import { GetHistogramStylePipe } from '../../search/get-histogram-style.pipe';
 import { MapFriendlyValuesPipe } from '../../search/map-friendly-values.pipe';
 import { SelectTabPipe } from '../entry/select-tab.pipe';
 import { BaseUrlPipe } from '../entry/base-url.pipe';
-import { CallPipe } from './function-pipes';
-import { PipePipe } from './function-pipes';
+import { MethodPipe } from './function-pipes';
+import { FunctionPipe } from './function-pipes';
 
 const DECLARATIONS: any[] = [
   FilePathPipe,
@@ -24,8 +24,8 @@ const DECLARATIONS: any[] = [
   GravatarPipe,
   RouterLinkPipe,
   BaseUrlPipe,
-  CallPipe,
-  PipePipe,
+  MethodPipe,
+  FunctionPipe,
 ];
 @NgModule({
   imports: [CommonModule],

@@ -1,9 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'call',
+  name: 'method',
 })
-export class CallPipe implements PipeTransform {
+export class MethodPipe implements PipeTransform {
   transform(thisValue: any, ...fnAndArgs: any): any {
     if (fnAndArgs.length < 1) {
       return null;
@@ -18,9 +18,9 @@ export class CallPipe implements PipeTransform {
 }
 
 @Pipe({
-  name: 'pipe',
+  name: 'function',
 })
-export class PipePipe implements PipeTransform {
+export class FunctionPipe implements PipeTransform {
   transform(firstArg: any, ...thisFnAndOtherArgs: any): any {
     if (thisFnAndOtherArgs.length < 2) {
       return null;
