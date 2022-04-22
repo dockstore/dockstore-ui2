@@ -7,7 +7,12 @@
     <img src="{{ user?.avatarUrl }}" alt="Dockstore avatar" />
     <h4>{{ user?.name }}</h4>
     <span fxLayoutGap="1rem">
-      <mat-icon *ngIf="showEmailWarning" class="alert-danger-icon">warning</mat-icon>
+      <mat-icon
+        class="alert-danger-icon"
+        *ngIf="showEmailWarning"
+        matTooltip="We strongly suggest you change your username to something other than an email address."
+        >warning</mat-icon
+      >
       <button mat-button class="private-btn small-btn-structure" (click)="editUsernameModal()">
         <img src="../../../../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit Dockstore Username" />
         Edit Dockstore Username
