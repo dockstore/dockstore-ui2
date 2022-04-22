@@ -292,11 +292,9 @@ export abstract class Entry implements OnDestroy {
   }
 
   updateVersionsFileTypes(entryId: number, versionid: number): void {
-    this.alertService.start(`Getting version's unique file types`);
     this.entryService.getVersionsFileTypes(entryId, versionid).subscribe(
       (fileTypes: Array<SourceFile.TypeEnum>) => {
         this.versionsFileTypes = fileTypes;
-        this.alertService.simpleSuccess();
       },
       (error: HttpErrorResponse) => {
         this.alertService.detailedError(error);
@@ -309,7 +307,6 @@ export abstract class Entry implements OnDestroy {
     this.entryService.getVerifiedPlatforms(entryId).subscribe(
       (verifiedVersions: Array<VersionVerifiedPlatform>) => {
         this.versionsWithVerifiedPlatforms = verifiedVersions.map((value) => Object.assign({}, value));
-        this.alertService.simpleSuccess();
       },
       (error) => {
         this.alertService.detailedError(error);
