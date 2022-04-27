@@ -10,7 +10,7 @@
 <div class="container">
   <div fxLayout fxLayout.lt-md="column" fxLayoutAlign="center" fxLayoutGap="1rem" class="my-5">
     <mat-card fxFlex.gt-md="25" fxFlex.lt-md="100" fxLayout="column" fxLayoutAlign="center">
-      <img mat-card-image [src]="user?.avatarUrl" class="mt-0 mx-auto mb-3" />
+      <img mat-card-image [src]="user?.avatarUrl" class="mt-0 mx-auto mb-3" alt="Dockstore avatar" />
       <mat-card-content fxLayout="column" fxLayoutAlign="center center">
         <h4 matLine class="accent-1-dark mt-2 mb-0">{{ user?.username }}</h4>
       </mat-card-content>
@@ -27,12 +27,12 @@
             <mat-card-title class="normal-line-height">GitHub Account</mat-card-title>
             <mat-card-subtitle class="normal-line-height weight-bold accent-1-dark mt-2 mb-0" fxLayout.lt-md="column" fxLayoutGap="1rem">
               <span *ngIf="gitHubProfile.name"
-                >Account Name: <span>{{ gitHubProfile?.name }}</span></span
+                >Account Name: <span>{{ gitHubProfile.name }}</span></span
               >
               <span>
                 Username:
-                <a href="https://github.com/{{ gitHubProfile?.username }}" target="_blank" class="accent-1-dark">
-                  <span>{{ gitHubProfile?.username }}</span>
+                <a href="https://github.com/{{ gitHubProfile.username }}" target="_blank" class="accent-1-dark">
+                  <span>{{ gitHubProfile.username }}</span>
                 </a>
               </span>
             </mat-card-subtitle>
@@ -61,7 +61,7 @@
           </div>
           <mat-card-title class="normal-line-height">ORCID Account</mat-card-title>
           <mat-card-subtitle class="accent-1-dark normal-line-height mt-2 mb-0">
-            <a href="https://orcid.org/{{ user?.orcid }}" target="_blank">
+            <a href="https://orcid.org/{{ user.orcid }}" target="_blank">
               <span class="weight-bold">https://orcid.org/{{ user?.orcid }}</span>
             </a>
           </mat-card-subtitle>
@@ -76,7 +76,7 @@
             </div>
             <mat-card-title class="normal-line-height">Google Account</mat-card-title>
             <mat-card-subtitle class="accent-1-dark normal-line-height weight-bold mt-2 mb-0">
-              <span>Account Name: {{ googleProfile?.name }}</span>
+              <span>Account Name: {{ googleProfile.name }}</span>
             </mat-card-subtitle>
           </mat-card-header>
           <span>

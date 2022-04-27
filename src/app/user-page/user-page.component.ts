@@ -6,6 +6,8 @@ import { UserService } from '../shared/user/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
+import { AlertService } from '../shared/alert/state/alert.service';
 
 @Component({
   selector: 'app-user-page',
@@ -23,7 +25,8 @@ export class UserPageComponent implements OnInit {
     private userService: UserService,
     private usersService: UsersService,
     private activatedRoute: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private alertService: AlertService
   ) {
     this.username = this.activatedRoute.snapshot.paramMap.get('username');
     this.checkIfUsernameExists(this.username);
@@ -31,13 +34,13 @@ export class UserPageComponent implements OnInit {
 
   getUserInfo(username: string): void {
     this.usersService.listUser(username, 'userProfiles').subscribe(
-      (User) => {
-        this.user = User;
-        if (User) {
+      (user) => {
+        this.user = user;
+        if (user) {
           if (!this.user.avatarUrl) {
             this.user.avatarUrl = this.userService.gravatarUrl(null, null);
           }
-          const userProfiles = User.userProfiles;
+          const userProfiles = user.userProfiles;
           if (userProfiles) {
             this.googleProfile = userProfiles[TokenSource.GOOGLE];
             // Using gravatar for Google also, may result in two identical pictures if both accounts use the same email address
@@ -51,8 +54,8 @@ export class UserPageComponent implements OnInit {
           }
         }
       },
-      (error) => {
-        console.error(error);
+      (error: HttpErrorResponse) => {
+        this.alertService.detailedError(error);
       }
     );
   }
@@ -71,8 +74,8 @@ export class UserPageComponent implements OnInit {
             this.router.navigateByUrl('');
           }
         },
-        (error) => {
-          console.error(error);
+        (error: HttpErrorResponse) => {
+          this.alertService.detailedError(error);
         }
       );
   }
