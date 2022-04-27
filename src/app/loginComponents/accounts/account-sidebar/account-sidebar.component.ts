@@ -10,6 +10,7 @@ import { UserQuery } from '../../../shared/user/user.query';
 import { UserService } from '../../../shared/user/user.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ChangeUsernameComponent } from '../../../../app/loginComponents/accounts/internal/change-username/change-username.component';
+import { bootstrap4largeModalSize } from '../../../shared/constants';
 
 @Component({
   selector: 'app-account-sidebar',
@@ -27,7 +28,6 @@ export class AccountSidebarComponent implements OnInit {
   public syncBadgeGit: boolean = false;
   public syncBadgeGoogle: boolean = false;
   public showEmailWarning = false;
-  protected ngUnsubscribe: Subject<{}> = new Subject();
   constructor(
     private userService: UserService,
     private usersService: UsersService,
@@ -93,7 +93,7 @@ export class AccountSidebarComponent implements OnInit {
   }
 
   editUsernameModal() {
-    this.dialog.open(ChangeUsernameComponent, { width: '776px' });
+    this.dialog.open(ChangeUsernameComponent, { width: bootstrap4largeModalSize });
   }
 
   ngOnInit(): void {
