@@ -46,13 +46,6 @@ mat-error {
   top: 1.84375em;
 }
 
-// Purple outline and text
-:host ::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline,
-:host ::ng-deep .mat-form-field:not(.mat-form-field-invalid) .mat-form-field-label,
-:host ::ng-deep .mat-form-field.mat-focused:not(.mat-form-field-invalid) .mat-form-field-label {
-  color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
-}
-
 // Disabled form field
 :host ::ng-deep .mat-form-field-appearance-outline.mat-form-field-disabled .mat-form-field-outline {
   color: mat.get-color-from-palette($dockstore-app-primary, 4);

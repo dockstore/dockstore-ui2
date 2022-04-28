@@ -1111,10 +1111,15 @@ mat-icon.mat-icon-sm {
   }
 }
 
-// Style the float label of the mat-form-field
+// Purple outline and text for mat-form-field
+.mat-form-field-appearance-outline.mat-focused:not(.mat-form-field-invalid) .mat-form-field-outline,
+.mat-form-field.mat-focused:not(.mat-form-field-invalid) .mat-form-field-label,
+.mat-form-field.mat-focused:not(.mat-form-field-invalid) .mat-form-field-label,
+.mat-form-field.mat-focused:not(.mat-form-field-invalid) .mat-form-field-label .mat-form-field-required-marker,
+.mat-form-field.mat-focused:not(.mat-form-field-invalid) .mat-form-field-label .mat-form-field-required-marker,
 .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float
   .mat-form-field-label:not(.mat-empty):not(.mat-form-field-empty) {
-  color: mat.get-color-from-palette($dockstore-app-accent, 1);
+  color: mat.get-color-from-palette($dockstore-app-accent-1, darker) !important;
 }
 
 // Keep the outer circle in a radio button gray even when selected
