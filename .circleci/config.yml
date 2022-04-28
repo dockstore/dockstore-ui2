@@ -1,6 +1,7 @@
 version: 2.1
 orbs:
   aws-s3: circleci/aws-s3@3.0.0
+  aws-cli: circleci/aws-cli@3.1
   slack: circleci/slack@3.4.2
   browser-tools: circleci/browser-tools@1.2.4
 executors:
@@ -281,21 +282,10 @@ jobs:
       - when:
           condition: <<parameters.aws_bucket>>
           steps:
-            - run:
-                name: authenticate-and-interact
-                command: |
-                  # use the OpenID Connect token to obtain AWS credentials
-                  read -r AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN \<<< \
-                    $(aws sts assume-role-with-web-identity \
-                     --role-arn ${AWS_ROLE_ARN} \
-                     --role-session-name "CircleCI-${CIRCLE_WORKFLOW_ID}-${CIRCLE_JOB}" \
-                     --web-identity-token $CIRCLE_OIDC_TOKEN \
-                     --duration-seconds 3600 \
-                     --query 'Credentials.[AccessKeyId,SecretAccessKey,SessionToken]' \
-                     --output text)
-                  export AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN
-                  # interact with AWS
-                  aws sts get-caller-identity
+            - aws-cli/setup:
+                profile-name: WEB IDENTITY PROFILE
+                role-arn: ${AWS_ROLE_ARN}
+                role-session-name: "CircleCI-${CIRCLE_WORKFLOW_ID}-${CIRCLE_JOB}"
             - get_workspace
             - install_container_dependencies
             # Build again for the upload to s3
