@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Observable } from 'rxjs';
 import { AlertQuery } from '../../../shared/alert/state/alert.query';
 import { AlertService } from '../../../shared/alert/state/alert.service';
 import { TokenSource } from '../../../shared/enum/token-source.enum';
