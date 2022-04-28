@@ -447,7 +447,7 @@ commands:
           name: Install java
           command: |
             sudo apt update -y
-            sudo apt install openjdk-11-jre -yq
+            sudo apt install openjdk-17-jre -yq
       - run:
           name: Install npm
           command: |
