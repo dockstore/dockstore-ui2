@@ -6,8 +6,6 @@ set -o xtrace
 
 GENERATOR_VERSION="4.3.0"
 BASE_PATH="https://raw.githubusercontent.com/dockstore/dockstore/$npm_package_config_webservice_version"
-CIRCLE_CI_PATH="https://""$npm_package_config_circle_build_id""-33383826-gh.circle-artifacts.com/0/tmp/artifacts"
-
 # DOCKSTORE-2428 - demo how to add new workflow language, generate from local copy of swagger
 # Uncomment this to use your local copy of swagger instead
 # BASE_PATH="../dockstore"
@@ -19,8 +17,8 @@ rm -Rf src/app/shared/openapi
 
 if [ "$npm_package_config_use_circle" = true ]
 then
-        SWAGGER_PATH="${CIRCLE_CI_PATH}""/swagger.yaml"
-        OPENAPI_PATH="${CIRCLE_CI_PATH}""/openapi.yaml"
+        SWAGGER_PATH=$(./scripts/get-circleci-artifact-url.sh $npm_package_config_circle_build_id swagger.yaml)
+        OPENAPI_PATH=$(./scripts/get-circleci-artifact-url.sh $npm_package_config_circle_build_id openapi.yaml)
 else
         SWAGGER_PATH="${BASE_PATH}""/dockstore-webservice/src/main/resources/swagger.yaml"
         OPENAPI_PATH="${BASE_PATH}""/dockstore-webservice/src/main/resources/openapi3/openapi.yaml"
