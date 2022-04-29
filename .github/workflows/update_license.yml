@@ -1,12 +1,13 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI
+name: Update license file
 
 on:
   push:
     branches:
       - 'feature/seab-4223/**'
 
+  workflow_dispatch:
 
 jobs:
   build:
