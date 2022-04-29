@@ -17,6 +17,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatIconModule } from '@angular/material/icon';
+import { RouterModule } from '@angular/router';
 
 import { StarentryService } from '../shared/starentry.service';
 import { StarringService } from '../starring/starring.service';
@@ -24,7 +25,7 @@ import { CustomMaterialModule } from './../shared/modules/material.module';
 import { StargazersComponent } from './stargazers.component';
 
 @NgModule({
-  imports: [CommonModule, FlexLayoutModule, MatIconModule, CustomMaterialModule],
+  imports: [CommonModule, FlexLayoutModule, MatIconModule, CustomMaterialModule, RouterModule],
   declarations: [StargazersComponent],
   exports: [StargazersComponent],
   providers: [StarringService, StarentryService],

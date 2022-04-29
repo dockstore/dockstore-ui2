@@ -8,7 +8,6 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgxJsonLdModule } from '@ngx-lite/json-ld';
 import { HomeLoggedInComponent } from 'app/home-page/home-logged-in/home-logged-in.component';
 import { HomeComponent } from 'app/home-page/home-logged-out/home.component';
-import { EntryToDisplayNamePipe } from 'app/shared/entry-to-display-name.pipe';
 import { ListContainersModule } from 'app/shared/modules/list-containers.module';
 import { ListWorkflowsModule } from 'app/shared/modules/list-workflows.module';
 import { CustomMaterialModule } from 'app/shared/modules/material.module';
@@ -16,7 +15,7 @@ import { MarkdownModule } from 'ngx-markdown';
 import { RefreshAlertModule } from '../shared/alert/alert.module';
 import { CategoryButtonModule } from '../categories/button/category-button.module';
 import { HomePageComponent } from './home-page.component';
-import { RecentEventsComponent } from './recent-events/recent-events.component';
+import { RecentEventsModule } from './recent-events/recent-events.module';
 import { EntriesComponent } from './widget/entries/entries.component';
 import { FeaturedContentComponent } from './widget/featured-content/featured-content.component';
 import { FeaturedNewsComponent } from './widget/featured-content/featured-news.component';
@@ -42,12 +41,12 @@ import { MySidebarModule } from '../shared/modules/my-sidebar.module';
     FontAwesomeModule,
     CategoryButtonModule,
     MySidebarModule,
+    RecentEventsModule,
   ],
   declarations: [
     HomePageComponent,
     HomeComponent,
     HomeLoggedInComponent,
-    RecentEventsComponent,
     RequestsComponent,
     EntriesComponent,
     OrganizationsComponent,
@@ -55,7 +54,6 @@ import { MySidebarModule } from '../shared/modules/my-sidebar.module';
     FeaturedNewsComponent,
     NewsUpdatesComponent,
     GettingStartedComponent,
-    EntryToDisplayNamePipe,
   ],
   exports: [NgxJsonLdModule],
 })
