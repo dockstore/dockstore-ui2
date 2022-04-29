@@ -5,6 +5,7 @@ on:
     inputs:
       branch:
         description: 'Branch name'
+        type: string
         required: true
 
 jobs:
