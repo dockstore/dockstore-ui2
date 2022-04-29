@@ -9,7 +9,7 @@
 
 <div class="container">
   <div fxLayout fxLayout.lt-md="column" fxLayoutAlign="center" fxLayoutGap="1rem" class="my-5">
-    <mat-card fxFlex.gt-md="25" fxFlex.lt-md="100" fxLayout="column" fxLayoutAlign="center">
+    <mat-card *ngIf="user" fxFlex.gt-md="25" fxFlex.lt-md="100" fxLayout="column" fxLayoutAlign="center">
       <img mat-card-image [src]="user?.avatarUrl" class="mt-0 mx-auto mb-3" alt="Dockstore avatar" />
       <mat-card-content fxLayout="column" fxLayoutAlign="center center">
         <h4 matLine class="accent-1-dark mt-2 mb-0">{{ user?.username }}</h4>
