@@ -15,16 +15,16 @@
  */
 
 import { NgModule } from '@angular/core';
-import { AccountSidebarComponent } from './account-sidebar.component';
 import { CustomMaterialModule } from 'app/shared/modules/material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { CommonModule } from '@angular/common';
-import { ChangeUsernameModule } from '../internal/change-username/change-username.module';
+import { ChangeUsernameComponent } from './change-username.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [AccountSidebarComponent],
-  imports: [CustomMaterialModule, FlexLayoutModule, CommonModule, ChangeUsernameModule],
+  declarations: [ChangeUsernameComponent],
+  imports: [CustomMaterialModule, FlexLayoutModule, CommonModule, ReactiveFormsModule],
   providers: [],
-  exports: [AccountSidebarComponent],
+  exports: [ChangeUsernameComponent],
 })
-export class AccountSidebarModule {}
+export class ChangeUsernameModule {}

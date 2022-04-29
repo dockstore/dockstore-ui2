@@ -343,8 +343,9 @@ describe('Dropdown test', () => {
       cy.contains('Yes, delete my account').should('not.be.disabled').click();
       cy.url().should('eq', Cypress.config().baseUrl + '/logout');
     });
-    it('Should have the change username button enabled', () => {
-      cy.contains('Update Username').should('not.be.disabled');
+    it('Should have the change username button disabled for current username', () => {
+      cy.contains('Edit Dockstore Username').click();
+      cy.contains('Save').should('be.disabled');
     });
   });
   const everythingOk = () => {

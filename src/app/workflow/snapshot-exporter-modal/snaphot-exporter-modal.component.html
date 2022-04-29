@@ -148,7 +148,7 @@
       fxLayoutAlign="end top"
     >
       <div>
-        <mat-icon class="warning-icon">warning</mat-icon>
+        <mat-icon class="alert-danger-icon">warning</mat-icon>
       </div>
       <div>
         <div data-cy="zenodo-not-linked">
@@ -168,7 +168,7 @@
   <ng-template #orcidCheck>
     <div *ngIf="(hasOrcidToken$ | async) === false" class="alert-danger p-2" fxLayout="row" fxLayoutGap="0.625rem;" fxLayoutAlign="end top">
       <div>
-        <mat-icon class="account-warning">warning</mat-icon>
+        <mat-icon class="account-warning alert-danger-icon">warning</mat-icon>
       </div>
       <div>
         <div data-cy="orcid-not-linked">
