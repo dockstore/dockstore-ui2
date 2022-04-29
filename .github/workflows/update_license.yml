@@ -1,23 +1,28 @@
-# This is a basic workflow to help you get started with Actions
-
-name: CI
+name: Update license file
 
 on:
-  push:
-    branches:
-      - 'feature/seab-4223/**'
-
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch name'
+        type: string
+        required: true
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-
+  update_license_file:
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3
-      - name: Run a one-line script
-        run: echo Hello, world!
-
-      - name: Run a multi-line script
+        with:
+          ref: ${{ github.event.inputs.branch }}
+      - name: Update license file
+        run: npm run license
+      - name: Push changes
         run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+          if [ -n $(git status --porcelain | grep "THIRD-PARTY-LICENSES.csv") ]; then
+            git add THIRD-PARTY-LICENSES.csv
+            git commit -m "Update license file"
+            git push
+          else
+            echo "There were no changes to THIRD-PARTY-LICENSE.csv"
+          fi
