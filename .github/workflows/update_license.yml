@@ -1,0 +1,27 @@
+name: Update license file
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch name'
+        required: true
+
+jobs:
+  update_license_file:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.inputs.branch }}
+      - name: Update license file
+        run: npm run license
+      - name: Push changes
+        run: |
+          if [ -n $(git status --porcelain | grep "THIRD-PARTY-LICENSES.csv") ]; then
+            git add THIRD-PARTY-LICENSES.csv
+            git commit -m "Update license file"
+            git push
+          else
+            echo "There were no changes to THIRD-PARTY-LICENSE.csv"
+          fi
