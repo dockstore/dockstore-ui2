@@ -5,7 +5,7 @@ set -o nounset
 set -o xtrace
 if [ "$npm_package_config_use_circle" = true ]
 then
-	JAR_PATH=$(./scripts/get-circleci-artifact-url.sh $npm_package_config_circle_build_id dockstore-webservice)
+	JAR_PATH=$(./scripts/get-circleci-artifact-url.sh "$npm_package_config_circle_build_id" dockstore-webservice)
 else
 	JAR_PATH="https://artifacts.oicr.on.ca/artifactory/collab-release/io/dockstore/dockstore-webservice/${npm_package_config_webservice_version}/dockstore-webservice-${npm_package_config_webservice_version}.jar"
 fi
