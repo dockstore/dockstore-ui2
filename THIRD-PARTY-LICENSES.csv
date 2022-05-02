@@ -745,7 +745,7 @@
 "mini-css-extract-plugin@2.5.3","MIT","https://github.com/webpack-contrib/mini-css-extract-plugin"
 "minimalistic-assert@1.0.1","ISC","https://github.com/calvinmetcalf/minimalistic-assert"
 "minimatch@3.0.4","ISC","https://github.com/isaacs/minimatch"
-"minimist@1.2.5","MIT","https://github.com/substack/minimist"
+"minimist@1.2.6","MIT","https://github.com/substack/minimist"
 "minipass-collect@1.0.2","ISC",""
 "minipass-fetch@1.4.1","MIT","https://github.com/npm/minipass-fetch"
 "minipass-flush@1.0.5","ISC","https://github.com/isaacs/minipass-flush"
