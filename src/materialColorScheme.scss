@@ -53,7 +53,7 @@ $kim-secondary: (
 );
 
 // Using kim's error instead (material doesn't differentiate between error and warn, kim's error seems more suitable)
-$kim-warn: (
+$kim-error: (
   1: #c14747,
   2: #e64a46,
   3: #e96f6c,
@@ -65,6 +65,23 @@ $kim-warn: (
     3: black,
     4: black,
     5: black,
+  ),
+);
+
+$kim-warn: (
+  1: #ffb74d,
+  2: #fdd835,
+  3: #fff176,
+  4: #fff59d,
+  5: #fff7d3,
+  6: #fffde7,
+  contrast: (
+    1: white,
+    2: white,
+    3: black,
+    4: black,
+    5: black,
+    6: black,
   ),
 );
 
@@ -110,6 +127,7 @@ $kim-gray: (
 // 4 was arbitarily chosen to be the lighter version because while looking at the progress bar, there wasn't enough contrast
 $dockstore-app-primary: mat.define-palette($kim-primary, 2, 4, 1);
 $dockstore-app-accent: mat.define-palette($kim-secondary, 2, 4, 1);
+$dockstore-app-error: mat.define-palette($kim-error, 2, 4, 1);
 $dockstore-app-warn: mat.define-palette($kim-warn, 2, 4, 1);
 $dockstore-app-accent-1: mat.define-palette($kim-accent1-success, 2, 4, 1);
 
@@ -118,7 +136,7 @@ $dockstore-app-accent-1: mat.define-palette($kim-accent1-success, 2, 4, 1);
 $dockstore-app-gray: mat.define-palette($kim-gray, 2, 4, 1);
 
 // Create the theme object (a Sass map containing all of the palettes).
-$dockstore-app-theme: mat.define-light-theme($dockstore-app-primary, $dockstore-app-accent, $dockstore-app-warn);
+$dockstore-app-theme: mat.define-light-theme($dockstore-app-primary, $dockstore-app-accent, $dockstore-app-error);
 
 // Include the grayscale palette in the theme object
 // Example of getting the palette: map-get($dockstore-app-theme, grayscale)

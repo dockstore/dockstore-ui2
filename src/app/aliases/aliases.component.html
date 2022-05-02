@@ -1,7 +1,7 @@
 <app-header> Redirecting </app-header>
 <div class="container">
-  <mat-card class="alert alert-warning" role="alert" *ngIf="!validType">
-    <mat-icon>warning</mat-icon>
+  <mat-card class="alert alert-warning mat-elevation-z" role="alert" *ngIf="!validType">
+    <mat-icon class="alert-warning-icon">warning</mat-icon>
     &nbsp;<strong>{{ type }}</strong> is not a valid type
   </mat-card>
   <div *ngIf="loading$ | async; else doneLoading">
@@ -24,8 +24,8 @@
       <mat-progress-bar mode="indeterminate"></mat-progress-bar>
       Redirecting to the tool <strong>{{ tool.tool_path }}</strong>
     </div>
-    <mat-card class="alert alert-warning" role="alert" *ngIf="types.includes(type) && (aliasNotFound$ | async)">
-      <mat-icon>warning</mat-icon>
+    <mat-card class="alert alert-warning mat-elevation-z" role="alert" *ngIf="types.includes(type) && (aliasNotFound$ | async)">
+      <mat-icon class="alert-warning-icon">warning</mat-icon>
       &nbsp;No <strong>{{ type }}</strong> with the alias <strong>{{ alias }}</strong> found
     </mat-card>
   </ng-template>

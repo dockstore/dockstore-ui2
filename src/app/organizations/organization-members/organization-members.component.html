@@ -28,7 +28,9 @@
             />
             <div fxFlex="80" fxLayout="column" fxLayoutAlign="start stretch">
               <div fxLayout="row" fxLayoutAlign="space-between center">
-                <h5 class="weight-bold mt-0 mb-0" fxFlex>{{ organizationUser.user?.username }}</h5>
+                <a class="no-underline" routerLink="/users/{{ organizationUser.user?.username }}">
+                  <h5 class="weight-bold mt-0 mb-0" fxFlex>{{ organizationUser.user?.username }}</h5>
+                </a>
                 <span class="bubble ml-3">{{ organizationUser.role | titlecase }}</span>
               </div>
               <span class="orcid" *ngIf="organizationUser.user?.orcid" fxLayout="row wrap">

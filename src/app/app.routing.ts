@@ -123,6 +123,7 @@ const APP_ROUTES: Routes = [
   { path: 'maintenance', component: MaintenanceComponent, data: { title: 'Dockstore | Maintenance' } },
   { path: 'funding', component: FundingComponent, data: { title: 'Dockstore | Funding' } },
   { path: 'sitemap', component: SitemapComponent, data: { title: 'Dockstore | Sitemap' } },
+  { path: 'users', loadChildren: () => import('app/user-page/user-page.module').then((m) => m.UserPageModule) },
   { path: '**', redirectTo: '' },
 ];
 
