@@ -16,14 +16,14 @@
 
 <div class="p-3">
   <div *ngIf="!_selectedVersion">
-    <mat-card class="alert alert-warning" role="alert">
-      <mat-icon>warning</mat-icon> To see launch with, please select a version.
+    <mat-card class="alert alert-warning mat-elevation-z" role="alert">
+      <mat-icon class="alert-warning-icon">warning</mat-icon> To see launch with, please select a version.
     </mat-card>
   </div>
   <div *ngIf="_selectedVersion">
     <div *ngIf="!_selectedVersion.valid">
-      <mat-card class="alert alert-warning" role="alert">
-        <mat-icon>warning</mat-icon> This section is only available for valid versions.
+      <mat-card class="alert alert-warning mat-elevation-z" role="alert">
+        <mat-icon class="alert-warning-icon">warning</mat-icon> This section is only available for valid versions.
       </mat-card>
     </div>
     <div *ngIf="_selectedVersion.valid">

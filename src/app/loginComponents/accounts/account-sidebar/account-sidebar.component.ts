@@ -8,6 +8,9 @@ import { Profile, User } from '../../../shared/swagger';
 import { UsersService } from '../../../shared/swagger/api/users.service';
 import { UserQuery } from '../../../shared/user/user.query';
 import { UserService } from '../../../shared/user/user.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ChangeUsernameComponent } from '../../../../app/loginComponents/accounts/internal/change-username/change-username.component';
+import { bootstrap4largeModalSize } from '../../../shared/constants';
 
 @Component({
   selector: 'app-account-sidebar',
@@ -24,13 +27,15 @@ export class AccountSidebarComponent implements OnInit {
   public isRefreshing$: Observable<boolean>;
   public syncBadgeGit: boolean = false;
   public syncBadgeGoogle: boolean = false;
+  public showEmailWarning = false;
   constructor(
     private userService: UserService,
     private usersService: UsersService,
     private tokenQuery: TokenQuery,
     private userQuery: UserQuery,
     private alertQuery: AlertQuery,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private dialog: MatDialog
   ) {
     this.hasGitHubToken$ = this.tokenQuery.hasGitHubToken$;
     this.hasGoogleToken$ = this.tokenQuery.hasGoogleToken$;
@@ -81,8 +86,14 @@ export class AccountSidebarComponent implements OnInit {
             this.gitHubProfile.avatarURL = this.userService.gravatarUrl(this.gitHubProfile.email, this.gitHubProfile.avatarURL);
           }
         }
+        // Check username to display warning on sidebar
+        this.showEmailWarning = this.user.username.includes('@');
       }
     });
+  }
+
+  editUsernameModal() {
+    this.dialog.open(ChangeUsernameComponent, { width: bootstrap4largeModalSize });
   }
 
   ngOnInit(): void {

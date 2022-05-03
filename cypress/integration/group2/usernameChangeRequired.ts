@@ -52,7 +52,7 @@ describe('Testing user with invalid username', () => {
       cy.get('.alert-warning').contains('Your username contains one or more banned words.');
 
       cy.visit('/accounts');
-      cy.contains('Dockstore Account & Preferences').click();
+      cy.contains('Edit Dockstore Username').click();
       cy.get('.alert-warning').contains('Your username contains one or more banned words.');
     });
   });

@@ -1111,10 +1111,13 @@ mat-icon.mat-icon-sm {
   }
 }
 
-// Style the float label of the mat-form-field
+// Purple outline and text for mat-form-field
+.mat-form-field-appearance-outline.mat-focused:not(.mat-form-field-invalid) .mat-form-field-outline,
+.mat-form-field.mat-focused:not(.mat-form-field-invalid) .mat-form-field-label,
+.mat-form-field.mat-focused:not(.mat-form-field-invalid) .mat-form-field-label .mat-form-field-required-marker,
 .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float
   .mat-form-field-label:not(.mat-empty):not(.mat-form-field-empty) {
-  color: mat.get-color-from-palette($dockstore-app-accent, 1);
+  color: mat.get-color-from-palette($dockstore-app-accent-1, darker) !important;
 }
 
 // Keep the outer circle in a radio button gray even when selected
@@ -1286,4 +1289,30 @@ a.small-mat-btn-skin:not([class*='mat-elevation-z']) {
 .mat-card:not([class*='mat-elevation-z']) {
   border: solid 1px mat.get-color-from-palette($dockstore-app-gray, 7);
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1), 0 2px 3px 0 rgba(0, 0, 0, 0.08) !important;
+}
+
+// Alert and Warning styles
+.alert-warning {
+  background-color: mat.get-color-from-palette($dockstore-app-warn, 6) !important;
+  border: solid 1px mat.get-color-from-palette($dockstore-app-warn, 3) !important;
+  box-shadow: none !important;
+}
+
+.alert-warning-icon {
+  color: mat.get-color-from-palette($dockstore-app-warn, 1) !important;
+}
+
+.alert-info {
+  background-color: #d9edf7 !important;
+  border-color: #bce8f1 !important;
+  border: 0px !important;
+}
+
+.alert-danger {
+  background-color: mat.get-color-from-palette($dockstore-app-error, 5) !important;
+  border: solid 1px mat.get-color-from-palette($dockstore-app-error, 4) !important;
+}
+
+.alert-danger-icon {
+  color: mat.get-color-from-palette($dockstore-app-error, 2) !important;
 }
