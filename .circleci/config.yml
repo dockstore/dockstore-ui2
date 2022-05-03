@@ -270,7 +270,7 @@ jobs:
   upload_to_s3:
     working_directory: ~/repo
     docker:
-      - image: amazon/aws-cli
+      - image: cimg/python:2.7
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
@@ -281,6 +281,7 @@ jobs:
     steps:
       - when:
           condition: <<parameters.aws_bucket>>
+          executor: aws-cli/default
           steps:
             - run:
                 name: authenticate-and-interact
