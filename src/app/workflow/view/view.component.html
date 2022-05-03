@@ -91,19 +91,20 @@
     >
       Set as Default Version
     </button>
-    <button
-      mat-menu-item
-      color="accent"
-      [disabled]="
-        (isRefreshing$ | async) ||
-        version.frozen ||
-        (workflow?.mode === WorkflowType.ModeEnum.DOCKSTOREYML && !version.legacyVersion) ||
-        workflow?.mode === WorkflowType.ModeEnum.HOSTED
-      "
-      (click)="refreshVersion()"
-      matTooltip="Refresh an individual version. Disabled for GitHub App workflows, Hosted workflow, and frozen versions."
-    >
-      Refresh Version
-    </button>
+    <div matTooltip="Refresh an individual version. Disabled for GitHub App workflows, Hosted workflow, and frozen versions.">
+      <button
+        mat-menu-item
+        color="accent"
+        [disabled]="
+          (isRefreshing$ | async) ||
+          version.frozen ||
+          (workflow?.mode === WorkflowType.ModeEnum.DOCKSTOREYML && !version.legacyVersion) ||
+          workflow?.mode === WorkflowType.ModeEnum.HOSTED
+        "
+        (click)="refreshVersion()"
+      >
+        Refresh Version
+      </button>
+    </div>
   </ng-container>
 </mat-menu>
