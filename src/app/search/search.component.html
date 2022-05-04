@@ -203,7 +203,7 @@
 
     <div class="col-md-9 containers-rsb" *ngIf="advancedSearchObject$ | async as advancedSearchObject">
       <div class="hits">
-        <mat-card *ngIf="searchService.noResults(searchTerm, hits)" class="alert alert-warning text-break">
+        <mat-card *ngIf="searchService.noResults(searchTerm, hits)" class="alert alert-warning mat-elevation-z text-break">
           Sorry, no matches found for <strong>{{ basicSearchText$ | async }}</strong
           >.
           <span *ngIf="suggestTerm$ | async"

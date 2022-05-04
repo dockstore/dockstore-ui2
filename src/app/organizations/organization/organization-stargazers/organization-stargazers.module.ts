@@ -17,13 +17,14 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { CustomMaterialModule } from '../../../shared/modules/material.module';
+import { RouterModule } from '@angular/router';
 
 import { StarOrganizationService } from '../../../shared/star-organization.service';
 import { OrganizationStarringService } from '../organization-starring/organization-starring.service';
 import { OrganizationStargazersComponent } from './organization-stargazers.component';
 
 @NgModule({
-  imports: [CommonModule, FlexLayoutModule, CustomMaterialModule],
+  imports: [CommonModule, FlexLayoutModule, CustomMaterialModule, RouterModule],
   declarations: [OrganizationStargazersComponent],
   exports: [OrganizationStargazersComponent],
   providers: [OrganizationStarringService, StarOrganizationService],

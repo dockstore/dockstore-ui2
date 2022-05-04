@@ -30,7 +30,7 @@ import { UsersService } from './../../../../shared/swagger/api/users.service';
   styleUrls: ['./change-username.component.scss'],
 })
 export class ChangeUsernameComponent implements OnInit {
-  @Input() showText;
+  @Input() noDialog: boolean;
   username: string;
   user: User;
   usernameTaken = false;
@@ -80,11 +80,7 @@ export class ChangeUsernameComponent implements OnInit {
       )
       .subscribe(
         (userExists: boolean) => {
-          if (userExists && this.username === this.user.username) {
-            this.usernameTaken = false;
-          } else {
-            this.usernameTaken = userExists;
-          }
+          this.usernameTaken = userExists;
         },
         (error) => {
           console.error(error);

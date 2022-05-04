@@ -52,7 +52,6 @@ import { DeleteAccountDialogComponent } from './loginComponents/accounts/control
 import { AccountsExternalComponent } from './loginComponents/accounts/external/accounts.component';
 import { AccountsService } from './loginComponents/accounts/external/accounts.service';
 import { GetTokenUsernamePipe } from './loginComponents/accounts/external/getTokenUsername.pipe';
-import { ChangeUsernameComponent } from './loginComponents/accounts/internal/change-username/change-username.component';
 import { AuthComponent } from './loginComponents/auth/auth.component';
 import { DownloadCLIClientComponent } from './loginComponents/onboarding/downloadcliclient/downloadcliclient.component';
 import { OnboardingComponent } from './loginComponents/onboarding/onboarding.component';
@@ -111,6 +110,7 @@ import { SnaphotExporterModalComponent } from './workflow/snapshot-exporter-moda
 import { ViewService } from './workflow/view/view.service';
 import { MySidebarModule } from './shared/modules/my-sidebar.module';
 import { AccountSidebarModule } from './loginComponents/accounts/account-sidebar/account-sidebar.module';
+import { ChangeUsernameModule } from './loginComponents/accounts/internal/change-username/change-username.module';
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   showDelay: 500,
@@ -148,7 +148,6 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     MaintenanceComponent,
     FundingComponent,
     BannerComponent,
-    ChangeUsernameComponent,
     YoutubeComponent,
     SitemapComponent,
     GithubCallbackComponent,
@@ -197,6 +196,7 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     PipeModule,
     MySidebarModule,
     AccountSidebarModule,
+    ChangeUsernameModule,
   ],
   providers: [
     AccountsService,
