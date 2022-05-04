@@ -778,7 +778,7 @@
 "nice-napi@1.0.2","MIT","https://github.com/addaleax/nice-napi"
 "node-addon-api@3.2.1","MIT","https://github.com/nodejs/node-addon-api"
 "node-fetch-npm@2.0.4","MIT","https://github.com/npm/node-fetch-npm"
-"node-forge@1.2.1","(BSD-3-Clause OR GPL-2.0)","https://github.com/digitalbazaar/forge"
+"node-forge@1.3.1","(BSD-3-Clause OR GPL-2.0)","https://github.com/digitalbazaar/forge"
 "node-gyp-build@4.3.0","MIT","https://github.com/prebuild/node-gyp-build"
 "node-gyp@8.4.1","MIT","https://github.com/nodejs/node-gyp"
 "node-releases@2.0.2","MIT","https://github.com/chicoxyzzy/node-releases"
