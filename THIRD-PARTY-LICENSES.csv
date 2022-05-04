@@ -892,7 +892,7 @@
 "prelude-ls@1.2.1","MIT","https://github.com/gkz/prelude-ls"
 "prettier@2.5.1","MIT","https://github.com/prettier/prettier"
 "pretty-bytes@5.6.0","MIT","https://github.com/sindresorhus/pretty-bytes"
-"prismjs@1.26.0","MIT","https://github.com/PrismJS/prism"
+"prismjs@1.28.0","MIT","https://github.com/PrismJS/prism"
 "process-nextick-args@2.0.1","MIT","https://github.com/calvinmetcalf/process-nextick-args"
 "promise-inflight@1.0.1","ISC","https://github.com/iarna/promise-inflight"
 "promise-retry@1.1.1","MIT","https://github.com/IndigoUnited/node-promise-retry"
