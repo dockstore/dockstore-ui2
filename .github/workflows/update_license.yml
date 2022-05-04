@@ -5,6 +5,8 @@ on:
     branches:
       - 'dependabot/**'
 
+# Workflows triggered by Dependabot have a read-only token by default. 
+# Need to grant write permissions so this workflow can commit changes to the license file.
 permissions:
   contents: write
 
