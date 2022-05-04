@@ -39,9 +39,7 @@
               class="expanded-row-detail"
               [@detailExpand]="element === expandedElement ? 'expanded' : 'collapsed'"
             >
-              <div class="p-2">
-                {{ element.message }}
-              </div>
+              <div class="p-2 log-entry-message">{{ element.message }}</div>
             </div>
           </td>
         </ng-container>
