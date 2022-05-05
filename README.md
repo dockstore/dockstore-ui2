@@ -1,5 +1,5 @@
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/58c43301d4b84c8ab74bdbeb2a962973)](https://app.codacy.com/app/dockstore/dockstore-ui2?utm_source=github.com&utm_medium=referral&utm_content=dockstore/dockstore-ui2&utm_campaign=Badge_Grade_Dashboard)
-[![Build Status](https://travis-ci.org/dockstore/dockstore-ui2.svg?branch=develop)](https://travis-ci.org/dockstore/dockstore-ui2)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/37aa92c1fff9407fb47b426d1be1f7f0)](https://www.codacy.com/gh/dockstore/dockstore-ui2/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=dockstore/dockstore-ui2&amp;utm_campaign=Badge_Grade)
+[![CircleCI](https://circleci.com/gh/dockstore/dockstore-ui2/tree/develop.svg?style=svg)](https://circleci.com/gh/dockstore/dockstore-ui2/tree/develop)
 [![codecov](https://codecov.io/gh/dockstore/dockstore-ui2/branch/develop/graph/badge.svg)](https://codecov.io/gh/dockstore/dockstore-ui2)
 
 Please file issues for this repository and Web site at [the dockstore/dockstore repository](https://github.com/dockstore/dockstore/issues)!
