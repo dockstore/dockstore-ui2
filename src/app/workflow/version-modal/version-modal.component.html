@@ -206,7 +206,10 @@
     </fieldset>
   </div>
   <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
-    <button type="button" mat-flat-button class="secondary-1" mat-dialog-close>OK</button>
+    <button type="button" mat-flat-button class="secondary-1" mat-dialog-close>
+      <span *ngIf="!isPublic && canWrite; else noSave">Cancel</span>
+      <ng-template #noSave>OK</ng-template>
+    </button>
     <button
       data-cy="save-version"
       type="button"
