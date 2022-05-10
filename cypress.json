@@ -8,6 +8,7 @@
   "retries": {
     "runMode": 3,
     "openMode": 0
-  }
+  },
+  "userAgent": "Dockstore/Testing"
 }
 
