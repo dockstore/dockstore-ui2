@@ -28,9 +28,11 @@ describe('GitHub App Tools', () => {
   }
 
   function selectGitHubAppTool(tool: string) {
+    cy.wait(1000);
     cy.get('#workflow-path').should('be.visible');
     cy.contains('div .no-wrap', tool).should('be.visible').click();
     cy.get('#workflow-path').contains(tool);
+    cy.wait(1000);
   }
 
   describe('My Tools', () => {
@@ -145,7 +147,6 @@ describe('GitHub App Tools', () => {
     });
 
     it('Public view', () => {
-      cy.wait(1000);
       selectGitHubAppTool('test-github-app-tools/md5sum');
       cy.get('[data-cy=viewPublicWorkflowButton]').click();
       cy.get('[data-cy=tool-icon]').should('exist');
