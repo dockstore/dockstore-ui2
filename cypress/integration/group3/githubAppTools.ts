@@ -145,6 +145,7 @@ describe('GitHub App Tools', () => {
     });
 
     it('Public view', () => {
+      cy.wait(1000);
       selectGitHubAppTool('test-github-app-tools/md5sum');
       cy.get('[data-cy=viewPublicWorkflowButton]').click();
       cy.get('[data-cy=tool-icon]').should('exist');
