@@ -69,8 +69,7 @@
             <pre>{{ cwl }}</pre>
           </div>
         </mat-card>
-        <mat-card>
-          <!--          cwltool instructions for workflows will need to wait for https://github.com/common-workflow-language/cwltool/pull/1093-->
+        <mat-card *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL && (published$ | async)">
           <div [matTooltip]="cwltoolTooltip">
             Alternatively, <a href="https://github.com/common-workflow-language/cwltool">cwltool</a> can conveniently run a workflow off of
             dockstore.org and other
