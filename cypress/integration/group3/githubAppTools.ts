@@ -29,7 +29,7 @@ describe('GitHub App Tools', () => {
 
   function selectGitHubAppTool(tool: string) {
     cy.get('#workflow-path').should('be.visible');
-    cy.contains('div .no-wrap', tool).click();
+    cy.contains('.org-accordion-list .no-wrap', tool).should('be.visible').click();
     cy.get('#workflow-path').contains(tool);
   }
 
