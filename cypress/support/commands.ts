@@ -19,7 +19,9 @@
 const psqlInvocation: string = 'PASSWORD=dockstore psql';
 
 export function goToTab(tabName: string): void {
+  cy.wait(500);
   cy.contains('.mat-tab-label', tabName).should('be.visible').click();
+  cy.wait(500);
 }
 
 export function assertVisibleTab(tabName: string): void {
