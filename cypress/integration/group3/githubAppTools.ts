@@ -28,11 +28,9 @@ describe('GitHub App Tools', () => {
   }
 
   function selectGitHubAppTool(tool: string) {
-    cy.wait(1000);
     cy.get('#workflow-path').should('be.visible');
-    cy.contains('div .no-wrap', tool).should('be.visible').click();
+    cy.contains('div .no-wrap', tool).click();
     cy.get('#workflow-path').contains(tool);
-    cy.wait(1000);
   }
 
   describe('My Tools', () => {
