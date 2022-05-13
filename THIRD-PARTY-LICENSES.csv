@@ -689,7 +689,7 @@
 "karma-jasmine-html-reporter@1.7.0","MIT","https://github.com/dfederm/karma-jasmine-html-reporter"
 "karma-jasmine@4.0.1","MIT","https://github.com/karma-runner/karma-jasmine"
 "karma-source-map-support@1.4.0","MIT","https://github.com/tschaub/karma-source-map-support"
-"karma@6.3.15","MIT","https://github.com/karma-runner/karma"
+"karma@6.3.16","MIT","https://github.com/karma-runner/karma"
 "katex@0.15.2","MIT","https://github.com/KaTeX/KaTeX"
 "kind-of@6.0.3","MIT","https://github.com/jonschlinkert/kind-of"
 "klona@2.0.5","MIT","https://github.com/lukeed/klona"
