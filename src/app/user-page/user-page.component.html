@@ -13,9 +13,13 @@
       <img mat-card-image [src]="user?.avatarUrl" class="mt-0 mx-auto mb-3" alt="Dockstore avatar" />
       <mat-card-content fxLayout="column" fxLayoutAlign="center center">
         <h4 matLine class="accent-1-dark mt-2 mb-0">{{ user?.username }}</h4>
-        <mat-card-subtitle class="normal-line-height weight-bold accent-1-dark mt-2 mb-0 text-center-align" fxLayoutAlign="center">{{
-          gitHubProfile.bio
-        }}</mat-card-subtitle>
+        <mat-card-subtitle
+          *ngIf="gitHubProfile.bio"
+          class="normal-line-height weight-bold accent-1-dark mt-2 mb-0 text-center-align"
+          fxLayoutAlign="center"
+        >
+          {{ gitHubProfile.bio }}
+        </mat-card-subtitle>
         <a rel="noopener noreferrer" href="{{ gitHubProfile?.link }}" target="_blank" class="accent-1-dark">
           {{ gitHubProfile?.link }}
         </a>
