@@ -319,7 +319,7 @@
             <strong matTooltip="Currently disabled for Hosted Workflows and Nextflow Workflows">Checker Workflow</strong>: n/a
           </div>
           <li *ngIf="!isPublic">
-            <div fxFlex="noshrink" fxLayoutAlign="center">
+            <div fxFlex="noshrink" fxLayoutAlign="start center">
               <strong [matTooltip]="modeTooltipContent">Mode</strong>: {{ 'mode' | mapFriendlyValue: workflow?.mode }}
             </div>
             <button
