@@ -11,7 +11,7 @@ executors:
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
-        environment:bin/bash: -c: bin/bash: -c: 
+        environment:
           JAVA_TOOL_OPTIONS: -Xmx2g # Java can read cgroup. Sadly the cgroup in CircleCI is wrong. Have to manually set. Using 1/2 memory as heap.
       - image: cimg/postgres:13.3
         command: postgres -c max_connections=200 -c jit=off
