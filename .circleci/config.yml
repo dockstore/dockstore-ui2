@@ -11,7 +11,7 @@ executors:
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
-        environment:
+        environment:bin/bash: -c: bin/bash: -c: 
           JAVA_TOOL_OPTIONS: -Xmx2g # Java can read cgroup. Sadly the cgroup in CircleCI is wrong. Have to manually set. Using 1/2 memory as heap.
       - image: cimg/postgres:13.3
         command: postgres -c max_connections=200 -c jit=off
@@ -382,44 +382,6 @@ workflows:
             - lint_license_unit_test_coverage
           context:
             - dockerhub
-#DELETE BELOW
-      - uptime_monitor_no_auth:
-          name: "uptime_monitor_no_auth_dev"
-          stack: "dev"
-          context:
-            - dockerhub
-            - oicr-slack
-      - uptime_monitor_no_auth:
-          name: "uptime_monitor_no_auth_staging"
-          stack: "staging"
-          context:
-            - dockerhub
-            - oicr-slack
-      - uptime_monitor_no_auth:
-          name: "uptime_monitor_no_auth_prod"
-          stack: "prod"
-          context:
-            - dockerhub
-            - oicr-slack
-      - uptime_monitor_auth:
-          name: "uptime_monitor_auth_dev"
-          stack: "dev"
-          context:
-            - dockerhub
-            - oicr-slack
-      - uptime_monitor_auth:
-          name: "uptime_monitor_auth_staging"
-          stack: "staging"
-          context:
-            - dockerhub
-            - oicr-slack
-      - uptime_monitor_auth:
-          name: "uptime_monitor_auth_prod"
-          stack: "prod"
-          context:
-            - dockerhub
-            - oicr-slack
- #DELETE ABOVE 
       # Upload builds for tags and branches to s3.
       - upload_to_s3:
           requires:
