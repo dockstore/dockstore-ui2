@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Repository } from '../openapi/model/repository';
 import { EntryWizardQuery } from '../state/entry-wizard.query';
 import { EntryWizardService } from '../state/entry-wizard.service';
@@ -25,7 +26,12 @@ export class EntryWizardComponent implements OnInit {
     this.isLoading$ = this.entryWizardQuery.selectLoading();
     this.gitRegistries$ = this.entryWizardQuery.selectGitRegistries$;
     this.gitOrganizations$ = this.entryWizardQuery.selectGitOrganizations$;
-    this.gitRepositories$ = this.entryWizardQuery.selectGitRepositories$;
+    this.gitRepositories$ = this.entryWizardQuery.selectGitRepositories$.pipe(
+      map((repositories) => {
+        repositories.sort((a, b) => a.repositoryName.localeCompare(b.repositoryName));
+        return repositories;
+      })
+    );
   }
 
   /**
