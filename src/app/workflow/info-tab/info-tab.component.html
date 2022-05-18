@@ -319,10 +319,12 @@
             <strong matTooltip="Currently disabled for Hosted Workflows and Nextflow Workflows">Checker Workflow</strong>: n/a
           </div>
           <li *ngIf="!isPublic">
-            <strong [matTooltip]="modeTooltipContent">Mode</strong>: {{ 'mode' | mapFriendlyValue: workflow?.mode }}
+            <div fxFlex="noshrink" fxLayoutAlign="center">
+              <strong [matTooltip]="modeTooltipContent">Mode</strong>: {{ 'mode' | mapFriendlyValue: workflow?.mode }}
+            </div>
             <button
               mat-raised-button
-              class="push-right small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+              class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
               type="button"
               *ngIf="workflow?.mode === WorkflowType.ModeEnum.FULL && !workflow?.is_published && !workflow?.isChecker"
               (click)="restubWorkflow()"
