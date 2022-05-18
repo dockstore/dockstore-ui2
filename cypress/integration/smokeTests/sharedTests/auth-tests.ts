@@ -180,27 +180,31 @@ function testTool(registry: string, repo: string, name: string) {
 
   // disable test until hiding versions for Tools are working on dev
 
-  describe('Hide and un-hide a tool version', () => {
-    registerQuayTool(repo, name);
-    it('hide a version', () => {
-      goToTab('Versions');
-      cy.contains('button', 'Actions').should('be.visible');
-      cy.contains('td', 'Actions').first().click();
-      cy.contains('button', 'Edit').click();
-      cy.contains('div', 'Hidden:').within(() => {
-        cy.get('[name=checkbox]').click();
-      });
-      cy.contains('button', 'Save Changes').click();
-      cy.get('[data-cy=hiddenCheck]').should('have.length', 1);
-    });
-    it('refresh namespace', () => {
-      cy.contains('button', 'Refresh Namespace').first().click();
-      // check that the 'refresh succeeded' message appears
-      cy.contains('succeeded');
-    });
-    unpublishTool();
-    deleteTool();
-  });
+  // describe('Hide and un-hide a tool version', () => {
+  //   registerQuayTool(repo, name);
+  //   it('hide a version', () => {
+  //     goToTab('Versions');
+  //     cy.contains('button', 'Actions').should('be.visible');
+  //     cy.contains('td', 'Actions')
+  //       .first()
+  //       .click();
+  //     cy.contains('button', 'Edit').click();
+  //     cy.contains('div', 'Hidden:').within(() => {
+  //       cy.get('[name=checkbox]').click();
+  //     });
+  //     cy.contains('button', 'Save Changes').click();
+  //     cy.get('[data-cy=hiddenCheck]').should('have.length', 1);
+  //   });
+  //   it('refresh namespace', () => {
+  //     cy.contains('button', 'Refresh Namespace')
+  //       .first()
+  //       .click();
+  //     // check that the 'refresh succeeded' message appears
+  //     cy.contains('succeeded');
+  //   });
+  //   unpublishTool();
+  //   deleteTool();
+  // });
 }
 
 function testWorkflow(registry: string, repo: string, name: string) {
