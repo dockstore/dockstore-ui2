@@ -119,7 +119,7 @@ jobs:
             then
               git fetch origin +refs/pull/${CIRCLE_PULL_REQUEST##*/}/merge:
               git checkout -qf FETCH_HEAD
-            figit get the latest from master
+            fi
       - install_container_dependencies
       - run:
           name: Run npm audit
