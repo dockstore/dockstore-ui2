@@ -1,6 +1,6 @@
 <app-loading [loading]="loading$ | async">
   <div *ngIf="noEvents$ | async">
-    <mat-card class="alert alert-info" role="alert">
+    <mat-card class="alert alert-info mx-1" role="alert">
       <mat-icon class="mat-icon material-icons">info</mat-icon> No events found. Star entries or organizations to see events for them. Read
       <a [href]="starringDocUrl" target="_blank" rel="noopener noreferrer">Starring Tools and Workflows</a>
       to learn how to star entries.
