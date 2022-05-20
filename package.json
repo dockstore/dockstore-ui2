@@ -7,7 +7,7 @@
     "use_circle": false,
     "circle_ci_source": "https://app.circleci.com/pipelines/github/dockstore/dockstore/7331/workflows/56ee2021-675a-460f-ae3e-663f456fc27c/jobs/17708/artifacts",
     "circle_build_id": "17708",
-    "base_branch": "release/2.9"
+    "base_branch": "hotfix/2.9.1"
   },
   "scripts": {
     "ng": "npx ng",
