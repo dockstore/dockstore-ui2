@@ -31,7 +31,7 @@ export class ListService {
 
   // TODO: need someone to pick up here to connect this to the data tables pagination for
   // public tools and workflows
-  getPublishedToolsByPage(toolType: any, offset: string, limit: number): Observable<any> {
+  getPublishedToolsByPage(toolType: any, offset: number, limit: number): Observable<any> {
     if (toolType === 'workflows') {
       return this.workflowsService.allPublishedWorkflows(offset, limit);
     } else {
@@ -42,12 +42,12 @@ export class ListService {
   getPublishedTools(toolType: any, preview: boolean): Observable<any> {
     if (toolType === 'workflows') {
       if (preview) {
-        return this.workflowsService.allPublishedWorkflows('0', 10);
+        return this.workflowsService.allPublishedWorkflows(0, 10);
       }
       return this.workflowsService.allPublishedWorkflows();
     } else {
       if (preview) {
-        return this.containersService.allPublishedContainers('0', 10);
+        return this.containersService.allPublishedContainers(0, 10);
       }
       return this.containersService.allPublishedContainers();
     }
