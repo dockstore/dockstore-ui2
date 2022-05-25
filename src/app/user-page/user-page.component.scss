@@ -24,10 +24,6 @@ img[alt='Google avatar'] {
   background: $accent-3-dark;
 }
 
-.text-center-align {
-  text-align: center;
-}
-
 .mat-icon:not(.mat-icon-sm) {
   font-size: 2.2rem;
   color: mat.get-color-from-palette($dockstore-app-accent-1, darker);

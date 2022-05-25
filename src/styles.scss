@@ -1000,6 +1000,13 @@ mat-tab-group.no-pagination {
   color: rgba(0, 0, 0, 0.54);
 }
 
+// Styling for information below the user icon in user-pages
+.mat-card-user-info {
+  text-align: center;
+  width: 100%;
+  word-wrap: break-word;
+}
+
 // Styling from design mockups
 // These badges are not clickable, thus different from Material Design Chips
 .nonclick-badge {
