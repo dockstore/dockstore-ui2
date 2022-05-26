@@ -1000,6 +1000,11 @@ mat-tab-group.no-pagination {
   color: rgba(0, 0, 0, 0.54);
 }
 
+// Used to make text center-aligned
+.text-align-center {
+  text-align: center;
+}
+
 // Styling from design mockups
 // These badges are not clickable, thus different from Material Design Chips
 .nonclick-badge {
