@@ -58,7 +58,13 @@
                   Register a Tool
                 </button>
               </div>
-              <p *ngIf="(hasGroupEntriesObject$ | async) === false && (hasGroupGitHubAppToolEntriesObjects$ | async) === false">
+              <p
+                *ngIf="
+                  (hasGroupEntriesObject$ | async) === false &&
+                  (hasGroupGitHubAppToolEntriesObjects$ | async) === false &&
+                  (loading$ | async) === false
+                "
+              >
                 You have not registered any tools
               </p>
               <app-workflow-sidebar-accordion
