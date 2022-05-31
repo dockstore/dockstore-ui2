@@ -32,7 +32,7 @@ export class EntryWizardComponent implements OnInit {
           repositories.sort((a, b) => a.repositoryName.localeCompare(b.repositoryName));
           return repositories;
         } else {
-          return [];
+          return null;
         }
       })
     );
