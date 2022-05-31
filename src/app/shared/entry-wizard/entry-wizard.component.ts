@@ -28,8 +28,12 @@ export class EntryWizardComponent implements OnInit {
     this.gitOrganizations$ = this.entryWizardQuery.selectGitOrganizations$;
     this.gitRepositories$ = this.entryWizardQuery.selectGitRepositories$.pipe(
       map((repositories) => {
-        repositories.sort((a, b) => a.repositoryName.localeCompare(b.repositoryName));
-        return repositories;
+        if (repositories !== undefined) {
+          repositories.sort((a, b) => a.repositoryName.localeCompare(b.repositoryName));
+          return repositories;
+        } else {
+          return [];
+        }
       })
     );
   }
