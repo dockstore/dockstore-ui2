@@ -5,15 +5,13 @@ import { Dockstore } from 'app/shared/dockstore.model';
 import { Event } from 'app/shared/openapi';
 import { User } from 'app/shared/openapi';
 import { UserQuery } from 'app/shared/user/user.query';
-import { UserService } from 'app/shared/user/user.service';
 import { UsersService } from 'app/shared/swagger';
 import { Observable } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
 import { RecentEventsQuery } from '../state/recent-events.query';
 import { RecentEventsService } from '../state/recent-events.service';
 import { AlertService } from 'app/shared/alert/state/alert.service';
-import { ControlsComponent } from 'app/loginComponents/accounts/controls/controls.component';
 
 /**
  * Shows recent events related to starred organization and entries
