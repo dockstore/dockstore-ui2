@@ -2,7 +2,7 @@ version: 2.1
 orbs:
   aws-s3: circleci/aws-s3@3.0.0
   aws-cli: circleci/aws-cli@3.1.1
-  slack: circleci/slack@4.4.4
+  slack: circleci/slack@3.4.2
   browser-tools: circleci/browser-tools@1.2.4
 executors:
   integration_test_exec: # declares a reusable executor
@@ -34,7 +34,7 @@ executors:
 jobs:
   # Specify the webpage url (https://dev.dockstore.net or https://staging.dockstore.org or https://dockstore.org)
   # and stack (dev or staging or prod) and the no auth smoke tests will be run against the corresponding webpage.
-  no_auth_smoke_tests:
+  uptime_monitor_no_auth:
     parameters:
       stack:
         type: string
@@ -60,18 +60,15 @@ jobs:
           environment:
             MOCHA_FILE: nightly-test-results/junit/test-<< parameters.stack >>-waf-[hash].xml
       - upload_nightly_artifacts
-      - slack/notify:
+      - slack/status:
+          fail_only: true
           channel: $<< parameters.stack >>_id
-          event: fail
-          template: basic_fail_1
-      - slack/notify:
-          channel: $<< parameters.stack >>_id
-          event: pass
-          template: basic_success_1
+          failure_message: Nightly << parameters.stack >> non-auth tests failed!
+          webhook: $SLACK_WEBHOOK
 
   # Specify the webpage url (https://dev.dockstore.net or https://staging.dockstore.org or https://dockstore.org)
   # and stack (dev or staging or prod) and the no auth smoke tests will be run against the corresponding webpage.
-  auth_smoke_tests:
+  uptime_monitor_auth:
     parameters:
       stack:
         type: string
@@ -92,14 +89,11 @@ jobs:
           environment:
             MOCHA_FILE: nightly-test-results/junit/test-<< parameters.stack >>-auth-[hash].xml
       - upload_nightly_artifacts
-      - slack/notify:
+      - slack/status:
+          fail_only: true
           channel: $<< parameters.stack >>_id
-          event: fail
-          template: basic_fail_1
-      - slack/notify:
-          channel: $<< parameters.stack >>_id
-          event: pass
-          template: basic_success_1
+          failure_message: Nightly << parameters.stack >> auth tests failed!
+          webhook: $SLACK_WEBHOOK
 
   audit:
     working_directory: ~/repo
@@ -404,7 +398,33 @@ workflows:
           context:
             - dockerhub
 
-  nightly:
+  nightly_no_auth:
+    triggers:
+      - schedule:
+          cron: "0 10 * * *" # This is 3am PDT / 2am PST
+          filters:
+            branches:
+              only:
+                - develop
+                - feature/flynn/SEAB-4406/spread_out_timings_of_tests #TODO REMOVE
+    jobs:
+      - uptime_monitor_no_auth:
+          name: "uptime_monitor_no_auth_dev"
+          stack: "dev"
+          context:
+            - dockerhub
+      - uptime_monitor_no_auth:
+          name: "uptime_monitor_no_auth_staging"
+          stack: "staging"
+          context:
+            - dockerhub
+      - uptime_monitor_no_auth:
+          name: "uptime_monitor_no_auth_prod"
+          stack: "prod"
+          context:
+            - dockerhub
+
+  nightly_auth:
     triggers:
       - schedule:
           cron: "0 11 * * *" # This is 4am PDT / 3am PST
@@ -412,43 +432,23 @@ workflows:
             branches:
               only:
                 - develop
+                - feature/flynn/SEAB-4406/spread_out_timings_of_tests #TODO REMOVE
     jobs:
-      - no_auth_smoke_tests:
-          name: "no_auth_smoke_tests_dev"
+      - uptime_monitor_auth:
+          name: "uptime_monitor_auth_dev"
           stack: "dev"
           context:
             - dockerhub
-            - oicr-slack
-      - no_auth_smoke_tests:
-          name: "no_auth_smoke_tests_staging"
+      - uptime_monitor_auth:
+          name: "uptime_monitor_auth_staging"
           stack: "staging"
           context:
             - dockerhub
-            - oicr-slack
-      - no_auth_smoke_tests:
-          name: "no_auth_smoke_tests_prod"
+      - uptime_monitor_auth:
+          name: "uptime_monitor_auth_prod"
           stack: "prod"
           context:
             - dockerhub
-            - oicr-slack
-      - auth_smoke_tests:
-          name: "auth_smoke_tests_dev"
-          stack: "dev"
-          context:
-            - dockerhub
-            - oicr-slack
-      - auth_smoke_tests:
-          name: "auth_smoke_tests_staging"
-          stack: "staging"
-          context:
-            - dockerhub
-            - oicr-slack
-      - auth_smoke_tests:
-          name: "auth_smoke_tests_prod"
-          stack: "prod"
-          context:
-            - dockerhub
-            - oicr-slack
 
 commands:
   install_container_dependencies:
@@ -457,7 +457,9 @@ commands:
           name: Install java
           command: |
             sudo apt update -y
-            sudo apt install openjdk-17-jdk -yq
+            sudo apt install openjdk-17-jdk -yq    All Pipelines
+
+All Pipelines
       - run:
           name: Install npm
           command: |
