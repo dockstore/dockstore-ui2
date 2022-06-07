@@ -8,17 +8,29 @@ import { RecentEventsStore } from './recent-events.store';
 export class RecentEventsService {
   constructor(private recentEventsStore: RecentEventsStore, private eventsService: EventsService) {}
 
-  get(user: User) {
+  get(user?: User) {
     this.recentEventsStore.setLoading(true);
-    this.eventsService
-      .getUserEvents(user.id, 'ALL_STARRED')
-      .pipe(
-        finalize(() => this.recentEventsStore.setLoading(false)),
-        tap((allStarredEvents) => {
-          this.recentEventsStore.set(allStarredEvents);
-        })
-      )
-      .subscribe();
+    if (user) {
+      this.eventsService
+        .getUserEvents(user.id, 'ALL_STARRED')
+        .pipe(
+          finalize(() => this.recentEventsStore.setLoading(false)),
+          tap((allStarredEvents) => {
+            this.recentEventsStore.set(allStarredEvents);
+          })
+        )
+        .subscribe();
+    } else {
+      this.eventsService
+        .getEvents('ALL_STARRED')
+        .pipe(
+          finalize(() => this.recentEventsStore.setLoading(false)),
+          tap((allStarredEvents) => {
+            this.recentEventsStore.set(allStarredEvents);
+          })
+        )
+        .subscribe();
+    }
   }
 
   add(recentEvent: Event) {

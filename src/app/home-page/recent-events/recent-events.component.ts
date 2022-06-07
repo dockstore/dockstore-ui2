@@ -61,11 +61,7 @@ export class RecentEventsComponent implements OnInit {
         }
       );
     } else {
-      this.userQuery.user$.subscribe((user: User) => {
-        if (user) {
-          this.recentEventsService.get(user);
-        }
-      });
+      this.recentEventsService.get();
     }
 
     this.events$ = this.recentEventsQuery.selectAll({
