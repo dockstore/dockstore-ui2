@@ -287,7 +287,7 @@
 "asn1@0.2.6","MIT","https://github.com/joyent/node-asn1"
 "assert-plus@1.0.0","MIT","https://github.com/mcavage/node-assert-plus"
 "astral-regex@2.0.0","MIT","https://github.com/kevva/astral-regex"
-"async@2.6.3","MIT","https://github.com/caolan/async"
+"async@2.6.4","MIT","https://github.com/caolan/async"
 "async@3.2.3","MIT","https://github.com/caolan/async"
 "asynckit@0.4.0","MIT","https://github.com/alexindigo/asynckit"
 "at-least-node@1.0.0","ISC","https://github.com/RyanZim/at-least-node"

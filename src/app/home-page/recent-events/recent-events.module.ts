@@ -7,11 +7,12 @@ import { MatCardModule } from '@angular/material/card';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatDividerModule } from '@angular/material/divider';
 import { RouterModule } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [RecentEventsComponent, EntryToDisplayNamePipe],
   providers: [],
-  imports: [RefreshAlertModule, CommonModule, MatCardModule, FlexLayoutModule, MatDividerModule, RouterModule],
+  imports: [RefreshAlertModule, MatIconModule, CommonModule, MatCardModule, FlexLayoutModule, MatDividerModule, RouterModule],
   exports: [RecentEventsComponent],
 })
 export class RecentEventsModule {}
