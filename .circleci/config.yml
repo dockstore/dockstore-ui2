@@ -436,7 +436,7 @@ workflows:
   nightly_auth:
     triggers:
       - schedule:
-          cron: "0 11 * * *" # This is 4am PDT / 3am PST
+          cron: "0 12 * * *" # This is 5am PDT / 4am PST TODO change to 11, just wanted to ensure it worked
           filters:
             branches:
               only:
