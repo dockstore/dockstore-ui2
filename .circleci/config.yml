@@ -282,7 +282,7 @@ jobs:
           executor: aws-cli/default
           steps:
             - aws-cli/setup:
-                profile-name: WEB IDENTITY PROFILE
+                profile-name: WEB IDENTITY PROFILEOICR VPN for Linux
                 role-arn: $AWS_ROLE_ARN
                 role-session-name: "CircleCI-${CIRCLE_WORKFLOW_ID}-${CIRCLE_JOB}"
             - get_workspace
@@ -412,7 +412,6 @@ workflows:
             branches:
               only:
                 - develop
-                - feature/flynn/SEAB-4406/spread_out_timings_of_tests #TODO REMOVE
     jobs:
       - no_auth_smoke_tests:
           name: "no_auth_smoke_tests_dev"
@@ -436,12 +435,11 @@ workflows:
   nightly_auth:
     triggers:
       - schedule:
-          cron: "0 12 * * *" # This is 5am PDT / 4am PST TODO change to 11, just wanted to ensure it worked
+          cron: "0 11 * * *" # This is 4am PDT / 3am PST 
           filters:
             branches:
               only:
                 - develop
-                - feature/flynn/SEAB-4406/spread_out_timings_of_tests #TODO REMOVE
     jobs:
       - auth_smoke_tests:
           name: "auth_smoke_tests_dev"
