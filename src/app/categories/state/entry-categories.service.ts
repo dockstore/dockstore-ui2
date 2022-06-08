@@ -26,7 +26,7 @@ export class EntryCategoriesService {
   constructor(
     private entryCategoriesStore: EntryCategoriesStore,
     private entryCategoriesQuery: EntryCategoriesQuery,
-    private entriesService: EntriesService,
+    private entriesService: EntriesService
   ) {
     /**
      * An observable list of the categories for a given entry.
@@ -42,14 +42,13 @@ export class EntryCategoriesService {
   /**
    * Updates the list of categories for the specified entry.
    */
-  updateEntryCategories(entryId: number) {
+  updateEntryCategories(entryId: number, published: boolean) {
     this.entryCategoriesStore.setLoading(true);
     this.entryCategoriesStore.setError(false);
     this.entryCategoriesStore.remove();
     this.currentSubscription?.unsubscribe();
-    this.currentSubscription = this.entriesService
-      .entryCategories(entryId)
-      .subscribe(
+    if (published) {
+      this.currentSubscription = this.entriesService.entryCategories(entryId).subscribe(
         (categories: Array<Category>) => {
           this.entryCategoriesStore.setLoading(false);
           this.entryCategoriesStore.setError(false);
@@ -60,5 +59,8 @@ export class EntryCategoriesService {
           this.entryCategoriesStore.setError(true);
         }
       );
+    } else {
+      this.entryCategoriesStore.set(null);
+    }
   }
 }
