@@ -47,6 +47,7 @@ export class EntryCategoriesService {
     this.entryCategoriesStore.setError(false);
     this.entryCategoriesStore.remove();
     this.currentSubscription?.unsubscribe();
+    this.currentSubscription = null;
     if (published) {
       this.currentSubscription = this.entriesService.entryCategories(entryId).subscribe(
         (categories: Array<Category>) => {
@@ -59,8 +60,6 @@ export class EntryCategoriesService {
           this.entryCategoriesStore.setError(true);
         }
       );
-    } else {
-      this.entryCategoriesStore.set(null);
     }
   }
 }
