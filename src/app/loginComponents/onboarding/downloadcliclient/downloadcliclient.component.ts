@@ -15,6 +15,7 @@ import { Metadata } from './../../../shared/swagger/model/metadata';
 export class DownloadCLIClientComponent implements OnInit {
   public downloadCli = 'dummy-start-value';
   public dockstoreVersion = 'dummy-start-value';
+  public dockstoreCliVersion = 'dummy-start-value';
   public dsToken = 'dummy-token';
   public dsServerURI: any;
   public isCopied2: boolean;
@@ -38,7 +39,18 @@ export class DownloadCLIClientComponent implements OnInit {
       (resultFromApi: Metadata) => {
         apiVersion = resultFromApi.version;
         this.dockstoreVersion = `${apiVersion}`;
-        this.downloadCli = `https://github.com/dockstore/dockstore/releases/download/${apiVersion}/dockstore`;
+        this.metadataService.getCliVersion().subscribe(
+          (json: any) => {
+            if (json) {
+              this.dockstoreCliVersion = json;
+            }
+          },
+          (err) => {
+            console.log('Unable to retrieve Dockstore CLI version.');
+          }
+        );
+        //this.downloadCli = `https://github.com/dockstore/dockstore/releases/download/${apiVersion}/dockstore`;
+        this.downloadCli = `https://github.com/dockstore/dockstore/releases/download/${this.dockstoreCliVersion}/dockstore`;
         this.metadataService
           .getRunnerDependencies(apiVersion, '3', 'cwltool', 'json')
           .pipe(finalize(() => this.generateMarkdown()))
