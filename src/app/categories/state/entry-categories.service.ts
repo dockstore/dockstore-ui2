@@ -41,14 +41,17 @@ export class EntryCategoriesService {
 
   /**
    * Updates the list of categories for the specified entry.
+   * @param {number} entryId - The ID for the associated entry.
+   * @param {boolean} published - The published status for the entry, non-published entries cannot belong to a category.
    */
   updateEntryCategories(entryId: number, published: boolean) {
-    this.entryCategoriesStore.setLoading(true);
-    this.entryCategoriesStore.setError(false);
     this.entryCategoriesStore.remove();
     this.currentSubscription?.unsubscribe();
     this.currentSubscription = null;
+    this.entryCategoriesStore.setError(false);
+    this.entryCategoriesStore.setLoading(false);
     if (published) {
+      this.entryCategoriesStore.setLoading(true);
       this.currentSubscription = this.entriesService.entryCategories(entryId).subscribe(
         (categories: Array<Category>) => {
           this.entryCategoriesStore.setLoading(false);
