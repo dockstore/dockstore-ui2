@@ -44,26 +44,25 @@ export class DownloadCLIClientComponent implements OnInit {
             if (json) {
               this.dockstoreCliVersion = json;
             }
+            this.downloadCli = `https://github.com/dockstore/dockstore-cli/releases/download/${this.dockstoreCliVersion}/dockstore`;
+            this.metadataService
+              .getRunnerDependencies(apiVersion, '3', 'cwltool', 'json')
+              .pipe(finalize(() => this.generateMarkdown()))
+              .subscribe(
+                (json: any) => {
+                  if (json) {
+                    this.cwltoolVersion = json.cwltool;
+                  }
+                },
+                (err) => {
+                  console.log('Unable to retrieve requirements.txt file.');
+                }
+              );
           },
           (err) => {
             console.log('Unable to retrieve Dockstore CLI version.');
           }
         );
-        //this.downloadCli = `https://github.com/dockstore/dockstore/releases/download/${apiVersion}/dockstore`;
-        this.downloadCli = `https://github.com/dockstore/dockstore/releases/download/${this.dockstoreCliVersion}/dockstore`;
-        this.metadataService
-          .getRunnerDependencies(apiVersion, '3', 'cwltool', 'json')
-          .pipe(finalize(() => this.generateMarkdown()))
-          .subscribe(
-            (json: any) => {
-              if (json) {
-                this.cwltoolVersion = json.cwltool;
-              }
-            },
-            (err) => {
-              console.log('Unable to retrieve requirements.txt file.');
-            }
-          );
       },
       (error) => {
         this.generateMarkdown();
