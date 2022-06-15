@@ -38,14 +38,14 @@ wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | 
 ```
 Close current terminal and open a new one or `source ~/.bashrc`
 ```
-nvm install 10.13.0
+nvm install 16.14.0
 ```
 Optionally, install a global Angular CLI in order to execute `ng` commands without prepending `npx`.   
-Otherwise, prepend `npx` to every command in this README if a global @angular/cli was not installed.
+Otherwise, prepend `npx` to every `ng` command in this README if a global @angular/cli was not installed.
 Before installing, follow https://docs.npmjs.com/getting-started/fixing-npm-permissions#option-two-change-npms-default-directory to fix permissions if needed.
 
 ```
-$npm i -g @angular/cli@1.3.1		
+$npm i -g @angular/cli@13.2.2    
 ```
 
 #### NPM
@@ -71,32 +71,43 @@ ghusky > pre-commit (node v10.13.0)
 [feature/2130/prettier b6da3e7c] Test
 ```
 
+To ensure the correct dependencies are installed, run `npm install check-dependencies --save-dev` for good measure.
+
 
 Check to make sure Angular CLI has been properly set up
 ```
 $ ng v
-    _                      _                 ____ _     ___
-   / \   _ __   __ _ _   _| | __ _ _ __     / ___| |   |_ _|
-  / △ \ | '_ \ / _` | | | | |/ _` | '__|   | |   | |    | |
- / ___ \| | | | (_| | |_| | | (_| | |      | |___| |___ | |
-/_/   \_\_| |_|\__, |\__,_|_|\__,_|_|       \____|_____|___|
-               |___/
-@angular/cli: 1.3.1
-node: 7.9.0
-os: linux x64
-@angular/animations: 4.3.6
-@angular/common: 4.3.6
-@angular/compiler: 4.3.6
-@angular/core: 4.3.6
-@angular/flex-layout: 2.0.0-beta.9
-@angular/forms: 4.3.6
-@angular/http: 4.3.6
-@angular/platform-browser: 4.3.6
-@angular/platform-browser-dynamic: 4.3.6
-@angular/router: 4.3.6
-@angular/cli: 1.3.1
-@angular/compiler-cli: 4.3.6
-@angular/language-service: 4.3.6
+
+     _                      _                 ____ _     ___
+    / \   _ __   __ _ _   _| | __ _ _ __     / ___| |   |_ _|
+   / △ \ | '_ \ / _` | | | | |/ _` | '__|   | |   | |    | |
+  / ___ \| | | | (_| | |_| | | (_| | |      | |___| |___ | |
+ /_/   \_\_| |_|\__, |\__,_|_|\__,_|_|       \____|_____|___|
+                |___/
+
+
+Angular CLI: 13.2.2
+Node: 16.14.0
+Package Manager: npm 8.3.1
+OS: darwin x64
+
+Angular: 13.2.2
+... animations, cli, common, compiler, compiler-cli, core, forms
+... language-service, platform-browser, platform-browser-dynamic
+... router
+
+Package                         Version
+---------------------------------------------------------
+@angular-devkit/architect       0.1302.2
+@angular-devkit/build-angular   13.2.2
+@angular-devkit/core            13.2.2
+@angular-devkit/schematics      13.2.2
+@angular/cdk                    13.2.1
+@angular/flex-layout            13.0.0-beta.38
+@angular/material               13.2.1
+@schematics/angular             13.2.2
+rxjs                            6.6.7
+typescript                      4.5.5
 ```
 
 If you wish to serve the dist folder in a VM, make sure you have nginx and security rules set up properly.
@@ -109,6 +120,8 @@ The Dockstore class in [src/app/shared/dockstore.model.ts](src/app/shared/dockst
 In `dockstore-webservice`, the `dockstore.yml` being served <b>must be edited to include the client IDs</b>.
 
 ## Development server
+
+First, run `npm run prebuild` to generate some necessary client code.
 
 Run `npm run start -- --host=<host>` for a dev server. Navigate to `http://<host>:4200/`. The app will automatically reload if you change any of the source files. 
 
