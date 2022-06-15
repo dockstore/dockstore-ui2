@@ -18,7 +18,7 @@ import { AboutComponent } from './about/about.component';
 import { FundingComponent } from './funding/funding.component';
 import { GithubCallbackComponent } from './github-callback/github-callback.component';
 import { HomeLoggedInComponent } from './home-page/home-logged-in/home-logged-in.component';
-import { HomePageComponent } from './home-page/home-page.component';
+import { HomeComponent } from './home-page/home-logged-out/home.component';
 import { LoginComponent } from './login/login.component';
 import { AccountsComponent } from './loginComponents/accounts/accounts.component';
 import { AuthComponent } from './loginComponents/auth/auth.component';
@@ -34,8 +34,13 @@ import { StarredEntriesComponent } from './starredentries/starredentries.compone
 export const CLIENT_ROUTER_PROVIDERS = [AuthGuard];
 
 const APP_ROUTES: Routes = [
-  { path: '', component: HomePageComponent, pathMatch: 'full', data: { title: 'Dockstore' } },
-  { path: 'beta-homepage', component: HomeLoggedInComponent, pathMatch: 'full', data: { title: 'Dockstore' } },
+  { path: '', component: HomeComponent, pathMatch: 'full', data: { title: 'Dockstore' } },
+  {
+    path: 'dashboard',
+    component: HomeLoggedInComponent,
+    pathMatch: 'full',
+    data: { title: 'Dockstore' },
+  },
   {
     path: 'docs',
     loadChildren: () => import('app/docs/docs.module').then((m) => m.DocsModule),
