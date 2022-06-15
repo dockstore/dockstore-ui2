@@ -25,7 +25,7 @@ describe('Dockstore my workflows', () => {
   const wdlDescriptorType = 'WDL';
   const nextflowDescriptorType = 'Nextflow';
   it('have entries shown on the homepage', () => {
-    cy.visit('/');
+    cy.visit('/dashboard');
     cy.contains(/^l$/);
     cy.contains('Find entries');
     cy.get('#mat-input-0').type('hosted');
