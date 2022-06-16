@@ -28,7 +28,7 @@ describe('News and Updates Widget', () => {
         response: json,
       });
     });
-    cy.visit('/');
+    cy.visit('/dashboard');
     // make sure items are in proper sort order
     cy.get('[data-cy=news-updates-container] > [data-cy=news-updates-item]').eq(0).contains('First Newsbody Item');
     cy.get('[data-cy=news-updates-container] > [data-cy=news-updates-item]').eq(1).contains('Middle Newsbody Item');

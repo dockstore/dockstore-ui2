@@ -222,7 +222,7 @@
               <a target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/watch?v=shMr_Bd01Ko"
                 ><button mat-raised-button color="accent">Tutorial</button></a
               >
-              <button mat-raised-button color="accent" routerLink="/register" data-cy="register-button">
+              <button *ngIf="(user$ | async) === null" mat-raised-button color="accent" routerLink="/register" data-cy="register-button">
                 Register with <fa-icon [icon]="faGithub"></fa-icon> or <fa-icon [icon]="faGoogle"></fa-icon>
               </button>
             </div>
