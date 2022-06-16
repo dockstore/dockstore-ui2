@@ -6,6 +6,7 @@ import { Dockstore } from '../../../shared/dockstore.model';
 import { MetadataService } from '../../../shared/swagger';
 import { GA4GHService } from './../../../shared/swagger/api/gA4GH.service';
 import { Metadata } from './../../../shared/swagger/model/metadata';
+import { CLIInfo } from './../../../shared/openapi/model/cLIInfo';
 
 @Component({
   selector: 'app-downloadcliclient',
@@ -15,7 +16,6 @@ import { Metadata } from './../../../shared/swagger/model/metadata';
 export class DownloadCLIClientComponent implements OnInit {
   public downloadCli = 'dummy-start-value';
   public dockstoreVersion = 'dummy-start-value';
-  public dockstoreCliVersion = 'dummy-start-value';
   public dsToken = 'dummy-token';
   public dsServerURI: any;
   public isCopied2: boolean;
@@ -40,11 +40,10 @@ export class DownloadCLIClientComponent implements OnInit {
         apiVersion = resultFromApi.version;
         this.dockstoreVersion = `${apiVersion}`;
         this.metadataService.getCliVersion().subscribe(
-          (json: any) => {
+          (json: CLIInfo) => {
             if (json) {
-              this.dockstoreCliVersion = json;
+              this.downloadCli = json.cliLatestDockstoreScriptDownloadUrl;
             }
-            this.downloadCli = `https://github.com/dockstore/dockstore-cli/releases/download/${this.dockstoreCliVersion}/dockstore`;
             this.metadataService
               .getRunnerDependencies(apiVersion, '3', 'cwltool', 'json')
               .pipe(finalize(() => this.generateMarkdown()))
