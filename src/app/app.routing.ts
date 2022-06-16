@@ -39,7 +39,7 @@ const APP_ROUTES: Routes = [
     path: 'dashboard',
     component: HomeLoggedInComponent,
     pathMatch: 'full',
-    data: { title: 'Dockstore' },
+    data: { title: 'Dockstore | Dashboard' },
   },
   {
     path: 'docs',
