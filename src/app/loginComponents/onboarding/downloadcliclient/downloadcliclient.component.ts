@@ -46,10 +46,10 @@ export class DownloadCLIClientComponent implements OnInit {
         apiVersion = resultFromApi.version;
         this.dockstoreVersion = `${apiVersion}`;
         this.metadataService.getCliVersion().subscribe(
-          (json: CLIInfo) => {
-            if (json) {
+          (clijson: CLIInfo) => {
+            if (clijson) {
               this.alertService.simpleSuccess();
-              this.downloadCli = json.cliLatestDockstoreScriptDownloadUrl;
+              this.downloadCli = clijson.cliLatestDockstoreScriptDownloadUrl;
             }
             this.metadataService
               .getRunnerDependencies(apiVersion, '3', 'cwltool', 'json')
