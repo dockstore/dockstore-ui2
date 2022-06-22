@@ -7,6 +7,7 @@ import { MetadataService } from '../../../shared/swagger';
 import { GA4GHService } from './../../../shared/swagger/api/gA4GH.service';
 import { Metadata } from './../../../shared/swagger/model/metadata';
 import { CLIInfo } from './../../../shared/openapi/model/cLIInfo';
+import { AlertService } from './../../../shared/alert/state/alert.service';
 
 @Component({
   selector: 'app-downloadcliclient',
@@ -26,7 +27,12 @@ export class DownloadCLIClientComponent implements OnInit {
   public textDataConfirmInstallation = '';
   public textDataInstallCLI = '';
   private cwltoolVersion = '';
-  constructor(private authService: AuthService, private metadataService: MetadataService, private gA4GHService: GA4GHService) {}
+  constructor(
+    private authService: AuthService,
+    private metadataService: MetadataService,
+    private gA4GHService: GA4GHService,
+    private alertService: AlertService
+  ) {}
 
   ngOnInit() {
     if (this.authService.getToken()) {
@@ -42,6 +48,7 @@ export class DownloadCLIClientComponent implements OnInit {
         this.metadataService.getCliVersion().subscribe(
           (json: CLIInfo) => {
             if (json) {
+              this.alertService.simpleSuccess();
               this.downloadCli = json.cliLatestDockstoreScriptDownloadUrl;
             }
             this.metadataService
@@ -50,20 +57,24 @@ export class DownloadCLIClientComponent implements OnInit {
               .subscribe(
                 (json: any) => {
                   if (json) {
+                    this.alertService.simpleSuccess();
                     this.cwltoolVersion = json.cwltool;
                   }
                 },
                 (err) => {
+                  this.alertService.detailedError(err);
                   console.log('Unable to retrieve requirements.txt file.');
                 }
               );
           },
-          (err) => {
-            console.log('Unable to retrieve Dockstore CLI version.');
+          (cliinfoerr) => {
+            this.alertService.detailedError(cliinfoerr);
+            console.log('Unable to retrieve Dockstore CLI information.');
           }
         );
       },
       (error) => {
+        this.alertService.detailedError(error);
         this.generateMarkdown();
       }
     );
