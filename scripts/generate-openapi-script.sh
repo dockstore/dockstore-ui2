@@ -8,7 +8,7 @@ GENERATOR_VERSION="4.3.0"
 BASE_PATH="https://raw.githubusercontent.com/dockstore/dockstore/$npm_package_config_webservice_version"
 # DOCKSTORE-2428 - demo how to add new workflow language, generate from local copy of swagger
 # Uncomment this to use your local copy of swagger instead
-BASE_PATH="../dockstore"
+# BASE_PATH="../dockstore"
 
 
 wget --no-verbose https://repo.maven.apache.org/maven2/org/openapitools/openapi-generator-cli/${GENERATOR_VERSION}/openapi-generator-cli-${GENERATOR_VERSION}.jar -O openapi-generator-cli.jar
