@@ -41,6 +41,7 @@ export class DownloadCLIClientComponent implements OnInit {
     this.dsServerURI = Dockstore.API_URI;
     this.isCopied2 = false;
     let apiVersion = 'unreachable';
+    this.alertService.start('Fetching metadata');
     this.gA4GHService.metadataGet().subscribe(
       (resultFromApi: Metadata) => {
         apiVersion = resultFromApi.version;
