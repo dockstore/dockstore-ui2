@@ -315,8 +315,8 @@ export abstract class Entry implements OnDestroy {
     );
   }
 
-  updateCategories(entryId: number): void {
-    this.entryCategoriesService.updateEntryCategories(entryId);
+  updateCategories(entryId: number, published: boolean): void {
+    this.entryCategoriesService.updateEntryCategories(entryId, published);
     this.categories$ = this.entryCategoriesService.categories$;
   }
 

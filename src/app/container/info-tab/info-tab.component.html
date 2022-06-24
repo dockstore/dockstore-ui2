@@ -22,7 +22,7 @@
       </mat-card-header>
       <mat-card-content class="p-3">
         <ul class="list-unstyled container-info">
-          <li *ngIf="tool?.providerUrl">
+          <li *ngIf="tool?.providerUrl && tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">
             <strong matTooltip="Source code repository for the associated tool descriptors and Dockerfile">Source Code</strong>:
             <a
               *ngIf="tool?.providerUrl"
