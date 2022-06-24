@@ -4,7 +4,7 @@
   "license": "Apache License 2.0",
   "config": {
     "webservice_version": "1.13.0-alpha.7",
-    "use_circle": true,
+    "use_circle": false,
     "circle_ci_source": "https://app.circleci.com/pipelines/github/dockstore/dockstore/7985/workflows/1b5411e1-bd09-40ae-9fb7-845f144fa864/jobs/21164/artifacts",
     "circle_build_id": "21164",
     "base_branch": "feature/walts-build"
