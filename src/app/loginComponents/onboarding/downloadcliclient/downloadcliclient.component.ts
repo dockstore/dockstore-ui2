@@ -1,13 +1,14 @@
 /* eslint-disable max-len */
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'ng2-ui-auth';
-import { finalize } from 'rxjs/operators';
+import { finalize, map } from 'rxjs/operators';
 import { Dockstore } from '../../../shared/dockstore.model';
 import { MetadataService } from '../../../shared/swagger';
 import { GA4GHService } from './../../../shared/swagger/api/gA4GH.service';
 import { Metadata } from './../../../shared/swagger/model/metadata';
 import { CLIInfo } from './../../../shared/openapi/model/cLIInfo';
 import { AlertService } from './../../../shared/alert/state/alert.service';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-downloadcliclient',
@@ -46,37 +47,23 @@ export class DownloadCLIClientComponent implements OnInit {
       (resultFromApi: Metadata) => {
         apiVersion = resultFromApi.version;
         this.dockstoreVersion = `${apiVersion}`;
-        this.metadataService.getCliVersion().subscribe(
-          (clijson: CLIInfo) => {
-            if (clijson) {
-              this.alertService.simpleSuccess();
-              this.downloadCli = clijson.cliLatestDockstoreScriptDownloadUrl;
-            }
-            this.metadataService
-              .getRunnerDependencies(apiVersion, '3', 'cwltool', 'json')
-              .pipe(finalize(() => this.generateMarkdown()))
-              .subscribe(
-                (json: any) => {
-                  if (json) {
-                    this.alertService.simpleSuccess();
-                    this.cwltoolVersion = json.cwltool;
-                  }
-                },
-                (err) => {
-                  this.alertService.detailedError(err);
-                  console.log('Unable to retrieve requirements.txt file.');
-                }
-              );
+
+        const cliInfo$ = this.metadataService.getCliVersion();
+        const dependencies$ = this.metadataService.getRunnerDependencies(apiVersion, '3', 'cwltool', 'json');
+        // forkJoin returns an array of values, here we map those values to an object
+        forkJoin([cliInfo$, dependencies$]).subscribe(
+          (result) => {
+            this.downloadCli = result[0].cliLatestDockstoreScriptDownloadUrl;
+            this.cwltoolVersion = JSON.parse(JSON.stringify(result[1])).cwltool;
+            this.generateMarkdown();
           },
-          (cliinfoerr) => {
-            this.alertService.detailedError(cliinfoerr);
-            console.log('Unable to retrieve Dockstore CLI information.');
+          (forkError) => {
+            this.alertService.detailedError(forkError);
           }
         );
       },
-      (error) => {
-        this.alertService.detailedError(error);
-        this.generateMarkdown();
+      (metadataError) => {
+        this.alertService.detailedError(metadataError);
       }
     );
   }
