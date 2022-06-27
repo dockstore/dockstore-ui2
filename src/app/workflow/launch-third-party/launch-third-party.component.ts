@@ -192,10 +192,6 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
     map(([hasContent, hasFileImports]) => !hasContent || (hasFileImports && !this.isGitHubWorkflow()))
   );
 
-  disableElwaziPlatform$: Observable<boolean> = combineLatest([this.hasContent$, this.hasFileImports$]).pipe(
-    map(([hasContent, hasFileImports]) => !hasContent || (hasFileImports && !this.isGitHubWorkflow()))
-  );
-
   cavaticaTooltip$: Observable<string> = combineLatest([this.hasContent$, this.hasHttpImports$]).pipe(
     map(([hasContent, hasHttpImports]) => this.sevenBridgesTooltip(hasContent, hasHttpImports, 'Cavatica'))
   );
