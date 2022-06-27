@@ -56,11 +56,13 @@ export class DownloadCLIClientComponent implements OnInit {
             this.generateMarkdown();
           },
           (forkError) => {
+            this.generateMarkdown();
             this.alertService.detailedError(forkError);
           }
         );
       },
       (metadataError) => {
+        this.generateMarkdown();
         this.alertService.detailedError(metadataError);
       }
     );
