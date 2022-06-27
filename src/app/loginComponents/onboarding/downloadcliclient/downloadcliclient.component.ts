@@ -1,12 +1,10 @@
 /* eslint-disable max-len */
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'ng2-ui-auth';
-import { finalize, map } from 'rxjs/operators';
 import { Dockstore } from '../../../shared/dockstore.model';
 import { MetadataService } from '../../../shared/swagger';
 import { GA4GHService } from './../../../shared/swagger/api/gA4GH.service';
 import { Metadata } from './../../../shared/swagger/model/metadata';
-import { CLIInfo } from './../../../shared/openapi/model/cLIInfo';
 import { AlertService } from './../../../shared/alert/state/alert.service';
 import { forkJoin } from 'rxjs';
 
