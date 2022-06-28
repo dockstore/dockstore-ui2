@@ -7,6 +7,7 @@ import { GA4GHService } from './../../../shared/swagger/api/gA4GH.service';
 import { Metadata } from './../../../shared/swagger/model/metadata';
 import { AlertService } from './../../../shared/alert/state/alert.service';
 import { forkJoin } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-downloadcliclient',
@@ -46,20 +47,20 @@ export class DownloadCLIClientComponent implements OnInit {
         apiVersion = resultFromApi.version;
         this.dockstoreVersion = `${apiVersion}`;
 
-        const cliInfo$ = this.metadataService.getCliVersion();
-        const dependencies$ = this.metadataService.getRunnerDependencies(apiVersion, '3', 'cwltool', 'json');
+        const cliInfo = this.metadataService.getCliVersion();
+        const dependencies = this.metadataService.getRunnerDependencies(apiVersion, '3', 'cwltool', 'json');
         // forkJoin returns an array of values, here we map those values to an object
-        forkJoin([cliInfo$, dependencies$]).subscribe(
-          (result) => {
-            this.downloadCli = result[0].cliLatestDockstoreScriptDownloadUrl;
-            this.cwltoolVersion = JSON.parse(JSON.stringify(result[1])).cwltool;
-            this.generateMarkdown();
-          },
-          (forkError) => {
-            this.generateMarkdown();
-            this.alertService.detailedError(forkError);
-          }
-        );
+        forkJoin([cliInfo, dependencies])
+          .pipe(finalize(() => this.generateMarkdown()))
+          .subscribe(
+            ([cliInfo, dependencies]) => {
+              this.downloadCli = cliInfo.cliLatestDockstoreScriptDownloadUrl;
+              this.cwltoolVersion = JSON.parse(JSON.stringify(dependencies)).cwltool;
+            },
+            (forkError) => {
+              this.alertService.detailedError(forkError);
+            }
+          );
       },
       (metadataError) => {
         this.generateMarkdown();
