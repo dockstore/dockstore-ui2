@@ -12,7 +12,7 @@ export class RecentEventsService {
     this.recentEventsStore.setLoading(true);
     if (user) {
       this.eventsService
-        .getUserEvents(user.id, 'ALL_STARRED')
+        .getUserEvents(user.id, 'PROFILE')
         .pipe(
           finalize(() => this.recentEventsStore.setLoading(false)),
           tap((allStarredEvents) => {
@@ -22,7 +22,7 @@ export class RecentEventsService {
         .subscribe();
     } else {
       this.eventsService
-        .getEvents('ALL_STARRED')
+        .getEvents('PROFILE')
         .pipe(
           finalize(() => this.recentEventsStore.setLoading(false)),
           tap((allStarredEvents) => {
