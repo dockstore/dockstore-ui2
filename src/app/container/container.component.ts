@@ -225,7 +225,7 @@ export class ContainerComponent extends Entry implements AfterViewInit, OnInit {
       this.contactAuthorHREF = this.emailService.composeContactAuthorEmail(this.tool);
       this.sortedVersions = this.getSortedTags(this.tool.workflowVersions, this.defaultVersion);
       this.updateVerifiedPlatforms(this.tool.id);
-      this.updateCategories(this.tool.id);
+      this.updateCategories(this.tool.id, this.tool.is_published);
     }
   }
 

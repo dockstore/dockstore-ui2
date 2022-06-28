@@ -275,7 +275,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
           });
       }
       this.updateVerifiedPlatforms(this.workflow.id);
-      this.updateCategories(this.workflow.id);
+      this.updateCategories(this.workflow.id, this.workflow.is_published);
     }
   }
 

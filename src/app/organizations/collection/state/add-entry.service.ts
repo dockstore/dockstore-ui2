@@ -107,7 +107,7 @@ export class AddEntryService {
           this.alertService.detailedSuccess();
           this.currentCollectionsService.get(entryId);
           // Changing collection membership can change category membership.
-          this.entryCategoriesService.updateEntryCategories(entryId);
+          this.entryCategoriesService.updateEntryCategories(entryId, true);
         },
         (error: HttpErrorResponse) => {
           this.alertService.detailedError(error);

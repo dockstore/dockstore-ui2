@@ -41,6 +41,16 @@
           <img class="site-icons-small hidden-sm" src="../assets/svg/main-nav/icons-navigation-forum.svg" alt="stacked pages" /> Forum
         </a>
         <span class="spacer"></span>
+        <a
+          *ngIf="isLoggedIn"
+          mat-button
+          class="icon"
+          (click)="resetPageNumber()"
+          [routerLink]="['/dashboard']"
+          routerLinkActive="icon-active"
+        >
+          <img src="../assets/svg/my-nav/dashboard.svg" alt="dashboard" /> My Dockstore
+        </a>
         <div fxLayoutGap="1rem" *ngIf="!isLoggedIn">
           <a routerLink="/login">
             <button mat-raised-button color="accent">Login</button>

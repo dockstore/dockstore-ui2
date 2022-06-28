@@ -17,7 +17,13 @@
 <div fxFlex="0 0 auto">
   <!-- Dashboard links to homepage since page doesn't exist yet -->
   <!-- TO DO: Update routerLink (button and hr) with Dashboard page when avalible -->
-  <button mat-flat-button class="purple" routerLink="" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+  <button
+    mat-flat-button
+    class="purple"
+    [routerLink]="['/dashboard']"
+    routerLinkActive="active"
+    [routerLinkActiveOptions]="{ exact: true }"
+  >
     <div><img src="../assets/svg/my-nav/dashboard.svg" alt="dashboard" /></div>
     Dashboard
   </button>
