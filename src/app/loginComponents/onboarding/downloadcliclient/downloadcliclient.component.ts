@@ -47,10 +47,8 @@ export class DownloadCLIClientComponent implements OnInit {
         apiVersion = resultFromApi.version;
         this.dockstoreVersion = `${apiVersion}`;
 
-        const cliInfo = this.metadataService.getCliVersion();
-        const dependencies = this.metadataService.getRunnerDependencies(apiVersion, '3', 'cwltool', 'json');
         // forkJoin returns an array of values, here we map those values to an object
-        forkJoin([cliInfo, dependencies])
+        forkJoin([this.metadataService.getCliVersion(), this.metadataService.getRunnerDependencies(apiVersion, '3', 'cwltool', 'json')])
           .pipe(finalize(() => this.generateMarkdown()))
           .subscribe(
             ([cliInfo, dependencies]) => {
