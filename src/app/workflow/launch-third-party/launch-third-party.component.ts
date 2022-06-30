@@ -75,7 +75,7 @@ import FileTypeEnum = ToolFile.FileTypeEnum;
  *  3. Add your HTML to launch-third-party.component.html, following the pattern of the existing code. There are
  *  several properties you can access from your HTML that should provide all the info needed for the new button. If
  *  additional properties are necessary, add them to this file.
- *  4. Add the new div and anchor to the end of the file. Currently the buttons are ordered by when they were added
+ *  4. Add the new div and anchor to the end of the file. Currently, the buttons are ordered by when they were added
  *  to the codebase.
  *  5. Submit a PR against the develop branch.
  *
@@ -174,6 +174,10 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
     map(([hasContent, hasFileImports]) => this.terraBasedPlatformTooltip(hasContent, hasFileImports, 'Terra'))
   );
 
+  elwaziToolTip$: Observable<string> = combineLatest([this.hasContent$, this.hasFileImports$]).pipe(
+    map(([hasContent, hasFileImports]) => this.terraBasedPlatformTooltip(hasContent, hasFileImports, 'Elwazi'))
+  );
+
   anvilTooltip$: Observable<string> = combineLatest([this.hasContent$, this.hasFileImports$]).pipe(
     map(([hasContent, hasFileImports]) => this.terraBasedPlatformTooltip(hasContent, hasFileImports, 'AnVIL'))
   );
@@ -208,6 +212,7 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
     iconRegistry.addSvgIcon('dnanexus', sanitizer.bypassSecurityTrustResourceUrl('../assets/images/thirdparty/DX_Logo_white_alpha.svg'));
     iconRegistry.addSvgIcon('terra', sanitizer.bypassSecurityTrustResourceUrl('../assets/images/thirdparty/terra.svg'));
     iconRegistry.addSvgIcon('anvil', sanitizer.bypassSecurityTrustResourceUrl('../assets/images/thirdparty/anvil.svg'));
+    iconRegistry.addSvgIcon('elwazi', sanitizer.bypassSecurityTrustResourceUrl('../assets/images/thirdparty/elwazi.svg'));
   }
 
   ngOnInit(): void {

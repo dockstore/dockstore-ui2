@@ -159,7 +159,9 @@
                             <span>Verified</span>
                           </span>
                         </mat-chip>
-                        <span class="bubble" *ngFor="let descriptorType of entry.descriptorTypes">{{ descriptorType }}</span>
+                        <span class="bubble" *ngFor="let descriptorType of entry.descriptorTypes">{{
+                          'descriptor_type' | mapFriendlyValue: descriptorType
+                        }}</span>
                       </mat-chip-list>
                     </div>
                     <button mat-raised-button class="small-mat-btn-skin small-btn-structure" color="accent">View</button>
