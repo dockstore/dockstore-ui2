@@ -9,7 +9,7 @@ if [[ -z ${1} || -z ${2} ]]; then
     exit 1
 fi
 
-# This script gets the URL for a CircleCI artifact. 
+# This script gets the URL for a CircleCI artifact.
 # It looks at all of the artifacts for a CircleCI build with <circleci-build-id> and returns the URL of the artifact with a path that contains <circleci-artifact-name>.
 
 CIRCLECI_BUILD_ID=${1}
