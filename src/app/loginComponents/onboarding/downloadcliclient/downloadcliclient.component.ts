@@ -54,6 +54,7 @@ export class DownloadCLIClientComponent implements OnInit {
             ([cliInfo, dependencies]) => {
               this.downloadCli = cliInfo.cliLatestDockstoreScriptDownloadUrl;
               this.cwltoolVersion = JSON.parse(JSON.stringify(dependencies)).cwltool;
+              this.alertService.simpleSuccess();
             },
             (forkError) => {
               this.alertService.detailedError(forkError);
