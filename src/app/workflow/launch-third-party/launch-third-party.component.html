@@ -67,6 +67,17 @@
             <a
               mat-raised-button
               class="launch-with-button"
+              [matTooltip]="elwaziToolTip$ | async"
+              target="_blank"
+              rel="noopener"
+              [disabled]="disableTerraPlatform$ | async"
+              [attr.href]="config.ELWAZI_IMPORT_URL + '/' + workflow?.full_workflow_path + ':' + selectedVersion?.name"
+              data-cy="elwaziLaunchWith"
+              ><img class="partner-launch" src="../assets/images/thirdparty/elwazi.png" alt="eLwazi launch with logo"
+            /></a>
+            <a
+              mat-raised-button
+              class="launch-with-button"
               [matTooltip]="anvilTooltip$ | async"
               target="_blank"
               rel="noopener"
@@ -125,6 +136,18 @@
                 color="primary"
                 data-cy="terraLaunchWith"
                 ><mat-icon svgIcon="terra"></mat-icon> Terra &raquo;</a
+              >
+              <a
+                mat-raised-button
+                class="old-launch-with-button"
+                [matTooltip]="elwaziToolTip$ | async"
+                target="_blank"
+                rel="noopener"
+                [disabled]="disableTerraPlatform$ | async"
+                [attr.href]="config.ELWAZI_IMPORT_URL + '/' + workflow?.full_workflow_path + ':' + selectedVersion?.name"
+                color="primary"
+                data-cy="elwaziLaunchWith"
+                ><mat-icon svgIcon="elwazi"></mat-icon> eLwazi &raquo;</a
               >
               <a
                 mat-raised-button
