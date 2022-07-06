@@ -1,0 +1,28 @@
+<mat-card>
+  <div id="header-bar" fxLayout="row" fxLayoutGap="5px" class="mat-card-header-separate">
+    <div id="workflow-number" fxLayout="row">
+      <mat-card-header fxLayout="row">
+        <mat-card-title>{{ entryType }}s</mat-card-title>
+        <span class="bubble">0</span>
+      </mat-card-header>
+    </div>
+    <button
+      mat-button
+      class="private-btn small-btn-structure ml-3 mb-3"
+      id="register{{ entryType }}Button"
+      matTooltip="Register {{ entryType }}"
+      matTooltipPosition="after"
+    >
+      <img src="../../../assets/svg/icons-plus.svg" alt="Register a {{ entryType }}" class="pr-2 pb-1" />
+      Register a {{ entryType }}
+    </button>
+  </div>
+  <mat-divider></mat-divider>
+  <mat-card-content class="p-3">
+    <mat-form-field appearance="outline" class="search-form-field w-100">
+      <mat-label>Search your {{ entryType }}s...</mat-label>
+      <input matInput type="text" data-cy="basic-search" />
+    </mat-form-field>
+    <span class="weight-bold">Recent Activity</span>
+  </mat-card-content>
+</mat-card>

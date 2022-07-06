@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { Observable } from 'rxjs';
 
@@ -7,12 +7,13 @@ import { Observable } from 'rxjs';
   templateUrl: './entry-boxes.component.html',
   styleUrls: ['./entry-boxes.component.scss'],
 })
-export class EntryBoxesComponent implements OnInit {
+export class EntryBoxesComponent {
   @Input() entryType: string;
-  public EntryType = EntryType;
   constructor() {}
 
-  ngOnInit(): void {
-    this.entryType = 'BioWorkflow';
-  }
+  //   ngOnChanges(): void {
+  //     if (this.entryType === "Workflow") {
+  //         EntryType = EntryType.BioWorkflow;
+  //     }
+  //   }
 }

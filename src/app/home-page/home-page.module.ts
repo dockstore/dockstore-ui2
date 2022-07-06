@@ -24,6 +24,7 @@ import { NewsUpdatesComponent } from './widget/news-updates/news-updates.compone
 import { OrganizationsComponent } from './widget/organizations/organizations.component';
 import { RequestsComponent } from './widget/requests/requests.component';
 import { MySidebarModule } from '../shared/modules/my-sidebar.module';
+import { EntryBoxesComponent } from './widget/entry-boxes/entry-boxes.component';
 
 @NgModule({
   imports: [
@@ -54,6 +55,7 @@ import { MySidebarModule } from '../shared/modules/my-sidebar.module';
     FeaturedNewsComponent,
     NewsUpdatesComponent,
     GettingStartedComponent,
+    EntryBoxesComponent,
   ],
   exports: [NgxJsonLdModule],
 })
