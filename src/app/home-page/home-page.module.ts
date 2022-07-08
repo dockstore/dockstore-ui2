@@ -25,6 +25,16 @@ import { OrganizationsComponent } from './widget/organizations/organizations.com
 import { RequestsComponent } from './widget/requests/requests.component';
 import { MySidebarModule } from '../shared/modules/my-sidebar.module';
 import { EntryBoxesComponent } from './widget/entry-boxes/entry-boxes.component';
+import { MytoolsService } from 'app/mytools/mytools.service';
+import { MyWorkflowsService } from 'app/myworkflows/myworkflows.service';
+import { MyServicesService } from 'app/myworkflows/my-services.service';
+import { MyBioWorkflowsService } from 'app/myworkflows/my-bio-workflows.service';
+import { MyEntriesStateService } from 'app/shared/state/my-entries.service';
+import { MyEntriesStore } from 'app/shared/state/my-entries.store';
+import { MyEntriesModule } from 'app/shared/modules/my-entries.module';
+import { MyEntriesQuery } from 'app/shared/state/my-entries.query';
+import { RegisterWorkflowModalService } from 'app/workflow/register-workflow-modal/register-workflow-modal.service';
+import { RegisterToolService } from 'app/container/register-tool/register-tool.service';
 
 @NgModule({
   imports: [
@@ -56,6 +66,17 @@ import { EntryBoxesComponent } from './widget/entry-boxes/entry-boxes.component'
     NewsUpdatesComponent,
     GettingStartedComponent,
     EntryBoxesComponent,
+  ],
+  providers: [
+    MytoolsService,
+    MyWorkflowsService,
+    MyServicesService,
+    MyBioWorkflowsService,
+    MyEntriesStateService,
+    MyEntriesStore,
+    MyEntriesQuery,
+    RegisterToolService,
+    RegisterWorkflowModalService,
   ],
   exports: [NgxJsonLdModule],
 })
