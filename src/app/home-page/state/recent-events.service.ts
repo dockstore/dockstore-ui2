@@ -10,35 +10,15 @@ export class RecentEventsService {
 
   get(user?: User) {
     this.recentEventsStore.setLoading(true);
-    // const events = user ? this.eventsService.getUserEvents(user.id, 'PROFILE') : this.eventsService.getEvents('PROFILE');
-    // events.pipe(
-    //   finalize(() => this.recentEventsStore.setLoading(false)),
-    //   tap((allStarredEvents) => {
-    //     this.recentEventsStore.set(allStarredEvents);
-    //   })
-    // )
-    // .subscribe();
-    if (user) {
-      this.eventsService
-        .getUserEvents(user.id, 'PROFILE')
-        .pipe(
-          finalize(() => this.recentEventsStore.setLoading(false)),
-          tap((allStarredEvents) => {
-            this.recentEventsStore.set(allStarredEvents);
-          })
-        )
-        .subscribe();
-    } else {
-      this.eventsService
-        .getEvents('PROFILE')
-        .pipe(
-          finalize(() => this.recentEventsStore.setLoading(false)),
-          tap((allStarredEvents) => {
-            this.recentEventsStore.set(allStarredEvents);
-          })
-        )
-        .subscribe();
-    }
+    const events = user ? this.eventsService.getUserEvents(user.id, 'PROFILE') : this.eventsService.getEvents('PROFILE');
+    events
+      .pipe(
+        finalize(() => this.recentEventsStore.setLoading(false)),
+        tap((allStarredEvents) => {
+          this.recentEventsStore.set(allStarredEvents);
+        })
+      )
+      .subscribe();
   }
 
   add(recentEvent: Event) {
