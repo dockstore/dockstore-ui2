@@ -2,9 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ID } from '@datorama/akita';
 import { Dockstore } from 'app/shared/dockstore.model';
-import { Event } from 'app/shared/openapi';
-import { User } from 'app/shared/openapi';
-import { UserQuery } from 'app/shared/user/user.query';
+import { Event, User } from 'app/shared/openapi';
 import { UsersService } from 'app/shared/swagger';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -44,8 +42,7 @@ export class RecentEventsComponent implements OnInit {
     private recentEventsService: RecentEventsService,
     private activatedRoute: ActivatedRoute,
     private usersService: UsersService,
-    private alertService: AlertService,
-    protected userQuery: UserQuery
+    private alertService: AlertService
   ) {
     this.username = this.activatedRoute.snapshot.paramMap.get('username');
   }
