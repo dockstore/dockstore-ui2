@@ -1,11 +1,15 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { ID } from '@datorama/akita';
 import { Dockstore } from 'app/shared/dockstore.model';
-import { Event } from 'app/shared/openapi';
+import { Event, User } from 'app/shared/openapi';
+import { UsersService } from 'app/shared/swagger';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { HttpErrorResponse } from '@angular/common/http';
 import { RecentEventsQuery } from '../state/recent-events.query';
 import { RecentEventsService } from '../state/recent-events.service';
+import { AlertService } from 'app/shared/alert/state/alert.service';
 
 /**
  * Shows recent events related to starred organization and entries
@@ -22,6 +26,8 @@ export class RecentEventsComponent implements OnInit {
   loading$: Observable<boolean>;
   EventType = Event.TypeEnum;
   noEvents$: Observable<boolean>;
+  user: User;
+  username: string;
   readonly starringDocUrl = `${Dockstore.DOCUMENTATION_URL}/end-user-topics/starring.html#starring-tools-and-workflows`;
   homepage = true;
   readonly supportedEventTypes = [
@@ -31,15 +37,35 @@ export class RecentEventsComponent implements OnInit {
     Event.TypeEnum.PUBLISHENTRY,
     Event.TypeEnum.UNPUBLISHENTRY,
   ];
-  constructor(private recentEventsQuery: RecentEventsQuery, private recentEventsService: RecentEventsService) {}
+  constructor(
+    private recentEventsQuery: RecentEventsQuery,
+    private recentEventsService: RecentEventsService,
+    private activatedRoute: ActivatedRoute,
+    private usersService: UsersService,
+    private alertService: AlertService
+  ) {
+    this.username = this.activatedRoute.snapshot.paramMap.get('username');
+  }
 
   ngOnInit() {
+    if (this.username) {
+      this.usersService.listUser(this.username).subscribe(
+        (currentUser: User) => {
+          this.recentEventsService.get(currentUser);
+        },
+        (error: HttpErrorResponse) => {
+          this.alertService.detailedError(error);
+        }
+      );
+    } else {
+      this.recentEventsService.get();
+    }
+
     this.events$ = this.recentEventsQuery.selectAll({
       filterBy: (entity) => this.supportedEventTypes.includes(entity.type),
     });
     this.loading$ = this.recentEventsQuery.selectLoading();
     this.noEvents$ = this.events$.pipe(map((events) => !events || events.length === 0));
-    this.recentEventsService.get();
   }
 
   add(recentEvent: Event) {

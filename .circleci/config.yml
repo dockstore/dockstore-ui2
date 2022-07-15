@@ -435,7 +435,7 @@ workflows:
   nightly_auth:
     triggers:
       - schedule:
-          cron: "0 11 * * *" # This is 4am PDT / 3am PST 
+          cron: "0 11 * * *" # This is 4am PDT / 3am PST
           filters:
             branches:
               only:

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ID } from '@datorama/akita';
-import { Event, EventsService } from 'app/shared/openapi';
+import { Event, EventsService, User } from 'app/shared/openapi';
 import { finalize, tap } from 'rxjs/operators';
 import { RecentEventsStore } from './recent-events.store';
 
@@ -8,10 +8,10 @@ import { RecentEventsStore } from './recent-events.store';
 export class RecentEventsService {
   constructor(private recentEventsStore: RecentEventsStore, private eventsService: EventsService) {}
 
-  get() {
+  get(user?: User) {
     this.recentEventsStore.setLoading(true);
-    this.eventsService
-      .getEvents('ALL_STARRED')
+    const events = user ? this.eventsService.getUserEvents(user.id, 'PROFILE') : this.eventsService.getEvents('PROFILE');
+    events
       .pipe(
         finalize(() => this.recentEventsStore.setLoading(false)),
         tap((allStarredEvents) => {

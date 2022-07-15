@@ -504,7 +504,7 @@ export abstract class Entry implements OnDestroy {
       url += '&entryType=' + searchType;
     }
     url += '&searchMode=files';
-    window.location.href = url;
+    this.router.navigateByUrl(url);
   }
 
   /**
