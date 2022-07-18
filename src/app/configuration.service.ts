@@ -3,13 +3,19 @@ import { ConfigService } from 'ng2-ui-auth';
 import { IOauth2Options } from 'ng2-ui-auth/lib/config-interfaces';
 import { AuthConfig } from './shared/auth.model';
 import { Dockstore } from './shared/dockstore.model';
+import { FeatureService } from './shared/feature.service';
 import { Config, MetadataService } from './shared/swagger';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ConfigurationService {
-  constructor(private metadataService: MetadataService, private configService: ConfigService) {}
+  constructor(
+    private metadataService: MetadataService,
+    private configService: ConfigService,
+    private window: Window,
+    private featureService: FeatureService
+  ) {}
 
   load(): Promise<void> {
     return this.metadataService
@@ -20,6 +26,7 @@ export class ConfigurationService {
           this.updateDockstoreModel(config);
 
           this.updateAuthProviders();
+          this.featureService.updateFeatureFlags(window.location.search);
         },
         (e) => {
           console.error('Error downloading config.json', e);
