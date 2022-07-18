@@ -19,8 +19,8 @@
   <div id="row-holder" fxLayout="column" fxLayoutAlign="start start" class="p-3 w-100">
     <mat-card class="alert alert-info mx-1 w-100" role="alert"> Major Release: </mat-card>
     <div id="entry-holder" fxLayout="row" fxLayoutGap="10px" class="w-100 mb-4">
-      <app-entry-boxes class="mat-card-grow" entryType="Workflow"></app-entry-boxes>
-      <app-entry-boxes class="mat-card-grow" entryType="Tool"></app-entry-boxes>
+      <app-entry-boxes class="mat-card-grow" entryType="Workflow" [listOfWorkflows]="listOfWorkflows"></app-entry-boxes>
+      <app-entry-boxes class="mat-card-grow" entryType="Tool" [listOfTools]="listOfTools"></app-entry-boxes>
       <app-entry-boxes class="mat-card-grow" entryType="Service"></app-entry-boxes>
     </div>
     <div id="updates-holder" fxLayout="row" fxLayoutGap="10px" class="w-100">

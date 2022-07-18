@@ -25,5 +25,30 @@
       <input matInput type="text" data-cy="basic-search" />
     </mat-form-field>
     <span class="weight-bold">Recent Activity</span>
+    <div *ngIf="entryType === 'Workflow'">
+      <div *ngFor="let entry of listOfWorkflows" fxLayout="row" class="list-items w-100 size-small">
+        <a class="no-wrap" [routerLink]="'/my-workflows/' + entry.path">
+          {{ entry.prettyPath }}
+        </a>
+        <div class="date">{{ entry.lastUpdateDate | date: 'MMM d, yyyy' }}</div>
+      </div>
+      <div *ngIf="!listOfWorkflows || listOfWorkflows.length === 0">
+        <p class="text-center size-small">You have not registered any workflows.</p>
+      </div>
+    </div>
+    <div *ngIf="entryType === 'Tool'">
+      <div *ngFor="let entry of listOfTools" fxLayout="row" class="list-items w-100 size-small">
+        <a class="no-wrap" [routerLink]="'/my-tools/' + entry.path">
+          {{ entry.prettyPath }}
+        </a>
+        <div class="date">{{ entry.lastUpdateDate | date: 'MMM d, yyyy' }}</div>
+      </div>
+      <div *ngIf="!listOfTools || listOfTools.length === 0">
+        <p class="text-center size-small">You have not registered any tools.</p>
+      </div>
+    </div>
+    <a class="weight-bold size-small" [routerLink]="'/my-workflows'">
+      All {{ entryType }}s<mat-icon class="mt-1">keyboard_double_arrow_right</mat-icon>
+    </a>
   </mat-card-content>
 </mat-card>

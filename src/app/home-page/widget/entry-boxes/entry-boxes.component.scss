@@ -5,6 +5,15 @@
   justify-content: space-between;
 }
 
+.list-items {
+  justify-content: space-between;
+  border-bottom: solid 1px mat.get-color-from-palette($kim-gray, 3);
+}
+
+.date {
+  color: mat.get-color-from-palette($kim-gray, 2);
+}
+
 .mat-card-grow {
   flex-grow: 1;
 }
