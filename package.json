@@ -5,8 +5,8 @@
   "config": {
     "webservice_version": "1.12.2",
     "use_circle": false,
-    "circle_ci_source": "https://app.circleci.com/pipelines/github/dockstore/dockstore/7942/workflows/2598a74f-9f5b-4654-be6f-21c955c8986a/jobs/20902/artifacts",
-    "circle_build_id": "20902",
+    "circle_ci_source": "https://app.circleci.com/pipelines/github/dockstore/dockstore/8199/workflows/b1452f4d-22fa-4960-8811-e4ec2c53e01b/jobs/22291/artifacts",
+    "circle_build_id": "22291",
     "base_branch": "hotfix/2.9.2"
   },
   "scripts": {
