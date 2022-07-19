@@ -40,7 +40,7 @@ esconfiguration:
   port: 9200
   hostname: localhost
 
-authenticationCachePolicy: maximumSize=10000, expireAfterAccess=10m
+authenticationCachePolicy: maximumSize=10000, expireAfterAccess=10s
 
 database:
   # the name of your JDBC driver
