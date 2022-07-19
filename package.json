@@ -4,9 +4,9 @@
   "license": "Apache License 2.0",
   "config": {
     "webservice_version": "1.12.2",
-    "use_circle": false,
-    "circle_ci_source": "https://app.circleci.com/pipelines/github/dockstore/dockstore/7942/workflows/2598a74f-9f5b-4654-be6f-21c955c8986a/jobs/20902/artifacts",
-    "circle_build_id": "20902",
+    "use_circle": true,
+    "circle_ci_source": "https://app.circleci.com/pipelines/github/dockstore/dockstore/8205/workflows/0219ccc5-6592-4dd9-a451-82e2ace9a789/jobs/22324/artifacts",
+    "circle_build_id": "22324",
     "base_branch": "hotfix/2.9.2"
   },
   "scripts": {
