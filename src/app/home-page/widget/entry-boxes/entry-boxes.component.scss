@@ -1,6 +1,32 @@
 @use '@angular/material' as mat;
 @import '/src/materialColorScheme.scss';
 
+.entry-boxes {
+  flex: 1 1 0px;
+  width: 0;
+}
+
+.entries-container {
+  height: 95%;
+}
+
+.no-entries {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.entry-logo {
+  min-width: 5rem;
+}
+
+.txt-button {
+  text-decoration: underline;
+  color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
+  font-size: 12px;
+  padding: 0.5rem;
+}
+
 .mat-card-header-separate {
   justify-content: space-between;
 }

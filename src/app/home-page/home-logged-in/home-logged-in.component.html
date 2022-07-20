@@ -16,62 +16,6 @@
 <div fxLayout>
   <app-my-sidebar fxFlexAlign="stretch"></app-my-sidebar>
 
-  <div id="row-holder" fxLayout="column" fxLayoutAlign="start start" class="p-3 w-100">
-    <mat-card class="alert alert-info mx-1 w-100" role="alert"> Major Release: </mat-card>
-    <div id="entry-holder" fxLayout="row" fxLayoutGap="2.5rem" class="w-100 mb-5">
-      <app-entry-boxes class="mat-card-grow" entryType="Workflow" [listOfWorkflows]="listOfWorkflows"></app-entry-boxes>
-      <app-entry-boxes class="mat-card-grow" entryType="Tool" [listOfTools]="listOfTools"></app-entry-boxes>
-      <app-entry-boxes class="mat-card-grow" entryType="Service"></app-entry-boxes>
-    </div>
-    <div id="updates-holder" fxLayout="row" fxLayoutGap="2.5rem" class="w-100">
-      <mat-card class="mat-card-grow">
-        <div id="header-bar" fxLayout="row" fxLayoutGap="5px" class="mat-card-header-separate">
-          <div id="workflow-number" fxLayout="row">
-            <mat-card-header fxLayout="row">
-              <mat-card-title>Starred</mat-card-title>
-            </mat-card-header>
-          </div>
-        </div>
-        <mat-divider></mat-divider>
-        <mat-card-content class="p-3">
-          <span class="weight-bold">Recent Activity</span>
-        </mat-card-content>
-      </mat-card>
-      <mat-card class="mat-card-grow">
-        <div id="header-bar" fxLayout="row" fxLayoutGap="5px" class="mat-card-header-separate">
-          <div id="workflow-number" fxLayout="row">
-            <mat-card-header fxLayout="row">
-              <mat-card-title>Organizations</mat-card-title>
-              <span class="bubble">3</span>
-            </mat-card-header>
-          </div>
-          <button
-            mat-button
-            class="private-btn small-btn-structure ml-3 mb-3"
-            id="registerServiceButton"
-            matTooltip="Register Service"
-            matTooltipPosition="after"
-          >
-            <img src="../../../assets/svg/icons-plus.svg" alt="Register a Service" class="pr-2 pb-1" />
-            Request an Organization
-          </button>
-        </div>
-        <mat-divider></mat-divider>
-        <mat-card-content class="p-3">
-          <mat-form-field appearance="outline" class="search-form-field w-100">
-            <mat-label>Search your Organizations...</mat-label>
-            <input matInput type="text" data-cy="basic-search" />
-          </mat-form-field>
-          <span class="weight-bold">Recent Activity</span>
-        </mat-card-content>
-      </mat-card>
-    </div>
-  </div>
-</div>
-
-<!-- <div fxLayout>
-  <app-my-sidebar fxFlexAlign="stretch"></app-my-sidebar>
-
   <div id="column-holder" fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="start start" fxLayoutGap="10px">
     <div
       fxLayout="column"
@@ -139,5 +83,3 @@
     </div>
   </div>
 </div>
-
--->

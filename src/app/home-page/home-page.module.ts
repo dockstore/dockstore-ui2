@@ -35,6 +35,8 @@ import { MyEntriesModule } from 'app/shared/modules/my-entries.module';
 import { MyEntriesQuery } from 'app/shared/state/my-entries.query';
 import { RegisterWorkflowModalService } from 'app/workflow/register-workflow-modal/register-workflow-modal.service';
 import { RegisterToolService } from 'app/container/register-tool/register-tool.service';
+import { RegisterToolComponent } from 'app/container/register-tool/register-tool.component';
+import { NewDashboardComponent } from './new-dashboard/new-dashboard.component';
 
 @NgModule({
   imports: [
@@ -66,6 +68,8 @@ import { RegisterToolService } from 'app/container/register-tool/register-tool.s
     NewsUpdatesComponent,
     GettingStartedComponent,
     EntryBoxesComponent,
+    RegisterToolComponent,
+    NewDashboardComponent,
   ],
   providers: [
     MytoolsService,
