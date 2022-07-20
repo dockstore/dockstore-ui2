@@ -22,7 +22,6 @@ import { RefreshToolOrganizationComponent } from '../container/refresh-tool-orga
 import { ContainerModule } from '../shared/modules/container.module';
 import { HeaderModule } from '../shared/modules/header.module';
 import { PipeModule } from '../shared/pipe/pipe.module';
-import { RegisterToolComponent } from './../container/register-tool/register-tool.component';
 import { RegisterToolService } from './../container/register-tool/register-tool.service';
 import { AccountsService } from './../loginComponents/accounts/external/accounts.service';
 import { CustomMaterialModule } from './../shared/modules/material.module';

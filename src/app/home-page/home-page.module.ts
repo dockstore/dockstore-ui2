@@ -31,7 +31,6 @@ import { MyServicesService } from 'app/myworkflows/my-services.service';
 import { MyBioWorkflowsService } from 'app/myworkflows/my-bio-workflows.service';
 import { MyEntriesStateService } from 'app/shared/state/my-entries.service';
 import { MyEntriesStore } from 'app/shared/state/my-entries.store';
-import { MyEntriesModule } from 'app/shared/modules/my-entries.module';
 import { MyEntriesQuery } from 'app/shared/state/my-entries.query';
 import { RegisterWorkflowModalService } from 'app/workflow/register-workflow-modal/register-workflow-modal.service';
 import { RegisterToolService } from 'app/container/register-tool/register-tool.service';
