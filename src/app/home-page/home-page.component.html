@@ -4,6 +4,11 @@
 <ngx-json-ld [json]="websiteSchema"></ngx-json-ld>
 
 <ng-template #loggedInHomePage>
+  <div *ngIf="Dockstore.FEATURES.enableNewDashboard; else oldDashboard">
+    <app-new-dashboard></app-new-dashboard>
+  </div>
+</ng-template>
+<ng-template #oldDashboard>
   <app-home-logged-in></app-home-logged-in>
 </ng-template>
 <ng-template #loggedOutHomePage><app-home></app-home></ng-template>

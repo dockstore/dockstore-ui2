@@ -37,7 +37,7 @@ export const CLIENT_ROUTER_PROVIDERS = [AuthGuard];
 const APP_ROUTES: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full', data: { title: 'Dockstore' } },
   {
-    path: 'new-dashboard',
+    path: 'newDashboard',
     component: NewDashboardComponent,
     pathMatch: 'full',
     data: { title: 'Dockstore | Dashboard' },
