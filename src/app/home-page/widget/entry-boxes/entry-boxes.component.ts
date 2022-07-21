@@ -25,7 +25,6 @@ export class EntryBoxesComponent extends Base implements OnInit {
   filterText: string;
   listOfEntries: Array<EntryUpdateTime> = [];
   user: User;
-  user$: Observable<User>;
   helpLink: string;
   allEntriesLink: string;
   public isLoading = true;
@@ -43,11 +42,9 @@ export class EntryBoxesComponent extends Base implements OnInit {
   ) {
     super();
     this.user = this.userQuery.getValue().user;
-    this.user$ = this.userQuery.user$;
   }
 
   ngOnInit(): void {
-    this.user = this.userQuery.getValue().user;
     this.getMyEntries();
     if (this.entryType === 'Workflow') {
       this.helpLink = Dockstore.DOCUMENTATION_URL + '/getting-started/dockstore-workflows.html';
