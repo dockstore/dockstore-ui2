@@ -80,11 +80,19 @@
         </mat-form-field>
       </div>
       <p class="update">
-        <span [matTooltip]="(extendedWorkflow$ | async)?.last_modified_date | date: 'medium'"
-          >Last Modified: {{ (extendedWorkflow$ | async)?.agoMessage || 'n/a' }}</span
-        >
+        <li>
+          <span [matTooltip]="selectedVersion.last_modified | date: 'medium'"
+            >Last update to this workflow version: {{ versionAgoMessage || 'n/a' }}</span
+          >
+        </li>
+        <li>
+          <span [matTooltip]="(extendedWorkflow$ | async)?.last_modified_date | date: 'medium'"
+            >Last update to source repository: {{ (extendedWorkflow$ | async)?.agoMessage || 'n/a' }}</span
+          >
+        </li>
       </p>
     </div>
+
     <div fxFlex>
       <app-starring
         [workflow]="workflow"
