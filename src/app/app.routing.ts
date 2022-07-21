@@ -129,7 +129,7 @@ const APP_ROUTES: Routes = [
     path: 'starred',
     component: StarredEntriesComponent,
     canActivate: [AuthGuard],
-    data: { title: 'Dockstore | Starred Tools & Workflows' },
+    data: { title: 'Dockstore | Starred Tools, Workflows & Organizations' },
   },
   { path: 'maintenance', component: MaintenanceComponent, data: { title: 'Dockstore | Maintenance' } },
   { path: 'funding', component: FundingComponent, data: { title: 'Dockstore | Funding' } },

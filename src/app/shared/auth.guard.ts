@@ -32,7 +32,7 @@ export class AuthGuard implements CanActivate {
   ) {}
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     return this.usersService.getUser().pipe(
-      catchError((error) => {
+      catchError(() => {
         return of(null);
       }),
       map((user) => {
