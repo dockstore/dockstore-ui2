@@ -6,7 +6,7 @@ orbs:
   browser-tools: circleci/browser-tools@1.2.4
 executors:
   integration_test_exec: # declares a reusable executor
-    resource_class: medium+
+    resource_class: large
     docker:
       - image: cimg/base:stable-18.04
         auth:
