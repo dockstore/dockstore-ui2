@@ -7,6 +7,7 @@ A link to a github issue or SEAB- ticket (using that as a prefix)
 Please make sure that you've checked the following before submitting your pull request. Thanks!
 
 - [ ] Check that your code compiles by running `npm run build`
+- [ ] Ensure that the PR targets the correct branch. Check the milestone or fix version of the ticket.
 - [ ] If this is the first time you're submitting a PR or even if you just need a refresher, consider reviewing our [style guide](https://github.com/dockstore/dockstore/wiki/Dockstore-Frontend-Opinionated-Style-Guide#pr-checklist)
 - [ ] Do not bypass Angular sanitization (bypassSecurityTrustHtml, etc.), or justify why you need to do so
 - [ ] If displaying markdown, use the `markdown-wrapper` component, which does extra sanitization
