@@ -205,6 +205,7 @@ jobs:
       - run:
           name: Test
           command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/integration/group1/**/*'
+          no_output_timeout: 30m
           environment:
             MOCHA_FILE: integration-tests/test-results/junit/test-results-[hash].xml
           when: always
@@ -219,6 +220,7 @@ jobs:
       - run:
           name: Test
           command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/integration/group2/**/*'
+          no_output_timeout: 30m
           environment:
             MOCHA_FILE: integration-tests/test-results/junit/test-results-[hash].xml
           when: always
@@ -233,6 +235,7 @@ jobs:
       - run:
           name: Test
           command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/integration/group3/**/*'
+          no_output_timeout: 30m
           environment:
             MOCHA_FILE: integration-tests/test-results/junit/test-results-[hash].xml
           when: always
@@ -247,6 +250,7 @@ jobs:
       - run:
           name: Test
           command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/integration/immutableDatabaseTests/**/*'
+          no_output_timeout: 30m
           environment:
             MOCHA_FILE: integration-tests/test-results/junit/test-results-[hash].xml
           when: always
