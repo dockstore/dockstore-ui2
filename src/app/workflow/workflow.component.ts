@@ -231,7 +231,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
     // messy prototype for a carousel https://developers.google.com/search/docs/guides/mark-up-listings
     // will need to be aggregated with a summary page
     this.schema = this.bioschemaService.getWorkflowSchema(this.workflow, this.selectedVersion);
-    this.versionAgoMessage = this.dateService.getAgoMessage(this.selectedVersion.dbUpdateDate);
+    this.versionAgoMessage = this.dateService.getAgoMessage((this.selectedVersion as WorkflowVersion).last_modified);
   }
 
   public getDefaultVersionName(): string {
@@ -453,7 +453,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
     this.workflowService.setWorkflowVersion(version);
     this.updateWorkflowUrl(this.workflow);
     this.schema = this.bioschemaService.getWorkflowSchema(this.workflow, this.selectedVersion);
-    this.versionAgoMessage = this.dateService.getAgoMessage(this.selectedVersion.dbUpdateDate);
+    this.versionAgoMessage = this.dateService.getAgoMessage((this.selectedVersion as WorkflowVersion).last_modified);
   }
 
   setEntryTab(tabName: string): void {

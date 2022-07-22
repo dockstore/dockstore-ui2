@@ -80,7 +80,10 @@
         </mat-form-field>
       </div>
       <p class="update">
-        <span [matTooltip]="selectedVersion.last_modified | date: 'medium'"
+        <span *ngIf="'TAG' == selectedVersion.referenceType" [matTooltip]="selectedVersion.last_modified | date: 'medium'"
+          >Tag created: {{ versionAgoMessage || 'n/a' }}</span
+        >
+        <span *ngIf="'TAG' != selectedVersion.referenceType" [matTooltip]="selectedVersion.last_modified | date: 'medium'"
           >Last update to this workflow version: {{ versionAgoMessage || 'n/a' }}</span
         >
         <br />
