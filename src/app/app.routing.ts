@@ -19,7 +19,6 @@ import { FundingComponent } from './funding/funding.component';
 import { GithubCallbackComponent } from './github-callback/github-callback.component';
 import { HomeLoggedInComponent } from './home-page/home-logged-in/home-logged-in.component';
 import { HomeComponent } from './home-page/home-logged-out/home.component';
-import { NewDashboardComponent } from './home-page/new-dashboard/new-dashboard.component';
 import { LoginComponent } from './login/login.component';
 import { AccountsComponent } from './loginComponents/accounts/accounts.component';
 import { AuthComponent } from './loginComponents/auth/auth.component';

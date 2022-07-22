@@ -2,7 +2,6 @@ import { Component, Input, OnInit } from '@angular/core';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { EntryUpdateTime, User, UsersService } from 'app/shared/openapi';
 import { UserQuery } from 'app/shared/user/user.query';
-import { Observable } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { WorkflowService } from 'app/shared/state/workflow.service';
 import { WorkflowQuery } from 'app/shared/state/workflow.query';
@@ -22,6 +21,7 @@ import { Dockstore } from 'app/shared/dockstore.model';
 export class EntryBoxesComponent extends Base implements OnInit {
   Dockstore = Dockstore;
   @Input() entryType: string;
+  entryTypeLowerCase: string;
   filterText: string;
   listOfEntries: Array<EntryUpdateTime> = [];
   user: User;
@@ -46,15 +46,16 @@ export class EntryBoxesComponent extends Base implements OnInit {
 
   ngOnInit(): void {
     this.getMyEntries();
+    this.entryTypeLowerCase = this.entryType.toLowerCase();
     if (this.entryType === 'Workflow') {
       this.helpLink = Dockstore.DOCUMENTATION_URL + '/getting-started/dockstore-workflows.html';
-      this.allEntriesLink = '/my-workflows';
+      this.allEntriesLink = '/my-workflows/';
     } else if (this.entryType === 'Tool') {
       this.helpLink = Dockstore.DOCUMENTATION_URL + '/getting-started/dockstore-tools.html';
-      this.allEntriesLink = '/my-tools';
+      this.allEntriesLink = '/my-tools/';
     } else if (this.entryType === 'Service') {
       this.helpLink = Dockstore.DOCUMENTATION_URL + '/getting-started/getting-started-with-services.html';
-      this.allEntriesLink = '/my-services';
+      this.allEntriesLink = '/my-services/';
     }
   }
 

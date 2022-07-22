@@ -41,7 +41,7 @@
         <img *ngIf="entryType === 'Workflow'" src="../assets/svg/workflow-circle.svg" alt="my workflows" class="entry-logo mb-4" />
         <img *ngIf="entryType === 'Tool'" src="../assets/svg/tool-circle.svg" alt="my tools" class="entry-logo mb-4" />
         <img *ngIf="entryType === 'Service'" src="../assets/svg/service-circle.svg" alt="my services" class="entry-logo mb-4" />
-        <span>You have not registered any {{ entryType }}s.</span>
+        <span>You have not registered any {{ entryTypeLowerCase }}s.</span>
         <div class="size-small">
           <span>Use the</span>
           <button
@@ -52,11 +52,11 @@
             matTooltipPosition="after"
             (click)="showRegisterEntryModal()"
           >
-            {{ entryType }} registration wizard
+            {{ entryTypeLowerCase }} registration wizard
           </button>
-          <span>to register a {{ entryType }}.</span>
+          <span>to register a {{ entryTypeLowerCase }}.</span>
         </div>
-        <a class="size-small" target="_blank" rel="noopener noreferrer" [href]="helpLink">Learn more about {{ entryType }}. </a>
+        <a class="size-small" target="_blank" rel="noopener noreferrer" [href]="helpLink">Learn more about {{ entryTypeLowerCase }}s. </a>
       </div>
     </ng-template>
   </mat-card-content>
