@@ -88,9 +88,7 @@ export class EntryBoxesComponent extends Base implements OnInit {
       this.myWorkflowsService.registerEntry(EntryType.BioWorkflow);
     } else if (this.entryType === 'Tool') {
       this.registerToolService.setIsModalShown(true);
-      console.log('Register tool');
     } else if (this.entryType === 'Service') {
-      console.log('Register service');
       this.myWorkflowsService.registerEntry(EntryType.Service);
     }
   }
