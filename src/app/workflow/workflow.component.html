@@ -80,16 +80,18 @@
         </mat-form-field>
       </div>
       <p class="update">
-        <span *ngIf="'TAG' === selectedVersion.referenceType" [matTooltip]="selectedVersion.last_modified | date: 'medium'"
-          >Tag created: {{ versionAgoMessage || 'n/a' }}</span
-        >
-        <span *ngIf="'TAG' !== selectedVersion.referenceType" [matTooltip]="selectedVersion.last_modified | date: 'medium'"
-          >Last update to this workflow version: {{ versionAgoMessage || 'n/a' }}</span
-        >
-        <br />
-        <span [matTooltip]="(extendedWorkflow$ | async)?.last_modified_date | date: 'medium'"
-          >Last update to source repository: {{ (extendedWorkflow$ | async)?.agoMessage || 'n/a' }}</span
-        >
+        <span *ngIf="selectedVersion !== null">
+          <span *ngIf="'TAG' === selectedVersion.referenceType" [matTooltip]="selectedVersion.last_modified | date: 'medium'"
+            >Tag created: {{ versionAgoMessage || 'n/a' }}</span
+          >
+          <span *ngIf="'TAG' !== selectedVersion.referenceType" [matTooltip]="selectedVersion.last_modified | date: 'medium'"
+            >Last update to this workflow version: {{ versionAgoMessage || 'n/a' }}</span
+          >
+          <br />
+          <span [matTooltip]="(extendedWorkflow$ | async)?.last_modified_date | date: 'medium'"
+            >Last update to source repository: {{ (extendedWorkflow$ | async)?.agoMessage || 'n/a' }}</span
+          >
+        </span>
       </p>
     </div>
 
