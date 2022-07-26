@@ -92,7 +92,10 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
   public showWorkflowActions = false;
   public schema;
   public extendedWorkflow$: Observable<ExtendedWorkflow>;
+  // may make sense to explore an ExtendedWorkflowVersion if we get more of these
+  public versionAgoMessage: string;
   public WorkflowModel = Workflow;
+  public WorkflowVersionModel = WorkflowVersion;
   public launchSupport$: Observable<boolean>;
   @Input() user;
 
@@ -228,7 +231,10 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
     this.resetWorkflowEditData();
     // messy prototype for a carousel https://developers.google.com/search/docs/guides/mark-up-listings
     // will need to be aggregated with a summary page
-    this.schema = this.bioschemaService.getWorkflowSchema(this.workflow, this.selectedVersion);
+    if (this.selectedVersion) {
+      this.schema = this.bioschemaService.getWorkflowSchema(this.workflow, this.selectedVersion);
+      this.versionAgoMessage = this.dateService.getAgoMessage((this.selectedVersion as WorkflowVersion).last_modified);
+    }
   }
 
   public getDefaultVersionName(): string {
@@ -446,6 +452,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
         this.descriptorTypeCompatService.stringToDescriptorType(this.workflow.descriptorType),
       ]);
       this.updateVersionsFileTypes(this.workflow.id, this.selectedVersion.id);
+      this.versionAgoMessage = this.dateService.getAgoMessage((this.selectedVersion as WorkflowVersion).last_modified);
     }
     this.workflowService.setWorkflowVersion(version);
     this.updateWorkflowUrl(this.workflow);
