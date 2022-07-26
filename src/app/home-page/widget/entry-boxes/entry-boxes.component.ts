@@ -47,6 +47,7 @@ export class EntryBoxesComponent extends Base implements OnInit {
   ngOnInit(): void {
     this.getMyEntries();
     this.entryTypeLowerCase = this.entryType.toLowerCase();
+
     if (this.entryType === 'Workflow') {
       this.helpLink = Dockstore.DOCUMENTATION_URL + '/getting-started/dockstore-workflows.html';
       this.allEntriesLink = '/my-workflows/';
