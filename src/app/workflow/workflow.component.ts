@@ -95,6 +95,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
   // may make sense to explore an ExtendedWorkflowVersion if we get more of these
   public versionAgoMessage: string;
   public WorkflowModel = Workflow;
+  public WorkflowVersionModel = WorkflowVersion;
   public launchSupport$: Observable<boolean>;
   @Input() user;
 
