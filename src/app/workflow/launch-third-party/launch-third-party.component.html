@@ -230,6 +230,7 @@
             [className]="'galaxy-launch'"
             [disabled]="(hasContent$ | async) === false"
             [matTooltip]="(hasContent$ | async) ? '' : 'The Galaxy workflow has no content.'"
+            data-cy="galaxyLaunchWith"
           ></app-multi-cloud-launch>
         </div>
         <div *ngIf="workflow?.descriptorType === WorkflowModel.DescriptorTypeEnum.NFL">
