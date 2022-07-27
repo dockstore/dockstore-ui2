@@ -60,7 +60,7 @@ describe('EntryBoxComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(EntryBoxComponent);
     component = fixture.componentInstance;
-    component.entryType = 'Workflow';
+    component.entryType = 'WORKFLOW';
     fixture.detectChanges();
   });
 

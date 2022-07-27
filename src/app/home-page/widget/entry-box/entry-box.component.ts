@@ -20,8 +20,9 @@ import { Dockstore } from 'app/shared/dockstore.model';
 })
 export class EntryBoxComponent extends Base implements OnInit {
   Dockstore = Dockstore;
-  @Input() entryType: string;
+  @Input() entryType: EntryUpdateTime.EntryTypeEnum;
   entryTypeLowerCase: string;
+  entryTypeCapitalize: string;
   filterText: string;
   listOfEntries: Array<EntryUpdateTime> = [];
   user: User;
@@ -46,15 +47,18 @@ export class EntryBoxComponent extends Base implements OnInit {
 
   ngOnInit(): void {
     this.getMyEntries();
-    this.entryTypeLowerCase = this.entryType.toLowerCase();
+    if (this.entryType) {
+      this.entryTypeLowerCase = this.entryType.toLowerCase();
+      this.entryTypeCapitalize = this.entryTypeLowerCase[0].toUpperCase() + this.entryTypeLowerCase.substring(1);
+    }
 
-    if (this.entryType === 'Workflow') {
+    if (this.entryType === 'WORKFLOW') {
       this.helpLink = Dockstore.DOCUMENTATION_URL + '/getting-started/dockstore-workflows.html';
       this.allEntriesLink = '/my-workflows/';
-    } else if (this.entryType === 'Tool') {
+    } else if (this.entryType === 'TOOL') {
       this.helpLink = Dockstore.DOCUMENTATION_URL + '/getting-started/dockstore-tools.html';
       this.allEntriesLink = '/my-tools/';
-    } else if (this.entryType === 'Service') {
+    } else if (this.entryType === 'SERVICE') {
       this.helpLink = Dockstore.DOCUMENTATION_URL + '/getting-started/getting-started-with-services.html';
       this.allEntriesLink = '/my-services/';
     }
@@ -66,11 +70,11 @@ export class EntryBoxComponent extends Base implements OnInit {
       .pipe(debounceTime(500), takeUntil(this.ngUnsubscribe))
       .subscribe((myEntries: Array<EntryUpdateTime>) => {
         myEntries.forEach((entry: EntryUpdateTime) => {
-          if (this.entryType === 'Workflow' && entry.entryType === 'WORKFLOW') {
+          if (this.entryType === 'WORKFLOW' && entry.entryType === 'WORKFLOW') {
             this.listOfEntries.push(entry);
-          } else if (this.entryType === 'Tool' && (entry.entryType === 'APPTOOL' || entry.entryType === 'TOOL')) {
+          } else if (this.entryType === 'TOOL' && (entry.entryType === 'APPTOOL' || entry.entryType === 'TOOL')) {
             this.listOfEntries.push(entry);
-          } else if (this.entryType === 'Service' && entry.entryType === 'SERVICE') {
+          } else if (this.entryType === 'SERVICE' && entry.entryType === 'SERVICE') {
             this.listOfEntries.push(entry);
           }
           this.isLoading = false;
@@ -85,11 +89,11 @@ export class EntryBoxComponent extends Base implements OnInit {
   }
 
   showRegisterEntryModal(): void {
-    if (this.entryType === 'Workflow') {
+    if (this.entryType === 'WORKFLOW') {
       this.myWorkflowsService.registerEntry(EntryType.BioWorkflow);
-    } else if (this.entryType === 'Tool') {
+    } else if (this.entryType === 'TOOL') {
       this.registerToolService.setIsModalShown(true);
-    } else if (this.entryType === 'Service') {
+    } else if (this.entryType === 'SERVICE') {
       this.myWorkflowsService.registerEntry(EntryType.Service);
     }
   }
