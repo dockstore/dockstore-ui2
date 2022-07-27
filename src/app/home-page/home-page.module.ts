@@ -24,7 +24,7 @@ import { NewsUpdatesComponent } from './widget/news-updates/news-updates.compone
 import { OrganizationsComponent } from './widget/organizations/organizations.component';
 import { RequestsComponent } from './widget/requests/requests.component';
 import { MySidebarModule } from '../shared/modules/my-sidebar.module';
-import { EntryBoxesComponent } from './widget/entry-boxes/entry-boxes.component';
+import { EntryBoxComponent } from './widget/entry-box/entry-box.component';
 import { MytoolsService } from 'app/mytools/mytools.service';
 import { MyWorkflowsService } from 'app/myworkflows/myworkflows.service';
 import { MyServicesService } from 'app/myworkflows/my-services.service';
@@ -66,7 +66,7 @@ import { NewDashboardComponent } from './new-dashboard/new-dashboard.component';
     FeaturedNewsComponent,
     NewsUpdatesComponent,
     GettingStartedComponent,
-    EntryBoxesComponent,
+    EntryBoxComponent,
     RegisterToolComponent,
     NewDashboardComponent,
   ],

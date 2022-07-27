@@ -26,16 +26,16 @@ import {
   WorkflowStubService,
 } from 'app/test/service-stubs';
 import { RegisterWorkflowModalService } from 'app/workflow/register-workflow-modal/register-workflow-modal.service';
-import { EntryBoxesComponent } from './entry-boxes.component';
+import { EntryBoxComponent } from './entry-box.component';
 
-describe('EntryBoxesComponent', () => {
-  let component: EntryBoxesComponent;
-  let fixture: ComponentFixture<EntryBoxesComponent>;
+describe('EntryBoxComponent', () => {
+  let component: EntryBoxComponent;
+  let fixture: ComponentFixture<EntryBoxComponent>;
 
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [EntryBoxesComponent],
+        declarations: [EntryBoxComponent],
         schemas: [NO_ERRORS_SCHEMA],
         imports: [RouterTestingModule, MatButtonModule, MatIconModule, MatDialogModule, HttpClientTestingModule, MatSnackBarModule],
         providers: [
@@ -58,7 +58,7 @@ describe('EntryBoxesComponent', () => {
   );
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EntryBoxesComponent);
+    fixture = TestBed.createComponent(EntryBoxComponent);
     component = fixture.componentInstance;
     component.entryType = 'Workflow';
     fixture.detectChanges();

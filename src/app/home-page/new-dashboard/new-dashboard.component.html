@@ -4,14 +4,14 @@
   <div id="row-holder" fxLayout="column" fxLayoutAlign="start start" class="p-4 w-100">
     <mat-card class="alert alert-info mx-1 w-100" role="alert"> Major Release: </mat-card>
     <div id="entry-holder" fxLayout="row" fxLayoutGap="2.5rem" class="w-100 mb-5 fx-grow">
-      <app-entry-boxes class="fx-grow box-container" entryType="Workflow"></app-entry-boxes>
-      <app-entry-boxes class="fx-grow box-container" entryType="Tool"></app-entry-boxes>
-      <app-entry-boxes class="fx-grow box-container" entryType="Service"></app-entry-boxes>
+      <app-entry-box class="fx-grow box-container" entryType="Workflow"></app-entry-box>
+      <app-entry-box class="fx-grow box-container" entryType="Tool"></app-entry-box>
+      <app-entry-box class="fx-grow box-container" entryType="Service"></app-entry-box>
     </div>
     <div id="updates-holder" fxLayout="row" fxLayoutGap="2.5rem" class="w-100 fx-grow">
       <mat-card class="fx-grow">
         <div id="header-bar" fxLayout="row" fxLayoutGap="5px" class="mat-card-header-separate">
-          <div id="workflow-number" fxLayout="row">
+          <div id="starred-number" fxLayout="row">
             <mat-card-header fxLayout="row">
               <mat-card-title>Starred</mat-card-title>
             </mat-card-header>
@@ -24,7 +24,7 @@
       </mat-card>
       <mat-card class="fx-grow">
         <div id="header-bar" fxLayout="row" fxLayoutGap="5px" class="mat-card-header-separate">
-          <div id="workflow-number" fxLayout="row">
+          <div id="organization-number" fxLayout="row">
             <mat-card-header fxLayout="row">
               <mat-card-title>Organizations</mat-card-title>
               <span class="bubble">3</span>
@@ -33,11 +33,11 @@
           <button
             mat-button
             class="private-btn small-btn-structure ml-3 mb-3"
-            id="registerServiceButton"
-            matTooltip="Register Service"
+            id="registerOrganizationButton"
+            matTooltip="Register Organization"
             matTooltipPosition="after"
           >
-            <img src="../../../assets/svg/icons-plus.svg" alt="Register a Service" class="pr-2 pb-1" />
+            <img src="../../../assets/svg/icons-plus.svg" alt="Register an Organization" class="pr-2 pb-1" />
             Request an Organization
           </button>
         </div>

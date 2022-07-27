@@ -14,11 +14,11 @@ import { Base } from 'app/shared/base';
 import { Dockstore } from 'app/shared/dockstore.model';
 
 @Component({
-  selector: 'app-entry-boxes',
-  templateUrl: './entry-boxes.component.html',
-  styleUrls: ['./entry-boxes.component.scss'],
+  selector: 'app-entry-box',
+  templateUrl: './entry-box.component.html',
+  styleUrls: ['./entry-box.component.scss'],
 })
-export class EntryBoxesComponent extends Base implements OnInit {
+export class EntryBoxComponent extends Base implements OnInit {
   Dockstore = Dockstore;
   @Input() entryType: string;
   entryTypeLowerCase: string;
