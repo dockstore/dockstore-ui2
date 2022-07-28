@@ -33,9 +33,9 @@
       </div>
       <div *ngIf="listOfEntries.length === 0" class="light-text mt-2">No matching {{ entryTypeLowerCase }}s.</div>
       <div class="weight-bold py-2">
-        <a [routerLink]="allEntriesLink"
-          >All {{ entryTypeCapitalize }}s<mat-icon class="mat-icon-sm">keyboard_double_arrow_right</mat-icon></a
-        >
+        <a [routerLink]="allEntriesLink">
+          All {{ entryTypeCapitalize }}s<mat-icon class="mat-icon-sm">keyboard_double_arrow_right</mat-icon>
+        </a>
       </div>
     </div>
     <ng-template #noEntries>
