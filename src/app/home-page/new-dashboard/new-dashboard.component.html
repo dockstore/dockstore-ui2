@@ -3,14 +3,14 @@
 
   <div id="row-holder" fxLayout="column" fxLayoutAlign="start start" class="p-4 w-100">
     <mat-card class="alert alert-info mx-1 w-100" role="alert"> Major Release: </mat-card>
-    <div id="entry-holder" fxLayout="row" fxLayoutGap="2.5rem" class="w-100 mb-5 fx-grow">
+    <div id="entry-holder" fxLayout="row" fxLayoutGap="2.5rem" class="w-100 mb-5 fx-grow entry-holder">
       <app-entry-box class="fx-grow box-container" entryType="WORKFLOW"></app-entry-box>
       <app-entry-box class="fx-grow box-container" entryType="TOOL"></app-entry-box>
       <app-entry-box class="fx-grow box-container" entryType="SERVICE"></app-entry-box>
     </div>
     <div id="updates-holder" fxLayout="row" fxLayoutGap="2.5rem" class="w-100 fx-grow">
       <mat-card class="fx-grow">
-        <div id="header-bar" fxLayout="row" fxLayoutGap="5px" class="mat-card-header-separate">
+        <div id="header-bar" fxLayout="row" class="mat-card-header-separate">
           <div id="starred-number" fxLayout="row">
             <mat-card-header fxLayout="row">
               <mat-card-title>Starred</mat-card-title>
@@ -23,7 +23,7 @@
         </mat-card-content>
       </mat-card>
       <mat-card class="fx-grow">
-        <div id="header-bar" fxLayout="row" fxLayoutGap="5px" class="mat-card-header-separate">
+        <div id="header-bar" fxLayout="row" class="mat-card-header-separate">
           <div id="organization-number" fxLayout="row">
             <mat-card-header fxLayout="row">
               <mat-card-title>Organizations</mat-card-title>

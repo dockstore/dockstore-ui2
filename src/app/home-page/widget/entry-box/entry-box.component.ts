@@ -12,6 +12,7 @@ import { MyWorkflowsService } from 'app/myworkflows/myworkflows.service';
 import { RegisterToolService } from 'app/container/register-tool/register-tool.service';
 import { Base } from 'app/shared/base';
 import { Dockstore } from 'app/shared/dockstore.model';
+import { T } from '@angular/cdk/keycodes';
 
 @Component({
   selector: 'app-entry-box',
@@ -25,6 +26,8 @@ export class EntryBoxComponent extends Base implements OnInit {
   entryTypeCapitalize: string;
   filterText: string;
   listOfEntries: Array<EntryUpdateTime> = [];
+  totalEntries: number = 0;
+  firstLoad = true;
   user: User;
   helpLink: string;
   allEntriesLink: string;
@@ -47,18 +50,20 @@ export class EntryBoxComponent extends Base implements OnInit {
 
   ngOnInit(): void {
     this.getMyEntries();
+
     if (this.entryType) {
       this.entryTypeLowerCase = this.entryType.toLowerCase();
       this.entryTypeCapitalize = this.entryTypeLowerCase[0].toUpperCase() + this.entryTypeLowerCase.substring(1);
     }
 
-    if (this.entryType === 'WORKFLOW') {
+    //Get the links for the specified entryType
+    if (this.entryType === EntryUpdateTime.EntryTypeEnum.WORKFLOW) {
       this.helpLink = Dockstore.DOCUMENTATION_URL + '/getting-started/dockstore-workflows.html';
       this.allEntriesLink = '/my-workflows/';
-    } else if (this.entryType === 'TOOL') {
+    } else if (this.entryType === EntryUpdateTime.EntryTypeEnum.TOOL) {
       this.helpLink = Dockstore.DOCUMENTATION_URL + '/getting-started/dockstore-tools.html';
       this.allEntriesLink = '/my-tools/';
-    } else if (this.entryType === 'SERVICE') {
+    } else if (this.entryType === EntryUpdateTime.EntryTypeEnum.SERVICE) {
       this.helpLink = Dockstore.DOCUMENTATION_URL + '/getting-started/getting-started-with-services.html';
       this.allEntriesLink = '/my-services/';
     }
@@ -66,34 +71,53 @@ export class EntryBoxComponent extends Base implements OnInit {
 
   getMyEntries() {
     this.usersService
-      .getUserEntries(10, this.filterText)
-      .pipe(debounceTime(500), takeUntil(this.ngUnsubscribe))
+      .getUserEntries(null, this.filterText)
+      .pipe(debounceTime(750), takeUntil(this.ngUnsubscribe))
       .subscribe((myEntries: Array<EntryUpdateTime>) => {
+        this.listOfEntries = [];
         myEntries.forEach((entry: EntryUpdateTime) => {
-          if (this.entryType === 'WORKFLOW' && entry.entryType === 'WORKFLOW') {
-            this.listOfEntries.push(entry);
-          } else if (this.entryType === 'TOOL' && (entry.entryType === 'APPTOOL' || entry.entryType === 'TOOL')) {
-            this.listOfEntries.push(entry);
-          } else if (this.entryType === 'SERVICE' && entry.entryType === 'SERVICE') {
-            this.listOfEntries.push(entry);
+          if (this.entryType === entry.entryType && entry.entryType === EntryUpdateTime.EntryTypeEnum.WORKFLOW) {
+            if (this.firstLoad) {
+              this.totalEntries += 1;
+            }
+            if (this.listOfEntries.length < 10) {
+              this.listOfEntries.push(entry);
+            }
+          } else if (
+            this.entryType === EntryUpdateTime.EntryTypeEnum.TOOL &&
+            (entry.entryType === EntryUpdateTime.EntryTypeEnum.APPTOOL || entry.entryType === EntryUpdateTime.EntryTypeEnum.TOOL)
+          ) {
+            if (this.firstLoad) {
+              this.totalEntries += 1;
+            }
+            if (this.listOfEntries.length < 10) {
+              this.listOfEntries.push(entry);
+            }
+          } else if (this.entryType === entry.entryType && this.entryType === EntryUpdateTime.EntryTypeEnum.SERVICE) {
+            if (this.firstLoad) {
+              this.totalEntries += 1;
+            }
+            if (this.listOfEntries.length < 10) {
+              this.listOfEntries.push(entry);
+            }
           }
-          this.isLoading = false;
         });
       });
+    this.isLoading = false;
   }
 
   onTextChange(event: any) {
+    this.firstLoad = false;
     this.isLoading = true;
-    this.listOfEntries = [];
     this.getMyEntries();
   }
 
   showRegisterEntryModal(): void {
-    if (this.entryType === 'WORKFLOW') {
+    if (this.entryType === EntryUpdateTime.EntryTypeEnum.WORKFLOW) {
       this.myWorkflowsService.registerEntry(EntryType.BioWorkflow);
-    } else if (this.entryType === 'TOOL') {
+    } else if (this.entryType === EntryUpdateTime.EntryTypeEnum.TOOL) {
       this.registerToolService.setIsModalShown(true);
-    } else if (this.entryType === 'SERVICE') {
+    } else if (this.entryType === EntryUpdateTime.EntryTypeEnum.SERVICE) {
       this.myWorkflowsService.registerEntry(EntryType.Service);
     }
   }

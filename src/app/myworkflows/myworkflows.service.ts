@@ -55,9 +55,9 @@ export class MyWorkflowsService extends MyEntriesService<Workflow, OrgWorkflowOb
     this.gitHubAppInstallationLink$ = this.sessionQuery.gitHubAppInstallationLink$;
   }
 
-  getMyEntries(userId: number, entryType: EntryType, showEntry = true) {
+  getMyEntries(userId: number, entryType: EntryType) {
     if (entryType === EntryType.BioWorkflow) {
-      this.getMyBioWorkflows(userId, showEntry);
+      this.getMyBioWorkflows(userId);
     } else if (entryType === EntryType.Tool) {
     } else {
       this.getMyServices(userId);
@@ -98,7 +98,7 @@ export class MyWorkflowsService extends MyEntriesService<Workflow, OrgWorkflowOb
    * @param {number} id  The user ID
    * @memberof MyBioWorkflowsService
    */
-  getMyBioWorkflows(id: number, showEntry: boolean): void {
+  getMyBioWorkflows(id: number): void {
     this.alertService.start('Fetching workflows');
     this.myEntriesStateService.setRefreshingMyEntries(true);
     forkJoin([
@@ -138,12 +138,10 @@ export class MyWorkflowsService extends MyEntriesService<Workflow, OrgWorkflowOb
           this.workflowService.setWorkflows(workflows);
           this.workflowService.setSharedWorkflows(sharedWorkflows);
           const actualSharedWorkflows = WorkflowService.convertSharedWorkflowsToWorkflowsList(sharedWorkflows);
-          if (showEntry) {
-            this.selectEntry(
-              this.recomputeWhatEntryToSelect([...(workflows || []), ...(actualSharedWorkflows || [])]),
-              EntryType.BioWorkflow
-            );
-          }
+          this.selectEntry(
+            this.recomputeWhatEntryToSelect([...(workflows || []), ...(actualSharedWorkflows || [])]),
+            EntryType.BioWorkflow
+          );
         },
         (error) => {
           console.error('This should be impossible because both errors are caught already');

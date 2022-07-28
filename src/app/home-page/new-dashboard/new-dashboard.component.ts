@@ -39,7 +39,7 @@ export class NewDashboardComponent extends Base implements OnInit {
     });
     this.registerToolService.isModalShown.pipe(takeUntil(this.ngUnsubscribe)).subscribe((isModalShown: boolean) => {
       if (isModalShown) {
-        const dialogRef = this.dialog.open(RegisterToolComponent, { width: '600px' });
+        const dialogRef = this.dialog.open(RegisterToolComponent, { width: '500px' });
         dialogRef
           .afterClosed()
           .pipe(takeUntil(this.ngUnsubscribe))
