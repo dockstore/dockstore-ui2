@@ -177,7 +177,7 @@ const workflowVersionTuples = [
   ],
 ];
 // This test shouldn't be run for smoke tests as it depends on 'real' entries
-if (Cypress.config('baseUrl') !== 'http://localhost:4200') {
+if (Cypress.config('baseUrl') !== 'http://test:4200') {
   describe('Monitor workflows', () => {
     workflowVersionTuples.forEach((t) => testWorkflow(t[0], t[1], t[2], t[3], t[4]));
   });
