@@ -35,7 +35,10 @@ describe('DateService', () => {
   }));
   it('should be getAgoMessage', inject([DateService], (service: DateService) => {
     expect(service.getAgoMessage(null)).toEqual(null);
-    expect(service.getAgoMessage(1498675698000)).toContain(' days ago');
+    // timestamp from a week ago should include days
+    expect(service.getAgoMessage(new Date().getTime() - 7 * 24 * 60 * 60 * 1000)).toContain(' days ago');
+    // time stamp from a long time ago will list the date
+    expect(service.getAgoMessage(1498675698000)).toContain('2017');
   }));
   it('should be getVerifiedLink', inject([DateService], (service: DateService) => {
     expect(service.getVerifiedLink()).toEqual(Dockstore.DOCUMENTATION_URL + '/faq.html#what-is-a-verified-tool-or-workflow');

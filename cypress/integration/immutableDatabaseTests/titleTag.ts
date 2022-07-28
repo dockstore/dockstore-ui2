@@ -20,7 +20,7 @@ describe('Verify Title Tags', () => {
   describe('Dropdown links', () => {
     it('/starred', () => {
       cy.visit('/starred');
-      cy.title().should('eq', 'Dockstore | Starred Tools & Workflows');
+      cy.title().should('eq', 'Dockstore | Starred Tools, Workflows & Organizations');
     });
 
     it('/accounts', () => {

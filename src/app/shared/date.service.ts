@@ -49,25 +49,31 @@ export class DateService {
       const msToMins = 1000 * 60;
       const msToHours = msToMins * 60;
       const msToDays = msToHours * 24;
+      const msToYears = msToDays * 365;
 
-      let time = this.getTime(timestamp, msToDays);
-
+      let time = this.getTime(timestamp, msToYears);
       if (time < 1) {
-        time = this.getTime(timestamp, msToHours);
+        time = this.getTime(timestamp, msToDays);
 
         if (time < 1) {
-          time = this.getTime(timestamp, msToMins);
+          time = this.getTime(timestamp, msToHours);
 
           if (time < 1) {
-            return '< 1 minute ago';
+            time = this.getTime(timestamp, msToMins);
+
+            if (time < 1) {
+              return '< 1 minute ago';
+            } else {
+              return time + (time === 1 ? ' minute ago' : ' minutes ago');
+            }
           } else {
-            return time + (time === 1 ? ' minute ago' : ' minutes ago');
+            return time + (time === 1 ? ' hour ago' : ' hours ago');
           }
         } else {
-          return time + (time === 1 ? ' hour ago' : ' hours ago');
+          return time + (time === 1 ? ' day ago' : ' days ago');
         }
       } else {
-        return time + (time === 1 ? ' day ago' : ' days ago');
+        return this.getDateTimeMessage(timestamp, true);
       }
     } else {
       return null;

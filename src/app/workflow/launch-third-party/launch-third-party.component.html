@@ -13,10 +13,6 @@
     <div class="container-source-repos">
       <div class="container-launch-with">
         <div *ngIf="workflow?.descriptorType === WorkflowModel.DescriptorTypeEnum.WDL">
-          <div *ngIf="(hasFileImports$ | async) || (hasHttpImports$ | async)" class="import-warning">
-            Warning: this version of the WDL has imports, which are not supported by DNAstack. Make sure to select a version without imports
-            in DNAstack.
-          </div>
           <div
             *ngIf="config.FEATURES.enableMultiCloudLaunchWithDNAstack; else oldWdlLaunch"
             fxLayout="column"
