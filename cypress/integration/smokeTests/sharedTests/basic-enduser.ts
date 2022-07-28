@@ -168,6 +168,13 @@ const workflowVersionTuples = [
     'CWL',
   ],
   ['github.com/nf-core/vipr', 'dev', 'master', '', 'NFL'],
+  [
+    'github.com/astrovsky01/ASHG_Galaxy_Workflows/ASHG_Plink_filtering_part_1',
+    'main',
+    'Oct_6',
+    'workflow/github.com/astrovsky01/ASHG_Galaxy_Workflows/ASHG_Plink_filtering_part_1',
+    'Galaxy',
+  ],
 ];
 // This test shouldn't be run for smoke tests as it depends on 'real' entries
 if (Cypress.config('baseUrl') !== 'http://localhost:4200') {
@@ -244,6 +251,19 @@ function testWorkflow(url: string, version1: string, version2: string, trsUrl: s
     ];
   } else if (type === 'NFL') {
     launchWithTuples = [['nextflowtowerLaunchWith', url + '&revision=' + version2]];
+  } else if (type === 'Galaxy') {
+    it('test that galaxy button exists', () => {
+      cy.get('[data-cy=galaxyLaunchWith] button').should('exist');
+      cy.get('[data-cy=galaxyLaunchWith] button').click();
+      cy.get('[data-cy=multiCloudLaunchOption]').each(($el, index) => {
+        cy.wrap($el).click();
+        cy.get(`[data-cy=multiCloudLaunchButton]`).invoke('attr', 'href').should('contain', trsUrl).should('contain', $el.text().trim());
+      });
+      const testUrl = 'https://www.test.ca';
+      cy.get('[data-cy=multiCloudLaunchButtonText]').type(testUrl);
+      cy.get('[data-cy=multiCloudLaunchButtonText]').click();
+      cy.get(`[data-cy=multiCloudLaunchButton]`).invoke('attr', 'href').should('contain', trsUrl).should('contain', testUrl);
+    });
   } else {
     launchWithTuples = [];
   }
