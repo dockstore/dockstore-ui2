@@ -12,7 +12,6 @@ import { MyWorkflowsService } from 'app/myworkflows/myworkflows.service';
 import { RegisterToolService } from 'app/container/register-tool/register-tool.service';
 import { Base } from 'app/shared/base';
 import { Dockstore } from 'app/shared/dockstore.model';
-import { T } from '@angular/cdk/keycodes';
 
 @Component({
   selector: 'app-entry-box',
