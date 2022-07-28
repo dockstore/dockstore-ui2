@@ -2,20 +2,20 @@
   <div id="header-bar" fxLayout="row" fxLayoutGap="5px" class="mat-card-header-separate">
     <div id="workflow-number" fxLayout="row">
       <mat-card-header fxLayout="row">
-        <mat-card-title>{{ entryTypeCapitalize }}s</mat-card-title>
+        <mat-card-title>{{ entryTypeLowerCase | titlecase }}s</mat-card-title>
         <span class="bubble">{{ totalEntries }}</span>
       </mat-card-header>
     </div>
     <button
       mat-button
       class="private-btn small-btn-structure ml-3 mb-3"
-      id="register{{ entryTypeCapitalize }}Button"
-      matTooltip="Register {{ entryTypeCapitalize }}"
+      id="register{{ entryTypeLowerCase | titlecase }}Button"
+      matTooltip="Register {{ entryTypeLowerCase | titlecase }}"
       matTooltipPosition="after"
       (click)="showRegisterEntryModal()"
     >
-      <img src="../../../assets/svg/icons-plus.svg" alt="Register a {{ entryTypeCapitalize }}" class="pr-2 pb-1" />
-      Register a {{ entryTypeCapitalize }}
+      <img src="../../../assets/svg/icons-plus.svg" alt="Register a {{ entryTypeLowerCase | titlecase }}" class="pr-2 pb-1" />
+      Register a {{ entryTypeLowerCase | titlecase }}
     </button>
   </div>
   <mat-divider></mat-divider>
@@ -29,12 +29,12 @@
         <a class="no-wrap" [routerLink]="allEntriesLink + entry.path">
           {{ entry.prettyPath }}
         </a>
-        <div class="light-text">{{ entry.lastUpdateDate | date: 'MMM d, yyyy' }}</div>
+        <div class="date">{{ entry.lastUpdateDate | date: 'MMM d, yyyy' }}</div>
       </div>
-      <div *ngIf="listOfEntries.length === 0" class="light-text mt-2">No matching {{ entryTypeLowerCase }}s.</div>
+      <div *ngIf="listOfEntries.length === 0" class="mt-2">No matching {{ entryTypeLowerCase }}s</div>
       <div class="weight-bold py-2">
         <a [routerLink]="allEntriesLink">
-          All {{ entryTypeCapitalize }}s<mat-icon class="mat-icon-sm">keyboard_double_arrow_right</mat-icon>
+          All {{ entryTypeLowerCase | titlecase }}s<mat-icon class="mat-icon-sm">keyboard_double_arrow_right</mat-icon>
         </a>
       </div>
     </div>

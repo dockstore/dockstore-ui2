@@ -22,7 +22,6 @@ export class EntryBoxComponent extends Base implements OnInit {
   Dockstore = Dockstore;
   @Input() entryType: EntryUpdateTime.EntryTypeEnum;
   entryTypeLowerCase: string;
-  entryTypeCapitalize: string;
   filterText: string;
   listOfEntries: Array<EntryUpdateTime> = [];
   totalEntries: number = 0;
@@ -52,7 +51,6 @@ export class EntryBoxComponent extends Base implements OnInit {
 
     if (this.entryType) {
       this.entryTypeLowerCase = this.entryType.toLowerCase();
-      this.entryTypeCapitalize = this.entryTypeLowerCase[0].toUpperCase() + this.entryTypeLowerCase.substring(1);
     }
 
     //Get the links for the specified entryType
@@ -79,7 +77,7 @@ export class EntryBoxComponent extends Base implements OnInit {
             if (this.firstLoad) {
               this.totalEntries += 1;
             }
-            if (this.listOfEntries.length < 10) {
+            if (this.listOfEntries.length < 7) {
               this.listOfEntries.push(entry);
             }
           } else if (
@@ -89,14 +87,14 @@ export class EntryBoxComponent extends Base implements OnInit {
             if (this.firstLoad) {
               this.totalEntries += 1;
             }
-            if (this.listOfEntries.length < 10) {
+            if (this.listOfEntries.length < 7) {
               this.listOfEntries.push(entry);
             }
           } else if (this.entryType === entry.entryType && this.entryType === EntryUpdateTime.EntryTypeEnum.SERVICE) {
             if (this.firstLoad) {
               this.totalEntries += 1;
             }
-            if (this.listOfEntries.length < 10) {
+            if (this.listOfEntries.length < 7) {
               this.listOfEntries.push(entry);
             }
           }
