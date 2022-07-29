@@ -360,7 +360,7 @@ export class SearchService {
   }
 
   handleLink(linkArray: Array<string>) {
-    this.router.navigateByUrl('search?' + linkArray[1], { replaceUrl: true });
+    this.router.navigateByUrl('search?' + linkArray[1]);
     this.setShortUrl(linkArray[0] + '?' + linkArray[1]);
   }
 
