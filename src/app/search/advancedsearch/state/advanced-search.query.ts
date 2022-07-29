@@ -23,7 +23,7 @@ export class AdvancedSearchQuery extends Query<SearchState> {
     })
   );
   aNDSplitFilterText$ = this.advancedSearch$.pipe(map((advancedSearchObject) => this.joinComma(advancedSearchObject.ANDSplitFilter)));
-  aNDNoSplitFilterText$ = this.advancedSearch$.pipe(map((advancedSearchObject) => this.joinComma(advancedSearchObject.ANDNoSplitFilter)));
+  aNDNoSplitFilterText$ = this.advancedSearch$.pipe(map((advancedSearchObject) => advancedSearchObject.ANDNoSplitFilter));
   oRFilterText$ = this.advancedSearch$.pipe(map((advancedSearchObject) => this.joinComma(advancedSearchObject.ORFilter)));
   nOTFilterText$ = this.advancedSearch$.pipe(map((advancedSearchObject) => this.joinComma(advancedSearchObject.NOTFilter)));
   constructor(protected store: SearchStore) {
