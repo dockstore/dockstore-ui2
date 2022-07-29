@@ -36,6 +36,7 @@ import { RegisterWorkflowModalService } from 'app/workflow/register-workflow-mod
 import { RegisterToolService } from 'app/container/register-tool/register-tool.service';
 import { RegisterToolComponent } from 'app/container/register-tool/register-tool.component';
 import { NewDashboardComponent } from './new-dashboard/new-dashboard.component';
+import { OrganizationBoxComponent } from './widget/organization-box/organization-box.component';
 
 @NgModule({
   imports: [
@@ -69,6 +70,7 @@ import { NewDashboardComponent } from './new-dashboard/new-dashboard.component';
     EntryBoxComponent,
     RegisterToolComponent,
     NewDashboardComponent,
+    OrganizationBoxComponent,
   ],
   providers: [
     MytoolsService,

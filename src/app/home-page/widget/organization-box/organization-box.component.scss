@@ -1,0 +1,11 @@
+@use '@angular/material' as mat;
+@import '/src/materialColorScheme.scss';
+
+.org-box {
+  flex: 1 1 0px;
+  width: 0;
+}
+
+.mat-card-header-separate {
+  justify-content: space-between;
+}

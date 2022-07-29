@@ -1,0 +1,28 @@
+<mat-card class="h-100 org-box">
+  <div id="header-bar" fxLayout="row" class="mat-card-header-separate">
+    <div id="organization-number" fxLayout="row">
+      <mat-card-header fxLayout="row">
+        <mat-card-title>Organizations</mat-card-title>
+        <span class="bubble">3</span>
+      </mat-card-header>
+    </div>
+    <button
+      mat-button
+      class="private-btn small-btn-structure ml-3 mb-3"
+      id="registerOrganizationButton"
+      matTooltip="Register Organization"
+      matTooltipPosition="after"
+    >
+      <img src="../../../assets/svg/icons-plus.svg" alt="Register an Organization" class="pr-2 pb-1" />
+      Request an Organization
+    </button>
+  </div>
+  <mat-divider></mat-divider>
+  <mat-card-content class="p-3">
+    <mat-form-field appearance="outline" class="search-form-field w-100">
+      <mat-label>Search your Organizations...</mat-label>
+      <input matInput type="text" data-cy="basic-search" />
+    </mat-form-field>
+    <span class="weight-bold">Recent Activity</span>
+  </mat-card-content>
+</mat-card>
