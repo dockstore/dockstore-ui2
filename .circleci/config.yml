@@ -354,38 +354,38 @@ workflows:
               only: /.*/
           context:
             - dockerhub
-      - integration_test_1:
-          filters:
-            tags:
-              only: /.*/
-          requires:
-            - lint_license_unit_test_coverage
-          context:
-            - dockerhub
-      - integration_test_2:
-          filters:
-            tags:
-              only: /.*/
-          requires:
-            - lint_license_unit_test_coverage
-          context:
-            - dockerhub
-      - integration_test_3:
-          filters:
-            tags:
-              only: /.*/
-          requires:
-            - lint_license_unit_test_coverage
-          context:
-            - dockerhub
-      - integration_test_4:
-          filters:
-            tags:
-              only: /.*/
-          requires:
-            - lint_license_unit_test_coverage
-          context:
-            - dockerhub
+#      - integration_test_1:
+#          filters:
+#            tags:
+#              only: /.*/
+#          requires:
+#            - lint_license_unit_test_coverage
+#          context:
+#            - dockerhub
+#      - integration_test_2:
+#          filters:
+#            tags:
+#              only: /.*/
+#          requires:
+#            - lint_license_unit_test_coverage
+#          context:
+#            - dockerhub
+#      - integration_test_3:
+#          filters:
+#            tags:
+#              only: /.*/
+#          requires:
+#            - lint_license_unit_test_coverage
+#          context:
+#            - dockerhub
+#      - integration_test_4:
+#          filters:
+#            tags:
+#              only: /.*/
+#          requires:
+#            - lint_license_unit_test_coverage
+#          context:
+#            - dockerhub
       - local_smoke_tests:
           filters:
             tags:
@@ -535,7 +535,7 @@ commands:
           background: true
       - run:
           name: Run webservice
-          command: java -jar dockstore-webservice.jar server test/web.yml 1>/dev/null
+          command: java -jar dockstore-webservice.jar server test/web.yml
           background: true
       - run: mkdir -p integration-tests/test-results/junit
       - run:
