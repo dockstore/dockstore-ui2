@@ -264,6 +264,7 @@ jobs:
   local_smoke_tests:
     executor:
       name: integration_test_exec
+      resourceClass: "medium+"
     working_directory: ~/repo
     steps:
       - setup_smoke_tests
