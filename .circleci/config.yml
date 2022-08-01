@@ -273,7 +273,6 @@ jobs:
       - run:
           name: Run local smoke tests (no auth)
           command: bash -i -c 'npm run test-local-no-auth'
-          no_output_timeout: 30m
           environment:
             MOCHA_FILE: integration-tests/test-results/junit/test-local-no-auth-[hash].xml
           when: always
