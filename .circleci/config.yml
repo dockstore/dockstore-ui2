@@ -11,8 +11,8 @@ executors:
         description: "Resource class"
         default: "medium"
         type: string
+    resource_class: <<parameters.resourceClass>>
     docker:
-      resource_class: <<parameters.resourceClass>>
       - image: cimg/base:stable-18.04
         auth:
           username: dockstoretestuser
