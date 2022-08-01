@@ -6,7 +6,13 @@ orbs:
   browser-tools: circleci/browser-tools@1.2.4
 executors:
   integration_test_exec: # declares a reusable executor
+    parameters:
+      resourceClass:
+        description: "Resource class"
+        default: "medium"
+        type: string
     docker:
+      resource_class: <<parameters.resourceClass>>
       - image: cimg/base:stable-18.04
         auth:
           username: dockstoretestuser
@@ -256,7 +262,9 @@ jobs:
           when: always
       - upload_artifacts
   local_smoke_tests:
-    executor: integration_test_exec
+    executor:
+      name: integration_test_exec
+      resourceClass: "medium+"
     working_directory: ~/repo
     steps:
       - setup_smoke_tests
