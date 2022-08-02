@@ -31,7 +31,6 @@ executors:
           - network.host: 127.0.0.1
           - http.port: 9200
           - discovery.type: single-node
-          - "ES_JAVA_OPTS=-Xms750m -Xmx750m"
 
 jobs:
   # Specify the webpage url (https://dev.dockstore.net or https://staging.dockstore.org or https://dockstore.org)
