@@ -11,7 +11,7 @@
     <mat-icon>{{ expanded ? 'expand_less' : 'expand_more' }}</mat-icon>
   </button>
 </div>
-<mat-menu #menu="matMenu" xPosition="before" yPosition="below">
+<mat-menu #menu="matMenu" xPosition="before" yPosition="below" data-cy="matMenu">
   <div class="px-4" fxLayout="column" fxLayoutAlign="center start">
     <p>Please choose a well-known server to launch on, or specify your own.</p>
     <mat-radio-group
@@ -26,6 +26,7 @@
         name="launchWithUrl"
         value="{{ instance.url }}"
         [checked]="this.defaultLaunchWith === instance.url"
+        data-cy="multiCloudLaunchOption"
       >
         {{ instance.displayName }}
       </mat-radio-button>
@@ -40,7 +41,7 @@
       <!--      >-->
       <!--        {{ usersInstance.displayName }} (Custom)-->
       <!--      </mat-radio-button>-->
-      <mat-radio-button value="other">
+      <mat-radio-button value="other" data-cy="multiCloudLaunchText">
         <mat-form-field class="small-text" color="accent" appearance="outline">
           <mat-label>Specify a url...</mat-label>
           <input matInput [(ngModel)]="customLaunchWith" (ngModelChange)="presetLaunchWith = 'other'" name="something" />
@@ -62,6 +63,7 @@
       color="accent"
       [disabled]="(!this.defaultLaunchWith && !this.launchWith.url) || (this.presetLaunchWithOption === 'other' && !customLaunchWithOption)"
       (click)="selectDefault()"
+      data-cy="multiCloudLaunchButton"
     >
       Launch
     </a>
