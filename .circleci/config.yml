@@ -568,7 +568,7 @@ commands:
       - run:
           name: Index ES
           command: |
-            curl -X POST "localhost:4200/api/api/ga4gh/v2/extended/tools/index" -H "accept: text/plain" -H "Authorization: Bearer fake-admin-token"
+            curl -X POST "localhost:4200/api/api/ga4gh/v2/extended/tools/index" -H "accept: text/plain" -H "Authorization: Bearer imamafakedockstoretoken2"
           requires:
             - setup_integration_test
   upload_nightly_artifacts:
