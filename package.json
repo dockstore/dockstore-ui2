@@ -5,7 +5,7 @@
   "config": {
     "webservice_version": "1.13.0-alpha.7",
     "use_circle": true,
-    "circle_build_id": "22808",
+    "circle_build_id": "22747",
     "base_branch": "develop"
   },
   "scripts": {
@@ -98,7 +98,7 @@
     "@types/node": "^15.12.2",
     "@typescript-eslint/eslint-plugin": "5.3.0",
     "@typescript-eslint/parser": "5.3.0",
-    "cypress": "^9.7.0",
+    "cypress": "^8.0.0",
     "eslint": "^8.2.0",
     "husky": "^7.0.0",
     "jasmine-core": "^3.7.1",
