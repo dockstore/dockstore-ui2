@@ -5,7 +5,8 @@
   "config": {
     "webservice_version": "1.13.0-alpha.7",
     "use_circle": true,
-    "circle_build_id": "22808",
+    "circle_ci_source": "https://app.circleci.com/pipelines/github/dockstore/dockstore/8261/workflows/62984766-73da-445a-9afa-cb9a1dcd8566/jobs/22664/artifacts",
+    "circle_build_id": "22664",
     "base_branch": "develop"
   },
   "scripts": {
