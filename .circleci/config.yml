@@ -264,7 +264,6 @@ jobs:
   local_smoke_tests:
     executor:
       name: integration_test_exec
-      resourceClass: "large"
     working_directory: ~/repo
     steps:
       - setup_smoke_tests
@@ -568,7 +567,7 @@ commands:
       - run:
           name: Index ES
           command: |
-            curl -X POST "localhost:4200/api/api/ga4gh/v2/extended/tools/index" -H "accept: text/plain" -H "Authorization: Bearer imamafakedockstoretoken2"
+            curl -X POST "localhost:4200/api/api/ga4gh/v2/extended/tools/index" -H "accept: text/plain" -H "Authorization: Bearer fake-admin-token"
           requires:
             - setup_integration_test
   upload_nightly_artifacts:
