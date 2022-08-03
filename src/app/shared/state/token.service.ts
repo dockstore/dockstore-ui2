@@ -59,14 +59,4 @@ export class TokenService {
   deleteToken(tokenId: number) {
     return this.tokensService.deleteToken(tokenId);
   }
-
-  setGitHubOrganizations(gitHubOrganizations: any) {
-    this.tokenStore.update({ gitHubOrganizations: gitHubOrganizations });
-  }
-
-  getGitHubOrganizations() {
-    this.usersService.getMyGitHubOrgs().subscribe((gitHubOrganizations) => {
-      this.setGitHubOrganizations(gitHubOrganizations);
-    });
-  }
 }
