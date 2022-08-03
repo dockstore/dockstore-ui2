@@ -40,6 +40,7 @@ const APP_ROUTES: Routes = [
     component: HomeLoggedInComponent,
     pathMatch: 'full',
     data: { title: 'Dockstore | Dashboard' },
+    canActivate: [AuthGuard],
   },
   {
     path: 'docs',
@@ -124,7 +125,12 @@ const APP_ROUTES: Routes = [
   { path: 'onboarding', component: OnboardingComponent, canActivate: [AuthGuard], data: { title: 'Dockstore | Onboarding' } },
   { path: 'accounts', component: AccountsComponent, canActivate: [AuthGuard], data: { title: 'Dockstore | Accounts' } },
   { path: 'auth/:provider', component: AuthComponent },
-  { path: 'starred', component: StarredEntriesComponent, data: { title: 'Dockstore | Starred Tools & Workflows' } },
+  {
+    path: 'starred',
+    component: StarredEntriesComponent,
+    canActivate: [AuthGuard],
+    data: { title: 'Dockstore | Starred Tools, Workflows & Organizations' },
+  },
   { path: 'maintenance', component: MaintenanceComponent, data: { title: 'Dockstore | Maintenance' } },
   { path: 'funding', component: FundingComponent, data: { title: 'Dockstore | Funding' } },
   { path: 'sitemap', component: SitemapComponent, data: { title: 'Dockstore | Sitemap' } },
