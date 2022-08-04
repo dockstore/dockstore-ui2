@@ -266,18 +266,7 @@ jobs:
           name: Run pa11y-ci
           command: |
             npm install -g pa11y-ci
-            pa11y-ci{
-	"defaults": {
-		"timeout": 10000
-	},
-	"urls": [
-		"http://localhost:4200/home",
-		"http://localhost:4200/tools",
-		"http://localhost:4200/workflows",
-		"http://localhost:4200/services",
-    "http://localhost:4200/organizations"
-	]
-}
+            pa11y-ci
 
   local_smoke_tests:
     executor: integration_test_exec
