@@ -12,8 +12,8 @@ fi
 
 wget -O dockstore-webservice.jar --no-verbose --tries=10 ${JAR_PATH}
 chmod u+x dockstore-webservice.jar
-# psql -h localhost -c "create user dockstore with password 'dockstore' createdb;" -U postgres
-# psql -h localhost -c "ALTER USER dockstore WITH superuser;" -U postgres
+psql -h localhost -c "create user dockstore with password 'dockstore' createdb;" -U postgres
+psql -h localhost -c "ALTER USER dockstore WITH superuser;" -U postgres
 psql -h localhost -c "drop database webservice_test" -U postgres
 psql -h localhost -c 'create database webservice_test with owner = dockstore;' -U postgres
 psql -h localhost -f test/${DB_DUMP:-db_dump.sql} webservice_test -U postgres
