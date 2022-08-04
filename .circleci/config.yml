@@ -292,6 +292,7 @@ jobs:
     working_directory: ~/repo
     parameters:
       db_dump:
+
         type: string
         default: "db_dump.sql"
     steps:
