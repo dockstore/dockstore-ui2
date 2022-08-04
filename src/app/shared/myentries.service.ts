@@ -20,7 +20,7 @@ import { DockstoreTool, Workflow } from './swagger';
 import { UrlResolverService } from './url-resolver.service';
 
 export abstract class MyEntriesService<E extends DockstoreTool | Workflow, O extends OrgToolObject<E> | OrgWorkflowObject<E>> {
-  constructor(protected urlResolverService: UrlResolverService) {}
+  protected constructor(protected urlResolverService: UrlResolverService) {}
 
   recomputeWhatEntryToSelect(entries: E[]): E | null {
     const foundEntry = this.findEntryFromPath(this.urlResolverService.getEntryPathFromUrl(), entries);

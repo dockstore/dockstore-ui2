@@ -322,6 +322,9 @@ export class UsersStubService {
   getUserTokens(userId: number, extraHttpRequestParams?: any): Observable<Array<TokenUser>> {
     return observableOf([]);
   }
+  getUserOrganizations(gitRegistry: string) {
+    return observableOf([]);
+  }
   getExtendedUserData() {
     return observableOf(null);
   }
