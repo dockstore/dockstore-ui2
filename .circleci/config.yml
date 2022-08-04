@@ -301,8 +301,8 @@ jobs:
       - browser-tools/install-chrome
       - browser-tools/install-chromedriver
       - run:
-          name: Checkout develop
-          command: git checkout develop
+          name: Checkout feature/SEAB-1498/add-pa11yci-file
+          command: git checkout feature/SEAB-1498/add-pa11yci-file
       - install_container_dependencies
       - restore_cache:
           key: dep-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
