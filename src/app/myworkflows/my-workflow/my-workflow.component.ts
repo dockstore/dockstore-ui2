@@ -23,6 +23,7 @@ import { SessionQuery } from 'app/shared/session/session.query';
 import { SessionService } from 'app/shared/session/session.service';
 import { MyEntriesQuery } from 'app/shared/state/my-entries.query';
 import { MyEntriesStateService } from 'app/shared/state/my-entries.service';
+import { TokenService } from 'app/shared/state/token.service';
 import { BioWorkflow } from 'app/shared/swagger/model/bioWorkflow';
 import { Service } from 'app/shared/swagger/model/service';
 import { UserService } from 'app/shared/user/user.service';
@@ -99,6 +100,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
     protected tokenQuery: TokenQuery,
     protected workflowQuery: WorkflowQuery,
     private alertQuery: AlertQuery,
+    private tokenService: TokenService,
     protected sessionService: SessionService,
     protected sessionQuery: SessionQuery,
     private myWorkflowsService: MyWorkflowsService,
@@ -128,6 +130,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   ngOnInit() {
     this.myWorkflowsService.clearPartialState();
     this.gitHubAppInstallationLink$ = this.sessionQuery.gitHubAppInstallationLink$;
+    this.tokenService.getGitHubOrganizations();
     this.isRefreshing$ = this.alertQuery.showInfo$;
     /**
      * This handles selecting of a workflow based on changing URL. It also handles when the router changes url
