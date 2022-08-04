@@ -255,6 +255,30 @@ jobs:
             MOCHA_FILE: integration-tests/test-results/junit/test-results-[hash].xml
           when: always
       - upload_artifacts
+  accessibility_test:
+    executor: integration_test_exec
+    working_directory: ~/repo
+    steps:
+      - setup_smoke_tests
+      - restore_cache:
+          key: cypress-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
+      - run:
+          name: Run pa11y-ci
+          command: |
+            npm install -g pa11y-ci
+            pa11y-ci{
+	"defaults": {
+		"timeout": 10000
+	},
+	"urls": [
+		"http://localhost:4200/home",
+		"http://localhost:4200/tools",
+		"http://localhost:4200/workflows",
+		"http://localhost:4200/services",
+    "http://localhost:4200/organizations"
+	]
+}
+
   local_smoke_tests:
     executor: integration_test_exec
     working_directory: ~/repo
@@ -379,6 +403,12 @@ workflows:
             - lint_license_unit_test_coverage
           context:
             - dockerhub
+      - accessibility_test:
+          filters:
+            tags:
+              only: /.*/
+          requires:
+            - lint_license_unit_test_coverage
       - local_smoke_tests:
           filters:
             tags:
@@ -464,6 +494,7 @@ workflows:
           context:
             - dockerhub
             - oicr-slack
+
 
 commands:
   install_container_dependencies:
