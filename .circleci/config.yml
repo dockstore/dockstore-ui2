@@ -258,6 +258,10 @@ jobs:
   accessibility_test:
     executor: integration_test_exec
     working_directory: ~/repo
+    parameters:
+      db_dump:
+        type: string
+        default: "db_dump.sql"
     steps:
       - setup_integration_test
       - restore_cache:
