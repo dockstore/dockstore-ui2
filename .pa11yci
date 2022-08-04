@@ -7,6 +7,6 @@
 		"http://localhost:4200/tools",
 		"http://localhost:4200/workflows",
 		"http://localhost:4200/services",
-	        "http://localhost:4200/organizations"
+	  "http://localhost:4200/organizations"
 	]
 }
