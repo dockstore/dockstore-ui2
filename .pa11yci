@@ -1,12 +1,12 @@
 {
-	"defaults": {
-		"timeout": 10000
-	},
-	"urls": [
-		"http://localhost:4200/home",
-		"http://localhost:4200/tools",
-		"http://localhost:4200/workflows",
-		"http://localhost:4200/services",
+  "defaults": {
+    "timeout": 10000
+  },
+  "urls": [
+    "http://localhost:4200/home",
+    "http://localhost:4200/tools",
+    "http://localhost:4200/workflows",
+    "http://localhost:4200/services",
     "http://localhost:4200/organizations"
 	]
 }
