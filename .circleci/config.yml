@@ -268,6 +268,7 @@ jobs:
             bash -i -c "npm install -g pa11y-ci; pa11y-ci"
   accessibility_test_base:
     docker:
+
       - image: cimg/base:stable-20.04
         auth:
           username: dockstoretestuser
