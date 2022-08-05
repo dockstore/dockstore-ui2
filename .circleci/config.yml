@@ -55,11 +55,13 @@ jobs:
       - run:
           name: Run
           command: bash -i -c 'npm run test-<< parameters.stack >>-waf'
+          no_output_timeout: 30m
       - run:
           name: Run remote verification of WAF against << parameters.stack >>
           command: bash -i -c 'npm run test-<< parameters.stack >>-waf'
           environment:
             MOCHA_FILE: nightly-test-results/junit/test-<< parameters.stack >>-waf-[hash].xml
+          no_output_timeout: 30m
       - upload_nightly_artifacts
 #      - slack/notify:
 #          channel: $<< parameters.stack >>_id
@@ -417,13 +419,6 @@ workflows:
             - dockerhub
 
   nightly_no_auth:
-    triggers:
-      - schedule:
-          cron: "0 10 * * *" # This is 3am PDT / 2am PST
-          filters:
-            branches:
-              only:
-                - develop
     jobs:
       - no_auth_smoke_tests:
           name: "no_auth_smoke_tests_dev"
@@ -431,18 +426,18 @@ workflows:
           context:
             - dockerhub
             - oicr-slack
-      - no_auth_smoke_tests:
-          name: "no_auth_smoke_tests_staging"
-          stack: "staging"
-          context:
-            - dockerhub
-            - oicr-slack
-      - no_auth_smoke_tests:
-          name: "no_auth_smoke_tests_prod"
-          stack: "prod"
-          context:
-            - dockerhub
-            - oicr-slack
+#      - no_auth_smoke_tests:
+#          name: "no_auth_smoke_tests_staging"
+#          stack: "staging"
+#          context:
+#            - dockerhub
+#            - oicr-slack
+#      - no_auth_smoke_tests:
+#          name: "no_auth_smoke_tests_prod"
+#          stack: "prod"
+#          context:
+#            - dockerhub
+#            - oicr-slack
 
   nightly_auth:
     jobs:
