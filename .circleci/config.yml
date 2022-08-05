@@ -50,28 +50,24 @@ jobs:
       - setup_nightly_tests
       - install_cypress_dependencies
       - run:
-          name: Run npx browserslist@latest --update-db
-          command: bash -i -c 'npm run test-dev-no-auth'
-          no_output_timeout: 30m
-      - run:
-          name: Run
-          command: bash -i -c 'npm run test-<< parameters.stack >>-waf'
-          no_output_timeout: 30m
+          name: Run remote verification test against << parameters.stack >> (no auth)
+          command: bash -i -c 'npm run test-<< parameters.stack >>-no-auth'
+          environment:
+            MOCHA_FILE: nightly-test-results/junit/test-<< parameters.stack >>-no-auth-[hash].xml
       - run:
           name: Run remote verification of WAF against << parameters.stack >>
           command: bash -i -c 'npm run test-<< parameters.stack >>-waf'
           environment:
             MOCHA_FILE: nightly-test-results/junit/test-<< parameters.stack >>-waf-[hash].xml
-          no_output_timeout: 30m
       - upload_nightly_artifacts
-#      - slack/notify:
-#          channel: $<< parameters.stack >>_id
-#          event: fail
-#          template: basic_fail_1
-#      - slack/notify:
-#          channel: $<< parameters.stack >>_id
-#          event: pass
-#          template: basic_success_1
+      - slack/notify:
+          channel: $<< parameters.stack >>_id
+          event: fail
+          template: basic_fail_1
+      - slack/notify:
+          channel: $<< parameters.stack >>_id
+          event: pass
+          template: basic_success_1
 
   # Specify the webpage url (https://dev.dockstore.net or https://staging.dockstore.org or https://dockstore.org)
   # and stack (dev or staging or prod) and the no auth smoke tests will be run against the corresponding webpage.
@@ -91,23 +87,19 @@ jobs:
       - setup_nightly_tests
       - install_cypress_dependencies
       - run:
-          name: Run npx browserslist@latest --update-db
-          command: bash -i -c 'npx browserslist@latest --update-db'
-      - run:
           name: Run remote verification test against << parameters.stack >> (with auth)
           command: bash -i -c 'npm run test-<< parameters.stack >>-auth'
           environment:
             MOCHA_FILE: nightly-test-results/junit/test-<< parameters.stack >>-auth-[hash].xml
-          no_output_timeout: 30m
       - upload_nightly_artifacts
-#      - slack/notify:
-#          channel: $<< parameters.stack >>_id
-#          event: fail
-#          template: basic_fail_1
-#      - slack/notify:
-#          channel: $<< parameters.stack >>_id
-#          event: pass
-#          template: basic_success_1
+      - slack/notify:
+          channel: $<< parameters.stack >>_id
+          event: fail
+          template: basic_fail_1
+      - slack/notify:
+          channel: $<< parameters.stack >>_id
+          event: pass
+          template: basic_success_1
 
   audit:
     working_directory: ~/repo
@@ -336,13 +328,6 @@ jobs:
 workflows:
   version: 2
   everything:
-    triggers:
-      - schedule:
-          cron: "0 10 * * *" # This is 3am PDT / 2am PST
-          filters:
-            branches:
-              only:
-                - develop
     jobs:
 #      # Add the tags filter to all jobs so they will run before upload_to_s3
       - audit:
@@ -427,20 +412,27 @@ workflows:
           context:
             - dockerhub
             - oicr-slack
-#      - no_auth_smoke_tests:
-#          name: "no_auth_smoke_tests_staging"
-#          stack: "staging"
-#          context:
-#            - dockerhub
-#            - oicr-slack
-#      - no_auth_smoke_tests:
-#          name: "no_auth_smoke_tests_prod"
-#          stack: "prod"
-#          context:
-#            - dockerhub
-#            - oicr-slack
+      - no_auth_smoke_tests:
+          name: "no_auth_smoke_tests_staging"
+          stack: "staging"
+          context:
+            - dockerhub
+            - oicr-slack
+      - no_auth_smoke_tests:
+          name: "no_auth_smoke_tests_prod"
+          stack: "prod"
+          context:
+            - dockerhub
+            - oicr-slack
 
   nightly_auth:
+    triggers:
+      - schedule:
+          cron: "0 11 * * *" # This is 4am PDT / 3am PST
+          filters:
+            branches:
+              only:
+                - develop
     jobs:
       - auth_smoke_tests:
           name: "auth_smoke_tests_dev"
@@ -448,18 +440,18 @@ workflows:
           context:
             - dockerhub
             - oicr-slack
-#      - auth_smoke_tests:
-#          name: "auth_smoke_tests_staging"
-#          stack: "staging"
-#          context:
-#            - dockerhub
-#            - oicr-slack
-#      - auth_smoke_tests:
-#          name: "auth_smoke_tests_prod"
-#          stack: "prod"
-#          context:
-#            - dockerhub
-#            - oicr-slack
+      - auth_smoke_tests:
+          name: "auth_smoke_tests_staging"
+          stack: "staging"
+          context:
+            - dockerhub
+            - oicr-slack
+      - auth_smoke_tests:
+          name: "auth_smoke_tests_prod"
+          stack: "prod"
+          context:
+            - dockerhub
+            - oicr-slack
 
 commands:
   install_container_dependencies:
