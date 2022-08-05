@@ -95,6 +95,7 @@ jobs:
           command: bash -i -c 'npm run test-<< parameters.stack >>-auth'
           environment:
             MOCHA_FILE: nightly-test-results/junit/test-<< parameters.stack >>-auth-[hash].xml
+          no_output_timeout: 30m
       - upload_nightly_artifacts
 #      - slack/notify:
 #          channel: $<< parameters.stack >>_id
