@@ -256,16 +256,89 @@ jobs:
           when: always
       - upload_artifacts
   accessibility_test:
-    executor: integration_test_exec
+    docker:
+
+      - image: cimg/base:stable-20.04
+        auth:
+          username: dockstoretestuser
+          password: $DOCKERHUB_PASSWORD
+      - image: cimg/postgres:13.3
+        command: postgres -c max_connections=200 -c jit=off
+        auth:
+          username: dockstoretestuser
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_DB: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_HOST_AUTH_METHOD: trust
+      - image: docker.elastic.co/elasticsearch/elasticsearch:7.10.1
+        environment:
+          - xpack.security.enabled: false
+          - transport.host: localhost
+          - network.host: 127.0.0.1
+          - http.port: 9200
+          - discovery.type: single-node
     working_directory: ~/repo
+    parameters:
+      db_dump:
+
+        type: string
+        default: "db_dump.sql"
     steps:
-      - setup_integration_test
+      - checkout
+      - browser-tools/install-chrome
+      - browser-tools/install-chromedriver
+      - install_container_dependencies
       - restore_cache:
-          key: cypress-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
+          key: dep-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
+      - run:
+          name: Install dependencies
+          command: bash -i -c 'npm ci'
+      - run:
+          name: Build
+          command: NODE_OPTIONS="--max-old-space-size=1610" bash -i -c 'npm run build.prod'
+      - run:
+          name: Install postgresql client
+          command: sudo apt install -y postgresql-client || true
+      - run:
+          name: Prepare webservice
+          command: bash -i -c 'DB_DUMP=<< parameters.db_dump >> npm run webservice'
+          environment:
+            PAGER: cat # prevent psql commands using less https://stackoverflow.com/questions/53055044/rails-rake-dbstructureload-times-out-on-circleci-2-0
+      - run:
+          name: Install nginx
+          command: sudo apt install -y nginx || true
+      - run:
+          name: Prepapre nginx config
+          command: sed "s%REPLACEME%`pwd`%" .circleci/nginx.conf.tmpl > .circleci/nginx.conf
+      - run:
+          name: Run nginx
+          command: sudo nginx -c `pwd`/.circleci/nginx.conf
+          background: true
+      - run:
+          name: Run webservice
+          command: java -jar dockstore-webservice.jar server test/web.yml 1>/dev/null
+          background: true
+      - run: mkdir -p integration-tests/test-results/junit
+      - run:
+          name: Wait for services
+          command: bash scripts/wait-for.sh
       - run:
           name: Run pa11y-ci
           command: |
             bash -i -c "npm install -g pa11y-ci; pa11y-ci"
+
+  #    executor: integration_test_exec
+#    working_directory: ~/repo
+#    steps:
+#      - setup_integration_test
+#      - restore_cache:
+#          key: cypress-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
+#      - run:
+#          name: Run pa11y-ci
+#          command: |
+#            bash -i -c "npm install -g pa11y-ci; pa11y-ci"
   accessibility_test_base:
     docker:
 
@@ -476,8 +549,6 @@ workflows:
           filters:
             tags:
               only: /.*/
-          requires:
-            - lint_license_unit_test_coverage
       - accessibility_test_base:
           filters:
             tags:
