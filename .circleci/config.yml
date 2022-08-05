@@ -501,50 +501,50 @@ workflows:
   everything:
     jobs:
 #      # Add the tags filter to all jobs so they will run before upload_to_s3
-      - audit:
-        filters:
-          tags:
-            only: /.*/
-          context:
-            - dockerhub
-      - lint_license_unit_test_coverage:
-          filters:
-            tags:
-              only: /.*/
-          context:
-            - dockerhub
-      - integration_test_1:
-          filters:
-            tags:
-              only: /.*/
-          requires:
-            - lint_license_unit_test_coverage
-          context:
-            - dockerhub
-      - integration_test_2:
-          filters:
-            tags:
-              only: /.*/
-          requires:
-            - lint_license_unit_test_coverage
-          context:
-            - dockerhub
-      - integration_test_3:
-          filters:
-            tags:
-              only: /.*/
-          requires:
-            - lint_license_unit_test_coverage
-          context:
-            - dockerhub
-      - integration_test_4:
-          filters:
-            tags:
-              only: /.*/
-          requires:
-            - lint_license_unit_test_coverage
-          context:
-            - dockerhub
+#      - audit:
+#        filters:
+#          tags:
+#            only: /.*/
+#          context:
+#            - dockerhub
+#      - lint_license_unit_test_coverage:
+#          filters:
+#            tags:
+#              only: /.*/
+#          context:
+#            - dockerhub
+#      - integration_test_1:
+#          filters:
+#            tags:
+#              only: /.*/
+#          requires:
+#            - lint_license_unit_test_coverage
+#          context:
+#            - dockerhub
+#      - integration_test_2:
+#          filters:
+#            tags:
+#              only: /.*/
+#          requires:
+#            - lint_license_unit_test_coverage
+#          context:
+#            - dockerhub
+#      - integration_test_3:
+#          filters:
+#            tags:
+#              only: /.*/
+#          requires:
+#            - lint_license_unit_test_coverage
+#          context:
+#            - dockerhub
+#      - integration_test_4:
+#          filters:
+#            tags:
+#              only: /.*/
+#          requires:
+#            - lint_license_unit_test_coverage
+#          context:
+#            - dockerhub
       - accessibility_test:
           filters:
             tags:
@@ -553,35 +553,35 @@ workflows:
           filters:
             tags:
               only: /.*/
-      - local_smoke_tests:
-          filters:
-            tags:
-              only: /.*/
-          requires:
-            - lint_license_unit_test_coverage
-          context:
-            - dockerhub
-      # Upload builds for tags and branches to s3.
-      - upload_to_s3:
-          requires:
-            - audit
-            - lint_license_unit_test_coverage
-          filters:
-            tags:
-              only: /.*/
-            branches:
-              only: /.*/
-          context:
-            - dockerhub
-            - aws-ui2
-      - check_build_develop:
-          requires:
-            - upload_to_s3
-          filters:
-            branches:
-              only: /^develop/
-          context:
-            - dockerhub
+#      - local_smoke_tests:
+#          filters:
+#            tags:
+#              only: /.*/
+#          requires:
+#            - lint_license_unit_test_coverage
+#          context:
+#            - dockerhub
+#      # Upload builds for tags and branches to s3.
+#      - upload_to_s3:
+#          requires:
+#            - audit
+#            - lint_license_unit_test_coverage
+#          filters:
+#            tags:
+#              only: /.*/
+#            branches:
+#              only: /.*/
+#          context:
+#            - dockerhub
+#            - aws-ui2
+#      - check_build_develop:
+#          requires:
+#            - upload_to_s3
+#          filters:
+#            branches:
+#              only: /^develop/
+#          context:
+#            - dockerhub
 
   nightly_no_auth:
     triggers:
