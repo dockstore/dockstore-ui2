@@ -120,15 +120,11 @@ export class UserService {
     this.getExtendedUserData();
   }
 
-  gravatarUrl(email: string | null, defaultImg: string | null): string | null {
-    if (email) {
-      return this.gravatarService.gravatarUrlForEmail(email, defaultImg);
+  gravatarUrl(defaultImg: string | null): string | null {
+    if (defaultImg) {
+      return defaultImg;
     } else {
-      if (defaultImg) {
-        return defaultImg;
-      } else {
-        return this.gravatarService.gravatarUrlForMysteryPerson();
-      }
+      return this.gravatarService.gravatarUrlForMysteryPerson();
     }
   }
 
