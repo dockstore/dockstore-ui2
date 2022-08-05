@@ -50,10 +50,11 @@ jobs:
       - setup_nightly_tests
       - install_cypress_dependencies
       - run:
-          name: Run remote verification test against << parameters.stack >> (no auth)
-          command: bash -i -c 'npm run test-<< parameters.stack >>-no-auth'
-          environment:
-            MOCHA_FILE: nightly-test-results/junit/test-<< parameters.stack >>-no-auth-[hash].xml
+          name: Run npx browserslist@latest --update-db
+          command: bash -i -c 'npx browserslist@latest --update-db'
+      - run:
+          name: Run
+          command: bash -i -c 'npm run test-<< parameters.stack >>-waf'
       - run:
           name: Run remote verification of WAF against << parameters.stack >>
           command: bash -i -c 'npm run test-<< parameters.stack >>-waf'
