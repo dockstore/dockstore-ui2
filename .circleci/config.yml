@@ -417,6 +417,13 @@ workflows:
             - dockerhub
 
   nightly_no_auth:
+    triggers:
+      - schedule:
+          cron: "0 10 * * *" # This is 3am PDT / 2am PST
+          filters:
+            branches:
+              only:
+                - develop
     jobs:
       - no_auth_smoke_tests:
           name: "no_auth_smoke_tests_dev"
@@ -445,18 +452,18 @@ workflows:
           context:
             - dockerhub
             - oicr-slack
-      - auth_smoke_tests:
-          name: "auth_smoke_tests_staging"
-          stack: "staging"
-          context:
-            - dockerhub
-            - oicr-slack
-      - auth_smoke_tests:
-          name: "auth_smoke_tests_prod"
-          stack: "prod"
-          context:
-            - dockerhub
-            - oicr-slack
+#      - auth_smoke_tests:
+#          name: "auth_smoke_tests_staging"
+#          stack: "staging"
+#          context:
+#            - dockerhub
+#            - oicr-slack
+#      - auth_smoke_tests:
+#          name: "auth_smoke_tests_prod"
+#          stack: "prod"
+#          context:
+#            - dockerhub
+#            - oicr-slack
 
 commands:
   install_container_dependencies:
