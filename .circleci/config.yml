@@ -88,6 +88,9 @@ jobs:
       - setup_nightly_tests
       - install_cypress_dependencies
       - run:
+          name: Run npx browserslist@latest --update-db
+          command: bash -i -c 'npx browserslist@latest --update-db'
+      - run:
           name: Run remote verification test against << parameters.stack >> (with auth)
           command: bash -i -c 'npm run test-<< parameters.stack >>-auth'
           environment:
