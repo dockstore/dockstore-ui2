@@ -257,7 +257,11 @@ function testWorkflow(url: string, version1: string, version2: string, trsUrl: s
       cy.get('[data-cy=galaxyLaunchWith] button').click();
       cy.get('[data-cy=multiCloudLaunchOption]').each(($el, index) => {
         cy.wrap($el).click();
-        cy.get(`[data-cy=multiCloudLaunchButton]`).invoke('attr', 'href').should('contain', trsUrl).should('contain', $el.text().trim());
+        cy.get(`[data-cy=multiCloudLaunchButton]`)
+          .invoke('attr', 'href')
+          .should('contain', trsUrl)
+          .should('contain', $el.text().trim().split(' ')[0]);
+        // .trim().split(' ')[0]) is required as $el.text() can be equal to " usegalaxy.org (Main) "
       });
       const testUrl = 'https://www.test.ca';
       cy.get('[data-cy=multiCloudLaunchText]').type(testUrl);
