@@ -15,7 +15,7 @@ const workflowVersionTuples = [
 
 describe('Monitor Galaxy Workflows', () => {
   // This test shouldn't be run for smoke tests as it depends on 'real' entries
-  if (Cypress.config('baseUrl') !== 'http://localhost:4200') {
+  if (Cypress.config('baseUrl') !== 'http://o:4200') {
     workflowVersionTuples.forEach((t) => testWorkflow(t[0], t[1], t[2], t[3], t[4]));
   }
 });
@@ -70,7 +70,7 @@ function testWorkflow(url: string, version1: string, version2: string, trsUrl: s
       cy.get('[data-cy=galaxyLaunchWith] button').click();
       cy.get('[data-cy=multiCloudLaunchOption]').should('have.length.of.at.least', 1);
       cy.get('[data-cy=multiCloudLaunchOption]').should('contain', 'usegalaxy.org');
-      cy.get('[data-cy=multiCloudLaunchOption]').each(($el, index) => {
+      cy.get('[data-cy=multiCloudLaunchOption]').each(($el) => {
         cy.wrap($el).click();
         cy.get(`[data-cy=multiCloudLaunchButton]`)
           .invoke('attr', 'href')
