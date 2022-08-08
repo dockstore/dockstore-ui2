@@ -69,7 +69,7 @@ function testWorkflow(url: string, version1: string, version2: string, trsUrl: s
       cy.get('[data-cy=galaxyLaunchWith] button').should('exist');
       cy.get('[data-cy=galaxyLaunchWith] button').click();
       cy.get('[data-cy=multiCloudLaunchOption]').should('have.length.of.at.least', 1);
-      cy.get('[data-cy=multiCloudLaunchOption]').should('contain', 'galaxy.org');
+      cy.get('[data-cy=multiCloudLaunchOption]').should('contain', 'usegalaxy.org');
       cy.get('[data-cy=multiCloudLaunchOption]').each(($el, index) => {
         cy.wrap($el).click();
         cy.get(`[data-cy=multiCloudLaunchButton]`)
