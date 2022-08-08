@@ -15,7 +15,7 @@ const workflowVersionTuples = [
 
 describe('Monitor Galaxy Workflows', () => {
   // This test shouldn't be run for smoke tests as it depends on 'real' entries
-  if (Cypress.config('baseUrl') !== 'http://orange:4200') {
+  if (Cypress.config('baseUrl') !== 'http://localhost:4200') {
     workflowVersionTuples.forEach((t) => testWorkflow(t[0], t[1], t[2], t[3], t[4]));
   }
 });
