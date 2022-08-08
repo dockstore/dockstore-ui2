@@ -1,4 +1,3 @@
-import { ga4ghPath } from '../../../../src/app/shared/constants';
 import { goToTab } from '../../../support/commands';
 import { ToolDescriptor } from '../../../../src/app/shared/swagger/model/toolDescriptor';
 
