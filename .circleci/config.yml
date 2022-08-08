@@ -60,7 +60,14 @@ jobs:
           environment:
             MOCHA_FILE: nightly-test-results/junit/test-<< parameters.stack >>-waf-[hash].xml
       - upload_nightly_artifacts
-
+      - slack/notify:
+          channel: $<< parameters.stack >>_id
+          event: fail
+          template: basic_fail_1
+      - slack/notify:
+          channel: $<< parameters.stack >>_id
+          event: pass
+          template: basic_success_1
 
   # Specify the webpage url (https://dev.dockstore.net or https://staging.dockstore.org or https://dockstore.org)
   # and stack (dev or staging or prod) and the no auth smoke tests will be run against the corresponding webpage.
@@ -85,7 +92,14 @@ jobs:
           environment:
             MOCHA_FILE: nightly-test-results/junit/test-<< parameters.stack >>-auth-[hash].xml
       - upload_nightly_artifacts
-
+      - slack/notify:
+          channel: $<< parameters.stack >>_id
+          event: fail
+          template: basic_fail_1
+      - slack/notify:
+          channel: $<< parameters.stack >>_id
+          event: pass
+          template: basic_success_1
 
   audit:
     working_directory: ~/repo
@@ -396,6 +410,13 @@ workflows:
             - dockerhub
 
   nightly_no_auth:
+    triggers:
+      - schedule:
+          cron: "0 10 * * *" # This is 3am PDT / 2am PST
+          filters:
+            branches:
+              only:
+                - develop
     jobs:
       - no_auth_smoke_tests:
           name: "no_auth_smoke_tests_dev"
