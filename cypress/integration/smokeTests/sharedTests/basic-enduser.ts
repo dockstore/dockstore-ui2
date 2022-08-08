@@ -168,13 +168,6 @@ const workflowVersionTuples = [
     'CWL',
   ],
   ['github.com/nf-core/vipr', 'dev', 'master', '', 'NFL'],
-  [
-    'github.com/dockstore-testing/galaxy-workflow-dockstore-example-2',
-    '0.9.6',
-    '0.9.7',
-    'workflow/github.com/dockstore-testing/galaxy-workflow-dockstore-example-2',
-    'Galaxy',
-  ],
 ];
 // This test shouldn't be run for smoke tests as it depends on 'real' entries
 if (Cypress.config('baseUrl') !== 'http://localhost:4200') {
@@ -251,23 +244,6 @@ function testWorkflow(url: string, version1: string, version2: string, trsUrl: s
     ];
   } else if (type === 'NFL') {
     launchWithTuples = [['nextflowtowerLaunchWith', url + '&revision=' + version2]];
-  } else if (type === 'Galaxy') {
-    it('test that galaxy button exists', () => {
-      cy.get('[data-cy=galaxyLaunchWith] button').should('exist');
-      cy.get('[data-cy=galaxyLaunchWith] button').click();
-      cy.get('[data-cy=multiCloudLaunchOption]').each(($el, index) => {
-        cy.wrap($el).click();
-        cy.get(`[data-cy=multiCloudLaunchButton]`)
-          .invoke('attr', 'href')
-          .should('contain', trsUrl)
-          .should('contain', $el.text().trim().split(' ')[0]);
-        // .trim().split(' ')[0]) is required as $el.text() can be equal to " usegalaxy.org (Main) "
-      });
-      const testUrl = 'https://www.test.ca';
-      cy.get('[data-cy=multiCloudLaunchText]').type(testUrl);
-      cy.get('[data-cy=multiCloudLaunchText]').click();
-      cy.get(`[data-cy=multiCloudLaunchButton]`).invoke('attr', 'href').should('contain', trsUrl).should('contain', testUrl);
-    });
   } else {
     launchWithTuples = [];
   }
