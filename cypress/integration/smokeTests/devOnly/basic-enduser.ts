@@ -3,6 +3,7 @@ import { ToolDescriptor } from '../../../../src/app/shared/swagger/model/toolDes
 
 // pairs of [workflow URL without version number, verified version number, another verified version number, workflow.trsUrl]
 const workflowVersionTuples = [
+  // This value will have to be moved to ../sharedTests/basic-enduser.ts once 1.13 is deployed
   [
     'github.com/dockstore-testing/galaxy-workflow-dockstore-example-2',
     '0.9.6',
@@ -63,6 +64,7 @@ function testWorkflow(url: string, version1: string, version2: string, trsUrl: s
     cy.get('[data-cy=dag-holder]').children().should('have.length.of.at.least', 1);
   });
 
+  // This section will have to be moved to ../sharedTests/basic-enduser.ts once 1.13 is deployed
   if (type === 'Galaxy') {
     it('test that galaxy button exists', () => {
       cy.get('[data-cy=galaxyLaunchWith] button').should('exist');
