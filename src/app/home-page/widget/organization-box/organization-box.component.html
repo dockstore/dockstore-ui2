@@ -3,26 +3,75 @@
     <div id="organization-number" fxLayout="row">
       <mat-card-header fxLayout="row">
         <mat-card-title>Organizations</mat-card-title>
-        <span class="bubble">3</span>
+        <span class="bubble">{{ listOfOrganizations.length }}</span>
       </mat-card-header>
     </div>
-    <button
-      mat-button
-      class="private-btn small-btn-structure ml-3 mb-3"
-      id="registerOrganizationButton"
-      matTooltip="Register Organization"
-      matTooltipPosition="after"
-    >
-      <img src="../../../assets/svg/icons-plus.svg" alt="Register an Organization" class="pr-2 pb-1" />
-      Request an Organization
-    </button>
+    <div>
+      <button
+        mat-button
+        class="private-btn small-btn-structure ml-3 mb-3"
+        id="registerOrganizationButton"
+        matTooltip="Register Organization"
+        matTooltipPosition="after"
+      >
+        <img src="../../../assets/svg/icons-plus.svg" alt="Register an Organization" class="pr-2 pb-1" />
+        Request an Organization
+      </button>
+    </div>
   </div>
   <mat-divider></mat-divider>
   <mat-card-content class="p-3">
-    <mat-form-field appearance="outline" class="search-form-field w-100">
-      <mat-label>Search your Organizations...</mat-label>
-      <input matInput type="text" data-cy="basic-search" />
-    </mat-form-field>
     <span class="weight-bold">Recent Activity</span>
+    <div *ngFor="let event of events$ | async; last as last">
+      <div [ngSwitch]="event?.type">
+        <div *ngSwitchCase="EventType.CREATECOLLECTION">
+          <strong>{{ event.initiatorUser?.username }}</strong> created the collection
+          <a [routerLink]="'/organizations/' + event.organization?.name + '/collections/' + event.collection?.name"
+            >{{ event.collection?.name }}
+          </a>
+          in organization
+          <a [routerLink]="'/organizations/' + event.organization?.name">{{ event.organization?.displayName }}</a>
+          <div class="subtitle">{{ 'on ' + (event.dbCreateDate | date: 'medium') }}</div>
+          <mat-divider *ngIf="!last" class="custom-margin"></mat-divider>
+        </div>
+        <div *ngSwitchCase="EventType.ADDTOCOLLECTION">
+          <strong>{{ event.initiatorUser.username }} </strong> added the {{ event?.tool || event?.apptool ? 'tool' : 'workflow' }}
+          <a
+            [routerLink]="
+              event?.apptool
+                ? '/tools/' + event?.apptool.full_workflow_path
+                : event?.tool
+                ? '/tools/' + event?.tool.tool_path
+                : '/workflows/' + event?.workflow.full_workflow_path
+            "
+            >{{ (event?.tool | entryToDisplayName) || (event?.workflow | entryToDisplayName) || (event?.apptool | entryToDisplayName) }}</a
+          >
+          to the collection
+          <a [routerLink]="'/organizations/' + event.organization?.name + '/collections/' + event.collection?.name"
+            >{{ event.collection?.name }}
+          </a>
+          in organization
+          <a [routerLink]="'/organizations/' + event.organization?.name">{{ event.organization?.displayName }}</a>
+          <div class="subtitle">{{ 'on ' + (event.dbCreateDate | date: 'medium') }}</div>
+          <mat-divider *ngIf="!last" class="custom-margin"></mat-divider>
+        </div>
+        <div *ngSwitchCase="EventType.ADDUSERTOORG">
+          <strong>{{ event.initiatorUser.username }} </strong> added {{ event.user.username }} to the organization
+          <a [routerLink]="'/organizations/' + event.organization?.name">{{ event.organization?.displayName }}</a>
+          <div class="subtitle">{{ 'on ' + (event.dbCreateDate | date: 'medium') }}</div>
+          <mat-divider *ngIf="!last" class="custom-margin"></mat-divider>
+        </div>
+        <div *ngSwitchCase="EventType.MODIFYCOLLECTION">
+          <strong>{{ event.initiatorUser.username }} </strong> edited the collection
+          <a [routerLink]="'/organizations/' + event.organization?.name + '/collections/' + event.collection?.name"
+            >{{ event.collection?.name }}
+          </a>
+          in organization
+          <a [routerLink]="'/organizations/' + event.organization?.name">{{ event.organization?.displayName }}</a>
+          <div class="subtitle">{{ 'on ' + (event.dbCreateDate | date: 'medium') }}</div>
+          <mat-divider *ngIf="!last" class="custom-margin"></mat-divider>
+        </div>
+      </div>
+    </div>
   </mat-card-content>
 </mat-card>

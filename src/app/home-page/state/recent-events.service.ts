@@ -21,6 +21,19 @@ export class RecentEventsService {
       .subscribe();
   }
 
+  getOrganizations() {
+    this.recentEventsStore.setLoading(true);
+    this.eventsService
+      .getEvents('STARRED_ORGANIZATION')
+      .pipe(
+        finalize(() => this.recentEventsStore.setLoading(false)),
+        tap((allStarredEvents) => {
+          this.recentEventsStore.set(allStarredEvents);
+        })
+      )
+      .subscribe();
+  }
+
   add(recentEvent: Event) {
     this.recentEventsStore.add(recentEvent);
   }
