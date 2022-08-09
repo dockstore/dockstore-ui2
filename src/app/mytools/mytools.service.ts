@@ -24,11 +24,12 @@ import { EntryType } from 'app/shared/enum/entry-type';
 import { MyEntriesStateService } from 'app/shared/state/my-entries.service';
 import { AppTool, ContainersService, DockstoreTool, UsersService, Workflow, WorkflowsService } from 'app/shared/swagger';
 import { UrlResolverService } from 'app/shared/url-resolver.service';
+import { forkJoin } from 'rxjs';
 import { finalize } from 'rxjs/operators';
+import { OrgWorkflowObject } from '../myworkflows/my-workflow/my-workflow.component';
+import { WorkflowService } from '../shared/state/workflow.service';
 import { MyEntriesService } from './../shared/myentries.service';
 import { OrgToolObject } from './my-tool/my-tool.component';
-import { WorkflowService } from '../shared/state/workflow.service';
-import { OrgWorkflowObject } from '../myworkflows/my-workflow/my-workflow.component';
 
 @Injectable()
 export class MytoolsService extends MyEntriesService<DockstoreTool, OrgToolObject<DockstoreTool>> {
@@ -49,25 +50,18 @@ export class MytoolsService extends MyEntriesService<DockstoreTool, OrgToolObjec
   getMyEntries(userId: number, entryType: EntryType) {
     this.alertService.start('Fetching tools');
     this.myEntriesService.setRefreshingMyEntries(true);
-    this.usersService
-      .userContainers(userId)
+    forkJoin([this.usersService.userContainers(userId), this.usersService.userAppTools(userId)])
       .pipe(finalize(() => this.myEntriesService.setRefreshingMyEntries(false)))
       .subscribe(
-        (tools) => {
-          this.containerService.setTools(tools);
+        ([containers, appTools]) => {
+          this.containerService.setTools(containers);
+          this.workflowService.setWorkflows(appTools);
           this.alertService.simpleSuccess();
         },
         (error: HttpErrorResponse) => {
           this.alertService.detailedError(error);
         }
       );
-
-    this.usersService
-      .userAppTools(userId)
-      .pipe(finalize(() => this.myEntriesService.setRefreshingMyEntries(false)))
-      .subscribe((appTools: Array<Workflow>) => {
-        this.workflowService.setWorkflows(appTools);
-      });
   }
 
   selectEntry(tool: DockstoreTool | Workflow | null): void {

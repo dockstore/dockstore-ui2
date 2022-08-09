@@ -157,5 +157,13 @@ describe('MyWorkflowsService', () => {
     expect(service.convertEntriesToOrgEntryObject(tools, tool1).length).toBe(3);
     expect(service.convertEntriesToOrgEntryObject(tools, tool1)).toEqual(expectedResult);
     expect(service.convertEntriesToOrgEntryObject([], tool1)).toEqual([]);
+
+    const orgNotInExistingTools = 'foobar';
+    const convertedEntries = service.convertEntriesToOrgEntryObject(tools, tool1, [orgNotInExistingTools]);
+    expect(convertedEntries.length).toBe(4);
+    const emptyOrgObject = convertedEntries.find((e) => e.organization === orgNotInExistingTools);
+    expect(emptyOrgObject.published.length).toBe(0);
+    expect(emptyOrgObject.unpublished.length).toBe(0);
+    expect(service.convertEntriesToOrgEntryObject(tools, tool1, [orgNotInExistingTools, tool1.organization]).length).toBe(4);
   }));
 });
