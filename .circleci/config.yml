@@ -326,10 +326,12 @@ jobs:
           name: Wait for services
           command: bash scripts/wait-for.sh
       - run:
+          name: Install pa11y-ci
+          command: bash -i -c "npm install -g pa11y-ci"
+      - run:
           name: Run pa11y-ci
-          command: |
-            npm install -g pa11y-ci
-            pa11y-ci
+          command: bash -i -c "pa11y-ci"
+
 
   #    executor: integration_test_exec
   #    working_directory: ~/repo
@@ -415,10 +417,11 @@ jobs:
           name: Wait for services
           command: bash scripts/wait-for.sh
       - run:
+          name: Install pa11y-ci
+          command: bash -i -c "npm install -g pa11y-ci"
+      - run:
           name: Run pa11y-ci
-          command: |
-            npm install -g pa11y-ci
-            pa11y-ci
+          command: bash -i -c "pa11y-ci"
 
 
 
