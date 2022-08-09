@@ -298,6 +298,7 @@ jobs:
       - run:
           name: Build
           command: NODE_OPTIONS="--max-old-space-size=1610" bash -i -c 'npm run build.prod'
+          no_output_timeout: 30m
       - run:
           name: Install postgresql client
           command: sudo apt install -y postgresql-client || true
@@ -385,6 +386,7 @@ jobs:
       - run:
           name: Build
           command: NODE_OPTIONS="--max-old-space-size=1610" bash -i -c 'npm run build.prod'
+          no_output_timeout: 30m
       - run:
           name: Install postgresql client
           command: sudo apt install -y postgresql-client || true
