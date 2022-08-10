@@ -319,7 +319,12 @@
               <div fxLayout="row" fxLayoutAlign="start center">
                 <span><strong matTooltip="Select which topic to display to the public">Topic Selection</strong>:&nbsp;</span>
                 <span>
-                  <mat-radio-group [(ngModel)]="tool.topicSelection" aria-label="Select an option" (change)="topicSelectionChange($event)">
+                  <mat-radio-group
+                    [(ngModel)]="tool.topicSelection"
+                    aria-label="Select an option"
+                    (change)="topicSelectionChange($event)"
+                    [disabled]="tool?.mode === DockstoreToolType.ModeEnum.HOSTED"
+                  >
                     <mat-radio-button [value]="TopicSelectionEnum.AUTOMATIC">Automatic</mat-radio-button>
                     <mat-radio-button class="ml-3" [value]="TopicSelectionEnum.MANUAL">Manual</mat-radio-button>
                   </mat-radio-group>

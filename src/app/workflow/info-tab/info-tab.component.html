@@ -245,7 +245,12 @@
               <div fxLayout="row" fxLayoutAlign="start center">
                 <span><strong matTooltip="Select which topic to display to the public">Topic Selection</strong>:&nbsp;</span>
                 <span>
-                  <mat-radio-group [(ngModel)]="workflow.topicSelection" aria-label="Select an option" (change)="radioChange($event)">
+                  <mat-radio-group
+                    [(ngModel)]="workflow.topicSelection"
+                    aria-label="Select an option"
+                    (change)="radioChange($event)"
+                    [disabled]="workflow?.mode === WorkflowType.ModeEnum.HOSTED"
+                  >
                     <mat-radio-button [value]="TopicSelectionEnum.AUTOMATIC">Automatic</mat-radio-button>
                     <mat-radio-button class="ml-3" [value]="TopicSelectionEnum.MANUAL">Manual</mat-radio-button>
                   </mat-radio-group>
