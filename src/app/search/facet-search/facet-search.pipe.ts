@@ -14,7 +14,11 @@ import { Pipe, PipeTransform } from '@angular/core';
  */
 export class GetFacetSearchResultsPipe implements PipeTransform {
   transform(items: Array<any>, searchText: string, facet: string): Array<any> {
-    if (!items || !searchText || facet !== 'author') {
+    if (
+      !items ||
+      !searchText ||
+      (facet !== 'author' && facet !== 'organization' && facet !== 'labels.value.keyword' && facet !== 'namespace')
+    ) {
       return items;
     }
     const value = searchText.toLowerCase();
