@@ -15,7 +15,7 @@
  */
 import { Component, Input } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 import { CheckerWorkflowQuery } from '../../state/checker-workflow.query';
 
