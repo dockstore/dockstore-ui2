@@ -1,18 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { RecentEventsQuery } from 'app/home-page/state/recent-events.query';
-import { RecentEventsService } from 'app/home-page/state/recent-events.service';
-import { RecentEventsStore } from 'app/home-page/state/recent-events.store';
 import { RequestsQuery } from 'app/loginComponents/state/requests.query';
-import { RequestsService } from 'app/loginComponents/state/requests.service';
 import { RequireAccountsModalComponent } from 'app/organizations/registerOrganization/requireAccountsModal/require-accounts-modal.component';
-import { EventsQuery } from 'app/organizations/state/events.query';
 import { Base } from 'app/shared/base';
 import { Dockstore } from 'app/shared/dockstore.model';
-import { User, Event, Organization, OrganizationUser, EventsService } from 'app/shared/openapi';
+import { Event, Organization, OrganizationUser, EventsService } from 'app/shared/openapi';
 import { EntriesService, UsersService } from 'app/shared/swagger';
 import { UserQuery } from 'app/shared/user/user.query';
-import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
@@ -26,8 +20,6 @@ export class OrganizationBoxComponent extends Base implements OnInit {
   events: Array<Event> = [];
   firstCall = true;
   hasOrganizations = false;
-  user: User;
-  username: string;
   readonly supportedEventTypes = [
     Event.TypeEnum.CREATECOLLECTION,
     Event.TypeEnum.ADDTOCOLLECTION,
@@ -49,7 +41,6 @@ export class OrganizationBoxComponent extends Base implements OnInit {
     private matDialog: MatDialog
   ) {
     super();
-    this.user = this.userQuery.getValue().user;
   }
 
   ngOnInit(): void {
@@ -67,7 +58,6 @@ export class OrganizationBoxComponent extends Base implements OnInit {
   }
 
   getMyOrganizations() {
-    this.username = this.user.username;
     this.usersService.getStarredOrganizations().subscribe((starredOrganizations) => {
       this.listOfOrganizations = starredOrganizations;
     });
@@ -76,7 +66,6 @@ export class OrganizationBoxComponent extends Base implements OnInit {
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((events) => {
         this.events = events;
-        console.log(events);
       });
     this.isLoading = false;
   }
