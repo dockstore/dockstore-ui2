@@ -39,3 +39,19 @@ img[alt='Org avatar'] {
 .mat-card-header-separate {
   justify-content: space-between;
 }
+
+.org-logo {
+  min-width: 5rem;
+}
+
+.no-organizations {
+  text-align: center;
+  line-height: 2rem;
+}
+
+.txt-button {
+  text-decoration: underline;
+  color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
+  font-size: 12px;
+  padding: 0;
+}

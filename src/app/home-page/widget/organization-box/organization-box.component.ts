@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { RecentEventsQuery } from 'app/home-page/state/recent-events.query';
 import { RecentEventsService } from 'app/home-page/state/recent-events.service';
 import { RecentEventsStore } from 'app/home-page/state/recent-events.store';
 import { RequestsQuery } from 'app/loginComponents/state/requests.query';
 import { RequestsService } from 'app/loginComponents/state/requests.service';
+import { RequireAccountsModalComponent } from 'app/organizations/registerOrganization/requireAccountsModal/require-accounts-modal.component';
 import { EventsQuery } from 'app/organizations/state/events.query';
 import { Base } from 'app/shared/base';
 import { Dockstore } from 'app/shared/dockstore.model';
@@ -43,7 +45,8 @@ export class OrganizationBoxComponent extends Base implements OnInit {
     protected usersService: UsersService,
     protected entriesService: EntriesService,
     private requestsQuery: RequestsQuery,
-    private eventsService: EventsService
+    private eventsService: EventsService,
+    private matDialog: MatDialog
   ) {
     super();
     this.user = this.userQuery.getValue().user;
@@ -65,7 +68,6 @@ export class OrganizationBoxComponent extends Base implements OnInit {
 
   getMyOrganizations() {
     this.username = this.user.username;
-    // this.recentEventsService.getOrganizations();
     this.usersService.getStarredOrganizations().subscribe((starredOrganizations) => {
       this.listOfOrganizations = starredOrganizations;
     });
@@ -77,5 +79,15 @@ export class OrganizationBoxComponent extends Base implements OnInit {
         console.log(events);
       });
     this.isLoading = false;
+  }
+
+  /**
+   * When the create organization button is clicked.
+   * Opens the dialog to create organization
+   *
+   * @memberof OrganizationsComponent
+   */
+  requireAccounts(): void {
+    this.matDialog.open(RequireAccountsModalComponent, { width: '600px' });
   }
 }

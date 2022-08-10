@@ -33,6 +33,7 @@
         id="requestOrganizationButton"
         matTooltip="Request Organization"
         matTooltipPosition="after"
+        (click)="requireAccounts()"
       >
         <img src="../../../assets/svg/icons-plus.svg" alt="Register an Organization" class="pr-2 pb-1" />
         Request an Organization
@@ -100,19 +101,23 @@
           </div>
           <img class="mr-2" src="{{ event?.organization.avatarUrl }}" alt="Org avatar" />
         </div>
+        <div class="weight-bold py-2">
+          <a [routerLink]="'/starred'"> All activity<mat-icon class="mat-icon-sm">keyboard_double_arrow_right</mat-icon> </a>
+        </div>
       </div>
       <ng-template #noEvents>
-        <div *ngIf="!isLoading" fxLayout="column" class="h-100 no-events">
+        <div *ngIf="!isLoading" fxLayout="column" class="h-100" fxLayoutAlign="center center">
           <img src="../assets/svg/sub-nav/organization.svg" alt="my organizations" class="org-logo mb-4" />
-          <span>There are no recent activity in </span>
-          <div class="size-small">
-            <span>Use the</span>
+          <span>You are not in any organizations </span>
+          <div class="size-small no-organizations">
+            <span>Use the </span>
             <button
               mat-button
               class="txt-button"
               id="registerOrganizationButton"
               matTooltip="Register organization"
               matTooltipPosition="after"
+              (click)="requireAccounts()"
             >
               organization request wizard
             </button>
@@ -120,7 +125,13 @@
             <a routerLink="/organizations">organizations page</a>
             to star an organization.
           </div>
-          <a class="size-small" target="_blank" rel="noopener noreferrer" [href]="helpLink">Learn more about {{ entryTypeLowerCase }}s. </a>
+          <a
+            class="size-small mt-3"
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://docs.dockstore.org/en/latest/advanced-topics/organizations-and-collections.html"
+            >Learn more about organizations.
+          </a>
         </div>
       </ng-template>
     </app-loading>
