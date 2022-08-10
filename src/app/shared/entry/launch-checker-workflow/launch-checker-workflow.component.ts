@@ -15,6 +15,7 @@
  */
 import { Component, Input } from '@angular/core';
 import { Observable } from 'rxjs';
+import { map, takeUntil } from 'rxjs/operators';
 
 import { CheckerWorkflowQuery } from '../../state/checker-workflow.query';
 
@@ -27,8 +28,18 @@ export class LaunchCheckerWorkflowComponent {
   @Input() command: string;
   @Input() versionName: string;
   command$: Observable<string>;
+  templateCommand$: Observable<string>;
   checkerWorkflowPath$: Observable<string>;
   constructor(private checkerWorkflowQuery: CheckerWorkflowQuery) {
     this.checkerWorkflowPath$ = this.checkerWorkflowQuery.checkerWorkflowPath$;
+    this.templateCommand$ = this.checkerWorkflowPath$.pipe(
+      map(
+        (checkerWorkflowPath) =>
+          'dockstore workflow convert entry2json --entry ' +
+          checkerWorkflowPath +
+          (this.versionName ? ':' + this.versionName : '') +
+          '> checkparam.json'
+      )
+    );
   }
 }
