@@ -1,17 +1,37 @@
 <mat-card class="h-100 org-box">
-  <div id="header-bar" fxLayout="row" class="mat-card-header-separate">
+  <div id="header-bar" fxLayout="row" fxLayoutGap="1rem" class="mat-card-header-separate">
     <div id="organization-number" fxLayout="row">
       <mat-card-header fxLayout="row">
         <mat-card-title>Organizations</mat-card-title>
         <span class="bubble">{{ listOfOrganizations.length }}</span>
       </mat-card-header>
     </div>
-    <div>
+    <div fxLayout="row" fxLayoutGap="0.5rem">
+      <div id="pending-requests" fxLayout="row" fxLayoutAlign="center center" class="mb-3">
+        <mat-icon class="pending-requests mr-1">pending_icon</mat-icon>
+        <a routerLink="/accounts" class="size-small pending-links">
+          <div [ngPlural]="pendingRequests.length">
+            <ng-template ngPluralCase="=0">0 Pending Requests</ng-template>
+            <ng-template ngPluralCase="=1">1 Pending Request</ng-template>
+            <ng-template ngPluralCase="few">{{ pendingRequests.length }} Pending Requests</ng-template>
+          </div>
+        </a>
+      </div>
+      <div id="pending-invites" fxLayout="row" fxLayoutAlign="center center" class="mb-3">
+        <mat-icon class="pending-invites mr-1">error</mat-icon>
+        <a routerLink="/accounts" class="size-small pending-links">
+          <div [ngPlural]="pendingInvites.length">
+            <ng-template ngPluralCase="=0">0 Pending Invitations</ng-template>
+            <ng-template ngPluralCase="=1">1 Pending Invitation</ng-template>
+            <ng-template ngPluralCase="few">{{ pendingInvites.length }} Pending Invitations</ng-template>
+          </div>
+        </a>
+      </div>
       <button
         mat-button
-        class="private-btn small-btn-structure ml-3 mb-3"
-        id="registerOrganizationButton"
-        matTooltip="Register Organization"
+        class="private-btn small-btn-structure mb-3"
+        id="requestOrganizationButton"
+        matTooltip="Request Organization"
         matTooltipPosition="after"
       >
         <img src="../../../assets/svg/icons-plus.svg" alt="Register an Organization" class="pr-2 pb-1" />
@@ -21,57 +41,88 @@
   </div>
   <mat-divider></mat-divider>
   <mat-card-content class="p-3">
-    <span class="weight-bold">Recent Activity</span>
-    <div *ngFor="let event of events$ | async; last as last">
-      <div [ngSwitch]="event?.type">
-        <div *ngSwitchCase="EventType.CREATECOLLECTION">
-          <strong>{{ event.initiatorUser?.username }}</strong> created the collection
-          <a [routerLink]="'/organizations/' + event.organization?.name + '/collections/' + event.collection?.name"
-            >{{ event.collection?.name }}
-          </a>
-          in organization
-          <a [routerLink]="'/organizations/' + event.organization?.name">{{ event.organization?.displayName }}</a>
-          <div class="subtitle">{{ 'on ' + (event.dbCreateDate | date: 'medium') }}</div>
-          <mat-divider *ngIf="!last" class="custom-margin"></mat-divider>
-        </div>
-        <div *ngSwitchCase="EventType.ADDTOCOLLECTION">
-          <strong>{{ event.initiatorUser.username }} </strong> added the {{ event?.tool || event?.apptool ? 'tool' : 'workflow' }}
-          <a
-            [routerLink]="
-              event?.apptool
-                ? '/tools/' + event?.apptool.full_workflow_path
-                : event?.tool
-                ? '/tools/' + event?.tool.tool_path
-                : '/workflows/' + event?.workflow.full_workflow_path
-            "
-            >{{ (event?.tool | entryToDisplayName) || (event?.workflow | entryToDisplayName) || (event?.apptool | entryToDisplayName) }}</a
-          >
-          to the collection
-          <a [routerLink]="'/organizations/' + event.organization?.name + '/collections/' + event.collection?.name"
-            >{{ event.collection?.name }}
-          </a>
-          in organization
-          <a [routerLink]="'/organizations/' + event.organization?.name">{{ event.organization?.displayName }}</a>
-          <div class="subtitle">{{ 'on ' + (event.dbCreateDate | date: 'medium') }}</div>
-          <mat-divider *ngIf="!last" class="custom-margin"></mat-divider>
-        </div>
-        <div *ngSwitchCase="EventType.ADDUSERTOORG">
-          <strong>{{ event.initiatorUser.username }} </strong> added {{ event.user.username }} to the organization
-          <a [routerLink]="'/organizations/' + event.organization?.name">{{ event.organization?.displayName }}</a>
-          <div class="subtitle">{{ 'on ' + (event.dbCreateDate | date: 'medium') }}</div>
-          <mat-divider *ngIf="!last" class="custom-margin"></mat-divider>
-        </div>
-        <div *ngSwitchCase="EventType.MODIFYCOLLECTION">
-          <strong>{{ event.initiatorUser.username }} </strong> edited the collection
-          <a [routerLink]="'/organizations/' + event.organization?.name + '/collections/' + event.collection?.name"
-            >{{ event.collection?.name }}
-          </a>
-          in organization
-          <a [routerLink]="'/organizations/' + event.organization?.name">{{ event.organization?.displayName }}</a>
-          <div class="subtitle">{{ 'on ' + (event.dbCreateDate | date: 'medium') }}</div>
-          <mat-divider *ngIf="!last" class="custom-margin"></mat-divider>
+    <app-loading [loading]="isLoading | async">
+      <div *ngIf="events.length !== 0 || isLoading; else noEvents">
+        <h5 class="weight-bold">Recent Activity</h5>
+        <div class="size-small list-events" *ngFor="let event of events" fxLayout="row" fxLayoutAlign="space-between center">
+          <div fxLayout="row" fxLayoutAlign="start center">
+            <img src="{{ event?.initiatorUser?.avatarUrl }}" alt="User avatar" />
+            <div [ngSwitch]="event.type">
+              <div *ngSwitchCase="EventType.CREATECOLLECTION" class="my-3">
+                <strong>{{ event.initiatorUser?.username }}</strong> created the collection
+                <a [routerLink]="'/organizations/' + event.organization?.name + '/collections/' + event.collection?.name"
+                  >{{ event.collection?.name }}
+                </a>
+                in organization
+                <a [routerLink]="'/organizations/' + event.organization?.name">{{ event.organization?.displayName }}</a>
+                <div class="subtitle">{{ event.dbCreateDate | date: 'medium' }}</div>
+              </div>
+              <div *ngSwitchCase="EventType.ADDTOCOLLECTION" class="my-3">
+                <strong>{{ event.initiatorUser.username }} </strong> added the {{ event?.tool || event?.apptool ? 'tool' : 'workflow' }}
+                <a
+                  [routerLink]="
+                    event?.apptool
+                      ? '/tools/' + event?.apptool.full_workflow_path
+                      : event?.tool
+                      ? '/tools/' + event?.tool.tool_path
+                      : '/workflows/' + event?.workflow.full_workflow_path
+                  "
+                  >{{ event?.apptool ? event?.apptool.workflowName : event?.tool ? event?.tool.name : event?.workflow.workflowName }}</a
+                >
+                to the collection
+                <a [routerLink]="'/organizations/' + event.organization?.name + '/collections/' + event.collection?.name"
+                  >{{ event.collection?.name }}
+                </a>
+                in organization
+                <a [routerLink]="'/organizations/' + event.organization?.name">{{ event.organization?.displayName }}</a>
+                <div class="subtitle">{{ event.dbCreateDate | date: 'medium' }}</div>
+              </div>
+              <div *ngSwitchCase="EventType.ADDUSERTOORG" class="my-3">
+                <strong>{{ event.initiatorUser.username }} </strong> added {{ event.user.username }} to the organization
+                <a [routerLink]="'/organizations/' + event.organization?.name">{{ event.organization?.displayName }}</a>
+                <div class="subtitle">{{ event.dbCreateDate | date: 'medium' }}</div>
+              </div>
+              <div *ngSwitchCase="EventType.MODIFYCOLLECTION" class="my-3">
+                <strong>{{ event.initiatorUser.username }} </strong> edited the collection
+                <a [routerLink]="'/organizations/' + event.organization?.name + '/collections/' + event.collection?.name"
+                  >{{ event.collection?.name }}
+                </a>
+                in organization
+                <a [routerLink]="'/organizations/' + event.organization?.name">{{ event.organization?.displayName }}</a>
+                <div class="subtitle">{{ event.dbCreateDate | date: 'medium' }}</div>
+              </div>
+              <div *ngSwitchCase="EventType.MODIFYORG" class="my-3">
+                <strong>{{ event.initiatorUser.username }} </strong> edited the organization
+                <a [routerLink]="'/organizations/' + event.organization?.name">{{ event.organization?.displayName }}</a>
+                <div class="subtitle">{{ event.dbCreateDate | date: 'medium' }}</div>
+              </div>
+            </div>
+          </div>
+          <img class="mr-2" src="{{ event?.organization.avatarUrl }}" alt="Org avatar" />
         </div>
       </div>
-    </div>
+      <ng-template #noEvents>
+        <div *ngIf="!isLoading" fxLayout="column" class="h-100 no-events">
+          <img src="../assets/svg/sub-nav/organization.svg" alt="my organizations" class="org-logo mb-4" />
+          <span>There are no recent activity in </span>
+          <div class="size-small">
+            <span>Use the</span>
+            <button
+              mat-button
+              class="txt-button"
+              id="registerOrganizationButton"
+              matTooltip="Register organization"
+              matTooltipPosition="after"
+            >
+              organization request wizard
+            </button>
+            to request an organization or visit the
+            <a routerLink="/organizations">organizations page</a>
+            to star an organization.
+          </div>
+          <a class="size-small" target="_blank" rel="noopener noreferrer" [href]="helpLink">Learn more about {{ entryTypeLowerCase }}s. </a>
+        </div>
+      </ng-template>
+    </app-loading>
   </mat-card-content>
 </mat-card>

@@ -1,15 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { RecentEventsQuery } from 'app/home-page/state/recent-events.query';
 import { RecentEventsService } from 'app/home-page/state/recent-events.service';
+import { RecentEventsStore } from 'app/home-page/state/recent-events.store';
 import { RequestsQuery } from 'app/loginComponents/state/requests.query';
 import { RequestsService } from 'app/loginComponents/state/requests.service';
+import { EventsQuery } from 'app/organizations/state/events.query';
 import { Base } from 'app/shared/base';
 import { Dockstore } from 'app/shared/dockstore.model';
-import { User, Event, Organization, OrganizationUser } from 'app/shared/openapi';
-import { EntriesService, OrganizationUpdateTime, UsersService } from 'app/shared/swagger';
+import { User, Event, Organization, OrganizationUser, EventsService } from 'app/shared/openapi';
+import { EntriesService, UsersService } from 'app/shared/swagger';
 import { UserQuery } from 'app/shared/user/user.query';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-organization-box',
@@ -19,10 +21,7 @@ import { map } from 'rxjs/operators';
 export class OrganizationBoxComponent extends Base implements OnInit {
   Dockstore = Dockstore;
   listOfOrganizations: Array<Organization> = [];
-  events$: Observable<Event[]>;
-  loading$: Observable<boolean>;
-  noEvents$: Observable<boolean>;
-  filterText: string;
+  events: Array<Event> = [];
   firstCall = true;
   hasOrganizations = false;
   user: User;
@@ -33,8 +32,9 @@ export class OrganizationBoxComponent extends Base implements OnInit {
     Event.TypeEnum.ADDUSERTOORG,
     Event.TypeEnum.MODIFYCOLLECTION,
   ];
-  pendingRequests: Array<OrganizationUser>;
-  pendingInvites: Array<OrganizationUser>;
+  pendingRequests: Array<OrganizationUser> = [];
+  pendingInvites: Array<OrganizationUser> = [];
+  EventType = Event.TypeEnum;
 
   public isLoading = true;
 
@@ -42,10 +42,8 @@ export class OrganizationBoxComponent extends Base implements OnInit {
     protected userQuery: UserQuery,
     protected usersService: UsersService,
     protected entriesService: EntriesService,
-    private recentEventsService: RecentEventsService,
-    private recentEventsQuery: RecentEventsQuery,
-    private requestsService: RequestsService,
-    private requestsQuery: RequestsQuery
+    private requestsQuery: RequestsQuery,
+    private eventsService: EventsService
   ) {
     super();
     this.user = this.userQuery.getValue().user;
@@ -54,23 +52,30 @@ export class OrganizationBoxComponent extends Base implements OnInit {
   ngOnInit(): void {
     this.getMyOrganizations();
     this.requestsQuery.myPendingOrganizationRequests$.subscribe((requests) => {
-      this.pendingRequests = requests;
+      if (requests) {
+        this.pendingRequests = requests;
+      }
     });
     this.requestsQuery.myOrganizationInvites$.subscribe((invites) => {
-      this.pendingInvites = invites;
+      if (invites) {
+        this.pendingRequests = invites;
+      }
     });
   }
 
   getMyOrganizations() {
     this.username = this.user.username;
-    this.recentEventsService.getOrganizations();
+    // this.recentEventsService.getOrganizations();
     this.usersService.getStarredOrganizations().subscribe((starredOrganizations) => {
       this.listOfOrganizations = starredOrganizations;
     });
-    this.events$ = this.recentEventsQuery.selectAll({
-      filterBy: (entity) => this.supportedEventTypes.includes(entity.type),
-    });
-    this.loading$ = this.recentEventsQuery.selectLoading();
-    this.noEvents$ = this.events$.pipe(map((events) => !events || events.length === 0));
+    this.eventsService
+      .getEvents('STARRED_ORGANIZATION', 5)
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((events) => {
+        this.events = events;
+        console.log(events);
+      });
+    this.isLoading = false;
   }
 }
