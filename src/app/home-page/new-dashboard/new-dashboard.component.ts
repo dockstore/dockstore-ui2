@@ -1,12 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { MyWorkflowsService } from 'app/myworkflows/myworkflows.service';
 import { Base } from 'app/shared/base';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { User } from '../../shared/swagger/model/user';
 import { UserQuery } from '../../shared/user/user.query';
-import { WorkflowService } from 'app/shared/state/workflow.service';
-import { WorkflowQuery } from 'app/shared/state/workflow.query';
 import { RegisterToolService } from 'app/container/register-tool/register-tool.service';
 import { MatDialog } from '@angular/material/dialog';
 import { RegisterToolComponent } from 'app/container/register-tool/register-tool.component';
@@ -22,10 +19,7 @@ export class NewDashboardComponent extends Base implements OnInit {
   user: User;
 
   constructor(
-    protected userQuery: UserQuery,
-    protected myWorkflowsService: MyWorkflowsService,
-    protected workflowService: WorkflowService,
-    protected workflowQuery: WorkflowQuery,
+    private userQuery: UserQuery,
     private registerToolService: RegisterToolService,
     private dialog: MatDialog,
     private alertService: AlertService

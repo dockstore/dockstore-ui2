@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { EntryUpdateTime, User, UsersService } from 'app/shared/openapi';
 import { UserQuery } from 'app/shared/user/user.query';
-import { debounceTime, takeUntil } from 'rxjs/operators';
+import { debounceTime, finalize, takeUntil } from 'rxjs/operators';
 import { WorkflowService } from 'app/shared/state/workflow.service';
 import { WorkflowQuery } from 'app/shared/state/workflow.query';
 import { MyEntriesQuery } from 'app/shared/state/my-entries.query';
@@ -25,21 +25,17 @@ export class EntryBoxComponent extends Base implements OnInit {
   filterText: string;
   listOfEntries: Array<EntryUpdateTime> = [];
   totalEntries: number = 0;
-  firstLoad = true;
   user: User;
   helpLink: string;
   allEntriesLink: string;
+  hasEntries: boolean;
+  firstLoad = true;
   public isLoading = true;
 
   constructor(
     private registerToolService: RegisterToolService,
-    protected userQuery: UserQuery,
-    protected workflowService: WorkflowService,
-    protected workflowQuery: WorkflowQuery,
-    protected myWorkflowsService: MyWorkflowsService,
-    protected myEntriesQuery: MyEntriesQuery,
-    protected sessionQuery: SessionQuery,
-    protected sessionService: SessionService,
+    private userQuery: UserQuery,
+    private myWorkflowsService: MyWorkflowsService,
     private usersService: UsersService
   ) {
     super();
@@ -69,38 +65,28 @@ export class EntryBoxComponent extends Base implements OnInit {
   getMyEntries() {
     this.usersService
       .getUserEntries(null, this.filterText)
-      .pipe(debounceTime(750), takeUntil(this.ngUnsubscribe))
+      .pipe(
+        finalize(() => (this.isLoading = false)),
+        debounceTime(750),
+        takeUntil(this.ngUnsubscribe)
+      )
       .subscribe((myEntries: Array<EntryUpdateTime>) => {
         this.listOfEntries = [];
-        myEntries.forEach((entry: EntryUpdateTime) => {
-          if (this.entryType === entry.entryType && entry.entryType === EntryUpdateTime.EntryTypeEnum.WORKFLOW) {
-            if (this.firstLoad) {
-              this.totalEntries += 1;
-            }
+        myEntries
+          .filter(
+            (entry) =>
+              entry.entryType === this.entryType ||
+              (this.entryType === EntryUpdateTime.EntryTypeEnum.TOOL && entry.entryType === EntryUpdateTime.EntryTypeEnum.APPTOOL)
+          )
+          .forEach((entry: EntryUpdateTime) => {
             if (this.listOfEntries.length < 7) {
               this.listOfEntries.push(entry);
             }
-          } else if (
-            this.entryType === EntryUpdateTime.EntryTypeEnum.TOOL &&
-            (entry.entryType === EntryUpdateTime.EntryTypeEnum.APPTOOL || entry.entryType === EntryUpdateTime.EntryTypeEnum.TOOL)
-          ) {
-            if (this.firstLoad) {
-              this.totalEntries += 1;
-            }
-            if (this.listOfEntries.length < 7) {
-              this.listOfEntries.push(entry);
-            }
-          } else if (this.entryType === entry.entryType && this.entryType === EntryUpdateTime.EntryTypeEnum.SERVICE) {
-            if (this.firstLoad) {
-              this.totalEntries += 1;
-            }
-            if (this.listOfEntries.length < 7) {
-              this.listOfEntries.push(entry);
-            }
-          }
-        });
+          });
+        if (this.firstLoad) {
+          this.hasEntries = this.listOfEntries.length !== 0;
+        }
       });
-    this.isLoading = false;
   }
 
   onTextChange(event: any) {

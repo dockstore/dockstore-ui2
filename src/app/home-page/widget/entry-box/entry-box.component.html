@@ -3,7 +3,7 @@
     <div id="workflow-number" fxLayout="row">
       <mat-card-header fxLayout="row">
         <mat-card-title>{{ entryTypeLowerCase | titlecase }}s</mat-card-title>
-        <span class="bubble">{{ totalEntries }}</span>
+        <span class="bubble">{{ listOfEntries.length }}</span>
       </mat-card-header>
     </div>
     <button
@@ -21,7 +21,7 @@
   </div>
   <mat-divider></mat-divider>
   <mat-card-content class="p-3 entries-container">
-    <div *ngIf="totalEntries !== 0 || isLoading; else noEntries">
+    <div *ngIf="hasEntries || isLoading; else noEntries">
       <mat-form-field appearance="outline" class="search-form-field w-100 pb-0">
         <input
           matInput
