@@ -1,0 +1,18 @@
+@use '@angular/material' as mat;
+@import '/src/materialColorScheme.scss';
+
+.entry-holder {
+  max-height: 48rem;
+}
+
+.box-container {
+  display: flex;
+}
+
+.fx-grow {
+  flex-grow: 1;
+}
+
+.mat-card-header-separate {
+  justify-content: space-between;
+}

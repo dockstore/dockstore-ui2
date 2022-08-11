@@ -46,12 +46,14 @@ import { CustomHeaderInterceptor } from './interceptors/custom-header.intercepto
 import { WorkflowVersionsInterceptor } from './interceptors/workflow-versions.interceptor';
 import { LoginComponent } from './login/login.component';
 import { LoginService } from './login/login.service';
+import { AccountSidebarModule } from './loginComponents/accounts/account-sidebar/account-sidebar.module';
 import { AccountsComponent } from './loginComponents/accounts/accounts.component';
 import { ControlsComponent } from './loginComponents/accounts/controls/controls.component';
 import { DeleteAccountDialogComponent } from './loginComponents/accounts/controls/delete-account-dialog/delete-account-dialog.component';
 import { AccountsExternalComponent } from './loginComponents/accounts/external/accounts.component';
 import { AccountsService } from './loginComponents/accounts/external/accounts.service';
 import { GetTokenUsernamePipe } from './loginComponents/accounts/external/getTokenUsername.pipe';
+import { ChangeUsernameModule } from './loginComponents/accounts/internal/change-username/change-username.module';
 import { AuthComponent } from './loginComponents/auth/auth.component';
 import { DownloadCLIClientComponent } from './loginComponents/onboarding/downloadcliclient/downloadcliclient.component';
 import { OnboardingComponent } from './loginComponents/onboarding/onboarding.component';
@@ -81,7 +83,9 @@ import { HeaderModule } from './shared/modules/header.module';
 import { ImgFallbackModule } from './shared/modules/img-fallback.module';
 import { ListContainersModule } from './shared/modules/list-containers.module';
 import { ListWorkflowsModule } from './shared/modules/list-workflows.module';
+import { MarkdownWrapperModule } from './shared/modules/markdown-wrapper.module';
 import { CustomMaterialModule } from './shared/modules/material.module';
+import { MySidebarModule } from './shared/modules/my-sidebar.module';
 import { OrderByModule } from './shared/modules/orderby.module';
 import { SnackbarModule } from './shared/modules/snackbar.module';
 import { ApiModule as ApiModule2 } from './shared/openapi/api.module';
@@ -100,7 +104,6 @@ import { UrlResolverService } from './shared/url-resolver.service';
 import { VerifiedByService } from './shared/verified-by.service';
 import { SitemapComponent } from './sitemap/sitemap.component';
 import { StargazersModule } from './stargazers/stargazers.module';
-import { MarkdownWrapperModule } from './shared/modules/markdown-wrapper.module';
 import { StarredEntriesComponent } from './starredentries/starredentries.component';
 import { StarringModule } from './starring/starring.module';
 import { TosBannerService } from './tosBanner/state/tos-banner.service';
@@ -108,9 +111,6 @@ import { TosBannerComponent } from './tosBanner/tos-banner.component';
 import { ExporterStepComponent } from './workflow/snapshot-exporter-modal/exporter-step/exporter-step.component';
 import { SnaphotExporterModalComponent } from './workflow/snapshot-exporter-modal/snaphot-exporter-modal.component';
 import { ViewService } from './workflow/view/view.service';
-import { MySidebarModule } from './shared/modules/my-sidebar.module';
-import { AccountSidebarModule } from './loginComponents/accounts/account-sidebar/account-sidebar.module';
-import { ChangeUsernameModule } from './loginComponents/accounts/internal/change-username/change-username.module';
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   showDelay: 500,
@@ -239,6 +239,7 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: myCustomSnackbarDefaults },
     { provide: HTTP_INTERCEPTORS, useClass: WorkflowVersionsInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: CustomHeaderInterceptor, multi: true },
+    { provide: Window, useValue: window },
   ],
   bootstrap: [AppComponent],
 })

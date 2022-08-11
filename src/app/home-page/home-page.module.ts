@@ -24,6 +24,19 @@ import { NewsUpdatesComponent } from './widget/news-updates/news-updates.compone
 import { OrganizationsComponent } from './widget/organizations/organizations.component';
 import { RequestsComponent } from './widget/requests/requests.component';
 import { MySidebarModule } from '../shared/modules/my-sidebar.module';
+import { EntryBoxComponent } from './widget/entry-box/entry-box.component';
+import { MytoolsService } from 'app/mytools/mytools.service';
+import { MyWorkflowsService } from 'app/myworkflows/myworkflows.service';
+import { MyServicesService } from 'app/myworkflows/my-services.service';
+import { MyBioWorkflowsService } from 'app/myworkflows/my-bio-workflows.service';
+import { MyEntriesStateService } from 'app/shared/state/my-entries.service';
+import { MyEntriesStore } from 'app/shared/state/my-entries.store';
+import { MyEntriesQuery } from 'app/shared/state/my-entries.query';
+import { RegisterWorkflowModalService } from 'app/workflow/register-workflow-modal/register-workflow-modal.service';
+import { RegisterToolService } from 'app/container/register-tool/register-tool.service';
+import { RegisterToolComponent } from 'app/container/register-tool/register-tool.component';
+import { NewDashboardComponent } from './new-dashboard/new-dashboard.component';
+import { OrganizationBoxComponent } from './widget/organization-box/organization-box.component';
 
 @NgModule({
   imports: [
@@ -54,6 +67,21 @@ import { MySidebarModule } from '../shared/modules/my-sidebar.module';
     FeaturedNewsComponent,
     NewsUpdatesComponent,
     GettingStartedComponent,
+    EntryBoxComponent,
+    RegisterToolComponent,
+    NewDashboardComponent,
+    OrganizationBoxComponent,
+  ],
+  providers: [
+    MytoolsService,
+    MyWorkflowsService,
+    MyServicesService,
+    MyBioWorkflowsService,
+    MyEntriesStateService,
+    MyEntriesStore,
+    MyEntriesQuery,
+    RegisterToolService,
+    RegisterWorkflowModalService,
   ],
   exports: [NgxJsonLdModule],
 })

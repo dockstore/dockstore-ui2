@@ -1,0 +1,57 @@
+@use '@angular/material' as mat;
+@import '/src/materialColorScheme.scss';
+
+.org-box {
+  flex: 1 1 0px;
+  width: 0;
+}
+
+.list-events {
+  border-bottom: solid 1px mat.get-color-from-palette($kim-gray, 3);
+  line-height: 2rem;
+}
+
+img[alt='User avatar'] {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  border: solid 1px mat.get-color-from-palette($dockstore-app-gray, 4);
+  margin: 0.8rem;
+}
+
+img[alt='Org avatar'] {
+  width: 6rem;
+}
+
+.pending-requests {
+  color: $service-color;
+}
+
+.pending-invites {
+  color: mat.get-color-from-palette($dockstore-app-error, 1);
+}
+
+.pending-links {
+  width: 6rem;
+  line-height: 1.5rem;
+}
+
+.mat-card-header-separate {
+  justify-content: space-between;
+}
+
+.org-logo {
+  min-width: 5rem;
+}
+
+.no-organizations {
+  text-align: center;
+  line-height: 2rem;
+}
+
+.txt-button {
+  text-decoration: underline;
+  color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
+  font-size: 12px;
+  padding: 0;
+}
