@@ -18,7 +18,6 @@ BASE_BRANCH_OUTPUT_FILE="base_branch"
 if [ "$#" -eq 1 ] && [ "$1" == "base-branch" ]
 then
   OUTPUT_FILE=$BASE_BRANCH_OUTPUT_FILE
-  git checkout "$npm_package_config_base_branch"
 else
   OUTPUT_FILE=$CURRENT_BRANCH_OUTPUT_FILE
   pa11y-ci > ${OUTPUT_FILE}.txt || true
