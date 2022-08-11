@@ -84,7 +84,15 @@
             />
           </mat-expansion-panel-header>
           <!-- watch out for GetFacetSearchResultsPipe when adding facets with search -->
-          <div *ngIf="key === 'author' || key === 'labels.value.keyword' || key === 'namespace' || key === 'organization'">
+          <div
+            *ngIf="
+              key === 'author' ||
+              key === 'labels.value.keyword' ||
+              key === 'namespace' ||
+              key === 'organization' ||
+              key === 'categories.name.keyword'
+            "
+          >
             <mat-form-field appearance="outline">
               <mat-label>Search for {{ key.substring(0, key.indexOf('.')) }}</mat-label>
               <input
@@ -197,7 +205,11 @@
                 <fa-icon [icon]="fullyExpandMap.get(key) ? faAngleDoubleUp : faAngleDoubleDown" aria-hidden="true"></fa-icon>
                 <span
                   *ngIf="
-                    key !== 'author' && key !== 'labels.value.keyword' && key !== 'namespace' && key !== 'organization';
+                    key !== 'author' &&
+                      key !== 'labels.value.keyword' &&
+                      key !== 'namespace' &&
+                      key !== 'organization' &&
+                      key != 'categories.name.keyword';
                     else facetLoading
                   "
                   >{{ fullyExpandMap.get(key) ? 'Hide' : orderedBuckets.get(key).Items.size - 5 + ' more' }}</span

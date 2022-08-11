@@ -17,7 +17,11 @@ export class GetFacetSearchResultsPipe implements PipeTransform {
     if (
       !items ||
       !searchText ||
-      (facet !== 'author' && facet !== 'organization' && facet !== 'labels.value.keyword' && facet !== 'namespace')
+      (facet !== 'author' &&
+        facet !== 'organization' &&
+        facet !== 'labels.value.keyword' &&
+        facet !== 'namespace' &&
+        facet !== 'categories.name.keyword')
     ) {
       return items;
     }
