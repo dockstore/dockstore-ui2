@@ -5,8 +5,7 @@ import { RequireAccountsModalComponent } from 'app/organizations/registerOrganiz
 import { Base } from 'app/shared/base';
 import { Dockstore } from 'app/shared/dockstore.model';
 import { Event, Organization, OrganizationUser, EventsService } from 'app/shared/openapi';
-import { EntriesService, UsersService } from 'app/shared/swagger';
-import { UserQuery } from 'app/shared/user/user.query';
+import { UsersService } from 'app/shared/swagger';
 import { takeUntil } from 'rxjs/operators';
 
 @Component({
