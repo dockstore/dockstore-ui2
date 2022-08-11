@@ -13,28 +13,11 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import { contains } from 'cypress/types/jquery';
-import { Repository } from '../../../src/app/shared/openapi/model/repository';
-import { goToTab, isActiveTab, resetDB, setTokenUserViewPort } from '../../support/commands';
+import { resetDB, setTokenUserViewPort } from '../../support/commands';
 
 describe('Dockstore dashboard', () => {
   resetDB();
   setTokenUserViewPort();
-
-  const cwlDescriptorType = 'CWL';
-  const wdlDescriptorType = 'WDL';
-  const nextflowDescriptorType = 'Nextflow';
-  //   it('can open register modals from the homepage', () => {
-  //     cy.visit('/dashboard?newDashboard');
-  //     cy.get('#registerWorkflowButton').contains('Register a Workflow').should('be.visible').click();
-  //     cy.contains('Register Workflow');
-  //     cy.contains('Create workflows on Dockstore.org');
-  //     cy.get('[data-cy=close-modal-btn]').should('have.text', 'Close').click();
-  //     cy.contains('Tools');
-  //     cy.get('#registerToolButton').contains('Register a Tool').should('be.visible').click();
-  //     cy.contains('Register Tool');
-  //     cy.contains('Close').click();
-  //   });
 
   it('have workflows visible from homepage', () => {
     cy.visit('/dashboard?newDashboard');
@@ -56,5 +39,18 @@ describe('Dockstore dashboard', () => {
     cy.contains('You have not registered any services.');
     cy.get('[data-cy=no-entry-register-modal]').contains('service');
     cy.get('[data-cy=help-link').should('have.attr', 'href').and('include', 'getting-started-with-services');
+  });
+
+  it('can open register modals from the homepage', () => {
+    cy.visit('/dashboard?newDashboard');
+    cy.get('#registerWorkflowButton').contains('Register a Workflow').should('be.visible').click();
+    cy.contains('Register Workflow');
+    cy.contains('Create workflows on Dockstore.org');
+    cy.get('[data-cy=close-modal-btn]').should('have.text', 'Close').click();
+    cy.contains('Tools');
+    cy.get('#registerToolButton').contains('Register a Tool').should('be.visible').click();
+    cy.contains('Register Tool');
+    cy.contains('Tool storage type');
+    cy.contains('Close').click();
   });
 });
