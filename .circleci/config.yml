@@ -330,7 +330,7 @@ jobs:
           command: bash -i -c "npm install -g pa11y-ci"
       - run:
           name: Run pa11y-ci
-          command: bash -i -c "pa11y-ci"
+          command: bash -i -c "npm run accessibility-test"
 
 
   #    executor: integration_test_exec
@@ -377,9 +377,6 @@ jobs:
       - checkout
       - browser-tools/install-chrome
       - browser-tools/install-chromedriver
-      - run:
-          name: Checkout feature/SEAB-1498/add-pa11yci-file
-          command: git checkout feature/SEAB-1498/add-pa11yci-file
       - install_container_dependencies
       - restore_cache:
           key: dep-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
@@ -421,7 +418,7 @@ jobs:
           command: bash -i -c "npm install -g pa11y-ci"
       - run:
           name: Run pa11y-ci
-          command: bash -i -c "pa11y-ci"
+          command: bash -i -c ""npm run accessibility-test"
 
 
 
