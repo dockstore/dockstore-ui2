@@ -11,15 +11,14 @@ import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-organization-box',
-  templateUrl: '/organization-box.component.html',
-  styleUrls: ['/organization-box.component.scss'],
+  templateUrl: './organization-box.component.html',
+  styleUrls: ['./organization-box.component.scss'],
 })
 export class OrganizationBoxComponent extends Base implements OnInit {
   Dockstore = Dockstore;
   listOfOrganizations: Array<Organization> = [];
   events: Array<Event> = [];
   firstCall = true;
-  hasOrganizations = false;
   readonly supportedEventTypes = [
     Event.TypeEnum.CREATECOLLECTION,
     Event.TypeEnum.ADDTOCOLLECTION,
@@ -33,9 +32,7 @@ export class OrganizationBoxComponent extends Base implements OnInit {
   public isLoading = true;
 
   constructor(
-    protected userQuery: UserQuery,
-    protected usersService: UsersService,
-    protected entriesService: EntriesService,
+    private usersService: UsersService,
     private requestsQuery: RequestsQuery,
     private eventsService: EventsService,
     private matDialog: MatDialog
