@@ -324,6 +324,11 @@
                     aria-label="Select an option"
                     (change)="topicSelectionChange($event)"
                     [disabled]="tool?.mode === DockstoreToolType.ModeEnum.HOSTED"
+                    [matTooltip]="
+                      tool?.mode === DockstoreToolType.ModeEnum.HOSTED
+                        ? 'Hosted tool topics are always manually entered'
+                        : 'Select whether the automatically harvested topic from source control is used or a manually input one'
+                    "
                   >
                     <mat-radio-button [value]="TopicSelectionEnum.AUTOMATIC">Automatic</mat-radio-button>
                     <mat-radio-button class="ml-3" [value]="TopicSelectionEnum.MANUAL">Manual</mat-radio-button>
