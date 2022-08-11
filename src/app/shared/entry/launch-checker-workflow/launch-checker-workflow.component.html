@@ -19,10 +19,13 @@
   matTooltip="Commands for running the checker workflow of this tool/workflow through Dockstore CLI"
 >
   To run a checker workflow for this entry, first make a runtime JSON template and fill in desired inputs, outputs, and other parameters:
-  <pre>
-dockstore workflow convert entry2json --entry {{ checkerWorkflowPath$ | async
-    }}{{ versionName ? ':' + versionName : '' }} > checkparam.json</pre
-  >
+  <button mat-icon-button color="secondary" matTooltip="Copy command" [cdkCopyToClipboard]="templateCommand$ | async" appSnackbar>
+    <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
+  </button>
+  <pre>{{ templateCommand$ | async }}</pre>
   Run the checker workflow with:
+  <button mat-icon-button color="secondary" matTooltip="Copy command" [cdkCopyToClipboard]="command" appSnackbar>
+    <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
+  </button>
   <pre>{{ command }}</pre>
 </mat-card>
