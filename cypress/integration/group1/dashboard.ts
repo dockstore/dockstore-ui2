@@ -40,17 +40,4 @@ describe('Dockstore dashboard', () => {
     cy.get('[data-cy=no-entry-register-modal]').contains('service');
     cy.get('[data-cy=help-link').should('have.attr', 'href').and('include', 'getting-started-with-services');
   });
-
-  it('can open register modals from the homepage', () => {
-    cy.visit('/dashboard?newDashboard');
-    cy.get('#registerWorkflowButton').contains('Register a Workflow').should('be.visible').click();
-    cy.contains('Register Workflow');
-    cy.contains('Create workflows on Dockstore.org');
-    cy.get('[data-cy=close-modal-btn]').should('have.text', 'Close').click();
-    cy.contains('Tools');
-    cy.get('#registerToolButton').contains('Register a Tool').should('be.visible').click();
-    cy.contains('Register Tool');
-    cy.contains('Tool storage type');
-    cy.contains('Close').click();
-  });
 });
