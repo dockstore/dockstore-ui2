@@ -209,7 +209,7 @@
                       key !== 'labels.value.keyword' &&
                       key !== 'namespace' &&
                       key !== 'organization' &&
-                      key != 'categories.name.keyword';
+                      key !== 'categories.name.keyword';
                     else facetLoading
                   "
                   >{{ fullyExpandMap.get(key) ? 'Hide' : orderedBuckets.get(key).Items.size - 5 + ' more' }}</span
