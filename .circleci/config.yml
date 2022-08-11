@@ -421,7 +421,7 @@ jobs:
           command: bash -i -c "npm install -g pa11y-ci"
       - run:
           name: Run pa11y-ci
-          command: bash -i -c ""npm run accessibility-test"
+          command: bash -i -c "npm run accessibility-test"
 
 
 
