@@ -38,6 +38,9 @@ describe('Dockstore dashboard', () => {
     cy.contains('Services');
     cy.contains('You have not registered any services.');
     cy.get('[data-cy=no-entry-register-modal]').contains('service');
-    cy.get('[data-cy=help-link').should('have.attr', 'href').and('include', 'getting-started-with-services');
+    cy.get('[data-cy=help-link')
+      .contains('Learn more about services')
+      .should('have.attr', 'href')
+      .and('include', 'getting-started-with-services');
   });
 });
