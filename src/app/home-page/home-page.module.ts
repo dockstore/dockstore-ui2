@@ -37,6 +37,7 @@ import { RegisterToolService } from 'app/container/register-tool/register-tool.s
 import { RegisterToolComponent } from 'app/container/register-tool/register-tool.component';
 import { NewDashboardComponent } from './new-dashboard/new-dashboard.component';
 import { OrganizationBoxComponent } from './widget/organization-box/organization-box.component';
+import { StarredBoxComponent } from './widget/starred-box/starred-box.component';
 
 @NgModule({
   imports: [
@@ -71,6 +72,7 @@ import { OrganizationBoxComponent } from './widget/organization-box/organization
     RegisterToolComponent,
     NewDashboardComponent,
     OrganizationBoxComponent,
+    StarredBoxComponent,
   ],
   providers: [
     MytoolsService,
