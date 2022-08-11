@@ -138,7 +138,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   // For search within facets
   public facetAutocompleteTerms$: Observable<Array<string>>;
   public hasFacetAutoCompleteTerms$: Observable<boolean>;
-  public facetSearchText = '';
+  public facetSearchTextMap: Map<string, string>;
   /**
    * This should be parameterised from src/app/shared/dockstore.model.ts
    * @param providerService
@@ -163,6 +163,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.friendlyNames = this.searchService.initializeFriendlyNames();
     this.entryOrder = this.searchService.initializeEntryOrder();
     this.toolTips = this.searchService.initializeToolTips();
+    this.clearFacetSearches();
   }
 
   getKeys(bucketMap: Map<any, any>): Array<string> {
@@ -527,7 +528,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   resetFilters() {
     this.searchService.reset();
     this.searchTerm = false;
-    this.facetSearchText = '';
+    this.clearFacetSearches();
     this.unsubmittedSearchText = '';
   }
 
@@ -598,9 +599,19 @@ export class SearchComponent implements OnInit, OnDestroy {
       this.checkboxMap.get(category).set(categoryValue, !checked);
       this.filters = this.searchService.handleFilters(category, categoryValue, this.filters);
     }
-    this.facetSearchText = '';
+    this.clearFacetSearches();
     this.searchService.setSearchText(this.unsubmittedSearchText);
     this.updatePermalink();
+  }
+
+  private clearFacetSearches() {
+    this.facetSearchTextMap = new Map<string, string>([
+      ['author', ''],
+      ['labels.value.keyword', ''],
+      ['namespace', ''],
+      ['organization', ''],
+      ['categories.name.keyword', ''],
+    ]);
   }
 
   clickExpand(key: string) {
@@ -642,7 +653,7 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   // Get autocomplete terms
   onFacetSearchKey(key) {
-    const values = this.facetSearchText.toLowerCase();
+    const values = this.facetSearchTextMap.get(key).toLowerCase();
     const unfilteredItems = Array.from(this.orderedBuckets.get(key).Items.entries());
     const filteredItems = unfilteredItems.filter((item) => item[0].toLowerCase().includes(values)).map((item) => item[0]);
     this.searchService.setFacetAutocompleteTerms(filteredItems);
