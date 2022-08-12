@@ -359,8 +359,8 @@ export class SearchService {
     return [url, httpParams.toString()];
   }
 
-  handleLink(linkArray: Array<string>) {
-    this.router.navigateByUrl('search?' + linkArray[1]);
+  handleLink(linkArray: Array<string>, currentLocation: string) {
+    this.router.navigateByUrl('search?' + linkArray[1], currentLocation == '/search' ? { replaceUrl: true } : {});
     this.setShortUrl(linkArray[0] + '?' + linkArray[1]);
   }
 
@@ -644,9 +644,9 @@ export class SearchService {
    */
   saveCurrentTabAndClear(index: number) {
     if (index === SearchService.WORKFLOWS_TAB_INDEX) {
-      this.router.navigateByUrl('search?entryType=workflows&searchMode=Files');
+      this.router.navigateByUrl('search?entryType=workflows&searchMode=files');
     } else {
-      this.router.navigateByUrl('search?entryType=tools&searchMode=Files');
+      this.router.navigateByUrl('search?entryType=tools&searchMode=files');
     }
   }
 
