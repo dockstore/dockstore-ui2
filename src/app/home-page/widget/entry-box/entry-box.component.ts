@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { EntryUpdateTime, User, UsersService } from 'app/shared/openapi';
-import { UserQuery } from 'app/shared/user/user.query';
 import { debounceTime, finalize, takeUntil } from 'rxjs/operators';
 import { MyWorkflowsService } from 'app/myworkflows/myworkflows.service';
 import { RegisterToolService } from 'app/container/register-tool/register-tool.service';
@@ -15,7 +14,10 @@ import { Dockstore } from 'app/shared/dockstore.model';
 })
 export class EntryBoxComponent extends Base implements OnInit {
   Dockstore = Dockstore;
-  @Input() entryType: EntryUpdateTime.EntryTypeEnum;
+  @Input() entryType:
+    | typeof EntryUpdateTime.EntryTypeEnum.TOOL
+    | typeof EntryUpdateTime.EntryTypeEnum.SERVICE
+    | typeof EntryUpdateTime.EntryTypeEnum.WORKFLOW;
   entryTypeLowerCase: string;
   filterText: string;
   listOfEntries: Array<EntryUpdateTime> = [];
@@ -23,17 +25,15 @@ export class EntryBoxComponent extends Base implements OnInit {
   helpLink: string;
   allEntriesLink: string;
   hasEntries: boolean;
-  firstLoad = true;
+  firstLoad: boolean = true;
   public isLoading = true;
 
   constructor(
     private registerToolService: RegisterToolService,
-    private userQuery: UserQuery,
     private myWorkflowsService: MyWorkflowsService,
     private usersService: UsersService
   ) {
     super();
-    this.user = this.userQuery.getValue().user;
   }
 
   ngOnInit(): void {
