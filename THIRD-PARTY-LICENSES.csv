@@ -260,6 +260,7 @@
 "ajv-keywords@5.1.0","MIT","https://github.com/epoberezkin/ajv-keywords"
 "ajv@6.12.3","MIT","https://github.com/ajv-validator/ajv"
 "ajv@6.12.6","MIT","https://github.com/ajv-validator/ajv"
+"ajv@8.11.0","MIT","https://github.com/ajv-validator/ajv"
 "ajv@8.9.0","MIT","https://github.com/ajv-validator/ajv"
 "angular-tag-cloud-module@6.0.1","MIT*",""
 "ansi-colors@4.1.1","MIT","https://github.com/doowb/ansi-colors"

@@ -3,11 +3,11 @@
   "version": "2.8.0",
   "license": "Apache License 2.0",
   "config": {
-    "webservice_version": "1.13.0-beta.3",
+    "webservice_version": "1.13.0-alpha.7",
     "use_circle": true,
-    "circle_ci_source": "https://app.circleci.com/pipelines/github/dockstore/dockstore/8331/workflows/81a1254f-c07b-4aa8-a4b1-42cc253dfb40/jobs/22925/artifacts",
-    "circle_build_id": "22925",
-    "base_branch": "develop"
+    "circle_ci_source": "https://app.circleci.com/pipelines/github/dockstore/dockstore/8308/workflows/1f50b5e0-f773-47d2-b943-c033fef05255/jobs/22821/artifacts",
+    "circle_build_id": "22821",
+    "base_branch": "feature/SEAB-1498/add-pa11yci-file"
   },
   "scripts": {
     "ng": "npx ng",
