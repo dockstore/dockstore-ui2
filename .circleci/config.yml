@@ -330,19 +330,12 @@ jobs:
           - http.port: 9200
           - discovery.type: single-node
     working_directory: ~/repo
-    parameters:
-      db_dump:
-
-        type: string
-        default: "db_dump.sql"
     steps:
       - checkout
       - prepare_accessibility_test
       - run:
           name: Run pa11y-ci
           command: bash -i -c "npm run accessibility-test base-branch"
-
-
 
 
 
@@ -580,6 +573,10 @@ commands:
             wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
             bash -i -c 'nvm install'
   prepare_accessibility_test:
+    parameters:
+      db_dump:
+        type: string
+        default: "db_dump.sql"
     steps:
       - browser-tools/install-chrome
       - browser-tools/install-chromedriver
