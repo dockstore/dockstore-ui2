@@ -13,11 +13,10 @@ set -o nounset
 # 2. WITH THE ARGUMENT "base-branch", this will pa11y-ci against the base branch (as defined in package.json)
 
 OUTPUT_FILE="NOT_SET"
-CURRENT_BRANCH_OUTPUT_FILE="current_branch"
-BASE_BRANCH_OUTPUT_FILE="base_branch"
+CURRENT_BRANCH_OUTPUT_FILE="current-branch"
 if [ "$#" -eq 1 ] && [ "$1" == "base-branch" ]
 then
-  OUTPUT_FILE=$BASE_BRANCH_OUTPUT_FILE
+  OUTPUT_FILE="$npm_package_config_base_branch"
 else
   OUTPUT_FILE=$CURRENT_BRANCH_OUTPUT_FILE
   pa11y-ci > ${OUTPUT_FILE}.txt || true
