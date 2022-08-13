@@ -288,47 +288,7 @@ jobs:
         default: "db_dump.sql"
     steps:
       - checkout
-      - browser-tools/install-chrome
-      - browser-tools/install-chromedriver
-      - install_container_dependencies
-      - restore_cache:
-          key: dep-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
-      - run:
-          name: Install dependencies
-          command: bash -i -c 'npm ci'
-      - run:
-          name: Build
-          command: NODE_OPTIONS="--max-old-space-size=1610" bash -i -c 'npm run build.prod'
-          no_output_timeout: 30m
-      - run:
-          name: Install postgresql client
-          command: sudo apt install -y postgresql-client || true
-      - run:
-          name: Prepare webservice
-          command: bash -i -c 'DB_DUMP=<< parameters.db_dump >> npm run webservice'
-          environment:
-            PAGER: cat # prevent psql commands using less https://stackoverflow.com/questions/53055044/rails-rake-dbstructureload-times-out-on-circleci-2-0
-      - run:
-          name: Install nginx
-          command: sudo apt install -y nginx || true
-      - run:
-          name: Prepapre nginx config
-          command: sed "s%REPLACEME%`pwd`%" .circleci/nginx.conf.tmpl > .circleci/nginx.conf
-      - run:
-          name: Run nginx
-          command: sudo nginx -c `pwd`/.circleci/nginx.conf
-          background: true
-      - run:
-          name: Run webservice
-          command: java -jar dockstore-webservice.jar server test/web.yml 1>/dev/null
-          background: true
-      - run: mkdir -p integration-tests/test-results/junit
-      - run:
-          name: Wait for services
-          command: bash scripts/wait-for.sh
-      - run:
-          name: Install pa11y-ci
-          command: bash -i -c "npm install -g pa11y-ci"
+      - prepare_accessibility_test
       - run:
           name: Run pa11y-ci
           command: bash -i -c "npm run accessibility-test"
@@ -377,50 +337,7 @@ jobs:
         default: "db_dump.sql"
     steps:
       - checkout
-      - browser-tools/install-chrome
-      - browser-tools/install-chromedriver
-      - install_container_dependencies
-#      - run:
-#          name: Checkout base branch
-#          command: git checkout feature/SEAB-1498/add-pa11yci-file
-      - restore_cache:
-          key: dep-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
-      - run:
-          name: Install dependencies
-          command: bash -i -c 'npm ci'
-      - run:
-          name: Build
-          command: NODE_OPTIONS="--max-old-space-size=1610" bash -i -c 'npm run build.prod'
-          no_output_timeout: 30m
-      - run:
-          name: Install postgresql client
-          command: sudo apt install -y postgresql-client || true
-      - run:
-          name: Prepare webservice
-          command: bash -i -c 'DB_DUMP=<< parameters.db_dump >> npm run webservice'
-          environment:
-            PAGER: cat # prevent psql commands using less https://stackoverflow.com/questions/53055044/rails-rake-dbstructureload-times-out-on-circleci-2-0
-      - run:
-          name: Install nginx
-          command: sudo apt install -y nginx || true
-      - run:
-          name: Prepapre nginx config
-          command: sed "s%REPLACEME%`pwd`%" .circleci/nginx.conf.tmpl > .circleci/nginx.conf
-      - run:
-          name: Run nginx
-          command: sudo nginx -c `pwd`/.circleci/nginx.conf
-          background: true
-      - run:
-          name: Run webservice
-          command: java -jar dockstore-webservice.jar server test/web.yml 1>/dev/null
-          background: true
-      - run: mkdir -p integration-tests/test-results/junit
-      - run:
-          name: Wait for services
-          command: bash scripts/wait-for.sh
-      - run:
-          name: Install pa11y-ci
-          command: bash -i -c "npm install -g pa11y-ci"
+      - prepare_accessibility_test
       - run:
           name: Run pa11y-ci
           command: bash -i -c "npm run accessibility-test base-branch"
@@ -662,6 +579,50 @@ commands:
           command: |
             wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
             bash -i -c 'nvm install'
+  prepare_accessibility_test:
+    steps:
+      - browser-tools/install-chrome
+      - browser-tools/install-chromedriver
+      - install_container_dependencies
+      - restore_cache:
+          key: dep-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
+      - run:
+          name: Install dependencies
+          command: bash -i -c 'npm ci'
+      - run:
+          name: Build
+          command: NODE_OPTIONS="--max-old-space-size=1610" bash -i -c 'npm run build.prod'
+          no_output_timeout: 30m
+      - run:
+          name: Install postgresql client
+          command: sudo apt install -y postgresql-client || true
+      - run:
+          name: Prepare webservice
+          command: bash -i -c 'DB_DUMP=<< parameters.db_dump >> npm run webservice'
+          environment:
+            PAGER: cat # prevent psql commands using less https://stackoverflow.com/questions/53055044/rails-rake-dbstructureload-times-out-on-circleci-2-0
+      - run:
+          name: Install nginx
+          command: sudo apt install -y nginx || true
+      - run:
+          name: Prepapre nginx config
+          command: sed "s%REPLACEME%`pwd`%" .circleci/nginx.conf.tmpl > .circleci/nginx.conf
+      - run:
+          name: Run nginx
+          command: sudo nginx -c `pwd`/.circleci/nginx.conf
+          background: true
+      - run:
+          name: Run webservice
+          command: java -jar dockstore-webservice.jar server test/web.yml 1>/dev/null
+          background: true
+      - run: mkdir -p integration-tests/test-results/junit
+      - run:
+          name: Wait for services
+          command: bash scripts/wait-for.sh
+      - run:
+          name: Install pa11y-ci
+          command: bash -i -c "npm install -g pa11y-ci"
+
   get_workspace:
     steps:
       - attach_workspace:
