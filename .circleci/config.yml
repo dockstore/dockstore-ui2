@@ -283,7 +283,6 @@ jobs:
     working_directory: ~/repo
     parameters:
       db_dump:
-
         type: string
         default: "db_dump.sql"
     steps:
@@ -291,7 +290,11 @@ jobs:
       - prepare_accessibility_test
       - run:
           name: Run pa11y-ci
-          command: bash -i -c "npm run accessibility-test"
+          command: bash -i -c "npm run accessibility-test -R" # Run accesibility test on current branch
+      - persist_to_workspace:
+          root: accessibility-results
+          paths:
+            -  accessibility-results/*
 
 
   #    executor: integration_test_exec
@@ -307,7 +310,6 @@ jobs:
   accessibility_test_base:
     resource_class: medium+
     docker:
-
       - image: cimg/base:stable-20.04
         auth:
           username: dockstoretestuser
@@ -332,10 +334,29 @@ jobs:
     working_directory: ~/repo
     steps:
       - checkout
+      - bash -i -c "npm run accessibility-test -C" # Checkout base branch
       - prepare_accessibility_test
       - run:
           name: Run pa11y-ci
-          command: bash -i -c "npm run accessibility-test base-branch"
+          command: bash -i -c "npm run accessibility-test -RB" # Run accesibility test on base branch
+      - persist_to_workspace:
+          root: accessibility-results
+          paths:
+            - accessibility-results/*
+
+compare_accessibility_results:
+  working_directory: ~/repo
+  docker:
+    - image: cimg/base:stable-20.04
+      auth:
+        username: dockstoretestuser
+        password: $DOCKERHUB_PASSWORD
+  steps:
+    - get_workspace
+    - bash -i -c "npm run accessibility-test -A"
+
+
+
 
 
 
@@ -472,6 +493,13 @@ workflows:
           filters:
             tags:
               only: /.*/
+      - compare_accessibility_results:
+          filters:
+            tags:
+              only: /.*/
+          requires:
+            - accessibility_test_base
+            - accessibility_test
   #      - local_smoke_tests:
   #          filters:
   #            tags:
