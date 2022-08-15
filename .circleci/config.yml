@@ -169,7 +169,7 @@ jobs:
             - ~/.cache
               # Disabled until ng2-ui-auth and @ngx-lite/json is replaced. Currently they do not support Angular 9
               #      - run:
-              #          name: Check dependencies
+            #          name: Check dependencies
             #          command: bash -i -c 'npm ls'
       - run:
           name: Lint
@@ -346,18 +346,18 @@ jobs:
           paths:
             - accessibility-results/*
 
-compare_accessibility_results:
-  working_directory: ~/repo
-  docker:
-    - image: cimg/base:stable-20.04
-      auth:
-        username: dockstoretestuser
-        password: $DOCKERHUB_PASSWORD
-  steps:
-    - get_workspace
-    - run:
-        name: Compare accessibility results
-        command: bash -i -c "npm run accessibility-test -A"
+  compare_accessibility_results:
+    working_directory: ~/repo
+    docker:
+      - image: cimg/base:stable-20.04
+        auth:
+          username: dockstoretestuser
+          password: $DOCKERHUB_PASSWORD
+    steps:
+      - get_workspace
+      - run:
+          name: Compare accessibility results
+          command: bash -i -c "npm run accessibility-test -A"
 
 
 
