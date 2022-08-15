@@ -83,13 +83,25 @@
               class="pl-2"
             />
           </mat-expansion-panel-header>
-          <div *ngIf="key === 'author'">
+          <!-- watch out for GetFacetSearchResultsPipe when adding facets with search -->
+          <div
+            *ngIf="
+              key === 'author' ||
+              key === 'labels.value.keyword' ||
+              key === 'namespace' ||
+              key === 'organization' ||
+              key === 'categories.name.keyword'
+            "
+          >
             <mat-form-field appearance="outline">
-              <mat-label>Search for {{ key }}</mat-label>
+              <mat-label>Search for {{ key.substring(0, key.indexOf('.')) }}</mat-label>
               <input
                 matInput
-                placeholder="Search for {{ key }}"
-                [(ngModel)]="facetSearchText"
+                type="text"
+                placeholder="Search for {{ key.substring(0, key.indexOf('.')) }}"
+                [ngModel]="facetSearchTextMap.get(key)"
+                [ngModelOptions]="{ updateOn: 'change' }"
+                (ngModelChange)="facetSearchTextMap.set(key, $event)"
                 (keyup)="onFacetSearchKey(key)"
                 [matAutocomplete]="auto"
               />
@@ -144,7 +156,10 @@
           </div>
           <div
             class="my-1"
-            *ngFor="let subBucket of getKeys(orderedBuckets.get(key).Items) | getFacetSearchResults: facetSearchText:key; let i = index"
+            *ngFor="
+              let subBucket of getKeys(orderedBuckets.get(key).Items) | getFacetSearchResults: facetSearchTextMap.get(key):key;
+              let i = index
+            "
           >
             <div [ngStyle]="orderedBuckets.get(key) | getHistogramStyle: subBucket:(selectedIndex$ | async)">
               <div class="panel-container-label">
@@ -188,12 +203,24 @@
               <!-- The anchor is an easy way to change the color of the icon and "more" -->
               <a>
                 <fa-icon [icon]="fullyExpandMap.get(key) ? faAngleDoubleUp : faAngleDoubleDown" aria-hidden="true"></fa-icon>
-                <span *ngIf="key !== 'author'">{{
-                  fullyExpandMap.get(key) ? 'Hide' : orderedBuckets.get(key).Items.size - 5 + ' more'
-                }}</span>
-                <span *ngIf="key === 'author'">{{
-                  fullyExpandMap.get(key) ? 'Hide' : (getKeys(orderedBuckets.get(key).Items) | getFacetSearchUpdate: facetSearchText)
-                }}</span>
+                <span
+                  *ngIf="
+                    key !== 'author' &&
+                      key !== 'labels.value.keyword' &&
+                      key !== 'namespace' &&
+                      key !== 'organization' &&
+                      key !== 'categories.name.keyword';
+                    else facetLoading
+                  "
+                  >{{ fullyExpandMap.get(key) ? 'Hide' : orderedBuckets.get(key).Items.size - 5 + ' more' }}</span
+                >
+                <ng-template #facetLoading>
+                  <span>{{
+                    fullyExpandMap.get(key)
+                      ? 'Hide'
+                      : (getKeys(orderedBuckets.get(key).Items) | getFacetSearchUpdate: facetSearchTextMap.get(key))
+                  }}</span>
+                </ng-template>
               </a>
             </span>
           </div>

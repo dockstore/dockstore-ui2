@@ -3,7 +3,7 @@
     <div id="workflow-number" fxLayout="row">
       <mat-card-header fxLayout="row">
         <mat-card-title>{{ entryTypeLowerCase | titlecase }}s</mat-card-title>
-        <span class="bubble">{{ totalEntries }}</span>
+        <span class="bubble">{{ listOfEntries.length }}</span>
       </mat-card-header>
     </div>
     <button
@@ -13,6 +13,7 @@
       matTooltip="Register {{ entryTypeLowerCase | titlecase }}"
       matTooltipPosition="after"
       (click)="showRegisterEntryModal()"
+      data-cy="register-entry-btn"
     >
       <img src="../../../assets/svg/icons-plus.svg" alt="Register a {{ entryTypeLowerCase | titlecase }}" class="pr-2 pb-1" />
       Register a {{ entryTypeLowerCase | titlecase }}
@@ -20,9 +21,15 @@
   </div>
   <mat-divider></mat-divider>
   <mat-card-content class="p-3 entries-container">
-    <div *ngIf="totalEntries !== 0 || isLoading; else noEntries">
+    <div *ngIf="hasEntries || isLoading; else noEntries">
       <mat-form-field appearance="outline" class="search-form-field w-100 pb-0">
-        <input matInput [(ngModel)]="filterText" (keyup)="onTextChange($event)" placeholder="Search your {{ entryTypeLowerCase }}s..." />
+        <input
+          matInput
+          data-cy="search-field"
+          [(ngModel)]="filterText"
+          (keyup)="onTextChange($event)"
+          placeholder="Search your {{ entryTypeLowerCase }}s..."
+        />
       </mat-form-field>
       <h5 class="weight-bold my-0">Recent Activity</h5>
       <div *ngFor="let entry of listOfEntries" fxLayout="row" class="list-items w-100 py-2">
@@ -33,7 +40,7 @@
       </div>
       <div *ngIf="listOfEntries.length === 0" class="mt-2">No matching {{ entryTypeLowerCase }}s</div>
       <div class="weight-bold py-2">
-        <a [routerLink]="allEntriesLink">
+        <a [routerLink]="allEntriesLink" data-cy="all-entries-btn">
           All {{ entryTypeLowerCase | titlecase }}s<mat-icon class="mat-icon-sm">keyboard_double_arrow_right</mat-icon>
         </a>
       </div>
@@ -53,12 +60,15 @@
             matTooltip="Register {{ entryTypeLowerCase }}"
             matTooltipPosition="after"
             (click)="showRegisterEntryModal()"
+            data-cy="no-entry-register-modal"
           >
             {{ entryTypeLowerCase }} registration wizard
           </button>
           <span>to register a {{ entryTypeLowerCase }}.</span>
         </div>
-        <a class="size-small" target="_blank" rel="noopener noreferrer" [href]="helpLink">Learn more about {{ entryTypeLowerCase }}s. </a>
+        <a class="size-small" target="_blank" rel="noopener noreferrer" [href]="helpLink" data-cy="help-link"
+          >Learn more about {{ entryTypeLowerCase }}s.
+        </a>
       </div>
     </ng-template>
   </mat-card-content>
