@@ -141,7 +141,7 @@
                         <mat-checkbox
                           class="search-facet-checkboxes"
                           type="checkbox"
-                          [checked]="checkboxMap.get(key).get(subBucket)"
+                          [checked]="checkboxMap?.get(key)?.get(subBucket)"
                           (change)="onClick(key, subBucket)"
                         >
                           {{ key | mapFriendlyValue: subBucket }}
@@ -169,7 +169,7 @@
                       <mat-checkbox
                         class="search-facet-checkboxes"
                         type="checkbox"
-                        [checked]="checkboxMap.get(key).get(subBucket)"
+                        [checked]="checkboxMap?.get(key)?.get(subBucket)"
                         (change)="onClick(key, subBucket)"
                       >
                         {{ key | mapFriendlyValue: subBucket }}
@@ -186,7 +186,7 @@
                         matTooltip="{{ subBucket }}"
                         [matTooltipPosition]="'after'"
                         type="checkbox"
-                        [checked]="checkboxMap.get(key).get(subBucket)"
+                        [checked]="checkboxMap?.get(key)?.get(subBucket)"
                         (change)="onClick(key, subBucket)"
                       >
                         {{ key | mapFriendlyValue: subBucket }}

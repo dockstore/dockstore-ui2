@@ -418,7 +418,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       entryType: SearchService.convertTabIndexToEntryType(this.searchQuery.getValue().currentTabIndex),
     };
     const linkArray = this.searchService.createPermalinks(searchInfo);
-    this.searchService.handleLink(linkArray);
+    this.searchService.handleLink(linkArray, this.location.path());
   }
 
   /**===============================================
