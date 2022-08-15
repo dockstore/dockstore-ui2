@@ -245,7 +245,17 @@
               <div fxLayout="row" fxLayoutAlign="start center">
                 <span><strong matTooltip="Select which topic to display to the public">Topic Selection</strong>:&nbsp;</span>
                 <span>
-                  <mat-radio-group [(ngModel)]="workflow.topicSelection" aria-label="Select an option" (change)="radioChange($event)">
+                  <mat-radio-group
+                    [(ngModel)]="workflow.topicSelection"
+                    aria-label="Select an option"
+                    (change)="radioChange($event)"
+                    [disabled]="workflow?.mode === WorkflowType.ModeEnum.HOSTED"
+                    [matTooltip]="
+                      workflow?.mode === WorkflowType.ModeEnum.HOSTED
+                        ? 'Hosted workflow topics are always manually entered'
+                        : 'Select whether the automatically harvested topic from source control is used or a manually input one'
+                    "
+                  >
                     <mat-radio-button [value]="TopicSelectionEnum.AUTOMATIC">Automatic</mat-radio-button>
                     <mat-radio-button class="ml-3" [value]="TopicSelectionEnum.MANUAL">Manual</mat-radio-button>
                   </mat-radio-group>
