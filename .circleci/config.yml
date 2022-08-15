@@ -336,9 +336,9 @@ jobs:
     steps:
       - checkout
       - install_container_dependencies
-#      - run:
-#          name: Checkout base branch
-#          command: bash -i -c "npm run accessibility-test -- -C"
+      - run:
+          name: Checkout base branch
+          command: bash -i -c "npm run accessibility-test -- -C"
       - prepare_accessibility_test
       - run:
           name: Run accesibility test on base branch

@@ -41,11 +41,8 @@ while getopts 'HBCRA' OPTION; do
       RESULT_FILE="$BASE_BRANCH_RESULT_FILE_NAME"
       ;;
     C)
-      if [ "$CIRCLE_BRANCH" != "$npm_package_config_base_branch" ]
-      then
-        git checkout "$npm_package_config_base_branch"
-        echo "The base branch has been checked out, all other flags (if any) have been ignored"
-      fi
+      git checkout "$npm_package_config_base_branch"
+      echo "The base branch has been checked out, all other flags (if any) have been ignored"
       exit 0
       ;;
     R)
