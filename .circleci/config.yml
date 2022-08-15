@@ -356,6 +356,7 @@ jobs:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
     steps:
+      - checkout
       - get_workspace
       - install_container_dependencies
       - run:
