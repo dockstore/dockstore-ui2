@@ -290,8 +290,8 @@ jobs:
       - install_container_dependencies
       - prepare_accessibility_test
       - run:
-          name: Run pa11y-ci
-          command: bash -i -c "npm run accessibility-test -R" # Run accesibility test on current branch
+          name: Run accesibility test on current branch
+          command: bash -i -c "npm run accessibility-test -- -R"
       - persist_to_workspace:
           root: accessibility-results
           paths:
@@ -338,11 +338,11 @@ jobs:
       - install_container_dependencies
       - run:
           name: Checkout base branch
-          command: bash -i -c "npm run accessibility-test -C"
+          command: bash -i -c "npm run accessibility-test -- -C"
       - prepare_accessibility_test
       - run:
           name: Run accesibility test on base branch
-          command: bash -i -c "npm run accessibility-test -RB"
+          command: bash -i -c "npm run accessibility-test -- -RB"
       - persist_to_workspace:
           root: accessibility-results
           paths:
@@ -359,7 +359,7 @@ jobs:
       - get_workspace
       - run:
           name: Compare accessibility results
-          command: bash -i -c "npm run accessibility-test -A"
+          command: bash -i -c "npm run accessibility-test -- -A"
 
 
 
