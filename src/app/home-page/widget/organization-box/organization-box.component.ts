@@ -58,7 +58,7 @@ export class OrganizationBoxComponent extends Base implements OnInit {
       this.listOfOrganizations = starredOrganizations;
     });
     this.eventsService
-      .getEvents('STARRED_ORGANIZATION', 5)
+      .getEvents('STARRED_ORGANIZATION', 4)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((events) => {
         this.events = events;
