@@ -87,7 +87,7 @@ then
     pa11y-ci 2> "$OUTPUT_FILE_PATH".txt || true # Get nicely formatted version of results
   fi
   echo "Successfully ran accessibility test"
-  cat ${OUTPUT_FILE_PATH}.json ${OUTPUT_FILE_PATH}.txt
+  cat ${OUTPUT_FILE_PATH}.json
   exit 0
 fi
 
