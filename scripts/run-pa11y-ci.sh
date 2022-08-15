@@ -108,7 +108,7 @@ then
 
   # If the number of accessibility errors is equal, then check that if they are the same set of errors.
   if [ "$ACCESSIBILITY_ERRORS_CURRENT_BRANCH" -eq "$ACCESSIBILITY_ERRORS_BASE_BRANCH" ]; then
-    echo "The number of accessibility erorrs between the PR and base branch are the same"
+    echo "The number of accessibility erorrs in this PR and the base branch are the same"
     exit 0
   fi
 
