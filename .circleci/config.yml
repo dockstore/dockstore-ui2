@@ -357,8 +357,8 @@ jobs:
           password: $DOCKERHUB_PASSWORD
     steps:
       - checkout
-      - get_workspace
       - install_container_dependencies
+      - get_workspace
       - run:
           name: Compare accessibility results
           command: bash -i -c "npm run accessibility-test -- -A"
