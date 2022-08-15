@@ -14,10 +14,10 @@
   ~    limitations under the License.
   -->
 
-<div fxLayout>
+<div fxLayout *ngIf="!Dockstore.FEATURES.enableNewDashboard; else newDashboard">
   <app-my-sidebar fxFlexAlign="stretch"></app-my-sidebar>
 
-  <div id="column-holder" fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="start start" fxLayoutGap="10px">
+  <div id="column-holder" fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="start start" fxLayoutGap="10px" fxFlex="1 2 100%">
     <div
       fxLayout="column"
       fxLayoutAlign="start start"
@@ -84,3 +84,6 @@
     </div>
   </div>
 </div>
+<ng-template #newDashboard>
+  <app-new-dashboard></app-new-dashboard>
+</ng-template>
