@@ -353,7 +353,9 @@ compare_accessibility_results:
         password: $DOCKERHUB_PASSWORD
   steps:
     - get_workspace
-    - bash -i -c "npm run accessibility-test -A"
+    - run:
+        name: Compare accessibility results
+        command: bash -i -c "npm run accessibility-test -A"
 
 
 
