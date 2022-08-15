@@ -295,7 +295,8 @@ jobs:
       - persist_to_workspace:
           root: accessibility-results
           paths:
-            -  accessibility-results/*
+            - accessibility-results/current-branch.json
+            - accessibility-results/current-branch.txt
 
 
   #    executor: integration_test_exec
@@ -346,7 +347,7 @@ jobs:
       - persist_to_workspace:
           root: accessibility-results
           paths:
-            - accessibility-results/*
+            - accessibility-results/base-branch.json
 
   compare_accessibility_results:
     working_directory: ~/repo
