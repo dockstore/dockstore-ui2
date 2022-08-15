@@ -287,6 +287,7 @@ jobs:
         default: "db_dump.sql"
     steps:
       - checkout
+      - install_container_dependencies
       - prepare_accessibility_test
       - run:
           name: Run pa11y-ci
@@ -334,6 +335,7 @@ jobs:
     working_directory: ~/repo
     steps:
       - checkout
+      - install_container_dependencies
       - run:
           name: Checkout base branch
           command: bash -i -c "npm run accessibility-test -C"
@@ -608,7 +610,6 @@ commands:
     steps:
       - browser-tools/install-chrome
       - browser-tools/install-chromedriver
-      - install_container_dependencies
       - restore_cache:
           key: dep-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
       - run:
