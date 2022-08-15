@@ -293,10 +293,9 @@ jobs:
           name: Run accesibility test on current branch
           command: bash -i -c "npm run accessibility-test -- -R"
       - persist_to_workspace:
-          root: accessibility-results
+          root: .
           paths:
-            - accessibility-results/current-branch.json
-            - accessibility-results/current-branch.txt
+            - accessibility-results
 
 
   #    executor: integration_test_exec
@@ -345,9 +344,9 @@ jobs:
           name: Run accesibility test on base branch
           command: bash -i -c "npm run accessibility-test -- -RB"
       - persist_to_workspace:
-          root: accessibility-results
+          root: .
           paths:
-            - accessibility-results/base-branch.json
+            - accessibility-results
 
   compare_accessibility_results:
     working_directory: ~/repo
