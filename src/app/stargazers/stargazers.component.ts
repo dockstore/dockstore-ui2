@@ -41,7 +41,7 @@ export class StargazersComponent extends Base implements OnInit {
         this.starringService.getStarring(entry.theEntry.id, entry.theEntryType).subscribe((starring) => {
           this.starGazers = starring;
           this.starGazers.forEach((user) => {
-            user.avatarUrl = this.userService.gravatarUrl(user.email, user.avatarUrl);
+            user.avatarUrl = this.userService.gravatarUrl(user.avatarUrl);
           });
         });
       }

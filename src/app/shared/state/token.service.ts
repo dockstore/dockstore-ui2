@@ -60,13 +60,13 @@ export class TokenService {
     return this.tokensService.deleteToken(tokenId);
   }
 
-  setGitHubOrganizations(gitHubOrganizations: any) {
-    this.tokenStore.update({ gitHubOrganizations: gitHubOrganizations });
-  }
-
   getGitHubOrganizations() {
-    this.usersService.getMyGitHubOrgs().subscribe((gitHubOrganizations) => {
+    this.usersService.getUserOrganizations('github.com').subscribe((gitHubOrganizations) => {
       this.setGitHubOrganizations(gitHubOrganizations);
     });
+  }
+
+  private setGitHubOrganizations(gitHubOrganizations: string[]) {
+    this.tokenStore.update({ gitHubOrganizations: gitHubOrganizations });
   }
 }

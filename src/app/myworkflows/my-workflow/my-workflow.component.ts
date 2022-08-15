@@ -166,9 +166,13 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
           console.error('Something has gone horribly wrong with sharedWorkflows$ and/or workflows$');
         }
       );
-    this.groupEntriesObject$ = combineLatest([this.workflowService.workflows$, this.workflowQuery.selectActive()]).pipe(
-      map(([workflows, workflow]) => {
-        return this.myWorkflowsService.convertEntriesToOrgEntryObject(workflows, workflow);
+    this.groupEntriesObject$ = combineLatest([
+      this.workflowService.workflows$,
+      this.workflowQuery.selectActive(),
+      this.tokenQuery.gitHubOrganizations$,
+    ]).pipe(
+      map(([workflows, workflow, gitHubOrganizations]) => {
+        return this.myWorkflowsService.convertEntriesToOrgEntryObject(workflows, workflow, gitHubOrganizations);
       })
     );
 

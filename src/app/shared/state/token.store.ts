@@ -3,7 +3,7 @@ import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
 import { TokenUser } from '../swagger';
 
 export interface TokenState extends EntityState<TokenUser> {
-  gitHubOrganizations: Array<any>;
+  gitHubOrganizations: Array<string>;
 }
 
 @Injectable({ providedIn: 'root' })
