@@ -38,18 +38,18 @@ export class UserPageComponent implements OnInit {
         this.user = user;
         if (user) {
           if (!this.user.avatarUrl) {
-            this.user.avatarUrl = this.userService.gravatarUrl(null, null);
+            this.user.avatarUrl = this.userService.gravatarUrl(null);
           }
           const userProfiles = user.userProfiles;
           if (userProfiles) {
             this.googleProfile = userProfiles[TokenSource.GOOGLE];
             // Using gravatar for Google also, may result in two identical pictures if both accounts use the same email address
             if (this.googleProfile && !this.googleProfile.avatarURL) {
-              this.googleProfile.avatarURL = this.userService.gravatarUrl(this.googleProfile.email, this.googleProfile.avatarURL);
+              this.googleProfile.avatarURL = this.userService.gravatarUrl(this.googleProfile.avatarURL);
             }
             this.gitHubProfile = userProfiles[TokenSource.GITHUB];
             if (this.gitHubProfile && !this.gitHubProfile.avatarURL) {
-              this.gitHubProfile.avatarURL = this.userService.gravatarUrl(this.gitHubProfile.email, this.gitHubProfile.avatarURL);
+              this.gitHubProfile.avatarURL = this.userService.gravatarUrl(this.gitHubProfile.avatarURL);
             }
           }
         }

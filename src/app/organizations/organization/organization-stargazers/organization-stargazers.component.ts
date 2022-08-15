@@ -44,7 +44,7 @@ export class OrganizationStargazersComponent extends Base implements OnInit {
         this.organizationStarringService.getStarring(organization.theOrganization.id).subscribe((starring: Array<User>) => {
           this.starGazers = starring;
           this.starGazers.forEach((user: User) => {
-            user.avatarUrl = this.userService.gravatarUrl(null, user.avatarUrl);
+            user.avatarUrl = this.userService.gravatarUrl(user.avatarUrl);
           });
         });
       }
