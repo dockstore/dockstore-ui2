@@ -296,6 +296,8 @@ jobs:
           root: .
           paths:
             - accessibility-results
+      - store_artifacts:
+          path: accessibility-results
 
 
   #    executor: integration_test_exec
@@ -350,6 +352,8 @@ jobs:
           root: accessibility
           paths:
             - accessibility-results
+      - store_artifacts:
+          path: accessibility/accessibility-results
 
   compare_accessibility_results:
     working_directory: ~/repo
