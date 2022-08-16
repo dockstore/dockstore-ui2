@@ -4,9 +4,10 @@ import { RequestsQuery } from 'app/loginComponents/state/requests.query';
 import { RequireAccountsModalComponent } from 'app/organizations/registerOrganization/requireAccountsModal/require-accounts-modal.component';
 import { Base } from 'app/shared/base';
 import { Dockstore } from 'app/shared/dockstore.model';
-import { Event, Organization, OrganizationUser, EventsService } from 'app/shared/openapi';
+import { Event, Organization, OrganizationUser, EventsService, OrganizationUpdateTime } from 'app/shared/openapi';
 import { UsersService } from 'app/shared/swagger';
-import { takeUntil } from 'rxjs/operators';
+import { finalize, takeUntil } from 'rxjs/operators';
+import { bootstrap4mediumModalSize } from 'app/shared/constants';
 
 @Component({
   selector: 'app-organization-box',
@@ -15,9 +16,11 @@ import { takeUntil } from 'rxjs/operators';
 })
 export class OrganizationBoxComponent extends Base implements OnInit {
   Dockstore = Dockstore;
-  listOfOrganizations: Array<Organization> = [];
+  listOfOrganizations: Array<OrganizationUpdateTime> = [];
   events: Array<Event> = [];
   firstCall = true;
+  totalOrgs: number = 0;
+
   readonly supportedEventTypes = [
     Event.TypeEnum.CREATECOLLECTION,
     Event.TypeEnum.ADDTOCOLLECTION,
@@ -54,14 +57,32 @@ export class OrganizationBoxComponent extends Base implements OnInit {
   }
 
   getMyOrganizations() {
-    this.usersService.getStarredOrganizations().subscribe((starredOrganizations) => {
-      this.listOfOrganizations = starredOrganizations;
-    });
-    this.eventsService
-      .getEvents('STARRED_ORGANIZATION', 4)
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((events) => {
-        this.events = events;
+    // this.usersService.getStarredOrganizations().subscribe((starredOrganizations) => {
+    //   this.listOfOrganizations = starredOrganizations;
+    // });
+    // this.eventsService
+    //   .getEvents('STARRED_ORGANIZATION', 4)
+    //   .pipe(takeUntil(this.ngUnsubscribe))
+    //   .subscribe((events) => {
+    //     this.events = events;
+    //   });
+
+    this.usersService
+      .getUserDockstoreOrganizations()
+      .pipe(
+        finalize(() => (this.isLoading = false)),
+        takeUntil(this.ngUnsubscribe)
+      )
+      .subscribe((myOrgs: Array<OrganizationUpdateTime>) => {
+        this.listOfOrganizations = [];
+        myOrgs.forEach((org: OrganizationUpdateTime) => {
+          if (this.listOfOrganizations.length < 5) {
+            this.listOfOrganizations.push(org);
+          }
+          if (this.firstCall) {
+            this.totalOrgs += 1;
+          }
+        });
       });
     this.isLoading = false;
   }
@@ -73,6 +94,6 @@ export class OrganizationBoxComponent extends Base implements OnInit {
    * @memberof OrganizationsComponent
    */
   requireAccounts(): void {
-    this.matDialog.open(RequireAccountsModalComponent, { width: '600px' });
+    this.matDialog.open(RequireAccountsModalComponent, { width: bootstrap4mediumModalSize });
   }
 }

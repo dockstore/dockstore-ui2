@@ -26,6 +26,7 @@ export class EntryBoxComponent extends Base implements OnInit {
   allEntriesLink: string;
   hasEntries: boolean;
   firstLoad: boolean = true;
+  totalEntries: number = 0;
   public isLoading = true;
 
   constructor(
@@ -76,10 +77,10 @@ export class EntryBoxComponent extends Base implements OnInit {
             if (this.listOfEntries.length < 7) {
               this.listOfEntries.push(entry);
             }
+            if (this.firstLoad) {
+              this.totalEntries += 1;
+            }
           });
-        if (this.firstLoad) {
-          this.hasEntries = this.listOfEntries.length !== 0;
-        }
       });
   }
 

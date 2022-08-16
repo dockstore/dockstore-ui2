@@ -1,19 +1,18 @@
-<mat-card class="h-100 org-box">
-  <div id="header-bar" fxLayout="row" fxLayoutGap="1rem" class="mat-card-header-separate">
+<mat-card class="h-100">
+  <div id="header-bar" fxLayout="row" fxLayoutGap="1rem" class="space-between">
     <div id="organization-number" fxLayout="row">
       <mat-card-header fxLayout="row">
         <mat-card-title>Organizations</mat-card-title>
         <span class="bubble">{{ listOfOrganizations.length }}</span>
       </mat-card-header>
     </div>
-    <div fxLayout="row" fxLayoutGap="0.5rem">
+    <div fxLayout="row" fxLayoutGap="1rem">
       <div id="pending-requests" fxLayout="row" fxLayoutAlign="center center" class="mb-3">
         <mat-icon class="pending-requests mr-1">pending_icon</mat-icon>
         <a routerLink="/accounts" class="size-small pending-links">
           <div [ngPlural]="pendingRequests.length">
-            <ng-template ngPluralCase="=0">0 Pending Requests</ng-template>
             <ng-template ngPluralCase="=1">1 Pending Request</ng-template>
-            <ng-template ngPluralCase="few">{{ pendingRequests.length }} Pending Requests</ng-template>
+            <ng-template ngPluralCase="other">{{ pendingRequests.length }} Pending Requests</ng-template>
           </div>
         </a>
       </div>
@@ -21,9 +20,8 @@
         <mat-icon class="pending-invites mr-1">error</mat-icon>
         <a routerLink="/accounts" class="size-small pending-links">
           <div [ngPlural]="pendingInvites.length">
-            <ng-template ngPluralCase="=0">0 Pending Invitations</ng-template>
             <ng-template ngPluralCase="=1">1 Pending Invitation</ng-template>
-            <ng-template ngPluralCase="few">{{ pendingInvites.length }} Pending Invitations</ng-template>
+            <ng-template ngPluralCase="other">{{ pendingInvites.length }} Pending Invitations</ng-template>
           </div>
         </a>
       </div>
@@ -42,17 +40,16 @@
   </div>
   <mat-divider></mat-divider>
   <mat-card-content class="p-3 h-100">
-    <div *ngIf="events.length !== 0 || isLoading; else noEvents">
-      <h5 class="weight-bold">Recent Activity</h5>
-      <div class="size-small list-events" *ngFor="let event of events" fxLayout="row" fxLayoutAlign="space-between center">
+    <!-- <div *ngIf="events.length !== 0 || isLoading; else noEvents">
+      <h5 class="weight-bold">Recent Activity</h5> -->
+    <!-- <div class="size-small widget-list-items" *ngFor="let event of events" fxLayout="row" fxLayoutAlign="space-between center">
         <div fxLayout="row" fxLayoutAlign="start center">
           <img src="{{ event?.initiatorUser?.avatarUrl }}" alt="User avatar" />
           <div [ngSwitch]="event.type">
             <div *ngSwitchCase="EventType.CREATECOLLECTION" class="my-3">
               <strong>{{ event.initiatorUser?.username }}</strong> created the collection
               <a [routerLink]="'/organizations/' + event.organization?.name + '/collections/' + event.collection?.name"
-                >{{ event.collection?.name }}
-              </a>
+                >{{ event.collection?.name }}</a>
               in organization
               <a [routerLink]="'/organizations/' + event.organization?.name">{{ event.organization?.displayName }}</a>
               <div class="subtitle">{{ event.dbCreateDate | date: 'medium' }}</div>
@@ -71,8 +68,7 @@
               >
               to the collection
               <a [routerLink]="'/organizations/' + event.organization?.name + '/collections/' + event.collection?.name"
-                >{{ event.collection?.name }}
-              </a>
+                >{{ event.collection?.name }}</a>
               in organization
               <a [routerLink]="'/organizations/' + event.organization?.name">{{ event.organization?.displayName }}</a>
               <div class="subtitle">{{ event.dbCreateDate | date: 'medium' }}</div>
@@ -85,8 +81,7 @@
             <div *ngSwitchCase="EventType.MODIFYCOLLECTION" class="my-3">
               <strong>{{ event.initiatorUser.username }} </strong> edited the collection
               <a [routerLink]="'/organizations/' + event.organization?.name + '/collections/' + event.collection?.name"
-                >{{ event.collection?.name }}
-              </a>
+                >{{ event.collection?.name }}</a>
               in organization
               <a [routerLink]="'/organizations/' + event.organization?.name">{{ event.organization?.displayName }}</a>
               <div class="subtitle">{{ event.dbCreateDate | date: 'medium' }}</div>
@@ -96,23 +91,28 @@
               <a [routerLink]="'/organizations/' + event.organization?.name">{{ event.organization?.displayName }}</a>
               <div class="subtitle">{{ event.dbCreateDate | date: 'medium' }}</div>
             </div>
-          </div>
-        </div>
-        <img class="mx-2" src="{{ event?.organization.avatarUrl }}" alt="Org avatar" />
-      </div>
-      <div class="weight-bold py-2">
-        <a [routerLink]="'/starred'"> All activity<mat-icon class="mat-icon-sm">keyboard_double_arrow_right</mat-icon> </a>
+          </div> -->
+    <!-- </div> -->
+    <!-- <img class="mx-2" src="{{ event?.organization.avatarUrl }}" alt="Org avatar" />
+      </div> -->
+    <div *ngIf="totalOrgs !== 0 || isLoading; else noOrganizations">
+      <h5 class="weight-bold">Recent Activity</h5>
+      <div *ngFor="let org of listOfOrganizations" fxLayout="row" fxLayoutAlign="space-between center" class="widget-list-items w-100 py-2">
+        <a class="no-wrap" [routerLink]="'/organizations/' + org.name">
+          {{ org.name }}
+        </a>
+        <div class="date-display">{{ org.lastUpdateDate | date: 'MMM d, yyyy' }}</div>
       </div>
     </div>
-    <ng-template #noEvents>
+    <ng-template #noOrganizations>
       <div *ngIf="!isLoading" fxLayout="column" class="h-100" fxLayoutAlign="center center">
-        <img src="../assets/svg/sub-nav/organization.svg" alt="my organizations" class="org-logo mb-4" />
+        <img src="../assets/svg/sub-nav/organization.svg" alt="my organizations" class="widget-box-type-logo mb-4" />
         <span>You are not in any organizations </span>
-        <div class="size-small no-organizations">
+        <div class="size-small text-align-center">
           <span>Use the </span>
           <button
             mat-button
-            class="txt-button"
+            class="inline-text-btn"
             id="registerOrganizationButton"
             matTooltip="Register organization"
             matTooltipPosition="after"
@@ -120,9 +120,7 @@
           >
             organization request wizard
           </button>
-          to request an organization or visit the
-          <a routerLink="/organizations">organizations page</a>
-          to star an organization.
+          to request an organization
         </div>
         <a
           class="size-small mt-3"
