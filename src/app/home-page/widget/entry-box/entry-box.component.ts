@@ -21,10 +21,8 @@ export class EntryBoxComponent extends Base implements OnInit {
   entryTypeLowerCase: string;
   filterText: string;
   listOfEntries: Array<EntryUpdateTime> = [];
-  user: User;
   helpLink: string;
   allEntriesLink: string;
-  hasEntries: boolean;
   firstLoad: boolean = true;
   totalEntries: number = 0;
   public isLoading = true;
