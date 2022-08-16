@@ -257,28 +257,7 @@ jobs:
       - upload_artifacts
   accessibility_test:
     resource_class: medium+
-    docker:
-      - image: cimg/base:stable-20.04
-        auth:
-          username: dockstoretestuser
-          password: $DOCKERHUB_PASSWORD
-      - image: cimg/postgres:13.3
-        command: postgres -c max_connections=200 -c jit=off
-        auth:
-          username: dockstoretestuser
-          password: $DOCKERHUB_PASSWORD
-        environment:
-          POSTGRES_USER: postgres
-          POSTGRES_DB: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_HOST_AUTH_METHOD: trust
-      - image: docker.elastic.co/elasticsearch/elasticsearch:7.10.1
-        environment:
-          - xpack.security.enabled: false
-          - transport.host: localhost
-          - network.host: 127.0.0.1
-          - http.port: 9200
-          - discovery.type: single-node
+    executor: integration_test_exec
     working_directory: ~/repo
     parameters:
       db_dump:
@@ -300,28 +279,7 @@ jobs:
 
   accessibility_test_base:
     resource_class: medium+
-    docker:
-      - image: cimg/base:stable-20.04
-        auth:
-          username: dockstoretestuser
-          password: $DOCKERHUB_PASSWORD
-      - image: cimg/postgres:13.3
-        command: postgres -c max_connections=200 -c jit=off
-        auth:
-          username: dockstoretestuser
-          password: $DOCKERHUB_PASSWORD
-        environment:
-          POSTGRES_USER: postgres
-          POSTGRES_DB: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_HOST_AUTH_METHOD: trust
-      - image: docker.elastic.co/elasticsearch/elasticsearch:7.10.1
-        environment:
-          - xpack.security.enabled: false
-          - transport.host: localhost
-          - network.host: 127.0.0.1
-          - http.port: 9200
-          - discovery.type: single-node
+    executor: integration_test_exec
     working_directory: ~/repo
     steps:
       - checkout
