@@ -77,10 +77,10 @@ jobs:
         type: string
     working_directory: ~/repo
     docker:
-      - image: cimg/base:stable-20.04
-        auth:
-          username: dockstoretestuser
-          password: $DOCKERHUB_PASSWORD
+        - image: cimg/base:stable-20.04
+          auth:
+            username: dockstoretestuser
+            password: $DOCKERHUB_PASSWORD
     steps:
       - browser-tools/install-chrome
       - browser-tools/install-chromedriver
@@ -155,10 +155,10 @@ jobs:
           name: Install dependencies
           #Only run 'npm ci' if node_modules was not restored from cache
           command: |
-            if [ ! -d "./node_modules" ]
-            then
-              bash -i -c 'npm ci'
-            fi
+              if [ ! -d "./node_modules" ]
+              then
+                bash -i -c 'npm ci'
+              fi
       - save_cache:
           key: dep-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
           paths:
@@ -168,9 +168,9 @@ jobs:
           paths:
             - ~/.cache
               # Disabled until ng2-ui-auth and @ngx-lite/json is replaced. Currently they do not support Angular 9
-            #      - run:
-            #          name: Check dependencies
-            #          command: bash -i -c 'npm ls'
+              #      - run:
+              #          name: Check dependencies
+              #          command: bash -i -c 'npm ls'
       - run:
           name: Lint
           command: bash -i -c 'npm run lint'
