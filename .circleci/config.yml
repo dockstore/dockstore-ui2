@@ -366,6 +366,8 @@ jobs:
       - checkout
       - install_container_dependencies
       - get_workspace
+      - store_artifacts:
+          path: accessibility-results
       - run:
           name: Compare accessibility results
           command: bash -i -c "npm run accessibility-test -- -A"
