@@ -300,16 +300,6 @@ jobs:
           path: accessibility-results
 
 
-  #    executor: integration_test_exec
-  #    working_directory: ~/repo
-  #    steps:
-  #      - setup_integration_test
-  #      - restore_cache:
-  #          key: cypress-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
-  #      - run:
-  #          name: Run pa11y-ci
-  #          command: |
-  #            bash -i -c "npm install -g pa11y-ci; pa11y-ci"
   accessibility_test_base:
     resource_class: medium+
     docker:
@@ -364,7 +354,11 @@ jobs:
           password: $DOCKERHUB_PASSWORD
     steps:
       - checkout
-      - install_container_dependencies
+      - run:
+          name: Install npm
+          command: |
+            wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
+            bash -i -c 'nvm install'
       - get_workspace
       - store_artifacts:
           path: accessibility-results
@@ -453,51 +447,51 @@ workflows:
   version: 2
   everything:
     jobs:
-      #      # Add the tags filter to all jobs so they will run before upload_to_s3
-      #      - audit:
-      #        filters:
-      #          tags:
-      #            only: /.*/
-      #          context:
-      #            - dockerhub
-      #      - lint_license_unit_test_coverage:
-      #          filters:
-      #            tags:
-      #              only: /.*/
-      #          context:
-      #            - dockerhub
-      #      - integration_test_1:
-      #          filters:
-      #            tags:
-      #              only: /.*/
-      #          requires:
-      #            - lint_license_unit_test_coverage
-      #          context:
-      #            - dockerhub
-      #      - integration_test_2:
-      #          filters:
-      #            tags:
-      #              only: /.*/
-      #          requires:
-      #            - lint_license_unit_test_coverage
-      #          context:
-      #            - dockerhub
-      #      - integration_test_3:
-      #          filters:
-      #            tags:
-      #              only: /.*/
-      #          requires:
-      #            - lint_license_unit_test_coverage
-      #          context:
-      #            - dockerhub
-      #      - integration_test_4:
-      #          filters:
-      #            tags:
-      #              only: /.*/
-      #          requires:
-      #            - lint_license_unit_test_coverage
-      #          context:
-      #            - dockerhub
+      # Add the tags filter to all jobs so they will run before upload_to_s3
+      - audit:
+        filters:
+          tags:
+            only: /.*/
+          context:
+            - dockerhub
+      - lint_license_unit_test_coverage:
+          filters:
+            tags:
+              only: /.*/
+          context:
+            - dockerhub
+      - integration_test_1:
+          filters:
+            tags:
+              only: /.*/
+          requires:
+            - lint_license_unit_test_coverage
+          context:
+            - dockerhub
+      - integration_test_2:
+          filters:
+            tags:
+              only: /.*/
+          requires:
+            - lint_license_unit_test_coverage
+          context:
+            - dockerhub
+      - integration_test_3:
+          filters:
+            tags:
+              only: /.*/
+          requires:
+            - lint_license_unit_test_coverage
+          context:
+            - dockerhub
+      - integration_test_4:
+          filters:
+            tags:
+              only: /.*/
+          requires:
+            - lint_license_unit_test_coverage
+          context:
+            - dockerhub
       - accessibility_test:
           filters:
             tags:
@@ -513,35 +507,35 @@ workflows:
           requires:
             - accessibility_test_base
             - accessibility_test
-  #      - local_smoke_tests:
-  #          filters:
-  #            tags:
-  #              only: /.*/
-  #          requires:
-  #            - lint_license_unit_test_coverage
-  #          context:
-  #            - dockerhub
-  #      # Upload builds for tags and branches to s3.
-  #      - upload_to_s3:
-  #          requires:
-  #            - audit
-  #            - lint_license_unit_test_coverage
-  #          filters:
-  #            tags:
-  #              only: /.*/
-  #            branches:
-  #              only: /.*/
-  #          context:
-  #            - dockerhub
-  #            - aws-ui2
-  #      - check_build_develop:
-  #          requires:
-  #            - upload_to_s3
-  #          filters:
-  #            branches:
-  #              only: /^develop/
-  #          context:
-  #            - dockerhub
+        - local_smoke_tests:
+            filters:
+              tags:
+                only: /.*/
+            requires:
+              - lint_license_unit_test_coverage
+            context:
+              - dockerhub
+        # Upload builds for tags and branches to s3.
+        - upload_to_s3:
+            requires:
+              - audit
+              - lint_license_unit_test_coverage
+            filters:
+              tags:
+                only: /.*/
+              branches:
+                only: /.*/
+            context:
+              - dockerhub
+              - aws-ui2
+        - check_build_develop:
+            requires:
+              - upload_to_s3
+            filters:
+              branches:
+                only: /^develop/
+            context:
+              - dockerhub
 
   nightly_no_auth:
     triggers:
