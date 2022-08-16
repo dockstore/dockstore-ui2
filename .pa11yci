@@ -11,15 +11,15 @@
     "http://localhost:4200/about",
     "http://localhost:4200/search?entryType=workflows&searchMode=files",
     "http://localhost:4200/search?entryType=tools&searchMode=Files",
-    "http://localhost:4200/workflows/github.com/AnalysisCommons/genesis_wdl/genesis_GWAS:v1_4_1?tab=info",
-    "http://localhost:4200/workflows/github.com/AnalysisCommons/genesis_wdl/genesis_GWAS:v1_4_1?tab=launch",
-    "http://localhost:4200/workflows/github.com/AnalysisCommons/genesis_wdl/genesis_GWAS:v1_4_1?tab=versions",
-    "http://localhost:4200/workflows/github.com/AnalysisCommons/genesis_wdl/genesis_GWAS:v1_4_1?tab=files",
-    "http://localhost:4200/workflows/github.com/AnalysisCommons/genesis_wdl/genesis_GWAS:v1_4_1?tab=tools",
-    "http://localhost:4200/workflows/github.com/AnalysisCommons/genesis_wdl/genesis_GWAS:v1_4_1?tab=DAG",
-    "http://localhost:4200/containers/quay.io/pancancer/pcawg-sanger-cgp-workflow:2.1.0?tab=info",
-    "http://localhost:4200/containers/quay.io/pancancer/pcawg-sanger-cgp-workflow:2.1.0?tab=launch",
-    "http://localhost:4200/containers/quay.io/pancancer/pcawg-sanger-cgp-workflow:2.1.0?tab=versions",
-    "http://localhost:4200/containers/quay.io/pancancer/pcawg-sanger-cgp-workflow:2.1.0?tab=files"
+    "http://localhost:4200/workflows/github.com/A/l:master?tab=info",
+    "http://localhost:4200/workflows/github.com/A/l:master?tab=launch",
+    "http://localhost:4200/workflows/github.com/A/l:master?tab=versions",
+    "http://localhost:4200/workflows/github.com/A/l:master?tab=files",
+    "http://localhost:4200/workflows/github.com/A/l:master?tab=tools",
+    "http://localhost:4200/workflows/github.com/A/l:master?tab=dag",
+    "http://localhost:4200/containers/quay.io/A2/b3:latest?tab=info",
+    "http://localhost:4200/containers/quay.io/A2/b3:latest?tab=launch",
+    "http://localhost:4200/containers/quay.io/A2/b3:latest?tab=versions",
+    "http://localhost:4200/containers/quay.io/A2/b3:latest?tab=files"
 	]
 }
