@@ -7,7 +7,7 @@
     "use_circle": true,
     "circle_ci_source": "https://app.circleci.com/pipelines/github/dockstore/dockstore/8331/workflows/81a1254f-c07b-4aa8-a4b1-42cc253dfb40/jobs/22925/artifacts",
     "circle_build_id": "22925",
-    "base_branch": "feature/pa11y-ci-test"
+    "base_branch": "develop"
   },
   "scripts": {
     "ng": "npx ng",
