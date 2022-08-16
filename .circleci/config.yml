@@ -168,7 +168,7 @@ jobs:
           paths:
             - ~/.cache
               # Disabled until ng2-ui-auth and @ngx-lite/json is replaced. Currently they do not support Angular 9
-              #      - run:
+            #      - run:
             #          name: Check dependencies
             #          command: bash -i -c 'npm ls'
       - run:
@@ -507,35 +507,35 @@ workflows:
           requires:
             - accessibility_test_base
             - accessibility_test
-        - local_smoke_tests:
-            filters:
-              tags:
-                only: /.*/
-            requires:
-              - lint_license_unit_test_coverage
-            context:
-              - dockerhub
-        # Upload builds for tags and branches to s3.
-        - upload_to_s3:
-            requires:
-              - audit
-              - lint_license_unit_test_coverage
-            filters:
-              tags:
-                only: /.*/
-              branches:
-                only: /.*/
-            context:
-              - dockerhub
-              - aws-ui2
-        - check_build_develop:
-            requires:
-              - upload_to_s3
-            filters:
-              branches:
-                only: /^develop/
-            context:
-              - dockerhub
+      - local_smoke_tests:
+          filters:
+            tags:
+              only: /.*/
+          requires:
+            - lint_license_unit_test_coverage
+          context:
+            - dockerhub
+      # Upload builds for tags and branches to s3.
+      - upload_to_s3:
+          requires:
+            - audit
+            - lint_license_unit_test_coverage
+          filters:
+            tags:
+              only: /.*/
+            branches:
+              only: /.*/
+          context:
+            - dockerhub
+            - aws-ui2
+      - check_build_develop:
+          requires:
+            - upload_to_s3
+          filters:
+            branches:
+              only: /^develop/
+          context:
+            - dockerhub
 
   nightly_no_auth:
     triggers:
