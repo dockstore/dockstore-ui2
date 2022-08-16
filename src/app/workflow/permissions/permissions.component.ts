@@ -10,8 +10,8 @@ import { Dockstore } from '../../shared/dockstore.model';
 import { TokenSource } from '../../shared/enum/token-source.enum';
 import { TokenQuery } from '../../shared/state/token.query';
 import { Permission, Workflow, WorkflowsService } from '../../shared/swagger';
-
 import RoleEnum = Permission.RoleEnum;
+
 @Component({
   selector: 'app-permissions',
   templateUrl: './permissions.component.html',
@@ -76,6 +76,7 @@ export class PermissionsComponent implements OnInit {
         .addWorkflowPermission(this.workflow.full_workflow_path, { email: value, role: permission }, this.entryType === EntryType.Service)
         .subscribe(
           (userPermissions: Permission[]) => {
+            this.alertService.detailedSuccess('Permissions updated');
             this.updating--;
             this.processResponse(userPermissions);
           },
