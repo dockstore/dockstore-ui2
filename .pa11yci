@@ -8,5 +8,8 @@
     "http://localhost:4200/workflows",
     "http://localhost:4200/services",
     "http://localhost:4200/organizations"
+    "http://localhost:4200/about"
+    "http://localhost:4200/search?entryType=workflows&searchMode=files"
+    "http://localhost:4200/search?entryType=tools&searchMode=Files"
 	]
 }
