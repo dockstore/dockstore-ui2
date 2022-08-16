@@ -18,12 +18,6 @@ export class OrganizationBoxComponent extends Base implements OnInit {
   listOfOrganizations: Array<Organization> = [];
   events: Array<Event> = [];
   firstCall = true;
-  readonly supportedEventTypes = [
-    Event.TypeEnum.CREATECOLLECTION,
-    Event.TypeEnum.ADDTOCOLLECTION,
-    Event.TypeEnum.ADDUSERTOORG,
-    Event.TypeEnum.MODIFYCOLLECTION,
-  ];
   pendingRequests: Array<OrganizationUser> = [];
   pendingInvites: Array<OrganizationUser> = [];
   EventType = Event.TypeEnum;

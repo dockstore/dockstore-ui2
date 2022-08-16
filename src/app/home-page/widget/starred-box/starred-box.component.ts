@@ -1,4 +1,3 @@
-import { T } from '@angular/cdk/keycodes';
 import { Component, OnInit } from '@angular/core';
 import { Base } from 'app/shared/base';
 import { Event, UsersService, EventsService } from 'app/shared/openapi';
@@ -16,15 +15,14 @@ export class StarredBoxComponent extends Base implements OnInit {
   totalStarredOrganizations: number = 0;
   events: Array<Event> = [];
   public isLoading = true;
+  EventType = Event.TypeEnum;
+
   constructor(private usersService: UsersService, private eventsService: EventsService) {
     super();
   }
 
   ngOnInit(): void {
     this.getMyEvents();
-  }
-
-  getMyEvents() {
     this.usersService.getStarredServices().subscribe((starredServices) => {
       this.totalStarredServices = starredServices.length;
     });
@@ -37,7 +35,9 @@ export class StarredBoxComponent extends Base implements OnInit {
     this.usersService.getStarredOrganizations().subscribe((starredOrganizations) => {
       this.totalStarredOrganizations = starredOrganizations.length;
     });
+  }
 
+  getMyEvents() {
     this.eventsService
       .getEvents('STARRED_ENTRIES', 5)
       .pipe(
