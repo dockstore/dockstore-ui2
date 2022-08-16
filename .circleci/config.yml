@@ -645,9 +645,6 @@ commands:
       - run:
           name: Wait for services
           command: bash scripts/wait-for.sh
-      - run:
-          name: Install pa11y-ci
-          command: bash -i -c "npm install -g pa11y-ci"
 
   get_workspace:
     steps:
