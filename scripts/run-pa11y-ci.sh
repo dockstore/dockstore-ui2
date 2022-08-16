@@ -108,12 +108,8 @@ then
 
   # If the number of accessibility errors is equal, then check that if they are the same set of errors.
   if [ "$ACCESSIBILITY_ERRORS_CURRENT_BRANCH" -eq "$ACCESSIBILITY_ERRORS_BASE_BRANCH" ]; then
-    if cmp -s "${RESULT_DIRECTORY}/${BASE_BRANCH_RESULT_FILE_NAME}".json "${RESULT_DIRECTORY}/${CURRENT_BRANCH_RESULT_FILE_NAME}".json; then
-      echo "The number of accessibility erorrs between the PR and base branch are the same"
-    else
-      echo "Looks like you have fixed and introduced an equal amount of accessibility errors compared to the base branch"
-      exit 1;
-    fi
+    echo "The number of accessibility erorrs in this PR and the base branch are the same"
+    exit 0
   fi
 
   echo "You have reduced the number of accessibility issues with this PR"
