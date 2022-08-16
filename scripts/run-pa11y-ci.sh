@@ -81,11 +81,14 @@ if [ "$RUN_ACCESSIBILITY_TEST" == "true" ]
 then
   mkdir -p "$RESULT_DIRECTORY"
   OUTPUT_FILE_PATH="${RESULT_DIRECTORY}/${RESULT_FILE}"
+
   pa11y-ci --json > "$OUTPUT_FILE_PATH".json || true
+
   if [ "$RESULT_FILE" == "$CURRENT_BRANCH_RESULT_FILE_NAME" ]
   then
     pa11y-ci 2> "$OUTPUT_FILE_PATH".txt || true # Get nicely formatted version of results
   fi
+
   echo "Successfully ran accessibility test"
   exit 0
 fi
