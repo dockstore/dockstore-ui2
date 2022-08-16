@@ -1,14 +1,13 @@
-#!/bin/bash
-
+#!/usr/bin/env bash
 
 set -o errexit
 set -o pipefail
 set -o nounset
-set -o nounset
 #set -o xtrace
 
 # Run pa11y-ci shows any accessibility issues related to the UI.
-# This script can be run in two different ways
+# NOTE: This script will not be useful if you are running it locally,
+# it is recommended that you run `pa11y-ci` in your command line instead.
 
 RESULT_DIRECTORY="accessibility-results"
 CURRENT_BRANCH_RESULT_FILE_NAME="current-branch"
@@ -20,10 +19,10 @@ usage() {
   echo "Usage: $0 [OPTION...]"
   echo ""
   echo "-H, Display help command"
-  echo "-B, Do all commands on base-branch (if this option is not given all commands are done on current branch"
-  echo "-C, Checkouts the code from the base branch (note: the option -base-branch is not required to do this"
-  echo "-R, Runs pa11y-ci on current branch (requires webservice to be running) and outputs results in a form that can be analysed"
-  echo "-A, Determines if current branch has more accessibility issues then base branch, requires the results from -run-accessibility-test to be available"
+  echo "-B, Do all commands on base branch (if this option is not given all commands are done on current branch)"
+  echo "-C, Checkouts the code from the base branch (note: the option -B is not required to do this)"
+  echo "-R, Runs pa11y-ci on branch (requires webservice to be running) and outputs results in a form that can be analysed"
+  echo "-A, Determines if current branch has more accessibility issues then base branch, requires the results from option -R to be available"
 }
 
 # Variables for determining which command to run
@@ -71,6 +70,7 @@ while getopts 'HBCRA' OPTION; do
   no_args="false"
 done
 
+# Display help message if no arguments were given
 if [ "$no_args" == "true" ]
 then
   usage
@@ -81,13 +81,15 @@ if [ "$RUN_ACCESSIBILITY_TEST" == "true" ]
 then
   mkdir -p "$RESULT_DIRECTORY"
   OUTPUT_FILE_PATH="${RESULT_DIRECTORY}/${RESULT_FILE}"
+
   pa11y-ci --json > "$OUTPUT_FILE_PATH".json || true
+
   if [ "$RESULT_FILE" == "$CURRENT_BRANCH_RESULT_FILE_NAME" ]
   then
     pa11y-ci 2> "$OUTPUT_FILE_PATH".txt || true # Get nicely formatted version of results
   fi
+
   echo "Successfully ran accessibility test"
-  cat ${OUTPUT_FILE_PATH}.json
   exit 0
 fi
 
