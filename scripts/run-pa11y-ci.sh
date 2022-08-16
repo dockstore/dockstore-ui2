@@ -3,7 +3,6 @@
 set -o errexit
 set -o pipefail
 set -o nounset
-set -o nounset
 #set -o xtrace
 
 # Run pa11y-ci shows any accessibility issues related to the UI.
