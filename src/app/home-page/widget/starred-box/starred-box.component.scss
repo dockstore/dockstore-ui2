@@ -1,11 +1,6 @@
 @use '@angular/material' as mat;
 @import '/src/materialColorScheme.scss';
 
-.starred-box {
-  flex: 1 1 0px;
-  width: 0;
-}
-
 .list-events {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -30,7 +25,4 @@ img[alt='Org avatar'] {
 img[alt='star'] {
   width: 2rem;
   height: 2rem;
-}
-
-.starred-types {
 }
