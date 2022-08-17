@@ -4,21 +4,29 @@
       <mat-card-title>Starred</mat-card-title>
     </mat-card-header>
     <div id="total-starred" fxLayout="row" fxLayoutGap="1rem" class="size-small pb-3">
-      <div id="starred-workflows" fxLayout="row" fxLayoutAlign="start center">
-        <img src="../assets/svg/star-on.svg" alt="star" />
-        {{ totalStarredWorkflows }} Workflows
+      <div [ngPlural]="totalStarredWorkflows" id="starred-workflows" fxLayout="row" fxLayoutAlign="start center">
+        <ng-template ngPluralCase="=0"> <img src="../assets/svg/star-off.svg" alt="star" class="mr-1" /> 0 Workflows </ng-template>
+        <ng-template ngPluralCase="other">
+          <img src="../assets/svg/star-on.svg" alt="star" class="mr-1" /> {{ totalStarredWorkflows }} Workflows</ng-template
+        >
       </div>
-      <div id="starred-tools" fxLayout="row" fxLayoutAlign="start center">
-        <img src="../assets/svg/star-on.svg" alt="star" />
-        {{ totalStarredTools }} Tools
+      <div [ngPlural]="totalStarredTools" id="starred-tools" fxLayout="row" fxLayoutAlign="start center">
+        <ng-template ngPluralCase="=0"> <img src="../assets/svg/star-off.svg" alt="star" class="mr-1" /> 0 Tools </ng-template>
+        <ng-template ngPluralCase="other">
+          <img src="../assets/svg/star-on.svg" alt="star" class="mr-1" /> {{ totalStarredTools }} Tools</ng-template
+        >
       </div>
-      <div id="starred-services" fxLayout="row" fxLayoutAlign="start center">
-        <img src="../assets/svg/star-on.svg" alt="star" />
-        {{ totalStarredServices }} Services
+      <div [ngPlural]="totalStarredServices" id="starred-services" fxLayout="row" fxLayoutAlign="start center">
+        <ng-template ngPluralCase="=0"> <img src="../assets/svg/star-off.svg" alt="star" class="mr-1" /> 0 Services </ng-template>
+        <ng-template ngPluralCase="other">
+          <img src="../assets/svg/star-on.svg" alt="star" class="mr-1" /> {{ totalStarredServices }} Services</ng-template
+        >
       </div>
-      <div id="starred-orgs" fxLayout="row" fxLayoutAlign="start center">
-        <img src="../assets/svg/star-on.svg" alt="star" />
-        {{ totalStarredOrganizations }} Organizations
+      <div [ngPlural]="totalStarredOrganizations" id="starred-orgs" fxLayout="row" fxLayoutAlign="start center">
+        <ng-template ngPluralCase="=0"> <img src="../assets/svg/star-off.svg" alt="star" class="mr-1" /> 0 Organizations </ng-template>
+        <ng-template ngPluralCase="other">
+          <img src="../assets/svg/star-on.svg" alt="star" class="mr-1" /> {{ totalStarredOrganizations }} Organizations</ng-template
+        >
       </div>
     </div>
   </div>
@@ -165,30 +173,14 @@
     </div>
     <ng-template #noEvents>
       <div *ngIf="!isLoading" fxLayout="column" class="h-100" fxLayoutAlign="center center">
-        <img src="../assets/svg/sub-nav/organization.svg" alt="starred" class="widget-box-type-logo mb-4" />
+        <img src="../assets/svg/star-on.svg" alt="starred" class="widget-box-type-logo mb-4" />
         <span>You do not have any starred events </span>
-        <div class="size-small text-align-center">
-          <span>Use the </span>
-          <button
-            mat-button
-            class="txt-button"
-            id="registerOrganizationButton"
-            matTooltip="Register organization"
-            matTooltipPosition="after"
-            (click)="requireAccounts()"
-          >
-            organization request wizard
-          </button>
-          to request an organization or visit the
-          <a routerLink="/organizations">organizations page</a>
-          to star an organization.
-        </div>
         <a
           class="size-small mt-3"
           target="_blank"
           rel="noopener noreferrer"
-          href="https://docs.dockstore.org/en/latest/advanced-topics/organizations-and-collections.html"
-          >Learn more about organizations.
+          [href]="Dockstore.DOCUMENTATION_URL + '/end-user-topics/starring.html'"
+          >Learn more about starring
         </a>
       </div>
     </ng-template>

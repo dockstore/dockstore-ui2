@@ -2,6 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { AlertService } from 'app/shared/alert/state/alert.service';
 import { Base } from 'app/shared/base';
+import { Dockstore } from 'app/shared/dockstore.model';
 import { Event, UsersService, EventsService } from 'app/shared/openapi';
 import { finalize, takeUntil } from 'rxjs/operators';
 
@@ -11,6 +12,7 @@ import { finalize, takeUntil } from 'rxjs/operators';
   styleUrls: ['./starred-box.component.scss'],
 })
 export class StarredBoxComponent extends Base implements OnInit {
+  Dockstore = Dockstore;
   totalStarredWorkflows: number = 0;
   totalStarredTools: number = 0;
   totalStarredServices: number = 0;
