@@ -965,6 +965,11 @@ mat-icon.star-icon {
   height: 16px;
 }
 
+.date-display {
+  color: mat.get-color-from-palette($kim-gray, 2);
+  white-space: nowrap;
+}
+
 .no-wrap {
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -1060,6 +1065,10 @@ hr {
   max-width: 200px;
   object-fit: scale-down;
   margin-top: 1.5rem;
+}
+
+.widget-box-type-logo {
+  min-width: 5rem;
 }
 
 // To indicate success of an operation.
@@ -1290,6 +1299,13 @@ a.small-mat-btn-skin:not([class*='mat-elevation-z']) {
   box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.08);
 }
 
+button.inline-text-btn {
+  text-decoration: underline;
+  color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
+  font-size: 12px;
+  padding: 0.5rem;
+}
+
 // Updated mat-card style matching Zeplin redesign
 .mat-card:not([class*='mat-elevation-z']) {
   border: solid 1px mat.get-color-from-palette($dockstore-app-gray, 7);
@@ -1320,4 +1336,13 @@ a.small-mat-btn-skin:not([class*='mat-elevation-z']) {
 
 .alert-danger-icon {
   color: mat.get-color-from-palette($dockstore-app-error, 2) !important;
+}
+
+.widget-list-items {
+  border-bottom: solid 1px mat.get-color-from-palette($kim-gray, 3);
+  line-height: 2rem;
+}
+
+.space-between {
+  justify-content: space-between;
 }

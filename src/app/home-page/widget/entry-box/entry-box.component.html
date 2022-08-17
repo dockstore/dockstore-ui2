@@ -1,9 +1,9 @@
-<mat-card class="h-100 entry-boxes">
-  <div id="header-bar" fxLayout="row" fxLayoutGap="5px" class="mat-card-header-separate">
+<mat-card class="h-100">
+  <div id="header-bar" fxLayout="row" fxLayoutGap="5px" class="space-between">
     <div id="workflow-number" fxLayout="row">
       <mat-card-header fxLayout="row">
         <mat-card-title>{{ entryTypeLowerCase | titlecase }}s</mat-card-title>
-        <span class="bubble">{{ listOfEntries.length }}</span>
+        <span class="bubble">{{ totalEntries }}</span>
       </mat-card-header>
     </div>
     <button
@@ -21,7 +21,7 @@
   </div>
   <mat-divider></mat-divider>
   <mat-card-content class="p-3 entries-container">
-    <div *ngIf="hasEntries || isLoading; else noEntries">
+    <div *ngIf="totalEntries !== 0 || isLoading; else noEntries">
       <mat-form-field appearance="outline" class="search-form-field w-100 pb-0">
         <input
           matInput
@@ -32,11 +32,11 @@
         />
       </mat-form-field>
       <h5 class="weight-bold my-0">Recent Activity</h5>
-      <div *ngFor="let entry of listOfEntries" fxLayout="row" class="list-items w-100 py-2">
+      <div *ngFor="let entry of listOfEntries" fxLayout="row" class="widget-list-items space-between w-100 py-2">
         <a class="no-wrap" [routerLink]="allEntriesLink + entry.path">
           {{ entry.prettyPath }}
         </a>
-        <div class="date">{{ entry.lastUpdateDate | date: 'MMM d, yyyy' }}</div>
+        <div class="date-display">{{ entry.lastUpdateDate | date: 'MMM d, yyyy' }}</div>
       </div>
       <div *ngIf="listOfEntries.length === 0" class="mt-2">No matching {{ entryTypeLowerCase }}s</div>
       <div class="weight-bold py-2">
@@ -46,16 +46,21 @@
       </div>
     </div>
     <ng-template #noEntries>
-      <div *ngIf="!isLoading" fxLayout="column" class="h-100 no-entries">
-        <img *ngIf="entryType === 'WORKFLOW'" src="../assets/svg/workflow-circle.svg" alt="my workflows" class="entry-logo mb-4" />
-        <img *ngIf="entryType === 'TOOL'" src="../assets/svg/tool-circle.svg" alt="my tools" class="entry-logo mb-4" />
-        <img *ngIf="entryType === 'SERVICE'" src="../assets/svg/service-circle.svg" alt="my services" class="entry-logo mb-4" />
+      <div *ngIf="!isLoading" fxLayout="column" class="h-100 text-align-center" fxLayoutAlign="center center">
+        <img
+          *ngIf="entryType === 'WORKFLOW'"
+          src="../assets/svg/workflow-circle.svg"
+          alt="my workflows"
+          class="widget-box-type-logo mb-4"
+        />
+        <img *ngIf="entryType === 'TOOL'" src="../assets/svg/tool-circle.svg" alt="my tools" class="widget-box-type-logo mb-4" />
+        <img *ngIf="entryType === 'SERVICE'" src="../assets/svg/service-circle.svg" alt="my services" class="widget-box-type-logo mb-4" />
         <span>You have not registered any {{ entryTypeLowerCase }}s.</span>
         <div class="size-small">
           <span>Use the</span>
           <button
             mat-button
-            class="txt-button"
+            class="inline-text-btn"
             id="register{{ entryTypeLowerCase }}Button"
             matTooltip="Register {{ entryTypeLowerCase }}"
             matTooltipPosition="after"

@@ -3,14 +3,14 @@
 
   <div id="row-holder" fxLayout="column" fxLayoutAlign="start start" class="p-4 w-100">
     <mat-card class="alert alert-info mx-1 w-100" role="alert"> Major Release: TODO</mat-card>
-    <div id="entry-holder" fxLayout="row" fxLayoutGap="2.5rem" class="w-100 mb-5 fx-grow entry-holder">
-      <app-entry-box class="fx-grow box-container" entryType="WORKFLOW"></app-entry-box>
-      <app-entry-box class="fx-grow box-container" entryType="TOOL"></app-entry-box>
-      <app-entry-box class="fx-grow box-container" entryType="SERVICE"></app-entry-box>
+    <div id="entry-holder" fxLayout="row" fxLayoutGap="2.5rem" class="w-100 mb-5 entry-holder" fxFlex>
+      <app-entry-box fxFlex="33" entryType="WORKFLOW"></app-entry-box>
+      <app-entry-box fxFlex="33" entryType="TOOL"></app-entry-box>
+      <app-entry-box fxFlex="33" entryType="SERVICE"></app-entry-box>
     </div>
-    <div id="updates-holder" fxLayout="row" fxLayoutGap="2.5rem" class="w-100 fx-grow">
-      <app-starred-box class="fx-grow box-container"></app-starred-box>
-      <app-organization-box class="fx-grow box-container"></app-organization-box>
+    <div id="updates-holder" fxLayout="row" fxLayoutGap="2.5rem" class="w-100 updates-holder" fxFlex>
+      <app-starred-box fxFlex="50"></app-starred-box>
+      <app-organization-box fxFlex="50"></app-organization-box>
     </div>
   </div>
 </div>
