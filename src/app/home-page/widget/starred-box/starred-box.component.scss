@@ -7,8 +7,12 @@
 }
 
 .list-events {
-  border-bottom: solid 1px mat.get-color-from-palette($kim-gray, 3);
-  line-height: 2rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* number of lines to show */
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 
 img[alt='User avatar'] {

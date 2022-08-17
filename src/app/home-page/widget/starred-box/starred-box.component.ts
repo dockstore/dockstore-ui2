@@ -1,4 +1,6 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { AlertService } from 'app/shared/alert/state/alert.service';
 import { Base } from 'app/shared/base';
 import { Event, UsersService, EventsService } from 'app/shared/openapi';
 import { finalize, takeUntil } from 'rxjs/operators';
@@ -16,8 +18,17 @@ export class StarredBoxComponent extends Base implements OnInit {
   events: Array<Event> = [];
   public isLoading = true;
   EventType = Event.TypeEnum;
+  readonly supportedEventTypes = [
+    Event.TypeEnum.ADDVERSIONTOENTRY,
+    Event.TypeEnum.CREATECOLLECTION,
+    Event.TypeEnum.ADDTOCOLLECTION,
+    Event.TypeEnum.PUBLISHENTRY,
+    Event.TypeEnum.UNPUBLISHENTRY,
+    Event.TypeEnum.MODIFYCOLLECTION,
+    Event.TypeEnum.ADDUSERTOORG,
+  ];
 
-  constructor(private usersService: UsersService, private eventsService: EventsService) {
+  constructor(private usersService: UsersService, private eventsService: EventsService, private alertService: AlertService) {
     super();
   }
 
@@ -39,13 +50,24 @@ export class StarredBoxComponent extends Base implements OnInit {
 
   getMyEvents() {
     this.eventsService
-      .getEvents('STARRED_ENTRIES', 5)
+      .getEvents('ALL_STARRED')
       .pipe(
         finalize(() => (this.isLoading = false)),
         takeUntil(this.ngUnsubscribe)
       )
-      .subscribe((events) => {
-        this.events = events;
-      });
+      .subscribe(
+        (events) => {
+          events
+            .filter((event) => this.supportedEventTypes.includes(event.type))
+            .forEach((ev: Event) => {
+              if (this.events.length < 4) {
+                this.events.push(ev);
+              }
+            });
+        },
+        (error: HttpErrorResponse) => {
+          this.alertService.detailedError(error);
+        }
+      );
   }
 }

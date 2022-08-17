@@ -1,4 +1,4 @@
-<mat-card class="fx-grow starred-box">
+<mat-card class="h-100">
   <div id="header-bar" fxLayout="row" fxLayoutAlign="space-between">
     <mat-card-header fxLayout="row">
       <mat-card-title>Starred</mat-card-title>
@@ -23,73 +23,141 @@
     </div>
   </div>
   <mat-divider></mat-divider>
-  <mat-card-content class="p-3">
+  <mat-card-content class="p-3 h-100">
     <div *ngIf="events.length !== 0 || isLoading; else noEvents">
       <h5 class="weight-bold">Recent Activity</h5>
-      <div class="size-small list-events" *ngFor="let event of events" fxLayout="row" fxLayoutAlign="space-between center">
+      <div class="size-small widget-list-items" *ngFor="let event of events" fxLayout="row" fxLayoutAlign="space-between center">
         <div fxLayout="row" fxLayoutAlign="start center">
           <img src="{{ event?.initiatorUser?.avatarUrl }}" alt="User avatar" />
           <div [ngSwitch]="event.type">
+            <div *ngSwitchCase="EventType.ADDVERSIONTOENTRY" class="my-3">
+              <div class="list-events">
+                <strong>{{ event.initiatorUser?.username }} </strong> created the {{ event.version?.referenceType | lowercase }}
+                <strong>{{ event.version?.name }}</strong> in {{ event?.tool || event?.apptool ? 'tool' : 'workflow' }}
+                <a
+                  [routerLink]="
+                    event?.apptool
+                      ? '/tools/' + event?.apptool.full_workflow_path
+                      : event?.tool
+                      ? '/tools/' + event?.tool.tool_path
+                      : '/workflows/' + event?.workflow.full_workflow_path
+                  "
+                  >{{
+                    (event?.tool | entryToDisplayName) || (event?.workflow | entryToDisplayName) || (event?.apptool | entryToDisplayName)
+                  }}</a
+                >
+              </div>
+              <div class="subtitle">{{ 'on ' + (event.dbCreateDate | date: 'medium') }}</div>
+              <mat-divider *ngIf="!last" class="custom-margin"></mat-divider>
+            </div>
             <div *ngSwitchCase="EventType.CREATECOLLECTION" class="my-3">
-              <strong>{{ event.initiatorUser?.username }}</strong> created the collection
-              <a [routerLink]="'/organizations/' + event.organization?.name + '/collections/' + event.collection?.name"
-                >{{ event.collection?.name }}
-              </a>
-              in organization
-              <a [routerLink]="'/organizations/' + event.organization?.name">{{ event.organization?.displayName }}</a>
+              <div class="list-events">
+                <strong>{{ event.initiatorUser?.username }}</strong> created the collection
+                <a [routerLink]="'/organizations/' + event.organization?.name + '/collections/' + event.collection?.name"
+                  >{{ event.collection?.name }}
+                </a>
+                in organization
+                <a [routerLink]="'/organizations/' + event.organization?.name">{{ event.organization?.displayName }}</a>
+              </div>
               <div class="subtitle">{{ event.dbCreateDate | date: 'medium' }}</div>
             </div>
             <div *ngSwitchCase="EventType.ADDTOCOLLECTION" class="my-3">
-              <strong>{{ event.initiatorUser.username }} </strong> added the {{ event?.tool || event?.apptool ? 'tool' : 'workflow' }}
-              <a
-                [routerLink]="
-                  event?.apptool
-                    ? '/tools/' + event?.apptool.full_workflow_path
-                    : event?.tool
-                    ? '/tools/' + event?.tool.tool_path
-                    : '/workflows/' + event?.workflow.full_workflow_path
-                "
-                >{{ event?.apptool ? event?.apptool.workflowName : event?.tool ? event?.tool.name : event?.workflow.workflowName }}</a
-              >
-              to the collection
-              <a [routerLink]="'/organizations/' + event.organization?.name + '/collections/' + event.collection?.name"
-                >{{ event.collection?.name }}
-              </a>
+              <div class="list-events">
+                <strong>{{ event.initiatorUser.username }} </strong> added the {{ event?.tool || event?.apptool ? 'tool' : 'workflow' }}
+                <a
+                  [routerLink]="
+                    event?.apptool
+                      ? '/tools/' + event?.apptool.full_workflow_path
+                      : event?.tool
+                      ? '/tools/' + event?.tool.tool_path
+                      : '/workflows/' + event?.workflow.full_workflow_path
+                  "
+                  >{{ event?.apptool ? event?.apptool.workflowName : event?.tool ? event?.tool.name : event?.workflow.workflowName }}</a
+                >
+                to the collection
+                <a [routerLink]="'/organizations/' + event.organization?.name + '/collections/' + event.collection?.name"
+                  >{{ event.collection?.name }}
+                </a>
+                in organization
+                <a [routerLink]="'/organizations/' + event.organization?.name">{{ event.organization?.displayName }}</a>
+              </div>
               <div class="subtitle">{{ event.dbCreateDate | date: 'medium' }}</div>
             </div>
             <div *ngSwitchCase="EventType.ADDUSERTOORG" class="my-3">
-              <strong>{{ event.initiatorUser.username }} </strong> added {{ event.user.username }} to the organization
-              <a [routerLink]="'/organizations/' + event.organization?.name">{{ event.organization?.displayName }}</a>
+              <div class="list-events">
+                <strong>{{ event.initiatorUser.username }} </strong> added {{ event.user.username }} to the organization
+                <a [routerLink]="'/organizations/' + event.organization?.name">{{ event.organization?.displayName }}</a>
+              </div>
               <div class="subtitle">{{ event.dbCreateDate | date: 'medium' }}</div>
             </div>
             <div *ngSwitchCase="EventType.MODIFYCOLLECTION" class="my-3">
-              <strong>{{ event.initiatorUser.username }} </strong> edited the collection
-              <a [routerLink]="'/organizations/' + event.organization?.name + '/collections/' + event.collection?.name"
-                >{{ event.collection?.name }}
-              </a>
+              <div class="list-events">
+                <strong>{{ event.initiatorUser.username }} </strong> edited the collection
+                <a [routerLink]="'/organizations/' + event.organization?.name + '/collections/' + event.collection?.name"
+                  >{{ event.collection?.name }}
+                </a>
+              </div>
               <div class="subtitle">{{ event.dbCreateDate | date: 'medium' }}</div>
             </div>
             <div *ngSwitchCase="EventType.REMOVEFROMCOLLECTION" class="my-3">
-              <strong>{{ event.initiatorUser.username }} </strong> removed the {{ event?.tool || event?.apptool ? 'tool' : 'workflow' }}
-              <a
-                [routerLink]="
-                  event?.apptool
-                    ? '/tools/' + event?.apptool.full_workflow_path
-                    : event?.tool
-                    ? '/tools/' + event?.tool.tool_path
-                    : '/workflows/' + event?.workflow.full_workflow_path
-                "
-                >{{ event?.apptool ? event?.apptool.workflowName : event?.tool ? event?.tool.name : event?.workflow.workflowName }}</a
-              >
-              from the collection
-              <a [routerLink]="'/organizations/' + event.organization?.name + '/collections/' + event.collection?.name"
-                >{{ event.collection?.name }}
-              </a>
+              <div class="list-events">
+                <strong>{{ event.initiatorUser.username }} </strong> removed the {{ event?.tool || event?.apptool ? 'tool' : 'workflow' }}
+                <a
+                  [routerLink]="
+                    event?.apptool
+                      ? '/tools/' + event?.apptool.full_workflow_path
+                      : event?.tool
+                      ? '/tools/' + event?.tool.tool_path
+                      : '/workflows/' + event?.workflow.full_workflow_path
+                  "
+                  >{{ event?.apptool ? event?.apptool.workflowName : event?.tool ? event?.tool.name : event?.workflow.workflowName }}</a
+                >
+                from the collection
+                <a [routerLink]="'/organizations/' + event.organization?.name + '/collections/' + event.collection?.name"
+                  >{{ event.collection?.name }}
+                </a>
+              </div>
               <div class="subtitle">{{ event.dbCreateDate | date: 'medium' }}</div>
+            </div>
+            <div *ngSwitchCase="EventType.PUBLISHENTRY" class="my-3">
+              <div class="list-events">
+                <strong>{{ event.user.username }} </strong> published the {{ event?.tool || event?.apptool ? 'tool' : 'workflow' }}
+                <a
+                  [routerLink]="
+                    event?.apptool
+                      ? '/tools/' + event?.apptool.full_workflow_path
+                      : event?.tool
+                      ? '/tools/' + event?.tool.tool_path
+                      : '/workflows/' + event?.workflow.full_workflow_path
+                  "
+                  >{{
+                    (event?.tool | entryToDisplayName) || (event?.workflow | entryToDisplayName) || (event?.apptool | entryToDisplayName)
+                  }}</a
+                >
+              </div>
+              <div class="subtitle">{{ 'on ' + (event.dbCreateDate | date: 'medium') }}</div>
+            </div>
+            <div *ngSwitchCase="EventType.UNPUBLISHENTRY" class="my-3">
+              <div class="list-events">
+                <strong>{{ event.user.username }} </strong> unpublished the {{ event?.tool || event?.apptool ? 'tool' : 'workflow' }}
+                <a
+                  [routerLink]="
+                    event?.apptool
+                      ? '/tools/' + event?.apptool.full_workflow_path
+                      : event?.tool
+                      ? '/tools/' + event?.tool.tool_path
+                      : '/workflows/' + event?.workflow.full_workflow_path
+                  "
+                  >{{
+                    (event?.tool | entryToDisplayName) || (event?.workflow | entryToDisplayName) || (event?.apptool | entryToDisplayName)
+                  }}</a
+                >
+              </div>
+              <div class="subtitle">{{ 'on ' + (event.dbCreateDate | date: 'medium') }}</div>
             </div>
           </div>
         </div>
-        <img class="mx-2" src="{{ event?.organization.avatarUrl }}" alt="Org avatar" />
+        <img class="mx-2" src="{{ event?.organization?.avatarUrl }}" alt="Org avatar" />
       </div>
       <div class="weight-bold py-2">
         <a [routerLink]="'/starred'"> All Starred<mat-icon class="mat-icon-sm">keyboard_double_arrow_right</mat-icon> </a>
@@ -97,9 +165,9 @@
     </div>
     <ng-template #noEvents>
       <div *ngIf="!isLoading" fxLayout="column" class="h-100" fxLayoutAlign="center center">
-        <img src="../assets/svg/sub-nav/organization.svg" alt="my organizations" class="org-logo mb-4" />
+        <img src="../assets/svg/sub-nav/organization.svg" alt="starred" class="widget-box-type-logo mb-4" />
         <span>You do not have any starred events </span>
-        <div class="size-small no-organizations">
+        <div class="size-small text-align-center">
           <span>Use the </span>
           <button
             mat-button
