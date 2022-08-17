@@ -37,7 +37,8 @@
     "test-staging-auth": "npx cypress run -c baseUrl=https://staging.dockstore.org -s \"cypress/integration/smokeTests/stagingOnly/auth-tests.ts,cypress/integration/smokeTests/sharedTests/auth-tests.ts\"",
     "test-prod-auth": "npx cypress run -c baseUrl=https://dockstore.org -s \"cypress/integration/smokeTests/prodOnly/auth-tests.ts,cypress/integration/smokeTests/sharedTests/auth-tests.ts\"",
     "prepare": "husky install",
-    "compare-audits": "scripts/npm-audit-comparison.sh"
+    "compare-audits": "scripts/npm-audit-comparison.sh",
+    "accessibility-test": "scripts/run-pa11y-ci.sh"
   },
   "private": true,
   "dependencies": {
@@ -112,6 +113,7 @@
     "lint-staged": "^11.0.0",
     "prettier": "^2.3.1",
     "ts-node": "^10.0.0",
-    "typescript": "^4.5.5"
+    "typescript": "^4.5.5",
+    "pa11y-ci":" ^3.0.1"
   }
 }
