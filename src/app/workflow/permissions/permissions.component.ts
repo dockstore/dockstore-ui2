@@ -50,14 +50,14 @@ export class PermissionsComponent implements OnInit {
     });
   }
 
-  remove(entity: string, permission: RoleEnum) {
+  remove(email: string, permission: RoleEnum) {
     this.updating++;
-    this.alertService.start('Removing permissions');
+    this.alertService.start(`Removing ${email}`);
     this.workflowsService
-      .removeWorkflowRole(this.workflow.full_workflow_path, entity, permission, this.entryType === EntryType.Service)
+      .removeWorkflowRole(this.workflow.full_workflow_path, email, permission, this.entryType === EntryType.Service)
       .subscribe(
         (userPermissions: Permission[]) => {
-          this.alertService.detailedSuccess('Removed permissions');
+          this.alertService.detailedSuccess(`Removed ${email}`);
           this.updating--;
           this.processResponse(userPermissions);
         },
@@ -69,16 +69,16 @@ export class PermissionsComponent implements OnInit {
 
   add(event: MatChipInputEvent, permission: RoleEnum): void {
     const input = event.input;
-    const value = event.value;
+    const email = event.value;
 
-    if ((value || '').trim()) {
+    if ((email || '').trim()) {
       this.updating++;
-      this.alertService.start('Updating permissions');
+      this.alertService.start(`Adding ${email}`);
       this.workflowsService
-        .addWorkflowPermission(this.workflow.full_workflow_path, { email: value, role: permission }, this.entryType === EntryType.Service)
+        .addWorkflowPermission(this.workflow.full_workflow_path, { email: email, role: permission }, this.entryType === EntryType.Service)
         .subscribe(
           (userPermissions: Permission[]) => {
-            this.alertService.detailedSuccess('Permissions updated');
+            this.alertService.detailedSuccess(`Added ${email}`);
             this.updating--;
             this.processResponse(userPermissions);
           },
