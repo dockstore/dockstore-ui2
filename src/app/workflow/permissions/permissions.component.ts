@@ -52,10 +52,12 @@ export class PermissionsComponent implements OnInit {
 
   remove(entity: string, permission: RoleEnum) {
     this.updating++;
+    this.alertService.start('Removing permissions');
     this.workflowsService
       .removeWorkflowRole(this.workflow.full_workflow_path, entity, permission, this.entryType === EntryType.Service)
       .subscribe(
         (userPermissions: Permission[]) => {
+          this.alertService.detailedSuccess('Removed permissions');
           this.updating--;
           this.processResponse(userPermissions);
         },
