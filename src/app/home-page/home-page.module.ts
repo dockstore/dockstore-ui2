@@ -12,6 +12,7 @@ import { ListContainersModule } from 'app/shared/modules/list-containers.module'
 import { ListWorkflowsModule } from 'app/shared/modules/list-workflows.module';
 import { CustomMaterialModule } from 'app/shared/modules/material.module';
 import { MarkdownModule } from 'ngx-markdown';
+import { RefreshWizardModule } from '../container/refresh-wizard.module';
 import { RefreshAlertModule } from '../shared/alert/alert.module';
 import { CategoryButtonModule } from '../categories/button/category-button.module';
 import { HomePageComponent } from './home-page.component';
@@ -55,6 +56,7 @@ import { OrganizationBoxComponent } from './widget/organization-box/organization
     CategoryButtonModule,
     MySidebarModule,
     RecentEventsModule,
+    RefreshWizardModule,
   ],
   declarations: [
     HomePageComponent,
