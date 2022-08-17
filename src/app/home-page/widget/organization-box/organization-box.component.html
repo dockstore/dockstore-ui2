@@ -40,61 +40,6 @@
   </div>
   <mat-divider></mat-divider>
   <mat-card-content class="p-3 h-100">
-    <!-- <div *ngIf="events.length !== 0 || isLoading; else noEvents">
-      <h5 class="weight-bold">Recent Activity</h5> -->
-    <!-- <div class="size-small widget-list-items" *ngFor="let event of events" fxLayout="row" fxLayoutAlign="space-between center">
-        <div fxLayout="row" fxLayoutAlign="start center">
-          <img src="{{ event?.initiatorUser?.avatarUrl }}" alt="User avatar" />
-          <div [ngSwitch]="event.type">
-            <div *ngSwitchCase="EventType.CREATECOLLECTION" class="my-3">
-              <strong>{{ event.initiatorUser?.username }}</strong> created the collection
-              <a [routerLink]="'/organizations/' + event.organization?.name + '/collections/' + event.collection?.name"
-                >{{ event.collection?.name }}</a>
-              in organization
-              <a [routerLink]="'/organizations/' + event.organization?.name">{{ event.organization?.displayName }}</a>
-              <div class="subtitle">{{ event.dbCreateDate | date: 'medium' }}</div>
-            </div>
-            <div *ngSwitchCase="EventType.ADDTOCOLLECTION" class="my-3">
-              <strong>{{ event.initiatorUser.username }} </strong> added the {{ event?.tool || event?.apptool ? 'tool' : 'workflow' }}
-              <a
-                [routerLink]="
-                  event?.apptool
-                    ? '/tools/' + event?.apptool.full_workflow_path
-                    : event?.tool
-                    ? '/tools/' + event?.tool.tool_path
-                    : '/workflows/' + event?.workflow.full_workflow_path
-                "
-                >{{ event?.apptool ? event?.apptool.workflowName : event?.tool ? event?.tool.name : event?.workflow.workflowName }}</a
-              >
-              to the collection
-              <a [routerLink]="'/organizations/' + event.organization?.name + '/collections/' + event.collection?.name"
-                >{{ event.collection?.name }}</a>
-              in organization
-              <a [routerLink]="'/organizations/' + event.organization?.name">{{ event.organization?.displayName }}</a>
-              <div class="subtitle">{{ event.dbCreateDate | date: 'medium' }}</div>
-            </div>
-            <div *ngSwitchCase="EventType.ADDUSERTOORG" class="my-3">
-              <strong>{{ event.initiatorUser.username }} </strong> added {{ event.user.username }} to the organization
-              <a [routerLink]="'/organizations/' + event.organization?.name">{{ event.organization?.displayName }}</a>
-              <div class="subtitle">{{ event.dbCreateDate | date: 'medium' }}</div>
-            </div>
-            <div *ngSwitchCase="EventType.MODIFYCOLLECTION" class="my-3">
-              <strong>{{ event.initiatorUser.username }} </strong> edited the collection
-              <a [routerLink]="'/organizations/' + event.organization?.name + '/collections/' + event.collection?.name"
-                >{{ event.collection?.name }}</a>
-              in organization
-              <a [routerLink]="'/organizations/' + event.organization?.name">{{ event.organization?.displayName }}</a>
-              <div class="subtitle">{{ event.dbCreateDate | date: 'medium' }}</div>
-            </div>
-            <div *ngSwitchCase="EventType.MODIFYORG" class="my-3">
-              <strong>{{ event.initiatorUser.username }} </strong> edited the organization
-              <a [routerLink]="'/organizations/' + event.organization?.name">{{ event.organization?.displayName }}</a>
-              <div class="subtitle">{{ event.dbCreateDate | date: 'medium' }}</div>
-            </div>
-          </div> -->
-    <!-- </div> -->
-    <!-- <img class="mx-2" src="{{ event?.organization.avatarUrl }}" alt="Org avatar" />
-      </div> -->
     <div *ngIf="totalOrgs !== 0 || isLoading; else noOrganizations">
       <h5 class="weight-bold">Recent Activity</h5>
       <div *ngFor="let org of listOfOrganizations" fxLayout="row" fxLayoutAlign="space-between center" class="widget-list-items w-100 py-2">
@@ -113,8 +58,8 @@
           <button
             mat-button
             class="inline-text-btn"
-            id="registerOrganizationButton"
-            matTooltip="Register organization"
+            id="requestOrganizationButton"
+            matTooltip="Request Organization"
             matTooltipPosition="after"
             (click)="requireAccounts()"
           >
@@ -126,7 +71,7 @@
           class="size-small mt-3"
           target="_blank"
           rel="noopener noreferrer"
-          href="https://docs.dockstore.org/en/latest/advanced-topics/organizations-and-collections.html"
+          [href]="Dockstore.DOCUMENTATION_URL + '/advanced-topics/organizations-and-collections.html'"
           >Learn more about organizations.
         </a>
       </div>

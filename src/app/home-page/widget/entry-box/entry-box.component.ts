@@ -6,6 +6,8 @@ import { MyWorkflowsService } from 'app/myworkflows/myworkflows.service';
 import { RegisterToolService } from 'app/container/register-tool/register-tool.service';
 import { Base } from 'app/shared/base';
 import { Dockstore } from 'app/shared/dockstore.model';
+import { AlertService } from 'app/shared/alert/state/alert.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-entry-box',
@@ -30,7 +32,8 @@ export class EntryBoxComponent extends Base implements OnInit {
   constructor(
     private registerToolService: RegisterToolService,
     private myWorkflowsService: MyWorkflowsService,
-    private usersService: UsersService
+    private usersService: UsersService,
+    private alertService: AlertService
   ) {
     super();
   }
@@ -63,23 +66,28 @@ export class EntryBoxComponent extends Base implements OnInit {
         debounceTime(750),
         takeUntil(this.ngUnsubscribe)
       )
-      .subscribe((myEntries: Array<EntryUpdateTime>) => {
-        this.listOfEntries = [];
-        myEntries
-          .filter(
-            (entry) =>
-              entry.entryType === this.entryType ||
-              (this.entryType === EntryUpdateTime.EntryTypeEnum.TOOL && entry.entryType === EntryUpdateTime.EntryTypeEnum.APPTOOL)
-          )
-          .forEach((entry: EntryUpdateTime) => {
-            if (this.listOfEntries.length < 7) {
-              this.listOfEntries.push(entry);
-            }
-            if (this.firstLoad) {
-              this.totalEntries += 1;
-            }
-          });
-      });
+      .subscribe(
+        (myEntries: Array<EntryUpdateTime>) => {
+          this.listOfEntries = [];
+          myEntries
+            .filter(
+              (entry) =>
+                entry.entryType === this.entryType ||
+                (this.entryType === EntryUpdateTime.EntryTypeEnum.TOOL && entry.entryType === EntryUpdateTime.EntryTypeEnum.APPTOOL)
+            )
+            .forEach((entry: EntryUpdateTime) => {
+              if (this.listOfEntries.length < 7) {
+                this.listOfEntries.push(entry);
+              }
+              if (this.firstLoad) {
+                this.totalEntries += 1;
+              }
+            });
+        },
+        (error: HttpErrorResponse) => {
+          this.alertService.detailedError(error);
+        }
+      );
   }
 
   onTextChange(event: any) {
