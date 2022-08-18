@@ -6,24 +6,28 @@
     <div id="total-starred" fxLayout="row" fxLayoutGap="1rem" class="size-small pb-3">
       <div [ngPlural]="totalStarredWorkflows" id="starred-workflows" fxLayout="row" fxLayoutAlign="start center">
         <ng-template ngPluralCase="=0"> <img src="../assets/svg/star-off.svg" alt="star" class="mr-1" /> 0 Workflows </ng-template>
+        <ng-template ngPluralCase="=1"> <img src="../assets/svg/star-on.svg" alt="star" class="mr-1" /> 1 Workflow </ng-template>
         <ng-template ngPluralCase="other">
           <img src="../assets/svg/star-on.svg" alt="star" class="mr-1" /> {{ totalStarredWorkflows }} Workflows</ng-template
         >
       </div>
       <div [ngPlural]="totalStarredTools" id="starred-tools" fxLayout="row" fxLayoutAlign="start center">
         <ng-template ngPluralCase="=0"> <img src="../assets/svg/star-off.svg" alt="star" class="mr-1" /> 0 Tools </ng-template>
+        <ng-template ngPluralCase="=1"> <img src="../assets/svg/star-on.svg" alt="star" class="mr-1" /> 1 Tool</ng-template>
         <ng-template ngPluralCase="other">
           <img src="../assets/svg/star-on.svg" alt="star" class="mr-1" /> {{ totalStarredTools }} Tools</ng-template
         >
       </div>
       <div [ngPlural]="totalStarredServices" id="starred-services" fxLayout="row" fxLayoutAlign="start center">
         <ng-template ngPluralCase="=0"> <img src="../assets/svg/star-off.svg" alt="star" class="mr-1" /> 0 Services </ng-template>
+        <ng-template ngPluralCase="=1"> <img src="../assets/svg/star-on.svg" alt="star" class="mr-1" /> 1 Service </ng-template>
         <ng-template ngPluralCase="other">
           <img src="../assets/svg/star-on.svg" alt="star" class="mr-1" /> {{ totalStarredServices }} Services</ng-template
         >
       </div>
       <div [ngPlural]="totalStarredOrganizations" id="starred-orgs" fxLayout="row" fxLayoutAlign="start center">
         <ng-template ngPluralCase="=0"> <img src="../assets/svg/star-off.svg" alt="star" class="mr-1" /> 0 Organizations </ng-template>
+        <ng-template ngPluralCase="=1"> <img src="../assets/svg/star-on.svg" alt="star" class="mr-1" /> 1 Organization </ng-template>
         <ng-template ngPluralCase="other">
           <img src="../assets/svg/star-on.svg" alt="star" class="mr-1" /> {{ totalStarredOrganizations }} Organizations</ng-template
         >

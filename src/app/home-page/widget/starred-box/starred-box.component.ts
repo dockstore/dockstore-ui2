@@ -20,7 +20,7 @@ export class StarredBoxComponent extends Base implements OnInit {
   events: Array<Event> = [];
   public isLoading = true;
   EventType = Event.TypeEnum;
-  readonly supportedEventTypes = [
+  private readonly supportedEventTypes = [
     Event.TypeEnum.ADDVERSIONTOENTRY,
     Event.TypeEnum.CREATECOLLECTION,
     Event.TypeEnum.ADDTOCOLLECTION,
@@ -50,7 +50,7 @@ export class StarredBoxComponent extends Base implements OnInit {
     });
   }
 
-  getMyEvents() {
+  private getMyEvents() {
     this.eventsService
       .getEvents('ALL_STARRED')
       .pipe(
@@ -59,13 +59,7 @@ export class StarredBoxComponent extends Base implements OnInit {
       )
       .subscribe(
         (events) => {
-          events
-            .filter((event) => this.supportedEventTypes.includes(event.type))
-            .forEach((ev: Event) => {
-              if (this.events.length < 4) {
-                this.events.push(ev);
-              }
-            });
+          this.events = events.filter((event) => this.supportedEventTypes.includes(event.type)).slice(0, 4);
         },
         (error: HttpErrorResponse) => {
           this.alertService.detailedError(error);
