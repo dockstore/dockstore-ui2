@@ -1,18 +1,9 @@
 @use '@angular/material' as mat;
 @import '/src/materialColorScheme.scss';
 
-.list-events {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 2; /* number of lines to show */
-  line-clamp: 2;
-  -webkit-box-orient: vertical;
-}
-
 img[alt='User avatar'] {
-  width: 4rem;
-  height: 4rem;
+  width: 3.5rem;
+  height: 3.5rem;
   border-radius: 50%;
   border: solid 1px mat.get-color-from-palette($dockstore-app-gray, 4);
   margin: 0.8rem;
@@ -20,9 +11,5 @@ img[alt='User avatar'] {
 
 img[alt='Org avatar'] {
   width: 6rem;
-}
-
-img[alt='star'] {
-  width: 2rem;
-  height: 2rem;
+  height: 6rem;
 }

@@ -8,28 +8,28 @@
         <ng-template ngPluralCase="=0"> <img src="../assets/svg/star-off.svg" alt="star" class="mr-1" /> 0 Workflows </ng-template>
         <ng-template ngPluralCase="=1"> <img src="../assets/svg/star-on.svg" alt="star" class="mr-1" /> 1 Workflow </ng-template>
         <ng-template ngPluralCase="other">
-          <img src="../assets/svg/star-on.svg" alt="star" class="mr-1" /> {{ totalStarredWorkflows }} Workflows</ng-template
+          <img src="../assets/svg/star-on.svg" class="mr-1 site-icons-small" /> {{ totalStarredWorkflows }} Workflows</ng-template
         >
       </div>
-      <div [ngPlural]="totalStarredTools" id="starred-tools" fxLayout="row" fxLayoutAlign="start center">
+      <div [ngPlural]="totalStarredTools" id="starred-tools" fxLayout="-mediumrow" fxLayoutAlign="start center">
         <ng-template ngPluralCase="=0"> <img src="../assets/svg/star-off.svg" alt="star" class="mr-1" /> 0 Tools </ng-template>
         <ng-template ngPluralCase="=1"> <img src="../assets/svg/star-on.svg" alt="star" class="mr-1" /> 1 Tool</ng-template>
         <ng-template ngPluralCase="other">
-          <img src="../assets/svg/star-on.svg" alt="star" class="mr-1" /> {{ totalStarredTools }} Tools</ng-template
+          <img src="../assets/svg/star-on.svg" class="mr-1 site-icons-small" /> {{ totalStarredTools }} Tools</ng-template
         >
       </div>
       <div [ngPlural]="totalStarredServices" id="starred-services" fxLayout="row" fxLayoutAlign="start center">
         <ng-template ngPluralCase="=0"> <img src="../assets/svg/star-off.svg" alt="star" class="mr-1" /> 0 Services </ng-template>
         <ng-template ngPluralCase="=1"> <img src="../assets/svg/star-on.svg" alt="star" class="mr-1" /> 1 Service </ng-template>
         <ng-template ngPluralCase="other">
-          <img src="../assets/svg/star-on.svg" alt="star" class="mr-1" /> {{ totalStarredServices }} Services</ng-template
+          <img src="../assets/svg/star-on.svg" class="mr-1 site-icons-small" /> {{ totalStarredServices }} Services</ng-template
         >
       </div>
       <div [ngPlural]="totalStarredOrganizations" id="starred-orgs" fxLayout="row" fxLayoutAlign="start center">
         <ng-template ngPluralCase="=0"> <img src="../assets/svg/star-off.svg" alt="star" class="mr-1" /> 0 Organizations </ng-template>
         <ng-template ngPluralCase="=1"> <img src="../assets/svg/star-on.svg" alt="star" class="mr-1" /> 1 Organization </ng-template>
         <ng-template ngPluralCase="other">
-          <img src="../assets/svg/star-on.svg" alt="star" class="mr-1" /> {{ totalStarredOrganizations }} Organizations</ng-template
+          <img src="../assets/svg/star-on.svg" class="mr-1 site-icons-small" /> {{ totalStarredOrganizations }} Organizations</ng-template
         >
       </div>
     </div>
@@ -39,11 +39,11 @@
     <div *ngIf="events.length !== 0 || isLoading; else noEvents">
       <h5 class="weight-bold">Recent Activity</h5>
       <div class="size-small widget-list-items" *ngFor="let event of events" fxLayout="row" fxLayoutAlign="space-between center">
-        <div fxLayout="row" fxLayoutAlign="start center">
+        <div fxLayout="row">
           <img src="{{ event?.initiatorUser?.avatarUrl }}" alt="User avatar" />
           <div [ngSwitch]="event.type">
             <div *ngSwitchCase="EventType.ADDVERSIONTOENTRY" class="my-3">
-              <div class="list-events">
+              <div class="truncate-text-2">
                 <strong>{{ event.initiatorUser?.username }} </strong> created the {{ event.version?.referenceType | lowercase }}
                 <strong>{{ event.version?.name }}</strong> in {{ event?.tool || event?.apptool ? 'tool' : 'workflow' }}
                 <a
@@ -63,7 +63,7 @@
               <mat-divider *ngIf="!last" class="custom-margin"></mat-divider>
             </div>
             <div *ngSwitchCase="EventType.CREATECOLLECTION" class="my-3">
-              <div class="list-events">
+              <div class="truncate-text-2">
                 <strong>{{ event.initiatorUser?.username }}</strong> created the collection
                 <a [routerLink]="'/organizations/' + event.organization?.name + '/collections/' + event.collection?.name"
                   >{{ event.collection?.name }}
@@ -74,7 +74,7 @@
               <div class="subtitle">{{ event.dbCreateDate | date: 'medium' }}</div>
             </div>
             <div *ngSwitchCase="EventType.ADDTOCOLLECTION" class="my-3">
-              <div class="list-events">
+              <div class="truncate-text-2">
                 <strong>{{ event.initiatorUser.username }} </strong> added the {{ event?.tool || event?.apptool ? 'tool' : 'workflow' }}
                 <a
                   [routerLink]="
@@ -96,14 +96,14 @@
               <div class="subtitle">{{ event.dbCreateDate | date: 'medium' }}</div>
             </div>
             <div *ngSwitchCase="EventType.ADDUSERTOORG" class="my-3">
-              <div class="list-events">
+              <div class="truncate-text-2">
                 <strong>{{ event.initiatorUser.username }} </strong> added {{ event.user.username }} to the organization
                 <a [routerLink]="'/organizations/' + event.organization?.name">{{ event.organization?.displayName }}</a>
               </div>
               <div class="subtitle">{{ event.dbCreateDate | date: 'medium' }}</div>
             </div>
             <div *ngSwitchCase="EventType.MODIFYCOLLECTION" class="my-3">
-              <div class="list-events">
+              <div class="truncate-text-2">
                 <strong>{{ event.initiatorUser.username }} </strong> edited the collection
                 <a [routerLink]="'/organizations/' + event.organization?.name + '/collections/' + event.collection?.name"
                   >{{ event.collection?.name }}
@@ -112,7 +112,7 @@
               <div class="subtitle">{{ event.dbCreateDate | date: 'medium' }}</div>
             </div>
             <div *ngSwitchCase="EventType.REMOVEFROMCOLLECTION" class="my-3">
-              <div class="list-events">
+              <div class="truncate-text-2">
                 <strong>{{ event.initiatorUser.username }} </strong> removed the {{ event?.tool || event?.apptool ? 'tool' : 'workflow' }}
                 <a
                   [routerLink]="
@@ -132,7 +132,7 @@
               <div class="subtitle">{{ event.dbCreateDate | date: 'medium' }}</div>
             </div>
             <div *ngSwitchCase="EventType.PUBLISHENTRY" class="my-3">
-              <div class="list-events">
+              <div class="truncate-text-2">
                 <strong>{{ event.user.username }} </strong> published the {{ event?.tool || event?.apptool ? 'tool' : 'workflow' }}
                 <a
                   [routerLink]="
@@ -150,7 +150,7 @@
               <div class="subtitle">{{ 'on ' + (event.dbCreateDate | date: 'medium') }}</div>
             </div>
             <div *ngSwitchCase="EventType.UNPUBLISHENTRY" class="my-3">
-              <div class="list-events">
+              <div class="truncate-text-2">
                 <strong>{{ event.user.username }} </strong> unpublished the {{ event?.tool || event?.apptool ? 'tool' : 'workflow' }}
                 <a
                   [routerLink]="
