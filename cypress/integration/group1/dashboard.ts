@@ -43,4 +43,10 @@ describe('Dockstore dashboard', () => {
       .should('have.attr', 'href')
       .and('include', 'getting-started-with-services');
   });
+
+  it('have 404 page work', () => {
+    cy.visit('/bewareoftheleopard');
+    cy.contains("Don't panic.");
+    cy.contains('Page not found');
+  });
 });
