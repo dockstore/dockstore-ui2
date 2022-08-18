@@ -8,6 +8,4 @@ import { Dockstore } from '../shared/dockstore.model';
 })
 export class PageNotFoundComponent {
   Dockstore = Dockstore;
-
-  constructor() {}
 }
