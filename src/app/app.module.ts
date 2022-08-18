@@ -66,6 +66,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { OrganizationStargazersModule } from './organizations/organization/organization-stargazers/organization-stargazers.module';
 import { OrganizationStarringModule } from './organizations/organization/organization-starring/organization-starring.module';
+import { PageNotFoundComponent } from './pagenotfound/pagenotfound.component';
 import { RegisterService } from './register/register.service';
 import { SessionExpiredComponent } from './session-expired/session-expired.component';
 import { RefreshAlertModule } from './shared/alert/alert.module';
@@ -158,6 +159,7 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     LogoutComponent,
     GitTagPipe,
     AboutComponent,
+    PageNotFoundComponent,
     SnaphotExporterModalComponent,
     ExporterStepComponent,
     FileTreeComponent,
