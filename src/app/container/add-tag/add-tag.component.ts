@@ -143,6 +143,7 @@ export class AddTagComponent extends Base implements OnInit, AfterViewChecked {
 
   addTag() {
     this.alertService.start('Adding tag');
+    this.editMode = false;
     this.containertagsService.addTags(this.tool.id, [this.unsavedVersion]).subscribe(
       (tags: Tag[]) => {
         this.tool.workflowVersions = tags;
@@ -157,8 +158,6 @@ export class AddTagComponent extends Base implements OnInit, AfterViewChecked {
         }
         const toAddCWLTestParameterFiles = this.unsavedCWLTestParameterFilePaths;
         const toAddWDLTestParameterFiles = this.unsavedCWLTestParameterFilePaths;
-        // Question: do we really want to clear the form?
-        this.initializeTag();
         // Using the string 'CWL' because this parameter only accepts 'CWL' or 'WDL' and not 'NFL'
         const addCWL: Observable<SourceFile[]> = this.containersService.addTestParameterFiles(
           id,
@@ -187,16 +186,21 @@ export class AddTagComponent extends Base implements OnInit, AfterViewChecked {
               (error: HttpErrorResponse) => {
                 this.containerService.setTool(this.tool);
                 this.alertService.detailedError(error);
+                this.editMode = true;
               }
             );
           },
           (error: HttpErrorResponse) => {
             this.containerService.setTool(this.tool);
             this.alertService.detailedError(error);
+            this.editMode = true;
           }
         );
       },
-      (error: HttpErrorResponse) => this.alertService.detailedError(error)
+      (error: HttpErrorResponse) => {
+        this.alertService.detailedError(error);
+        this.editMode = true;
+      }
     );
   }
 
