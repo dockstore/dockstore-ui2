@@ -76,7 +76,7 @@
               >
                 <div class="form-group" fxFlex="noshrink" fxLayout fxLayoutAlign=" center">
                   <strong [matTooltip]="tooltip.workflowPath">Workflow Path: </strong>
-                  <span *ngIf="!workflowPathEditing" fxFlexOffset="4px"> {{ workflow.workflow_path }} </span>
+                  <span *ngIf="!workflowPathEditing" fxFlexOffset="4px" data-cy="workflowPathSpan"> {{ workflow.workflow_path }} </span>
                   <input
                     data-cy="workflowPathInput"
                     *ngIf="workflowPathEditing"
@@ -95,6 +95,7 @@
                 <div *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED" class="btn-group" role="group" aria-label="Basic example">
                   <button
                     *ngIf="!isPublic && workflowPathEditing"
+                    data-cy="cancelWorkflowPathButton"
                     type="button"
                     mat-raised-button
                     class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
@@ -104,6 +105,7 @@
                   </button>
                   <button
                     *ngIf="!isPublic"
+                    data-cy="editWorkflowPathButton"
                     type="button"
                     mat-raised-button
                     class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"

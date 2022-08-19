@@ -37,24 +37,6 @@ export class InfoTabService {
   public topicEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public descriptorLanguageMap = [];
 
-  /**
-   * The original workflow that should be in sync with the database
-   *
-   * @private
-   * @type {Workflow}
-   * @memberof InfoTabService
-   */
-  private originalWorkflow: any;
-
-  /**
-   * The workflow with info that may have been modified but not saved
-   *
-   * @private
-   * @type {Workflow}
-   * @memberof InfoTabService
-   */
-  private currentWorkflow: any;
-
   constructor(
     private workflowsService: WorkflowsService,
     private workflowService: WorkflowService,
@@ -64,7 +46,6 @@ export class InfoTabService {
     private descriptorLanguageService: DescriptorLanguageService
   ) {
     this.extendedWorkflowQuery.extendedWorkflow$.subscribe((workflow: ExtendedWorkflow) => {
-      this.workflow = workflow;
       this.cancelEditing();
     });
     this.descriptorLanguageService.filteredDescriptorLanguages$.subscribe((map) => (this.descriptorLanguageMap = map));
@@ -92,7 +73,7 @@ export class InfoTabService {
   saveTopic(workflow: Workflow, errorCallback: () => void) {
     this.alertService.start('Updating topic');
     const partialEntryForUpdate = this.getPartialEntryForUpdate(workflow);
-    this.workflowsService.updateWorkflow(this.originalWorkflow.id, partialEntryForUpdate).subscribe(
+    this.workflowsService.updateWorkflow(workflow.id, partialEntryForUpdate).subscribe(
       (response) => {
         this.alertService.detailedSuccess();
         const newTopic = response.topicManual;
@@ -112,7 +93,7 @@ export class InfoTabService {
   saveTopicSelection(workflow: Workflow, errorCallback: () => void) {
     this.alertService.start('Updating topic selection');
     const partialEntryForUpdate = this.getPartialEntryForUpdate(workflow);
-    this.workflowsService.updateWorkflow(this.originalWorkflow.id, partialEntryForUpdate).subscribe(
+    this.workflowsService.updateWorkflow(workflow.id, partialEntryForUpdate).subscribe(
       (response) => {
         this.alertService.detailedSuccess();
         const newTopicSelection = response.topicSelection;
@@ -128,9 +109,9 @@ export class InfoTabService {
   updateAndRefresh(workflow: Workflow) {
     const message = 'Workflow Info';
     const partialEntryForUpdate = this.getPartialEntryForUpdate(workflow);
-    this.workflowsService.updateWorkflow(this.originalWorkflow.id, partialEntryForUpdate).subscribe((response) => {
+    this.workflowsService.updateWorkflow(workflow.id, partialEntryForUpdate).subscribe((response) => {
       this.alertService.start('Updating ' + message);
-      this.workflowsService.refresh(this.originalWorkflow.id).subscribe(
+      this.workflowsService.refresh(workflow.id).subscribe(
         (refreshResponse) => {
           this.workflowService.upsertWorkflowToWorkflow(refreshResponse);
           this.workflowService.setWorkflow(refreshResponse);
@@ -138,7 +119,6 @@ export class InfoTabService {
         },
         (error) => {
           this.alertService.detailedError(error);
-          this.restoreWorkflow();
         }
       );
     });
@@ -181,7 +161,7 @@ export class InfoTabService {
     this.alertService.start('Updating ' + message);
     workflow = this.changeWorkflowPathToDefaults(workflow);
     workflow.workflowVersions = [];
-    this.workflowsService.updateWorkflow(this.originalWorkflow.id, workflow).subscribe(
+    this.workflowsService.updateWorkflow(workflow.id, workflow).subscribe(
       (updatedWorkflow: Workflow) => {
         this.workflowService.upsertWorkflowToWorkflow(updatedWorkflow);
         this.workflowService.setWorkflow(updatedWorkflow);
@@ -212,15 +192,6 @@ export class InfoTabService {
     return workflow;
   }
 
-  get workflow(): ExtendedWorkflow {
-    return this.currentWorkflow;
-  }
-
-  set workflow(workflow: ExtendedWorkflow) {
-    this.originalWorkflow = workflow;
-    this.currentWorkflow = Object.assign({}, workflow);
-  }
-
   /**
    * Cancels editing for all editable fields and reverts the workflow back to the original
    *
@@ -231,26 +202,6 @@ export class InfoTabService {
     this.defaultTestFilePathEditing$.next(false);
     this.forumUrlEditing$.next(false);
     this.topicEditing$.next(false);
-    this.restoreWorkflow();
-  }
-
-  /**
-   * Reverts the workflow info back to the original
-   * This actually doesn't work anymore
-   *
-   * @memberof InfoTabService
-   */
-  restoreWorkflow(): void {
-    this.workflow = this.originalWorkflow;
-  }
-
-  /**
-   * Saves the current workflow into the workflow variable
-   *
-   * @memberof InfoTabService
-   */
-  saveWorkflow(): void {
-    this.workflow = this.currentWorkflow;
   }
 
   /**
