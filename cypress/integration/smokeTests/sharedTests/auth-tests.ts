@@ -256,6 +256,26 @@ function testWorkflow(registry: string, repo: string, name: string) {
       cy.contains('button', 'Restub').click();
       cy.contains('button', 'Publish').should('be.disabled');
     });
+    it('hide and un-hide a version', () => {
+      goToTab('Versions');
+      // hide
+      cy.get('[data-cy=refreshButton]').click();
+      cy.get('[data-cy=versionRow]').last().contains('button', 'Actions').should('be.visible').click();
+      cy.contains('button', 'Edit').click();
+      cy.contains('div', 'Hidden:').within(() => {
+        cy.get('[name=checkbox]').click();
+      });
+      cy.contains('button', 'Save Changes').click();
+      cy.get('[data-cy=hidden]').should('have.length', 1);
+      // un-hide
+      cy.get('[data-cy=versionRow]').last().contains('button', 'Actions').should('be.visible').click();
+      cy.contains('button', 'Edit').click();
+      cy.contains('div', 'Hidden:').within(() => {
+        cy.get('[name=checkbox]').click();
+      });
+      cy.contains('button', 'Save Changes').click();
+      cy.get('[data-cy=hidden]').should('not.exist');
+    });
   });
 }
 
@@ -300,7 +320,7 @@ function testCollection(org: string, collection: string, registry: string, repo:
     deleteTool();
   });
 }
-
+//
 testCollection(collectionTuple[0], collectionTuple[1], toolTuple[0], toolTuple[1], toolTuple[2]);
 testTool(toolTuple[0], toolTuple[1], toolTuple[2]);
 testWorkflow(workflowTuple[0], workflowTuple[1], workflowTuple[2]);
