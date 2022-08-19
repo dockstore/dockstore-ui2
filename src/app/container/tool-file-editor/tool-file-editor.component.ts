@@ -16,11 +16,10 @@
 import { Component, Input } from '@angular/core';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { FileEditing } from '../../shared/file-editing';
-import { ContainertagsService } from '../../shared/openapi';
+import { ContainertagsService, SourceFile } from '../../shared/openapi';
 import { DockstoreTool, ToolDescriptor } from '../../shared/swagger';
 import { ContainerService } from './../../shared/container.service';
 import { HostedService } from './../../shared/swagger/api/hosted.service';
-import { SourceFile } from './../../shared/swagger/model/sourceFile';
 import { Tag } from './../../shared/swagger/model/tag';
 
 @Component({
@@ -75,10 +74,8 @@ export class ToolFileEditorComponent extends FileEditing {
    */
   loadVersionSourcefiles(): void {
     this.containerTagsService.getTagsSourcefiles(this.id, this.currentVersion.id).subscribe((sourcefiles: Array<SourceFile>) => {
-      this.originalSourceFiles = JSON.parse(JSON.stringify(sourcefiles));
-      this.descriptorFiles = JSON.parse(JSON.stringify(this.getDescriptorFiles(this.originalSourceFiles)));
-      this.testParameterFiles = JSON.parse(JSON.stringify(this.getTestFiles(this.originalSourceFiles)));
-      this.dockerFile = JSON.parse(JSON.stringify(this.getDockerFile(this.originalSourceFiles)));
+      this.originalSourceFiles = this.deepCopy(sourcefiles);
+      this.resetFiles();
     });
   }
 
@@ -138,9 +135,9 @@ export class ToolFileEditorComponent extends FileEditing {
    * Resets the files back to their original state
    */
   resetFiles(): void {
-    this.descriptorFiles = this.getDescriptorFiles(this.originalSourceFiles);
-    this.testParameterFiles = this.getTestFiles(this.originalSourceFiles);
-    this.dockerFile = this.getDockerFile(this.originalSourceFiles);
+    this.descriptorFiles = this.deepCopy(this.getDescriptorFiles(this.originalSourceFiles));
+    this.testParameterFiles = this.deepCopy(this.getTestFiles(this.originalSourceFiles));
+    this.dockerFile = this.deepCopy(this.getDockerFile(this.originalSourceFiles));
   }
 
   /**
