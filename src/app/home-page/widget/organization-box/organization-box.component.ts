@@ -60,7 +60,7 @@ export class OrganizationBoxComponent extends Base implements OnInit {
     );
   }
 
-  getMyOrganizations() {
+  private getMyOrganizations() {
     this.usersService
       .getUserDockstoreOrganizations()
       .pipe(

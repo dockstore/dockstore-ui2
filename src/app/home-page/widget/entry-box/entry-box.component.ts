@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { EntryType } from 'app/shared/enum/entry-type';
-import { EntryUpdateTime, User, UsersService } from 'app/shared/openapi';
+import { EntryUpdateTime, UsersService } from 'app/shared/openapi';
 import { debounceTime, finalize, takeUntil } from 'rxjs/operators';
 import { MyWorkflowsService } from 'app/myworkflows/myworkflows.service';
 import { RegisterToolService } from 'app/container/register-tool/register-tool.service';
@@ -25,7 +25,6 @@ export class EntryBoxComponent extends Base implements OnInit {
   listOfEntries: Array<EntryUpdateTime> = [];
   helpLink: string;
   allEntriesLink: string;
-  firstLoad: boolean = true;
   totalEntries: number = 0;
   public isLoading = true;
 
@@ -69,6 +68,7 @@ export class EntryBoxComponent extends Base implements OnInit {
       .subscribe(
         (myEntries: Array<EntryUpdateTime>) => {
           this.listOfEntries = [];
+          this.totalEntries = 0;
           myEntries
             .filter(
               (entry) =>
@@ -79,9 +79,7 @@ export class EntryBoxComponent extends Base implements OnInit {
               if (this.listOfEntries.length < 7) {
                 this.listOfEntries.push(entry);
               }
-              if (this.firstLoad) {
-                this.totalEntries += 1;
-              }
+              this.totalEntries += 1;
             });
         },
         (error: HttpErrorResponse) => {
@@ -91,7 +89,6 @@ export class EntryBoxComponent extends Base implements OnInit {
   }
 
   onTextChange(event: any) {
-    this.firstLoad = false;
     this.isLoading = true;
     this.getMyEntries();
   }
