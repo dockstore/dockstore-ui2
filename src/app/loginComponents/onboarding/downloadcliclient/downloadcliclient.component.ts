@@ -195,7 +195,7 @@ $ cwltool --version
 /usr/local/bin/cwltool ${this.cwltoolVersion}
 \`\`\`
 
-If you have issues installing cwltool using the above method try running \`pip3 install cwltool\`, which will install the latest released version from PyPi that is compatible with your Python version.
+Although Dockstore has only been tested with the above cwltool version, if you have issues installing cwltool please try running \`pip3 install cwltool\`. This will install the latest released version from PyPi that is compatible with your Python version.
 
 #### Part 6 - Install Nextflow (Optional)
 The Dockstore CLI does not run Nextflow workflows. Users can run them directly by using the Nextflow command line tool. For installation instructions, follow [Nextflow's documentation](https://github.com/nextflow-io/nextflow#download-the-package)
