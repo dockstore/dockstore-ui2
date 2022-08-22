@@ -107,7 +107,7 @@ describe('Dockstore my workflows', () => {
       cy.contains('1 – 2 of 2');
       cy.contains('Close').click();
     });
-    it.only('Should contain the extended properties and be able to edit the info tab', () => {
+    it('Should contain the extended properties and be able to edit the info tab', () => {
       // The seemingly unnecessary visits are due to a detached-from-dom error even using cy.get().click();
       cy.visit('/my-workflows/github.com/A/g');
       cy.contains('github.com');
