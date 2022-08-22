@@ -1346,3 +1346,24 @@ button.inline-text-btn {
 .space-between {
   justify-content: space-between;
 }
+
+// For the about page and the not found page
+.truck-img {
+  padding-bottom: 1rem;
+  height: 25%;
+  width: auto;
+}
+
+.about-h3 {
+  font-size: 1.7rem;
+  color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
+  line-height: 2.5rem;
+  font-weight: 500;
+}
+
+.about-dockstore {
+  margin-top: 6rem;
+  background-image: url(assets/images/about-page/city.png);
+  background-repeat: repeat-x;
+  background-position-y: bottom;
+}
