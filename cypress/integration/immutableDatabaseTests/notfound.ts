@@ -21,6 +21,6 @@ describe('Dockstore not found page', () => {
   it('have 404 page work', () => {
     cy.visit('/bewareoftheleopard');
     cy.contains("Don't panic.");
-    cy.contains('Page not found');
+    cy.contains('Page Not Found');
   });
 });
