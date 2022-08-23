@@ -29,4 +29,9 @@ describe('MultiCloudLaunchComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('Should construct url with https protocol', () => {
+    expect(component.constructUrlWithHttpsProtocol('usegalaxy.ca')).toBe('https://usegalaxy.ca');
+    expect(component.constructUrlWithHttpsProtocol('http://foobar.com')).toThrow();
+  });
 });

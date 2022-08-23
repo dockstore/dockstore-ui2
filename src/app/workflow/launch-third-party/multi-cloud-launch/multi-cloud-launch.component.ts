@@ -130,6 +130,7 @@ export class MultiCloudLaunchComponent extends Base implements OnInit {
       let url: URL;
       try {
         this.alertService.start('Constructing URL');
+        this.launchWith.url = this.constructUrlWithHttpsProtocol(this.launchWith.url);
         url = new URL(this.launchWith.url);
         this.alertService.simpleSuccess();
       } catch (error) {
@@ -165,6 +166,21 @@ export class MultiCloudLaunchComponent extends Base implements OnInit {
 
   private updateLaunchWithUrl(): void {
     this.launchWith.url = this.presetLaunchWithOption === 'other' ? this.customLaunchWithOption : this.presetLaunchWithOption;
+  }
+
+  constructUrlWithHttpsProtocol(launchWithUrl: string): string {
+    let url;
+    try {
+      url = new URL(launchWithUrl);
+    } catch (error) {
+      if (!launchWithUrl.toLowerCase().startsWith('https://')) {
+        return 'https://' + launchWithUrl;
+      }
+    }
+
+    if (url.protocol !== 'https:') {
+      throw new Error('URL ' + launchWithUrl + ' does not start with https://');
+    }
   }
 
   closeMatMenu() {
