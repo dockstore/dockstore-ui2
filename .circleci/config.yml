@@ -420,9 +420,9 @@ jobs:
 
 workflows:
   version: 2
-  everything:
-    jobs:
 # RESTORE THIS FOR PR!
+#  everything:
+#    jobs:
 #      # Add the tags filter to all jobs so they will run before upload_to_s3
 #      - audit:
 #        filters:
