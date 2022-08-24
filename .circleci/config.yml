@@ -528,18 +528,18 @@ workflows:
           context:
             - dockerhub
             - oicr-slack
-#      - no_auth_smoke_tests:
-#          name: "no_auth_smoke_tests_staging"
-#          stack: "staging"
-#          context:
-#            - dockerhub
-#            - oicr-slack
-#      - no_auth_smoke_tests:
-#          name: "no_auth_smoke_tests_prod"
-#          stack: "prod"
-#          context:
-#            - dockerhub
-#            - oicr-slack
+      - no_auth_smoke_tests:
+          name: "no_auth_smoke_tests_staging"
+          stack: "staging"
+          context:
+            - dockerhub
+            - oicr-slack
+      - no_auth_smoke_tests:
+          name: "no_auth_smoke_tests_prod"
+          stack: "prod"
+          context:
+            - dockerhub
+            - oicr-slack
 
   nightly_auth:
     triggers:
