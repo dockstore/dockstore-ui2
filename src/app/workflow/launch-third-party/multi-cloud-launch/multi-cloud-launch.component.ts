@@ -142,25 +142,30 @@ export class MultiCloudLaunchComponent extends Base implements OnInit {
         );
       }
 
-      const newCustomInstance: CloudInstance = {
-        url: this.launchWith.url,
-        partner: this.languagePartner,
-        supportsFileImports: null,
-        supportsHttpImports: null,
-        supportedLanguages: new Array<Language>(),
-        displayName: url.hostname,
-      };
+      if (url) {
+        const newCustomInstance: CloudInstance = {
+          url: this.launchWith.url,
+          partner: this.languagePartner,
+          supportsFileImports: null,
+          supportsHttpImports: null,
+          supportedLanguages: new Array<Language>(),
+          displayName: url.hostname,
+        };
 
-      this.usersService.postUserCloudInstance(this.user.id, newCustomInstance).subscribe(
-        (usersCloudInstances: Array<CloudInstance>) => {
-          this.usersCloudInstances = usersCloudInstances;
-        },
-        (error: HttpErrorResponse) => {
-          // It's okay for the save to the db to fail for now. At this step, we only care about what URL's users
-          // are trying to use. Probably most of these failures will be the for violating the uniqueness constraint
-          console.log(error.message);
-        }
-      );
+        this.usersService.postUserCloudInstance(this.user.id, newCustomInstance).subscribe(
+          (usersCloudInstances: Array<CloudInstance>) => {
+            this.usersCloudInstances = usersCloudInstances;
+          },
+          (error: HttpErrorResponse) => {
+            // It's okay for the save to the db to fail for now. At this step, we only care about what URL's users
+            // are trying to use. Probably most of these failures will be the for violating the uniqueness constraint
+            console.log(error.message);
+          }
+        );
+      } else {
+        // Remove link to prevent navigating to invalid URL
+        document.getElementById('multiCloudLaunchButton').removeAttribute('href');
+      }
     }
   }
 
