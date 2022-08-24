@@ -1,6 +1,6 @@
 /**
  * Remove this file after 1.13 deployed and update package.json "test-staging-no-auth"
- * and "test-prod-no-auth" to point to the sharedTests version of this file.
+ * and "test-prod-no-auth" to restore the sharedTests version of this file.
  *
  * Had to comment out a test because it was triggering the self-DOS
  * https://ucsc-cgl.atlassian.net/browse/SEAB-3792
