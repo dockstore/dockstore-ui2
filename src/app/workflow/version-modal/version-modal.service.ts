@@ -20,11 +20,12 @@ import { concatMap } from 'rxjs/operators';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { RefreshService } from '../../shared/refresh.service';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
+import { WorkflowService } from '../../shared/state/workflow.service';
+import { AppTool, BioWorkflow, DockstoreTool, Service, Workflow } from '../../shared/swagger';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { SourceFile } from '../../shared/swagger/model/sourceFile';
 import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
-import { WorkflowService } from '../../shared/state/workflow.service';
-import { AppTool, BioWorkflow, Service } from '../../shared/swagger';
+import ModeEnum = DockstoreTool.ModeEnum;
 
 @Injectable()
 export class VersionModalService {
@@ -64,10 +65,9 @@ export class VersionModalService {
     workflowVersion: WorkflowVersion,
     originalTestParameterFilePaths,
     newTestParameterFiles,
-    workflowMode: String
+    workflowMode: Workflow.ModeEnum
   ) {
     const message1 = 'Saving workflow version';
-    const message2 = 'Modifying test parameter files';
     const workflowId = this.workflowQuery.getActive().id;
     let toRefresh = false;
     // Checks if the workflow path was changed
@@ -75,17 +75,18 @@ export class VersionModalService {
       toRefresh = true;
     }
     this.alertService.start(message1);
-    if (workflowMode !== 'HOSTED') {
-      this.workflowsService.updateWorkflowVersion(workflowId, [workflowVersion]).subscribe(
-        (response) => {
-          const updatedWorkflow: BioWorkflow | Service | AppTool = { ...workflow, workflowVersions: response };
-          this.workflowService.setWorkflow(updatedWorkflow);
-          this.alertService.start(message2);
+    this.workflowsService.updateWorkflowVersion(workflowId, [workflowVersion]).subscribe(
+      (response) => {
+        const updatedWorkflow: BioWorkflow | Service | AppTool = { ...workflow, workflowVersions: response };
+        this.workflowService.setWorkflow(updatedWorkflow);
+        if (workflowMode === ModeEnum.HOSTED) {
+          this.alertService.detailedSuccess();
+          this.matDialog.closeAll();
+        } else {
           this.modifyTestParameterFiles(workflowVersion, originalTestParameterFilePaths, newTestParameterFiles).subscribe(
-            (success) => {
+            (files) => {
               // Checks if there was a test parameter file added/removed
-              // The this.modifyTestParameterFiles function returns a {} observable if nothing was done, this is a way of checking for it
-              if (!(Object.keys(success).length === 0 && success.constructor === Object)) {
+              if (files !== null) {
                 toRefresh = true;
               }
               this.alertService.detailedSuccess();
@@ -101,24 +102,12 @@ export class VersionModalService {
               }
             }
           );
-        },
-        (error) => {
-          this.alertService.detailedError(error);
         }
-      );
-    } else {
-      this.workflowsService.updateWorkflowVersion(workflowId, [workflowVersion]).subscribe(
-        (response) => {
-          const updatedWorkflow: BioWorkflow | Service | AppTool = { ...workflow, workflowVersions: response };
-          this.workflowService.setWorkflow(updatedWorkflow);
-          this.alertService.detailedSuccess();
-          this.matDialog.closeAll();
-        },
-        (error) => {
-          this.alertService.detailedError(error);
-        }
-      );
-    }
+      },
+      (error) => {
+        this.alertService.detailedError(error);
+      }
+    );
   }
 
   /**
@@ -130,7 +119,11 @@ export class VersionModalService {
    * @returns {Observable<any>}
    * @memberof VersionModalService
    */
-  modifyTestParameterFiles(workflowVersion: WorkflowVersion, originalTestParameterFilePaths, newTestParameterFiles): Observable<any> {
+  modifyTestParameterFiles(
+    workflowVersion: WorkflowVersion,
+    originalTestParameterFilePaths,
+    newTestParameterFiles
+  ): Observable<Array<SourceFile> | null> {
     const newCWL = newTestParameterFiles.filter((x) => !originalTestParameterFilePaths.includes(x));
     const missingCWL = originalTestParameterFilePaths.filter((x) => !newTestParameterFiles.includes(x));
     const toAdd: boolean = newCWL && newCWL.length > 0;
@@ -148,7 +141,7 @@ export class VersionModalService {
       return this.workflowsService.addTestParameterFiles(workflowId, newCWL, workflowVersion.name);
     }
     if (!toAdd && !toDelete) {
-      return observableOf({});
+      return observableOf(null);
     }
   }
 }
