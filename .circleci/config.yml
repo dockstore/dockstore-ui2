@@ -542,13 +542,13 @@ workflows:
             - oicr-slack
 
   nightly_auth:
-    triggers:
-      - schedule:
-          cron: "0 11 * * *" # This is 4am PDT / 3am PST
-          filters:
-            branches:
-              only:
-                - develop
+#    triggers:
+#      - schedule:
+#          cron: "0 11 * * *" # This is 4am PDT / 3am PST
+#          filters:
+#            branches:
+#              only:
+#                - develop
     jobs:
       - auth_smoke_tests:
           name: "auth_smoke_tests_dev"
