@@ -14,7 +14,7 @@
   ~    limitations under the License.
   -->
 <div>
-  <h4 mat-dialog-title>{{ isPublic || !canWrite ? 'View' : 'Edit' }} {{ entryTypeText }}</h4>
+  <h4 mat-dialog-title>{{ isPublic || !canWrite ? 'View' : 'Edit' }} {{ entryTypeText }} Version</h4>
   <div mat-dialog-content>
     <app-alert></app-alert>
     <fieldset [disabled]="!canWrite || isPublic">
@@ -79,7 +79,7 @@
             <div
               class="col-sm-9 col-md-9 col-lg-9 form-margin"
               [ngClass]="{ 'col-sm-offset-3': i > 0 }"
-              *ngFor="let item of testParameterFilePaths; let i = index; trackBy: trackByIndex"
+              *ngFor="let item of testParameterFilePaths; let i = index"
             >
               <div class="input-group">
                 <input

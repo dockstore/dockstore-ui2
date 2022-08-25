@@ -13,7 +13,6 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { contains } from 'cypress/types/jquery';
 import { Repository } from '../../../src/app/shared/openapi/model/repository';
 import { goToTab, isActiveTab, resetDB, setTokenUserViewPort } from '../../support/commands';
 
@@ -116,16 +115,29 @@ describe('Dockstore my workflows', () => {
       cy.contains('/Dockstore.cwl');
       // Change the file path
       cy.contains('button', ' Edit ').click();
-      cy.get('[data-cy=workflowPathInput]').clear().type('/Dockstore2.cwl');
+      const workflowPathInput = '[data-cy=workflowPathInput]';
+      cy.get(workflowPathInput).clear().type('/Dockstore2.cwl');
       cy.contains('button', ' Save ').click();
       cy.visit('/my-workflows/github.com/A/g');
       cy.contains('/Dockstore2.cwl');
       // Change the file path back
       cy.contains('button', ' Edit ').click();
-      cy.get('[data-cy=workflowPathInput]').clear().type('/Dockstore.cwl');
+      const dockstoreCwlPath = '/Dockstore.cwl';
+      cy.get(workflowPathInput).clear().type(dockstoreCwlPath);
       cy.contains('button', ' Save ').click();
       cy.visit('/my-workflows/github.com/A/g');
-      cy.contains('/Dockstore.cwl');
+      const workflowPathSpan = '[data-cy=workflowPathSpan]';
+      cy.get(workflowPathSpan).contains(dockstoreCwlPath);
+
+      // Test Revert
+      cy.get('[data-cy=editWorkflowPathButton').click();
+      const sillyText = 'silly';
+      cy.get(workflowPathInput).clear().type(sillyText);
+      // Verify it took
+      cy.get(workflowPathInput).should('have.value', sillyText);
+      cy.get('[data-cy=cancelWorkflowPathButton').click();
+      // Input goes away, check that correct text displayed
+      cy.get(workflowPathSpan).contains(dockstoreCwlPath);
 
       // Topic Editing
       const privateEntryURI = '/my-workflows/github.com/A/l';
