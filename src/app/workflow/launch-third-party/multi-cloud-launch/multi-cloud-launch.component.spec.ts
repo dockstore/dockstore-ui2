@@ -33,7 +33,7 @@ describe('MultiCloudLaunchComponent', () => {
   it('Should construct url with https protocol', () => {
     expect(component.constructUrlWithHttpsProtocol('usegalaxy.ca')).toBe('https://usegalaxy.ca');
     expect(component.constructUrlWithHttpsProtocol('subdomain.usegalaxy.ca')).toBe('https://subdomain.usegalaxy.ca');
-    expect(() => component.constructUrlWithHttpsProtocol('http://foobar.com')).toThrow();
+    expect(() => component.constructUrlWithHttpsProtocol('http://foobar.com')).toThrow(); // NOSONAR suppress insecure http protocol analysis
     expect(() => component.constructUrlWithHttpsProtocol('foobar://foobar.com')).toThrow();
   });
 });
