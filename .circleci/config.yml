@@ -420,107 +420,106 @@ jobs:
 
 workflows:
   version: 2
-# RESTORE THIS FOR PR!
-#  everything:
-#    jobs:
-#      # Add the tags filter to all jobs so they will run before upload_to_s3
-#      - audit:
-#        filters:
-#          tags:
-#            only: /.*/
-#          context:
-#            - dockerhub
-#      - lint_license_unit_test_coverage:
-#          filters:
-#            tags:
-#              only: /.*/
-#          context:
-#            - dockerhub
-#      - integration_test_1:
-#          filters:
-#            tags:
-#              only: /.*/
-#          requires:
-#            - lint_license_unit_test_coverage
-#          context:
-#            - dockerhub
-#      - integration_test_2:
-#          filters:
-#            tags:
-#              only: /.*/
-#          requires:
-#            - lint_license_unit_test_coverage
-#          context:
-#            - dockerhub
-#      - integration_test_3:
-#          filters:
-#            tags:
-#              only: /.*/
-#          requires:
-#            - lint_license_unit_test_coverage
-#          context:
-#            - dockerhub
-#      - integration_test_4:
-#          filters:
-#            tags:
-#              only: /.*/
-#          requires:
-#            - lint_license_unit_test_coverage
-#          context:
-#            - dockerhub
-#      - accessibility_test:
-#          filters:
-#            tags:
-#              only: /.*/
-#      - accessibility_test_base:
-#          filters:
-#            tags:
-#              only: /.*/
-#      - compare_accessibility_results:
-#          filters:
-#            tags:
-#              only: /.*/
-#          requires:
-#            - accessibility_test_base
-#            - accessibility_test
-#      - local_smoke_tests:
-#          filters:
-#            tags:
-#              only: /.*/
-#          requires:
-#            - lint_license_unit_test_coverage
-#          context:
-#            - dockerhub
-#      # Upload builds for tags and branches to s3.
-#      - upload_to_s3:
-#          requires:
-#            - audit
-#            - lint_license_unit_test_coverage
-#          filters:
-#            tags:
-#              only: /.*/
-#            branches:
-#              only: /.*/
-#          context:
-#            - dockerhub
-#            - aws-ui2
-#      - check_build_develop:
-#          requires:
-#            - upload_to_s3
-#          filters:
-#            branches:
-#              only: /^develop/
-#          context:
-#            - dockerhub
+  everything:
+    jobs:
+      # Add the tags filter to all jobs so they will run before upload_to_s3
+      - audit:
+        filters:
+          tags:
+            only: /.*/
+          context:
+            - dockerhub
+      - lint_license_unit_test_coverage:
+          filters:
+            tags:
+              only: /.*/
+          context:
+            - dockerhub
+      - integration_test_1:
+          filters:
+            tags:
+              only: /.*/
+          requires:
+            - lint_license_unit_test_coverage
+          context:
+            - dockerhub
+      - integration_test_2:
+          filters:
+            tags:
+              only: /.*/
+          requires:
+            - lint_license_unit_test_coverage
+          context:
+            - dockerhub
+      - integration_test_3:
+          filters:
+            tags:
+              only: /.*/
+          requires:
+            - lint_license_unit_test_coverage
+          context:
+            - dockerhub
+      - integration_test_4:
+          filters:
+            tags:
+              only: /.*/
+          requires:
+            - lint_license_unit_test_coverage
+          context:
+            - dockerhub
+      - accessibility_test:
+          filters:
+            tags:
+              only: /.*/
+      - accessibility_test_base:
+          filters:
+            tags:
+              only: /.*/
+      - compare_accessibility_results:
+          filters:
+            tags:
+              only: /.*/
+          requires:
+            - accessibility_test_base
+            - accessibility_test
+      - local_smoke_tests:
+          filters:
+            tags:
+              only: /.*/
+          requires:
+            - lint_license_unit_test_coverage
+          context:
+            - dockerhub
+      # Upload builds for tags and branches to s3.
+      - upload_to_s3:
+          requires:
+            - audit
+            - lint_license_unit_test_coverage
+          filters:
+            tags:
+              only: /.*/
+            branches:
+              only: /.*/
+          context:
+            - dockerhub
+            - aws-ui2
+      - check_build_develop:
+          requires:
+            - upload_to_s3
+          filters:
+            branches:
+              only: /^develop/
+          context:
+            - dockerhub
 
   nightly_no_auth:
-#    triggers:
-#      - schedule:
-#          cron: "0 10 * * *" # This is 3am PDT / 2am PST
-#          filters:
-#            branches:
-#              only:
-#                - develop
+    triggers:
+      - schedule:
+          cron: "0 10 * * *" # This is 3am PDT / 2am PST
+          filters:
+            branches:
+              only:
+                - develop
     jobs:
       - no_auth_smoke_tests:
           name: "no_auth_smoke_tests_dev"
@@ -542,13 +541,13 @@ workflows:
             - oicr-slack
 
   nightly_auth:
-#    triggers:
-#      - schedule:
-#          cron: "0 11 * * *" # This is 4am PDT / 3am PST
-#          filters:
-#            branches:
-#              only:
-#                - develop
+    triggers:
+      - schedule:
+          cron: "0 11 * * *" # This is 4am PDT / 3am PST
+          filters:
+            branches:
+              only:
+                - develop
     jobs:
       - auth_smoke_tests:
           name: "auth_smoke_tests_dev"
