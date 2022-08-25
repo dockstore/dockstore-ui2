@@ -30,6 +30,7 @@ import { SessionExpiredComponent } from './session-expired/session-expired.compo
 import { AuthGuard } from './shared/auth.guard';
 import { SitemapComponent } from './sitemap/sitemap.component';
 import { StarredEntriesComponent } from './starredentries/starredentries.component';
+import { PageNotFoundComponent } from './pagenotfound/pagenotfound.component';
 
 export const CLIENT_ROUTER_PROVIDERS = [AuthGuard];
 
@@ -135,7 +136,11 @@ const APP_ROUTES: Routes = [
   { path: 'funding', component: FundingComponent, data: { title: 'Dockstore | Funding' } },
   { path: 'sitemap', component: SitemapComponent, data: { title: 'Dockstore | Sitemap' } },
   { path: 'users', loadChildren: () => import('app/user-page/user-page.module').then((m) => m.UserPageModule) },
-  { path: '**', redirectTo: '' },
+  {
+    path: '**',
+    component: PageNotFoundComponent,
+    data: { title: 'Dockstore | 404 Page Not Found' },
+  },
 ];
 
 export const routing = RouterModule.forRoot(APP_ROUTES, {
