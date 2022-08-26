@@ -105,8 +105,6 @@ jobs:
             username: dockstoretestuser
             password: $DOCKERHUB_PASSWORD
     steps:
-      - browser-tools/install-chrome
-      - browser-tools/install-chromedriver
       - setup_nightly_tests
       - install_cypress_dependencies
       - run:
