@@ -178,7 +178,8 @@ export class MyToolComponent extends MyEntry implements OnInit {
 
     this.hasGroupGitHubAppToolEntriesObjects$ = this.groupAppToolEntryObjects$.pipe(
       map((orgToolObjects: OrgWorkflowObject<Workflow>[]) => {
-        return orgToolObjects && orgToolObjects.length !== 0;
+        // Now that we have empty GitHub orgs showing up, check if they have any entries
+        return orgToolObjects && orgToolObjects.some((orgToolObject) => orgToolObject.unpublished.length || orgToolObject.published.length);
       })
     );
 

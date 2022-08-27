@@ -56,7 +56,7 @@ function deleteTool() {
     });
     cy.wait('@containers');
     // TODO: Revisit this -- with change to show GitHub orgs with no entries, this got broken
-    // cy.contains('There are currently no tools registered under this account');
+    cy.contains('There are currently no tools registered under this account');
   });
 }
 
