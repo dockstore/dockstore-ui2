@@ -16,23 +16,6 @@
 import { DockstoreTool } from '../../../src/app/shared/openapi';
 import { goToTab, resetDB, setTokenUserViewPort, setTokenUserViewPortCurator, typeInInput } from '../../support/commands';
 
-describe('Should handle no tools correctly', () => {
-  resetDB();
-  setTokenUserViewPortCurator(); // Curator has no tools
-  beforeEach(() => {
-    cy.server();
-    cy.route({
-      method: 'GET',
-      url: /github.com\/organizations/,
-      response: ['dockstore'],
-    });
-  });
-  it('My tools should prompt to register a tool', () => {
-    cy.visit('/my-tools');
-    cy.contains('Add Tool');
-  });
-});
-
 describe('Dockstore my tools', () => {
   resetDB();
   setTokenUserViewPort();
@@ -564,6 +547,6 @@ describe('Should handle no tools correctly', () => {
   });
   it('My tools should prompt to register a tool', () => {
     cy.visit('/my-tools');
-    cy.contains('Add Tool');
+    cy.contains('Register Tool');
   });
 });

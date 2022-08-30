@@ -562,7 +562,7 @@ describe('Should handle no workflows correctly', () => {
       response: ['dockstore'],
     });
   });
-  it('My tools should prompt to register a tool', () => {
+  it('My workflows should prompt to register a workflow', () => {
     cy.visit('/my-workflows');
     cy.contains('Register Workflow');
   });
