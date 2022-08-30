@@ -547,6 +547,6 @@ describe('Should handle no tools correctly', () => {
   });
   it('My tools should prompt to register a tool', () => {
     cy.visit('/my-tools');
-    cy.contains('Register Tool');
+    cy.contains('Add Tool');
   });
 });
