@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { Repository } from '../../../src/app/shared/openapi/model/repository';
-import { goToTab, isActiveTab, resetDB, setTokenUserViewPort } from '../../support/commands';
+import { goToTab, isActiveTab, resetDB, setTokenUserViewPort, setTokenUserViewPortCurator } from '../../support/commands';
 
 describe('Dockstore my workflows', () => {
   resetDB();
@@ -550,4 +550,20 @@ describe('Dockstore my workflows', () => {
       cy.get('.error-output').should('not.be.visible');
     });
   }
+});
+describe('Should handle no workflows correctly', () => {
+  resetDB();
+  setTokenUserViewPortCurator(); // Curator has no workflows
+  beforeEach(() => {
+    cy.server();
+    cy.route({
+      method: 'GET',
+      url: /github.com\/organizations/,
+      response: ['dockstore'],
+    });
+  });
+  it('My workflows should prompt to register a workflow', () => {
+    cy.visit('/my-workflows');
+    cy.contains('Register Workflow');
+  });
 });

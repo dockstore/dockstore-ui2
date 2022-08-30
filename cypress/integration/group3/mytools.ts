@@ -14,7 +14,7 @@
  *     limitations under the License.
  */
 import { DockstoreTool } from '../../../src/app/shared/openapi';
-import { goToTab, resetDB, setTokenUserViewPort, typeInInput } from '../../support/commands';
+import { goToTab, resetDB, setTokenUserViewPort, setTokenUserViewPortCurator, typeInInput } from '../../support/commands';
 
 describe('Dockstore my tools', () => {
   resetDB();
@@ -532,4 +532,21 @@ describe('Dockstore my tools', () => {
       cy.get('#cdk-accordion-child-1 > .mat-action-row > .pull-right > [data-cy=refreshOrganization]').trigger('mouseenter');
     });
   }
+});
+
+describe('Should handle no tools correctly', () => {
+  resetDB();
+  setTokenUserViewPortCurator(); // Curator has no tools
+  beforeEach(() => {
+    cy.server();
+    cy.route({
+      method: 'GET',
+      url: /github.com\/organizations/,
+      response: ['dockstore'],
+    });
+  });
+  it('My tools should prompt to register a tool', () => {
+    cy.visit('/my-tools');
+    cy.contains('Add Tool');
+  });
 });
