@@ -21,6 +21,7 @@ describe('Dockstore dashboard', () => {
 
   it('have workflows visible from homepage', () => {
     cy.visit('/dashboard?newDashboard');
+    cy.wait(1000);
     cy.contains('Workflows');
     cy.contains('hosted-workflow');
     cy.get('[data-cy=all-entries-btn]').contains('All Workflows').should('have.attr', 'href').and('include', '/my-workflows');
@@ -28,6 +29,7 @@ describe('Dockstore dashboard', () => {
 
   it('have tools visible from homepage', () => {
     cy.visit('/dashboard?newDashboard');
+    cy.wait(1000);
     cy.contains('Tools');
     cy.contains('b1');
     cy.get('[data-cy=all-entries-btn]').contains('All Tools').should('have.attr', 'href').and('include', '/my-tools');
@@ -35,6 +37,7 @@ describe('Dockstore dashboard', () => {
 
   it('no services display correctly', () => {
     cy.visit('/dashboard?newDashboard');
+    cy.wait(1000);
     cy.contains('Services');
     cy.contains('You have not registered any services.');
     cy.get('[data-cy=no-entry-register-modal]').contains('service');
