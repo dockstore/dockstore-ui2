@@ -110,6 +110,8 @@ export class QueryBuilderService {
     tableBody = tableBody.query('match', '_index', index);
     tableBody = this.appendQuery(tableBody, values, advancedSearchObject, searchTerm);
     tableBody = this.appendFilter(tableBody, null, filters);
+    // most popular results should be returned first
+    tableBody = tableBody.sort('stars_count', 'desc');
     const builtTableBody = tableBody.build();
     const tableQuery = JSON.stringify(builtTableBody);
     return tableQuery;
