@@ -187,9 +187,7 @@ function testTool(registry: string, repo: string, name: string) {
   // disable test until hiding versions for Tools are working on dev
 
   describe('Hide and un-hide a tool version', () => {
-    registerQuayTool(repo, name);
-    it('hide a version', () => {
-      goToTab('Versions');
+    function toggleHidden() {
       cy.contains('button', 'Actions').should('be.visible');
       cy.contains('td', 'Actions').first().click();
       cy.contains('button', 'Edit').click();
@@ -197,7 +195,15 @@ function testTool(registry: string, repo: string, name: string) {
         cy.get('[name=checkbox]').click();
       });
       cy.contains('button', 'Save Changes').click();
+    }
+    registerQuayTool(repo, name);
+    it('hide a version', () => {
+      goToTab('Versions');
+      toggleHidden();
       cy.get('[data-cy=hiddenCheck]').should('have.length', 1);
+      // un-hide and verify
+      toggleHidden();
+      cy.get('[data-cy=hiddenCheck]').should('not.exist');
     });
     it('refresh namespace', () => {
       cy.contains('button', 'Refresh Namespace').first().click();
@@ -257,23 +263,22 @@ function testWorkflow(registry: string, repo: string, name: string) {
       cy.contains('button', 'Publish').should('be.disabled');
     });
     it('hide and un-hide a version', () => {
+      function toggleHidden() {
+        cy.get('[data-cy=refreshButton]').click();
+        cy.get('[data-cy=versionRow]').last().contains('button', 'Actions').should('be.visible').click();
+        cy.contains('button', 'Edit').click();
+        // TODO: Use [data-cy=hiddenCheck] -- do after 1.13 deployed
+        cy.contains('div', 'Hidden:').within(() => {
+          cy.get('[name=checkbox]').click();
+        });
+        cy.contains('button', 'Save Changes').click();
+      }
       goToTab('Versions');
       // hide
-      cy.get('[data-cy=refreshButton]').click();
-      cy.get('[data-cy=versionRow]').last().contains('button', 'Actions').should('be.visible').click();
-      cy.contains('button', 'Edit').click();
-      cy.contains('div', 'Hidden:').within(() => {
-        cy.get('[name=checkbox]').click();
-      });
-      cy.contains('button', 'Save Changes').click();
+      toggleHidden();
       cy.get('[data-cy=hidden]').should('have.length', 1);
       // un-hide
-      cy.get('[data-cy=versionRow]').last().contains('button', 'Actions').should('be.visible').click();
-      cy.contains('button', 'Edit').click();
-      cy.contains('div', 'Hidden:').within(() => {
-        cy.get('[name=checkbox]').click();
-      });
-      cy.contains('button', 'Save Changes').click();
+      toggleHidden();
       cy.get('[data-cy=hidden]').should('not.exist');
     });
   });
