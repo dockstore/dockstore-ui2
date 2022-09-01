@@ -443,53 +443,53 @@ workflows:
             - lint_license_unit_test_coverage
           context:
             - dockerhub
-#      - integration_test_2:
-#          filters:
-#            tags:
-#              only: /.*/
-#          requires:
-#            - lint_license_unit_test_coverage
-#          context:
-#            - dockerhub
-#      - integration_test_3:
-#          filters:
-#            tags:
-#              only: /.*/
-#          requires:
-#            - lint_license_unit_test_coverage
-#          context:
-#            - dockerhub
-#      - integration_test_4:
-#          filters:
-#            tags:
-#              only: /.*/
-#          requires:
-#            - lint_license_unit_test_coverage
-#          context:
-#            - dockerhub
-#      - accessibility_test:
-#          filters:
-#            tags:
-#              only: /.*/
-#      - accessibility_test_base:
-#          filters:
-#            tags:
-#              only: /.*/
-#      - compare_accessibility_results:
-#          filters:
-#            tags:
-#              only: /.*/
-#          requires:
-#            - accessibility_test_base
-#            - accessibility_test
-#      - local_smoke_tests:
-#          filters:
-#            tags:
-#              only: /.*/
-#          requires:
-#            - lint_license_unit_test_coverage
-#          context:
-#            - dockerhub
+      - integration_test_2:
+          filters:
+            tags:
+              only: /.*/
+          requires:
+            - lint_license_unit_test_coverage
+          context:
+            - dockerhub
+      - integration_test_3:
+          filters:
+            tags:
+              only: /.*/
+          requires:
+            - lint_license_unit_test_coverage
+          context:
+            - dockerhub
+      - integration_test_4:
+          filters:
+            tags:
+              only: /.*/
+          requires:
+            - lint_license_unit_test_coverage
+          context:
+            - dockerhub
+      - accessibility_test:
+          filters:
+            tags:
+              only: /.*/
+      - accessibility_test_base:
+          filters:
+            tags:
+              only: /.*/
+      - compare_accessibility_results:
+          filters:
+            tags:
+              only: /.*/
+          requires:
+            - accessibility_test_base
+            - accessibility_test
+      - local_smoke_tests:
+          filters:
+            tags:
+              only: /.*/
+          requires:
+            - lint_license_unit_test_coverage
+          context:
+            - dockerhub
       # Upload builds for tags and branches to s3.
       - upload_to_s3:
           requires:
