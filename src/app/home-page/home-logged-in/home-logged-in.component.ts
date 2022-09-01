@@ -26,10 +26,13 @@ export class HomeLoggedInComponent extends Base implements OnInit, AfterViewInit
   }
 
   ngAfterViewInit() {
-    this.loadTwitterWidget();
+    // Ideally we would create a new component, so we don't need this special if
+    if (!Dockstore.FEATURES.enableNewDashboard) {
+      this.loadTwitterWidget();
+    }
   }
 
-  loadTwitterWidget() {
+  private loadTwitterWidget() {
     this.twitterService
       .loadScript()
       .pipe(takeUntil(this.ngUnsubscribe))
