@@ -29,8 +29,10 @@ function storeToken() {
     window.localStorage.setItem('ng2-ui-auth_token', Cypress.env('PROD_TOKEN'));
   } else if (Cypress.config('baseUrl') === 'https://staging.dockstore.org') {
     window.localStorage.setItem('ng2-ui-auth_token', Cypress.env('STAGING_TOKEN'));
-  } else {
+  } else if (Cypress.config('baseUrl') === 'https://dev.dockstore.net') {
     window.localStorage.setItem('ng2-ui-auth_token', Cypress.env('DEV_TOKEN'));
+  } else {
+    window.localStorage.setItem('ng2-ui-auth_token', Cypress.env('LOCAL_TOKEN'));
   }
 }
 
@@ -94,7 +96,8 @@ function registerQuayTool(repo: string, name: string) {
     cy.wait('@containers');
     cy.contains('button', 'Finish').should('be.visible').click();
     cy.url().should('contain', toolName);
-    cy.contains('button', 'Refresh').should('be.visible').click();
+    cy.wait(hardcodedWaitTime); // Get disconnected DOM without this
+    cy.contains('button', 'Refresh').should('be.visible').click(); // Need to refresh because it sets the default version, which publish needs
     cy.wait(hardcodedWaitTime); // The publish button is enabled even when publishing fails, so we need to wait for the refresh to complete.
     cy.get('#publishToolButton').should('be.visible').click();
     cy.wait('@publish');
@@ -121,6 +124,8 @@ function registerRemoteSitesTool(repo: string, name: string) {
       cy.contains('button', 'Add Tool').should('be.visible').click();
     });
     cy.url().should('contain', toolName);
+    cy.wait(hardcodedWaitTime); // The publish button is enabled even when publishing fails, so we need to wait for the refresh to complete.
+    cy.contains('button', 'Refresh').should('be.visible').click(); // Need to refresh because it sets the default version, which publish needs
     cy.get('#publishToolButton').should('be.visible').click();
     cy.wait('@publish');
   });
