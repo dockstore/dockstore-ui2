@@ -170,6 +170,26 @@ function registerToolOnDockstore(repo: string, name: string) {
   });
 }
 
+function toggleHiddenToolVersion() {
+  cy.contains('button', 'Actions').should('be.visible');
+  cy.contains('td', 'Actions').first().click();
+  cy.contains('button', 'Edit').click();
+  cy.contains('div', 'Hidden:').within(() => {
+    cy.get('[name=checkbox]').click();
+  });
+  cy.contains('button', 'Save Changes').click();
+}
+
+function toggleHiddenWorkflowVersion() {
+  cy.get('[data-cy=versionRow]').last().scrollIntoView().contains('button', 'Actions').should('be.visible').click();
+  cy.contains('button', 'Edit').click();
+  // TODO: Use [data-cy=hiddenCheck] -- do after 1.14 deployed
+  cy.contains('div', 'Hidden:').within(() => {
+    cy.get('[name=checkbox]').click();
+  });
+  cy.contains('button', 'Save Changes').click();
+}
+
 function testTool(registry: string, repo: string, name: string) {
   describe('Register, publish, unpublish, and delete a tool', () => {
     registerQuayTool(repo, name);
@@ -184,20 +204,15 @@ function testTool(registry: string, repo: string, name: string) {
     deleteTool();
   });
 
-  // disable test until hiding versions for Tools are working on dev
-
   describe('Hide and un-hide a tool version', () => {
     registerQuayTool(repo, name);
     it('hide a version', () => {
       goToTab('Versions');
-      cy.contains('button', 'Actions').should('be.visible');
-      cy.contains('td', 'Actions').first().click();
-      cy.contains('button', 'Edit').click();
-      cy.contains('div', 'Hidden:').within(() => {
-        cy.get('[name=checkbox]').click();
-      });
-      cy.contains('button', 'Save Changes').click();
+      toggleHiddenToolVersion();
       cy.get('[data-cy=hiddenCheck]').should('have.length', 1);
+      // un-hide and verify
+      toggleHiddenToolVersion();
+      cy.get('[data-cy=hiddenCheck]').should('not.exist');
     });
     it('refresh namespace', () => {
       cy.contains('button', 'Refresh Namespace').first().click();
@@ -255,6 +270,16 @@ function testWorkflow(registry: string, repo: string, name: string) {
       goToTab('Info');
       cy.contains('button', 'Restub').click();
       cy.contains('button', 'Publish').should('be.disabled');
+    });
+    it('hide and un-hide a version', () => {
+      cy.get('[data-cy=refreshButton]').click();
+      goToTab('Versions');
+      // hide
+      toggleHiddenWorkflowVersion();
+      cy.get('[data-cy=hidden]').should('have.length', 1);
+      // un-hide
+      toggleHiddenWorkflowVersion();
+      cy.get('[data-cy=hidden]').should('not.exist');
     });
   });
 }
