@@ -179,6 +179,7 @@ export class MultiCloudLaunchComponent extends Base implements OnInit {
     try {
       url = new URL(launchWithUrl);
     } catch (error) {
+      // URL has no protocol
       if (!launchWithUrl.toLowerCase().startsWith('https://')) {
         return 'https://' + launchWithUrl;
       }
@@ -187,6 +188,7 @@ export class MultiCloudLaunchComponent extends Base implements OnInit {
     if (url.protocol === 'https:') {
       return launchWithUrl;
     } else {
+      // URL has a protocol that is not HTTPS
       throw new Error('URL ' + launchWithUrl + ' does not start with https://');
     }
   }
