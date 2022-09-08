@@ -86,7 +86,7 @@
                 event?.apptool
                   ? '/tools/' + event?.apptool?.full_workflow_path
                   : event?.tool
-                  ? '/tools/' + event?.tool.tool_path
+                  ? '/tools/' + event?.tool?.tool_path
                   : '/workflows/' + event?.workflow?.full_workflow_path
               "
               >{{
