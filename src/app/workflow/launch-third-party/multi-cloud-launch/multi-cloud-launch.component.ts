@@ -125,8 +125,8 @@ export class MultiCloudLaunchComponent extends Base implements OnInit {
       localStorage.setItem('useCustomLaunch', 'false');
     }
 
-    // Create and save a user's custom launch entry to the db
-    if (this.presetLaunchWithOption === 'other' && this.user) {
+    // Construct custom URL
+    if (this.presetLaunchWithOption === 'other') {
       let url: URL;
       try {
         this.alertService.start('Constructing URL');
@@ -142,7 +142,8 @@ export class MultiCloudLaunchComponent extends Base implements OnInit {
         );
       }
 
-      if (url) {
+      // Create and save a user's custom launch entry to the db if URL is valid
+      if (url && this.user) {
         const newCustomInstance: CloudInstance = {
           url: this.launchWith.url,
           partner: this.languagePartner,
@@ -162,7 +163,7 @@ export class MultiCloudLaunchComponent extends Base implements OnInit {
             console.log(error.message);
           }
         );
-      } else {
+      } else if (!url) {
         // Remove link to prevent navigating to invalid URL
         document.getElementById('multiCloudLaunchButton').removeAttribute('href');
       }
@@ -183,7 +184,9 @@ export class MultiCloudLaunchComponent extends Base implements OnInit {
       }
     }
 
-    if (url.protocol !== 'https:') {
+    if (url.protocol === 'https:') {
+      return launchWithUrl;
+    } else {
       throw new Error('URL ' + launchWithUrl + ' does not start with https://');
     }
   }
