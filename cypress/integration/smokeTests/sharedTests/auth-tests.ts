@@ -181,8 +181,7 @@ function toggleHiddenToolVersion() {
 }
 
 function toggleHiddenWorkflowVersion() {
-  cy.get('[data-cy=refreshButton]').click();
-  cy.get('[data-cy=versionRow]').last().contains('button', 'Actions').should('be.visible').click();
+  cy.get('[data-cy=versionRow]').last().scrollIntoView().contains('button', 'Actions').should('be.visible').click();
   cy.contains('button', 'Edit').click();
   // TODO: Use [data-cy=hiddenCheck] -- do after 1.14 deployed
   cy.contains('div', 'Hidden:').within(() => {
@@ -273,6 +272,7 @@ function testWorkflow(registry: string, repo: string, name: string) {
       cy.contains('button', 'Publish').should('be.disabled');
     });
     it('hide and un-hide a version', () => {
+      cy.get('[data-cy=refreshButton]').click();
       goToTab('Versions');
       // hide
       toggleHiddenWorkflowVersion();
