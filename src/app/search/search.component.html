@@ -239,36 +239,15 @@
           >
         </mat-card>
 
-        <mde-popover #appPopover="mdePopover" [mdePopoverOverlapTrigger]="false">
-          <mat-card class="row">
-            <div>Link to this page</div>
-            <div class="input-group" style="padding: 5px">
-              <input type="text" class="form-control" [value]="shortUrl$ | async" readonly />
-              <span class="input-group-btn">
-                <button
-                  data-cy="copy_button"
-                  class="btn btn-default"
-                  [ngClass]="{ 'btn-copy': isCopied }"
-                  type="button"
-                  [cdkCopyToClipboard]="shortUrl$ | async"
-                  (cbOnSuccess)="isCopied = true"
-                  appSnackbar
-                >
-                  <mat-icon>file_copy</mat-icon>
-                </button>
-              </span>
-            </div>
-          </mat-card>
-        </mde-popover>
-
         <div *ngIf="searchService.hasSearchText(advancedSearchObject, searchTerm, hits) || searchService.hasFilters(filters)">
           <mat-card class="alert alert-info text-break">
             <button
               data-cy="share_button"
               mat-raised-button
               type="button"
-              [mdePopoverTriggerFor]="appPopover"
-              mdePopoverTriggerOn="click"
+              type="button"
+              [cdkCopyToClipboard]="shortUrl$ | async"
+              appSnackbar
               class="mr-2 accent-1-dark-btn"
             >
               <fa-icon [icon]="faShareAlt" aria-hidden="true"></fa-icon>
