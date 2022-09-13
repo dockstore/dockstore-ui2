@@ -13,16 +13,16 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnDestroy, OnInit, ViewChild, HostListener } from '@angular/core';
 import { Location } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatAccordion } from '@angular/material/expansion';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import {
   faAngleDoubleDown,
   faAngleDoubleUp,
-  faShareAlt,
+  faCopy,
   faSortAlphaDown,
   faSortAlphaUp,
   faSortNumericDown,
@@ -71,13 +71,13 @@ import { Hit, SearchService } from './state/search.service';
   styleUrls: ['./search.component.scss'],
 })
 export class SearchComponent implements OnInit, OnDestroy {
-  faShareAlt = faShareAlt;
   faAngleDoubleDown = faAngleDoubleDown;
   faAngleDoubleUp = faAngleDoubleUp;
   faSortAlphaDown = faSortAlphaDown;
   faSortAlphaUp = faSortAlphaUp;
   faSortNumericDown = faSortNumericDown;
   faSortNumericUp = faSortNumericUp;
+  faCopy = faCopy;
   private ngUnsubscribe: Subject<{}> = new Subject();
   @ViewChild(MatAccordion, { static: true }) accordion: MatAccordion;
   public advancedSearchObject$: Observable<AdvancedSearchObject>;
