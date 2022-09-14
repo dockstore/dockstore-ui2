@@ -13,9 +13,8 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { contains } from 'cypress/types/jquery';
 import { Repository } from '../../../src/app/shared/openapi/model/repository';
-import { goToTab, isActiveTab, resetDB, setTokenUserViewPort } from '../../support/commands';
+import { goToTab, isActiveTab, resetDB, setTokenUserViewPort, setTokenUserViewPortCurator } from '../../support/commands';
 
 describe('Dockstore my workflows', () => {
   resetDB();
@@ -25,7 +24,7 @@ describe('Dockstore my workflows', () => {
   const wdlDescriptorType = 'WDL';
   const nextflowDescriptorType = 'Nextflow';
   it('have entries shown on the homepage', () => {
-    cy.visit('/');
+    cy.visit('/dashboard');
     cy.contains(/^l$/);
     cy.contains('Find entries');
     cy.get('#mat-input-0').type('hosted');
@@ -61,7 +60,7 @@ describe('Dockstore my workflows', () => {
       cy.contains('github.com/A/l');
     });
     it('should be able to see GitHub Apps Logs dialog', () => {
-      cy.contains('See GitHub Apps Logs').click();
+      cy.contains('Apps Logs').click();
       cy.contains('There were problems retrieving GitHub App logs for this organization.');
       cy.contains('Close').click();
       cy.server();
@@ -70,7 +69,7 @@ describe('Dockstore my workflows', () => {
         url: '/api/lambdaEvents/**',
         response: [],
       }).as('refreshWorkflow');
-      cy.contains('See GitHub Apps Logs').click();
+      cy.contains('Apps Logs').click();
       cy.contains('There are no GitHub App logs for this organization.');
       cy.contains('Close').click();
       const realResponse = [
@@ -102,7 +101,7 @@ describe('Dockstore my workflows', () => {
         url: '/api/lambdaEvents/**',
         response: realResponse,
       }).as('refreshWorkflow');
-      cy.contains('See GitHub Apps Logs').click();
+      cy.contains('Apps Logs').click();
       cy.contains('2020-02-20T02:20');
       cy.contains('2020-06-05T14:40');
       cy.contains('1 – 2 of 2');
@@ -116,16 +115,29 @@ describe('Dockstore my workflows', () => {
       cy.contains('/Dockstore.cwl');
       // Change the file path
       cy.contains('button', ' Edit ').click();
-      cy.get('[data-cy=workflowPathInput]').clear().type('/Dockstore2.cwl');
+      const workflowPathInput = '[data-cy=workflowPathInput]';
+      cy.get(workflowPathInput).clear().type('/Dockstore2.cwl');
       cy.contains('button', ' Save ').click();
       cy.visit('/my-workflows/github.com/A/g');
       cy.contains('/Dockstore2.cwl');
       // Change the file path back
       cy.contains('button', ' Edit ').click();
-      cy.get('[data-cy=workflowPathInput]').clear().type('/Dockstore.cwl');
+      const dockstoreCwlPath = '/Dockstore.cwl';
+      cy.get(workflowPathInput).clear().type(dockstoreCwlPath);
       cy.contains('button', ' Save ').click();
       cy.visit('/my-workflows/github.com/A/g');
-      cy.contains('/Dockstore.cwl');
+      const workflowPathSpan = '[data-cy=workflowPathSpan]';
+      cy.get(workflowPathSpan).contains(dockstoreCwlPath);
+
+      // Test Revert
+      cy.get('[data-cy=editWorkflowPathButton').click();
+      const sillyText = 'silly';
+      cy.get(workflowPathInput).clear().type(sillyText);
+      // Verify it took
+      cy.get(workflowPathInput).should('have.value', sillyText);
+      cy.get('[data-cy=cancelWorkflowPathButton').click();
+      // Input goes away, check that correct text displayed
+      cy.get(workflowPathSpan).contains(dockstoreCwlPath);
 
       // Topic Editing
       const privateEntryURI = '/my-workflows/github.com/A/l';
@@ -521,18 +533,37 @@ describe('Dockstore my workflows', () => {
       cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=info');
     });
   });
-  it('Refresh Organization button should have tooltip', () => {
-    cy.visit('/my-workflows/github.com/A/l');
-    cy.get(
-      '#cdk-accordion-child-2 > .mat-action-row.ng-star-inserted > div > :nth-child(2) > ' +
-        'app-refresh-workflow-organization > [data-cy=refreshOrganization]'
-    ).trigger('mouseenter');
-    cy.get('[data-cy=refreshOrganization]:visible').should('be.visible').click();
-    cy.contains('button', 'Cancel').should('be.visible');
-    cy.get('[data-cy=confirm-dialog-button] > .mat-button-wrapper').contains('Refresh').click();
-    cy.get('.error-output').should('be.visible');
-    cy.get('[data-cy=refreshOrganization]:visible').should('be.visible').click();
-    cy.contains('button', 'Cancel').should('be.visible').click();
-    cy.get('.error-output').should('not.be.visible');
+  // Refresh org button does not have tool tip, re-enable test when feature is added
+  if (false) {
+    it('Refresh Organization button should have tooltip', () => {
+      cy.visit('/my-workflows/github.com/A/l');
+      cy.get(
+        '#cdk-accordion-child-2 > .mat-action-row.ng-star-inserted > div > :nth-child(2) > ' +
+          'app-refresh-workflow-organization > [data-cy=refreshOrganization]'
+      ).trigger('mouseenter');
+      cy.get('[data-cy=refreshOrganization]:visible').should('be.visible').click();
+      cy.contains('button', 'Cancel').should('be.visible');
+      cy.get('[data-cy=confirm-dialog-button] > .mat-button-wrapper').contains('Refresh').click();
+      cy.get('.error-output').should('be.visible');
+      cy.get('[data-cy=refreshOrganization]:visible').should('be.visible').click();
+      cy.contains('button', 'Cancel').should('be.visible').click();
+      cy.get('.error-output').should('not.be.visible');
+    });
+  }
+});
+describe('Should handle no workflows correctly', () => {
+  resetDB();
+  setTokenUserViewPortCurator(); // Curator has no workflows
+  beforeEach(() => {
+    cy.server();
+    cy.route({
+      method: 'GET',
+      url: /github.com\/organizations/,
+      response: ['dockstore'],
+    });
+  });
+  it('My workflows should prompt to register a workflow', () => {
+    cy.visit('/my-workflows');
+    cy.contains('Register Workflow');
   });
 });

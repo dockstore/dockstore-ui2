@@ -706,11 +706,6 @@ mat-list.org-accordion-list > mat-list-item {
   font-size: 12px !important;
 }
 
-mat-panel-title.org-accordion-header {
-  color: #487980;
-  font-size: 16px;
-}
-
 .add-entry-button {
   margin-left: 5px;
 }
@@ -720,24 +715,4 @@ mat-panel-title.org-accordion-header {
 }
 .mat-drawer-inner-container {
   overflow: visible !important;
-}
-
-.alert-warning {
-  color: #8a6d3b !important;
-  background-color: #fcf8e3 !important;
-  border-color: #faebcc !important;
-  border: 0px !important;
-}
-
-.alert-info {
-  background-color: #d9edf7 !important;
-  border-color: #bce8f1 !important;
-  border: 0px !important;
-}
-
-.alert-danger {
-  color: #a94442 !important;
-  background-color: #f2dede !important;
-  border-color: #ebccd1 !important;
-  border: 0px !important;
 }

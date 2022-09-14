@@ -4,3 +4,8 @@
 .mat-badge-medium.mat-badge-above .mat-badge-content {
   background: $accent-3-dark;
 }
+
+// Hide mat-chip overflow when resizing
+mat-card {
+  overflow: hidden;
+}

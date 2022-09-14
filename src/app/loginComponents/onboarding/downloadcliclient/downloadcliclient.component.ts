@@ -1,11 +1,13 @@
 /* eslint-disable max-len */
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'ng2-ui-auth';
-import { finalize } from 'rxjs/operators';
 import { Dockstore } from '../../../shared/dockstore.model';
 import { MetadataService } from '../../../shared/swagger';
 import { GA4GHService } from './../../../shared/swagger/api/gA4GH.service';
 import { Metadata } from './../../../shared/swagger/model/metadata';
+import { AlertService } from './../../../shared/alert/state/alert.service';
+import { forkJoin } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-downloadcliclient',
@@ -25,7 +27,12 @@ export class DownloadCLIClientComponent implements OnInit {
   public textDataConfirmInstallation = '';
   public textDataInstallCLI = '';
   private cwltoolVersion = '';
-  constructor(private authService: AuthService, private metadataService: MetadataService, private gA4GHService: GA4GHService) {}
+  constructor(
+    private authService: AuthService,
+    private metadataService: MetadataService,
+    private gA4GHService: GA4GHService,
+    private alertService: AlertService
+  ) {}
 
   ngOnInit() {
     if (this.authService.getToken()) {
@@ -34,27 +41,29 @@ export class DownloadCLIClientComponent implements OnInit {
     this.dsServerURI = Dockstore.API_URI;
     this.isCopied2 = false;
     let apiVersion = 'unreachable';
+    this.alertService.start('Fetching metadata');
     this.gA4GHService.metadataGet().subscribe(
       (resultFromApi: Metadata) => {
         apiVersion = resultFromApi.version;
         this.dockstoreVersion = `${apiVersion}`;
-        this.downloadCli = `https://github.com/dockstore/dockstore/releases/download/${apiVersion}/dockstore`;
-        this.metadataService
-          .getRunnerDependencies(apiVersion, '3', 'cwltool', 'json')
+
+        // forkJoin returns an array of values, here we map those values to an object
+        forkJoin([this.metadataService.getCliVersion(), this.metadataService.getRunnerDependencies(apiVersion, '3', 'cwltool', 'json')])
           .pipe(finalize(() => this.generateMarkdown()))
           .subscribe(
-            (json: any) => {
-              if (json) {
-                this.cwltoolVersion = json.cwltool;
-              }
+            ([cliInfo, dependencies]) => {
+              this.downloadCli = cliInfo.cliLatestDockstoreScriptDownloadUrl;
+              this.cwltoolVersion = JSON.parse(JSON.stringify(dependencies)).cwltool;
+              this.alertService.simpleSuccess();
             },
-            (err) => {
-              console.log('Unable to retrieve requirements.txt file.');
+            (forkError) => {
+              this.alertService.detailedError(forkError);
             }
           );
       },
-      (error) => {
+      (metadataError) => {
         this.generateMarkdown();
+        this.alertService.detailedError(metadataError);
       }
     );
   }
@@ -185,6 +194,8 @@ pip3 install -r requirements.txt
 $ cwltool --version
 /usr/local/bin/cwltool ${this.cwltoolVersion}
 \`\`\`
+
+Although Dockstore has only been tested with the above cwltool version, if you have issues installing cwltool please try running \`pip3 install cwltool\`. This will install the latest released version from PyPi that is compatible with your Python version.
 
 #### Part 6 - Install Nextflow (Optional)
 The Dockstore CLI does not run Nextflow workflows. Users can run them directly by using the Nextflow command line tool. For installation instructions, follow [Nextflow's documentation](https://github.com/nextflow-io/nextflow#download-the-package)

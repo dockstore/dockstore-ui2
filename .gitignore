@@ -36,6 +36,7 @@ openapi-generator-cli-3.3.1.jar
 !.vscode/extensions.json
 
 # misc
+/.angular/cache
 /.sass-cache
 /connect.lock
 /coverage

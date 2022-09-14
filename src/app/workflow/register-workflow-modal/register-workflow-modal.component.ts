@@ -177,7 +177,8 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
   }
 
   getWorkflowPathPlaceholder(descriptorType: Workflow.DescriptorTypeEnum): string {
-    return DescriptorLanguageService.workflowDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorType).descriptorPathPlaceholder;
+    return this.descriptorLanguageService.workflowDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorType)
+      .descriptorPathPlaceholder;
   }
 
   formChanged() {
@@ -242,8 +243,11 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
    */
   changeDescriptorType(descriptorType: Workflow.DescriptorTypeEnum): void {
     this.descriptorValidationPattern =
-      DescriptorLanguageService.workflowDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorType).descriptorPathPattern;
+      this.descriptorLanguageService.workflowDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorType).descriptorPathPattern;
     switch (descriptorType) {
+      case Workflow.DescriptorTypeEnum.SMK:
+        this.workflowPathError = validationMessages.smkPath.pattern;
+        break;
       case Workflow.DescriptorTypeEnum.CWL:
         this.workflowPathError = validationMessages.cwlPath.pattern;
         break;

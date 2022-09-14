@@ -13,7 +13,6 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Dockstore } from '../../../src/app/shared/dockstore.model';
 import { goToTab, goToUnexpandedSidebarEntry, resetDB, setTokenUserViewPort } from '../../support/commands';
 
 describe('Dockstore hosted tools', () => {
@@ -23,17 +22,15 @@ describe('Dockstore hosted tools', () => {
   beforeEach(() => {
     cy.visit('/my-tools');
 
-    cy.server();
-
-    cy.route({
+    cy.intercept({
       method: 'GET',
       url: /containers\/.+\/zip\/.+/,
-      response: 200,
     }).as('downloadZip');
   });
 
   function getTool() {
-    goToUnexpandedSidebarEntry('quay.io/hosted-tool', 'ht');
+    cy.wait(1000);
+    goToUnexpandedSidebarEntry('hosted-tool', 'ht');
   }
 
   // Ensure tabs are correct for the hosted tool, try adding a version
@@ -95,7 +92,7 @@ describe('Dockstore hosted tools', () => {
       // https://github.com/ga4gh/dockstore/issues/2050
       cy.get('#downloadZipButton').click();
 
-      cy.wait('@downloadZip').its('url').should('include', Dockstore.API_URI);
+      cy.wait('@downloadZip').its('response.statusCode').should('eq', 200);
 
       // Add a new version with a second descriptor and a test json
       goToTab('Files');

@@ -30,6 +30,8 @@ import {
 } from '../../test/service-stubs';
 import { LaunchWorkflowComponent } from './launch.component';
 import { WorkflowLaunchService } from './workflow-launch.service';
+import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('LaunchWorkflowComponent', () => {
   let component: LaunchWorkflowComponent;
@@ -40,6 +42,7 @@ describe('LaunchWorkflowComponent', () => {
       TestBed.configureTestingModule({
         declarations: [LaunchWorkflowComponent],
         schemas: [NO_ERRORS_SCHEMA],
+        imports: [HttpClientTestingModule],
         providers: [
           WorkflowLaunchService,
           { provide: ContainerService, useClass: ContainerStubService },
@@ -47,6 +50,7 @@ describe('LaunchWorkflowComponent', () => {
           { provide: CheckerWorkflowService, useClass: CheckerWorkflowStubService },
           { provide: WorkflowService, useClass: WorkflowStubService },
           { provide: GA4GHV20Service, useClass: GA4GHV20StubService },
+          { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
         ],
       }).compileComponents();
     })

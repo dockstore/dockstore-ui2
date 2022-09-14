@@ -16,20 +16,20 @@
 
 <div class="p-3">
   <div *ngIf="!_selectedVersion">
-    <mat-card class="alert alert-warning" role="alert">
-      <mat-icon>warning</mat-icon> To see launch with, please select a version.
+    <mat-card class="alert alert-warning mat-elevation-z" role="alert">
+      <mat-icon class="alert-warning-icon">warning</mat-icon> To see launch with, please select a version.
     </mat-card>
   </div>
   <div *ngIf="_selectedVersion">
     <div *ngIf="!_selectedVersion.valid">
-      <mat-card class="alert alert-warning" role="alert">
-        <mat-icon>warning</mat-icon> This section is only available for valid versions.
+      <mat-card class="alert alert-warning mat-elevation-z" role="alert">
+        <mat-icon class="alert-warning-icon">warning</mat-icon> This section is only available for valid versions.
       </mat-card>
     </div>
     <div *ngIf="_selectedVersion.valid">
       <div class="row">
         <div class="col-sm-4">
-          <mat-form-field class="m-2">
+          <mat-form-field>
             <mat-select name="toolVersions" [(value)]="currentDescriptor" (selectionChange)="changeDescriptor($event)">
               <mat-option *ngFor="let descriptor of filteredDescriptors" [value]="descriptor">{{ descriptor }}</mat-option>
             </mat-select>
@@ -37,21 +37,21 @@
         </div>
       </div>
 
-      <div *ngIf="currentDescriptor">
-        <mat-card class="m-2" matTooltip="Commands for creating a runtime JSON template">
+      <div fxLayout="column" fxLayoutGap="1rem" *ngIf="currentDescriptor">
+        <mat-card matTooltip="Commands for creating a runtime JSON template">
           Make a runtime JSON template and fill in desired inputs, outputs, and other parameters
           <pre>{{ params }}</pre>
         </mat-card>
-        <mat-card class="m-2" matTooltip="Commands for launching tool through Dockstore CLI (Supports file provisioning)">
+        <mat-card matTooltip="Commands for launching tool through Dockstore CLI (Supports file provisioning)">
           Run locally with the Dockstore CLI
           <pre>{{ cli }}</pre>
         </mat-card>
-        <div *ngIf="currentDescriptor === ToolDescriptor.TypeEnum.CWL && (published$ | async)">
-          <mat-card class="m-2" [matTooltip]="cwlrunnerTooltip">
+        <div fxLayout="column" fxLayoutGap="1rem" *ngIf="currentDescriptor === ToolDescriptor.TypeEnum.CWL && (published$ | async)">
+          <mat-card [matTooltip]="cwlrunnerTooltip">
             {{ cwlrunnerDescription }}
             <pre>{{ cwl }}</pre>
           </mat-card>
-          <mat-card class="m-2" [matTooltip]="cwltoolTooltip">
+          <mat-card [matTooltip]="cwltoolTooltip">
             Alternatively, <a href="https://github.com/common-workflow-language/cwltool">cwltool</a> can conveniently run a tool off of
             dockstore.org and other
             <a href="https://github.com/common-workflow-language/cwltool#use-with-ga4gh-tool-registry-api">GA4GH tool registries</a> when

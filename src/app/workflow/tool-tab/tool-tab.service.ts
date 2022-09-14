@@ -6,7 +6,7 @@ import { ToolDescriptor } from '../../shared/swagger';
   providedIn: 'root',
 })
 export class ToolTabService {
-  constructor() {}
+  constructor(private descriptorLanguageService: DescriptorLanguageService) {}
 
   /**
    * Determines the second column's header name. No break needed because headings are always short.
@@ -16,7 +16,7 @@ export class ToolTabService {
    * @memberof ToolTabService
    */
   descriptorTypeToHeaderName(descriptorType: ToolDescriptor.TypeEnum): string {
-    return DescriptorLanguageService.toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorType).toolTab.workflowStepHeader;
+    return this.descriptorLanguageService.toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorType).toolTab.workflowStepHeader;
   }
 
   /**
@@ -28,6 +28,6 @@ export class ToolTabService {
    * @memberof ToolTabService
    */
   descriptorTypeToWorkflowExcerptRowHeading(descriptorType: ToolDescriptor.TypeEnum): string {
-    return DescriptorLanguageService.toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorType).toolTab.rowIdentifier;
+    return this.descriptorLanguageService.toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorType).toolTab.rowIdentifier;
   }
 }

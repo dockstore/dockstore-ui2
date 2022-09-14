@@ -135,7 +135,7 @@ export class RegisterWorkflowModalService {
    */
   registerHostedWorkflow(hostedWorkflow, dialogRef: MatDialogRef<RegisterWorkflowModalComponent>) {
     this.clearWorkflowRegisterError();
-    const descriptorLanguageEnum = DescriptorLanguageService.workflowDescriptorTypeEnumToExtendedDescriptorLanguageBean(
+    const descriptorLanguageEnum = this.descriptorLanguageService.workflowDescriptorTypeEnumToExtendedDescriptorLanguageBean(
       hostedWorkflow.descriptorType
     ).descriptorLanguageEnum;
     this.alertService.start('Registering new workflow');

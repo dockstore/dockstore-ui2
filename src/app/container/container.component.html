@@ -16,9 +16,9 @@
 <div *ngIf="tool; else workflow">
   <div class="row m-1" *ngIf="error || missingWarning">
     <div class="col-md-12" *ngIf="!isToolPublic">
-      <mat-card class="alert alert-warning" ng-class="!editMode ? 'push-top' : ''" role="alert" *ngIf="missingWarning">
+      <mat-card class="alert alert-warning mat-elevation-z" ng-class="!editMode ? 'push-top' : ''" role="alert" *ngIf="missingWarning">
         <button type="button" class="close" data-dismiss="alert" ng-click="missingWarning = false">&times;</button>
-        <mat-icon>warning</mat-icon>
+        <mat-icon class="alert-warning-icon">warning</mat-icon>
         {{ missingContent.length === 1 ? 'Field that is missing from file: ' : 'Fields that are missing from file: ' }} {{ missingContent }}
       </mat-card>
     </div>
@@ -42,7 +42,7 @@
     </mat-card>
   </div>
 
-  <div class="row m-1" fxLayout.lt-sm="column">
+  <div class="row m-1" fxLayout.lt-sm="column" fxLayout.gt-sm="row">
     <ngx-json-ld [json]="schema"></ngx-json-ld>
     <div fxFlex="80">
       <h3 id="tool-path" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1rem">
@@ -97,7 +97,7 @@
         </div>
       </h3>
     </div>
-    <div *ngIf="!publicPage" class="col-md-5">
+    <div *ngIf="!publicPage">
       <h3>
         <app-tool-actions
           [tool]="tool"
@@ -122,7 +122,7 @@
           <mat-chip
             class="bubble container-background pointer"
             *ngFor="let label of containerEditData?.labels"
-            (click)="goToSearch(label)"
+            (click)="goToSearch(label, EntryType.Tool)"
             >{{ label }}</mat-chip
           >
           <button
@@ -223,7 +223,9 @@
             ></app-launch>
             <ng-template #noTags>
               <div class="p-3">
-                <mat-card class="alert alert-warning" role="alert"> <mat-icon>warning</mat-icon> No tags exist for this </mat-card>
+                <mat-card class="alert alert-warning mat-elevation-z" role="alert">
+                  <mat-icon class="alert-warning-icon">warning</mat-icon> No tags exist for this
+                </mat-card>
               </div>
             </ng-template>
           </mat-tab>
@@ -289,7 +291,9 @@
       <div *ngIf="publicPage" class="mt-2 mr-3">
         <div *ngIf="tool?.topicId !== null; else noTopicId" id="discourse-comments"></div>
         <ng-template #noTopicId>
-          <mat-card class="alert alert-warning" role="alert"> <mat-icon>info</mat-icon> No Discourse topic exists for this tool. </mat-card>
+          <mat-card class="alert alert-warning mat-elevation-z" role="alert">
+            <mat-icon class="alert-warning-icon">info</mat-icon> No Discourse topic exists for this tool.
+          </mat-card>
         </ng-template>
       </div>
     </div>

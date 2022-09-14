@@ -8,6 +8,7 @@ import { ProviderService } from '../../../shared/provider.service';
 import { WorkflowService } from '../../../shared/state/workflow.service';
 import { sampleCwlExtendedWorkflow, sampleWorkflowVersion } from '../../../test/mocked-objects';
 import { CwlViewerComponent } from './cwl-viewer.component';
+import { DescriptorLanguageService } from '../../../shared/entry/descriptor-language.service';
 
 describe('cwl-viewerComponent', () => {
   let component: CwlViewerComponent;
@@ -17,9 +18,9 @@ describe('cwl-viewerComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [CwlViewerComponent],
-        imports: [HttpClientTestingModule, FormsModule],
+        imports: [HttpClientTestingModule, FormsModule, HttpClientTestingModule],
         schemas: [NO_ERRORS_SCHEMA],
-        providers: [DockstoreService, DateService, ProviderService, WorkflowService],
+        providers: [DockstoreService, DateService, ProviderService, WorkflowService, DescriptorLanguageService],
       }).compileComponents();
     })
   );

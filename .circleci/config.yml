@@ -2,8 +2,8 @@ version: 2.1
 orbs:
   aws-s3: circleci/aws-s3@3.0.0
   aws-cli: circleci/aws-cli@3.1.1
-  slack: circleci/slack@3.4.2
-  browser-tools: circleci/browser-tools@1.2.3
+  slack: circleci/slack@4.4.4
+  browser-tools: circleci/browser-tools@1.2.4
 executors:
   integration_test_exec: # declares a reusable executor
     docker:
@@ -30,11 +30,34 @@ executors:
           - network.host: 127.0.0.1
           - http.port: 9200
           - discovery.type: single-node
+  accessibility_test_exec:
+    docker:
+      - image: cimg/base:stable-20.04
+        auth:
+          username: dockstoretestuser
+          password: $DOCKERHUB_PASSWORD
+      - image: cimg/postgres:13.3
+        command: postgres -c max_connections=200 -c jit=off
+        auth:
+          username: dockstoretestuser
+          password: $DOCKERHUB_PASSWORD
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_DB: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_HOST_AUTH_METHOD: trust
+      - image: docker.elastic.co/elasticsearch/elasticsearch:7.10.1
+        environment:
+          - xpack.security.enabled: false
+          - transport.host: localhost
+          - network.host: 127.0.0.1
+          - http.port: 9200
+          - discovery.type: single-node
 
 jobs:
   # Specify the webpage url (https://dev.dockstore.net or https://staging.dockstore.org or https://dockstore.org)
   # and stack (dev or staging or prod) and the no auth smoke tests will be run against the corresponding webpage.
-  uptime_monitor_no_auth:
+  no_auth_smoke_tests:
     parameters:
       stack:
         type: string
@@ -60,15 +83,18 @@ jobs:
           environment:
             MOCHA_FILE: nightly-test-results/junit/test-<< parameters.stack >>-waf-[hash].xml
       - upload_nightly_artifacts
-      - slack/status:
-          fail_only: true
+      - slack/notify:
           channel: $<< parameters.stack >>_id
-          failure_message: Nightly << parameters.stack >> non-auth tests failed!
-          webhook: $SLACK_WEBHOOK
+          event: fail
+          template: basic_fail_1
+      - slack/notify:
+          channel: $<< parameters.stack >>_id
+          event: pass
+          template: basic_success_1
 
   # Specify the webpage url (https://dev.dockstore.net or https://staging.dockstore.org or https://dockstore.org)
   # and stack (dev or staging or prod) and the no auth smoke tests will be run against the corresponding webpage.
-  uptime_monitor_auth:
+  auth_smoke_tests:
     parameters:
       stack:
         type: string
@@ -79,8 +105,6 @@ jobs:
             username: dockstoretestuser
             password: $DOCKERHUB_PASSWORD
     steps:
-      - browser-tools/install-chrome
-      - browser-tools/install-chromedriver
       - setup_nightly_tests
       - install_cypress_dependencies
       - run:
@@ -89,11 +113,14 @@ jobs:
           environment:
             MOCHA_FILE: nightly-test-results/junit/test-<< parameters.stack >>-auth-[hash].xml
       - upload_nightly_artifacts
-      - slack/status:
-          fail_only: true
+      - slack/notify:
           channel: $<< parameters.stack >>_id
-          failure_message: Nightly << parameters.stack >> auth tests failed!
-          webhook: $SLACK_WEBHOOK
+          event: fail
+          template: basic_fail_1
+      - slack/notify:
+          channel: $<< parameters.stack >>_id
+          event: pass
+          template: basic_success_1
 
   audit:
     working_directory: ~/repo
@@ -193,14 +220,13 @@ jobs:
     executor: integration_test_exec
     working_directory: ~/repo
     steps:
-      - browser-tools/install-chrome
-      - browser-tools/install-chromedriver
       - setup_integration_test
       - restore_cache:
           key: cypress-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
       - run:
           name: Test
           command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/integration/group1/**/*'
+          no_output_timeout: 30m
           environment:
             MOCHA_FILE: integration-tests/test-results/junit/test-results-[hash].xml
           when: always
@@ -209,14 +235,13 @@ jobs:
     executor: integration_test_exec
     working_directory: ~/repo
     steps:
-      - browser-tools/install-chrome
-      - browser-tools/install-chromedriver
       - setup_integration_test
       - restore_cache:
           key: cypress-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
       - run:
           name: Test
           command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/integration/group2/**/*'
+          no_output_timeout: 30m
           environment:
             MOCHA_FILE: integration-tests/test-results/junit/test-results-[hash].xml
           when: always
@@ -225,18 +250,99 @@ jobs:
     executor: integration_test_exec
     working_directory: ~/repo
     steps:
-      - browser-tools/install-chrome
-      - browser-tools/install-chromedriver
+      - setup_integration_test
+      - restore_cache:
+          key: cypress-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
+      - run:
+          name: Test
+          command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/integration/group3/**/*'
+          no_output_timeout: 30m
+          environment:
+            MOCHA_FILE: integration-tests/test-results/junit/test-results-[hash].xml
+          when: always
+      - upload_artifacts
+  integration_test_4:
+    executor: integration_test_exec
+    working_directory: ~/repo
+    steps:
       - setup_integration_test
       - restore_cache:
           key: cypress-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
       - run:
           name: Test
           command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/integration/immutableDatabaseTests/**/*'
+          no_output_timeout: 30m
           environment:
             MOCHA_FILE: integration-tests/test-results/junit/test-results-[hash].xml
           when: always
       - upload_artifacts
+  accessibility_test:
+    resource_class: medium+
+    executor: accessibility_test_exec
+    working_directory: ~/repo
+    parameters:
+      db_dump:
+        type: string
+        default: "db_dump.sql"
+    steps:
+      - checkout
+      - install_container_dependencies
+      - prepare_accessibility_test
+      - run:
+          name: Run accesibility test on current branch
+          command: bash -i -c "npm run accessibility-test -- -R"
+      - persist_to_workspace:
+          root: .
+          paths:
+            - accessibility-results
+      - store_artifacts:
+          path: accessibility-results
+
+  accessibility_test_base:
+    resource_class: medium+
+    executor: accessibility_test_exec
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - checkout:
+          path: accessibility
+      - install_container_dependencies
+      - run:
+          name: Checkout base branch
+          command: bash -i -c "npm run accessibility-test -- -C"
+      - prepare_accessibility_test
+      - run:
+          name: Run accesibility test on base branch
+          command: bash -i -c "npm run accessibility-test -- -RB"
+          working_directory: accessibility
+      - persist_to_workspace:
+          root: accessibility
+          paths:
+            - accessibility-results
+      - store_artifacts:
+          path: accessibility/accessibility-results
+
+  compare_accessibility_results:
+    working_directory: ~/repo
+    docker:
+      - image: cimg/base:stable-20.04
+        auth:
+          username: dockstoretestuser
+          password: $DOCKERHUB_PASSWORD
+    steps:
+      - checkout
+      - run:
+          name: Install npm
+          command: |
+            wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
+            bash -i -c 'nvm install'
+      - get_workspace
+      - store_artifacts:
+          path: accessibility-results
+      - run:
+          name: Compare accessibility results
+          command: bash -i -c "npm run accessibility-test -- -A"
+
   local_smoke_tests:
     executor: integration_test_exec
     working_directory: ~/repo
@@ -247,6 +353,7 @@ jobs:
       - run:
           name: Run local smoke tests (no auth)
           command: bash -i -c 'npm run test-local-no-auth'
+          no_output_timeout: 30m
           environment:
             MOCHA_FILE: integration-tests/test-results/junit/test-local-no-auth-[hash].xml
           when: always
@@ -303,7 +410,7 @@ jobs:
     steps:
       - get_workspace
       - install_container_dependencies
-        # Override the webservice version in package.json to instead build against develop webservice
+      # Override the webservice version in package.json to instead build against develop webservice
       - run:
           name: set webservice to develop
           command: bash -i -c 'npm config set dockstore-ui2:webservice_version develop'
@@ -315,7 +422,7 @@ workflows:
   version: 2
   everything:
     jobs:
-#      # Add the tags filter to all jobs so they will run before upload_to_s3
+      # Add the tags filter to all jobs so they will run before upload_to_s3
       - audit:
         filters:
           tags:
@@ -352,6 +459,29 @@ workflows:
             - lint_license_unit_test_coverage
           context:
             - dockerhub
+      - integration_test_4:
+          filters:
+            tags:
+              only: /.*/
+          requires:
+            - lint_license_unit_test_coverage
+          context:
+            - dockerhub
+      - accessibility_test:
+          filters:
+            tags:
+              only: /.*/
+      - accessibility_test_base:
+          filters:
+            tags:
+              only: /.*/
+      - compare_accessibility_results:
+          filters:
+            tags:
+              only: /.*/
+          requires:
+            - accessibility_test_base
+            - accessibility_test
       - local_smoke_tests:
           filters:
             tags:
@@ -363,9 +493,8 @@ workflows:
       # Upload builds for tags and branches to s3.
       - upload_to_s3:
           requires:
-            - integration_test_1
-            - integration_test_2
-            - integration_test_3
+            - audit
+            - lint_license_unit_test_coverage
           filters:
             tags:
               only: /.*/
@@ -383,7 +512,35 @@ workflows:
           context:
             - dockerhub
 
-  nightly:
+  nightly_no_auth:
+    triggers:
+      - schedule:
+          cron: "0 10 * * *" # This is 3am PDT / 2am PST
+          filters:
+            branches:
+              only:
+                - develop
+    jobs:
+      - no_auth_smoke_tests:
+          name: "no_auth_smoke_tests_dev"
+          stack: "dev"
+          context:
+            - dockerhub
+            - oicr-slack
+      - no_auth_smoke_tests:
+          name: "no_auth_smoke_tests_staging"
+          stack: "staging"
+          context:
+            - dockerhub
+            - oicr-slack
+      - no_auth_smoke_tests:
+          name: "no_auth_smoke_tests_prod"
+          stack: "prod"
+          context:
+            - dockerhub
+            - oicr-slack
+
+  nightly_auth:
     triggers:
       - schedule:
           cron: "0 11 * * *" # This is 4am PDT / 3am PST
@@ -392,26 +549,24 @@ workflows:
               only:
                 - develop
     jobs:
-      - uptime_monitor_no_auth:
-          name: "uptime_monitor_no_auth-dev"
+      - auth_smoke_tests:
+          name: "auth_smoke_tests_dev"
           stack: "dev"
           context:
             - dockerhub
-      - uptime_monitor_no_auth:
-          name: "uptime_monitor_no_auth-staging"
+            - oicr-slack
+      - auth_smoke_tests:
+          name: "auth_smoke_tests_staging"
           stack: "staging"
           context:
             - dockerhub
-#      - uptime_monitor_no_auth:
-#          name: "uptime_monitor_no_auth-prod"
-#          stack: "prod"
-#          context:
-#            - dockerhub
-      # TODO: Add auth tests for staging/prod once https://ucsc-cgl.atlassian.net/browse/SEAB-2071 is done.
-      - uptime_monitor_auth:
-          stack: "dev"
+            - oicr-slack
+      - auth_smoke_tests:
+          name: "auth_smoke_tests_prod"
+          stack: "prod"
           context:
             - dockerhub
+            - oicr-slack
 
 commands:
   install_container_dependencies:
@@ -420,12 +575,56 @@ commands:
           name: Install java
           command: |
             sudo apt update -y
-            sudo apt install openjdk-11-jre -yq
+            sudo apt install openjdk-17-jdk -yq
       - run:
           name: Install npm
           command: |
             wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
             bash -i -c 'nvm install'
+  prepare_accessibility_test:
+    parameters:
+      db_dump:
+        type: string
+        default: "db_dump.sql"
+    steps:
+      - browser-tools/install-chrome
+      - browser-tools/install-chromedriver
+      - restore_cache:
+          key: dep-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
+      - run:
+          name: Install dependencies
+          command: bash -i -c 'npm ci'
+      - run:
+          name: Build
+          command: NODE_OPTIONS="--max-old-space-size=1610" bash -i -c 'npm run build.prod'
+          no_output_timeout: 30m
+      - run:
+          name: Install postgresql client
+          command: sudo apt install -y postgresql-client || true
+      - run:
+          name: Prepare webservice
+          command: bash -i -c 'DB_DUMP=<< parameters.db_dump >> npm run webservice'
+          environment:
+            PAGER: cat # prevent psql commands using less https://stackoverflow.com/questions/53055044/rails-rake-dbstructureload-times-out-on-circleci-2-0
+      - run:
+          name: Install nginx
+          command: sudo apt install -y nginx || true
+      - run:
+          name: Prepapre nginx config
+          command: sed "s%REPLACEME%`pwd`%" .circleci/nginx.conf.tmpl > .circleci/nginx.conf
+      - run:
+          name: Run nginx
+          command: sudo nginx -c `pwd`/.circleci/nginx.conf
+          background: true
+      - run:
+          name: Run webservice
+          command: java -jar dockstore-webservice.jar server test/web.yml 1>/dev/null
+          background: true
+      - run: mkdir -p integration-tests/test-results/junit
+      - run:
+          name: Wait for services
+          command: bash scripts/wait-for.sh
+
   get_workspace:
     steps:
       - attach_workspace:

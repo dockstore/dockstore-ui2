@@ -1,11 +1,14 @@
 import { inject, TestBed } from '@angular/core/testing';
 import { ToolDescriptor } from '../../shared/swagger';
 import { ToolTabService } from './tool-tab.service';
+import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('Service: ToolTab', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [ToolTabService],
+      imports: [HttpClientTestingModule],
+      providers: [ToolTabService, DescriptorLanguageService],
     });
   });
 

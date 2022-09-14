@@ -1,9 +1,12 @@
+@use '@angular/material' as mat;
+@import '/src/materialColorScheme.scss';
+
 .widget-section {
   width: 100%;
 }
 
 .twitter {
-  border: 1px solid #cfd1d7;
+  border: 1px solid mat.get-color-from-palette($dockstore-app-gray, 7);
 }
 
 mat-sidenav-container {
@@ -14,6 +17,7 @@ mat-sidenav-container {
 
 .left-side-column {
   background-color: #f6f8fa;
+  z-index: 1;
 }
 
 @media screen and (min-width: 992px) {
@@ -38,4 +42,9 @@ ul {
 }
 .news-container {
   border-top: 0.1rem solid #e0e1e2;
+}
+
+// Let sidebar shadow fall on top of left-side-column
+app-my-sidebar {
+  z-index: 2;
 }

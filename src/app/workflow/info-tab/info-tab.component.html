@@ -76,7 +76,7 @@
               >
                 <div class="form-group" fxFlex="noshrink" fxLayout fxLayoutAlign=" center">
                   <strong [matTooltip]="tooltip.workflowPath">Workflow Path: </strong>
-                  <span *ngIf="!workflowPathEditing" fxFlexOffset="4px"> {{ workflow.workflow_path }} </span>
+                  <span *ngIf="!workflowPathEditing" fxFlexOffset="4px" data-cy="workflowPathSpan"> {{ workflow.workflow_path }} </span>
                   <input
                     data-cy="workflowPathInput"
                     *ngIf="workflowPathEditing"
@@ -95,6 +95,7 @@
                 <div *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED" class="btn-group" role="group" aria-label="Basic example">
                   <button
                     *ngIf="!isPublic && workflowPathEditing"
+                    data-cy="cancelWorkflowPathButton"
                     type="button"
                     mat-raised-button
                     class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
@@ -104,6 +105,7 @@
                   </button>
                   <button
                     *ngIf="!isPublic"
+                    data-cy="editWorkflowPathButton"
                     type="button"
                     mat-raised-button
                     class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
@@ -245,7 +247,17 @@
               <div fxLayout="row" fxLayoutAlign="start center">
                 <span><strong matTooltip="Select which topic to display to the public">Topic Selection</strong>:&nbsp;</span>
                 <span>
-                  <mat-radio-group [(ngModel)]="workflow.topicSelection" aria-label="Select an option" (change)="radioChange($event)">
+                  <mat-radio-group
+                    [(ngModel)]="workflow.topicSelection"
+                    aria-label="Select an option"
+                    (change)="radioChange($event)"
+                    [disabled]="workflow?.mode === WorkflowType.ModeEnum.HOSTED"
+                    [matTooltip]="
+                      workflow?.mode === WorkflowType.ModeEnum.HOSTED
+                        ? 'Hosted workflow topics are always manually entered'
+                        : 'Select whether the automatically harvested topic from source control is used or a manually input one'
+                    "
+                  >
                     <mat-radio-button [value]="TopicSelectionEnum.AUTOMATIC">Automatic</mat-radio-button>
                     <mat-radio-button class="ml-3" [value]="TopicSelectionEnum.MANUAL">Manual</mat-radio-button>
                   </mat-radio-group>
@@ -319,10 +331,12 @@
             <strong matTooltip="Currently disabled for Hosted Workflows and Nextflow Workflows">Checker Workflow</strong>: n/a
           </div>
           <li *ngIf="!isPublic">
-            <strong [matTooltip]="modeTooltipContent">Mode</strong>: {{ 'mode' | mapFriendlyValue: workflow?.mode }}
+            <div fxFlex="noshrink" fxLayoutAlign="start center">
+              <strong [matTooltip]="modeTooltipContent">Mode</strong>: {{ 'mode' | mapFriendlyValue: workflow?.mode }}
+            </div>
             <button
               mat-raised-button
-              class="push-right small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+              class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
               type="button"
               *ngIf="workflow?.mode === WorkflowType.ModeEnum.FULL && !workflow?.is_published && !workflow?.isChecker"
               (click)="restubWorkflow()"
@@ -377,15 +391,16 @@
             Export as ZIP
           </button>
           <a [href]="downloadZipLink" *ngIf="workflow?.is_published" mat-button color="accent" class="private-btn small-btn-structure">
-            <mat-icon class="mat-icon-sm">file_download</mat-icon>Export as ZIP
+            <mat-icon class="mat-icon-sm">file_download</mat-icon>
+            Export as ZIP
           </a>
         </span>
       </div>
       <mat-divider [inset]="true" class="mt-3"></mat-divider>
       <div *ngIf="selectedVersion?.frozen && hasHttpImports" class="pt-3">
-        <mat-card class="alert alert-warning" role="alert">
-          <mat-icon>warning</mat-icon> This version is snapshotted but contains HTTP imports. HTTP imports may change and execution results
-          may vary.
+        <mat-card class="alert alert-warning mat-elevation-z" role="alert">
+          <mat-icon class="alert-warning-icon">warning</mat-icon> This version is snapshotted but contains HTTP imports. HTTP imports may
+          change and execution results may vary.
         </mat-card>
       </div>
       <table mat-table [dataSource]="this.authors" class="w-100 mb-5" aria-describedby="Authors">

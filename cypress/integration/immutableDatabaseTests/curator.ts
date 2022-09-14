@@ -32,9 +32,7 @@ describe('Curator UI', () => {
   describe('Profile', () => {
     it('Curator status indicated on profile page', () => {
       cy.get('#dropdown-accounts').click();
-      cy.get('#mat-tab-label-0-1').click();
       cy.get('#account-is-curator').should('exist');
-      cy.get('#account-is-curator > .mat-icon').contains('edit');
     });
   });
 });

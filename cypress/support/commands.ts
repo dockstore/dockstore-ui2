@@ -19,7 +19,11 @@
 const psqlInvocation: string = 'PASSWORD=dockstore psql';
 
 export function goToTab(tabName: string): void {
+  // cypress tests run asynchronously, so if the DOM changes and an element-of-interest becomes detached while we're manipulating it, the test will fail.
+  // our current (admittedly primitive) go-to solution is to wait (sleep) for long enough that the DOM "settles", thus avoiding the "detached element" bug.
+  cy.wait(500);
   cy.contains('.mat-tab-label', tabName).should('be.visible').click();
+  cy.wait(500);
 }
 
 export function assertVisibleTab(tabName: string): void {
@@ -59,7 +63,7 @@ export function resetDB() {
     cy.exec('java -jar dockstore-webservice.jar db drop-all --confirm-delete-everything test/web.yml');
     cy.exec(psqlInvocation + ' -h localhost webservice_test -U dockstore < test/db_dump.sql');
     cy.exec(
-      'java -jar dockstore-webservice.jar db migrate -i 1.5.0,1.6.0,1.7.0,1.8.0,1.9.0,1.10.0,alter_test_user_1.10.2,1.11.0,1.12.0 test/web.yml'
+      'java -jar dockstore-webservice.jar db migrate -i 1.5.0,1.6.0,1.7.0,1.8.0,1.9.0,1.10.0,alter_test_user_1.10.2,1.11.0,1.12.0,1.13.0 test/web.yml'
     );
   });
 }
@@ -95,7 +99,7 @@ export function goToUnexpandedSidebarEntry(organization: string, repo: RegExp | 
   // All expansion panels are shown before any of them are expanded (after some logic of choosing which to expanded).
   // If the user expands a panel before the above happens, their choice gets overwritten
   cy.get('.mat-expanded');
-  cy.contains(organization).click();
+  cy.contains(organization).parent().click();
   // Can't seem to select the mat-expansion-panel for some reason without triple parent
   cy.contains(organization).parent().parent().parent().contains('div .no-wrap', repo).should('be.visible').click();
 }

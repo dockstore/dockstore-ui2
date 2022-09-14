@@ -3,8 +3,8 @@
     <mat-card class="alert alert-info mx-1" role="alert">
       <mat-icon>info</mat-icon> No events found. Star entries or organizations to see events for them. Read
       <a [href]="starringDocUrl" target="_blank" rel="noopener noreferrer">Starring Tools and Workflows</a>
-      to learn how to star entries.</mat-card
-    >
+      to learn how to star entries.
+    </mat-card>
   </div>
   <!-- Possible changes: Toggle highlighting of verbs and nouns. Toggle dates into a separate column to the left -->
   <mat-card *ngIf="(events$ | async)?.length > 0">
@@ -17,10 +17,10 @@
             <a
               [routerLink]="
                 event?.apptool
-                  ? '/tools/' + event?.apptool.full_workflow_path
+                  ? '/tools/' + event?.apptool?.full_workflow_path
                   : event?.tool
-                  ? '/tools/' + event?.tool.tool_path
-                  : '/workflows/' + event?.workflow.full_workflow_path
+                  ? '/tools/' + event?.tool?.tool_path
+                  : '/workflows/' + event?.workflow?.full_workflow_path
               "
               >{{
                 (event?.tool | entryToDisplayName) || (event?.workflow | entryToDisplayName) || (event?.apptool | entryToDisplayName)
@@ -44,10 +44,10 @@
             <a
               [routerLink]="
                 event?.apptool
-                  ? '/tools/' + event?.apptool.full_workflow_path
+                  ? '/tools/' + event?.apptool?.full_workflow_path
                   : event?.tool
-                  ? '/tools/' + event?.tool.tool_path
-                  : '/workflows/' + event?.workflow.full_workflow_path
+                  ? '/tools/' + event?.tool?.tool_path
+                  : '/workflows/' + event?.workflow?.full_workflow_path
               "
               >{{
                 (event?.tool | entryToDisplayName) || (event?.workflow | entryToDisplayName) || (event?.apptool | entryToDisplayName)
@@ -67,10 +67,10 @@
             <a
               [routerLink]="
                 event?.apptool
-                  ? '/tools/' + event?.apptool.full_workflow_path
+                  ? '/tools/' + event?.apptool?.full_workflow_path
                   : event?.tool
-                  ? '/tools/' + event?.tool.tool_path
-                  : '/workflows/' + event?.workflow.full_workflow_path
+                  ? '/tools/' + event?.tool?.tool_path
+                  : '/workflows/' + event?.workflow?.full_workflow_path
               "
               >{{
                 (event?.tool | entryToDisplayName) || (event?.workflow | entryToDisplayName) || (event?.apptool | entryToDisplayName)
@@ -84,10 +84,10 @@
             <a
               [routerLink]="
                 event?.apptool
-                  ? '/tools/' + event?.apptool.full_workflow_path
+                  ? '/tools/' + event?.apptool?.full_workflow_path
                   : event?.tool
-                  ? '/tools/' + event?.tool.tool_path
-                  : '/workflows/' + event?.workflow.full_workflow_path
+                  ? '/tools/' + event?.tool?.tool_path
+                  : '/workflows/' + event?.workflow?.full_workflow_path
               "
               >{{
                 (event?.tool | entryToDisplayName) || (event?.workflow | entryToDisplayName) || (event?.apptool | entryToDisplayName)

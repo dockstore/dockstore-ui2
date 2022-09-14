@@ -12,6 +12,8 @@ import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { sampleWdlWorkflow2, sampleWorkflowVersion } from '../../test/mocked-objects';
 import { CloudInstancesStubService, UsersStubService, WorkflowsStubService } from '../../test/service-stubs';
 import { LaunchThirdPartyComponent } from './launch-third-party.component';
+import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('LaunchThirdPartyComponent', () => {
   let component: LaunchThirdPartyComponent;
@@ -21,7 +23,7 @@ describe('LaunchThirdPartyComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [LaunchThirdPartyComponent],
-        imports: [CustomMaterialModule, HttpClientModule],
+        imports: [CustomMaterialModule, HttpClientModule, HttpClientTestingModule],
         providers: [
           GA4GHFilesService,
           GA4GHV20Service,
@@ -29,6 +31,7 @@ describe('LaunchThirdPartyComponent', () => {
           { provide: WorkflowsService, useClass: WorkflowsStubService },
           { provide: CloudInstancesService, useClass: CloudInstancesStubService },
           { provide: UsersService, useClass: UsersStubService },
+          { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
         ],
         schemas: [CUSTOM_ELEMENTS_SCHEMA],
       }).compileComponents();

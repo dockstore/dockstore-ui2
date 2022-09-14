@@ -11,6 +11,7 @@ export const extendedWDL: ExtendedDescriptorLanguageBean = {
   descriptorPathPlaceholder: 'e.g. /Dockstore.wdl',
   toolDescriptorEnum: ToolDescriptor.TypeEnum.WDL,
   workflowDescriptorEnum: Workflow.DescriptorTypeEnum.WDL,
+  languageDocumentationURL: 'https://openwdl.org/',
   plainTRS: 'PLAIN-WDL',
   descriptorFileTypes: [SourceFile.TypeEnum.DOCKSTOREWDL],
   toolTab: {

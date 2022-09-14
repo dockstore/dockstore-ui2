@@ -125,11 +125,12 @@ export class MultiCloudLaunchComponent extends Base implements OnInit {
       localStorage.setItem('useCustomLaunch', 'false');
     }
 
-    // Create and save a user's custom launch entry to the db
-    if (this.presetLaunchWithOption === 'other' && this.user) {
+    // Construct custom URL
+    if (this.presetLaunchWithOption === 'other') {
       let url: URL;
       try {
         this.alertService.start('Constructing URL');
+        this.launchWith.url = this.constructUrlWithHttpsProtocol(this.launchWith.url);
         url = new URL(this.launchWith.url);
         this.alertService.simpleSuccess();
       } catch (error) {
@@ -141,30 +142,55 @@ export class MultiCloudLaunchComponent extends Base implements OnInit {
         );
       }
 
-      const newCustomInstance: CloudInstance = {
-        url: this.launchWith.url,
-        partner: this.languagePartner,
-        supportsFileImports: null,
-        supportsHttpImports: null,
-        supportedLanguages: new Array<Language>(),
-        displayName: url.hostname,
-      };
+      // Create and save a user's custom launch entry to the db if URL is valid
+      if (url && this.user) {
+        const newCustomInstance: CloudInstance = {
+          url: this.launchWith.url,
+          partner: this.languagePartner,
+          supportsFileImports: null,
+          supportsHttpImports: null,
+          supportedLanguages: new Array<Language>(),
+          displayName: url.hostname,
+        };
 
-      this.usersService.postUserCloudInstance(this.user.id, newCustomInstance).subscribe(
-        (usersCloudInstances: Array<CloudInstance>) => {
-          this.usersCloudInstances = usersCloudInstances;
-        },
-        (error: HttpErrorResponse) => {
-          // It's okay for the save to the db to fail for now. At this step, we only care about what URL's users
-          // are trying to use. Probably most of these failures will be the for violating the uniqueness constraint
-          console.log(error.message);
-        }
-      );
+        this.usersService.postUserCloudInstance(this.user.id, newCustomInstance).subscribe(
+          (usersCloudInstances: Array<CloudInstance>) => {
+            this.usersCloudInstances = usersCloudInstances;
+          },
+          (error: HttpErrorResponse) => {
+            // It's okay for the save to the db to fail for now. At this step, we only care about what URL's users
+            // are trying to use. Probably most of these failures will be the for violating the uniqueness constraint
+            console.log(error.message);
+          }
+        );
+      } else if (!url) {
+        // Remove link to prevent navigating to invalid URL
+        document.getElementById('multiCloudLaunchButton').removeAttribute('href');
+      }
     }
   }
 
   private updateLaunchWithUrl(): void {
     this.launchWith.url = this.presetLaunchWithOption === 'other' ? this.customLaunchWithOption : this.presetLaunchWithOption;
+  }
+
+  constructUrlWithHttpsProtocol(launchWithUrl: string): string {
+    let url;
+    try {
+      url = new URL(launchWithUrl);
+    } catch (error) {
+      // URL has no protocol
+      if (!launchWithUrl.toLowerCase().startsWith('https://')) {
+        return 'https://' + launchWithUrl;
+      }
+    }
+
+    if (url.protocol === 'https:') {
+      return launchWithUrl;
+    } else {
+      // URL has a protocol that is not HTTPS
+      throw new Error('URL ' + launchWithUrl + ' does not start with https://');
+    }
   }
 
   closeMatMenu() {

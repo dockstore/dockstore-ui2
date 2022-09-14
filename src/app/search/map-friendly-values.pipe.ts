@@ -16,18 +16,13 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 import { DockstoreTool } from 'app/shared/openapi';
-import { SourceFile, ToolFile, Workflow } from 'app/shared/swagger';
+import { ToolFile, Workflow } from 'app/shared/swagger';
 
 @Pipe({
   name: 'mapFriendlyValue',
 })
 export class MapFriendlyValuesPipe implements PipeTransform {
-  readonly shortFriendlyCWLName = DescriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(Workflow.DescriptorTypeEnum.CWL);
-  readonly shortFriendlyWDLName = DescriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(Workflow.DescriptorTypeEnum.WDL);
-  readonly shortFriendlyNFLName = DescriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(Workflow.DescriptorTypeEnum.NFL);
-  readonly shortFriendlyGalaxyName = DescriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(
-    Workflow.DescriptorTypeEnum.Gxformat2
-  );
+  constructor(private descriptorLanguageService: DescriptorLanguageService) {}
 
   // For instances in which we know it is nullable and don't need an console.error
   readonly nullableKeys = ['reference'];
@@ -73,28 +68,6 @@ export class MapFriendlyValuesPipe implements PipeTransform {
       ]),
     ],
     [
-      'descriptorType',
-      new Map([
-        ['cwl', this.shortFriendlyCWLName],
-        ['wdl', this.shortFriendlyWDLName],
-        ['nfl', this.shortFriendlyNFLName],
-        ['NFL', this.shortFriendlyNFLName],
-        [Workflow.DescriptorTypeEnum.Gxformat2, this.shortFriendlyGalaxyName],
-      ]),
-    ],
-    [
-      'descriptor_type',
-      new Map([
-        ['cwl', this.shortFriendlyCWLName],
-        ['CWL', this.shortFriendlyCWLName],
-        ['wdl', this.shortFriendlyWDLName],
-        ['WDL', this.shortFriendlyWDLName],
-        ['nfl', this.shortFriendlyNFLName],
-        ['NFL', this.shortFriendlyNFLName],
-        [Workflow.DescriptorTypeEnum.Gxformat2, this.shortFriendlyGalaxyName],
-      ]),
-    ],
-    [
       'registry',
       new Map([
         ['QUAY_IO', 'Quay.io'],
@@ -113,14 +86,6 @@ export class MapFriendlyValuesPipe implements PipeTransform {
         ['DOCKSTORE', 'Dockstore'],
       ]),
     ],
-    [
-      'descriptor_tooltip',
-      new Map([
-        ['CWL', 'Common Workflow Language'],
-        ['WDL', 'Workflow Description Language'],
-        ['NFL', 'Nextflow'],
-      ]),
-    ],
     ['author', new Map([['', 'n/a']])],
     [
       'ToolFile.FileTypeEnum',
@@ -130,25 +95,6 @@ export class MapFriendlyValuesPipe implements PipeTransform {
         [ToolFile.FileTypeEnum.TESTFILE, 'Test Parameter Files'],
         [ToolFile.FileTypeEnum.CONTAINERFILE, 'Dockerfile'],
         [ToolFile.FileTypeEnum.OTHER, 'Files'],
-      ]),
-    ],
-    [
-      'SourceFile.TypeEnum',
-      new Map([
-        [SourceFile.TypeEnum.DOCKERFILE, 'Dockerfile'],
-        [SourceFile.TypeEnum.DOCKSTORECWL, 'Descriptor Files'],
-        [SourceFile.TypeEnum.DOCKSTOREWDL, 'Descriptor Files'],
-        [SourceFile.TypeEnum.NEXTFLOW, 'Descriptor Files'],
-        [SourceFile.TypeEnum.NEXTFLOWCONFIG, 'Descriptor Files'],
-        [SourceFile.TypeEnum.DOCKSTOREGXFORMAT2, 'Descriptor Files'],
-        [SourceFile.TypeEnum.CWLTESTJSON, 'Test Parameter Files'],
-        [SourceFile.TypeEnum.WDLTESTJSON, 'Test Parameter Files'],
-        [SourceFile.TypeEnum.NEXTFLOWTESTPARAMS, 'Test Parameter Files'],
-        [SourceFile.TypeEnum.GXFORMAT2TESTFILE, 'Test Parameter Files'],
-        [SourceFile.TypeEnum.DOCKSTORESERVICETESTJSON, 'Test Parameter Files'],
-        [SourceFile.TypeEnum.DOCKSTORESERVICEYML, 'Configuration'],
-        [SourceFile.TypeEnum.DOCKSTOREYML, 'Configuration'],
-        [SourceFile.TypeEnum.DOCKSTORESERVICEOTHER, 'Service Files'],
       ]),
     ],
     [
@@ -186,11 +132,35 @@ export class MapFriendlyValuesPipe implements PipeTransform {
     }
     // Handle number
     const subBucketString: string = subBucket.toString();
-    // Handle string
-    if (this.friendlyValueNames.has(key) && this.friendlyValueNames.get(key).get(subBucketString)) {
-      return this.friendlyValueNames.get(key).get(subBucketString);
-    } else {
-      return subBucketString;
+
+    switch (key) {
+      case 'descriptorType':
+      case 'descriptor_type':
+        const shortFriendlyName =
+          this.descriptorLanguageService.descriptorLanguageBeanValueToExtendedDescriptorLanguageBean(subBucketString).shortFriendlyName;
+        return shortFriendlyName ?? subBucketString;
+      case 'descriptor_tooltip':
+        const friendlyName =
+          this.descriptorLanguageService.descriptorLanguageBeanValueToExtendedDescriptorLanguageBean(subBucketString).friendlyName;
+        return friendlyName ?? subBucketString;
+      case 'SourceFile.TypeEnum': {
+        // Get the specific ExtendedDescriptorLanguageBean using subBucketString, which is the SourceFile.TypeEnum
+        // Search through the file tabs
+        // if the file types list for the tab contains the source file type (subBucketString)
+        // then return the tabName, which is sort of a description of the file,
+        // e.g. whether it is a descriptor or test file
+        const fileTabsSchematic =
+          this.descriptorLanguageService.sourceFileTypeStringToExtendedDescriptorLanguageBean(subBucketString).fileTabs;
+        const fileTypes = fileTabsSchematic.find((fileTab) => fileTab.fileTypes.find((fileType) => fileType === subBucketString));
+        return fileTypes?.tabName ?? subBucketString;
+      }
+      default:
+        // Handle string
+        if (this.friendlyValueNames.has(key) && this.friendlyValueNames.get(key).get(subBucketString)) {
+          return this.friendlyValueNames.get(key).get(subBucketString);
+        } else {
+          return subBucketString;
+        }
     }
   }
 }

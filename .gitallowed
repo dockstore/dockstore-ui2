@@ -34,3 +34,5 @@ src/app/workflow/dag/cwl-viewer/cwl-viewer.service.spec.ts:.*9283b35ae651477f5e7
 
 # src/app/workflow/launch-third-party/launch-third-party.component.ts
 src/app/workflow/launch-third-party/launch-third-party.component.ts:.*https://github.com/dockstore/dockstore/blob/0a734abe9dbe34eed12404d4697ebc43b71da8d8*
+
+.circleci/config.yml:.*https://raw.githubusercontent.com/dockstore/dockstore-ui2/.*

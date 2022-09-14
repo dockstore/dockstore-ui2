@@ -8,15 +8,15 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgxJsonLdModule } from '@ngx-lite/json-ld';
 import { HomeLoggedInComponent } from 'app/home-page/home-logged-in/home-logged-in.component';
 import { HomeComponent } from 'app/home-page/home-logged-out/home.component';
-import { EntryToDisplayNamePipe } from 'app/shared/entry-to-display-name.pipe';
 import { ListContainersModule } from 'app/shared/modules/list-containers.module';
 import { ListWorkflowsModule } from 'app/shared/modules/list-workflows.module';
 import { CustomMaterialModule } from 'app/shared/modules/material.module';
 import { MarkdownModule } from 'ngx-markdown';
+import { RefreshWizardModule } from '../container/refresh-wizard.module';
 import { RefreshAlertModule } from '../shared/alert/alert.module';
 import { CategoryButtonModule } from '../categories/button/category-button.module';
 import { HomePageComponent } from './home-page.component';
-import { RecentEventsComponent } from './recent-events/recent-events.component';
+import { RecentEventsModule } from './recent-events/recent-events.module';
 import { EntriesComponent } from './widget/entries/entries.component';
 import { FeaturedContentComponent } from './widget/featured-content/featured-content.component';
 import { FeaturedNewsComponent } from './widget/featured-content/featured-news.component';
@@ -24,6 +24,21 @@ import { GettingStartedComponent } from './widget/getting-started/getting-starte
 import { NewsUpdatesComponent } from './widget/news-updates/news-updates.component';
 import { OrganizationsComponent } from './widget/organizations/organizations.component';
 import { RequestsComponent } from './widget/requests/requests.component';
+import { MySidebarModule } from '../shared/modules/my-sidebar.module';
+import { EntryBoxComponent } from './widget/entry-box/entry-box.component';
+import { MytoolsService } from 'app/mytools/mytools.service';
+import { MyWorkflowsService } from 'app/myworkflows/myworkflows.service';
+import { MyServicesService } from 'app/myworkflows/my-services.service';
+import { MyBioWorkflowsService } from 'app/myworkflows/my-bio-workflows.service';
+import { MyEntriesStateService } from 'app/shared/state/my-entries.service';
+import { MyEntriesStore } from 'app/shared/state/my-entries.store';
+import { MyEntriesQuery } from 'app/shared/state/my-entries.query';
+import { RegisterWorkflowModalService } from 'app/workflow/register-workflow-modal/register-workflow-modal.service';
+import { RegisterToolService } from 'app/container/register-tool/register-tool.service';
+import { RegisterToolComponent } from 'app/container/register-tool/register-tool.component';
+import { NewDashboardComponent } from './new-dashboard/new-dashboard.component';
+import { OrganizationBoxComponent } from './widget/organization-box/organization-box.component';
+import { StarredBoxComponent } from './widget/starred-box/starred-box.component';
 
 @NgModule({
   imports: [
@@ -40,12 +55,14 @@ import { RequestsComponent } from './widget/requests/requests.component';
     MarkdownModule,
     FontAwesomeModule,
     CategoryButtonModule,
+    MySidebarModule,
+    RecentEventsModule,
+    RefreshWizardModule,
   ],
   declarations: [
     HomePageComponent,
     HomeComponent,
     HomeLoggedInComponent,
-    RecentEventsComponent,
     RequestsComponent,
     EntriesComponent,
     OrganizationsComponent,
@@ -53,7 +70,22 @@ import { RequestsComponent } from './widget/requests/requests.component';
     FeaturedNewsComponent,
     NewsUpdatesComponent,
     GettingStartedComponent,
-    EntryToDisplayNamePipe,
+    EntryBoxComponent,
+    RegisterToolComponent,
+    NewDashboardComponent,
+    OrganizationBoxComponent,
+    StarredBoxComponent,
+  ],
+  providers: [
+    MytoolsService,
+    MyWorkflowsService,
+    MyServicesService,
+    MyBioWorkflowsService,
+    MyEntriesStateService,
+    MyEntriesStore,
+    MyEntriesQuery,
+    RegisterToolService,
+    RegisterWorkflowModalService,
   ],
   exports: [NgxJsonLdModule],
 })

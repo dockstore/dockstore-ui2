@@ -4,6 +4,7 @@ import { extendedService } from 'app/descriptor-languages/Service';
 import { extendedWDL } from 'app/descriptor-languages/WDL';
 import { DescriptorLanguageBean, SourceFile, ToolDescriptor, Workflow } from 'app/shared/swagger';
 import { extendedCWL } from '../descriptor-languages/CWL';
+import { extendedSMK } from '../descriptor-languages/Snakemake';
 
 /**
  * The idea is that this file serves as a collection of language plugins.
@@ -23,6 +24,7 @@ export interface ExtendedDescriptorLanguageBean extends DescriptorLanguageBean {
   descriptorPathPlaceholder: string;
   toolDescriptorEnum: ToolDescriptor.TypeEnum;
   workflowDescriptorEnum: Workflow.DescriptorTypeEnum;
+  languageDocumentationURL: string;
   plainTRS: string;
   descriptorFileTypes: SourceFile.TypeEnum[];
   toolTab: {
@@ -46,6 +48,7 @@ export const extendedUnknownDescriptor: ExtendedDescriptorLanguageBean = {
   descriptorPathPlaceholder: '',
   toolDescriptorEnum: null,
   workflowDescriptorEnum: null,
+  languageDocumentationURL: null,
   plainTRS: null,
   descriptorFileTypes: [],
   toolTab: {
@@ -59,6 +62,7 @@ export const extendedUnknownDescriptor: ExtendedDescriptorLanguageBean = {
 
 // To add a language, create a file in the descriptor-languages directory that is an ExtendedDescriptorLanguageBean
 export const extendedDescriptorLanguages: ExtendedDescriptorLanguageBean[] = [
+  extendedSMK,
   extendedCWL,
   extendedWDL,
   extendedNFL,
@@ -66,4 +70,4 @@ export const extendedDescriptorLanguages: ExtendedDescriptorLanguageBean[] = [
   extendedGalaxy,
 ];
 
-export type DescriptorLanguageEnum = 'CWL' | 'WDL' | 'GXFORMAT2' | 'SWL' | 'NEXTFLOW' | 'SERVICE';
+export type DescriptorLanguageEnum = 'SMK' | 'CWL' | 'WDL' | 'GXFORMAT2' | 'SWL' | 'NEXTFLOW' | 'SERVICE';

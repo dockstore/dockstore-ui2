@@ -14,7 +14,7 @@
   ~    limitations under the License.
   -->
 <mat-toolbar color="primary">
-  <mat-toolbar-row class="toolbar-holder hidden-xs">
+  <mat-toolbar-row class="toolbar-holder hidden-sm hidden-xs">
     <div [ngClass]="'container navbar-fluid'">
       <span class="flex-toolbar">
         <a id="home-nav-button" (click)="resetPageNumber()" routerLink="" data-cy="home-nav-button">
@@ -41,6 +41,16 @@
           <img class="site-icons-small hidden-sm" src="../assets/svg/main-nav/icons-navigation-forum.svg" alt="stacked pages" /> Forum
         </a>
         <span class="spacer"></span>
+        <a
+          *ngIf="isLoggedIn"
+          mat-button
+          class="icon"
+          (click)="resetPageNumber()"
+          [routerLink]="['/dashboard']"
+          routerLinkActive="icon-active"
+        >
+          <img src="../assets/svg/my-nav/dashboard.svg" alt="dashboard" /> My Dockstore
+        </a>
         <div fxLayoutGap="1rem" *ngIf="!isLoggedIn">
           <a routerLink="/login">
             <button mat-raised-button color="accent">Login</button>
@@ -106,7 +116,7 @@
       </span>
     </div>
   </mat-toolbar-row>
-  <mat-toolbar-row class="visible-xs toolbar-holder toolbar-holder-sm clearfix">
+  <mat-toolbar-row class="visible-sm visible-xs toolbar-holder toolbar-holder-sm clearfix">
     <div class="container-fluid navbar-holder">
       <div fxLayout="row" fxLayoutAlign="space-between center">
         <a fxFlex id="home-nav-button-mobile" (click)="resetPageNumber()" routerLink="">
@@ -117,7 +127,7 @@
       </div>
     </div>
   </mat-toolbar-row>
-  <mat-toolbar-row class="visible-xs toolbar-holder text-center toolbar-holder-sm">
+  <mat-toolbar-row class="visible-sm visible-xs toolbar-holder text-center toolbar-holder-sm">
     <div class="container-fluid navbar-holder">
       <a mat-button class="icon" routerLink="/search">Search</a>
       <a mat-button class="icon" routerLink="/organizations">Organizations</a>

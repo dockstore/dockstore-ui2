@@ -25,18 +25,13 @@ import { EntryType } from '../enum/entry-type';
 import { SessionQuery } from '../session/session.query';
 import { SourceFile, ToolDescriptor } from '../swagger';
 import { Workflow } from '../swagger/model/workflow';
-import { validationDescriptorPatterns } from '../validationMessages.model';
 import { MetadataService } from './../swagger/api/metadata.service';
 import { DescriptorLanguageBean } from './../swagger/model/descriptorLanguageBean';
 
 @Injectable()
 export class DescriptorLanguageService {
   // Known value for the DescriptorLanguageBeans
-  readonly knownCWLValue = 'CWL';
-  readonly knownWDLValue = 'WDL';
-  readonly knownNFLValue = 'NFL';
   readonly knownServiceValue = 'service';
-  readonly knownGalaxyValue = 'gxformat2';
 
   public descriptorLanguages$: Observable<Array<Workflow.DescriptorTypeEnum>>;
   public descriptorLanguagesInnerHTML$: Observable<string>;
@@ -59,28 +54,93 @@ export class DescriptorLanguageService {
     const combined$ = combineLatest([this.descriptorLanguages$, this.sessionQuery.entryType$]);
     this.filteredDescriptorLanguages$ = combined$.pipe(map((combined) => this.filterLanguages(combined[0], combined[1])));
   }
-  static toolDescriptorTypeEnumToDefaultDescriptorPath(descriptorType: ToolDescriptor.TypeEnum | null): string | null {
-    return DescriptorLanguageService.toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorType).defaultDescriptorPath;
+
+  testParameterTypeEnumToToolDescriptorEnum(sourceFileType: SourceFile.TypeEnum | null): ToolDescriptor.TypeEnum | null {
+    return this.testSourceFileTypeEnumToExtendedDescriptorLanguageBean(sourceFileType).toolDescriptorEnum;
   }
 
-  static toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(
-    descriptorType: ToolDescriptor.TypeEnum | null
-  ): ExtendedDescriptorLanguageBean {
+  testSourceFileTypeEnumToExtendedDescriptorLanguageBean(sourceFileType: SourceFile.TypeEnum | null): ExtendedDescriptorLanguageBean {
+    const foundExtendedDescriptorLanguageFromValue = extendedDescriptorLanguages.find(
+      (extendedDescriptorLanguage) => extendedDescriptorLanguage.testParameterFileType === sourceFileType
+    );
+    return foundExtendedDescriptorLanguageFromValue || extendedUnknownDescriptor;
+  }
+
+  sourceFileTypeStringToExtendedDescriptorLanguageBean(sourceFileType: string | null): ExtendedDescriptorLanguageBean {
+    let foundExtendedDescriptorLanguageFromValue = extendedDescriptorLanguages.find((extendedDescriptorLanguage) =>
+      extendedDescriptorLanguage.descriptorFileTypes.find((f) => f === sourceFileType)
+    );
+    // Check if the source file type matches a test file type
+    if (!foundExtendedDescriptorLanguageFromValue) {
+      foundExtendedDescriptorLanguageFromValue = extendedDescriptorLanguages.find(
+        (extendedDescriptorLanguage) => extendedDescriptorLanguage.testParameterFileType === sourceFileType
+      );
+    }
+
+    return foundExtendedDescriptorLanguageFromValue || extendedUnknownDescriptor;
+  }
+
+  descriptorLanguageBeanValueToExtendedDescriptorLanguageBean(descriptorLanguageBeanValue: string | null): ExtendedDescriptorLanguageBean {
+    const foundExtendedDescriptorLanguageFromValue = extendedDescriptorLanguages.find(
+      (extendedDescriptorLanguage) => extendedDescriptorLanguage.value.toUpperCase() === descriptorLanguageBeanValue.toUpperCase()
+    );
+    return foundExtendedDescriptorLanguageFromValue || extendedUnknownDescriptor;
+  }
+
+  /**
+   * This gets the list of descriptor languages tool Types
+   *
+   * @returns {Array<string>}
+   */
+  getDescriptorLanguagesToolTypes(): Array<string> {
+    const tooTypesArray: Array<string> = [];
+    extendedDescriptorLanguages.forEach((descriptorLanguageBean) => {
+      const extendedDescriptorLanguageBean = this.descriptorLanguageBeanValueToExtendedDescriptorLanguageBean(descriptorLanguageBean.value);
+      // Don't include Services at this time
+      if (descriptorLanguageBean.toolDescriptorEnum !== ToolDescriptor.TypeEnum.SERVICE) {
+        tooTypesArray.push(extendedDescriptorLanguageBean.toolDescriptorEnum);
+      }
+    });
+    return tooTypesArray;
+  }
+
+  /**
+   * This gets the list of default descriptor paths
+   *
+   * @returns {Array<string>}
+   */
+  getDescriptorLanguagesDefaultDescriptorPaths(): Array<string> {
+    const descriptorPathArray: Array<string> = [];
+    extendedDescriptorLanguages.forEach((descriptorLanguageBean) => {
+      const extendedDescriptorLanguageBean = this.descriptorLanguageBeanValueToExtendedDescriptorLanguageBean(descriptorLanguageBean.value);
+      // Don't include Services at this time
+      if (descriptorLanguageBean.toolDescriptorEnum !== ToolDescriptor.TypeEnum.SERVICE) {
+        descriptorPathArray.push(extendedDescriptorLanguageBean.defaultDescriptorPath);
+      }
+    });
+    return descriptorPathArray;
+  }
+
+  toolDescriptorTypeEnumToDefaultDescriptorPath(descriptorType: ToolDescriptor.TypeEnum | null): string | null {
+    return this.toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorType).defaultDescriptorPath;
+  }
+
+  toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorType: ToolDescriptor.TypeEnum | null): ExtendedDescriptorLanguageBean {
     const foundExtendedDescriptorLanguageFromValue = extendedDescriptorLanguages.find(
       (extendedDescriptorLanguage) => extendedDescriptorLanguage.toolDescriptorEnum === descriptorType
     );
     return foundExtendedDescriptorLanguageFromValue || extendedUnknownDescriptor;
   }
 
-  static toolDescriptorTypeEnumTotestParameterFileType(descriptorType: ToolDescriptor.TypeEnum): SourceFile.TypeEnum | null {
+  toolDescriptorTypeEnumTotestParameterFileType(descriptorType: ToolDescriptor.TypeEnum): SourceFile.TypeEnum | null {
     return this.toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorType).testParameterFileType;
   }
 
-  static workflowDescriptorTypeEnumToShortFriendlyName(workflowDescriptorTypeEnum: Workflow.DescriptorTypeEnum | null): string | null {
+  workflowDescriptorTypeEnumToShortFriendlyName(workflowDescriptorTypeEnum: Workflow.DescriptorTypeEnum | null): string | null {
     return this.workflowDescriptorTypeEnumToExtendedDescriptorLanguageBean(workflowDescriptorTypeEnum).shortFriendlyName;
   }
 
-  static workflowDescriptorTypeEnumToExtendedDescriptorLanguageBean(
+  workflowDescriptorTypeEnumToExtendedDescriptorLanguageBean(
     descriptorType: Workflow.DescriptorTypeEnum | null
   ): ExtendedDescriptorLanguageBean {
     const foundExtendedDescriptorLanguageFromValue = extendedDescriptorLanguages.find(
@@ -96,34 +156,6 @@ export class DescriptorLanguageService {
   }
 
   /**
-   * Registering checker workflow has another weird set of accepted string values for descriptor type.
-   * It doesn't use ToolDescriptor.TypeEnum, Workflow.DescriptorTypeEnum, or a string.
-   * It only accepts 'cwl' or 'wdl' (not even capitals)
-   * This function converts ToolDesriptor.TypeEnum to it
-   * @param {ToolDescriptor.TypeEnum} descriptorType Descriptor type from ToolDescriptor.TypeEnum
-   * @returns {('cwl' | 'wdl' | null)} The weird values accepted by register checker workflow endpoint
-   * @memberof DescriptorLanguageService
-   */
-  toolDescriptorTypeEnumToWeirdCheckerRegisterString(descriptorType: ToolDescriptor.TypeEnum): 'cwl' | 'wdl' | null {
-    let descriptorTypeNoNFL: 'cwl' | 'wdl';
-    switch (descriptorType) {
-      case ToolDescriptor.TypeEnum.CWL: {
-        descriptorTypeNoNFL = 'cwl';
-        break;
-      }
-      case ToolDescriptor.TypeEnum.WDL: {
-        descriptorTypeNoNFL = 'wdl';
-        break;
-      }
-      default: {
-        this.genericUnhandledTypeError(descriptorType);
-        return null;
-      }
-    }
-    return descriptorTypeNoNFL;
-  }
-
-  /**
    * Returns the validation pattern for the descriptor path associated with the descriptor type
    *
    * @param {ToolDescriptor.TypeEnum} descriptorType  Descriptor type from ToolDescriptor.TypeEnum
@@ -131,24 +163,7 @@ export class DescriptorLanguageService {
    * @memberof DescriptorLanguageService
    */
   getDescriptorPattern(descriptorType: ToolDescriptor.TypeEnum): string {
-    switch (descriptorType) {
-      case ToolDescriptor.TypeEnum.CWL: {
-        return validationDescriptorPatterns.cwlPath;
-      }
-      case ToolDescriptor.TypeEnum.WDL: {
-        return validationDescriptorPatterns.wdlPath;
-      }
-      case ToolDescriptor.TypeEnum.NFL: {
-        return validationDescriptorPatterns.nflPath;
-      }
-      case ToolDescriptor.TypeEnum.SERVICE: {
-        return '.*';
-      }
-      default: {
-        this.genericUnhandledTypeError(descriptorType);
-        return '.*';
-      }
-    }
+    return this.toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorType).descriptorPathPattern;
   }
 
   /**
@@ -158,8 +173,8 @@ export class DescriptorLanguageService {
    * @returns {string}  Placeholder descriptor path
    * @memberof DescriptorLanguageService
    */
-  workflowDescriptorTypeEnumToPlaceholderDescriptor(descriptorType: ToolDescriptor.TypeEnum | null): string {
-    return DescriptorLanguageService.toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorType).descriptorPathPlaceholder;
+  toolDescriptorTypeEnumToPlaceholderDescriptor(descriptorType: ToolDescriptor.TypeEnum | null): string {
+    return this.toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorType).descriptorPathPlaceholder;
   }
 
   genericUnhandledTypeError(type: any): void {
@@ -178,28 +193,12 @@ export class DescriptorLanguageService {
     if (descriptorLanguageBeans.length === 0) {
       return '';
     }
+
     descriptorLanguageBeans.forEach((descriptorLanguageBean) => {
-      switch (descriptorLanguageBean.value) {
-        case this.knownCWLValue: {
-          innerHTMLArray.push('<a href="https://www.commonwl.org/" target="_blank" rel="noopener noreferrer">CWL</a>');
-          break;
-        }
-        case this.knownWDLValue: {
-          innerHTMLArray.push('<a href="https://openwdl.org/" target="_blank" rel="noopener noreferrer">WDL</a>');
-          break;
-        }
-        case this.knownNFLValue: {
-          innerHTMLArray.push('<a href="https://www.nextflow.io/" target="_blank" rel="noopener noreferrer">Nextflow</a>');
-          break;
-        }
-        case this.knownGalaxyValue: {
-          innerHTMLArray.push('<a href="https://galaxyproject.org/" target="_blank" rel="noopener noreferrer">Galaxy</a>');
-          break;
-        }
-        default: {
-          this.genericUnhandledTypeError(descriptorLanguageBean.value);
-        }
-      }
+      const extendedDescriptorLanguageBean = this.descriptorLanguageBeanValueToExtendedDescriptorLanguageBean(descriptorLanguageBean.value);
+      innerHTMLArray.push(
+        `<a href="${extendedDescriptorLanguageBean.languageDocumentationURL}" target="_blank" rel="noopener noreferrer">${extendedDescriptorLanguageBean.shortFriendlyName}</a>`
+      );
     });
     const length = innerHTMLArray.length;
     if (length === 0) {

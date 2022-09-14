@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Base } from 'app/shared/base';
+import { Dockstore } from 'app/shared/dockstore.model';
 import { TwitterService } from 'app/shared/twitter.service';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -13,6 +14,7 @@ import { UserQuery } from '../../shared/user/user.query';
 })
 export class HomeLoggedInComponent extends Base implements OnInit, AfterViewInit {
   public user$: Observable<User>;
+  Dockstore = Dockstore;
   @ViewChild('twitter') twitterElement: ElementRef;
 
   constructor(private userQuery: UserQuery, private twitterService: TwitterService) {
@@ -24,10 +26,13 @@ export class HomeLoggedInComponent extends Base implements OnInit, AfterViewInit
   }
 
   ngAfterViewInit() {
-    this.loadTwitterWidget();
+    // Ideally we would create a new component, so we don't need this special if
+    if (!Dockstore.FEATURES.enableNewDashboard) {
+      this.loadTwitterWidget();
+    }
   }
 
-  loadTwitterWidget() {
+  private loadTwitterWidget() {
     this.twitterService
       .loadScript()
       .pipe(takeUntil(this.ngUnsubscribe))

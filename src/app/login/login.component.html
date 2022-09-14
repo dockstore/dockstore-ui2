@@ -35,7 +35,7 @@
             <a href="../assets/docs/Dockstore_Privacy Policy_v2.5.pdf" target="_blank" rel="noopener noreferrer">Privacy Policy</a>.
           </ng-template>
           <mat-tab isActive="true" label="Login">
-            <mat-card>
+            <div class="p-4">
               <p>Login to your existing Dockstore account with any third party application that has been previously linked.</p>
               <button
                 class="w-100 my-1"
@@ -59,10 +59,10 @@
               >
                 <fa-icon [icon]="faGoogle"></fa-icon> Login with Google
               </button>
-            </mat-card>
+            </div>
           </mat-tab>
           <mat-tab label="Register">
-            <mat-card>
+            <div class="p-4">
               <p>Register a new Dockstore account with any third party application.</p>
               <button
                 class="w-100 my-1"
@@ -96,7 +96,7 @@
               <!-- <a class="btn btn-block btn-social btn-real-google" matTooltip="Register with Google account" (click)="registerWith('google')">
                   <span class="google-logo "></span>Register with Google
               </a> -->
-            </mat-card>
+            </div>
           </mat-tab>
         </mat-tab-group>
       </mat-card>

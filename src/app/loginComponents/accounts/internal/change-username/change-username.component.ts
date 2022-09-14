@@ -30,7 +30,7 @@ import { UsersService } from './../../../../shared/swagger/api/users.service';
   styleUrls: ['./change-username.component.scss'],
 })
 export class ChangeUsernameComponent implements OnInit {
-  @Input() showText;
+  @Input() noDialog: boolean;
   username: string;
   user: User;
   usernameTaken = false;
@@ -57,6 +57,7 @@ export class ChangeUsernameComponent implements OnInit {
       }
     });
     this.canChangeUsername$ = this.userQuery.canChangeUsername$;
+    this.enableDisableFormControl();
     this.usernameFormControl.valueChanges.pipe(debounceTime(formInputDebounceTime), takeUntil(this.ngUnsubscribe)).subscribe((value) => {
       if (this.usernameFormControl.valid) {
         this.checkIfUsernameExists(value);
@@ -79,11 +80,7 @@ export class ChangeUsernameComponent implements OnInit {
       )
       .subscribe(
         (userExists: boolean) => {
-          if (userExists && this.username === this.user.username) {
-            this.usernameTaken = false;
-          } else {
-            this.usernameTaken = userExists;
-          }
+          this.usernameTaken = userExists;
         },
         (error) => {
           console.error(error);
@@ -96,5 +93,18 @@ export class ChangeUsernameComponent implements OnInit {
    */
   updateUsername() {
     this.userService.updateUsername(this.username);
+  }
+
+  /**
+   * Enable or disable form input if user can or cannot update username
+   */
+  enableDisableFormControl() {
+    this.canChangeUsername$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((canChangeUsername: boolean) => {
+      if (!canChangeUsername) {
+        this.usernameFormControl.disable();
+      } else {
+        this.usernameFormControl.enable();
+      }
+    });
   }
 }

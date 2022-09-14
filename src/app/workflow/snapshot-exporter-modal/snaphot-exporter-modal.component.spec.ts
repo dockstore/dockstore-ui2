@@ -10,6 +10,7 @@ import { ProviderService } from '../../shared/provider.service';
 import { AccountsStubService, AuthStubService } from '../../test/service-stubs';
 
 import { SnaphotExporterModalComponent, SnapshotExporterAction } from './snaphot-exporter-modal.component';
+import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
 
 describe('SnapshotDoiOrcidComponent', () => {
   let component: SnaphotExporterModalComponent;
@@ -46,6 +47,7 @@ describe('SnapshotDoiOrcidComponent', () => {
         { provide: AccountsService, useClass: AccountsStubService },
         DateService,
         ProviderService,
+        { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
       ],
     }).compileComponents();
   });

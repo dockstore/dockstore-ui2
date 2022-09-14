@@ -17,15 +17,35 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
 import { AuthService } from 'ng2-ui-auth';
+import { of } from 'rxjs/internal/observable/of';
+import { catchError, map } from 'rxjs/operators';
+import { LogoutService } from './logout.service';
+import { UsersService } from './openapi';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(private auth: AuthService, private router: Router) {}
+  constructor(
+    private auth: AuthService,
+    private router: Router,
+    private logoutService: LogoutService,
+    private usersService: UsersService
+  ) {}
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    if (this.auth.isAuthenticated()) {
-      return true;
-    }
-    this.router.navigate(['/login']);
-    return false;
+    return this.usersService.getUser().pipe(
+      catchError(() => {
+        return of(null);
+      }),
+      map((user) => {
+        if (user) {
+          return true;
+        }
+        if (this.auth.isAuthenticated()) {
+          this.logoutService.logout();
+        } else {
+          this.router.navigate(['/login']);
+        }
+        return false;
+      })
+    );
   }
 }

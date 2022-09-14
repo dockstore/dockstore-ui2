@@ -46,14 +46,14 @@ import { CustomHeaderInterceptor } from './interceptors/custom-header.intercepto
 import { WorkflowVersionsInterceptor } from './interceptors/workflow-versions.interceptor';
 import { LoginComponent } from './login/login.component';
 import { LoginService } from './login/login.service';
+import { AccountSidebarModule } from './loginComponents/accounts/account-sidebar/account-sidebar.module';
 import { AccountsComponent } from './loginComponents/accounts/accounts.component';
 import { ControlsComponent } from './loginComponents/accounts/controls/controls.component';
 import { DeleteAccountDialogComponent } from './loginComponents/accounts/controls/delete-account-dialog/delete-account-dialog.component';
 import { AccountsExternalComponent } from './loginComponents/accounts/external/accounts.component';
 import { AccountsService } from './loginComponents/accounts/external/accounts.service';
 import { GetTokenUsernamePipe } from './loginComponents/accounts/external/getTokenUsername.pipe';
-import { AccountsInternalComponent } from './loginComponents/accounts/internal/accounts.component';
-import { ChangeUsernameComponent } from './loginComponents/accounts/internal/change-username/change-username.component';
+import { ChangeUsernameModule } from './loginComponents/accounts/internal/change-username/change-username.module';
 import { AuthComponent } from './loginComponents/auth/auth.component';
 import { DownloadCLIClientComponent } from './loginComponents/onboarding/downloadcliclient/downloadcliclient.component';
 import { OnboardingComponent } from './loginComponents/onboarding/onboarding.component';
@@ -66,6 +66,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { OrganizationStargazersModule } from './organizations/organization/organization-stargazers/organization-stargazers.module';
 import { OrganizationStarringModule } from './organizations/organization/organization-starring/organization-starring.module';
+import { PageNotFoundComponent } from './pagenotfound/pagenotfound.component';
 import { RegisterService } from './register/register.service';
 import { SessionExpiredComponent } from './session-expired/session-expired.component';
 import { RefreshAlertModule } from './shared/alert/alert.module';
@@ -83,7 +84,9 @@ import { HeaderModule } from './shared/modules/header.module';
 import { ImgFallbackModule } from './shared/modules/img-fallback.module';
 import { ListContainersModule } from './shared/modules/list-containers.module';
 import { ListWorkflowsModule } from './shared/modules/list-workflows.module';
+import { MarkdownWrapperModule } from './shared/modules/markdown-wrapper.module';
 import { CustomMaterialModule } from './shared/modules/material.module';
+import { MySidebarModule } from './shared/modules/my-sidebar.module';
 import { OrderByModule } from './shared/modules/orderby.module';
 import { SnackbarModule } from './shared/modules/snackbar.module';
 import { ApiModule as ApiModule2 } from './shared/openapi/api.module';
@@ -138,7 +141,6 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     OnboardingComponent,
     QuickStartComponent,
     AccountsComponent,
-    AccountsInternalComponent,
     AccountsExternalComponent,
     AuthComponent,
     GetTokenUsernamePipe,
@@ -147,7 +149,6 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     MaintenanceComponent,
     FundingComponent,
     BannerComponent,
-    ChangeUsernameComponent,
     YoutubeComponent,
     SitemapComponent,
     GithubCallbackComponent,
@@ -158,6 +159,7 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     LogoutComponent,
     GitTagPipe,
     AboutComponent,
+    PageNotFoundComponent,
     SnaphotExporterModalComponent,
     ExporterStepComponent,
     FileTreeComponent,
@@ -182,6 +184,7 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     routing,
     StargazersModule,
     MarkdownModule.forRoot(),
+    MarkdownWrapperModule,
     ReactiveFormsModule,
     ApiModule.forRoot(getApiConfig),
     ApiModule2.forRoot(getApiConfig),
@@ -193,6 +196,9 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     SnackbarModule,
     ImgFallbackModule,
     PipeModule,
+    MySidebarModule,
+    AccountSidebarModule,
+    ChangeUsernameModule,
   ],
   providers: [
     AccountsService,
@@ -235,6 +241,7 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: myCustomSnackbarDefaults },
     { provide: HTTP_INTERCEPTORS, useClass: WorkflowVersionsInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: CustomHeaderInterceptor, multi: true },
+    { provide: Window, useValue: window },
   ],
   bootstrap: [AppComponent],
 })

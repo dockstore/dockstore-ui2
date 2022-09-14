@@ -1,0 +1,83 @@
+<!--
+  ~    Copyright 2022 OICR
+  ~
+  ~    Licensed under the Apache License, Version 2.0 (the "License");
+  ~    you may not use this file except in compliance with the License.
+  ~    You may obtain a copy of the License at
+  ~
+  ~        http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~    Unless required by applicable law or agreed to in writing, software
+  ~    distributed under the License is distributed on an "AS IS" BASIS,
+  ~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~    See the License for the specific language governing permissions and
+  ~    limitations under the License.
+  -->
+
+<div fxFlex="0 0 auto">
+  <!-- Dashboard links to homepage since page doesn't exist yet -->
+  <!-- TO DO: Update routerLink (button and hr) with Dashboard page when avalible -->
+  <button
+    mat-flat-button
+    class="purple"
+    [routerLink]="['/dashboard']"
+    routerLinkActive="active"
+    [routerLinkActiveOptions]="{ exact: true }"
+  >
+    <div><img src="../assets/svg/my-nav/dashboard.svg" alt="dashboard" /></div>
+    Dashboard
+  </button>
+  <hr routerLink="" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" />
+
+  <!-- My Workflows -->
+  <button mat-flat-button class="workflow" routerLink="/my-workflows" routerLinkActive="active">
+    <div><img src="../assets/svg/my-nav/workflows.svg" alt="my workflows" /></div>
+    Workflows
+  </button>
+  <hr routerLink="/my-workflows" routerLinkActive="active" />
+
+  <!-- My Tools -->
+  <button mat-flat-button class="tool" routerLink="/my-tools" routerLinkActive="active">
+    <div><img src="../assets/svg/my-nav/tools.svg" alt="my tools" /></div>
+    Tools
+  </button>
+  <hr routerLink="/my-tools" routerLinkActive="active" />
+
+  <!-- My Services -->
+  <button mat-flat-button class="service" routerLink="/my-services" routerLinkActive="active">
+    <div><img src="../assets/svg/my-nav/services.svg" alt="my services" /></div>
+    Services
+  </button>
+  <hr routerLink="/my-services" routerLinkActive="active" />
+
+  <!-- Organizations page does not exist, framework is commented out for the time being -->
+  <!-- TO DO: Update routerLink (button and hr) with Org. page when avalible and uncomment to add to nav bar -->
+  <!-- <button mat-flat-button class="purple" routerLink="/organizations" routerLinkActive="active">
+        <div><img src="../assets/svg/my-nav/organization.svg" class="pb-1" alt="my organizations"></div>
+        Organizations
+    </button>
+    <hr routerLink="/organizations" routerLinkActive="active"/> -->
+
+  <!-- My Starred -->
+  <button mat-flat-button class="purple" routerLink="/starred" routerLinkActive="active">
+    <div><img src="../assets/svg/my-nav/starred.svg" class="pb-1" alt="starred" /></div>
+    Starred
+  </button>
+  <hr routerLink="/starred" routerLinkActive="active" />
+
+  <!-- My Accounts -->
+  <button mat-flat-button class="purple" routerLink="/accounts" routerLinkActive="active">
+    <div><img src="../assets/svg/my-nav/account.svg" class="pb-1" alt="my account" /></div>
+    Account
+  </button>
+  <hr routerLink="/accounts" routerLinkActive="active" />
+
+  <!-- Help Desk -->
+  <a
+    class="size-small inline-block ml-3 mt-4"
+    href="https://discuss.dockstore.org/t/opening-helpdesk-tickets/1506"
+    target="blank"
+    rel="noopener noreferrer"
+    >Help Desk</a
+  >
+</div>

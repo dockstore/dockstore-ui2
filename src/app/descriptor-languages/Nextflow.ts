@@ -7,10 +7,11 @@ export const extendedNFL: ExtendedDescriptorLanguageBean = {
   shortFriendlyName: 'Nextflow',
   friendlyName: 'Nextflow',
   defaultDescriptorPath: '/nextflow.config',
-  descriptorPathPattern: '^^/([^/?:*|<>]+/)*[^/?:*|<>]+.(config)',
+  descriptorPathPattern: '^/([^/?:*|<>]+/)*[^/?:*|<>]+.(config)',
   descriptorPathPlaceholder: 'e.g. /nextflow.config',
   toolDescriptorEnum: ToolDescriptor.TypeEnum.NFL,
   workflowDescriptorEnum: Workflow.DescriptorTypeEnum.NFL,
+  languageDocumentationURL: 'https://www.nextflow.io/',
   plainTRS: 'PLAIN-NFL',
   descriptorFileTypes: [SourceFile.TypeEnum.NEXTFLOW, SourceFile.TypeEnum.NEXTFLOWCONFIG],
   toolTab: {

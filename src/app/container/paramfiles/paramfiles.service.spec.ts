@@ -23,15 +23,19 @@ import { SourceFile } from './../../shared/swagger/model/sourceFile';
 import { Tag } from './../../shared/swagger/model/tag';
 import { ContainersStubService, RefreshStubService, WorkflowsStubService } from './../../test/service-stubs';
 import { ParamfilesService } from './paramfiles.service';
+import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('Service: paramFiles.service.ts', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
       providers: [
         ParamfilesService,
         { provide: WorkflowsService, useClass: WorkflowsStubService },
         { provide: ContainersService, useClass: ContainersStubService },
         { provide: RefreshService, useClass: RefreshStubService },
+        { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
       ],
     });
   });

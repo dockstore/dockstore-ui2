@@ -34,6 +34,8 @@ import {
 import { VersionModalService } from '../version-modal/version-modal.service';
 import { ViewWorkflowComponent } from './view.component';
 import { ViewService } from './view.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
 
 describe('ViewWorkflowComponent', () => {
   let component: ViewWorkflowComponent;
@@ -42,7 +44,7 @@ describe('ViewWorkflowComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [CustomMaterialModule],
+        imports: [CustomMaterialModule, HttpClientTestingModule],
         declarations: [ViewWorkflowComponent],
         providers: [
           { provide: ViewService },
@@ -53,6 +55,7 @@ describe('ViewWorkflowComponent', () => {
           { provide: DateService, useClass: DateStubService },
           { provide: HostedService, useClass: HostedStubService },
           { provide: RefreshService, useClass: RefreshStubService },
+          { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
         ],
       }).compileComponents();
     })

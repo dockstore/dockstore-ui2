@@ -13,6 +13,7 @@ import { GA4GHService } from './../../../shared/swagger/api/gA4GH.service';
 import { RouterLinkStubDirective, RouterOutletStubComponent } from './../../../test/router-stubs';
 import { AuthStubService, GA4GHStubService } from './../../../test/service-stubs';
 import { DownloadCLIClientComponent } from './downloadcliclient.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 describe('DownloadCLIClientComponent', () => {
   let component: DownloadCLIClientComponent;
@@ -28,6 +29,7 @@ describe('DownloadCLIClientComponent', () => {
           MatIconModule,
           MatButtonModule,
           HttpClientTestingModule,
+          MatSnackBarModule,
           MatTabsModule,
           NoopAnimationsModule,
         ],

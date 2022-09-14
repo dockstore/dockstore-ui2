@@ -10,6 +10,7 @@ import { WorkflowService } from '../../shared/state/workflow.service';
 import { RefreshStubService, RegisterWorkflowModalStubService, WorkflowStubService } from './../../test/service-stubs';
 import { RegisterWorkflowModalService } from './../../workflow/register-workflow-modal/register-workflow-modal.service';
 import { SidebarAccordionComponent } from './sidebar-accordion.component';
+import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
 
 describe('SidebarAccordionComponent', () => {
   let component: SidebarAccordionComponent;
@@ -36,6 +37,7 @@ describe('SidebarAccordionComponent', () => {
             provide: RefreshService,
             useClass: RefreshStubService,
           },
+          { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
         ],
       }).compileComponents();
     })

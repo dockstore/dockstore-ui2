@@ -67,10 +67,6 @@ describe('Dropdown test', () => {
       cy.visit('/accounts?tab=abcd');
       cy.url().should('eq', Cypress.config().baseUrl + '/accounts?tab=accounts');
     });
-    it('Change tab to profiles', () => {
-      goToTab('Profiles');
-      cy.url().should('eq', Cypress.config().baseUrl + '/accounts?tab=profiles');
-    });
     it('Change tab to Dockstore Account & Preferences', () => {
       goToTab('Dockstore Account & Preferences');
       cy.url().should('eq', Cypress.config().baseUrl + '/accounts?tab=dockstore%20account%20and%20preferences');
@@ -83,10 +79,6 @@ describe('Dropdown test', () => {
     it('Link to accounts tab', () => {
       cy.visit('/accounts?tab=accounts');
       isActiveTab('Accounts');
-    });
-    it('Link to profiles tab', () => {
-      cy.visit('/accounts?tab=profiles');
-      isActiveTab('Profiles');
     });
     it('Link to Dockstore Account & Preferences tab', () => {
       cy.visit('/accounts?tab=dockstore%20account%20and%20preferences');
@@ -351,8 +343,9 @@ describe('Dropdown test', () => {
       cy.contains('Yes, delete my account').should('not.be.disabled').click();
       cy.url().should('eq', Cypress.config().baseUrl + '/logout');
     });
-    it('Should have the change username button enabled', () => {
-      cy.contains('Update Username').should('not.be.disabled');
+    it('Should have the change username button disabled for current username', () => {
+      cy.contains('Edit Dockstore Username').click();
+      cy.contains('Save').should('be.disabled');
     });
   });
   const everythingOk = () => {

@@ -1,6 +1,6 @@
 <div class="cwl-viewer">
-  <mat-card *ngIf="cwlViewerError" class="alert alert-warning">
-    <mat-icon>warning</mat-icon>&nbsp;
+  <mat-card *ngIf="cwlViewerError" class="alert alert-warning mat-elevation-z">
+    <mat-icon class="alert-warning-icon">warning</mat-icon>&nbsp;
     <div>
       The Common Workflow Language Viewer was unable to process the CWL. <span *ngIf="errorMessage">It returned the following error:</span>
     </div>

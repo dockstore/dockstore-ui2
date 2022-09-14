@@ -10,11 +10,12 @@ import { Base } from '../../shared/base';
 @Component({
   selector: 'app-accounts',
   templateUrl: './accounts.component.html',
+  styleUrls: ['./accounts.component.scss'],
 })
 export class AccountsComponent extends Base implements OnInit {
   public currentTab = 'accounts'; // default to the 'accounts' tab
   selected = new FormControl();
-  validTabs = ['linked accounts and tokens', 'profiles', 'dockstore account and preferences', 'requests'];
+  validTabs = ['linked accounts and tokens', 'dockstore account and preferences', 'requests'];
   constructor(private location: Location, private activatedRoute: ActivatedRoute) {
     super();
   }
@@ -57,6 +58,6 @@ export class AccountsComponent extends Base implements OnInit {
   setAccountsTab(tabName: string) {
     // Adding the & symbol causes the URL to be parsed in an unexpected way.
     // TODO: Change replace to replaceAll once we use EC2021
-    this.location.replaceState('accounts?tab=' + tabName.replace('&', 'and'));
+    this.location.replaceState('accounts?tab=' + tabName.replace(/&/g, 'and'));
   }
 }

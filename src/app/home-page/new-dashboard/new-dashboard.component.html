@@ -1,0 +1,16 @@
+<div fxLayout>
+  <app-my-sidebar fxFlexAlign="stretch"></app-my-sidebar>
+
+  <div id="row-holder" fxLayout="column" fxLayoutAlign="start start" class="p-4 w-100">
+    <mat-card class="alert alert-info mx-1 w-100" role="alert"> Major Release: TODO</mat-card>
+    <div id="entry-holder" fxLayout="row" fxLayoutGap="2.5rem" class="w-100 mb-5 entry-holder" fxFlex>
+      <app-entry-box fxFlex="33" entryType="WORKFLOW"></app-entry-box>
+      <app-entry-box fxFlex="33" entryType="TOOL"></app-entry-box>
+      <app-entry-box fxFlex="33" entryType="SERVICE"></app-entry-box>
+    </div>
+    <div id="updates-holder" fxLayout="row" fxLayoutGap="2.5rem" class="w-100 updates-holder" fxFlex>
+      <app-organization-box fxFlex="50"></app-organization-box>
+      <app-starred-box fxFlex="50"></app-starred-box>
+    </div>
+  </div>
+</div>

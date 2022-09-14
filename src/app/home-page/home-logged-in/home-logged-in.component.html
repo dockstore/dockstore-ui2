@@ -14,62 +14,76 @@
   ~    limitations under the License.
   -->
 
-<div id="column-holder" fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="start start" fxLayoutGap="10px">
-  <div
-    fxLayout="column"
-    fxLayoutAlign="start start"
-    fxLayoutGap="20px"
-    fxFlex="1 2 100%"
-    class="px-4 side-column left-side-column"
-    fxFlexAlign="stretch"
-  >
-    <app-entries *ngIf="user$ | async" class="w-100"></app-entries>
-    <app-organizations *ngIf="user$ | async" class="w-100"></app-organizations>
-  </div>
+<div fxLayout *ngIf="!Dockstore.FEATURES.enableNewDashboard; else newDashboard">
+  <app-my-sidebar fxFlexAlign="stretch"></app-my-sidebar>
 
-  <div fxLayout="row" fxLayout.lt-lg="column" fxLayoutAlign="start start" fxLayoutGap="10px" class="w-100" fxFlex="1 1 100%">
-    <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="20px" class="px-4 w-100" fxFlex="1 1 100%" fxFlexAlign="stretch">
-      <div class="widget-section">
-        <h3>News and Updates</h3>
-        <div class="news-container">
-          <app-news-updates data-cy="news-updates-container"></app-news-updates>
-        </div>
-        <app-alert></app-alert>
-        <app-featured-news></app-featured-news>
-      </div>
-      <div class="widget-section">
-        <h3>Explore Featured Content</h3>
-        <app-alert></app-alert>
-        <app-featured-content></app-featured-content>
-      </div>
-      <div class="widget-section">
-        <h3>Recent Activity</h3>
-        <div class="m-auto mw-macbook-13">
-          <app-recent-events></app-recent-events>
-        </div>
-      </div>
+  <div id="column-holder" fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="start start" fxLayoutGap="10px" fxFlex="1 2 100%">
+    <div
+      fxLayout="column"
+      fxLayoutAlign="start start"
+      fxLayoutGap="20px"
+      fxFlex="1 2 100%"
+      class="px-4 side-column left-side-column"
+      fxFlexAlign="stretch"
+    >
+      <app-entries *ngIf="user$ | async" class="w-100"></app-entries>
+      <app-organizations *ngIf="user$ | async" class="w-100"></app-organizations>
     </div>
-    <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="20px" fxFlex="1 2 100%" class="px-4 side-column" fxFlexAlign="stretch">
-      <app-requests *ngIf="user$ | async" class="w-100"></app-requests>
-      <div class="w-100">
-        <h3>Links</h3>
-        <ul>
-          <li><a routerLink="quick-start">Quickstart</a></li>
-          <li><a routerLink="accounts">My Account</a></li>
-          <li><a routerLink="starred">My Starred</a></li>
-          <li>
-            <a href="https://discuss.dockstore.org/" target="_blank" rel="noopener noreferrer">Forum <mat-icon>open_in_new</mat-icon></a>
-          </li>
-          <li>
-            <a href="https://discuss.dockstore.org/t/opening-helpdesk-tickets/1506" target="_blank" rel="noopener noreferrer"
-              >Help Desk <mat-icon>open_in_new</mat-icon></a
-            >
-          </li>
-        </ul>
+
+    <div fxLayout="row" fxLayout.lt-lg="column" fxLayoutAlign="start start" fxLayoutGap="10px" class="w-100" fxFlex="1 1 100%">
+      <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="20px" class="px-4 w-100" fxFlex="1 1 100%" fxFlexAlign="stretch">
+        <div class="widget-section">
+          <h3>News and Updates</h3>
+          <div class="news-container">
+            <app-news-updates data-cy="news-updates-container"></app-news-updates>
+          </div>
+          <app-alert></app-alert>
+          <app-featured-news></app-featured-news>
+        </div>
+        <div class="widget-section">
+          <h3>Explore Featured Content</h3>
+          <app-alert></app-alert>
+          <app-featured-content></app-featured-content>
+        </div>
+        <div class="widget-section">
+          <h3>Recent Activity</h3>
+          <div class="m-auto mw-macbook-13">
+            <app-recent-events></app-recent-events>
+          </div>
+        </div>
       </div>
-      <div class="w-100">
-        <div class="my-3 twitter" #twitter></div>
+      <div
+        fxLayout="column"
+        fxLayoutAlign="start start"
+        fxLayoutGap="20px"
+        fxFlex="1 2 100%"
+        class="px-4 side-column"
+        fxFlexAlign="stretch"
+      >
+        <app-requests *ngIf="user$ | async" class="w-100"></app-requests>
+        <div class="w-100">
+          <h3>Links</h3>
+          <ul>
+            <li><a [routerLink]="['/quick-start']">Quickstart</a></li>
+            <li><a [routerLink]="['/accounts']">My Account</a></li>
+            <li><a [routerLink]="['/starred']">My Starred</a></li>
+            <li>
+              <a href="https://discuss.dockstore.org/" target="_blank" rel="noopener noreferrer">Forum <mat-icon>open_in_new</mat-icon></a>
+            </li>
+            <li>
+              <a href="https://discuss.dockstore.org/t/opening-helpdesk-tickets/1506" target="_blank" rel="noopener noreferrer"
+                >Help Desk <mat-icon>open_in_new</mat-icon></a
+              >
+            </li>
+          </ul>
+        </div>
+        <div class="w-100">
+          <div class="my-3 twitter" #twitter></div>
+        </div>
       </div>
     </div>
   </div>
 </div>
+<ng-template #newDashboard>
+  <app-new-dashboard></app-new-dashboard>
+</ng-template>

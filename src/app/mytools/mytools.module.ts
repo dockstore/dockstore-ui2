@@ -22,7 +22,6 @@ import { RefreshToolOrganizationComponent } from '../container/refresh-tool-orga
 import { ContainerModule } from '../shared/modules/container.module';
 import { HeaderModule } from '../shared/modules/header.module';
 import { PipeModule } from '../shared/pipe/pipe.module';
-import { RegisterToolComponent } from './../container/register-tool/register-tool.component';
 import { RegisterToolService } from './../container/register-tool/register-tool.service';
 import { AccountsService } from './../loginComponents/accounts/external/accounts.service';
 import { CustomMaterialModule } from './../shared/modules/material.module';
@@ -34,9 +33,10 @@ import { SidebarAccordionComponent } from './sidebar-accordion/sidebar-accordion
 import { SharedWorkflowServicesModule } from '../shared-workflow-services/shared-workflow-services.module';
 import { IsAppToolPipe } from '../search/is-app-tool.pipe';
 import { WorkflowModule } from '../shared/modules/workflow.module';
+import { MySidebarModule } from '../shared/modules/my-sidebar.module';
 
 @NgModule({
-  declarations: [MyToolsComponent, RegisterToolComponent, RefreshToolOrganizationComponent, MyToolComponent, SidebarAccordionComponent],
+  declarations: [MyToolsComponent, RefreshToolOrganizationComponent, MyToolComponent, SidebarAccordionComponent],
   imports: [
     CommonModule,
     ContainerModule,
@@ -49,6 +49,7 @@ import { WorkflowModule } from '../shared/modules/workflow.module';
     RefreshWizardModule,
     SharedWorkflowServicesModule,
     WorkflowModule,
+    MySidebarModule,
   ],
   providers: [RegisterToolService, AccountsService, MytoolsService, IsAppToolPipe],
 })

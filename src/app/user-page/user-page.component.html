@@ -1,0 +1,141 @@
+<app-header>
+  <div fxLayout fxLayoutAlign="space-between stretch">
+    <div fxHide.lt-sm fxLayout fxLayoutGap="1rem">
+      <span><mat-icon>people</mat-icon></span>
+      <div>{{ user?.username }}</div>
+    </div>
+  </div>
+</app-header>
+
+<div class="container">
+  <div fxLayout fxLayout.lt-md="column" fxLayoutAlign="center" fxLayoutGap="1rem" class="my-5">
+    <mat-card *ngIf="user" fxFlex.gt-md="25" fxFlex.lt-md="100" fxLayout="column" fxLayoutAlign="center">
+      <img mat-card-image [src]="user?.avatarUrl" class="mt-0 mx-auto mb-3" alt="Dockstore avatar" />
+      <mat-card-content fxLayout="column" fxLayoutAlign="center center">
+        <h4 matLine class="accent-1-dark mt-2 mb-0">{{ user?.username }}</h4>
+        <mat-card-subtitle class="text-align-center w-100 text-break mt-2 mb-0">
+          <span *ngIf="gitHubProfile?.bio" class="normal-line-height accent-1-dark">
+            {{ gitHubProfile.bio }}
+          </span>
+          <a *ngIf="gitHubProfile?.link" rel="noopener noreferrer" href="{{ gitHubProfile?.link }}" target="_blank" class="accent-1-dark">
+            {{ gitHubProfile.link }}
+          </a>
+        </mat-card-subtitle>
+      </mat-card-content>
+    </mat-card>
+
+    <div fxLayout="column" fxLayoutGap="1rem" fxFlex>
+      <!-- GitHub -->
+      <mat-card *ngIf="gitHubProfile" fxLayout="column" fxLayoutAlign="space-between" class="h-100">
+        <div fxLayout fxLayoutAlign="space-between">
+          <mat-card-header>
+            <div mat-card-avatar matBadge="✓" class="mr-2">
+              <img src="../../assets/images/account-logos/github.svg" alt="Github logo" class="w-100" />
+            </div>
+            <mat-card-title class="normal-line-height">GitHub Account</mat-card-title>
+            <mat-card-subtitle class="normal-line-height weight-bold accent-1-dark mt-2 mb-0" fxLayout.lt-md="column" fxLayoutGap="1rem">
+              <span *ngIf="gitHubProfile.name"
+                >Account Name: <span>{{ gitHubProfile.name }}</span></span
+              >
+              <span>
+                Username:
+                <a href="https://github.com/{{ gitHubProfile.username }}" target="_blank" class="accent-1-dark">
+                  <span>{{ gitHubProfile.username }}</span>
+                </a>
+              </span>
+            </mat-card-subtitle>
+          </mat-card-header>
+          <span>
+            <img [src]="gitHubProfile.avatarURL" alt="GitHub avatar" />
+          </span>
+        </div>
+        <div *ngIf="!user?.orcid && !googleProfile" fxLayout="column" fxLayoutAlign="end" class="mt-3">
+          <hr />
+          <span fxLayout fxLayoutAlign="end end">
+            <a href="https://github.com/{{ gitHubProfile?.username }}" target="_blank">
+              <button mat-button class="accent-1-dark-btn small-mat-btn-skin small-btn-structure mt-2">
+                <mat-icon class="mat-icon-sm">open_in_new</mat-icon>
+                View
+              </button>
+            </a>
+          </span>
+        </div>
+      </mat-card>
+      <!-- ORCID -->
+      <mat-card *ngIf="user?.orcid" class="h-100">
+        <mat-card-header>
+          <div mat-card-avatar matBadge="✓" class="mr-2">
+            <img src="../../assets/images/account-logos/orcid.svg" alt="ORCID logo" class="w-100" />
+          </div>
+          <mat-card-title class="normal-line-height">ORCID Account</mat-card-title>
+          <mat-card-subtitle class="accent-1-dark normal-line-height mt-2 mb-0">
+            <a href="https://orcid.org/{{ user.orcid }}" target="_blank">
+              <span class="weight-bold">https://orcid.org/{{ user?.orcid }}</span>
+            </a>
+          </mat-card-subtitle>
+        </mat-card-header>
+      </mat-card>
+      <!-- Google -->
+      <mat-card *ngIf="googleProfile" fxLayout="column" fxLayoutAlign="space-between" class="h-100">
+        <div fxLayout fxLayoutAlign="space-between">
+          <mat-card-header>
+            <div mat-card-avatar matBadge="✓" class="mr-2">
+              <img src="../../assets/images/account-logos/google.svg" alt="Google logo" class="w-100" />
+            </div>
+            <mat-card-title class="normal-line-height">Google Account</mat-card-title>
+            <mat-card-subtitle class="accent-1-dark normal-line-height weight-bold mt-2 mb-0">
+              <span>Account Name: {{ googleProfile.name }}</span>
+            </mat-card-subtitle>
+          </mat-card-header>
+          <span>
+            <img [src]="googleProfile.avatarURL" alt="Google avatar" />
+          </span>
+        </div>
+        <div *ngIf="!user?.orcid && !gitHubProfile" fxLayout="column" fxLayoutAlign="end">
+          <hr class="mb-5" />
+        </div>
+      </mat-card>
+    </div>
+  </div>
+
+  <mat-tab-group class="pb-5 purple-tab-group">
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <div fxLayoutGap="0.5rem">
+          <mat-icon>restore</mat-icon>
+          <span>Activity</span>
+        </div>
+      </ng-template>
+      <div class="p-2">
+        <!-- Note: this is currently a placeholder until a new endpoint is created to retrieve user specific recent events and not just your own -->
+        <app-recent-events></app-recent-events>
+      </div>
+    </mat-tab>
+    <!-- TO DO: Comment back in once we have the required resources to display user specific tools, workflows etc. -->
+    <!-- When commented back in, also add mat-stretch-tabs to the tab-group -->
+    <!-- <mat-tab>
+      <ng-template mat-tab-label>
+        <div fxLayoutGap="0.5rem">
+          <img src="../../../assets/svg/sub-nav/workflow.svg" alt="workflow logo" />
+          <span>Workflows</span>
+        </div>
+      </ng-template>
+    </mat-tab>
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <div fxLayoutGap="0.5rem">
+          <img src="../../../assets/svg/sub-nav/tool.svg" alt="workflow logo" />
+          <span>Tools</span>
+        </div>
+      </ng-template>
+    </mat-tab>
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <div fxLayoutGap="0.5rem">
+          <img src="../../../assets/svg/sub-nav/organization.svg" alt="workflow logo" />
+          <span>Organizations</span>
+        </div>
+      </ng-template>
+    </mat-tab> -->
+  </mat-tab-group>
+</div>

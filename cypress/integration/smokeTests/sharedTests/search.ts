@@ -13,10 +13,13 @@ describe('Admin UI', () => {
       cy.contains('the Language is WDL');
       cy.url().should('include', '/search?descriptorType=WDL');
     });
-    it('should be able to handle the back button', () => {
+    it('should be able to handle the back and forward buttons', () => {
       cy.go('back');
       cy.url().should('not.include', '/search?descriptorType=WDL');
       cy.contains('the Language is WDL').should('not.exist');
+      cy.go('forward');
+      cy.url().should('include', '/search?descriptorType=WDL');
+      cy.contains('the Language is WDL').should('exist');
     });
     it('should be able to use basic search box and have suggestions', () => {
       cy.get('[data-cy=basic-search]').type('dockstore_i{enter}');

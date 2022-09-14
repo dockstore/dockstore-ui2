@@ -15,8 +15,7 @@
  */
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
-import { NavigationEnd, Router } from '@angular/router/';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { User } from 'app/shared/openapi';
@@ -167,9 +166,13 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
           console.error('Something has gone horribly wrong with sharedWorkflows$ and/or workflows$');
         }
       );
-    this.groupEntriesObject$ = combineLatest([this.workflowService.workflows$, this.workflowQuery.selectActive()]).pipe(
-      map(([workflows, workflow]) => {
-        return this.myWorkflowsService.convertEntriesToOrgEntryObject(workflows, workflow);
+    this.groupEntriesObject$ = combineLatest([
+      this.workflowService.workflows$,
+      this.workflowQuery.selectActive(),
+      this.tokenQuery.gitHubOrganizations$,
+    ]).pipe(
+      map(([workflows, workflow, gitHubOrganizations]) => {
+        return this.myWorkflowsService.convertEntriesToOrgEntryObject(workflows, workflow, gitHubOrganizations);
       })
     );
 
@@ -181,7 +184,8 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
 
     this.hasGroupEntriesObject$ = this.groupEntriesObject$.pipe(
       map((orgToolObjects: OrgWorkflowObject<Workflow>[]) => {
-        return orgToolObjects && orgToolObjects.length !== 0;
+        // Now that we have empty GitHub orgs showing up, check if they have any entries
+        return orgToolObjects && orgToolObjects.some((orgToolObject) => orgToolObject.unpublished.length || orgToolObject.published.length);
       })
     );
     this.hasGroupSharedEntriesObject$ = this.groupSharedEntriesObject$.pipe(

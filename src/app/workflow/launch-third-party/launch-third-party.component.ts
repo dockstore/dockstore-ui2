@@ -206,7 +206,8 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
     private descriptorsService: DescriptorsService,
     private cloudInstanceService: CloudInstancesService,
     private usersService: UsersService,
-    private userQuery: UserQuery
+    private userQuery: UserQuery,
+    private descriptorLanguageService: DescriptorLanguageService
   ) {
     super();
     iconRegistry.addSvgIcon('dnanexus', sanitizer.bypassSecurityTrustResourceUrl('../assets/images/thirdparty/DX_Logo_white_alpha.svg'));
@@ -238,7 +239,9 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
           // No idea if this.workflow.descriptorType is the one that's required or if it's some other enum
           const descriptorType = this.workflow.descriptorType;
           const descriptorLanguageEnum =
-            DescriptorLanguageService.workflowDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorType).descriptorLanguageEnum;
+            this.descriptorLanguageService.workflowDescriptorTypeEnumToExtendedDescriptorLanguageBean(
+              descriptorType
+            ).descriptorLanguageEnum;
           this.workflowsService.primaryDescriptor(this.workflow.id, this.selectedVersion.name, descriptorType).subscribe((sourceFile) => {
             this.descriptorsService.updatePrimaryDescriptor(sourceFile);
             if (fileDescriptors.some((file) => file.file_type === FileTypeEnum.SECONDARYDESCRIPTOR)) {

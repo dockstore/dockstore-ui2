@@ -16,9 +16,9 @@
 <div *ngIf="workflow">
   <div class="row m-1" *ngIf="error || missingWarning">
     <div class="col-md-12" *ngIf="!isWorkflowPublic">
-      <mat-card class="alert alert-warning" ng-class="!editMode ? 'push-top' : ''" role="alert" *ngIf="missingWarning">
+      <mat-card class="alert alert-warning mat-elevation-z" ng-class="!editMode ? 'push-top' : ''" role="alert" *ngIf="missingWarning">
         <button type="button" class="close" data-dismiss="alert" ng-click="missingWarning = false">&times;</button>
-        <mat-icon>warning</mat-icon>
+        <mat-icon class="alert-warning-icon">warning</mat-icon>
       </mat-card>
     </div>
   </div>
@@ -42,7 +42,7 @@
       </ul>
     </div>
   </div>
-  <div class="row m-1" *ngIf="!showRedirect" fxLayout.lt-sm="column">
+  <div class="row m-1" *ngIf="!showRedirect" fxLayout.lt-sm="column" fxLayout.gt-sm="row">
     <ngx-json-ld [json]="schema"></ngx-json-ld>
     <div fxFlex="80">
       <h3 id="workflow-path" data-cy="workflowTitle" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1rem">
@@ -80,11 +80,25 @@
         </mat-form-field>
       </div>
       <p class="update">
-        <span [matTooltip]="(extendedWorkflow$ | async)?.last_modified_date | date: 'medium'"
-          >Last Modified: {{ (extendedWorkflow$ | async)?.agoMessage || 'n/a' }}</span
-        >
+        <span *ngIf="selectedVersion !== null">
+          <span
+            *ngIf="WorkflowVersionModel.ReferenceTypeEnum.TAG === selectedVersion.referenceType"
+            [matTooltip]="selectedVersion.last_modified | date: 'medium'"
+            >Tag created: {{ versionAgoMessage || 'n/a' }}</span
+          >
+          <span
+            *ngIf="WorkflowVersionModel.ReferenceTypeEnum.TAG !== selectedVersion.referenceType"
+            [matTooltip]="selectedVersion.last_modified | date: 'medium'"
+            >Last update to this workflow version: {{ versionAgoMessage || 'n/a' }}</span
+          >
+          <br />
+          <span [matTooltip]="(extendedWorkflow$ | async)?.last_modified_date | date: 'medium'"
+            >Last update to source repository: {{ (extendedWorkflow$ | async)?.agoMessage || 'n/a' }}</span
+          >
+        </span>
       </p>
     </div>
+
     <div fxFlex>
       <app-starring
         [workflow]="workflow"
@@ -93,7 +107,7 @@
         (starGazersChange)="starGazersChange()"
       ></app-starring>
     </div>
-    <div *ngIf="!publicPage" class="col-md-5">
+    <div *ngIf="!publicPage">
       <h3>
         <app-workflow-actions
           *ngIf="showWorkflowActions"
@@ -122,9 +136,12 @@
       <span *ngIf="!labelsEditMode && !starGazersClicked" class="inline-block mt-1 mb-1">
         <span *ngIf="workflowEditData?.labels.length > 0" class="size-small mr-2">Labels</span>
         <mat-chip-list class="bubble-list">
-          <mat-chip class="bubble workflow-background pointer" *ngFor="let label of workflowEditData?.labels" (click)="goToSearch(label)">{{
-            label
-          }}</mat-chip>
+          <mat-chip
+            class="bubble workflow-background pointer"
+            *ngFor="let label of workflowEditData?.labels"
+            (click)="goToSearch(label, entryType)"
+            >{{ label }}</mat-chip
+          >
           <button
             type="button"
             *ngIf="!labelsEditMode && !isWorkflowPublic"
@@ -215,8 +232,9 @@
             <mat-tab id="launchTab" label="Launch">
               <div *ngIf="(launchSupport$ | async) === false; else launchSupported">
                 <div class="p-3">
-                  <mat-card class="alert alert-warning" role="alert">
-                    <mat-icon>warning</mat-icon> Dockstore does not yet have customized launch-with instructions for this language.
+                  <mat-card class="alert alert-warning mat-elevation-z" role="alert">
+                    <mat-icon class="alert-warning-icon">warning</mat-icon> Dockstore does not yet have customized launch-with instructions
+                    for this language.
                   </mat-card>
                 </div>
               </div>
@@ -235,8 +253,8 @@
               </ng-template>
               <ng-template #noVersions>
                 <div class="p-3">
-                  <mat-card class="alert alert-warning" role="alert">
-                    <mat-icon>warning</mat-icon> No versions exist for this workflow.
+                  <mat-card class="alert alert-warning mat-elevation-z" role="alert">
+                    <mat-icon class="alert-warning-icon">warning</mat-icon> No versions exist for this workflow.
                   </mat-card>
                 </div>
               </ng-template>
@@ -335,8 +353,8 @@
                 </app-tool-tab>
               </div>
               <div *ngIf="isStub()" class="p-3">
-                <mat-card class="alert alert-warning" role="alert">
-                  <mat-icon>warning</mat-icon> To see tools, please refresh the workflow.
+                <mat-card class="alert alert-warning mat-elevation-z" role="alert">
+                  <mat-icon class="alert-warning-icon">warning</mat-icon> To see tools, please refresh the workflow.
                 </mat-card>
               </div>
             </mat-tab>
@@ -352,11 +370,13 @@
                 >
                 </app-dag>
                 <div *ngIf="!selectedVersion">
-                  <mat-card class="alert alert-warning p-3" role="alert"> <mat-icon>warning</mat-icon> No version selected. </mat-card>
+                  <mat-card class="alert alert-warning mat-elevation-z p-3" role="alert">
+                    <mat-icon class="alert-warning-icon">warning</mat-icon> No version selected.
+                  </mat-card>
                 </div>
                 <div *ngIf="isStub()" class="p-3">
-                  <mat-card class="alert alert-warning" role="alert">
-                    <mat-icon>warning</mat-icon> To see the DAG, please refresh the workflow.
+                  <mat-card class="alert alert-warning mat-elevation-z" role="alert">
+                    <mat-icon class="alert-warning-icon">warning</mat-icon> To see the DAG, please refresh the workflow.
                   </mat-card>
                 </div>
               </ng-template>
@@ -370,8 +390,8 @@
       <div *ngIf="publicPage" class="mt-2 mr-3">
         <div *ngIf="workflow?.topicId !== null; else noTopicId" id="discourse-comments"></div>
         <ng-template #noTopicId>
-          <mat-card class="alert alert-warning" role="alert">
-            <mat-icon>info</mat-icon> No Discourse topic exists for this {{ entryType }}.
+          <mat-card class="alert alert-warning mat-elevation-z" role="alert">
+            <mat-icon class="alert-warning-icon">info</mat-icon> No Discourse topic exists for this {{ entryType }}.
           </mat-card>
         </ng-template>
       </div>

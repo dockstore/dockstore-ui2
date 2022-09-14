@@ -27,7 +27,11 @@ export class CodeEditorListComponent {
   public downloadFilePath: string;
   public DescriptorType = ToolDescriptor.TypeEnum;
 
-  constructor(private fileService: FileService, private workflowQuery: WorkflowQuery) {
+  constructor(
+    private fileService: FileService,
+    private workflowQuery: WorkflowQuery,
+    private codeEditorListService: CodeEditorListService
+  ) {
     this.published$ = this.workflowQuery.workflowIsPublished$;
   }
 
@@ -40,7 +44,7 @@ export class CodeEditorListComponent {
     if (this.fileType === 'dockerfile') {
       descriptorType = ToolDescriptor.TypeEnum.CWL;
     }
-    const filesToAdd = CodeEditorListService.determineFilesToAdd(descriptorType, this.fileType, this.sourcefiles);
+    const filesToAdd = this.codeEditorListService.determineFilesToAdd(descriptorType, this.fileType, this.sourcefiles);
     if (this.sourcefiles === undefined) {
       this.sourcefiles = [];
     }
@@ -70,7 +74,7 @@ export class CodeEditorListComponent {
    * @memberof CodeEditorListComponent
    */
   isPrimaryDescriptor(path: string): boolean {
-    return this.fileType === 'descriptor' && CodeEditorListService.isPrimaryDescriptor(path);
+    return this.fileType === 'descriptor' && this.codeEditorListService.isPrimaryDescriptor(path);
   }
 
   /**
@@ -92,7 +96,7 @@ export class CodeEditorListComponent {
   showSourcefile(type: SourceFile.TypeEnum): boolean {
     const fileType = this.fileType;
     const descriptorType = this.descriptorType;
-    return CodeEditorListService.showSourcefile(type, fileType, descriptorType);
+    return this.codeEditorListService.showSourcefile(type, fileType, descriptorType);
   }
 
   /**

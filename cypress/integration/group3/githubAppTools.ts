@@ -8,7 +8,7 @@ describe('GitHub App Tools', () => {
 
   function selectUnpublishedTab(org: string) {
     cy.get('#tool-path').should('be.visible');
-    cy.get('mat-panel-title')
+    cy.get('mat-expansion-panel-header')
       .contains(org)
       .parentsUntil('mat-accordion')
       .should('be.visible')
@@ -19,7 +19,7 @@ describe('GitHub App Tools', () => {
 
   function selectUnpublishedGitHubAppTab(org: string) {
     cy.get('#workflow-path').should('be.visible');
-    cy.get('mat-panel-title')
+    cy.get('mat-expansion-panel-header')
       .contains(org)
       .parentsUntil('mat-accordion')
       .should('be.visible')
@@ -48,7 +48,7 @@ describe('GitHub App Tools', () => {
       cy.contains('Close').click();
 
       // GitHub App Logs
-      cy.contains('See GitHub Apps Logs').click();
+      cy.contains('Apps Logs').click();
       cy.contains('There were problems retrieving GitHub App logs for this organization.');
       cy.contains('Close').click();
       cy.server();
@@ -57,7 +57,7 @@ describe('GitHub App Tools', () => {
         url: '/api/lambdaEvents/**',
         response: [],
       }).as('lambdaEvents');
-      cy.contains('See GitHub Apps Logs').click();
+      cy.contains('Apps Logs').click();
       cy.contains('There are no GitHub App logs for this organization.');
       cy.contains('Close').click();
 
@@ -79,7 +79,7 @@ describe('GitHub App Tools', () => {
         url: '/api/lambdaEvents/**',
         response: realResponse,
       }).as('lambdaEvents');
-      cy.contains('See GitHub Apps Logs').click();
+      cy.contains('Apps Logs').click();
       cy.contains('1 – 1 of 1');
       cy.contains('Close').click();
     });
@@ -126,7 +126,7 @@ describe('GitHub App Tools', () => {
       cy.contains('Configuration');
       cy.contains('/.dockstore.yml');
 
-      selectUnpublishedGitHubAppTab('github.com/C');
+      selectUnpublishedGitHubAppTab('C');
       selectGitHubAppTool('test-github-app-tools/md5sum');
       cy.get('#publishButton').should('not.be.disabled');
       cy.get('[data-cy=viewPublicWorkflowButton]').should('not.exist');

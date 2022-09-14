@@ -19,7 +19,7 @@ import { Directive, Injectable, Input, OnDestroy, ViewChild } from '@angular/cor
 import { FormControl, Validators } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatTabChangeEvent, MatTabGroup } from '@angular/material/tabs';
-import { ActivatedRoute, NavigationEnd, Params, Router, RouterEvent } from '@angular/router/';
+import { ActivatedRoute, NavigationEnd, Params, Router, RouterEvent } from '@angular/router';
 import { Subject, Observable } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { Dockstore } from '../shared/dockstore.model';
@@ -292,11 +292,9 @@ export abstract class Entry implements OnDestroy {
   }
 
   updateVersionsFileTypes(entryId: number, versionid: number): void {
-    this.alertService.start(`Getting version's unique file types`);
     this.entryService.getVersionsFileTypes(entryId, versionid).subscribe(
       (fileTypes: Array<SourceFile.TypeEnum>) => {
         this.versionsFileTypes = fileTypes;
-        this.alertService.simpleSuccess();
       },
       (error: HttpErrorResponse) => {
         this.alertService.detailedError(error);
@@ -309,7 +307,6 @@ export abstract class Entry implements OnDestroy {
     this.entryService.getVerifiedPlatforms(entryId).subscribe(
       (verifiedVersions: Array<VersionVerifiedPlatform>) => {
         this.versionsWithVerifiedPlatforms = verifiedVersions.map((value) => Object.assign({}, value));
-        this.alertService.simpleSuccess();
       },
       (error) => {
         this.alertService.detailedError(error);
@@ -318,8 +315,8 @@ export abstract class Entry implements OnDestroy {
     );
   }
 
-  updateCategories(entryId: number): void {
-    this.entryCategoriesService.updateEntryCategories(entryId);
+  updateCategories(entryId: number, published: boolean): void {
+    this.entryCategoriesService.updateEntryCategories(entryId, published);
     this.categories$ = this.entryCategoriesService.categories$;
   }
 
@@ -490,9 +487,24 @@ export abstract class Entry implements OnDestroy {
   /**
    * Go to the search page with a query preloaded
    * @param {string} searchValue Value to search for
+   * @param {EntryType} entryType Type of entry to search for
    */
-  goToSearch(searchValue: string): void {
-    window.location.href = '/search?labels.value.keyword=' + searchValue + '&searchMode=files';
+  goToSearch(searchValue: string, entryType: EntryType): void {
+    // If the entry type is a tool or workflow, search for that particular type of entry
+    // Otherwise, perform the default type of search
+    let searchType: string = undefined;
+    if (entryType === EntryType.Tool || entryType === EntryType.AppTool) {
+      searchType = 'tools';
+    } else if (entryType === EntryType.BioWorkflow) {
+      searchType = 'workflows';
+    }
+    // construct the url, adding parameters in an order that will remain the same when the search page later rewrites it
+    let url = '/search?labels.value.keyword=' + searchValue;
+    if (searchType !== undefined) {
+      url += '&entryType=' + searchType;
+    }
+    url += '&searchMode=files';
+    this.router.navigateByUrl(url);
   }
 
   /**

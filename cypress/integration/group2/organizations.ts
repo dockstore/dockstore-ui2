@@ -140,13 +140,13 @@ describe('Dockstore Organizations', () => {
     });
 
     it('have request shown on homepage', () => {
-      cy.visit('/');
+      cy.visit('/dashboard');
       cy.contains('1 organization request');
       cy.contains('1 organization request requiring action');
     });
 
     it('have organization shown on the homepage', () => {
-      cy.visit('/');
+      cy.visit('/dashboard');
       cy.contains('Potatoe');
       cy.contains('Find organizations');
       cy.get('[data-cy=filterOrganizationsInput]').type('Po');
@@ -306,7 +306,7 @@ describe('Dockstore Organizations', () => {
     });
 
     // test the fix for DOCK-1945
-    it('stay on collections page when removing an entry',  () => {
+    it('stay on collections page when removing an entry', () => {
       const url: string = '/organizations/Potatoe/collections/veryFakeCollectionName';
       cy.visit(url);
       cy.url().should('include', url);

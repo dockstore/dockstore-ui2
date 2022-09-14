@@ -14,38 +14,48 @@
    limitations under the License.
 -->
 <app-loading [loading]="loading$ | async">
-  <div class="pt-2" fxLayout="column" fxLayoutGap="1rem">
-    <div *ngFor="let organizationUser of organizationMembers$ | async; let index = index">
-      <mat-card class="m-2 mat-elevation-z2" fxFlex *ngIf="organizationUser?.accepted">
-        <div fxLayout="row" fxLayoutAlign="space-between stretch">
-          <div fxFlex fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="center center">
-            <img *ngIf="organizationUser.user?.avatarUrl" mat-card-avatar class="header-image" [src]="organizationUser.user?.avatarUrl" />
-            <img
-              *ngIf="!organizationUser.user?.avatarUrl"
-              mat-card-avatar
-              class="header-image"
-              src="https://via.placeholder.com/300x300?text=Avatar+Not+Found"
-            />
-            <div fxFlex="80" fxLayout="column" fxLayoutAlign="start stretch">
-              <div fxLayout="row" fxLayoutAlign="space-between center">
-                <h5>{{ organizationUser.user?.username }}</h5>
-                <span class="role-display">{{ organizationUser.role | titlecase }}</span>
-              </div>
-              <span class="orcid" *ngIf="organizationUser.user?.orcid" fxLayout="row wrap">
-                <div>
-                  ORCID
-                  <img
-                    src="../../../assets/images/account-logos/orcid.svg"
-                    alt="ORCID iD logo"
-                    class="orcid-id-logo site-icons-small mr-3"
-                  />
+  <div class="pt-2" fxLayout="row wrap">
+    <div fxFlex="50" fxFlex.lt-sm="100" *ngFor="let organizationUser of organizationMembers$ | async; let index = index">
+      <mat-card fxFlex class="m-2" *ngIf="organizationUser?.accepted">
+        <div fxLayout="column">
+          <div fxLayout="row" fxLayoutAlign="space-between stretch">
+            <div fxFlex fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="center center">
+              <img *ngIf="organizationUser.user?.avatarUrl" mat-card-avatar class="header-image" [src]="organizationUser.user?.avatarUrl" />
+              <img
+                *ngIf="!organizationUser.user?.avatarUrl"
+                mat-card-avatar
+                class="header-image"
+                src="https://via.placeholder.com/300x300?text=Avatar+Not+Found"
+              />
+              <div fxFlex="80" fxLayout="column" fxLayoutAlign="start stretch">
+                <div fxLayout="row" fxLayoutAlign="space-between center">
+                  <a class="no-underline" routerLink="/users/{{ organizationUser.user?.username }}">
+                    <h5 class="weight-bold mt-0 mb-0" fxFlex>{{ organizationUser.user?.username }}</h5>
+                  </a>
+                  <span class="bubble">{{ organizationUser.role | titlecase }}</span>
                 </div>
-                <a href="https://orcid.org/{{ organizationUser.user?.orcid }}">{{ organizationUser.user?.orcid }}</a>
-              </span>
+                <span class="orcid" *ngIf="organizationUser.user?.orcid" fxLayout="row wrap">
+                  <div>
+                    ORCID
+                    <img
+                      src="../../../assets/images/account-logos/orcid.svg"
+                      alt="ORCID iD logo"
+                      class="orcid-id-logo site-icons-small mr-3"
+                    />
+                  </div>
+                  <a href="https://orcid.org/{{ organizationUser.user?.orcid }}">{{ organizationUser.user?.orcid }}</a>
+                </span>
+              </div>
             </div>
           </div>
-          <div fxFlex fxGrow="1" fxLayoutAlign="end center" *ngIf="canEditMembership$ | async">
-            <mat-card-content fxLayout="row" fxLayoutGap="10px" class="m-0">
+          <div fxLayoutAlign="center" *ngIf="canEditMembership$ | async">
+            <mat-card-content
+              *ngIf="organizationUser.user.id !== (userId$ | async)"
+              fxLayout="row"
+              fxLayoutGap="35px"
+              class="m-0"
+              fxLayoutAlign="space-evenly"
+            >
               <button
                 mat-button
                 class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"

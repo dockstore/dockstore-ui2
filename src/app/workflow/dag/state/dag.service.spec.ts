@@ -21,13 +21,23 @@ import { WorkflowsStubService } from '../../../test/service-stubs';
 import { DagQuery } from './dag.query';
 import { DagService } from './dag.service';
 import { DagStore } from './dag.store';
+import { DescriptorLanguageService } from '../../../shared/entry/descriptor-language.service';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 /* eslint-disable no-unused-vars, @typescript-eslint/no-unused-vars */
 
 describe('Service: Dag', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [DagService, DagStore, DagQuery, Renderer2, { provide: WorkflowsService, useClass: WorkflowsStubService }],
+      imports: [HttpClientTestingModule],
+      providers: [
+        DagService,
+        DagStore,
+        DagQuery,
+        Renderer2,
+        { provide: WorkflowsService, useClass: WorkflowsStubService },
+        { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
+      ],
     });
   });
 

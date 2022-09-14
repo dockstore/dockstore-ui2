@@ -28,6 +28,7 @@
         [pattern]="validationPatterns.versionTag"
         required
         placeholder="20.04"
+        [disabled]="!editMode"
       />
       <mat-hint>e.g. "20.04" is the tag name of "docker pull ubuntu:20.04" </mat-hint>
       <mat-error *ngIf="formErrors.versionTag">{{ formErrors.versionTag }}</mat-error>
@@ -43,6 +44,7 @@
         [pattern]="validationPatterns.reference"
         placeholder="develop"
         required
+        [disabled]="!editMode"
       />
       <mat-hint>e.g. "develop" is the branch name of "https://github.com/dockstore/dockstore/tree/develop"</mat-hint>
       <mat-error *ngIf="formErrors.reference">{{ formErrors.reference }}</mat-error>

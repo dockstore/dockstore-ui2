@@ -16,12 +16,12 @@
 
 <button
   mat-button
-  color="accent"
   type="button"
-  class="mr-1"
+  class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z mr-1 mt-2 mb-2"
   data-cy="refreshOrganization"
   (click)="isGitHubOrg ? openConfirmationDialog() : refreshOrganization()"
   [disabled]="isRefreshing$ | async"
 >
+  <img src="../../../assets/svg/Refresh.svg" alt="Refresh" class="pb-1 pr-2" />
   {{ buttonText }}
 </button>

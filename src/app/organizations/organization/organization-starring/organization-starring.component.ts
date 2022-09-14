@@ -29,7 +29,7 @@ import { OrganizationStarringService } from './organization-starring.service';
 @Component({
   selector: 'app-organization-starring',
   templateUrl: '../../../starring/starring.component.html',
-  styleUrls: ['../../../starring/starring.component.css'],
+  styleUrls: ['../../../starring/starring.component.scss'],
 })
 export class OrganizationStarringComponent extends Base implements OnInit, OnDestroy, OnChanges {
   @Input() organization: Organization;

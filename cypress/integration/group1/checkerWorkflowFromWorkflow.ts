@@ -27,8 +27,7 @@ describe('Checker workflow test from my-workflows', () => {
    * This specifically gets the 'l' workflow, not something containing the 'l', but exactly 'l'
    */
   function getWorkflow() {
-    cy.contains('mat-expansion-panel', 'github.com/A')
-      .should('have.class', 'mat-expanded')
+    cy.contains('mat-expansion-panel', 'A')
       .first()
       .parentsUntil('accordion-group')
       .contains('div .no-wrap', /\l\b/)

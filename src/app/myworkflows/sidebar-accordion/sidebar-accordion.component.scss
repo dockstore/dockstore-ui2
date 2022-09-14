@@ -1,7 +1,16 @@
-mat-expansion-panel {
-  margin: 0px 2px;
+@use '@angular/material' as mat;
+
+@import '/src/materialColorScheme.scss';
+
+// // Expansion panel background - Workflow
+mat-expansion-panel-header,
+mat-expansion-panel-header[aria-expanded='true']:hover,
+mat-expansion-panel-header[aria-expanded='true']:focus,
+:host ::ng-deep mat-expansion-panel .mat-expansion-panel-content {
+  background-color: $workflow-background-color;
 }
 
-.mat-expansion-panel-spacing {
-  margin: 16px 2px !important;
+// Selected workflow style
+.selectedWorkflow {
+  background-color: $workflow-selection-color;
 }

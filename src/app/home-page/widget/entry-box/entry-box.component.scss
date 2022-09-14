@@ -1,0 +1,6 @@
+@use '@angular/material' as mat;
+@import '/src/materialColorScheme.scss';
+
+.entries-container {
+  height: 95%;
+}
