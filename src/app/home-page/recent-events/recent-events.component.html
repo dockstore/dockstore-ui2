@@ -17,10 +17,10 @@
             <a
               [routerLink]="
                 event?.apptool
-                  ? '/tools/' + event?.apptool.full_workflow_path
+                  ? '/tools/' + event?.apptool?.full_workflow_path
                   : event?.tool
-                  ? '/tools/' + event?.tool.tool_path
-                  : '/workflows/' + event?.workflow.full_workflow_path
+                  ? '/tools/' + event?.tool?.tool_path
+                  : '/workflows/' + event?.workflow?.full_workflow_path
               "
               >{{
                 (event?.tool | entryToDisplayName) || (event?.workflow | entryToDisplayName) || (event?.apptool | entryToDisplayName)
@@ -44,10 +44,10 @@
             <a
               [routerLink]="
                 event?.apptool
-                  ? '/tools/' + event?.apptool.full_workflow_path
+                  ? '/tools/' + event?.apptool?.full_workflow_path
                   : event?.tool
-                  ? '/tools/' + event?.tool.tool_path
-                  : '/workflows/' + event?.workflow.full_workflow_path
+                  ? '/tools/' + event?.tool?.tool_path
+                  : '/workflows/' + event?.workflow?.full_workflow_path
               "
               >{{
                 (event?.tool | entryToDisplayName) || (event?.workflow | entryToDisplayName) || (event?.apptool | entryToDisplayName)
@@ -67,10 +67,10 @@
             <a
               [routerLink]="
                 event?.apptool
-                  ? '/tools/' + event?.apptool.full_workflow_path
+                  ? '/tools/' + event?.apptool?.full_workflow_path
                   : event?.tool
-                  ? '/tools/' + event?.tool.tool_path
-                  : '/workflows/' + event?.workflow.full_workflow_path
+                  ? '/tools/' + event?.tool?.tool_path
+                  : '/workflows/' + event?.workflow?.full_workflow_path
               "
               >{{
                 (event?.tool | entryToDisplayName) || (event?.workflow | entryToDisplayName) || (event?.apptool | entryToDisplayName)
@@ -84,10 +84,10 @@
             <a
               [routerLink]="
                 event?.apptool
-                  ? '/tools/' + event?.apptool.full_workflow_path
+                  ? '/tools/' + event?.apptool?.full_workflow_path
                   : event?.tool
-                  ? '/tools/' + event?.tool.tool_path
-                  : '/workflows/' + event?.workflow.full_workflow_path
+                  ? '/tools/' + event?.tool?.tool_path
+                  : '/workflows/' + event?.workflow?.full_workflow_path
               "
               >{{
                 (event?.tool | entryToDisplayName) || (event?.workflow | entryToDisplayName) || (event?.apptool | entryToDisplayName)
