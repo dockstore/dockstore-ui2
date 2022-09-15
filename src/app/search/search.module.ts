@@ -21,7 +21,6 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { MdePopoverModule } from '@material-extended/mde';
 import { TagCloudModule } from 'angular-tag-cloud-module';
 
 import { RefreshAlertModule } from '../shared/alert/alert.module';
@@ -32,6 +31,7 @@ import { PipeModule } from '../shared/pipe/pipe.module';
 import { PrivateIconModule } from '../shared/private-icon/private-icon.module';
 import { AdvancedSearchComponent } from './advancedsearch/advancedsearch.component';
 import { BasicSearchComponent } from './basic-search/basic-search.component';
+import { IsAppToolPipe } from './is-app-tool.pipe';
 import { QueryBuilderService } from './query-builder.service';
 import { SearchResultsComponent } from './search-results/search-results.component';
 import { SearchToolTableComponent } from './search-tool-table/search-tool-table.component';
@@ -39,7 +39,6 @@ import { SearchWorkflowTableComponent } from './search-workflow-table/search-wor
 import { SearchComponent } from './search.component';
 import { searchRouting } from './search.routing';
 import { SearchService } from './state/search.service';
-import { IsAppToolPipe } from './is-app-tool.pipe';
 
 @NgModule({
   declarations: [
@@ -67,7 +66,6 @@ import { IsAppToolPipe } from './is-app-tool.pipe';
     ReactiveFormsModule,
     RefreshAlertModule,
     FlexLayoutModule,
-    MdePopoverModule,
     SnackbarModule,
   ],
   providers: [SearchService, QueryBuilderService],

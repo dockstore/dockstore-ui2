@@ -151,7 +151,6 @@
 "@istanbuljs/load-nyc-config@1.1.0","ISC","https://github.com/istanbuljs/load-nyc-config"
 "@istanbuljs/schema@0.1.3","MIT","https://github.com/istanbuljs/schema"
 "@jridgewell/resolve-uri@3.0.4","MIT","https://github.com/jridgewell/resolve-uri"
-"@material-extended/mde@3.0.3","MIT","https://github.com/material-extended/mde"
 "@ngneat/forms-manager@2.5.0","MIT",""
 "@ngtools/webpack@13.2.2","MIT","https://github.com/angular/angular-cli"
 "@ngx-lite/json-ld@0.6.4","MIT","https://github.com/coryrylan/ngx-json-ld"
