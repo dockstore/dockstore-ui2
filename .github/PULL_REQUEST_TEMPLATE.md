@@ -14,3 +14,4 @@ Please make sure that you've checked the following before submitting your pull r
 - [ ] Run `npm audit` and ensure you are not introducing new vulnerabilities
 - [ ] Do due diligence on new 3rd party libraries, checking for CVEs
 - [ ] Don't allow user-uploaded images to be served from the Dockstore domain
+- [ ] If this PR is for a user-facing feature, create and link a documentation ticket for this feature (usually in the same milestone as the linked issue). Style points if you create a documentation PR directly and link that instead.
