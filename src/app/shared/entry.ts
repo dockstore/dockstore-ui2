@@ -461,6 +461,9 @@ export abstract class Entry implements OnDestroy {
    * @param topicId The ID of the topic on discourse
    */
   discourseHelper(topicId: number): void {
+    if (document.getElementById('discourse-embed-script') !== null) {
+      return;
+    }
     const element = document.getElementById('discourse-embed-frame');
     if (element !== null) {
       element.remove();
@@ -471,6 +474,7 @@ export abstract class Entry implements OnDestroy {
     };
     (function () {
       const d = document.createElement('script');
+      d.id = 'discourse-embed-script';
       d.type = 'text/javascript';
       d.async = true;
       d.src = (<any>window).DiscourseEmbed.discourseUrl + '/javascripts/embed.js';
