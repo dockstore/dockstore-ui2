@@ -461,12 +461,15 @@ export abstract class Entry implements OnDestroy {
    * @param topicId The ID of the topic on discourse
    */
   discourseHelper(topicId: number): void {
-    // If the #discourse-comments element does not exist, or if the
-    // previous topicId is the same as the requested topic id, no dothing.
+    // If the #discourse-comments element does not exist, or if the previous topicId
+    // (from the previous call) is the same as the requested topicId, no dothing.
     const comments = document.getElementById('discourse-comments');
     if (!comments || (<any>comments).topicId === topicId) {
+      console.log('no action');
       return;
     }
+    // Store the topicId so we can check it the next time this function is called.
+    // The stored topicId will persist until the view is regenerated.
     (<any>comments).topicId = topicId;
 
     const element = document.getElementById('discourse-embed-frame');
