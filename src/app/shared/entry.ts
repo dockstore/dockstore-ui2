@@ -461,9 +461,14 @@ export abstract class Entry implements OnDestroy {
    * @param topicId The ID of the topic on discourse
    */
   discourseHelper(topicId: number): void {
-    if (document.getElementById('discourse-embed-script') !== null) {
+    // If the #discourse-comments element does not exist, or if the
+    // previous topicId is the same as the requested topic id, no dothing.
+    const comments = document.getElementById('discourse-comments');
+    if (!comments || (<any>comments).topicId === topicId) {
       return;
     }
+    (<any>comments).topicId = topicId;
+
     const element = document.getElementById('discourse-embed-frame');
     if (element !== null) {
       element.remove();
@@ -474,7 +479,6 @@ export abstract class Entry implements OnDestroy {
     };
     (function () {
       const d = document.createElement('script');
-      d.id = 'discourse-embed-script';
       d.type = 'text/javascript';
       d.async = true;
       d.src = (<any>window).DiscourseEmbed.discourseUrl + '/javascripts/embed.js';
