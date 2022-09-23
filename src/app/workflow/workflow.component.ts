@@ -413,15 +413,21 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
       this.labelsEditMode = true;
       return;
     }
+    const value = this.labelFormControl.value;
+    if ((value || '').trim()) {
+      this.workflowEditData.labels.push(value.trim());
+    }
     // the edit object should be recreated
-    if (this.workflowEditData.labels !== 'undefined') {
+    if (this.workflowEditData.labels !== undefined) {
       this.setWorkflowLabels();
     }
+    this.labelFormControl.setValue(null);
   }
 
   cancelLabelChanges(): void {
     this.workflowEditData.labels = this.dockstoreService.getLabelStrings(this.workflow.labels);
     this.labelsEditMode = false;
+    this.labelFormControl.setValue(null);
   }
 
   // TODO: Move most of this function to the service, sadly 'this.labelsEditMode' makes it more difficult

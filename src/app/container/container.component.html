@@ -151,7 +151,7 @@
               [formControl]="labelFormControl"
               [matChipInputFor]="chipList"
               [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-              [matChipInputAddOnBlur]="true"
+              [matChipInputAddOnBlur]="false"
               (matChipInputTokenEnd)="addToLabels($event)"
             />
             <mat-error *ngIf="labelFormControl.hasError('pattern')"

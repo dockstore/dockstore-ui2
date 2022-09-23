@@ -280,10 +280,15 @@ export class ContainerComponent extends Entry implements AfterViewInit, OnInit {
       this.labelsEditMode = true;
       return;
     }
+    const value = this.labelFormControl.value;
+    if ((value || '').trim()) {
+      this.containerEditData.labels.push(value.trim());
+    }
     // the edit object should be recreated
-    if (this.containerEditData.labels !== 'undefined') {
+    if (this.containerEditData.labels !== undefined) {
       this.setContainerLabels();
     }
+    this.labelFormControl.setValue(null);
   }
 
   // TODO: Move most of this function to the service, sadly 'this.labelsEditMode' makes it more difficult
@@ -304,6 +309,7 @@ export class ContainerComponent extends Entry implements AfterViewInit, OnInit {
   cancelLabelChanges(): void {
     this.containerEditData.labels = this.dockstoreService.getLabelStrings(this.tool.labels);
     this.labelsEditMode = false;
+    this.labelFormControl.setValue(null);
   }
 
   public toolCopyBtnClick(copyBtn: string): void {
