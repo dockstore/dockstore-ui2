@@ -70,21 +70,8 @@
           routerLinkActive="icon-active"
         >
           <mat-icon
-            matBadge="{{
-              isAdminOrCurator
-                ? (myOrganizationInvites$ | async)?.length +
-                  (myRejectedOrganizationRequests$ | async)?.length +
-                  (allPendingOrganizations$ | async)?.length
-                : (myOrganizationInvites$ | async)?.length + (myRejectedOrganizationRequests$ | async)?.length
-            }}"
-            matBadgeHidden="{{
-              isAdminOrCurator
-                ? (myOrganizationInvites$ | async)?.length +
-                    (myRejectedOrganizationRequests$ | async)?.length +
-                    (allPendingOrganizations$ | async)?.length ===
-                  0
-                : (myOrganizationInvites$ | async)?.length + (myRejectedOrganizationRequests$ | async)?.length === 0
-            }}"
+            matBadge="{{ (isAdminOrCurator$ | async) ? adminNotifCount : notifCount }}"
+            matBadgeHidden="{{ (isAdminOrCurator$ | async) ? adminNotifCount === 0 : notifCount === 0 }}"
             matBadgeColor="warn"
             matBadgeSize="small"
             matBadgeOverlap="true"

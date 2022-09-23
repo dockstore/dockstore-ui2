@@ -15,8 +15,8 @@
  */
 import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { Observable, Subject } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
+import { Observable, Subject, combineLatest } from 'rxjs';
+import { filter, takeUntil, map } from 'rxjs/operators';
 import { Logout } from '../loginComponents/logout';
 import { currentPrivacyPolicyVersion, currentTOSVersion } from '../shared/constants';
 import { Dockstore } from '../shared/dockstore.model';
@@ -47,8 +47,9 @@ export class NavbarComponent extends Logout implements OnInit {
   public myOrganizationInvites$: Observable<Array<OrganizationUser>>;
   public myRejectedOrganizationRequests$: Observable<Array<OrganizationUser>>;
   public allPendingOrganizations$: Observable<Array<Organization>>;
-  public allPendingOrganizations: Array<Organization>;
-  public isAdminOrCurator: boolean;
+  public isAdminOrCurator$: Observable<boolean>;
+  public adminNotifCount: number;
+  public notifCount: number;
 
   constructor(
     private pagenumberService: PagenumberService,
@@ -60,7 +61,8 @@ export class NavbarComponent extends Logout implements OnInit {
     private requestsService: RequestsService
   ) {
     super(trackLoginService, logoutService, router);
-
+    this.adminNotifCount = 0;
+    this.notifCount = 0;
     this.router.events
       .pipe(
         filter((event) => event instanceof NavigationEnd),
@@ -69,14 +71,10 @@ export class NavbarComponent extends Logout implements OnInit {
       .subscribe(() => {
         this.isExtended = toExtendSite(this.router.url);
       });
-    this.userQuery.isAdminOrCurator$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((isAdminOrCurator) => {
-      this.isAdminOrCurator = isAdminOrCurator;
-    });
+    this.isAdminOrCurator$ = this.userQuery.isAdminOrCurator$;
   }
 
   ngOnInit() {
-    this.requestsService.updateMyMemberships();
-    this.requestsQuery.myOrganizationInvites$.subscribe((invites) => console.log(invites));
     this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((user) => {
       this.user = user;
       this.requestsService.updateMyMemberships();
@@ -86,6 +84,13 @@ export class NavbarComponent extends Logout implements OnInit {
     this.myOrganizationInvites$ = this.requestsQuery.myOrganizationInvites$;
     this.myRejectedOrganizationRequests$ = this.requestsQuery.myRejectedOrganizationRequests$;
     this.allPendingOrganizations$ = this.requestsQuery.allPendingOrganizations$;
+    combineLatest([this.myOrganizationInvites$, this.myRejectedOrganizationRequests$, this.allPendingOrganizations$]).subscribe(
+      ([invites, rejections, pendingOrgs]: [Array<OrganizationUser>, Array<OrganizationUser>, Array<Organization>]) => {
+        this.adminNotifCount = invites?.length + rejections?.length + pendingOrgs?.length;
+        this.notifCount = invites?.length + rejections?.length;
+        console.log(invites?.length);
+      }
+    );
   }
 
   resetPageNumber() {
