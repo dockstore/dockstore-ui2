@@ -16,7 +16,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Observable, Subject, combineLatest } from 'rxjs';
-import { filter, takeUntil, map } from 'rxjs/operators';
+import { filter, takeUntil } from 'rxjs/operators';
 import { Logout } from '../loginComponents/logout';
 import { currentPrivacyPolicyVersion, currentTOSVersion } from '../shared/constants';
 import { Dockstore } from '../shared/dockstore.model';
@@ -88,7 +88,6 @@ export class NavbarComponent extends Logout implements OnInit {
       ([invites, rejections, pendingOrgs]: [Array<OrganizationUser>, Array<OrganizationUser>, Array<Organization>]) => {
         this.adminNotifCount = invites?.length + rejections?.length + pendingOrgs?.length;
         this.notifCount = invites?.length + rejections?.length;
-        console.log(invites?.length);
       }
     );
   }
