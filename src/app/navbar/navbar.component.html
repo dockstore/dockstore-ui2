@@ -71,8 +71,8 @@
           routerLinkActive="icon-active"
         >
           <mat-icon
-            matBadge="{{ (isAdminOrCurator$ | async) ? adminNotifCount : notifCount }}"
-            matBadgeHidden="{{ (isAdminOrCurator$ | async) ? adminNotifCount === 0 : notifCount === 0 }}"
+            matBadge="{{ notifCount }}"
+            matBadgeHidden="{{ notifCount === 0 }}"
             matBadgeColor="warn"
             matBadgeSize="small"
             matBadgeOverlap="true"

@@ -61,7 +61,6 @@ export class NavbarComponent extends Logout implements OnInit {
     private requestsService: RequestsService
   ) {
     super(trackLoginService, logoutService, router);
-    this.adminNotifCount = 0;
     this.notifCount = 0;
     this.router.events
       .pipe(
@@ -86,14 +85,16 @@ export class NavbarComponent extends Logout implements OnInit {
     this.allPendingOrganizations$ = this.requestsQuery.allPendingOrganizations$;
     combineLatest([this.myOrganizationInvites$, this.myRejectedOrganizationRequests$, this.allPendingOrganizations$]).subscribe(
       ([invites, rejections, pendingOrgs]: [Array<OrganizationUser>, Array<OrganizationUser>, Array<Organization>]) => {
-        this.adminNotifCount = invites?.length + rejections?.length + pendingOrgs?.length;
-        this.notifCount = invites?.length + rejections?.length;
-        if (isNaN(this.adminNotifCount)) {
-          this.adminNotifCount = 0;
-        }
-        if (isNaN(this.notifCount)) {
-          this.notifCount = 0;
-        }
+        this.isAdminOrCurator$.subscribe((isAdminorCurator: boolean) => {
+          if (isAdminorCurator) {
+            this.notifCount = invites?.length + rejections?.length + pendingOrgs?.length;
+          } else {
+            this.notifCount = invites?.length + rejections?.length;
+          }
+          if (isNaN(this.notifCount)) {
+            this.notifCount = 0;
+          }
+        });
       }
     );
   }

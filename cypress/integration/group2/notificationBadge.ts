@@ -44,30 +44,18 @@ describe('Test notification badge on navbar', () => {
       cy.contains('button', 'Create Organization Request').should('be.visible').click();
       cy.contains('button', 'Next').should('be.visible').click();
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('be.disabled');
-      typeInInput('Name', 'Potato');
+      typeInInput('Name', 'Test');
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('be.disabled');
-      typeInInput('Display Name', 'Potato');
+      typeInInput('Display Name', 'Test');
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('be.disabled');
-      typeInInput('Topic', "Boil 'em, mash 'em, stick 'em in a stew");
+      typeInInput('Topic', 'Testing Testing Testing');
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('be.disabled');
-      typeInInput('Email', 'fake@potato.com');
-      cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('not.be.disabled');
-      typeInInput('Organization website', 'www.google.ca');
-      cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('be.disabled');
-      typeInInput('Location', 'Basement');
-      cy.get('.mat-error').should('be.visible');
+      typeInInput('Location', 'Lab');
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('be.disabled');
       typeInInput('Organization website', 'https://www.google.ca');
-      cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('not.be.disabled');
-
-      cy.get('[data-cy=image-url-input').clear().type('https://via.placeholder.com/150');
-      cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('be.disabled');
-
       typeInInput('Contact Email Address', 'asdf@asdf.ca');
-      cy.get('.mat-error').should('be.visible');
-      cy.get('[data-cy=image-url-input').clear();
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('not.be.disabled').click();
-      cy.url().should('eq', Cypress.config().baseUrl + '/organizations/Potato');
+      cy.url().should('eq', Cypress.config().baseUrl + '/organizations/Test');
 
       cy.reload();
       cy.get('#notifButton').should('be.visible').click();
@@ -98,29 +86,12 @@ describe('Test notification badge on navbar', () => {
     it('create a new unapproved organization and invite user', () => {
       cy.contains('button', 'Create Organization Request').should('be.visible').click();
       cy.contains('button', 'Next').should('be.visible').click();
-      cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('be.disabled');
       typeInInput('Name', 'Potato111');
-      cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('be.disabled');
       typeInInput('Display Name', 'Potato111');
-      cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('be.disabled');
       typeInInput('Topic', "Boil 'em, mash 'em, stick 'em in a stew");
-      cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('be.disabled');
-      typeInInput('Email', 'fake11@potato.com');
-      cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('not.be.disabled');
-      typeInInput('Organization website', 'www.google.ca');
-      cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('be.disabled');
       typeInInput('Location', 'Basement');
-      cy.get('.mat-error').should('be.visible');
-      cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('be.disabled');
       typeInInput('Organization website', 'https://www.google.ca');
-      cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('not.be.disabled');
-
-      cy.get('[data-cy=image-url-input').clear().type('https://via.placeholder.com/150');
-      cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('be.disabled');
-
       typeInInput('Contact Email Address', 'a111sdf@asdf.ca');
-      cy.get('.mat-error').should('be.visible');
-      cy.get('[data-cy=image-url-input').clear();
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('not.be.disabled').click();
       cy.url().should('eq', Cypress.config().baseUrl + '/organizations/Potato111');
 

@@ -76,6 +76,6 @@ mat-menu {
   filter: grayscale(100%);
 }
 .bell-icon {
-  color: #c5cae9;
+  color: mat.get-color-from-palette($kim-accent1-success, 4);
   transform: scale(1.25);
 }
