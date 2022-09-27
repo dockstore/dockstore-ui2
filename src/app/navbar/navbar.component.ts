@@ -88,6 +88,12 @@ export class NavbarComponent extends Logout implements OnInit {
       ([invites, rejections, pendingOrgs]: [Array<OrganizationUser>, Array<OrganizationUser>, Array<Organization>]) => {
         this.adminNotifCount = invites?.length + rejections?.length + pendingOrgs?.length;
         this.notifCount = invites?.length + rejections?.length;
+        if (isNaN(this.adminNotifCount)) {
+          this.adminNotifCount = 0;
+        }
+        if (isNaN(this.notifCount)) {
+          this.notifCount = 0;
+        }
       }
     );
   }
