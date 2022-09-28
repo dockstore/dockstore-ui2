@@ -37,21 +37,15 @@ describe('Test notification badge on navbar', () => {
     it('visit the organizations page from the home page', () => {
       cy.visit('/');
       cy.contains('a', 'Organizations').should('be.visible').should('have.attr', 'href', '/organizations').click();
-      cy.contains('No organizations found');
     });
 
     it('create a new unapproved organization', () => {
       cy.contains('button', 'Create Organization Request').should('be.visible').click();
       cy.contains('button', 'Next').should('be.visible').click();
-      cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('be.disabled');
       typeInInput('Name', 'Test');
-      cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('be.disabled');
       typeInInput('Display Name', 'Test');
-      cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('be.disabled');
       typeInInput('Topic', 'Testing Testing Testing');
-      cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('be.disabled');
       typeInInput('Location', 'Lab');
-      cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('be.disabled');
       typeInInput('Organization website', 'https://www.google.ca');
       typeInInput('Contact Email Address', 'asdf@asdf.ca');
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('not.be.disabled').click();
@@ -80,7 +74,6 @@ describe('Test notification badge on navbar', () => {
     it('visit the organizations page from the home page', () => {
       cy.visit('');
       cy.contains('a', 'Organizations').should('be.visible').should('have.attr', 'href', '/organizations').click();
-      cy.contains('No organizations found');
     });
 
     it('create a new unapproved organization and invite user', () => {
