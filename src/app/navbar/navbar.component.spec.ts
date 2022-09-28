@@ -20,6 +20,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterTestingModule } from '@angular/router/testing';
 import { RequestsService } from '../loginComponents/state/requests.service';
@@ -46,6 +47,7 @@ describe('NavbarComponent', () => {
           MatIconModule,
           MatDividerModule,
           MatToolbarModule,
+          HttpClientTestingModule,
         ],
         schemas: [NO_ERRORS_SCHEMA],
         providers: [
