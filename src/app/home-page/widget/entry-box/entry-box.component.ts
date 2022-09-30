@@ -9,7 +9,6 @@ import { Dockstore } from 'app/shared/dockstore.model';
 import { AlertService } from 'app/shared/alert/state/alert.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { SessionService } from '../../../shared/session/session.service';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-entry-box',
@@ -35,8 +34,7 @@ export class EntryBoxComponent extends Base implements OnInit {
     private myWorkflowsService: MyWorkflowsService,
     private usersService: UsersService,
     private alertService: AlertService,
-    private sessionService: SessionService,
-    private route: ActivatedRoute
+    private sessionService: SessionService
   ) {
     super();
   }
