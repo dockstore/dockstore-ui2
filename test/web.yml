@@ -25,6 +25,8 @@ orcidClientSecret: <fill me in>
 gitHubAppPrivateKeyFile: <fill me in>
 gitHubAppId: <fill me in>
 
+orcidClientID: <fill me in>
+orcidClientSecret: <fill me in>
 
 authorizerType: inmemory
 
@@ -95,7 +97,6 @@ uiConfig:
   gitlabAuthUrl: https://gitlab.com/oauth/authorize
   gitlabRedirectPath: /auth/gitlab.com
   gitlabScope: api
-  gitHubAppInstallationUrl: https://github.com/apps/dockstore-testing-application
 
   zenodoAuthUrl: https://zenodo.org/oauth/authorize
   zenodoRedirectPath: /auth/zenodo.org
@@ -108,4 +109,3 @@ uiConfig:
   googleScope: profile email
 
   cwlVisualizerUri: https://view.commonwl.org
-

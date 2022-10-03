@@ -14,7 +14,6 @@
  *  limitations under the License.
  */
 import { resetDB, setTokenUserViewPort } from '../../support/commands';
-import { Dockstore } from '../../../src/app/shared/dockstore.model';
 
 describe('Dockstore dashboard', () => {
   resetDB();
@@ -49,6 +48,16 @@ describe('Dockstore dashboard', () => {
     cy.contains('Tools');
     cy.get('#registerToolButton').should('be.visible').click();
     cy.get('#3-register-workflow-option').should('be.visible').click();
+    cy.contains('button', 'Next').should('be.visible').click();
+    cy.contains('a', 'Manage Dockstore installations on GitHub')
+      .should('have.attr', 'href')
+      .and('include', 'https://github.com/apps/dockstore-testing-application');
+  });
+  it('Registering new workflow through Github redirects correctly', () => {
+    cy.visit('/dashboard?newDashboard');
+    cy.contains('Workflows');
+    cy.get('#registerWorkflowButton').should('be.visible').click();
+    cy.get('#0-register-workflow-option').should('be.visible').click();
     cy.contains('button', 'Next').should('be.visible').click();
     cy.contains('a', 'Manage Dockstore installations on GitHub')
       .should('have.attr', 'href')
