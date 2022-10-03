@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import { resetDB, setTokenUserViewPort } from '../../support/commands';
+import { resetDB, setTokenUserViewPort, verifyGithubLinkNewDashboard } from '../../support/commands';
 
 describe('Dockstore dashboard', () => {
   resetDB();
@@ -44,23 +44,9 @@ describe('Dockstore dashboard', () => {
       .and('include', 'getting-started-with-services');
   });
   it('Registering new tool through Github redirects correctly', () => {
-    cy.visit('/dashboard?newDashboard');
-    cy.contains('Tools');
-    cy.get('#registerToolButton').should('be.visible').click();
-    cy.get('#3-register-workflow-option').should('be.visible').click();
-    cy.contains('button', 'Next').should('be.visible').click();
-    cy.contains('a', 'Manage Dockstore installations on GitHub')
-      .should('have.attr', 'href')
-      .and('include', 'https://github.com/apps/dockstore-testing-application');
+    verifyGithubLinkNewDashboard('Tool');
   });
   it('Registering new workflow through Github redirects correctly', () => {
-    cy.visit('/dashboard?newDashboard');
-    cy.contains('Workflows');
-    cy.get('#registerWorkflowButton').should('be.visible').click();
-    cy.get('#0-register-workflow-option').should('be.visible').click();
-    cy.contains('button', 'Next').should('be.visible').click();
-    cy.contains('a', 'Manage Dockstore installations on GitHub')
-      .should('have.attr', 'href')
-      .and('include', 'https://github.com/apps/dockstore-testing-application');
+    verifyGithubLinkNewDashboard('Workflow');
   });
 });
