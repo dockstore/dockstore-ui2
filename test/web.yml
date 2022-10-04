@@ -87,6 +87,7 @@ uiConfig:
   gitHubAuthUrl: https://github.com/login/oauth/authorize
   gitHubRedirectPath: /auth/github.com
   gitHubScope: read:org,user:email
+  gitHubAppInstallationUrl: https://github.com/apps/dockstore-testing-application
 
   quayIoAuthUrl: https://quay.io/oauth/authorize
   quayIoRedirectPath: /auth/quay.io

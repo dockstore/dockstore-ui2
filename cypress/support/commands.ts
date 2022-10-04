@@ -125,3 +125,12 @@ export function addOrganizationAdminUser(organization: string, user: string) {
       "'), true, 'ADMIN')"
   );
 }
+export function verifyGithubLinkNewDashboard(entryType: string) {
+  cy.visit('/dashboard?newDashboard');
+  cy.get('[data-cy=register-entry-btn]').contains(entryType).should('be.visible').click();
+  cy.get('[data-cy=storage-type-choice]').contains('GitHub').click();
+  cy.contains('button', 'Next').should('be.visible').click();
+  cy.contains('a', 'Manage Dockstore installations on GitHub')
+    .should('have.attr', 'href')
+    .and('include', 'https://github.com/apps/dockstore-testing-application');
+}

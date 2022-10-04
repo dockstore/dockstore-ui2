@@ -34,6 +34,7 @@
             *ngFor="let option of options"
             [value]="option"
             [id]="option.value + '-register-workflow-option'"
+            data-cy="storage-type-choice"
           >
             <span class="text-wrap">
               {{ option.label }}
