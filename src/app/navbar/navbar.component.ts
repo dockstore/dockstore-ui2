@@ -16,7 +16,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { Observable, Subject, combineLatest } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
+import { filter, map, takeUntil } from 'rxjs/operators';
 import { Logout } from '../loginComponents/logout';
 import { currentPrivacyPolicyVersion, currentTOSVersion } from '../shared/constants';
 import { Dockstore } from '../shared/dockstore.model';
@@ -48,8 +48,7 @@ export class NavbarComponent extends Logout implements OnInit {
   public myRejectedOrganizationRequests$: Observable<Array<OrganizationUser>>;
   public allPendingOrganizations$: Observable<Array<Organization>>;
   public isAdminOrCurator$: Observable<boolean>;
-  public adminNotifCount: number;
-  public notifCount: number;
+  public notificationCount$: Observable<number>;
 
   constructor(
     private pagenumberService: PagenumberService,
@@ -61,7 +60,6 @@ export class NavbarComponent extends Logout implements OnInit {
     private requestsService: RequestsService
   ) {
     super(trackLoginService, logoutService, router);
-    this.notifCount = 0;
     this.router.events
       .pipe(
         filter((event) => event instanceof NavigationEnd),
@@ -83,19 +81,33 @@ export class NavbarComponent extends Logout implements OnInit {
     this.myOrganizationInvites$ = this.requestsQuery.myOrganizationInvites$;
     this.myRejectedOrganizationRequests$ = this.requestsQuery.myRejectedOrganizationRequests$;
     this.allPendingOrganizations$ = this.requestsQuery.allPendingOrganizations$;
-    combineLatest([this.myOrganizationInvites$, this.myRejectedOrganizationRequests$, this.allPendingOrganizations$]).subscribe(
-      ([invites, rejections, pendingOrgs]: [Array<OrganizationUser>, Array<OrganizationUser>, Array<Organization>]) => {
-        this.isAdminOrCurator$.subscribe((isAdminorCurator: boolean) => {
-          if (isAdminorCurator) {
-            this.notifCount = invites?.length + rejections?.length + pendingOrgs?.length;
+    this.notificationCount$ = combineLatest([
+      this.myOrganizationInvites$,
+      this.myRejectedOrganizationRequests$,
+      this.allPendingOrganizations$,
+      this.isAdminOrCurator$,
+    ]).pipe(
+      takeUntil(this.ngUnsubscribe),
+      map(
+        ([invites, rejections, pendingOrganizations, isAdminOrCurator]: [
+          Array<OrganizationUser>,
+          Array<OrganizationUser>,
+          Array<Organization>,
+          boolean
+        ]) => {
+          if (isAdminOrCurator) {
+            if (isNaN(invites?.length + rejections?.length + pendingOrganizations?.length)) {
+              return 0;
+            }
+            return invites?.length + rejections?.length + pendingOrganizations?.length;
           } else {
-            this.notifCount = invites?.length + rejections?.length;
+            if (isNaN(invites?.length + rejections?.length)) {
+              return 0;
+            }
+            return invites?.length + rejections?.length;
           }
-          if (isNaN(this.notifCount)) {
-            this.notifCount = 0;
-          }
-        });
-      }
+        }
+      )
     );
   }
 

@@ -64,6 +64,7 @@
         <a
           *ngIf="isLoggedIn"
           id="notifButton"
+          data-cy="notification-button"
           mat-button
           class="icon"
           [routerLink]="['/accounts']"
@@ -71,8 +72,9 @@
           routerLinkActive="icon-active"
         >
           <mat-icon
-            matBadge="{{ notifCount }}"
-            matBadgeHidden="{{ notifCount === 0 }}"
+            data-cy="bell-icon"
+            matBadge="{{ notificationCount$ | async }}"
+            matBadgeHidden="{{ (notificationCount$ | async) === 0 }}"
             matBadgeColor="warn"
             matBadgeSize="small"
             matBadgeOverlap="true"
