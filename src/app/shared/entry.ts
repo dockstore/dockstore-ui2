@@ -464,7 +464,7 @@ export abstract class Entry implements OnDestroy {
     // The #discourse-comments element, included in the entry component's html template,
     // marks the location where the discourse embed script will add the discourse link.
     // If the #discourse-comments element does not exist, or if the previous topicId
-    // (from the previous call) is the same as the requested topicId, no dothing.
+    // (from the previous call) is the same as the requested topicId, do nothing.
     const comments = document.getElementById('discourse-comments');
     if (!comments || (<any>comments).topicId === topicId) {
       return;
