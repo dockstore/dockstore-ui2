@@ -96,15 +96,11 @@ export class NavbarComponent extends Logout implements OnInit {
           boolean
         ]) => {
           if (isAdminOrCurator) {
-            if (isNaN(invites?.length + rejections?.length + pendingOrganizations?.length)) {
-              return 0;
-            }
-            return invites?.length + rejections?.length + pendingOrganizations?.length;
+            return isNaN(invites?.length + rejections?.length + pendingOrganizations?.length)
+              ? 0
+              : invites?.length + rejections?.length + pendingOrganizations?.length;
           } else {
-            if (isNaN(invites?.length + rejections?.length)) {
-              return 0;
-            }
-            return invites?.length + rejections?.length;
+            return isNaN(invites?.length + rejections?.length) ? 0 : invites?.length + rejections?.length;
           }
         }
       )
