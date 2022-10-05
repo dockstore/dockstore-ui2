@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { resetDB, setTokenUserViewPort, setTokenUserViewPortCurator } from '../../support/commands';
+import { createOrganization, resetDB, setTokenUserViewPort, setTokenUserViewPortCurator } from '../../support/commands';
 
 describe('Test notification badge on navbar', () => {
   function typeInInput(fieldName: string, text: string) {
@@ -40,18 +40,7 @@ describe('Test notification badge on navbar', () => {
     });
 
     it('create a new unapproved organization', () => {
-      cy.contains('button', 'Create Organization Request').should('be.visible').click();
-      cy.contains('button', 'Next').should('be.visible').click();
-      typeInInput('Name', 'Test');
-      typeInInput('Display Name', 'Test');
-      typeInInput('Topic', 'Testing Testing Testing');
-      typeInInput('Location', 'Lab');
-      typeInInput('Organization website', 'https://www.google.ca');
-      typeInInput('Contact Email Address', 'asdf@asdf.ca');
-      cy.get('[data-cy=create-or-update-organization-button]').should('be.visible').should('not.be.disabled').click();
-      cy.url().should('eq', Cypress.config().baseUrl + '/organizations/Test');
-
-      cy.reload();
+      createOrganization('Test', 'Test Display', 'Testing Testing Testing', 'Lab', 'https://www.google.ca', 'asf@asdf.ca');
       cy.get('[data-cy=notification-button]').should('be.visible').click();
       cy.get('[data-cy=bell-icon]').should('contain.text', '1');
     });
@@ -77,18 +66,14 @@ describe('Test notification badge on navbar', () => {
     });
 
     it('create a new unapproved organization and invite user', () => {
-      cy.contains('button', 'Create Organization Request').should('be.visible').click();
-      cy.contains('button', 'Next').should('be.visible').click();
-      typeInInput('Name', 'Potato111');
-      typeInInput('Display Name', 'Potato111');
-      typeInInput('Topic', "Boil 'em, mash 'em, stick 'em in a stew");
-      typeInInput('Location', 'Basement');
-      typeInInput('Organization website', 'https://www.google.ca');
-      typeInInput('Contact Email Address', 'a111sdf@asdf.ca');
-      cy.get('[data-cy=create-or-update-organization-button]').should('be.visible').should('not.be.disabled').click();
-      cy.url().should('eq', Cypress.config().baseUrl + '/organizations/Potato111');
-
-      cy.reload();
+      createOrganization(
+        'Potato111',
+        'Potato111',
+        "Boil 'em, mash 'em, stick 'em in a stew",
+        'Basement',
+        'https://www.google.ca',
+        'a111sdf@asdf.ca'
+      );
       cy.contains('span', 'Members').click();
       cy.contains('button', 'Add user').should('be.visible').click();
       typeInInput('Username', 'user_A');

@@ -125,3 +125,18 @@ export function addOrganizationAdminUser(organization: string, user: string) {
       "'), true, 'ADMIN')"
   );
 }
+
+export function createOrganization(name: string, displayName: string, topic: string, location: string, website: string, email: string) {
+  cy.contains('button', 'Create Organization Request').should('be.visible').click();
+  cy.contains('button', 'Next').should('be.visible').click();
+  typeInInput('Name', name);
+  typeInInput('Display Name', displayName);
+  typeInInput('Topic', topic);
+  typeInInput('Location', location);
+  typeInInput('Organization website', website);
+  typeInInput('Contact Email Address', email);
+  cy.get('[data-cy=create-or-update-organization-button]').should('be.visible').should('not.be.disabled').click();
+  cy.url().should('eq', Cypress.config().baseUrl + '/organizations/' + name);
+
+  cy.reload();
+}
