@@ -375,6 +375,7 @@ export class ContainerComponent extends Entry implements AfterViewInit, OnInit {
     if (input) {
       input.value = '';
     }
+    this.labelFormControl.setValue(null);
   }
 
   removeLabel(label: any): void {
