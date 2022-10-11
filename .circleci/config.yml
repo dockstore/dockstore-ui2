@@ -523,7 +523,7 @@ workflows:
     jobs:
       - no_auth_smoke_tests:
           name: "no_auth_smoke_tests_dev"
-          stack: "dev"
+          stack: "qa"
           context:
             - dockerhub
             - oicr-slack
@@ -549,12 +549,13 @@ workflows:
               only:
                 - develop
     jobs:
-      - auth_smoke_tests:
-          name: "auth_smoke_tests_dev"
-          stack: "dev"
-          context:
-            - dockerhub
-            - oicr-slack
+# Disable these until we have DockstoreTestUser4 set up in QA
+#      - auth_smoke_tests:
+#          name: "auth_smoke_tests_dev"
+#          stack: "dev"
+#          context:
+#            - dockerhub
+#            - oicr-slack
       - auth_smoke_tests:
           name: "auth_smoke_tests_staging"
           stack: "staging"

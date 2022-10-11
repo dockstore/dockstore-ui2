@@ -148,6 +148,90 @@ describe('Check external links', () => {
   });
 });
 
+const galaxyWorkflowTuples = [
+  [
+    'github.com/iwc-workflows/sars-cov-2-pe-illumina-wgs-variant-calling/COVID-19-PE-WGS-ILLUMINA',
+    'main',
+    'v0.2.2',
+    'github.com/iwc-workflows/sars-cov-2-pe-illumina-wgs-variant-calling/COVID-19-PE-WGS-ILLUMINA',
+    'Galaxy',
+  ],
+];
+
+describe('Monitor Galaxy Workflows', () => {
+  // This test shouldn't be run for smoke tests as it depends on 'real' entries
+  if (Cypress.config('baseUrl') !== 'http://localhost:4200') {
+    galaxyWorkflowTuples.forEach((t) => testGalaxyWorkflow(t[0], t[1], t[2], t[3], t[4]));
+  }
+});
+
+// Based off ../sharedTests/basic-enduser.ts
+function testGalaxyWorkflow(url: string, version1: string, version2: string, trsUrl: string, type: string) {
+  it('info tab works', () => {
+    cy.visit('/workflows/' + url + ':' + version1);
+    goToTab('Launch');
+    cy.url().should('contain', '?tab=launch');
+    goToTab('Info');
+    cy.url().should('contain', '?tab=info');
+    cy.contains('mat-card-header', 'Workflow Information');
+  });
+
+  it('versions tab works', () => {
+    goToTab('Versions');
+    cy.url().should('contain', '?tab=versions');
+
+    // check that clicking on a different version goes to that version's url
+    cy.contains('[data-cy=versionName]', version2).click();
+    cy.url().should('contain', url + ':' + version2);
+  });
+
+  it('files tab works', () => {
+    goToTab('Files');
+    cy.url().should('contain', '?tab=files');
+    cy.contains('Descriptor Files');
+    cy.get('.ace_editor').should('be.visible');
+    goToTab('Test Parameter Files');
+    if (type === ToolDescriptor.TypeEnum.NFL) {
+      cy.contains('This version has no files of this type.');
+    }
+  });
+
+  it('tools tab works', () => {
+    goToTab('Tools');
+    cy.url().should('contain', '?tab=tools');
+  });
+
+  it('DAG tab works', () => {
+    /// New material have to click twice
+    cy.contains('.mat-tab-label', 'DAG').click();
+    cy.contains('.mat-tab-label', 'DAG').click();
+    cy.url().should('contain', '?tab=dag');
+    cy.get('[data-cy=dag-holder]').children().should('have.length.of.at.least', 1);
+  });
+
+  // This section will have to be moved to ../sharedTests/basic-enduser.ts once 1.13 is deployed
+  if (type === 'Galaxy') {
+    it('test that galaxy button exists', () => {
+      cy.get('[data-cy=galaxyLaunchWith] button').should('exist');
+      cy.get('[data-cy=galaxyLaunchWith] button').click();
+      cy.get('[data-cy=multiCloudLaunchOption]').should('have.length.of.at.least', 1);
+      cy.get('[data-cy=multiCloudLaunchOption]').should('contain', 'usegalaxy.org');
+      cy.get('[data-cy=multiCloudLaunchOption]').each(($el) => {
+        cy.wrap($el).click();
+        cy.get(`[data-cy=multiCloudLaunchButton]`)
+          .invoke('attr', 'href')
+          .should('contain', trsUrl)
+          .should('contain', $el.text().trim().split(' ')[0]);
+        // .trim().split(' ')[0]) is required as $el.text() can be equal to " usegalaxy.org (Main) "
+      });
+      const testUrl = 'https://www.test.com';
+      cy.get('[data-cy=multiCloudLaunchText]').type(testUrl);
+      cy.get('[data-cy=multiCloudLaunchText]').click();
+      cy.get(`[data-cy=multiCloudLaunchButton]`).invoke('attr', 'href').should('contain', trsUrl).should('contain', testUrl);
+    });
+  }
+}
+
 // pairs of [workflow URL without version number, verified version number, another verified version number, workflow.trsUrl]
 const workflowVersionTuples = [
   [
