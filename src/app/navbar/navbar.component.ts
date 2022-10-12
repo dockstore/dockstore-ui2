@@ -95,11 +95,11 @@ export class NavbarComponent extends Logout implements OnInit {
           Array<Organization>,
           boolean
         ]) => {
-          let count = invites?.length + rejections?.length;
+          let count = (invites?.length ?? 0) + (rejections?.length ?? 0);
           if (isAdminOrCurator) {
-            return isNaN(count + pendingOrganizations?.length) ? 0 : count + pendingOrganizations?.length;
+            return count + (pendingOrganizations?.length ?? 0);
           } else {
-            return isNaN(count) ? 0 : count;
+            return count;
           }
         }
       )
