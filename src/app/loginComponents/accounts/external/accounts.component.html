@@ -17,54 +17,73 @@
 <div fxLayout="row wrap">
   <div class="p-3" fxFlex="50" fxFlex.lt-md="100">
     <mat-card class="mb-2 h-100" *ngIf="dockstoreToken">
-      <div fxLayoutAlign="space-between">
-        <mat-card-header>
-          <div mat-card-avatar matBadge="✓">
-            <img src="../../../../assets/images/dockstore/dockstore.png" alt="Dockstore logo" class="w-100" />
-          </div>
-          <mat-card-title class="normal-line-height">Dockstore Account</mat-card-title>
-          <mat-card-subtitle class="accent-1-dark normal-line-height">
-            <strong>Username: {{ username$ | async }} </strong>
-          </mat-card-subtitle>
-        </mat-card-header>
-        <mat-chip-list>
-          <mat-chip class="bubble"> Main Account </mat-chip>
-        </mat-chip-list>
-      </div>
-      <mat-card-content>
-        <div>
-          Use with our CLI utilities or with our
-          <a [href]="dsServerURI + '/static/swagger-ui/index.html#'" target="_blank">REST web service interface</a> to work with and launch
-          tools and workflows. See the <a routerLink="/onboarding">Onboarding</a> page for more details on using the CLI.
+      <div class="h-100" fxLayout="column" fxLayoutAlign="space-between stretch">
+        <div fxLayoutAlign="space-between">
+          <mat-card-header>
+            <div mat-card-avatar matBadge="✓">
+              <img src="../../../../assets/images/dockstore/dockstore.png" alt="Dockstore logo" class="w-100" />
+            </div>
+            <mat-card-title class="normal-line-height">Dockstore Account</mat-card-title>
+            <mat-card-subtitle class="accent-1-dark normal-line-height">
+              <strong>Username: {{ username$ | async }} </strong>
+            </mat-card-subtitle>
+          </mat-card-header>
+          <mat-chip-list>
+            <mat-chip class="bubble"> Main Account </mat-chip>
+          </mat-chip-list>
         </div>
-      </mat-card-content>
-      <mat-form-field appearance="outline" class="w-75">
-        <mat-label class="accent-1-dark">
-          <strong>Token</strong>
-        </mat-label>
-        <input matInput readonly [type]="show ? 'text' : 'password'" value="{{ dockstoreToken }}" />
-        <button
-          mat-icon-button
-          matSuffix
-          class="accent-1-dark"
-          [cdkCopyToClipboard]="dockstoreToken"
-          (cbOnSuccess)="isCopied1 = true"
-          matTooltip="Copy Token"
-          appSnackbar
-        >
-          <mat-icon>file_copy</mat-icon>
-        </button>
-      </mat-form-field>
-      <button
-        [matTooltip]="show ? 'Hide token' : 'Show token'"
-        mat-button
-        color="secondary"
-        class="accent-1-dark small-mat-btn-skin small-btn-structure mat-elevation-z"
-        (click)="show = !show"
-      >
-        <mat-icon class="mat-icon-sm">{{ show ? 'visibility_off' : 'visibility' }}</mat-icon>
-        <span> Show </span>
-      </button>
+        <mat-card-content>
+          <div>
+            Use with our CLI utilities or with our
+            <a [href]="dsServerURI + '/static/swagger-ui/index.html#'" target="_blank">REST web service interface</a> to work with and
+            launch tools and workflows. See the <a routerLink="/onboarding">Onboarding</a> page for more details on using the CLI.
+          </div>
+        </mat-card-content>
+        <div>
+          <mat-form-field appearance="outline" class="w-75">
+            <mat-label class="accent-1-dark">
+              <strong>Token</strong>
+            </mat-label>
+            <input matInput readonly [type]="show ? 'text' : 'password'" value="{{ dockstoreToken }}" />
+            <button
+              mat-icon-button
+              matSuffix
+              class="accent-1-dark"
+              [cdkCopyToClipboard]="dockstoreToken"
+              (cbOnSuccess)="isCopied1 = true"
+              matTooltip="Copy Token"
+              appSnackbar
+            >
+              <mat-icon>file_copy</mat-icon>
+            </button>
+          </mat-form-field>
+          <button
+            [matTooltip]="show ? 'Hide token' : 'Show token'"
+            mat-button
+            color="secondary"
+            class="accent-1-dark small-mat-btn-skin small-btn-structure mat-elevation-z"
+            (click)="show = !show"
+          >
+            <mat-icon class="mat-icon-sm">{{ show ? 'visibility_off' : 'visibility' }}</mat-icon>
+            <span> Show </span>
+          </button>
+        </div>
+        <div>
+          <hr />
+          <span class="pull-right" fxLayoutAlign="end end">
+            <!-- This button needs to be vertically centered -->
+            <button
+              mat-button
+              class="accent-1-dark-btn small-mat-btn-skin small-btn-structure mt-2"
+              matTooltip="Revoke Dockstore token"
+              (click)="revokeToken()"
+            >
+              <mat-icon class="mat-icon-sm">link</mat-icon>
+              <span> Revoke Token </span>
+            </button>
+          </span>
+        </div>
+      </div>
     </mat-card>
   </div>
 

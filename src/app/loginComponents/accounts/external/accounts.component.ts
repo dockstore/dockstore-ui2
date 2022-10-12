@@ -28,6 +28,9 @@ import { UserQuery } from '../../../shared/user/user.query';
 import { UserService } from '../../../shared/user/user.service';
 import { TokenUser } from './../../../shared/swagger/model/tokenUser';
 import { AccountsService } from './accounts.service';
+import { DeleteAccountDialogComponent } from '../controls/delete-account-dialog/delete-account-dialog.component';
+import { RevokeTokenDialogComponent } from './revoke-token-dialog/revoke-token-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 export interface AccountInfo {
   name: string;
@@ -148,7 +151,8 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
     private accountsService: AccountsService,
     private matSnackBar: MatSnackBar,
     private userQuery: UserQuery,
-    private tokenQuery: TokenQuery
+    private tokenQuery: TokenQuery,
+    public dialog: MatDialog
   ) {
     this.trackLoginService.isLoggedIn$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((state) => {
       if (!state) {
@@ -237,5 +241,8 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
+  }
+  revokeToken() {
+    this.dialog.open(RevokeTokenDialogComponent, { width: '600px' });
   }
 }
