@@ -1,15 +1,10 @@
-import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, Inject } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subject } from 'rxjs';
-import { finalize, takeUntil } from 'rxjs/operators';
-
-import { LogoutService } from '../../../../shared/logout.service';
-import { TokensService } from '../../../../shared/openapi';
+import { takeUntil } from 'rxjs/operators';
 import { UserQuery } from '../../../../shared/user/user.query';
-import { AuthService } from 'ng2-ui-auth';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-delete-account-dialog',
@@ -19,7 +14,6 @@ import { AuthService } from 'ng2-ui-auth';
 export class RevokeTokenDialogComponent implements OnDestroy {
   username = '';
   usernameFormControl: FormControl;
-  public dockstoreToken: string;
   usernameForm: FormGroup;
   loading = false;
   private ngUnsubscribe: Subject<{}> = new Subject();
@@ -27,34 +21,20 @@ export class RevokeTokenDialogComponent implements OnDestroy {
     public userQuery: UserQuery,
     public form: FormBuilder,
     public dialogRef: MatDialogRef<RevokeTokenDialogComponent>,
-    private logoutService: LogoutService,
-    private matSnackBar: MatSnackBar,
-    private tokensService: TokensService,
-    private authService: AuthService
+    @Inject(MAT_DIALOG_DATA) public data: { revokeButtonClicked: boolean }
   ) {
     this.userQuery.username$.pipe(takeUntil(this.ngUnsubscribe)).subscribe(
       (username: string) => {
-        this.setupForm(username);
+        this.username = username;
+        this.usernameFormControl = new FormControl('', [Validators.required, this.validateUsername(this.username)]);
+        this.usernameForm = new FormGroup({
+          usernameFormControl: this.usernameFormControl,
+        });
       },
       (error) => {
         console.error('Could not get username from userService');
       }
     );
-    this.dockstoreToken = this.authService.getToken();
-  }
-
-  /**
-   * Sets up the form
-   *
-   * @param {string} username  The user's actual username
-   * @memberof RevokeTokenDialogComponent
-   */
-  setupForm(username: string): void {
-    this.username = username;
-    this.usernameFormControl = new FormControl('', [Validators.required, this.validateUsername(this.username)]);
-    this.usernameForm = new FormGroup({
-      usernameFormControl: this.usernameFormControl,
-    });
   }
 
   // Close dialog
@@ -69,48 +49,8 @@ export class RevokeTokenDialogComponent implements OnDestroy {
    */
   revokeToken(): void {
     this.loading = true;
-    this.tokensService
-      .deleteToken(this.dockstoreToken)
-      .pipe(
-        finalize(() => {
-          this.loading = false;
-          this.onNoClick();
-        })
-      )
-      .subscribe(
-        (status: boolean) => {
-          console.log(this.dockstoreToken);
-          if (status) {
-            this.revokeTokenSuccess();
-          } else {
-            this.revokeTokenFailure();
-          }
-        },
-        (error: HttpErrorResponse) => {
-          this.revokeTokenFailure();
-        }
-      );
-  }
-
-  /**
-   * What happens when deleting the account has succeeded.
-   *
-   * @private
-   * @memberof RevokeTokenDialogComponent
-   */
-  private revokeTokenSuccess(): void {
-    this.logoutService.logout();
-    this.matSnackBar.open('Revoking Dockstore token succeeded', 'Dismiss');
-  }
-
-  /**
-   * What happens when deleteing the account has failed.
-   *
-   * @private
-   * @memberof RevokeTokenDialogComponent
-   */
-  private revokeTokenFailure(): void {
-    this.matSnackBar.open('Revoking Dockstore token failed', 'Dismiss');
+    this.data.revokeButtonClicked = true;
+    this.dialogRef.close(this.data.revokeButtonClicked);
   }
 
   /**

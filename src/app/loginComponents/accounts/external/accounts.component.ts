@@ -28,9 +28,11 @@ import { UserQuery } from '../../../shared/user/user.query';
 import { UserService } from '../../../shared/user/user.service';
 import { TokenUser } from './../../../shared/swagger/model/tokenUser';
 import { AccountsService } from './accounts.service';
-import { DeleteAccountDialogComponent } from '../controls/delete-account-dialog/delete-account-dialog.component';
+import { LogoutService } from '../../../shared/logout.service';
 import { RevokeTokenDialogComponent } from './revoke-token-dialog/revoke-token-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { DeleteAccountDialogComponent } from '../controls/delete-account-dialog/delete-account-dialog.component';
+import { HttpErrorResponse } from '@angular/common/http';
 
 export interface AccountInfo {
   name: string;
@@ -55,6 +57,7 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
   public orcidId$: Observable<string>;
   public TokenSource = TokenSource;
   public username$: Observable<string>;
+  private revokeButtonClicked = false;
   Dockstore = Dockstore;
   accountsInfo: Array<AccountInfo> = [
     {
@@ -142,6 +145,7 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
   public show: false;
   public dockstoreToken: string;
   public orcidRootUrl: string;
+
   constructor(
     private trackLoginService: TrackLoginService,
     private tokenService: TokenService,
@@ -152,6 +156,7 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
     private matSnackBar: MatSnackBar,
     private userQuery: UserQuery,
     private tokenQuery: TokenQuery,
+    private logoutService: LogoutService,
     public dialog: MatDialog
   ) {
     this.trackLoginService.isLoggedIn$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((state) => {
@@ -242,7 +247,45 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }
+
   revokeToken() {
-    this.dialog.open(RevokeTokenDialogComponent, { width: '600px' });
+    let dialogRef = this.dialog.open(RevokeTokenDialogComponent, {
+      width: '600px',
+      data: { revokeButtonClicked: this.revokeButtonClicked },
+    });
+    dialogRef.afterClosed().subscribe((buttonClicked) => {
+      if (buttonClicked) {
+        this.deleteToken(TokenSource.DOCKSTORE).subscribe(
+          () => {
+            this.revokeTokenSuccess();
+          },
+          (error: HttpErrorResponse) => {
+            console.log(error);
+            this.revokeTokenFailure();
+          }
+        );
+      }
+    });
+  }
+
+  /**
+   * What happens when revoking the Dockstore Token has succeeded.
+   *
+   * @private
+   * @memberof RevokeTokenDialogComponent
+   */
+  revokeTokenSuccess(): void {
+    this.logoutService.logout();
+    this.matSnackBar.open('Revoking Dockstore token succeeded', 'Dismiss');
+  }
+
+  /**
+   * What happens when revoking the Dockstore token has failed.
+   *
+   * @private
+   * @memberof RevokeTokenDialogComponent
+   */
+  revokeTokenFailure(): void {
+    this.matSnackBar.open('Revoking Dockstore token failed', 'Dismiss');
   }
 }
