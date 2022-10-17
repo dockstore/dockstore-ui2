@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import { resetDB, setTokenUserViewPort } from '../../support/commands';
+import { resetDB, setTokenUserViewPort, verifyGithubLinkNewDashboard } from '../../support/commands';
 
 describe('Dockstore dashboard', () => {
   resetDB();
@@ -42,5 +42,11 @@ describe('Dockstore dashboard', () => {
       .contains('Learn more about services')
       .should('have.attr', 'href')
       .and('include', 'getting-started-with-services');
+  });
+  it('Registering new tool through Github redirects correctly', () => {
+    verifyGithubLinkNewDashboard('Tool');
+  });
+  it('Registering new workflow through Github redirects correctly', () => {
+    verifyGithubLinkNewDashboard('Workflow');
   });
 });

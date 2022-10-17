@@ -1,5 +1,5 @@
 /*
- *    Copyright 2018 OICR
+ *    Copyright 2022 OICR, UCSC
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -139,4 +139,14 @@ export function createOrganization(name: string, displayName: string, topic: str
   cy.url().should('eq', Cypress.config().baseUrl + '/organizations/' + name);
 
   cy.reload();
+}
+
+export function verifyGithubLinkNewDashboard(entryType: string) {
+  cy.visit('/dashboard?newDashboard');
+  cy.get('[data-cy=register-entry-btn]').contains(entryType).should('be.visible').click();
+  cy.get('[data-cy=storage-type-choice]').contains('GitHub').click();
+  cy.contains('button', 'Next').should('be.visible').click();
+  cy.contains('a', 'Manage Dockstore installations on GitHub')
+    .should('have.attr', 'href')
+    .and('include', 'https://github.com/apps/dockstore-testing-application');
 }

@@ -8,6 +8,7 @@ import { Base } from 'app/shared/base';
 import { Dockstore } from 'app/shared/dockstore.model';
 import { AlertService } from 'app/shared/alert/state/alert.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { SessionService } from '../../../shared/session/session.service';
 
 @Component({
   selector: 'app-entry-box',
@@ -32,7 +33,8 @@ export class EntryBoxComponent extends Base implements OnInit {
     private registerToolService: RegisterToolService,
     private myWorkflowsService: MyWorkflowsService,
     private usersService: UsersService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private sessionService: SessionService
   ) {
     super();
   }
@@ -95,10 +97,13 @@ export class EntryBoxComponent extends Base implements OnInit {
 
   showRegisterEntryModal(): void {
     if (this.entryType === EntryUpdateTime.EntryTypeEnum.WORKFLOW) {
+      this.sessionService.setEntryType(EntryType.BioWorkflow);
       this.myWorkflowsService.registerEntry(EntryType.BioWorkflow);
     } else if (this.entryType === EntryUpdateTime.EntryTypeEnum.TOOL) {
+      this.sessionService.setEntryType(EntryType.Tool);
       this.registerToolService.setIsModalShown(true);
     } else if (this.entryType === EntryUpdateTime.EntryTypeEnum.SERVICE) {
+      this.sessionService.setEntryType(EntryType.Service);
       this.myWorkflowsService.registerEntry(EntryType.Service);
     }
   }
