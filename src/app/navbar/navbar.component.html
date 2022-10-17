@@ -51,6 +51,7 @@
         >
           <img src="../assets/svg/my-nav/dashboard.svg" alt="dashboard" /> My Dockstore
         </a>
+
         <div fxLayoutGap="1rem" *ngIf="!isLoggedIn">
           <a routerLink="/login">
             <button mat-raised-button color="accent">Login</button>
@@ -59,6 +60,30 @@
             <button mat-raised-button color="accent">Register</button>
           </a>
         </div>
+
+        <a
+          *ngIf="isLoggedIn"
+          id="notifButton"
+          data-cy="notification-button"
+          mat-button
+          class="icon"
+          [routerLink]="['/accounts']"
+          [queryParams]="{ tab: 'requests' }"
+          routerLinkActive="icon-active"
+        >
+          <mat-icon
+            data-cy="bell-icon"
+            matBadge="{{ notificationCount$ | async }}"
+            matBadgeHidden="{{ (notificationCount$ | async) === 0 }}"
+            matBadgeColor="warn"
+            matBadgeSize="small"
+            matBadgeOverlap="true"
+            aria-label="requests button"
+            class="bell-icon"
+            >notifications</mat-icon
+          >
+        </a>
+
         <template [ngTemplateOutlet]="loginButton"></template>
         <mat-menu #menuLarge="matMenu">
           <button

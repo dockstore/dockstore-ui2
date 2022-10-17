@@ -10,9 +10,23 @@
   <div fxFlex></div>
   <button mat-button (click)="onNoClick()">No Thanks</button>
   <span *ngIf="data.approve; else rejectBlock">
-    <button mat-flat-button id="accept-pending-org-dialog" [mat-dialog-close]="{ 'id': data.id, 'approve': data.approve }">Accept</button>
+    <button
+      mat-flat-button
+      id="accept-pending-org-dialog"
+      data-cy="approve-pending-org-dialog"
+      [mat-dialog-close]="{ 'id': data.id, 'approve': data.approve }"
+    >
+      Accept
+    </button>
   </span>
   <ng-template #rejectBlock>
-    <button mat-flat-button id="reject-pending-org-dialog" [mat-dialog-close]="{ 'id': data.id, 'approve': data.approve }">Decline</button>
+    <button
+      mat-flat-button
+      id="reject-pending-org-dialog"
+      data-cy="reject-pending-org-dialog"
+      [mat-dialog-close]="{ 'id': data.id, 'approve': data.approve }"
+    >
+      Decline
+    </button>
   </ng-template>
 </div>
