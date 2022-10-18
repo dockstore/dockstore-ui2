@@ -93,7 +93,13 @@
             <div class="beta-label">preview</div>
           </button>
           <mat-divider></mat-divider>
-          <button mat-menu-item id="dropdown-accounts" routerLink="/accounts" routerLinkActive="menu-item-active">
+          <button
+            mat-menu-item
+            id="dropdown-accounts"
+            routerLink="/accounts"
+            routerLinkActive="menu-item-active"
+            data-cy="dropdown-account-button"
+          >
             <mat-icon color="accent" *ngIf="user?.isAdmin">lock</mat-icon>
             <mat-icon color="accent" *ngIf="user?.curator && !user?.isAdmin">edit</mat-icon>
             <mat-icon color="accent" *ngIf="!user?.isAdmin && !user?.curator">account_circle</mat-icon>Account
