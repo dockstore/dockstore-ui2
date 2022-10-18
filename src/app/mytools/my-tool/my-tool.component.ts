@@ -161,12 +161,12 @@ export class MyToolComponent extends MyEntry implements OnInit {
     );
 
     this.groupAppToolEntryObjects$ = combineLatest([
-      this.workflowService.workflows$,
-      this.workflowQuery.workflow$,
+      this.containerService.tools$,
+      this.toolQuery.tool$,
       this.tokenQuery.gitHubOrganizations$,
     ]).pipe(
-      map(([workflows, workflow, gitHubOrganizations]) => {
-        return this.myWorkflowsService.convertEntriesToOrgEntryObject(workflows, workflow, gitHubOrganizations);
+      map(([tools, tool, gitHubOrganizations]) => {
+        return this.mytoolsService.convertEntriesToOrgEntryObject(tools, tool, gitHubOrganizations);
       })
     );
 
