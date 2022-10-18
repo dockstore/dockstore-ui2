@@ -39,7 +39,15 @@
               </a>
             </mat-list-item>
             <mat-list-item *ngIf="!orgObj || orgObj?.published.length === 0">
-              <p class="text-center size-small">No published workflows.</p>
+              <p data-cy="no-published-apptool-message" *ngIf="pageEntryType === 'apptool'" class="text-center size-small">
+                No published tools.
+              </p>
+              <p data-cy="no-published-service-message" *ngIf="pageEntryType === 'service'" class="text-center size-small">
+                No published services.
+              </p>
+              <p data-cy="no-published-workflow-message" *ngIf="pageEntryType === 'workflow'" class="text-center size-small">
+                No published workflows.
+              </p>
             </mat-list-item>
           </mat-list>
         </mat-tab>
@@ -62,7 +70,15 @@
               </a>
             </mat-list-item>
             <mat-list-item *ngIf="!orgObj || orgObj?.unpublished.length === 0">
-              <p class="text-center size-small">No unpublished workflows.</p>
+              <p data-cy="no-unpublished-apptool-message" *ngIf="pageEntryType === 'apptool'" class="text-center size-small">
+                No unpublished tools.
+              </p>
+              <p data-cy="no-unpublished-service-message" *ngIf="pageEntryType === 'service'" class="text-center size-small">
+                No unpublished services.
+              </p>
+              <p data-cy="no-unpublished-workflow-message" *ngIf="pageEntryType === 'workflow'" class="text-center size-small">
+                No unpublished workflows.
+              </p>
             </mat-list-item>
           </mat-list>
         </mat-tab>

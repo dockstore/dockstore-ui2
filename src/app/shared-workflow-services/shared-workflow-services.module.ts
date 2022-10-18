@@ -47,6 +47,6 @@ const IMPORTS = [
   declarations: DECLARATIONS,
   imports: IMPORTS,
   providers: [MyWorkflowsService, MyBioWorkflowsService, MyServicesService],
-  exports: [DECLARATIONS.concat(IMPORTS)],
+  exports: [DECLARATIONS.concat(IMPORTS), SidebarAccordionComponent],
 })
 export class SharedWorkflowServicesModule {}
