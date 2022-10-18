@@ -30,6 +30,7 @@ export class SidebarAccordionComponent implements OnInit, OnChanges {
   @Input() openOneAtATime;
   @Input() groupEntriesObject: OrgWorkflowObject<Workflow>[];
   @Input() refreshMessage;
+  @Input() pageEntryType: string;
   public workflowId$: Observable<number>;
   activeTab = 0;
   entryType$: Observable<EntryType>;
