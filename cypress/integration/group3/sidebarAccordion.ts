@@ -14,8 +14,7 @@
  *     limitations under the License.
  */
 
-import { Repository } from '../../../src/app/shared/openapi/model/repository';
-import { resetDB, setTokenUserViewPort, setTokenUserViewPortCurator, testNoGithubEntriesText } from '../../support/commands';
+import { resetDB, setTokenUserViewPort, testNoGithubEntriesText } from '../../support/commands';
 
 describe('Mock create a GitHub repository', () => {
   resetDB();
