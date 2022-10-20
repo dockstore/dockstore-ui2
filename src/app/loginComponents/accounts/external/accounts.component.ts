@@ -1,5 +1,5 @@
 /*
- *     Copyright 2018 OICR
+ *     Copyright 2022 OICR, UCSC
  *
  *     Licensed under the Apache License, Version 2.0 (the "License")
  *     you may not use this file except in compliance with the License
@@ -33,6 +33,7 @@ import { RevokeTokenDialogComponent } from './revoke-token-dialog/revoke-token-d
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteAccountDialogComponent } from '../controls/delete-account-dialog/delete-account-dialog.component';
 import { HttpErrorResponse } from '@angular/common/http';
+import { bootstrap4largeModalSize, bootstrap4mediumModalSize } from '../../../shared/constants';
 
 export interface AccountInfo {
   name: string;
@@ -57,7 +58,6 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
   public orcidId$: Observable<string>;
   public TokenSource = TokenSource;
   public username$: Observable<string>;
-  private revokeButtonClicked = false;
   Dockstore = Dockstore;
   accountsInfo: Array<AccountInfo> = [
     {
@@ -250,8 +250,7 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
 
   revokeToken() {
     let dialogRef = this.dialog.open(RevokeTokenDialogComponent, {
-      width: '600px',
-      data: { revokeButtonClicked: this.revokeButtonClicked },
+      width: bootstrap4largeModalSize,
     });
     dialogRef.afterClosed().subscribe((buttonClicked) => {
       if (buttonClicked) {
@@ -274,7 +273,7 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
    * @private
    * @memberof RevokeTokenDialogComponent
    */
-  revokeTokenSuccess(): void {
+  private revokeTokenSuccess(): void {
     this.logoutService.logout();
     this.matSnackBar.open('Revoking Dockstore token succeeded', 'Dismiss');
   }
@@ -285,7 +284,7 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
    * @private
    * @memberof RevokeTokenDialogComponent
    */
-  revokeTokenFailure(): void {
+  private revokeTokenFailure(): void {
     this.matSnackBar.open('Revoking Dockstore token failed', 'Dismiss');
   }
 }

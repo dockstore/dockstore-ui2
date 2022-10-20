@@ -1,5 +1,5 @@
 <!--
-   Copyright 2018 OICR
+   Copyright 2022 OICR, UCSC
  *
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -71,7 +71,6 @@
         <div>
           <hr />
           <span class="pull-right" fxLayoutAlign="end end">
-            <!-- This button needs to be vertically centered -->
             <button
               mat-button
               class="accent-1-dark-btn small-mat-btn-skin small-btn-structure mt-2"
@@ -79,7 +78,7 @@
               data-cy="revoke-token-button"
               (click)="revokeToken()"
             >
-              <mat-icon class="mat-icon-sm">link</mat-icon>
+              <mat-icon class="mat-icon-sm">link_off</mat-icon>
               <span> Revoke Token </span>
             </button>
           </span>
@@ -162,7 +161,6 @@
             </button>
           </span>
           <ng-template #linked>
-            <!-- This button needs to be vertically centered -->
             <button
               mat-raised-button
               class="accent-1-dark-btn small-mat-btn-skin small-btn-structure mt-2"

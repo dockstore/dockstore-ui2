@@ -1,5 +1,5 @@
 <!--
-    Copyright 2018 OICR
+    Copyright 2018 OICR, UCSC
 
     Licensed under the Apache License, Version 2.0 (the "License")
     you may not use this file except in compliance with the License
@@ -17,10 +17,10 @@
 <h1 mat-dialog-title>Are you sure you want to revoke this Dockstore token?</h1>
 <div mat-dialog-content>
   <app-alert></app-alert>
-  <p>This action will be irreversible and you will need to log back in to generate a new Dockstore token.</p>
+  <p>This action will be irreversible and you will be logged out. You will need to log back in to generate a new Dockstore token.</p>
   <mat-divider></mat-divider>
   <div *ngIf="username" class="text-center">
-    <p>Please enter your account username to revoke.</p>
+    <p>Please enter your account username, {{ username }}, to revoke.</p>
     <div [formGroup]="usernameForm">
       <mat-form-field>
         <input
@@ -32,7 +32,7 @@
         />
       </mat-form-field>
     </div>
-    <div class="btn-group">
+    <div class="btn-group" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="1rem">
       <button mat-flat-button mat-dialog-close class="secondary-1">No</button>
       <button mat-flat-button (click)="revokeToken()" [disabled]="usernameForm.invalid" data-cy="confirm-revoke-token-button" color="warn">
         Yes, revoke my Dockstore token
