@@ -252,14 +252,13 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
     let dialogRef = this.dialog.open(RevokeTokenDialogComponent, {
       width: bootstrap4largeModalSize,
     });
-    dialogRef.afterClosed().subscribe((buttonClicked) => {
-      if (buttonClicked) {
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
         this.deleteToken(TokenSource.DOCKSTORE).subscribe(
           () => {
             this.revokeTokenSuccess();
           },
-          (error: HttpErrorResponse) => {
-            console.log(error);
+          () => {
             this.revokeTokenFailure();
           }
         );

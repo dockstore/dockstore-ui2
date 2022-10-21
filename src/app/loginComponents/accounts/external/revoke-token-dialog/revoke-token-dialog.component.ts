@@ -32,13 +32,7 @@ export class RevokeTokenDialogComponent extends Base implements OnDestroy {
   username = '';
   usernameFormControl: FormControl;
   usernameForm: FormGroup;
-  loading = false;
-  constructor(
-    public userQuery: UserQuery,
-    public form: FormBuilder,
-    public dialogRef: MatDialogRef<RevokeTokenDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { revokeButtonClicked: boolean }
-  ) {
+  constructor(public userQuery: UserQuery, public form: FormBuilder, public dialogRef: MatDialogRef<RevokeTokenDialogComponent>) {
     super();
     this.userQuery.username$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((username: string) => {
       this.username = username;
@@ -60,9 +54,7 @@ export class RevokeTokenDialogComponent extends Base implements OnDestroy {
    * @memberof RevokeTokenDialogComponent
    */
   revokeToken(): void {
-    this.loading = true;
-    this.data.revokeButtonClicked = true;
-    this.dialogRef.close(this.data.revokeButtonClicked);
+    this.dialogRef.close(true);
   }
 
   /**

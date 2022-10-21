@@ -22,7 +22,7 @@ import {
   setTokenUserViewPort,
 } from '../../support/commands';
 
-describe('Test revoke token button opens confirmation dialog successfully', () => {
+describe('Test revoke token button opens confirmation dialog successfully and log out user', () => {
   resetDB();
   setTokenUserViewPort();
 
@@ -30,6 +30,8 @@ describe('Test revoke token button opens confirmation dialog successfully', () =
     cy.visit('/accounts?tab=accounts');
     cy.get('[data-cy=revoke-token-button]').should('be.visible').click();
     cy.get('[data-cy=confirm-revoke-token-button]').should('be.disabled');
+  });
+  it('Confirm button should log out user', () => {
     cy.get('[data-cy=revoke-token-username-input]').should('be.visible').clear().type('user_A');
     cy.get('[data-cy=confirm-revoke-token-button]').should('not.be.disabled').click();
     cy.get('[data-cy=header]').should('contain', 'Logged Out');
