@@ -31,9 +31,7 @@ import { AccountsService } from './accounts.service';
 import { LogoutService } from '../../../shared/logout.service';
 import { RevokeTokenDialogComponent } from './revoke-token-dialog/revoke-token-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { DeleteAccountDialogComponent } from '../controls/delete-account-dialog/delete-account-dialog.component';
-import { HttpErrorResponse } from '@angular/common/http';
-import { bootstrap4largeModalSize, bootstrap4mediumModalSize } from '../../../shared/constants';
+import { bootstrap4largeModalSize } from '../../../shared/constants';
 
 export interface AccountInfo {
   name: string;

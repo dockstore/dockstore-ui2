@@ -14,13 +14,11 @@
  *    limitations under the License.
  */
 
-import { Component, OnDestroy, Inject } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
-import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { UserQuery } from '../../../../shared/user/user.query';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Base } from '../../../../shared/base';
 
 @Component({

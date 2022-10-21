@@ -13,14 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import {
-  clickFirstActionsButtonPublic,
-  clickFirstActionsButtonPrivate,
-  goToTab,
-  goToUnexpandedSidebarEntry,
-  resetDB,
-  setTokenUserViewPort,
-} from '../../support/commands';
+import { resetDB, setTokenUserViewPort } from '../../support/commands';
 
 describe('Test revoke token button opens confirmation dialog successfully and log out user', () => {
   resetDB();
