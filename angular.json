@@ -143,7 +143,6 @@
       }
     }
   },
-  "defaultProject": "dockstore-ui2",
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "app",
@@ -154,7 +153,9 @@
     }
   },
   "cli": {
-    "defaultCollection": "@angular-eslint/schematics",
-    "analytics": false
+    "analytics": false,
+    "schematicCollections": [
+      "@angular-eslint/schematics"
+    ]
   }
 }

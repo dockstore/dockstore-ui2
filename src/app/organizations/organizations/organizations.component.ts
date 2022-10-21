@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { PageEvent } from '@angular/material/paginator';
 import { Observable } from 'rxjs';
@@ -36,7 +36,7 @@ import { OrgLogoService } from '../../shared/org-logo.service';
 })
 export class OrganizationsComponent extends Base implements OnInit {
   public orgLength$: Observable<number>;
-  public organizationSearchForm: FormGroup;
+  public organizationSearchForm: UntypedFormGroup;
   public loading$: Observable<boolean>;
   public isLoggedIn$: Observable<boolean>;
   public pagedOrganizations: Array<Organization>;
@@ -46,7 +46,7 @@ export class OrganizationsComponent extends Base implements OnInit {
   constructor(
     private organizationsStateService: OrganizationsStateService,
     private organizationsQuery: OrganizationsQuery,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private alertQuery: AlertQuery,
     private matDialog: MatDialog,
     private trackLoginService: TrackLoginService,

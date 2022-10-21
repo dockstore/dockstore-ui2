@@ -6,7 +6,7 @@ import { DockstoreTool, Entry, Organization, Workflow } from '../shared/swagger'
 import { UserQuery } from '../shared/user/user.query';
 import { UsersService } from './../shared/swagger/api/users.service';
 import { MatTabChangeEvent } from '@angular/material/tabs';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { ExtendedDockstoreTool } from 'app/shared/models/ExtendedDockstoreTool';
 import { ExtendedWorkflow } from 'app/shared/models/ExtendedWorkflow';
 // import { DockstoreService } from 'app/shared/dockstore.service';
@@ -19,7 +19,7 @@ import { EntryType } from '../shared/enum/entry-type';
   styleUrls: ['./starredentries.component.scss'],
 })
 export class StarredEntriesComponent extends Base implements OnInit {
-  selected = new FormControl(0);
+  selected = new UntypedFormControl(0);
   starredTools: Array<ExtendedDockstoreTool> | null;
   starredWorkflows: Array<ExtendedWorkflow> | null;
   starredServices: Array<Entry> | null;

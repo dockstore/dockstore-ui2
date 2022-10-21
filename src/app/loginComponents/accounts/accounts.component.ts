@@ -1,6 +1,6 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -14,7 +14,7 @@ import { Base } from '../../shared/base';
 })
 export class AccountsComponent extends Base implements OnInit {
   public currentTab = 'accounts'; // default to the 'accounts' tab
-  selected = new FormControl();
+  selected = new UntypedFormControl();
   validTabs = ['linked accounts and tokens', 'dockstore account and preferences', 'requests'];
   constructor(private location: Location, private activatedRoute: ActivatedRoute) {
     super();

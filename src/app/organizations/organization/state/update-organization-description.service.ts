@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { finalize } from 'rxjs/operators';
 import { Organization, OrganizationsService } from '../../../shared/swagger';
@@ -12,7 +12,7 @@ import { UpdateOrganizationOrCollectionDescriptionStore } from './update-organiz
 export class UpdateOrganizationOrCollectionDescriptionService {
   constructor(
     private updateOrganizationOrCollectionDescriptionStore: UpdateOrganizationOrCollectionDescriptionStore,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private organizationsService: OrganizationsService,
     private organizationQuery: OrganizationQuery,
     private organizationService: OrganizationService,
@@ -20,7 +20,7 @@ export class UpdateOrganizationOrCollectionDescriptionService {
     private collectionsService: CollectionsService
   ) {}
 
-  createForm(data: any): FormGroup {
+  createForm(data: any): UntypedFormGroup {
     const description = data.description;
     const form = this.formBuilder.group({
       description: [description, []],
@@ -28,7 +28,7 @@ export class UpdateOrganizationOrCollectionDescriptionService {
     return form;
   }
 
-  updateCollectionDescription(formGroup: FormGroup, collectionId: number): void {
+  updateCollectionDescription(formGroup: UntypedFormGroup, collectionId: number): void {
     const newDescription = formGroup.get('description').value || '';
     const organizationID = this.organizationQuery.getValue().organization.id;
     this.updateOrganizationOrCollectionDescriptionStore.setError(false);
@@ -47,7 +47,7 @@ export class UpdateOrganizationOrCollectionDescriptionService {
       );
   }
 
-  updateOrganizationDescription(formGroup: FormGroup): void {
+  updateOrganizationDescription(formGroup: UntypedFormGroup): void {
     const newDescription = formGroup.get('description').value || '';
     const organizationID = this.organizationQuery.getValue().organization.id;
     this.updateOrganizationOrCollectionDescriptionStore.setError(false);

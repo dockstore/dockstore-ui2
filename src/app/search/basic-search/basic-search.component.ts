@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, shareReplay, takeUntil } from 'rxjs/operators';
@@ -18,7 +18,7 @@ export class BasicSearchComponent extends Base implements OnInit {
   constructor(private searchService: SearchService, private searchQuery: SearchQuery, private matDialog: MatDialog) {
     super();
   }
-  public searchFormControl = new FormControl();
+  public searchFormControl = new UntypedFormControl();
   public autocompleteTerms$: Observable<Array<string>>;
   public hasAutoCompleteTerms$: Observable<boolean>;
   @Output() changed: EventEmitter<string> = new EventEmitter<string>();
