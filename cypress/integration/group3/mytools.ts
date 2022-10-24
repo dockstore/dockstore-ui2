@@ -532,6 +532,22 @@ describe('Dockstore my tools', () => {
       cy.get('#cdk-accordion-child-1 > .mat-action-row > .pull-right > [data-cy=refreshOrganization]').trigger('mouseenter');
     });
   }
+  describe('Should have correct buttons in Version modal', () => {
+    it('Should have "Save Changes" and "Cancel" button when in editing view', () => {
+      cy.visit('/my-tools/quay.io/A2/b1');
+      goToTab('Versions');
+      cy.contains('button', 'Actions').should('be.visible').click();
+      cy.get('[data-cy=editTagButton]').should('be.visible').click();
+      cy.get('[data-cy=save-changes-button]').scrollIntoView().should('be.visible');
+      cy.get('[data-cy=cancel-edit-version-button]').should('be.visible').click();
+    });
+    it('Should have "OK" button when in public (non-editing) view', () => {
+      cy.visit('/containers/quay.io/A2/a');
+      goToTab('Versions');
+      cy.get('[data-cy=actionsButton]').should('be.visible').first().click();
+      cy.get('[data-cy=ok-dialog-close-button]').scrollIntoView().should('be.visible').click();
+    });
+  });
 });
 
 describe('Should handle no tools correctly', () => {
@@ -548,23 +564,5 @@ describe('Should handle no tools correctly', () => {
   it('My tools should prompt to register a tool', () => {
     cy.visit('/my-tools');
     cy.contains('Add Tool');
-  });
-});
-
-describe('Should have correct buttons in Version modal', () => {
-  it('Should have "Save Changes" and "Cancel" button when in editing view', () => {
-    cy.visit('/my-tools/quay.io/A2/b1');
-    goToTab('Versions');
-    cy.contains('button', 'Actions').should('be.visible').click();
-    cy.get('[data-cy=editTagButton]').should('be.visible').click();
-    cy.get('[data-cy=save-changes-button]').should('be.visible');
-    cy.get('[data-cy=cancel-edit-version-button]').should('be.visible').click();
-  });
-  it('Should have "OK" button when in public (non-editing) view', () => {
-    cy.visit('/containers/quay.io/A2/a');
-    goToTab('Versions');
-    cy.contains('button', 'Actions').should('be.visible').click();
-    cy.get('[data-cy=actionsButton]').should('contain', 'Info').click();
-    cy.get('[data-cy=OK-tool-version-button]').should('be.visible').click();
   });
 });
