@@ -1,5 +1,5 @@
 <!--
-  ~    Copyright 2017 OICR
+  ~    Copyright 2022 OICR, UCSC
   ~
   ~    Licensed under the Apache License, Version 2.0 (the "License");
   ~    you may not use this file except in compliance with the License.
@@ -401,7 +401,27 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" mat-flat-button class="secondary-1" (click)="onHidden()">Cancel</button>
+          <button
+            type="button"
+            data-cy="cancel-edit-version-button"
+            mat-flat-button
+            class="secondary-1"
+            *ngIf="editMode"
+            (click)="onHidden()"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            data-cy="OK-tool-version-button"
+            mat-raised-button
+            class="accent-1-dark-btn mat-elevation-z"
+            mat-dialog-close
+            data-cy="ok-dialog-close-button"
+            *ngIf="!editMode"
+          >
+            OK
+          </button>
           <button
             id="saveVersionModal"
             type="button"
@@ -411,6 +431,7 @@
             *ngIf="mode === TagEditorMode.Edit"
             [disabled]="!tagEditorForm.form.valid || hasDuplicateTestJson(DescriptorType.WDL) || hasDuplicateTestJson(DescriptorType.CWL)"
             data-dismiss="modal"
+            data-cy="save-changes-button"
           >
             Save Changes
           </button>
