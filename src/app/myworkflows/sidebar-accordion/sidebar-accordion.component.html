@@ -86,13 +86,13 @@
               </a>
             </mat-list-item>
             <mat-list-item *ngIf="!orgObj || orgObj?.unpublished.length === 0">
-              <p data-cy="no-unpublished-apptool-message" *ngIf="pageEntryType === 'apptool'" class="text-center size-small">
+              <p data-cy="no-unpublished-apptool-message" *ngIf="pageEntryType === EntryType.AppTool" class="text-center size-small">
                 No unpublished tools.
               </p>
-              <p data-cy="no-unpublished-service-message" *ngIf="pageEntryType === 'service'" class="text-center size-small">
+              <p data-cy="no-unpublished-service-message" *ngIf="pageEntryType === EntryType.Service" class="text-center size-small">
                 No unpublished services.
               </p>
-              <p data-cy="no-unpublished-workflow-message" *ngIf="pageEntryType === 'workflow'" class="text-center size-small">
+              <p data-cy="no-unpublished-workflow-message" *ngIf="pageEntryType === EntryType.BioWorkflow" class="text-center size-small">
                 No unpublished workflows.
               </p>
             </mat-list-item>
