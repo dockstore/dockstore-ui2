@@ -55,13 +55,13 @@
               </a>
             </mat-list-item>
             <mat-list-item *ngIf="!orgObj || orgObj?.published.length === 0">
-              <p data-cy="no-published-apptool-message" *ngIf="pageEntryType === 'apptool'" class="text-center size-small">
+              <p data-cy="no-published-apptool-message" *ngIf="pageEntryType === EntryType.AppTool" class="text-center size-small">
                 No published tools.
               </p>
-              <p data-cy="no-published-service-message" *ngIf="pageEntryType === 'service'" class="text-center size-small">
+              <p data-cy="no-published-service-message" *ngIf="pageEntryType === EntryType.Service" class="text-center size-small">
                 No published services.
               </p>
-              <p data-cy="no-published-workflow-message" *ngIf="pageEntryType === 'workflow'" class="text-center size-small">
+              <p data-cy="no-published-workflow-message" *ngIf="pageEntryType === EntryType.BioWorkflow" class="text-center size-small">
                 No published workflows.
               </p>
             </mat-list-item>
