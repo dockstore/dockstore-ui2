@@ -32,6 +32,8 @@ import { LogoutService } from '../../../shared/logout.service';
 import { RevokeTokenDialogComponent } from './revoke-token-dialog/revoke-token-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { bootstrap4largeModalSize } from '../../../shared/constants';
+import { AlertService } from '../../../shared/alert/state/alert.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 export interface AccountInfo {
   name: string;
@@ -155,6 +157,7 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
     private userQuery: UserQuery,
     private tokenQuery: TokenQuery,
     private logoutService: LogoutService,
+    private alertService: AlertService,
     public dialog: MatDialog
   ) {
     this.trackLoginService.isLoggedIn$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((state) => {
@@ -256,8 +259,8 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
           () => {
             this.revokeTokenSuccess();
           },
-          () => {
-            this.revokeTokenFailure();
+          (error) => {
+            this.revokeTokenFailure(error);
           }
         );
       }
@@ -272,7 +275,7 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
    */
   private revokeTokenSuccess(): void {
     this.logoutService.logout();
-    this.matSnackBar.open('Revoking Dockstore token succeeded', 'Dismiss');
+    this.alertService.detailedSuccess('Revoking Dockstore token succeeded');
   }
 
   /**
@@ -281,7 +284,7 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
    * @private
    * @memberof RevokeTokenDialogComponent
    */
-  private revokeTokenFailure(): void {
-    this.matSnackBar.open('Revoking Dockstore token failed', 'Dismiss');
+  private revokeTokenFailure(error: HttpErrorResponse): void {
+    this.alertService.detailedError(error);
   }
 }

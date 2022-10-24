@@ -41,13 +41,8 @@ export class RevokeTokenDialogComponent extends Base implements OnDestroy {
     });
   }
 
-  // Close dialog
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-
   /**
-   * Revoke user's Dockstore token
+   * Closes the dialog, sending data indicating that the user's Dockstore token should be revoked.
    *
    * @memberof RevokeTokenDialogComponent
    */
