@@ -419,6 +419,7 @@
             mat-dialog-close
             data-cy="ok-dialog-close-button"
             *ngIf="!editMode"
+            (click)="onHidden()"
           >
             OK
           </button>
