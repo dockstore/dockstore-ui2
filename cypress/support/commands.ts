@@ -125,3 +125,59 @@ export function addOrganizationAdminUser(organization: string, user: string) {
       "'), true, 'ADMIN')"
   );
 }
+
+export function createOrganization(name: string, displayName: string, topic: string, location: string, website: string, email: string) {
+  cy.contains('button', 'Create Organization Request').should('be.visible').click();
+  cy.contains('button', 'Next').should('be.visible').click();
+  typeInInput('Name', name);
+  typeInInput('Display Name', displayName);
+  typeInInput('Topic', topic);
+  typeInInput('Location', location);
+  typeInInput('Organization website', website);
+  typeInInput('Contact Email Address', email);
+  cy.get('[data-cy=create-or-update-organization-button]').should('be.visible').should('not.be.disabled').click();
+  cy.url().should('eq', Cypress.config().baseUrl + '/organizations/' + name);
+
+  cy.reload();
+}
+
+export function verifyGithubLinkNewDashboard(entryType: string) {
+  cy.visit('/dashboard?newDashboard');
+  cy.get('[data-cy=register-entry-btn]').contains(entryType).should('be.visible').click();
+  cy.get('[data-cy=storage-type-choice]').contains('GitHub').click();
+  cy.contains('button', 'Next').should('be.visible').click();
+  cy.contains('a', 'Manage Dockstore installations on GitHub')
+    .should('have.attr', 'href')
+    .and('include', 'https://github.com/apps/dockstore-testing-application');
+}
+
+export function testNoGithubEntriesText(entryType: string, repository: string) {
+  it('Should have no published ' + entryType + 's in ' + repository + ' repository', () => {
+    cy.visit('/my-' + entryType + 's');
+    cy.get('mat-expansion-panel-header').contains(repository).click();
+    cy.get('mat-expansion-panel-header')
+      .contains(repository)
+      .parentsUntil('mat-accordion')
+      .should('be.visible')
+      .contains('.mat-tab-label-content', 'Published')
+      .click();
+    if (entryType === 'tool') {
+      cy.get('[data-cy=no-published-apptool-message]').should('contain', 'No published ' + entryType + 's');
+    } else {
+      cy.get('[data-cy=no-published-' + entryType + '-message]').should('contain', 'No published ' + entryType + 's');
+    }
+  });
+  it('Should have no unpublished ' + entryType + 's in dockstore repository', () => {
+    cy.get('mat-expansion-panel-header')
+      .contains(repository)
+      .parentsUntil('mat-accordion')
+      .should('be.visible')
+      .contains('.mat-tab-label-content', 'Unpublished')
+      .click();
+    if (entryType === 'tool') {
+      cy.get('[data-cy=no-unpublished-apptool-message]').should('contain', 'No unpublished ' + entryType + 's');
+    } else {
+      cy.get('[data-cy=no-unpublished-' + entryType + '-message]').should('contain', 'No unpublished ' + entryType + 's');
+    }
+  });
+}
