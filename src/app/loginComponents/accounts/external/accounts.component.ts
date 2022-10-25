@@ -255,6 +255,7 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
+        this.alertService.start('Revoke Dockstore token');
         this.deleteToken(TokenSource.DOCKSTORE).subscribe(
           () => {
             this.revokeTokenSuccess();
@@ -268,7 +269,7 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * What happens when revoking the Dockstore Token has succeeded.
+   * When the user's Dockstore token is successfully revoked, the user gets logged out.
    *
    * @private
    * @memberof RevokeTokenDialogComponent
