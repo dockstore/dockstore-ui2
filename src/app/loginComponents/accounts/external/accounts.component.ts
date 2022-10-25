@@ -255,7 +255,7 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.alertService.start('Revoke Dockstore token');
+        this.alertService.start('Revoking Dockstore token');
         this.deleteToken(TokenSource.DOCKSTORE).subscribe(
           () => {
             this.revokeTokenSuccess();
