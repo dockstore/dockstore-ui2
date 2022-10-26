@@ -1,5 +1,5 @@
 /*
- *     Copyright 2018 OICR
+ *     Copyright 2022 OICR, UCSC
  *
  *     Licensed under the Apache License, Version 2.0 (the "License")
  *     you may not use this file except in compliance with the License
@@ -44,6 +44,7 @@ import { ToolQuery } from '../../shared/tool/tool.query';
 import { UrlResolverService } from '../../shared/url-resolver.service';
 import { UserQuery } from '../../shared/user/user.query';
 import { MytoolsService } from '../mytools.service';
+import { EntryType } from '../../shared/enum/entry-type';
 
 @Component({
   selector: 'app-my-tool',
@@ -65,6 +66,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
   public showSidebar = true;
   public groupEntriesObject$: Observable<Array<OrgToolObject<DockstoreTool>>>;
   public groupAppToolEntryObjects$: Observable<Array<OrgWorkflowObject<Workflow>>>;
+  EntryType = EntryType;
   constructor(
     private mytoolsService: MytoolsService,
     protected configuration: Configuration,
