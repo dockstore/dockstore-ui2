@@ -27,6 +27,8 @@ export class AboutComponent implements OnInit {
     new Sponsor('terra.png', new URL('https://terra.bio')),
     new Sponsor('dnanexus.png', new URL('https://www.dnanexus.com/')),
     new Sponsor('anvil.png', new URL('https://anvilproject.org/')),
+    new Sponsor('nf-tower-purple.svg', new URL('https://cloud.tower.nf/')),
+    new Sponsor('galaxy.png', new URL('https://galaxyproject.org/')),
   ];
   public contributors: Sponsor[] = [
     new Sponsor('collaboratory.svg', new URL('https://www.cancercollaboratory.org/')),
