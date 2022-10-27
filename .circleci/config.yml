@@ -431,7 +431,9 @@ workflows:
   everything:
     when:
       not:
-        equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+        or:
+          - << pipeline.parameters.run_nightly_no_auth >>
+          - << pipeline.parameters.run_nightly_no_auth >>
     jobs:
       # Add the tags filter to all jobs so they will run before upload_to_s3
       - audit:
