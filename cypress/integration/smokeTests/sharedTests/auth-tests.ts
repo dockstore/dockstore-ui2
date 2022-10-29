@@ -25,11 +25,14 @@ const hardcodedWaitTime = 8000;
 
 // get the dockstore token from env variable and put it in local storage
 function storeToken() {
-  if (Cypress.config('baseUrl') === 'https://dockstore.org') {
+  const baseUrl = Cypress.config('baseUrl');
+  if (baseUrl === 'https://dockstore.org') {
     window.localStorage.setItem('ng2-ui-auth_token', Cypress.env('PROD_TOKEN'));
-  } else if (Cypress.config('baseUrl') === 'https://staging.dockstore.org') {
+  } else if (baseUrl === 'https://staging.dockstore.org') {
     window.localStorage.setItem('ng2-ui-auth_token', Cypress.env('STAGING_TOKEN'));
-  } else if (Cypress.config('baseUrl') === 'https://dev.dockstore.net') {
+  } else if (baseUrl === 'https://qa.dockstore.org') {
+    window.localStorage.setItem('ng2-ui-auth_token', Cypress.env('QA_TOKEN'));
+  } else if (baseUrl === 'https://dev.dockstore.net') {
     window.localStorage.setItem('ng2-ui-auth_token', Cypress.env('DEV_TOKEN'));
   } else {
     window.localStorage.setItem('ng2-ui-auth_token', Cypress.env('LOCAL_TOKEN'));
