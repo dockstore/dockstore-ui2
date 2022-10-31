@@ -418,9 +418,22 @@ jobs:
           name: Build
           command: NODE_OPTIONS="--max-old-space-size=1610" bash -i -c 'npm run build.prod'
 
+parameters:
+  run_nightly_auth:
+    type: boolean
+    default: false
+  run_nightly_no_auth:
+    type: boolean
+    default: false
+
 workflows:
   version: 2
   everything:
+    when:
+      not:
+        or:
+          - << pipeline.parameters.run_nightly_auth >>
+          - << pipeline.parameters.run_nightly_no_auth >>
     jobs:
       # Add the tags filter to all jobs so they will run before upload_to_s3
       - audit:
@@ -513,13 +526,7 @@ workflows:
             - dockerhub
 
   nightly_no_auth:
-    triggers:
-      - schedule:
-          cron: "0 10 * * *" # This is 3am PDT / 2am PST
-          filters:
-            branches:
-              only:
-                - develop
+    when: << pipeline.parameters.run_nightly_no_auth >>
     jobs:
       - no_auth_smoke_tests:
           name: "no_auth_smoke_tests_dev"
@@ -541,13 +548,7 @@ workflows:
             - oicr-slack
 
   nightly_auth:
-    triggers:
-      - schedule:
-          cron: "0 11 * * *" # This is 4am PDT / 3am PST
-          filters:
-            branches:
-              only:
-                - develop
+    when: << pipeline.parameters.run_nightly_auth >>
     jobs:
       - auth_smoke_tests:
           name: "auth_smoke_tests_dev"
