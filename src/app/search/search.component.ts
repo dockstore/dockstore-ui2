@@ -362,7 +362,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   setupAllBuckets(hits: SearchResponse<Hit>) {
     this.checkboxMap = new Map<string, Map<string, boolean>>();
     const aggregations = hits.aggregations;
-    Object.entries(aggregations).forEach(([key, value]) => {
+    Object.entries(aggregations || {}).forEach(([key, value]) => {
       if (value['buckets'] != null) {
         this.setupBuckets(this.searchService.aggregationNameToTerm(key), value['buckets']);
       }
