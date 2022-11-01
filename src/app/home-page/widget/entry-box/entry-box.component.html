@@ -3,7 +3,9 @@
     <div id="workflow-number" fxLayout="row">
       <mat-card-header fxLayout="row">
         <mat-card-title>{{ entryTypeLowerCase | titlecase }}s</mat-card-title>
-        <span class="bubble">{{ totalEntries }}</span>
+        <span class="bubble" id="bubble-green" *ngIf="entryTypeLowerCase === 'workflow'">{{ totalEntries }}</span>
+        <span class="bubble" id="bubble-blue" *ngIf="entryTypeLowerCase === 'tool'">{{ totalEntries }}</span>
+        <span class="bubble" id="bubble-orange" *ngIf="entryTypeLowerCase === 'service'">{{ totalEntries }}</span>
       </mat-card-header>
     </div>
     <button
