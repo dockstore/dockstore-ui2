@@ -22,6 +22,7 @@ export class EntryBoxComponent extends Base implements OnInit {
     | typeof EntryUpdateTime.EntryTypeEnum.SERVICE
     | typeof EntryUpdateTime.EntryTypeEnum.WORKFLOW;
   entryTypeLowerCase: string;
+  public entryTypeEnum = EntryUpdateTime.EntryTypeEnum;
   filterText: string;
   listOfEntries: Array<EntryUpdateTime> = [];
   helpLink: string;
