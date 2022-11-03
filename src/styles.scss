@@ -621,6 +621,7 @@ h5,
 p.update {
   font-weight: bold;
   color: #7987aa;
+  list-style-type: none;
 }
 
 div.side-block table,
@@ -917,7 +918,6 @@ app-workflow-sidebar-accordion
   max-height: 26px !important;
   padding: 0 0.75rem !important;
   display: inline-block !important;
-  min-width: 32px !important;
   font-weight: 500 !important;
   background: mat.get-color-from-palette($dockstore-app-gray, lighter);
 }
@@ -965,6 +965,11 @@ mat-icon.star-icon {
   height: 16px;
 }
 
+.date-display {
+  color: mat.get-color-from-palette($kim-gray, 2);
+  white-space: nowrap;
+}
+
 .no-wrap {
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -998,6 +1003,11 @@ mat-tab-group.no-pagination {
 .subtitle {
   font-size: smaller;
   color: rgba(0, 0, 0, 0.54);
+}
+
+// Used to make text center-aligned
+.text-align-center {
+  text-align: center;
 }
 
 // Styling from design mockups
@@ -1057,6 +1067,10 @@ hr {
   margin-top: 1.5rem;
 }
 
+.widget-box-type-logo {
+  min-width: 5rem;
+}
+
 // To indicate success of an operation.
 .accent-3-dark {
   color: $accent-3-dark;
@@ -1111,10 +1125,13 @@ mat-icon.mat-icon-sm {
   }
 }
 
-// Style the float label of the mat-form-field
+// Purple outline and text for mat-form-field
+.mat-form-field-appearance-outline.mat-focused:not(.mat-form-field-invalid) .mat-form-field-outline,
+.mat-form-field.mat-focused:not(.mat-form-field-invalid) .mat-form-field-label,
+.mat-form-field.mat-focused:not(.mat-form-field-invalid) .mat-form-field-label .mat-form-field-required-marker,
 .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float
   .mat-form-field-label:not(.mat-empty):not(.mat-form-field-empty) {
-  color: mat.get-color-from-palette($dockstore-app-accent, 1);
+  color: mat.get-color-from-palette($dockstore-app-accent-1, darker) !important;
 }
 
 // Keep the outer circle in a radio button gray even when selected
@@ -1282,8 +1299,71 @@ a.small-mat-btn-skin:not([class*='mat-elevation-z']) {
   box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.08);
 }
 
+button.inline-text-btn {
+  text-decoration: underline;
+  color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
+  font-size: 12px;
+  padding: 0.5rem;
+}
+
 // Updated mat-card style matching Zeplin redesign
 .mat-card:not([class*='mat-elevation-z']) {
   border: solid 1px mat.get-color-from-palette($dockstore-app-gray, 7);
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1), 0 2px 3px 0 rgba(0, 0, 0, 0.08) !important;
+}
+
+// Alert and Warning styles
+.alert-warning {
+  background-color: mat.get-color-from-palette($dockstore-app-warn, 6) !important;
+  border: solid 1px mat.get-color-from-palette($dockstore-app-warn, 3) !important;
+  box-shadow: none !important;
+}
+
+.alert-warning-icon {
+  color: mat.get-color-from-palette($dockstore-app-warn, 1) !important;
+}
+
+.alert-info {
+  background-color: #d9edf7 !important;
+  border-color: #bce8f1 !important;
+  border: 0px !important;
+}
+
+.alert-danger {
+  background-color: mat.get-color-from-palette($dockstore-app-error, 5) !important;
+  border: solid 1px mat.get-color-from-palette($dockstore-app-error, 4) !important;
+}
+
+.alert-danger-icon {
+  color: mat.get-color-from-palette($dockstore-app-error, 2) !important;
+}
+
+.widget-list-items {
+  border-bottom: solid 1px mat.get-color-from-palette($kim-gray, 3);
+  line-height: 2rem;
+}
+
+.space-between {
+  justify-content: space-between;
+}
+
+// For the about page and the not found page
+.truck-img {
+  padding-bottom: 1rem;
+  height: 25%;
+  width: auto;
+}
+
+.about-h3 {
+  font-size: 1.7rem;
+  color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
+  line-height: 2.5rem;
+  font-weight: 500;
+}
+
+.about-dockstore {
+  margin-top: 6rem;
+  background-image: url(assets/images/about-page/city.png);
+  background-repeat: repeat-x;
+  background-position-y: bottom;
 }

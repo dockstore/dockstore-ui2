@@ -1,5 +1,5 @@
 /*
- *    Copyright 2018 OICR
+ *    Copyright 2022 OICR, UCSC
  *
  *    Licensed under the Apache License, Version 2.0 (the "License")
  *    you may not use this file except in compliance with the License
@@ -166,9 +166,13 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
           console.error('Something has gone horribly wrong with sharedWorkflows$ and/or workflows$');
         }
       );
-    this.groupEntriesObject$ = combineLatest([this.workflowService.workflows$, this.workflowQuery.selectActive()]).pipe(
-      map(([workflows, workflow]) => {
-        return this.myWorkflowsService.convertEntriesToOrgEntryObject(workflows, workflow);
+    this.groupEntriesObject$ = combineLatest([
+      this.workflowService.workflows$,
+      this.workflowQuery.selectActive(),
+      this.tokenQuery.gitHubOrganizations$,
+    ]).pipe(
+      map(([workflows, workflow, gitHubOrganizations]) => {
+        return this.myWorkflowsService.convertEntriesToOrgEntryObject(workflows, workflow, gitHubOrganizations);
       })
     );
 
@@ -180,7 +184,8 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
 
     this.hasGroupEntriesObject$ = this.groupEntriesObject$.pipe(
       map((orgToolObjects: OrgWorkflowObject<Workflow>[]) => {
-        return orgToolObjects && orgToolObjects.length !== 0;
+        // Now that we have empty GitHub orgs showing up, check if they have any entries
+        return orgToolObjects && orgToolObjects.some((orgToolObject) => orgToolObject.unpublished.length || orgToolObject.published.length);
       })
     );
     this.hasGroupSharedEntriesObject$ = this.groupSharedEntriesObject$.pipe(

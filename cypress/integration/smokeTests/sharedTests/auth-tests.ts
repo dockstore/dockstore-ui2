@@ -25,12 +25,17 @@ const hardcodedWaitTime = 8000;
 
 // get the dockstore token from env variable and put it in local storage
 function storeToken() {
-  if (Cypress.config('baseUrl') === 'https://dockstore.org') {
+  const baseUrl = Cypress.config('baseUrl');
+  if (baseUrl === 'https://dockstore.org') {
     window.localStorage.setItem('ng2-ui-auth_token', Cypress.env('PROD_TOKEN'));
-  } else if (Cypress.config('baseUrl') === 'https://staging.dockstore.org') {
+  } else if (baseUrl === 'https://staging.dockstore.org') {
     window.localStorage.setItem('ng2-ui-auth_token', Cypress.env('STAGING_TOKEN'));
-  } else {
+  } else if (baseUrl === 'https://qa.dockstore.org') {
+    window.localStorage.setItem('ng2-ui-auth_token', Cypress.env('QA_TOKEN'));
+  } else if (baseUrl === 'https://dev.dockstore.net') {
     window.localStorage.setItem('ng2-ui-auth_token', Cypress.env('DEV_TOKEN'));
+  } else {
+    window.localStorage.setItem('ng2-ui-auth_token', Cypress.env('LOCAL_TOKEN'));
   }
 }
 
@@ -55,6 +60,7 @@ function deleteTool() {
       cy.contains('button', 'Delete').should('be.visible').click();
     });
     cy.wait('@containers');
+    // TODO: Revisit this -- with change to show GitHub orgs with no entries, this got broken
     cy.contains('There are currently no tools registered under this account');
   });
 }
@@ -93,7 +99,8 @@ function registerQuayTool(repo: string, name: string) {
     cy.wait('@containers');
     cy.contains('button', 'Finish').should('be.visible').click();
     cy.url().should('contain', toolName);
-    cy.contains('button', 'Refresh').should('be.visible').click();
+    cy.wait(hardcodedWaitTime); // Get disconnected DOM without this
+    cy.contains('button', 'Refresh').should('be.visible').click(); // Need to refresh because it sets the default version, which publish needs
     cy.wait(hardcodedWaitTime); // The publish button is enabled even when publishing fails, so we need to wait for the refresh to complete.
     cy.get('#publishToolButton').should('be.visible').click();
     cy.wait('@publish');
@@ -120,6 +127,8 @@ function registerRemoteSitesTool(repo: string, name: string) {
       cy.contains('button', 'Add Tool').should('be.visible').click();
     });
     cy.url().should('contain', toolName);
+    cy.wait(hardcodedWaitTime); // The publish button is enabled even when publishing fails, so we need to wait for the refresh to complete.
+    cy.contains('button', 'Refresh').should('be.visible').click(); // Need to refresh because it sets the default version, which publish needs
     cy.get('#publishToolButton').should('be.visible').click();
     cy.wait('@publish');
   });
@@ -164,6 +173,26 @@ function registerToolOnDockstore(repo: string, name: string) {
   });
 }
 
+function toggleHiddenToolVersion() {
+  cy.contains('button', 'Actions').should('be.visible');
+  cy.contains('td', 'Actions').first().click();
+  cy.contains('button', 'Edit').click();
+  cy.contains('div', 'Hidden:').within(() => {
+    cy.get('[name=checkbox]').click();
+  });
+  cy.contains('button', 'Save Changes').click();
+}
+
+function toggleHiddenWorkflowVersion() {
+  cy.get('[data-cy=versionRow]').last().scrollIntoView().contains('button', 'Actions').should('be.visible').click();
+  cy.contains('button', 'Edit').click();
+  // TODO: Use [data-cy=hiddenCheck] -- do after 1.14 deployed
+  cy.contains('div', 'Hidden:').within(() => {
+    cy.get('[name=checkbox]').click();
+  });
+  cy.contains('button', 'Save Changes').click();
+}
+
 function testTool(registry: string, repo: string, name: string) {
   describe('Register, publish, unpublish, and delete a tool', () => {
     registerQuayTool(repo, name);
@@ -178,33 +207,24 @@ function testTool(registry: string, repo: string, name: string) {
     deleteTool();
   });
 
-  // disable test until hiding versions for Tools are working on dev
-
-  // describe('Hide and un-hide a tool version', () => {
-  //   registerQuayTool(repo, name);
-  //   it('hide a version', () => {
-  //     goToTab('Versions');
-  //     cy.contains('button', 'Actions').should('be.visible');
-  //     cy.contains('td', 'Actions')
-  //       .first()
-  //       .click();
-  //     cy.contains('button', 'Edit').click();
-  //     cy.contains('div', 'Hidden:').within(() => {
-  //       cy.get('[name=checkbox]').click();
-  //     });
-  //     cy.contains('button', 'Save Changes').click();
-  //     cy.get('[data-cy=hiddenCheck]').should('have.length', 1);
-  //   });
-  //   it('refresh namespace', () => {
-  //     cy.contains('button', 'Refresh Namespace')
-  //       .first()
-  //       .click();
-  //     // check that the 'refresh succeeded' message appears
-  //     cy.contains('succeeded');
-  //   });
-  //   unpublishTool();
-  //   deleteTool();
-  // });
+  describe('Hide and un-hide a tool version', () => {
+    registerQuayTool(repo, name);
+    it('hide a version', () => {
+      goToTab('Versions');
+      toggleHiddenToolVersion();
+      cy.get('[data-cy=hiddenCheck]').should('have.length', 1);
+      // un-hide and verify
+      toggleHiddenToolVersion();
+      cy.get('[data-cy=hiddenCheck]').should('not.exist');
+    });
+    it('refresh namespace', () => {
+      cy.contains('button', 'Refresh Namespace').first().click();
+      // check that the 'refresh succeeded' message appears
+      cy.contains('succeeded');
+    });
+    unpublishTool();
+    deleteTool();
+  });
 }
 
 function testWorkflow(registry: string, repo: string, name: string) {
@@ -253,6 +273,16 @@ function testWorkflow(registry: string, repo: string, name: string) {
       goToTab('Info');
       cy.contains('button', 'Restub').click();
       cy.contains('button', 'Publish').should('be.disabled');
+    });
+    it('hide and un-hide a version', () => {
+      cy.get('[data-cy=refreshButton]').click();
+      goToTab('Versions');
+      // hide
+      toggleHiddenWorkflowVersion();
+      cy.get('[data-cy=hidden]').should('have.length', 1);
+      // un-hide
+      toggleHiddenWorkflowVersion();
+      cy.get('[data-cy=hidden]').should('not.exist');
     });
   });
 }

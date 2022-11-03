@@ -40,7 +40,7 @@ esconfiguration:
   port: 9200
   hostname: localhost
 
-authenticationCachePolicy: maximumSize=10000, expireAfterAccess=10m
+authenticationCachePolicy: maximumSize=10000, expireAfterAccess=10s
 
 database:
   # the name of your JDBC driver
@@ -87,6 +87,7 @@ uiConfig:
   gitHubAuthUrl: https://github.com/login/oauth/authorize
   gitHubRedirectPath: /auth/github.com
   gitHubScope: read:org,user:email
+  gitHubAppInstallationUrl: https://github.com/apps/dockstore-testing-application
 
   quayIoAuthUrl: https://quay.io/oauth/authorize
   quayIoRedirectPath: /auth/quay.io

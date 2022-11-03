@@ -1,5 +1,5 @@
 /*
- *    Copyright 2018 OICR
+ *    Copyright 2022 OICR, UCSC
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -19,7 +19,11 @@
 const psqlInvocation: string = 'PASSWORD=dockstore psql';
 
 export function goToTab(tabName: string): void {
+  // cypress tests run asynchronously, so if the DOM changes and an element-of-interest becomes detached while we're manipulating it, the test will fail.
+  // our current (admittedly primitive) go-to solution is to wait (sleep) for long enough that the DOM "settles", thus avoiding the "detached element" bug.
+  cy.wait(500);
   cy.contains('.mat-tab-label', tabName).should('be.visible').click();
+  cy.wait(500);
 }
 
 export function assertVisibleTab(tabName: string): void {
@@ -59,7 +63,7 @@ export function resetDB() {
     cy.exec('java -jar dockstore-webservice.jar db drop-all --confirm-delete-everything test/web.yml');
     cy.exec(psqlInvocation + ' -h localhost webservice_test -U dockstore < test/db_dump.sql');
     cy.exec(
-      'java -jar dockstore-webservice.jar db migrate -i 1.5.0,1.6.0,1.7.0,1.8.0,1.9.0,1.10.0,alter_test_user_1.10.2,1.11.0,1.12.0 test/web.yml'
+      'java -jar dockstore-webservice.jar db migrate -i 1.5.0,1.6.0,1.7.0,1.8.0,1.9.0,1.10.0,alter_test_user_1.10.2,1.11.0,1.12.0,1.13.0 test/web.yml'
     );
   });
 }
@@ -120,4 +124,85 @@ export function addOrganizationAdminUser(organization: string, user: string) {
       user +
       "'), true, 'ADMIN')"
   );
+}
+
+export function createOrganization(name: string, displayName: string, topic: string, location: string, website: string, email: string) {
+  cy.contains('button', 'Create Organization Request').should('be.visible').click();
+  cy.contains('button', 'Next').should('be.visible').click();
+  typeInInput('Name', name);
+  typeInInput('Display Name', displayName);
+  typeInInput('Topic', topic);
+  typeInInput('Location', location);
+  typeInInput('Organization website', website);
+  typeInInput('Contact Email Address', email);
+  cy.get('[data-cy=create-or-update-organization-button]').should('be.visible').should('not.be.disabled').click();
+  cy.url().should('eq', Cypress.config().baseUrl + '/organizations/' + name);
+
+  cy.reload();
+}
+
+export function verifyGithubLinkNewDashboard(entryType: string) {
+  cy.visit('/dashboard?newDashboard');
+  cy.get('[data-cy=register-entry-btn]').contains(entryType).should('be.visible').click();
+  cy.get('[data-cy=storage-type-choice]').contains('GitHub').click();
+  cy.contains('button', 'Next').should('be.visible').click();
+  cy.contains('a', 'Manage Dockstore installations on GitHub')
+    .should('have.attr', 'href')
+    .and('include', 'https://github.com/apps/dockstore-testing-application');
+}
+
+export function createOrganization(name: string, displayName: string, topic: string, location: string, website: string, email: string) {
+  cy.contains('button', 'Create Organization Request').should('be.visible').click();
+  cy.contains('button', 'Next').should('be.visible').click();
+  typeInInput('Name', name);
+  typeInInput('Display Name', displayName);
+  typeInInput('Topic', topic);
+  typeInInput('Location', location);
+  typeInInput('Organization website', website);
+  typeInInput('Contact Email Address', email);
+  cy.get('[data-cy=create-or-update-organization-button]').should('be.visible').should('not.be.disabled').click();
+  cy.url().should('eq', Cypress.config().baseUrl + '/organizations/' + name);
+
+  cy.reload();
+}
+
+export function verifyGithubLinkNewDashboard(entryType: string) {
+  cy.visit('/dashboard?newDashboard');
+  cy.get('[data-cy=register-entry-btn]').contains(entryType).should('be.visible').click();
+  cy.get('[data-cy=storage-type-choice]').contains('GitHub').click();
+  cy.contains('button', 'Next').should('be.visible').click();
+  cy.contains('a', 'Manage Dockstore installations on GitHub')
+    .should('have.attr', 'href')
+    .and('include', 'https://github.com/apps/dockstore-testing-application');
+}
+
+export function testNoGithubEntriesText(entryType: string, repository: string) {
+  it('Should have no published ' + entryType + 's in ' + repository + ' repository', () => {
+    cy.visit('/my-' + entryType + 's');
+    cy.get('mat-expansion-panel-header').contains(repository).click();
+    cy.get('mat-expansion-panel-header')
+      .contains(repository)
+      .parentsUntil('mat-accordion')
+      .should('be.visible')
+      .contains('.mat-tab-label-content', 'Published')
+      .click();
+    if (entryType === 'tool') {
+      cy.get('[data-cy=no-published-apptool-message]').should('contain', 'No published ' + entryType + 's');
+    } else {
+      cy.get('[data-cy=no-published-' + entryType + '-message]').should('contain', 'No published ' + entryType + 's');
+    }
+  });
+  it('Should have no unpublished ' + entryType + 's in dockstore repository', () => {
+    cy.get('mat-expansion-panel-header')
+      .contains(repository)
+      .parentsUntil('mat-accordion')
+      .should('be.visible')
+      .contains('.mat-tab-label-content', 'Unpublished')
+      .click();
+    if (entryType === 'tool') {
+      cy.get('[data-cy=no-unpublished-apptool-message]').should('contain', 'No unpublished ' + entryType + 's');
+    } else {
+      cy.get('[data-cy=no-unpublished-' + entryType + '-message]').should('contain', 'No unpublished ' + entryType + 's');
+    }
+  });
 }

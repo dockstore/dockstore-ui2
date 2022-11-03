@@ -14,10 +14,10 @@
   ~    limitations under the License.
   -->
 
-<div fxLayout>
+<div fxLayout *ngIf="!Dockstore.FEATURES.enableNewDashboard; else newDashboard">
   <app-my-sidebar fxFlexAlign="stretch"></app-my-sidebar>
 
-  <div id="column-holder" fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="start start" fxLayoutGap="10px">
+  <div id="column-holder" fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="start start" fxLayoutGap="10px" fxFlex="1 2 100%">
     <div
       fxLayout="column"
       fxLayoutAlign="start start"
@@ -64,9 +64,9 @@
         <div class="w-100">
           <h3>Links</h3>
           <ul>
-            <li><a routerLink="quick-start">Quickstart</a></li>
-            <li><a routerLink="accounts">My Account</a></li>
-            <li><a routerLink="starred">My Starred</a></li>
+            <li><a [routerLink]="['/quick-start']">Quickstart</a></li>
+            <li><a [routerLink]="['/accounts']">My Account</a></li>
+            <li><a [routerLink]="['/starred']">My Starred</a></li>
             <li>
               <a href="https://discuss.dockstore.org/" target="_blank" rel="noopener noreferrer">Forum <mat-icon>open_in_new</mat-icon></a>
             </li>
@@ -84,3 +84,6 @@
     </div>
   </div>
 </div>
+<ng-template #newDashboard>
+  <app-new-dashboard></app-new-dashboard>
+</ng-template>

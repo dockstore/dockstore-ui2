@@ -1,28 +1,8 @@
 @use '@angular/material' as mat;
 @import '/src/materialColorScheme.scss';
 
-.about-dockstore {
-  margin-top: 6rem;
-  background-image: url(../../assets/images/about-page/city.png);
-  background-repeat: repeat-x;
-  background-position-y: bottom;
-}
-
-.truck-img {
-  padding-bottom: 1rem;
-  height: 25%;
-  width: auto;
-}
-
 .principles-icon {
   height: 60px;
-}
-
-h3 {
-  font-size: 1.7rem;
-  color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
-  line-height: 2.5rem;
-  font-weight: 500;
 }
 
 h2 {

@@ -55,6 +55,21 @@ export class MyWorkflowsService extends MyEntriesService<Workflow, OrgWorkflowOb
     this.gitHubAppInstallationLink$ = this.sessionQuery.gitHubAppInstallationLink$;
   }
 
+  convertEntriesToOrgEntryObject(
+    entries: Workflow[] | null,
+    selectedEntry: Workflow,
+    gitHubOrganizations: string[] = []
+  ): OrgWorkflowObject<Workflow>[] {
+    const orgWorkflowObjects = super.convertEntriesToOrgEntryObject(entries, selectedEntry);
+    orgWorkflowObjects.push(
+      ...gitHubOrganizations
+        .filter((gitHubOrg) => !this.hasGitHubOrg(orgWorkflowObjects, gitHubOrg))
+        .map((gitHubOrg) => this.createEmptyGitHubOrgEntryObject(gitHubOrg))
+    );
+    this.recursiveSortOrgEntryObjects(orgWorkflowObjects);
+    return orgWorkflowObjects;
+  }
+
   getMyEntries(userId: number, entryType: EntryType) {
     if (entryType === EntryType.BioWorkflow) {
       this.getMyBioWorkflows(userId);
@@ -209,6 +224,20 @@ export class MyWorkflowsService extends MyEntriesService<Workflow, OrgWorkflowOb
       organization: workflow.organization,
       ...this.createPartial(workflow),
     };
+  }
+
+  protected createEmptyGitHubOrgEntryObject(organization: string): OrgWorkflowObject<Workflow> {
+    return {
+      sourceControl: 'github.com', // Enum would be nice, but see comment in my-workflow.component.ts / OrgWorkflowObject
+      organization: organization,
+      published: [],
+      unpublished: [],
+      expanded: false,
+    };
+  }
+
+  private hasGitHubOrg(orgEntryObjects: OrgWorkflowObject<Workflow>[], gitHubOrg: string): boolean {
+    return orgEntryObjects.some((o) => o.organization === gitHubOrg);
   }
 
   protected sortOrgEntryObjects(orgWorkflowObjectA: OrgWorkflowObject<Workflow>, orgWorkflowObjectB: OrgWorkflowObject<Workflow>): number {

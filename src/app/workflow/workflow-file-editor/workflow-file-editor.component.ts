@@ -16,7 +16,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input } from '@angular/core';
 import { includesAuthors } from 'app/shared/constants';
-import { WorkflowsService as OpenApiWorkflowServices } from 'app/shared/openapi';
+import { SourceFile, WorkflowsService as OpenApiWorkflowServices } from 'app/shared/openapi';
 import { Observable } from 'rxjs';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { FileEditing } from '../../shared/file-editing';
@@ -34,9 +34,9 @@ import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
   styleUrls: ['./workflow-file-editor.component.scss'],
 })
 export class WorkflowFileEditorComponent extends FileEditing {
-  descriptorFiles = [];
-  testParameterFiles = [];
-  originalSourceFiles = [];
+  descriptorFiles: Array<SourceFile> = [];
+  testParameterFiles: Array<SourceFile> = [];
+  originalSourceFiles: Array<SourceFile> = [];
   _selectedVersion: WorkflowVersion;
   isNewestVersion = false;
   public selectedDescriptorType$: Observable<ToolDescriptor.TypeEnum>;
@@ -81,9 +81,8 @@ export class WorkflowFileEditorComponent extends FileEditing {
    */
   loadVersionSourcefiles() {
     this.openapiWorkflowsService.getWorkflowVersionsSourcefiles(this.id, this._selectedVersion.id).subscribe((sourcefiles) => {
-      this.originalSourceFiles = JSON.parse(JSON.stringify(sourcefiles));
-      this.descriptorFiles = JSON.parse(JSON.stringify(this.getDescriptorFiles(this.originalSourceFiles)));
-      this.testParameterFiles = JSON.parse(JSON.stringify(this.getTestFiles(this.originalSourceFiles)));
+      this.originalSourceFiles = this.deepCopy(sourcefiles);
+      this.resetFiles();
     });
   }
 
@@ -151,8 +150,8 @@ export class WorkflowFileEditorComponent extends FileEditing {
    * Resets the files back to their original state
    */
   resetFiles() {
-    this.descriptorFiles = this.getDescriptorFiles(this.originalSourceFiles);
-    this.testParameterFiles = this.getTestFiles(this.originalSourceFiles);
+    this.descriptorFiles = this.deepCopy(this.getDescriptorFiles(this.originalSourceFiles));
+    this.testParameterFiles = this.deepCopy(this.getTestFiles(this.originalSourceFiles));
   }
 
   /**

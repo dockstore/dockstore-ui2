@@ -315,8 +315,8 @@ export abstract class Entry implements OnDestroy {
     );
   }
 
-  updateCategories(entryId: number): void {
-    this.entryCategoriesService.updateEntryCategories(entryId);
+  updateCategories(entryId: number, published: boolean): void {
+    this.entryCategoriesService.updateEntryCategories(entryId, published);
     this.categories$ = this.entryCategoriesService.categories$;
   }
 
@@ -461,6 +461,18 @@ export abstract class Entry implements OnDestroy {
    * @param topicId The ID of the topic on discourse
    */
   discourseHelper(topicId: number): void {
+    // The #discourse-comments element, included in the entry component's html template,
+    // marks the location where the discourse embed script will add the discourse link.
+    // If the #discourse-comments element does not exist, or if the previous topicId
+    // (from the previous call) is the same as the requested topicId, do nothing.
+    const comments = document.getElementById('discourse-comments');
+    if (!comments || (<any>comments).topicId === topicId) {
+      return;
+    }
+    // Store the topicId so we can check it the next time this function is called.
+    // The stored topicId will persist until the view is regenerated.
+    (<any>comments).topicId = topicId;
+
     const element = document.getElementById('discourse-embed-frame');
     if (element !== null) {
       element.remove();
@@ -504,7 +516,7 @@ export abstract class Entry implements OnDestroy {
       url += '&entryType=' + searchType;
     }
     url += '&searchMode=files';
-    window.location.href = url;
+    this.router.navigateByUrl(url);
   }
 
   /**

@@ -116,7 +116,9 @@ export class EntryActionsService {
     };
     const observable = this.informationDialogService.openDialog(informationDialogData, bootstrap4mediumModalSize);
     if (showVersions != null) {
-      observable.subscribe(() => { showVersions.emit(); });
+      observable.subscribe(() => {
+        showVersions.emit();
+      });
     }
   }
 

@@ -17,8 +17,8 @@
 import { Directive } from '@angular/core';
 import { AlertService } from './alert/state/alert.service';
 import { Files } from './files';
+import { SourceFile } from './openapi';
 import { Tag, WorkflowVersion } from './swagger';
-import { SourceFile } from './swagger/model/sourceFile';
 
 @Directive()
 // eslint-disable-next-line @angular-eslint/directive-class-suffix
@@ -116,5 +116,9 @@ export class FileEditing extends Files {
 
   getNewestVersion(versions: Array<WorkflowVersion | Tag>): WorkflowVersion | Tag {
     return versions.reduce((p, c) => (p.id > c.id ? p : c));
+  }
+
+  deepCopy<T>(object: T): T {
+    return JSON.parse(JSON.stringify(object));
   }
 }

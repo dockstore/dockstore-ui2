@@ -83,13 +83,25 @@
               class="pl-2"
             />
           </mat-expansion-panel-header>
-          <div *ngIf="key === 'author'">
+          <!-- watch out for GetFacetSearchResultsPipe when adding facets with search -->
+          <div
+            *ngIf="
+              key === 'author' ||
+              key === 'labels.value.keyword' ||
+              key === 'namespace' ||
+              key === 'organization' ||
+              key === 'categories.name.keyword'
+            "
+          >
             <mat-form-field appearance="outline">
-              <mat-label>Search for {{ key }}</mat-label>
+              <mat-label>Search for {{ key.substring(0, key.indexOf('.')) }}</mat-label>
               <input
                 matInput
-                placeholder="Search for {{ key }}"
-                [(ngModel)]="facetSearchText"
+                type="text"
+                placeholder="Search for {{ key.substring(0, key.indexOf('.')) }}"
+                [ngModel]="facetSearchTextMap.get(key)"
+                [ngModelOptions]="{ updateOn: 'change' }"
+                (ngModelChange)="facetSearchTextMap.set(key, $event)"
                 (keyup)="onFacetSearchKey(key)"
                 [matAutocomplete]="auto"
               />
@@ -129,7 +141,7 @@
                         <mat-checkbox
                           class="search-facet-checkboxes"
                           type="checkbox"
-                          [checked]="checkboxMap.get(key).get(subBucket)"
+                          [checked]="checkboxMap?.get(key)?.get(subBucket)"
                           (change)="onClick(key, subBucket)"
                         >
                           {{ key | mapFriendlyValue: subBucket }}
@@ -144,7 +156,10 @@
           </div>
           <div
             class="my-1"
-            *ngFor="let subBucket of getKeys(orderedBuckets.get(key).Items) | getFacetSearchResults: facetSearchText:key; let i = index"
+            *ngFor="
+              let subBucket of getKeys(orderedBuckets.get(key).Items) | getFacetSearchResults: facetSearchTextMap.get(key):key;
+              let i = index
+            "
           >
             <div [ngStyle]="orderedBuckets.get(key) | getHistogramStyle: subBucket:(selectedIndex$ | async)">
               <div class="panel-container-label">
@@ -154,7 +169,7 @@
                       <mat-checkbox
                         class="search-facet-checkboxes"
                         type="checkbox"
-                        [checked]="checkboxMap.get(key).get(subBucket)"
+                        [checked]="checkboxMap?.get(key)?.get(subBucket)"
                         (change)="onClick(key, subBucket)"
                       >
                         {{ key | mapFriendlyValue: subBucket }}
@@ -171,7 +186,7 @@
                         matTooltip="{{ subBucket }}"
                         [matTooltipPosition]="'after'"
                         type="checkbox"
-                        [checked]="checkboxMap.get(key).get(subBucket)"
+                        [checked]="checkboxMap?.get(key)?.get(subBucket)"
                         (change)="onClick(key, subBucket)"
                       >
                         {{ key | mapFriendlyValue: subBucket }}
@@ -188,12 +203,24 @@
               <!-- The anchor is an easy way to change the color of the icon and "more" -->
               <a>
                 <fa-icon [icon]="fullyExpandMap.get(key) ? faAngleDoubleUp : faAngleDoubleDown" aria-hidden="true"></fa-icon>
-                <span *ngIf="key !== 'author'">{{
-                  fullyExpandMap.get(key) ? 'Hide' : orderedBuckets.get(key).Items.size - 5 + ' more'
-                }}</span>
-                <span *ngIf="key === 'author'">{{
-                  fullyExpandMap.get(key) ? 'Hide' : (getKeys(orderedBuckets.get(key).Items) | getFacetSearchUpdate: facetSearchText)
-                }}</span>
+                <span
+                  *ngIf="
+                    key !== 'author' &&
+                      key !== 'labels.value.keyword' &&
+                      key !== 'namespace' &&
+                      key !== 'organization' &&
+                      key !== 'categories.name.keyword';
+                    else facetLoading
+                  "
+                  >{{ fullyExpandMap.get(key) ? 'Hide' : orderedBuckets.get(key).Items.size - 5 + ' more' }}</span
+                >
+                <ng-template #facetLoading>
+                  <span>{{
+                    fullyExpandMap.get(key)
+                      ? 'Hide'
+                      : (getKeys(orderedBuckets.get(key).Items) | getFacetSearchUpdate: facetSearchTextMap.get(key))
+                  }}</span>
+                </ng-template>
               </a>
             </span>
           </div>
@@ -203,7 +230,7 @@
 
     <div class="col-md-9 containers-rsb" *ngIf="advancedSearchObject$ | async as advancedSearchObject">
       <div class="hits">
-        <mat-card *ngIf="searchService.noResults(searchTerm, hits)" class="alert alert-warning text-break">
+        <mat-card *ngIf="searchService.noResults(searchTerm, hits)" class="alert alert-warning mat-elevation-z text-break">
           Sorry, no matches found for <strong>{{ basicSearchText$ | async }}</strong
           >.
           <span *ngIf="suggestTerm$ | async"
@@ -212,40 +239,19 @@
           >
         </mat-card>
 
-        <mde-popover #appPopover="mdePopover" [mdePopoverOverlapTrigger]="false">
-          <mat-card class="row">
-            <div>Link to this page</div>
-            <div class="input-group" style="padding: 5px">
-              <input type="text" class="form-control" [value]="shortUrl$ | async" readonly />
-              <span class="input-group-btn">
-                <button
-                  data-cy="copy_button"
-                  class="btn btn-default"
-                  [ngClass]="{ 'btn-copy': isCopied }"
-                  type="button"
-                  [cdkCopyToClipboard]="shortUrl$ | async"
-                  (cbOnSuccess)="isCopied = true"
-                  appSnackbar
-                >
-                  <mat-icon>file_copy</mat-icon>
-                </button>
-              </span>
-            </div>
-          </mat-card>
-        </mde-popover>
-
         <div *ngIf="searchService.hasSearchText(advancedSearchObject, searchTerm, hits) || searchService.hasFilters(filters)">
           <mat-card class="alert alert-info text-break">
             <button
               data-cy="share_button"
               mat-raised-button
               type="button"
-              [mdePopoverTriggerFor]="appPopover"
-              mdePopoverTriggerOn="click"
+              type="button"
+              [cdkCopyToClipboard]="shortUrl$ | async"
+              appSnackbar
               class="mr-2 accent-1-dark-btn"
             >
-              <fa-icon [icon]="faShareAlt" aria-hidden="true"></fa-icon>
-              Share
+              <fa-icon [icon]="faCopy" aria-hidden="true"></fa-icon>
+              Copy search link
             </button>
 
             <span *ngIf="searchService.hasResults(searchTerm, hits)">

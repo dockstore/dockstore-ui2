@@ -15,8 +15,8 @@
  */
 import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { Subject } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
+import { Observable, Subject, combineLatest } from 'rxjs';
+import { filter, map, takeUntil } from 'rxjs/operators';
 import { Logout } from '../loginComponents/logout';
 import { currentPrivacyPolicyVersion, currentTOSVersion } from '../shared/constants';
 import { Dockstore } from '../shared/dockstore.model';
@@ -27,6 +27,9 @@ import { PageInfo } from './../shared/models/PageInfo';
 import { PagenumberService } from './../shared/pagenumber.service';
 import { User } from './../shared/swagger/model/user';
 import { TrackLoginService } from './../shared/track-login.service';
+import { Organization, OrganizationUser } from '../shared/swagger';
+import { RequestsQuery } from '../loginComponents/state/requests.query';
+import { RequestsService } from '../loginComponents/state/requests.service';
 
 @Component({
   selector: 'app-navbar',
@@ -41,13 +44,20 @@ export class NavbarComponent extends Logout implements OnInit {
   protected ngUnsubscribe: Subject<{}> = new Subject();
   private readonly currentTOSVersion: User.TosversionEnum = currentTOSVersion;
   private readonly currentPrivacyPolicyVersion: User.PrivacyPolicyVersionEnum = currentPrivacyPolicyVersion;
+  public myOrganizationInvites$: Observable<Array<OrganizationUser>>;
+  public myRejectedOrganizationRequests$: Observable<Array<OrganizationUser>>;
+  public allPendingOrganizations$: Observable<Array<Organization>>;
+  public isAdminOrCurator$: Observable<boolean>;
+  public notificationCount$: Observable<number>;
 
   constructor(
     private pagenumberService: PagenumberService,
     trackLoginService: TrackLoginService,
     logoutService: LogoutService,
     router: Router,
-    private userQuery: UserQuery
+    private userQuery: UserQuery,
+    private requestsQuery: RequestsQuery,
+    private requestsService: RequestsService
   ) {
     super(trackLoginService, logoutService, router);
     this.router.events
@@ -58,13 +68,42 @@ export class NavbarComponent extends Logout implements OnInit {
       .subscribe(() => {
         this.isExtended = toExtendSite(this.router.url);
       });
+    this.isAdminOrCurator$ = this.userQuery.isAdminOrCurator$;
   }
 
   ngOnInit() {
     this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((user) => {
       this.user = user;
+      this.requestsService.updateMyMemberships();
+      this.requestsService.updateCuratorOrganizations();
     });
     this.userQuery.extendedUserData$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((extendedUser) => (this.extendedUser = extendedUser));
+    this.myOrganizationInvites$ = this.requestsQuery.myOrganizationInvites$;
+    this.myRejectedOrganizationRequests$ = this.requestsQuery.myRejectedOrganizationRequests$;
+    this.allPendingOrganizations$ = this.requestsQuery.allPendingOrganizations$;
+    this.notificationCount$ = combineLatest([
+      this.myOrganizationInvites$,
+      this.myRejectedOrganizationRequests$,
+      this.allPendingOrganizations$,
+      this.isAdminOrCurator$,
+    ]).pipe(
+      takeUntil(this.ngUnsubscribe),
+      map(
+        ([invites, rejections, pendingOrganizations, isAdminOrCurator]: [
+          Array<OrganizationUser>,
+          Array<OrganizationUser>,
+          Array<Organization>,
+          boolean
+        ]) => {
+          let count = (invites?.length ?? 0) + (rejections?.length ?? 0);
+          if (isAdminOrCurator) {
+            return count + (pendingOrganizations?.length ?? 0);
+          } else {
+            return count;
+          }
+        }
+      )
+    );
   }
 
   resetPageNumber() {

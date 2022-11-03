@@ -18,7 +18,7 @@ import { AboutComponent } from './about/about.component';
 import { FundingComponent } from './funding/funding.component';
 import { GithubCallbackComponent } from './github-callback/github-callback.component';
 import { HomeLoggedInComponent } from './home-page/home-logged-in/home-logged-in.component';
-import { HomePageComponent } from './home-page/home-page.component';
+import { HomeComponent } from './home-page/home-logged-out/home.component';
 import { LoginComponent } from './login/login.component';
 import { AccountsComponent } from './loginComponents/accounts/accounts.component';
 import { AuthComponent } from './loginComponents/auth/auth.component';
@@ -30,12 +30,19 @@ import { SessionExpiredComponent } from './session-expired/session-expired.compo
 import { AuthGuard } from './shared/auth.guard';
 import { SitemapComponent } from './sitemap/sitemap.component';
 import { StarredEntriesComponent } from './starredentries/starredentries.component';
+import { PageNotFoundComponent } from './pagenotfound/pagenotfound.component';
 
 export const CLIENT_ROUTER_PROVIDERS = [AuthGuard];
 
 const APP_ROUTES: Routes = [
-  { path: '', component: HomePageComponent, pathMatch: 'full', data: { title: 'Dockstore' } },
-  { path: 'beta-homepage', component: HomeLoggedInComponent, pathMatch: 'full', data: { title: 'Dockstore' } },
+  { path: '', component: HomeComponent, pathMatch: 'full', data: { title: 'Dockstore' } },
+  {
+    path: 'dashboard',
+    component: HomeLoggedInComponent,
+    pathMatch: 'full',
+    data: { title: 'Dockstore | Dashboard' },
+    canActivate: [AuthGuard],
+  },
   {
     path: 'docs',
     loadChildren: () => import('app/docs/docs.module').then((m) => m.DocsModule),
@@ -119,11 +126,21 @@ const APP_ROUTES: Routes = [
   { path: 'onboarding', component: OnboardingComponent, canActivate: [AuthGuard], data: { title: 'Dockstore | Onboarding' } },
   { path: 'accounts', component: AccountsComponent, canActivate: [AuthGuard], data: { title: 'Dockstore | Accounts' } },
   { path: 'auth/:provider', component: AuthComponent },
-  { path: 'starred', component: StarredEntriesComponent, data: { title: 'Dockstore | Starred Tools & Workflows' } },
+  {
+    path: 'starred',
+    component: StarredEntriesComponent,
+    canActivate: [AuthGuard],
+    data: { title: 'Dockstore | Starred Tools, Workflows & Organizations' },
+  },
   { path: 'maintenance', component: MaintenanceComponent, data: { title: 'Dockstore | Maintenance' } },
   { path: 'funding', component: FundingComponent, data: { title: 'Dockstore | Funding' } },
   { path: 'sitemap', component: SitemapComponent, data: { title: 'Dockstore | Sitemap' } },
-  { path: '**', redirectTo: '' },
+  { path: 'users', loadChildren: () => import('app/user-page/user-page.module').then((m) => m.UserPageModule) },
+  {
+    path: '**',
+    component: PageNotFoundComponent,
+    data: { title: 'Dockstore | 404 Page Not Found' },
+  },
 ];
 
 export const routing = RouterModule.forRoot(APP_ROUTES, {

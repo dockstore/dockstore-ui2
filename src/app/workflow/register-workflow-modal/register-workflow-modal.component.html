@@ -28,7 +28,12 @@
       </p>
       <div class="modal-body">
         <mat-radio-group [(ngModel)]="selectedOption">
-          <mat-radio-button *ngFor="let option of options" [value]="option" [id]="option.value + '-register-workflow-option'">
+          <mat-radio-button
+            *ngFor="let option of options"
+            [value]="option"
+            [id]="option.value + '-register-workflow-option'"
+            data-cy="storage-type-choice"
+          >
             <span class="text-wrap">
               {{ option.label }}
               <div *ngIf="selectedOption.value === option.value" class="extended-label mat-small">
@@ -76,6 +81,7 @@
             class="accent-1-dark-btn mat-elevation-z"
             [mat-dialog-close]="true"
             (click)="clearWorkflowRegisterError()"
+            data-cy="close-modal-btn"
           >
             Close
           </button>

@@ -13,10 +13,6 @@
     <div class="container-source-repos">
       <div class="container-launch-with">
         <div *ngIf="workflow?.descriptorType === WorkflowModel.DescriptorTypeEnum.WDL">
-          <div *ngIf="(hasFileImports$ | async) || (hasHttpImports$ | async)" class="import-warning">
-            Warning: this version of the WDL has imports, which are not supported by DNAstack. Make sure to select a version without imports
-            in DNAstack.
-          </div>
           <div
             *ngIf="config.FEATURES.enableMultiCloudLaunchWithDNAstack; else oldWdlLaunch"
             fxLayout="column"
@@ -63,6 +59,17 @@
               [attr.href]="config.TERRA_IMPORT_URL + '/' + workflow?.full_workflow_path + ':' + selectedVersion?.name"
               data-cy="terraLaunchWith"
               ><img class="partner-launch" src="../assets/images/thirdparty/terra.png" alt="Terra launch with logo"
+            /></a>
+            <a
+              mat-raised-button
+              class="launch-with-button"
+              [matTooltip]="elwaziToolTip$ | async"
+              target="_blank"
+              rel="noopener"
+              [disabled]="disableTerraPlatform$ | async"
+              [attr.href]="config.ELWAZI_IMPORT_URL + '/' + workflow?.full_workflow_path + ':' + selectedVersion?.name"
+              data-cy="elwaziLaunchWith"
+              ><img class="partner-launch" src="../assets/images/thirdparty/elwazi.png" alt="eLwazi launch with logo"
             /></a>
             <a
               mat-raised-button
@@ -125,6 +132,18 @@
                 color="primary"
                 data-cy="terraLaunchWith"
                 ><mat-icon svgIcon="terra"></mat-icon> Terra &raquo;</a
+              >
+              <a
+                mat-raised-button
+                class="old-launch-with-button"
+                [matTooltip]="elwaziToolTip$ | async"
+                target="_blank"
+                rel="noopener"
+                [disabled]="disableTerraPlatform$ | async"
+                [attr.href]="config.ELWAZI_IMPORT_URL + '/' + workflow?.full_workflow_path + ':' + selectedVersion?.name"
+                color="primary"
+                data-cy="elwaziLaunchWith"
+                ><mat-icon svgIcon="elwazi"></mat-icon> eLwazi &raquo;</a
               >
               <a
                 mat-raised-button
@@ -207,6 +226,7 @@
             [className]="'galaxy-launch'"
             [disabled]="(hasContent$ | async) === false"
             [matTooltip]="(hasContent$ | async) ? '' : 'The Galaxy workflow has no content.'"
+            data-cy="galaxyLaunchWith"
           ></app-multi-cloud-launch>
         </div>
         <div *ngIf="workflow?.descriptorType === WorkflowModel.DescriptorTypeEnum.NFL">

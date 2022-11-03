@@ -14,7 +14,7 @@
   ~    limitations under the License.
   -->
 <div>
-  <h4 mat-dialog-title>{{ isPublic || !canWrite ? 'View' : 'Edit' }} {{ entryTypeText }}</h4>
+  <h4 mat-dialog-title>{{ isPublic || !canWrite ? 'View' : 'Edit' }} {{ entryTypeText }} Version</h4>
   <div mat-dialog-content>
     <app-alert></app-alert>
     <fieldset [disabled]="!canWrite || isPublic">
@@ -66,7 +66,7 @@
               <div *ngIf="isService$ | async" class="label-value">
                 {{ version.workflow_path }}
               </div>
-              <mat-card *ngIf="formErrors.workflow_path && (isService$ | async) === false" class="alert alert-danger">
+              <mat-card *ngIf="formErrors.workflow_path && (isService$ | async) === false" class="alert alert-danger mat-elevation-z">
                 {{ formErrors.workflow_path }}
               </mat-card>
             </div>
@@ -79,7 +79,7 @@
             <div
               class="col-sm-9 col-md-9 col-lg-9 form-margin"
               [ngClass]="{ 'col-sm-offset-3': i > 0 }"
-              *ngFor="let item of testParameterFilePaths; let i = index; trackBy: trackByIndex"
+              *ngFor="let item of testParameterFilePaths; let i = index"
             >
               <div class="input-group">
                 <input
@@ -160,7 +160,9 @@
               <div *ngIf="formErrors.testParameterFilePath" class="form-error-messages alert alert-danger">
                 {{ formErrors.testParameterFilePath }}
               </div>
-              <mat-card *ngIf="hasDuplicateTestJson()" class="alert alert-danger"> Duplicate test json files are not allowed. </mat-card>
+              <mat-card *ngIf="hasDuplicateTestJson()" class="alert alert-danger mat-elevation-z">
+                Duplicate test json files are not allowed.
+              </mat-card>
             </div>
             <div class="col-sm-9 col-md-9 col-lg-9" *ngIf="testParameterFilePaths.length === 0 && isPublic">
               <input class="form-control" placeholder="None provided" disabled />
@@ -173,6 +175,7 @@
               <div>
                 <label>
                   <input
+                    data-cy="hiddenCheck"
                     [disabled]="version.doiURL"
                     type="checkbox"
                     name="checkbox"
@@ -204,7 +207,10 @@
     </fieldset>
   </div>
   <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
-    <button type="button" mat-flat-button class="secondary-1" mat-dialog-close>Cancel</button>
+    <button type="button" mat-flat-button class="secondary-1" mat-dialog-close *ngIf="!isPublic && canWrite">Cancel</button>
+    <button type="button" mat-raised-button class="accent-1-dark-btn mat-elevation-z" mat-dialog-close *ngIf="isPublic || !canWrite">
+      OK
+    </button>
     <button
       data-cy="save-version"
       type="button"

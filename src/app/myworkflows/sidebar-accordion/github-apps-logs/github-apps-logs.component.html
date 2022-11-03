@@ -1,8 +1,8 @@
 <h1 mat-dialog-title>GitHub App Logs</h1>
 <div mat-dialog-content>
   <app-loading [loading]="loading">
-    <mat-card *ngIf="showContent === 'error'" class="alert alert-warning" role="alert">
-      <mat-icon>warning</mat-icon> There were problems retrieving GitHub App logs for this organization.
+    <mat-card *ngIf="showContent === 'error'" class="alert alert-warning mat-elevation-z" role="alert">
+      <mat-icon class="alert-warning-icon">warning</mat-icon> There were problems retrieving GitHub App logs for this organization.
     </mat-card>
     <mat-card *ngIf="showContent === 'empty'" class="alert alert-info" role="alert">
       <mat-icon>warning</mat-icon> There are no GitHub App logs for this organization.
@@ -39,9 +39,7 @@
               class="expanded-row-detail"
               [@detailExpand]="element === expandedElement ? 'expanded' : 'collapsed'"
             >
-              <div class="p-2">
-                {{ element.message }}
-              </div>
+              <div class="p-2 log-entry-message">{{ element.message }}</div>
             </div>
           </td>
         </ng-container>

@@ -1,5 +1,5 @@
 /*
- *     Copyright 2018 OICR
+ *     Copyright 2022 OICR, UCSC
  *
  *     Licensed under the Apache License, Version 2.0 (the "License")
  *     you may not use this file except in compliance with the License
@@ -29,20 +29,22 @@ import { RegisterToolComponent } from '../../container/register-tool/register-to
 import { RegisterToolService } from '../../container/register-tool/register-tool.service';
 import { Tool } from '../../container/register-tool/tool';
 import { AccountsService } from '../../loginComponents/accounts/external/accounts.service';
+import { OrgWorkflowObject } from '../../myworkflows/my-workflow/my-workflow.component';
+import { MyWorkflowsService } from '../../myworkflows/myworkflows.service';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { ContainerService } from '../../shared/container.service';
 import { MyEntry, OrgEntryObject } from '../../shared/my-entry';
 import { TokenQuery } from '../../shared/state/token.query';
+import { TokenService } from '../../shared/state/token.service';
+import { WorkflowQuery } from '../../shared/state/workflow.query';
+import { WorkflowService } from '../../shared/state/workflow.service';
 import { AppTool, DockstoreTool, Workflow } from '../../shared/swagger';
 import { Configuration } from '../../shared/swagger/configuration';
 import { ToolQuery } from '../../shared/tool/tool.query';
 import { UrlResolverService } from '../../shared/url-resolver.service';
 import { UserQuery } from '../../shared/user/user.query';
 import { MytoolsService } from '../mytools.service';
-import { OrgWorkflowObject } from '../../myworkflows/my-workflow/my-workflow.component';
-import { MyWorkflowsService } from '../../myworkflows/myworkflows.service';
-import { WorkflowService } from '../../shared/state/workflow.service';
-import { WorkflowQuery } from '../../shared/state/workflow.query';
+import { EntryType } from '../../shared/enum/entry-type';
 
 @Component({
   selector: 'app-my-tool',
@@ -64,6 +66,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
   public showSidebar = true;
   public groupEntriesObject$: Observable<Array<OrgToolObject<DockstoreTool>>>;
   public groupAppToolEntryObjects$: Observable<Array<OrgWorkflowObject<Workflow>>>;
+  EntryType = EntryType;
   constructor(
     private mytoolsService: MytoolsService,
     protected configuration: Configuration,
@@ -81,6 +84,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
     private toolQuery: ToolQuery,
     private alertQuery: AlertQuery,
     private alertService: AlertService,
+    private tokenService: TokenService,
     protected sessionQuery: SessionQuery,
     protected myEntriesQuery: MyEntriesQuery,
     protected myEntriesStateService: MyEntriesStateService,
@@ -127,6 +131,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
         this.dialog.closeAll();
       }
     });
+    this.tokenService.getGitHubOrganizations();
     this.commonMyEntriesOnInit();
     this.containerService.setTool(null);
     this.containerService.setTools(null);
@@ -157,9 +162,13 @@ export class MyToolComponent extends MyEntry implements OnInit {
       })
     );
 
-    this.groupAppToolEntryObjects$ = combineLatest([this.workflowService.workflows$, this.workflowQuery.workflow$]).pipe(
-      map(([workflows, workflow]) => {
-        return this.myWorkflowsService.convertEntriesToOrgEntryObject(workflows, workflow);
+    this.groupAppToolEntryObjects$ = combineLatest([
+      this.workflowService.workflows$,
+      this.workflowQuery.workflow$,
+      this.tokenQuery.gitHubOrganizations$,
+    ]).pipe(
+      map(([workflows, workflow, gitHubOrganizations]) => {
+        return this.myWorkflowsService.convertEntriesToOrgEntryObject(workflows, workflow, gitHubOrganizations);
       })
     );
 
@@ -171,7 +180,8 @@ export class MyToolComponent extends MyEntry implements OnInit {
 
     this.hasGroupGitHubAppToolEntriesObjects$ = this.groupAppToolEntryObjects$.pipe(
       map((orgToolObjects: OrgWorkflowObject<Workflow>[]) => {
-        return orgToolObjects && orgToolObjects.length !== 0;
+        // Now that we have empty GitHub orgs showing up, check if they have any entries
+        return orgToolObjects && orgToolObjects.some((orgToolObject) => orgToolObject.unpublished.length || orgToolObject.published.length);
       })
     );
 

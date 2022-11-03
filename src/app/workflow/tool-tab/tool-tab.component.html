@@ -15,12 +15,12 @@
   -->
 <div class="p-3">
   <app-loading [loading]="loading">
-    <mat-card *ngIf="nullContent" class="alert alert-warning" role="alert">
-      <mat-icon>warning</mat-icon>
+    <mat-card *ngIf="nullContent" class="alert alert-warning mat-elevation-z" role="alert">
+      <mat-icon class="alert-warning-icon">warning</mat-icon>
       No Records Found
     </mat-card>
-    <mat-card *ngIf="noContent" class="alert alert-warning" role="alert">
-      <mat-icon>warning</mat-icon>
+    <mat-card *ngIf="noContent" class="alert alert-warning mat-elevation-z" role="alert">
+      <mat-icon class="alert-warning-icon">warning</mat-icon>
       Some tools associated with this workflow are missing from Git repo.
     </mat-card>
     <table *ngIf="hasContent" mat-table [dataSource]="toolContent" class="w-100">

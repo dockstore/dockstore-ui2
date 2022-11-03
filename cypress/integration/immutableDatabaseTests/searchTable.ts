@@ -14,8 +14,7 @@
  *    limitations under the License.
  */
 import { ga4ghExtendedPath } from '../../../src/app/shared/constants';
-import { setTokenUserViewPort } from '../../support/commands';
-import { goToTab } from '../../support/commands';
+import { goToTab, setTokenUserViewPort } from '../../support/commands';
 
 describe('Dockstore tool/workflow search table', () => {
   setTokenUserViewPort();
@@ -440,6 +439,5 @@ describe('search table items per page', () => {
     cy.get('[data-cy=confirm-search]').click();
 
     cy.get('[data-cy=share_button').should('be.visible').click();
-    cy.get('[data-cy=copy_button').click();
   });
 });

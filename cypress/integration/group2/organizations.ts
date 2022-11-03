@@ -140,13 +140,13 @@ describe('Dockstore Organizations', () => {
     });
 
     it('have request shown on homepage', () => {
-      cy.visit('/');
+      cy.visit('/dashboard');
       cy.contains('1 organization request');
       cy.contains('1 organization request requiring action');
     });
 
     it('have organization shown on the homepage', () => {
-      cy.visit('/');
+      cy.visit('/dashboard');
       cy.contains('Potatoe');
       cy.contains('Find organizations');
       cy.get('[data-cy=filterOrganizationsInput]').type('Po');

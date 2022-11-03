@@ -50,7 +50,7 @@ export class PublishedToolsDataSource implements DataSource<ExtendedDockstoreToo
   loadEntries(entryType: EntryType, filter: string, sortDirection: 'asc' | 'desc', pageIndex: number, pageSize: number, sortCol: string) {
     this.loadingSubject$.next(true);
     this.containersService
-      .allPublishedContainers(pageIndex.toString(), pageSize, filter, sortCol, sortDirection, 'response')
+      .allPublishedContainers(pageIndex, pageSize, filter, sortCol, sortDirection, 'response')
       .pipe(
         catchError(() => of([])),
         finalize(() => this.loadingSubject$.next(false))

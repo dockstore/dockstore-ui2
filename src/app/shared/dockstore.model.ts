@@ -42,6 +42,7 @@ export class Dockstore {
   static BD_CATALYST_TERRA_IMPORT_URL = 'https://terra.biodatacatalyst.nhlbi.nih.gov/#import-tool/dockstore';
   static CAVATICA_IMPORT_URL = 'https://cavatica.sbgenomics.com/integration/trs/import';
   static NEXTFLOW_TOWER_IMPORT_URL = 'https://tower.nf/launch';
+  static ELWAZI_IMPORT_URL = 'https://elwazi.terra.bio/#import-tool/dockstore';
 
   static GITHUB_CLIENT_ID = 'will be filled in by configuration.service';
   static GITHUB_AUTH_URL = 'https://github.com/login/oauth/authorize';
@@ -101,5 +102,6 @@ export class Dockstore {
     enableLaunchWithGalaxy: true,
     enableMultiCloudLaunchWithDNAstack: false,
     enableOrcidExport: true,
+    enableNewDashboard: false,
   };
 }

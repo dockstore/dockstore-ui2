@@ -51,7 +51,7 @@ export class PublishedWorkflowsDataSource implements DataSource<ExtendedWorkflow
     this.loadingSubject$.next(true);
     const workflowSubClass = this.entryTypeToWorkflowSubclassMap.get(entryType);
     this.workflowsService
-      .allPublishedWorkflows(pageIndex.toString(), pageSize, filter, sortCol, sortDirection, false, workflowSubClass, 'response')
+      .allPublishedWorkflows(pageIndex, pageSize, filter, sortCol, sortDirection, false, workflowSubClass, 'response')
       .pipe(
         catchError(() => of([])),
         finalize(() => this.loadingSubject$.next(false))

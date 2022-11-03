@@ -92,7 +92,10 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
   public showWorkflowActions = false;
   public schema;
   public extendedWorkflow$: Observable<ExtendedWorkflow>;
+  // may make sense to explore an ExtendedWorkflowVersion if we get more of these
+  public versionAgoMessage: string;
   public WorkflowModel = Workflow;
+  public WorkflowVersionModel = WorkflowVersion;
   public launchSupport$: Observable<boolean>;
   @Input() user;
 
@@ -228,7 +231,10 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
     this.resetWorkflowEditData();
     // messy prototype for a carousel https://developers.google.com/search/docs/guides/mark-up-listings
     // will need to be aggregated with a summary page
-    this.schema = this.bioschemaService.getWorkflowSchema(this.workflow, this.selectedVersion);
+    if (this.selectedVersion) {
+      this.schema = this.bioschemaService.getWorkflowSchema(this.workflow, this.selectedVersion);
+      this.versionAgoMessage = this.dateService.getAgoMessage((this.selectedVersion as WorkflowVersion).last_modified);
+    }
   }
 
   public getDefaultVersionName(): string {
@@ -275,7 +281,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
           });
       }
       this.updateVerifiedPlatforms(this.workflow.id);
-      this.updateCategories(this.workflow.id);
+      this.updateCategories(this.workflow.id, this.workflow.is_published);
     }
   }
 
@@ -407,15 +413,21 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
       this.labelsEditMode = true;
       return;
     }
+    const value = this.labelFormControl.value;
+    if ((value || '').trim()) {
+      this.workflowEditData.labels.push(value.trim());
+    }
     // the edit object should be recreated
-    if (this.workflowEditData.labels !== 'undefined') {
+    if (this.workflowEditData.labels !== undefined) {
       this.setWorkflowLabels();
     }
+    this.labelFormControl.setValue(null);
   }
 
   cancelLabelChanges(): void {
     this.workflowEditData.labels = this.dockstoreService.getLabelStrings(this.workflow.labels);
     this.labelsEditMode = false;
+    this.labelFormControl.setValue(null);
   }
 
   // TODO: Move most of this function to the service, sadly 'this.labelsEditMode' makes it more difficult
@@ -446,6 +458,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
         this.descriptorTypeCompatService.stringToDescriptorType(this.workflow.descriptorType),
       ]);
       this.updateVersionsFileTypes(this.workflow.id, this.selectedVersion.id);
+      this.versionAgoMessage = this.dateService.getAgoMessage((this.selectedVersion as WorkflowVersion).last_modified);
     }
     this.workflowService.setWorkflowVersion(version);
     this.updateWorkflowUrl(this.workflow);
@@ -472,6 +485,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
     if (input) {
       input.value = '';
     }
+    this.labelFormControl.setValue(null);
   }
 
   removeLabel(label: any): void {

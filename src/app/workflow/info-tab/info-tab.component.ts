@@ -49,7 +49,7 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   // This should represent what's in the database
   @Input() extendedWorkflow: ExtendedWorkflow;
   // This is what the user is currently seeing/editing
-  public workflow: Workflow;
+  public workflow: ExtendedWorkflow;
   currentVersion: WorkflowVersion;
   downloadZipLink: string;
   publicAccessibleTestParameterFile: boolean | null;
@@ -107,7 +107,7 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
         this.hasHttpImports = sourceFiles.some((sourceFile) => this.fileService.hasHttpImport(sourceFile));
       });
     }
-    this.workflow = JSON.parse(JSON.stringify(this.extendedWorkflow));
+    this.workflow = this.deepCopy(this.extendedWorkflow);
     this.temporaryDescriptorType = this.workflow.descriptorType;
     if (this.selectedVersion && this.workflow) {
       this.currentVersion = this.selectedVersion;
@@ -233,6 +233,10 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
    */
   cancelEditing(): void {
     this.infoTabService.cancelEditing();
-    this.revertTopic();
+    this.workflow = this.deepCopy(this.extendedWorkflow);
+  }
+
+  private deepCopy(workflow: ExtendedWorkflow): ExtendedWorkflow {
+    return JSON.parse(JSON.stringify(this.extendedWorkflow));
   }
 }
