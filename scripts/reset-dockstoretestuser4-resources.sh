@@ -1,45 +1,72 @@
 #!/bin/bash
 
-USER = $(curl -X 'GET' \
-  'https://dockstore.org/api/users/username/DockstoreTestUser4' \
+STACK=$1
+
+if [ "$STACK" == "dev" ]
+then
+  URL='https://qa.dockstore.org'
+  TOKEN=${CYPRESS_QA_TOKEN}
+elif [ "$STACK" == "prod" ]
+then
+  URL='https://staging.dockstore.org'
+  TOKEN=${CYPRESS_STAGING_TOKEN}
+else
+  URL='https://dockstore.org'
+  TOKEN=${CYPRESS_PROD_TOKEN}
+fi
+
+
+USER=$(curl -X 'GET' \
+  "${URL}/api/users/username/dockstoretestuser4" \
   -H 'accept: application/json')
+
+USER_ID=$(echo $USER | jq -r ".id")
 
 PUBLISHED_WORKFLOWS=$(curl -X 'GET' \
-  'https://dockstore.org/api/users/${USER.id}/workflows/published' \
-  -H 'accept: application/json')
+  "${URL}/api/users/${USER_ID}/workflows/published" \
+  -H 'accept: application/json' \
+  -H "Authorization: Bearer ${TOKEN}" \
+)
 
 REGISTERED_TOOLS=$(curl -X 'GET' \
-'https://dockstore.org/api/users/${USER.id}/containers' \
- -H 'accept: application/json'
+"${URL}/api/users/${USER_ID}/containers" \
+  -H "Authorization: Bearer ${TOKEN}" \
+  -H 'accept: application/json'
 )
 echo $REGISTERED_TOOLS
 echo $PUBLISHED_WORKFLOWS
 
-for WORKFLOW in PUBLISHED_WORKFLOWS
+for WORKFLOW in $PUBLISHED_WORKFLOWS
 do
+  WORKFLOW_ID=$(echo $WORKFLOW | jq -r ".id")
   curl -X 'POST' \
-    'https://dockstore.org/api/workflows/${WORKFLOW.id}/publish' \
+    "${URL}/api/workflows/${WORKFLOW_ID}/publish" \
     -H 'accept: application/json' \
     -H 'Content-Type: application/json' \
+    -H "Authorization: Bearer ${TOKEN}" \
     -d '{
     "publish": false
   }'
 done
 
-for TOOL in REGISTERED_TOOLS
+for TOOL in $REGISTERED_TOOLS
 do
+  TOOL_ID=$(echo $TOOL| jq -r ".id")
   curl -X 'DELETE' \
-    'https://dockstore.org/api/containers/${TOOL.id}' \
-    -H 'accept: application/json'
+    "${URL}/api/containers/${TOOL_ID}" \
+    -H 'accept: application/json' \
+    -H "Authorization: Bearer ${TOKEN}"
 done
 
 PUBLISHED_WORKFLOWS=$(curl -X 'GET' \
-  'https://dockstore.org/api/users/${USER.id}/workflows/published' \
-  -H 'accept: application/json')
+  "${URL}/api/users/${USER_ID}/workflows/published" \
+  -H 'accept: application/json' \
+  -H "Authorization: Bearer ${TOKEN}")
 
 REGISTERED_TOOLS=$(curl -X 'GET' \
-'https://dockstore.org/api/users/${USER.id}/containers' \
- -H 'accept: application/json'
+"${URL}/api/users/${USER_ID}/containers" \
+ -H 'accept: application/json' \
+ -H "Authorization: Bearer ${TOKEN}"
 )
 echo $REGISTERED_TOOLS
 echo $PUBLISHED_WORKFLOWS

@@ -112,6 +112,10 @@ jobs:
           command: bash -i -c 'npm run test-<< parameters.stack >>-auth'
           environment:
             MOCHA_FILE: nightly-test-results/junit/test-<< parameters.stack >>-auth-[hash].xml
+      - run:
+          name: Reset dockstoretestuser4's resources
+          # Reset user dockstoretestuser4's resources such that it has no registered tools and published workflows
+          command: bash script/reset-dockstoretestuser4-resources.sh << parameters.stack >>
       - upload_nightly_artifacts
       - slack/notify:
           channel: $<< parameters.stack >>_id
