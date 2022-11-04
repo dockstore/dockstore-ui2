@@ -20,7 +20,7 @@ USER=$(curl -X 'GET' \
   "${URL}/api/users/username/dockstoretestuser4" \
   -H 'accept: application/json')
 
-USER_ID=$(echo $USER | jq -r ".id")
+USER_ID=$(echo "$USER" | jq -r ".id")
 
 PUBLISHED_WORKFLOWS=$(curl -X 'GET' \
   "${URL}/api/users/${USER_ID}/workflows/published" \
@@ -33,12 +33,12 @@ REGISTERED_TOOLS=$(curl -X 'GET' \
   -H "Authorization: Bearer ${TOKEN}" \
   -H 'accept: application/json'
 )
-echo $REGISTERED_TOOLS
-echo $PUBLISHED_WORKFLOWS
+echo "$REGISTERED_TOOLS"
+echo "$PUBLISHED_WORKFLOWS"
 
 for WORKFLOW in $PUBLISHED_WORKFLOWS
 do
-  WORKFLOW_ID=$(echo $WORKFLOW | jq -r ".id")
+  WORKFLOW_ID=$(echo "$WORKFLOW" | jq -r ".id")
   curl -X 'POST' \
     "${URL}/api/workflows/${WORKFLOW_ID}/publish" \
     -H 'accept: application/json' \
@@ -51,7 +51,7 @@ done
 
 for TOOL in $REGISTERED_TOOLS
 do
-  TOOL_ID=$(echo $TOOL| jq -r ".id")
+  TOOL_ID=$(echo "$TOOL"| jq -r ".id")
   curl -X 'DELETE' \
     "${URL}/api/containers/${TOOL_ID}" \
     -H 'accept: application/json' \
@@ -68,5 +68,5 @@ REGISTERED_TOOLS=$(curl -X 'GET' \
  -H 'accept: application/json' \
  -H "Authorization: Bearer ${TOKEN}"
 )
-echo $REGISTERED_TOOLS
-echo $PUBLISHED_WORKFLOWS
+echo "$REGISTERED_TOOLS"
+echo "$PUBLISHED_WORKFLOWS"
