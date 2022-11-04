@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnDestroy } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subject } from 'rxjs';
@@ -17,13 +17,13 @@ import { UserQuery } from '../../../../shared/user/user.query';
 })
 export class DeleteAccountDialogComponent implements OnDestroy {
   username = '';
-  usernameFormControl: FormControl;
-  usernameForm: FormGroup;
+  usernameFormControl: UntypedFormControl;
+  usernameForm: UntypedFormGroup;
   loading = false;
   private ngUnsubscribe: Subject<{}> = new Subject();
   constructor(
     public userQuery: UserQuery,
-    public form: FormBuilder,
+    public form: UntypedFormBuilder,
     public dialogRef: MatDialogRef<DeleteAccountDialogComponent>,
     private logoutService: LogoutService,
     private matSnackBar: MatSnackBar,
@@ -47,8 +47,8 @@ export class DeleteAccountDialogComponent implements OnDestroy {
    */
   setupForm(username: string): void {
     this.username = username;
-    this.usernameFormControl = new FormControl('', [Validators.required, this.validateUsername(this.username)]);
-    this.usernameForm = new FormGroup({
+    this.usernameFormControl = new UntypedFormControl('', [Validators.required, this.validateUsername(this.username)]);
+    this.usernameForm = new UntypedFormGroup({
       usernameFormControl: this.usernameFormControl,
     });
   }

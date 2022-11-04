@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { NgFormsManager } from '@ngneat/forms-manager';
 import { finalize } from 'rxjs/operators';
@@ -27,7 +27,7 @@ export class CreateCollectionService {
     private organizationQuery: OrganizationQuery,
     private matDialog: MatDialog,
     private collectionsService: CollectionsService,
-    private builder: FormBuilder,
+    private builder: UntypedFormBuilder,
     private alertService: AlertService
   ) {}
 
@@ -81,7 +81,7 @@ export class CreateCollectionService {
    * @param {FormGroup} createCollectionForm
    * @memberof CreateCollectionService
    */
-  createOrUpdateCollection(data: any, createCollectionForm: FormGroup) {
+  createOrUpdateCollection(data: any, createCollectionForm: UntypedFormGroup) {
     if (data.mode === TagEditorMode.Add) {
       this.createCollection(createCollectionForm.value);
     } else {
@@ -96,7 +96,7 @@ export class CreateCollectionService {
    * @returns {FormGroup}
    * @memberof CreateCollectionService
    */
-  createForm(formsManager: NgFormsManager<FormsState>, data: any): FormGroup {
+  createForm(formsManager: NgFormsManager<FormsState>, data: any): UntypedFormGroup {
     const mode: TagEditorMode = data.mode;
     let name = null;
     let topic = null;

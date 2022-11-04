@@ -6,7 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of as observableOf, throwError } from 'rxjs';
 
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 import { OrganizationsService } from '../../shared/swagger';
 import { RegisterOrganizationService } from './register-organization.service';
 
@@ -22,7 +22,7 @@ describe('RegisterOrganizationService', () => {
     TestBed.configureTestingModule({
       providers: [
         RegisterOrganizationService,
-        FormBuilder,
+        UntypedFormBuilder,
         { provide: OrganizationsService, useValue: organizationsServiceStub },
         { provide: MatDialog, useValue: matDialogStub },
       ],

@@ -16,7 +16,7 @@
 import { Location } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Directive, Injectable, Input, OnDestroy, ViewChild } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { UntypedFormControl, Validators } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatTabChangeEvent, MatTabGroup } from '@angular/material/tabs';
 import { ActivatedRoute, NavigationEnd, Params, Router, RouterEvent } from '@angular/router';
@@ -70,8 +70,8 @@ export abstract class Entry implements OnDestroy {
   public versionsWithVerifiedPlatforms: Array<VersionVerifiedPlatform> = [];
   public validationMessage = validationMessages;
   protected ngUnsubscribe: Subject<{}> = new Subject();
-  protected selected = new FormControl(0);
-  labelFormControl = new FormControl('', [Validators.pattern('^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*$')]);
+  protected selected = new UntypedFormControl(0);
+  labelFormControl = new UntypedFormControl('', [Validators.pattern('^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*$')]);
   public verifiedLink: string;
   public categories$: Observable<Array<Category>>;
   constructor(
