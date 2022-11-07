@@ -168,6 +168,13 @@ const workflowVersionTuples = [
     'CWL',
   ],
   ['github.com/nf-core/vipr', 'dev', 'master', '', 'NFL'],
+  [
+    'github.com/iwc-workflows/sars-cov-2-pe-illumina-wgs-variant-calling/COVID-19-PE-WGS-ILLUMINA',
+    'main',
+    'v0.2.2',
+    'github.com/iwc-workflows/sars-cov-2-pe-illumina-wgs-variant-calling/COVID-19-PE-WGS-ILLUMINA',
+    'Galaxy',
+  ],
 ];
 // This test shouldn't be run for smoke tests as it depends on 'real' entries
 if (Cypress.config('baseUrl') !== 'http://localhost:4200') {
@@ -220,6 +227,27 @@ function testWorkflow(url: string, version1: string, version2: string, trsUrl: s
   });
 
   let launchWithTuples: any[] = [];
+  if (type === 'Galaxy') {
+    it('test that galaxy button exists', () => {
+      cy.get('[data-cy=galaxyLaunchWith] button').should('exist');
+      cy.get('[data-cy=galaxyLaunchWith] button').click();
+      cy.get('[data-cy=multiCloudLaunchOption]').should('have.length.of.at.least', 1);
+      cy.get('[data-cy=multiCloudLaunchOption]').should('contain', 'usegalaxy.org');
+      cy.get('[data-cy=multiCloudLaunchOption]').each(($el) => {
+        cy.wrap($el).click();
+        cy.get(`[data-cy=multiCloudLaunchButton]`)
+          .invoke('attr', 'href')
+          .should('contain', trsUrl)
+          .should('contain', $el.text().trim().split(' ')[0]);
+        // .trim().split(' ')[0]) is required as $el.text() can be equal to " usegalaxy.org (Main) "
+      });
+      const testUrl = 'https://www.test.com';
+      cy.get('[data-cy=multiCloudLaunchText]').type(testUrl);
+      cy.get('[data-cy=multiCloudLaunchText]').click();
+      cy.get(`[data-cy=multiCloudLaunchButton]`).invoke('attr', 'href').should('contain', trsUrl).should('contain', testUrl);
+    });
+  }
+
   if (type === 'WDL') {
     it('get the img icons', () => {
       cy.get('[data-cy=dnanexusLaunchWith] svg').should('exist');

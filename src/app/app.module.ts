@@ -50,6 +50,7 @@ import { AccountSidebarModule } from './loginComponents/accounts/account-sidebar
 import { AccountsComponent } from './loginComponents/accounts/accounts.component';
 import { ControlsComponent } from './loginComponents/accounts/controls/controls.component';
 import { DeleteAccountDialogComponent } from './loginComponents/accounts/controls/delete-account-dialog/delete-account-dialog.component';
+import { RevokeTokenDialogComponent } from './loginComponents/accounts/external/revoke-token-dialog/revoke-token-dialog.component';
 import { AccountsExternalComponent } from './loginComponents/accounts/external/accounts.component';
 import { AccountsService } from './loginComponents/accounts/external/accounts.service';
 import { GetTokenUsernamePipe } from './loginComponents/accounts/external/getTokenUsername.pipe';
@@ -164,6 +165,7 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     ExporterStepComponent,
     FileTreeComponent,
     ChangeUsernameBannerComponent,
+    RevokeTokenDialogComponent,
   ],
   imports: [
     environment.production ? [] : AkitaNgDevtools.forRoot(),

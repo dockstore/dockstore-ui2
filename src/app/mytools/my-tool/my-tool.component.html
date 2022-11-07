@@ -1,5 +1,5 @@
 <!--
-  ~    Copyright 2018 OICR
+  ~    Copyright 2022 OICR, UCSC
   ~
   ~    Licensed under the Apache License, Version 2.0 (the "License");
   ~    you may not use this file except in compliance with the License.
@@ -58,19 +58,14 @@
                   Register a Tool
                 </button>
               </div>
-              <p
-                *ngIf="
-                  (hasGroupEntriesObject$ | async) === false &&
-                  (hasGroupGitHubAppToolEntriesObjects$ | async) === false &&
-                  (loading$ | async) === false
-                "
-              >
+              <p *ngIf="(hasGroupEntriesObject$ | async) === false && (hasGroupGitHubAppToolEntriesObjects$ | async) === false">
                 You have not registered any tools
               </p>
               <app-workflow-sidebar-accordion
                 [openOneAtATime]="oneAtATime"
                 [groupEntriesObject]="groupAppToolEntryObjects$ | async"
                 [refreshMessage]="isRefreshing$ | async"
+                [pageEntryType]="EntryType.AppTool"
               ></app-workflow-sidebar-accordion>
               <app-sidebar-accordion
                 [openOneAtATime]="oneAtATime"
@@ -88,7 +83,6 @@
               (hasGroupGitHubAppToolEntriesObjects$ | async) === false
             "
           >
-            >
             <div fxFlex>
               <mat-card class="alert alert-info" role="alert">
                 <p>
