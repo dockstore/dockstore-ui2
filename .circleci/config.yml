@@ -533,7 +533,7 @@ workflows:
     when: << pipeline.parameters.run_nightly_no_auth >>
     jobs:
       - no_auth_smoke_tests:
-          name: "no_auth_smoke_tests_dev"
+          name: "no_auth_smoke_tests_qa"
           stack: "qa"
           context:
             - dockerhub
@@ -555,7 +555,7 @@ workflows:
     when: << pipeline.parameters.run_nightly_auth >>
     jobs:
       - auth_smoke_tests:
-          name: "auth_smoke_tests_dev"
+          name: "auth_smoke_tests_qa"
           stack: "qa"
           context:
             - dockerhub
