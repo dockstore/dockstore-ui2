@@ -1,5 +1,5 @@
 /*!
- *    Copyright 2016 OICR
+ *    Copyright 2022 OICR, UCSC
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -897,13 +897,19 @@ app-workflow-sidebar-accordion
 // Set the background to the color associated with containers (blue).
 // Used to set the background color in bubbles.
 .container-background {
-  background: #d0effd !important;
+  background: $tool-selection-color !important;
 }
 
 // Set the background to the color associated with workflows (green).
 // Used to set the background color in bubbles.
 .workflow-background {
-  background: #d2fbf0 !important;
+  background: $workflow-selection-color !important;
+}
+
+// Set the background to the color associated with services (orange).
+// Used to set the background color in bubbles.
+.service-background {
+  background: $service-selection-color !important;
 }
 
 // Styles an element as a "bubble", which is a small very-rounded rectangular element that typically contains a word or short phrase.
