@@ -16,7 +16,7 @@ else
 fi
 
 #The function getUser takes username as argument to get the user JSON object and user id.
-function getUser() {
+function getUser {
   USER=$(curl -X 'GET' \
   "${URL}/api/users/username/$1" \
   -H 'accept: application/json')
@@ -25,7 +25,7 @@ function getUser() {
 }
 
 
-function getUserPublishedWorkflows() {
+function getUserPublishedWorkflows {
   while IFS=$'\n' read -r line
   do
     PUBLISHED_WORKFLOWS_IDS+=("$line")
@@ -35,7 +35,7 @@ function getUserPublishedWorkflows() {
     -H "Authorization: Bearer ${TOKEN}" | jq .[].id)
 }
 
-function getUserRegisteredTools() {
+function getUserRegisteredTools {
   while IFS=$'\n' read -r line
   do
     REGISTERED_TOOLS_IDS+=("$line")
@@ -47,7 +47,7 @@ function getUserRegisteredTools() {
 }
 
 #This function will unpublish all of the user's workflows and delete its registered tools
-function resetUserResources() {
+function resetUserResources {
   for WORKFLOW_ID in "${PUBLISHED_WORKFLOWS_IDS[@]}"
   do
     curl -X 'POST' \
