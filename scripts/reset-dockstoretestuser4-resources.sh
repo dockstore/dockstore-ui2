@@ -2,19 +2,22 @@
 
 STACK=$1
 
-if [ "$STACK" == "dev" ]
+echo "$STACK"
+
+if [ "$STACK" == "qa" ]
 then
-  URL='https://qa.dockstore.org'
+  URL="https://qa.dockstore.org"
   TOKEN=${CYPRESS_QA_TOKEN}
 elif [ "$STACK" == "prod" ]
 then
-  URL='https://staging.dockstore.org'
+  URL="https://staging.dockstore.org"
   TOKEN=${CYPRESS_STAGING_TOKEN}
 else
-  URL='https://dockstore.org'
+  URL="https://dockstore.org"
   TOKEN=${CYPRESS_PROD_TOKEN}
 fi
 
+echo "$URL"
 
 USER=$(curl -X 'GET' \
   "${URL}/api/users/username/dockstoretestuser4" \
