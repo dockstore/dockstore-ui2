@@ -20,7 +20,7 @@ fi
 echo "$URL"
 
 USER=$(curl -X 'GET' \
-  "${URL}/api/users/username/dockstoretestuser4" \
+  "${URL}/api/users/username/DockstoreTestUser4" \
   -H 'accept: application/json')
 
 USER_ID=$(echo "$USER" | jq -r ".id")
