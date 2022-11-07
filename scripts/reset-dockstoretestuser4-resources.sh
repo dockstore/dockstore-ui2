@@ -8,7 +8,7 @@ if [ "$STACK" == "qa" ]
 then
   URL="https://qa.dockstore.org"
   TOKEN=${CYPRESS_QA_TOKEN}
-elif [ "$STACK" == "prod" ]
+elif [ "$STACK" == "staging" ]
 then
   URL="https://staging.dockstore.org"
   TOKEN=${CYPRESS_STAGING_TOKEN}
@@ -24,6 +24,9 @@ USER=$(curl -X 'GET' \
   -H 'accept: application/json')
 
 USER_ID=$(echo "$USER" | jq -r ".id")
+
+echo "$USER"
+echo "$USER_ID"
 
 PUBLISHED_WORKFLOWS=$(curl -X 'GET' \
   "${URL}/api/users/${USER_ID}/workflows/published" \
