@@ -2,7 +2,6 @@
 set -o errexit
 set -o pipefail
 set -o nounset
-set -o xtrace
 
 STACK=$1
 
@@ -14,9 +13,13 @@ elif [ "$STACK" == "staging" ]
 then
   URL="https://staging.dockstore.org"
   TOKEN=${CYPRESS_STAGING_TOKEN}
-else
+elif [ "$STACK" == "prod"]
+then
   URL="https://dockstore.org"
   TOKEN=${CYPRESS_PROD_TOKEN}
+else
+  echo "Provided stack does not exist"
+  exit 1
 fi
 
 #The function getUser takes username as argument to get the user JSON object and user id.
