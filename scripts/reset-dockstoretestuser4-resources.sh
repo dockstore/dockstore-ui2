@@ -25,6 +25,7 @@ fi
 
 #The function getUser takes username as argument to get the user JSON object and user id.
 function getUser {
+  echo "Getting user"
   USERNAME=$1
   USER=$(curl -X 'GET' \
   "${URL}/api/users/username/${USERNAME}" \
@@ -34,6 +35,7 @@ function getUser {
 
 
 function getUserPublishedWorkflows {
+  echo "Getting user's published workflows"
   PUBLISHED_WORKFLOWS_IDS=$(curl -X 'GET' \
     "${URL}/api/users/${USER_ID}/workflows/published" \
     -H 'accept: application/json' \
@@ -41,6 +43,7 @@ function getUserPublishedWorkflows {
 }
 
 function getUserRegisteredTools {
+  echo "Getting user's tools"
   REGISTERED_TOOLS_IDS=$(curl -X 'GET' \
   "${URL}/api/users/${USER_ID}/containers" \
     -H "Authorization: Bearer ${TOKEN}" \
@@ -50,6 +53,7 @@ function getUserRegisteredTools {
 
 #This function will first unpublish all of the user's workflows and tools then delete its registered tools.
 function resetUserResources {
+  echo "Unpublishing all of the user's workflows"
   for WORKFLOW_ID in ${PUBLISHED_WORKFLOWS_IDS}
   do
     curl -X 'POST' \
@@ -64,6 +68,7 @@ function resetUserResources {
 
   for TOOL_ID in ${REGISTERED_TOOLS_IDS}
   do
+    echo "Unpublishing all of user's tools"
     curl -X 'POST' \
       "${URL}/api/containers/${TOOL_ID}/publish" \
       -H 'accept: application/json' \
@@ -72,13 +77,13 @@ function resetUserResources {
       -d '{
       "publish": false
       }'
+    echo "Deleting all of user's tools"
     curl -X 'DELETE' \
       "${URL}/api/containers/${TOOL_ID}" \
       -H 'accept: application/json' \
       -H "Authorization: Bearer ${TOKEN}"
   done
 }
-
 getUser "DockstoreTestUser4"
 getUserPublishedWorkflows
 getUserRegisteredTools
