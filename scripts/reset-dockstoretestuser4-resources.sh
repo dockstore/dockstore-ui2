@@ -1,4 +1,5 @@
 #!/bin/bash
+
 set -o errexit
 set -o pipefail
 set -o nounset
@@ -13,7 +14,7 @@ elif [ "$STACK" == "staging" ]
 then
   URL="https://staging.dockstore.org"
   TOKEN=${CYPRESS_STAGING_TOKEN}
-elif [ "$STACK" == "prod"]
+elif [ "$STACK" == "prod" ]
 then
   URL="https://dockstore.org"
   TOKEN=${CYPRESS_PROD_TOKEN}
@@ -28,7 +29,6 @@ function getUser {
   USER=$(curl -X 'GET' \
   "${URL}/api/users/username/${USERNAME}" \
   -H 'accept: application/json')
-
   USER_ID=$(echo "$USER" | jq -r ".id")
 }
 
