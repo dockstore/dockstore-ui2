@@ -25,7 +25,7 @@ fi
 
 #The function getUser takes username as argument to get the user JSON object and user id.
 function getUser {
-  USERNAME=S1
+  USERNAME=$1
   USER=$(curl -X 'GET' \
   "${URL}/api/users/username/${USERNAME}" \
   -H 'accept: application/json')
