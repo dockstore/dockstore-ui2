@@ -36,7 +36,7 @@
       </mat-card>
       <mat-card class="alert alert-warning mat-elevation-z" role="alert" *ngIf="(missingTool$ | async) && selectedVersion?.valid">
         <mat-icon class="alert-warning-icon">warning</mat-icon>&nbsp; DAG cannot be created because some required tools are missing from
-        Github repo.
+        GitHub repo.
       </mat-card>
     </div>
     <div fxFlex #dagHolder id="dag-holder">
