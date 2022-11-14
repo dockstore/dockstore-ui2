@@ -63,7 +63,7 @@ export class FooterComponent extends Base implements OnInit {
   }
 
   ngOnInit() {
-    this.domain = window.location.href;
+    this.domain = Dockstore.HOSTNAME;
     this.year = new Date().getFullYear();
     this.tag = versions.tag;
     this.dsServerURI = Dockstore.API_URI;

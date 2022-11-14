@@ -13,7 +13,7 @@ describe('FooterService', () => {
   it('should generate markdown', () => {
     // sanity test the method; don't want to look for the exact value as that would just be writing it all over again
     const markdown = service.versionsToMarkdown(
-      window.location.href,
+      'domainurl.com',
       '981edd1',
       '2.6.1-39-g597aeeed',
       '1.9.0',
@@ -24,7 +24,7 @@ describe('FooterService', () => {
       null,
       'potato'
     );
-    expect(markdown).toContain(window.location.href);
+    expect(markdown).toContain('domainurl.com');
     expect(markdown).toContain('981edd1');
     expect(markdown).toContain('potato');
     expect(markdown).toContain('checkUrlLambdaVersion');
