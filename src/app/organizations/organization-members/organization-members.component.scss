@@ -24,14 +24,14 @@ h5 {
   line-height: none;
 }
 
-.mat-action-row {
-  border: 0;
-}
-
 a {
   color: mat.get-color-from-palette($kim-secondary, 2);
 }
 
 * {
   color: $header-color;
+}
+
+.pending-bubble {
+  background: mat.get-color-from-palette($dockstore-app-accent-4, 4);
 }

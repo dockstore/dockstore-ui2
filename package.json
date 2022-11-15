@@ -4,9 +4,9 @@
   "license": "Apache License 2.0",
   "config": {
     "webservice_version": "1.13.0",
-    "use_circle": false,
-    "circle_ci_source": "https://app.circleci.com/pipelines/github/dockstore/dockstore/8588/workflows/7e19040e-70d9-416d-9acc-db7fd9c6639c/jobs/24582/artifacts",
-    "circle_build_id": "24582",
+    "use_circle": true,
+    "circle_ci_source": "https://app.circleci.com/pipelines/github/dockstore/dockstore/8858/workflows/1a20cf28-f539-4df6-8abf-086df408e846/jobs/26265/artifacts",
+    "circle_build_id": "26265",
     "base_branch": "develop"
   },
   "scripts": {

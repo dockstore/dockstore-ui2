@@ -13,10 +13,22 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 -->
+<div *ngIf="canEditMembership$ | async" fxLayout="row" class="pt-3">
+  <button
+    mat-button
+    class="private-btn small-btn-structure"
+    matTooltip="Invite a member to the organization"
+    (click)="addUser()"
+    id="addUserToOrgButton"
+  >
+    <mat-icon class="info-icon accent-1-dark">email</mat-icon>Invite a Member
+  </button>
+</div>
 <app-loading [loading]="loading$ | async">
-  <div class="pt-2" fxLayout="row wrap">
-    <div fxFlex="50" fxFlex.lt-sm="100" *ngFor="let organizationUser of organizationMembers$ | async; let index = index">
-      <mat-card fxFlex class="m-2" *ngIf="organizationUser?.accepted">
+  <div class="pt-2" fxLayout="column" fxLayoutGap="1rem">
+    <!-- Setting to one column for the public view instead of two until we have a dedicated My Organizations page -->
+    <div fxFlex="100" fxFlex.lt-sm="100" *ngFor="let organizationUser of organizationMembers$ | async; let index = index">
+      <mat-card fxFlex>
         <div fxLayout="column">
           <div fxLayout="row" fxLayoutAlign="space-between stretch">
             <div fxFlex fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="center center">
@@ -27,64 +39,76 @@
                 class="header-image"
                 src="https://via.placeholder.com/300x300?text=Avatar+Not+Found"
               />
-              <div fxFlex="80" fxLayout="column" fxLayoutAlign="start stretch">
+              <div fxFlex="100" fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="0.5rem">
                 <div fxLayout="row" fxLayoutAlign="space-between center">
                   <a class="no-underline" routerLink="/users/{{ organizationUser.user?.username }}">
                     <h5 class="weight-bold mt-0 mb-0" fxFlex>{{ organizationUser.user?.username }}</h5>
                   </a>
-                  <span class="bubble">{{ organizationUser.role | titlecase }}</span>
+                  <span class="bubble" *ngIf="organizationUser.status === 'ACCEPTED'">{{ organizationUser.role | titlecase }}</span>
+                  <span class="bubble pending-bubble" *ngIf="organizationUser.status !== 'ACCEPTED'"
+                    >{{ organizationUser.status | titlecase }} Invitation</span
+                  >
                 </div>
-                <span class="orcid" *ngIf="organizationUser.user?.orcid" fxLayout="row wrap">
-                  <div>
-                    ORCID
-                    <img
-                      src="../../../assets/images/account-logos/orcid.svg"
-                      alt="ORCID iD logo"
-                      class="orcid-id-logo site-icons-small mr-3"
-                    />
+                <div fxLayout="row" fxLayoutAlign="space-between">
+                  <span class="orcid" *ngIf="organizationUser.user?.orcid" fxLayout="row" fxLayoutAlign="start">
+                    <div>
+                      ORCID
+                      <img
+                        src="../../../assets/images/account-logos/orcid.svg"
+                        alt="ORCID iD logo"
+                        class="orcid-id-logo site-icons-small mr-3"
+                      />
+                    </div>
+                    <a href="https://orcid.org/{{ organizationUser.user?.orcid }}">{{ organizationUser.user?.orcid }}</a>
+                  </span>
+                  <div fxLayout="row" fxLayoutAlign="end" *ngIf="canEditMembership$ | async" fxFlex="noshrink">
+                    <mat-card-content
+                      *ngIf="organizationUser.user.id !== (userId$ | async)"
+                      fxLayout="row"
+                      fxLayoutGap="1rem"
+                      class="m-0"
+                      fxLayoutAlign="space-evenly"
+                    >
+                      <button
+                        *ngIf="organizationUser.status !== 'REJECTED'"
+                        mat-button
+                        class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+                        matTooltip="Edit member's role in organization"
+                        [id]="'edit-user-role-' + index"
+                        [disabled]="organizationUser.user.id === (userId$ | async)"
+                        (click)="editUser(organizationUser)"
+                      >
+                        <img src="../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit member" />Edit
+                      </button>
+                      <button
+                        *ngIf="organizationUser.status === 'REJECTED'"
+                        mat-button
+                        class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+                        matTooltip="Re-invite a user"
+                        [id]="'re-invite-user-role-' + index"
+                        [disabled]="organizationUser.user.id === (userId$ | async)"
+                        (click)="reinviteUser(organizationUser)"
+                      >
+                        <mat-icon class="info-icon accent-1-dark">sync</mat-icon>Resend Invite
+                      </button>
+                      <button
+                        mat-button
+                        class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+                        [matTooltip]="organizationUser.status === 'ACCEPTED' ? 'Remove member from organization' : 'Delete Invitation'"
+                        [id]="'remove-user-' + index"
+                        [disabled]="organizationUser.user.id === (userId$ | async)"
+                        (click)="removeUserDialog(organizationUser)"
+                      >
+                        <img src="../assets/svg/icons-actions-trash.svg" class="pr-2" alt="Remove member" />
+                      </button>
+                    </mat-card-content>
                   </div>
-                  <a href="https://orcid.org/{{ organizationUser.user?.orcid }}">{{ organizationUser.user?.orcid }}</a>
-                </span>
+                </div>
               </div>
             </div>
-          </div>
-          <div fxLayoutAlign="center" *ngIf="canEditMembership$ | async">
-            <mat-card-content
-              *ngIf="organizationUser.user.id !== (userId$ | async)"
-              fxLayout="row"
-              fxLayoutGap="35px"
-              class="m-0"
-              fxLayoutAlign="space-evenly"
-            >
-              <button
-                mat-button
-                class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
-                matTooltip="Edit user's role in organization"
-                [id]="'edit-user-role-' + index"
-                [disabled]="organizationUser.user.id === (userId$ | async)"
-                (click)="editUser(organizationUser)"
-              >
-                <img src="../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit member" />Edit
-              </button>
-              <button
-                mat-button
-                class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
-                matTooltip="Remove user from organization"
-                [id]="'remove-user-' + index"
-                [disabled]="organizationUser.user.id === (userId$ | async)"
-                (click)="removeUserDialog(organizationUser)"
-              >
-                <img src="../assets/svg/icons-actions-trash.svg" class="pr-2" alt="Remove member" />
-              </button>
-            </mat-card-content>
           </div>
         </div>
       </mat-card>
     </div>
   </div>
 </app-loading>
-<mat-action-row *ngIf="canEditMembership$ | async" fxLayout="row" fxLayoutAlign="end center">
-  <button matTooltip="Add user to organization" (click)="addUser()" id="addUserToOrgButton" mat-button>
-    <mat-icon>add</mat-icon>Add user
-  </button>
-</mat-action-row>

@@ -204,7 +204,12 @@ describe('Dockstore Organizations', () => {
   describe('should be able to view a collection', () => {
     beforeEach(() => {
       const memberships = [
-        { id: 1, role: 'MAINTAINER', accepted: true, organization: { id: 2, status: 'APPROVED', name: 'Potatoe', displayName: 'Potatoe' } },
+        {
+          id: 1,
+          role: 'MAINTAINER',
+          status: 'ACCEPTED',
+          organization: { id: 2, status: 'APPROVED', name: 'Potatoe', displayName: 'Potatoe' },
+        },
       ];
       cy.server().route({
         method: 'GET',

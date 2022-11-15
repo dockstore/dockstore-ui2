@@ -13,13 +13,24 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 -->
+<div *ngIf="canEdit$ | async" class="mt-3">
+  <button
+    mat-button
+    class="private-btn small-btn-structure"
+    matTooltip="Create a collection"
+    (click)="createCollection()"
+    id="createCollection"
+  >
+    <mat-icon class="info-icon accent-1-dark">add</mat-icon>Create a Collection
+  </button>
+</div>
 <app-loading [loading]="loading$ | async">
   <div *ngIf="(collections$ | async | json) === '{}'; else hasCollections">
     <mat-card class="alert alert-info mx-1" role="alert"> <mat-icon>info</mat-icon> No collections found. </mat-card>
   </div>
   <ng-template #hasCollections>
     <div class="pt-2" fxLayout="column" fxLayoutGap="1rem">
-      <mat-card fxFlex *ngFor="let collection of collections$ | async | keyvalue" class="m-1 pb-3">
+      <mat-card fxFlex *ngFor="let collection of collections$ | async | keyvalue">
         <a
           class="no-underline"
           [routerLink]="['/organizations/', organizationName, 'collections', collection?.value?.name]"
@@ -75,9 +86,3 @@
     </div>
   </ng-template>
 </app-loading>
-<mat-action-row *ngIf="canEdit$ | async">
-  <div fxFlex></div>
-  <button mat-button class="my-2" (click)="createCollection()" id="createCollection" matTooltip="Create a new collection">
-    <mat-icon>add</mat-icon>Create collection
-  </button>
-</mat-action-row>

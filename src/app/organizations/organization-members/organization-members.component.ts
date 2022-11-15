@@ -83,8 +83,30 @@ export class OrganizationMembersComponent extends Base implements OnInit {
   editUser(organizationUser: OrganizationUser) {
     this.alertService.clearEverything();
     this.matDialog.open(UpsertOrganizationMemberComponent, {
-      data: { mode: TagEditorMode.Edit, username: organizationUser.user.username, role: organizationUser.role },
-      width: '600px',
+      data: {
+        mode: TagEditorMode.Edit,
+        username: organizationUser.user.username,
+        role: organizationUser.role,
+        title: 'Edit Member',
+        descriptionPrefix: "Edit the member's role in your organization.",
+        confirmationButtonText: 'Edit Member',
+      },
+      width: bootstrap4mediumModalSize,
+    });
+  }
+
+  reinviteUser(organizationUser: OrganizationUser) {
+    this.matDialog.open(UpsertOrganizationMemberComponent, {
+      data: {
+        mode: TagEditorMode.Edit,
+        username: organizationUser.user.username,
+        role: organizationUser.role,
+        title: 'Resend Invitation',
+        descriptionPrefix: `Resend an invitation to the user <strong>${organizationUser.user.username}</strong> 
+          who rejected the invitation to the organization <strong>${organizationUser.organization.displayName}</strong>. You may optionally edit the role.`,
+        confirmationButtonText: 'Resend Invitation',
+      },
+      width: bootstrap4mediumModalSize,
     });
   }
 
@@ -96,8 +118,15 @@ export class OrganizationMembersComponent extends Base implements OnInit {
   addUser() {
     this.alertService.clearEverything();
     this.matDialog.open(UpsertOrganizationMemberComponent, {
-      data: { mode: TagEditorMode.Add, username: null, role: null },
-      width: '600px',
+      data: {
+        mode: TagEditorMode.Add,
+        username: null,
+        role: null,
+        title: 'Invite a Member',
+        descriptionPrefix: 'When you send this invite, the user will receive a request to join your organization.',
+        confirmationButtonText: 'Send Invite',
+      },
+      width: bootstrap4mediumModalSize,
     });
   }
 
@@ -108,13 +137,18 @@ export class OrganizationMembersComponent extends Base implements OnInit {
    * @memberof OrganizationMembersComponent
    */
   removeUserDialog(organizationUser: OrganizationUser) {
+    const isAccepted = organizationUser.status === 'ACCEPTED';
+    const acceptedMessage = `Are you sure you want to <strong>remove</strong> the member <strong>${organizationUser.user.username}</strong>
+      from the organization <strong>${organizationUser.organization.displayName}</strong>?`;
+    const pendingOrRejectedMessage = `The member has a <strong>${organizationUser.status.toLowerCase()}</strong> invitation to the organization <strong>${
+      organizationUser.organization.displayName
+    }</strong>. 
+      Are you sure you want to <strong>delete</strong> the invitation to the member <strong>${organizationUser.user.username}</strong>?`;
     const confirmationDialogData: ConfirmationDialogData = {
-      title: 'Remove user from organization',
-      message: `Are you sure you want to <strong>remove</strong> the user <strong>${organizationUser.user.username}</strong>
-      from the organization
-    <strong>${organizationUser.organization.displayName}?`,
-      cancelButtonText: 'NO THANKS',
-      confirmationButtonText: 'REMOVE',
+      title: isAccepted ? 'Remove member from organization' : `Delete ${organizationUser.status.toLowerCase()} invitation`,
+      message: isAccepted ? acceptedMessage : pendingOrRejectedMessage,
+      cancelButtonText: 'Cancel',
+      confirmationButtonText: isAccepted ? 'Remove Member' : 'Delete Invitation',
     };
     this.confirmationDialogService
       .openDialog(confirmationDialogData, bootstrap4mediumModalSize)
