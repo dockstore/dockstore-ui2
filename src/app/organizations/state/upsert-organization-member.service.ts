@@ -64,21 +64,14 @@ export class UpsertOrganizationMemberService {
   /**
    * Get the description
    *
-   * @param {TagEditorMode} mode
    * @returns {string}
    * @memberof UpsertOrganizationMemberService
    */
-  getDescription(mode: TagEditorMode, prefix: string): string {
+  getDescription(prefix: string): string {
     const rolePermissions = ` Role permissions include:<br>
       <strong>Admin:</strong> can update the organization, collections, and memberships.<br>
       <strong>Maintainer:</strong> can update the organization and collections.<br>
       <strong>Member:</strong> no editing permissions. Joins to show support for the organization.`;
-    let descriptionPrefix;
-    if (mode === TagEditorMode.Add) {
-      descriptionPrefix = 'When you send this invite, the user will receive a request to join your organization.';
-    } else {
-      descriptionPrefix = "Edit the member's role in your organization.";
-    }
     return prefix + rolePermissions;
   }
 
