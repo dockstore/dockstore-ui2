@@ -39,9 +39,8 @@ export class UpsertOrganizationMemberComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.form = this.upsertOrganizationMemberService.createForm(this.formsManager, this.data);
-    this.mode = this.data.mode;
     this.title = this.data.title;
-    this.description = this.upsertOrganizationMemberService.getDescription(this.mode, this.data.descriptionPrefix);
+    this.description = this.upsertOrganizationMemberService.getDescription(this.data.descriptionPrefix);
     this.confirmationButtonText = this.data.confirmationButtonText;
   }
 
