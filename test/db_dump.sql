@@ -1536,7 +1536,7 @@ steps:
     run: wc.cwl
     in:
       infiles: grep/outfile
-out: [outfile]
+    out: [outfile]
 ', 'grep-and-count.cwl', 'DOCKSTORE_CWL', NULL, NULL);
 INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate) VALUES (31, 'cwlVersion: v1.0
 class: CommandLineTool
