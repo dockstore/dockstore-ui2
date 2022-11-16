@@ -109,19 +109,19 @@ describe('Dropdown test', () => {
         {
           id: 1,
           role: 'MAINTAINER',
-          accepted: false,
+          status: 'PENDING',
           organization: { id: 1000, status: 'PENDING', name: 'orgOne', displayName: 'orgOne' },
         },
         {
           id: 2,
           role: 'MAINTAINER',
-          accepted: true,
+          status: 'ACCEPTED',
           organization: { id: 1001, status: 'PENDING', name: 'orgTwo', displayName: 'orgTwo' },
         },
         {
           id: 3,
           role: 'MAINTAINER',
-          accepted: true,
+          status: 'ACCEPTED',
           organization: { id: 1002, status: 'REJECTED', name: 'orgThree', displayName: 'orgThree' },
         },
       ];
@@ -158,9 +158,9 @@ describe('Dropdown test', () => {
 
       // Mock new my pending orgs
       const memberships = [
-        { id: 1, role: 'MAINTAINER', accepted: false, organization: { id: 1000, status: 'PENDING', name: 'orgOne' } },
-        { id: 2, role: 'MAINTAINER', accepted: true, organization: { id: 1001, status: 'PENDING', name: 'orgTwo' } },
-        { id: 3, role: 'MAINTAINER', accepted: true, organization: { id: 1002, status: 'PENDING', name: 'orgThree' } },
+        { id: 1, role: 'MAINTAINER', status: 'PENDING', organization: { id: 1000, status: 'PENDING', name: 'orgOne' } },
+        { id: 2, role: 'MAINTAINER', status: 'ACCEPTED', organization: { id: 1001, status: 'PENDING', name: 'orgTwo' } },
+        { id: 3, role: 'MAINTAINER', status: 'ACCEPTED', organization: { id: 1002, status: 'PENDING', name: 'orgThree' } },
       ];
       cy.server().route({
         method: 'GET',
@@ -226,8 +226,8 @@ describe('Dropdown test', () => {
 
       // Membership should have two accepted entries
       const memberships = [
-        { id: 1, role: 'MAINTAINER', accepted: true, organization: { id: 1000, status: 'PENDING', name: 'orgOne' } },
-        { id: 2, role: 'MAINTAINER', accepted: true, organization: { id: 1001, status: 'PENDING', name: 'orgTwo' } },
+        { id: 1, role: 'MAINTAINER', status: 'ACCEPTED', organization: { id: 1000, status: 'PENDING', name: 'orgOne' } },
+        { id: 2, role: 'MAINTAINER', status: 'ACCEPTED', organization: { id: 1001, status: 'PENDING', name: 'orgTwo' } },
       ];
       cy.server().route({
         method: 'GET',
@@ -262,14 +262,19 @@ describe('Dropdown test', () => {
       const nonAffiliatedMembership = {
         id: 1,
         role: 'MAINTAINER',
-        accepted: false,
+        status: 'PENDING',
         organization: { id: 1000, status: 'PENDING', name: 'orgOne', displayName: 'orgOne' },
       };
 
       // New mocked memberships after deleting the rejected organization
       const membershipsAfterFirstDeletion = [
         nonAffiliatedMembership,
-        { id: 2, role: 'MAINTAINER', accepted: true, organization: { id: 1001, status: 'PENDING', name: 'orgTwo', displayName: 'orgTwo' } },
+        {
+          id: 2,
+          role: 'MAINTAINER',
+          status: 'ACCEPTED',
+          organization: { id: 1001, status: 'PENDING', name: 'orgTwo', displayName: 'orgTwo' },
+        },
       ];
 
       // Route all DELETE API calls to organizations respond with with an empty JSON object

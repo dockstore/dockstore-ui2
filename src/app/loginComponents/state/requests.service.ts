@@ -110,7 +110,7 @@ export class RequestsService {
             (membership) => membership.organization.status === 'PENDING' && membership.status === 'ACCEPTED'
           );
           const myRejectedOrganizationRequests = myMemberships.filter(
-            (membership) => membership.organization.status === 'REJECTED' && membership.status === 'REJECTED'
+            (membership) => membership.organization.status === 'REJECTED' && membership.status === 'ACCEPTED'
           );
 
           this.updateMyMembershipState(myMemberships, myOrganizationInvites, myPendingOrganizationRequests, myRejectedOrganizationRequests);

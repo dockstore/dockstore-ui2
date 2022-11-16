@@ -109,7 +109,7 @@ export function invokeSql(sqlStatement: string) {
 }
 
 export function approvePotatoMembership() {
-  invokeSql('update organization_user set accepted=true where userid=2 and organizationid=1');
+  invokeSql("update organization_user set status='ACCEPTED' where userid=2 and organizationid=1");
 }
 
 export function approvePotatoOrganization() {
@@ -118,11 +118,11 @@ export function approvePotatoOrganization() {
 
 export function addOrganizationAdminUser(organization: string, user: string) {
   invokeSql(
-    "insert into organization_user (organizationid, userid, accepted, role) values ((select id from organization where name = '" +
+    "insert into organization_user (organizationid, userid, status, role) values ((select id from organization where name = '" +
       organization +
       "'), (select id from enduser where username = '" +
       user +
-      "'), true, 'ADMIN')"
+      "'), 'ACCEPTED', 'ADMIN')"
   );
 }
 
