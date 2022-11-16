@@ -75,9 +75,9 @@ describe('Test notification badge on navbar', () => {
         'a111sdf@asdf.ca'
       );
       cy.contains('span', 'Members').click();
-      cy.contains('button', 'Invite a Member').should('be.visible').click();
+      cy.get('#addUserToOrgButton').should('be.visible').click();
       typeInInput('Username', 'user_A');
-      cy.contains('button', 'Send Invite').should('be.visible').click();
+      cy.get('#upsertUserDialogButton').should('be.visible').should('not.be.disabled').click();
       cy.reload();
     });
 

@@ -13,7 +13,14 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { approvePotatoMembership, approvePotatoOrganization, resetDB, setTokenUserViewPort } from '../../support/commands';
+import {
+  approvePotatoMembership,
+  approvePotatoOrganization,
+  createPotatoMembership,
+  rejectPotatoMembership,
+  resetDB,
+  setTokenUserViewPort,
+} from '../../support/commands';
 import { TokenUser } from '../../../src/app/shared/swagger';
 import { TokenSource } from '../../../src/app/shared/enum/token-source.enum';
 
@@ -235,6 +242,7 @@ describe('Dockstore Organizations', () => {
     it('be able to update a collection description', () => {
       cy.visit('/organizations/Potatoe/collections/veryFakeCollectionName');
       cy.get('#editCollectionDescription').click();
+      cy.wait(5000);
       cy.get('#updateOrganizationDescriptionButton').should('be.visible').should('not.be.disabled');
       typeInTextArea('Description', '* fake collection description');
       cy.contains('Preview Mode').click();
@@ -297,19 +305,6 @@ describe('Dockstore Organizations', () => {
       cy.contains('quay.io/garyluu/dockstore-cgpmap/cgpmap-cramOut');
     });
 
-    it('be able to remove an entry from a collection', () => {
-      cy.visit('/organizations/Potatoe/collections/veryFakeCollectionName');
-      cy.wait(10000);
-      cy.contains('quay.io/garyluu/dockstore-cgpmap/cgpmap-cramOut:3.0.0-rc8');
-      cy.get('#removeEntryButton').click();
-      cy.contains('quay.io/garyluu/dockstore-cgpmap/cgpmap-cramOut');
-      cy.get('#removeEntryButton').click();
-      cy.get('[data-cy=accept-remove-entry-from-org]').click();
-      cy.contains('This collection has no associated entries');
-      cy.visit('/organizations/Potatoe');
-      cy.contains('Members').should('be.visible');
-    });
-
     // test the fix for DOCK-1945
     it('stay on collections page when removing an entry', () => {
       const url: string = '/organizations/Potatoe/collections/veryFakeCollectionName';
@@ -323,6 +318,17 @@ describe('Dockstore Organizations', () => {
       cy.url().should('include', url);
       cy.get('[data-cy=accept-remove-entry-from-org]').click();
       cy.url().should('include', url);
+    });
+
+    it('be able to remove an entry from a collection', () => {
+      cy.visit('/organizations/Potatoe/collections/veryFakeCollectionName');
+      cy.contains('quay.io/garyluu/dockstore-cgpmap/cgpmap-cramOut:3.0.0-rc8');
+      cy.get('#removeEntryButton').click();
+      cy.contains('quay.io/garyluu/dockstore-cgpmap/cgpmap-cramOut');
+      cy.get('[data-cy=accept-remove-entry-from-org]').click();
+      cy.contains('This collection has no associated entries');
+      cy.visit('/organizations/Potatoe');
+      cy.contains('Members').should('be.visible');
     });
 
     it('use default organization logo image', () => {
@@ -349,30 +355,26 @@ describe('Dockstore Organizations', () => {
 
   describe('Should be able to CRUD user', () => {
     beforeEach(() => {
+      cy.visit('/organizations/Potatoe');
       cy.contains('Members').click();
     });
 
     it('be able to Read organization user', () => {
       cy.get('mat-progress-bar').should('not.exist');
-      cy.get('mat-card-title').contains('user_A');
-      cy.get('#edit-user-role-0').should('be.disabled');
+      cy.get('#organization-member-0').should('be.visible').should('contain', 'user_A').should('contain', 'Admin');
+      cy.get('#edit-user-role-0').should('not.exist');
     });
 
     it('be able to Create organization user', () => {
-      cy.get('#addUserToOrgButton').click();
-      typeInInput('Username', 'potato');
-      cy.get('mat-select').click();
-      cy.get('mat-option').contains('Member').click();
-      cy.get('.mat-select-panel').should('not.exist');
-      cy.get('#upsertUserDialogButton').should('be.visible').should('not.be.disabled').click();
-      cy.get('#upsertUserDialogButton').should('not.exist');
-      cy.contains('mat-card-title', 'potato').should('not.exist');
+      createPotatoMembership();
+      cy.get('#organization-member-1').should('be.visible').should('contain', 'potato').should('contain', 'Pending Invitation');
+      cy.get('#edit-user-role-1').should('exist').should('be.enabled');
 
       // Need to approve membership and reload for it to be visible
       approvePotatoMembership();
       cy.visit('/organizations/Potatoe');
       cy.contains('Members').click();
-      cy.contains('mat-card-title', 'potato').parent().parent().parent().contains('Member');
+      cy.get('#organization-member-1').should('be.visible').should('contain', 'potato').should('contain', 'Member');
     });
 
     it('be able to edit an approved organization', () => {
@@ -383,18 +385,53 @@ describe('Dockstore Organizations', () => {
 
     it('be able to Update organization user', () => {
       cy.get('#edit-user-role-1').should('not.be.disabled').click();
+      cy.get('.mat-dialog-title').should('contain', 'Edit Member');
       cy.get('mat-select').click();
       cy.get('mat-option').contains('Maintainer').click();
       cy.get('.mat-select-panel').should('not.exist');
       cy.get('#upsertUserDialogButton').should('be.visible').should('not.be.disabled').click();
       cy.get('#upsertUserDialogButton').should('not.exist');
-      cy.contains('mat-card-title', 'potato').parent().parent().parent().contains('Maintainer');
+      cy.get('#organization-member-1').should('be.visible').should('contain', 'potato').should('contain', 'Maintainer');
     });
 
     it('be able to Delete organization user', () => {
-      cy.get('#remove-user-0').should('not.be.disabled').click();
+      cy.get('#remove-user-1').should('not.be.disabled').click();
+      cy.get('.mat-dialog-title').should('contain', 'Remove Member from Organization');
       cy.get('[data-cy=confirm-dialog-button]').should('not.be.disabled').click();
-      cy.contains('mat-card-title', 'potato').should('not.exist');
+      cy.get('#organization-member-1').contains('potato').should('not.exist');
+    });
+
+    it('Reject organization member invite', () => {
+      createPotatoMembership();
+      cy.get('#organization-member-1').should('be.visible').should('contain', 'potato').should('contain', 'Pending Invitation');
+
+      // Need to reject membership and reload for it to be visible
+      rejectPotatoMembership();
+      cy.visit('/organizations/Potatoe');
+      cy.contains('Members').click();
+      cy.get('#organization-member-1').should('contain', 'potato').should('contain', 'Rejected Invitation');
+      cy.get('#remove-user-1').should('exist').should('be.enabled');
+    });
+
+    it('Resend invitation to organization user who rejected previous invite', () => {
+      cy.get('#edit-user-role-1').should('exist').should('be.enabled').click();
+      cy.get('.mat-dialog-title').should('contain', 'Resend Invitation');
+      cy.get('#upsertUserDialogButton').should('be.visible').should('not.be.disabled').click();
+      cy.get('#upsertUserDialogButton').should('not.exist');
+      cy.get('#organization-member-1').should('contain', 'potato').should('contain', 'Pending Invitation');
+
+      // Reject membership again and reload for it to be visible
+      rejectPotatoMembership();
+      cy.visit('/organizations/Potatoe');
+      cy.contains('Members').click();
+      cy.get('#organization-member-1').should('contain', 'potato').should('contain', 'Rejected Invitation');
+    });
+
+    it('Delete rejected invitation', () => {
+      cy.get('#remove-user-1').should('exist').should('be.enabled').click();
+      cy.get('.mat-dialog-title').should('contain', 'Delete Invitation');
+      cy.get('[data-cy=confirm-dialog-button]').should('not.be.disabled').click();
+      cy.get('#organization-member-1').contains('potato').should('not.exist');
     });
   });
 

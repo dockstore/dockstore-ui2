@@ -28,7 +28,7 @@
   <div class="pt-2" fxLayout="column" fxLayoutGap="1rem">
     <!-- Setting to one column for the public view instead of two until we have a dedicated My Organizations page -->
     <div fxFlex="100" fxFlex.lt-sm="100" *ngFor="let organizationUser of organizationMembers$ | async; let index = index">
-      <mat-card fxFlex>
+      <mat-card [id]="'organization-member-' + index" fxFlex>
         <div fxLayout="column">
           <div fxLayout="row" fxLayoutAlign="space-between stretch">
             <div fxFlex fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="center center">
@@ -44,10 +44,13 @@
                   <a class="no-underline" routerLink="/users/{{ organizationUser.user?.username }}">
                     <h5 class="weight-bold mt-0 mb-0" fxFlex>{{ organizationUser.user?.username }}</h5>
                   </a>
-                  <span class="bubble" *ngIf="organizationUser.status === 'ACCEPTED'">{{ organizationUser.role | titlecase }}</span>
-                  <span class="bubble pending-bubble" *ngIf="organizationUser.status !== 'ACCEPTED'"
-                    >{{ organizationUser.status | titlecase }} Invitation</span
-                  >
+                  <span class="bubble" [ngClass]="{ 'pending-bubble': organizationUser.status !== 'ACCEPTED' }">
+                    {{
+                      organizationUser.status === 'ACCEPTED'
+                        ? (organizationUser.role | titlecase)
+                        : (organizationUser.status | titlecase) + ' Invitation'
+                    }}
+                  </span>
                 </div>
                 <div fxLayout="row" fxLayoutAlign="space-between">
                   <span class="orcid" *ngIf="organizationUser.user?.orcid" fxLayout="row" fxLayoutAlign="start">
@@ -70,33 +73,20 @@
                       fxLayoutAlign="space-evenly"
                     >
                       <button
-                        *ngIf="organizationUser.status !== 'REJECTED'"
                         mat-button
                         class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
-                        matTooltip="Edit member's role in organization"
+                        [matTooltip]="organizationUser.status === 'REJECTED' ? 'Reinvite a user' : 'Edit member\'s role in organization'"
                         [id]="'edit-user-role-' + index"
-                        [disabled]="organizationUser.user.id === (userId$ | async)"
                         (click)="editUser(organizationUser)"
                       >
-                        <img src="../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit member" />Edit
-                      </button>
-                      <button
-                        *ngIf="organizationUser.status === 'REJECTED'"
-                        mat-button
-                        class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
-                        matTooltip="Re-invite a user"
-                        [id]="'re-invite-user-role-' + index"
-                        [disabled]="organizationUser.user.id === (userId$ | async)"
-                        (click)="reinviteUser(organizationUser)"
-                      >
-                        <mat-icon class="info-icon accent-1-dark">sync</mat-icon>Resend Invite
+                        <mat-icon class="info-icon accent-1-dark">{{ organizationUser.status === 'REJECTED' ? 'sync' : 'edit' }}</mat-icon>
+                        {{ organizationUser.status === 'REJECTED' ? 'Resend Invite' : 'Edit' }}
                       </button>
                       <button
                         mat-button
                         class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
                         [matTooltip]="organizationUser.status === 'ACCEPTED' ? 'Remove member from organization' : 'Delete Invitation'"
                         [id]="'remove-user-' + index"
-                        [disabled]="organizationUser.user.id === (userId$ | async)"
                         (click)="removeUserDialog(organizationUser)"
                       >
                         <img src="../assets/svg/icons-actions-trash.svg" class="pr-2" alt="Remove member" />

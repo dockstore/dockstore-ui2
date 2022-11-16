@@ -108,8 +108,22 @@ export function invokeSql(sqlStatement: string) {
   cy.exec(psqlInvocation + ' -h localhost webservice_test -U dockstore -c "' + sqlStatement + '"');
 }
 
+export function createPotatoMembership() {
+  cy.get('#addUserToOrgButton').click();
+  typeInInput('Username', 'potato');
+  cy.get('mat-select').click();
+  cy.get('mat-option').contains('Member').click();
+  cy.get('.mat-select-panel').should('not.exist');
+  cy.get('#upsertUserDialogButton').should('be.visible').should('not.be.disabled').click();
+  cy.get('#upsertUserDialogButton').should('not.exist');
+}
+
 export function approvePotatoMembership() {
-  invokeSql("update organization_user set status='ACCEPTED' where userid=2 and organizationid=1");
+  invokeSql("update organization_user set status='ACCEPTED' where userid=2 and organizationid=2");
+}
+
+export function rejectPotatoMembership() {
+  invokeSql("update organization_user set status='REJECTED' where userid=2 and organizationid=2");
 }
 
 export function approvePotatoOrganization() {
