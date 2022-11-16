@@ -297,7 +297,7 @@ describe('Dockstore Organizations', () => {
       cy.contains('quay.io/garyluu/dockstore-cgpmap/cgpmap-cramOut');
     });
 
-    it.skip('be able to remove an entry from a collection', () => {
+    it('be able to remove an entry from a collection', () => {
       cy.visit('/organizations/Potatoe/collections/veryFakeCollectionName');
       cy.wait(10000);
       cy.contains('quay.io/garyluu/dockstore-cgpmap/cgpmap-cramOut:3.0.0-rc8');
@@ -347,7 +347,7 @@ describe('Dockstore Organizations', () => {
     });
   });
 
-  describe.skip('Should be able to CRUD user', () => {
+  describe('Should be able to CRUD user', () => {
     beforeEach(() => {
       cy.contains('Members').click();
     });
