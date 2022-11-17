@@ -14,6 +14,7 @@ export class FooterService {
   }
 
   versionsToMarkdown(
+    domain: string | null,
     webServiceVersion: string | null,
     uiVersion: string | null,
     composeSetupVersion: string | null,
@@ -24,7 +25,9 @@ export class FooterService {
     galaxyParsingLambdaVersion: string | null,
     checkUrlLambdaVersion: string | null
   ): string {
-    let baseBuildInfo = `[Webservice](${this.gitHubUrl('dockstore', webServiceVersion)}) - ${webServiceVersion}
+    let baseBuildInfo = `[Domain] - ${domain}
+
+[Webservice](${this.gitHubUrl('dockstore', webServiceVersion)}) - ${webServiceVersion}
 
 [UI](${this.gitHubUrl('dockstore-ui2', uiVersion)}) - ${uiVersion}`;
     if (composeSetupVersion) {
