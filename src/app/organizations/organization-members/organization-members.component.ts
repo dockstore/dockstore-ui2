@@ -36,6 +36,7 @@ import { UpsertOrganizationMemberComponent } from '../upsert-organization-member
   styleUrls: ['./organization-members.component.scss'],
 })
 export class OrganizationMembersComponent extends Base implements OnInit {
+  OrganizationUser = OrganizationUser;
   organizationMembers$: Observable<OrganizationUser[]>;
   loading$: Observable<boolean>;
   canEdit$: Observable<boolean>;

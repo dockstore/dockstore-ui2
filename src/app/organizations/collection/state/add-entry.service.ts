@@ -29,7 +29,8 @@ export class AddEntryService {
       .subscribe(
         (memberships: Array<OrganizationUser>) => {
           memberships = memberships.filter(
-            (membership) => membership.status === 'ACCEPTED' && membership.role !== OrganizationUser.RoleEnum.MEMBER
+            (membership) =>
+              membership.status === OrganizationUser.StatusEnum.ACCEPTED && membership.role !== OrganizationUser.RoleEnum.MEMBER
           );
           this.updateMembershipsState(memberships);
           this.addEntryStore.setError(false);

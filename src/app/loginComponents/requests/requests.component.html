@@ -21,7 +21,9 @@
             <p>
               Requested by user(s)
               <span *ngFor="let user of org?.users; let last = last">
-                <strong *ngIf="user?.status === 'ACCEPTED'">{{ user.user.username }}<span *ngIf="!last">, </span></strong>
+                <strong *ngIf="user?.status === OrganizationUser.StatusEnum.ACCEPTED"
+                  >{{ user.user.username }}<span *ngIf="!last">, </span></strong
+                >
               </span>
               on {{ org.dbCreateDate | date }}
             </p>

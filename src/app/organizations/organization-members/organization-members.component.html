@@ -54,9 +54,9 @@
                     <a class="no-underline" routerLink="/users/{{ organizationUser.user?.username }}">
                       <h5 class="weight-bold mt-0 mb-0" fxFlex>{{ organizationUser.user?.username }}</h5>
                     </a>
-                    <span class="bubble" [ngClass]="{ 'pending-bubble': organizationUser.status !== 'ACCEPTED' }">
+                    <span class="bubble" [ngClass]="{ 'pending-bubble': organizationUser.status !== OrganizationUser.StatusEnum.ACCEPTED }">
                       {{
-                        organizationUser.status === 'ACCEPTED'
+                        organizationUser.status === OrganizationUser.StatusEnum.ACCEPTED
                           ? (organizationUser.role | titlecase)
                           : (organizationUser.status | titlecase) + ' Invitation'
                       }}
@@ -85,19 +85,27 @@
                         <button
                           mat-button
                           class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
-                          [matTooltip]="organizationUser.status === 'REJECTED' ? 'Reinvite a user' : 'Edit member\'s role in organization'"
+                          [matTooltip]="
+                            organizationUser.status === OrganizationUser.StatusEnum.REJECTED
+                              ? 'Reinvite a user'
+                              : 'Edit member\'s role in organization'
+                          "
                           [id]="'edit-user-role-' + index"
                           (click)="editUser(organizationUser)"
                         >
                           <mat-icon class="info-icon accent-1-dark">{{
-                            organizationUser.status === 'REJECTED' ? 'sync' : 'edit'
+                            organizationUser.status === OrganizationUser.StatusEnum.REJECTED ? 'sync' : 'edit'
                           }}</mat-icon>
-                          {{ organizationUser.status === 'REJECTED' ? 'Resend Invite' : 'Edit' }}
+                          {{ organizationUser.status === OrganizationUser.StatusEnum.REJECTED ? 'Resend Invite' : 'Edit' }}
                         </button>
                         <button
                           mat-button
                           class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
-                          [matTooltip]="organizationUser.status === 'ACCEPTED' ? 'Remove member from organization' : 'Delete Invitation'"
+                          [matTooltip]="
+                            organizationUser.status === OrganizationUser.StatusEnum.ACCEPTED
+                              ? 'Remove member from organization'
+                              : 'Delete Invitation'
+                          "
                           [id]="'remove-user-' + index"
                           (click)="removeUserDialog(organizationUser)"
                         >

@@ -68,7 +68,7 @@ export class UpsertOrganizationMemberService {
    * @memberof UpsertOrganizationMemberService
    */
   getDescription(prefix: string): string {
-    const rolePermissions = ` Role permissions include:<br>
+    const rolePermissions = ` Role permissions are:<br>
       <strong>Admin:</strong> can update the organization, collections, and memberships.<br>
       <strong>Maintainer:</strong> can update the organization and collections.<br>
       <strong>Member:</strong> no editing permissions. Joins to show support for the organization.`;

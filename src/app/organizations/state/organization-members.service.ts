@@ -96,24 +96,21 @@ export class OrganizationMembersService {
             const canEdit = organizationUsers.some(
               (user) =>
                 user.id.userId === currentUserId &&
-                user.status === 'ACCEPTED' &&
                 (user.role === OrganizationUser.RoleEnum.ADMIN || user.role === OrganizationUser.RoleEnum.MAINTAINER)
             );
             const canEditMembers = organizationUsers.some(
-              (user) => user.id.userId === currentUserId && user.status === 'ACCEPTED' && user.role === OrganizationUser.RoleEnum.ADMIN
+              (user) =>
+                user.id.userId === currentUserId &&
+                user.status === OrganizationUser.StatusEnum.ACCEPTED &&
+                user.role === OrganizationUser.RoleEnum.ADMIN
             );
             // If a user can edit the organization, allow them to delete a collection.
             const canDeleteCollection = canEdit;
             this.setCanModifyState(canEdit, canEditMembers, canDeleteCollection);
-            if (canEditMembers) {
-              this.updateAll(organizationUsers);
-            } else {
-              this.updateAll(organizationUsers.filter((organizationUser) => organizationUser.status === 'ACCEPTED'));
-            }
           } else {
             this.setCanModifyState(false, false, false);
-            this.updateAll(organizationUsers.filter((organizationUser) => organizationUser.status === 'ACCEPTED'));
           }
+          this.updateAll(organizationUsers);
           this.organizationMembersStore.setError(false);
         },
         (error: HttpErrorResponse) => {
