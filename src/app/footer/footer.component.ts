@@ -31,6 +31,7 @@ import { versions } from './versions';
   styleUrls: ['./footer.component.scss'],
 })
 export class FooterComponent extends Base implements OnInit {
+  domain: string;
   version: string;
   tag: string;
   public prod = true;
@@ -62,6 +63,7 @@ export class FooterComponent extends Base implements OnInit {
   }
 
   ngOnInit() {
+    this.domain = Dockstore.HOSTNAME;
     this.year = new Date().getFullYear();
     this.tag = versions.tag;
     this.dsServerURI = Dockstore.API_URI;
@@ -78,6 +80,7 @@ export class FooterComponent extends Base implements OnInit {
               this.version = metadatum;
             }
             this.content = this.footerService.versionsToMarkdown(
+              this.domain,
               this.version,
               this.tag,
               Dockstore.COMPOSE_SETUP_VERSION,
