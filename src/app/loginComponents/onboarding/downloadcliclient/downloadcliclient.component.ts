@@ -83,12 +83,11 @@ Setup our Dockstore CLI application to start launching workflows from the comman
 #### Part 1 - Install dependencies
 1. Install Java 11 (This example installs OpenJDK 11)
 \`\`\`
-sudo add-apt-repository ppa:openjdk-r/ppa \
-&& sudo apt-get update -q \
+sudo apt-get update -q \
 && sudo apt install -y openjdk-11-jdk
 \`\`\`
-2. Install Docker following the instructions on [Docker's website](https://docs.docker.com/install/linux/docker-ce/ubuntu/). You should have at least version 19.03.1 installed.
-Ensure that you are able to run Docker without using sudo directly with the
+2. Install Docker Engine following the instructions on [Docker's website](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository). You should have at least version 19.03.1 installed. Ensure that you install Docker Engine. Docker Desktop does not run containers natively and the Dockstore CLI is not currently compatible with Docker Desktop's use of a VM.
+3. Ensure that you are able to run Docker without using sudo directly with the
 [post install instructions](https://docs.docker.com/engine/installation/linux/linux-postinstall/#manage-docker-as-a-non-root-user).
 \`\`\`
 sudo usermod -aG docker $USER
