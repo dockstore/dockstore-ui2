@@ -17,7 +17,7 @@ import { approvePotatoMembership, approvePotatoOrganization, resetDB, setTokenUs
 import { TokenUser } from '../../../src/app/shared/swagger';
 import { TokenSource } from '../../../src/app/shared/enum/token-source.enum';
 
-const imageURL = 'https://fakeUrl.com/potato.png';
+const imageURL = 'https://superduperfakepotatourl.com/potato.png';
 describe('Dockstore Organizations', () => {
   resetDB();
   setTokenUserViewPort();
