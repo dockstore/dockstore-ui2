@@ -52,7 +52,7 @@ export class GA4GHFilesService {
     }
     this.injectAuthorizationToken(this.ga4ghService);
     descriptorTypes.forEach((descriptorType) => {
-      this.ga4ghService.toolsIdVersionsVersionIdTypeFilesGet(descriptorType, id, version).subscribe(
+      this.ga4ghService.toolsIdVersionsVersionIdTypeFilesGet(id, descriptorType, version).subscribe(
         (files) => {
           this.ga4ghFilesStore.setError(null);
           this.ga4ghFilesStore.upsert(descriptorType, { toolFiles: files });

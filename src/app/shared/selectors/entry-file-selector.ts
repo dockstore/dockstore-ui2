@@ -159,8 +159,8 @@ export abstract class EntryFileSelector implements OnDestroy {
     } else {
       this.gA4GHService
         .toolsIdVersionsVersionIdTypeDescriptorRelativePathGet(
-          this.currentDescriptor,
           this.entryType === 'workflow' ? ga4ghWorkflowIdPrefix + this.entrypath : this.entrypath,
+          this.currentDescriptor,
           this._selectedVersion.name,
           this.currentFile.path
         )
