@@ -69,3 +69,15 @@ export class DescriptorTypeCompatService {
     return extendedUnknownDescriptor.plainTRS;
   }
 }
+
+export type DescriptorTypeWithPlain =
+  | 'CWL'
+  | 'WDL'
+  | 'NFL'
+  | 'GALAXY'
+  | 'SMK'
+  | 'PLAIN_CWL'
+  | 'PLAIN_WDL'
+  | 'PLAIN_NFL'
+  | 'PLAIN_GALAXY'
+  | 'PLAIN_SMK';

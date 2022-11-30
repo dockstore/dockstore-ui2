@@ -21,9 +21,10 @@ import { FilesQuery } from '../../workflow/files/state/files.query';
 import { FilesService } from '../../workflow/files/state/files.service';
 import { AlertService } from '../alert/state/alert.service';
 import { ga4ghWorkflowIdPrefix } from '../constants';
+import { DescriptorTypeWithPlain } from '../descriptor-type-compat.service';
 import { FileService } from '../file.service';
 import { GA4GHFilesService } from '../ga4gh-files/ga4gh-files.service';
-import { EntriesService, GA4GHV20Service } from '../openapi';
+import { EntriesService, GA4GHV20Service, ToolVersion } from '../openapi';
 import { FileWrapper, Tag, ToolDescriptor, ToolFile, WorkflowVersion } from '../swagger';
 
 /**
@@ -160,7 +161,7 @@ export abstract class EntryFileSelector implements OnDestroy {
       this.gA4GHService
         .toolsIdVersionsVersionIdTypeDescriptorRelativePathGet(
           this.entryType === 'workflow' ? ga4ghWorkflowIdPrefix + this.entrypath : this.entrypath,
-          this.currentDescriptor,
+          <DescriptorTypeWithPlain>this.currentDescriptor,
           this._selectedVersion.name,
           this.currentFile.path
         )

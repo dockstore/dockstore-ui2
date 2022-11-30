@@ -16,7 +16,8 @@
 import { Injectable } from '@angular/core';
 import { transaction } from '@datorama/akita';
 import { FilesService } from '../../workflow/files/state/files.service';
-import { GA4GHV20Service } from '../openapi';
+import { GA4GHV20Service, ToolVersion } from '../openapi';
+import { ToolDescriptor } from '../swagger';
 import { GA4GHFilesStore } from './ga4gh-files.store';
 import { DescriptorLanguageService } from '../entry/descriptor-language.service';
 
@@ -52,7 +53,7 @@ export class GA4GHFilesService {
     }
     this.injectAuthorizationToken(this.ga4ghService);
     descriptorTypes.forEach((descriptorType) => {
-      this.ga4ghService.toolsIdVersionsVersionIdTypeFilesGet(id, descriptorType, version).subscribe(
+      this.ga4ghService.toolsIdVersionsVersionIdTypeFilesGet(id, <ToolVersion.DescriptorTypeEnum>descriptorType, version).subscribe(
         (files) => {
           this.ga4ghFilesStore.setError(null);
           this.ga4ghFilesStore.upsert(descriptorType, { toolFiles: files });
