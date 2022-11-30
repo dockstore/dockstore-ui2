@@ -73,6 +73,7 @@ export class TwitterService {
       .createTimeline({ sourceType: 'url', url: 'https://twitter.com/dockstoreOrg' }, nativeElement, {
         theme: 'light',
         tweetLimit: tweetLimit,
+        width: '100%',
       })
       .then((embed) => {
         // console.log(embed);
