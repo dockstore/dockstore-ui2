@@ -928,6 +928,12 @@ app-workflow-sidebar-accordion
   background: mat.get-color-from-palette($dockstore-app-gray, lighter);
 }
 
+.preview-bubble {
+  color: white !important;
+  background-color: mat.get-color-from-palette($kim-primary, 3);
+  margin: 0 1.25rem;
+}
+
 // Remove any default link styling from a bubble, and ensure the font-weight is correct.
 a.bubble,
 a.bubble:hover,
