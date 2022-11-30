@@ -19,7 +19,6 @@ import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { NgxJsonLdModule } from '@ngx-lite/json-ld';
 
 import { ShareButtonsModule } from 'ngx-sharebuttons/buttons';
 import { ShareIconsModule } from 'ngx-sharebuttons/icons';
@@ -30,6 +29,7 @@ import { CodeEditorListComponent } from '../code-editor-list/code-editor-list.co
 import { CodeEditorComponent } from '../code-editor/code-editor.component';
 import { EntryActionsService } from '../entry-actions/entry-actions.service';
 import { PublicFileDownloadPipe } from '../entry/public-file-download.pipe';
+import { JsonLdModule } from '../modules/json-ld.module';
 import { CustomMaterialModule } from '../modules/material.module';
 import { SnackbarModule } from '../modules/snackbar.module';
 import { CommitUrlPipe } from './commit-url.pipe';
@@ -50,7 +50,7 @@ import { VersionProviderUrlPipe } from './versionProviderUrl.pipe';
     FormsModule,
     CustomMaterialModule,
     FlexLayoutModule,
-    NgxJsonLdModule,
+    JsonLdModule,
     ClipboardModule,
     RouterModule,
     ReactiveFormsModule,
@@ -84,7 +84,7 @@ import { VersionProviderUrlPipe } from './versionProviderUrl.pipe';
     VerifiedPlatformsPipe,
     VersionProviderUrlPipe,
     PublicFileDownloadPipe,
-    NgxJsonLdModule,
+    JsonLdModule,
     RefreshAlertModule,
     ShareButtonsModule,
     ShareIconsModule,
