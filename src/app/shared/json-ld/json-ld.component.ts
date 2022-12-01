@@ -65,6 +65,6 @@ export class JsonLdComponent {
   getSafeHTML(value: {}) {
     const json = value ? JSON.stringify(value, null, 2).replace(/<\/script>/g, '<\\/script>') : '';
     const html = `<script type="application/ld+json">${json}</script>`;
-    return this.sanitizer.bypassSecurityTrustHtml(html);
+    return this.sanitizer.bypassSecurityTrustHtml(html); // NOSONAR -- two lines up ensures its safe. The spec file has a test to confirm
   }
 }

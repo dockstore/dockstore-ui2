@@ -50,9 +50,9 @@ import { JsonLdComponent } from './json-ld.component';
  */
 
 const testSchema = {
-  '@context': 'http://schema.org',
+  '@context': 'https://schema.org',
   '@type': 'Organization',
-  url: 'http://www.example.com',
+  url: 'https://www.example.com',
   name: 'Unlimited Ball Bearings Corp.',
   contactPoint: {
     '@type': 'ContactPoint',
@@ -87,7 +87,7 @@ describe('JsonLdComponent', () => {
   it('should create schema in the template', () => {
     component.json = testSchema;
     fixture.detectChanges();
-    expect(fixture.nativeElement.innerHTML).toContain('http://schema.org');
+    expect(fixture.nativeElement.innerHTML).toContain('https://schema.org');
   });
 
   it('should update schema in template', () => {
