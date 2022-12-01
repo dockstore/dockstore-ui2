@@ -22,6 +22,7 @@
         <span class="bubble workflow-background" *ngIf="entryType === entryTypeEnum.WORKFLOW">{{ totalEntries }}</span>
         <span class="bubble container-background" *ngIf="entryType === entryTypeEnum.TOOL">{{ totalEntries }}</span>
         <span class="bubble service-background" *ngIf="entryType === entryTypeEnum.SERVICE">{{ totalEntries }}</span>
+        <span class="bubble preview-bubble" *ngIf="entryType === entryTypeEnum.SERVICE">PREVIEW</span>
       </mat-card-header>
     </div>
     <button
