@@ -41,7 +41,7 @@
  *
  */
 
-import { Component, HostBinding, Input, ChangeDetectionStrategy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding, Input } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 /**
@@ -52,6 +52,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 @Component({
   selector: 'app-json-ld',
   template: '',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class JsonLdComponent {
   @Input()
