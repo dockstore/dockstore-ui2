@@ -47,20 +47,20 @@ describe('FileService', () => {
     const descriptorType = ToolDescriptor.TypeEnum.CWL;
     const entryType = 'tool';
     const url = fileService.getDescriptorPath('quay.io/org/repo', tag, sourceFile, descriptorType, entryType);
-    expect(url).toEqual(Dockstore.API_URI + ga4ghPath + '/tools/quay.io%2Forg%2Frepo/versions/sampleName/PLAIN-CWL/descriptor/%2Fcwl.json');
+    expect(url).toEqual(Dockstore.API_URI + ga4ghPath + '/tools/quay.io%2Forg%2Frepo/versions/sampleName/PLAIN_CWL/descriptor/%2Fcwl.json');
   }));
 
   it('should get downloadFilePath', inject([FileService], (fileService: FileService) => {
     const id = '#workflow/github.com/HumanCellAtlas/skylab/HCA_SmartSeq2';
     const versionId = 'dockstore';
-    const type = 'PLAIN-WDL';
+    const type = 'PLAIN_WDL';
     const relativePath = 'HISAT2.wdl';
     const downloadFilePath = fileService.getDownloadFilePath(id, versionId, type, relativePath);
     expect(downloadFilePath).toEqual(
       Dockstore.API_URI +
         ga4ghPath +
         // eslint-disable-next-line max-len
-        '/tools/%23workflow%2Fgithub.com%2FHumanCellAtlas%2Fskylab%2FHCA_SmartSeq2/versions/dockstore/PLAIN-WDL/descriptor/HISAT2.wdl'
+        '/tools/%23workflow%2Fgithub.com%2FHumanCellAtlas%2Fskylab%2FHCA_SmartSeq2/versions/dockstore/PLAIN_WDL/descriptor/HISAT2.wdl'
     );
   }));
 

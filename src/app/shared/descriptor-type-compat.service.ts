@@ -75,7 +75,7 @@ export class DescriptorTypeCompatService {
   }
 
   /**
-   * Converts the ToolDescriptor.TypeEnum to ToolVersion.DescriptorLanguageEnum
+   * Converts the ToolDescriptor.TypeEnum to ToolVersion.DescriptorTypeEnum
    */
   public toolDescriptorTypeEnumToToolVersionDescriptorTypeEnum(typeEnum: ToolDescriptor.TypeEnum): ToolVersion.DescriptorTypeEnum | null {
     // Special case for Galaxy because TRS uses 'GALAXY' and not 'GXFORMAT2'
