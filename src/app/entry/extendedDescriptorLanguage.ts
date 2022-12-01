@@ -2,7 +2,7 @@ import { extendedGalaxy } from 'app/descriptor-languages/Galaxy';
 import { extendedNFL } from 'app/descriptor-languages/Nextflow';
 import { extendedService } from 'app/descriptor-languages/Service';
 import { extendedWDL } from 'app/descriptor-languages/WDL';
-import { DescriptorLanguageBean, SourceFile, ToolDescriptor, ToolVersion, Workflow } from 'app/shared/swagger';
+import { DescriptorLanguageBean, SourceFile, ToolDescriptor, Workflow } from 'app/shared/swagger';
 import { extendedCWL } from '../descriptor-languages/CWL';
 import { extendedSMK } from '../descriptor-languages/Snakemake';
 
@@ -72,4 +72,4 @@ export const extendedDescriptorLanguages: ExtendedDescriptorLanguageBean[] = [
 
 export type DescriptorLanguageEnum = 'SMK' | 'CWL' | 'WDL' | 'GXFORMAT2' | 'SWL' | 'NEXTFLOW' | 'SERVICE';
 
-export type PlainTRSDescriptorLanguageEnum = 'PLAIN_CWL' | 'PLAIN_WDL' | 'PLAIN_NFL' | 'PLAIN_GALAXY' | 'PLAIN_SMK';
+export type PlainTRSDescriptorLanguageEnum = 'PLAIN_SMK' | 'PLAIN_CWL' | 'PLAIN_WDL' | 'PLAIN_GALAXY' | 'PLAIN_NFL';
