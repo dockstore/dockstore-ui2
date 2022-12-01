@@ -54,6 +54,7 @@ export class RequestsComponent extends Base implements OnInit {
   public myOrganizationInvites$: Observable<Array<OrganizationUser>>;
   public myPendingOrganizationRequests$: Observable<Array<OrganizationUser>>;
   public myRejectedOrganizationRequests$: Observable<Array<OrganizationUser>>;
+  public OrganizationUser = OrganizationUser;
   isLoading$: Observable<boolean>;
   isAdmin$: Observable<boolean>;
   isCurator$: Observable<boolean>;

@@ -55,10 +55,10 @@ export class RequestsComponent extends Base implements OnInit {
   getMyMemberships(): void {
     this.usersService.getUserMemberships().subscribe(
       (myMemberships: Array<OrganizationUser>) => {
-        this.myOrganizationInvites = myMemberships.filter((membership) => !membership.accepted);
+        this.myOrganizationInvites = myMemberships.filter((membership) => membership.status === OrganizationUser.StatusEnum.PENDING);
         this.myOrganizationRequests = myMemberships.filter(
           (membership) =>
-            membership.accepted &&
+            membership.status === OrganizationUser.StatusEnum.ACCEPTED &&
             (membership.organization.status === Organization.StatusEnum.PENDING ||
               membership.organization.status === Organization.StatusEnum.REJECTED)
         );

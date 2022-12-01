@@ -193,7 +193,7 @@ export class InfoTabComponent extends Base implements OnInit, OnChanges {
   getTRSLink(path: string, versionName: string, descriptorType: ToolDescriptor.TypeEnum, relativePath: string): string {
     return (
       `${Dockstore.API_URI}${ga4ghPath}/tools/${encodeURIComponent(path)}` +
-      `/versions/${encodeURIComponent(versionName)}/plain-` +
+      `/versions/${encodeURIComponent(versionName)}/PLAIN_` +
       descriptorType +
       `/descriptor/` +
       relativePath

@@ -25,7 +25,7 @@ export interface ExtendedDescriptorLanguageBean extends DescriptorLanguageBean {
   toolDescriptorEnum: ToolDescriptor.TypeEnum;
   workflowDescriptorEnum: Workflow.DescriptorTypeEnum;
   languageDocumentationURL: string;
-  plainTRS: string;
+  plainTRS: PlainTRSDescriptorLanguageEnum;
   descriptorFileTypes: SourceFile.TypeEnum[];
   toolTab: {
     // Example: If rowIdentifier is "tool ID", then the the first column of each row will say something like "tool ID: hello-world"
@@ -71,3 +71,5 @@ export const extendedDescriptorLanguages: ExtendedDescriptorLanguageBean[] = [
 ];
 
 export type DescriptorLanguageEnum = 'SMK' | 'CWL' | 'WDL' | 'GXFORMAT2' | 'SWL' | 'NEXTFLOW' | 'SERVICE';
+
+export type PlainTRSDescriptorLanguageEnum = 'PLAIN_SMK' | 'PLAIN_CWL' | 'PLAIN_WDL' | 'PLAIN_GALAXY' | 'PLAIN_NFL';

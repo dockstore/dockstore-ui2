@@ -19,6 +19,7 @@ import { FilesService } from '../../workflow/files/state/files.service';
 import { GA4GHV20Service } from '../openapi';
 import { GA4GHFilesStore } from './ga4gh-files.store';
 import { DescriptorLanguageService } from '../entry/descriptor-language.service';
+import { DescriptorTypeCompatService } from '../descriptor-type-compat.service';
 
 @Injectable({
   providedIn: 'root',
@@ -28,7 +29,8 @@ export class GA4GHFilesService {
     private ga4ghFilesStore: GA4GHFilesStore,
     private ga4ghService: GA4GHV20Service,
     private filesService: FilesService,
-    private descriptorLanguageService: DescriptorLanguageService
+    private descriptorLanguageService: DescriptorLanguageService,
+    private descriptorTypeCompatService: DescriptorTypeCompatService
   ) {}
 
   /**
@@ -52,7 +54,10 @@ export class GA4GHFilesService {
     }
     this.injectAuthorizationToken(this.ga4ghService);
     descriptorTypes.forEach((descriptorType) => {
-      this.ga4ghService.toolsIdVersionsVersionIdTypeFilesGet(descriptorType, id, version).subscribe(
+      const type = this.descriptorTypeCompatService.toolDescriptorTypeEnumToToolVersionDescriptorTypeEnum(
+        this.descriptorTypeCompatService.stringToDescriptorType(descriptorType)
+      );
+      this.ga4ghService.toolsIdVersionsVersionIdTypeFilesGet(id, type, version).subscribe(
         (files) => {
           this.ga4ghFilesStore.setError(null);
           this.ga4ghFilesStore.upsert(descriptorType, { toolFiles: files });

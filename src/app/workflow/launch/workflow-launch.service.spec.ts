@@ -48,7 +48,7 @@ describe('WorkflowLaunchService', () => {
     expect(service.getCwlString('a/b', 'c', '%2Fpotato')).toContain('cwl-runner');
     expect(service.getCwlString('a/b', 'c', '%2Fpotato')).not.toContain('non-strict');
     expect(service.getCwlString('a/b', 'c', '%2Fpotato')).toContain(
-      ga4ghPath + '/tools/%23workflow%2Fa%2Fb/versions/c/plain-CWL/descriptor/%2Fpotato Dockstore.json'
+      ga4ghPath + '/tools/%23workflow%2Fa%2Fb/versions/c/PLAIN_CWL/descriptor/%2Fpotato Dockstore.json'
     );
   }));
   it('should getConsonanceString', inject([WorkflowLaunchService], (service: WorkflowLaunchService) => {

@@ -53,7 +53,7 @@ export class ToolLaunchService extends LaunchService {
     return (
       'cwl-runner ' +
       `${Dockstore.API_URI}${ga4ghPath}/tools/${encodeURIComponent(path)}` +
-      `/versions/${encodeURIComponent(versionName)}/plain-CWL/descriptor/${mainDescriptor} Dockstore.json`
+      `/versions/${encodeURIComponent(versionName)}/PLAIN_CWL/descriptor/${mainDescriptor} Dockstore.json`
     );
   }
 

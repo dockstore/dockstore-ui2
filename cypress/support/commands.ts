@@ -63,7 +63,7 @@ export function resetDB() {
     cy.exec('java -jar dockstore-webservice.jar db drop-all --confirm-delete-everything test/web.yml');
     cy.exec(psqlInvocation + ' -h localhost webservice_test -U dockstore < test/db_dump.sql');
     cy.exec(
-      'java -jar dockstore-webservice.jar db migrate -i 1.5.0,1.6.0,1.7.0,1.8.0,1.9.0,1.10.0,alter_test_user_1.10.2,1.11.0,1.12.0,1.13.0 test/web.yml'
+      'java -jar dockstore-webservice.jar db migrate -i 1.5.0,1.6.0,1.7.0,1.8.0,1.9.0,1.10.0,alter_test_user_1.10.2,1.11.0,1.12.0,1.13.0,1.14.0 test/web.yml'
     );
   });
 }
@@ -108,8 +108,22 @@ export function invokeSql(sqlStatement: string) {
   cy.exec(psqlInvocation + ' -h localhost webservice_test -U dockstore -c "' + sqlStatement + '"');
 }
 
+export function createPotatoMembership() {
+  cy.get('#addUserToOrgButton').click();
+  typeInInput('Username', 'potato');
+  cy.get('mat-select').click();
+  cy.get('mat-option').contains('Member').click();
+  cy.get('.mat-select-panel').should('not.exist');
+  cy.get('#upsertUserDialogButton').should('be.visible').should('not.be.disabled').click();
+  cy.get('#upsertUserDialogButton').should('not.exist');
+}
+
 export function approvePotatoMembership() {
-  invokeSql('update organization_user set accepted=true where userid=2 and organizationid=1');
+  invokeSql("update organization_user set status='ACCEPTED' where userid=2 and organizationid=2");
+}
+
+export function rejectPotatoMembership() {
+  invokeSql("update organization_user set status='REJECTED' where userid=2 and organizationid=2");
 }
 
 export function approvePotatoOrganization() {
@@ -118,37 +132,12 @@ export function approvePotatoOrganization() {
 
 export function addOrganizationAdminUser(organization: string, user: string) {
   invokeSql(
-    "insert into organization_user (organizationid, userid, accepted, role) values ((select id from organization where name = '" +
+    "insert into organization_user (organizationid, userid, status, role) values ((select id from organization where name = '" +
       organization +
       "'), (select id from enduser where username = '" +
       user +
-      "'), true, 'ADMIN')"
+      "'), 'ACCEPTED', 'ADMIN')"
   );
-}
-
-export function createOrganization(name: string, displayName: string, topic: string, location: string, website: string, email: string) {
-  cy.contains('button', 'Create Organization Request').should('be.visible').click();
-  cy.contains('button', 'Next').should('be.visible').click();
-  typeInInput('Name', name);
-  typeInInput('Display Name', displayName);
-  typeInInput('Topic', topic);
-  typeInInput('Location', location);
-  typeInInput('Organization website', website);
-  typeInInput('Contact Email Address', email);
-  cy.get('[data-cy=create-or-update-organization-button]').should('be.visible').should('not.be.disabled').click();
-  cy.url().should('eq', Cypress.config().baseUrl + '/organizations/' + name);
-
-  cy.reload();
-}
-
-export function verifyGithubLinkNewDashboard(entryType: string) {
-  cy.visit('/dashboard?newDashboard');
-  cy.get('[data-cy=register-entry-btn]').contains(entryType).should('be.visible').click();
-  cy.get('[data-cy=storage-type-choice]').contains('GitHub').click();
-  cy.contains('button', 'Next').should('be.visible').click();
-  cy.contains('a', 'Manage Dockstore installations on GitHub')
-    .should('have.attr', 'href')
-    .and('include', 'https://github.com/apps/dockstore-testing-application');
 }
 
 export function createOrganization(name: string, displayName: string, topic: string, location: string, website: string, email: string) {

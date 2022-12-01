@@ -12,7 +12,7 @@ export const extendedWDL: ExtendedDescriptorLanguageBean = {
   toolDescriptorEnum: ToolDescriptor.TypeEnum.WDL,
   workflowDescriptorEnum: Workflow.DescriptorTypeEnum.WDL,
   languageDocumentationURL: 'https://openwdl.org/',
-  plainTRS: 'PLAIN-WDL',
+  plainTRS: 'PLAIN_WDL',
   descriptorFileTypes: [SourceFile.TypeEnum.DOCKSTOREWDL],
   toolTab: {
     rowIdentifier: 'task\xa0ID',

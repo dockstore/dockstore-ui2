@@ -218,7 +218,7 @@ export class InfoTabService {
   getTRSLink(path: string, versionName: string, descriptorType: string, descriptorPath: string, entryType: EntryType): string {
     return (
       `${Dockstore.API_URI}${ga4ghPath}/tools/${encodeURIComponent(this.getTRSIDFromPath(path, entryType))}` +
-      `/versions/${encodeURIComponent(versionName)}/plain-` +
+      `/versions/${encodeURIComponent(versionName)}/PLAIN_` +
       descriptorType.toUpperCase() +
       `/descriptor/` +
       descriptorPath

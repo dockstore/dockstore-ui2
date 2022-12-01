@@ -14,7 +14,12 @@
  *     limitations under the License.
  */
 import { Injectable } from '@angular/core';
-import { extendedDescriptorLanguages, extendedUnknownDescriptor } from 'app/entry/extendedDescriptorLanguage';
+import {
+  extendedDescriptorLanguages,
+  extendedUnknownDescriptor,
+  PlainTRSDescriptorLanguageEnum,
+} from 'app/entry/extendedDescriptorLanguage';
+import { ToolVersion } from './openapi';
 import { ToolDescriptor, Workflow } from './swagger';
 
 /**
@@ -56,10 +61,10 @@ export class DescriptorTypeCompatService {
    * Converts the ToolDescriptor.TypeEnum to the plain text type
    *
    * @param {ToolDescriptor.TypeEnum} typeEnum  The ToolDescriptor.TypeEnum to convert
-   * @returns {string}  Plain type that the TRS accepts
+   * @returns {PlainTRSDescriptorLanguageEnum}  Plain type that the TRS accepts
    * @memberof DescriptorTypeCompatService
    */
-  public toolDescriptorTypeEnumToPlainTRS(typeEnum: ToolDescriptor.TypeEnum): string | null {
+  public toolDescriptorTypeEnumToPlainTRS(typeEnum: ToolDescriptor.TypeEnum): PlainTRSDescriptorLanguageEnum | null {
     const foundExtendedDescriptorLanguage = extendedDescriptorLanguages.find(
       (extendedDescriptorLanguage) => extendedDescriptorLanguage.toolDescriptorEnum === typeEnum
     );
@@ -68,4 +73,34 @@ export class DescriptorTypeCompatService {
     }
     return extendedUnknownDescriptor.plainTRS;
   }
+
+  /**
+   * Converts the ToolDescriptor.TypeEnum to ToolVersion.DescriptorTypeEnum
+   */
+  public toolDescriptorTypeEnumToToolVersionDescriptorTypeEnum(typeEnum: ToolDescriptor.TypeEnum): ToolVersion.DescriptorTypeEnum | null {
+    // Special case for Galaxy because TRS uses 'GALAXY' and not 'GXFORMAT2'
+    if (typeEnum === ToolDescriptor.TypeEnum.GXFORMAT2) {
+      return ToolVersion.DescriptorTypeEnum.GALAXY;
+    }
+    const foundExtendedDescriptorLanguage = extendedDescriptorLanguages.find(
+      (extendedDescriptorLanguage) => extendedDescriptorLanguage.toolDescriptorEnum === typeEnum
+    );
+    if (foundExtendedDescriptorLanguage) {
+      // Cast to ToolVersion.DescriptorTypeEnum because for other languages, the ToolDescriptor.TypeEnum value is the same as ToolVersion.DescriptorTypeEnum
+      return <ToolVersion.DescriptorTypeEnum>foundExtendedDescriptorLanguage.toolDescriptorEnum;
+    }
+    return <ToolVersion.DescriptorTypeEnum>extendedUnknownDescriptor.toolDescriptorEnum;
+  }
 }
+
+export type DescriptorTypeWithPlain =
+  | 'CWL'
+  | 'WDL'
+  | 'NFL'
+  | 'GALAXY'
+  | 'SMK'
+  | 'PLAIN_CWL'
+  | 'PLAIN_WDL'
+  | 'PLAIN_NFL'
+  | 'PLAIN_GALAXY'
+  | 'PLAIN_SMK';

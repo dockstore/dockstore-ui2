@@ -60,7 +60,7 @@ export class WorkflowLaunchService extends LaunchService {
     const id = encodeURIComponent(ga4ghWorkflowIdPrefix + path);
     return (
       `cwl-runner ${Dockstore.API_URI}${ga4ghPath}/tools/${id}` +
-      `/versions/${encodeURIComponent(versionName)}/plain-CWL/descriptor/${mainDescriptor} Dockstore.json`
+      `/versions/${encodeURIComponent(versionName)}/PLAIN_CWL/descriptor/${mainDescriptor} Dockstore.json`
     );
   }
 

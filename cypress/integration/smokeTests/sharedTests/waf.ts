@@ -73,7 +73,7 @@ describe('Test AWS Managed Common Rule Set', () => {
   // clients shouldn't read or run. Example patterns include extensions like .log and .ini.
   it('Try a URL that would break if RestrictedExtensions_URIPATH were turned on', () => {
     const longUrl =
-      '/api/ga4gh/trs/v2/tools/%23workflow%2Fgithub.com%2Fnf-core%2Fhlatyping/versions/1.1.2/plain-NFL/descriptor//nextflow.config';
+      '/api/ga4gh/trs/v2/tools/%23workflow%2Fgithub.com%2Fnf-core%2Fhlatyping/versions/1.1.2/PLAIN_NFL/descriptor//nextflow.config';
     cy.request(longUrl).its('body').should('include', 'nfcore/hlatyping:1.1.2');
   });
   // RestrictedExtensions_QUERYARGUMENTS 	Inspects requests whose query arguments are system file extensions
