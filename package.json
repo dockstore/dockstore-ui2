@@ -60,7 +60,6 @@
     "@fortawesome/free-brands-svg-icons": "^6.0.0",
     "@fortawesome/free-solid-svg-icons": "^6.0.0",
     "@ngneat/forms-manager": "^2.3.0",
-    "@ngx-lite/json-ld": "^0.6.4",
     "academicons": "^1.8.6",
     "ace-builds": "^1.4.12",
     "angular-tag-cloud-module": "^6.0.0",

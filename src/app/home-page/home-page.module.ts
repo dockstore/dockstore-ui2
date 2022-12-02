@@ -5,7 +5,6 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { NgxJsonLdModule } from '@ngx-lite/json-ld';
 import { HomeLoggedInComponent } from 'app/home-page/home-logged-in/home-logged-in.component';
 import { HomeComponent } from 'app/home-page/home-logged-out/home.component';
 import { ListContainersModule } from 'app/shared/modules/list-containers.module';
@@ -15,7 +14,7 @@ import { MarkdownModule } from 'ngx-markdown';
 import { RefreshWizardModule } from '../container/refresh-wizard.module';
 import { RefreshAlertModule } from '../shared/alert/alert.module';
 import { CategoryButtonModule } from '../categories/button/category-button.module';
-import { HomePageComponent } from './home-page.component';
+import { JsonLdModule } from '../shared/modules/json-ld.module';
 import { RecentEventsModule } from './recent-events/recent-events.module';
 import { EntriesComponent } from './widget/entries/entries.component';
 import { FeaturedContentComponent } from './widget/featured-content/featured-content.component';
@@ -45,7 +44,6 @@ import { StarredBoxComponent } from './widget/starred-box/starred-box.component'
     CommonModule,
     CustomMaterialModule,
     FlexLayoutModule,
-    NgxJsonLdModule,
     RouterModule,
     ListWorkflowsModule,
     ListContainersModule,
@@ -55,12 +53,12 @@ import { StarredBoxComponent } from './widget/starred-box/starred-box.component'
     MarkdownModule,
     FontAwesomeModule,
     CategoryButtonModule,
+    JsonLdModule,
     MySidebarModule,
     RecentEventsModule,
     RefreshWizardModule,
   ],
   declarations: [
-    HomePageComponent,
     HomeComponent,
     HomeLoggedInComponent,
     RequestsComponent,
@@ -87,6 +85,5 @@ import { StarredBoxComponent } from './widget/starred-box/starred-box.component'
     RegisterToolService,
     RegisterWorkflowModalService,
   ],
-  exports: [NgxJsonLdModule],
 })
 export class HomePageModule {}

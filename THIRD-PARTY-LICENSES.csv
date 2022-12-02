@@ -181,7 +181,6 @@
 "@leichtgewicht/ip-codec@2.0.4","MIT","https://github.com/martinheidegger/ip-codec"
 "@ngneat/forms-manager@2.5.0","MIT",""
 "@ngtools/webpack@14.2.7","MIT","https://github.com/angular/angular-cli"
-"@ngx-lite/json-ld@0.6.4","MIT","https://github.com/coryrylan/ngx-json-ld"
 "@nodelib/fs.scandir@2.1.5","MIT","https://github.com/nodelib/nodelib/tree/master/packages/fs/fs.scandir"
 "@nodelib/fs.stat@2.0.5","MIT","https://github.com/nodelib/nodelib/tree/master/packages/fs/fs.stat"
 "@nodelib/fs.walk@1.2.8","MIT","https://github.com/nodelib/nodelib/tree/master/packages/fs/fs.walk"
