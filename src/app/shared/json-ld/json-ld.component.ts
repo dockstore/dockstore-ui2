@@ -45,8 +45,11 @@ import { ChangeDetectionStrategy, Component, HostBinding, Input } from '@angular
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 /**
- * This code was copied from https://github.com/coryrylan/ngx-lite and slightly modified, as that repo and its corresponding NPM releases
- * have not kept up with the latest Angular release.
+ * The following code was adapted from https://github.com/coryrylan/ngx-lite,
+ * as that repo and its corresponding NPM releases have not kept up with the latest Angular releases.
+ * The original code was licensed under the included MIT license, and we sublicense the derived code
+ * under the included Apache license.  The included MIT license does not apply to other source files,
+ * except where noted.
  */
 
 @Component({
