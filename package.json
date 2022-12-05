@@ -73,7 +73,7 @@
     "jquery": "^3.6.0",
     "material-design-icons-iconfont": "^6.1.0",
     "ng2-ui-auth": "^10.0.1",
-    "ngx-markdown": "^14.0.0",
+    "ngx-markdown": "^13.1.0",
     "ngx-sharebuttons": "^8.0.5",
     "rxjs": "^6.6.7",
     "ts-md5": "^1.2.8",
@@ -119,6 +119,11 @@
     "ng2-ui-auth": {
       "@angular/common": "~14.2.7",
       "@angular/core": "~14.2.7"
+    },
+    "ngx-markdown": {
+      "@angular/common": "~14.2.7",
+      "@angular/core": "~14.2.7",
+      "@angular/platform-browser": "~14.2.7"
     }
   }
 }
