@@ -21,7 +21,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { TagCloudModule } from 'angular-tag-cloud-module';
+import { TagCloudComponent } from 'angular-tag-cloud-module';
 
 import { RefreshAlertModule } from '../shared/alert/alert.module';
 import { HeaderModule } from '../shared/modules/header.module';
@@ -57,7 +57,6 @@ import { SearchService } from './state/search.service';
     MatAutocompleteModule,
     FormsModule,
     HeaderModule,
-    TagCloudModule,
     PipeModule,
     ClipboardModule,
     searchRouting,
@@ -67,6 +66,7 @@ import { SearchService } from './state/search.service';
     RefreshAlertModule,
     FlexLayoutModule,
     SnackbarModule,
+    TagCloudComponent,
   ],
   providers: [SearchService, QueryBuilderService],
   exports: [SearchComponent, IsAppToolPipe],
