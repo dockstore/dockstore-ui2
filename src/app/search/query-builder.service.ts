@@ -43,8 +43,7 @@ export class QueryBuilderService {
     return toolQuery;
   }
 
-  getSidebarQuery(
-    query_size: number,
+  getSidebarAggregationQuery(
     values: string,
     advancedSearchObject: AdvancedSearchObject,
     searchTerm: boolean,
@@ -54,7 +53,8 @@ export class QueryBuilderService {
     index: 'workflows' | 'tools'
   ): string {
     const count = this.getNumberOfFilters(filters);
-    let sidebarBody = bodybuilder().size(query_size);
+    // Size to 0 here because https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations.html#agg-caches
+    let sidebarBody = bodybuilder().size(0);
     sidebarBody = this.excludeContent(sidebarBody);
     sidebarBody = sidebarBody.query('match', '_index', index);
     sidebarBody = this.appendQuery(sidebarBody, values, advancedSearchObject, searchTerm);

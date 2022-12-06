@@ -434,8 +434,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     // The second query updates the result table
     const advancedSearchObject = this.advancedSearchQuery.getValue().advancedSearch;
     const values = this.advancedSearchQuery.getValue().searchText;
-    const sideBarQuery = this.queryBuilderService.getSidebarQuery(
-      this.query_size,
+    const sideBarQuery = this.queryBuilderService.getSidebarAggregationQuery(
       values,
       advancedSearchObject,
       this.searchTerm,
