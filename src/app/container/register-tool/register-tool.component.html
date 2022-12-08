@@ -52,10 +52,10 @@
     </mat-step>
     <mat-step>
       <ng-template matStepLabel>Create a tool</ng-template>
-      <div *ngIf="selectedOption?.value === 0">
+      <div *ngIf="selectedOption?.value === OptionChoice.QuayAuto">
         <app-refresh-wizard></app-refresh-wizard>
       </div>
-      <div *ngIf="selectedOption?.value === 3">
+      <div *ngIf="selectedOption?.value === OptionChoice.GitHubApps">
         <p>
           Navigate to GitHub to install our GitHub app on your repositories/organizations. See our
           <a
@@ -79,7 +79,7 @@
         </div>
       </div>
       <form
-        *ngIf="selectedOption?.value === 1"
+        *ngIf="selectedOption?.value === OptionChoice.Remote"
         #registerToolForm="ngForm"
         name="registerToolForm"
         class="form-horizontal"
@@ -372,7 +372,7 @@
         </div>
       </form>
       <form
-        *ngIf="selectedOption?.value === 2"
+        *ngIf="selectedOption?.value === OptionChoice.Hosted"
         #registerHostedToolForm="ngForm"
         name="registerHostedToolForm"
         class="form-horizontal"
