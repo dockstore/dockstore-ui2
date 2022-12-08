@@ -40,7 +40,7 @@ describe('GitHub App Tools', () => {
       // Registration
       cy.get('#register_tool_button').click();
       cy.contains('Register using GitHub Apps');
-      cy.get('#3-register-workflow-option').click();
+      cy.get('#GitHubApps-register-workflow-option').click();
       cy.contains('Install our GitHub App on your');
       cy.get('.modal-footer').contains('Next').first().click();
       cy.contains('Navigate to GitHub to install our GitHub app');
