@@ -22,3 +22,4 @@ Please make sure that you've checked the following before submitting your pull r
 - [ ] Do due diligence on new 3rd party libraries, checking for CVEs
 - [ ] Don't allow user-uploaded images to be served from the Dockstore domain
 - [ ] If this PR is for a user-facing feature, create and link a documentation ticket for this feature (usually in the same milestone as the linked issue). Style points if you create a documentation PR directly and link that instead.
+- [ ] Check whether this PR disables tests. If it legitimately needs to disable a test, create a new ticket to re-enable it in a specific milestone. 
