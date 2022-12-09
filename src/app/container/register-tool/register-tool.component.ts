@@ -32,6 +32,13 @@ interface HostedTool {
   entryName?: string;
 }
 
+enum OptionChoice {
+  GitHubApps,
+  Hosted,
+  QuayAuto,
+  Remote,
+}
+
 @Component({
   selector: 'app-register-tool',
   templateUrl: './register-tool.component.html',
@@ -56,31 +63,37 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked, OnDestro
     registryProvider: 'Quay.io',
     entryName: undefined,
   };
+
+  public get OptionChoice() {
+    return OptionChoice;
+  }
+
   public options = [
     {
-      label: 'Quickly register Quay.io tools',
-      extendedLabel: 'Select repositories from Quay.io to quickly create tools on Dockstore.',
-      value: 0,
-    },
-    {
-      label: 'Create tool with descriptor(s) on remote sites',
+      label: 'Register using GitHub Apps (Recommended)',
       extendedLabel:
-        'Manually add individual tools with descriptor(s) from sites like GitHub, BitBucket, and GitLab. Docker images are stored on sites like Quay.io and DockerHub.',
-      value: 1,
+        'Install our GitHub App on your repository/organization to automatically sync tools with GitHub. Allows you to register a tool descriptor without linking to a Docker image you own.',
+      value: OptionChoice.GitHubApps,
     },
     {
       label: 'Create tool with descriptor(s) on Dockstore.org',
       extendedLabel:
         'Manually add individual tools with descriptor(s) stored on Dockstore.org. Docker images are stored on sites like Quay.io and DockerHub.',
-      value: 2,
+      value: OptionChoice.Hosted,
     },
     {
-      label: 'Register using GitHub Apps',
+      label: 'Quickly register Quay.io tools',
+      extendedLabel: 'Select repositories from Quay.io to quickly create tools on Dockstore.',
+      value: OptionChoice.QuayAuto,
+    },
+    {
+      label: 'Create tool with descriptor(s) on remote sites',
       extendedLabel:
-        'Install our GitHub App on your repository/organization to automatically sync tools with GitHub. Allows you to register a tool descriptor without linking to a Docker image you own.',
-      value: 3,
+        'Manually add individual tools with descriptor(s) from sites like GitHub, BitBucket, and GitLab. Docker images are stored on sites like Quay.io and DockerHub.',
+      value: OptionChoice.Remote,
     },
   ];
+
   public selectedOption = this.options[0];
   private ngUnsubscribe: Subject<{}> = new Subject();
   Dockstore = Dockstore;
