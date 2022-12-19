@@ -83,9 +83,9 @@ function registerQuayTool(repo: string, name: string) {
     // click thru the steps of registering a tool
     cy.wait(hardcodedWaitTime); // The page loads asynchronously, and causes a detached DOM to be grabbed by Cypress. This is a 'fix'.
     cy.get('#register_tool_button').should('be.visible').click();
-    cy.wait('@orgs');
     cy.get('mat-dialog-content').within(() => {
       cy.contains('mat-radio-button', 'Quickly register Quay.io tools').click();
+      cy.wait('@orgs');
       cy.contains('button', 'Next').should('be.visible').click();
       cy.contains('mat-form-field', 'Select namespace').should('be.visible').click();
     });
