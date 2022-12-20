@@ -86,7 +86,7 @@ describe('Dockstore Workflow Details', () => {
     });
 
     it('Should have either a primary bubble or home icon', () => {
-      cy.contains('[data-cy=primary-descriptor-bubble]') || cy.contains('[data-cy=go-to-primary-icon]');
+      cy.get('[data-cy=primary-descriptor-bubble]').should('be.visible') || cy.get('[data-cy=go-to-primary-icon]').should('be.visible');
     });
 
     describe('Change tab to Test Parameters', () => {
