@@ -90,7 +90,7 @@ describe('Dockstore Workflow Details', () => {
         cy.get('[data-cy=go-to-primary-icon]').should('not.exist');
       } else {
         cy.get('[data-cy=primary-descriptor-bubble]').should('not.be.visible');
-        cy.get('[data-cy=go-to-primary-icon]').should('not.exist');
+        cy.get('[data-cy=go-to-primary-icon]').should('be.visible');
       }
     });
 
