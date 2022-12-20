@@ -44,10 +44,8 @@ describe('Dockstore Organizations', () => {
   describe('Should need to link two external accounts', () => {
     beforeEach(() => {
       const userTokens: Array<TokenUser> = [{ tokenSource: TokenSource.DOCKSTORE, id: 1, username: 'user_A' }];
-      cy.server().route({
-        method: 'GET',
-        url: '*/users/1/tokens',
-        response: userTokens,
+      cy.intercept('GET', '*/users/1/tokens', {
+        body: userTokens,
       });
     });
 
@@ -218,10 +216,8 @@ describe('Dockstore Organizations', () => {
           organization: { id: 2, status: 'APPROVED', name: 'Potatoe', displayName: 'Potatoe' },
         },
       ];
-      cy.server().route({
-        method: 'GET',
-        url: '*/users/user/memberships',
-        response: memberships,
+      cy.intercept('GET', '*/users/user/memberships', {
+        body: memberships,
       });
     });
 

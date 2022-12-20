@@ -398,22 +398,15 @@ describe('Dockstore my workflows', () => {
         path: 'foobar/doesNotExist',
       };
 
-      cy.server()
-        .route({
-          method: 'GET',
-          url: 'api/users/registries',
-          response: ['github.com', 'bitbucket.org'],
-        })
-        .route({
-          method: 'GET',
-          url: 'api/users/registries/github.com/organizations',
-          response: ['foobar', 'lorem'],
-        })
-        .route({
-          method: 'GET',
-          url: 'api/users/registries/github.com/organizations/foobar',
-          response: [canDeleteMe, cannotDeleteMe, doesNotExist],
-        });
+      cy.intercept('GET', 'api/users/registries', {
+        body: ['github.com', 'bitbucket.org'],
+      });
+      cy.intercept('GET', 'api/users/registries/github.com/organizations', {
+        body: ['foobar', 'lorem'],
+      });
+      cy.intercept('GET', 'api/users/registries/github.com/organizations/foobar', {
+        body: [canDeleteMe, cannotDeleteMe, doesNotExist],
+      });
 
       cy.visit('/my-workflows');
       cy.get('#registerWorkflowButton').should('be.visible').should('be.enabled').click();
