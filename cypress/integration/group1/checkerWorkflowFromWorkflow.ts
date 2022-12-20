@@ -49,10 +49,8 @@ describe('Checker workflow test from my-workflows', () => {
       cy.get('#checkerWorkflowPath').type('/Dockstore.cwl');
       cy.get('#checkerWorkflowTestParameterFilePath').type('/test.json');
       cy.fixture('refreshedChecker').then((json) => {
-        cy.intercept({
-          method: 'GET',
-          url: '/api/workflows/*/refresh',
-          response: json,
+        cy.intercept('GET', '/api/workflows/*/refresh', {
+          body: json,
         });
         cy.get('#submitButton').click();
       });

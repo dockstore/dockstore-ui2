@@ -170,11 +170,9 @@ describe('Dockstore Tool Details of quay.io/A2/b3', () => {
 
 describe('Find tool by alias', () => {
   it('tool alias', () => {
-    cy.intercept({
-      url: '*/containers/fakeAlias/aliases',
-      method: 'GET',
-      status: 200,
-      response: { tool_path: 'quay.io/A2/b3' },
+    cy.intercept('GET', '*/containers/fakeAlias/aliases', {
+      body: { tool_path: 'quay.io/A2/b3' },
+      statusCode: 200,
     });
     cy.visit('/aliases/tools/fakeAlias');
     cy.url().should('eq', Cypress.config().baseUrl + '/containers/quay.io/A2/b3:latest?tab=info');

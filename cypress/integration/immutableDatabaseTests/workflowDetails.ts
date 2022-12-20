@@ -118,11 +118,9 @@ describe('Dockstore Workflow Details', () => {
 
 describe('Find workflow by alias', () => {
   it('workflow alias', () => {
-    cy.intercept({
-      url: '*/workflows/fakeAlias/aliases',
-      method: 'GET',
-      status: 200,
-      response: { full_workflow_path: 'github.com/A/l' },
+    cy.intercept('GET', '*/workflows/fakeAlias/aliases', {
+      body: { full_workflow_path: 'github.com/A/l' },
+      statusCode: 200,
     });
     cy.visit('/aliases/workflows/fakeAlias');
     cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l');

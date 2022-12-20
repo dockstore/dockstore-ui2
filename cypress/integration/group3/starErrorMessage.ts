@@ -21,11 +21,9 @@ describe('Tool and workflow starring error messages', () => {
 
   function starringError(url: string, type: string, routePath: string, name: string) {
     cy.visit(url);
-    cy.intercept({
-      url: routePath,
-      method: 'PUT',
-      status: 400,
-      response: 'You cannot star the ' + type + ' ' + name + ' because you have not unstarred it.',
+    cy.intercept('PUT', routePath, {
+      body: 'You cannot star the ' + type + ' ' + name + ' because you have not unstarred it.',
+      statusCode: 400,
     });
 
     cy.get('#starringButtonIcon').click();
@@ -42,11 +40,9 @@ describe('Tool and workflow starring error messages', () => {
 
     cy.get('#starringButtonIcon').click();
 
-    cy.intercept({
-      url: routePath,
-      method: 'PUT',
-      status: 400,
-      response: 'You cannot unstar the ' + type + ' ' + name + ' because you have not starred it.',
+    cy.intercept('PUT', routePath, {
+      body: 'You cannot unstar the ' + type + ' ' + name + ' because you have not starred it.',
+      statusCode: 400,
     });
 
     cy.get('#unstarringButtonIcon').click();
@@ -61,11 +57,9 @@ describe('Tool and workflow starring error messages', () => {
   function starringServerError(url: string, routePath: string) {
     cy.visit(url);
 
-    cy.intercept({
-      url: routePath,
-      method: 'PUT',
-      status: 500,
-      response: {},
+    cy.intercept('PUT', routePath, {
+      body: {},
+      statusCode: 500,
     });
 
     cy.get('#starringButtonIcon').click();

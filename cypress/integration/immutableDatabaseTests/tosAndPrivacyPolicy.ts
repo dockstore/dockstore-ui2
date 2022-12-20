@@ -104,7 +104,6 @@ describe('TOS Banner', () => {
             avatarURL: undefined,
             bio: undefined,
             company: undefined,
-            email: undefined,
             location: undefined,
             name: '',
             username: 'user_A',
@@ -113,10 +112,8 @@ describe('TOS Banner', () => {
         username: 'user_A',
       };
 
-      cy.intercept({
-        method: 'GET',
-        url: '*/users/user',
-        response: outOfDateUser,
+      cy.intercept('GET', '*/users/user', {
+        body: outOfDateUser,
       });
 
       cy.visit('');

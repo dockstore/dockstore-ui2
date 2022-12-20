@@ -505,10 +505,8 @@ describe('Dockstore my tools', () => {
   });
   it('Should refresh individual repo when refreshing organization', () => {
     cy.fixture('refreshedTool5').then((json) => {
-      cy.intercept({
-        method: 'GET',
-        url: '/api/containers/5/refresh',
-        response: json,
+      cy.intercept('GET', '/api/containers/5/refresh', {
+        body: json,
       }).as('refreshEntry');
     });
     cy.visit('/my-tools/quay.io/A2/a');
@@ -549,10 +547,8 @@ describe('Should handle no tools correctly', () => {
   resetDB();
   setTokenUserViewPortCurator(); // Curator has no tools
   beforeEach(() => {
-    cy.intercept({
-      method: 'GET',
-      url: /github.com\/organizations/,
-      response: ['dockstore'],
+    cy.intercept('GET', /github.com\/organizations/, {
+      body: ['dockstore'],
     });
   });
   it('My tools should prompt to register a tool', () => {

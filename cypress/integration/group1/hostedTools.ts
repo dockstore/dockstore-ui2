@@ -22,10 +22,7 @@ describe('Dockstore hosted tools', () => {
   beforeEach(() => {
     cy.visit('/my-tools');
 
-    cy.intercept({
-      method: 'GET',
-      url: /containers\/.+\/zip\/.+/,
-    }).as('downloadZip');
+    cy.intercept('GET', /containers\/.+\/zip\/.+/).as('downloadZip');
   });
 
   function getTool() {

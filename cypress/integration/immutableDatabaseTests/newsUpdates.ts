@@ -21,10 +21,8 @@ describe('News and Updates Widget', () => {
 
   it('News and updates widget appears on logged-in homepage', () => {
     cy.fixture('newsUpdates.json').then((json) => {
-      cy.intercept({
-        method: 'GET',
-        url: '*/curation/notifications',
-        response: json,
+      cy.intercept('GET', '*/curation/notifications', {
+        body: json,
       });
     });
     cy.visit('/dashboard');

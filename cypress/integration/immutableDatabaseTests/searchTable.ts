@@ -22,11 +22,8 @@ describe('Dockstore tool/workflow search table', () => {
   // When elastic search is added to cypress testing, get rid of cy.intercepts, and uncomment the commented lines
   function starColumnSearch(url: string, type: string) {
     // Tools/worflows not starred in this response.
-    cy.intercept({
-      url: '*' + ga4ghExtendedPath + '/tools/entry/_search',
-      method: 'POST',
-      status: 200,
-      response: {
+    cy.intercept('POST', '*' + ga4ghExtendedPath + '/tools/entry/_search', {
+      body: {
         took: 18,
         timed_out: false,
         _shards: { total: 5, successful: 5, skipped: 0, failed: 0 },
@@ -348,10 +345,8 @@ describe('Dockstore tool/workflow search table', () => {
 
     // First tool and workflow starred
     cy.fixture('searchTableResponse').then((json) => {
-      cy.intercept({
-        url: '*' + ga4ghExtendedPath + '/tools/entry/_search',
-        method: 'POST',
-        response: json,
+      cy.intercept('POST', '*' + ga4ghExtendedPath + '/tools/entry/_search', {
+        body: json,
       });
     });
 
@@ -379,10 +374,8 @@ describe('search table items per page', () => {
   setTokenUserViewPort();
   beforeEach(() => {
     cy.fixture('searchTableResponse').then((json) => {
-      cy.intercept({
-        url: '*' + ga4ghExtendedPath + '/tools/entry/_search',
-        method: 'POST',
-        response: json,
+      cy.intercept('POST', '*' + ga4ghExtendedPath + '/tools/entry/_search', {
+        body: json,
       });
     });
   });
