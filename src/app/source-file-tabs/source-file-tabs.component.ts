@@ -12,6 +12,7 @@ import { SourceFileTabsService } from './source-file-tabs.service';
 
 import { WorkflowQuery } from '../shared/state/workflow.query';
 import { Observable } from 'rxjs';
+import { CodeEditorListService } from '../shared/code-editor-list/code-editor-list.service';
 
 @Component({
   selector: 'app-source-file-tabs',
@@ -23,7 +24,8 @@ export class SourceFileTabsComponent implements OnChanges {
     private fileService: FileService,
     private sourceFileTabsService: SourceFileTabsService,
     private matDialog: MatDialog,
-    private workflowQuery: WorkflowQuery
+    private workflowQuery: WorkflowQuery,
+    private codeEditorListService: CodeEditorListService
   ) {
     this.isPublished$ = this.workflowQuery.workflowIsPublished$;
   }
@@ -42,6 +44,8 @@ export class SourceFileTabsComponent implements OnChanges {
   relativePath: string;
   downloadFilePath: string;
   fileTabs: Map<string, SourceFile[]>;
+  primaryDescriptors: SourceFile[] | null;
+  isCurrentFilePrimary: boolean | null;
   protected isPublished$: Observable<boolean>;
   /**
    * To prevent the Angular's keyvalue pipe from sorting by key
@@ -74,6 +78,7 @@ export class SourceFileTabsComponent implements OnChanges {
           if (this.fileTabs.size > 0) {
             this.changeFileType(this.fileTabs.values().next().value);
           }
+          this.primaryDescriptors = sourceFiles.filter((sourceFile) => this.codeEditorListService.isPrimaryDescriptor(sourceFile.path));
         },
         () => {
           this.displayError = true;
@@ -107,6 +112,7 @@ export class SourceFileTabsComponent implements OnChanges {
       this.downloadFilePath = null;
     }
     this.currentFile = file;
+    this.isCurrentFilePrimary = this.isPrimaryDescriptor(this.currentFile.path);
   }
 
   matTabChange(event: MatTabChangeEvent) {
@@ -131,5 +137,9 @@ export class SourceFileTabsComponent implements OnChanges {
 
   downloadFileContent() {
     this.fileService.downloadFileContent(this.currentFile.content, this.fileName);
+  }
+
+  isPrimaryDescriptor(path: string): boolean {
+    return this.codeEditorListService.isPrimaryDescriptor(path);
   }
 }

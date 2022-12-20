@@ -1,0 +1,21 @@
+.file-copy-download-span {
+  display: flex;
+  flex-grow: 1;
+  flex-basis: 0;
+  justify-content: flex-end;
+}
+.select-file-button-span {
+  flex-grow: 1;
+  flex-basis: 0;
+}
+.dropdown-primary-button-span {
+  flex-grow: 1;
+  flex-basis: 0;
+}
+.go-to-primary-button {
+  margin: 0 1.25rem;
+}
+.primary-bubble-header {
+  font-size: 14px !important;
+  padding: 0 1rem !important;
+}
