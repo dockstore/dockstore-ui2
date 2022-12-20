@@ -170,8 +170,7 @@ describe('Dockstore Tool Details of quay.io/A2/b3', () => {
 
 describe('Find tool by alias', () => {
   it('tool alias', () => {
-    cy.server();
-    cy.route({
+    cy.intercept({
       url: '*/containers/fakeAlias/aliases',
       method: 'GET',
       status: 200,

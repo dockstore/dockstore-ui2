@@ -21,8 +21,7 @@ describe('Tool and workflow starring error messages', () => {
 
   function starringError(url: string, type: string, routePath: string, name: string) {
     cy.visit(url);
-    cy.server();
-    cy.route({
+    cy.intercept({
       url: routePath,
       method: 'PUT',
       status: 400,
@@ -43,8 +42,7 @@ describe('Tool and workflow starring error messages', () => {
 
     cy.get('#starringButtonIcon').click();
 
-    cy.server();
-    cy.route({
+    cy.intercept({
       url: routePath,
       method: 'PUT',
       status: 400,
@@ -62,9 +60,8 @@ describe('Tool and workflow starring error messages', () => {
 
   function starringServerError(url: string, routePath: string) {
     cy.visit(url);
-    cy.server();
 
-    cy.route({
+    cy.intercept({
       url: routePath,
       method: 'PUT',
       status: 500,

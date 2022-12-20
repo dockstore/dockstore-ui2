@@ -22,31 +22,27 @@ describe('Dockstore aliases', () => {
 
   describe('Find workflow version by alias', () => {
     it('workflow version alias', () => {
-      cy.server();
-      cy.route({
-        url: '*/aliases/workflow-versions/w11wv13alias',
-        method: 'GET',
-        status: 200,
-        response: { fullWorkflowPath: 'github.com/A/l', tagName: 'master' },
+      cy.intercept('GET', '*/aliases/workflow-versions/w11wv13alias', {
+        body: {
+          fullWorkflowPath: 'github.com/A/l',
+          tagName: 'master',
+        },
+        statusCode: 200,
       });
       cy.visit('/aliases/workflow-versions/w11wv13alias');
       cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=info');
     });
 
     it('invalid workflow version alias type', () => {
-      cy.server();
       cy.visit('/aliases/foobar/fakeAlias');
       cy.url().should('eq', Cypress.config().baseUrl + '/aliases/foobar/fakeAlias');
       cy.contains('foobar is not a valid type');
     });
 
     it('workflow version alias incorrect', () => {
-      cy.server();
-      cy.route({
-        url: '*/aliases/workflow-versions/incorrectAlias',
-        method: 'GET',
-        status: 404,
-        response: {},
+      cy.intercept('GET', '*/aliases/workflow-versions/incorrectAlias', {
+        body: {},
+        statusCode: 404,
       });
       cy.visit('/aliases/workflow-versions/incorrectAlias');
       cy.url().should('eq', Cypress.config().baseUrl + '/aliases/workflow-versions/incorrectAlias');

@@ -51,8 +51,7 @@ describe('GitHub App Tools', () => {
       cy.contains('Apps Logs').click();
       cy.contains('There were problems retrieving GitHub App logs for this organization.');
       cy.contains('Close').click();
-      cy.server();
-      cy.route({
+      cy.intercept({
         method: 'GET',
         url: '/api/lambdaEvents/**',
         response: [],
@@ -74,7 +73,7 @@ describe('GitHub App Tools', () => {
           type: 'PUSH',
         },
       ];
-      cy.route({
+      cy.intercept({
         method: 'GET',
         url: '/api/lambdaEvents/**',
         response: realResponse,

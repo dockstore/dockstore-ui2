@@ -20,9 +20,8 @@ describe('News and Updates Widget', () => {
   setTokenUserViewPort();
 
   it('News and updates widget appears on logged-in homepage', () => {
-    cy.server();
     cy.fixture('newsUpdates.json').then((json) => {
-      cy.route({
+      cy.intercept({
         method: 'GET',
         url: '*/curation/notifications',
         response: json,

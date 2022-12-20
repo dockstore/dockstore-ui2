@@ -37,7 +37,6 @@ describe('Checker workflow test from my-workflows', () => {
 
   describe('Should be able to register and publish a checker workflow from a workflow', () => {
     it('visit a tool and have the correct buttons and be able to register a checker workflow', () => {
-      cy.server();
       getWorkflow();
       cy.url().should('eq', Cypress.config().baseUrl + '/my-workflows/github.com/A/l');
       cy.get('#viewCheckerWorkflowButton').should('not.exist');
@@ -50,7 +49,7 @@ describe('Checker workflow test from my-workflows', () => {
       cy.get('#checkerWorkflowPath').type('/Dockstore.cwl');
       cy.get('#checkerWorkflowTestParameterFilePath').type('/test.json');
       cy.fixture('refreshedChecker').then((json) => {
-        cy.route({
+        cy.intercept({
           method: 'GET',
           url: '/api/workflows/*/refresh',
           response: json,

@@ -21,7 +21,6 @@ describe('Testing user with invalid username', () => {
             avatarURL: undefined,
             bio: undefined,
             company: undefined,
-            email: undefined,
             location: undefined,
             name: '',
             username: 'user_A',
@@ -32,16 +31,11 @@ describe('Testing user with invalid username', () => {
         canChangeUsername: true,
       };
 
-      cy.server();
-      cy.route({
-        method: 'GET',
-        url: '*/users/user',
-        response: invalidUsernameUser,
+      cy.intercept('GET', '*/users/user', {
+        body: invalidUsernameUser,
       });
-      cy.route({
-        method: 'GET',
-        url: '*/users/user/extended',
-        response: canChangeUsername,
+      cy.intercept('GET', '*/users/user/extended', {
+        body: canChangeUsername,
       });
 
       cy.visit('/');

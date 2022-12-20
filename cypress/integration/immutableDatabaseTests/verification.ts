@@ -8,9 +8,8 @@ describe('See verification information and logs', () => {
     cy.exec(
       `curl -X POST "${Dockstore.API_URI}${ga4ghExtendedPath}/quay.io%2Fgaryluu%2Fdockstore-cgpmap%2Fcgpmap-cramOut/versions/3.0.0-rc8/CWL/tests/..%2Fexamples%2Fcgpmap%2FcramOut%2Ffastq_gz_input.json?platform=Dockstore%20CLI&platform_version=1.6.0&verified=true&metadata=Potato" -H "accept: application/json" -H "Authorization: Bearer imamafakedockstoretoken2"`
     );
-    cy.server();
     cy.fixture('toolTesterLogs').then((json) => {
-      cy.route({
+      cy.intercept({
         url: `${Dockstore.API_URI}/toolTester/logs/**`,
         method: 'GET',
         response: json,

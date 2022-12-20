@@ -449,43 +449,33 @@ describe('Dockstore Organizations', () => {
 
   describe('Find organization and collection by alias', () => {
     it('organization alias', () => {
-      cy.server();
-      cy.route({
-        url: '*/organizations/fakeAlias/aliases',
-        method: 'GET',
-        status: 200,
-        response: { name: 'Potatoe' },
+      cy.intercept('GET', '*/organizations/fakeAlias/aliases', {
+        body: { name: 'Potatoe' },
+        statusCode: 200,
       });
       cy.visit('/aliases/organizations/fakeAlias');
       cy.url().should('eq', Cypress.config().baseUrl + '/organizations/Potatoe');
     });
 
     it('collection alias', () => {
-      cy.server();
-      cy.route({
-        url: '*/organizations/collections/fakeAlias/aliases',
-        method: 'GET',
-        status: 200,
-        response: { organizationName: 'Potatoe', name: 'veryFakeCollectionName' },
+      cy.intercept('GET', '*/organizations/collections/fakeAlias/aliases', {
+        body: { organizationName: 'Potatoe', name: 'veryFakeCollectionName' },
+        statusCode: 200,
       });
       cy.visit('/aliases/collections/fakeAlias');
       cy.url().should('eq', Cypress.config().baseUrl + '/organizations/Potatoe/collections/veryFakeCollectionName');
     });
 
     it('invalid alias type', () => {
-      cy.server();
       cy.visit('/aliases/foobar/fakeAlias');
       cy.url().should('eq', Cypress.config().baseUrl + '/aliases/foobar/fakeAlias');
       cy.contains('foobar is not a valid type');
     });
 
     it('organization alias incorrect', () => {
-      cy.server();
-      cy.route({
-        url: '*/organizations/incorrectAlias/aliases',
-        method: 'GET',
-        status: 404,
-        response: {},
+      cy.intercept('GET', '*/organizations/incorrectAlias/aliases', {
+        body: {},
+        statusCode: 404,
       });
       cy.visit('/aliases/organizations/incorrectAlias');
       cy.url().should('eq', Cypress.config().baseUrl + '/aliases/organizations/incorrectAlias');
@@ -493,12 +483,9 @@ describe('Dockstore Organizations', () => {
     });
 
     it('collection alias incorrect', () => {
-      cy.server();
-      cy.route({
-        url: '*/organizations/collections/incorrectAlias/aliases',
-        method: 'GET',
-        status: 404,
-        response: {},
+      cy.intercept('GET', '*/organizations/collections/incorrectAlias/aliases', {
+        body: {},
+        statusCode: 404,
       });
       cy.visit('/aliases/collections/incorrectAlias');
       cy.url().should('eq', Cypress.config().baseUrl + '/aliases/collections/incorrectAlias');

@@ -52,8 +52,7 @@ describe('Dockstore my tools', () => {
   describe('Should contain extended DockstoreTool properties', () => {
     it('visit another page then come back', () => {
       // The seemingly unnecessary visits are due to a detached-from-dom error even using cy.get().click();
-      cy.server();
-      cy.route('api/containers/*?include=validations').as('getTool');
+      cy.intercept('api/containers/*?include=validations').as('getTool');
       cy.get('a#home-nav-button').click();
       cy.get('[data-cy=dropdown-main]:visible').should('be.visible').click();
       cy.get('[data-cy=my-tools-nav-button]').click();
@@ -115,8 +114,7 @@ describe('Dockstore my tools', () => {
       cy.get('[data-cy=saveLabelButton]').should('not.exist');
     });
     it('add and remove test parameter file', () => {
-      cy.server();
-      cy.route('api/containers/*?include=validations').as('getTool');
+      cy.intercept('api/containers/*?include=validations').as('getTool');
       cy.wait('@getTool');
       selectUnpublishedTab('A2');
       selectTool('b1');
@@ -149,8 +147,7 @@ describe('Dockstore my tools', () => {
 
   describe('publish a tool', () => {
     it('publish and unpublish', () => {
-      cy.server();
-      cy.route('api/containers/*?include=validations').as('getTool');
+      cy.intercept('api/containers/*?include=validations').as('getTool');
       cy.wait('@getTool');
       selectUnpublishedTab('A2');
       selectTool('b1');
@@ -193,8 +190,7 @@ describe('Dockstore my tools', () => {
       cy.get('#publishToolButton').should('contain', 'Publish').click().should('contain', 'Unpublish').click().should('contain', 'Publish');
     });
     it('Be able to add tag with test parameter file', () => {
-      cy.server();
-      cy.route({
+      cy.intercept({
         method: 'PUT',
         url: 'api/containers/1/testParameterFiles?testParameterPaths=/test.json*',
       }).as('putTestParameterFile');
@@ -508,9 +504,8 @@ describe('Dockstore my tools', () => {
     });
   });
   it('Should refresh individual repo when refreshing organization', () => {
-    cy.server();
     cy.fixture('refreshedTool5').then((json) => {
-      cy.route({
+      cy.intercept({
         method: 'GET',
         url: '/api/containers/5/refresh',
         response: json,
@@ -554,8 +549,7 @@ describe('Should handle no tools correctly', () => {
   resetDB();
   setTokenUserViewPortCurator(); // Curator has no tools
   beforeEach(() => {
-    cy.server();
-    cy.route({
+    cy.intercept({
       method: 'GET',
       url: /github.com\/organizations/,
       response: ['dockstore'],

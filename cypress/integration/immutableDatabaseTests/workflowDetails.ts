@@ -118,8 +118,7 @@ describe('Dockstore Workflow Details', () => {
 
 describe('Find workflow by alias', () => {
   it('workflow alias', () => {
-    cy.server();
-    cy.route({
+    cy.intercept({
       url: '*/workflows/fakeAlias/aliases',
       method: 'GET',
       status: 200,

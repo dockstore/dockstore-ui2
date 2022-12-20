@@ -34,9 +34,8 @@ describe('Dockstore my workflows', () => {
   });
 
   it('have action buttons which work', () => {
-    cy.server();
     cy.fixture('myWorkflows.json').then((json) => {
-      cy.route({
+      cy.intercept({
         url: '/api/users/1/workflows',
         method: 'PATCH',
         status: 200,
@@ -63,8 +62,7 @@ describe('Dockstore my workflows', () => {
       cy.contains('Apps Logs').click();
       cy.contains('There were problems retrieving GitHub App logs for this organization.');
       cy.contains('Close').click();
-      cy.server();
-      cy.route({
+      cy.intercept({
         method: 'GET',
         url: '/api/lambdaEvents/**',
         response: [],
@@ -96,7 +94,7 @@ describe('Dockstore my workflows', () => {
           type: 'PUSH',
         },
       ];
-      cy.route({
+      cy.intercept({
         method: 'GET',
         url: '/api/lambdaEvents/**',
         response: realResponse,
@@ -260,10 +258,9 @@ describe('Dockstore my workflows', () => {
     });
 
     it('Should be able to request DOI and then export to ORCID', () => {
-      cy.server();
       // tokens.json indicates a Zenodo token and an ORCID token
       cy.fixture('tokens.json').then((json) => {
-        cy.route({
+        cy.intercept({
           url: '/api/users/1/tokens',
           method: 'GET',
           status: 200,
@@ -272,7 +269,7 @@ describe('Dockstore my workflows', () => {
       });
       // doiResponse.json has a workflow version with a DOI
       cy.fixture('doiResponse.json').then((json) => {
-        cy.route({
+        cy.intercept({
           url: '/api/**/requestDOI/*',
           method: 'PUT',
           status: 200,
@@ -281,7 +278,7 @@ describe('Dockstore my workflows', () => {
       });
       // orcidExportResponse.json has a workflow version with an ORCID put code
       cy.fixture('orcidExportResponse.json').then((json) => {
-        cy.route({
+        cy.intercept({
           url: '/api/entries/*/exportToOrcid?versionId=*',
           method: 'POST',
           status: 200,
@@ -353,9 +350,8 @@ describe('Dockstore my workflows', () => {
   });
 
   it('Should refresh individual repo when refreshing organization', () => {
-    cy.server();
     cy.fixture('refreshedAslashl').then((json) => {
-      cy.route({
+      cy.intercept({
         method: 'GET',
         url: '/api/workflows/11/refresh',
         response: json,
@@ -555,8 +551,7 @@ describe('Should handle no workflows correctly', () => {
   resetDB();
   setTokenUserViewPortCurator(); // Curator has no workflows
   beforeEach(() => {
-    cy.server();
-    cy.route({
+    cy.intercept({
       method: 'GET',
       url: /github.com\/organizations/,
       response: ['dockstore'],

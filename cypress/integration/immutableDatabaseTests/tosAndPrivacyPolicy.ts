@@ -113,8 +113,7 @@ describe('TOS Banner', () => {
         username: 'user_A',
       };
 
-      cy.server();
-      cy.route({
+      cy.intercept({
         method: 'GET',
         url: '*/users/user',
         response: outOfDateUser,

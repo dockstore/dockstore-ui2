@@ -19,11 +19,10 @@ import { goToTab, setTokenUserViewPort } from '../../support/commands';
 describe('Dockstore tool/workflow search table', () => {
   setTokenUserViewPort();
 
-  // When elastic search is added to cypress testing, get rid of cy.routes, and uncomment the commented lines
+  // When elastic search is added to cypress testing, get rid of cy.intercepts, and uncomment the commented lines
   function starColumnSearch(url: string, type: string) {
-    cy.server();
     // Tools/worflows not starred in this response.
-    cy.route({
+    cy.intercept({
       url: '*' + ga4ghExtendedPath + '/tools/entry/_search',
       method: 'POST',
       status: 200,
@@ -349,7 +348,7 @@ describe('Dockstore tool/workflow search table', () => {
 
     // First tool and workflow starred
     cy.fixture('searchTableResponse').then((json) => {
-      cy.route({
+      cy.intercept({
         url: '*' + ga4ghExtendedPath + '/tools/entry/_search',
         method: 'POST',
         response: json,
@@ -379,9 +378,8 @@ describe('Dockstore tool/workflow search table', () => {
 describe('search table items per page', () => {
   setTokenUserViewPort();
   beforeEach(() => {
-    cy.server();
     cy.fixture('searchTableResponse').then((json) => {
-      cy.route({
+      cy.intercept({
         url: '*' + ga4ghExtendedPath + '/tools/entry/_search',
         method: 'POST',
         response: json,
