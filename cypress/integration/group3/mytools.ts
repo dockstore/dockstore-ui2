@@ -190,10 +190,7 @@ describe('Dockstore my tools', () => {
       cy.get('#publishToolButton').should('contain', 'Publish').click().should('contain', 'Unpublish').click().should('contain', 'Publish');
     });
     it('Be able to add tag with test parameter file', () => {
-      cy.intercept({
-        method: 'PUT',
-        url: 'api/containers/1/testParameterFiles?testParameterPaths=/test.json*',
-      }).as('putTestParameterFile');
+      cy.intercept('PUT', 'api/containers/1/testParameterFiles?testParameterPaths=/test.json*').as('putTestParameterFile');
       cy.visit('/my-tools/amazon.dkr.ecr.test.amazonaws.com/A/a');
       cy.contains('Versions').click();
       cy.get('#addTagButton').click();
