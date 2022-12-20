@@ -20,7 +20,7 @@ describe('FileTreeComponent', () => {
         providers: [
           { provide: MatDialogRef, useValue: {} },
           { provide: MAT_DIALOG_DATA, useValue: [] },
-          { provide: DescriptorLanguageService, useValue: {} },
+          { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
         ],
       }).compileComponents();
     })
