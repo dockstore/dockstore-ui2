@@ -4,7 +4,7 @@ import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/materia
 import { MatIconModule } from '@angular/material/icon';
 import { MatTreeModule } from '@angular/material/tree';
 import { SourceFile } from 'app/shared/swagger';
-
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FileTreeComponent } from './file-tree.component';
 import { DescriptorLanguageService } from '../shared/entry/descriptor-language.service';
 
@@ -16,7 +16,7 @@ describe('FileTreeComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [FileTreeComponent],
-        imports: [MatButtonModule, MatIconModule, MatTreeModule, MatDialogModule],
+        imports: [MatButtonModule, MatIconModule, MatTreeModule, MatDialogModule, HttpClientTestingModule],
         providers: [
           { provide: MatDialogRef, useValue: {} },
           { provide: MAT_DIALOG_DATA, useValue: [] },
