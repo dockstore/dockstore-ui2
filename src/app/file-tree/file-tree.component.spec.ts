@@ -6,6 +6,7 @@ import { MatTreeModule } from '@angular/material/tree';
 import { SourceFile } from 'app/shared/swagger';
 
 import { FileTreeComponent } from './file-tree.component';
+import { DescriptorLanguageService } from '../shared/entry/descriptor-language.service';
 
 describe('FileTreeComponent', () => {
   let component: FileTreeComponent;
@@ -19,6 +20,7 @@ describe('FileTreeComponent', () => {
         providers: [
           { provide: MatDialogRef, useValue: {} },
           { provide: MAT_DIALOG_DATA, useValue: [] },
+          { provide: DescriptorLanguageService, useValue: {} },
         ],
       }).compileComponents();
     })
