@@ -20,10 +20,8 @@ describe('Dropdown test', () => {
   setTokenUserViewPortCurator();
 
   beforeEach(() => {
-    cy.server().route({
-      method: 'GET',
-      url: /extended/,
-      response: { canChangeUsername: true },
+    cy.intercept('GET', /extended/, {
+      body: { canChangeUsername: true },
     });
 
     cy.visit('');
@@ -98,10 +96,8 @@ describe('Dropdown test', () => {
         { id: 1001, name: 'OrgTwo', status: 'PENDING' },
       ];
 
-      cy.server().route({
-        method: 'GET',
-        url: '*/organizations/all?type=pending',
-        response: pendingOrganizations,
+      cy.intercept('GET', '*/organizations/all?type=pending', {
+        body: pendingOrganizations,
       });
 
       // Logged in user has two memberships, one is not accepted
@@ -125,10 +121,8 @@ describe('Dropdown test', () => {
           organization: { id: 1002, status: 'REJECTED', name: 'orgThree', displayName: 'orgThree' },
         },
       ];
-      cy.server().route({
-        method: 'GET',
-        url: '*/users/user/memberships',
-        response: memberships,
+      cy.intercept('GET', '*/users/user/memberships', {
+        body: memberships,
       });
       // Choose dropdown
       cy.get('#dropdown-accounts').click();
@@ -137,10 +131,8 @@ describe('Dropdown test', () => {
 
     it('Should have one rejected org', () => {
       // Mock request re-review
-      cy.server().route({
-        method: 'POST',
-        url: '*/organizations/1002/request',
-        response: { id: 1002, name: 'OrgThree', status: 'PENDING' },
+      cy.intercept('POST', '*/organizations/1002/request', {
+        body: { id: 1002, name: 'OrgThree', status: 'PENDING' },
       });
 
       // Mock new pending orgs
@@ -150,10 +142,8 @@ describe('Dropdown test', () => {
         { id: 1002, name: 'OrgThree', status: 'PENDING' },
       ];
 
-      cy.server().route({
-        method: 'GET',
-        url: '*/organizations/all?type=pending',
-        response: pendingOrganizations,
+      cy.intercept('GET', '*/organizations/all?type=pending', {
+        body: pendingOrganizations,
       });
 
       // Mock new my pending orgs
@@ -162,10 +152,8 @@ describe('Dropdown test', () => {
         { id: 2, role: 'MAINTAINER', status: 'ACCEPTED', organization: { id: 1001, status: 'PENDING', name: 'orgTwo' } },
         { id: 3, role: 'MAINTAINER', status: 'ACCEPTED', organization: { id: 1002, status: 'PENDING', name: 'orgThree' } },
       ];
-      cy.server().route({
-        method: 'GET',
-        url: '*/users/user/memberships',
-        response: memberships,
+      cy.intercept('GET', '*/users/user/memberships', {
+        body: memberships,
       });
 
       // Ensure that there is one org
@@ -189,17 +177,13 @@ describe('Dropdown test', () => {
     it('Should have two pending orgs', () => {
       // Endpoint should return only one pending organization after approval
       const pendingOrganizations = [{ id: 1001, name: 'OrgTwo', status: 'PENDING' }];
-      cy.server().route({
-        method: 'GET',
-        url: '*/organizations/all?type=pending',
-        response: pendingOrganizations,
+      cy.intercept('GET', '*/organizations/all?type=pending', {
+        body: pendingOrganizations,
       });
 
       // Stub approve response
-      cy.server().route({
-        method: 'POST',
-        url: '*/organizations/1000/approve',
-        response: [],
+      cy.intercept('POST', '*/organizations/1000/approve', {
+        body: [],
       });
 
       // Ensure that there are two orgs
@@ -218,10 +202,8 @@ describe('Dropdown test', () => {
 
     it('Should have a pending invite', () => {
       // Stub the accept invite response
-      cy.server().route({
-        method: 'POST',
-        url: '*/organizations/1000/invitation?accept=true',
-        response: [],
+      cy.intercept('POST', '*/organizations/1000/invitation?accept=true', {
+        body: [],
       });
 
       // Membership should have two accepted entries
@@ -229,10 +211,8 @@ describe('Dropdown test', () => {
         { id: 1, role: 'MAINTAINER', status: 'ACCEPTED', organization: { id: 1000, status: 'PENDING', name: 'orgOne' } },
         { id: 2, role: 'MAINTAINER', status: 'ACCEPTED', organization: { id: 1001, status: 'PENDING', name: 'orgTwo' } },
       ];
-      cy.server().route({
-        method: 'GET',
-        url: '*/users/user/memberships',
-        response: memberships,
+      cy.intercept('GET', '*/users/user/memberships', {
+        body: memberships,
       });
 
       // One invite should be visible
@@ -278,17 +258,13 @@ describe('Dropdown test', () => {
       ];
 
       // Route all DELETE API calls to organizations respond with with an empty JSON object
-      cy.server().route({
-        method: 'DELETE',
-        url: '*/organizations/*',
-        response: [],
+      cy.intercept('DELETE', '*/organizations/*', {
+        body: [],
       });
 
       // Route GET API call to user/membership with the mocked membership JSON object after first deletion
-      cy.server().route({
-        method: 'GET',
-        url: '*/users/user/memberships',
-        response: membershipsAfterFirstDeletion,
+      cy.intercept('GET', '*/users/user/memberships', {
+        body: membershipsAfterFirstDeletion,
       });
 
       // Delete the rejected organization
@@ -301,17 +277,13 @@ describe('Dropdown test', () => {
       cy.get('#my-rejected-org-card-0').should('not.exist');
 
       // Route GET API call to user/memberships to respond with the membership JSON object that the user is not affiliated with
-      cy.server().route({
-        method: 'GET',
-        url: '*/users/user/memberships',
-        response: [nonAffiliatedMembership],
+      cy.intercept('GET', '*/users/user/memberships', {
+        body: [nonAffiliatedMembership],
       });
 
       // Route all GET requests to organizations/all?type=pending to the non affiliated organization
-      cy.server().route({
-        method: 'GET',
-        url: '*/organizations/all?type=pending',
-        response: [nonAffiliatedMembership],
+      cy.intercept('GET', '*/organizations/all?type=pending', {
+        body: [nonAffiliatedMembership],
       });
 
       // Delete the pending organization
@@ -328,10 +300,8 @@ describe('Dropdown test', () => {
   describe('Go to enabled Dockstore Account & Preferences', () => {
     beforeEach(() => {
       // Select dropdown accounts
-      cy.server().route({
-        method: 'DELETE',
-        url: '*/users/user',
-        response: 'true',
+      cy.intercept('DELETE', '*/users/user', {
+        body: 'true',
       });
       cy.get('#dropdown-accounts').click();
       cy.contains('Dockstore Account & Preferences').click();

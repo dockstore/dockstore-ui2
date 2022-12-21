@@ -34,13 +34,10 @@ describe('Dockstore my workflows', () => {
   });
 
   it('have action buttons which work', () => {
-    cy.server();
     cy.fixture('myWorkflows.json').then((json) => {
-      cy.route({
-        url: '/api/users/1/workflows',
-        method: 'PATCH',
-        status: 200,
-        response: json,
+      cy.intercept('PATCH', '/api/users/1/workflows', {
+        body: json,
+        statusCode: 200,
       });
     });
 
@@ -63,11 +60,8 @@ describe('Dockstore my workflows', () => {
       cy.contains('Apps Logs').click();
       cy.contains('There were problems retrieving GitHub App logs for this organization.');
       cy.contains('Close').click();
-      cy.server();
-      cy.route({
-        method: 'GET',
-        url: '/api/lambdaEvents/**',
-        response: [],
+      cy.intercept('GET', '/api/lambdaEvents/**', {
+        body: [],
       }).as('refreshWorkflow');
       cy.contains('Apps Logs').click();
       cy.contains('There are no GitHub App logs for this organization.');
@@ -96,10 +90,8 @@ describe('Dockstore my workflows', () => {
           type: 'PUSH',
         },
       ];
-      cy.route({
-        method: 'GET',
-        url: '/api/lambdaEvents/**',
-        response: realResponse,
+      cy.intercept('GET', '/api/lambdaEvents/**', {
+        body: realResponse,
       }).as('refreshWorkflow');
       cy.contains('Apps Logs').click();
       cy.contains('2020-02-20T02:20');
@@ -260,32 +252,25 @@ describe('Dockstore my workflows', () => {
     });
 
     it('Should be able to request DOI and then export to ORCID', () => {
-      cy.server();
       // tokens.json indicates a Zenodo token and an ORCID token
       cy.fixture('tokens.json').then((json) => {
-        cy.route({
-          url: '/api/users/1/tokens',
-          method: 'GET',
-          status: 200,
-          response: json,
+        cy.intercept('GET', '/api/users/1/tokens', {
+          body: json,
+          statusCode: 200,
         });
       });
       // doiResponse.json has a workflow version with a DOI
       cy.fixture('doiResponse.json').then((json) => {
-        cy.route({
-          url: '/api/**/requestDOI/*',
-          method: 'PUT',
-          status: 200,
-          response: json,
+        cy.intercept('PUT', '/api/**/requestDOI/*', {
+          body: json,
+          statusCode: 200,
         });
       });
       // orcidExportResponse.json has a workflow version with an ORCID put code
       cy.fixture('orcidExportResponse.json').then((json) => {
-        cy.route({
-          url: '/api/entries/*/exportToOrcid?versionId=*',
-          method: 'POST',
-          status: 200,
-          response: json,
+        cy.intercept('POST', '/api/entries/*/exportToOrcid?versionId=*', {
+          body: json,
+          statusCode: 200,
         });
       });
 
@@ -353,12 +338,9 @@ describe('Dockstore my workflows', () => {
   });
 
   it('Should refresh individual repo when refreshing organization', () => {
-    cy.server();
     cy.fixture('refreshedAslashl').then((json) => {
-      cy.route({
-        method: 'GET',
-        url: '/api/workflows/11/refresh',
-        response: json,
+      cy.intercept('GET', '/api/workflows/11/refresh', {
+        body: json,
       }).as('refreshWorkflow');
     });
     cy.visit('/my-workflows/github.com/A/l');
@@ -416,22 +398,15 @@ describe('Dockstore my workflows', () => {
         path: 'foobar/doesNotExist',
       };
 
-      cy.server()
-        .route({
-          method: 'GET',
-          url: 'api/users/registries',
-          response: ['github.com', 'bitbucket.org'],
-        })
-        .route({
-          method: 'GET',
-          url: 'api/users/registries/github.com/organizations',
-          response: ['foobar', 'lorem'],
-        })
-        .route({
-          method: 'GET',
-          url: 'api/users/registries/github.com/organizations/foobar',
-          response: [canDeleteMe, cannotDeleteMe, doesNotExist],
-        });
+      cy.intercept('GET', 'api/users/registries', {
+        body: ['github.com', 'bitbucket.org'],
+      });
+      cy.intercept('GET', 'api/users/registries/github.com/organizations', {
+        body: ['foobar', 'lorem'],
+      });
+      cy.intercept('GET', 'api/users/registries/github.com/organizations/foobar', {
+        body: [canDeleteMe, cannotDeleteMe, doesNotExist],
+      });
 
       cy.visit('/my-workflows');
       cy.get('#registerWorkflowButton').should('be.visible').should('be.enabled').click();
@@ -555,11 +530,8 @@ describe('Should handle no workflows correctly', () => {
   resetDB();
   setTokenUserViewPortCurator(); // Curator has no workflows
   beforeEach(() => {
-    cy.server();
-    cy.route({
-      method: 'GET',
-      url: /github.com\/organizations/,
-      response: ['dockstore'],
+    cy.intercept('GET', /github.com\/organizations/, {
+      body: ['dockstore'],
     });
   });
   it('My workflows should prompt to register a workflow', () => {

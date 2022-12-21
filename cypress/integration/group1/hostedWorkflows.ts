@@ -29,10 +29,7 @@ describe('Dockstore hosted workflows', () => {
   beforeEach(() => {
     cy.visit('/my-workflows');
 
-    cy.intercept({
-      method: 'GET',
-      url: /workflows\/.+\/zip\/.+/,
-    }).as('downloadZip');
+    cy.intercept('GET', /workflows\/.+\/zip\/.+/).as('downloadZip');
   });
 
   function getWorkflow() {

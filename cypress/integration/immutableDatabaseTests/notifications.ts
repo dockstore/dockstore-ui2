@@ -26,12 +26,9 @@ describe('Notifications Banner', () => {
   }
 
   beforeEach(() => {
-    cy.server();
     cy.fixture('notification1.json').then((json) => {
-      cy.route({
-        method: 'GET',
-        url: '*/curation/notifications',
-        response: json,
+      cy.intercept('GET', '*/curation/notifications', {
+        body: json,
       });
     });
 
