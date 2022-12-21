@@ -85,15 +85,6 @@ describe('Dockstore Workflow Details', () => {
       cy.get('.ace_content').should('be.visible');
     });
 
-    it('Should have either a primary bubble or home icon', () => {
-      if (cy.get('[data-cy=primary-descriptor-bubble]').should('be.visible')) {
-        cy.get('[data-cy=go-to-primary-icon]').should('not.exist');
-      } else {
-        cy.get('[data-cy=primary-descriptor-bubble]').should('not.be.visible');
-        cy.get('[data-cy=go-to-primary-icon]').should('be.visible');
-      }
-    });
-
     describe('Change tab to Test Parameters', () => {
       beforeEach(() => {
         goToTab('Test Parameter Files');
@@ -136,5 +127,17 @@ describe('Find workflow by alias', () => {
     });
     cy.visit('/aliases/workflows/fakeAlias');
     cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l');
+  });
+});
+
+describe('Test primary descriptor bubble', () => {
+  it('go to a workflow with multiple files', () => {
+    cy.visit('/workflows/github.com/nf-core/rnaseq:1.4.2');
+    cy.get('[data-cy=primary-descriptor-bubble]').should('be.visible');
+    cy.get('[data-cy=select-file-button]').click();
+    cy.get('[data-cy=toggle-conf]').click();
+    cy.contains('button', 'base.config').should('be.visible').click();
+    cy.get('[data-cy=go-to-primary-icon]').should('be.visible').click();
+    cy.get('[data-cy=primary-descriptor-bubble]').should('be.visible');
   });
 });

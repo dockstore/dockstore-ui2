@@ -33,7 +33,9 @@
           <mat-toolbar color="primary">
             <div class="w-100" fxLayout="row" fxLayoutAlign="space-between center">
               <span class="select-file-button-span" *ngIf="fileTab.value.length > 10">
-                <button color="accent" mat-raised-button (click)="openFileTree(fileTab.value)">Select File</button>
+                <button color="accent" data-cy="select-file-button" mat-raised-button (click)="openFileTree(fileTab.value)">
+                  Select File
+                </button>
               </span>
               <span class="no-wrap" *ngIf="fileTab.value.length > 10"> {{ fileName }} </span>
               <span
