@@ -417,8 +417,8 @@ describe('Dockstore my workflows', () => {
 
       // Select github.com in git registry
       cy.get('app-entry-wizard').within(() => {
-        cy.get('mat-select').eq(0).click().type('{enter}');
-        cy.get('mat-select').eq(1).click().type('{enter}');
+        cy.get('mat-select').eq(0).click().type('{enter}', { force: true });
+        cy.get('mat-select').eq(1).click().type('{enter}', { force: true });
 
         // foobar/canDeleteMe should be on and not disabled
         cy.get('mat-slide-toggle').eq(0).should('not.have.class', 'mat-disabled').should('have.class', 'mat-checked');
