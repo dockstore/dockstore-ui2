@@ -79,7 +79,7 @@ export class SourceFileTabsComponent implements OnChanges {
           if (this.fileTabs.size > 0) {
             this.changeFileType(this.fileTabs.values().next().value);
           }
-          sourceFiles.filter((sourceFile) => {
+          sourceFiles.forEach((sourceFile) => {
             if (this.isPrimaryDescriptor(sourceFile.path)) {
               this.primaryDescriptors.push(sourceFile);
             }
