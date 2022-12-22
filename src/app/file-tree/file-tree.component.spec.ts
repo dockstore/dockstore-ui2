@@ -7,6 +7,7 @@ import { SourceFile } from 'app/shared/swagger';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FileTreeComponent } from './file-tree.component';
 import { SourceFileTabsService } from '../source-file-tabs/source-file-tabs.service';
+import { DescriptorLanguageService } from '../shared/entry/descriptor-language.service';
 
 describe('FileTreeComponent', () => {
   let component: FileTreeComponent;
@@ -21,6 +22,7 @@ describe('FileTreeComponent', () => {
           { provide: MatDialogRef, useValue: {} },
           { provide: MAT_DIALOG_DATA, useValue: [] },
           { provide: SourceFileTabsService, useClass: SourceFileTabsService },
+          { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
         ],
       }).compileComponents();
     })
