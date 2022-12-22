@@ -9,6 +9,7 @@ import { FileTreeComponent } from './file-tree.component';
 import { SourceFileTabsService } from '../source-file-tabs/source-file-tabs.service';
 import { DescriptorLanguageService } from '../shared/entry/descriptor-language.service';
 import { InfoTabService } from '../workflow/info-tab/info-tab.service';
+import { WorkflowModule } from '../shared/modules/workflow.module';
 
 describe('FileTreeComponent', () => {
   let component: FileTreeComponent;
@@ -18,7 +19,7 @@ describe('FileTreeComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [FileTreeComponent],
-        imports: [MatButtonModule, MatIconModule, MatTreeModule, MatDialogModule, HttpClientTestingModule],
+        imports: [MatButtonModule, MatIconModule, MatTreeModule, MatDialogModule, HttpClientTestingModule, WorkflowModule],
         providers: [
           { provide: MatDialogRef, useValue: {} },
           { provide: MAT_DIALOG_DATA, useValue: [] },

@@ -8,19 +8,18 @@ import { DescriptorTypeCompatStubService, FileStubService, WorkflowsStubService 
 import { SourceFileTabsService } from './source-file-tabs.service';
 import { DescriptorLanguageService } from '../shared/entry/descriptor-language.service';
 import { InfoTabService } from '../workflow/info-tab/info-tab.service';
-import { DateService } from '../shared/date.service';
+import { WorkflowModule } from '../shared/modules/workflow.module';
 
 describe('SourceFileTabsService', () => {
   beforeEach(() =>
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule, WorkflowModule],
       providers: [
         { provide: FileService, useClass: FileStubService },
         { provide: WorkflowsService, useClass: WorkflowsStubService },
         { provide: DescriptorTypeCompatService, useClass: DescriptorTypeCompatStubService },
         { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
         { provide: InfoTabService, useClass: InfoTabService },
-        { provide: DateService, useClass: DateService },
       ],
     })
   );
