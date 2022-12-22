@@ -1,15 +1,19 @@
-import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTreeModule } from '@angular/material/tree';
 import { SourceFile } from 'app/shared/swagger';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { FileTreeComponent } from './file-tree.component';
-import { SourceFileTabsService } from '../source-file-tabs/source-file-tabs.service';
+import { DateService } from '../shared/date.service';
 import { DescriptorLanguageService } from '../shared/entry/descriptor-language.service';
+import { ProviderService } from '../shared/provider.service';
+import { SourceFileTabsService } from '../source-file-tabs/source-file-tabs.service';
+import { DateStubService, DescriptorLanguageStubService, InfoTabServiceStub, SourceFileTabsStubService } from '../test/service-stubs';
 import { InfoTabService } from '../workflow/info-tab/info-tab.service';
-import { WorkflowModule } from '../shared/modules/workflow.module';
+
+import { FileTreeComponent } from './file-tree.component';
 
 describe('FileTreeComponent', () => {
   let component: FileTreeComponent;
@@ -19,13 +23,13 @@ describe('FileTreeComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [FileTreeComponent],
-        imports: [MatButtonModule, MatIconModule, MatTreeModule, MatDialogModule, HttpClientTestingModule, WorkflowModule],
+        imports: [MatButtonModule, MatIconModule, MatTreeModule, MatDialogModule, HttpClientTestingModule],
         providers: [
           { provide: MatDialogRef, useValue: {} },
           { provide: MAT_DIALOG_DATA, useValue: [] },
           { provide: SourceFileTabsService, useClass: SourceFileTabsService },
-          { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
-          { provide: InfoTabService, useClass: InfoTabService },
+          { provide: DescriptorLanguageService, useClass: DescriptorLanguageStubService },
+          { provide: InfoTabService, useClass: InfoTabServiceStub },
         ],
       }).compileComponents();
     })
