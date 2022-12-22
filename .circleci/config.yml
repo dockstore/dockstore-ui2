@@ -229,7 +229,7 @@ jobs:
           key: cypress-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
       - run:
           name: Test
-          command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/integration/group1/**/*'
+          command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/e2e/group1/**/*'
           no_output_timeout: 30m
           environment:
             MOCHA_FILE: integration-tests/test-results/junit/test-results-[hash].xml
@@ -244,7 +244,7 @@ jobs:
           key: cypress-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
       - run:
           name: Test
-          command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/integration/group2/**/*'
+          command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/e2e/group2/**/*'
           no_output_timeout: 30m
           environment:
             MOCHA_FILE: integration-tests/test-results/junit/test-results-[hash].xml
@@ -259,7 +259,7 @@ jobs:
           key: cypress-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
       - run:
           name: Test
-          command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/integration/group3/**/*'
+          command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/e2e/group3/**/*'
           no_output_timeout: 30m
           environment:
             MOCHA_FILE: integration-tests/test-results/junit/test-results-[hash].xml
@@ -274,7 +274,7 @@ jobs:
           key: cypress-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
       - run:
           name: Test
-          command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/integration/immutableDatabaseTests/**/*'
+          command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/e2e/immutableDatabaseTests/**/*'
           no_output_timeout: 30m
           environment:
             MOCHA_FILE: integration-tests/test-results/junit/test-results-[hash].xml
