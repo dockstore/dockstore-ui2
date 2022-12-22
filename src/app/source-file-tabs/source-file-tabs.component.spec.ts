@@ -9,6 +9,7 @@ import { SourceFileTabsComponent } from './source-file-tabs.component';
 import { SourceFileTabsService } from './source-file-tabs.service';
 import { MatDialogModule } from '@angular/material/dialog';
 import { InfoTabService } from '../workflow/info-tab/info-tab.service';
+import { DescriptorLanguageService } from '../shared/entry/descriptor-language.service';
 
 describe('SourceFileTabsComponent', () => {
   let component: SourceFileTabsComponent;
@@ -23,6 +24,7 @@ describe('SourceFileTabsComponent', () => {
           { provide: SourceFileTabsService, useClass: SourceFileTabsStubService },
           { provide: FileService, useClass: FileStubService },
           { provide: InfoTabService, useClass: InfoTabService },
+          { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
         ],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
