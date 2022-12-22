@@ -7,6 +7,7 @@ import { WorkflowsService } from 'app/shared/swagger';
 import { DescriptorTypeCompatStubService, FileStubService, WorkflowsStubService } from 'app/test/service-stubs';
 import { SourceFileTabsService } from './source-file-tabs.service';
 import { DescriptorLanguageService } from '../shared/entry/descriptor-language.service';
+import { InfoTabService } from '../workflow/info-tab/info-tab.service';
 
 describe('SourceFileTabsService', () => {
   beforeEach(() =>
@@ -17,6 +18,7 @@ describe('SourceFileTabsService', () => {
         { provide: WorkflowsService, useClass: WorkflowsStubService },
         { provide: DescriptorTypeCompatService, useClass: DescriptorTypeCompatStubService },
         { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
+        { provide: InfoTabService, useClass: InfoTabService },
       ],
     })
   );
