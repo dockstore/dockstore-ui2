@@ -12,7 +12,7 @@ import { SourceFileTabsService } from './source-file-tabs.service';
 
 import { WorkflowQuery } from '../shared/state/workflow.query';
 import { Observable } from 'rxjs';
-import { CodeEditorListService } from '../shared/code-editor-list/code-editor-list.service';
+import { SessionQuery } from '../shared/session/session.query';
 
 @Component({
   selector: 'app-source-file-tabs',
@@ -25,9 +25,10 @@ export class SourceFileTabsComponent implements OnChanges {
     private sourceFileTabsService: SourceFileTabsService,
     private matDialog: MatDialog,
     private workflowQuery: WorkflowQuery,
-    private codeEditorListService: CodeEditorListService
+    private sessionQuery: SessionQuery
   ) {
     this.isPublished$ = this.workflowQuery.workflowIsPublished$;
+    this.primaryDescriptors = [];
   }
   // Used to generate the TRS file path
   @Input() entryPath: string;
@@ -78,7 +79,11 @@ export class SourceFileTabsComponent implements OnChanges {
           if (this.fileTabs.size > 0) {
             this.changeFileType(this.fileTabs.values().next().value);
           }
-          this.primaryDescriptors = sourceFiles.filter((sourceFile) => this.codeEditorListService.isPrimaryDescriptor(sourceFile.path));
+          sourceFiles.filter((sourceFile) => {
+            if (this.isPrimaryDescriptor(sourceFile.path)) {
+              this.primaryDescriptors.push(sourceFile);
+            }
+          });
         },
         () => {
           this.displayError = true;
@@ -125,7 +130,18 @@ export class SourceFileTabsComponent implements OnChanges {
 
   openFileTree(sourceFiles: SourceFile[]) {
     this.matDialog
-      .open(FileTreeComponent, { width: bootstrap4largeModalSize, data: { files: sourceFiles, selectedFile: this.currentFile } })
+      .open(FileTreeComponent, {
+        width: bootstrap4largeModalSize,
+        data: {
+          files: sourceFiles,
+          selectedFile: this.currentFile,
+          entryPath: this.entryPath,
+          versionName: this.version.name,
+          descriptorType: this.descriptorType,
+          versionPath: this.version.workflow_path,
+          entryType: this.sessionQuery.getValue().entryType,
+        },
+      })
       .afterClosed()
       .subscribe((absoluteFilePath) => {
         const foundFile = sourceFiles.find((file) => file.absolutePath === absoluteFilePath);
@@ -140,6 +156,13 @@ export class SourceFileTabsComponent implements OnChanges {
   }
 
   isPrimaryDescriptor(path: string): boolean {
-    return this.codeEditorListService.isPrimaryDescriptor(path);
+    const primaryPaths = this.sourceFileTabsService.getPrimaryPath(
+      this.entryPath,
+      this.version.name,
+      this.descriptorType,
+      this.version.workflow_path,
+      this.sessionQuery.getValue().entryType
+    );
+    return primaryPaths.includes(path);
   }
 }

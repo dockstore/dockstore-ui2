@@ -3,7 +3,9 @@ import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree'
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { SourceFile } from 'app/shared/swagger';
-import { CodeEditorListService } from '../shared/code-editor-list/code-editor-list.service';
+import { SourceFileTabsService } from '../source-file-tabs/source-file-tabs.service';
+import { ToolDescriptor } from '../shared/openapi';
+import { EntryType } from '../shared/enum/entry-type';
 
 /** File node data with possible child nodes. */
 export interface FileNode {
@@ -48,8 +50,17 @@ export class FileTreeComponent {
   primaryDescriptorPath: string;
   constructor(
     private matDialogRef: MatDialogRef<FileTreeComponent>,
-    private codeEditorListService: CodeEditorListService,
-    @Inject(MAT_DIALOG_DATA) public data: { files: SourceFile[]; selectedFile: SourceFile }
+    private sourceFileTabsService: SourceFileTabsService,
+    @Inject(MAT_DIALOG_DATA)
+    public data: {
+      files: SourceFile[];
+      selectedFile: SourceFile;
+      entryPath: string;
+      versionName: string;
+      descriptorType: ToolDescriptor.TypeEnum;
+      versionPath: string;
+      entryType: EntryType;
+    }
   ) {
     this.treeFlattener = new MatTreeFlattener(this.transformer, this.getLevel, this.isExpandable, this.getChildren);
     this.treeControl = new FlatTreeControl(this.getLevel, this.isExpandable);
@@ -137,7 +148,16 @@ export class FileTreeComponent {
     }
   }
 
-  isPrimaryDescriptor(path: string) {
-    return this.codeEditorListService.isPrimaryDescriptor(path);
+  isPrimaryDescriptor(path: string): boolean {
+    const primaryPaths = this.sourceFileTabsService.getPrimaryPath(
+      this.data.entryPath,
+      this.data.versionName,
+      this.data.descriptorType,
+      this.data.versionPath,
+      this.data.entryType
+    );
+    console.log(primaryPaths);
+    console.log(path);
+    return primaryPaths.includes(path);
   }
 }

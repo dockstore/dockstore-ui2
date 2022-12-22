@@ -6,6 +6,8 @@ import { SourceFile, ToolDescriptor, WorkflowsService, WorkflowVersion } from 'a
 import { Validation } from 'app/shared/swagger';
 import { Observable } from 'rxjs';
 import { ga4ghWorkflowIdPrefix } from '../shared/constants';
+import { EntryType } from '../shared/enum/entry-type';
+import { InfoTabService } from '../workflow/info-tab/info-tab.service';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +17,8 @@ export class SourceFileTabsService {
     private workflowsService: WorkflowsService,
     private fileService: FileService,
     private descriptorTypeCompatService: DescriptorTypeCompatService,
-    private descriptorLanguageService: DescriptorLanguageService
+    private descriptorLanguageService: DescriptorLanguageService,
+    private infoTabService: InfoTabService
   ) {}
 
   /**
@@ -127,5 +130,20 @@ export class SourceFileTabsService {
     }
     const id = ga4ghWorkflowIdPrefix + fileId;
     return this.fileService.getDownloadFilePath(id, versionName, type, relativePath);
+  }
+  getPrimaryPath(
+    path: string,
+    versionName: string,
+    descriptorType: ToolDescriptor.TypeEnum,
+    descriptorPath: string,
+    entryType: EntryType
+  ): string[] {
+    const primaryPath = [];
+    primaryPath.push(this.infoTabService.getPrimaryPath(path, versionName, descriptorType, descriptorPath, entryType));
+    if (descriptorType === 'NFL') {
+      primaryPath.push('main.nf');
+      primaryPath.push('/main.nf');
+    }
+    return primaryPath;
   }
 }
