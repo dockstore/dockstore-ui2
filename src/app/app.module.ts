@@ -114,7 +114,7 @@ import { ExporterStepComponent } from './workflow/snapshot-exporter-modal/export
 import { SnaphotExporterModalComponent } from './workflow/snapshot-exporter-modal/snaphot-exporter-modal.component';
 import { ViewService } from './workflow/view/view.service';
 import { InfoTabService } from './workflow/info-tab/info-tab.service';
-import { SourceFileTabsComponent } from './source-file-tabs/source-file-tabs.component';
+import { WorkflowModule } from './shared/modules/workflow.module';
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   showDelay: 500,
@@ -168,7 +168,6 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     FileTreeComponent,
     ChangeUsernameBannerComponent,
     RevokeTokenDialogComponent,
-    SourceFileTabsComponent,
   ],
   imports: [
     environment.production ? [] : AkitaNgDevtools.forRoot(),
@@ -180,6 +179,7 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     HeaderModule,
     ListContainersModule,
     ListWorkflowsModule,
+    WorkflowModule,
     ClipboardModule,
     OrderByModule,
     FlexLayoutModule,
