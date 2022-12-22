@@ -59,6 +59,7 @@ import { MarkdownWrapperModule } from './markdown-wrapper.module';
 import { SnackbarModule } from './snackbar.module';
 import { CategoryButtonModule } from './../../categories/button/category-button.module';
 import { MySidebarModule } from '../modules/my-sidebar.module';
+import { SourceFileTabsService } from '../../source-file-tabs/source-file-tabs.service';
 
 @NgModule({
   declarations: [
@@ -109,6 +110,7 @@ import { MySidebarModule } from '../modules/my-sidebar.module';
     RefreshService,
     RegisterWorkflowModalService,
     VersionModalService,
+    SourceFileTabsService,
   ],
   exports: [
     WorkflowComponent,

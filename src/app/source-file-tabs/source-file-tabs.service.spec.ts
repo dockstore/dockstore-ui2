@@ -8,6 +8,7 @@ import { DescriptorTypeCompatStubService, FileStubService, WorkflowsStubService 
 import { SourceFileTabsService } from './source-file-tabs.service';
 import { DescriptorLanguageService } from '../shared/entry/descriptor-language.service';
 import { InfoTabService } from '../workflow/info-tab/info-tab.service';
+import { DateService } from '../shared/date.service';
 
 describe('SourceFileTabsService', () => {
   beforeEach(() =>
@@ -19,6 +20,7 @@ describe('SourceFileTabsService', () => {
         { provide: DescriptorTypeCompatService, useClass: DescriptorTypeCompatStubService },
         { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
         { provide: InfoTabService, useClass: InfoTabService },
+        { provide: DateService, useClass: DateService },
       ],
     })
   );

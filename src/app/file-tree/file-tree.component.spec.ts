@@ -8,6 +8,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { FileTreeComponent } from './file-tree.component';
 import { SourceFileTabsService } from '../source-file-tabs/source-file-tabs.service';
 import { DescriptorLanguageService } from '../shared/entry/descriptor-language.service';
+import { InfoTabService } from '../workflow/info-tab/info-tab.service';
 
 describe('FileTreeComponent', () => {
   let component: FileTreeComponent;
@@ -23,6 +24,7 @@ describe('FileTreeComponent', () => {
           { provide: MAT_DIALOG_DATA, useValue: [] },
           { provide: SourceFileTabsService, useClass: SourceFileTabsService },
           { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
+          { provide: InfoTabService, useClass: InfoTabService },
         ],
       }).compileComponents();
     })
