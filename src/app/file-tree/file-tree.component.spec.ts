@@ -3,14 +3,11 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTreeModule } from '@angular/material/tree';
 import { SourceFile } from 'app/shared/swagger';
-import { DateService } from '../shared/date.service';
 import { DescriptorLanguageService } from '../shared/entry/descriptor-language.service';
-import { ProviderService } from '../shared/provider.service';
 import { SourceFileTabsService } from '../source-file-tabs/source-file-tabs.service';
-import { DateStubService, DescriptorLanguageStubService, InfoTabServiceStub, SourceFileTabsStubService } from '../test/service-stubs';
+import { DescriptorLanguageStubService, InfoTabServiceStub } from '../test/service-stubs';
 import { InfoTabService } from '../workflow/info-tab/info-tab.service';
 
 import { FileTreeComponent } from './file-tree.component';
