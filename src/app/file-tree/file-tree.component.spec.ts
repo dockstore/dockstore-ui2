@@ -7,7 +7,7 @@ import { MatTreeModule } from '@angular/material/tree';
 import { SourceFile } from 'app/shared/swagger';
 import { DescriptorLanguageService } from '../shared/entry/descriptor-language.service';
 import { SourceFileTabsService } from '../source-file-tabs/source-file-tabs.service';
-import { DescriptorLanguageStubService, InfoTabServiceStub } from '../test/service-stubs';
+import { DescriptorLanguageStubService, InfoTabServiceStub, SourceFileTabsStubService } from '../test/service-stubs';
 import { InfoTabService } from '../workflow/info-tab/info-tab.service';
 
 import { FileTreeComponent } from './file-tree.component';
@@ -24,7 +24,7 @@ describe('FileTreeComponent', () => {
         providers: [
           { provide: MatDialogRef, useValue: {} },
           { provide: MAT_DIALOG_DATA, useValue: [] },
-          { provide: SourceFileTabsService, useClass: SourceFileTabsService },
+          { provide: SourceFileTabsService, useClass: SourceFileTabsStubService },
           { provide: DescriptorLanguageService, useClass: DescriptorLanguageStubService },
           { provide: InfoTabService, useClass: InfoTabServiceStub },
         ],

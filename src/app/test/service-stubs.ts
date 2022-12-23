@@ -84,6 +84,19 @@ export class SourceFileTabsStubService {
   getDescriptorPath(descriptorType: ToolDescriptor.TypeEnum, filePath: string, versionName: string): string {
     return '';
   }
+  isPrimaryDescriptor(path): boolean {
+    const primaryPaths = [];
+    return primaryPaths.includes(path);
+  }
+  getPrimaryPath(
+    path: string,
+    versionName: string,
+    descriptorType: ToolDescriptor.TypeEnum,
+    descriptorPath: string,
+    entryType: EntryType
+  ): string[] {
+    return [];
+  }
 }
 
 export class InfoTabServiceStub {
