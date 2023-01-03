@@ -52,8 +52,7 @@ describe('Dockstore my tools', () => {
   describe('Should contain extended DockstoreTool properties', () => {
     it('visit another page then come back', () => {
       // The seemingly unnecessary visits are due to a detached-from-dom error even using cy.get().click();
-      cy.server();
-      cy.route('api/containers/*?include=validations').as('getTool');
+      cy.intercept('api/containers/*?include=validations').as('getTool');
       cy.get('a#home-nav-button').click();
       cy.get('[data-cy=dropdown-main]:visible').should('be.visible').click();
       cy.get('[data-cy=my-tools-nav-button]').click();
@@ -115,8 +114,7 @@ describe('Dockstore my tools', () => {
       cy.get('[data-cy=saveLabelButton]').should('not.exist');
     });
     it('add and remove test parameter file', () => {
-      cy.server();
-      cy.route('api/containers/*?include=validations').as('getTool');
+      cy.intercept('api/containers/*?include=validations').as('getTool');
       cy.wait('@getTool');
       selectUnpublishedTab('A2');
       selectTool('b1');
@@ -149,8 +147,7 @@ describe('Dockstore my tools', () => {
 
   describe('publish a tool', () => {
     it('publish and unpublish', () => {
-      cy.server();
-      cy.route('api/containers/*?include=validations').as('getTool');
+      cy.intercept('api/containers/*?include=validations').as('getTool');
       cy.wait('@getTool');
       selectUnpublishedTab('A2');
       selectTool('b1');
@@ -193,11 +190,7 @@ describe('Dockstore my tools', () => {
       cy.get('#publishToolButton').should('contain', 'Publish').click().should('contain', 'Unpublish').click().should('contain', 'Publish');
     });
     it('Be able to add tag with test parameter file', () => {
-      cy.server();
-      cy.route({
-        method: 'PUT',
-        url: 'api/containers/1/testParameterFiles?testParameterPaths=/test.json*',
-      }).as('putTestParameterFile');
+      cy.intercept('PUT', 'api/containers/1/testParameterFiles?testParameterPaths=%2Ftest.json*').as('putTestParameterFile');
       cy.visit('/my-tools/amazon.dkr.ecr.test.amazonaws.com/A/a');
       cy.contains('Versions').click();
       cy.get('#addTagButton').click();
@@ -240,30 +233,21 @@ describe('Dockstore my tools', () => {
         tool_path: 'public.ecr.aws/testnamespace/testname',
         custom_docker_registry_path: 'public.ecr.aws',
       };
-      cy.server()
-        .route({
-          method: 'GET',
-          url: /refresh/,
-          response: toolObject,
-        })
-        .route({
-          method: 'GET',
-          url: 'containers/40000',
-          response: toolObject,
-        })
-        .route({
-          method: 'GET',
-          url: /dockerfile/,
-          response: { content: 'FROM ubuntu:16.10' },
-        })
-        .route({
-          method: 'GET',
-          url: /cwl/,
-          response: {
-            content: `#!/usr/bin/env cwl-runner\n\nclass: CommandLineTool\n\ndct:contributor:\n  foaf:name: Andy Yang\n  foaf:mbox: mailto:ayang@oicr.on.ca\ndct:creator:\n  '@id': http://orcid.org/0000-0001-9102-5681\n  foaf:name: Andrey Kartashov\n  foaf:mbox: mailto:Andrey.Kartashov@cchmc.org\ndct:description: 'Developed at Cincinnati Children’s Hospital Medical Center for the\n  CWL consortium http://commonwl.org/ Original URL: https://github.com/common-workflow-language/workflows'\ncwlVersion: v1.0\n\nrequirements:\n- class: DockerRequirement\n  dockerPull: quay.io/cancercollaboratory/dockstore-tool-samtools-rmdup:1.0\ninputs:\n  single_end:\n    type: boolean\n    default: false\n    doc: |\n      rmdup for SE reads\n  input:\n    type: File\n    inputBinding:\n      position: 2\n\n    doc: |\n      Input bam file.\n  output_name:\n    type: string\n    inputBinding:\n      position: 3\n\n  pairend_as_se:\n    type: boolean\n    default: false\n    doc: |\n      treat PE reads as SE in rmdup (force -s)\noutputs:\n  rmdup:\n    type: File\n    outputBinding:\n      glob: $(inputs.output_name)\n\n    doc: File with removed duplicates\nbaseCommand: [samtools, rmdup]\ndoc: |\n  Remove potential PCR duplicates: if multiple read pairs have identical external coordinates, only retain the pair with highest mapping quality. In the paired-end mode, this command ONLY works with FR orientation and requires ISIZE is correctly set. It does not work for unpaired reads (e.g. two ends mapped to different chromosomes or orphan reads).\n\n  Usage: samtools rmdup [-sS] <input.srt.bam> <out.bam>\n  Options:\n    -s       Remove duplicates for single-end reads. By default, the command works for paired-end reads only.\n    -S       Treat paired-end reads and single-end reads.\n\n`,
-            path: '/Dockstore.cwl',
-          },
-        });
+      cy.intercept('GET', /refresh/, {
+        body: toolObject,
+      });
+      cy.intercept('GET', 'containers/40000', {
+        body: toolObject,
+      });
+      cy.intercept('GET', /dockerfile/, {
+        body: { content: 'FROM ubuntu:16.10' },
+      });
+      cy.intercept('GET', /cwl/, {
+        body: {
+          content: `#!/usr/bin/env cwl-runner\n\nclass: CommandLineTool\n\ndct:contributor:\n  foaf:name: Andy Yang\n  foaf:mbox: mailto:ayang@oicr.on.ca\ndct:creator:\n  '@id': http://orcid.org/0000-0001-9102-5681\n  foaf:name: Andrey Kartashov\n  foaf:mbox: mailto:Andrey.Kartashov@cchmc.org\ndct:description: 'Developed at Cincinnati Children’s Hospital Medical Center for the\n  CWL consortium http://commonwl.org/ Original URL: https://github.com/common-workflow-language/workflows'\ncwlVersion: v1.0\n\nrequirements:\n- class: DockerRequirement\n  dockerPull: quay.io/cancercollaboratory/dockstore-tool-samtools-rmdup:1.0\ninputs:\n  single_end:\n    type: boolean\n    default: false\n    doc: |\n      rmdup for SE reads\n  input:\n    type: File\n    inputBinding:\n      position: 2\n\n    doc: |\n      Input bam file.\n  output_name:\n    type: string\n    inputBinding:\n      position: 3\n\n  pairend_as_se:\n    type: boolean\n    default: false\n    doc: |\n      treat PE reads as SE in rmdup (force -s)\noutputs:\n  rmdup:\n    type: File\n    outputBinding:\n      glob: $(inputs.output_name)\n\n    doc: File with removed duplicates\nbaseCommand: [samtools, rmdup]\ndoc: |\n  Remove potential PCR duplicates: if multiple read pairs have identical external coordinates, only retain the pair with highest mapping quality. In the paired-end mode, this command ONLY works with FR orientation and requires ISIZE is correctly set. It does not work for unpaired reads (e.g. two ends mapped to different chromosomes or orphan reads).\n\n  Usage: samtools rmdup [-sS] <input.srt.bam> <out.bam>\n  Options:\n    -s       Remove duplicates for single-end reads. By default, the command works for paired-end reads only.\n    -S       Treat paired-end reads and single-end reads.\n\n`,
+          path: '/Dockstore.cwl',
+        },
+      });
       // Make sure page is loaded first
       cy.get('#tool-path').should('be.visible');
       cy.get('#register_tool_button').click();
@@ -313,30 +297,21 @@ describe('Dockstore my tools', () => {
         tool_path: 'amazon.dkr.ecr.test-1.amazonaws.com/testnamespace/testname',
         custom_docker_registry_path: 'amazon.dkr.ecr.test-1.amazonaws.com',
       };
-      cy.server()
-        .route({
-          method: 'GET',
-          url: /refresh/,
-          response: toolObject,
-        })
-        .route({
-          method: 'GET',
-          url: 'containers/40000',
-          response: toolObject,
-        })
-        .route({
-          method: 'GET',
-          url: /dockerfile/,
-          response: { content: 'FROM ubuntu:16.10' },
-        })
-        .route({
-          method: 'GET',
-          url: /cwl/,
-          response: {
-            content: `#!/usr/bin/env cwl-runner\n\nclass: CommandLineTool\n\ndct:contributor:\n  foaf:name: Andy Yang\n  foaf:mbox: mailto:ayang@oicr.on.ca\ndct:creator:\n  '@id': http://orcid.org/0000-0001-9102-5681\n  foaf:name: Andrey Kartashov\n  foaf:mbox: mailto:Andrey.Kartashov@cchmc.org\ndct:description: 'Developed at Cincinnati Children’s Hospital Medical Center for the\n  CWL consortium http://commonwl.org/ Original URL: https://github.com/common-workflow-language/workflows'\ncwlVersion: v1.0\n\nrequirements:\n- class: DockerRequirement\n  dockerPull: quay.io/cancercollaboratory/dockstore-tool-samtools-rmdup:1.0\ninputs:\n  single_end:\n    type: boolean\n    default: false\n    doc: |\n      rmdup for SE reads\n  input:\n    type: File\n    inputBinding:\n      position: 2\n\n    doc: |\n      Input bam file.\n  output_name:\n    type: string\n    inputBinding:\n      position: 3\n\n  pairend_as_se:\n    type: boolean\n    default: false\n    doc: |\n      treat PE reads as SE in rmdup (force -s)\noutputs:\n  rmdup:\n    type: File\n    outputBinding:\n      glob: $(inputs.output_name)\n\n    doc: File with removed duplicates\nbaseCommand: [samtools, rmdup]\ndoc: |\n  Remove potential PCR duplicates: if multiple read pairs have identical external coordinates, only retain the pair with highest mapping quality. In the paired-end mode, this command ONLY works with FR orientation and requires ISIZE is correctly set. It does not work for unpaired reads (e.g. two ends mapped to different chromosomes or orphan reads).\n\n  Usage: samtools rmdup [-sS] <input.srt.bam> <out.bam>\n  Options:\n    -s       Remove duplicates for single-end reads. By default, the command works for paired-end reads only.\n    -S       Treat paired-end reads and single-end reads.\n\n`,
-            path: '/Dockstore.cwl',
-          },
-        });
+      cy.intercept('GET', /refresh/, {
+        body: toolObject,
+      });
+      cy.intercept('GET', 'containers/40000', {
+        body: toolObject,
+      });
+      cy.intercept('GET', /dockerfile/, {
+        body: { content: 'FROM ubuntu:16.10' },
+      });
+      cy.intercept('GET', /cwl/, {
+        body: {
+          content: `#!/usr/bin/env cwl-runner\n\nclass: CommandLineTool\n\ndct:contributor:\n  foaf:name: Andy Yang\n  foaf:mbox: mailto:ayang@oicr.on.ca\ndct:creator:\n  '@id': http://orcid.org/0000-0001-9102-5681\n  foaf:name: Andrey Kartashov\n  foaf:mbox: mailto:Andrey.Kartashov@cchmc.org\ndct:description: 'Developed at Cincinnati Children’s Hospital Medical Center for the\n  CWL consortium http://commonwl.org/ Original URL: https://github.com/common-workflow-language/workflows'\ncwlVersion: v1.0\n\nrequirements:\n- class: DockerRequirement\n  dockerPull: quay.io/cancercollaboratory/dockstore-tool-samtools-rmdup:1.0\ninputs:\n  single_end:\n    type: boolean\n    default: false\n    doc: |\n      rmdup for SE reads\n  input:\n    type: File\n    inputBinding:\n      position: 2\n\n    doc: |\n      Input bam file.\n  output_name:\n    type: string\n    inputBinding:\n      position: 3\n\n  pairend_as_se:\n    type: boolean\n    default: false\n    doc: |\n      treat PE reads as SE in rmdup (force -s)\noutputs:\n  rmdup:\n    type: File\n    outputBinding:\n      glob: $(inputs.output_name)\n\n    doc: File with removed duplicates\nbaseCommand: [samtools, rmdup]\ndoc: |\n  Remove potential PCR duplicates: if multiple read pairs have identical external coordinates, only retain the pair with highest mapping quality. In the paired-end mode, this command ONLY works with FR orientation and requires ISIZE is correctly set. It does not work for unpaired reads (e.g. two ends mapped to different chromosomes or orphan reads).\n\n  Usage: samtools rmdup [-sS] <input.srt.bam> <out.bam>\n  Options:\n    -s       Remove duplicates for single-end reads. By default, the command works for paired-end reads only.\n    -S       Treat paired-end reads and single-end reads.\n\n`,
+          path: '/Dockstore.cwl',
+        },
+      });
       // Make sure page is loaded first
       cy.get('#tool-path').should('be.visible');
       cy.get('#register_tool_button').click();
@@ -429,30 +404,21 @@ describe('Dockstore my tools', () => {
         tool_path: 'images.sbgenomics.com/testnamespace/testname',
         custom_docker_registry_path: 'images.sbgenomics.com',
       };
-      cy.server()
-        .route({
-          method: 'GET',
-          url: /refresh/,
-          response: toolObject,
-        })
-        .route({
-          method: 'GET',
-          url: 'containers/40000',
-          response: toolObject,
-        })
-        .route({
-          method: 'GET',
-          url: /dockerfile/,
-          response: { content: 'FROM ubuntu:16.10' },
-        })
-        .route({
-          method: 'GET',
-          url: /cwl/,
-          response: {
-            content: `#!/usr/bin/env cwl-runner\n\nclass: CommandLineTool\n\ndct:contributor:\n  foaf:name: Andy Yang\n  foaf:mbox: mailto:ayang@oicr.on.ca\ndct:creator:\n  '@id': http://orcid.org/0000-0001-9102-5681\n  foaf:name: Andrey Kartashov\n  foaf:mbox: mailto:Andrey.Kartashov@cchmc.org\ndct:description: 'Developed at Cincinnati Children’s Hospital Medical Center for the\n  CWL consortium http://commonwl.org/ Original URL: https://github.com/common-workflow-language/workflows'\ncwlVersion: v1.0\n\nrequirements:\n- class: DockerRequirement\n  dockerPull: quay.io/cancercollaboratory/dockstore-tool-samtools-rmdup:1.0\ninputs:\n  single_end:\n    type: boolean\n    default: false\n    doc: |\n      rmdup for SE reads\n  input:\n    type: File\n    inputBinding:\n      position: 2\n\n    doc: |\n      Input bam file.\n  output_name:\n    type: string\n    inputBinding:\n      position: 3\n\n  pairend_as_se:\n    type: boolean\n    default: false\n    doc: |\n      treat PE reads as SE in rmdup (force -s)\noutputs:\n  rmdup:\n    type: File\n    outputBinding:\n      glob: $(inputs.output_name)\n\n    doc: File with removed duplicates\nbaseCommand: [samtools, rmdup]\ndoc: |\n  Remove potential PCR duplicates: if multiple read pairs have identical external coordinates, only retain the pair with highest mapping quality. In the paired-end mode, this command ONLY works with FR orientation and requires ISIZE is correctly set. It does not work for unpaired reads (e.g. two ends mapped to different chromosomes or orphan reads).\n\n  Usage: samtools rmdup [-sS] <input.srt.bam> <out.bam>\n  Options:\n    -s       Remove duplicates for single-end reads. By default, the command works for paired-end reads only.\n    -S       Treat paired-end reads and single-end reads.\n\n`,
-            path: '/Dockstore.cwl',
-          },
-        });
+      cy.intercept('GET', /refresh/, {
+        body: toolObject,
+      });
+      cy.intercept('GET', 'containers/40000', {
+        body: toolObject,
+      });
+      cy.intercept('GET', /dockerfile/, {
+        body: { content: 'FROM ubuntu:16.10' },
+      });
+      cy.intercept('GET', /cwl/, {
+        body: {
+          content: `#!/usr/bin/env cwl-runner\n\nclass: CommandLineTool\n\ndct:contributor:\n  foaf:name: Andy Yang\n  foaf:mbox: mailto:ayang@oicr.on.ca\ndct:creator:\n  '@id': http://orcid.org/0000-0001-9102-5681\n  foaf:name: Andrey Kartashov\n  foaf:mbox: mailto:Andrey.Kartashov@cchmc.org\ndct:description: 'Developed at Cincinnati Children’s Hospital Medical Center for the\n  CWL consortium http://commonwl.org/ Original URL: https://github.com/common-workflow-language/workflows'\ncwlVersion: v1.0\n\nrequirements:\n- class: DockerRequirement\n  dockerPull: quay.io/cancercollaboratory/dockstore-tool-samtools-rmdup:1.0\ninputs:\n  single_end:\n    type: boolean\n    default: false\n    doc: |\n      rmdup for SE reads\n  input:\n    type: File\n    inputBinding:\n      position: 2\n\n    doc: |\n      Input bam file.\n  output_name:\n    type: string\n    inputBinding:\n      position: 3\n\n  pairend_as_se:\n    type: boolean\n    default: false\n    doc: |\n      treat PE reads as SE in rmdup (force -s)\noutputs:\n  rmdup:\n    type: File\n    outputBinding:\n      glob: $(inputs.output_name)\n\n    doc: File with removed duplicates\nbaseCommand: [samtools, rmdup]\ndoc: |\n  Remove potential PCR duplicates: if multiple read pairs have identical external coordinates, only retain the pair with highest mapping quality. In the paired-end mode, this command ONLY works with FR orientation and requires ISIZE is correctly set. It does not work for unpaired reads (e.g. two ends mapped to different chromosomes or orphan reads).\n\n  Usage: samtools rmdup [-sS] <input.srt.bam> <out.bam>\n  Options:\n    -s       Remove duplicates for single-end reads. By default, the command works for paired-end reads only.\n    -S       Treat paired-end reads and single-end reads.\n\n`,
+          path: '/Dockstore.cwl',
+        },
+      });
       cy.get('#tool-path').should('be.visible');
       cy.get('#register_tool_button').click();
       cy.contains('Create tool with descriptor(s) on remote sites').should('be.visible').click();
@@ -508,12 +474,9 @@ describe('Dockstore my tools', () => {
     });
   });
   it('Should refresh individual repo when refreshing organization', () => {
-    cy.server();
     cy.fixture('refreshedTool5').then((json) => {
-      cy.route({
-        method: 'GET',
-        url: '/api/containers/5/refresh',
-        response: json,
+      cy.intercept('GET', '/api/containers/5/refresh', {
+        body: json,
       }).as('refreshEntry');
     });
     cy.visit('/my-tools/quay.io/A2/a');
@@ -554,11 +517,8 @@ describe('Should handle no tools correctly', () => {
   resetDB();
   setTokenUserViewPortCurator(); // Curator has no tools
   beforeEach(() => {
-    cy.server();
-    cy.route({
-      method: 'GET',
-      url: /github.com\/organizations/,
-      response: ['dockstore'],
+    cy.intercept('GET', /github.com\/organizations/, {
+      body: ['dockstore'],
     });
   });
   it('My tools should prompt to register a tool', () => {

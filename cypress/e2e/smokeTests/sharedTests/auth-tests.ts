@@ -53,8 +53,7 @@ function unpublishTool() {
 function deleteTool() {
   it('delete the tool', () => {
     storeToken();
-    cy.server();
-    cy.route('delete', '**/containers/**').as('containers');
+    cy.intercept('delete', '**/containers/**').as('containers');
     cy.contains('#deregisterButton', 'Delete').should('be.visible').click();
     cy.contains('div', 'Are you sure you wish to delete this tool?').within(() => {
       cy.contains('button', 'Delete').should('be.visible').click();
@@ -70,22 +69,21 @@ function registerQuayTool(repo: string, name: string) {
     storeToken();
 
     // define routes to watch for
-    cy.server();
     // get quay.io organization/namespaces accessible to user
-    cy.route('/api/users/dockerRegistries/quay.io/organizations').as('orgs');
-    cy.route('**/tokens').as('tokens');
-    cy.route('**/repositories').as('repos');
-    cy.route('**/containers').as('containers');
-    cy.route('post', '**/publish').as('publish');
+    cy.intercept('/api/users/dockerRegistries/quay.io/organizations').as('orgs');
+    cy.intercept('**/tokens').as('tokens');
+    cy.intercept('**/repositories').as('repos');
+    cy.intercept('**/containers').as('containers');
+    cy.intercept('post', '**/publish').as('publish');
 
     cy.visit('/my-tools');
     cy.wait('@tokens');
     // click thru the steps of registering a tool
     cy.wait(hardcodedWaitTime); // The page loads asynchronously, and causes a detached DOM to be grabbed by Cypress. This is a 'fix'.
     cy.get('#register_tool_button').should('be.visible').click();
-    cy.wait('@orgs');
     cy.get('mat-dialog-content').within(() => {
       cy.contains('mat-radio-button', 'Quickly register Quay.io tools').click();
+      cy.wait('@orgs');
       cy.contains('button', 'Next').should('be.visible').click();
       cy.contains('mat-form-field', 'Select namespace').should('be.visible').click();
     });
@@ -111,9 +109,8 @@ function registerRemoteSitesTool(repo: string, name: string) {
   it('register and publish - create tool remote sites option', () => {
     storeToken();
     // define routes to watch for
-    cy.server();
-    cy.route('post', '**/publish').as('publish');
-    cy.route('**/tokens').as('tokens');
+    cy.intercept('post', '**/publish').as('publish');
+    cy.intercept('**/tokens').as('tokens');
 
     cy.visit('/my-tools');
     cy.wait('@tokens');
@@ -139,16 +136,15 @@ function registerToolOnDockstore(repo: string, name: string) {
     storeToken();
 
     // define routes to watch for
-    cy.server();
     // for some reason watching and waiting for all the responses is still flaky
-    cy.route('**/containers').as('containers');
-    cy.route('**/tokens').as('tokens');
-    cy.route('**/user').as('user');
-    cy.route('**/extended').as('extended');
-    cy.route('**/metadata').as('metadata');
-    cy.route('**/dockerRegistryList').as('docker');
-    cy.route('**/sourceControlList').as('sourceControl');
-    cy.route('**/notifications').as('notifications');
+    cy.intercept('**/containers').as('containers');
+    cy.intercept('**/tokens').as('tokens');
+    cy.intercept('**/user').as('user');
+    cy.intercept('**/extended').as('extended');
+    cy.intercept('**/metadata').as('metadata');
+    cy.intercept('**/dockerRegistryList').as('docker');
+    cy.intercept('**/sourceControlList').as('sourceControl');
+    cy.intercept('**/notifications').as('notifications');
 
     cy.visit('/my-tools');
     cy.wait('@containers');
@@ -233,19 +229,18 @@ function testWorkflow(registry: string, repo: string, name: string) {
       storeToken();
 
       // define routes to watch for
-      cy.server();
-      cy.route('**/tokens').as('tokens');
-      cy.route('**/workflows/path/workflow/**').as('workflow');
+      cy.intercept('**/tokens').as('tokens');
+      cy.intercept('**/workflows/path/workflow/**').as('workflow');
 
       cy.visit(`/my-workflows`);
       cy.wait('@tokens');
       cy.wait('@workflow');
 
       //  refresh stubbed workflow to full and publish
-      cy.route('**/refresh?hardRefresh=false').as('refresh');
+      cy.intercept('**/refresh?hardRefresh=false').as('refresh');
       cy.get('[data-cy=refreshButton]').click();
       cy.wait('@refresh');
-      cy.route('post', '**/publish').as('publish');
+      cy.intercept('post', '**/publish').as('publish');
       cy.contains('button', 'Publish').should('be.enabled').click();
       cy.wait('@publish');
     });
@@ -254,7 +249,6 @@ function testWorkflow(registry: string, repo: string, name: string) {
     // WARNING: don't actually snapshot since it can't be undone
     it('snapshot', () => {
       // define routes to watch for
-      cy.server();
 
       goToTab('Versions');
 
@@ -293,8 +287,7 @@ function testCollection(org: string, collection: string, registry: string, repo:
     it('be able to add an entry to the collection', () => {
       storeToken();
       // define routes to watch for
-      cy.server();
-      cy.route('post', '**/collections/**').as('postToCollection');
+      cy.intercept('post', '**/collections/**').as('postToCollection');
       cy.visit(`/containers/quay.io/${repo}/${name}:develop?tab=info`);
       cy.get('#addToolToCollectionButton').should('be.visible').click();
       cy.get('#addEntryToCollectionButton').should('be.disabled');
@@ -311,7 +304,6 @@ function testCollection(org: string, collection: string, registry: string, repo:
 
     it('be able to remove an entry from a collection', () => {
       storeToken();
-      cy.server();
       cy.visit(`/organizations/${org}/collections/${collection}`);
       cy.contains(`quay.io/${repo}/${name}`);
       cy.get('#removeEntryButton').should('be.visible').click();
@@ -320,7 +312,7 @@ function testCollection(org: string, collection: string, registry: string, repo:
       cy.visit(`/organizations/${org}`);
       cy.contains('Members').should('be.visible');
 
-      cy.route('**/tokens').as('tokens');
+      cy.intercept('**/tokens').as('tokens');
       cy.visit('/my-tools');
       cy.wait('@tokens');
     });

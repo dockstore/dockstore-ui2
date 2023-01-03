@@ -31,55 +31,40 @@ describe('Shared with me workflow test from my-workflows', () => {
   beforeEach(() => {
     // Mock the shared with me workflows and permissions
     // TODO: There is probably a better approach to this which would allow for deeper testing of shared workflows
-    cy.server();
 
-    cy.route({
-      method: 'GET',
-      url: /readertest\/actions/,
-      response: ['READ'],
+    cy.intercept('GET', /readertest\/actions/, {
+      body: ['READ'],
     }).as('readerActions');
 
-    cy.route({
-      method: 'GET',
-      url: /writertest\/actions/,
-      response: ['READ', 'WRITE'],
+    cy.intercept('GET', /writertest\/actions/, {
+      body: ['READ', 'WRITE'],
     }).as('writerActions');
 
-    cy.route({
-      method: 'GET',
-      url: /ownertest\/actions/,
-      response: ['READ', 'WRITE', 'SHARE', 'DELETE'],
+    cy.intercept('GET', /ownertest\/actions/, {
+      body: ['READ', 'WRITE', 'SHARE', 'DELETE'],
     }).as('ownerActions');
 
     const readerWorkflow = createHostedWorkflow('readertest', 200);
     const writerWorkflow = createHostedWorkflow('writertest', 201);
     const ownerWorkflow = createHostedWorkflow('ownertest', 202);
-    cy.route({
-      method: 'GET',
-      url: '*shared*',
-      response: [
+    cy.intercept('GET', '*shared*', {
+      body: [
         { role: 'READER', workflows: [readerWorkflow] },
         { role: 'WRITER', workflows: [writerWorkflow] },
         { role: 'OWNER', workflows: [ownerWorkflow] },
       ],
     }).as('getSharedWorkflows');
 
-    cy.route({
-      method: 'GET',
-      url: '*/workflows/200*',
-      response: readerWorkflow,
+    cy.intercept('GET', '*/workflows/200*', {
+      body: readerWorkflow,
     }).as('getReaderWorkflow');
 
-    cy.route({
-      method: 'GET',
-      url: '*/workflows/201*',
-      response: writerWorkflow,
+    cy.intercept('GET', '*/workflows/201*', {
+      body: writerWorkflow,
     }).as('getWriterWorkflow');
 
-    cy.route({
-      method: 'GET',
-      url: '*/workflows/202*',
-      response: ownerWorkflow,
+    cy.intercept('GET', '*/workflows/202*', {
+      body: ownerWorkflow,
     }).as('getOwnerWorkflow');
 
     // Visit my-worklfows page

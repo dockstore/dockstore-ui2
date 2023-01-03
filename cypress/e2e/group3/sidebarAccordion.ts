@@ -21,11 +21,8 @@ describe('Mock create a GitHub repository', () => {
   setTokenUserViewPort();
 
   beforeEach(() => {
-    cy.server();
-    cy.route({
-      method: 'GET',
-      url: /github.com\/organizations/,
-      response: ['dockstore'],
+    cy.intercept('GET', /github.com\/organizations/, {
+      body: ['dockstore'],
     });
   });
 

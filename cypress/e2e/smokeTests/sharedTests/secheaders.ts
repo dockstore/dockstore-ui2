@@ -7,18 +7,17 @@ before(() => {
 // Function to check that the value of the response header "headerKey"
 // contains the substring "containsValue".
 function checkHeaderValueContains(url: string, headerKey: string, containsValue: string) {
-    cy.request(url).then((resp) => {
-        expect(resp.headers).to.have.property(headerKey);
-        const headerValue = resp.headers[headerKey];
-        expect(headerValue).to.include(containsValue);
-    });
+  cy.request(url).then((resp) => {
+    expect(resp.headers).to.have.property(headerKey);
+    const headerValue = resp.headers[headerKey];
+    expect(headerValue).to.include(containsValue);
+  });
 }
-
 
 describe('Test for security headers', () => {
   it('Check for presence of headers in response', () => {
     cy.request('/').then((resp) => {
-        expect(resp).to.have.property('headers');
+      expect(resp).to.have.property('headers');
     });
   });
 
@@ -37,5 +36,4 @@ describe('Test for security headers', () => {
   it('Check expect-ct headers in response', () => {
     checkHeaderValueContains('/', 'expect-ct', 'enforce, max-age=');
   });
-
 });
