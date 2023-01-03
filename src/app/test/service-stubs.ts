@@ -33,7 +33,6 @@ import { WorkflowVersion } from './../shared/swagger/model/workflowVersion';
 import { bitbucketToken, gitHubToken, gitLabToken, quayToken, sampleTag, sampleWorkflow1, updatedWorkflow } from './mocked-objects';
 import RoleEnum = Permission.RoleEnum;
 import DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
-import { ga4ghPath } from '../shared/constants';
 
 export class ContainerStubService {
   private copyBtnSource = new BehaviorSubject<any>(null); // This is the currently selected copy button.
@@ -85,8 +84,7 @@ export class SourceFileTabsStubService {
     return '';
   }
   isPrimaryDescriptor(path): boolean {
-    const primaryPaths = [];
-    return primaryPaths.includes(path);
+    return false;
   }
   getPrimaryPath(
     path: string,
