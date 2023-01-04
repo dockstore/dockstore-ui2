@@ -62,7 +62,7 @@ export class VersionsContainerComponent extends Versions implements OnInit, OnCh
   ) {
     super(dockstoreService, dateService, sessionQuery);
     this.sortColumn = 'last_built';
-    this.displayedColumns = ['name', 'reference', 'last_built', 'valid', 'hidden', 'verified', 'actions'];
+    this.displayedColumns = ['name', 'reference', 'last_built', 'descriptor_type_versions', 'valid', 'hidden', 'verified', 'actions'];
   }
 
   ngOnInit() {

@@ -89,6 +89,21 @@
       </td>
     </ng-container>
 
+    <ng-container matColumnDef="descriptor_type_versions">
+      <th
+        scope="col"
+        mat-header-cell
+        *matHeaderCellDef
+        mat-sort-header
+        matTooltip="The language versions used by the version's the descriptor file(s)."
+      >
+        Language Versions
+      </th>
+      <td mat-cell *matCellDef="let version">
+        <span>{{ this.workflow.descriptorType | descriptorLanguageVersions: version.descriptorTypeVersions }}</span>
+      </td>
+    </ng-container>
+
     <ng-container matColumnDef="valid">
       <th
         scope="col"
