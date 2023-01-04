@@ -108,4 +108,8 @@ export class OrganizationsComponent extends Base implements OnInit {
   clearSearch() {
     this.organizationSearchForm.get('name').setValue('');
   }
+
+  brace(org) {
+    return '{' + org.name + '}';
+  }
 }
