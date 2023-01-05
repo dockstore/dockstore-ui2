@@ -9,7 +9,6 @@ import { FileService } from 'app/shared/file.service';
 import { SourceFile, ToolDescriptor, WorkflowVersion } from 'app/shared/openapi';
 import { finalize } from 'rxjs/operators';
 import { SourceFileTabsService } from './source-file-tabs.service';
-
 import { WorkflowQuery } from '../shared/state/workflow.query';
 import { Observable } from 'rxjs';
 
