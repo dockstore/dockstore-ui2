@@ -59,7 +59,7 @@
                   </mat-select-trigger>
                   <mat-option [value]="file" *ngFor="let file of fileTab.value">
                     {{ file.path }}
-                    <span *ngIf="primaryDescriptorPath == file.path" class="bubble primary-bubble" data-cy="primary-descriptor-bubble"
+                    <span *ngIf="primaryDescriptorPath === file.path" class="bubble primary-bubble" data-cy="primary-descriptor-bubble"
                       >Primary</span
                     >
                   </mat-option>

@@ -6,7 +6,6 @@ import { SourceFile, ToolDescriptor, WorkflowsService, WorkflowVersion } from 'a
 import { Validation } from 'app/shared/swagger';
 import { Observable } from 'rxjs';
 import { ga4ghWorkflowIdPrefix } from '../shared/constants';
-import { InfoTabService } from '../workflow/info-tab/info-tab.service';
 
 @Injectable({
   providedIn: 'root',
