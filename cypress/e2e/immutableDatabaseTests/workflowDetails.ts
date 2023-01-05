@@ -136,6 +136,7 @@ describe('Test primary descriptor bubble', () => {
     cy.get('[data-cy=primary-descriptor-bubble]').should('be.visible');
     cy.get('mat-form-field').click();
     cy.contains('.mat-option-text', 'arguments.cwl').click();
+    cy.get('[data-cy=primary-descriptor-bubble]').should('not.exist');
     cy.get('[data-cy=go-to-primary-icon]').should('be.visible').click();
     cy.get('[data-cy=primary-descriptor-bubble]').should('be.visible');
   });

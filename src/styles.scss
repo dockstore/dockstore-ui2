@@ -933,12 +933,6 @@ app-workflow-sidebar-accordion
   background-color: mat.get-color-from-palette($kim-primary, 3);
   margin: 0 1.25rem;
 }
-.primary-bubble {
-  color: white !important;
-  background-color: mat.get-color-from-palette($kim-primary, 3);
-  margin-left: 1.5rem;
-  height: 100% !important;
-}
 
 // Remove any default link styling from a bubble, and ensure the font-weight is correct.
 a.bubble,

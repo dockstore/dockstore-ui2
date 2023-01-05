@@ -224,10 +224,7 @@ export class InfoTabService {
       descriptorPath
     );
   }
-  getPrimaryPath(path: string, versionName: string, descriptorType: string, descriptorPath: string, entryType: EntryType): string {
-    const TRSLink = this.getTRSLink(path, versionName, descriptorType, descriptorPath, entryType);
-    return TRSLink.split('/descriptor/', 2)[1];
-  }
+
   getTRSId(workflow: Workflow | undefined, entryType: EntryType): string {
     if (!workflow) {
       return '';

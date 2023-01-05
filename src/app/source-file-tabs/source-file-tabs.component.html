@@ -40,7 +40,7 @@
               <span class="no-wrap" *ngIf="fileTab.value.length > 10"> {{ fileName }} </span>
               <span
                 *ngIf="isCurrentFilePrimary && fileTab.value.length > 10"
-                class="bubble primary-bubble primary-bubble-header"
+                class="bubble preview-bubble primary-bubble-header"
                 data-cy="primary-descriptor-bubble"
               >
                 Primary
@@ -48,18 +48,18 @@
 
               <mat-form-field *ngIf="fileTab.value.length <= 10" class="w-50">
                 <mat-select [value]="currentFile" (selectionChange)="matSelectChange($event)">
-                  <mat-select-trigger [value]="currentFile">
+                  <mat-select-trigger>
                     {{ currentFile.path }}
                     <span
                       *ngIf="isCurrentFilePrimary"
-                      class="bubble primary-bubble primary-bubble-header"
+                      class="bubble preview-bubble primary-bubble-header"
                       data-cy="primary-descriptor-bubble"
                       >Primary</span
                     >
                   </mat-select-trigger>
                   <mat-option [value]="file" *ngFor="let file of fileTab.value">
                     {{ file.path }}
-                    <span *ngIf="isPrimaryDescriptor(file.path)" class="bubble primary-bubble" data-cy="primary-descriptor-bubble"
+                    <span *ngIf="primaryDescriptorPath == file.path" class="bubble primary-bubble" data-cy="primary-descriptor-bubble"
                       >Primary</span
                     >
                   </mat-option>

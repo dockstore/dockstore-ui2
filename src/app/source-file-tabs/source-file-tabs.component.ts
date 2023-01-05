@@ -12,7 +12,6 @@ import { SourceFileTabsService } from './source-file-tabs.service';
 
 import { WorkflowQuery } from '../shared/state/workflow.query';
 import { Observable } from 'rxjs';
-import { SessionQuery } from '../shared/session/session.query';
 
 @Component({
   selector: 'app-source-file-tabs',
@@ -24,8 +23,7 @@ export class SourceFileTabsComponent implements OnChanges {
     private fileService: FileService,
     private sourceFileTabsService: SourceFileTabsService,
     private matDialog: MatDialog,
-    private workflowQuery: WorkflowQuery,
-    private sessionQuery: SessionQuery
+    private workflowQuery: WorkflowQuery
   ) {
     this.isPublished$ = this.workflowQuery.workflowIsPublished$;
     this.primaryDescriptors = [];
@@ -46,6 +44,7 @@ export class SourceFileTabsComponent implements OnChanges {
   downloadFilePath: string;
   fileTabs: Map<string, SourceFile[]>;
   primaryDescriptors: SourceFile[] | null;
+  primaryDescriptorPath: string;
   isCurrentFilePrimary: boolean | null;
   protected isPublished$: Observable<boolean>;
   /**
@@ -82,6 +81,7 @@ export class SourceFileTabsComponent implements OnChanges {
           sourceFiles.forEach((sourceFile) => {
             if (this.isPrimaryDescriptor(sourceFile.path)) {
               this.primaryDescriptors.push(sourceFile);
+              this.primaryDescriptorPath = sourceFile.path;
             }
           });
         },
@@ -139,7 +139,6 @@ export class SourceFileTabsComponent implements OnChanges {
           versionName: this.version.name,
           descriptorType: this.descriptorType,
           versionPath: this.version.workflow_path,
-          entryType: this.sessionQuery.getValue().entryType,
         },
       })
       .afterClosed()
@@ -156,13 +155,7 @@ export class SourceFileTabsComponent implements OnChanges {
   }
 
   isPrimaryDescriptor(path: string): boolean {
-    const primaryPaths = this.sourceFileTabsService.getPrimaryPath(
-      this.entryPath,
-      this.version.name,
-      this.descriptorType,
-      this.version.workflow_path,
-      this.sessionQuery.getValue().entryType
-    );
+    const primaryPaths = this.sourceFileTabsService.getPrimaryPaths(this.descriptorType, this.version.workflow_path);
     return primaryPaths.includes(path);
   }
 }

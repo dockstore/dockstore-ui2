@@ -86,13 +86,7 @@ export class SourceFileTabsStubService {
   isPrimaryDescriptor(path): boolean {
     return false;
   }
-  getPrimaryPath(
-    path: string,
-    versionName: string,
-    descriptorType: ToolDescriptor.TypeEnum,
-    descriptorPath: string,
-    entryType: EntryType
-  ): string[] {
+  getPrimaryPaths(descriptorType: ToolDescriptor.TypeEnum, descriptorPath: string): string[] {
     return [];
   }
 }

@@ -5,7 +5,6 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { SourceFile } from 'app/shared/swagger';
 import { SourceFileTabsService } from '../source-file-tabs/source-file-tabs.service';
 import { ToolDescriptor } from '../shared/openapi';
-import { EntryType } from '../shared/enum/entry-type';
 
 /** File node data with possible child nodes. */
 export interface FileNode {
@@ -59,7 +58,6 @@ export class FileTreeComponent {
       versionName: string;
       descriptorType: ToolDescriptor.TypeEnum;
       versionPath: string;
-      entryType: EntryType;
     }
   ) {
     this.treeFlattener = new MatTreeFlattener(this.transformer, this.getLevel, this.isExpandable, this.getChildren);
@@ -149,15 +147,7 @@ export class FileTreeComponent {
   }
 
   isPrimaryDescriptor(path: string): boolean {
-    const primaryPaths = this.sourceFileTabsService.getPrimaryPath(
-      this.data.entryPath,
-      this.data.versionName,
-      this.data.descriptorType,
-      this.data.versionPath,
-      this.data.entryType
-    );
-    console.log(primaryPaths);
-    console.log(path);
+    const primaryPaths = this.sourceFileTabsService.getPrimaryPaths(this.data.descriptorType, this.data.versionPath);
     return primaryPaths.includes(path);
   }
 }
