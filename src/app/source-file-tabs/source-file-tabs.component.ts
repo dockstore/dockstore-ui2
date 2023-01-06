@@ -154,6 +154,6 @@ export class SourceFileTabsComponent implements OnChanges {
   }
 
   isPrimaryDescriptor(path: string): boolean {
-    return path == this.version.workflow_path;
+    return path === this.version.workflow_path;
   }
 }

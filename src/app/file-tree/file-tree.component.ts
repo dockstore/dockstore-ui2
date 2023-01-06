@@ -3,7 +3,6 @@ import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree'
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { SourceFile } from 'app/shared/swagger';
-import { SourceFileTabsService } from '../source-file-tabs/source-file-tabs.service';
 import { ToolDescriptor } from '../shared/openapi';
 
 /** File node data with possible child nodes. */
@@ -49,7 +48,6 @@ export class FileTreeComponent {
   primaryDescriptorPath: string;
   constructor(
     private matDialogRef: MatDialogRef<FileTreeComponent>,
-    private sourceFileTabsService: SourceFileTabsService,
     @Inject(MAT_DIALOG_DATA)
     public data: {
       files: SourceFile[];

@@ -113,9 +113,6 @@ import { TosBannerComponent } from './tosBanner/tos-banner.component';
 import { ExporterStepComponent } from './workflow/snapshot-exporter-modal/exporter-step/exporter-step.component';
 import { SnaphotExporterModalComponent } from './workflow/snapshot-exporter-modal/snaphot-exporter-modal.component';
 import { ViewService } from './workflow/view/view.service';
-import { InfoTabService } from './workflow/info-tab/info-tab.service';
-import { WorkflowModule } from './shared/modules/workflow.module';
-import { SourceFileTabsService } from './source-file-tabs/source-file-tabs.service';
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   showDelay: 500,
@@ -180,7 +177,6 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     HeaderModule,
     ListContainersModule,
     ListWorkflowsModule,
-    WorkflowModule,
     ClipboardModule,
     OrderByModule,
     FlexLayoutModule,
@@ -237,8 +233,6 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     TosBannerService,
     ConfigurationService,
     OrgLogoService,
-    InfoTabService,
-    SourceFileTabsService,
     {
       provide: APP_INITIALIZER,
       useFactory: configurationServiceFactory,

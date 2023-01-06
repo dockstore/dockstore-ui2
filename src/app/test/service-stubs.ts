@@ -83,9 +83,6 @@ export class SourceFileTabsStubService {
   getDescriptorPath(descriptorType: ToolDescriptor.TypeEnum, filePath: string, versionName: string): string {
     return '';
   }
-  isPrimaryDescriptor(path): boolean {
-    return false;
-  }
 }
 
 export class QueryBuilderStubService {
