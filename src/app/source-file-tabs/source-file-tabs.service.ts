@@ -128,9 +128,4 @@ export class SourceFileTabsService {
     const id = ga4ghWorkflowIdPrefix + fileId;
     return this.fileService.getDownloadFilePath(id, versionName, type, relativePath);
   }
-  getPrimaryPaths(descriptorType: ToolDescriptor.TypeEnum, descriptorPath: string): string[] {
-    const primaryPath = [];
-    primaryPath.push(descriptorPath);
-    return primaryPath;
-  }
 }

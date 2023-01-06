@@ -154,7 +154,6 @@ export class SourceFileTabsComponent implements OnChanges {
   }
 
   isPrimaryDescriptor(path: string): boolean {
-    const primaryPaths = this.sourceFileTabsService.getPrimaryPaths(this.descriptorType, this.version.workflow_path);
-    return primaryPaths.includes(path);
+    return path == this.version.workflow_path;
   }
 }

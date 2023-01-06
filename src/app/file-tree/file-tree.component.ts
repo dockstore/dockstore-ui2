@@ -147,7 +147,6 @@ export class FileTreeComponent {
   }
 
   isPrimaryDescriptor(path: string): boolean {
-    const primaryPaths = this.sourceFileTabsService.getPrimaryPaths(this.data.descriptorType, this.data.versionPath);
-    return primaryPaths.includes(path);
+    return path == this.data.versionPath;
   }
 }
