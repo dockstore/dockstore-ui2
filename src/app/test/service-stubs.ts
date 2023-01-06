@@ -88,12 +88,6 @@ export class SourceFileTabsStubService {
   }
 }
 
-export class InfoTabServiceStub {
-  getPrimaryPath(path: string, versionName: string, descriptorType: string, descriptorPath: string, entryType: EntryType): string {
-    return '';
-  }
-}
-
 export class QueryBuilderStubService {
   getTagCloudQuery(type: string): string {
     return '';
