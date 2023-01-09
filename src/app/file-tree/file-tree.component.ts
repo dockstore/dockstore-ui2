@@ -3,6 +3,7 @@ import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree'
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { SourceFile } from 'app/shared/swagger';
+import { ToolDescriptor } from '../shared/openapi';
 
 /** File node data with possible child nodes. */
 export interface FileNode {
@@ -44,14 +45,24 @@ export class FileTreeComponent {
 
   /** The MatTreeFlatDataSource connects the control and flattener to provide data. */
   dataSource: MatTreeFlatDataSource<FileNode, FlatTreeNode>;
+  primaryDescriptorPath: string;
   constructor(
     private matDialogRef: MatDialogRef<FileTreeComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { files: SourceFile[]; selectedFile: SourceFile }
+    @Inject(MAT_DIALOG_DATA)
+    public data: {
+      files: SourceFile[];
+      selectedFile: SourceFile;
+      entryPath: string;
+      versionName: string;
+      descriptorType: ToolDescriptor.TypeEnum;
+      versionPath: string;
+    }
   ) {
     this.treeFlattener = new MatTreeFlattener(this.transformer, this.getLevel, this.isExpandable, this.getChildren);
     this.treeControl = new FlatTreeControl(this.getLevel, this.isExpandable);
     this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
     this.dataSource.data = this.convertSourceFilesToTree(data.files);
+    this.primaryDescriptorPath = '';
   }
 
   /** Transform the data to something the tree can read. */
@@ -105,6 +116,9 @@ export class FileTreeComponent {
             children: accumulator[pathSegment].result,
             absolutePath: '/' + array.slice(0, index + 1).join('/'),
           });
+          if (this.isPrimaryDescriptor(pathSegment)) {
+            this.primaryDescriptorPath = pathSegment;
+          }
         }
         return accumulator[pathSegment];
       }, level);
@@ -128,5 +142,9 @@ export class FileTreeComponent {
     if (!filterText) {
       this.treeControl.collapseAll();
     }
+  }
+
+  isPrimaryDescriptor(path: string): boolean {
+    return path == this.data.versionPath;
   }
 }

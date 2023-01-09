@@ -13,9 +13,10 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { goToTab, isActiveTab, setTokenUserViewPort } from '../../support/commands';
+import { goToTab, isActiveTab, resetDB, setTokenUserViewPort } from '../../support/commands';
 
 describe('Variations of URL', () => {
+  resetDB();
   setTokenUserViewPort();
   it('Should redirect to canonical url (encoding)', () => {
     cy.visit('/workflows/github.com%2FA%2Fl');
@@ -124,5 +125,19 @@ describe('Find workflow by alias', () => {
     });
     cy.visit('/aliases/workflows/fakeAlias');
     cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l');
+  });
+});
+
+describe('Test primary descriptor bubble', () => {
+  resetDB();
+  it('go to a workflow with multiple files', () => {
+    cy.visit('/workflows/github.com/A/l');
+    goToTab('Files');
+    cy.get('[data-cy=primary-descriptor-bubble]').should('be.visible');
+    cy.get('mat-form-field').click();
+    cy.contains('.mat-option-text', 'arguments.cwl').click();
+    cy.get('[data-cy=primary-descriptor-bubble]').should('not.exist');
+    cy.get('[data-cy=go-to-primary-icon]').should('be.visible').click();
+    cy.get('[data-cy=primary-descriptor-bubble]').should('be.visible');
   });
 });

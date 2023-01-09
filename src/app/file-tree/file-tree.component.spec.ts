@@ -1,9 +1,13 @@
-import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTreeModule } from '@angular/material/tree';
 import { SourceFile } from 'app/shared/swagger';
+import { DescriptorLanguageService } from '../shared/entry/descriptor-language.service';
+import { SourceFileTabsService } from '../source-file-tabs/source-file-tabs.service';
+import { DescriptorLanguageStubService, SourceFileTabsStubService } from '../test/service-stubs';
 
 import { FileTreeComponent } from './file-tree.component';
 
@@ -15,10 +19,12 @@ describe('FileTreeComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [FileTreeComponent],
-        imports: [MatButtonModule, MatIconModule, MatTreeModule, MatDialogModule],
+        imports: [MatButtonModule, MatIconModule, MatTreeModule, MatDialogModule, HttpClientTestingModule],
         providers: [
           { provide: MatDialogRef, useValue: {} },
           { provide: MAT_DIALOG_DATA, useValue: [] },
+          { provide: SourceFileTabsService, useClass: SourceFileTabsStubService },
+          { provide: DescriptorLanguageService, useClass: DescriptorLanguageStubService },
         ],
       }).compileComponents();
     })

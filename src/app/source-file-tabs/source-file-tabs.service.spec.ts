@@ -4,19 +4,22 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DescriptorTypeCompatService } from 'app/shared/descriptor-type-compat.service';
 import { FileService } from 'app/shared/file.service';
 import { WorkflowsService } from 'app/shared/swagger';
-import { DescriptorTypeCompatStubService, FileStubService, WorkflowsStubService } from 'app/test/service-stubs';
+import { DescriptorTypeCompatStubService, FileStubService, ProviderStubService, WorkflowsStubService } from 'app/test/service-stubs';
+import { ProviderService } from '../shared/provider.service';
 import { SourceFileTabsService } from './source-file-tabs.service';
 import { DescriptorLanguageService } from '../shared/entry/descriptor-language.service';
+import { WorkflowModule } from '../shared/modules/workflow.module';
 
 describe('SourceFileTabsService', () => {
   beforeEach(() =>
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [HttpClientTestingModule, WorkflowModule],
       providers: [
         { provide: FileService, useClass: FileStubService },
         { provide: WorkflowsService, useClass: WorkflowsStubService },
         { provide: DescriptorTypeCompatService, useClass: DescriptorTypeCompatStubService },
         { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
+        { provide: ProviderService, useClass: ProviderStubService },
       ],
     })
   );

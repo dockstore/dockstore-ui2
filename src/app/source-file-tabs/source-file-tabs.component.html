@@ -31,16 +31,67 @@
         </div>
         <div *ngIf="fileTab.value.length > 0">
           <mat-toolbar color="primary">
-            <div class="w-100" fxLayout="row" fxLayoutAlign="space-between center">
-              <button color="accent" *ngIf="fileTab.value.length > 10" mat-raised-button (click)="openFileTree(fileTab.value)">
-                Select File
-              </button>
-              <span class="no-wrap" *ngIf="fileTab.value.length > 10"> {{ fileName }} </span>
-              <mat-form-field *ngIf="fileTab.value.length <= 10" class="w-50">
-                <mat-select [value]="currentFile" (selectionChange)="matSelectChange($event)">
-                  <mat-option [value]="file" *ngFor="let file of fileTab.value"> {{ file.path }} </mat-option>
-                </mat-select>
-              </mat-form-field>
+            <div fxFlex="grow" fxLayout="row" fxLayoutAlign="space-between center">
+              <span *ngIf="fileTab.value.length > 10">
+                <button color="accent" data-cy="select-file-button" mat-raised-button (click)="openFileTree(fileTab.value)">
+                  Select File
+                </button>
+              </span>
+              <span fxFlex="40">
+                <span *ngIf="fileTab.value.length > 10" fxLayoutAlign="center center">
+                  <span class="no-wrap"> {{ fileName }} </span>
+                  <span
+                    *ngIf="isCurrentFilePrimary"
+                    class="bubble preview-bubble primary-bubble-header"
+                    data-cy="primary-descriptor-bubble"
+                  >
+                    Primary
+                  </span>
+                  <a
+                    color="secondary"
+                    type="button"
+                    *ngIf="!isCurrentFilePrimary && fileTab.key === 'Descriptor Files'"
+                    (click)="selectFile(primaryDescriptors[0])"
+                    matTooltip="View the primary descriptor"
+                    mat-icon-button
+                    data-cy="go-to-primary-icon"
+                  >
+                    <mat-icon aria-hidden="false" aria-label="Navigate to Primary Descriptor file" fontIcon="home"></mat-icon>
+                  </a>
+                </span>
+
+                <mat-form-field class="w-100" *ngIf="fileTab.value.length <= 10">
+                  <mat-select [value]="currentFile" (selectionChange)="matSelectChange($event)">
+                    <mat-select-trigger>
+                      {{ currentFile.path }}
+                      <span
+                        *ngIf="isCurrentFilePrimary"
+                        class="bubble preview-bubble primary-bubble-header"
+                        data-cy="primary-descriptor-bubble"
+                        >Primary</span
+                      >
+                    </mat-select-trigger>
+                    <mat-option [value]="file" *ngFor="let file of fileTab.value">
+                      {{ file.path }}
+                      <span *ngIf="primaryDescriptorPath === file.path" class="bubble preview-bubble" data-cy="primary-descriptor-bubble"
+                        >Primary</span
+                      >
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <a
+                  color="secondary"
+                  type="button"
+                  *ngIf="!isCurrentFilePrimary && fileTab.value.length <= 10 && fileTab.key === 'Descriptor Files'"
+                  (click)="selectFile(primaryDescriptors[0])"
+                  matTooltip="View the primary descriptor"
+                  mat-icon-button
+                  data-cy="go-to-primary-icon"
+                >
+                  <mat-icon aria-hidden="false" aria-label="Navigate to Primary Descriptor file" fontIcon="home"></mat-icon>
+                </a>
+              </span>
               <span>
                 <a
                   mat-icon-button
