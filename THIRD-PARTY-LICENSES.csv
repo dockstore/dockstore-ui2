@@ -441,7 +441,7 @@
 "cssesc@3.0.0","MIT","https://github.com/mathiasbynens/cssesc"
 "custom-event@1.0.1","MIT","https://github.com/webmodules/custom-event"
 "cyclist@1.0.1","MIT","https://github.com/mafintosh/cyclist"
-"cypress@10.11.0","MIT","https://github.com/cypress-io/cypress"
+"cypress@11.2.0","MIT","https://github.com/cypress-io/cypress"
 "cytoscape-dagre@2.4.0","MIT","https://github.com/cytoscape/cytoscape.js-dagre"
 "cytoscape-popper@2.0.0","MIT","https://github.com/cytoscape/cytoscape.js-popper"
 "cytoscape@3.21.0","MIT","https://github.com/cytoscape/cytoscape.js"

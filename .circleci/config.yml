@@ -407,7 +407,7 @@ jobs:
   check_build_develop:
     working_directory: ~/repo
     docker:
-      - image: cimg/python:2.7
+      - image: cimg/python:3.11
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
