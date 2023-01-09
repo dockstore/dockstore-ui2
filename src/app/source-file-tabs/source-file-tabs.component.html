@@ -38,7 +38,7 @@
                 </button>
               </span>
               <span fxFlex="40">
-                <span *ngIf="fileTab.value.length > 10 && fileTab.key === 'Descriptor Files'" fxLayoutAlign="center center">
+                <span *ngIf="fileTab.value.length > 10" fxLayoutAlign="center center">
                   <span class="no-wrap"> {{ fileName }} </span>
                   <span
                     *ngIf="isCurrentFilePrimary"
@@ -50,7 +50,7 @@
                   <a
                     color="secondary"
                     type="button"
-                    *ngIf="!isCurrentFilePrimary"
+                    *ngIf="!isCurrentFilePrimary && fileTab.key === 'Descriptor Files'"
                     (click)="selectFile(primaryDescriptors[0])"
                     matTooltip="View the primary descriptor"
                     mat-icon-button
