@@ -94,6 +94,23 @@
         {{ version.last_built | date: 'yyyy-MM-dd HH:mm' }}
       </td>
     </ng-container>
+    <ng-container matColumnDef="descriptorTypeVersions">
+      <th
+        scope="col"
+        mat-header-cell
+        *matHeaderCellDef
+        mat-sort-header
+        matTooltip="The language versions used by the version's descriptor file(s)."
+      >
+        Language Versions
+      </th>
+      <td mat-cell *matCellDef="let version">
+        <!-- Only display descriptor type versions if there's one descriptor type otherwise we can't tell which version belongs to which type without looking at the source files -->
+        <span *ngIf="tool?.descriptorType.length === 1">{{
+          tool.descriptorType[0] | descriptorLanguageVersions: version.descriptorTypeVersions
+        }}</span>
+      </td>
+    </ng-container>
     <ng-container matColumnDef="valid">
       <th scope="col" mat-header-cell *matHeaderCellDef mat-sort-header matTooltip="">Valid</th>
       <td mat-cell *matCellDef="let version">

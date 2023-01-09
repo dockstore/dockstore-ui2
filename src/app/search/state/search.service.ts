@@ -510,6 +510,7 @@ export class SearchService {
       ['Organization', 'organization'],
       ['VerifiedPlatforms', 'verified_platforms.keyword'],
       ['Category', 'categories.name.keyword'],
+      ['Language Versions', 'descriptor_type_versions.keyword'],
     ]);
   }
 
@@ -530,6 +531,7 @@ export class SearchService {
       ['organization', 'Organization'],
       ['verified_platforms.keyword', 'Verified Platforms'],
       ['categories.name.keyword', 'Category'],
+      ['descriptor_type_versions.keyword', 'Language Versions'],
     ]);
   }
 
@@ -546,6 +548,10 @@ export class SearchService {
           'that, when given some inputs, it produces the expected outputs on a different platform other than the one it was developed on.',
       ],
       ['verified_platforms.keyword', 'Indicates which platform a tool or workflow (at least one version) was successfully run on.'],
+      [
+        'descriptor_type_versions.keyword',
+        'Indicates that the tool or workflow contains at least one version that is written with the workflow language version',
+      ],
     ]);
   }
 
@@ -553,6 +559,7 @@ export class SearchService {
     return new Map([
       ['categories.name.keyword', new SubBucket()],
       ['descriptorType', new SubBucket()],
+      ['descriptor_type_versions.keyword', new SubBucket()],
       ['author', new SubBucket()],
       ['registry', new SubBucket()],
       ['source_control_provider.keyword', new SubBucket()],
