@@ -1,3 +1,6 @@
+@use '@angular/material' as mat;
+@import '/src/materialColorScheme.scss';
+
 th,
 td {
   white-space: nowrap;
@@ -5,10 +8,19 @@ td {
 
 :host ::ng-deep {
   table {
-    td,
-    th {
-      padding: 6px 18px;
-      white-space: nowrap;
-    }
+    table-layout: fixed;
+    display: block;
+    width: 100%;
+  }
+
+  thead,
+  tbody {
+    width: 100%;
+    border: 1px solid mat.get-color-from-palette($dockstore-app-gray, 7);
+  }
+  th,
+  td {
+    border: 1px solid mat.get-color-from-palette($dockstore-app-gray, 7);
+    padding: 2px;
   }
 }
