@@ -100,7 +100,7 @@ jobs:
         type: string
     working_directory: ~/repo
     docker:
-        - image: cimg/base:current-22.04
+        - image: cimg/base:stable-20.04
           auth:
             username: dockstoretestuser
             password: $DOCKERHUB_PASSWORD
@@ -129,7 +129,7 @@ jobs:
   audit:
     working_directory: ~/repo
     docker:
-      - image: cimg/base:current-22.04
+      - image: cimg/base:stable-20.04
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
@@ -157,7 +157,7 @@ jobs:
   lint_license_unit_test_coverage:
     working_directory: ~/repo
     docker:
-      - image: cimg/base:current-22.04
+      - image: cimg/base:stable-20.04
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
@@ -329,7 +329,7 @@ jobs:
   compare_accessibility_results:
     working_directory: ~/repo
     docker:
-      - image: cimg/base:current-22.04
+      - image: cimg/base:stable-20.04
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
