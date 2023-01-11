@@ -136,6 +136,13 @@ jobs:
     steps:
       - browser-tools/install-chrome
       - browser-tools/install-chromedriver
+      - run:
+          name: hello 
+          command: |
+            ls /home
+            ls /home/circleci
+            ls /home/circleci/repo
+            tree /home/circleci/repo
       - checkout
       - run:
           name: Checkout merge commit (PRs only)
