@@ -1,11 +1,6 @@
 @use '@angular/material' as mat;
 @import '/src/materialColorScheme.scss';
 
-th,
-td {
-  white-space: nowrap;
-}
-
 :host ::ng-deep {
   table {
     table-layout: fixed;
