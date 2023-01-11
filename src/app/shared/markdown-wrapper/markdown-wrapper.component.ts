@@ -47,9 +47,8 @@ export class MarkdownWrapperComponent implements OnInit, OnChanges {
    * @returns {string} HTML string
    */
   customCompile(data, baseUrl): string {
-    return this.markdownService.compile(data, undefined, undefined, {
-      baseUrl: baseUrl,
-    });
+    const parseOptions = { markedOptions: { baseUrl: baseUrl } };
+    return this.markdownService.parse(data, parseOptions);
   }
 
   customSanitize(html): string {
