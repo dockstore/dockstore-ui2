@@ -134,16 +134,9 @@ jobs:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
     steps:
+      - checkout
       - browser-tools/install-chrome
       - browser-tools/install-chromedriver
-      - run:
-          name: hello 
-          command: |
-            ls /home
-            ls /home/circleci
-            ls /home/circleci/repo
-            tree /home/circleci/repo
-      - checkout
       - run:
           name: Checkout merge commit (PRs only)
           command: |
@@ -169,9 +162,9 @@ jobs:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
     steps:
+      - checkout
       - browser-tools/install-chrome
       - browser-tools/install-chromedriver
-      - checkout
       - run:
           name: Checkout merge commit (PRs only)
           command: |
@@ -695,9 +688,9 @@ commands:
           command: bash scripts/wait-for.sh
   setup_nightly_tests:
     steps:
+      - checkout
       - browser-tools/install-chrome
       - browser-tools/install-chromedriver
-      - checkout
       - install_container_dependencies
       - restore_cache:
           key: cypress-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
