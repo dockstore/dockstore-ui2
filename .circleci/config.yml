@@ -68,8 +68,6 @@ jobs:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
     steps:
-      - browser-tools/install-chrome
-      - browser-tools/install-chromedriver
       - setup_nightly_tests
       - install_cypress_dependencies
       - run:
@@ -134,9 +132,9 @@ jobs:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
     steps:
+      - checkout
       - browser-tools/install-chrome
       - browser-tools/install-chromedriver
-      - checkout
       - run:
           name: Checkout merge commit (PRs only)
           command: |
@@ -162,9 +160,9 @@ jobs:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
     steps:
+      - checkout
       - browser-tools/install-chrome
       - browser-tools/install-chromedriver
-      - checkout
       - run:
           name: Checkout merge commit (PRs only)
           command: |
@@ -688,9 +686,9 @@ commands:
           command: bash scripts/wait-for.sh
   setup_nightly_tests:
     steps:
+      - checkout
       - browser-tools/install-chrome
       - browser-tools/install-chromedriver
-      - checkout
       - install_container_dependencies
       - restore_cache:
           key: cypress-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
