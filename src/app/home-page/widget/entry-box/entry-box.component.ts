@@ -25,6 +25,7 @@ import { Dockstore } from 'app/shared/dockstore.model';
 import { AlertService } from 'app/shared/alert/state/alert.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { SessionService } from '../../../shared/session/session.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-entry-box',
@@ -45,6 +46,8 @@ export class EntryBoxComponent extends Base implements OnInit {
   allEntriesLink: string;
   totalEntries: number = 0;
   public isLoading = true;
+  userEntries$: Observable<EntryUpdateTime[]>;
+  entryTypeParam: any;
 
   constructor(
     private registerToolService: RegisterToolService,
@@ -57,8 +60,6 @@ export class EntryBoxComponent extends Base implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getMyEntries();
-
     if (this.entryType) {
       this.entryTypeLowerCase = this.entryType.toLowerCase();
     }
@@ -67,18 +68,22 @@ export class EntryBoxComponent extends Base implements OnInit {
     if (this.entryType === EntryUpdateTime.EntryTypeEnum.WORKFLOW) {
       this.helpLink = Dockstore.DOCUMENTATION_URL + '/getting-started/dockstore-workflows.html';
       this.allEntriesLink = '/my-workflows/';
+      this.entryTypeParam = 'WORKFLOWS';
     } else if (this.entryType === EntryUpdateTime.EntryTypeEnum.TOOL) {
       this.helpLink = Dockstore.DOCUMENTATION_URL + '/getting-started/dockstore-tools.html';
       this.allEntriesLink = '/my-tools/';
+      this.entryTypeParam = 'TOOLS';
     } else if (this.entryType === EntryUpdateTime.EntryTypeEnum.SERVICE) {
       this.helpLink = Dockstore.DOCUMENTATION_URL + '/getting-started/getting-started-with-services.html';
       this.allEntriesLink = '/my-services/';
+      this.entryTypeParam = 'SERVICES';
     }
+    this.getMyEntries();
   }
 
   getMyEntries() {
-    this.usersService
-      .getUserEntries(null, this.filterText)
+    this.userEntries$ = this.usersService.getUserEntries(null, this.filterText, this.entryTypeParam);
+    this.userEntries$
       .pipe(
         finalize(() => (this.isLoading = false)),
         debounceTime(750),
@@ -86,20 +91,10 @@ export class EntryBoxComponent extends Base implements OnInit {
       )
       .subscribe(
         (myEntries: Array<EntryUpdateTime>) => {
-          this.listOfEntries = [];
-          this.totalEntries = 0;
-          myEntries
-            .filter(
-              (entry) =>
-                entry.entryType === this.entryType ||
-                (this.entryType === EntryUpdateTime.EntryTypeEnum.TOOL && entry.entryType === EntryUpdateTime.EntryTypeEnum.APPTOOL)
-            )
-            .forEach((entry: EntryUpdateTime) => {
-              if (this.listOfEntries.length < 7) {
-                this.listOfEntries.push(entry);
-              }
-              this.totalEntries += 1;
-            });
+          myEntries.forEach(() => {
+            this.listOfEntries = myEntries.slice(0, 7);
+            this.totalEntries = myEntries.length;
+          });
         },
         (error: HttpErrorResponse) => {
           this.alertService.detailedError(error);
