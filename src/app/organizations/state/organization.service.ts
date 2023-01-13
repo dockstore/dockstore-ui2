@@ -81,9 +81,9 @@ export class OrganizationService {
           this.updateOrganization(organization);
           this.organizationMembersService.updateCanModify(organization.id);
         },
-        (organization: Organization) => {
+        (error: HttpHeaderResponse) => {
           this.organizationStore.setError(true);
-          if ((organization as unknown as HttpHeaderResponse).status == 404) {
+          if (error.status == 404) {
             this.router.navigate(['page-not-found']);
           }
         }

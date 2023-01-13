@@ -101,9 +101,9 @@ export class CollectionsService {
           this.collectionsStore.setActive(collection.id);
           this.organizationService.updateOrganizationFromID(collection.organizationID);
         },
-        (collection: Collection) => {
+        (error: HttpErrorResponse) => {
           this.collectionsStore.setError(true);
-          if ((collection as unknown as HttpErrorResponse).status == 404) {
+          if (error.status == 404) {
             this.router.navigate(['page-not-found']);
           }
         }
