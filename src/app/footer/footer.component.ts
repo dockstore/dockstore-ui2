@@ -21,7 +21,7 @@ import { MetadataService } from '../metadata/metadata.service';
 import { Base } from '../shared/base';
 import { Sponsor } from '../sponsors/sponsor.model';
 import { Dockstore } from './../shared/dockstore.model';
-import { Metadata } from './../shared/swagger/model/metadata';
+import { TRSService } from 'app/shared/openapi';
 import { FooterService } from './footer.service';
 import { versions } from './versions';
 
@@ -71,7 +71,7 @@ export class FooterComponent extends Base implements OnInit {
       .getMetadata()
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(
-        (metadata: Metadata) => {
+        (metadata: TRSService) => {
           if (metadata.hasOwnProperty('version')) {
             const metadatum = metadata['version'];
             if (metadatum && (metadatum.includes('SNAPSHOT') || metadatum.includes('development-build'))) {

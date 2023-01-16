@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, publishReplay, refCount } from 'rxjs/operators';
-import { GA4GHService } from '../../../src/app/shared/swagger/api/gA4GH.service';
-import { Metadata } from './../shared/swagger/model/metadata';
+import { GA4GHV20Service } from '../../../src/app/shared/openapi';
+import { TRSService } from 'app/shared/openapi';
 
 @Injectable()
 export class MetadataService {
-  metadata: Observable<Metadata>;
+  metadata: Observable<TRSService>;
 
-  constructor(private gA4GHService: GA4GHService) {
-    this.metadata = this.gA4GHService.metadataGet().pipe(
+  constructor(private gA4GHService: GA4GHV20Service) {
+    this.metadata = this.gA4GHService.getServiceInfo().pipe(
       map((metadata) => metadata),
       publishReplay(),
       refCount()

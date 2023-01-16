@@ -3,8 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'ng2-ui-auth';
 import { Dockstore } from '../../../shared/dockstore.model';
 import { MetadataService } from '../../../shared/swagger';
-import { GA4GHService } from './../../../shared/swagger/api/gA4GH.service';
-import { Metadata } from './../../../shared/swagger/model/metadata';
+import { GA4GHV20Service } from './../../../shared/openapi';
+import { TRSService } from 'app/shared/openapi';
 import { AlertService } from './../../../shared/alert/state/alert.service';
 import { forkJoin } from 'rxjs';
 import { finalize } from 'rxjs/operators';
@@ -30,7 +30,7 @@ export class DownloadCLIClientComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private metadataService: MetadataService,
-    private gA4GHService: GA4GHService,
+    private gA4GHService: GA4GHV20Service,
     private alertService: AlertService
   ) {}
 
@@ -42,8 +42,8 @@ export class DownloadCLIClientComponent implements OnInit {
     this.isCopied2 = false;
     let apiVersion = 'unreachable';
     this.alertService.start('Fetching metadata');
-    this.gA4GHService.metadataGet().subscribe(
-      (resultFromApi: Metadata) => {
+    this.gA4GHService.getServiceInfo().subscribe(
+      (resultFromApi: TRSService) => {
         apiVersion = resultFromApi.version;
         this.dockstoreVersion = `${apiVersion}`;
 

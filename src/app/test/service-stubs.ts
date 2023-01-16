@@ -17,7 +17,7 @@ import { EntryType } from 'app/shared/enum/entry-type';
 import { BehaviorSubject, EMPTY, Observable, of as observableOf } from 'rxjs';
 import { SearchFields } from '../search/state/search.service';
 import { TagEditorMode } from '../shared/enum/tagEditorMode.enum';
-import { CloudInstance } from '../shared/openapi';
+import { CloudInstance, TRSService } from '../shared/openapi';
 import { Dockstore } from './../shared/dockstore.model';
 import { AdvancedSearchObject } from './../shared/models/AdvancedSearchObject';
 import { SubBucket } from './../shared/models/SubBucket';
@@ -137,7 +137,22 @@ export class ExtendedGA4GHStubService {
   }
 }
 
-export class GA4GHV20StubService {}
+export class GA4GHV20StubService {
+  getServiceInfo(): Observable<TRSService> {
+    const metadata: TRSService = {
+      version: '1.14.0-SNAPSHOT',
+      type: {
+        artifact: 'TRS',
+        group: 'org.ga4gh',
+        version: '2.0.1',
+      },
+      id: '1',
+      name: 'Dockstore',
+      organization: undefined,
+    };
+    return observableOf(metadata);
+  }
+}
 
 export class SearchStubService {
   workflowhit$ = observableOf([]);

@@ -6,7 +6,7 @@ import { environment } from '../../environments/environment';
 import { versions } from '../footer/versions';
 import { MetadataService } from '../metadata/metadata.service';
 import { Base } from '../shared/base';
-import { Metadata } from './../shared/swagger/model/metadata';
+import { TRSService } from 'app/shared/openapi';
 
 @Component({
   selector: 'app-banner',
@@ -31,7 +31,7 @@ export class BannerComponent extends Base implements OnInit {
       .getMetadata()
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(
-        (metadata: Metadata) => {
+        (metadata: TRSService) => {
           if (metadata.hasOwnProperty('version')) {
             this.versionFromAPI = metadata['version'];
             if (this.versionFromAPI !== this.versionBuiltWith) {
