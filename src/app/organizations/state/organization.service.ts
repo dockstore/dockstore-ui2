@@ -83,7 +83,7 @@ export class OrganizationService {
         },
         (error: HttpHeaderResponse) => {
           this.organizationStore.setError(true);
-          if (error.status == 404) {
+          if (error.status === 404) {
             this.router.navigate(['page-not-found']);
           }
         }

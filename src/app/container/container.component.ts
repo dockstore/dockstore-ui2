@@ -256,7 +256,7 @@ export class ContainerComponent extends Entry implements AfterViewInit, OnInit {
           }
         },
         (error) => {
-          if (error.status == 404) {
+          if (error.status === 404) {
             this.router.navigate(['page-not-found']);
           }
         }
