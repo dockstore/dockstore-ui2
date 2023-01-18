@@ -107,7 +107,7 @@
       <td mat-cell *matCellDef="let version">
         <!-- Only display descriptor type versions if there's one descriptor type otherwise we can't tell which version belongs to which type without looking at the source files -->
         <span *ngIf="tool?.descriptorType.length === 1">{{
-          tool.descriptorType[0] | descriptorLanguageVersions: version.descriptorTypeVersions
+          tool.descriptorType[0] | descriptorLanguageVersions: version.versionMetadata?.descriptorTypeVersions
         }}</span>
       </td>
     </ng-container>
