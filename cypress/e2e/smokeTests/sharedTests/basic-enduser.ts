@@ -101,8 +101,10 @@ describe('Test search page functionality', () => {
   });
   it('filters and unfilters by facets', () => {
     cy.visit('/search');
+    cy.wait(2500); // Wait less than ideal, facets keep getting rerendered is the problem
     cy.contains('mat-checkbox', 'Nextflow').click();
     cy.get('[data-cy=workflowColumn] a');
+    cy.wait(2500); // Wait less than ideal, facets keep getting rerendered is the problem
     cy.contains('mat-checkbox', 'Nextflow'); // wait for the checkbox to reappear, indicating the filtering is almost complete
     cy.get('[data-cy=descriptorType]').each(($el, index, $list) => {
       cy.wrap($el).contains('NFL');
