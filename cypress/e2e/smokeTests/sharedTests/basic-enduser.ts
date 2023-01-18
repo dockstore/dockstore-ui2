@@ -54,14 +54,12 @@ function testEntry(tab: string) {
 
 const organizations = [['Broad Institute']];
 describe('Check organizations page', () => {
-  it('has multiple organizations', () => {
+  it('has multiple organizations and org with content', () => {
     cy.visit('/');
     cy.contains('a', 'Organizations').click();
     cy.url().should('contain', '/organizations');
     cy.get('[data-cy=orgName]').should('have.length.of.at.least', 1);
-  });
 
-  it('has organizations with content', () => {
     // Makes the assumption that the first org has at least 1 collection and at least 1 entry in
     cy.get('[data-cy=orgName]').first().click();
     cy.get('[data-cy=collectionName').should('have.length.of.at.least', 1);
@@ -89,6 +87,7 @@ describe('Test search page functionality', () => {
     cy.get('[data-cy=workflowColumn]').should('have.length.of.at.least', 1);
   });
   it('has working tag cloud', () => {
+    cy.visit('/search');
     cy.get('[data-cy=tagCloud]').should('not.exist');
     cy.contains('button', 'Popular Keywords').click();
     cy.get('[data-cy=tagCloud]').should('exist');
@@ -96,6 +95,7 @@ describe('Test search page functionality', () => {
     cy.get('[data-cy=tagCloud]').should('not.exist');
   });
   it('searches', () => {
+    cy.visit('/search');
     cy.get('[data-cy=basic-search]').type('topmed{enter}');
     cy.url().should('contain', '/search?entryType=workflows&search=topmed');
   });
@@ -104,7 +104,6 @@ describe('Test search page functionality', () => {
     cy.contains('mat-checkbox', 'Nextflow').click();
     cy.get('[data-cy=workflowColumn] a');
     cy.contains('mat-checkbox', 'Nextflow'); // wait for the checkbox to reappear, indicating the filtering is almost complete
-    cy.wait(3000);
     cy.get('[data-cy=descriptorType]').each(($el, index, $list) => {
       cy.wrap($el).contains('NFL');
     });
@@ -184,25 +183,21 @@ if (Cypress.config('baseUrl') !== 'http://localhost:4200') {
 }
 
 function testWorkflow(url: string, version1: string, version2: string, trsUrl: string, type: string) {
-  it('info tab works', () => {
+  it('workflow tabs work for ' + url, () => {
     cy.visit('/workflows/' + url + ':' + version1);
     goToTab('Launch');
     cy.url().should('contain', '?tab=launch');
     goToTab('Info');
     cy.url().should('contain', '?tab=info');
     cy.contains('mat-card-header', 'Workflow Information');
-  });
 
-  it('versions tab works', () => {
     goToTab('Versions');
     cy.url().should('contain', '?tab=versions');
 
     // check that clicking on a different version goes to that version's url
     cy.contains('[data-cy=versionName]', version2).click();
     cy.url().should('contain', url + ':' + version2);
-  });
 
-  it('files tab works', () => {
     goToTab('Files');
     cy.url().should('contain', '?tab=files');
     cy.contains('Descriptor Files');
@@ -211,74 +206,65 @@ function testWorkflow(url: string, version1: string, version2: string, trsUrl: s
     if (type === ToolDescriptor.TypeEnum.NFL) {
       cy.contains('This version has no files of this type.');
     }
-  });
-
-  it('tools tab works', () => {
     goToTab('Tools');
     cy.url().should('contain', '?tab=tools');
-  });
 
-  it('DAG tab works', () => {
     /// New material have to click twice
     cy.contains('.mat-tab-label', 'DAG').click();
     cy.contains('.mat-tab-label', 'DAG').click();
     cy.url().should('contain', '?tab=dag');
     cy.get('[data-cy=dag-holder]').children().should('have.length.of.at.least', 1);
-  });
 
-  let launchWithTuples: any[] = [];
-  if (type === 'Galaxy') {
-    it('test that galaxy button exists', () => {
-      cy.get('[data-cy=galaxyLaunchWith] button').should('exist');
-      cy.get('[data-cy=galaxyLaunchWith] button').click();
-      cy.get('[data-cy=multiCloudLaunchOption]').should('have.length.of.at.least', 1);
-      cy.get('[data-cy=multiCloudLaunchOption]').should('contain', 'usegalaxy.org');
-      cy.get('[data-cy=multiCloudLaunchOption]').each(($el) => {
-        cy.wrap($el).click();
-        cy.get(`[data-cy=multiCloudLaunchButton]`)
-          .invoke('attr', 'href')
-          .should('contain', trsUrl)
-          .should('contain', $el.text().trim().split(' ')[0]);
-        // .trim().split(' ')[0]) is required as $el.text() can be equal to " usegalaxy.org (Main) "
+    let launchWithTuples: any[] = [];
+    if (type === 'Galaxy') {
+      it('test that galaxy button exists', () => {
+        cy.get('[data-cy=galaxyLaunchWith] button').should('exist');
+        cy.get('[data-cy=galaxyLaunchWith] button').click();
+        cy.get('[data-cy=multiCloudLaunchOption]').should('have.length.of.at.least', 1);
+        cy.get('[data-cy=multiCloudLaunchOption]').should('contain', 'usegalaxy.org');
+        cy.get('[data-cy=multiCloudLaunchOption]').each(($el) => {
+          cy.wrap($el).click();
+          cy.get(`[data-cy=multiCloudLaunchButton]`)
+            .invoke('attr', 'href')
+            .should('contain', trsUrl)
+            .should('contain', $el.text().trim().split(' ')[0]);
+          // .trim().split(' ')[0]) is required as $el.text() can be equal to " usegalaxy.org (Main) "
+        });
+        const testUrl = 'https://www.test.com';
+        cy.get('[data-cy=multiCloudLaunchText]').type(testUrl);
+        cy.get('[data-cy=multiCloudLaunchText]').click();
+        cy.get(`[data-cy=multiCloudLaunchButton]`).invoke('attr', 'href').should('contain', trsUrl).should('contain', testUrl);
       });
-      const testUrl = 'https://www.test.com';
-      cy.get('[data-cy=multiCloudLaunchText]').type(testUrl);
-      cy.get('[data-cy=multiCloudLaunchText]').click();
-      cy.get(`[data-cy=multiCloudLaunchButton]`).invoke('attr', 'href').should('contain', trsUrl).should('contain', testUrl);
-    });
-  }
+    }
 
-  if (type === 'WDL') {
-    it('get the img icons', () => {
+    if (type === 'WDL') {
       cy.get('[data-cy=dnanexusLaunchWith] svg').should('exist');
       cy.get('[data-cy=terraLaunchWith] svg').should('exist');
       cy.get('[data-cy=anvilLaunchWith] svg').should('exist');
-    });
-  }
-  if (type === 'CWL') {
-    launchWithTuples = [
-      // pairs of [launch button text, expected href]
-      ['cgcLaunchWith', '?trs=' + trsUrl],
-      ['nhlbiLaunchWith', '?trs=' + trsUrl],
-      ['cavaticaLaunchWith', '?trs=' + trsUrl],
-    ];
-  } else if (type === 'WDL') {
-    launchWithTuples = [
-      // pairs of [launch button text, expected href]
-      ['dnanexusLaunchWith', '?source=' + trsUrl],
-      ['terraLaunchWith', url + ':' + version2],
-      ['anvilLaunchWith', url + ':' + version2],
-      ['nhlbiLaunchWith', url + ':' + version2],
-    ];
-  } else if (type === 'NFL') {
-    launchWithTuples = [['nextflowtowerLaunchWith', url + '&revision=' + version2]];
-  } else {
-    launchWithTuples = [];
-  }
+    }
+    if (type === 'CWL') {
+      launchWithTuples = [
+        // pairs of [launch button text, expected href]
+        ['cgcLaunchWith', '?trs=' + trsUrl],
+        ['nhlbiLaunchWith', '?trs=' + trsUrl],
+        ['cavaticaLaunchWith', '?trs=' + trsUrl],
+      ];
+    } else if (type === 'WDL') {
+      launchWithTuples = [
+        // pairs of [launch button text, expected href]
+        ['dnanexusLaunchWith', '?source=' + trsUrl],
+        ['terraLaunchWith', url + ':' + version2],
+        ['anvilLaunchWith', url + ':' + version2],
+        ['nhlbiLaunchWith', url + ':' + version2],
+      ];
+    } else if (type === 'NFL') {
+      launchWithTuples = [['nextflowtowerLaunchWith', url + '&revision=' + version2]];
+    } else {
+      launchWithTuples = [];
+    }
 
-  // click on each launch button and confirm the url changes
-  launchWithTuples.forEach((t) => {
-    it('launch with buttons go to external site', () => {
+    // click on each launch button and confirm the url changes
+    launchWithTuples.forEach((t) => {
       cy.get('[data-cy=' + t[0] + ']').should(($el) => {
         // @ts-ignore
         expect($el.attr('href')).to.contain(t[1]);
