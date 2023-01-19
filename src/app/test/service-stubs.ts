@@ -139,7 +139,7 @@ export class ExtendedGA4GHStubService {
 
 export class GA4GHV20StubService {
   getServiceInfo(): Observable<TRSService> {
-    const metadata: TRSService = {
+    const serviceInfo: TRSService = {
       version: '1.14.0-SNAPSHOT',
       type: {
         artifact: 'TRS',
@@ -150,7 +150,7 @@ export class GA4GHV20StubService {
       name: 'Dockstore',
       organization: undefined,
     };
-    return observableOf(metadata);
+    return observableOf(serviceInfo);
   }
 }
 
