@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { MetadataService } from '../metadata/metadata.service';
+import { ServiceInfoService } from '../service-info/service-info.service';
 import { GA4GHV20Service } from './../shared/openapi';
 import { GA4GHV20StubService } from './../test/service-stubs';
 import { BannerComponent } from './banner.component';
@@ -12,7 +12,7 @@ describe('BannerComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [BannerComponent],
-        providers: [MetadataService, { provide: GA4GHV20Service, useClass: GA4GHV20StubService }],
+        providers: [ServiceInfoService, { provide: GA4GHV20Service, useClass: GA4GHV20StubService }],
       }).compileComponents();
     })
   );
