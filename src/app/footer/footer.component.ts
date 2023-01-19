@@ -72,8 +72,8 @@ export class FooterComponent extends Base implements OnInit {
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(
         (serviceInfo: TRSService) => {
-          if (serviceInfo.hasOwnProperty('version')) {
-            const version = serviceInfo['version'];
+          if (serviceInfo.version) {
+            const version = serviceInfo.version;
             if (version && (version.includes('SNAPSHOT') || version.includes('development-build'))) {
               this.version = Dockstore.WEBSERVICE_COMMIT_ID;
             } else {

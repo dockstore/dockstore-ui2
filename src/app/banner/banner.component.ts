@@ -32,8 +32,8 @@ export class BannerComponent extends Base implements OnInit {
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(
         (serviceInfo: TRSService) => {
-          if (serviceInfo.hasOwnProperty('version')) {
-            this.versionFromAPI = serviceInfo['version'];
+          if (serviceInfo.version) {
+            this.versionFromAPI = serviceInfo.version;
             if (this.versionFromAPI !== this.versionBuiltWith) {
               this.mismatchedVersion = true;
             }
