@@ -79,3 +79,29 @@ mat-menu {
   color: mat.get-color-from-palette($kim-accent1-success, 4);
   transform: scale(1.25);
 }
+
+#dropdown-main {
+  padding: 14px 14px;
+  height: 64px;
+}
+#dropdown-main:hover {
+  background-color: #112246;
+}
+.navbar-avatar {
+  width: 30px;
+  height: 30px;
+  margin-right: 5%;
+  border-radius: 50%;
+}
+
+.dropdown-username {
+  font-size: 16px;
+}
+
+.menu-active {
+  background-color: mat.get-color-from-palette($dockstore-app-primary, darker);
+}
+
+.menu-icon {
+  color: mat.get-color-from-palette($kim-primary, 3);
+}
