@@ -100,7 +100,7 @@
         Language Versions
       </th>
       <td mat-cell *matCellDef="let version">
-        <span>{{ this.workflow.descriptorType | descriptorLanguageVersions: version.descriptorTypeVersions }}</span>
+        <span>{{ this.workflow.descriptorType | descriptorLanguageVersions: version.versionMetadata?.descriptorTypeVersions }}</span>
       </td>
     </ng-container>
 
