@@ -4,8 +4,8 @@ export default defineConfig({
   projectId: '1ya4vj',
   viewportHeight: 900,
   viewportWidth: 1440,
-  defaultCommandTimeout: 45000,
-  requestTimeout: 45000,
+  defaultCommandTimeout: 30000,
+  requestTimeout: 30000,
   retries: {
     runMode: 3,
     openMode: 0,

@@ -64,9 +64,7 @@ describe('Dockstore Organizations', () => {
       cy.visit('/');
       cy.contains('a', 'Organizations').should('be.visible').should('have.attr', 'href', '/organizations').click();
       cy.contains('No organizations found');
-    });
 
-    it('create a new unapproved organization', () => {
       cy.contains('button', 'Create Organization Request').should('be.visible').click();
       cy.contains('button', 'Next').should('be.visible').click();
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('be.disabled');
@@ -94,11 +92,7 @@ describe('Dockstore Organizations', () => {
       cy.get('[data-cy=image-url-input').clear();
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('not.be.disabled').click();
       cy.url().should('eq', Cypress.config().baseUrl + '/organizations/Potato');
-    });
-  });
 
-  describe('Should be able to view new unapproved organization', () => {
-    it('have the fields just entered in during registration', () => {
       cy.contains('Potato');
       cy.contains("Boil 'em, mash 'em, stick 'em in a stew");
       cy.contains('https://www.google.ca');
@@ -106,10 +100,9 @@ describe('Dockstore Organizations', () => {
       // Why does next line work in Cypress 8? Dangling DOM? I don't see it in screenshot; removing for Cypress 9
       // cy.contains('asdf@asdf.ca');
       cy.contains('No collections found');
-    });
-    it('be able to edit an unapproved organization', () => {
+
       cy.get('#editOrgInfo').should('be.visible').click();
-      cy.wait(5000);
+      cy.wait(2000);
       typeInInput('Name', 'Potatoe');
       typeInInput('Display Name', 'Potatoe');
       typeInInput('Topic', 'Boil them, mash them, stick them in a stew');
@@ -123,7 +116,7 @@ describe('Dockstore Organizations', () => {
       cy.get('#createOrUpdateOrganizationButton').should('not.exist');
       cy.get('#editOrgInfo').should('be.visible').click();
       // I don't even
-      cy.wait(5000);
+      cy.wait(2000);
       cy.get('[data-cy=image-url-input]').should('be.visible').clear();
       cy.get('[data-cy=image-url-input]').should('not.have.value', imageURL);
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('not.be.disabled').click();
@@ -135,24 +128,18 @@ describe('Dockstore Organizations', () => {
       cy.get('[data-cy=image-url-input]').should('have.value', imageURL);
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('not.be.disabled').click();
       cy.url().should('eq', Cypress.config().baseUrl + '/organizations/Potatoe');
-    });
 
-    it('have new fields reflected', () => {
       cy.contains('Potatoe');
       cy.contains('Boil them, mash them, stick them in a stew');
       cy.contains('https://www.google.com');
       cy.contains('UCSC Basement');
       // Why does next line work in Cypress 8? Dangling DOM? I don't see it in screenshot; removing for Cypress 9
       // cy.contains('asdf@asdf.ca');
-    });
 
-    it('have request shown on homepage', () => {
       cy.visit('/dashboard');
       cy.contains('1 organization request');
       cy.contains('1 organization request requiring action');
-    });
 
-    it('have organization shown on the homepage', () => {
       cy.visit('/dashboard');
       cy.contains('Potatoe');
       cy.contains('Find organizations');
@@ -174,11 +161,9 @@ describe('Dockstore Organizations', () => {
       cy.get('#createOrUpdateCollectionButton').should('be.visible').should('not.be.disabled').click();
       cy.contains('fakeCollectionName');
       cy.contains('fake collection topic');
-    });
 
-    it('be able to update a collection', () => {
       cy.get('#editCollection').click();
-      cy.wait(5000);
+      cy.wait(2000);
       cy.get('#createOrUpdateCollectionButton').should('be.visible').should('not.be.disabled');
       typeInInput('Name', 'veryFakeCollectionName');
       typeInInput('Display Name', 'veryFakeCollectionName');
@@ -187,14 +172,10 @@ describe('Dockstore Organizations', () => {
       cy.get('#createOrUpdateCollectionButton').should('not.exist');
       cy.contains('veryFakeCollectionName');
       cy.contains('very fake collection topic');
-    });
-  });
 
-  describe('Should be able to update description', () => {
-    it('be able to update an organization description with markdown', () => {
       cy.visit('/organizations/Potatoe');
       cy.get('#editOrgDescription').click();
-      cy.wait(5000);
+      cy.wait(2000);
       cy.get('#updateOrganizationDescriptionButton').should('be.visible').should('not.be.disabled');
       typeInTextArea('Description', '* fake organization description');
       cy.contains('Preview Mode').click();
@@ -235,12 +216,10 @@ describe('Dockstore Organizations', () => {
 
       // Should have no entries
       cy.contains('This collection has no associated entries');
-    });
 
-    it('be able to update a collection description', () => {
       cy.visit('/organizations/Potatoe/collections/veryFakeCollectionName');
       cy.get('#editCollectionDescription').click();
-      cy.wait(5000);
+      cy.wait(2000);
       cy.get('#updateOrganizationDescriptionButton').should('be.visible').should('not.be.disabled');
       typeInTextArea('Description', '* fake collection description');
       cy.contains('Preview Mode').click();
@@ -250,12 +229,10 @@ describe('Dockstore Organizations', () => {
       cy.get('#updateOrganizationDescriptionButton').should('not.exist');
       cy.contains('fake collection description');
       cy.contains('* fake collection description').should('not.exist');
-    });
 
-    it('be able to edit collection information', () => {
       // Should be able to edit the collection topic and see the changes reflected
       cy.get('#editCollection').click();
-      cy.wait(5000);
+      cy.wait(2000);
       cy.get('#createOrUpdateCollectionButton').should('be.visible').should('not.be.disabled');
       typeInInput('Name', 'veryFakeCollectionName');
       typeInInput('Display Name', 'veryFakeCollectionName');
@@ -263,9 +240,7 @@ describe('Dockstore Organizations', () => {
       cy.get('#createOrUpdateCollectionButton').should('be.visible').should('not.be.disabled').click();
       cy.contains('veryFakeCollectionName');
       cy.contains('very fake collection topic2');
-    });
 
-    it('be able to add an entry to the collection', () => {
       cy.visit('/containers/quay.io/garyluu/dockstore-cgpmap/cgpmap-cramOut:3.0.0-rc8?tab=info');
       cy.get('#addToolToCollectionButton').should('be.visible').click();
       cy.get('#addEntryToCollectionButton').should('be.disabled');
@@ -278,9 +253,7 @@ describe('Dockstore Organizations', () => {
       cy.get('#addEntryToCollectionButton').should('not.be.disabled').click();
       cy.get('#addEntryToCollectionButton').should('not.exist');
       cy.get('mat-progress-bar').should('not.exist');
-    });
 
-    it('be able to add an entry with version to the collection', () => {
       cy.visit('/containers/quay.io/garyluu/dockstore-cgpmap/cgpmap-cramOut:3.0.0-rc8?tab=info');
       cy.get('#addToolToCollectionButton').should('be.visible').click();
       cy.get('#addEntryToCollectionButton').should('be.disabled');
@@ -295,16 +268,12 @@ describe('Dockstore Organizations', () => {
       cy.get('#addEntryToCollectionButton').should('not.be.disabled').click();
       cy.get('#addEntryToCollectionButton').should('not.exist');
       cy.get('mat-progress-bar').should('not.exist');
-    });
 
-    it('be able to see the two entries added to collection', () => {
       cy.visit('/organizations/Potatoe/collections/veryFakeCollectionName');
       cy.contains('quay.io/garyluu/dockstore-cgpmap/cgpmap-cramOut:3.0.0-rc8');
       cy.contains('quay.io/garyluu/dockstore-cgpmap/cgpmap-cramOut');
-    });
 
-    // test the fix for DOCK-1945
-    it('stay on collections page when removing an entry', () => {
+      // test the fix for DOCK-1945
       const url: string = '/organizations/Potatoe/collections/veryFakeCollectionName';
       cy.visit(url);
       cy.url().should('include', url);
@@ -316,9 +285,7 @@ describe('Dockstore Organizations', () => {
       cy.url().should('include', url);
       cy.get('[data-cy=accept-remove-entry-from-org]').click();
       cy.url().should('include', url);
-    });
 
-    it('be able to remove an entry from a collection', () => {
       cy.visit('/organizations/Potatoe/collections/veryFakeCollectionName');
       cy.contains('quay.io/garyluu/dockstore-cgpmap/cgpmap-cramOut:3.0.0-rc8');
       cy.get('#removeEntryButton').click();
@@ -327,18 +294,14 @@ describe('Dockstore Organizations', () => {
       cy.contains('This collection has no associated entries');
       cy.visit('/organizations/Potatoe');
       cy.contains('Members').should('be.visible');
-    });
 
-    it('use default organization logo image', () => {
       approvePotatoOrganization();
       for (const url of ['/organizations', '/organizations/Potatoe', '/organizations/Potatoe/collections/veryFakeCollectionName']) {
         cy.visit(url);
         cy.wait(1000);
         cy.get('img[src*="default-org-logo"]').should('be.visible');
       }
-    });
 
-    it('be able to remove the collection', () => {
       cy.visit('/organizations/Potatoe/collections/veryFakeCollectionName');
       cy.get('[data-cy=removeCollectionButton]').click();
       cy.get('[data-cy=cancel-remove-collection]').click();
@@ -352,18 +315,17 @@ describe('Dockstore Organizations', () => {
   });
 
   describe('Should be able to CRUD user', () => {
+    setTokenUserViewPort();
     beforeEach(() => {
       cy.visit('/organizations/Potatoe');
       cy.contains('Members').click();
     });
 
-    it('be able to Read organization user', () => {
+    it('be able to Read and create organization user', () => {
       cy.get('mat-progress-bar').should('not.exist');
       cy.get('#organization-member-0').should('be.visible').should('contain', 'user_A').should('contain', 'Admin');
       cy.get('#edit-user-role-0').should('not.exist');
-    });
 
-    it('be able to Create organization user', () => {
       createPotatoMembership();
       cy.get('#organization-member-1').should('be.visible').should('contain', 'potato').should('contain', 'Pending Invitation');
       cy.get('#edit-user-role-1').should('exist').should('be.enabled');
@@ -373,15 +335,11 @@ describe('Dockstore Organizations', () => {
       cy.visit('/organizations/Potatoe');
       cy.contains('Members').click();
       cy.get('#organization-member-1').should('be.visible').should('contain', 'potato').should('contain', 'Member');
-    });
 
-    it('be able to edit an approved organization', () => {
       cy.get('#editOrgInfo').should('be.visible').click();
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('not.be.disabled').click();
       cy.get('#createOrUpdateOrganizationButton').should('not.exist');
-    });
 
-    it('be able to Update organization user', () => {
       cy.get('#edit-user-role-1').should('not.be.disabled').click();
       cy.get('.mat-dialog-title').should('contain', 'Edit Member');
       cy.get('mat-select').click();
@@ -390,13 +348,11 @@ describe('Dockstore Organizations', () => {
       cy.get('#upsertUserDialogButton').should('be.visible').should('not.be.disabled').click();
       cy.get('#upsertUserDialogButton').should('not.exist');
       cy.get('#organization-member-1').should('be.visible').should('contain', 'potato').should('contain', 'Maintainer');
-    });
 
-    it('be able to Delete organization user', () => {
       cy.get('#remove-user-1').should('not.be.disabled').click();
       cy.get('.mat-dialog-title').should('contain', 'Remove Member from Organization');
       cy.get('[data-cy=confirm-dialog-button]').should('not.be.disabled').click();
-      cy.get('#organization-member-1').contains('potato').should('not.exist');
+      cy.get('app-organization-members').contains('potato').should('not.exist');
     });
 
     it('Reject organization member invite', () => {
@@ -407,7 +363,7 @@ describe('Dockstore Organizations', () => {
       rejectPotatoMembership();
       cy.visit('/organizations/Potatoe');
       cy.contains('Members').click();
-      cy.get('#organization-member-1').should('contain', 'potato').should('contain', 'Rejected Invitation');
+      cy.get('app-organization-members').should('contain', 'potato').should('contain', 'Rejected Invitation');
       cy.get('#remove-user-1').should('exist').should('be.enabled');
     });
 
@@ -416,20 +372,20 @@ describe('Dockstore Organizations', () => {
       cy.get('.mat-dialog-title').should('contain', 'Resend Invitation');
       cy.get('#upsertUserDialogButton').should('be.visible').should('not.be.disabled').click();
       cy.get('#upsertUserDialogButton').should('not.exist');
-      cy.get('#organization-member-1').should('contain', 'potato').should('contain', 'Pending Invitation');
+      cy.get('app-organization-members').should('contain', 'potato').should('contain', 'Pending Invitation');
 
       // Reject membership again and reload for it to be visible
       rejectPotatoMembership();
       cy.visit('/organizations/Potatoe');
       cy.contains('Members').click();
-      cy.get('#organization-member-1').should('contain', 'potato').should('contain', 'Rejected Invitation');
+      cy.get('app-organization-members').should('contain', 'potato').should('contain', 'Rejected Invitation');
     });
 
     it('Delete rejected invitation', () => {
       cy.get('#remove-user-1').should('exist').should('be.enabled').click();
       cy.get('.mat-dialog-title').should('contain', 'Delete Invitation');
       cy.get('[data-cy=confirm-dialog-button]').should('not.be.disabled').click();
-      cy.get('#organization-member-1').contains('potato').should('not.exist');
+      cy.get('app-organization-members').contains('potato').should('not.exist');
     });
   });
 
