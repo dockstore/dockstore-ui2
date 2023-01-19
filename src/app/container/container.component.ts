@@ -255,8 +255,10 @@ export class ContainerComponent extends Entry implements AfterViewInit, OnInit {
             this.updateUrl(this.tool.tool_path, 'my-tools', 'containers');
           }
         },
-        () => {
-          this.router.navigate(['../']);
+        (error) => {
+          if (error.status === 404) {
+            this.router.navigate(['page-not-found']);
+          }
         }
       );
     }
