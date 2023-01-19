@@ -32,17 +32,6 @@ describe('Logged in Dockstore Home', () => {
     cy.get('.twitter-timeline').should('be.visible');
   });
 
-  describe('Navigation', () => {
-    it('My Tools visible', () => {
-      cy.get('[data-cy=dropdown-main]:visible').should('be.visible').click();
-      cy.get('[data-cy=my-tools-nav-button]').should('be.visible');
-    });
-    it('My Workflows visible', () => {
-      cy.get('[data-cy=dropdown-main]:visible').should('be.visible').click();
-      cy.get('[data-cy=my-workflows-nav-button]').should('be.visible');
-    });
-  });
-
   function starColumn(url: string, type: string) {
     if (type === 'workflow') {
       cy.get('[data-cy=workflows-tab]').click();

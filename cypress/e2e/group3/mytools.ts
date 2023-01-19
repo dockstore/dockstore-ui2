@@ -53,9 +53,7 @@ describe('Dockstore my tools', () => {
     it('visit another page then come back', () => {
       // The seemingly unnecessary visits are due to a detached-from-dom error even using cy.get().click();
       cy.intercept('api/containers/*?include=validations').as('getTool');
-      cy.get('a#home-nav-button').click();
-      cy.get('[data-cy=dropdown-main]:visible').should('be.visible').click();
-      cy.get('[data-cy=my-tools-nav-button]').click();
+      cy.visit('/my-tools');
       cy.wait('@getTool');
       selectUnpublishedTab('A2');
       selectTool('b1');
