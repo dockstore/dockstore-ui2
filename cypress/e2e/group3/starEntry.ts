@@ -59,8 +59,7 @@ describe('Tool, Workflow, and Organization starring', () => {
   }
 
   function starredPage(entity: string) {
-    cy.get('[data-cy=dropdown-main]:visible').click();
-    cy.get('#dropdown-starred').click();
+    cy.visit('/starred');
     if (entity === 'tool') {
       cy.contains('.mat-tab-label-content', 'Tools').click();
     } else if (entity === 'workflow') {
