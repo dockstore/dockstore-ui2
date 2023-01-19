@@ -55,8 +55,7 @@ describe('Dockstore my workflows', () => {
       cy.get('[data-cy=dropdown-main]:visible').should('be.visible').click();
       cy.get('[data-cy=my-workflows-nav-button]').click();
       cy.contains('github.com/A/l');
-    });
-    it('should be able to see GitHub Apps Logs dialog', () => {
+
       cy.contains('Apps Logs').click();
       cy.contains('There were problems retrieving GitHub App logs for this organization.');
       cy.contains('Close').click();
@@ -159,8 +158,7 @@ describe('Dockstore my workflows', () => {
       // .trigger('mouseover') doesn't work for some reason
       cy.contains('Mode').trigger('mouseenter');
       cy.get('.mat-tooltip').contains('STUB: Basic metadata pulled from source control.');
-    });
-    it('should be able to add labels', () => {
+
       cy.contains('github.com/A/g');
       cy.get('button').contains('Manage labels').click();
       cy.get('[data-cy=workflowLabelInput]').type('potato');
@@ -467,13 +465,13 @@ describe('Dockstore my workflows', () => {
 
   describe('Should require default version to publish', () => {
     it('should not be able to publish with no default version', () => {
+      setTokenUserViewPort();
       cy.visit('/my-workflows/github.com/A/l');
       cy.get('#publishButton').should('contain', 'Unpublish').should('be.visible').click();
       cy.get('#publishButton').should('contain', 'Publish').should('be.visible').click();
       cy.get('[data-cy=close-dialog-button]').should('be.visible').click();
       cy.get('#publishButton').should('contain', 'Publish').should('be.visible');
-    });
-    it('should be able to publish after setting default version', () => {
+
       goToTab('Versions');
       cy.contains('button', 'Actions').should('be.visible').click();
       cy.get('[data-cy=set-default-version-button]').should('be.visible').click();
