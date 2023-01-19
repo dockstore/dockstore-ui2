@@ -321,11 +321,13 @@ describe('Dockstore Organizations', () => {
       cy.contains('Members').click();
     });
 
-    it('be able to Read and create organization user', () => {
+    it('be able to Read organization user', () => {
       cy.get('mat-progress-bar').should('not.exist');
       cy.get('#organization-member-0').should('be.visible').should('contain', 'user_A').should('contain', 'Admin');
       cy.get('#edit-user-role-0').should('not.exist');
+    });
 
+    it('be able to Create organization user', () => {
       createPotatoMembership();
       cy.get('#organization-member-1').should('be.visible').should('contain', 'potato').should('contain', 'Pending Invitation');
       cy.get('#edit-user-role-1').should('exist').should('be.enabled');
@@ -335,11 +337,15 @@ describe('Dockstore Organizations', () => {
       cy.visit('/organizations/Potatoe');
       cy.contains('Members').click();
       cy.get('#organization-member-1').should('be.visible').should('contain', 'potato').should('contain', 'Member');
+    });
 
+    it('be able to edit an approved organization', () => {
       cy.get('#editOrgInfo').should('be.visible').click();
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('not.be.disabled').click();
       cy.get('#createOrUpdateOrganizationButton').should('not.exist');
+    });
 
+    it('be able to Update organization user', () => {
       cy.get('#edit-user-role-1').should('not.be.disabled').click();
       cy.get('.mat-dialog-title').should('contain', 'Edit Member');
       cy.get('mat-select').click();
@@ -348,7 +354,9 @@ describe('Dockstore Organizations', () => {
       cy.get('#upsertUserDialogButton').should('be.visible').should('not.be.disabled').click();
       cy.get('#upsertUserDialogButton').should('not.exist');
       cy.get('#organization-member-1').should('be.visible').should('contain', 'potato').should('contain', 'Maintainer');
+    });
 
+    it('be able to Delete organization user', () => {
       cy.get('#remove-user-1').should('not.be.disabled').click();
       cy.get('.mat-dialog-title').should('contain', 'Remove Member from Organization');
       cy.get('[data-cy=confirm-dialog-button]').should('not.be.disabled').click();
