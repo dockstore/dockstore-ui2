@@ -93,8 +93,12 @@ describe('Dockstore my workflows', () => {
         body: realResponse,
       }).as('refreshWorkflow');
       cy.contains('Apps Logs').click();
+      // These next 2 values work on Circle CI (UTC?) I would have thought East Coast time, but there's an 8 hour diff with West Coast time. Confused
       cy.contains('2020-02-20T02:20');
       cy.contains('2020-06-05T14:40');
+      // These next 2 values only work on the West Coast
+      // cy.contains('2020-02-19T18:20');
+      // cy.contains('2020-06-05T07:40');
       cy.contains('1 – 2 of 2');
       cy.contains('Close').click();
     });
@@ -315,7 +319,7 @@ describe('Dockstore my workflows', () => {
     cy.contains('/Dockstore.cwl');
     cy.contains('class: Workflow');
 
-    cy.get('mat-tab-body').within((tabBody) => {
+    cy.get('app-source-file-tabs').within((tabBody) => {
       cy.get('mat-select').click();
     });
 
@@ -465,7 +469,6 @@ describe('Dockstore my workflows', () => {
 
   describe('Should require default version to publish', () => {
     it('should not be able to publish with no default version', () => {
-      setTokenUserViewPort();
       cy.visit('/my-workflows/github.com/A/l');
       cy.get('#publishButton').should('contain', 'Unpublish').should('be.visible').click();
       cy.get('#publishButton').should('contain', 'Publish').should('be.visible').click();
@@ -477,11 +480,7 @@ describe('Dockstore my workflows', () => {
       cy.get('[data-cy=set-default-version-button]').should('be.visible').click();
       cy.wait(1000);
       cy.get('#publishButton').should('contain', 'Publish').should('be.visible').click();
-    });
-  });
 
-  describe('Look at a published workflow', () => {
-    it('Look at each tab', () => {
       const tabs = ['Info', 'Launch', 'Versions', 'Files', 'Tools', 'DAG'];
       cy.visit('/my-workflows/github.com/A/l');
       isActiveTab('Info');
