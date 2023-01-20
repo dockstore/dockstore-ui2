@@ -180,6 +180,8 @@ export function testNoGithubEntriesText(entryType: string, repository: string) {
     }
   });
   it('Should have no unpublished ' + entryType + 's in dockstore repository', () => {
+    cy.visit('/my-' + entryType + 's');
+    cy.get('mat-expansion-panel-header').contains(repository).click();
     cy.get('mat-expansion-panel-header')
       .contains(repository)
       .parentsUntil('mat-accordion')
