@@ -29,7 +29,10 @@ describe('GitHub App Tools', () => {
 
   function selectGitHubAppTool(tool: string) {
     cy.get('#workflow-path').should('be.visible');
-    cy.contains('div .no-wrap', tool).should('be.visible').click();
+    const alias = 'thetool';
+    cy.contains('div .no-wrap', tool).should('be.visible').as(alias);
+    // Cypress recommends using an alias like this to get around element being re-rendered
+    cy.get('@' + alias).click();
     cy.get('#workflow-path').contains(tool);
   }
 
