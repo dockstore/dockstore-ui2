@@ -20,10 +20,16 @@
         <a id="home-nav-button" (click)="resetPageNumber()" routerLink="" data-cy="home-nav-button">
           <img src="../assets/svg/Dockstore-logo-horizontal-white.svg" height="41" alt="dockstore logo" />
         </a>
-        <a mat-button class="icon" [routerLink]="['/search']" routerLinkActive="icon-active">
+        <a mat-button class="icon navbar-button" [routerLink]="['/search']" routerLinkActive="navbar-button-active">
           <img class="site-icons-small hidden-sm" src="../assets/svg/main-nav/icons-navigation-search.svg" alt="search button" /> Search
         </a>
-        <a mat-button class="icon" (click)="resetPageNumber()" routerLink="/organizations" routerLinkActive="icon-active">
+        <a
+          mat-button
+          class="icon navbar-button"
+          (click)="resetPageNumber()"
+          routerLink="/organizations"
+          routerLinkActive="navbar-button-active"
+        >
           <img
             class="site-icons-small hidden-sm"
             src="../assets/svg/main-nav/icons-navigation-organization.svg"
@@ -31,23 +37,23 @@
           />
           Organizations
         </a>
-        <a mat-button class="icon" [routerLink]="['/about']" routerLinkActive="icon-active">
+        <a mat-button class="icon navbar-button" [routerLink]="['/about']" routerLinkActive="navbar-button-active">
           <img class="site-icons-small hidden-sm" src="../assets/svg/main-nav/icons-navigation-about.svg" alt="about button" /> About
         </a>
-        <a mat-button class="icon" [href]="Dockstore.DOCUMENTATION_URL" target="_blank" rel="noopener noreferrer">
+        <a mat-button class="icon navbar-button" [href]="Dockstore.DOCUMENTATION_URL" target="_blank" rel="noopener noreferrer">
           <img class="site-icons-small hidden-sm" src="../assets/svg/main-nav/icons-navigation-docs.svg" alt="stacked pages" /> Docs
         </a>
-        <a mat-button class="icon" [href]="Dockstore.DISCOURSE_URL" target="_blank" rel="noopener noreferrer">
+        <a mat-button class="icon navbar-button" [href]="Dockstore.DISCOURSE_URL" target="_blank" rel="noopener noreferrer">
           <img class="site-icons-small hidden-sm" src="../assets/svg/main-nav/icons-navigation-forum.svg" alt="stacked pages" /> Forum
         </a>
         <span class="spacer"></span>
         <a
           *ngIf="isLoggedIn"
           mat-button
-          class="icon"
+          class="icon navbar-button"
           (click)="resetPageNumber()"
           [routerLink]="['/dashboard']"
-          routerLinkActive="icon-active"
+          routerLinkActive="navbar-button-active"
         >
           <img src="../assets/svg/my-nav/dashboard.svg" alt="dashboard" /> My Dockstore
         </a>
@@ -66,10 +72,10 @@
           id="notifButton"
           data-cy="notification-button"
           mat-button
-          class="icon"
+          class="icon navbar-button"
           [routerLink]="['/accounts']"
           [queryParams]="{ tab: 'requests' }"
-          routerLinkActive="icon-active"
+          routerLinkActive="navbar-button-active"
         >
           <mat-icon
             data-cy="bell-icon"
@@ -125,8 +131,8 @@
 <!-- This is the login button used in both navbar sizes -->
 <ng-template #loginButton>
   <mat-button
-    [ngClass]="{ 'menu-active': t.menuOpen === true }"
-    data-cy="dropdown-main"
+    [ngClass]="{ 'navbar-button-active': t.menuOpen === true }"
+    data-cy="navbar-button"
     *ngIf="isLoggedIn"
     id="dropdown-main"
     #t="matMenuTrigger"
