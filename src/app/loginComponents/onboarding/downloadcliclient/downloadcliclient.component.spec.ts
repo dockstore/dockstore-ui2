@@ -9,9 +9,10 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MarkdownModule } from 'ngx-markdown';
 import { MetadataService } from '../../../shared/swagger';
-import { GA4GHService } from './../../../shared/swagger/api/gA4GH.service';
+import { GA4GHV20Service } from './../../../shared/openapi';
+import { ServiceInfoService } from '../../../service-info/service-info.service';
 import { RouterLinkStubDirective, RouterOutletStubComponent } from './../../../test/router-stubs';
-import { AuthStubService, GA4GHStubService } from './../../../test/service-stubs';
+import { AuthStubService, GA4GHV20StubService } from './../../../test/service-stubs';
 import { DownloadCLIClientComponent } from './downloadcliclient.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
@@ -35,8 +36,9 @@ describe('DownloadCLIClientComponent', () => {
         ],
         providers: [
           { provide: AuthService, useClass: AuthStubService },
-          { provide: GA4GHService, useClass: GA4GHStubService },
+          { provide: GA4GHV20Service, useClass: GA4GHV20StubService },
           MetadataService,
+          ServiceInfoService,
         ],
       }).compileComponents();
     })

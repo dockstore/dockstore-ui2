@@ -62,7 +62,7 @@ import { QuickStartComponent } from './loginComponents/onboarding/quickstart.com
 import { RequestsModule } from './loginComponents/requests.module';
 import { LogoutComponent } from './logout/logout.component';
 import { MaintenanceComponent } from './maintenance/maintenance.component';
-import { MetadataService } from './metadata/metadata.service';
+import { ServiceInfoService } from './service-info/service-info.service';
 import { NavbarComponent } from './navbar/navbar.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { OrganizationStargazersModule } from './organizations/organization/organization-stargazers/organization-stargazers.module';
@@ -224,7 +224,7 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     GA4GHV20Service,
     DescriptorLanguageService,
     UrlResolverService,
-    MetadataService,
+    ServiceInfoService,
     ExtendedWorkflowsService,
     ExtendedToolsService,
     VerifiedByService,

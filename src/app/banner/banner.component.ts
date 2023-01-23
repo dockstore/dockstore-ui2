@@ -4,9 +4,9 @@ import { takeUntil } from 'rxjs/operators';
 
 import { environment } from '../../environments/environment';
 import { versions } from '../footer/versions';
-import { MetadataService } from '../metadata/metadata.service';
+import { ServiceInfoService } from '../service-info/service-info.service';
 import { Base } from '../shared/base';
-import { Metadata } from './../shared/swagger/model/metadata';
+import { TRSService } from 'app/shared/openapi';
 
 @Component({
   selector: 'app-banner',
@@ -19,7 +19,7 @@ export class BannerComponent extends Base implements OnInit {
   versionFromAPI: string;
   versionBuiltWith: string;
 
-  constructor(private metadataService: MetadataService) {
+  constructor(private serviceInfoService: ServiceInfoService) {
     super();
   }
 
@@ -27,13 +27,13 @@ export class BannerComponent extends Base implements OnInit {
     this.showBanner = environment.staging;
     this.versionBuiltWith = versions.version;
 
-    this.metadataService
-      .getMetadata()
+    this.serviceInfoService
+      .getServiceInfo()
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(
-        (metadata: Metadata) => {
-          if (metadata.hasOwnProperty('version')) {
-            this.versionFromAPI = metadata['version'];
+        (serviceInfo: TRSService) => {
+          if (serviceInfo.version) {
+            this.versionFromAPI = serviceInfo.version;
             if (this.versionFromAPI !== this.versionBuiltWith) {
               this.mismatchedVersion = true;
             }
