@@ -132,7 +132,8 @@
 <ng-template #loginButton>
   <mat-button
     [ngClass]="{ 'navbar-button-active': t.menuOpen === true }"
-    data-cy="navbar-button"
+    data-cy="dropdown-main"
+    class="navbar-button"
     *ngIf="isLoggedIn"
     id="dropdown-main"
     #t="matMenuTrigger"
