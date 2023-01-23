@@ -17,11 +17,11 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 
-import { MetadataService } from '../metadata/metadata.service';
+import { ServiceInfoService } from '../service-info/service-info.service';
 import { Base } from '../shared/base';
 import { Sponsor } from '../sponsors/sponsor.model';
 import { Dockstore } from './../shared/dockstore.model';
-import { Metadata } from './../shared/swagger/model/metadata';
+import { TRSService } from 'app/shared/openapi';
 import { FooterService } from './footer.service';
 import { versions } from './versions';
 
@@ -52,13 +52,13 @@ export class FooterComponent extends Base implements OnInit {
    *
    * * 0 This may have only happened without the load balancer, but it was already in the code, so leaving it.
    * * 404 The web service container is down or restarting. While most 404s don't mean the web service is down,
-   * going to assume that a 404 on the TRS metadata endpoint means something is wrong
+   * going to assume that a 404 on the TRS service-info endpoint means something is wrong
    * * 502 The whole compose_setup backend stack is down.
    * * 504 In a local dev environment, the Angular proxy returns 504 if it can't connect to the web service.
    */
   private readonly WEBSERVICE_DOWN_STATUS_CODES = [0, 404, 502, 504];
 
-  constructor(private metadataService: MetadataService, private footerService: FooterService) {
+  constructor(private serviceInfoService: ServiceInfoService, private footerService: FooterService) {
     super();
   }
 
@@ -67,17 +67,17 @@ export class FooterComponent extends Base implements OnInit {
     this.year = new Date().getFullYear();
     this.tag = versions.tag;
     this.dsServerURI = Dockstore.API_URI;
-    this.metadataService
-      .getMetadata()
+    this.serviceInfoService
+      .getServiceInfo()
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(
-        (metadata: Metadata) => {
-          if (metadata.hasOwnProperty('version')) {
-            const metadatum = metadata['version'];
-            if (metadatum && (metadatum.includes('SNAPSHOT') || metadatum.includes('development-build'))) {
+        (serviceInfo: TRSService) => {
+          if (serviceInfo.version) {
+            const version = serviceInfo.version;
+            if (version && (version.includes('SNAPSHOT') || version.includes('development-build'))) {
               this.version = Dockstore.WEBSERVICE_COMMIT_ID;
             } else {
-              this.version = metadatum;
+              this.version = version;
             }
             this.content = this.footerService.versionsToMarkdown(
               this.domain,

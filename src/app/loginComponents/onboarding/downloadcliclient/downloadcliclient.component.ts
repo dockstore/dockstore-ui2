@@ -3,18 +3,19 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'ng2-ui-auth';
 import { Dockstore } from '../../../shared/dockstore.model';
 import { MetadataService } from '../../../shared/swagger';
-import { GA4GHService } from './../../../shared/swagger/api/gA4GH.service';
-import { Metadata } from './../../../shared/swagger/model/metadata';
+import { ServiceInfoService } from '../../../service-info/service-info.service';
+import { TRSService } from 'app/shared/openapi';
 import { AlertService } from './../../../shared/alert/state/alert.service';
 import { forkJoin } from 'rxjs';
-import { finalize } from 'rxjs/operators';
+import { finalize, takeUntil } from 'rxjs/operators';
+import { Base } from 'app/shared/base';
 
 @Component({
   selector: 'app-downloadcliclient',
   templateUrl: './downloadcliclient.component.html',
   styleUrls: ['./downloadcliclient.component.scss'],
 })
-export class DownloadCLIClientComponent implements OnInit {
+export class DownloadCLIClientComponent extends Base implements OnInit {
   public downloadCli = 'dummy-start-value';
   public dockstoreVersion = 'dummy-start-value';
   public dsToken = 'dummy-token';
@@ -30,9 +31,11 @@ export class DownloadCLIClientComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private metadataService: MetadataService,
-    private gA4GHService: GA4GHService,
+    private serviceInfoService: ServiceInfoService,
     private alertService: AlertService
-  ) {}
+  ) {
+    super();
+  }
 
   ngOnInit() {
     if (this.authService.getToken()) {
@@ -41,31 +44,34 @@ export class DownloadCLIClientComponent implements OnInit {
     this.dsServerURI = Dockstore.API_URI;
     this.isCopied2 = false;
     let apiVersion = 'unreachable';
-    this.alertService.start('Fetching metadata');
-    this.gA4GHService.metadataGet().subscribe(
-      (resultFromApi: Metadata) => {
-        apiVersion = resultFromApi.version;
-        this.dockstoreVersion = `${apiVersion}`;
+    this.alertService.start('Fetching service-info');
+    this.serviceInfoService
+      .getServiceInfo()
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(
+        (serviceInfo: TRSService) => {
+          apiVersion = serviceInfo.version;
+          this.dockstoreVersion = `${apiVersion}`;
 
-        // forkJoin returns an array of values, here we map those values to an object
-        forkJoin([this.metadataService.getCliVersion(), this.metadataService.getRunnerDependencies(apiVersion, '3', 'cwltool', 'json')])
-          .pipe(finalize(() => this.generateMarkdown()))
-          .subscribe(
-            ([cliInfo, dependencies]) => {
-              this.downloadCli = cliInfo.cliLatestDockstoreScriptDownloadUrl;
-              this.cwltoolVersion = JSON.parse(JSON.stringify(dependencies)).cwltool;
-              this.alertService.simpleSuccess();
-            },
-            (forkError) => {
-              this.alertService.detailedError(forkError);
-            }
-          );
-      },
-      (metadataError) => {
-        this.generateMarkdown();
-        this.alertService.detailedError(metadataError);
-      }
-    );
+          // forkJoin returns an array of values, here we map those values to an object
+          forkJoin([this.metadataService.getCliVersion(), this.metadataService.getRunnerDependencies(apiVersion, '3', 'cwltool', 'json')])
+            .pipe(finalize(() => this.generateMarkdown()))
+            .subscribe(
+              ([cliInfo, dependencies]) => {
+                this.downloadCli = cliInfo.cliLatestDockstoreScriptDownloadUrl;
+                this.cwltoolVersion = JSON.parse(JSON.stringify(dependencies)).cwltool;
+                this.alertService.simpleSuccess();
+              },
+              (forkError) => {
+                this.alertService.detailedError(forkError);
+              }
+            );
+        },
+        (serviceInfoError) => {
+          this.generateMarkdown();
+          this.alertService.detailedError(serviceInfoError);
+        }
+      );
   }
   generateMarkdown(): void {
     this.textDataRequirements = `

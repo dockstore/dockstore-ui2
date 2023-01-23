@@ -19,13 +19,16 @@ import { finalize } from 'rxjs/operators';
 import { Organization, OrganizationsService } from '../../shared/swagger';
 import { OrganizationMembersService } from './organization-members.service';
 import { OrganizationStore } from './organization.store';
+import { Router } from '@angular/router';
+import { HttpHeaderResponse } from '@angular/common/http';
 
 @Injectable({ providedIn: 'root' })
 export class OrganizationService {
   constructor(
     private organizationStore: OrganizationStore,
     private organizationsService: OrganizationsService,
-    private organizationMembersService: OrganizationMembersService
+    private organizationMembersService: OrganizationMembersService,
+    private router: Router
   ) {}
 
   clearState(): void {
@@ -78,8 +81,11 @@ export class OrganizationService {
           this.updateOrganization(organization);
           this.organizationMembersService.updateCanModify(organization.id);
         },
-        () => {
+        (error: HttpHeaderResponse) => {
           this.organizationStore.setError(true);
+          if (error.status === 404) {
+            this.router.navigate(['page-not-found']);
+          }
         }
       );
   }
