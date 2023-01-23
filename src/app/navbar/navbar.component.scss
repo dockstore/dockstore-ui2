@@ -92,11 +92,3 @@ mat-menu {
 .dropdown-username {
   font-size: 16px;
 }
-
-.menu-active {
-  background-color: mat.get-color-from-palette($dockstore-app-primary, darker);
-}
-
-.menu-icon {
-  color: mat.get-color-from-palette($kim-primary, 3);
-}
