@@ -21,7 +21,9 @@ const toolTuple = ['github.com', username, toolName];
 const workflowTuple = ['github.com', username, 'hello-dockstore-workflow'];
 // tuple of organization name, collection name
 const collectionTuple = ['DockstoreAuthTestOrg', 'SimpleCollection'];
-const hardcodedWaitTime = 8000;
+const hardcodedWaitTime = 4000;
+const registerAliasName = 'register';
+const registerAlias = '@' + registerAliasName;
 
 // get the dockstore token from env variable and put it in local storage
 function storeToken() {
@@ -53,6 +55,7 @@ function unpublishTool() {
 function deleteTool() {
   it('delete the tool', () => {
     storeToken();
+    cy.visit('/my-tools');
     cy.intercept('delete', '**/containers/**').as('containers');
     cy.contains('#deregisterButton', 'Delete').should('be.visible').click();
     cy.contains('div', 'Are you sure you wish to delete this tool?').within(() => {
@@ -79,8 +82,8 @@ function registerQuayTool(repo: string, name: string) {
     cy.visit('/my-tools');
     cy.wait('@tokens');
     // click thru the steps of registering a tool
-    cy.wait(hardcodedWaitTime); // The page loads asynchronously, and causes a detached DOM to be grabbed by Cypress. This is a 'fix'.
-    cy.get('#register_tool_button').should('be.visible').click();
+    cy.get('#register_tool_button').should('be.visible').as(registerAliasName);
+    cy.get(registerAlias).click();
     cy.get('mat-dialog-content').within(() => {
       cy.contains('mat-radio-button', 'Quickly register Quay.io tools').click();
       cy.wait('@orgs');
@@ -115,9 +118,11 @@ function registerRemoteSitesTool(repo: string, name: string) {
     cy.visit('/my-tools');
     cy.wait('@tokens');
     cy.wait(hardcodedWaitTime); // The page loads asynchronously, and causes a detached DOM to be grabbed by Cypress. This is a 'fix'.
-    cy.get('#register_tool_button').should('be.visible').click();
+    cy.get('#register_tool_button').should('be.visible').as(registerAliasName);
+    cy.get(registerAlias).click();
     cy.get('mat-dialog-content').within(() => {
       cy.contains('mat-radio-button', 'Create tool with descriptor(s) on remote sites').click();
+      cy.wait(1000); // Need previous line to "take effect" before clicking next
       cy.contains('button', 'Next').should('be.visible').click();
       cy.get('#sourceCodeRepositoryInput').type(`${repo}/${name}`);
       cy.get('#imageRegistryInput').type(`${repo}/${name}`);
@@ -147,18 +152,12 @@ function registerToolOnDockstore(repo: string, name: string) {
     cy.intercept('**/notifications').as('notifications');
 
     cy.visit('/my-tools');
-    cy.wait('@containers');
-    cy.wait('@notifications');
     cy.wait('@tokens');
-    cy.wait('@user');
-    cy.wait('@extended');
-    cy.wait('@metadata');
-    cy.wait('@docker');
-    cy.wait('@sourceControl');
     cy.wait(hardcodedWaitTime); // The page loads asynchronously, and causes a detached DOM to be grabbed by Cypress. This is a 'fix'.
     cy.get('#register_tool_button').should('be.visible').click();
     cy.get('mat-dialog-content').within(() => {
       cy.contains('mat-radio-button', 'Create tool with descriptor(s) on Dockstore.org').should('be.visible').click();
+      cy.wait(1000);
       cy.contains('button', 'Next').should('be.visible').click();
       cy.get('#hostedImagePath').type(`${repo}/${name}`);
       cy.contains('button', 'Add Tool').should('be.visible').click();
@@ -206,6 +205,8 @@ function testTool(registry: string, repo: string, name: string) {
   describe('Hide and un-hide a tool version', () => {
     registerQuayTool(repo, name);
     it('hide a version', () => {
+      storeToken();
+      cy.visit('/my-tools');
       goToTab('Versions');
       toggleHiddenToolVersion();
       cy.get('[data-cy=hiddenCheck]').should('have.length', 1);
@@ -214,6 +215,8 @@ function testTool(registry: string, repo: string, name: string) {
       cy.get('[data-cy=hiddenCheck]').should('not.exist');
     });
     it('refresh namespace', () => {
+      storeToken();
+      cy.visit('/my-tools');
       cy.contains('button', 'Refresh Namespace').first().click();
       // check that the 'refresh succeeded' message appears
       cy.contains('succeeded');
@@ -243,11 +246,9 @@ function testWorkflow(registry: string, repo: string, name: string) {
       cy.intercept('post', '**/publish').as('publish');
       cy.contains('button', 'Publish').should('be.enabled').click();
       cy.wait('@publish');
-    });
 
-    // Test some snapshot and versions stuff
-    // WARNING: don't actually snapshot since it can't be undone
-    it('snapshot', () => {
+      // Test some snapshot and versions stuff
+      // WARNING: don't actually snapshot since it can't be undone
       // define routes to watch for
 
       goToTab('Versions');
@@ -259,16 +260,14 @@ function testWorkflow(registry: string, repo: string, name: string) {
         cy.contains('button', 'Edit').click();
       });
       cy.contains('button', 'Cancel').click();
-    });
-    it('unpublish and stub', () => {
+
       storeToken();
       cy.get('#publishButton').contains('Unpublish').click({ force: true });
 
       goToTab('Info');
       cy.contains('button', 'Restub').click();
       cy.contains('button', 'Publish').should('be.disabled');
-    });
-    it('hide and un-hide a version', () => {
+
       cy.get('[data-cy=refreshButton]').click();
       goToTab('Versions');
       // hide
