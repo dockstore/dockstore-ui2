@@ -51,9 +51,6 @@ describe('Dockstore my workflows', () => {
   describe('Should contain extended Workflow properties', () => {
     it('visit another page then come back', () => {
       cy.visit('/my-workflows');
-      cy.get('a#home-nav-button').click();
-      cy.get('[data-cy=dropdown-main]:visible').should('be.visible').click();
-      cy.get('[data-cy=my-workflows-nav-button]').click();
       cy.contains('github.com/A/l');
     });
     it('should be able to see GitHub Apps Logs dialog', () => {

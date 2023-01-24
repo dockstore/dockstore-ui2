@@ -18,7 +18,6 @@
 @import 'materialColorScheme.scss';
 
 .icon {
-  padding: 14px 14px;
   font-weight: bold;
   text-decoration: none;
   color: white;
@@ -27,13 +26,16 @@
   height: 64px;
 }
 
-.icon:hover {
+.navbar-button {
+  padding: 1.4rem;
+}
+.navbar-button:hover {
   // Hover color is darker than mat.get-color-from-palette($dockstore-app-primary, default),
   // but lighter than mat.get-color-from-palette($dockstore-app-primary, darker), which is used for the navbar active state
   background-color: #112246;
 }
 
-.icon-active {
+.navbar-button-active {
   background-color: mat.get-color-from-palette($dockstore-app-primary, darker);
 }
 
@@ -78,4 +80,15 @@ mat-menu {
 .bell-icon {
   color: mat.get-color-from-palette($kim-accent1-success, 4);
   transform: scale(1.25);
+}
+
+.navbar-avatar {
+  width: 30px;
+  height: 30px;
+  margin-right: 5%;
+  border-radius: 50%;
+}
+
+.dropdown-username {
+  font-size: 16px;
 }

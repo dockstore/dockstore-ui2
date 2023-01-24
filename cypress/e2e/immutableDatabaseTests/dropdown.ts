@@ -33,7 +33,7 @@ describe('Dropdown test', () => {
   describe('Go to starred page', () => {
     beforeEach(() => {
       // Select dropdown tokens
-      cy.get('#dropdown-starred').click();
+      cy.visit('/starred');
     });
 
     it('Should have nothing starred', () => {
@@ -303,7 +303,7 @@ describe('Dropdown test', () => {
       cy.intercept('DELETE', '*/users/user', {
         body: 'true',
       });
-      cy.get('#dropdown-accounts').click();
+      cy.get('[data-cy=dropdown-account-button]').should('be.visible').click();
       cy.contains('Dockstore Account & Preferences').click();
     });
     it('Should have the danger alert', () => {
@@ -335,8 +335,7 @@ describe('Dropdown test', () => {
   };
   describe('Go to setup page', () => {
     beforeEach(() => {
-      // Select dropdown setup
-      cy.get('#dropdown-onboarding').click();
+      cy.visit('/onboarding');
     });
 
     it('Should let you change your username if possible', () => {
@@ -385,6 +384,9 @@ describe('Dropdown test', () => {
       });
       goToAccountsOnboarding();
       everythingOk();
+      cy.get('[data-cy=dropdown-main]:visible').click();
+      cy.get('[data-cy=dropdown-logout-button]').should('be.visible').click();
+      cy.get('[data-cy=header]').should('contain', 'Logged Out');
     });
     // TODO: this part of the wizard has been reworked
     // it('Go through steps', () => {

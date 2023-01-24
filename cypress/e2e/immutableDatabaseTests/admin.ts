@@ -23,12 +23,6 @@ describe('Admin UI', () => {
     cy.get('[data-cy=dropdown-main]:visible').click();
   });
 
-  describe('Dropdown', () => {
-    it('Admin user sees lock icon', () => {
-      cy.get('#dropdown-accounts > .mat-icon').contains('lock');
-    });
-  });
-
   describe('Profile', () => {
     it('Admin status indicated on profile page', () => {
       cy.get('#dropdown-accounts').click();

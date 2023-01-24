@@ -23,12 +23,6 @@ describe('Curator UI', () => {
     cy.get('[data-cy=dropdown-main]:visible').click();
   });
 
-  describe('Dropdown for curators', () => {
-    it('Curator user sees edit icon', () => {
-      cy.get('#dropdown-accounts > .mat-icon').contains('edit');
-    });
-  });
-
   describe('Profile', () => {
     it('Curator status indicated on profile page', () => {
       cy.get('#dropdown-accounts').click();
