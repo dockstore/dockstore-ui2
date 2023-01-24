@@ -384,7 +384,7 @@ describe('Dropdown test', () => {
       });
       goToAccountsOnboarding();
       everythingOk();
-      cy.get('[data-cy=dropdown-main').should('be.visible').click();
+      cy.get('[data-cy=dropdown-main]').should('be.visible').click();
       cy.get('[data-cy=dropdown-logout-button]').should('be.visible').click();
       cy.get('[data-cy=header]').should('contain', 'Logged Out');
     });
