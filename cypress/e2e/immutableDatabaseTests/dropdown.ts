@@ -384,6 +384,8 @@ describe('Dropdown test', () => {
       });
       goToAccountsOnboarding();
       everythingOk();
+      cy.get('[data-cy=dropdown-logout-button]').should('be.visible').click();
+      cy.get('[data-cy=header]').should('contain', 'Logged Out');
     });
     // TODO: this part of the wizard has been reworked
     // it('Go through steps', () => {
@@ -429,9 +431,5 @@ describe('Dropdown test', () => {
     //         .get('#finish_step')
     //         .click()
     // });
-    it('Should be able to log out through the dropdown button', () => {
-      cy.get('[data-cy=dropdown-logout-button]').should('be.visible').click();
-      cy.get('[data-cy=header]').should('contain', 'Logged Out');
-    });
   });
 });
