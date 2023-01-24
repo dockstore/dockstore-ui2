@@ -429,8 +429,6 @@ describe('Dropdown test', () => {
     //         .get('#finish_step')
     //         .click()
     // });
-  });
-  describe('Log out', () => {
     it('Should be able to log out through the dropdown button', () => {
       cy.get('[data-cy=dropdown-logout-button]').should('be.visible').click();
       cy.get('[data-cy=header]').should('contain', 'Logged Out');
