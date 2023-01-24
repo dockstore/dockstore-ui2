@@ -166,7 +166,7 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
 
   bdCatalystSevenBridgesTooltip$: Observable<string> = combineLatest([this.hasContent$, this.hasHttpImports$]).pipe(
     map(([hasContent, hasHttpImports]) =>
-      this.sevenBridgesTooltip(hasContent, hasHttpImports, 'NHLBI BioData Catalyst powered by Seven Bridges')
+      this.sevenBridgesTooltip(hasContent, hasHttpImports, 'BioData Catalyst (BDC) Powered by Seven Bridges')
     )
   );
 
@@ -184,7 +184,7 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
 
   bdCatalystTerraTooltip$: Observable<string> = combineLatest([this.hasContent$, this.hasFileImports$]).pipe(
     map(([hasContent, hasFileImports]) =>
-      this.terraBasedPlatformTooltip(hasContent, hasFileImports, 'NHLBI BioData Catalyst powered by Terra')
+      this.terraBasedPlatformTooltip(hasContent, hasFileImports, 'BioData Catalyst (BDC) Powered by Terra')
     )
   );
 
