@@ -29,6 +29,7 @@ describe('GitHub App Tools', () => {
 
   function selectGitHubAppTool(tool: string) {
     cy.get('#workflow-path').should('be.visible');
+    cy.wait(5000);
     const alias = 'thetool';
     cy.contains('div .no-wrap', tool).should('be.visible').as(alias);
     // Cypress recommends using an alias like this to get around element being re-rendered
