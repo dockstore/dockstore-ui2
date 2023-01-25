@@ -34,6 +34,7 @@ export class PublishedWorkflowsDataSource implements DataSource<ExtendedWorkflow
     [EntryType.AppTool, WorkflowSubClass.APPTOOL],
     [EntryType.BioWorkflow, WorkflowSubClass.BIOWORKFLOW],
     [EntryType.Service, WorkflowSubClass.SERVICE],
+    [EntryType.Notebook, WorkflowSubClass.NOTEBOOK],
   ]);
 
   constructor(private workflowsService: WorkflowsService, private providersService: ProviderService) {}
