@@ -80,17 +80,17 @@ export class DownloadCLIClientComponent extends Base implements OnInit {
 Setup our Dockstore CLI application to start launching workflows from the command line.
 
 #### Requirements
-1. Linux/Ubuntu (Recommended - Tested on 18.04.3 LTS) or Mac OS X machine
-2. Java 11 (Tested with OpenJDK 11, Oracle JDK may work but is untested)
+1. Linux/Ubuntu (Recommended - Tested on 22.04 LTS) or Mac OS X machine
+2. Java 17 (Tested with OpenJDK 17, Oracle JDK may work but is untested)
 3. Python3 and pip3 (Required if working with CWL, optional otherwise)
     `;
 
     this.textDataUbuntuLinux = `
 #### Part 1 - Install dependencies
-1. Install Java 11 (This example installs OpenJDK 11)
+1. Install Java 17 (This example installs OpenJDK 17)
 \`\`\`
 sudo apt-get update -q \
-&& sudo apt install -y openjdk-11-jdk
+&& sudo apt install -y openjdk-17-jdk
 \`\`\`
 2. Install Docker Engine following the instructions on [Docker's website](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository). You should have at least version 19.03.1 installed. Ensure that you install Docker Engine. Docker Desktop does not run containers natively and the Dockstore CLI is not currently compatible with Docker Desktop's use of a VM.
 3. Ensure that you are able to run Docker without using sudo directly with the
@@ -171,9 +171,9 @@ printf "token: ${this.dsToken}\\nserver-url: ${this.dsServerURI}\\n" > ~/.dockst
 1. Run our dependencies to verify that they have been installed properly.
 \`\`\`
 $ java -version
-openjdk version "11.0.4" 2019-07-16
-OpenJDK Runtime Environment (build 11.0.4+11-post-Ubuntu-1ubuntu218.04.3)
-OpenJDK 64-Bit Server VM (build 11.0.4+11-post-Ubuntu-1ubuntu218.04.3, mixed mode, sharing)
+openjdk 17.0.5 2022-10-18
+OpenJDK Runtime Environment (build 17.0.5+8-Ubuntu-2ubuntu122.04)
+OpenJDK 64-Bit Server VM (build 17.0.5+8-Ubuntu-2ubuntu122.04, mixed mode, sharing)
 $ dockstore --version
 Dockstore version ${this.dockstoreVersion}
 $ docker run hello-world
