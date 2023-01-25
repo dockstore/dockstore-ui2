@@ -53,7 +53,7 @@ database:
   password: dockstore
 
   # the JDBC URL
-  url: jdbc:postgresql://localhost:5432/webservice_test
+  url: jdbc:postgresql://localhost:5432/cypress_webservice
 
   # any properties specific to your JDBC driver:
   properties:

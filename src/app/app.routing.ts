@@ -79,6 +79,11 @@ const APP_ROUTES: Routes = [
     data: { title: 'Dockstore | App Tools' },
   },
   {
+    path: 'notebooks',
+    loadChildren: () => import('app/workflows/notebooks/notebooks.module').then((m) => m.NotebooksModule),
+    data: { title: 'Dockstore | Notebooks' },
+  },
+  {
     path: 'search-workflows',
     loadChildren: () => import('app/workflows/workflows.module').then((m) => m.WorkflowsModule),
     data: { title: 'Dockstore | Workflows' },
