@@ -20,19 +20,15 @@ describe('Dockstore workflow list page', () => {
   describe('Select a workflow', () => {
     it('Should be able to go to the workflows search page', () => {
       cy.visit('/search-workflows');
-    });
-    it('Should display the correct url', () => {
+
       cy.get('mat-cell')
         .find('a')
         .contains(/^A\/l$/)
         .should('have.attr', 'href', '/workflows/github.com/A/l')
         .should('not.have.attr', 'href', '/workflows/github.com%20A%20l');
-    });
-    // 1 workflow A/l, no checkers from other tests added
-    it('Should have 1 workflow', () => {
+      // 1 workflow A/l, no checkers from other tests added
       cy.get('mat-row').should('have.length', 1);
-    });
-    it('Should be able to go to the github.com/A/l workflow', () => {
+
       cy.get('mat-cell')
         .find('a')
         .contains(/^A\/l$/)

@@ -71,6 +71,7 @@ describe('Monitor homepage links', () => {
   });
   describe('Test RSS feed', () => {
     it('access RSS feed', () => {
+      cy.visit('');
       cy.get('[data-cy=footer-rss-link]').then((t) => {
         cy.request(t.prop('href')).its('body').should('include', '<rss version="2.0">');
       });

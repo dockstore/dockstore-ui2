@@ -29,7 +29,11 @@ describe('GitHub App Tools', () => {
 
   function selectGitHubAppTool(tool: string) {
     cy.get('#workflow-path').should('be.visible');
-    cy.contains('div .no-wrap', tool).should('be.visible').click();
+    cy.wait(5000);
+    const alias = 'thetool';
+    cy.contains('div .no-wrap', tool).should('be.visible').as(alias);
+    // Cypress recommends using an alias like this to get around element being re-rendered
+    cy.get('@' + alias).click();
     cy.get('#workflow-path').contains(tool);
   }
 
@@ -77,9 +81,7 @@ describe('GitHub App Tools', () => {
       cy.contains('Apps Logs').click();
       cy.contains('1 – 1 of 1');
       cy.contains('Close').click();
-    });
 
-    it('GitHub Tool Private View', () => {
       selectGitHubAppTool('test-github-app-tools/testing');
       cy.get('#publishButton').should('not.be.disabled');
       cy.get('#publishButton').contains('Unpublish');
@@ -137,9 +139,7 @@ describe('GitHub App Tools', () => {
 
       // Fix that the entry list on the left doesn't update without refreshing the page
       selectGitHubAppTool('test-github-app-tools/testing');
-    });
 
-    it('Public view', () => {
       selectGitHubAppTool('test-github-app-tools/md5sum');
       cy.get('[data-cy=viewPublicWorkflowButton]').click();
       cy.get('[data-cy=tool-icon]').should('exist');
