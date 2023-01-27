@@ -69,6 +69,7 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   topicEditing: boolean;
   isPublic: boolean;
   trsLink: string;
+  sourceCodeFile: string;
   displayTextForButton: string;
   displayedColumns: string[] = ['name', 'role', 'affiliation', 'email', 'orcid_id'];
   authors: (Author | OrcidAuthorInformation)[] = [];
@@ -150,6 +151,7 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
       .subscribe((entryType) => (this.displayTextForButton = this.infoTabService.getTRSId(this.workflow, entryType)));
     this.infoTabService.forumUrlEditing$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((editing) => (this.forumUrlEditing = editing));
     this.infoTabService.topicEditing$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((topicEditing) => (this.topicEditing = topicEditing));
+    this.sourceCodeFile = this.selectedVersion.workflow_path.slice(1); //removes first slash to prevent from displaying on text
   }
   /**
    * Handle restubbing a workflow

@@ -45,9 +45,9 @@
             <a
               id="sourceRepository"
               data-cy="sourceRepository"
-              [href]="workflow?.providerUrl | versionProviderUrl: (isPublic ? selectedVersion?.name : '')"
+              [href]="workflow?.providerUrl | versionProviderUrl: (isPublic ? selectedVersion?.name : '') + '/' + sourceCodeFile"
             >
-              {{ workflow?.providerUrl | urlDeconstruct: (isPublic ? selectedVersion?.name : '') }}
+              {{ sourceCodeFile }}
             </a>
           </li>
         </span>
