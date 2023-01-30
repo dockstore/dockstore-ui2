@@ -10,8 +10,8 @@ const routes: Routes = [
     component: WorkflowsComponent,
     data: { title: 'Dockstore | Notebooks', entryType: EntryType.Notebook },
     children: [
-      { path: '', component: SearchWorkflowsComponent, data: { title: 'Dockstore | Notebook' } },
-      { path: '**', component: WorkflowComponent, data: { title: 'Dockstore | Notebook' } },
+      { path: '', component: SearchWorkflowsComponent, data: { title: 'Dockstore | Notebooks' } },
+      { path: '**', component: WorkflowComponent, data: { title: 'Dockstore | Notebooks' } },
     ],
   },
 ];
