@@ -26,20 +26,22 @@
     </div>
 
     <div class="container">
+      <!-- TO DO: When services are implemented add:'service-tab-group': selected.value === 2,' -->
+      <!-- TO DO: And change the purple-tab-group to:'purple-tab-group': selected.value === 3' -->
       <mat-tab-group
         mat-stretch-tabs
         class="container"
         *ngIf="!starGazersClicked && !organizationStarGazersClicked"
         [selectedIndex]="selected.value"
-        (selectedTabChange)="onTabChange($event)"
+        (selectedIndexChange)="selected.setValue($event)"
+        (selectedTabChange)="selectedTabChange($event)"
         [ngClass]="{
           'workflow-tab-group': selected.value === 0,
           'tool-tab-group': selected.value === 1,
-          'service-tab-group': selected.value === 2,
-          'purple-tab-group': selected.value === 3
+          'purple-tab-group': selected.value === 2
         }"
       >
-        <mat-tab *ngIf="starredWorkflows">
+        <mat-tab>
           <ng-template mat-tab-label>
             <div fxLayoutGap="0.5rem">
               <img class="site-icons-tab" src="../../../assets/svg/sub-nav/workflow.svg" alt="workflow logo" />
@@ -58,7 +60,7 @@
           </div>
         </mat-tab>
 
-        <mat-tab *ngIf="starredTools">
+        <mat-tab>
           <ng-template mat-tab-label>
             <div fxLayoutGap="0.5rem">
               <img src="../../../assets/svg/sub-nav/tool.svg" alt="tool logo" />
@@ -183,6 +185,7 @@
         </ng-template>
 
         <!-- Services not done -->
+        <!-- TO DO: remove *ngIf when implemented to allow for routing of tabs -->
         <mat-tab *ngIf="starredServices">
           <ng-template mat-tab-label>
             <div fxLayoutGap="0.5rem">
@@ -197,7 +200,7 @@
           </mat-card>
         </mat-tab>
 
-        <mat-tab *ngIf="starredOrganizations">
+        <mat-tab>
           <ng-template mat-tab-label>
             <div fxLayoutGap="0.5rem">
               <img src="../../../assets/svg/sub-nav/organization.svg" alt="organization logo" />

@@ -12,6 +12,8 @@ import { ExtendedWorkflow } from 'app/shared/models/ExtendedWorkflow';
 // import { DockstoreService } from 'app/shared/dockstore.service';
 import { OrgLogoService } from '../shared/org-logo.service';
 import { EntryType } from '../shared/enum/entry-type';
+import { ActivatedRoute, Params } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-starredentries',
@@ -19,7 +21,6 @@ import { EntryType } from '../shared/enum/entry-type';
   styleUrls: ['./starredentries.component.scss'],
 })
 export class StarredEntriesComponent extends Base implements OnInit {
-  selected = new UntypedFormControl(0);
   starredTools: Array<ExtendedDockstoreTool> | null;
   starredWorkflows: Array<ExtendedWorkflow> | null;
   starredServices: Array<Entry> | null;
@@ -28,6 +29,11 @@ export class StarredEntriesComponent extends Base implements OnInit {
   starGazersClicked = false;
   organizationStarGazersClicked = false;
   readonly entryType = EntryType;
+  // Default to workflows tab
+  currentTab = 'workflows';
+  selected = new UntypedFormControl();
+  // TO DO: Add 'services' between tools and orgs when implemented
+  validTabs = ['workflows', 'tools', 'organizations'];
 
   constructor(
     private userQuery: UserQuery,
@@ -35,12 +41,18 @@ export class StarredEntriesComponent extends Base implements OnInit {
     private providerService: ProviderService,
     private usersService: UsersService,
     // private dockstoreService: DockstoreService
-    private orgLogoService: OrgLogoService
+    private orgLogoService: OrgLogoService,
+    private activatedRoute: ActivatedRoute,
+    private location: Location
   ) {
     super();
   }
 
   ngOnInit() {
+    this.activatedRoute.queryParams.subscribe((params) => {
+      this.setupTab(params.tab);
+    });
+
     this.userQuery.user$.subscribe((user) => (this.user = user));
     this.usersService.getStarredTools().subscribe((starredTool) => {
       this.starredTools = <ExtendedDockstoreTool[]>starredTool.filter((entry: DockstoreTool) => entry.is_published);
@@ -84,7 +96,23 @@ export class StarredEntriesComponent extends Base implements OnInit {
     this.organizationStarGazersClicked = !this.organizationStarGazersClicked;
   }
 
-  onTabChange(event: MatTabChangeEvent) {
-    this.selected.setValue(event.index);
+  // Runs on first page load
+  public setupTab(tabName: string) {
+    const tabIndex = this.validTabs.indexOf(tabName);
+    if (tabIndex >= 0) {
+      this.currentTab = tabName;
+    }
+    this.selected.setValue(this.validTabs.indexOf(this.currentTab));
+    this.updateStarredUrl(this.currentTab);
+  }
+
+  selectedTabChange(matTabChangeEvent: MatTabChangeEvent) {
+    this.currentTab = this.validTabs[matTabChangeEvent.index];
+    this.updateStarredUrl(this.currentTab);
+  }
+
+  // Updates url query params
+  updateStarredUrl(tabName: string) {
+    this.location.replaceState('starred?tab=' + tabName);
   }
 }
