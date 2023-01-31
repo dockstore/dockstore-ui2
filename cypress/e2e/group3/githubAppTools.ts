@@ -146,11 +146,13 @@ describe('GitHub App Tools', () => {
       cy.contains('Tool Information');
       cy.contains('Tool Version Information');
       cy.get('[data-cy=workflowTitle]').contains('github.com/C/test-github-app-tools/md5sum:invalidTool');
+      cy.wait(1000); // Ugh, but clicking too soon seems to cause SEAB-5217
       goToTab('Versions');
       cy.contains('main').click();
       cy.get('[data-cy=workflowTitle]').contains('github.com/C/test-github-app-tools/md5sum:main');
       cy.get('#starringButton').click();
       cy.get('#starCountButton').should('contain', '1');
+      cy.wait(1000); // Ugh, but clicking too soon seems to cause SEAB-5217
       goToTab('Info');
       cy.get('[data-cy=trs-link]').contains('TRS: github.com/C/test-github-app-tools/md5sum');
     });
