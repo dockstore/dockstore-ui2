@@ -73,7 +73,7 @@ export class SearchService {
    * @private
    * @memberof SearchService
    */
-  public exclusiveFilters = ['verified', 'private_access', 'has_checker', 'openData'];
+  public exclusiveFilters = ['verified', 'private_access', 'has_checker'];
   constructor(
     private searchStore: SearchStore,
     private searchQuery: SearchQuery,
@@ -511,7 +511,6 @@ export class SearchService {
       ['VerifiedPlatforms', 'verified_platforms.keyword'],
       ['Category', 'categories.name.keyword'],
       ['Language Versions', 'descriptor_type_versions.keyword'],
-      ['Open Data', 'openData'],
     ]);
   }
 
@@ -533,7 +532,6 @@ export class SearchService {
       ['verified_platforms.keyword', 'Verified Platforms'],
       ['categories.name.keyword', 'Category'],
       ['descriptor_type_versions.keyword', 'Language Versions'],
-      ['openData', 'Open Data'],
     ]);
   }
 
@@ -554,7 +552,6 @@ export class SearchService {
         'descriptor_type_versions.keyword',
         'Indicates that the tool or workflow contains at least one version that is written with the workflow language version',
       ],
-      ['openData', 'Indicates whether an entry has a test parameter file with all publicly accessible data.'],
     ]);
   }
 
@@ -576,7 +573,6 @@ export class SearchService {
       ['input_file_formats.value.keyword', new SubBucket()],
       ['output_file_formats.value.keyword', new SubBucket()],
       ['has_checker', new SubBucket()],
-      ['openData', new SubBucket()],
     ]);
   }
 
