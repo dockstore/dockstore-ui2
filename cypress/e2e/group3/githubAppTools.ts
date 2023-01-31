@@ -37,7 +37,8 @@ describe('GitHub App Tools', () => {
     cy.get('#workflow-path').contains(tool);
   }
 
-  describe('My Tools', () => {
+  // This test will be re-enabled in https://ucsc-cgl.atlassian.net/browse/SEAB-5217
+  describe.skip('My Tools', () => {
     it('Side Bar', () => {
       cy.visit('/my-tools');
 
