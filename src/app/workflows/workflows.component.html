@@ -15,7 +15,10 @@
   -->
 <app-header>
   <div fxLayout="row" fxLayoutAlign="start center">
-    <img src="../assets/svg/sub-nav/{{ (entryPageTitle$ | async | titlecase) === 'Services' ? 'services.svg' : 'workflow.svg' }}" />
+    <img *ngIf="(entryType$ | async) === EntryType.BioWorkflow" src="../assets/svg/sub-nav/workflow.svg" />
+    <img *ngIf="(entryType$ | async) === EntryType.Service" src="../assets/svg/sub-nav/services.svg" />
+    <img *ngIf="(entryType$ | async) === EntryType.Notebook" src="../assets/svg/sub-nav/notebooks.svg" />
+
     <span>&nbsp;{{ entryPageTitle$ | async | titlecase }}&nbsp;</span>
     <div *ngIf="(entryType$ | async) === EntryType.Service || (entryType$ | async) === EntryType.Notebook" class="beta-label">preview</div>
   </div>
