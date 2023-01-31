@@ -19,6 +19,7 @@ import { ActivatedRoute } from '@angular/router';
 import { SessionQuery } from 'app/shared/session/session.query';
 import { SessionService } from 'app/shared/session/session.service';
 import { Observable } from 'rxjs';
+import { EntryType } from '../shared/enum/entry-type';
 
 @Component({
   selector: 'app-workflows',
@@ -26,8 +27,12 @@ import { Observable } from 'rxjs';
 })
 export class WorkflowsComponent {
   public entryPageTitle$: Observable<string>;
+  public entryType$: Observable<EntryType>;
+  EntryType = EntryType;
+
   constructor(private sessionQuery: SessionQuery, private sessionService: SessionService, private route: ActivatedRoute) {
     this.sessionService.setEntryType(this.route.snapshot.data['entryType']);
     this.entryPageTitle$ = this.sessionQuery.entryPageTitle$;
+    this.entryType$ = this.sessionQuery.entryType$;
   }
 }
