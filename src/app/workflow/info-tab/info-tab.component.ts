@@ -120,6 +120,7 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
         this.selectedVersion.workflow_path,
         this.sessionQuery.getValue().entryType
       );
+      this.sourceCodeFile = this.selectedVersion.workflow_path.slice(1); //removes first slash to prevent from displaying on text
       const found = this.validVersions.find((version: WorkflowVersion) => version.id === this.selectedVersion.id);
       this.isValidVersion = found ? true : false;
       this.downloadZipLink = Dockstore.API_URI + '/workflows/' + this.workflow.id + '/zip/' + this.currentVersion.id;
@@ -151,7 +152,6 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
       .subscribe((entryType) => (this.displayTextForButton = this.infoTabService.getTRSId(this.workflow, entryType)));
     this.infoTabService.forumUrlEditing$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((editing) => (this.forumUrlEditing = editing));
     this.infoTabService.topicEditing$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((topicEditing) => (this.topicEditing = topicEditing));
-    this.sourceCodeFile = this.selectedVersion.workflow_path.slice(1); //removes first slash to prevent from displaying on text
   }
   /**
    * Handle restubbing a workflow
