@@ -112,6 +112,13 @@ export class MapFriendlyValuesPipe implements PipeTransform {
         ['INSTALL', 'Install'],
       ]),
     ],
+    [
+      'openData',
+      new Map([
+        ['0', 'No public test data'],
+        ['1', 'Has public test data'],
+      ]),
+    ],
   ]);
 
   /**
