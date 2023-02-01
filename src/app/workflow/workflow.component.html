@@ -277,17 +277,20 @@
             </div>
             <ng-template #noVersionsVersionTab>
               <div [ngSwitch]="workflow.mode" class="p-3">
-                <mat-card class="alert alert-info" role="alert">
-                  <mat-icon>info</mat-icon>
-                  <span *ngSwitchCase="WorkflowModel.ModeEnum.HOSTED"> To see versions, please add a new version in the Files tab. </span>
-                  <span *ngSwitchCase="WorkflowModel.ModeEnum.STUB"> To see versions, please refresh the workflow. </span>
-                  <span *ngSwitchCase="WorkflowModel.ModeEnum.DOCKSTOREYML">
-                    This {{ entryType }} does not have any versions because there are no GitHub branches or releases/tags with a
-                    .dockstore.yml that references this {{ entryType }}. Create a valid .dockstore.yml on GitHub that references this
-                    {{ entryType }} to add a new version.
-                  </span>
-                  <!-- This also handles FULL -->
-                  <span *ngSwitchDefault> This {{ entryType }} does not have any versions. </span>
+                <mat-card *ngSwitchCase="WorkflowModel.ModeEnum.HOSTED" class="alert alert-info" role="alert">
+                  <mat-icon>info</mat-icon> To see versions, please add a new version in the Files tab.
+                </mat-card>
+                <mat-card *ngSwitchCase="WorkflowModel.ModeEnum.STUB" class="alert alert-info" role="alert">
+                  <mat-icon>info</mat-icon> To see versions, please refresh the workflow.
+                </mat-card>
+                <mat-card *ngSwitchCase="WorkflowModel.ModeEnum.DOCKSTOREYML" class="alert alert-info" role="alert">
+                  <mat-icon>info</mat-icon> This {{ entryType }} does not have any versions because there are no GitHub branches or
+                  releases/tags with a .dockstore.yml that references this {{ entryType }}. Create a valid .dockstore.yml on GitHub that
+                  references this {{ entryType }} to add a new version.
+                </mat-card>
+                <!-- This also handles FULL -->
+                <mat-card *ngSwitchDefault class="alert alert-info" role="alert">
+                  <mat-icon>info</mat-icon> This {{ entryType }} does not have any versions.
                 </mat-card>
               </div>
             </ng-template>
