@@ -19,14 +19,14 @@
             {{ totalStarredTools }} Tool<span *ngIf="totalStarredTools === 0 || totalStarredTools > 1">s</span>
           </a>
         </div>
-        <!-- TO DO: uncomment when starred services are implemented -->
-        <!-- <div fxLayout fxLayoutAlign="center center">
+        <!-- TO DO: remove *ngIf when services implemented-->
+        <div *ngIf="serviceImplemented" fxLayout fxLayoutAlign="center center">
           <mat-icon *ngIf="totalStarredServices" class="mat-icon-sm">star</mat-icon>
           <mat-icon *ngIf="!totalStarredServices" class="mat-icon-sm">star_border</mat-icon>
-          <a [routerLink]="['/starred']" [queryParams]="{ tab:'services' }">
+          <a [routerLink]="['/starred']" [queryParams]="{ tab: 'services' }">
             {{ totalStarredServices }} Service<span *ngIf="totalStarredServices === 0 || totalStarredServices > 1">s</span>
           </a>
-        </div> -->
+        </div>
         <div fxLayout fxLayoutAlign="center center">
           <mat-icon *ngIf="totalStarredOrganizations" class="mat-icon-sm">star</mat-icon>
           <mat-icon *ngIf="!totalStarredOrganizations" class="mat-icon-sm">star_border</mat-icon>
