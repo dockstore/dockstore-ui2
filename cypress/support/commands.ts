@@ -21,9 +21,7 @@ const psqlInvocation: string = 'PASSWORD=dockstore psql';
 export function goToTab(tabName: string): void {
   // cypress tests run asynchronously, so if the DOM changes and an element-of-interest becomes detached while we're manipulating it, the test will fail.
   // our current (admittedly primitive) go-to solution is to wait (sleep) for long enough that the DOM "settles", thus avoiding the "detached element" bug.
-  cy.wait(500);
   cy.contains('.mat-tab-label', tabName).should('be.visible').click();
-  cy.wait(500);
 }
 
 export function assertVisibleTab(tabName: string): void {
@@ -182,6 +180,8 @@ export function testNoGithubEntriesText(entryType: string, repository: string) {
     }
   });
   it('Should have no unpublished ' + entryType + 's in dockstore repository', () => {
+    cy.visit('/my-' + entryType + 's');
+    cy.get('mat-expansion-panel-header').contains(repository).click();
     cy.get('mat-expansion-panel-header')
       .contains(repository)
       .parentsUntil('mat-accordion')

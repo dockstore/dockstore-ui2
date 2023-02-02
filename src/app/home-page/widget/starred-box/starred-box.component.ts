@@ -29,6 +29,8 @@ export class StarredBoxComponent extends Base implements OnInit {
     Event.TypeEnum.MODIFYCOLLECTION,
     Event.TypeEnum.ADDUSERTOORG,
   ];
+  // Hides starred services, remove when implemented
+  serviceImplemented: boolean = false;
 
   constructor(private usersService: UsersService, private eventsService: EventsService, private alertService: AlertService) {
     super();

@@ -11,5 +11,15 @@ img[alt='User avatar'] {
 
 img[alt='Org avatar'] {
   width: 6rem;
-  height: 6rem;
+  max-height: 6rem;
+  object-fit: scale-down;
+}
+
+.size-small mat-icon {
+  color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
+}
+
+// Overide mat-card padding to extend mat-divider to edges
+mat-divider {
+  margin: 0 -16px;
 }

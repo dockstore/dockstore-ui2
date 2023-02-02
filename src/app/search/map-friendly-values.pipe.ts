@@ -68,6 +68,13 @@ export class MapFriendlyValuesPipe implements PipeTransform {
       ]),
     ],
     [
+      'openData',
+      new Map([
+        ['1', 'has public test data'],
+        ['0', 'no public test data'],
+      ]),
+    ],
+    [
       'registry',
       new Map([
         ['QUAY_IO', 'Quay.io'],

@@ -20,8 +20,7 @@ describe('Dockstore tool list page', () => {
   describe('Select a tool', () => {
     it('Should be able to go to the tools search page', () => {
       cy.visit('/search-containers');
-    });
-    it('Should display the correct url', () => {
+
       cy.get('mat-cell')
         .find('a')
         .contains(/\ba\b/)
@@ -32,12 +31,10 @@ describe('Dockstore tool list page', () => {
         .contains('b3')
         .should('have.attr', 'href', '/containers/quay.io/A2/b3')
         .should('not.have.attr', 'href', '/containers/quay.io%20A2%20b3');
-    });
-    // a, b3, dockstore-cgpmap
-    it('Should have 3 tools', () => {
+
+      // a, b3, dockstore-cgpmap
       cy.get('mat-row').should('have.length', 3);
-    });
-    it('Should be able to go to the quay.io/A2/a tool', () => {
+
       cy.get('mat-cell').find('a').contains(/\ba\b/).first().click().get('#tool-path').should('contain', 'quay.io/A2/a');
     });
   });

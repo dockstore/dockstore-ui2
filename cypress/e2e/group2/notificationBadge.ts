@@ -37,20 +37,11 @@ describe('Test notification badge on navbar', () => {
     it('visit the organizations page from the home page', () => {
       cy.visit('/');
       cy.contains('a', 'Organizations').should('be.visible').should('have.attr', 'href', '/organizations').click();
-    });
 
-    it('create a new unapproved organization', () => {
       createOrganization('Test', 'Test Display', 'Testing Testing Testing', 'Lab', 'https://www.google.ca', 'asf@asdf.ca');
       cy.get('[data-cy=notification-button]').should('be.visible').click();
       cy.get('[data-cy=bell-icon]').should('contain.text', '1');
-    });
-  });
-  describe('Should have badge count of 1 with a rejected organization request', () => {
-    it('visit the requests page', () => {
       cy.get('[data-cy=notification-button]').should('be.visible').click();
-    });
-
-    it('reject a pending organization', () => {
       cy.contains('button', 'Reject').should('be.visible').click();
       cy.get('[data-cy=reject-pending-org-dialog]').should('be.visible').click();
       cy.reload();
@@ -63,9 +54,7 @@ describe('Test notification badge on navbar', () => {
     it('visit the organizations page from the home page', () => {
       cy.visit('/');
       cy.contains('a', 'Organizations').should('be.visible').should('have.attr', 'href', '/organizations').click();
-    });
 
-    it('create a new unapproved organization and invite user', () => {
       createOrganization(
         'Potato111',
         'Potato111',

@@ -5,8 +5,8 @@
   "config": {
     "webservice_version": "1.13.0",
     "use_circle": true,
-    "circle_ci_source": "https://app.circleci.com/pipelines/github/dockstore/dockstore/9250/workflows/bac94a7d-e678-42dd-9173-760b1a477a7f/jobs/28821/artifacts",
-    "circle_build_id": "28821",
+    "circle_ci_source": "https://app.circleci.com/pipelines/github/dockstore/dockstore/9270/workflows/c7e731d0-3eb5-4e66-bbe9-ce085f675c71/jobs/29004/artifacts",
+    "circle_build_id": "29004",
     "base_branch": "develop"
   },
   "scripts": {
@@ -99,7 +99,7 @@
     "@types/node": "^15.12.2",
     "@typescript-eslint/eslint-plugin": "5.3.0",
     "@typescript-eslint/parser": "5.3.0",
-    "cypress": "^11.2.0",
+    "cypress": "^12.3.0",
     "eslint": "^8.2.0",
     "husky": "^7.0.0",
     "jasmine-core": "^3.7.1",

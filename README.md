@@ -28,7 +28,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ### Prerequisites
 
-- Java 8+ 
+- Java 17+
 - Node and its included NPM (see [.nvmrc](.nvmrc) for the correct version of node to install)
 - wget 
 
@@ -38,7 +38,7 @@ wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | 
 ```
 Close current terminal and open a new one or `source ~/.bashrc`
 ```
-nvm install 10.13.0
+nvm install 18.12.1
 ```
 Optionally, install a global Angular CLI in order to execute `ng` commands without prepending `npx`.   
 Otherwise, prepend `npx` to every command in this README if a global @angular/cli was not installed.
