@@ -1,6 +1,6 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
+import { RouterTestingModule } from '@angular/router/testing';
 import { ImageProviderService } from '../shared/image-provider.service';
 import { ProviderService } from './../shared/provider.service';
 import { StarentryService } from './../shared/starentry.service';
@@ -23,6 +23,7 @@ describe('StarredEntriesComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
+        imports: [RouterTestingModule],
         declarations: [StarredEntriesComponent],
         schemas: [NO_ERRORS_SCHEMA],
         providers: [
