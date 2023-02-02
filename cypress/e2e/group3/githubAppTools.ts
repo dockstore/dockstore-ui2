@@ -142,6 +142,11 @@ describe('GitHub App Tools', () => {
 
       selectGitHubAppTool('test-github-app-tools/md5sum');
       cy.get('[data-cy=viewPublicWorkflowButton]').click();
+
+      // Look for something that is on public page that is not in My Tools; avoids detached DOM when clicking on versions below; also
+      // ensures the subsequent checks below are checking the public page and not the My Tools Page
+      cy.get('app-launch-third-party');
+
       cy.get('[data-cy=tool-icon]').should('exist');
       cy.contains('Tool Information');
       cy.contains('Tool Version Information');
