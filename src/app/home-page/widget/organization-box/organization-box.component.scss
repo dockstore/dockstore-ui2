@@ -25,3 +25,8 @@ img[alt='Org avatar'] {
   width: 6rem;
   line-height: 1.5rem;
 }
+
+// Overide mat-card padding to extend mat-divider to edges
+mat-divider {
+  margin: 0 -16px;
+}

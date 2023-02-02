@@ -1,6 +1,7 @@
 @use '@angular/material' as mat;
 @import '/src/materialColorScheme.scss';
 
-.entries-container {
-  height: 95%;
+// Overide mat-card padding to extend mat-divider to edges
+mat-divider {
+  margin: 0 -16px;
 }
