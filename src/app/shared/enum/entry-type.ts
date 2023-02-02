@@ -13,4 +13,5 @@ export enum EntryType {
   BioWorkflow = 'workflow',
   Service = 'service',
   AppTool = 'appTool',
+  Notebook = 'notebook',
 }

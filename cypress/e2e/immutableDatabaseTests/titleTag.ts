@@ -83,6 +83,11 @@ describe('Verify Title Tags', () => {
       cy.visit('/workflows');
       cy.title().should('eq', 'Dockstore | Workflows');
     });
+
+    it('/notebooks', () => {
+      cy.visit('/notebooks');
+      cy.title().should('eq', 'Dockstore | Notebooks');
+    });
   });
 
   describe('Miscellaneous ', () => {
