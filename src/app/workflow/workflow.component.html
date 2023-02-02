@@ -276,19 +276,21 @@
               </app-versions-workflow>
             </div>
             <ng-template #noVersionsVersionTab>
-              <div class="p-3">
-                <mat-card class="alert alert-info" role="alert">
-                  <mat-icon>info</mat-icon>
-                  <span *ngIf="entryType === EntryType.Service; else noVersionsVersionTabBioWorkflow">
-                    This service does not have any versions. Create a release/tag on GitHub with a valid .dockstore.yml to add a new
-                    version.
-                  </span>
-                  <ng-template #noVersionsVersionTabBioWorkflow>
-                    <span *ngIf="workflow?.mode === WorkflowModel.ModeEnum.HOSTED">
-                      To see versions, please add a new version in the Files tab.
-                    </span>
-                    <span *ngIf="workflow?.mode !== WorkflowModel.ModeEnum.HOSTED"> To see versions, please refresh the workflow. </span>
-                  </ng-template>
+              <div [ngSwitch]="workflow.mode" class="p-3">
+                <mat-card *ngSwitchCase="WorkflowModel.ModeEnum.HOSTED" class="alert alert-info" role="alert">
+                  <mat-icon>info</mat-icon> To see versions, please add a new version in the Files tab.
+                </mat-card>
+                <mat-card *ngSwitchCase="WorkflowModel.ModeEnum.STUB" class="alert alert-info" role="alert">
+                  <mat-icon>info</mat-icon> To see versions, please refresh the workflow.
+                </mat-card>
+                <mat-card *ngSwitchCase="WorkflowModel.ModeEnum.DOCKSTOREYML" class="alert alert-info" role="alert">
+                  <mat-icon>info</mat-icon> This {{ entryType }} does not have any versions because there are no GitHub branches or
+                  releases/tags with a .dockstore.yml that references this {{ entryType }}. Create a valid .dockstore.yml on GitHub that
+                  references this {{ entryType }} to add a new version.
+                </mat-card>
+                <!-- This also handles FULL -->
+                <mat-card *ngSwitchDefault class="alert alert-info" role="alert">
+                  <mat-icon>info</mat-icon> This {{ entryType }} does not have any versions.
                 </mat-card>
               </div>
             </ng-template>
@@ -311,8 +313,9 @@
                     <ng-container *ngTemplateOutlet="hostedComponent"></ng-container>
                   </div>
                   <mat-card *ngSwitchCase="WorkflowModel.ModeEnum.DOCKSTOREYML" class="alert alert-info" role="alert">
-                    <mat-icon>info</mat-icon> This {{ entryType }} does not have any versions. Create a release/tag on GitHub with a valid
-                    .dockstore.yml to add a new version.
+                    <mat-icon>info</mat-icon> This {{ entryType }} does not have any versions because there are no GitHub branches or
+                    releases/tags with a .dockstore.yml that references this {{ entryType }}. Create a valid .dockstore.yml on GitHub that
+                    references this {{ entryType }} to add a new version.
                   </mat-card>
                   <!-- This also handles FULL -->
                   <mat-card *ngSwitchDefault class="alert alert-info" role="alert">
