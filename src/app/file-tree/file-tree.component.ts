@@ -62,7 +62,11 @@ export class FileTreeComponent {
     this.treeControl = new FlatTreeControl(this.getLevel, this.isExpandable);
     this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
     this.dataSource.data = this.convertSourceFilesToTree(data.files);
-    this.primaryDescriptorPath = '';
+    this.dataSource.data.forEach((fileNode) => {
+      if (this.isPrimaryDescriptor(fileNode.absolutePath)) {
+        this.primaryDescriptorPath = fileNode.absolutePath;
+      }
+    });
   }
 
   /** Transform the data to something the tree can read. */
@@ -116,9 +120,6 @@ export class FileTreeComponent {
             children: accumulator[pathSegment].result,
             absolutePath: '/' + array.slice(0, index + 1).join('/'),
           });
-          if (this.isPrimaryDescriptor(pathSegment)) {
-            this.primaryDescriptorPath = pathSegment;
-          }
         }
         return accumulator[pathSegment];
       }, level);
@@ -145,6 +146,6 @@ export class FileTreeComponent {
   }
 
   isPrimaryDescriptor(path: string): boolean {
-    return path == this.data.versionPath;
+    return path === this.data.versionPath;
   }
 }

@@ -59,17 +59,10 @@
                     <mat-icon aria-hidden="false" aria-label="Navigate to Primary Descriptor file" fontIcon="home"></mat-icon>
                   </a>
                 </span>
-
                 <mat-form-field class="w-100" *ngIf="fileTab.value.length <= 10">
                   <mat-select [value]="currentFile" (selectionChange)="matSelectChange($event)">
                     <mat-select-trigger>
                       {{ currentFile.path }}
-                      <span
-                        *ngIf="isCurrentFilePrimary"
-                        class="bubble preview-bubble primary-bubble-header"
-                        data-cy="primary-descriptor-bubble"
-                        >Primary</span
-                      >
                     </mat-select-trigger>
                     <mat-option [value]="file" *ngFor="let file of fileTab.value">
                       {{ file.path }}
@@ -80,6 +73,13 @@
                   </mat-select>
                 </mat-form-field>
 
+                <span
+                  *ngIf="isCurrentFilePrimary && fileTab.value.length <= 10"
+                  class="bubble preview-bubble primary-bubble-header"
+                  data-cy="primary-descriptor-bubble"
+                >
+                  Primary
+                </span>
                 <a
                   color="secondary"
                   type="button"
