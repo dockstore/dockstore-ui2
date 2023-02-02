@@ -6,34 +6,28 @@
       </mat-card-header>
       <div fxLayout="row wrap" fxLayoutGap="2rem" class="size-small pb-3">
         <div fxLayout fxLayoutAlign="center center">
-          <mat-icon *ngIf="totalStarredWorkflows" class="mat-icon-sm">star</mat-icon>
-          <mat-icon *ngIf="!totalStarredWorkflows" class="mat-icon-sm">star_border</mat-icon>
+          <mat-icon class="mat-icon-sm">{{ totalStarredWorkflows ? 'star' : 'star_border' }}</mat-icon>
           <a [routerLink]="['/starred']" [queryParams]="{ tab: 'workflows' }">
-            {{ totalStarredWorkflows }} Workflow<span *ngIf="totalStarredWorkflows === 0 || totalStarredWorkflows > 1">s</span>
+            {{ totalStarredWorkflows }} Workflow<span *ngIf="totalStarredWorkflows !== 1">s</span>
           </a>
         </div>
         <div fxLayout fxLayoutAlign="center center">
-          <mat-icon *ngIf="totalStarredTools" class="mat-icon-sm">star</mat-icon>
-          <mat-icon *ngIf="!totalStarredTools" class="mat-icon-sm">star_border</mat-icon>
+          <mat-icon class="mat-icon-sm">{{ totalStarredTools ? 'star' : 'star_border' }}</mat-icon>
           <a [routerLink]="['/starred']" [queryParams]="{ tab: 'tools' }">
-            {{ totalStarredTools }} Tool<span *ngIf="totalStarredTools === 0 || totalStarredTools > 1">s</span>
+            {{ totalStarredTools }} Tool<span *ngIf="totalStarredTools !== 1">s</span>
           </a>
         </div>
         <!-- TO DO: remove *ngIf when services implemented-->
         <div *ngIf="serviceImplemented" fxLayout fxLayoutAlign="center center">
-          <mat-icon *ngIf="totalStarredServices" class="mat-icon-sm">star</mat-icon>
-          <mat-icon *ngIf="!totalStarredServices" class="mat-icon-sm">star_border</mat-icon>
+          <mat-icon class="mat-icon-sm">{{ totalStarredServices ? 'star' : 'star_border' }}</mat-icon>
           <a [routerLink]="['/starred']" [queryParams]="{ tab: 'services' }">
-            {{ totalStarredServices }} Service<span *ngIf="totalStarredServices === 0 || totalStarredServices > 1">s</span>
+            {{ totalStarredServices }} Service<span *ngIf="totalStarredServices !== 1">s</span>
           </a>
         </div>
         <div fxLayout fxLayoutAlign="center center">
-          <mat-icon *ngIf="totalStarredOrganizations" class="mat-icon-sm">star</mat-icon>
-          <mat-icon *ngIf="!totalStarredOrganizations" class="mat-icon-sm">star_border</mat-icon>
+          <mat-icon class="mat-icon-sm">{{ totalStarredOrganizations ? 'star' : 'star_border' }}</mat-icon>
           <a [routerLink]="['/starred']" [queryParams]="{ tab: 'organizations' }">
-            {{ totalStarredOrganizations }} Organization<span *ngIf="totalStarredOrganizations === 0 || totalStarredOrganizations > 1"
-              >s</span
-            >
+            {{ totalStarredOrganizations }} Organization<span *ngIf="totalStarredOrganizations !== 1">s</span>
           </a>
         </div>
       </div>
