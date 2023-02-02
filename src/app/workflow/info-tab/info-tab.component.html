@@ -39,15 +39,15 @@
     <mat-divider></mat-divider>
     <mat-card-content class="p-3">
       <ul class="list-unstyled container-info" *ngIf="workflow">
-        <span *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED">
+        <span *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED" class="truncate-text-1">
           <li *ngIf="workflow?.provider && workflow?.providerUrl">
             <strong matTooltip="Git repository for the associated descriptors">Source Code</strong>:
             <a
               id="sourceRepository"
               data-cy="sourceRepository"
-              [href]="workflow?.providerUrl | versionProviderUrl: (isPublic ? selectedVersion?.name : '')"
+              [href]="workflow?.providerUrl | versionProviderUrl: (isPublic ? selectedVersion?.name : '') + '/' + sourceCodeFile"
             >
-              {{ workflow?.providerUrl | urlDeconstruct: (isPublic ? selectedVersion?.name : '') }}
+              {{ workflow?.providerUrl | versionProviderUrl: (isPublic ? selectedVersion?.name : '') + '/' + sourceCodeFile }}
             </a>
           </li>
         </span>

@@ -101,9 +101,10 @@ describe('Dockstore my workflows', () => {
     });
     it('Should contain the extended properties and be able to edit the info tab', () => {
       // The seemingly unnecessary visits are due to a detached-from-dom error even using cy.get().click();
-      cy.visit('/my-workflows/github.com/A/g');
+      cy.visit('/my-workflows/github.com/A/l');
       cy.contains('github.com');
-      cy.get('a#sourceRepository').contains('A/g').should('have.attr', 'href', 'https://github.com/A/g');
+      cy.get('[data-cy=sourceRepository]').should('contain.text', '1st-workflow.cwl');
+      cy.visit('/my-workflows/github.com/A/g');
       cy.contains('/Dockstore.cwl');
       // Change the file path
       cy.contains('button', ' Edit ').click();
