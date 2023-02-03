@@ -15,6 +15,7 @@
         [pattern]="descriptorPattern"
         required
         matTooltip="Default relative path to the descriptor in the Git repository."
+        matTooltipPosition="after"
         [placeholder]="descriptorPathPlaceholder"
       />
       <mat-error *ngIf="formErrors.workflow_path"> {{ formErrors.workflow_path }} </mat-error>
@@ -32,6 +33,7 @@
         [pattern]="validationDescriptorPatterns.testParameterFilePath"
         required
         matTooltip="Default relative path to the test parameter file in the Git repository."
+        matTooltipPosition="after"
         placeholder="e.g. /test.json"
       />
       <mat-error *ngIf="formErrors.testParameterFilePath"> {{ formErrors.testParameterFilePath }} </mat-error>
