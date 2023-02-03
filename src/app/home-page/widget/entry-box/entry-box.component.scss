@@ -1,7 +1,0 @@
-@use '@angular/material' as mat;
-@import '/src/materialColorScheme.scss';
-
-// Overide mat-card padding to extend mat-divider to edges
-mat-divider {
-  margin: 0 -16px;
-}

@@ -9,7 +9,7 @@ import { finalize, takeUntil } from 'rxjs/operators';
 @Component({
   selector: 'app-starred-box',
   templateUrl: './starred-box.component.html',
-  styleUrls: ['./starred-box.component.scss'],
+  styleUrls: ['./starred-box.component.scss', '../../../shared/styles/dashboard-boxes.scss'],
 })
 export class StarredBoxComponent extends Base implements OnInit {
   Dockstore = Dockstore;

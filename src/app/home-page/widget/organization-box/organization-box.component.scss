@@ -1,18 +1,6 @@
 @use '@angular/material' as mat;
 @import '/src/materialColorScheme.scss';
 
-img[alt='User avatar'] {
-  width: 4rem;
-  height: 4rem;
-  border-radius: 50%;
-  border: solid 1px mat.get-color-from-palette($dockstore-app-gray, 4);
-  margin: 0.8rem;
-}
-
-img[alt='Org avatar'] {
-  width: 6rem;
-}
-
 .pending-requests {
   color: $service-color;
 }
@@ -24,9 +12,4 @@ img[alt='Org avatar'] {
 .pending-links {
   width: 6rem;
   line-height: 1.5rem;
-}
-
-// Overide mat-card padding to extend mat-divider to edges
-mat-divider {
-  margin: 0 -16px;
 }

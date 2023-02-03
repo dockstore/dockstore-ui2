@@ -14,7 +14,7 @@ import { AlertService } from 'app/shared/alert/state/alert.service';
 @Component({
   selector: 'app-organization-box',
   templateUrl: './organization-box.component.html',
-  styleUrls: ['./organization-box.component.scss'],
+  styleUrls: ['./organization-box.component.scss', '../../../shared/styles/dashboard-boxes.scss'],
 })
 export class OrganizationBoxComponent extends Base implements OnInit {
   Dockstore = Dockstore;
