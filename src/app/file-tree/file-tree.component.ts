@@ -62,11 +62,8 @@ export class FileTreeComponent {
     this.treeControl = new FlatTreeControl(this.getLevel, this.isExpandable);
     this.dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
     this.dataSource.data = this.convertSourceFilesToTree(data.files);
-    this.dataSource.data.forEach((fileNode) => {
-      if (this.isPrimaryDescriptor(fileNode.absolutePath)) {
-        this.primaryDescriptorPath = fileNode.absolutePath;
-      }
-    });
+    this.primaryDescriptorPath =
+      this.dataSource.data.find((fileNode) => this.isPrimaryDescriptor(fileNode.absolutePath))?.absolutePath || '';
   }
 
   /** Transform the data to something the tree can read. */
