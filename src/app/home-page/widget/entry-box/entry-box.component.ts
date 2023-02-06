@@ -30,7 +30,7 @@ import { Observable } from 'rxjs';
 @Component({
   selector: 'app-entry-box',
   templateUrl: './entry-box.component.html',
-  styleUrls: ['./entry-box.component.scss', '../../../shared/styles/dashboard-boxes.scss'],
+  styleUrls: ['../../../shared/styles/dashboard-boxes.scss'],
 })
 export class EntryBoxComponent extends Base implements OnInit {
   Dockstore = Dockstore;
