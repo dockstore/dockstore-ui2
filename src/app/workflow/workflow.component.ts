@@ -62,7 +62,7 @@ import RoleEnum = Permission.RoleEnum;
 @Component({
   selector: 'app-workflow',
   templateUrl: './workflow.component.html',
-  styleUrls: ['./workflow.component.css'],
+  styleUrls: ['../shared/styles/workflow-container.component.scss'],
 })
 export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
   workflowEditData: any;

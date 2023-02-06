@@ -369,7 +369,8 @@ a.no-underline {
   text-decoration: none;
 }
 
-a.no-underline:hover {
+a.no-underline:hover,
+a.underline-none:hover {
   text-decoration: none;
 }
 
@@ -1216,7 +1217,7 @@ table {
 }
 
 .mat-header-cell,
-table th {
+table th:not(.not-bold) {
   font-weight: 500 !important;
   color: $header-color !important;
 }
@@ -1378,4 +1379,10 @@ button.inline-text-btn {
   background-image: url(assets/images/about-page/city.png);
   background-repeat: repeat-x;
   background-position-y: bottom;
+}
+
+// Light purple background colour for selected items - used in search, tool and workflow sidebars
+.selected-item,
+.form-control.selected-item {
+  background-color: mat.get-color-from-palette($kim-accent1-success, 6);
 }

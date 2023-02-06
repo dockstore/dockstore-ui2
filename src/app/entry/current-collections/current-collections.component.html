@@ -14,11 +14,25 @@
    limitations under the License.
 -->
 <mat-card *ngIf="(isLoggedIn$ | async) || (currentCollections$ | async).length > 0">
-  <mat-card-header>
-    <mat-card-title>Collections</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <ng-container *ngFor="let collectionOrganization of currentCollections$ | async">
+  <div fxLayout fxLayoutAlign="space-between">
+    <div class="h5 mt-2">Collections</div>
+    <div *ngIf="isLoggedIn$ | async">
+      <button
+        mat-button
+        class="private-btn small-btn-structure"
+        matTooltip="Add the entry to a collection"
+        (click)="addEntryToCollection()"
+        id="addToolToCollectionButton"
+      >
+        <img src="../../../assets/svg/icons-plus.svg" class="pr-2 pb-1" alt="Add to my collection" />
+        <span fxHide.lt-lg>Add to my collection</span>
+        <span fxHide fxShow.lt-lg>Add to mine</span>
+      </button>
+    </div>
+  </div>
+  <mat-divider></mat-divider>
+  <mat-card-content class="pt-3">
+    <ng-container *ngFor="let collectionOrganization of currentCollections$ | async; last as last">
       <div class="mb-1 single-spaced">
         <ng-container *ngIf="collectionOrganization.organizationAvatarUrl; then withAvatar; else withoutAvatar"></ng-container>
         <ng-template #withAvatar>
@@ -49,20 +63,7 @@
           >
         </ng-template>
       </div>
+      <mat-divider *ngIf="!last" class="my-2"></mat-divider>
     </ng-container>
-    <div *ngIf="isLoggedIn$ | async" class="p-3">
-      <button
-        fxFlex
-        mat-raised-button
-        class="accent-1-dark-btn"
-        matTooltip="Add the entry to a collection"
-        (click)="addEntryToCollection()"
-        id="addToolToCollectionButton"
-      >
-        <mat-icon>add</mat-icon>
-        <span fxHide.lt-lg>Add to my collection</span>
-        <span fxHide fxShow.lt-lg>Add to mine</span>
-      </button>
-    </div>
   </mat-card-content>
 </mat-card>

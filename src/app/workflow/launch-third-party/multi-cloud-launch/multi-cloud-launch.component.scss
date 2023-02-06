@@ -10,3 +10,7 @@ mat-icon {
 button.small-mat-btn-skin {
   color: mat.get-color-from-palette($dockstore-app-accent);
 }
+
+.launch-with-button {
+  color: $header-color;
+}
