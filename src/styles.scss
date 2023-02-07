@@ -1217,7 +1217,7 @@ table {
 }
 
 .mat-header-cell,
-table th:not(.not-bold) {
+table th {
   font-weight: 500 !important;
   color: $header-color !important;
 }

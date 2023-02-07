@@ -354,65 +354,56 @@
       <mat-card *ngIf="extendedTool$ | async">
         <div class="h5">Source Repositories</div>
         <mat-divider></mat-divider>
-        <!-- Overflow hidden to fix the protruding image due to float right -->
-        <mat-card-content class="overflow-hidden">
-          <div class="container-source-repos pt-3">
-            <table>
-              <tr>
-                <th class="not-bold">Git Repository</th>
-                <td>
-                  <span *ngIf="(extendedTool$ | async).provider">
-                    <a
-                      [href]="(extendedTool$ | async).providerUrl"
-                      target="_blank"
-                      rel="noopener"
-                      mat-raised-button
-                      color="accent"
-                      class="underline-none"
-                    >
-                      <img src="../../assets/images/dockstore/github.svg" class="site-icons-small mr-2" />
-                      {{ (extendedTool$ | async).provider }}
-                    </a>
-                  </span>
-                </td>
-              </tr>
-              <tr>
-                <th class="not-bold">Docker Registry</th>
-                <td class="pt-2">
-                  <div fxLayout="column" fxLayoutAlign="start">
-                    <div *ngIf="!(extendedTool$ | async).imgProviderUrl || privateOnlyRegistry">
-                      {{ (extendedTool$ | async)?.imgProvider }}
-                    </div>
-                    <div *ngIf="(extendedTool$ | async).imgProviderUrl && !privateOnlyRegistry">
-                      <a
-                        [href]="(extendedTool$ | async).imgProviderUrl"
-                        target="_blank"
-                        rel="noopener"
-                        mat-raised-button
-                        color="accent"
-                        class="underline-none"
-                      >
-                        <img src="../../assets/images/registries/quay-io-white.png" class="site-icons-small mr-2" />
-                        {{ (extendedTool$ | async)?.imgProvider }}
-                      </a>
-                      <div *ngIf="(extendedTool$ | async).imgProviderUrl === null">{{ (extendedTool$ | async)?.imgProvider }}</div>
-                    </div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <th></th>
-                <td fxLayout fxLayoutAlign="start">
-                  <div
-                    *ngIf="(extendedTool$ | async)?.imgProviderUrl && (extendedTool$ | async).imgProviderUrl.startsWith('https://quay.io')"
-                  >
-                    <a [href]="(extendedTool$ | async)?.imgProviderUrl" target="_blank" rel="noopener">
-                      <img src="{{ (extendedTool$ | async).imgProviderUrl }}/status" />
-                    </a>
-                  </div>
-                </td>
-              </tr>
-            </table>
+        <mat-card-content>
+          <div fxLayout="row wrap" class="container-source-repos pt-3">
+            <div fxFlex="40" class="mb-2 pt-2 pr-2">Git Repository</div>
+            <div class="mb-2">
+              <span *ngIf="(extendedTool$ | async).provider">
+                <a
+                  [href]="(extendedTool$ | async).providerUrl"
+                  target="_blank"
+                  rel="noopener"
+                  mat-raised-button
+                  color="accent"
+                  class="underline-none"
+                >
+                  <img
+                    src="../../assets/images/registries/{{ (extendedTool$ | async).provider }}-white.svg"
+                    class="site-icons-small mr-2"
+                    alt="Git Repository"
+                  />
+                  {{ (extendedTool$ | async).provider }}
+                </a>
+              </span>
+            </div>
+            <div fxFlex="40" class="pt-2 pr-2">Docker Registry</div>
+            <div>
+              <div *ngIf="!(extendedTool$ | async).imgProviderUrl || privateOnlyRegistry" class="pt-2">
+                {{ (extendedTool$ | async)?.imgProvider }}
+              </div>
+              <span *ngIf="(extendedTool$ | async).imgProviderUrl && !privateOnlyRegistry">
+                <a
+                  [href]="(extendedTool$ | async).imgProviderUrl"
+                  target="_blank"
+                  rel="noopener"
+                  mat-raised-button
+                  color="accent"
+                  class="underline-none"
+                >
+                  <img
+                    src="../../assets/images/registries/{{ (extendedTool$ | async)?.imgProvider }}-white.svg"
+                    class="site-icons-small mr-2"
+                    alt="Docker Registry"
+                  />
+                  {{ (extendedTool$ | async)?.imgProvider }}
+                </a>
+                <div *ngIf="(extendedTool$ | async).imgProvider === 'Quay.io'">
+                  <a [href]="(extendedTool$ | async)?.imgProviderUrl" target="_blank" rel="noopener">
+                    <img src="{{ (extendedTool$ | async).imgProviderUrl }}/status" />
+                  </a>
+                </div>
+              </span>
+            </div>
           </div>
         </mat-card-content>
       </mat-card>
