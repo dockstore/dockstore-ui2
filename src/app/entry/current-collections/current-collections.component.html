@@ -14,7 +14,7 @@
    limitations under the License.
 -->
 <mat-card *ngIf="(isLoggedIn$ | async) || (currentCollections$ | async).length > 0">
-  <div fxLayout fxLayoutAlign="space-between">
+  <div fxLayout fxLayoutAlign="space-between" class="mb-3">
     <div class="h5 mt-2">Collections</div>
     <div *ngIf="isLoggedIn$ | async">
       <button
@@ -24,8 +24,8 @@
         (click)="addEntryToCollection()"
         id="addToolToCollectionButton"
       >
-        <img src="../../../assets/svg/icons-plus.svg" class="pr-2 pb-1" alt="Add to my collection" />
-        <span fxHide.lt-lg>Add to my collection</span>
+        <img src="../../../assets/svg/icons-plus.svg" class="pr-2 pb-1" alt="Add to my Collections" />
+        <span fxHide.lt-lg>Add to my Collections</span>
         <span fxHide fxShow.lt-lg>Add to mine</span>
       </button>
     </div>
