@@ -45,7 +45,7 @@
         <mat-form-field appearance="outline" class="search-form-field">
           <mat-label>Search Organizations</mat-label>
           <input #search matInput formControlName="name" />
-          <button mat-button *ngIf="search.value" matSuffix mat-icon-button (click)="clearSearch()">
+          <button mat-button *ngIf="search.value" matSuffix mat-icon-button (click)="clearSearch()" type="button">
             <mat-icon>close</mat-icon>
           </button>
         </mat-form-field>
