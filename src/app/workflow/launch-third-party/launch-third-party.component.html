@@ -6,10 +6,9 @@
     workflow.descriptorType === WorkflowModel.DescriptorTypeEnum.Gxformat2
   "
 >
-  <mat-card-header>
-    <mat-card-title>Launch with</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
+  <div class="h5">Launch with</div>
+  <mat-divider class="mb-2"></mat-divider>
+  <mat-card-content class="pt-3">
     <div class="container-source-repos">
       <div class="container-launch-with">
         <div *ngIf="workflow?.descriptorType === WorkflowModel.DescriptorTypeEnum.WDL">
@@ -39,8 +38,8 @@
               [matTooltip]="(hasContent$ | async) ? '' : 'The WDL workflow has no content.'"
             ></app-multi-cloud-launch>
             <a
-              mat-raised-button
-              class="launch-with-button"
+              mat-button
+              class="launch-with-button private-btn"
               [matTooltip]="(hasContent$ | async) ? '' : 'The WDL workflow has no content.'"
               target="_blank"
               rel="noopener"
@@ -50,19 +49,19 @@
               ><img class="partner-launch" src="../assets/images/thirdparty/dnanexus.png" alt="DNAnexus launch with logo"
             /></a>
             <a
-              mat-raised-button
-              class="launch-with-button"
+              mat-button
+              class="launch-with-button private-btn"
               [matTooltip]="terraTooltip$ | async"
               target="_blank"
               rel="noopener"
               [disabled]="disableTerraPlatform$ | async"
               [attr.href]="config.TERRA_IMPORT_URL + '/' + workflow?.full_workflow_path + ':' + selectedVersion?.name"
               data-cy="terraLaunchWith"
-              ><img class="partner-launch" src="../assets/images/thirdparty/terra.png" alt="Terra launch with logo"
-            /></a>
+              ><img class="partner-launch" src="../assets/images/thirdparty/terra.png" alt="Terra launch with logo" />Terra</a
+            >
             <a
-              mat-raised-button
-              class="launch-with-button"
+              mat-button
+              class="launch-with-button private-btn"
               [matTooltip]="elwaziToolTip$ | async"
               target="_blank"
               rel="noopener"
@@ -72,26 +71,26 @@
               ><img class="partner-launch" src="../assets/images/thirdparty/elwazi.png" alt="eLwazi launch with logo"
             /></a>
             <a
-              mat-raised-button
-              class="launch-with-button"
+              mat-button
+              class="launch-with-button private-btn"
               [matTooltip]="anvilTooltip$ | async"
               target="_blank"
               rel="noopener"
               [disabled]="disableTerraPlatform$ | async"
               [attr.href]="config.ANVIL_IMPORT_URL + '/' + workflow?.full_workflow_path + ':' + selectedVersion?.name"
               data-cy="anvilLaunchWith"
-              ><img class="partner-launch" src="../assets/images/thirdparty/anvil.png" alt="AnVIL launch with logo"
+              ><img class="partner-launch pb-2" src="../assets/images/thirdparty/anvil.png" alt="AnVIL launch with logo"
             /></a>
             <a
-              mat-raised-button
-              class="launch-with-button"
+              mat-button
+              class="launch-with-button private-btn"
               [matTooltip]="bdCatalystTerraTooltip$ | async"
               target="_blank"
               rel="noopener"
               [disabled]="disableTerraPlatform$ | async"
               [attr.href]="config.BD_CATALYST_TERRA_IMPORT_URL + '/' + workflow?.full_workflow_path + ':' + selectedVersion?.name"
               data-cy="nhlbiLaunchWith"
-              ><span class="partner-name">NHLBI BioData Catalyst®</span></a
+              ><span>NHLBI BioData Catalyst®</span></a
             >
           </div>
           <ng-template #oldWdlLaunch>
@@ -110,62 +109,57 @@
               <!--              ><img class="partner-icon" src="../assets/images/thirdparty/dnastack.png" alt="DNAstack icon" /> DNAstack &raquo;</a-->
               <!--              >-->
               <a
-                mat-raised-button
-                class="old-launch-with-button"
+                mat-button
+                class="launch-with-button private-btn"
                 [matTooltip]="(hasContent$ | async) ? '' : 'The WDL workflow has no content.'"
                 target="_blank"
                 rel="noopener"
                 [attr.href]="config.DNANEXUS_IMPORT_URL + '?source=' + trsUrl"
                 [disabled]="(hasContent$ | async) === false"
-                color="primary"
                 data-cy="dnanexusLaunchWith"
-                ><mat-icon svgIcon="dnanexus"></mat-icon> DNAnexus &raquo;</a
-              >
+                ><img class="partner-launch" src="../assets/images/thirdparty/dnanexus.png" alt="DNAnexus launch with logo"
+              /></a>
               <a
-                mat-raised-button
-                class="old-launch-with-button"
+                mat-button
+                class="launch-with-button private-btn"
                 [matTooltip]="terraTooltip$ | async"
                 target="_blank"
                 rel="noopener"
                 [disabled]="disableTerraPlatform$ | async"
                 [attr.href]="config.TERRA_IMPORT_URL + '/' + workflow?.full_workflow_path + ':' + selectedVersion?.name"
-                color="primary"
                 data-cy="terraLaunchWith"
-                ><mat-icon svgIcon="terra"></mat-icon> Terra &raquo;</a
+                ><img class="partner-launch mr-2" src="../assets/images/thirdparty/terra.png" alt="Terra launch with logo" />Terra</a
               >
               <a
-                mat-raised-button
-                class="old-launch-with-button"
+                mat-button
+                class="launch-with-button private-btn"
                 [matTooltip]="elwaziToolTip$ | async"
                 target="_blank"
                 rel="noopener"
                 [disabled]="disableTerraPlatform$ | async"
                 [attr.href]="config.ELWAZI_IMPORT_URL + '/' + workflow?.full_workflow_path + ':' + selectedVersion?.name"
-                color="primary"
                 data-cy="elwaziLaunchWith"
-                ><mat-icon svgIcon="elwazi"></mat-icon> eLwazi &raquo;</a
-              >
+                ><img class="partner-launch" src="../assets/images/thirdparty/elwazi.png" alt="eLwazi launch with logo"
+              /></a>
               <a
-                mat-raised-button
-                class="old-launch-with-button"
+                mat-button
+                class="launch-with-button private-btn"
                 [matTooltip]="anvilTooltip$ | async"
                 target="_blank"
                 rel="noopener"
                 [disabled]="disableTerraPlatform$ | async"
                 [attr.href]="config.ANVIL_IMPORT_URL + '/' + workflow?.full_workflow_path + ':' + selectedVersion?.name"
-                color="primary"
                 data-cy="anvilLaunchWith"
-                ><mat-icon class="anvil-icon" svgIcon="anvil"></mat-icon> AnVIL &raquo;</a
-              >
+                ><img class="partner-launch pb-2" src="../assets/images/thirdparty/anvil.png" alt="AnVIL launch with logo"
+              /></a>
               <a
-                mat-raised-button
-                class="old-launch-with-button"
+                mat-button
+                class="launch-with-button private-btn"
                 [matTooltip]="bdCatalystTerraTooltip$ | async"
                 target="_blank"
                 rel="noopener"
                 [disabled]="disableTerraPlatform$ | async"
                 [attr.href]="config.BD_CATALYST_TERRA_IMPORT_URL + '/' + workflow?.full_workflow_path + ':' + selectedVersion?.name"
-                color="primary"
                 data-cy="nhlbiLaunchWith"
                 >NHLBI BioData Catalyst®</a
               >
@@ -179,40 +173,37 @@
           *ngIf="workflow?.descriptorType === WorkflowModel.DescriptorTypeEnum.CWL"
         >
           <a
-            mat-raised-button
-            class="old-launch-with-button"
+            mat-button
+            class="launch-with-button private-btn"
             [matTooltip]="cgcTooltip$ | async"
             target="_blank"
             rel="noopener"
             [attr.href]="config.CGC_IMPORT_URL + '?trs=' + trsUrl"
             [disabled]="disableSevenBridgesPlatform$ | async"
-            color="primary"
             data-cy="cgcLaunchWith"
-            ><img class="partner-icon" src="../assets/images/thirdparty/cgc.png" alt="CGC icon" /> CGC
+            ><img class="partner-icon mr-1" src="../assets/images/thirdparty/cgc-colour.png" alt="CGC icon" /> CGC
           </a>
           <a
-            mat-raised-button
-            class="old-launch-with-button"
+            mat-button
+            class="launch-with-button private-btn"
             [matTooltip]="bdCatalystSevenBridgesTooltip$ | async"
             target="_blank"
             rel="noopener"
             [attr.href]="config.BD_CATALYST_SEVEN_BRIDGES_IMPORT_URL + '?trs=' + trsUrl"
             [disabled]="disableSevenBridgesPlatform$ | async"
-            color="primary"
             data-cy="nhlbiLaunchWith"
             >NHLBI BioData Catalyst®
           </a>
           <a
-            mat-raised-button
-            class="old-launch-with-button"
+            mat-button
+            class="launch-with-button private-btn"
             [matTooltip]="cavaticaTooltip$ | async"
             target="_blank"
             rel="noopener"
             [attr.href]="config.CAVATICA_IMPORT_URL + '?trs=' + trsUrl"
             [disabled]="disableSevenBridgesPlatform$ | async"
-            color="primary"
             data-cy="cavaticaLaunchWith"
-            ><img class="partner-icon" src="../assets/images/thirdparty/cavatica.png" alt="Cavatica icon" /> Cavatica
+            ><img class="partner-icon mr-1" src="../assets/images/thirdparty/cavatica-colour.png" alt="Cavatica icon" /> Cavatica
           </a>
         </div>
         <div *ngIf="config.FEATURES.enableLaunchWithGalaxy && workflow?.descriptorType === WorkflowModel.DescriptorTypeEnum.Gxformat2">
@@ -231,8 +222,8 @@
         </div>
         <div *ngIf="workflow?.descriptorType === WorkflowModel.DescriptorTypeEnum.NFL">
           <a
-            mat-raised-button
-            class="old-launch-with-button"
+            mat-button
+            class="launch-with-button private-btn"
             [matTooltip]="(hasContent$ | async) ? 'Export this workflow to Nextflow Tower' : 'The Nextflow workflow has no content.'"
             target="_blank"
             rel="noopener"
@@ -248,10 +239,9 @@
               selectedVersion.name
             "
             [disabled]="(hasContent$ | async) === false"
-            color="primary"
             data-cy="nextflowtowerLaunchWith"
           >
-            <img class="partner-icon" src="../assets/images/thirdparty/nextflow-icon.png" alt="Nextflow icon" /> Nextflow Tower
+            <img class="partner-icon mr-2" src="../assets/images/thirdparty/nextflow-icon.png" alt="Nextflow icon" /> Nextflow Tower
           </a>
         </div>
       </div>
