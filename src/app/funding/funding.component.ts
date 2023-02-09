@@ -8,6 +8,11 @@ export interface Funder {
   content: string;
 }
 
+export interface FundingSections {
+  sectionHeader: string;
+  funders: Funder[];
+}
+
 @Component({
   selector: 'app-funding',
   templateUrl: './funding.component.html',
@@ -90,8 +95,18 @@ export class FundingComponent {
   ];
 
   currentFunders: Funder[] = [this.AmazonFunder, this.GenomeCanadaFunder, this.NHGRIFunder, this.NIHFunder, this.ProvinceOfOntarioFunder];
-
   previousFunders: Funder[] = [this.BISTIFunder, this.CFIFunder, this.BioDataCatalyst];
+
+  fundingDisplay: FundingSections[] = [
+    {
+      sectionHeader: 'Current Funding',
+      funders: this.currentFunders,
+    },
+    {
+      sectionHeader: 'Previous Funding',
+      funders: this.previousFunders,
+    },
+  ];
 
   getFunders(): Funder[] {
     return this.funders;
