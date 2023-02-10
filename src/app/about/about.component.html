@@ -220,7 +220,7 @@
         Dockstore is grateful to its team, funders, contributors, and partners who have pulled together a library of over 1000 workflows and
         tools.
       </p>
-      <div fxLayout="column" fxLayoutAlign="space-between start" fxLayoutGap="1rem">
+      <div fxLayout="column" fxLayoutAlign="space-between start" fxLayoutGap="1rem" class="w-100">
         <div class="w-100" fxLayout="row" fxLayoutGap="4rem" fxLayoutAlign="start center">
           <div fxLayout="column" fxHide.lt-md fxFlex="10">
             <h3>Funders</h3>
@@ -229,7 +229,7 @@
               <mat-icon>keyboard_arrow_right</mat-icon>
             </span>
           </div>
-          <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="4rem" fxFlex>
+          <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="3rem" fxFlex>
             <a *ngFor="let funder of funders" [href]="funder.website" target="_blank" rel="noopener noreferrer" class="py-2">
               <img class="funders" [src]="funder.imageSource" [alt]="funder.altImageText" />
             </a>
