@@ -10,6 +10,7 @@ import { Dockstore } from '../../shared/dockstore.model';
 import { TokenSource } from '../../shared/enum/token-source.enum';
 import { TokenQuery } from '../../shared/state/token.query';
 import { Permission, Workflow, WorkflowsService } from '../../shared/swagger';
+import { WorkflowSubClass } from '../../shared/openapi';
 import RoleEnum = Permission.RoleEnum;
 
 @Component({
@@ -54,7 +55,7 @@ export class PermissionsComponent implements OnInit {
     this.updating++;
     this.alertService.start(`Removing ${email}`);
     this.workflowsService
-      .removeWorkflowRole(this.workflow.full_workflow_path, email, permission, this.entryType === EntryType.Service)
+      .removeWorkflowRole(this.workflow.full_workflow_path, email, permission, this.getWorkflowSubclass(this.entryType))
       .subscribe(
         (userPermissions: Permission[]) => {
           this.alertService.detailedSuccess(`Removed ${email}`);
@@ -75,7 +76,10 @@ export class PermissionsComponent implements OnInit {
       this.updating++;
       this.alertService.start(`Adding ${email}`);
       this.workflowsService
-        .addWorkflowPermission(this.workflow.full_workflow_path, { email: email, role: permission }, this.entryType === EntryType.Service)
+        .addWorkflowPermission(this.workflow.full_workflow_path, this.getWorkflowSubclass(this.entryType), {
+          email: email,
+          role: permission,
+        })
         .subscribe(
           (userPermissions: Permission[]) => {
             this.alertService.detailedSuccess(`Added ${email}`);
@@ -109,7 +113,7 @@ export class PermissionsComponent implements OnInit {
     this.owners = [];
     if (this._workflow) {
       this.hosted = this.workflow.mode === 'HOSTED';
-      this.workflowsService.getWorkflowPermissions(this._workflow.full_workflow_path, this.entryType === EntryType.Service).subscribe(
+      this.workflowsService.getWorkflowPermissions(this._workflow.full_workflow_path, this.getWorkflowSubclass(this.entryType)).subscribe(
         (userPermissions: Permission[]) => {
           this.canViewPermissions = true;
           this.processResponse(userPermissions);
@@ -127,5 +131,19 @@ export class PermissionsComponent implements OnInit {
     this.owners = this.specificPermissionEmails(userPermissions, RoleEnum.OWNER);
     this.writers = this.specificPermissionEmails(userPermissions, RoleEnum.WRITER);
     this.readers = this.specificPermissionEmails(userPermissions, RoleEnum.READER);
+  }
+
+  public getWorkflowSubclass(entryType: EntryType): WorkflowSubClass {
+    switch (entryType) {
+      case EntryType.Tool:
+        return WorkflowSubClass.APPTOOL;
+      case EntryType.AppTool:
+        // don't think this should happen.
+        return WorkflowSubClass.APPTOOL;
+      case EntryType.BioWorkflow:
+        return WorkflowSubClass.BIOWORKFLOW;
+      case EntryType.Service:
+        return WorkflowSubClass.SERVICE;
+    }
   }
 }

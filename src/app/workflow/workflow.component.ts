@@ -272,7 +272,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
             // for users that are not on FireCloud
             if (this.isOwner && this.isHosted() && this.workflow) {
               this.workflowsService
-                .getWorkflowPermissions(this.workflow.full_workflow_path, this.entryType === EntryType.Service)
+                .getWorkflowPermissions(this.workflow.full_workflow_path, this.getWorkflowSubclass(this.entryType))
                 .pipe(takeUntil(this.ngUnsubscribe))
                 .subscribe((userPermissions: Permission[]) => {
                   this.processPermissions(userPermissions);
