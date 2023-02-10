@@ -86,12 +86,12 @@ export class FundingComponent {
   funders: Funder[] = [
     this.GenomeCanadaFunder,
     this.ProvinceOfOntarioFunder,
-    this.NIHFunder,
     this.BISTIFunder,
+    this.NIHFunder,
+    this.NHGRIFunder,
     this.BioDataCatalyst,
     this.CFIFunder,
     this.AmazonFunder,
-    this.NHGRIFunder,
   ];
 
   currentFunders: Funder[] = [this.AmazonFunder, this.GenomeCanadaFunder, this.NHGRIFunder, this.NIHFunder, this.ProvinceOfOntarioFunder];
