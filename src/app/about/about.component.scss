@@ -34,7 +34,7 @@ ul.ordered-list {
 }
 
 .funders {
-  max-width: 13rem;
+  max-width: 17rem;
   max-height: 4rem;
 }
 
@@ -42,7 +42,13 @@ ul.ordered-list {
 .funders[alt='NIH Logo'],
 .funders[alt='BISTI Logo'],
 .funders[alt='NHGRI Logo'] {
-  height: 1.7rem;
+  height: 3.3rem;
+  max-width: 26rem;
+}
+
+.contributors {
+  max-width: 13rem;
+  max-height: 4rem;
 }
 
 hr {

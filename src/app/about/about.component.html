@@ -229,10 +229,17 @@
               <mat-icon>keyboard_arrow_right</mat-icon>
             </span>
           </div>
-          <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="3rem" fxFlex>
-            <a *ngFor="let funder of funders" [href]="funder.website" target="_blank" rel="noopener noreferrer" class="py-2">
-              <img class="funders" [src]="funder.imageSource" [alt]="funder.altImageText" />
-            </a>
+          <div fxLayout="column">
+            <div fxLayout="row wrap" fxLayoutAlign="center center" fxLayoutGap="6rem" fxLayoutGap.lt-sm="4rem" fxFlex>
+              <a *ngFor="let funder of funders | slice: 0:4" [href]="funder.website" target="_blank" rel="noopener noreferrer" class="py-4">
+                <img class="funders" [src]="funder.imageSource" [alt]="funder.altImageText" />
+              </a>
+            </div>
+            <div fxLayout="row wrap" fxLayoutAlign="center center" fxLayoutGap="6rem" fxLayoutGap.lt-sm="4rem" fxFlex>
+              <a *ngFor="let funder of funders | slice: 4" [href]="funder.website" target="_blank" rel="noopener noreferrer" class="py-2">
+                <img class="funders" [src]="funder.imageSource" [alt]="funder.altImageText" />
+              </a>
+            </div>
           </div>
         </div>
         <hr />
@@ -246,7 +253,7 @@
           </div>
           <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="4rem" fxFlex>
             <a *ngFor="let contributor of contributors" [href]="contributor.url" target="_blank" rel="noopener noreferrer" class="py-2">
-              <img class="funders" [src]="contributor.current" [alt]="contributor.name" />
+              <img class="contributors" [src]="contributor.current" [alt]="contributor.name" />
             </a>
           </div>
         </div>
@@ -257,7 +264,7 @@
           </div>
           <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="4rem" fxFlex>
             <a *ngFor="let partner of partners" [href]="partner.url" target="_blank" rel="noopener noreferrer">
-              <img class="funders" [src]="partner.current" [alt]="partner.name" />
+              <img class="contributors" [src]="partner.current" [alt]="partner.name" />
             </a>
           </div>
         </div>
