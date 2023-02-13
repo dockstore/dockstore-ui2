@@ -34,8 +34,21 @@ ul.ordered-list {
 }
 
 .funders {
-  max-width: 15rem;
-  max-height: 5rem;
+  max-width: 17rem;
+  max-height: 4rem;
+}
+
+// Normalize image sizes for NIH logos
+.funders[alt='NIH Logo'],
+.funders[alt='BISTI Logo'],
+.funders[alt='NHGRI Logo'] {
+  height: 3.3rem;
+  max-width: 26rem;
+}
+
+.contributors {
+  max-width: 13rem;
+  max-height: 4rem;
 }
 
 hr {
