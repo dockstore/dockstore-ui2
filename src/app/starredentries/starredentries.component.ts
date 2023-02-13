@@ -14,7 +14,6 @@ import { OrgLogoService } from '../shared/org-logo.service';
 import { EntryType } from '../shared/enum/entry-type';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Location } from '@angular/common';
-import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 
 @Component({
   selector: 'app-starredentries',
@@ -44,8 +43,7 @@ export class StarredEntriesComponent extends Base implements OnInit {
     // private dockstoreService: DockstoreService
     private orgLogoService: OrgLogoService,
     private activatedRoute: ActivatedRoute,
-    private location: Location,
-    private descriptorLanguageService: DescriptorLanguageService
+    private location: Location
   ) {
     super();
   }
@@ -117,11 +115,4 @@ export class StarredEntriesComponent extends Base implements OnInit {
   updateStarredUrl(tabName: string) {
     this.location.replaceState('starred?tab=' + tabName);
   }
-
-  // When displaying the descriptor type typically the workflow descriptor type string is used
-  // However for Galaxy this is gxformat2, so change it to be Galaxy.
-  // The shortFriendlyName is Galaxy so use that.
-  public galaxyShortfriendlyName = this.descriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(
-    Workflow.DescriptorTypeEnum.Gxformat2
-  );
 }

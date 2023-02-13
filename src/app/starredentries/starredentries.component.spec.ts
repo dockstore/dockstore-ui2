@@ -15,8 +15,6 @@ import {
   OrgLogoStubService,
 } from './../test/service-stubs';
 import { StarredEntriesComponent } from './starredentries.component';
-import { DescriptorLanguageService } from '../shared/entry/descriptor-language.service';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('StarredEntriesComponent', () => {
   let component: StarredEntriesComponent;
@@ -25,7 +23,7 @@ describe('StarredEntriesComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [RouterTestingModule, HttpClientTestingModule],
+        imports: [RouterTestingModule],
         declarations: [StarredEntriesComponent],
         schemas: [NO_ERRORS_SCHEMA],
         providers: [
@@ -35,7 +33,6 @@ describe('StarredEntriesComponent', () => {
           { provide: StarentryService, useClass: StarEntryStubService },
           { provide: UsersService, useClass: UsersStubService },
           { provide: OrgLogoService, useClass: OrgLogoStubService },
-          { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
         ],
       }).compileComponents();
     })
@@ -49,7 +46,6 @@ describe('StarredEntriesComponent', () => {
 
   it('should be created', () => {
     expect(component).toBeTruthy();
-    expect(component.galaxyShortfriendlyName === 'Galaxy');
   });
   it('should check isOwner', () => {
     component.user = {

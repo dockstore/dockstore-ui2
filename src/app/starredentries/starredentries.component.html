@@ -128,7 +128,7 @@
                       </span>
                     </mat-chip>
                     <mat-chip class="bubble">
-                      {{ workflow?.descriptorType === 'gxformat2' ? galaxyShortfriendlyName : (workflow?.descriptorType | uppercase) }}
+                      {{ workflow?.descriptorType | descriptorLanguage }}
                     </mat-chip>
                     <mat-chip class="bubble" *ngIf="workflow.versionVerified === true">
                       <span class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">

@@ -11,8 +11,6 @@ import { CustomMaterialModule } from '../../shared/modules/material.module';
 import { DockstoreStubService, SearchStubService } from '../../test/service-stubs';
 import { SearchService } from '../state/search.service';
 import { SearchWorkflowTableComponent } from './search-workflow-table.component';
-import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('SearchWorkflowTableComponent', () => {
   let component: SearchWorkflowTableComponent;
@@ -23,12 +21,11 @@ describe('SearchWorkflowTableComponent', () => {
       TestBed.configureTestingModule({
         declarations: [SearchWorkflowTableComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        imports: [CustomMaterialModule, BrowserAnimationsModule, RouterTestingModule, HttpClientTestingModule],
+        imports: [CustomMaterialModule, BrowserAnimationsModule, RouterTestingModule],
         providers: [
           { provide: DockstoreService, useClass: DockstoreStubService },
           DateService,
           { provide: SearchService, useClass: SearchStubService },
-          { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
         ],
       }).compileComponents();
     })
@@ -42,6 +39,5 @@ describe('SearchWorkflowTableComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-    expect(component.galaxyShortfriendlyName === 'Galaxy');
   });
 });
