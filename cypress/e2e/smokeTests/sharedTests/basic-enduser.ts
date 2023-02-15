@@ -240,9 +240,12 @@ function testWorkflow(url: string, version1: string, version2: string, trsUrl: s
     }
 
     if (type === 'WDL') {
-      cy.get('[data-cy=dnanexusLaunchWith] svg').should('exist');
-      cy.get('[data-cy=terraLaunchWith] svg').should('exist');
-      cy.get('[data-cy=anvilLaunchWith] svg').should('exist');
+      const launchSelectors = ['dnanexusLaunchWith', 'terraLaunchWith', 'anvilLaunchWith'];
+      launchSelectors
+        // In 1.13, launch button images are <svg>
+        // In 1.14, launch button images are <img>
+        .map((launchSelector) => `[data-cy=${launchSelector}] svg, [data-cy=${launchSelector}] img`)
+        .forEach((launchSelector) => cy.get(launchSelector).should('exist'));
     }
     if (type === 'CWL') {
       launchWithTuples = [
