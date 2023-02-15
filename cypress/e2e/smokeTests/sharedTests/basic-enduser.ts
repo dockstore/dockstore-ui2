@@ -204,6 +204,8 @@ function testWorkflow(url: string, version1: string, version2: string, trsUrl: s
     cy.url().should('contain', '?tab=files');
     cy.contains('Descriptor Files');
     cy.get('.ace_editor').should('be.visible');
+    cy.wait(1000); // https://ucsc-cgl.atlassian.net/browse/SEAB-5240 wait seems to fix; I think the import script needs to finish downloading
+    // before clicking away.
     goToTab('Test Parameter Files');
     if (type === ToolDescriptor.TypeEnum.NFL) {
       cy.contains('This version has no files of this type.');
