@@ -107,12 +107,12 @@ describe('Test search page functionality', () => {
     cy.wait(2500); // Wait less than ideal, facets keep getting rerendered is the problem
     cy.contains('mat-checkbox', 'Nextflow'); // wait for the checkbox to reappear, indicating the filtering is almost complete
     cy.get('[data-cy=descriptorType]').each(($el, index, $list) => {
-      cy.wrap($el).contains('NFL');
+      cy.wrap($el).contains('Nextflow');
     });
-    cy.url().should('contain', 'descriptorType=NFL');
+    cy.url().should('contain', 'descriptorType=Nextflow');
     cy.url().should('contain', 'searchMode=files');
     cy.contains('mat-checkbox', 'Nextflow').click();
-    cy.url().should('not.contain', 'descriptorType=NFL');
+    cy.url().should('not.contain', 'descriptorType=Nextflow');
     cy.url().should('contain', 'searchMode=files');
   });
   it('boolean facet filters', () => {
