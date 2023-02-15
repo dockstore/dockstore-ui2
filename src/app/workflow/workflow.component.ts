@@ -337,6 +337,8 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
         return WorkflowSubClass.BIOWORKFLOW;
       case EntryType.Service:
         return WorkflowSubClass.SERVICE;
+      case EntryType.Notebook:
+        return WorkflowSubClass.NOTEBOOK;
     }
   }
 

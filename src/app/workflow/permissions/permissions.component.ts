@@ -144,6 +144,8 @@ export class PermissionsComponent implements OnInit {
         return WorkflowSubClass.BIOWORKFLOW;
       case EntryType.Service:
         return WorkflowSubClass.SERVICE;
+      case EntryType.Notebook:
+        return WorkflowSubClass.NOTEBOOK;
     }
   }
 }
