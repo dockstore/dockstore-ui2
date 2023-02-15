@@ -7,18 +7,12 @@ import { Workflow } from '../../shared/swagger';
 })
 export class DescriptorLanguagePipe implements PipeTransform {
   /**
-   * When displaying the descriptor type typically the workflow descriptor type string is used
-   * However for Galaxy this is 'gxformat2', so change it to be Galaxy.
-   * The shortFriendlyName is 'Galaxy' so use that.
+   * Transforms DescriptorTypeEnum to their friendly names
    * @param descriptorType
    * @returns {string}
    */
   constructor(private descriptorLanguageService: DescriptorLanguageService) {}
-  transform(descriptorType: string): string {
-    if (descriptorType === 'gxformat2') {
-      return this.descriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(Workflow.DescriptorTypeEnum.Gxformat2);
-    } else {
-      return descriptorType.toUpperCase();
-    }
+  transform(descriptorType: Workflow.DescriptorTypeEnum): string {
+    return this.descriptorLanguageService.workflowDescriptorTypeEnumToShortFriendlyName(descriptorType);
   }
 }
