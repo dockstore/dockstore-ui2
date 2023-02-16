@@ -9,6 +9,10 @@
   color: mat.get-color-from-palette($dockstore-app-error, 1);
 }
 
+.disabled {
+  color: mat.get-color-from-palette($dockstore-app-gray, 4);
+}
+
 .pending-links {
   width: 6rem;
   line-height: 1.5rem;
