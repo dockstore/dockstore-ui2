@@ -109,10 +109,10 @@ describe('Test search page functionality', () => {
     cy.get('[data-cy=descriptorType]').each(($el, index, $list) => {
       cy.wrap($el).contains('Nextflow');
     });
-    cy.url().should('contain', 'descriptorType=Nextflow');
+    cy.url().should('contain', 'descriptorType=NFL');
     cy.url().should('contain', 'searchMode=files');
     cy.contains('mat-checkbox', 'Nextflow').click();
-    cy.url().should('not.contain', 'descriptorType=Nextflow');
+    cy.url().should('not.contain', 'descriptorType=NFL');
     cy.url().should('contain', 'searchMode=files');
   });
   it('boolean facet filters', () => {
