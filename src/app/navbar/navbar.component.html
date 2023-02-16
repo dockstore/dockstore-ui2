@@ -55,7 +55,7 @@
           [routerLink]="['/dashboard']"
           routerLinkActive="navbar-button-active"
         >
-          <img src="../assets/svg/my-nav/dashboard.svg" alt="dashboard" /> My Dockstore
+          <img src="../assets/svg/main-nav/icons-navigation-dashboard.svg" alt="dashboard" class="mr-1 mb-1" /> My Dockstore
         </a>
 
         <div fxLayoutGap="1rem" *ngIf="!isLoggedIn">
@@ -98,12 +98,13 @@
             routerLink="/accounts"
             routerLinkActive="menu-item-active"
             data-cy="dropdown-account-button"
+            class="weight-bold px-5"
           >
             <mat-icon class="menu-icon">settings</mat-icon>Profile & Account
           </button>
           <mat-divider></mat-divider>
-          <button mat-menu-item id="dropdown-logout" data-cy="dropdown-logout-button" (click)="logout()">
-            <mat-icon class="menu-icon">input</mat-icon>Log out
+          <button mat-menu-item id="dropdown-logout" data-cy="dropdown-logout-button" (click)="logout()" class="weight-bold px-5">
+            <mat-icon class="menu-icon">logout</mat-icon>Log out
           </button>
         </mat-menu>
       </span>
