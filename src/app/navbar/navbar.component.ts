@@ -74,8 +74,14 @@ export class NavbarComponent extends Logout implements OnInit {
   ngOnInit() {
     this.userQuery.user$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((user) => {
       this.user = user;
-      this.requestsService.updateMyMemberships();
-      this.requestsService.updateCuratorOrganizations();
+      if (user) {
+        // You may not be logged in
+        this.requestsService.updateMyMemberships();
+        this.requestsService.updateCuratorOrganizations();
+      } else {
+        // In case you went from logged in to logged out
+        this.requestsService.updateMyMembershipState(null, null, null, null);
+      }
     });
     this.userQuery.extendedUserData$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((extendedUser) => (this.extendedUser = extendedUser));
     this.myOrganizationInvites$ = this.requestsQuery.myOrganizationInvites$;

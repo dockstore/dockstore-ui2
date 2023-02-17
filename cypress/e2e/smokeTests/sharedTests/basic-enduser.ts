@@ -107,7 +107,7 @@ describe('Test search page functionality', () => {
     cy.wait(2500); // Wait less than ideal, facets keep getting rerendered is the problem
     cy.contains('mat-checkbox', 'Nextflow'); // wait for the checkbox to reappear, indicating the filtering is almost complete
     cy.get('[data-cy=descriptorType]').each(($el, index, $list) => {
-      cy.wrap($el).contains('NFL');
+      cy.wrap($el).contains('Nextflow');
     });
     cy.url().should('contain', 'descriptorType=NFL');
     cy.url().should('contain', 'searchMode=files');
@@ -204,6 +204,8 @@ function testWorkflow(url: string, version1: string, version2: string, trsUrl: s
     cy.url().should('contain', '?tab=files');
     cy.contains('Descriptor Files');
     cy.get('.ace_editor').should('be.visible');
+    cy.wait(1000); // https://ucsc-cgl.atlassian.net/browse/SEAB-5240 wait seems to fix; I think the import script needs to finish downloading
+    // before clicking away.
     goToTab('Test Parameter Files');
     if (type === ToolDescriptor.TypeEnum.NFL) {
       cy.contains('This version has no files of this type.');
@@ -240,9 +242,12 @@ function testWorkflow(url: string, version1: string, version2: string, trsUrl: s
     }
 
     if (type === 'WDL') {
-      cy.get('[data-cy=dnanexusLaunchWith] svg').should('exist');
-      cy.get('[data-cy=terraLaunchWith] svg').should('exist');
-      cy.get('[data-cy=anvilLaunchWith] svg').should('exist');
+      const launchSelectors = ['dnanexusLaunchWith', 'terraLaunchWith', 'anvilLaunchWith'];
+      launchSelectors
+        // In 1.13, launch button images are <svg>
+        // In 1.14, launch button images are <img>
+        .map((launchSelector) => `[data-cy=${launchSelector}] svg, [data-cy=${launchSelector}] img`)
+        .forEach((launchSelector) => cy.get(launchSelector).should('exist'));
     }
     if (type === 'CWL') {
       launchWithTuples = [

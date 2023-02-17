@@ -1,33 +1,39 @@
-<div id="container-header">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-12">
-        <h3 class="available-containers">Funding</h3>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="container">
-  <div class="row-fluid mt-3">
+<app-header> Funding </app-header>
+<div class="container h-100 p-4">
+  <div class="pt-2">
     <p class="lead">
       Support for Dockstore is provided by grants from Genome Canada, the National Institutes of Health, and the Province of Ontario.
     </p>
-    <div *ngFor="let funder of funders" class="col-xs-12 col-md-6 col-lg-6">
-      <mat-card class="my-3">
-        <mat-card-header>
-          <mat-card-title>{{ funder.title }}</mat-card-title>
-        </mat-card-header>
-        <div class="image-wrapper">
-          <a [href]="funder.website">
-            <img [src]="funder.imageSource" [alt]="funder.altImageText" class="center-block funding-img" />
-          </a>
+    <div *ngFor="let section of fundingDisplay">
+      <h3>{{ section.sectionHeader }}</h3>
+      <mat-divider></mat-divider>
+      <div fxLayout="row wrap" fxLayoutGap="2rem grid" class="mt-4">
+        <div *ngFor="let funder of section.funders" fxFlex="33.3" fxFlex.lt-lg="50" fxFlex.lt-md="100">
+          <mat-card class="my-2">
+            <div fxLayout="column" fxLayoutAlign="space-between stretch" class="h-100">
+              <div>
+                <div fxLayout fxLayoutAlign="center center" class="image-wrapper">
+                  <a [href]="funder.website" target="_blank">
+                    <img [src]="funder.imageSource" [alt]="funder.altImageText" class="center-block funding-img" />
+                  </a>
+                </div>
+                <div>
+                  <h5 class="mt-1">{{ funder.title }}</h5>
+                  <p>{{ funder.content }}</p>
+                </div>
+              </div>
+              <div>
+                <mat-divider></mat-divider>
+                <div fxLayout fxLayoutAlign="end" class="mt-4">
+                  <a [href]="funder.website" class="no-underline" target="_blank">
+                    <button mat-raised-button color="accent">View</button>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </mat-card>
         </div>
-        <mat-card-content>
-          <p>
-            {{ funder.content }}
-          </p>
-        </mat-card-content>
-      </mat-card>
+      </div>
     </div>
   </div>
 </div>
