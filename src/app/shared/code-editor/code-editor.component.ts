@@ -49,7 +49,7 @@ export class CodeEditorComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     const aceMode = 'ace/mode/' + this.mode;
-    ace.config.set('workerPath', '/assets/ace');
+    ace.config.set('workerPath', '../assets/ace');
     this.editor = ace.edit(this.aceId, {
       mode: aceMode,
       readOnly: this.readOnly,
