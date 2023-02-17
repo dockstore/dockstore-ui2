@@ -129,6 +129,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   public friendlyNames: Map<string, string>;
   public toolTips: Map<string, string>;
   private entryOrder: Map<string, SubBucket>;
+  private expandedPanels: Map<string, Boolean>;
   public basicSearchText$: Observable<string>;
   private advancedSearchOptions = ['ANDSplitFilter', 'ANDNoSplitFilter', 'ORFilter', 'NOTFilter', 'searchMode'];
   public filterKeys$: Observable<Array<string>>;
@@ -163,6 +164,8 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.friendlyNames = this.searchService.initializeFriendlyNames();
     this.entryOrder = this.searchService.initializeEntryOrder();
     this.toolTips = this.searchService.initializeToolTips();
+    this.expandedPanels = this.searchService.initializeExpandedPanels();
+
     this.clearFacetSearches();
   }
 
@@ -541,6 +544,11 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.searchService.setPageSizeAndIndex(this.searchQuery.getValue().pageSize, 0);
   }
 
+  resetExpansionPanels() {
+    this.clearExpandedPanelsState();
+    this.expandedPanels = this.searchService.initializeExpandedPanels();
+  }
+
   /**===============================================
    *                Event Functions
    * ==============================================
@@ -658,6 +666,20 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.searchService.setFacetAutocompleteTerms(filteredItems);
   }
 
+  /**
+   * Updates the state of the expansion panels on expand or collapse events
+   * Saves state to local storage
+   *
+   * @param {string} key
+   * @param {Boolean} expanded
+   * @memberof SearchComponent
+   */
+  updateExpandedPanels(key: string, expanded: Boolean) {
+    this.expandedPanels.set(key, expanded);
+    this.clearExpandedPanelsState();
+    this.saveExpandedPanelsState();
+  }
+
   /**===============================================
    *                Helper Functions
    * ===============================================
@@ -666,5 +688,13 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   getBucketKeys(key: string) {
     return Array.from(this.orderedBuckets.get(key).SelectedItems.keys());
+  }
+
+  saveExpandedPanelsState() {
+    localStorage.setItem(this.searchService.expandedPanelsStorageKey, JSON.stringify(Array.from(this.expandedPanels.entries())));
+  }
+
+  clearExpandedPanelsState() {
+    localStorage.removeItem(this.searchService.expandedPanelsStorageKey);
   }
 }

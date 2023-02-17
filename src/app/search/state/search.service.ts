@@ -65,6 +65,7 @@ export class SearchService {
   public toSaveSearch$ = new BehaviorSubject<boolean>(false);
   public searchTerm$ = new BehaviorSubject<boolean>(false);
   public tagClicked$ = new BehaviorSubject<boolean>(false);
+  public readonly expandedPanelsStorageKey = 'expandedPanels';
   searchInfo$ = this.searchInfoSource.asObservable();
 
   /**
@@ -578,6 +579,35 @@ export class SearchService {
       ['has_checker', new SubBucket()],
       ['openData', new SubBucket()],
     ]);
+  }
+
+  /**
+   * Initialize expanded panels to default state or restore previous state from local storage
+   */
+  initializeExpandedPanels() {
+    if (localStorage.getItem(this.expandedPanelsStorageKey)) {
+      return new Map<string, Boolean>(JSON.parse(localStorage.getItem(this.expandedPanelsStorageKey)));
+    } else {
+      return new Map([
+        ['descriptorType', true],
+        ['registry', true],
+        ['source_control_provider.keyword', true],
+        ['private_access', false],
+        ['verified', true],
+        ['author', false],
+        ['namespace', true],
+        ['labels.value.keyword', false],
+        ['input_file_formats.value.keyword', false],
+        ['output_file_formats.value.keyword', false],
+        [SearchFields.VERIFIED_SOURCE, false],
+        ['has_checker', false],
+        ['organization', true],
+        ['verified_platforms.keyword', false],
+        ['categories.name.keyword', true],
+        ['descriptor_type_versions.keyword', false],
+        ['openData', false],
+      ]);
+    }
   }
 
   // Functions called from HTML
