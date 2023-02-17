@@ -155,6 +155,7 @@ export class GA4GHV20StubService {
 }
 
 export class SearchStubService {
+  public readonly expandedPanelsStorageKey = 'expandedPanels';
   workflowhit$ = observableOf([]);
   toolhit$ = observableOf([]);
   searchInfo$ = observableOf({});
@@ -254,6 +255,32 @@ export class SearchStubService {
       ['verified', new SubBucket()],
       ['verifiedSource', new SubBucket()],
     ]);
+  }
+
+  initializeExpandedPanels() {
+    if (localStorage.getItem(this.expandedPanelsStorageKey)) {
+      return new Map<string, Boolean>(JSON.parse(localStorage.getItem(this.expandedPanelsStorageKey)));
+    } else {
+      return new Map([
+        ['descriptorType', true],
+        ['registry', true],
+        ['source_control_provider.keyword', true],
+        ['private_access', false],
+        ['verified', true],
+        ['author', false],
+        ['namespace', true],
+        ['labels.value.keyword', false],
+        ['input_file_formats.value.keyword', false],
+        ['output_file_formats.value.keyword', false],
+        [SearchFields.VERIFIED_SOURCE, false],
+        ['has_checker', false],
+        ['organization', true],
+        ['verified_platforms.keyword', false],
+        ['categories.name.keyword', true],
+        ['descriptor_type_versions.keyword', false],
+        ['openData', false],
+      ]);
+    }
   }
 
   initializeFriendlyValueNames() {
