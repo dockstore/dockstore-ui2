@@ -24,6 +24,7 @@ export class OrganizationBoxComponent extends Base implements OnInit {
   pendingInvites$: Observable<Array<OrganizationUser>>;
   filterText: string;
   totalOrgs: number = 0;
+  firstCall: Boolean = true;
   EventType = Event.TypeEnum;
 
   public isLoading = true;
@@ -52,12 +53,14 @@ export class OrganizationBoxComponent extends Base implements OnInit {
       )
       .subscribe(
         (myOrgs: Array<OrganizationUpdateTime>) => {
-          myOrgs.forEach(() => {
-            this.listOfOrganizations = myOrgs.slice(0, 7);
+          this.listOfOrganizations = myOrgs.slice(0, 7);
+          if (this.firstCall) {
             this.totalOrgs = myOrgs.length;
-          });
+            this.firstCall = false;
+          }
         },
         (error: HttpErrorResponse) => {
+          this.listOfOrganizations = [];
           this.alertService.detailedError(error);
         }
       );

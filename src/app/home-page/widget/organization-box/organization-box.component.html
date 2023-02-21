@@ -4,7 +4,7 @@
       <div id="organization-number" fxLayout="row">
         <mat-card-header fxLayout="row">
           <mat-card-title>Organizations</mat-card-title>
-          <span class="bubble">{{ listOfOrganizations.length }}</span>
+          <span class="bubble">{{ totalOrgs }}</span>
         </mat-card-header>
       </div>
       <div fxLayout="row wrap" fxLayoutGap="1rem">
@@ -29,7 +29,6 @@
         <button
           mat-button
           class="private-btn small-btn-structure mb-3"
-          id="requestOrganizationButton"
           matTooltip="Request Organization"
           matTooltipPosition="after"
           (click)="requireAccounts()"
@@ -52,6 +51,7 @@
           />
         </mat-form-field>
         <h5 class="weight-bold mt-0">My Organizations</h5>
+        <div *ngIf="listOfOrganizations.length === 0" class="text-align-center date-display mt-5">No matching search results.</div>
         <div
           *ngFor="let org of listOfOrganizations"
           fxLayout="row"
@@ -73,7 +73,6 @@
             <button
               mat-button
               class="inline-text-btn"
-              id="requestOrganizationButton"
               matTooltip="Request Organization"
               matTooltipPosition="after"
               (click)="requireAccounts()"
