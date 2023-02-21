@@ -51,7 +51,9 @@
           />
         </mat-form-field>
         <h5 class="weight-bold mt-0">My Organizations</h5>
-        <div *ngIf="listOfOrganizations.length === 0" class="text-align-center date-display mt-5">No matching search results.</div>
+        <div *ngIf="listOfOrganizations.length === 0 && !isLoading" class="text-align-center date-display mt-5">
+          No matching search results.
+        </div>
         <div
           *ngFor="let org of listOfOrganizations"
           fxLayout="row"

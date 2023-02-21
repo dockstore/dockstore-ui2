@@ -24,7 +24,7 @@ export class OrganizationBoxComponent extends Base implements OnInit {
   pendingInvites$: Observable<Array<OrganizationUser>>;
   filterText: string;
   totalOrgs: number = 0;
-  firstCall: Boolean = true;
+  firstCall: boolean = true;
   EventType = Event.TypeEnum;
 
   public isLoading = true;
