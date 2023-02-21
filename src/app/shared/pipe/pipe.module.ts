@@ -11,6 +11,7 @@ import { MapFriendlyValuesPipe } from '../../search/map-friendly-values.pipe';
 import { SelectTabPipe } from '../entry/select-tab.pipe';
 import { BaseUrlPipe } from '../entry/base-url.pipe';
 import { DescriptorLanguageVersionsPipe } from '../entry/descriptor-language-versions.pipe';
+import { DescriptorLanguagePipe } from '../entry/descriptor-language.pipe';
 
 const DECLARATIONS: any[] = [
   FilePathPipe,
@@ -24,6 +25,7 @@ const DECLARATIONS: any[] = [
   RouterLinkPipe,
   BaseUrlPipe,
   DescriptorLanguageVersionsPipe,
+  DescriptorLanguagePipe,
 ];
 @NgModule({
   imports: [CommonModule],
