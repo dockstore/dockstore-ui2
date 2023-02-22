@@ -58,7 +58,7 @@
             fxFlex="1 0 auto"
             class="m-1 private-btn mat-accent small-btn-structure"
             mat-button
-            (click)="resetFilters()"
+            (click)="resetFilters(); resetExpansionPanels()"
             type="button"
           >
             <img src="../assets/svg/reset.svg" alt="Reset filters" class="pb-1 pr-1" />
@@ -72,7 +72,12 @@
           (changedDebounced)="handleChangedDebounced($event)"
           (submitted)="handleSubmitted($event)"
         ></app-basic-search>
-        <mat-expansion-panel *ngFor="let key of getKeys(orderedBuckets)" #bucket expanded>
+        <mat-expansion-panel
+          *ngFor="let key of getKeys(orderedBuckets)"
+          [expanded]="expandedPanels.get(key)"
+          (afterExpand)="updateExpandedPanels(key, true)"
+          (afterCollapse)="updateExpandedPanels(key, false)"
+        >
           <mat-expansion-panel-header>
             {{ friendlyNames.get(key) }}
             <img
