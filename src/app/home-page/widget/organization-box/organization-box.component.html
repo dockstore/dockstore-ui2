@@ -4,32 +4,31 @@
       <div id="organization-number" fxLayout="row">
         <mat-card-header fxLayout="row">
           <mat-card-title>Organizations</mat-card-title>
-          <span class="bubble">{{ listOfOrganizations.length }}</span>
+          <span class="bubble">{{ totalOrgs }}</span>
         </mat-card-header>
       </div>
       <div fxLayout="row wrap" fxLayoutGap="1rem">
         <div id="pending-requests" fxLayout="row" fxLayoutAlign="center center" class="mb-3">
-          <mat-icon class="pending-requests mr-1">pending_icon</mat-icon>
-          <a routerLink="/accounts" class="size-small pending-links">
-            <div [ngPlural]="pendingRequests.length">
+          <mat-icon [class.disabled]="(pendingRequests$ | async)?.length === 0" class="pending-requests mr-1">pending_icon</mat-icon>
+          <a routerLink="/accounts" [queryParams]="{ tab: 'requests' }" class="size-small pending-links">
+            <div [ngPlural]="(pendingRequests$ | async)?.length">
               <ng-template ngPluralCase="=1">1 Pending Request</ng-template>
-              <ng-template ngPluralCase="other">{{ pendingRequests.length }} Pending Requests</ng-template>
+              <ng-template ngPluralCase="other">{{ (pendingRequests$ | async)?.length }} Pending Requests</ng-template>
             </div>
           </a>
         </div>
         <div id="pending-invites" fxLayout="row" fxLayoutAlign="center center" class="mb-3">
-          <mat-icon class="pending-invites mr-1">error</mat-icon>
-          <a routerLink="/accounts" class="size-small pending-links">
-            <div [ngPlural]="pendingInvites.length">
+          <mat-icon [class.disabled]="(pendingInvites$ | async)?.length === 0" class="pending-invites mr-1">error</mat-icon>
+          <a routerLink="/accounts" [queryParams]="{ tab: 'requests' }" class="size-small pending-links">
+            <div [ngPlural]="(pendingInvites$ | async)?.length">
               <ng-template ngPluralCase="=1">1 Pending Invitation</ng-template>
-              <ng-template ngPluralCase="other">{{ pendingInvites.length }} Pending Invitations</ng-template>
+              <ng-template ngPluralCase="other">{{ (pendingInvites$ | async)?.length }} Pending Invitations</ng-template>
             </div>
           </a>
         </div>
         <button
           mat-button
           class="private-btn small-btn-structure mb-3"
-          id="requestOrganizationButton"
           matTooltip="Request Organization"
           matTooltipPosition="after"
           (click)="requireAccounts()"
@@ -42,7 +41,19 @@
     <mat-divider></mat-divider>
     <mat-card-content class="p-3 h-100">
       <div *ngIf="totalOrgs !== 0 || isLoading; else noOrganizations">
-        <h5 class="weight-bold">Recent Activity</h5>
+        <mat-form-field appearance="outline" class="search-form-field w-100 pb-0">
+          <input
+            data-cy="filterOrganizationsInput"
+            matInput
+            [(ngModel)]="filterText"
+            (keyup)="onTextChange($event)"
+            placeholder="Find your organizations..."
+          />
+        </mat-form-field>
+        <h5 class="weight-bold mt-0">My Organizations</h5>
+        <div *ngIf="listOfOrganizations.length === 0 && !isLoading" class="text-align-center date-display mt-5">
+          No matching search results.
+        </div>
         <div
           *ngFor="let org of listOfOrganizations"
           fxLayout="row"
@@ -50,21 +61,20 @@
           class="widget-list-items w-100 py-2"
         >
           <a class="no-wrap" [routerLink]="'/organizations/' + org.name">
-            {{ org.name }}
+            {{ org.displayName }}
           </a>
           <div class="date-display">{{ org.lastUpdateDate | date: 'MMM d, yyyy' }}</div>
         </div>
       </div>
       <ng-template #noOrganizations>
         <div *ngIf="!isLoading" fxLayout="column" class="h-100" fxLayoutAlign="center center">
-          <img src="../assets/svg/sub-nav/organization.svg" alt="my organizations" class="widget-box-type-logo mb-4" />
+          <img src="../../../../assets/svg/organization-circle.svg" alt="my organizations" class="widget-box-type-logo mb-4" />
           <span>You are not in any organizations </span>
           <div class="size-small text-align-center">
             <span>Use the </span>
             <button
               mat-button
               class="inline-text-btn"
-              id="requestOrganizationButton"
               matTooltip="Request Organization"
               matTooltipPosition="after"
               (click)="requireAccounts()"

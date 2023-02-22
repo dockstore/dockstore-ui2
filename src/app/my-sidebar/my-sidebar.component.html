@@ -15,19 +15,12 @@
   -->
 
 <div fxFlex="0 0 auto">
-  <!-- Dashboard links to homepage since page doesn't exist yet -->
-  <!-- TO DO: Update routerLink (button and hr) with Dashboard page when avalible -->
-  <button
-    mat-flat-button
-    class="purple"
-    [routerLink]="['/dashboard']"
-    routerLinkActive="active"
-    [routerLinkActiveOptions]="{ exact: true }"
-  >
+  <!-- My Dashboard -->
+  <button mat-flat-button class="purple" routerLink="/dashboard" routerLinkActive="active">
     <div><img src="../assets/svg/my-nav/dashboard.svg" alt="dashboard" /></div>
     Dashboard
   </button>
-  <hr routerLink="" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" />
+  <hr routerLink="/dashboard" routerLinkActive="active" />
 
   <!-- My Workflows -->
   <button mat-flat-button class="workflow" routerLink="/my-workflows" routerLinkActive="active">
@@ -72,9 +65,12 @@
   </button>
   <hr routerLink="/accounts" routerLinkActive="active" />
 
+  <!-- User Guide -->
+  <a class="size-small inline-block ml-3 mt-4" routerLink="/quick-start" target="blank" rel="noopener noreferrer">Quickstart</a>
+
   <!-- Help Desk -->
   <a
-    class="size-small inline-block ml-3 mt-4"
+    class="size-small inline-block ml-3 mt-1"
     href="https://discuss.dockstore.org/t/opening-helpdesk-tickets/1506"
     target="blank"
     rel="noopener noreferrer"

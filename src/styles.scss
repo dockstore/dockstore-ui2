@@ -843,7 +843,8 @@ body {
 }
 
 // Set font weight to bold
-.weight-bold {
+.weight-bold,
+.mat-menu-item.weight-bold {
   font-weight: 500;
 }
 
