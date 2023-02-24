@@ -44,6 +44,8 @@ export class UrlResolverService {
     title = this.decodedString(title.replace(`/workflows/`, ''));
     title = this.decodedString(title.replace(`/tools/`, ''));
     title = this.decodedString(title.replace(`/containers/`, ''));
+    title = this.decodedString(title.replace(`/my-notebooks/`, ''));
+    title = this.decodedString(title.replace(`/notebooks/`, ''));
 
     // Remove Query params from title
     const splitTitleByQueryParams = title.split('?');

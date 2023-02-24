@@ -78,8 +78,12 @@ app-header img {
 
 app-header h3 {
   font-size: 1.3rem;
+}
+
+app-header h3,
+app-header .h5 {
   color: black;
-  margin: 20px 0px 15px 0px;
+  margin: 2rem 0rem 1.5rem 0rem;
   display: inline;
   line-height: 4rem;
 }
@@ -1241,7 +1245,8 @@ table th {
 }
 
 /* Don't have multi-line headers */
-.mat-header-row {
+.mat-header-row,
+.white-space-no-wrap {
   white-space: nowrap;
 }
 

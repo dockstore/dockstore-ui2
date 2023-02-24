@@ -21,11 +21,10 @@
 
   <div fxLayout="column" fxFlex>
     <app-header fxFlex>
-      <span fxLayoutAlign="flex-start center" fxLayoutGap="0.5rem">
+      <span fxLayout fxLayoutAlign="start center">
         <button mat-icon-button (click)="toggleSidebar()">
-          <mat-icon *ngIf="showSidebar">chevron_left</mat-icon><mat-icon *ngIf="!showSidebar">chevron_right</mat-icon>
+          <mat-icon>chevron_{{ showSidebar ? 'left' : 'right' }}</mat-icon>
         </button>
-        <img src="../assets/svg/sub-nav/tool.svg" alt="tool icon" />
         <span>{{ myEntryPageTitle$ | async | titlecase }}</span>
       </span>
     </app-header>

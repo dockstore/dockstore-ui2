@@ -15,8 +15,10 @@
   -->
 
 <app-header>
-  <mat-icon>search</mat-icon>
-  Search
+  <div fxLayout fxLayoutAlign="start center">
+    <img src="../../assets/svg/search.svg" class="site-icons-small mr-3" />
+    Explore {{ (selectedIndex$ | async) === 0 ? 'Workflows' : 'Tools' }}
+  </div>
 </app-header>
 <mat-tab-group
   class="homeComponent no-pagination"

@@ -15,24 +15,38 @@
  */
 
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SessionQuery } from 'app/shared/session/session.query';
 import { SessionService } from 'app/shared/session/session.service';
 import { Observable } from 'rxjs';
 import { EntryType } from '../shared/enum/entry-type';
+import { UrlResolverService } from '../shared/url-resolver.service';
 
 @Component({
   selector: 'app-workflows',
   templateUrl: './workflows.component.html',
 })
 export class WorkflowsComponent {
+  public entryName: string;
   public entryPageTitle$: Observable<string>;
   public entryType$: Observable<EntryType>;
   EntryType = EntryType;
+  private searchPageUrls: string[] = ['/workflows', '/notebooks', '/apptools', '/services'];
+  public searchPage: boolean = false;
 
-  constructor(private sessionQuery: SessionQuery, private sessionService: SessionService, private route: ActivatedRoute) {
+  constructor(
+    private sessionQuery: SessionQuery,
+    private sessionService: SessionService,
+    private route: ActivatedRoute,
+    private router: Router,
+    protected urlResolverService: UrlResolverService
+  ) {
+    /* Force refresh of route when nagivating from /entryType to /entryType/entryName to update header */
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.sessionService.setEntryType(this.route.snapshot.data['entryType']);
     this.entryPageTitle$ = this.sessionQuery.entryPageTitle$;
     this.entryType$ = this.sessionQuery.entryType$;
+    this.searchPage = this.searchPageUrls.includes(this.urlResolverService.getEntryPathFromUrl());
+    this.entryName = this.urlResolverService.getEntryPathFromUrl();
   }
 }

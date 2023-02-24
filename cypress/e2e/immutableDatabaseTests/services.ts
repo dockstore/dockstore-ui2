@@ -81,7 +81,7 @@ describe('Dockstore Home', () => {
     it('Have no services in /services', () => {
       cy.visit('/my-services');
       cy.url().should('contain', 'my-services/github.com/garyluu/another-test-service');
-      cy.get('[data-cy=header]').contains('h3', 'My Services');
+      cy.get('[data-cy=header]').contains('h3', 'My Dockstore: Services');
       // 1.3 version is selected because it's the newest version
       cy.get('#workflow-path').contains('github.com/garyluu/another-test-service:1.3');
       checkTabs();
