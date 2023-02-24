@@ -156,7 +156,7 @@ describe('Should be able to see the checker workflow from a tool', () => {
     cy.get('#viewParentEntryButton').should('be.visible').click();
 
     // In the parent tool right now
-    // Accidentically allow the uri "tools" to work
+    // Accidentally allow the uri "tools" to work
     cy.url().should('eq', Cypress.config().baseUrl + '/containers/quay.io/A2/b3:latest?tab=info');
     cy.get('#viewParentEntryButton').should('not.exist');
     cy.get('#addCheckerWorkflowButton').should('not.exist');

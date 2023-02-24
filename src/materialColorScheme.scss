@@ -141,7 +141,7 @@ $kim-accent-4: (
 
 // main color is assumed to be 2 based on prevalence of it on the home page (buttons). It's also called default in zeplin
 // 1 is the darker version of it because it's the only one that's darker
-// 4 was arbitarily chosen to be the lighter version because while looking at the progress bar, there wasn't enough contrast
+// 4 was arbitrarily chosen to be the lighter version because while looking at the progress bar, there wasn't enough contrast
 $dockstore-app-primary: mat.define-palette($kim-primary, 2, 4, 1);
 $dockstore-app-accent: mat.define-palette($kim-secondary, 2, 4, 1);
 $dockstore-app-error: mat.define-palette($kim-error, 2, 4, 1);

@@ -211,7 +211,7 @@ export class SearchService {
   }
 
   /**
-   * Seperates the 'hits' object into 'toolHits' and 'workflowHits'
+   * Separates the 'hits' object into 'toolHits' and 'workflowHits'
    * Also sets up provider information
    * @param {Array<any>} hits
    * @param {number} query_size
@@ -543,7 +543,7 @@ export class SearchService {
       // Git hook auto fixes from single quotes with an escaped 's but linter complains about double quotes.
       /* eslint-disable-next-line quotes, @typescript-eslint/quotes */
       ['private_access', "A private tool requires authentication to view on Docker's registry website and to pull the Docker image."],
-      ['verified', 'Indicates that at least one version of a tool or workflow has been successfuly run by our team or an outside party.'],
+      ['verified', 'Indicates that at least one version of a tool or workflow has been successfully run by our team or an outside party.'],
       [SearchFields.VERIFIED_SOURCE, 'Indicates which party performed the verification process on a tool or workflow.'],
       [
         'has_checker',

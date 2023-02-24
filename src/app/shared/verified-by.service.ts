@@ -13,7 +13,7 @@ export class VerifiedByService {
    *
    * @param {Array<VersionVerifiedPlatform>} verifiedSources  The sourcesfiles of an entry's version
    * @param {number} versionid id of the version you want verified sources for.
-   * @returns {Array<string>}                    An array of strings to be displayed seperated by newlines
+   * @returns {Array<string>}                    An array of strings to be displayed separated by newlines
    * @memberof VerifiedByService
    */
 
