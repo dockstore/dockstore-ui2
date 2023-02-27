@@ -49,7 +49,7 @@ describe('Test notification badge on navbar', () => {
       cy.get('[data-cy=bell-icon]').should('contain.text', '1');
     });
   });
-  describe('Should have badge count of 3 with one pending organiaztion, one invitation, and one rejected organization request', () => {
+  describe('Should have badge count of 3 with one pending organization, one invitation, and one rejected organization request', () => {
     setTokenUserViewPortCurator();
     it('visit the organizations page from the home page', () => {
       cy.visit('/');

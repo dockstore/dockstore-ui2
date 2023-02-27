@@ -432,7 +432,7 @@ describe('Dockstore my workflows', () => {
   });
 
   describe('Test register workflow form validation', () => {
-    it('It should have 3 seperate descriptor path validation patterns', () => {
+    it('It should have 3 separate descriptor path validation patterns', () => {
       cy.visit('/my-workflows');
       cy.get('#registerWorkflowButton').should('be.visible').should('be.enabled').click();
       // TODO: Fix this.  When 'Next' is clicked too fast, the next step is empty

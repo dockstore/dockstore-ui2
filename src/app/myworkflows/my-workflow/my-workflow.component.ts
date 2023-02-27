@@ -46,7 +46,7 @@ import { MyWorkflowsService } from '../myworkflows.service';
 /**
  * How the workflow selection works:
  * Each action is fully completed if 3 things are updated (URL, workflow$ and workflows$)
- * workflows$ is completely seperate from URL and workflow$ (none of them should update the other)
+ * workflows$ is completely separate from URL and workflow$ (none of them should update the other)
  * URL change is tied to workflow$ change
  *
  * To update (refresh, publish, etc) a currently selected workflow, update workflows$ first then

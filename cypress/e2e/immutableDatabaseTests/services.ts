@@ -86,7 +86,7 @@ describe('Dockstore Home', () => {
       cy.get('#workflow-path').contains('github.com/garyluu/another-test-service:1.3');
       checkTabs();
       checkInfoTab();
-      // TRS only visibile in public page
+      // TRS only visible in public page
       cy.contains('TRS: ').should('not.exist');
       checkVersionsTab();
       // Edit button only in my-services

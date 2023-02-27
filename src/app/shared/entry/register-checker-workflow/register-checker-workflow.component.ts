@@ -107,7 +107,7 @@ export class RegisterCheckerWorkflowComponent extends Base implements OnInit, Af
    *
    * @private
    * @param {Entry} entry The current entry
-   * @param {string} descriptorType The descriptor type currnetly selected in the form
+   * @param {string} descriptorType The descriptor type currently selected in the form
    * @returns {string} The default test parameter file to populate the form
    * @memberof RegisterCheckerWorkflowComponent
    */

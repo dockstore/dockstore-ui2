@@ -118,7 +118,7 @@ describe('Service: DescriptorLanguage', () => {
     placeholder = descriptorLanguageService.getDescriptorPattern(<ToolDescriptor.TypeEnum>'UnrecognizedType');
     expect(placeholder).toEqual('.*');
   });
-  it('should be able to get shortFriendlyName from Worfklow.DescriptorTypeEnum for workflow registration', () => {
+  it('should be able to get shortFriendlyName from Workflow.DescriptorTypeEnum for workflow registration', () => {
     const descriptorLanguageBeans: DescriptorLanguageBean[] = [];
     metadataServiceSpy.getDescriptorLanguages.and.returnValue(observableOf(descriptorLanguageBeans));
     const descriptorLanguageService = new DescriptorLanguageService(metadataServiceSpy, workflowQuerySpy);
