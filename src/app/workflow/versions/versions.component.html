@@ -134,6 +134,15 @@
       </td>
     </ng-container>
 
+    <ng-container matColumnDef="openData">
+      <th scope="col" mat-header-cell *matHeaderCellDef mat-sort-header matTooltip="The version has a test parameter file with open data.">
+        Open Data
+      </th>
+      <td mat-cell *matCellDef="let version">
+        <mat-icon data-cy="openData" *ngIf="version?.versionMetadata?.publicAccessibleTestParameterFile">check</mat-icon>
+      </td>
+    </ng-container>
+
     <ng-container matColumnDef="verified">
       <th scope="col" mat-header-cell *matHeaderCellDef [matTooltip]="verifiedVersionTooltip">
         Verified Platforms
