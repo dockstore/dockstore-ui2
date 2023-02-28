@@ -58,8 +58,8 @@
           </a>
           <div class="date-display">{{ entry.lastUpdateDate | date: 'MMM d, yyyy' }}</div>
         </div>
-        <div *ngIf="listOfEntries.length === 0" class="mt-2">No matching {{ entryTypeLowerCase }}s</div>
-        <div class="weight-bold py-2">
+        <div *ngIf="listOfEntries.length === 0" class="text-align-center date-display mt-5">No matching {{ entryTypeLowerCase }}s.</div>
+        <div *ngIf="listOfEntries.length > 0" class="weight-bold py-2">
           <a [routerLink]="allEntriesLink" data-cy="all-entries-btn">
             All {{ entryTypeLowerCase | titlecase }}s<mat-icon class="mat-icon-sm">keyboard_double_arrow_right</mat-icon>
           </a>

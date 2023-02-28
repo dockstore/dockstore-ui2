@@ -48,6 +48,7 @@ export class EntryBoxComponent extends Base implements OnInit {
   public isLoading = true;
   userEntries$: Observable<EntryUpdateTime[]>;
   entryTypeParam: any;
+  firstCall: boolean = true;
 
   constructor(
     private registerToolService: RegisterToolService,
@@ -91,10 +92,11 @@ export class EntryBoxComponent extends Base implements OnInit {
       )
       .subscribe(
         (myEntries: Array<EntryUpdateTime>) => {
-          myEntries.forEach(() => {
-            this.listOfEntries = myEntries.slice(0, 7);
+          this.listOfEntries = myEntries.slice(0, 7);
+          if (this.firstCall) {
             this.totalEntries = myEntries.length;
-          });
+            this.firstCall = false;
+          }
         },
         (error: HttpErrorResponse) => {
           this.alertService.detailedError(error);
