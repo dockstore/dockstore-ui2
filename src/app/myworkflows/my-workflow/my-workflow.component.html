@@ -26,7 +26,7 @@
           <mat-icon>chevron_{{ showSidebar ? 'left' : 'right' }}</mat-icon>
         </button>
         <span>{{ myEntryPageTitle$ | async | titlecase }}</span>
-        <span *ngIf="(myEntryPageTitle$ | async | titlecase) === 'My Dockstore: Services'" class="beta-label ml-1"> preview </span>
+        <span *ngIf="(myEntryPageTitle$ | async | titlecase) === 'My Dockstore: Services'" class="bubble preview-bubble">PREVIEW</span>
       </div>
     </app-header>
 
