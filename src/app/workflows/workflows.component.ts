@@ -39,7 +39,7 @@ export class WorkflowsComponent {
     private sessionService: SessionService,
     private route: ActivatedRoute,
     private router: Router,
-    protected urlResolverService: UrlResolverService
+    private urlResolverService: UrlResolverService
   ) {
     /* Force refresh of route when nagivating from /entryType to /entryType/entryName to update header */
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;

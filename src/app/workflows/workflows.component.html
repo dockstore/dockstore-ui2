@@ -21,7 +21,7 @@
       <a
         *ngIf="(entryType$ | async) === EntryType.BioWorkflow; else serviceOrNotebook"
         [routerLink]="['/search']"
-        [queryParams]="{ entryType: workflows }"
+        [queryParams]="{ entryType: 'workflows' }"
         class="white-space-no-wrap"
         >Explore Workflows</a
       >

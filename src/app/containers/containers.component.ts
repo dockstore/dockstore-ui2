@@ -15,7 +15,7 @@
  */
 
 import { Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { SessionQuery } from 'app/shared/session/session.query';
 import { SessionService } from 'app/shared/session/session.service';
 import { Observable } from 'rxjs';
@@ -35,8 +35,7 @@ export class ContainersComponent {
     private sessionService: SessionService,
     private activatedRoute: ActivatedRoute,
     private sessionQuery: SessionQuery,
-    private router: Router,
-    protected urlResolverService: UrlResolverService
+    private urlResolverService: UrlResolverService
   ) {
     this.sessionService.setEntryType(this.activatedRoute.snapshot.data['entryType']);
     this.entryPageTitle$ = this.sessionQuery.entryPageTitle$;
