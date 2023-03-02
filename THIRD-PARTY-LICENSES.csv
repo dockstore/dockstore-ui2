@@ -805,6 +805,7 @@
 "make-fetch-happen@10.2.1","ISC","https://github.com/npm/make-fetch-happen"
 "make-fetch-happen@5.0.2","ISC","https://github.com/zkat/make-fetch-happen"
 "marked@4.2.3","MIT","https://github.com/markedjs/marked"
+"mat-select-search@1.2.21","Custom: https://github.com/shafi-sahal/MatSelectSearch",""
 "material-design-icons-iconfont@6.1.1","Apache-2.0","https://github.com/jossef/material-design-icons-iconfont"
 "media-typer@0.3.0","MIT","https://github.com/jshttp/media-typer"
 "memfs@3.4.7","Unlicense","https://github.com/streamich/memfs"
