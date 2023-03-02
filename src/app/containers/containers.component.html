@@ -14,7 +14,20 @@
   ~    limitations under the License.
   -->
 <app-header>
-  <img class="site-icons-medium" src="../assets/svg/sub-nav/tool.svg" alt="site icon" /> {{ entryPageTitle$ | async | titlecase }}
+  <div fxLayout fxLayoutAlign="start center" *ngIf="searchPage === false; else search">
+    <img src="../../assets/svg/search.svg" class="site-icons-small mr-3" alt="search icon" />
+    <div fxLayout fxLayoutGap="1rem">
+      <a [routerLink]="['/search']" [queryParams]="{ entryType: 'tools' }" class="white-space-no-wrap"
+        >Explore {{ entryPageTitle$ | async | titlecase }}</a
+      >
+      <span fxHide.lt-sm>/</span>
+      <span fxHide.lt-sm class="truncate-text-1">{{ entryName }}</span>
+    </div>
+  </div>
+  <ng-template #search>
+    <img class="site-icons-medium" src="../assets/svg/sub-nav/tool.svg" alt="site icon" />
+    <span class="mx-2">{{ entryPageTitle$ | async | titlecase }}</span>
+  </ng-template>
 </app-header>
 <div class="container">
   <router-outlet></router-outlet>

@@ -37,7 +37,7 @@ export class SessionQuery extends Query<SessionState> {
     })
   );
   entryPageTitle$: Observable<string> = this.entryTypeDisplayName$.pipe(map((displayName: string) => displayName + 's'));
-  myEntryPageTitle$: Observable<string> = this.entryType$.pipe(map((entryType: EntryType) => 'my ' + entryType + 's'));
+  myEntryPageTitle$: Observable<string> = this.entryType$.pipe(map((entryType: EntryType) => 'My Dockstore: ' + entryType + 's'));
   isService$: Observable<boolean> = this.entryType$.pipe(map((entryType) => entryType === EntryType.Service));
   isTool$: Observable<boolean> = this.entryType$.pipe(map((entryType) => entryType === EntryType.Tool));
   gitHubAppInstallationLink$: Observable<string> = this.entryType$.pipe(

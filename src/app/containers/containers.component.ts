@@ -14,22 +14,32 @@
  *    limitations under the License.
  */
 
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { SessionQuery } from 'app/shared/session/session.query';
 import { SessionService } from 'app/shared/session/session.service';
 import { Observable } from 'rxjs';
+import { UrlResolverService } from '../shared/url-resolver.service';
 
 @Component({
   selector: 'app-containers',
   templateUrl: './containers.component.html',
 })
-export class ContainersComponent implements OnInit {
+export class ContainersComponent {
+  public entryName: string = '';
   entryPageTitle$: Observable<string>;
-  constructor(private sessionService: SessionService, private activatedRoute: ActivatedRoute, private sessionQuery: SessionQuery) {}
+  private searchPageUrls: string[] = ['/tools', '/apptools'];
+  public searchPage: boolean = false;
 
-  ngOnInit() {
+  constructor(
+    private sessionService: SessionService,
+    private activatedRoute: ActivatedRoute,
+    private sessionQuery: SessionQuery,
+    private urlResolverService: UrlResolverService
+  ) {
     this.sessionService.setEntryType(this.activatedRoute.snapshot.data['entryType']);
     this.entryPageTitle$ = this.sessionQuery.entryPageTitle$;
+    this.searchPage = this.searchPageUrls.includes(this.urlResolverService.getEntryPathFromUrl());
+    this.entryName = this.urlResolverService.getEntryPathFromUrl();
   }
 }
