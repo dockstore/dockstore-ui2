@@ -23,9 +23,8 @@ import { RegisterToolService } from 'app/container/register-tool/register-tool.s
 import { Base } from 'app/shared/base';
 import { Dockstore } from 'app/shared/dockstore.model';
 import { AlertService } from 'app/shared/alert/state/alert.service';
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { SessionService } from '../../../shared/session/session.service';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-entry-box',
@@ -46,9 +45,7 @@ export class EntryBoxComponent extends Base implements OnInit {
   allEntriesLink: string;
   totalEntries: number = 0;
   public isLoading = true;
-  userEntries$: Observable<EntryUpdateTime[]>;
   entryTypeParam: any;
-  firstCall: boolean = true;
 
   constructor(
     private registerToolService: RegisterToolService,
@@ -83,19 +80,19 @@ export class EntryBoxComponent extends Base implements OnInit {
   }
 
   getMyEntries() {
-    this.userEntries$ = this.usersService.getUserEntries(null, this.filterText, this.entryTypeParam);
-    this.userEntries$
+    this.usersService
+      .getUserEntries(null, this.filterText, this.entryTypeParam, 'response')
       .pipe(
         finalize(() => (this.isLoading = false)),
         debounceTime(750),
         takeUntil(this.ngUnsubscribe)
       )
       .subscribe(
-        (myEntries: Array<EntryUpdateTime>) => {
-          this.listOfEntries = myEntries.slice(0, 7);
-          if (this.firstCall) {
-            this.totalEntries = myEntries.length;
-            this.firstCall = false;
+        (myEntries: HttpResponse<EntryUpdateTime[]>) => {
+          this.listOfEntries = myEntries.body.slice(0, 7);
+          const url = new URL(myEntries.url);
+          if (!url.searchParams.get('filter')) {
+            this.totalEntries = myEntries.body.length;
           }
         },
         (error: HttpErrorResponse) => {
