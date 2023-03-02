@@ -247,7 +247,7 @@
         </mat-card>
 
         <div *ngIf="searchService.hasSearchText(advancedSearchObject, searchTerm, hits) || searchService.hasFilters(filters)">
-          <mat-card class="alert alert-info text-break">
+          <mat-card class="alert alert-info mat-elevation-z text-break">
             <button
               data-cy="share_button"
               mat-raised-button
@@ -302,7 +302,7 @@
           </mat-card>
         </div>
         <mat-card
-          class="alert alert-info"
+          class="alert alert-info mat-elevation-z"
           *ngIf="hits?.length > query_size - 1 && searchService.hasNarrowedSearch(advancedSearchObject, searchTerm, hits, filters)"
         >
           <p>
