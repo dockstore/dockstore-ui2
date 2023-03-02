@@ -78,7 +78,9 @@
               </lib-mat-select-search>
             </mat-option>
 
-            <mat-option *ngFor="let workflowVersion of filteredVersions" [value]="workflowVersion">{{ workflowVersion.name }} </mat-option>
+            <mat-option *ngFor="let workflowVersion of filteredVersions" [value]="workflowVersion.version"
+              >{{ workflowVersion.name }}
+            </mat-option>
           </mat-select>
         </mat-form-field>
       </div>
