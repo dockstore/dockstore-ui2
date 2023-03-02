@@ -293,7 +293,6 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
       this.updateVerifiedPlatforms(this.workflow.id);
       this.updateCategories(this.workflow.id, this.workflow.is_published);
       this.workflowVersionsRecord = [];
-      console.log(this.selectedVersion);
       this.workflow.workflowVersions.forEach((version) => {
         const versionRecord = {};
         versionRecord['name'] = version.name;
