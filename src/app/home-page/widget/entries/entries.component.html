@@ -16,18 +16,18 @@
 
       <div *ngFor="let entry of myItems" class="w-100 no-wrap">
         <span [matTooltip]="entry.prettyPath">
-          <a *ngIf="entry.entryType === EntryType.TOOL" [routerLink]="'/my-tools/' + entry.path" routerLinkActive="router-link-active">{{
+          <a *ngIf="entry.entryType === entryType.TOOL" [routerLink]="'/my-tools/' + entry.path" routerLinkActive="router-link-active">{{
             entry.prettyPath
           }}</a>
 
           <a
-            *ngIf="entry.entryType === EntryType.WORKFLOW"
+            *ngIf="entry.entryType === entryType.WORKFLOW"
             [routerLink]="'/my-workflows/' + entry.path"
             routerLinkActive="router-link-active"
             >{{ entry.prettyPath }}</a
           >
           <a
-            *ngIf="entry.entryType === EntryType.SERVICE"
+            *ngIf="entry.entryType === entryType.SERVICE"
             [routerLink]="'/my-services/' + entry.path"
             routerLinkActive="router-link-active"
             >{{ entry.prettyPath }}</a
