@@ -97,6 +97,9 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
   public WorkflowModel = Workflow;
   public WorkflowVersionModel = WorkflowVersion;
   public launchSupport$: Observable<boolean>;
+  public workflowVersionsRecord: Record<string, string>[] = [];
+  filteredVersions: Record<string, string>[] = [];
+
   @Input() user;
 
   constructor(
@@ -177,6 +180,11 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
           this.titleService.setTitle(`${previousTitle} | ${workflow.full_workflow_path}`);
           if (workflow.topicId) {
             this.discourseHelper(workflow.topicId);
+          }
+          if (!this.workflowVersionsRecord.some((v) => v.name == this.selectedVersion.name)) {
+            const record = {};
+            record['name'] = this.selectedVersion.name;
+            this.workflowVersionsRecord.push(record);
           }
         }
       });
@@ -282,6 +290,13 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
       }
       this.updateVerifiedPlatforms(this.workflow.id);
       this.updateCategories(this.workflow.id, this.workflow.is_published);
+      this.workflow.workflowVersions.forEach((version) => {
+        const versionRecord = {};
+        versionRecord['name'] = version.name;
+        if (!this.workflowVersionsRecord.some((v) => v.name == version.name)) {
+          this.workflowVersionsRecord.push(versionRecord);
+        }
+      });
     }
   }
 

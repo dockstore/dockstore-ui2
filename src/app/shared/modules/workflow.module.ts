@@ -60,6 +60,7 @@ import { SnackbarModule } from './snackbar.module';
 import { CategoryButtonModule } from './../../categories/button/category-button.module';
 import { MySidebarModule } from '../modules/my-sidebar.module';
 import { SourceFileTabsService } from '../../source-file-tabs/source-file-tabs.service';
+import { MatSelectSearchModule } from 'mat-select-search';
 
 @NgModule({
   declarations: [
@@ -100,6 +101,7 @@ import { SourceFileTabsService } from '../../source-file-tabs/source-file-tabs.s
     SnackbarModule,
     CategoryButtonModule,
     MySidebarModule,
+    MatSelectSearchModule,
   ],
   providers: [
     DateService,

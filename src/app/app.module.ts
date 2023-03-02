@@ -25,6 +25,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AuthService, Ng2UiAuthModule } from 'ng2-ui-auth';
+import { MatSelectSearchModule } from 'mat-select-search';
 import { MarkdownModule } from 'ngx-markdown';
 import { environment } from '../environments/environment';
 import { AboutComponent } from './about/about.component';
@@ -201,6 +202,7 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     MySidebarModule,
     AccountSidebarModule,
     ChangeUsernameModule,
+    MatSelectSearchModule,
   ],
   providers: [
     AccountsService,
