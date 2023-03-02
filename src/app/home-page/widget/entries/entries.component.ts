@@ -14,7 +14,6 @@ import { FilteredList } from '../filtered-list';
 export class EntriesComponent extends FilteredList {
   Dockstore = Dockstore;
 
-  public entryTypeEnum = EntryUpdateTime.EntryTypeEnum;
   constructor(userQuery: UserQuery, usersService: UsersService, entriesService: EntriesService) {
     super(userQuery, entriesService, usersService);
   }
