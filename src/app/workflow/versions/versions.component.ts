@@ -71,7 +71,7 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
 
   setDisplayColumns(publicPage: boolean) {
     if (publicPage) {
-      this.displayedColumns = ['name', 'last_modified', 'descriptorTypeVersions', 'valid', 'verified', 'openData', 'snapshot', 'actions'];
+      this.displayedColumns = ['name', 'last_modified', 'descriptorTypeVersions', 'valid', 'verified', 'open', 'snapshot', 'actions'];
     } else {
       this.displayedColumns = [
         'name',
