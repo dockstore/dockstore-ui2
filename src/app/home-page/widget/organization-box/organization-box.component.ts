@@ -53,6 +53,8 @@ export class OrganizationBoxComponent extends Base implements OnInit {
       .subscribe(
         (myOrgs: HttpResponse<OrganizationUpdateTime[]>) => {
           this.listOfOrganizations = myOrgs.body.slice(0, 7);
+          // Update total orgs only when no search filter applied (i.e. non-filtered total)
+          // Handles cases with no filter param and empty filter param
           const url = new URL(myOrgs.url);
           if (!url.searchParams.get('filter')) {
             this.totalOrgs = myOrgs.body.length;
