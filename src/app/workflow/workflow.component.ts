@@ -97,8 +97,9 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
   public WorkflowModel = Workflow;
   public WorkflowVersionModel = WorkflowVersion;
   public launchSupport$: Observable<boolean>;
-  public workflowVersionsRecord: Record<string, string>[] = [];
-  filteredVersions: Record<string, string>[];
+  public workflowVersionAlphabetical: Array<Tag | WorkflowVersion> = [];
+  public workflowVersionsRecord: Array<Record<string, string>> = [];
+  filteredVersions: Array<Record<string, string>>;
 
   @Input() user;
 
@@ -292,8 +293,11 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
       }
       this.updateVerifiedPlatforms(this.workflow.id);
       this.updateCategories(this.workflow.id, this.workflow.is_published);
+      this.workflowVersionAlphabetical = this.workflow.workflowVersions.slice().sort((a, b) => {
+        return a.name.localeCompare(b.name);
+      });
       this.workflowVersionsRecord = [];
-      this.workflow.workflowVersions.forEach((version) => {
+      this.workflowVersionAlphabetical.forEach((version) => {
         const versionRecord = {};
         versionRecord['name'] = version.name;
         versionRecord['version'] = version;
