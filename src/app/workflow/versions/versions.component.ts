@@ -79,7 +79,7 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
         'descriptorTypeVersions',
         'valid',
         'hidden',
-        'openData',
+        'open',
         'verified',
         'snapshot',
         'actions',
