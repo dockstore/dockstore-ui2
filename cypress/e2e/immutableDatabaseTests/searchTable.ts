@@ -21,7 +21,7 @@ describe('Dockstore tool/workflow search table', () => {
 
   // When elastic search is added to cypress testing, get rid of cy.intercepts, and uncomment the commented lines
   function starColumnSearch(url: string, type: string) {
-    // Tools/worflows not starred in this response.
+    // Tools/workflows not starred in this response.
     cy.intercept('POST', '*' + ga4ghExtendedPath + '/tools/entry/_search', {
       body: {
         took: 18,

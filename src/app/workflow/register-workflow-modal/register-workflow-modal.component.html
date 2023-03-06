@@ -136,7 +136,7 @@
             matTooltip="Git Repository path."
             placeholder="e.g. CancerCollaboratory/dockstore-tool-liftover"
           />
-          <!-- TODO: Actually return 3 seperate sets of form error messages depending on the descriptor type selected -->
+          <!-- TODO: Actually return 3 separate sets of form error messages depending on the descriptor type selected -->
           <mat-error *ngIf="formErrors.gitPath">{{ formErrors.gitPath }}</mat-error>
         </mat-form-field>
         <mat-radio-group
@@ -167,7 +167,7 @@
             [matTooltip]="Tooltip.workflowPath"
             [placeholder]="workflowPathPlaceholder"
           />
-          <!-- TODO: Actually return 3 seperate sets of form error messages depending on the descriptor type selected -->
+          <!-- TODO: Actually return 3 separate sets of form error messages depending on the descriptor type selected -->
           <mat-error *ngIf="formErrors.workflow_path">{{ workflowPathError }}</mat-error>
         </mat-form-field>
         <mat-form-field class="w-100">

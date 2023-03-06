@@ -46,7 +46,7 @@ export class VerifiedDisplayComponent implements OnInit, OnChanges {
   /**
    * Extracts the custom verification information object array from the sourcefiles
    *
-   * @param {number} versionid The versionid to get verfication information for
+   * @param {number} versionid The versionid to get verification information for
    * @param {Array<VersionVerifiedPlatform>} sourceFiles  The list of sourcefiles from an entry's version
    * @returns {Array<CustomVerificationInformationObject>}   Custom object array (that contains path, verifier, platform)
    * @memberof VerifiedDisplayComponent

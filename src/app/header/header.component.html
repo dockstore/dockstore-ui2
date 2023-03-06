@@ -18,7 +18,7 @@
   <div [className]="isExtended ? 'container-fluid' : 'container'">
     <div fxLayout="row">
       <div class="col-md-12">
-        <h3 data-cy="header">
+        <h3 data-cy="header" [class.h5]="isExtended">
           <ng-content></ng-content>
         </h3>
       </div>

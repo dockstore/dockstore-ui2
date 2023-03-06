@@ -99,7 +99,7 @@ export class DeleteAccountDialogComponent implements OnDestroy {
   }
 
   /**
-   * What happens when deleteing the account has failed.
+   * What happens when deleting the account has failed.
    *
    * @private
    * @memberof DeleteAccountDialogComponent

@@ -148,16 +148,16 @@ export class CreateCollectionService {
    *
    * @param {FormsState['createOrUpdateCollection']} collectionFormState
    * @param {number} collectionID  ID of the collection to update
-   * @param {string} collectionDescripton The unedited description because formState isn't updating description and doesn't know it
+   * @param {string} collectionDescription The unedited description because formState isn't updating description and doesn't know it
    * @memberof CreateCollectionService
    */
-  updateCollection(collectionFormState: FormsState['createOrUpdateCollection'], collectionID: number, collectionDescripton: string) {
+  updateCollection(collectionFormState: FormsState['createOrUpdateCollection'], collectionID: number, collectionDescription: string) {
     let collection: Collection;
     collection = {
       name: collectionFormState.name,
       topic: collectionFormState.topic,
       displayName: collectionFormState.displayName,
-      description: collectionDescripton,
+      description: collectionDescription,
     };
     const organizationID = this.organizationQuery.getValue().organization.id;
     this.beforeCall();

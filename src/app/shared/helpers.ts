@@ -3,6 +3,11 @@
  */
 export function toExtendSite(url: string): boolean {
   return (
-    url.startsWith('/my-workflows') || url.startsWith('/my-tools') || url.startsWith('/my-services') || url === '/' || url === '/#overview'
+    url.startsWith('/my-workflows') ||
+    url.startsWith('/my-tools') ||
+    url.startsWith('/my-services') ||
+    url.startsWith('/starred') ||
+    url.startsWith('/accounts') ||
+    url.startsWith('/dashboard')
   );
 }
