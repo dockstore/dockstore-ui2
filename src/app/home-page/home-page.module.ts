@@ -5,6 +5,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { HomeLoggedInComponent } from 'app/home-page/home-logged-in/home-logged-in.component';
 import { HomeComponent } from 'app/home-page/home-logged-out/home.component';
 import { ListContainersModule } from 'app/shared/modules/list-containers.module';
@@ -52,6 +53,7 @@ import { StarredBoxComponent } from './widget/starred-box/starred-box.component'
     RefreshAlertModule,
     MarkdownModule,
     FontAwesomeModule,
+    MatAutocompleteModule,
     CategoryButtonModule,
     JsonLdModule,
     MySidebarModule,

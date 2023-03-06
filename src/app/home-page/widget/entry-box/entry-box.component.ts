@@ -37,15 +37,16 @@ export class EntryBoxComponent extends Base implements OnInit {
     | typeof EntryUpdateTime.EntryTypeEnum.TOOL
     | typeof EntryUpdateTime.EntryTypeEnum.SERVICE
     | typeof EntryUpdateTime.EntryTypeEnum.WORKFLOW;
-  entryTypeLowerCase: string;
+  public entryTypeLowerCase: string;
   public entryTypeEnum = EntryUpdateTime.EntryTypeEnum;
-  filterText: string;
-  listOfEntries: Array<EntryUpdateTime> = [];
-  helpLink: string;
-  allEntriesLink: string;
-  totalEntries: number = 0;
+  public filterText: string = '';
+  public listOfEntries: Array<EntryUpdateTime> = [];
+  public listOfResults: Array<EntryUpdateTime> = [];
+  public helpLink: string = '';
+  public allEntriesLink: string = '';
+  public totalEntries: number = 0;
   public isLoading = true;
-  entryTypeParam: any;
+  public entryTypeParam: any;
 
   constructor(
     private registerToolService: RegisterToolService,
@@ -89,11 +90,13 @@ export class EntryBoxComponent extends Base implements OnInit {
       )
       .subscribe(
         (myEntries: HttpResponse<EntryUpdateTime[]>) => {
-          this.listOfEntries = myEntries.body.slice(0, 7);
-          // Update total entries only when no search filter applied (i.e. non-filtered total)
-          // Handles cases with no filter param and empty filter param
           const url = new URL(myEntries.url);
-          if (!url.searchParams.get('filter')) {
+          if (url.searchParams.get('filter')) {
+            this.listOfResults = myEntries.body.slice(0, 5);
+          } else {
+            // Update total entries only when no search filter applied (i.e. non-filtered total)
+            // Handles cases with no filter param and empty filter param
+            this.listOfEntries = myEntries.body.slice(0, 7);
             this.totalEntries = myEntries.body.length;
           }
         },
@@ -106,6 +109,11 @@ export class EntryBoxComponent extends Base implements OnInit {
   onTextChange(event: any) {
     this.isLoading = true;
     this.getMyEntries();
+  }
+
+  clearSearch() {
+    this.listOfResults = [];
+    this.filterText = '';
   }
 
   showRegisterEntryModal(): void {

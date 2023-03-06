@@ -19,13 +19,12 @@ import { Observable } from 'rxjs';
 })
 export class OrganizationBoxComponent extends Base implements OnInit {
   Dockstore = Dockstore;
-  listOfOrganizations: Array<OrganizationUpdateTime> = [];
-  pendingRequests$: Observable<Array<OrganizationUser>>;
-  pendingInvites$: Observable<Array<OrganizationUser>>;
-  filterText: string;
-  totalOrgs: number = 0;
-  EventType = Event.TypeEnum;
-
+  public listOfOrganizations: Array<OrganizationUpdateTime> = [];
+  public pendingRequests$: Observable<Array<OrganizationUser>>;
+  public pendingInvites$: Observable<Array<OrganizationUser>>;
+  public filterText: string = '';
+  public totalOrgs: number = 0;
+  public EventType = Event.TypeEnum;
   public isLoading = true;
 
   constructor(
