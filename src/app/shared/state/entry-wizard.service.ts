@@ -99,7 +99,6 @@ export class EntryWizardService {
       .subscribe(
         (workflow: BioWorkflow) => {
           this.alertService.detailedSuccess('Workflow ' + repository.gitRegistry + '/' + repository.path + ' has been added');
-          this.workflowService.upsertWorkflowToWorkflow(<SwaggerBioWorkflow>workflow);
           this.workflowService.setWorkflow(<SwaggerBioWorkflow>workflow);
           this.router.navigateByUrl('/my-workflows' + '/' + workflow.full_workflow_path);
         },
@@ -124,6 +123,7 @@ export class EntryWizardService {
       .subscribe(
         (workflow: BioWorkflow) => {
           this.alertService.detailedSuccess('Workflow ' + repository.gitRegistry + '/' + repository.path + ' has been deleted');
+          this.workflowService.setWorkflow(null);
           // move this to be called right away
           // on error, will revert state back
         },
