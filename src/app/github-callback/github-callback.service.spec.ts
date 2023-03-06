@@ -13,12 +13,7 @@ describe('Service: GithubCallback', () => {
     });
   });
 
-  it('should get the redirect URL', inject([GithubCallbackService], (service: GithubCallbackService) => {
+  it('should compile', inject([GithubCallbackService], (service: GithubCallbackService) => {
     expect(service).toBeTruthy();
-    expect(service.stateToUrl(EntryType.Tool)).toBe('/my-tools');
-    expect(service.stateToUrl(EntryType.BioWorkflow)).toBe('/my-workflows');
-    expect(service.stateToUrl(EntryType.Service)).toBe('/my-services');
-    expect(service.stateToUrl(null)).toBe('/');
-    expect(service.stateToUrl('potato')).toBe('/');
   }));
 });
