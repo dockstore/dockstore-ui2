@@ -17,10 +17,10 @@
 // Must define the material icons font directory path, see https://www.npmjs.com/package/material-design-icons-iconfont
 $material-design-icons-font-directory-path: '~material-design-icons-iconfont/dist/fonts/';
 @use '@angular/material' as mat;
-@import '~material-design-icons-iconfont/src/material-design-icons';
+@import 'material-design-icons-iconfont/src/material-design-icons';
 @import 'ds-style-fix.scss';
 @import 'bootstrap4.scss';
-@import '~ngx-sharebuttons/themes/default/default-theme';
+@import 'ngx-sharebuttons/themes/default/default-theme';
 @import 'featured-content.scss';
 @import '/src/materialColorScheme.scss';
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
@@ -1329,9 +1329,11 @@ button.inline-text-btn {
 }
 
 .alert-info {
-  background-color: #d9edf7 !important;
-  border-color: #bce8f1 !important;
-  border: 0px !important;
+  background-color: mat.get-color-from-palette($dockstore-app-accent-2, 6) !important;
+  border: solid 1px mat.get-color-from-palette($dockstore-app-accent-2, 4) !important;
+  mat-icon {
+    color: mat.get-color-from-palette($dockstore-app-accent-2, 1);
+  }
 }
 
 .alert-danger {
