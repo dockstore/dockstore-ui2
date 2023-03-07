@@ -189,7 +189,6 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
             record['name'] = this.selectedVersion.name;
             this.workflowVersionsRecord.push(record);
           }
-          //initialize filteredVersions to be the same as the total workflowVersionsRecord
           this.filteredVersions = this.workflowVersionsRecord;
         }
       });
@@ -295,12 +294,11 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
       }
       this.updateVerifiedPlatforms(this.workflow.id);
       this.updateCategories(this.workflow.id, this.workflow.is_published);
-      //sort workflowVersions alphabetically
       this.workflowVersionAlphabetical = this.workflow.workflowVersions.slice().sort((a, b) => {
         return a.name.localeCompare(b.name);
       });
-      //reset workflowVersionsRecord each time another workflow is selected
-      this.workflowVersionsRecord = [];
+      this.workflowVersionsRecord = []; //reset workflowVersionsRecord each time another workflow is selected
+
       //add workflowVersions to workflowVersionsRecord if not already in it
       this.workflowVersionAlphabetical.forEach((version) => {
         const versionRecord = {};
