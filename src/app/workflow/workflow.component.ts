@@ -98,8 +98,8 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
   public WorkflowVersionModel = WorkflowVersion;
   public launchSupport$: Observable<boolean>;
   public workflowVersionAlphabetical: Array<Tag | WorkflowVersion> = [];
-  public workflowVersionsRecord: Array<Record<string, string>> = [];
-  filteredVersions: Array<Record<string, string>>;
+  public workflowVersionsRecord: Array<Record<string, string>> = []; //Array containing all workflow versions formatted in a Record. Need this to be compatible with mat-select-search library
+  filteredVersions: Array<Record<string, string>>; //New array that generates per search result using with mat-select-search library
 
   @Input() user;
 
@@ -182,12 +182,14 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
           if (workflow.topicId) {
             this.discourseHelper(workflow.topicId);
           }
+          //if workflowVersionsRecord does not contain selectedVersion, add the selected version
           if (!this.workflowVersionsRecord.some((v) => v.name == this.selectedVersion.name)) {
             const record = {};
             record['version'] = this.selectedVersion;
             record['name'] = this.selectedVersion.name;
             this.workflowVersionsRecord.push(record);
           }
+          //initialize filteredVersions to be the same as the total workflowVersionsRecord
           this.filteredVersions = this.workflowVersionsRecord;
         }
       });
@@ -293,10 +295,13 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
       }
       this.updateVerifiedPlatforms(this.workflow.id);
       this.updateCategories(this.workflow.id, this.workflow.is_published);
+      //sort workflowVersions alphabetically
       this.workflowVersionAlphabetical = this.workflow.workflowVersions.slice().sort((a, b) => {
         return a.name.localeCompare(b.name);
       });
+      //reset workflowVersionsRecord each time another workflow is selected
       this.workflowVersionsRecord = [];
+      //add workflowVersions to workflowVersionsRecord if not already in it
       this.workflowVersionAlphabetical.forEach((version) => {
         const versionRecord = {};
         versionRecord['name'] = version.name;
