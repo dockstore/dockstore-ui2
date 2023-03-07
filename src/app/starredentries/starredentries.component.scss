@@ -58,6 +58,11 @@
   text-decoration: none;
   transition: 0.4s color;
 }
+.notebook-icon {
+  height: 1em;
+  align-self: center;
+  justify-content: center;
+}
 @media screen and (max-width: 750px) {
   .columns {
     column-gap: 0px;

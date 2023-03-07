@@ -35,7 +35,8 @@
         [ngClass]="{
           'workflow-tab-group': selected.value === 0,
           'tool-tab-group': selected.value === 1,
-          'purple-tab-group': selected.value === 2
+          'notebook-tab-group': selected.value === 2,
+          'purple-tab-group': selected.value === 3
         }"
       >
         <mat-tab>
@@ -83,12 +84,42 @@
           </div>
         </mat-tab>
 
-        <ng-template #workflowSummary let-workflow="workflow" let-isAppTool="isAppTool">
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <div fxLayoutGap="0.5rem">
+              <img class="notebook-icon" src="../../../assets/svg/sub-nav/notebooks.svg" alt="notebook logo" />
+              <span>Notebooks</span>
+              <span class="tab-display">{{ starredNotebooks?.length }}</span>
+            </div>
+          </ng-template>
+          <div>
+            <mat-card class="alert alert-info starred-header" role="alert" *ngIf="starredNotebooks?.length === 0">
+              <mat-icon>warning</mat-icon>
+              You have no starred notebooks.
+            </mat-card>
+            <div fxLayout="column" fxLayoutGap="1rem" class="mb-2 mx-1">
+              <mat-card fxFlex *ngFor="let notebook of starredNotebooks; let last = last" class="m-1 pb-3">
+                <ng-container
+                  *ngTemplateOutlet="workflowSummary; context: { workflow: notebook, isAppTool: false, isNotebook: true }"
+                ></ng-container>
+              </mat-card>
+            </div>
+          </div>
+        </mat-tab>
+
+        <ng-template #workflowSummary let-workflow="workflow" let-isAppTool="isAppTool" let-isNotebook="isNotebook">
           <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-between">
             <a [routerLink]="(isAppTool ? entryType.AppTool : entryType.BioWorkflow) | routerLink: workflow" class="no-underline">
               <mat-card-header>
                 <mat-card-title fxLayoutAlign="space-between" fxLayoutGap="1rem">
                   <img
+                    *ngIf="isNotebook"
+                    src="../../../assets/svg/sub-nav/notebooks.svg"
+                    alt="{{ isAppTool ? 'tool' : 'workflow' }} logo"
+                    class="notebook-icon"
+                  />
+                  <img
+                    *ngIf="!isNotebook"
                     src="../../../assets/svg/sub-nav/{{ isAppTool ? 'tool' : 'workflow' }}.svg"
                     alt="{{ isAppTool ? 'tool' : 'workflow' }} logo"
                   />

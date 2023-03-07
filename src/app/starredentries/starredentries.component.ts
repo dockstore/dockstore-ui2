@@ -14,6 +14,7 @@ import { OrgLogoService } from '../shared/org-logo.service';
 import { EntryType } from '../shared/enum/entry-type';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Location } from '@angular/common';
+import { Notebook } from '../shared/openapi';
 
 @Component({
   selector: 'app-starredentries',
@@ -24,6 +25,7 @@ export class StarredEntriesComponent extends Base implements OnInit {
   starredTools: Array<ExtendedDockstoreTool> | null;
   starredWorkflows: Array<ExtendedWorkflow> | null;
   starredServices: Array<Entry> | null;
+  starredNotebooks: Array<ExtendedWorkflow> | null;
   starredOrganizations: Array<Organization> | null;
   user: any;
   starGazersClicked = false;
@@ -66,6 +68,14 @@ export class StarredEntriesComponent extends Base implements OnInit {
     this.usersService.getStarredWorkflows().subscribe((starredWorkflow) => {
       this.starredWorkflows = <ExtendedWorkflow[]>starredWorkflow.filter((entry: Workflow) => entry.is_published);
       this.starredWorkflows.forEach((workflow) => {
+        this.providerService.setUpProvider(workflow);
+        // This doesn't work because there's no workflowVersions
+        // workflow.versionVerified = this.dockstoreService.getVersionVerified(workflow.workflowVersions);
+      });
+    });
+    this.usersService.getStarredNotebooks().subscribe((starredNotebook) => {
+      this.starredNotebooks = <ExtendedWorkflow[]>starredNotebook.filter((entry: Workflow) => entry.is_published);
+      this.starredNotebooks.forEach((workflow) => {
         this.providerService.setUpProvider(workflow);
         // This doesn't work because there's no workflowVersions
         // workflow.versionVerified = this.dockstoreService.getVersionVerified(workflow.workflowVersions);
