@@ -19,7 +19,7 @@
     <div fxLayout="column">
       <div fxFlex *ngIf="memberships$ | async as memberships">
         <ng-template #noMemberships>
-          <mat-card class="alert alert-info" role="alert">
+          <mat-card class="alert alert-info mat-elevation-z" role="alert">
             <mat-icon>info</mat-icon> You must be part of an organization to add to a collection
           </mat-card>
         </ng-template>
@@ -39,7 +39,7 @@
       </div>
       <div fxFlex *ngIf="selectedOrganizationId && collections$ | async as collections">
         <ng-template #noCollections>
-          <mat-card class="alert alert-info" role="alert">
+          <mat-card class="alert alert-info mat-elevation-z" role="alert">
             <mat-icon>info</mat-icon> The selected organization has no collections that can be added
           </mat-card>
         </ng-template>

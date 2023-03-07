@@ -1329,9 +1329,11 @@ button.inline-text-btn {
 }
 
 .alert-info {
-  background-color: #d9edf7 !important;
-  border-color: #bce8f1 !important;
-  border: 0px !important;
+  background-color: mat.get-color-from-palette($dockstore-app-accent-2, 6) !important;
+  border: solid 1px mat.get-color-from-palette($dockstore-app-accent-2, 4) !important;
+  mat-icon {
+    color: mat.get-color-from-palette($dockstore-app-accent-2, 1);
+  }
 }
 
 .alert-danger {
