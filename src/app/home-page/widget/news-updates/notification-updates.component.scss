@@ -1,0 +1,6 @@
+@use '@angular/material' as mat;
+@import '/src/materialColorScheme.scss';
+
+button mat-icon {
+  color: mat.get-color-from-palette($kim-primary, 3);
+}

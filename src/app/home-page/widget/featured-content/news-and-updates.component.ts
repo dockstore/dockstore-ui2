@@ -4,16 +4,17 @@ import { AlertService } from '../../../shared/alert/state/alert.service';
 import { Dockstore } from '../../../shared/dockstore.model';
 
 @Component({
-  selector: 'app-featured-news',
-  template: ` <div [innerHTML]="myExternalHTML"></div> `,
+  selector: 'app-news-and-updates',
+  template: ` <span [innerHTML]="myExternalHTML"></span> `,
+  styleUrls: ['../../../shared/styles/dashboard-boxes.scss'],
 })
-export class FeaturedNewsComponent implements OnInit {
+export class NewsAndUpdatesComponent implements OnInit {
   // TODO should parameterize FeaturedContentComponent or something
   public myExternalHTML = '';
 
   constructor(private http: HttpClient, private alertService: AlertService) {}
   ngOnInit() {
-    this.alertService.start('Retrieving featured news');
+    this.alertService.start('Retrieving news and updates');
     this.http
       .get(
         Dockstore.FEATURED_NEWS_URL,

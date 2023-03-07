@@ -3,8 +3,8 @@
 
   <div fxFlex="calc(100vw - 11rem)">
     <app-header>My Dockstore: Dashboard</app-header>
+    <app-notification-updates class="w-100"></app-notification-updates>
     <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="2.5rem" class="p-4">
-      <mat-card class="alert alert-info mat-elevation-z mx-1 w-100" role="alert"> Major Release: TODO</mat-card>
       <div fxFlex fxLayout fxLayout.lt-md="column" fxLayoutGap="2.5rem" class="w-100">
         <app-entry-box fxFlex="33" fxFlex.lt-md="100" class="entry-holder" entryType="WORKFLOW"></app-entry-box>
         <app-entry-box fxFlex="33" fxFlex.lt-md="100" class="entry-holder" entryType="TOOL"></app-entry-box>
@@ -13,6 +13,12 @@
       <div fxFlex fxLayout fxLayout.lt-md="column" fxLayoutGap="2.5rem" class="w-100">
         <app-organization-box fxFlex="50" fxFlex.lt-md="100" class="updates-holder"></app-organization-box>
         <app-starred-box fxFlex="50" fxFlex.lt-md="100" class="updates-holder"></app-starred-box>
+      </div>
+      <div fxFlex fxLayout fxLayout.lt-md="column" fxLayoutGap="2.5rem" class="w-100">
+        <app-news-box fxFlex.md="65" fxFlex.gt-md="65" fxFlex.lt-md="100"></app-news-box>
+        <div fxFlex.md="35" fxFlex.gt-md="35" fxFlex.lt-md="100">
+          <div class="my-3 twitter" #twitter></div>
+        </div>
       </div>
     </div>
   </div>

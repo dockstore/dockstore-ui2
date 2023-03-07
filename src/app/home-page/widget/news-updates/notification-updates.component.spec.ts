@@ -1,24 +1,23 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MarkdownModule } from 'ngx-markdown';
-import { NewsUpdatesComponent } from './news-updates.component';
+import { NotificationUpdatesComponent } from './notification-updates.component';
 
-describe('NewsUpdatesComponent', () => {
-  let component: NewsUpdatesComponent;
-  let fixture: ComponentFixture<NewsUpdatesComponent>;
+describe('NotificationUpdatesComponent', () => {
+  let component: NotificationUpdatesComponent;
+  let fixture: ComponentFixture<NotificationUpdatesComponent>;
 
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [NewsUpdatesComponent],
+        declarations: [NotificationUpdatesComponent],
         imports: [MarkdownModule, HttpClientTestingModule],
       }).compileComponents();
     })
   );
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(NewsUpdatesComponent);
+    fixture = TestBed.createComponent(NotificationUpdatesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
