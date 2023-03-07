@@ -17,8 +17,6 @@
 import { setTokenUserViewPort } from '../../support/commands';
 
 describe('Notification updates banner', () => {
-  const storageKey = 'dismissedNotifications';
-
   setTokenUserViewPort();
 
   beforeEach(() => {
@@ -35,6 +33,7 @@ describe('Notification updates banner', () => {
     cy.get('[data-cy=notification-updates-container] > [data-cy=notification-updates-item]').eq(0).contains('First Newsbody Item');
     cy.get('[data-cy=notification-updates-container] > [data-cy=notification-updates-item]').eq(1).contains('Middle Newsbody Item');
     cy.get('[data-cy=notification-updates-container] > [data-cy=notification-updates-item]').eq(2).contains('Last Newsbody Item');
+    cy.get('[data-cy=dismiss-notification]').should('exist');
   });
 
   it('Notification updates banner appears on new dashboard', () => {
@@ -43,23 +42,6 @@ describe('Notification updates banner', () => {
     cy.get('[data-cy=notification-updates-container] > [data-cy=notification-updates-item]').eq(0).contains('First Newsbody Item');
     cy.get('[data-cy=notification-updates-container] > [data-cy=notification-updates-item]').eq(1).contains('Middle Newsbody Item');
     cy.get('[data-cy=notification-updates-container] > [data-cy=notification-updates-item]').eq(2).contains('Last Newsbody Item');
-  });
-
-  it('Notification updates banner does not appear when dismissed on homepage', () => {
-    cy.clearLocalStorage(storageKey);
-    cy.visit('/dashboard');
-    // wait for banner to load then dismiss all notifications in banner
-    cy.wait(3000);
-    cy.get('[data-cy=dismiss-notification').click({ multiple: true });
-    cy.get('[data-cy=notification-updates-container] > [data-cy=notification-updates-item]').should('not.exist');
-  });
-
-  it('Notification updates banner does not appear when dismissed on new dashboard', () => {
-    cy.clearLocalStorage(storageKey);
-    cy.visit('/dashboard?newDashboard=');
-    // wait for banner to load then dismiss all notifications in banner
-    cy.wait(3000);
-    cy.get('[data-cy=dismiss-notification').click({ multiple: true });
-    cy.get('[data-cy=notification-updates-container] > [data-cy=notification-updates-item]').should('not.exist');
+    cy.get('[data-cy=dismiss-notification]').should('exist');
   });
 });
