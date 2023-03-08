@@ -2,7 +2,6 @@
 
 import { inject, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { EntryType } from 'app/shared/enum/entry-type';
 import { GithubCallbackService } from './github-callback.service';
 
 describe('Service: GithubCallback', () => {

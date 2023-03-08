@@ -126,7 +126,7 @@ export class MytoolsService extends MyEntriesService<DockstoreTool, OrgToolObjec
 
   matchingOrgEntryObjectByPath(
     orgToolObjects: OrgToolObject<DockstoreTool>[],
-    toolPath: String
+    toolPath: string
   ): OrgToolObject<DockstoreTool> | undefined | null {
     const toolPathComponents = toolPath.split('/');
     if (toolPathComponents.length < 2) {

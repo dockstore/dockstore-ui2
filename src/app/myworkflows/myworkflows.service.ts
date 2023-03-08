@@ -260,7 +260,7 @@ export class MyWorkflowsService extends MyEntriesService<Workflow, OrgWorkflowOb
 
   matchingOrgEntryObjectByPath(
     orgWorkflowObjects: OrgWorkflowObject<Workflow>[],
-    workflowPath: String
+    workflowPath: string
   ): OrgWorkflowObject<Workflow> | undefined | null {
     const workflowPathComponents = workflowPath.split('/');
     if (workflowPathComponents.length < 2) {

@@ -90,22 +90,6 @@ export abstract class MyEntriesService<E extends DockstoreTool | Workflow, O ext
     return entries.find((entry) => this.getPath(entry) === path);
   }
 
-  // protected findOrgEntryObjectFromPath(entryPath: string | null, orgEntryObjects: Array<O> | null): O | null | undefined {
-  //   if (!entryPath || !orgEntryObjects || orgEntryObjects.length === 0) {
-  //     return null;
-  //   }
-
-  //   const entryPathComponents = entryPath.split('/');
-  //   if (entryPathComponents.length < 2) {
-  //     return null;
-  //   }
-
-  //   const entryRegistryOrSourceControl = entryPathComponents[0];
-  //   const entryNamespaceOrOrganization = entryPathComponents[1];
-
-  //   return orgEntryObjects.find(orgEntryObject )
-  // }
-
   abstract getPath(entry: E): string;
 
   /**
@@ -156,5 +140,5 @@ export abstract class MyEntriesService<E extends DockstoreTool | Workflow, O ext
 
   protected abstract matchingOrgEntryObject(orgEntryObjects: O[], selectedEntry: E): O | undefined;
 
-  protected abstract matchingOrgEntryObjectByPath(orgEntryObjects: O[], entryPath: String): O | undefined | null;
+  protected abstract matchingOrgEntryObjectByPath(orgEntryObjects: O[], entryPath: string): O | undefined | null;
 }

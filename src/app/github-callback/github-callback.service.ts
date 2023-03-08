@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Params, Router } from '@angular/router';
-import { EntryType } from 'app/shared/enum/entry-type';
 
 @Injectable({
   providedIn: 'root',
