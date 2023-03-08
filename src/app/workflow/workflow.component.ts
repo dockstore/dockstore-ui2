@@ -175,7 +175,8 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
 
   ngOnInit() {
     this.init();
-    this.workflowVersionsCtrl.valueChanges.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
+    //watch for changes in search
+    this.versionFilterCtrl.valueChanges.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
       this.filterVersions();
     });
   }
@@ -325,15 +326,12 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
 
   protected setInitialValue() {
     this.filteredVersions.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
-      // setting the compareWith property to a comparison function
-      // triggers initializing the selection according to the initial value of
-      // the form control (i.e. _initializeSelection())
-      // this needs to be done after the filteredVersions are loaded initially
-      // and after the mat-option elements are available
+      // initializing the selection according to the initial value of the form control
       this.singleSelect.compareWith = (a: Tag | WorkflowVersion, b: Tag | WorkflowVersion) => a && b && a.id === b.id;
     });
   }
 
+  //function for filtering list of versions according to search
   protected filterVersions() {
     if (!this.workflowVersionAlphabetical) {
       return;

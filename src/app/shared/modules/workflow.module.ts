@@ -60,7 +60,6 @@ import { SnackbarModule } from './snackbar.module';
 import { CategoryButtonModule } from './../../categories/button/category-button.module';
 import { MySidebarModule } from '../modules/my-sidebar.module';
 import { SourceFileTabsService } from '../../source-file-tabs/source-file-tabs.service';
-import { MatSelectSearchModule } from 'mat-select-search';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
 @NgModule({
@@ -102,7 +101,6 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
     SnackbarModule,
     CategoryButtonModule,
     MySidebarModule,
-    MatSelectSearchModule,
     NgxMatSelectSearchModule,
   ],
   providers: [
