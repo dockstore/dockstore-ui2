@@ -72,7 +72,11 @@
       </h3>
       <div *ngIf="!publicPage && workflow.workflowVersions && workflow.workflowVersions.length > 0" class="input-group">
         <mat-form-field data-cy="version-dropdown">
-          <mat-select (selectionChange)="onSelectedVersionChange(selectedVersion)" [formControl]="workflowVersionsCtrl">
+          <mat-select
+            (selectionChange)="onSelectedVersionChange(selectedVersion)"
+            [(value)]="selectedVersion"
+            [formControl]="workflowVersionsCtrl"
+          >
             <mat-option>
               <ngx-mat-select-search
                 data-cy="version-dropdown-search-field"
