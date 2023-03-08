@@ -15,14 +15,14 @@
  */
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Location } from '@angular/common';
-import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertService } from 'app/shared/alert/state/alert.service';
 import { BioWorkflow } from 'app/shared/swagger/model/bioWorkflow';
 import { Service } from 'app/shared/swagger/model/service';
-import { Observable } from 'rxjs';
+import { Observable, ReplaySubject } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
 import { AlertQuery } from '../shared/alert/state/alert.query';
 import { BioschemaService } from '../shared/bioschema.service';
@@ -58,6 +58,8 @@ import { EntriesService, WorkflowSubClass } from '../shared/openapi';
 import { Title } from '@angular/platform-browser';
 import { EntryCategoriesService } from '../categories/state/entry-categories.service';
 import RoleEnum = Permission.RoleEnum;
+import { FormControl } from '@angular/forms';
+import { MatSelect } from '@angular/material/select';
 
 @Component({
   selector: 'app-workflow',
@@ -97,9 +99,11 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
   public WorkflowModel = Workflow;
   public WorkflowVersionModel = WorkflowVersion;
   public launchSupport$: Observable<boolean>;
+  @ViewChild('singleSelect') singleSelect: MatSelect;
   public workflowVersionAlphabetical: Array<Tag | WorkflowVersion> = [];
-  public workflowVersionsRecord: Array<Record<string, string>> = []; //Array containing all workflow versions formatted in a Record. Need this to be compatible with mat-select-search library
-  filteredVersions: Array<Record<string, string>>; //New array that generates per search result using with mat-select-search library
+  public workflowVersionsCtrl: FormControl<Tag | WorkflowVersion> = new FormControl<Tag | WorkflowVersion>(null); //control for the selected version
+  public versionFilterCtrl: FormControl<string> = new FormControl<string>(''); // control for the MatSelect filter keyword
+  public filteredVersions: ReplaySubject<Array<Tag | WorkflowVersion>> = new ReplaySubject<Array<Tag | WorkflowVersion>>(1);
 
   @Input() user;
 
@@ -171,6 +175,9 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
 
   ngOnInit() {
     this.init();
+    this.workflowVersionsCtrl.valueChanges.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
+      this.filterVersions();
+    });
   }
 
   ngAfterViewInit() {
@@ -182,18 +189,10 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
           if (workflow.topicId) {
             this.discourseHelper(workflow.topicId);
           }
-          //if workflowVersionsRecord does not contain selectedVersion, add the selected version
-          if (!this.workflowVersionsRecord.some((v) => v.name == this.selectedVersion.name)) {
-            const record = {};
-            record['version'] = this.selectedVersion;
-            record['name'] = this.selectedVersion.name;
-            this.workflowVersionsRecord.push(record);
-          }
-          this.filteredVersions = this.workflowVersionsRecord;
         }
       });
+      this.setInitialValue();
     }
-
     this.updateTabSelection();
   }
 
@@ -294,20 +293,6 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
       }
       this.updateVerifiedPlatforms(this.workflow.id);
       this.updateCategories(this.workflow.id, this.workflow.is_published);
-      this.workflowVersionAlphabetical = this.workflow.workflowVersions.slice().sort((a, b) => {
-        return a.name.localeCompare(b.name);
-      });
-      this.workflowVersionsRecord = []; //reset workflowVersionsRecord each time another workflow is selected
-
-      //add workflowVersions to workflowVersionsRecord if not already in it
-      this.workflowVersionAlphabetical.forEach((version) => {
-        const versionRecord = {};
-        versionRecord['name'] = version.name;
-        versionRecord['version'] = version;
-        if (!this.workflowVersionsRecord.some((v) => v.name == version.name)) {
-          this.workflowVersionsRecord.push(versionRecord);
-        }
-      });
     }
   }
 
@@ -328,9 +313,39 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
             this.gA4GHFilesService.updateFiles(trsID, this.selectedVersion.name, [this.workflow.descriptorType]);
           }
         }
+        this.workflowVersionAlphabetical = this.workflow.workflowVersions.slice().sort((a, b) => {
+          return a.name.localeCompare(b.name);
+        });
+        this.filteredVersions.next(this.workflowVersionAlphabetical.slice());
+        this.workflowVersionsCtrl.setValue(this.selectedVersion);
       }
       this.setUpWorkflow(workflow);
     });
+  }
+
+  protected setInitialValue() {
+    this.filteredVersions.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
+      // setting the compareWith property to a comparison function
+      // triggers initializing the selection according to the initial value of
+      // the form control (i.e. _initializeSelection())
+      // this needs to be done after the filteredVersions are loaded initially
+      // and after the mat-option elements are available
+      this.singleSelect.compareWith = (a: Tag | WorkflowVersion, b: Tag | WorkflowVersion) => a && b && a.id === b.id;
+    });
+  }
+
+  protected filterVersions() {
+    if (!this.workflowVersionAlphabetical) {
+      return;
+    }
+    let search = this.versionFilterCtrl.value;
+    if (!search) {
+      this.filteredVersions.next(this.workflowVersionAlphabetical.slice());
+      return;
+    } else {
+      search = search.toLowerCase();
+    }
+    this.filteredVersions.next(this.workflowVersionAlphabetical.filter((version) => version.name.toLowerCase().indexOf(search) > -1));
   }
 
   public getTRSID(): string {
