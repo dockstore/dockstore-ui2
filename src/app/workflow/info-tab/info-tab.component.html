@@ -460,8 +460,8 @@
         {{ selectedVersion?.doiURL ? '' : 'n/a' }}
       </div>
       <div *ngIf="publicAccessibleTestParameterFile !== null && publicAccessibleTestParameterFile !== undefined">
-        <strong matTooltip="Version has a test parameter file where all URLs are publicly accessible"
-          >Test Parameter File With Open Data</strong
+        <strong matTooltip="Version either has a test parameter file where all URLs are publicly accessible or does not require test data"
+          >Open</strong
         >:
         {{ publicAccessibleTestParameterFile ? 'Yes' : 'No' }}
       </div>
