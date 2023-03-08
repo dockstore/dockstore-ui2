@@ -16,6 +16,7 @@
 
 import { Component, Input, OnInit } from '@angular/core';
 import { EntryType } from 'app/shared/enum/entry-type';
+import { EntryType as NewEntryType } from 'app/shared/openapi';
 import { EntryUpdateTime, UsersService } from 'app/shared/openapi';
 import { debounceTime, finalize, takeUntil } from 'rxjs/operators';
 import { MyWorkflowsService } from 'app/myworkflows/myworkflows.service';
@@ -33,18 +34,14 @@ import { SessionService } from '../../../shared/session/session.service';
 })
 export class EntryBoxComponent extends Base implements OnInit {
   Dockstore = Dockstore;
-  @Input() entryType:
-    | typeof EntryUpdateTime.EntryTypeEnum.TOOL
-    | typeof EntryUpdateTime.EntryTypeEnum.SERVICE
-    | typeof EntryUpdateTime.EntryTypeEnum.WORKFLOW;
-  public entryTypeLowerCase: string;
-  public entryTypeEnum = EntryUpdateTime.EntryTypeEnum;
-  public filterText: string = '';
-  public listOfEntries: Array<EntryUpdateTime> = [];
-  public listOfResults: Array<EntryUpdateTime> = [];
-  public helpLink: string = '';
-  public allEntriesLink: string = '';
-  public totalEntries: number = 0;
+  public newEntryType = NewEntryType;
+  @Input() entryType: typeof NewEntryType.TOOL | typeof NewEntryType.SERVICE | typeof NewEntryType.WORKFLOW;
+  entryTypeLowerCase: string;
+  filterText: string;
+  listOfEntries: Array<EntryUpdateTime> = [];
+  helpLink: string;
+  allEntriesLink: string;
+  totalEntries: number = 0;
   public isLoading = true;
   public entryTypeParam: any;
 
@@ -64,15 +61,15 @@ export class EntryBoxComponent extends Base implements OnInit {
     }
 
     //Get the links for the specified entryType
-    if (this.entryType === EntryUpdateTime.EntryTypeEnum.WORKFLOW) {
+    if (this.entryType === NewEntryType.WORKFLOW) {
       this.helpLink = Dockstore.DOCUMENTATION_URL + '/getting-started/dockstore-workflows.html';
       this.allEntriesLink = '/my-workflows/';
       this.entryTypeParam = 'WORKFLOWS';
-    } else if (this.entryType === EntryUpdateTime.EntryTypeEnum.TOOL) {
+    } else if (this.entryType === NewEntryType.TOOL) {
       this.helpLink = Dockstore.DOCUMENTATION_URL + '/getting-started/dockstore-tools.html';
       this.allEntriesLink = '/my-tools/';
       this.entryTypeParam = 'TOOLS';
-    } else if (this.entryType === EntryUpdateTime.EntryTypeEnum.SERVICE) {
+    } else if (this.entryType === NewEntryType.SERVICE) {
       this.helpLink = Dockstore.DOCUMENTATION_URL + '/getting-started/getting-started-with-services.html';
       this.allEntriesLink = '/my-services/';
       this.entryTypeParam = 'SERVICES';
@@ -117,13 +114,13 @@ export class EntryBoxComponent extends Base implements OnInit {
   }
 
   showRegisterEntryModal(): void {
-    if (this.entryType === EntryUpdateTime.EntryTypeEnum.WORKFLOW) {
+    if (this.entryType === NewEntryType.WORKFLOW) {
       this.sessionService.setEntryType(EntryType.BioWorkflow);
       this.myWorkflowsService.registerEntry(EntryType.BioWorkflow);
-    } else if (this.entryType === EntryUpdateTime.EntryTypeEnum.TOOL) {
+    } else if (this.entryType === NewEntryType.TOOL) {
       this.sessionService.setEntryType(EntryType.Tool);
       this.registerToolService.setIsModalShown(true);
-    } else if (this.entryType === EntryUpdateTime.EntryTypeEnum.SERVICE) {
+    } else if (this.entryType === NewEntryType.SERVICE) {
       this.sessionService.setEntryType(EntryType.Service);
       this.myWorkflowsService.registerEntry(EntryType.Service);
     }
