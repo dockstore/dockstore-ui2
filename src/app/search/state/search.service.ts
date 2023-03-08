@@ -534,7 +534,7 @@ export class SearchService {
       ['verified_platforms.keyword', 'Verified Platforms'],
       ['categories.name.keyword', 'Category'],
       ['descriptor_type_versions.keyword', 'Language Versions'],
-      ['openData', 'Open'],
+      ['openData', 'Open Data'],
     ]);
   }
 
@@ -555,7 +555,10 @@ export class SearchService {
         'descriptor_type_versions.keyword',
         'Indicates that the tool or workflow contains at least one version that is written with the workflow language version',
       ],
-      ['openData', 'Indicates whether an entry can be run with a provided test parameter file and no additional access permissions.'],
+      [
+        'openData',
+        'Indicates whether an entry can be run with no additional access permissions, potentially via an included test parameter file referencing open data.',
+      ],
     ]);
   }
 
