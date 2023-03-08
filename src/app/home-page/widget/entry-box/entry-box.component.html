@@ -20,10 +20,10 @@
       <div id="workflow-number" fxLayout="row">
         <mat-card-header fxLayout="row">
           <mat-card-title>{{ entryTypeLowerCase | titlecase }}s</mat-card-title>
-          <span class="bubble workflow-background" *ngIf="entryType === entryTypeEnum.WORKFLOW">{{ totalEntries }}</span>
-          <span class="bubble container-background" *ngIf="entryType === entryTypeEnum.TOOL">{{ totalEntries }}</span>
-          <span class="bubble service-background" *ngIf="entryType === entryTypeEnum.SERVICE">{{ totalEntries }}</span>
-          <span class="bubble preview-bubble" *ngIf="entryType === entryTypeEnum.SERVICE">PREVIEW</span>
+          <span class="bubble workflow-background" *ngIf="entryType === newEntryType.WORKFLOW">{{ totalEntries }}</span>
+          <span class="bubble container-background" *ngIf="entryType === newEntryType.TOOL">{{ totalEntries }}</span>
+          <span class="bubble service-background" *ngIf="entryType === newEntryType.SERVICE">{{ totalEntries }}</span>
+          <span class="bubble preview-bubble" *ngIf="entryType === newEntryType.SERVICE">PREVIEW</span>
         </mat-card-header>
       </div>
       <button
