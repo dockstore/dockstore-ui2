@@ -70,8 +70,8 @@ export class MapFriendlyValuesPipe implements PipeTransform {
     [
       'openData',
       new Map([
-        ['1', "doesn't need more data"],
-        ['0', 'needs more data'],
+        ['1', 'open data'],
+        ['0', 'requires restricted data'],
       ]),
     ],
     [
