@@ -45,19 +45,15 @@
         <mat-form-field appearance="outline" class="search-form-field w-100 pb-0">
           <mat-label>Search your {{ entryTypeLowerCase | titlecase }}s...</mat-label>
           <input matInput data-cy="search-field" [(ngModel)]="filterText" (keyup)="onTextChange($event)" [matAutocomplete]="auto" />
-          <button *ngIf="filterText" mat-button matSuffix mat-icon-button (click)="clearSearch()">
+          <button *ngIf="filterText" mat-button matSuffix mat-icon-button (click)="clearSearch()" type="button">
             <mat-icon>cancel</mat-icon>
           </button>
         </mat-form-field>
-        <mat-autocomplete #auto="matAutocomplete">
-          <span>
-            <a *ngFor="let result of listOfResults | slice: 0:5" [routerLink]="allEntriesLink + result.path" class="no-wrap no-underline">
-              <mat-option>{{ result.prettyPath }}</mat-option>
-            </a>
-            <div *ngIf="listOfResults.length > 5" class="date-display no-wrap p-2 px-4">
-              Showing 5 of {{ listOfResults.length }} matching {{ entryTypeLowerCase }}s
-            </div>
-          </span>
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="navigateToEntry(value)">
+          <mat-option *ngFor="let result of listOfResults" [value]="result.prettyPath" class="no-wrap">{{ result.prettyPath }}</mat-option>
+          <div *ngIf="totalResults > 5" class="date-display no-wrap p-2 px-4">
+            Showing 5 of {{ totalResults }} matching {{ entryTypeLowerCase }}s
+          </div>
         </mat-autocomplete>
         <h5 class="weight-bold my-0">Recent Activity</h5>
         <div *ngFor="let entry of listOfEntries" fxLayout="row" class="widget-list-items space-between w-100 py-2">

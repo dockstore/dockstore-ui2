@@ -26,6 +26,7 @@ import { Dockstore } from 'app/shared/dockstore.model';
 import { AlertService } from 'app/shared/alert/state/alert.service';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { SessionService } from '../../../shared/session/session.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-entry-box',
@@ -36,21 +37,25 @@ export class EntryBoxComponent extends Base implements OnInit {
   Dockstore = Dockstore;
   public newEntryType = NewEntryType;
   @Input() entryType: typeof NewEntryType.TOOL | typeof NewEntryType.SERVICE | typeof NewEntryType.WORKFLOW;
-  entryTypeLowerCase: string;
-  filterText: string;
-  listOfEntries: Array<EntryUpdateTime> = [];
-  helpLink: string;
-  allEntriesLink: string;
-  totalEntries: number = 0;
+  public entryTypeLowerCase: string;
+  public filterText: string = '';
+  public listOfEntries: Array<EntryUpdateTime> = [];
+  public listOfResults: Array<EntryUpdateTime> = [];
+  public helpLink: string = '';
+  public allEntriesLink: string = '';
+  public totalEntries: number = 0;
+  public totalResults: number = 0;
   public isLoading = true;
   public entryTypeParam: any;
+  private readonly arrowKeyCodes: number[] = [37, 38, 39, 40];
 
   constructor(
     private registerToolService: RegisterToolService,
     private myWorkflowsService: MyWorkflowsService,
     private usersService: UsersService,
     private alertService: AlertService,
-    private sessionService: SessionService
+    private sessionService: SessionService,
+    private router: Router
   ) {
     super();
   }
@@ -89,7 +94,8 @@ export class EntryBoxComponent extends Base implements OnInit {
         (myEntries: HttpResponse<EntryUpdateTime[]>) => {
           const url = new URL(myEntries.url);
           if (url.searchParams.get('filter')) {
-            this.listOfResults = myEntries.body;
+            this.listOfResults = myEntries.body.slice(0, 5);
+            this.totalResults = myEntries.body.length;
           } else {
             // Update total entries only when no search filter applied (i.e. non-filtered total)
             // Handles cases with no filter param and empty filter param
@@ -104,8 +110,15 @@ export class EntryBoxComponent extends Base implements OnInit {
   }
 
   onTextChange(event: any) {
-    this.isLoading = true;
-    this.getMyEntries();
+    // Ignore arrow key events as they are used for nagivation
+    if (!this.arrowKeyCodes.includes(event.keyCode)) {
+      this.isLoading = true;
+      this.getMyEntries();
+    }
+  }
+
+  navigateToEntry(prettyPath: string) {
+    this.router.navigate([this.allEntriesLink + prettyPath]);
   }
 
   clearSearch() {
