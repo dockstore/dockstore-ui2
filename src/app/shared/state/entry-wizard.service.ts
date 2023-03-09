@@ -3,9 +3,12 @@ import { Injectable } from '@angular/core';
 import { finalize } from 'rxjs/operators';
 import { AlertService } from '../alert/state/alert.service';
 import { BioWorkflow, UsersService, Workflow, WorkflowsService } from '../openapi';
+import { BioWorkflow as SwaggerBioWorkflow } from '../swagger';
 import { Repository } from '../openapi/model/repository';
 import { EntryWizardQuery } from './entry-wizard.query';
 import { EntryWizardStore } from './entry-wizard.store';
+import { WorkflowService } from './workflow.service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +19,9 @@ export class EntryWizardService {
     private entryWizardQuery: EntryWizardQuery,
     private usersService: UsersService,
     private alertService: AlertService,
-    private workflowsService: WorkflowsService
+    private workflowService: WorkflowService,
+    private workflowsService: WorkflowsService,
+    private router: Router
   ) {}
 
   /**
@@ -94,6 +99,8 @@ export class EntryWizardService {
       .subscribe(
         (workflow: BioWorkflow) => {
           this.alertService.detailedSuccess('Workflow ' + repository.gitRegistry + '/' + repository.path + ' has been added');
+          this.workflowService.setWorkflow(<SwaggerBioWorkflow>workflow);
+          this.router.navigateByUrl('/my-workflows/' + workflow.full_workflow_path);
         },
         (error: HttpErrorResponse) => {
           this.alertService.detailedError(error);
@@ -116,6 +123,7 @@ export class EntryWizardService {
       .subscribe(
         (workflow: BioWorkflow) => {
           this.alertService.detailedSuccess('Workflow ' + repository.gitRegistry + '/' + repository.path + ' has been deleted');
+          this.workflowService.setWorkflow(null);
           // move this to be called right away
           // on error, will revert state back
         },
