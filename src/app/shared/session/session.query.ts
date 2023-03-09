@@ -52,15 +52,15 @@ export class SessionQuery extends Query<SessionState> {
   /**
    * Generate the general GitHub App installation URL
    *
-   * @param {string} redirectUrl  The page to redirect to after installation is complete
+   * @param {string} redirectPath  The page to redirect to after installation is complete
    * @returns {string}
    * @memberof WorkflowQuery
    */
-  generateGitHubAppInstallationUrl(redirectUrl: string): string {
+  generateGitHubAppInstallationUrl(redirectPath: string): string {
     let queryParams = new HttpParams();
     // Can only provide a state query parameter
     // https://docs.github.com/en/apps/maintaining-github-apps/installing-github-apps#preserving-an-application-state-during-installation
-    queryParams = queryParams.set('state', redirectUrl);
+    queryParams = queryParams.set('state', redirectPath);
     return Dockstore.GITHUB_APP_INSTALLATION_URL + '/installations/new?' + queryParams.toString();
   }
 }
