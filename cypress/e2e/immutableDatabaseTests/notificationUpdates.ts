@@ -29,19 +29,21 @@ describe('Notification updates banner', () => {
 
   it('Notification updates banner appears on logged-in homepage', () => {
     cy.visit('/dashboard');
-    // make sure items are in proper sort order
+    // Make sure items are in proper sort order
     cy.get('[data-cy=notification-updates-container] > [data-cy=notification-updates-item]').eq(0).contains('First Newsbody Item');
     cy.get('[data-cy=notification-updates-container] > [data-cy=notification-updates-item]').eq(1).contains('Middle Newsbody Item');
     cy.get('[data-cy=notification-updates-container] > [data-cy=notification-updates-item]').eq(2).contains('Last Newsbody Item');
+    // Check for dismiss button
     cy.get('[data-cy=dismiss-notification]').should('exist');
   });
 
   it('Notification updates banner appears on new dashboard', () => {
     cy.visit('/dashboard?newDashboard=');
-    // make sure items are in proper sort order
+    // Make sure items are in proper sort order
     cy.get('[data-cy=notification-updates-container] > [data-cy=notification-updates-item]').eq(0).contains('First Newsbody Item');
     cy.get('[data-cy=notification-updates-container] > [data-cy=notification-updates-item]').eq(1).contains('Middle Newsbody Item');
     cy.get('[data-cy=notification-updates-container] > [data-cy=notification-updates-item]').eq(2).contains('Last Newsbody Item');
+    // Check for dismiss button
     cy.get('[data-cy=dismiss-notification]').should('exist');
   });
 });

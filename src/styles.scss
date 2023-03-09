@@ -1380,3 +1380,9 @@ button.inline-text-btn {
 .form-control.selected-item {
   background-color: mat.get-color-from-palette($kim-accent1-success, 6);
 }
+
+// Limit height on twitter widgets
+.twitter-widget {
+  overflow: auto;
+  max-height: 50rem;
+}
