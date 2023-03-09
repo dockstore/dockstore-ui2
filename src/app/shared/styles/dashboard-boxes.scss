@@ -23,6 +23,9 @@ button[mat-icon-button] {
   font-size: 1.4rem;
   height: 3.5rem;
   line-height: normal;
+}
+
+.mat-option:not([disabled]) {
   border-bottom: 0.1rem solid mat.get-color-from-palette($dockstore-app-gray, 3);
 }
 

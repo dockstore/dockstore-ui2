@@ -45,6 +45,7 @@ export class EntryBoxComponent extends Base implements OnInit {
   public allEntriesLink: string = '';
   public totalEntries: number = 0;
   public totalResults: number = 0;
+  public noResults: boolean = false;
   public isLoading = true;
   public entryTypeParam: any;
   private readonly arrowKeyCodes: number[] = [37, 38, 39, 40];
@@ -96,11 +97,15 @@ export class EntryBoxComponent extends Base implements OnInit {
           if (url.searchParams.get('filter')) {
             this.listOfResults = myEntries.body.slice(0, 5);
             this.totalResults = myEntries.body.length;
+            // Display no search results message when there are no search results returned and a search filter is present
+            this.noResults = myEntries.body.length === 0 ? true : false;
           } else {
             // Update total entries only when no search filter applied (i.e. non-filtered total)
             // Handles cases with no filter param and empty filter param
             this.listOfEntries = myEntries.body.slice(0, 7);
             this.totalEntries = myEntries.body.length;
+            // Clear search results if no filter applied
+            this.clearSearch();
           }
         },
         (error: HttpErrorResponse) => {
@@ -117,13 +122,14 @@ export class EntryBoxComponent extends Base implements OnInit {
     }
   }
 
-  navigateToEntry(prettyPath: string) {
-    this.router.navigate([this.allEntriesLink + prettyPath]);
+  navigateToEntry(path: string) {
+    this.router.navigateByUrl(this.allEntriesLink + path);
   }
 
   clearSearch() {
     this.listOfResults = [];
     this.filterText = '';
+    this.noResults = false;
   }
 
   showRegisterEntryModal(): void {
