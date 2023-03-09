@@ -100,7 +100,7 @@ export class EntryWizardService {
         (workflow: BioWorkflow) => {
           this.alertService.detailedSuccess('Workflow ' + repository.gitRegistry + '/' + repository.path + ' has been added');
           this.workflowService.setWorkflow(<SwaggerBioWorkflow>workflow);
-          this.router.navigateByUrl('/my-workflows' + '/' + workflow.full_workflow_path);
+          this.router.navigateByUrl('/my-workflows/' + workflow.full_workflow_path);
         },
         (error: HttpErrorResponse) => {
           this.alertService.detailedError(error);
