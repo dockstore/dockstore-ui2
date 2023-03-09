@@ -38,6 +38,7 @@ import { RegisterToolComponent } from 'app/container/register-tool/register-tool
 import { NewDashboardComponent } from './new-dashboard/new-dashboard.component';
 import { OrganizationBoxComponent } from './widget/organization-box/organization-box.component';
 import { StarredBoxComponent } from './widget/starred-box/starred-box.component';
+import { HeaderModule } from 'app/shared/modules/header.module';
 
 @NgModule({
   imports: [
@@ -57,6 +58,7 @@ import { StarredBoxComponent } from './widget/starred-box/starred-box.component'
     MySidebarModule,
     RecentEventsModule,
     RefreshWizardModule,
+    HeaderModule,
   ],
   declarations: [
     HomeComponent,

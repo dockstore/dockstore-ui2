@@ -555,7 +555,10 @@ export class SearchService {
         'descriptor_type_versions.keyword',
         'Indicates that the tool or workflow contains at least one version that is written with the workflow language version',
       ],
-      ['openData', 'Indicates whether an entry has a test parameter file with all publicly accessible data.'],
+      [
+        'openData',
+        'Indicates whether an entry can be run with no additional access permissions, potentially via an included test parameter file referencing open data.',
+      ],
     ]);
   }
 

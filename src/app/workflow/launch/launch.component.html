@@ -27,7 +27,7 @@
     </div>
     <div *ngIf="_selectedVersion.valid" fxLayout="column" fxLayoutGap="1rem">
       <div fxLayout="column" fxLayoutGap="1rem">
-        <mat-card *ngIf="entryType === EntryType.Tool" class="alert alert-info" role="alert">
+        <mat-card *ngIf="entryType === EntryType.Tool" class="alert alert-info mat-elevation-z" role="alert">
           <mat-icon>info</mat-icon> GitHub App Tools are launched in workflow mode with the Dockstore CLI
         </mat-card>
         <mat-card *ngIf="(isNFL$ | async) === false" matTooltip="Commands for creating a runtime JSON template">

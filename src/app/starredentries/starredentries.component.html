@@ -6,10 +6,7 @@
   </div>
 
   <div fxFlex="calc(100vw - 11rem)">
-    <app-header>
-      <mat-icon>star</mat-icon>
-      My Starred
-    </app-header>
+    <app-header> My Dockstore: Starred </app-header>
 
     <div class="container" *ngIf="starGazersClicked">
       <app-stargazers></app-stargazers>
@@ -49,8 +46,7 @@
               <span class="tab-display">{{ starredWorkflows?.length }}</span>
             </div>
           </ng-template>
-          <mat-card class="alert alert-info starred-header" role="alert" *ngIf="starredWorkflows?.length === 0">
-            <mat-icon>warning</mat-icon>
+          <mat-card class="alert alert-info mat-elevation-z starred-header" role="alert" *ngIf="starredWorkflows?.length === 0">
             You have no starred workflows.
           </mat-card>
           <div fxLayout="column" fxLayoutGap="1rem" class="mb-2 mx-1">
@@ -69,8 +65,7 @@
             </div>
           </ng-template>
           <div>
-            <mat-card class="alert alert-info starred-header" role="alert" *ngIf="starredTools?.length === 0">
-              <mat-icon>warning</mat-icon>
+            <mat-card class="alert alert-info mat-elevation-z starred-header" role="alert" *ngIf="starredTools?.length === 0">
               You have no starred tools.
             </mat-card>
             <div fxLayout="column" fxLayoutGap="1rem" class="mb-2 mx-1">
@@ -194,10 +189,7 @@
               <span class="tab-display">0</span>
             </div>
           </ng-template>
-          <mat-card class="alert alert-info starred-header" role="alert">
-            <mat-icon>warning</mat-icon>
-            You have no starred services.
-          </mat-card>
+          <mat-card class="alert alert-info mat-elevation-z starred-header" role="alert"> You have no starred services. </mat-card>
         </mat-tab>
 
         <mat-tab>
@@ -208,8 +200,7 @@
               <span class="tab-display">{{ starredOrganizations?.length }}</span>
             </div>
           </ng-template>
-          <mat-card class="alert alert-info starred-header" role="alert" *ngIf="starredOrganizations?.length === 0">
-            <mat-icon>warning</mat-icon>
+          <mat-card class="alert alert-info mat-elevation-z starred-header" role="alert" *ngIf="starredOrganizations?.length === 0">
             You have no starred organizations.
           </mat-card>
           <div *ngIf="starredOrganizations?.length > 0">
