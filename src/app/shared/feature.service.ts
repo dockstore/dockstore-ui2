@@ -9,7 +9,8 @@ export class FeatureService {
 
   updateFeatureFlags(queryParams: string) {
     const urlSearchParams = new URLSearchParams(queryParams);
-    const newDashboard = urlSearchParams.has('newDashboard');
+    const gitHubAppCallBackToNewDashBoard = urlSearchParams.has('state') && urlSearchParams.get('state').includes('newDashboard');
+    const newDashboard = urlSearchParams.has('newDashboard') || gitHubAppCallBackToNewDashBoard;
     Dockstore.FEATURES.enableNewDashboard = newDashboard;
   }
 }

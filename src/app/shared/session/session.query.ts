@@ -15,6 +15,7 @@
  */
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Query } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -41,23 +42,25 @@ export class SessionQuery extends Query<SessionState> {
   isService$: Observable<boolean> = this.entryType$.pipe(map((entryType) => entryType === EntryType.Service));
   isTool$: Observable<boolean> = this.entryType$.pipe(map((entryType) => entryType === EntryType.Tool));
   gitHubAppInstallationLink$: Observable<string> = this.entryType$.pipe(
-    map((entryType: EntryType) => (entryType ? this.generateGitHubAppInstallationUrl(entryType) : null))
+    map((entryType: EntryType) => (entryType ? this.generateGitHubAppInstallationUrl(this.route.url) : null))
   );
   loadingDialog$: Observable<boolean> = this.select((session) => session.loadingDialog);
-  constructor(protected store: SessionStore) {
+  constructor(protected store: SessionStore, private route: Router) {
     super(store);
   }
 
   /**
    * Generate the general GitHub App installation URL
    *
-   * @param {EntryType} entryType  To determine which page the user currently is on
+   * @param {string} redirectPath  The page to redirect to after installation is complete
    * @returns {string}
    * @memberof WorkflowQuery
    */
-  generateGitHubAppInstallationUrl(entryType: EntryType): string {
+  generateGitHubAppInstallationUrl(redirectPath: string): string {
     let queryParams = new HttpParams();
-    queryParams = queryParams.set('state', entryType);
+    // Can only provide a state query parameter
+    // https://docs.github.com/en/apps/maintaining-github-apps/installing-github-apps#preserving-an-application-state-during-installation
+    queryParams = queryParams.set('state', redirectPath);
     return Dockstore.GITHUB_APP_INSTALLATION_URL + '/installations/new?' + queryParams.toString();
   }
 }
