@@ -74,6 +74,7 @@ export class TwitterService {
         theme: 'light',
         tweetLimit: tweetLimit,
         chrome: 'nofooter',
+        height: 500,
       })
       .catch((error) => console.error(error));
   }
