@@ -24,9 +24,9 @@ import { RegisterToolService } from 'app/container/register-tool/register-tool.s
 import { Base } from 'app/shared/base';
 import { Dockstore } from 'app/shared/dockstore.model';
 import { AlertService } from 'app/shared/alert/state/alert.service';
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { SessionService } from '../../../shared/session/session.service';
-import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-entry-box',
@@ -37,22 +37,27 @@ export class EntryBoxComponent extends Base implements OnInit {
   Dockstore = Dockstore;
   public newEntryType = NewEntryType;
   @Input() entryType: typeof NewEntryType.TOOL | typeof NewEntryType.SERVICE | typeof NewEntryType.WORKFLOW;
-  entryTypeLowerCase: string;
-  filterText: string;
-  listOfEntries: Array<EntryUpdateTime> = [];
-  helpLink: string;
-  allEntriesLink: string;
-  totalEntries: number = 0;
+  public entryTypeLowerCase: string;
+  public filterText: string = '';
+  public listOfEntries: Array<EntryUpdateTime> = [];
+  public listOfResults: Array<EntryUpdateTime> = [];
+  public helpLink: string = '';
+  public allEntriesLink: string = '';
+  public totalEntries: number = 0;
+  public totalResults: number = 0;
+  public noResults: boolean = false;
+  public resultsDisplayed: number = 5;
   public isLoading = true;
-  userEntries$: Observable<EntryUpdateTime[]>;
-  entryTypeParam: any;
+  public entryTypeParam: any;
+  private readonly arrowKeyCodes: number[] = [37, 38, 39, 40];
 
   constructor(
     private registerToolService: RegisterToolService,
     private myWorkflowsService: MyWorkflowsService,
     private usersService: UsersService,
     private alertService: AlertService,
-    private sessionService: SessionService
+    private sessionService: SessionService,
+    private router: Router
   ) {
     super();
   }
@@ -80,19 +85,29 @@ export class EntryBoxComponent extends Base implements OnInit {
   }
 
   getMyEntries() {
-    this.userEntries$ = this.usersService.getUserEntries(null, this.filterText, this.entryTypeParam);
-    this.userEntries$
+    this.usersService
+      .getUserEntries(null, this.filterText, this.entryTypeParam, 'response')
       .pipe(
         finalize(() => (this.isLoading = false)),
         debounceTime(750),
         takeUntil(this.ngUnsubscribe)
       )
       .subscribe(
-        (myEntries: Array<EntryUpdateTime>) => {
-          myEntries.forEach(() => {
-            this.listOfEntries = myEntries.slice(0, 7);
-            this.totalEntries = myEntries.length;
-          });
+        (myEntries: HttpResponse<EntryUpdateTime[]>) => {
+          const url = new URL(myEntries.url);
+          if (url.searchParams.get('filter')) {
+            this.listOfResults = myEntries.body.slice(0, this.resultsDisplayed);
+            this.totalResults = myEntries.body.length;
+            // Display no search results message when there are no search results returned and a search filter is present
+            this.noResults = myEntries.body.length === 0;
+          } else {
+            // Update total entries only when no search filter applied (i.e. non-filtered total)
+            // Handles cases with no filter param and empty filter param
+            this.listOfEntries = myEntries.body.slice(0, 7);
+            this.totalEntries = myEntries.body.length;
+            // Clear search results if no filter applied
+            this.clearSearch();
+          }
         },
         (error: HttpErrorResponse) => {
           this.alertService.detailedError(error);
@@ -101,8 +116,21 @@ export class EntryBoxComponent extends Base implements OnInit {
   }
 
   onTextChange(event: any) {
-    this.isLoading = true;
-    this.getMyEntries();
+    // Ignore arrow key events as they are used for nagivation
+    if (!this.arrowKeyCodes.includes(event.keyCode)) {
+      this.isLoading = true;
+      this.getMyEntries();
+    }
+  }
+
+  navigateToEntry(path: string) {
+    this.router.navigateByUrl(this.allEntriesLink + path);
+  }
+
+  clearSearch() {
+    this.listOfResults = [];
+    this.filterText = '';
+    this.noResults = false;
   }
 
   showRegisterEntryModal(): void {
