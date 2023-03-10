@@ -46,6 +46,7 @@ export class EntryBoxComponent extends Base implements OnInit {
   public totalEntries: number = 0;
   public totalResults: number = 0;
   public noResults: boolean = false;
+  public resultsDisplayed: number = 5;
   public isLoading = true;
   public entryTypeParam: any;
   private readonly arrowKeyCodes: number[] = [37, 38, 39, 40];
@@ -95,10 +96,10 @@ export class EntryBoxComponent extends Base implements OnInit {
         (myEntries: HttpResponse<EntryUpdateTime[]>) => {
           const url = new URL(myEntries.url);
           if (url.searchParams.get('filter')) {
-            this.listOfResults = myEntries.body.slice(0, 5);
+            this.listOfResults = myEntries.body.slice(0, this.resultsDisplayed);
             this.totalResults = myEntries.body.length;
             // Display no search results message when there are no search results returned and a search filter is present
-            this.noResults = myEntries.body.length === 0 ? true : false;
+            this.noResults = myEntries.body.length === 0;
           } else {
             // Update total entries only when no search filter applied (i.e. non-filtered total)
             // Handles cases with no filter param and empty filter param

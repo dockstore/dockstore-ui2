@@ -51,8 +51,8 @@
         </mat-form-field>
         <mat-autocomplete #auto="matAutocomplete" (optionSelected)="navigateToEntry($event.option.value)">
           <mat-option *ngFor="let result of listOfResults" [value]="result.path" class="no-wrap">{{ result.prettyPath }}</mat-option>
-          <div *ngIf="totalResults > 5" class="date-display no-wrap p-2 px-4">
-            Showing 5 of {{ totalResults }} matching {{ entryTypeLowerCase }}s
+          <div *ngIf="totalResults > resultsDisplayed" class="date-display no-wrap p-2 px-4">
+            Showing {{ resultsDisplayed }} of {{ totalResults }} matching {{ entryTypeLowerCase }}s
           </div>
           <mat-option *ngIf="noResults" disabled class="m-2">No matching {{ entryTypeLowerCase }}s</mat-option>
         </mat-autocomplete>
