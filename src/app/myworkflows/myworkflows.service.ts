@@ -258,6 +258,22 @@ export class MyWorkflowsService extends MyEntriesService<Workflow, OrgWorkflowOb
     });
   }
 
+  matchingOrgEntryObjectByPath(
+    orgWorkflowObjects: OrgWorkflowObject<Workflow>[],
+    workflowPath: string
+  ): OrgWorkflowObject<Workflow> | undefined | null {
+    const workflowPathComponents = workflowPath.split('/');
+    if (workflowPathComponents.length < 2) {
+      return null;
+    }
+
+    const sourceControl = workflowPathComponents[0];
+    const organization = workflowPathComponents[1];
+    return orgWorkflowObjects.find((orgWorkflowObject) => {
+      return orgWorkflowObject.sourceControl === sourceControl && orgWorkflowObject.organization === organization;
+    });
+  }
+
   getPath(entry: Workflow): string {
     return entry.full_workflow_path || '';
   }

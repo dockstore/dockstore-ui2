@@ -71,10 +71,22 @@
         </span>
       </h3>
       <div *ngIf="!publicPage && workflow.workflowVersions && workflow.workflowVersions.length > 0" class="input-group">
-        <mat-form-field>
-          <mat-select (selectionChange)="onSelectedVersionChange(selectedVersion)" [(value)]="selectedVersion">
-            <mat-option *ngFor="let workflowVersion of workflow.workflowVersions" [value]="workflowVersion"
-              >{{ workflowVersion.name }}
+        <mat-form-field data-cy="version-dropdown">
+          <mat-select
+            (selectionChange)="onSelectedVersionChange(selectedVersion)"
+            [(value)]="selectedVersion"
+            [formControl]="workflowVersionsCtrl"
+          >
+            <mat-option>
+              <ngx-mat-select-search
+                data-cy="version-dropdown-search-field"
+                [formControl]="versionFilterCtrl"
+                placeholderLabel="Search version"
+                noEntriesFoundLabel="No matching version found"
+              ></ngx-mat-select-search>
+            </mat-option>
+            <mat-option *ngFor="let version of filteredVersions | async" [value]="version">
+              {{ version.name }}
             </mat-option>
           </mat-select>
         </mat-form-field>

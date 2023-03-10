@@ -15,6 +15,20 @@ img[alt='Org avatar'] {
   object-fit: scale-down;
 }
 
+button[mat-icon-button] {
+  color: mat.get-color-from-palette($dockstore-app-gray, 3);
+}
+
+.mat-option {
+  font-size: 1.4rem;
+  height: 3.5rem;
+  line-height: normal;
+}
+
+.mat-option:not([disabled]) {
+  border-bottom: 0.1rem solid mat.get-color-from-palette($dockstore-app-gray, 3);
+}
+
 // Overide mat-card padding to extend mat-divider to edges
 mat-divider {
   margin: 0 -16px;

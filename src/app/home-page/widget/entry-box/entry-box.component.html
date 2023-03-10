@@ -20,10 +20,10 @@
       <div id="workflow-number" fxLayout="row">
         <mat-card-header fxLayout="row">
           <mat-card-title>{{ entryTypeLowerCase | titlecase }}s</mat-card-title>
-          <span class="bubble workflow-background" *ngIf="entryType === entryTypeEnum.WORKFLOW">{{ totalEntries }}</span>
-          <span class="bubble container-background" *ngIf="entryType === entryTypeEnum.TOOL">{{ totalEntries }}</span>
-          <span class="bubble service-background" *ngIf="entryType === entryTypeEnum.SERVICE">{{ totalEntries }}</span>
-          <span class="bubble preview-bubble" *ngIf="entryType === entryTypeEnum.SERVICE">PREVIEW</span>
+          <span class="bubble workflow-background" *ngIf="entryType === newEntryType.WORKFLOW">{{ totalEntries }}</span>
+          <span class="bubble container-background" *ngIf="entryType === newEntryType.TOOL">{{ totalEntries }}</span>
+          <span class="bubble service-background" *ngIf="entryType === newEntryType.SERVICE">{{ totalEntries }}</span>
+          <span class="bubble preview-bubble" *ngIf="entryType === newEntryType.SERVICE">PREVIEW</span>
         </mat-card-header>
       </div>
       <button
@@ -43,14 +43,19 @@
     <mat-card-content class="p-3 h-100">
       <div *ngIf="totalEntries !== 0 || isLoading; else noEntries">
         <mat-form-field appearance="outline" class="search-form-field w-100 pb-0">
-          <input
-            matInput
-            data-cy="search-field"
-            [(ngModel)]="filterText"
-            (keyup)="onTextChange($event)"
-            placeholder="Search your {{ entryTypeLowerCase }}s..."
-          />
+          <mat-label>Search your {{ entryTypeLowerCase | titlecase }}s...</mat-label>
+          <input matInput data-cy="search-field" [(ngModel)]="filterText" (keyup)="onTextChange($event)" [matAutocomplete]="auto" />
+          <button *ngIf="filterText" mat-button matSuffix mat-icon-button (click)="clearSearch()" type="button">
+            <mat-icon>cancel</mat-icon>
+          </button>
         </mat-form-field>
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="navigateToEntry($event.option.value)">
+          <mat-option *ngFor="let result of listOfResults" [value]="result.path" class="no-wrap">{{ result.prettyPath }}</mat-option>
+          <div *ngIf="totalResults > resultsDisplayed" class="date-display no-wrap p-2 px-4">
+            Showing {{ resultsDisplayed }} of {{ totalResults }} matching {{ entryTypeLowerCase }}s
+          </div>
+          <mat-option *ngIf="noResults" disabled class="m-2">No matching {{ entryTypeLowerCase }}s</mat-option>
+        </mat-autocomplete>
         <h5 class="weight-bold my-0">Recent Activity</h5>
         <div *ngFor="let entry of listOfEntries" fxLayout="row" class="widget-list-items space-between w-100 py-2">
           <a class="no-wrap" [routerLink]="allEntriesLink + entry.path">
@@ -58,7 +63,6 @@
           </a>
           <div class="date-display">{{ entry.lastUpdateDate | date: 'MMM d, yyyy' }}</div>
         </div>
-        <div *ngIf="listOfEntries.length === 0" class="mt-2">No matching {{ entryTypeLowerCase }}s</div>
         <div class="weight-bold py-2">
           <a [routerLink]="allEntriesLink" data-cy="all-entries-btn">
             All {{ entryTypeLowerCase | titlecase }}s<mat-icon class="mat-icon-sm">keyboard_double_arrow_right</mat-icon>

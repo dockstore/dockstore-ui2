@@ -28,16 +28,20 @@ describe('Dockstore Home', () => {
   describe('GitHub App Callback Routing', () => {
     setTokenUserViewPort();
     it('Redirects to my-tools', () => {
-      cy.visit('/githubCallback?state=tool');
-      cy.url().should('contain', '/my-tools');
+      cy.visit('/githubCallback?state=/my-tools/quay.io/A2/b1');
+      cy.url().should('contain', '/my-tools/quay.io/A2/b1');
     });
     it('Redirects to my-workflows', () => {
-      cy.visit('/githubCallback?state=workflow');
-      cy.url().should('contain', '/my-workflows');
+      cy.visit('/githubCallback?state=/my-workflows/github.com/A/l');
+      cy.url().should('contain', '/my-workflows/github.com/A/l');
     });
     it('Redirects to my-services', () => {
-      cy.visit('/githubCallback?state=service');
-      cy.url().should('contain', '/my-services');
+      cy.visit('/githubCallback?state=/services/github.com/garyluu/another-test-service');
+      cy.url().should('contain', '/services/github.com/garyluu/another-test-service');
+    });
+    it('Redirects to dashboard', () => {
+      cy.visit('githubCallback?state=/dashboard?newDashboard');
+      cy.url().should('contain', '/dashboard?newDashboard');
     });
   });
 

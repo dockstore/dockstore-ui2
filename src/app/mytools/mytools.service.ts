@@ -124,6 +124,22 @@ export class MytoolsService extends MyEntriesService<DockstoreTool, OrgToolObjec
     });
   }
 
+  matchingOrgEntryObjectByPath(
+    orgToolObjects: OrgToolObject<DockstoreTool>[],
+    toolPath: string
+  ): OrgToolObject<DockstoreTool> | undefined | null {
+    const toolPathComponents = toolPath.split('/');
+    if (toolPathComponents.length < 2) {
+      return null;
+    }
+
+    const registry = toolPathComponents[0];
+    const namespace = toolPathComponents[1];
+    return orgToolObjects.find((orgToolObject) => {
+      return orgToolObject.registry === registry && orgToolObject.namespace === namespace;
+    });
+  }
+
   getPath(entry: DockstoreTool | Workflow): string {
     if (MytoolsService.isWorkflowBasedObject(entry)) {
       return entry.full_workflow_path || '';
