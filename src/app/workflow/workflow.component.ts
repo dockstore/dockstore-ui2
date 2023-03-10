@@ -59,7 +59,6 @@ import { Title } from '@angular/platform-browser';
 import { EntryCategoriesService } from '../categories/state/entry-categories.service';
 import RoleEnum = Permission.RoleEnum;
 import { FormControl } from '@angular/forms';
-import { MatSelect } from '@angular/material/select';
 
 @Component({
   selector: 'app-workflow',
@@ -99,7 +98,6 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
   public WorkflowModel = Workflow;
   public WorkflowVersionModel = WorkflowVersion;
   public launchSupport$: Observable<boolean>;
-  @ViewChild('singleSelect') singleSelect: MatSelect;
   public workflowVersionAlphabetical: Array<Tag | WorkflowVersion> = [];
   public workflowVersionsCtrl: FormControl<Tag | WorkflowVersion> = new FormControl<Tag | WorkflowVersion>(null); //control for the selected version
   public versionFilterCtrl: FormControl<string> = new FormControl<string>(''); // control for the MatSelect filter keyword
@@ -192,7 +190,6 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
           }
         }
       });
-      this.setInitialValue();
     }
     this.updateTabSelection();
   }
@@ -321,13 +318,6 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
         this.workflowVersionsCtrl.setValue(this.selectedVersion);
       }
       this.setUpWorkflow(workflow);
-    });
-  }
-
-  protected setInitialValue() {
-    this.filteredVersions.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
-      // initializing the selection according to the initial value of the form control
-      this.singleSelect.compareWith = (a: Tag | WorkflowVersion, b: Tag | WorkflowVersion) => a && b && a.id === b.id;
     });
   }
 
