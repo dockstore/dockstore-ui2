@@ -51,6 +51,7 @@
       (click)="snapshotVersion()"
       data-cy="dockstore-snapshot"
       matTooltip="Snapshotting a version makes it read-only."
+      matTooltipPosition="left"
     >
       Snapshot
     </button>
@@ -63,6 +64,7 @@
       data-cy="dockstore-request-doi-button"
       *ngIf="version.referenceType !== 'BRANCH' && !version.doiURL && workflow?.is_published"
       matTooltip="Request a Digital Object Identifier (DOI) for this version."
+      matTooltipPosition="left"
     >
       Request DOI
     </button>
@@ -80,6 +82,7 @@
         workflow?.is_published
       "
       matTooltip="Export this version to ORCID."
+      matTooltipPosition="left"
     >
       Export to ORCID
     </button>
@@ -91,7 +94,10 @@
     >
       Set as Default Version
     </button>
-    <div matTooltip="Refresh an individual version. Disabled for GitHub App workflows, hosted workflows, and frozen versions.">
+    <div
+      matTooltip="Refresh an individual version. Disabled for GitHub App workflows, hosted workflows, and frozen versions."
+      matTooltipPosition="left"
+    >
       <button
         mat-menu-item
         color="accent"
