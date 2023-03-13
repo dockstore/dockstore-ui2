@@ -33,6 +33,7 @@ import { CLIENT_ROUTER_PROVIDERS, routing } from './app.routing';
 import { BannerComponent } from './banner/banner.component';
 import { ChangeUsernameBannerComponent } from './changeUsernameBanner/changeUsernameBanner.component';
 import { ConfigurationService } from './configuration.service';
+import { EntryTypeMetadataService } from './entry/type-metadata/entry-type-metadata.service';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 import { FileTreeComponent } from './file-tree/file-tree.component';
 import { FooterComponent } from './footer/footer.component';
@@ -127,8 +128,11 @@ export const myCustomSnackbarDefaults: MatSnackBarConfig = {
   verticalPosition: 'bottom',
 };
 
-export function configurationServiceFactory(configurationService: ConfigurationService): Function {
-  return () => configurationService.load();
+export function initializerFactory(
+  configurationService: ConfigurationService,
+  entryTypeMetadataService: EntryTypeMetadataService
+): Function {
+  return () => Promise.all([configurationService.load(), entryTypeMetadataService.load()]);
 }
 
 @NgModule({
@@ -234,11 +238,12 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     ViewService,
     TosBannerService,
     ConfigurationService,
+    EntryTypeMetadataService,
     OrgLogoService,
     {
       provide: APP_INITIALIZER,
-      useFactory: configurationServiceFactory,
-      deps: [ConfigurationService],
+      useFactory: initializerFactory,
+      deps: [ConfigurationService, EntryTypeMetadataService],
       multi: true,
     },
     { provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: myCustomTooltipDefaults },
