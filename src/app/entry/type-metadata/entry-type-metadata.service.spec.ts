@@ -1,6 +1,5 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { inject, TestBed } from '@angular/core/testing';
-import { ConfigService } from 'ng2-ui-auth';
 import { EntryTypeMetadataService } from './entry-type-metadata.service';
 import { EntryType, EntryTypeMetadata } from '../../shared/openapi';
 
@@ -8,7 +7,7 @@ describe('EntryTypeMetadataService', () => {
   beforeEach(() =>
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [EntryTypeMetadataService, { provide: ConfigService, useValue: {} }, { provide: Window, useValue: window }],
+      providers: [EntryTypeMetadataService],
     })
   );
 
