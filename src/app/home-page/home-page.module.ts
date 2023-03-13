@@ -20,7 +20,7 @@ import { EntriesComponent } from './widget/entries/entries.component';
 import { FeaturedContentComponent } from './widget/featured-content/featured-content.component';
 import { NewsAndUpdatesComponent } from './widget/featured-content/news-and-updates.component';
 import { GettingStartedComponent } from './widget/getting-started/getting-started.component';
-import { NotificationUpdatesComponent } from './widget/news-updates/notification-updates.component';
+import { NewsNotificationsComponent } from './widget/news-updates/news-notifications.component';
 import { OrganizationsComponent } from './widget/organizations/organizations.component';
 import { RequestsComponent } from './widget/requests/requests.component';
 import { MySidebarModule } from '../shared/modules/my-sidebar.module';
@@ -40,6 +40,7 @@ import { OrganizationBoxComponent } from './widget/organization-box/organization
 import { StarredBoxComponent } from './widget/starred-box/starred-box.component';
 import { HeaderModule } from 'app/shared/modules/header.module';
 import { NewsBoxComponent } from './widget/news-box/news-box.component';
+import { MarkdownWrapperModule } from '../shared/modules/markdown-wrapper.module';
 
 @NgModule({
   imports: [
@@ -60,6 +61,7 @@ import { NewsBoxComponent } from './widget/news-box/news-box.component';
     RecentEventsModule,
     RefreshWizardModule,
     HeaderModule,
+    MarkdownWrapperModule,
   ],
   declarations: [
     HomeComponent,
@@ -69,7 +71,7 @@ import { NewsBoxComponent } from './widget/news-box/news-box.component';
     OrganizationsComponent,
     FeaturedContentComponent,
     NewsAndUpdatesComponent,
-    NotificationUpdatesComponent,
+    NewsNotificationsComponent,
     GettingStartedComponent,
     EntryBoxComponent,
     RegisterToolComponent,

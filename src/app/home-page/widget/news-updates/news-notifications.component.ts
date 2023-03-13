@@ -1,18 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Notification } from '../shared/swagger/model/notification';
-import { NotificationsService } from './state/notifications.service';
+import { NotificationsService } from '../../../notifications/state/notifications.service';
+import { Notification } from '../../../shared/swagger';
 
 @Component({
-  selector: 'app-notifications',
-  templateUrl: './notifications.component.html',
-  styleUrls: ['./notifications.component.scss'],
+  selector: 'app-news-notifications',
+  templateUrl: './news-notifications.component.html',
+  styleUrls: ['./news-notifications.component.scss'],
 })
-export class NotificationsComponent implements OnInit {
+export class NewsNotificationsComponent implements OnInit {
   public activeNotifications$: Observable<Array<Notification>>;
 
   constructor(private notificationsService: NotificationsService) {
-    this.activeNotifications$ = this.notificationsService.getActiveNotificationsByType(Notification.TypeEnum.SITEWIDE);
+    this.activeNotifications$ = this.notificationsService.getActiveNotificationsByType(Notification.TypeEnum.NEWSBODY);
   }
 
   ngOnInit() {

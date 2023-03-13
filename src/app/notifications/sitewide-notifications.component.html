@@ -2,7 +2,7 @@
   <div class="container text-center notification-bar {{ notification.priority?.toLowerCase() }}">
     <div class="container-fluid text-center" fxLayoutAlign="center center" data-cy="notification-banner">
       <div class="notification-display">
-        <markdown class="markdown-remove-pmargin" [data]="notification.message"></markdown>
+        <app-markdown-wrapper class="markdown-remove-pmargin" [data]="notification.message"></app-markdown-wrapper>
       </div>
       <button mat-button data-dismiss="alert" (click)="dismissNotification(notification)" data-cy="dismiss-notification">
         <mat-icon> clear </mat-icon>

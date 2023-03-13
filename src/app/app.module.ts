@@ -64,7 +64,7 @@ import { LogoutComponent } from './logout/logout.component';
 import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { ServiceInfoService } from './service-info/service-info.service';
 import { NavbarComponent } from './navbar/navbar.component';
-import { NotificationsComponent } from './notifications/notifications.component';
+import { SitewideNotificationsComponent } from './notifications/sitewide-notifications.component';
 import { OrganizationStargazersModule } from './organizations/organization/organization-stargazers/organization-stargazers.module';
 import { OrganizationStarringModule } from './organizations/organization/organization-starring/organization-starring.module';
 import { PageNotFoundComponent } from './pagenotfound/pagenotfound.component';
@@ -137,7 +137,7 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     DeleteAccountDialogComponent,
     NavbarComponent,
     FooterComponent,
-    NotificationsComponent,
+    SitewideNotificationsComponent,
     LoginComponent,
     OnboardingComponent,
     QuickStartComponent,

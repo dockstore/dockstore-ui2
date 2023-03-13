@@ -1,18 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { NotificationsService } from '../../../notifications/state/notifications.service';
-import { Notification } from '../../../shared/swagger';
+import { Notification } from '../shared/swagger/model/notification';
+import { NotificationsService } from './state/notifications.service';
 
 @Component({
-  selector: 'app-notification-updates',
-  templateUrl: './notification-updates.component.html',
-  styleUrls: ['./notification-updates.component.scss'],
+  selector: 'app-sitewide-notifications',
+  templateUrl: './sitewide-notifications.component.html',
+  styleUrls: ['./sitewide-notifications.component.scss'],
 })
-export class NotificationUpdatesComponent implements OnInit {
+export class SitewideNotificationsComponent implements OnInit {
   public activeNotifications$: Observable<Array<Notification>>;
 
   constructor(private notificationsService: NotificationsService) {
-    this.activeNotifications$ = this.notificationsService.getActiveNotificationsByType(Notification.TypeEnum.NEWSBODY);
+    this.activeNotifications$ = this.notificationsService.getActiveNotificationsByType(Notification.TypeEnum.SITEWIDE);
   }
 
   ngOnInit() {
