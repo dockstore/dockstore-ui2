@@ -6,6 +6,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterTestingModule } from '@angular/router/testing';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { RegisterToolService } from 'app/container/register-tool/register-tool.service';
 import { MyBioWorkflowsService } from 'app/myworkflows/my-bio-workflows.service';
 import { MyServicesService } from 'app/myworkflows/my-services.service';
@@ -37,7 +38,15 @@ describe('EntryBoxComponent', () => {
       TestBed.configureTestingModule({
         declarations: [EntryBoxComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        imports: [RouterTestingModule, MatButtonModule, MatIconModule, MatDialogModule, HttpClientTestingModule, MatSnackBarModule],
+        imports: [
+          MatAutocompleteModule,
+          RouterTestingModule,
+          MatButtonModule,
+          MatIconModule,
+          MatDialogModule,
+          HttpClientTestingModule,
+          MatSnackBarModule,
+        ],
         providers: [
           { provide: RegisterToolService, useClass: RegisterToolStubService },
           { provide: WorkflowService, useClass: WorkflowStubService },

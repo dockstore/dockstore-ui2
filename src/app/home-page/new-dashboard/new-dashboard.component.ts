@@ -5,6 +5,7 @@ import { RegisterToolService } from 'app/container/register-tool/register-tool.s
 import { MatDialog } from '@angular/material/dialog';
 import { RegisterToolComponent } from 'app/container/register-tool/register-tool.component';
 import { AlertService } from 'app/shared/alert/state/alert.service';
+import { EntryType } from 'app/shared/openapi';
 
 @Component({
   selector: 'app-new-dashboard',
@@ -12,6 +13,7 @@ import { AlertService } from 'app/shared/alert/state/alert.service';
   styleUrls: ['./new-dashboard.component.scss'],
 })
 export class NewDashboardComponent extends Base implements OnInit {
+  public entryType = EntryType;
   constructor(private registerToolService: RegisterToolService, private dialog: MatDialog, private alertService: AlertService) {
     super();
   }

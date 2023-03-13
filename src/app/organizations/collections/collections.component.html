@@ -26,7 +26,7 @@
 </div>
 <app-loading [loading]="loading$ | async">
   <div *ngIf="(collections$ | async | json) === '{}'; else hasCollections">
-    <mat-card class="alert alert-info mx-1" role="alert"> <mat-icon>info</mat-icon> No collections found. </mat-card>
+    <mat-card class="alert alert-info mat-elevation-z mx-1" role="alert"> <mat-icon>info</mat-icon> No collections found. </mat-card>
   </div>
   <ng-template #hasCollections>
     <div class="pt-2" fxLayout="column" fxLayoutGap="1rem">

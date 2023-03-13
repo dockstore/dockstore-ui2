@@ -521,6 +521,18 @@ describe('Dockstore my workflows', () => {
     });
   }
 });
+describe('Version Dropdown should have search capabilities', () => {
+  setTokenUserViewPort();
+  it('Search result should exclude master version', () => {
+    cy.visit('/my-workflows/github.com/A/l');
+    cy.get('[data-cy=version-dropdown]').should('contain', 'master').click();
+    cy.get('mat-option').should('contain', 'master').should('be.visible');
+    cy.get('mat-option').should('contain', 'test').should('be.visible');
+    cy.get('[data-cy=version-dropdown-search-field]').should('be.visible').type('test');
+    cy.get('mat-option').should('not.contain', 'master');
+    cy.get('mat-option').should('contain', 'test').should('be.visible');
+  });
+});
 describe('Should handle no workflows correctly', () => {
   resetDB();
   setTokenUserViewPortCurator(); // Curator has no workflows

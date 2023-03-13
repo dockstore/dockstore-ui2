@@ -38,7 +38,7 @@ import { Versions } from '../../shared/versions';
 export class VersionsWorkflowComponent extends Versions implements OnInit, OnChanges, AfterViewInit {
   faTag = faTag;
   faCodeBranch = faCodeBranch;
-  @Input() versions: Array<any>;
+  @Input() versions: Array<WorkflowVersion>;
   @Input() workflowId: number;
   @Input() verifiedVersionPlatforms: Array<VersionVerifiedPlatform>;
   zenodoUrl: string;
@@ -71,9 +71,19 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
 
   setDisplayColumns(publicPage: boolean) {
     if (publicPage) {
-      this.displayedColumns = ['name', 'last_modified', 'descriptorTypeVersions', 'valid', 'verified', 'snapshot', 'actions'];
+      this.displayedColumns = ['name', 'last_modified', 'descriptorTypeVersions', 'valid', 'verified', 'open', 'snapshot', 'actions'];
     } else {
-      this.displayedColumns = ['name', 'last_modified', 'descriptorTypeVersions', 'valid', 'hidden', 'verified', 'snapshot', 'actions'];
+      this.displayedColumns = [
+        'name',
+        'last_modified',
+        'descriptorTypeVersions',
+        'valid',
+        'hidden',
+        'open',
+        'verified',
+        'snapshot',
+        'actions',
+      ];
     }
   }
 
