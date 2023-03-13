@@ -16,21 +16,22 @@ describe('EntryTypeMetadataService', () => {
     expect(service).toBeTruthy();
   }));
 
-  it('should return undefined if type is invalid', inject([EntryTypeMetadataService], (service: EntryTypeMetadataService) => {
-    expect(service.get(undefined)).toBe(undefined);
-  }));
-
-  it('should return undefined at first', inject([EntryTypeMetadataService], (service: EntryTypeMetadataService) => {
+  it('should initially return undefined', inject([EntryTypeMetadataService], (service: EntryTypeMetadataService) => {
     expect(service.get(EntryType.NOTEBOOK)).toBe(undefined);
   }));
 
-  it('should return correct value', inject([EntryTypeMetadataService], (service: EntryTypeMetadataService) => {
-    const entryTypeMetadata: EntryTypeMetadata = {
+  it('should return the correct value', inject([EntryTypeMetadataService], (service: EntryTypeMetadataService) => {
+    const notebookMetadata: EntryTypeMetadata = {
       type: EntryType.NOTEBOOK,
       term: 'notebook',
     };
-    const blank: EntryTypeMetadata = {};
-    service.entryTypeMetadataList = [blank, entryTypeMetadata];
+    const workflowMetadata: EntryTypeMetadata = {
+      type: EntryType.WORKFLOW,
+      term: 'workflow',
+    };
+    service.entryTypeMetadataList = [notebookMetadata, workflowMetadata];
     expect(service.get(EntryType.NOTEBOOK).term).toBe('notebook');
+    expect(service.get(EntryType.WORKFLOW).term).toBe('workflow');
+    expect(service.get(EntryType.SERVICE)).toBe(undefined);
   }));
 });
