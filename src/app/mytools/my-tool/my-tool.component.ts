@@ -45,6 +45,7 @@ import { UrlResolverService } from '../../shared/url-resolver.service';
 import { UserQuery } from '../../shared/user/user.query';
 import { MytoolsService } from '../mytools.service';
 import { EntryType } from '../../shared/enum/entry-type';
+import { UserService } from 'app/shared/user/user.service';
 
 @Component({
   selector: 'app-my-tool',
@@ -90,7 +91,8 @@ export class MyToolComponent extends MyEntry implements OnInit {
     protected myEntriesStateService: MyEntriesStateService,
     protected myWorkflowsService: MyWorkflowsService,
     private workflowService: WorkflowService,
-    protected workflowQuery: WorkflowQuery
+    protected workflowQuery: WorkflowQuery,
+    private userService: UserService
   ) {
     super(
       accountsService,
@@ -211,6 +213,12 @@ export class MyToolComponent extends MyEntry implements OnInit {
 
   showRegisterEntryModal(): void {
     this.registerToolService.setIsModalShown(true);
+  }
+
+  addToExistingTools(): void {
+    if (this.user) {
+      this.userService.addUserToWorkflows(this.user.id, false);
+    }
   }
 
   /**

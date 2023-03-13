@@ -49,6 +49,19 @@ describe('Dockstore my tools', () => {
     });
   });
 
+  it('Should have discover existing tools button', () => {
+    cy.fixture('myWorkflows.json').then((json) => {
+      cy.intercept('PATCH', '/api/users/1/workflows', {
+        body: json,
+        statusCode: 200,
+      });
+    });
+
+    cy.get('[data-cy=myToolsMoreActionButtons]').should('be.visible').click();
+    cy.get('[data-cy=addToExistingTools]').should('be.visible').click();
+    cy.contains('addedthisworkflowviasync');
+  });
+
   describe('Should contain extended DockstoreTool properties', () => {
     it('visit another page then come back', () => {
       // The seemingly unnecessary visits are due to a detached-from-dom error even using cy.get().click();

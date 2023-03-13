@@ -45,8 +45,15 @@ export class UserService {
     });
   }
 
-  addUserToWorkflows(userId: number): void {
-    this.alertService.start('Adding user to existing workflows on Dockstore');
+  /**
+   * Add Workflows or GitHub App Tools from a user's organization
+   *
+   * @param userId
+   * @param isWorkflow  Display 'workflows' or 'tools' in the alert message
+   */
+  addUserToWorkflows(userId: number, isWorkflow: boolean): void {
+    // Should use 'tools' when adding app tools from myTools page and 'workflows' when adding from myWorkflows page
+    this.alertService.start('Adding user to existing ' + (isWorkflow ? 'workflows' : 'tools') + ' on Dockstore');
     this.usersService.addUserToDockstoreWorkflows(userId).subscribe(
       (workflows: Array<Workflow>) => {
         this.alertService.detailedSuccess();
