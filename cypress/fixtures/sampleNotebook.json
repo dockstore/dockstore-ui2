@@ -1,0 +1,65 @@
+[
+  {
+    "descriptorType": "JUPYTER",
+    "aliases": null,
+    "author": null,
+    "checker_id": null,
+    "conceptDoi": null,
+    "dbCreateDate": 1678804799542,
+    "dbUpdateDate": 1678804799613,
+    "defaultTestParameterFilePath": "/test.json",
+    "defaultVersion": null,
+    "description": null,
+    "descriptorTypeSubclass": "Python",
+    "email": null,
+    "entryType": "NOTEBOOK",
+    "entryTypeMetadata": {
+      "searchEntryType": "",
+      "searchSupported": false,
+      "sitePath": "notebooks",
+      "term": "notebook",
+      "termPlural": "notebooks",
+      "trsPrefix": "#notebook/",
+      "trsSupported": true,
+      "type": "NOTEBOOK"
+    },
+    "forumUrl": null,
+    "full_workflow_path": "ithub.com/fakeOrganization/fakeRepository/notebook0",
+    "gitUrl": "git@github.com:fakeOrganization/fakeRepository.git",
+    "has_checker": false,
+    "id": 21229,
+    "input_file_formats": [],
+    "isChecker": false,
+    "is_published": true,
+    "labels": [],
+    "lastUpdated": 1678804798524,
+    "last_modified": 1451297560,
+    "last_modified_date": 1676488543000,
+    "licenseInformation": {
+      "licenseName": null
+    },
+    "mode": "DOCKSTORE_YML",
+    "organization": "hyunnaye",
+    "output_file_formats": [],
+    "parentEntry": null,
+    "path": "github.com/fakeOrganization/notebook0",
+    "repository": "fakeRepository",
+    "sourceControl": "github.com",
+    "source_control_provider": "GITHUB",
+    "starredUsers": [
+      {
+        "id": 62751
+      }
+    ],
+    "topic": null,
+    "topicAutomatic": null,
+    "topicId": null,
+    "topicManual": null,
+    "topicSelection": "AUTOMATIC",
+    "userIdToOrcidPutCode": null,
+    "users": null,
+    "workflowName": "notebook0",
+    "workflowVersions": null,
+    "workflow_path": "/Dockstore.cwl"
+  }
+]

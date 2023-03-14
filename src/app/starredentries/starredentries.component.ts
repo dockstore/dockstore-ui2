@@ -35,7 +35,7 @@ export class StarredEntriesComponent extends Base implements OnInit {
   currentTab = 'workflows';
   selected = new UntypedFormControl();
   // TO DO: Add 'services' between tools and orgs when implemented
-  validTabs = ['workflows', 'tools', 'organizations'];
+  validTabs = ['workflows', 'tools', 'notebooks', 'organizations'];
 
   constructor(
     private userQuery: UserQuery,
