@@ -14,7 +14,6 @@ import { OrgLogoService } from '../shared/org-logo.service';
 import { EntryType } from '../shared/enum/entry-type';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Location } from '@angular/common';
-import { Notebook } from '../shared/openapi';
 
 @Component({
   selector: 'app-starredentries',
