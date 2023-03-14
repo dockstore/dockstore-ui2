@@ -42,4 +42,8 @@ export class EntryTypeMetadataService {
       return undefined;
     }
   }
+
+  public getAll(): EntryTypeMetadata[] {
+    return this.entryTypeMetadataList;
+  }
 }
