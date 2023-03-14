@@ -78,11 +78,6 @@ ul.ordered-list {
   line-height: 4rem;
 }
 
-.twitter-widget {
-  overflow: auto;
-  max-height: 400px;
-}
-
 .subtitle {
   font-size: 1.7rem;
   color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
