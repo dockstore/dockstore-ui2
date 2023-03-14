@@ -1,4 +1,3 @@
-import { ConfigService } from 'ng2-ui-auth';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { inject, TestBed } from '@angular/core/testing';
 import { EntryTypeMetadataService } from './entry-type-metadata.service';

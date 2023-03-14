@@ -19,7 +19,7 @@ export class EntryTypeMetadataService {
         },
         (e) => {
           this.entryTypeMetadataList = undefined;
-          // The following code is a direct adaptation of the "load failure" code in ConfigurationService
+          // The following code/comment is a direct adaptation/copy of the "load failure" code in ConfigurationService
           console.error('Error downloading entry type metadata list', e);
           // Less than ideal, but just let the normal error handling in footer.component.ts kick in later.
           Promise.resolve();
@@ -30,7 +30,7 @@ export class EntryTypeMetadataService {
   public get(type: EntryType): EntryTypeMetadata {
     // If no metadata has been retrieved, log and return.
     if (!this.entryTypeMetadataList) {
-      console.error('No metadata was retrieved.');
+      console.error('No metadata was retrieved');
       return undefined;
     }
     // Find the metadata for the specified entry type, log an error if it's not there, and return it.
