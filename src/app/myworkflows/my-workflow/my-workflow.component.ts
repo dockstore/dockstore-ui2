@@ -223,7 +223,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
 
   addToExistingWorkflows(): void {
     if (this.user) {
-      this.userService.addUserToWorkflows(this.user.id, true);
+      this.userService.addUserToWorkflows(this.user.id);
     }
   }
 

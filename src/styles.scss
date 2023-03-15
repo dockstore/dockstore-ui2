@@ -1380,3 +1380,8 @@ button.inline-text-btn {
 .form-control.selected-item {
   background-color: mat.get-color-from-palette($kim-accent1-success, 6);
 }
+
+// Override min-height: 64px for mat-menu-panel dropdowns
+div.mat-menu-panel {
+  min-height: min-content;
+}
