@@ -132,6 +132,10 @@ export abstract class Entry implements OnDestroy {
     return false;
   }
 
+  protected isNotebook(url: String): boolean {
+    return url.includes('/notebooks/');
+  }
+
   starGazersChange(): void {
     this.starGazersClicked = !this.starGazersClicked;
   }
@@ -509,6 +513,8 @@ export abstract class Entry implements OnDestroy {
       searchType = 'tools';
     } else if (entryType === EntryType.BioWorkflow) {
       searchType = 'workflows';
+    } else if (entryType === EntryType.Notebook) {
+      searchType = 'notebooks';
     }
     // construct the url, adding parameters in an order that will remain the same when the search page later rewrites it
     let url = '/search?labels.value.keyword=' + searchValue;

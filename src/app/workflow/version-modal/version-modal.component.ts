@@ -17,6 +17,7 @@ import { AfterViewChecked, Component, Inject, OnDestroy, OnInit, ViewChild } fro
 import { NgForm } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Service } from 'app/shared/swagger/model/service';
+import { Notebook } from 'app/shared/swagger/model/notebook';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, shareReplay, takeUntil } from 'rxjs/operators';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
@@ -48,7 +49,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
   isPublic: boolean;
   isModalShown: boolean;
   version: WorkflowVersion;
-  workflow: BioWorkflow | Service | AppTool;
+  workflow: BioWorkflow | Service | AppTool | Notebook;
   originalVersion: WorkflowVersion;
   testParameterFiles: SourceFile[];
   versionEditorForm: NgForm;

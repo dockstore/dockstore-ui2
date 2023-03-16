@@ -16,6 +16,7 @@
 import { Component, Input } from '@angular/core';
 import { BioWorkflow } from 'app/shared/swagger/model/bioWorkflow';
 import { Service } from 'app/shared/swagger/model/service';
+import { Notebook } from 'app/shared/swagger/model/notebook';
 import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 import { EntryTab } from '../../shared/entry/entry-tab';
@@ -30,7 +31,7 @@ import { ToolTabService } from './tool-tab.service';
   styleUrls: ['./tool-tab.component.scss'],
 })
 export class ToolTabComponent extends EntryTab {
-  workflow: BioWorkflow | Service;
+  workflow: BioWorkflow | Service | Notebook;
   toolContent: string = null;
   _selectedVersion: WorkflowVersion;
   descriptorType$: Observable<ToolDescriptor.TypeEnum>;

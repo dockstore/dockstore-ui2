@@ -20,6 +20,7 @@ import { EntryType } from 'app/shared/enum/entry-type';
 import { RefreshService } from 'app/shared/refresh.service';
 import { BioWorkflow } from 'app/shared/swagger/model/bioWorkflow';
 import { Service } from 'app/shared/swagger/model/service';
+import { Notebook } from 'app/shared/swagger/model/notebook';
 import { UserQuery } from 'app/shared/user/user.query';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -56,7 +57,7 @@ export class ViewWorkflowComponent extends View implements OnInit {
   userId: number;
   EntryType = EntryType;
   public entryType$: Observable<EntryType>;
-  public workflow: BioWorkflow | Service;
+  public workflow: BioWorkflow | Service | Notebook;
   public WorkflowType = Workflow;
   public enableExportToOrcid = Dockstore.FEATURES.enableOrcidExport;
   constructor(
