@@ -19,9 +19,9 @@ import { JsonLdModule } from '../shared/modules/json-ld.module';
 import { RecentEventsModule } from './recent-events/recent-events.module';
 import { EntriesComponent } from './widget/entries/entries.component';
 import { FeaturedContentComponent } from './widget/featured-content/featured-content.component';
-import { FeaturedNewsComponent } from './widget/featured-content/featured-news.component';
+import { NewsAndUpdatesComponent } from './widget/featured-content/news-and-updates.component';
 import { GettingStartedComponent } from './widget/getting-started/getting-started.component';
-import { NewsUpdatesComponent } from './widget/news-updates/news-updates.component';
+import { NewsNotificationsComponent } from './widget/news-updates/news-notifications.component';
 import { OrganizationsComponent } from './widget/organizations/organizations.component';
 import { RequestsComponent } from './widget/requests/requests.component';
 import { MySidebarModule } from '../shared/modules/my-sidebar.module';
@@ -40,6 +40,8 @@ import { NewDashboardComponent } from './new-dashboard/new-dashboard.component';
 import { OrganizationBoxComponent } from './widget/organization-box/organization-box.component';
 import { StarredBoxComponent } from './widget/starred-box/starred-box.component';
 import { HeaderModule } from 'app/shared/modules/header.module';
+import { NewsBoxComponent } from './widget/news-box/news-box.component';
+import { MarkdownWrapperModule } from '../shared/modules/markdown-wrapper.module';
 
 @NgModule({
   imports: [
@@ -61,6 +63,7 @@ import { HeaderModule } from 'app/shared/modules/header.module';
     RecentEventsModule,
     RefreshWizardModule,
     HeaderModule,
+    MarkdownWrapperModule,
   ],
   declarations: [
     HomeComponent,
@@ -69,14 +72,15 @@ import { HeaderModule } from 'app/shared/modules/header.module';
     EntriesComponent,
     OrganizationsComponent,
     FeaturedContentComponent,
-    FeaturedNewsComponent,
-    NewsUpdatesComponent,
+    NewsAndUpdatesComponent,
+    NewsNotificationsComponent,
     GettingStartedComponent,
     EntryBoxComponent,
     RegisterToolComponent,
     NewDashboardComponent,
     OrganizationBoxComponent,
     StarredBoxComponent,
+    NewsBoxComponent,
   ],
   providers: [
     MytoolsService,
