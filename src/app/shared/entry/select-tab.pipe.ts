@@ -41,10 +41,11 @@ export class SelectTabPipe implements PipeTransform {
     const publishedIndex = 0;
     const unpublishedIndex = 1;
 
-    // If the currently selected entry is unpublished, or there are no published entries, select the unpublished tab
+    // The selected entry is in the unpublished tab, or there are no published entries
     if (unpublishedEntries.find((entry: Entry) => entry.id === entryId) || publishedEntries.length === 0) {
       return unpublishedIndex;
     }
+    // Entry is in the published tab, or the entry wasn't in the unpublished tab and published entries exist
     return publishedIndex;
   }
 }
