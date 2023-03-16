@@ -61,7 +61,14 @@ export class SidebarAccordionComponent implements OnInit, OnChanges {
     private sessionQuery: SessionQuery,
     private alertQuery: AlertQuery,
     private metadataService: MetadataService
-  ) {}
+  ) {
+    this.metadataService.getSourceControlList().subscribe((map) => {
+      map.forEach((source) => {
+        this.sourceControlToWorkflows.set(source.value, { groupEntryInfo: [], sourceControlTitle: source.friendlyName.toUpperCase() });
+      });
+      this.sortBySourceControl();
+    });
+  }
 
   /**
    * Display in original ordering when iterating through keys
@@ -80,11 +87,13 @@ export class SidebarAccordionComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.groupEntriesObject && this.groupEntriesObject && this.sourceControlToWorkflows.size !== 0) {
+    if (changes.groupEntriesObject && this.groupEntriesObject) {
       for (const key of this.sourceControlToWorkflows.keys()) {
         this.sourceControlToWorkflows.get(key).groupEntryInfo = [];
       }
-      this.sortBySourceControl();
+      if (this.sourceControlToWorkflows.size != 0) {
+        this.sortBySourceControl();
+      }
     }
   }
 
@@ -93,12 +102,6 @@ export class SidebarAccordionComponent implements OnInit, OnChanges {
     this.entryType$ = this.sessionQuery.entryType$;
     this.workflowId$ = this.workflowQuery.workflowId$;
     this.isTool$ = this.sessionQuery.isTool$;
-    this.metadataService.getSourceControlList().subscribe((map) => {
-      map.forEach((source) => {
-        this.sourceControlToWorkflows.set(source.value, { groupEntryInfo: [], sourceControlTitle: source.friendlyName.toUpperCase() });
-      });
-      this.sortBySourceControl();
-    });
   }
 
   trackByWorkflowId(index: number, workflow: Workflow) {
