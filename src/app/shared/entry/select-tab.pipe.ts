@@ -38,16 +38,13 @@ export class SelectTabPipe implements PipeTransform {
   transform(orgEntriesObject: OrgToolObject<DockstoreTool> | OrgWorkflowObject<Workflow>, entryId: number): number {
     const publishedEntries: Array<ExtendedDockstoreTool | ExtendedWorkflow> = orgEntriesObject.published;
     const unpublishedEntries: Array<ExtendedDockstoreTool | ExtendedWorkflow> = orgEntriesObject.unpublished;
-    if (publishedEntries.find((entry: Entry) => entry.id === entryId)) {
-      return 0;
+    const publishedIndex = 0;
+    const unpublishedIndex = 1;
+
+    // If the currently selected entry is unpublished, or there are no published entries, select the unpublished tab
+    if (unpublishedEntries.find((entry: Entry) => entry.id === entryId) || publishedEntries.length === 0) {
+      return unpublishedIndex;
     }
-    if (unpublishedEntries.find((entry: Entry) => entry.id === entryId)) {
-      return 1;
-    }
-    if (publishedEntries.length > 0) {
-      return 0;
-    } else {
-      return 1;
-    }
+    return publishedIndex;
   }
 }
