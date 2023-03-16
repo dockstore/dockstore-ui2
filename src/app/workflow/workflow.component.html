@@ -56,7 +56,7 @@
           <img src="../../assets/svg/service-circle.svg" alt="service icon" />
         </span>
         <span *ngIf="entryType === EntryType.Notebook" data-cy="notebook-icon">
-          <img src="../../assets/svg/sub-nav/notebooks.svg" width="40" height="40" alt="notebook icon" />
+          <img src="../../assets/svg/notebook-circle.svg" alt="notebook icon" />
         </span>
         <span fxLayout.lt-sm="column" style="word-break: break-word">
           {{ title
@@ -248,7 +248,7 @@
               <div>The rendered notebook will go here.</div>
             </mat-tab>
           </div>
-          <div *ngIf="entryType === EntryType.BioWorkflow || entryType === EntryType.Tool">
+          <div *ngIf="entryType === EntryType.BioWorkflow || entryType === EntryType.Tool || entryType === EntryType.Notebook">
             <mat-tab id="launchTab" label="Launch">
               <div *ngIf="(launchSupport$ | async) === false; else launchSupported">
                 <div class="p-3">
