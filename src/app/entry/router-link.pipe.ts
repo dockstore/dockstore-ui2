@@ -17,6 +17,8 @@ export class RouterLinkPipe implements PipeTransform {
         return '/services/' + workflow.full_workflow_path;
       case EntryType.AppTool:
         return '/containers/' + workflow.full_workflow_path;
+      case EntryType.Notebook:
+        return '/notebooks/' + workflow.full_workflow_path;
     }
     return null;
   }
