@@ -7,7 +7,7 @@
     "use_circle": true,
     "circle_ci_source": "https://app.circleci.com/pipelines/github/dockstore/dockstore/9627/workflows/3d8ce90c-3f70-4be5-b8d0-ca2d6a9b9b5a/jobs/31570/artifacts",
     "circle_build_id": "31570",
-    "base_branch": "SEAB-5122-star-notebook"
+    "base_branch": "develop"
   },
   "scripts": {
     "ng": "npx ng",
