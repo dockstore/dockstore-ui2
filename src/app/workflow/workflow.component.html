@@ -252,7 +252,7 @@
               </div>
             </mat-tab>
           </div>
-          <div *ngIf="entryType === EntryType.BioWorkflow || entryType === EntryType.Tool || entryType === EntryType.Notebook">
+          <div *ngIf="entryType === EntryType.BioWorkflow || entryType === EntryType.Tool">
             <mat-tab id="launchTab" label="Launch">
               <div *ngIf="(launchSupport$ | async) === false; else launchSupported">
                 <div class="p-3">
