@@ -27,7 +27,8 @@ describe('Notebooks Page', () => {
   });
 
   it('should star notebook', () => {
-    cy.visit('/notebooks');
+    cy.visit('/starred?tab=notebooks');
+    cy.get('[data-cy=no-notebooks-banner]').should('contain', 'You have no starred notebooks.');
     cy.fixture('sampleNotebook.json').then((json) => {
       cy.intercept('GET', '*/users/starredNotebooks', {
         body: json,

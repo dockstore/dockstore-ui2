@@ -93,7 +93,12 @@
             </div>
           </ng-template>
           <div>
-            <mat-card class="alert alert-info mat-elevation-z starred-header" role="alert" *ngIf="starredNotebooks?.length === 0">
+            <mat-card
+              class="alert alert-info mat-elevation-z starred-header"
+              data-cy="no-notebooks-banner"
+              role="alert"
+              *ngIf="starredNotebooks?.length === 0"
+            >
               You have no starred notebooks.
             </mat-card>
             <div fxLayout="column" fxLayoutGap="1rem" class="mb-2 mx-1">
