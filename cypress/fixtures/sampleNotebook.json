@@ -24,7 +24,7 @@
       "type": "NOTEBOOK"
     },
     "forumUrl": null,
-    "full_workflow_path": "ithub.com/fakeOrganization/fakeRepository/notebook0",
+    "full_workflow_path": "github.com/fakeOrganization/fakeRepository/notebook0",
     "gitUrl": "git@github.com:fakeOrganization/fakeRepository.git",
     "has_checker": false,
     "id": 21229,

@@ -36,7 +36,7 @@
   <ng-template #search>
     <img *ngIf="(entryType$ | async) === EntryType.BioWorkflow" src="../assets/svg/sub-nav/workflow.svg" alt="workflow icon" />
     <img *ngIf="(entryType$ | async) === EntryType.Service" src="../assets/svg/sub-nav/services.svg" alt="service icon" />
-    <img *ngIf="(entryType$ | async) === EntryType.Notebook" src="../assets/svg/sub-nav/notebooks.svg" alt="notebook icon" />
+    <img *ngIf="(entryType$ | async) === EntryType.Notebook" src="../assets/svg/sub-nav/notebook.svg" alt="notebook icon" />
     <span class="mx-1">{{ entryPageTitle$ | async | titlecase }}</span>
     <div *ngIf="(entryType$ | async) === EntryType.Service || (entryType$ | async) === EntryType.Notebook" class="bubble preview-bubble">
       PREVIEW
