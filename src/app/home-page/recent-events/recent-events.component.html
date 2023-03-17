@@ -1,103 +1,229 @@
 <app-loading [loading]="loading$ | async">
-  <div *ngIf="noEvents$ | async">
+  <div *ngIf="events?.length > 0 || isLoading; else noEvents">
+    <div *ngFor="let event of events" class="size-small widget-list-items event" fxLayout fxLayoutAlign="space-between center">
+      <div fxLayout>
+        <a [routerLink]="'/users/' + event.initiatorUser?.username">
+          <img src="{{ event?.initiatorUser?.avatarUrl }}" alt="User avatar" />
+        </a>
+        <div [ngSwitch]="event.type" class="my-3">
+          <!-- Entries -->
+          <div *ngSwitchCase="EventType.PUBLISHENTRY" class="truncate-text-2">
+            <strong
+              ><a class="no-underline" [routerLink]="'/users/' + event.initiatorUser?.username">{{
+                event.initiatorUser?.username
+              }}</a></strong
+            >
+            published the {{ event | recentEvents: 'entryType' }}
+            <a [routerLink]="event | recentEvents: 'entryLink'">{{ event | recentEvents: 'displayName' }}</a>
+          </div>
+          <div *ngSwitchCase="EventType.UNPUBLISHENTRY" class="truncate-text-2">
+            <!-- Do not link to an entry that doesn't exist - 404 -->
+            <strong
+              ><a class="no-underline" [routerLink]="'/users/' + event.initiatorUser?.username">{{
+                event.initiatorUser?.username
+              }}</a></strong
+            >
+            unpublished the {{ event | recentEvents: 'entryType' }} <strong>{{ event | recentEvents: 'displayName' }}</strong>
+          </div>
+          <div *ngSwitchCase="EventType.ADDVERSIONTOENTRY" class="truncate-text-2">
+            <strong
+              ><a class="no-underline" [routerLink]="'/users/' + event.initiatorUser?.username">{{
+                event.initiatorUser?.username
+              }}</a></strong
+            >
+            created the {{ event.version?.referenceType | lowercase }} <strong>{{ event.version?.name }}</strong> in
+            {{ event | recentEvents: 'entryType' }}
+            <a [routerLink]="event | recentEvents: 'entryLink'">{{ event | recentEvents: 'displayName' }}</a>
+          </div>
+          <!-- Organizations -->
+          <div *ngSwitchCase="EventType.CREATEORG" class="truncate-text-2">
+            <strong
+              ><a class="no-underline" [routerLink]="'/users/' + event.initiatorUser?.username">{{
+                event.initiatorUser?.username
+              }}</a></strong
+            >
+            created the organization
+            <a [routerLink]="event | recentEvents: 'orgLink'">{{ event.organization?.displayName }}</a>
+          </div>
+          <div *ngSwitchCase="EventType.APPROVEORG" class="truncate-text-2">
+            The organization
+            <a [routerLink]="event | recentEvents: 'orgLink'">{{ event.organization?.displayName }}</a>
+            was approved.
+          </div>
+          <div *ngSwitchCase="EventType.REJECTORG" class="truncate-text-2">
+            The organization
+            <a [routerLink]="event | recentEvents: 'orgLink'">{{ event.organization?.displayName }}</a>
+            was rejected.
+          </div>
+          <div *ngSwitchCase="EventType.REREQUESTORG" class="truncate-text-2">
+            The organization
+            <a [routerLink]="event | recentEvents: 'orgLink'">{{ event.organization?.displayName }}</a>
+            was re-requested for review.
+          </div>
+          <div *ngSwitchCase="EventType.ADDUSERTOORG" class="truncate-text-2">
+            <strong
+              ><a class="no-underline" [routerLink]="'/users/' + event.initiatorUser?.username">{{
+                event.initiatorUser?.username
+              }}</a></strong
+            >
+            added {{ event.user.username }} to the organization
+            <a [routerLink]="event | recentEvents: 'orgLink'">{{ event.organization?.displayName }}</a>
+          </div>
+          <div *ngSwitchCase="EventType.APPROVEORGINVITE" class="truncate-text-2">
+            <strong
+              ><a class="no-underline" [routerLink]="'/users/' + event.initiatorUser?.username">{{
+                event.initiatorUser?.username
+              }}</a></strong
+            >
+            joined the organization
+            <a [routerLink]="event | recentEvents: 'orgLink'">{{ event.organization?.displayName }}</a>
+          </div>
+          <div *ngSwitchCase="EventType.MODIFYORG" class="truncate-text-2">
+            <strong
+              ><a class="no-underline" [routerLink]="'/users/' + event.initiatorUser?.username">{{
+                event.initiatorUser?.username
+              }}</a></strong
+            >
+            updated the organization
+            <a [routerLink]="event | recentEvents: 'orgLink'">{{ event.organization?.displayName }}</a>
+          </div>
+          <!-- Collections -->
+          <div *ngSwitchCase="EventType.CREATECOLLECTION" class="truncate-text-2">
+            <strong
+              ><a class="no-underline" [routerLink]="'/users/' + event.initiatorUser?.username">{{
+                event.initiatorUser?.username
+              }}</a></strong
+            >
+            created the collection
+            <a [routerLink]="event | recentEvents: 'collectionLink'">{{ event.collection?.name }}</a>
+            in organization
+            <a [routerLink]="event | recentEvents: 'orgLink'">{{ event.organization?.displayName }}</a>
+          </div>
+          <div *ngSwitchCase="EventType.DELETECOLLECTION" class="truncate-text-2">
+            <!-- Do not link to a collection that doesn't exist - 404 -->
+            <strong
+              ><a class="no-underline" [routerLink]="'/users/' + event.initiatorUser?.username">{{
+                event.initiatorUser?.username
+              }}</a></strong
+            >
+            removed the collection <strong>{{ event.collection?.name }}</strong> in organization
+            <a [routerLink]="event | recentEvents: 'orgLink'">{{ event.organization?.displayName }}</a>
+          </div>
+          <div *ngSwitchCase="EventType.ADDTOCOLLECTION" class="truncate-text-2">
+            <strong
+              ><a class="no-underline" [routerLink]="'/users/' + event.initiatorUser?.username">{{
+                event.initiatorUser?.username
+              }}</a></strong
+            >
+            added the {{ event | recentEvents: 'entryType' }}
+            <a [routerLink]="event | recentEvents: 'entryLink'">{{ event | recentEvents: 'displayName' }}</a>
+            to the collection
+            <a [routerLink]="event | recentEvents: 'collectionLink'">{{ event.collection?.name }}</a>
+            in organization
+            <a [routerLink]="event | recentEvents: 'orgLink'">{{ event.organization?.displayName }}</a>
+          </div>
+          <div *ngSwitchCase="EventType.MODIFYCOLLECTION" class="truncate-text-2">
+            <strong
+              ><a class="no-underline" [routerLink]="'/users/' + event.initiatorUser?.username">{{
+                event.initiatorUser?.username
+              }}</a></strong
+            >
+            edited the collection
+            <a [routerLink]="event | recentEvents: 'collectionLink'">{{ event.collection?.name }}</a>
+          </div>
+          <div *ngSwitchCase="EventType.REMOVEFROMCOLLECTION" class="truncate-text-2">
+            <strong
+              ><a class="no-underline" [routerLink]="'/users/' + event.initiatorUser?.username">{{
+                event.initiatorUser?.username
+              }}</a></strong
+            >
+            removed the {{ event | recentEvents: 'entryType' }}
+            <a [routerLink]="event | recentEvents: 'entryLink'">{{ event | recentEvents: 'displayName' }}</a>
+            from the collection
+            <a [routerLink]="event | recentEvents: 'collectionLink'">{{ event.collection?.name }}</a>
+          </div>
+          <div class="subtitle">{{ event.dbCreateDate | date: 'medium' }}</div>
+        </div>
+      </div>
+      <div
+        *ngIf="
+          event.type === EventType.ADDVERSIONTOENTRY || event.type === EventType.PUBLISHENTRY || event.type === EventType.UNPUBLISHENTRY;
+          else orgImg
+        "
+      >
+        <a *ngIf="event.type !== EventType.UNPUBLISHENTRY; else noLink" [routerLink]="event | recentEvents: 'entryLink'">
+          <img
+            *ngIf="(event | recentEvents: 'entryType') === EntryType.BioWorkflow"
+            src="../../../assets/svg/sub-nav/workflow.svg"
+            class="site-icons-medium mx-3"
+            alt="Workflow icon"
+          />
+          <img
+            *ngIf="(event | recentEvents: 'entryType') === EntryType.Tool"
+            src="../../../assets/svg/sub-nav/tool.svg"
+            class="site-icons-medium mx-3"
+            alt="Tool icon"
+          />
+          <!-- Adding prematurely, service and notebook events do not exist currently -->
+          <img
+            *ngIf="(event | recentEvents: 'entryType') === EntryType.Service"
+            src="../assets/svg/sub-nav/services.svg"
+            class="site-icons-medium mx-3"
+            alt="Service icon"
+          />
+          <img
+            *ngIf="(event | recentEvents: 'entryType') === EntryType.Notebook"
+            src="../assets/svg/sub-nav/notebooks.svg"
+            class="site-icons-medium mx-3"
+            alt="Notebook icon"
+          />
+        </a>
+        <!-- Do not link to an entry that doesn't exist - 404 -->
+        <ng-template #noLink>
+          <img
+            *ngIf="(event | recentEvents: 'entryType') === EntryType.BioWorkflow"
+            src="../../../assets/svg/sub-nav/workflow.svg"
+            class="site-icons-medium mx-3"
+            alt="Workflow icon"
+          />
+          <img
+            *ngIf="(event | recentEvents: 'entryType') === EntryType.Tool"
+            src="../../../assets/svg/sub-nav/tool.svg"
+            class="site-icons-medium mx-3"
+            alt="Tool icon"
+          />
+          <!-- Adding prematurely, service and notebook events do not exist currently -->
+          <img
+            *ngIf="(event | recentEvents: 'entryType') === EntryType.Service"
+            src="../assets/svg/sub-nav/services.svg"
+            class="site-icons-medium mx-3"
+            alt="Service icon"
+          />
+          <img
+            *ngIf="(event | recentEvents: 'entryType') === EntryType.Notebook"
+            src="../assets/svg/sub-nav/notebooks.svg"
+            class="site-icons-medium mx-3"
+            alt="Notebook icon"
+          />
+        </ng-template>
+      </div>
+      <ng-template #orgImg>
+        <a *ngIf="event.organization?.avatarUrl; else orgIcon" [routerLink]="event | recentEvents: 'orgLink'">
+          <img class="entry-img p-2" src="{{ event.organization.avatarUrl }}" alt="Org avatar" />
+        </a>
+        <ng-template #orgIcon>
+          <a [routerLink]="event | recentEvents: 'orgLink'">
+            <img src="../../../assets/svg/sub-nav/organization.svg" class="site-icons-medium mx-3" alt="Org icon" />
+          </a>
+        </ng-template>
+      </ng-template>
+    </div>
+  </div>
+  <ng-template #noEvents>
     <mat-card class="alert alert-info mat-elevation-z mx-1" role="alert">
       <mat-icon>info</mat-icon> No events found. Star entries or organizations to see events for them. Read
       <a [href]="starringDocUrl" target="_blank" rel="noopener noreferrer">Starring Tools and Workflows</a>
       to learn how to star entries.
     </mat-card>
-  </div>
-  <!-- Possible changes: Toggle highlighting of verbs and nouns. Toggle dates into a separate column to the left -->
-  <mat-card *ngIf="(events$ | async)?.length > 0">
-    <div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="1.6rem">
-      <div *ngFor="let event of events$ | async; last as last">
-        <div [ngSwitch]="event?.type">
-          <div *ngSwitchCase="EventType.ADDVERSIONTOENTRY">
-            <strong>{{ event.initiatorUser?.username }} </strong> created the {{ event.version?.referenceType | lowercase }}
-            <strong>{{ event.version?.name }}</strong> in {{ event?.tool || event?.apptool ? 'tool' : 'workflow' }}
-            <a
-              [routerLink]="
-                event?.apptool
-                  ? '/tools/' + event?.apptool?.full_workflow_path
-                  : event?.tool
-                  ? '/tools/' + event?.tool?.tool_path
-                  : '/workflows/' + event?.workflow?.full_workflow_path
-              "
-              >{{
-                (event?.tool | entryToDisplayName) || (event?.workflow | entryToDisplayName) || (event?.apptool | entryToDisplayName)
-              }}</a
-            >
-            <div class="subtitle">{{ 'on ' + (event.dbCreateDate | date: 'medium') }}</div>
-            <mat-divider *ngIf="!last" class="custom-margin"></mat-divider>
-          </div>
-          <div *ngSwitchCase="EventType.CREATECOLLECTION">
-            <strong>{{ event.initiatorUser?.username }}</strong> created the collection
-            <a [routerLink]="'/organizations/' + event.organization?.name + '/collections/' + event.collection?.name"
-              >{{ event.collection?.name }}
-            </a>
-            in organization
-            <a [routerLink]="'/organizations/' + event.organization?.name">{{ event.organization?.displayName }}</a>
-            <div class="subtitle">{{ 'on ' + (event.dbCreateDate | date: 'medium') }}</div>
-            <mat-divider *ngIf="!last" class="custom-margin"></mat-divider>
-          </div>
-          <div *ngSwitchCase="EventType.ADDTOCOLLECTION">
-            <strong>{{ event.initiatorUser.username }} </strong> added the {{ event?.tool || event?.apptool ? 'tool' : 'workflow' }}
-            <a
-              [routerLink]="
-                event?.apptool
-                  ? '/tools/' + event?.apptool?.full_workflow_path
-                  : event?.tool
-                  ? '/tools/' + event?.tool?.tool_path
-                  : '/workflows/' + event?.workflow?.full_workflow_path
-              "
-              >{{
-                (event?.tool | entryToDisplayName) || (event?.workflow | entryToDisplayName) || (event?.apptool | entryToDisplayName)
-              }}</a
-            >
-            to the collection
-            <a [routerLink]="'/organizations/' + event.organization?.name + '/collections/' + event.collection?.name"
-              >{{ event.collection?.name }}
-            </a>
-            in organization
-            <a [routerLink]="'/organizations/' + event.organization?.name">{{ event.organization?.displayName }}</a>
-            <div class="subtitle">{{ 'on ' + (event.dbCreateDate | date: 'medium') }}</div>
-            <mat-divider *ngIf="!last" class="custom-margin"></mat-divider>
-          </div>
-          <div *ngSwitchCase="EventType.PUBLISHENTRY">
-            <strong>{{ event.user.username }} </strong> published the {{ event?.tool || event?.apptool ? 'tool' : 'workflow' }}
-            <a
-              [routerLink]="
-                event?.apptool
-                  ? '/tools/' + event?.apptool?.full_workflow_path
-                  : event?.tool
-                  ? '/tools/' + event?.tool?.tool_path
-                  : '/workflows/' + event?.workflow?.full_workflow_path
-              "
-              >{{
-                (event?.tool | entryToDisplayName) || (event?.workflow | entryToDisplayName) || (event?.apptool | entryToDisplayName)
-              }}</a
-            >
-            <div class="subtitle">{{ 'on ' + (event.dbCreateDate | date: 'medium') }}</div>
-            <mat-divider *ngIf="!last" class="custom-margin"></mat-divider>
-          </div>
-          <div *ngSwitchCase="EventType.UNPUBLISHENTRY">
-            <strong>{{ event.user.username }} </strong> unpublished the {{ event?.tool || event?.apptool ? 'tool' : 'workflow' }}
-            <a
-              [routerLink]="
-                event?.apptool
-                  ? '/tools/' + event?.apptool?.full_workflow_path
-                  : event?.tool
-                  ? '/tools/' + event?.tool?.tool_path
-                  : '/workflows/' + event?.workflow?.full_workflow_path
-              "
-              >{{
-                (event?.tool | entryToDisplayName) || (event?.workflow | entryToDisplayName) || (event?.apptool | entryToDisplayName)
-              }}</a
-            >
-            <div class="subtitle">{{ 'on ' + (event.dbCreateDate | date: 'medium') }}</div>
-            <mat-divider *ngIf="!last" class="custom-margin"></mat-divider>
-          </div>
-        </div>
-      </div>
-    </div>
-  </mat-card>
+  </ng-template>
 </app-loading>

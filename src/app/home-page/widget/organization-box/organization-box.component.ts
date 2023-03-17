@@ -4,13 +4,10 @@ import { RequestsQuery } from 'app/loginComponents/state/requests.query';
 import { RequireAccountsModalComponent } from 'app/organizations/registerOrganization/requireAccountsModal/require-accounts-modal.component';
 import { Base } from 'app/shared/base';
 import { Dockstore } from 'app/shared/dockstore.model';
-import { Event, OrganizationUser, OrganizationUpdateTime } from 'app/shared/openapi';
-import { UsersService } from '../../../shared/openapi';
-import { finalize, takeUntil } from 'rxjs/operators';
+import { Event, UsersService, OrganizationUser } from 'app/shared/openapi';
 import { bootstrap4mediumModalSize } from 'app/shared/constants';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
-import { AlertService } from 'app/shared/alert/state/alert.service';
 import { Observable } from 'rxjs';
+import { finalize, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-organization-box',
@@ -19,56 +16,28 @@ import { Observable } from 'rxjs';
 })
 export class OrganizationBoxComponent extends Base implements OnInit {
   Dockstore = Dockstore;
-  public listOfOrganizations: Array<OrganizationUpdateTime> = [];
   public pendingRequests$: Observable<Array<OrganizationUser>>;
   public pendingInvites$: Observable<Array<OrganizationUser>>;
-  public filterText: string = '';
   public totalOrgs: number = 0;
   public EventType = Event.TypeEnum;
   public isLoading = true;
 
-  constructor(
-    private usersService: UsersService,
-    private requestsQuery: RequestsQuery,
-    private matDialog: MatDialog,
-    private alertService: AlertService
-  ) {
+  constructor(private usersService: UsersService, private requestsQuery: RequestsQuery, private matDialog: MatDialog) {
     super();
   }
 
   ngOnInit(): void {
-    this.getMyOrganizations();
-    this.pendingRequests$ = this.requestsQuery.myPendingOrganizationRequests$;
-    this.pendingInvites$ = this.requestsQuery.myOrganizationInvites$;
-  }
-
-  private getMyOrganizations() {
     this.usersService
-      .getUserDockstoreOrganizations(null, this.filterText, 'response')
+      .getUserDockstoreOrganizations()
       .pipe(
         finalize(() => (this.isLoading = false)),
         takeUntil(this.ngUnsubscribe)
       )
-      .subscribe(
-        (myOrgs: HttpResponse<OrganizationUpdateTime[]>) => {
-          this.listOfOrganizations = myOrgs.body.slice(0, 7);
-          // Update total orgs only when no search filter applied (i.e. non-filtered total)
-          // Handles cases with no filter param and empty filter param
-          const url = new URL(myOrgs.url);
-          if (!url.searchParams.get('filter')) {
-            this.totalOrgs = myOrgs.body.length;
-          }
-        },
-        (error: HttpErrorResponse) => {
-          this.listOfOrganizations = [];
-          this.alertService.detailedError(error);
-        }
-      );
-  }
-
-  onTextChange(event: any) {
-    this.isLoading = true;
-    this.getMyOrganizations();
+      .subscribe((myOrgs) => {
+        this.totalOrgs = myOrgs.length;
+      });
+    this.pendingRequests$ = this.requestsQuery.myPendingOrganizationRequests$;
+    this.pendingInvites$ = this.requestsQuery.myOrganizationInvites$;
   }
 
   /**

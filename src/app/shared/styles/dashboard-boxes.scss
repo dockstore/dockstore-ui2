@@ -9,7 +9,7 @@ img[alt='User avatar'] {
   margin: 0.8rem;
 }
 
-img[alt='Org avatar'] {
+img.entry-img {
   width: 6rem;
   max-height: 6rem;
   object-fit: scale-down;
@@ -27,6 +27,11 @@ button[mat-icon-button] {
 
 .mat-option:not([disabled]) {
   border-bottom: 0.1rem solid mat.get-color-from-palette($dockstore-app-gray, 3);
+}
+
+// Ensure recent activity events are unifrom
+.event {
+  min-height: 8rem;
 }
 
 // Overide mat-card padding to extend mat-divider to edges
