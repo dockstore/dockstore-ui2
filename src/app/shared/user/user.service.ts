@@ -45,8 +45,13 @@ export class UserService {
     });
   }
 
+  /**
+   * Add Workflows and GitHub App Tools from a user's organization
+   *
+   * @param userId
+   */
   addUserToWorkflows(userId: number): void {
-    this.alertService.start('Adding user to existing workflows on Dockstore');
+    this.alertService.start('Adding user to existing workflows and tools on Dockstore');
     this.usersService.addUserToDockstoreWorkflows(userId).subscribe(
       (workflows: Array<Workflow>) => {
         this.alertService.detailedSuccess();
