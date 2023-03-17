@@ -68,6 +68,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
   canWrite: boolean;
   isOwner: boolean;
   isService$: Observable<boolean>;
+  isNotebook$: Observable<boolean>;
   entryTypeText: string;
   @ViewChild('versionEditorForm', { static: true }) currentForm: NgForm;
 
@@ -84,6 +85,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
 
   ngOnInit() {
     this.isService$ = this.sessionQuery.isService$.pipe(shareReplay());
+    this.isNotebook$ = this.sessionQuery.isNotebook$.pipe(shareReplay());
     this.sessionQuery.entryType$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((type: EntryType) => {
       switch (type) {
         case EntryType.Service:
@@ -97,6 +99,9 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
           break;
         case EntryType.BioWorkflow:
           this.entryTypeText = 'Workflow';
+          break;
+        case EntryType.Notebook:
+          this.entryTypeText = 'Notebook';
           break;
       }
     });
