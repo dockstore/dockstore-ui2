@@ -153,57 +153,17 @@
       >
         <a *ngIf="event.type !== EventType.UNPUBLISHENTRY; else noLink" [routerLink]="event | recentEvents: 'entryLink'">
           <img
-            *ngIf="(event | recentEvents: 'entryType') === EntryType.BioWorkflow"
-            src="../../../assets/svg/sub-nav/workflow.svg"
+            src="../../../assets/svg/sub-nav/{{ event | recentEvents: 'entryType' }}.svg"
             class="site-icons-medium mx-3"
-            alt="Workflow icon"
-          />
-          <img
-            *ngIf="(event | recentEvents: 'entryType') === EntryType.Tool"
-            src="../../../assets/svg/sub-nav/tool.svg"
-            class="site-icons-medium mx-3"
-            alt="Tool icon"
-          />
-          <!-- Adding prematurely, service and notebook events do not exist currently -->
-          <img
-            *ngIf="(event | recentEvents: 'entryType') === EntryType.Service"
-            src="../assets/svg/sub-nav/services.svg"
-            class="site-icons-medium mx-3"
-            alt="Service icon"
-          />
-          <img
-            *ngIf="(event | recentEvents: 'entryType') === EntryType.Notebook"
-            src="../assets/svg/sub-nav/notebooks.svg"
-            class="site-icons-medium mx-3"
-            alt="Notebook icon"
+            alt="{{ event | recentEvents: 'entryType' }} icon"
           />
         </a>
         <!-- Do not link to an entry that doesn't exist - 404 -->
         <ng-template #noLink>
           <img
-            *ngIf="(event | recentEvents: 'entryType') === EntryType.BioWorkflow"
-            src="../../../assets/svg/sub-nav/workflow.svg"
+            src="../../../assets/svg/sub-nav/{{ event | recentEvents: 'entryType' }}.svg"
             class="site-icons-medium mx-3"
-            alt="Workflow icon"
-          />
-          <img
-            *ngIf="(event | recentEvents: 'entryType') === EntryType.Tool"
-            src="../../../assets/svg/sub-nav/tool.svg"
-            class="site-icons-medium mx-3"
-            alt="Tool icon"
-          />
-          <!-- Adding prematurely, service and notebook events do not exist currently -->
-          <img
-            *ngIf="(event | recentEvents: 'entryType') === EntryType.Service"
-            src="../assets/svg/sub-nav/services.svg"
-            class="site-icons-medium mx-3"
-            alt="Service icon"
-          />
-          <img
-            *ngIf="(event | recentEvents: 'entryType') === EntryType.Notebook"
-            src="../assets/svg/sub-nav/notebooks.svg"
-            class="site-icons-medium mx-3"
-            alt="Notebook icon"
+            alt="{{ event | recentEvents: 'entryType' }} icon"
           />
         </ng-template>
       </div>
