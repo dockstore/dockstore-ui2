@@ -57,6 +57,14 @@ export enum SearchFields {
   VERIFIED_SOURCE = 'workflowVersions.verifiedSources.keyword',
 }
 
+interface FacetInfo {
+  friendlyName: string;
+  esName: string;
+  tooltip?: string;
+  initiallyExpanded: boolean;
+  exclusive?: boolean;
+}
+
 @Injectable()
 export class SearchService {
   private static readonly WORKFLOWS_TAB_INDEX = 0;
@@ -69,12 +77,84 @@ export class SearchService {
   searchInfo$ = this.searchInfoSource.asObservable();
 
   /**
+   * As implied by the name, the order of definition is the top to bottom order in which facets display
+   * @private
+   */
+  private orderedFacetInfos: Array<FacetInfo> = [
+    { friendlyName: 'Category', esName: 'categories.name.keyword', initiallyExpanded: true },
+    { friendlyName: 'Language', esName: 'descriptorType', initiallyExpanded: true },
+    {
+      friendlyName: 'Language Versions',
+      esName: 'descriptor_type_versions.keyword',
+      tooltip: 'Indicates that the tool or workflow contains at least one version that is written with the workflow language version',
+      initiallyExpanded: false,
+    },
+    {
+      friendlyName: 'Engine Versions',
+      esName: 'engine_versions.keyword',
+      tooltip: 'Indicates something or other',
+      initiallyExpanded: false,
+    },
+    { friendlyName: 'Author', esName: 'author', initiallyExpanded: true },
+    { friendlyName: 'Registry', esName: 'registry', initiallyExpanded: true },
+    { friendlyName: 'Source Control', esName: 'source_control_provider.keyword', initiallyExpanded: true },
+    { friendlyName: 'Namespace', esName: 'namespace', initiallyExpanded: true },
+    { friendlyName: 'Organization', esName: 'organization', initiallyExpanded: true },
+    { friendlyName: 'Labels', esName: 'labels.value.keyword', initiallyExpanded: false },
+    {
+      friendlyName: 'Private Access',
+      esName: 'private_access',
+      tooltip: "A private tool requires authentication to view on Docker's registry website and to pull the Docker image.",
+      initiallyExpanded: false,
+      exclusive: true,
+    },
+    {
+      friendlyName: 'VerifiedSourceWorkflow',
+      esName: SearchFields.VERIFIED_SOURCE,
+      tooltip: 'Indicates which party performed the verification process on a tool or workflow.',
+      initiallyExpanded: false,
+    },
+    {
+      friendlyName: 'VerifiedPlatforms',
+      esName: 'verified_platforms.keyword',
+      tooltip: 'Indicates which platform a tool or workflow (at least one version) was successfully run on.',
+      initiallyExpanded: false,
+    },
+    { friendlyName: 'Input File Formats', esName: 'input_file_formats.value.keyword', initiallyExpanded: false },
+    { friendlyName: 'Output File Formats', esName: 'output_file_formats.value.keyword', initiallyExpanded: false },
+    {
+      friendlyName: 'VerifiedTool',
+      esName: 'verified',
+      tooltip: 'Indicates that at least one version of a tool or workflow has been successfully run by our team or an outside party.',
+      initiallyExpanded: true,
+      exclusive: true,
+    },
+    {
+      friendlyName: 'HasCheckerWorkflow',
+      esName: 'has_checker',
+      tooltip:
+        'Checker workflows are additional workflows you can associate with a tool or workflow to ensure ' +
+        'that, when given some inputs, it produces the expected outputs on a different platform other than the one it was developed on.',
+      initiallyExpanded: false,
+      exclusive: true,
+    },
+    {
+      friendlyName: 'Open Data',
+      esName: 'openData',
+      tooltip:
+        'Indicates whether an entry can be run with no additional access permissions, potentially via an included test parameter file referencing open data.',
+      initiallyExpanded: false,
+      exclusive: true,
+    },
+  ];
+
+  /**
    * These are the terms which use "must" filters
    * Example: Results returned can be private or public but never both
-   * @private
    * @memberof SearchService
    */
-  public exclusiveFilters = ['verified', 'private_access', 'has_checker', 'openData'];
+  public exclusiveFilters = this.orderedFacetInfos.filter((facetInfo) => facetInfo.exclusive).map((facetInfo) => facetInfo.esName);
+
   constructor(
     private searchStore: SearchStore,
     private searchQuery: SearchQuery,
@@ -495,93 +575,21 @@ export class SearchService {
 
   // Initialization Functions
   initializeCommonBucketStubs() {
-    return new Map([
-      ['Language', 'descriptorType'],
-      ['Registry', 'registry'],
-      ['Source Control', 'source_control_provider.keyword'],
-      ['Input File Formats', 'input_file_formats.value.keyword'],
-      ['Output File Formats', 'output_file_formats.value.keyword'],
-      ['Private Access', 'private_access'],
-      ['VerifiedTool', 'verified'],
-      ['Author', 'author'],
-      ['Namespace', 'namespace'],
-      ['Labels', 'labels.value.keyword'],
-      ['VerifiedSourceWorkflow', SearchFields.VERIFIED_SOURCE],
-      ['HasCheckerWorkflow', 'has_checker'],
-      ['Organization', 'organization'],
-      ['VerifiedPlatforms', 'verified_platforms.keyword'],
-      ['Category', 'categories.name.keyword'],
-      ['Language Versions', 'descriptor_type_versions.keyword'],
-      ['Open Data', 'openData'],
-    ]);
+    return new Map(this.orderedFacetInfos.map((facetInfo) => [facetInfo.friendlyName, facetInfo.esName]));
   }
 
   initializeFriendlyNames() {
-    return new Map([
-      ['descriptorType', 'Language'],
-      ['registry', 'Registry'],
-      ['source_control_provider.keyword', 'Source Control'],
-      ['private_access', 'Private Access'],
-      ['verified', 'Verified'],
-      ['author', 'Author'],
-      ['namespace', 'Namespace'],
-      ['labels.value.keyword', 'Labels'],
-      ['input_file_formats.value.keyword', 'Input File Formats'],
-      ['output_file_formats.value.keyword', 'Output File Formats'],
-      [SearchFields.VERIFIED_SOURCE, 'Verified Source'],
-      ['has_checker', 'Has Checker Workflows'],
-      ['organization', 'Organization'],
-      ['verified_platforms.keyword', 'Verified Platforms'],
-      ['categories.name.keyword', 'Category'],
-      ['descriptor_type_versions.keyword', 'Language Versions'],
-      ['openData', 'Open Data'],
-    ]);
+    return new Map(this.orderedFacetInfos.map((facetInfo) => [facetInfo.esName, facetInfo.friendlyName]));
   }
 
   initializeToolTips() {
-    return new Map([
-      // Git hook auto fixes from single quotes with an escaped 's but linter complains about double quotes.
-      /* eslint-disable-next-line quotes, @typescript-eslint/quotes */
-      ['private_access', "A private tool requires authentication to view on Docker's registry website and to pull the Docker image."],
-      ['verified', 'Indicates that at least one version of a tool or workflow has been successfully run by our team or an outside party.'],
-      [SearchFields.VERIFIED_SOURCE, 'Indicates which party performed the verification process on a tool or workflow.'],
-      [
-        'has_checker',
-        'Checker workflows are additional workflows you can associate with a tool or workflow to ensure ' +
-          'that, when given some inputs, it produces the expected outputs on a different platform other than the one it was developed on.',
-      ],
-      ['verified_platforms.keyword', 'Indicates which platform a tool or workflow (at least one version) was successfully run on.'],
-      [
-        'descriptor_type_versions.keyword',
-        'Indicates that the tool or workflow contains at least one version that is written with the workflow language version',
-      ],
-      [
-        'openData',
-        'Indicates whether an entry can be run with no additional access permissions, potentially via an included test parameter file referencing open data.',
-      ],
-    ]);
+    return new Map(
+      this.orderedFacetInfos.filter((facetInfo) => facetInfo.tooltip).map((facetInfo) => [facetInfo.esName, facetInfo.tooltip])
+    );
   }
 
   initializeEntryOrder() {
-    return new Map([
-      ['categories.name.keyword', new SubBucket()],
-      ['descriptorType', new SubBucket()],
-      ['descriptor_type_versions.keyword', new SubBucket()],
-      ['author', new SubBucket()],
-      ['registry', new SubBucket()],
-      ['source_control_provider.keyword', new SubBucket()],
-      ['namespace', new SubBucket()],
-      ['organization', new SubBucket()],
-      ['labels.value.keyword', new SubBucket()],
-      ['private_access', new SubBucket()],
-      ['verified', new SubBucket()],
-      [SearchFields.VERIFIED_SOURCE, new SubBucket()],
-      ['verified_platforms.keyword', new SubBucket()],
-      ['input_file_formats.value.keyword', new SubBucket()],
-      ['output_file_formats.value.keyword', new SubBucket()],
-      ['has_checker', new SubBucket()],
-      ['openData', new SubBucket()],
-    ]);
+    return new Map(this.orderedFacetInfos.map((facetInfo) => [facetInfo.esName, new SubBucket()]));
   }
 
   /**
@@ -591,25 +599,7 @@ export class SearchService {
     if (localStorage.getItem(this.expandedPanelsStorageKey)) {
       return new Map<string, boolean>(JSON.parse(localStorage.getItem(this.expandedPanelsStorageKey)));
     } else {
-      return new Map([
-        ['descriptorType', true],
-        ['registry', true],
-        ['source_control_provider.keyword', true],
-        ['private_access', false],
-        ['verified', true],
-        ['author', false],
-        ['namespace', true],
-        ['labels.value.keyword', false],
-        ['input_file_formats.value.keyword', false],
-        ['output_file_formats.value.keyword', false],
-        [SearchFields.VERIFIED_SOURCE, false],
-        ['has_checker', false],
-        ['organization', true],
-        ['verified_platforms.keyword', false],
-        ['categories.name.keyword', true],
-        ['descriptor_type_versions.keyword', false],
-        ['openData', false],
-      ]);
+      return new Map(this.orderedFacetInfos.map((facetInfo) => [facetInfo.esName, facetInfo.initiallyExpanded]));
     }
   }
 
