@@ -39,18 +39,14 @@
       "licenseName": null
     },
     "mode": "DOCKSTORE_YML",
-    "organization": "hyunnaye",
+    "organization": "fakeOrganization",
     "output_file_formats": [],
     "parentEntry": null,
     "path": "github.com/fakeOrganization/notebook0",
     "repository": "fakeRepository",
     "sourceControl": "github.com",
     "source_control_provider": "GITHUB",
-    "starredUsers": [
-      {
-        "id": 62751
-      }
-    ],
+    "starredUsers": [],
     "topic": null,
     "topicAutomatic": null,
     "topicId": null,
