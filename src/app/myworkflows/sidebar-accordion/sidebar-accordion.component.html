@@ -32,6 +32,11 @@
       </mat-expansion-panel-header>
 
       <mat-tab-group
+        *ngIf="
+          (workflowId$ | async) ||
+          (entryType$ | async) === EntryType.Tool ||
+          (orgObj?.unpublished.length === 0 && orgObj?.published.length === 0)
+        "
         mat-stretch-tabs
         [ngClass]="(isTool$ | async) ? 'tool-tab-group' : 'workflow-tab-group'"
         [selectedIndex]="orgObj | selectTab: (workflowId$ | async)"

@@ -10,7 +10,12 @@
         {{ orgObj?.namespace }}
       </mat-expansion-panel-header>
 
-      <mat-tab-group mat-stretch-tabs class="tool-tab-group" [selectedIndex]="orgObj | selectTab: (toolId$ | async)">
+      <mat-tab-group
+        *ngIf="(toolId$ | async) || (appToolId$ | async)"
+        mat-stretch-tabs
+        class="tool-tab-group"
+        [selectedIndex]="orgObj | selectTab: (toolId$ | async)"
+      >
         <mat-tab label="Published">
           <mat-list class="org-accordion-list">
             <mat-list-item *ngFor="let toolObj of orgObj?.published" [ngClass]="{ selectedTool: (toolId$ | async) === toolObj?.id }">
