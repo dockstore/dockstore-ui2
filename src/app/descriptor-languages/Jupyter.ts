@@ -24,7 +24,6 @@ export const extendedJupyter: ExtendedDescriptorLanguageBean = {
   workflowLaunchSupport: true,
   testParameterFileType: SourceFile.TypeEnum.DOCKSTORENOTEBOOKTESTFILE,
   fileTabs: [
-    // TODO add notebook entry
     {
       tabName: 'Notebook Files',
       fileTypes: [SourceFile.TypeEnum.DOCKSTOREJUPYTER, SourceFile.TypeEnum.DOCKSTORENOTEBOOKOTHER],
