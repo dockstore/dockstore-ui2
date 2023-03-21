@@ -461,6 +461,10 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
       </table>
+      <div *ngIf="selectedVersion?.versionMetadata.engineVersions?.length">
+        <strong matTooltip="Required engine versions" data-cy="engine-versions">Engine Versions</strong>:
+        {{ selectedVersion.versionMetadata.engineVersions }}
+      </div>
       <div *ngIf="(entryType$ | async) === EntryType.BioWorkflow">
         <strong matTooltip="Digital Object Identifier">DOI</strong>:
         <a
