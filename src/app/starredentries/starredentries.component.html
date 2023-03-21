@@ -53,7 +53,7 @@
           <div fxLayout="column" fxLayoutGap="1rem" class="mb-2 mx-1">
             <mat-card fxFlex *ngFor="let workflow of starredWorkflows; let last = last" class="pb-3">
               <ng-container
-                *ngTemplateOutlet="workflowSummary; context: { workflow: workflow, entryType: entryType.BioWorkflow, isAppTool: false }"
+                *ngTemplateOutlet="workflowSummary; context: { workflow: workflow, entryType: entryType.BioWorkflow }"
               ></ng-container>
             </mat-card>
           </div>
@@ -76,9 +76,7 @@
                 <ng-container
                   *ngTemplateOutlet="
                     tool.mode === 'DOCKSTORE_YML' ? workflowSummary : toolSummary;
-                    context: tool.mode === 'DOCKSTORE_YML'
-                      ? { workflow: tool, entryType: entryType.AppTool, isAppTool: true }
-                      : { tool: tool }
+                    context: tool.mode === 'DOCKSTORE_YML' ? { workflow: tool, entryType: entryType.AppTool } : { tool: tool }
                   "
                 ></ng-container>
               </mat-card>
@@ -106,22 +104,22 @@
             <div fxLayout="column" fxLayoutGap="1rem" class="mb-2 mx-1">
               <mat-card fxFlex *ngFor="let notebook of starredNotebooks; let last = last" class="m-1 pb-3">
                 <ng-container
-                  *ngTemplateOutlet="workflowSummary; context: { workflow: notebook, entryType: entryType.Notebook, isAppTool: false }"
+                  *ngTemplateOutlet="workflowSummary; context: { workflow: notebook, entryType: entryType.Notebook }"
                 ></ng-container>
               </mat-card>
             </div>
           </div>
         </mat-tab>
 
-        <ng-template #workflowSummary let-workflow="workflow" let-entryType="entryType" let-isAppTool="isAppTool">
+        <ng-template #workflowSummary let-workflow="workflow" let-type="entryType">
           <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-between">
-            <a [routerLink]="entryType | routerLink: workflow" class="no-underline">
+            <a [routerLink]="type | routerLink: workflow" class="no-underline">
               <mat-card-header>
                 <mat-card-title fxLayoutAlign="space-between" fxLayoutGap="1rem">
                   <img
                     class="site-icons-small entryType-icons"
-                    src="../../../assets/svg/sub-nav/{{ isAppTool ? 'tool' : entryType }}.svg"
-                    alt="{{ entryType }} logo"
+                    src="../../../assets/svg/sub-nav/{{ type === entryType.AppTool ? 'tool' : type }}.svg"
+                    alt="{{ type }} logo"
                   />
                   <h4>
                     {{ workflow?.organization + '/' + workflow?.repository + (workflow?.workflowName ? '/' + workflow?.workflowName : '') }}
@@ -168,7 +166,7 @@
                 </span>
               </div>
             </div>
-            <a [routerLink]="entryType | routerLink: workflow" class="no-underline">
+            <a [routerLink]="type | routerLink: workflow" class="no-underline">
               <button mat-raised-button class="small-mat-btn-skin small-btn-structure" color="accent">View</button>
             </a>
           </div>
@@ -179,7 +177,7 @@
             <a routerLink="/containers/{{ tool.tool_path }}" class="no-underline">
               <mat-card-header>
                 <mat-card-title fxLayoutAlign="flex-start" fxLayoutGap="1rem">
-                  <img src="../../../assets/svg/sub-nav/tool.svg" alt="tool logo" />
+                  <img class="site-icons-small entryType-icons" src="../../../assets/svg/sub-nav/tool.svg" alt="tool logo" />
                   <h4>{{ tool?.namespace + '/' + tool?.name + (tool?.toolname ? '/' + tool?.toolname : '') }}</h4>
                 </mat-card-title>
                 <div *ngIf="tool?.starredUsers.length !== 0" fxLayout="row" fxLayoutAlign="end center"></div>
