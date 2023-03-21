@@ -26,10 +26,12 @@ export class WorkflowQuery extends QueryEntity<WorkflowState, Service | BioWorkf
     )
   );
   public extendedDescriptorLanguageBean$: Observable<ExtendedDescriptorLanguageBean> = this.workflow$.pipe(
-    map((workflow) => this.descriptorLanguageService.workflowDescriptorTypeEnumToExtendedDescriptorLanguageBean(workflow.descriptorType))
+    map((workflow) =>
+      workflow ? this.descriptorLanguageService.workflowDescriptorTypeEnumToExtendedDescriptorLanguageBean(workflow.descriptorType) : null
+    )
   );
   public launchSupport$: Observable<boolean> = this.extendedDescriptorLanguageBean$.pipe(
-    map((extendedDescriptorLanguage) => extendedDescriptorLanguage.workflowLaunchSupport)
+    map((extendedDescriptorLanguage) => (extendedDescriptorLanguage ? extendedDescriptorLanguage.workflowLaunchSupport : null))
   );
   public isNFL$: Observable<boolean> = this.descriptorType$.pipe(
     map((descriptorType: ToolDescriptor.TypeEnum) => descriptorType === ToolDescriptor.TypeEnum.NFL)
