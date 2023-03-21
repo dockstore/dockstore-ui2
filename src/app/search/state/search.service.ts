@@ -77,7 +77,8 @@ export class SearchService {
   searchInfo$ = this.searchInfoSource.asObservable();
 
   /**
-   * As implied by the name, the order of definition is the top to bottom order in which facets display
+   * The definition order is also the order in which facets are displayed, i.e., Category is displayed first, Language
+   * is displayed second, etc.
    * @private
    */
   private orderedFacetInfos: Array<FacetInfo> = [
