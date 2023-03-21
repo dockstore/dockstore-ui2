@@ -349,7 +349,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
     if (this.entryType === EntryType.Tool) {
       id = this.workflow.full_workflow_path;
     } else {
-      var prefix;
+      let prefix;
       if (this.entryType === EntryType.BioWorkflow) {
         prefix = ga4ghWorkflowIdPrefix;
       } else if (this.entryType === EntryType.Notebook) {

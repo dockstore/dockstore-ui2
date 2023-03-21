@@ -125,14 +125,11 @@ export abstract class Entry implements OnDestroy {
     }
   }
 
-  protected isAppTool(url: String): boolean {
-    if (url.includes('/containers/github.com')) {
-      return true;
-    }
-    return false;
+  protected isAppTool(url: string): boolean {
+    return url.includes('/containers/github.com');
   }
 
-  protected isNotebook(url: String): boolean {
+  protected isNotebook(url: string): boolean {
     return url.includes('/notebooks/');
   }
 
