@@ -426,7 +426,7 @@
                 [ngClass]="{ 'selected-item weight-bold': selectedVersion?.name === sortedVersion?.name }"
               >
                 <div>
-                  <a (click)="onSelectedVersionChange(sortedVersion)" class="panel-body-anchor">{{ sortedVersion.name }}</a
+                  <a (click)="onSelectedVersionChange(sortedVersion)" class="pointer panel-body-anchor">{{ sortedVersion.name }}</a
                   >&nbsp;
                   <span *ngIf="sortedVersion?.verified">
                     <mat-chip matTooltip="Verified" class="bubble">
@@ -440,7 +440,7 @@
               </div>
               <mat-divider></mat-divider>
             </div>
-            <a (click)="selectVersionsTab()">See all versions</a>
+            <a (click)="selectVersionsTab()" class="pointer">See all versions</a>
           </div>
         </mat-card-content>
       </mat-card>
