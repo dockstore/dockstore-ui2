@@ -60,6 +60,7 @@
             matTooltip="View the collection"
             [routerLink]="['/organizations', collectionOrganization.organizationName, 'collections', collectionOrganization.collectionName]"
             routerLinkActive="router-link-active"
+            data-cy="collectionLink"
             >{{ collectionOrganization.collectionDisplayName }}</a
           >
         </ng-template>
