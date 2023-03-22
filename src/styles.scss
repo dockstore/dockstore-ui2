@@ -1385,3 +1385,21 @@ button.inline-text-btn {
 div.mat-menu-panel {
   min-height: min-content;
 }
+
+// Styles for News & Updates widget on Dashboard and Homepage, pure HTML and CSS needed for styling
+.news-and-updates-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  :not(:last-of-type) {
+    border-bottom: solid 1px mat.get-color-from-palette($kim-gray, 3);
+  }
+}
+
+.news-entry {
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  justify-content: space-between;
+}
