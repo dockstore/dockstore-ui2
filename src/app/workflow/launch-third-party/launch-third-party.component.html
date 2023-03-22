@@ -3,7 +3,8 @@
     workflow?.descriptorType === WorkflowModel.DescriptorTypeEnum.WDL ||
     workflow?.descriptorType === WorkflowModel.DescriptorTypeEnum.CWL ||
     workflow.descriptorType === WorkflowModel.DescriptorTypeEnum.NFL ||
-    workflow.descriptorType === WorkflowModel.DescriptorTypeEnum.Gxformat2
+    workflow.descriptorType === WorkflowModel.DescriptorTypeEnum.Gxformat2 ||
+    workflow.descriptorType === WorkflowModel.DescriptorTypeEnum.Jupyter
   "
 >
   <div class="h5">Launch with</div>
@@ -244,6 +245,16 @@
             <img class="partner-icon mr-2" src="../assets/images/thirdparty/nextflow-icon.png" alt="Nextflow icon" /> Nextflow Tower
           </a>
         </div>
+      </div>
+      <div *ngIf="workflow?.descriptorType === WorkflowModel.DescriptorTypeEnum.Jupyter">
+        <a
+          target="_blank"
+          rel="noopener"
+          href="https://colab.research.google.com/github/{{ workflow.organization }}/{{ workflow.repository }}/blob/{{
+            selectedVersion.name
+          }}/{{ selectedVersion.workflow_path }}"
+          >Google Colab</a
+        >
       </div>
     </div>
   </mat-card-content>

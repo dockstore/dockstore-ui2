@@ -22,16 +22,19 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AlertService } from 'app/shared/alert/state/alert.service';
 import { BioWorkflow } from 'app/shared/swagger/model/bioWorkflow';
 import { Service } from 'app/shared/swagger/model/service';
+import { Notebook } from 'app/shared/swagger/model/notebook';
 import { Observable, ReplaySubject } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
 import { AlertQuery } from '../shared/alert/state/alert.query';
 import { BioschemaService } from '../shared/bioschema.service';
 import {
+  ga4ghNotebookIdPrefix,
   ga4ghServiceIdPrefix,
   ga4ghWorkflowIdPrefix,
   includesAuthors,
   includesValidation,
   myBioWorkflowsURLSegment,
+  myNotebooksURLSegment,
   myServicesURLSegment,
   myToolsURLSegment,
 } from '../shared/constants';
@@ -68,7 +71,7 @@ import { FormControl } from '@angular/forms';
 export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
   workflowEditData: any;
   public isRefreshing$: Observable<boolean>;
-  public workflow: BioWorkflow | Service;
+  public workflow: BioWorkflow | Service | Notebook;
   public missingWarning: boolean;
   public title: string;
   public sortedVersions: Array<Tag | WorkflowVersion> = [];
@@ -148,6 +151,8 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
     );
     if (this.isAppTool(window.location.href)) {
       this._toolType = 'containers';
+    } else if (this.isNotebook(window.location.href)) {
+      this._toolType = 'notebooks';
     } else {
       this._toolType = 'workflows';
     }
@@ -160,6 +165,9 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
     } else if (this.entryType === EntryType.Tool) {
       this.validTabs = ['info', 'launch', 'versions', 'files'];
       this.redirectToCanonicalURL('/' + myToolsURLSegment);
+    } else if (this.entryType === EntryType.Notebook) {
+      this.validTabs = ['info', 'code', 'versions', 'files'];
+      this.redirectToCanonicalURL('/' + myNotebooksURLSegment);
     } else {
       this.validTabs = ['info', 'versions', 'files'];
       this.redirectToCanonicalURL('/' + myServicesURLSegment);
@@ -295,7 +303,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
   }
 
   public subscriptions(): void {
-    this.workflowQuery.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((workflow: BioWorkflow | Service) => {
+    this.workflowQuery.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((workflow: BioWorkflow | Service | Notebook) => {
       this.workflow = workflow;
       if (workflow) {
         this.published = this.workflow.is_published;
@@ -341,7 +349,14 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
     if (this.entryType === EntryType.Tool) {
       id = this.workflow.full_workflow_path;
     } else {
-      let prefix = this.entryType === EntryType.BioWorkflow ? ga4ghWorkflowIdPrefix : ga4ghServiceIdPrefix;
+      let prefix;
+      if (this.entryType === EntryType.BioWorkflow) {
+        prefix = ga4ghWorkflowIdPrefix;
+      } else if (this.entryType === EntryType.Notebook) {
+        prefix = ga4ghNotebookIdPrefix;
+      } else {
+        prefix = ga4ghServiceIdPrefix;
+      }
       id = prefix + this.workflow.full_workflow_path;
     }
     return id;
@@ -420,6 +435,8 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
         this.updateUrl(entryPath, myBioWorkflowsURLSegment, 'workflows');
       } else if (this.entryType === EntryType.Tool) {
         this.updateUrl(entryPath, myToolsURLSegment, 'containers');
+      } else if (this.entryType === EntryType.Notebook) {
+        this.updateUrl(entryPath, myNotebooksURLSegment, 'notebooks');
       } else {
         this.updateUrl(entryPath, myServicesURLSegment, 'services');
       }

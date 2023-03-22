@@ -6,7 +6,7 @@ import { EntryType } from '../enum/entry-type';
 import { RefreshService } from '../refresh.service';
 import { SessionQuery } from '../session/session.query';
 import { TokenQuery } from '../state/token.query';
-import { BioWorkflow, Service, WorkflowVersion } from '../swagger';
+import { BioWorkflow, Service, Notebook, WorkflowVersion } from '../swagger';
 import { Workflow } from '../swagger/model/workflow';
 import { EntryActionsComponent } from './entry-actions.component';
 import { EntryActionsService } from './entry-actions.service';
@@ -17,7 +17,7 @@ import { EntryActionsService } from './entry-actions.service';
   styleUrls: ['./entry-actions.component.scss'],
 })
 export class WorkflowActionsComponent extends EntryActionsComponent implements OnInit, OnChanges {
-  @Input() workflow: BioWorkflow | Service;
+  @Input() workflow: BioWorkflow | Service | Notebook;
   @Input() selectedVersion: WorkflowVersion;
   @Input() isOwner: boolean;
   @Input() canWrite: boolean;

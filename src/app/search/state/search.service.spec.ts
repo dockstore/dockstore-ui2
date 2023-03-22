@@ -90,7 +90,14 @@ describe('SearchService', () => {
           privateOnly: 'false',
           url: 'https://gitlab.com/',
         },
-        { customDockerPath: 'true', dockerPath: 'public.ecr.aws', enum: 'AMAZON_ECR', friendlyName: 'Amazon ECR', privateOnly: 'false', url: "https://gallery.ecr.aws/" },
+        {
+          customDockerPath: 'true',
+          dockerPath: 'public.ecr.aws',
+          enum: 'AMAZON_ECR',
+          friendlyName: 'Amazon ECR',
+          privateOnly: 'false',
+          url: 'https://gallery.ecr.aws/',
+        },
         {
           customDockerPath: 'true',
           dockerPath: null,
@@ -130,7 +137,7 @@ describe('SearchService', () => {
       ...a,
       author: 'B',
       full_workflow_path: 'Bcd',
-      starredUsers: [{ isAdmin: false, curator: false, setupComplete: true }],
+      starredUsers: [{ isAdmin: false, curator: false, setupComplete: true, platformPartner: false }],
     };
 
     const c: Workflow = { ...a, author: null, full_workflow_path: null, descriptorType: Workflow.DescriptorTypeEnum.WDL };

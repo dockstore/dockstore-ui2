@@ -9,7 +9,7 @@ export const extendedGalaxy: ExtendedDescriptorLanguageBean = {
   defaultDescriptorPath: '/workflow-name.yml',
   descriptorPathPattern: '^/([^/?:*|<>]+/)*[^/?:*|<>]+.(ga|yaml|yml)',
   descriptorPathPlaceholder: 'e.g. /workflow-name.yml',
-  toolDescriptorEnum: ToolDescriptor.TypeEnum.GXFORMAT2,
+  toolDescriptorEnum: ToolDescriptor.TypeEnum.GALAXY,
   workflowDescriptorEnum: Workflow.DescriptorTypeEnum.Gxformat2,
   languageDocumentationURL: 'https://galaxyproject.org/',
   plainTRS: 'PLAIN_GALAXY',

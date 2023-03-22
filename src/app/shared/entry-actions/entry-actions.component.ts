@@ -2,7 +2,7 @@ import { Directive, Input } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AlertQuery } from '../alert/state/alert.query';
 import { EntryType } from '../enum/entry-type';
-import { BioWorkflow, DockstoreTool, Service } from '../swagger';
+import { BioWorkflow, DockstoreTool, Service, Notebook } from '../swagger';
 import { EntryActionsService } from './entry-actions.service';
 
 @Directive()
@@ -26,7 +26,7 @@ export abstract class EntryActionsComponent {
   abstract publishToggle(): void;
   abstract refresh(): void;
 
-  commonNgOnChanges(entry: DockstoreTool | BioWorkflow | Service): void {
+  commonNgOnChanges(entry: DockstoreTool | BioWorkflow | Service | Notebook): void {
     this.pubUnpubMessage = this.entryActionsService.getPublishMessage(entry, this.entryType);
     this.isHosted = this.entryActionsService.isEntryHosted(entry);
     this.viewPublicMessage = this.entryActionsService.getViewPublicButtonTooltip(this.entryType);
