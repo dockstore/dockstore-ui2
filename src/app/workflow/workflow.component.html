@@ -249,6 +249,11 @@
                 <p>A user-friendly representation of the notebook will appear here, after it is implemented in SEAB-5117.</p>
                 <p>For a Jupyter notebook, it'll be the contents of the code/documentation cells, nicely-formatted.</p>
                 <p>For other kinds of notebooks, it might be something different.</p>
+                <app-formatted-notebook
+                  *ngIf="workflow && selectedVersion"
+                  [workflow]="workflow"
+                  [version]="selectedVersion"
+                ></app-formatted-notebook>
               </div>
             </mat-tab>
           </div>

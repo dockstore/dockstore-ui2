@@ -1,0 +1,8 @@
+moo<app-loading class="w-100" [loading]="loading">
+  foo
+  <div *ngIf="displayError">An error occurred.</div>
+  <div *ngIf="!displayError">
+    Formatted
+    {{ formatted }}
+  </div>
+</app-loading>
