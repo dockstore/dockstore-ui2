@@ -356,9 +356,9 @@
           </li>
           <li>
             <div *ngIf="workflow?.mode === WorkflowType.ModeEnum.STUB" class="form-inline">
-              <Strong matTooltip="Type of descriptor language used">{{
-                (entryType$ | async) === EntryType.Notebook ? 'Format' : 'Descriptor Type'
-              }}</Strong
+              <Strong
+                matTooltip="{{ (entryType$ | async) === EntryType.Notebook ? 'Format of notebook' : 'Type of descriptor language used' }}"
+                >{{ (entryType$ | async) === EntryType.Notebook ? 'Format' : 'Descriptor Type' }}</Strong
               >:
               <select class="form-control input-sm" (change)="updateDescriptorType()" [(ngModel)]="temporaryDescriptorType">
                 <option *ngFor="let descriptorLanguage of descriptorLanguages$ | async" [value]="descriptorLanguage">
@@ -367,9 +367,9 @@
               </select>
             </div>
             <div *ngIf="workflow?.mode !== WorkflowType.ModeEnum.STUB && workflow?.descriptorType">
-              <Strong matTooltip="Type of descriptor language used">{{
-                (entryType$ | async) === EntryType.Notebook ? 'Format' : 'Descriptor Type'
-              }}</Strong
+              <Strong
+                matTooltip="{{ (entryType$ | async) === EntryType.Notebook ? 'Format of notebook' : 'Type of descriptor language used' }}"
+                >{{ (entryType$ | async) === EntryType.Notebook ? 'Format' : 'Descriptor Type' }}</Strong
               >:
               {{ 'descriptor_type' | mapFriendlyValue: workflow?.descriptorType }}
             </div>

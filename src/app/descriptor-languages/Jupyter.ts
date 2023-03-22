@@ -2,7 +2,7 @@ import { ExtendedDescriptorLanguageBean } from 'app/entry/extendedDescriptorLang
 import { SourceFile, ToolDescriptor, Workflow } from 'app/shared/swagger';
 import { Dockstore } from '../shared/dockstore.model';
 
-const JUPYTER_DOCUMENTATION_URL = Dockstore.DOCUMENTATION_URL + '/not-yet-created.html'; // TODO point at correct page
+const JUPYTER_DOCUMENTATION_URL = Dockstore.DOCUMENTATION_URL + '/getting-started/notebooks/notebooks.html';
 
 export const extendedJupyter: ExtendedDescriptorLanguageBean = {
   descriptorLanguageEnum: 'JUPYTER',

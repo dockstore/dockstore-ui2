@@ -130,7 +130,7 @@ export abstract class Entry implements OnDestroy {
   }
 
   protected isNotebook(url: string): boolean {
-    return url.includes('/notebooks/');
+    return url.includes('/notebooks/github.com');
   }
 
   starGazersChange(): void {

@@ -249,10 +249,11 @@
       <div *ngIf="workflow?.descriptorType === WorkflowModel.DescriptorTypeEnum.Jupyter">
         <a
           target="_blank"
+          rel="noopener"
           href="https://colab.research.google.com/github/{{ workflow.organization }}/{{ workflow.repository }}/blob/{{
             selectedVersion.name
           }}/{{ selectedVersion.workflow_path }}"
-          >Colab</a
+          >Google Colab</a
         >
       </div>
     </div>

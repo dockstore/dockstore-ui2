@@ -435,7 +435,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
         this.updateUrl(entryPath, myBioWorkflowsURLSegment, 'workflows');
       } else if (this.entryType === EntryType.Tool) {
         this.updateUrl(entryPath, myToolsURLSegment, 'containers');
-      } else if (this.entryType == EntryType.Notebook) {
+      } else if (this.entryType === EntryType.Notebook) {
         this.updateUrl(entryPath, myNotebooksURLSegment, 'notebooks');
       } else {
         this.updateUrl(entryPath, myServicesURLSegment, 'services');
