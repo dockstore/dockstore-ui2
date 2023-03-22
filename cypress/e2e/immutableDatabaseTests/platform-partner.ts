@@ -29,7 +29,7 @@ describe('Platform Partner UI', () => {
     it('Platform Partner status indicated on profile page', () => {
       setPlatformPartnerRole();
       cy.get('#dropdown-accounts').click();
-      cy.get('#account-is-platform-partner').should('exist');
+      cy.get('[data-cy=account-is-platform-partner]').should('exist');
     });
   });
 });

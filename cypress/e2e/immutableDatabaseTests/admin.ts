@@ -26,7 +26,7 @@ describe('Admin UI', () => {
   describe('Profile', () => {
     it('Admin status indicated on profile page', () => {
       cy.get('#dropdown-accounts').click();
-      cy.get('#account-is-admin').should('exist');
+      cy.get('[data-cy=account-is-admin]').should('exist');
     });
   });
 });

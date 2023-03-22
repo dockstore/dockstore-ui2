@@ -26,7 +26,7 @@ describe('Curator UI', () => {
   describe('Profile', () => {
     it('Curator status indicated on profile page', () => {
       cy.get('#dropdown-accounts').click();
-      cy.get('#account-is-curator').should('exist');
+      cy.get('[data-cy=account-is-curator]').should('exist');
     });
   });
 });
