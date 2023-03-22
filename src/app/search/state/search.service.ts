@@ -93,7 +93,7 @@ export class SearchService {
     {
       friendlyName: 'Engine Versions',
       esName: 'engine_versions.keyword',
-      tooltip: 'Indicates something or other',
+      tooltip: 'The workflow engine versions required to run a workflow or tool',
       initiallyExpanded: false,
     },
     { friendlyName: 'Author', esName: 'author', initiallyExpanded: true },
