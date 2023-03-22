@@ -36,7 +36,7 @@ import { Router } from '@angular/router';
 export class EntryBoxComponent extends Base implements OnInit {
   Dockstore = Dockstore;
   public newEntryType = NewEntryType;
-  @Input() entryType: typeof NewEntryType.TOOL | typeof NewEntryType.SERVICE | typeof NewEntryType.WORKFLOW;
+  @Input() entryType: typeof NewEntryType.TOOL | typeof NewEntryType.SERVICE | typeof NewEntryType.WORKFLOW | typeof NewEntryType.NOTEBOOK;
   public entryTypeLowerCase: string;
   public filterText: string = '';
   public listOfEntries: Array<EntryUpdateTime> = [];
@@ -80,6 +80,10 @@ export class EntryBoxComponent extends Base implements OnInit {
       this.helpLink = Dockstore.DOCUMENTATION_URL + '/getting-started/getting-started-with-services.html';
       this.allEntriesLink = '/my-services/';
       this.entryTypeParam = 'SERVICES';
+    } else if (this.entryType === NewEntryType.NOTEBOOK) {
+      this.helpLink = Dockstore.DOCUMENTATION_URL + '/getting-started/notebooks/notebooks.html';
+      this.allEntriesLink = '/my-notebooks/';
+      this.entryTypeParam = 'NOTEBOOKS';
     }
     this.getMyEntries();
   }
@@ -143,6 +147,9 @@ export class EntryBoxComponent extends Base implements OnInit {
     } else if (this.entryType === NewEntryType.SERVICE) {
       this.sessionService.setEntryType(EntryType.Service);
       this.myWorkflowsService.registerEntry(EntryType.Service);
+    } else if (this.entryType === NewEntryType.NOTEBOOK) {
+      this.sessionService.setEntryType(EntryType.Notebook);
+      this.myWorkflowsService.registerEntry(EntryType.Notebook);
     }
   }
 }

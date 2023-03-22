@@ -17,6 +17,7 @@ import { AfterViewChecked, Component, Inject, OnDestroy, OnInit, ViewChild } fro
 import { NgForm } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Service } from 'app/shared/swagger/model/service';
+import { Notebook } from 'app/shared/swagger/model/notebook';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, shareReplay, takeUntil } from 'rxjs/operators';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
@@ -48,7 +49,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
   isPublic: boolean;
   isModalShown: boolean;
   version: WorkflowVersion;
-  workflow: BioWorkflow | Service | AppTool;
+  workflow: BioWorkflow | Service | AppTool | Notebook;
   originalVersion: WorkflowVersion;
   testParameterFiles: SourceFile[];
   versionEditorForm: NgForm;
@@ -67,6 +68,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
   canWrite: boolean;
   isOwner: boolean;
   isService$: Observable<boolean>;
+  isNotebook$: Observable<boolean>;
   entryTypeText: string;
   @ViewChild('versionEditorForm', { static: true }) currentForm: NgForm;
 
@@ -83,6 +85,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
 
   ngOnInit() {
     this.isService$ = this.sessionQuery.isService$.pipe(shareReplay());
+    this.isNotebook$ = this.sessionQuery.isNotebook$.pipe(shareReplay());
     this.sessionQuery.entryType$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((type: EntryType) => {
       switch (type) {
         case EntryType.Service:
@@ -96,6 +99,9 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
           break;
         case EntryType.BioWorkflow:
           this.entryTypeText = 'Workflow';
+          break;
+        case EntryType.Notebook:
+          this.entryTypeText = 'Notebook';
           break;
       }
     });

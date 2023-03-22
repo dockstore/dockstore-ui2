@@ -23,6 +23,7 @@ import { ProviderService } from '../provider.service';
 import { Workflow } from '../swagger';
 import { BioWorkflow } from '../swagger/model/bioWorkflow';
 import { Service } from '../swagger/model/service';
+import { Notebook } from '../swagger/model/notebook';
 import { ExtendedWorkflowStore } from './extended-workflow.store';
 
 @Injectable({ providedIn: 'root' })
@@ -61,7 +62,7 @@ export class ExtendedWorkflowService {
    * @returns {ExtendedWorkflow}
    * @memberof ExtendedWorkflowService
    */
-  extendWorkflow(workflow: BioWorkflow | Service): ExtendedWorkflow {
+  extendWorkflow(workflow: BioWorkflow | Service | Notebook): ExtendedWorkflow {
     if (workflow) {
       let extendedWorkflow: ExtendedWorkflow = { ...workflow };
       extendedWorkflow = <ExtendedWorkflow>this.providerService.setUpProvider(extendedWorkflow);

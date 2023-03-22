@@ -125,11 +125,12 @@ export abstract class Entry implements OnDestroy {
     }
   }
 
-  protected isAppTool(url: String): boolean {
-    if (url.includes('/containers/github.com')) {
-      return true;
-    }
-    return false;
+  protected isAppTool(url: string): boolean {
+    return url.includes('/containers/github.com');
+  }
+
+  protected isNotebook(url: string): boolean {
+    return url.includes('/notebooks/github.com');
   }
 
   starGazersChange(): void {
@@ -509,6 +510,8 @@ export abstract class Entry implements OnDestroy {
       searchType = 'tools';
     } else if (entryType === EntryType.BioWorkflow) {
       searchType = 'workflows';
+    } else if (entryType === EntryType.Notebook) {
+      searchType = 'notebooks';
     }
     // construct the url, adding parameters in an order that will remain the same when the search page later rewrites it
     let url = '/search?labels.value.keyword=' + searchValue;
