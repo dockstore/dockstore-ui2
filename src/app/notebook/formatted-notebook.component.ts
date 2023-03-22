@@ -6,6 +6,8 @@ import { SourceFileTabsService } from '../source-file-tabs/source-file-tabs.serv
 import { WorkflowQuery } from '../shared/state/workflow.query';
 import { Observable } from 'rxjs';
 import { NotebookFormatter } from './formatter';
+import { MarkdownWrapperService } from '../shared/markdown-wrapper/markdown-wrapper.service';
+import { Renderer } from 'marked';
 
 @Component({
   selector: 'app-formatted-notebook',
@@ -13,7 +15,11 @@ import { NotebookFormatter } from './formatter';
   styleUrls: ['./formatted-notebook.component.scss'],
 })
 export class FormattedNotebookComponent implements OnChanges {
-  constructor(private fileService: FileService, private sourceFileTabsService: SourceFileTabsService) {}
+  constructor(
+    private fileService: FileService,
+    private sourceFileTabsService: SourceFileTabsService,
+    private markdownWrapperService: MarkdownWrapperService
+  ) {}
   @Input() workflow: Workflow;
   @Input() version: WorkflowVersion;
   loading = true;
@@ -38,9 +44,7 @@ export class FormattedNotebookComponent implements OnChanges {
         (sourceFiles: SourceFile[]) => {
           sourceFiles.forEach((sourceFile) => {
             if (this.isPrimaryDescriptor(sourceFile.path)) {
-              let formatted = 'Notebook path: ' + sourceFile.path;
-              formatted += '<br>' + sourceFile.content;
-              this.formatted = new NotebookFormatter().format(formatted);
+              this.formatted = this.format(sourceFile.content);
             }
           });
         },
@@ -52,5 +56,52 @@ export class FormattedNotebookComponent implements OnChanges {
 
   isPrimaryDescriptor(path: string): boolean {
     return path === this.version.workflow_path;
+  }
+
+  format(notebook: string): string {
+    const json = JSON.parse(notebook);
+    const cells: string[] = json['cells'] ?? [];
+    console.log(cells);
+    let output = '';
+    cells.forEach((cell) => {
+      const type = cell['cell_type'];
+      if (type == 'markdown') {
+        output += '<div class="markdown_cell">markdown</div>';
+        output += '<div>' + this.renderMarkdown(cell['source'].join('\n')) + '</div>';
+        output += '<div>' + this.renderMarkdown('# Heading!\nsome **text**') + '</div>';
+        output += '<div>' + this.renderMarkdown('![inline image](attachment:f>oo.png "title")') + '</div>';
+        output += '<div>moo!</div>';
+      }
+      if (type == 'code') {
+        output += '<div>code</div>';
+      }
+    });
+
+    return output;
+  }
+
+  renderMarkdown(markdown: string): string {
+    const renderer = new Renderer();
+    const escape = this.escape;
+    // TODO add code to generate attachment images
+    renderer.image = function (href, title, text) {
+      return '[an attachment image] ' + escape(escape(href)) + ' ' + title + ' ' + text;
+    };
+    return this.markdownWrapperService.customCompileWithOptions(markdown, { baseUrl: '', renderer: renderer });
+  }
+
+  // TODO make better https://stackoverflow.com/questions/1787322/what-is-the-htmlspecialchars-equivalent-in-javascript
+  escape(text) {
+    var map = {
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#039;',
+    };
+
+    return text.replace(/[&<>"']/g, function (m) {
+      return map[m];
+    });
   }
 }

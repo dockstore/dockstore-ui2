@@ -1,8 +1,5 @@
 moo<app-loading class="w-100" [loading]="loading">
   foo
   <div *ngIf="displayError">An error occurred.</div>
-  <div *ngIf="!displayError">
-    Formatted
-    {{ formatted }}
-  </div>
+  <div *ngIf="!displayError" [innerHtml]="formatted"></div>
 </app-loading>
