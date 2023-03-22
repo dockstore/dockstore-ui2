@@ -142,7 +142,7 @@ describe('Test primary descriptor bubble', () => {
   });
 });
 
-describe.only('Test engine versions', () => {
+describe('Test engine versions', () => {
   resetDB();
   it('Should not be visible if unknown engine versions', () => {
     cy.visit('/workflows/github.com/A/l');
