@@ -119,7 +119,7 @@
                   <img
                     class="site-icons-small entryType-icons"
                     src="../../../assets/svg/sub-nav/{{ type === entryType.AppTool ? 'tool' : type }}.svg"
-                    alt="{{ type }} logo"
+                    alt="{{ type === entryType.AppTool ? 'tool' : type }} logo"
                   />
                   <h4>
                     {{ workflow?.organization + '/' + workflow?.repository + (workflow?.workflowName ? '/' + workflow?.workflowName : '') }}
