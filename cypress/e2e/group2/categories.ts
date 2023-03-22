@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { resetDB, setTokenUserViewPort, addOrganizationAdminUser } from '../../support/commands';
+import { resetDB, setTokenUserViewPort, insertNotebooks, addOrganizationAdminUser } from '../../support/commands';
 
 describe('Dockstore Categories', () => {
   const categoryName = 'foooo';
@@ -22,12 +22,25 @@ describe('Dockstore Categories', () => {
   const toolPath = '/containers/quay.io/garyluu/dockstore-cgpmap/cgpmap-cramOut:3.0.0-rc8?tab=info';
   const toolSnippet = 'cgpmap-cramOut';
   const workflowPath = '/workflows/github.com/A/l:master?tab=info';
+  const notebookPath = '/notebooks/github.com/dockstore-testing/simple-notebook';
 
   resetDB();
   setTokenUserViewPort();
 
   function typeInInput(fieldName: string, text: string) {
     cy.contains('span', fieldName).parentsUntil('.mat-form-field-wrapper').find('input').first().should('be.visible').clear().type(text);
+  }
+
+  function addToCollection(path: string) {
+    cy.visit(path);
+    cy.get('[data-cy=addToolToCollectionButton]').should('be.visible').click();
+    cy.get('[data-cy=addEntryToCollectionButton]').should('be.disabled');
+    cy.get('[data-cy=selectOrganization]').click();
+    cy.get('mat-option').contains('Dockstore').click();
+    cy.get('[data-cy=addEntryToCollectionButton]').should('be.disabled');
+    cy.get('[data-cy=selectCollection]').click();
+    cy.get('mat-option').contains(categoryDisplayName).click();
+    cy.get('[data-cy=addEntryToCollectionButton]').should('not.be.disabled').click();
   }
 
   describe('Should be able to create a category', () => {
@@ -47,29 +60,20 @@ describe('Dockstore Categories', () => {
 
   describe('Should be able to add a tool to a category', () => {
     it('be able to add tool to category', () => {
-      cy.visit(toolPath);
-      cy.get('#addToolToCollectionButton').should('be.visible').click();
-      cy.get('#addEntryToCollectionButton').should('be.disabled');
-      cy.get('#selectOrganization').click();
-      cy.get('mat-option').contains('Dockstore').click();
-      cy.get('#addEntryToCollectionButton').should('be.disabled');
-      cy.get('#selectCollection').click();
-      cy.get('mat-option').contains(categoryDisplayName).click();
-      cy.get('#addEntryToCollectionButton').should('not.be.disabled').click();
+      addToCollection(toolPath);
     });
   });
 
   describe('Should be able to add a workflow to a category', () => {
     it('be able to add workflow to category', () => {
-      cy.visit(workflowPath);
-      cy.get('#addToolToCollectionButton').should('be.visible').click();
-      cy.get('#addEntryToCollectionButton').should('be.disabled');
-      cy.get('#selectOrganization').click();
-      cy.get('mat-option').contains('Dockstore').click();
-      cy.get('#addEntryToCollectionButton').should('be.disabled');
-      cy.get('#selectCollection').click();
-      cy.get('mat-option').contains(categoryDisplayName).click();
-      cy.get('#addEntryToCollectionButton').should('not.be.disabled').click();
+      addToCollection(workflowPath);
+    });
+  });
+
+  describe('Should be able to add a notebook to a category', () => {
+    insertNotebooks();
+    it('be able to add notebook to category', () => {
+      addToCollection(notebookPath);
     });
   });
 
