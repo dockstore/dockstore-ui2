@@ -48,14 +48,16 @@ describe('Dockstore Categories', () => {
 
   describe('Should be able to add a tool to a category', () => {
     it('be able to add tool to category', () => {
-      addToCollection(toolPath, categoryDisplayName);
+      addToCollection(toolPath, 'Dockstore', categoryDisplayName);
+      cy.visit(toolPath);
       cy.get('[data-cy=categoriesBubble]').should('contain', categoryDisplayName);
     });
   });
 
   describe('Should be able to add a workflow to a category', () => {
     it('be able to add workflow to category', () => {
-      addToCollection(workflowPath, categoryDisplayName);
+      addToCollection(workflowPath, 'Dockstore', categoryDisplayName);
+      cy.visit(workflowPath);
       cy.get('[data-cy=categoriesBubble]').should('contain', categoryDisplayName);
     });
   });
@@ -63,7 +65,8 @@ describe('Dockstore Categories', () => {
   describe('Should be able to add a notebook to a category', () => {
     insertNotebooks();
     it('be able to add notebook to category', () => {
-      addToCollection(notebookPath, categoryDisplayName);
+      addToCollection(notebookPath, 'Dockstore', categoryDisplayName);
+      cy.visit(notebookPath);
       cy.get('[data-cy=categoriesBubble]').should('contain', categoryDisplayName);
     });
   });

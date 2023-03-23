@@ -314,15 +314,13 @@ describe('Dockstore Organizations', () => {
       cy.visit('/organizations/Potatoe/collections/veryFakeCollectionName');
       cy.contains('veryFakeCollectionName').should('not.exist');
     });
-  });
 
-  describe('Should be able to add notebook to collection', () => {
     it('add notebook to collection', () => {
       setTokenUserViewPort();
       insertNotebooks();
       const notebookPath = '/notebooks/github.com/dockstore-testing/simple-notebook';
-      addToCollection(notebookPath, 'Foooo');
-      cy.get('[data-cy=collectionLink]').should('contain', 'Foooo');
+      addToCollection(notebookPath, 'Potatoe', 'veryFakeCollectionName');
+      cy.get('[data-cy=collectionLink]').should('contain', 'veryFakeCollectionName');
     });
   });
 

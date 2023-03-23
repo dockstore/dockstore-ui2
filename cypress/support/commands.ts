@@ -204,13 +204,13 @@ export function testNoGithubEntriesText(entryType: string, repository: string) {
   });
 }
 
-export function addToCollection(path: string, collectionDisplayName: string) {
+export function addToCollection(path: string, organizationName: string, collectionDisplayName: string) {
   it('add to collection', () => {
     cy.visit(path);
     cy.get('[data-cy=addToolToCollectionButton]').should('be.visible').click();
     cy.get('[data-cy=addEntryToCollectionButton]').should('be.disabled');
     cy.get('[data-cy=selectOrganization]').click();
-    cy.get('mat-option').contains('Dockstore').click();
+    cy.get('mat-option').contains(organizationName).click();
     cy.get('[data-cy=addEntryToCollectionButton]').should('be.disabled');
     cy.get('[data-cy=selectCollection]').click();
     cy.get('mat-option').contains(collectionDisplayName).click();
