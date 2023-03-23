@@ -4,10 +4,12 @@ import { RequestsQuery } from 'app/loginComponents/state/requests.query';
 import { RequireAccountsModalComponent } from 'app/organizations/registerOrganization/requireAccountsModal/require-accounts-modal.component';
 import { Base } from 'app/shared/base';
 import { Dockstore } from 'app/shared/dockstore.model';
-import { Event, UsersService, OrganizationUser } from 'app/shared/openapi';
-import { bootstrap4mediumModalSize } from 'app/shared/constants';
+import { Event, UsersService, OrganizationUser, OrganizationUpdateTime } from 'app/shared/openapi';
+import { bootstrap4mediumModalSize, bootstrap4largeModalSize } from 'app/shared/constants';
 import { Observable } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
+import { MyOrganizationsDialogComponent } from './my-organizations-dialog.component/my-organizations-dialog.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-organization-box',
@@ -19,10 +21,16 @@ export class OrganizationBoxComponent extends Base implements OnInit {
   public pendingRequests$: Observable<Array<OrganizationUser>>;
   public pendingInvites$: Observable<Array<OrganizationUser>>;
   public totalOrgs: number = 0;
+  public listOfOrgs: Array<OrganizationUpdateTime>;
   public EventType = Event.TypeEnum;
   public isLoading = true;
 
-  constructor(private usersService: UsersService, private requestsQuery: RequestsQuery, private matDialog: MatDialog) {
+  constructor(
+    private usersService: UsersService,
+    private requestsQuery: RequestsQuery,
+    private matDialog: MatDialog,
+    private router: Router
+  ) {
     super();
   }
 
@@ -35,9 +43,27 @@ export class OrganizationBoxComponent extends Base implements OnInit {
       )
       .subscribe((myOrgs) => {
         this.totalOrgs = myOrgs.length;
+        this.listOfOrgs = myOrgs;
       });
     this.pendingRequests$ = this.requestsQuery.myPendingOrganizationRequests$;
     this.pendingInvites$ = this.requestsQuery.myOrganizationInvites$;
+  }
+
+  /**
+   * Open dialog diaplaying user's organizations
+   * When user selects an organization, close dialog and navigate
+   *
+   * NOTE: Remove my organizations dialog once my organizations page is implemented
+   */
+  viewMyOrganizations(): void {
+    const dialogRef = this.matDialog.open(MyOrganizationsDialogComponent, { width: bootstrap4largeModalSize, data: this.listOfOrgs });
+
+    // Navigate to selected Organization
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result?.data) {
+        this.router.navigateByUrl('/organizations/' + result.data);
+      }
+    });
   }
 
   /**

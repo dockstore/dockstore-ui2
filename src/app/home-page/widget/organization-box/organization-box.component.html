@@ -35,8 +35,13 @@
     <mat-divider></mat-divider>
     <mat-card-content class="mx-2 mt-3 mb-0 h-100">
       <div *ngIf="totalOrgs > 0 || isLoading; else noOrganizations">
-        <h5 class="weight-bold">Recent Activity</h5>
+        <h5 class="weight-bold mb-0">Recent Activity</h5>
         <app-recent-events [eventType]="'SELF_ORGANIZATIONS'"></app-recent-events>
+        <div class="weight-bold py-2">
+          <a (click)="viewMyOrganizations()" class="pointer"
+            >View my Organizations<mat-icon class="mat-icon-sm">keyboard_double_arrow_right</mat-icon></a
+          >
+        </div>
       </div>
       <ng-template #noOrganizations>
         <div *ngIf="!isLoading" fxLayout="column" class="h-100" fxLayoutAlign="center center">

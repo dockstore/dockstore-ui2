@@ -169,7 +169,12 @@
       </div>
       <ng-template #orgImg>
         <a *ngIf="event.organization?.avatarUrl; else orgIcon" [routerLink]="event | recentEvents: 'orgLink'">
-          <img class="entry-img p-2" src="{{ event.organization.avatarUrl }}" alt="Org avatar" />
+          <img
+            class="entry-img p-2"
+            [src]="event.organization.avatarUrl | gravatar"
+            [appFallback]="orgLogoService.DEFAULT_URL"
+            alt="Org avatar"
+          />
         </a>
         <ng-template #orgIcon>
           <a [routerLink]="event | recentEvents: 'orgLink'">

@@ -11,6 +11,7 @@ import { EntryType } from '../../shared/enum/entry-type';
 import { finalize, takeUntil } from 'rxjs/operators';
 import { Base } from 'app/shared/base';
 import { Observable } from 'rxjs';
+import { OrgLogoService } from '../../shared/org-logo.service';
 
 /**
  * Shows recent events related to starred organization and entries or user organization events
@@ -79,7 +80,8 @@ export class RecentEventsComponent extends Base implements OnInit {
     private activatedRoute: ActivatedRoute,
     private usersService: UsersService,
     private alertService: AlertService,
-    private eventsService: EventsService
+    private eventsService: EventsService,
+    private orgLogoService: OrgLogoService
   ) {
     super();
     this.username = this.activatedRoute.snapshot.paramMap.get('username');
