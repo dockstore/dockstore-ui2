@@ -41,7 +41,7 @@ describe('Dockstore Categories', () => {
     cy.get('[data-cy=selectCollection]').click();
     cy.get('mat-option').contains(categoryDisplayName).click();
     cy.get('[data-cy=addEntryToCollectionButton]').should('not.be.disabled').click();
-    cy.get('[data-cy=collectionLink]').should('contain', categoryDisplayName);
+    cy.get('[data-cy=categoriesBubble]').should('contain', categoryDisplayName);
   }
 
   describe('Should be able to create a category', () => {
