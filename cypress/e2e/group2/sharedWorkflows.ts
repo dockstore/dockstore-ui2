@@ -47,7 +47,7 @@ describe('Shared with me workflow test from my-workflows', () => {
     const readerWorkflow = createHostedWorkflow('readertest', 200);
     const writerWorkflow = createHostedWorkflow('writertest', 201);
     const ownerWorkflow = createHostedWorkflow('ownertest', 202);
-    cy.intercept('GET', '*shared*', {
+    cy.intercept('GET', '*/workflows/shared*', {
       body: [
         { role: 'READER', workflows: [readerWorkflow] },
         { role: 'WRITER', workflows: [writerWorkflow] },
@@ -146,6 +146,15 @@ describe('Shared with me workflow test from my-workflows', () => {
             username: 'user_B',
             setupComplete: true,
           },
+          versionMetadata: {
+            engineVersions: [],
+            userIdToOrcidPutCode: {},
+            description: '',
+            descriptorTypeVersions: undefined,
+            id: 0,
+            parsedInformationSet: undefined,
+            publicAccessibleTestParameterFile: false,
+          },
           workflow_path: '/Dockstore.wdl',
           workingDirectory: '',
         },
@@ -175,6 +184,15 @@ describe('Shared with me workflow test from my-workflows', () => {
             name: 'user_B',
             userProfiles: undefined,
             username: 'user_B',
+          },
+          versionMetadata: {
+            engineVersions: [],
+            userIdToOrcidPutCode: {},
+            description: '',
+            descriptorTypeVersions: undefined,
+            id: 0,
+            parsedInformationSet: undefined,
+            publicAccessibleTestParameterFile: false,
           },
           workflow_path: '/Dockstore.wdl',
           workingDirectory: '',
