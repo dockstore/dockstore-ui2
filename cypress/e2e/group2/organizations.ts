@@ -303,7 +303,14 @@ describe('Dockstore Organizations', () => {
         cy.wait(1000);
         cy.get('img[src*="default-org-logo"]').should('be.visible');
       }
+    });
+    it('Should be able to add notebook to collection', () => {
+      const notebookPath = '/workflows/github.com/A/l:master?tab=info';
+      addToCollection(notebookPath, 'Potatoe', 'veryFakeCollectionName');
+      cy.get('[data-cy=collectionLink]').should('contain', 'veryFakeCollectionName');
+    });
 
+    it('Should be able to remove collection', () => {
       cy.visit('/organizations/Potatoe/collections/veryFakeCollectionName');
       cy.get('[data-cy=removeCollectionButton]').click();
       cy.get('[data-cy=cancel-remove-collection]').click();
@@ -313,14 +320,6 @@ describe('Dockstore Organizations', () => {
       cy.get('[data-cy=accept-remove-collection]').click();
       cy.visit('/organizations/Potatoe/collections/veryFakeCollectionName');
       cy.contains('veryFakeCollectionName').should('not.exist');
-    });
-
-    it('add notebook to collection', () => {
-      setTokenUserViewPort();
-      insertNotebooks();
-      const notebookPath = '/notebooks/github.com/dockstore-testing/simple-notebook';
-      addToCollection(notebookPath, 'Potatoe', 'veryFakeCollectionName');
-      cy.get('[data-cy=collectionLink]').should('contain', 'veryFakeCollectionName');
     });
   });
 
