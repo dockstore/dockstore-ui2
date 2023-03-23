@@ -305,7 +305,8 @@ describe('Dockstore Organizations', () => {
       }
     });
     it('Should be able to add notebook to collection', () => {
-      const notebookPath = '/workflows/github.com/A/l:master?tab=info';
+      insertNotebooks();
+      const notebookPath = '/notebooks/github.com/dockstore-testing/simple-notebook';
       addToCollection(notebookPath, 'Potatoe', 'veryFakeCollectionName');
       cy.get('[data-cy=collectionLink]').should('contain', 'veryFakeCollectionName');
     });
