@@ -42,6 +42,7 @@ export class FormattedNotebookComponent implements OnChanges {
       )
       .subscribe(
         (sourceFiles: SourceFile[]) => {
+          // TODO catch exception here, convert to traditional for
           sourceFiles.forEach((sourceFile) => {
             if (this.isPrimaryDescriptor(sourceFile.path)) {
               this.formatted = this.format(sourceFile.content);
@@ -94,7 +95,8 @@ export class FormattedNotebookComponent implements OnChanges {
 
   outputTypeToFormatter = new Map<string, (json: any) => string[]>([
     ['stream', this.convertStreamOutput],
-    ['display_data', this.convertDisplayDataOutput],
+    ['display_data', this.convertMimeBundleOutput],
+    ['execute_result', this.convertMimeBundleOutput],
   ]);
 
   convertOutputs(outputs: any): string[] {
@@ -105,9 +107,16 @@ export class FormattedNotebookComponent implements OnChanges {
     return [this.escapeAndDiv(this.join(output['text']), 'output stream')];
   }
 
-  convertDisplayDataOutput(output: any): string[] {
+  convertMimeBundleOutput(output: any): string[] {
+    // TODO get the mime bundle from 'data' property
+    // extract the best mime type and data
+    // create the tag, new function createHtmlFromMimeTypeAndData()
+    // wrap in div and return
     return [this.escapeAndDiv('A display_data output goes here.', 'output display_data')];
   }
+
+  // TODO list of image mime types
+  // TODO list of all mime types we want to display
 
   div(content: string, classes: string) {
     return '<div class="' + classes + '">' + this.sanitize(content) + '</div>';
@@ -115,6 +124,10 @@ export class FormattedNotebookComponent implements OnChanges {
 
   escapeAndDiv(content: string, classes: string) {
     return this.div(this.escape(content), classes);
+  }
+
+  sanitize(html: string): string {
+    return this.markdownWrapperService.customSanitize(html);
   }
 
   renderMarkdown(markdown: string, attachments: any): string {
@@ -125,9 +138,11 @@ export class FormattedNotebookComponent implements OnChanges {
       if (href.startsWith('attachment:')) {
         const name = href.substring('attachment:'.length);
         const mimeBundle = attachments[name] ?? {};
-        const data = dataFromMimeBundle(mimeBundle);
-        if (data != undefined) {
-          return '<img src="data:mime-type;base64,<base64data>">';
+        const mimeTypeAndData = dataFromMimeBundle(mimeBundle);
+        if (mimeTypeAndData !== undefined) {
+          const mimeType = mimeTypeAndData[0];
+          const data = mimeTypeAndData[1];
+          return '<img src="data:' + escape(mimeType) + ';base64,' + escape(data) + '">';
         }
       }
       return undefined;
@@ -135,12 +150,14 @@ export class FormattedNotebookComponent implements OnChanges {
     return this.markdownWrapperService.customCompileWithOptions(markdown, { baseUrl: '', renderer: renderer });
   }
 
-  sanitize(html: string): string {
-    return this.markdownWrapperService.customSanitize(html);
-  }
-
-  dataFromMimeBundle(mimeBundle: any) {
-    return '349034903490'; // TODO fix
+  // TODO search for entries for mime types from
+  dataFromMimeBundle(mimeBundle: any): [string, string] | undefined {
+    const keys = mimeBundle.keys();
+    if (keys && keys.length > 0) {
+      return [keys[0], mimeBundle[keys[0]]];
+    } else {
+      return undefined;
+    }
   }
 
   // TODO make better https://stackoverflow.com/questions/1787322/what-is-the-htmlspecialchars-equivalent-in-javascript
@@ -159,7 +176,7 @@ export class FormattedNotebookComponent implements OnChanges {
   }
 
   join(value: any): string {
-    if (value == null || value == undefined) {
+    if (value == undefined) {
       return '';
     }
     if (value.join) {
