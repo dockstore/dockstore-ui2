@@ -22,6 +22,7 @@ export class FormattedNotebookComponent implements OnChanges {
   ) {}
   @Input() workflow: Workflow;
   @Input() version: WorkflowVersion;
+  @Input() baseUrl: string;
   loading = true;
   formatted = '';
   displayError = false;
@@ -108,15 +109,14 @@ export class FormattedNotebookComponent implements OnChanges {
   }
 
   convertMimeBundleOutput(output: any): string[] {
-    // TODO get the mime bundle from 'data' property
-    // extract the best mime type and data
-    // create the tag, new function createHtmlFromMimeTypeAndData()
-    // wrap in div and return
-    return [this.escapeAndDiv('A display_data output goes here.', 'output display_data')];
+    const mimeBundle = output['data'];
+    const mimeObject = this.extractFromMimeBundle(mimeBundle);
+    const html = this.createHtmlFromMimeTypeAndData(mimeObject?.mimeType, mimeObject?.data);
+    if (html != undefined) {
+      return [this.div(html, 'output display_data')];
+    }
+    return [];
   }
-
-  // TODO list of image mime types
-  // TODO list of all mime types we want to display
 
   div(content: string, classes: string) {
     return '<div class="' + classes + '">' + this.sanitize(content) + '</div>';
@@ -131,33 +131,51 @@ export class FormattedNotebookComponent implements OnChanges {
   }
 
   renderMarkdown(markdown: string, attachments: any): string {
+    const renderer = this.createAttachedImageRenderer(attachments);
+    return this.markdownWrapperService.customCompileWithOptions(markdown, { baseUrl: this.baseUrl, renderer: renderer });
+  }
+
+  createAttachedImageRenderer(attachments: any): Renderer {
     const renderer = new Renderer();
     const escape = this.escape;
-    const dataFromMimeBundle = this.dataFromMimeBundle;
+    const extractFromMimeBundle = this.extractFromMimeBundle;
+    const createHtmlFromMimeTypeAndData = this.createHtmlFromMimeTypeAndData;
     renderer.image = function (href, title, text) {
       if (href.startsWith('attachment:')) {
         const name = href.substring('attachment:'.length);
         const mimeBundle = attachments[name] ?? {};
-        const mimeTypeAndData = dataFromMimeBundle(mimeBundle);
-        if (mimeTypeAndData !== undefined) {
-          const mimeType = mimeTypeAndData[0];
-          const data = mimeTypeAndData[1];
-          return '<img src="data:' + escape(mimeType) + ';base64,' + escape(data) + '">';
+        const mimeObject = extractFromMimeBundle(mimeBundle);
+        const mimeType = mimeObject?.mimeType;
+        if (mimeType?.startsWith('image/')) {
+          return createHtmlFromMimeTypeAndData(mimeType, mimeObject?.data);
         }
       }
       return undefined;
     };
-    return this.markdownWrapperService.customCompileWithOptions(markdown, { baseUrl: '', renderer: renderer });
+    return renderer;
   }
 
-  // TODO search for entries for mime types from
-  dataFromMimeBundle(mimeBundle: any): [string, string] | undefined {
-    const keys = mimeBundle.keys();
-    if (keys && keys.length > 0) {
-      return [keys[0], mimeBundle[keys[0]]];
-    } else {
-      return undefined;
+  // TODO document
+  supportedMimeTypes = ['image/png', 'image/jpeg', 'image/gif', 'text/json', 'text/plain'];
+
+  extractFromMimeBundle(mimeBundle: any): { mimeType: string; data: string } {
+    for (const mimeType of this.supportedMimeTypes) {
+      const data = mimeBundle[mimeType];
+      if (data != undefined) {
+        return { mimeType: mimeType, data: this.join(data) };
+      }
     }
+    return undefined;
+  }
+
+  createHtmlFromMimeTypeAndData(mimeType: string, data: string): string {
+    if (mimeType?.startsWith('image/')) {
+      return '<img src="data:' + this.escape(mimeType) + ';base64,' + this.escape(data) + '">';
+    }
+    if (mimeType?.startsWith('text/')) {
+      return this.escape(data);
+    }
+    return undefined;
   }
 
   // TODO make better https://stackoverflow.com/questions/1787322/what-is-the-htmlspecialchars-equivalent-in-javascript
@@ -179,12 +197,9 @@ export class FormattedNotebookComponent implements OnChanges {
     if (value == undefined) {
       return '';
     }
-    if (value.join) {
-      return value.join('\n');
+    if (Array.isArray(value)) {
+      return value.join('');
     }
-    if (value.toString) {
-      return value.toString();
-    }
-    return '' + value;
+    return String(value);
   }
 }
