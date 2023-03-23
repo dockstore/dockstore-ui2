@@ -59,26 +59,62 @@ export class FormattedNotebookComponent implements OnChanges {
   }
 
   format(notebook: string): string {
+    const formatted: string[] = [];
     const json = JSON.parse(notebook);
-    const cells: string[] = json['cells'] ?? [];
-    let output = [];
+    const cells: any[] = json['cells'] ?? [];
     cells.forEach((cell) => {
       const type = cell['cell_type'];
       if (type === 'markdown') {
-        output.push(this.convertMarkdownCell(cell));
+        formatted.push(this.convertMarkdownCell(cell));
       } else if (type === 'code') {
-        output.push(this.convertCodeCell(cell));
+        formatted.push(this.convertCodeCell(cell));
       }
     });
-    return output.join('\n');
+    return formatted.join('\n');
   }
 
-  convertMarkdownCell(cell: any) {
-    return '<div>' + this.renderMarkdown(this.join(cell['source']), cell['attachments']) + '</div>';
+  convertMarkdownCell(cell: any): string {
+    const formattedMarkdown = this.renderMarkdown(this.join(cell['source']), cell['attachments']);
+    return '<div>' + this.sanitize(formattedMarkdown) + '</div>';
   }
 
-  convertCodeCell(cell: any) {
-    return '<div><pre>' + this.escape(this.join(cell['source'])) + '</pre></div>';
+  convertCodeCell(cell: any): string {
+    const formatted: string[] = [];
+    const formattedCode = this.escape(this.join(cell['source']));
+    formatted.push('<div><pre>', this.sanitize(formattedCode), '</pre></div>');
+    formatted.push(this.convertOutputs(cell['outputs'] ?? {}));
+    return formatted.join('');
+  }
+
+  convertOutputs(outputs: any): string {
+    const formatted: string[] = [];
+    outputs.forEach((output) => {
+      const type = output['output_type'];
+      if (type === 'stream') {
+        const formattedStreamOutput = this.convertStreamOutput(output);
+        formatted.push('<div><pre>', this.sanitize(formattedStreamOutput), '</pre></div>');
+      } else if (type === 'display_data') {
+        const formattedDisplayDataOutput = this.convertDisplayDataOutput(output);
+        formatted.push('<div>', this.sanitize(formattedDisplayDataOutput), '</div>');
+      }
+    });
+    return formatted.join('');
+  }
+
+  convertStreamOutput(output: any): string {
+    return this.escape(this.join(output['text'] ?? ''));
+  }
+
+  convertDisplayDataOutput(output: any): string {
+    return this.escape('A display_data output goes here.');
+  }
+
+  div(content: string, classes: string) {
+    return '<div class="' + classes + '>' + this.sanitize(content) + '</div>';
+  }
+
+  escapeAndDiv(content: string, classes: string) {
+    return this.div(this.escape(content), classes);
   }
 
   renderMarkdown(markdown: string, attachments: any): string {
@@ -90,13 +126,17 @@ export class FormattedNotebookComponent implements OnChanges {
         const name = href.substring('attachment:'.length);
         const mimeBundle = attachments[name] ?? {};
         const data = dataFromMimeBundle(mimeBundle);
-        if (data) {
+        if (data != undefined) {
           return '<img src="data:mime-type;base64,<base64data>">';
         }
       }
       return undefined;
     };
     return this.markdownWrapperService.customCompileWithOptions(markdown, { baseUrl: '', renderer: renderer });
+  }
+
+  sanitize(html: string): string {
+    return this.markdownWrapperService.customSanitize(html);
   }
 
   dataFromMimeBundle(mimeBundle: any) {
