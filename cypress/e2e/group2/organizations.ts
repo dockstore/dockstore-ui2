@@ -304,8 +304,8 @@ describe('Dockstore Organizations', () => {
         cy.get('img[src*="default-org-logo"]').should('be.visible');
       }
     });
+    insertNotebooks();
     it('Should be able to add notebook to collection', () => {
-      insertNotebooks();
       const notebookPath = '/notebooks/github.com/dockstore-testing/simple-notebook';
       addToCollection(notebookPath, 'Potatoe', 'veryFakeCollectionName');
       cy.get('[data-cy=collectionLink]').should('contain', 'veryFakeCollectionName');
