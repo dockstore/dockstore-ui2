@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { goToTab, isActiveTab, resetDB, setTokenUserViewPort } from '../../support/commands';
+import { goToTab, isActiveTab, setTokenUserViewPort } from '../../support/commands';
 
 describe('Variations of URL', () => {
   setTokenUserViewPort();

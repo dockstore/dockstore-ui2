@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-import { resetDB, setTokenUserViewPort } from '../../support/commands';
+import { setTokenUserViewPort } from '../../support/commands';
 
 describe('Notebooks Page', () => {
   setTokenUserViewPort();
