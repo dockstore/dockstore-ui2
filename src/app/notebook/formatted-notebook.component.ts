@@ -5,7 +5,6 @@ import { finalize } from 'rxjs/operators';
 import { SourceFileTabsService } from '../source-file-tabs/source-file-tabs.service';
 import { WorkflowQuery } from '../shared/state/workflow.query';
 import { Observable } from 'rxjs';
-import { NotebookFormatter } from './formatter';
 import { MarkdownWrapperService } from '../shared/markdown-wrapper/markdown-wrapper.service';
 import { Renderer } from 'marked';
 
