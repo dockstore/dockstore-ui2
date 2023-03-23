@@ -141,7 +141,6 @@ describe('Test primary descriptor bubble', () => {
 });
 
 describe('Test engine versions', () => {
-  resetDB();
   it('Should not be visible if unknown engine versions', () => {
     cy.visit('/workflows/github.com/A/l');
     cy.get('[data-cy=sourceRepository]').should('exist');
