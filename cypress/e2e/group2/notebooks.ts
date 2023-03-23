@@ -66,18 +66,21 @@ describe('Dockstore notebooks', () => {
   it('should have Code tab', () => {
     cy.visit('/notebooks/' + name);
     goToTab('Code');
-    cy.contains('SEAB-5117'); // look for placeholder text
+    // Confirm the appearance of the text from the markdown and code cells.
+    cy.contains('A simple notebook.');
+    cy.contains('print("Hello world!")');
+    cy.contains('Hello world!');
   });
 
   it('should have Versions tab', () => {
     cy.visit('/notebooks/' + name);
     goToTab('Versions');
-    // check for Format column
+    // Check for Format column.
     cy.get('thead').contains('Format');
-    // check for version name and format
+    // Check for version name and format.
     cy.get('[data-cy=versionRow]').contains('simple-published-v1');
     cy.get('[data-cy=versionRow]').contains(/jupyter/i);
-    // click on Info button and check content
+    // Click on Info button and check content.
     cy.get('[data-cy=versionRow] button').click();
     cy.get('input[name=reference]').should('have.value', 'simple-published-v1');
     cy.get('input[name=workflow_path]').should('have.value', '/notebook.ipynb');
@@ -86,7 +89,7 @@ describe('Dockstore notebooks', () => {
   it('should have Files tab', () => {
     cy.visit('/notebooks/' + name);
     goToTab('Files');
-    // check for notebook file name and some notebook-specific json content.
+    // Check for notebook file name and some notebook-specific json content.
     cy.get('app-source-file-tabs').contains('Primary');
     cy.get('app-source-file-tabs').contains('/notebook.ipynb');
     cy.get('app-source-file-tabs').contains('"nbformat"');

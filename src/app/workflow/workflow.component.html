@@ -246,13 +246,11 @@
           <div *ngIf="entryType === EntryType.Notebook">
             <mat-tab id="codeTab" label="Code">
               <div class="mt-4 ml-4 mr-4">
-                <p>A user-friendly representation of the notebook will appear here, after it is implemented in SEAB-5117.</p>
-                <p>For a Jupyter notebook, it'll be the contents of the code/documentation cells, nicely-formatted.</p>
-                <p>For other kinds of notebooks, it might be something different.</p>
                 <app-formatted-notebook
                   *ngIf="workflow && selectedVersion"
                   [workflow]="workflow"
                   [version]="selectedVersion"
+                  [baseUrl]="workflow.providerUrl | baseUrl: selectedVersion.name"
                 ></app-formatted-notebook>
               </div>
             </mat-tab>
