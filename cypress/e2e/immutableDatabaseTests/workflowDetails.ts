@@ -13,10 +13,9 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { goToTab, isActiveTab, resetDB, setTokenUserViewPort } from '../../support/commands';
+import { goToTab, isActiveTab, setTokenUserViewPort } from '../../support/commands';
 
 describe('Variations of URL', () => {
-  resetDB();
   setTokenUserViewPort();
   it('Should redirect to canonical url (encoding)', () => {
     cy.visit('/workflows/github.com%2FA%2Fl');
@@ -129,7 +128,6 @@ describe('Find workflow by alias', () => {
 });
 
 describe('Test primary descriptor bubble', () => {
-  resetDB();
   it('go to a workflow with multiple files', () => {
     cy.visit('/workflows/github.com/A/l');
     goToTab('Files');
@@ -143,7 +141,6 @@ describe('Test primary descriptor bubble', () => {
 });
 
 describe('Test engine versions', () => {
-  resetDB();
   it('Should not be visible if unknown engine versions', () => {
     cy.visit('/workflows/github.com/A/l');
     cy.get('[data-cy=sourceRepository]').should('exist');

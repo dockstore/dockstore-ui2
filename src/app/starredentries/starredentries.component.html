@@ -35,7 +35,8 @@
         [ngClass]="{
           'workflow-tab-group': selected.value === 0,
           'tool-tab-group': selected.value === 1,
-          'purple-tab-group': selected.value === 2
+          'notebook-tab-group': selected.value === 2,
+          'purple-tab-group': selected.value === 3
         }"
       >
         <mat-tab>
@@ -51,7 +52,9 @@
           </mat-card>
           <div fxLayout="column" fxLayoutGap="1rem" class="mb-2 mx-1">
             <mat-card fxFlex *ngFor="let workflow of starredWorkflows; let last = last" class="pb-3">
-              <ng-container *ngTemplateOutlet="workflowSummary; context: { workflow: workflow, isAppTool: false }"></ng-container>
+              <ng-container
+                *ngTemplateOutlet="workflowSummary; context: { workflow: workflow, entryType: entryType.BioWorkflow }"
+              ></ng-container>
             </mat-card>
           </div>
         </mat-tab>
@@ -73,7 +76,7 @@
                 <ng-container
                   *ngTemplateOutlet="
                     tool.mode === 'DOCKSTORE_YML' ? workflowSummary : toolSummary;
-                    context: tool.mode === 'DOCKSTORE_YML' ? { workflow: tool, isAppTool: true } : { tool: tool }
+                    context: tool.mode === 'DOCKSTORE_YML' ? { workflow: tool, entryType: entryType.AppTool } : { tool: tool }
                   "
                 ></ng-container>
               </mat-card>
@@ -81,14 +84,42 @@
           </div>
         </mat-tab>
 
-        <ng-template #workflowSummary let-workflow="workflow" let-isAppTool="isAppTool">
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <div fxLayoutGap="0.5rem">
+              <img class="site-icons-tab" src="../../../assets/svg/sub-nav/notebook.svg" alt="notebook logo" />
+              <span>Notebooks</span>
+              <span class="tab-display" data-cy="starred-notebooks-count">{{ starredNotebooks?.length }}</span>
+            </div>
+          </ng-template>
+          <div>
+            <mat-card
+              class="alert alert-info mat-elevation-z starred-header"
+              data-cy="no-notebooks-banner"
+              role="alert"
+              *ngIf="starredNotebooks?.length === 0"
+            >
+              You have no starred notebooks.
+            </mat-card>
+            <div fxLayout="column" fxLayoutGap="1rem" class="mb-2 mx-1">
+              <mat-card fxFlex *ngFor="let notebook of starredNotebooks; let last = last" class="m-1 pb-3">
+                <ng-container
+                  *ngTemplateOutlet="workflowSummary; context: { workflow: notebook, entryType: entryType.Notebook }"
+                ></ng-container>
+              </mat-card>
+            </div>
+          </div>
+        </mat-tab>
+
+        <ng-template #workflowSummary let-workflow="workflow" let-type="entryType">
           <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-between">
-            <a [routerLink]="(isAppTool ? entryType.AppTool : entryType.BioWorkflow) | routerLink: workflow" class="no-underline">
+            <a [routerLink]="type | routerLink: workflow" class="no-underline">
               <mat-card-header>
                 <mat-card-title fxLayoutAlign="space-between" fxLayoutGap="1rem">
                   <img
-                    src="../../../assets/svg/sub-nav/{{ isAppTool ? 'tool' : 'workflow' }}.svg"
-                    alt="{{ isAppTool ? 'tool' : 'workflow' }} logo"
+                    class="site-icons-small entryType-icons"
+                    src="../../../assets/svg/sub-nav/{{ workflow?.entryTypeMetadata.term }}.svg"
+                    alt="{{ workflow?.entryTypeMetadata.term }} logo"
                   />
                   <h4>
                     {{ workflow?.organization + '/' + workflow?.repository + (workflow?.workflowName ? '/' + workflow?.workflowName : '') }}
@@ -135,7 +166,7 @@
                 </span>
               </div>
             </div>
-            <a [routerLink]="(isAppTool ? entryType.AppTool : entryType.BioWorkflow) | routerLink: workflow" class="no-underline">
+            <a [routerLink]="type | routerLink: workflow" class="no-underline">
               <button mat-raised-button class="small-mat-btn-skin small-btn-structure" color="accent">View</button>
             </a>
           </div>
@@ -146,7 +177,7 @@
             <a routerLink="/containers/{{ tool.tool_path }}" class="no-underline">
               <mat-card-header>
                 <mat-card-title fxLayoutAlign="flex-start" fxLayoutGap="1rem">
-                  <img src="../../../assets/svg/sub-nav/tool.svg" alt="tool logo" />
+                  <img class="site-icons-small entryType-icons" src="../../../assets/svg/sub-nav/tool.svg" alt="tool logo" />
                   <h4>{{ tool?.namespace + '/' + tool?.name + (tool?.toolname ? '/' + tool?.toolname : '') }}</h4>
                 </mat-card-title>
                 <div *ngIf="tool?.starredUsers.length !== 0" fxLayout="row" fxLayoutAlign="end center"></div>
