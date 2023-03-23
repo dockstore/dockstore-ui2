@@ -17,7 +17,6 @@
 import { resetDB, setTokenUserViewPort } from '../../support/commands';
 
 describe('Notebooks Page', () => {
-  resetDB();
   setTokenUserViewPort();
   it('should contain header and search', () => {
     cy.visit('/notebooks');

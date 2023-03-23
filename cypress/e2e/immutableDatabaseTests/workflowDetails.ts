@@ -16,7 +16,6 @@
 import { goToTab, isActiveTab, resetDB, setTokenUserViewPort } from '../../support/commands';
 
 describe('Variations of URL', () => {
-  resetDB();
   setTokenUserViewPort();
   it('Should redirect to canonical url (encoding)', () => {
     cy.visit('/workflows/github.com%2FA%2Fl');
@@ -129,7 +128,6 @@ describe('Find workflow by alias', () => {
 });
 
 describe('Test primary descriptor bubble', () => {
-  resetDB();
   it('go to a workflow with multiple files', () => {
     cy.visit('/workflows/github.com/A/l');
     goToTab('Files');
