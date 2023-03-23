@@ -61,37 +61,50 @@ export class FormattedNotebookComponent implements OnChanges {
   format(notebook: string): string {
     const json = JSON.parse(notebook);
     const cells: string[] = json['cells'] ?? [];
-    console.log(cells);
-    let output = '';
+    let output = [];
     cells.forEach((cell) => {
       const type = cell['cell_type'];
-      if (type == 'markdown') {
-        output += '<div class="markdown_cell">markdown</div>';
-        output += '<div>' + this.renderMarkdown(cell['source'].join('\n')) + '</div>';
-        output += '<div>' + this.renderMarkdown('# Heading!\nsome **text**') + '</div>';
-        output += '<div>' + this.renderMarkdown('![inline image](attachment:f>oo.png "title")') + '</div>';
-        output += '<div>moo!</div>';
-      }
-      if (type == 'code') {
-        output += '<div>code</div>';
+      if (type === 'markdown') {
+        output.push(this.convertMarkdownCell(cell));
+      } else if (type === 'code') {
+        output.push(this.convertCodeCell(cell));
       }
     });
-
-    return output;
+    return output.join('\n');
   }
 
-  renderMarkdown(markdown: string): string {
+  convertMarkdownCell(cell: any) {
+    return '<div>' + this.renderMarkdown(this.join(cell['source']), cell['attachments']) + '</div>';
+  }
+
+  convertCodeCell(cell: any) {
+    return '<div><pre>' + this.escape(this.join(cell['source'])) + '</pre></div>';
+  }
+
+  renderMarkdown(markdown: string, attachments: any): string {
     const renderer = new Renderer();
     const escape = this.escape;
-    // TODO add code to generate attachment images
+    const dataFromMimeBundle = this.dataFromMimeBundle;
     renderer.image = function (href, title, text) {
-      return '[an attachment image] ' + escape(escape(href)) + ' ' + title + ' ' + text;
+      if (href.startsWith('attachment:')) {
+        const name = href.substring('attachment:'.length);
+        const mimeBundle = attachments[name] ?? {};
+        const data = dataFromMimeBundle(mimeBundle);
+        if (data) {
+          return '<img src="data:mime-type;base64,<base64data>">';
+        }
+      }
+      return undefined;
     };
     return this.markdownWrapperService.customCompileWithOptions(markdown, { baseUrl: '', renderer: renderer });
   }
 
+  dataFromMimeBundle(mimeBundle: any) {
+    return '349034903490'; // TODO fix
+  }
+
   // TODO make better https://stackoverflow.com/questions/1787322/what-is-the-htmlspecialchars-equivalent-in-javascript
-  escape(text) {
+  escape(text: string): string {
     var map = {
       '&': '&amp;',
       '<': '&lt;',
@@ -103,5 +116,18 @@ export class FormattedNotebookComponent implements OnChanges {
     return text.replace(/[&<>"']/g, function (m) {
       return map[m];
     });
+  }
+
+  join(value: any): string {
+    if (value == null || value == undefined) {
+      return '';
+    }
+    if (value.join) {
+      return value.join('\n');
+    }
+    if (value.toString) {
+      return value.toString();
+    }
+    return '' + value;
   }
 }
