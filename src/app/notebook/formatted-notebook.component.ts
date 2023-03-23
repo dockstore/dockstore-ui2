@@ -75,13 +75,12 @@ export class FormattedNotebookComponent implements OnChanges {
 
   convertMarkdownCell(cell: any): string {
     const formattedMarkdown = this.renderMarkdown(this.join(cell['source']), cell['attachments']);
-    return '<div>' + this.sanitize(formattedMarkdown) + '</div>';
+    return this.div(formattedMarkdown, 'markdown');
   }
 
   convertCodeCell(cell: any): string {
     const formatted: string[] = [];
-    const formattedCode = this.escape(this.join(cell['source']));
-    formatted.push('<div><pre>', this.sanitize(formattedCode), '</pre></div>');
+    formatted.push(this.escapeAndDiv(this.join(cell['source']), 'code'));
     formatted.push(this.convertOutputs(cell['outputs'] ?? {}));
     return formatted.join('');
   }
@@ -91,26 +90,24 @@ export class FormattedNotebookComponent implements OnChanges {
     outputs.forEach((output) => {
       const type = output['output_type'];
       if (type === 'stream') {
-        const formattedStreamOutput = this.convertStreamOutput(output);
-        formatted.push('<div><pre>', this.sanitize(formattedStreamOutput), '</pre></div>');
+        formatted.push(this.convertStreamOutput(output));
       } else if (type === 'display_data') {
-        const formattedDisplayDataOutput = this.convertDisplayDataOutput(output);
-        formatted.push('<div>', this.sanitize(formattedDisplayDataOutput), '</div>');
+        formatted.push(this.convertDisplayDataOutput(output));
       }
     });
     return formatted.join('');
   }
 
   convertStreamOutput(output: any): string {
-    return this.escape(this.join(output['text'] ?? ''));
+    return this.escapeAndDiv(this.join(output['text']), 'output stream');
   }
 
   convertDisplayDataOutput(output: any): string {
-    return this.escape('A display_data output goes here.');
+    return this.escapeAndDiv('A display_data output goes here.', 'output display_data');
   }
 
   div(content: string, classes: string) {
-    return '<div class="' + classes + '>' + this.sanitize(content) + '</div>';
+    return '<div class="' + classes + '">' + this.sanitize(content) + '</div>';
   }
 
   escapeAndDiv(content: string, classes: string) {
