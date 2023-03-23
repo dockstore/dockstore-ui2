@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { resetDB, setTokenUserViewPort, insertNotebooks, addOrganizationAdminUser } from '../../support/commands';
+import { resetDB, setTokenUserViewPort, insertNotebooks, addOrganizationAdminUser, addToCollection } from '../../support/commands';
 
 describe('Dockstore Categories', () => {
   const categoryName = 'foooo';
@@ -29,19 +29,6 @@ describe('Dockstore Categories', () => {
 
   function typeInInput(fieldName: string, text: string) {
     cy.contains('span', fieldName).parentsUntil('.mat-form-field-wrapper').find('input').first().should('be.visible').clear().type(text);
-  }
-
-  function addToCollection(path: string) {
-    cy.visit(path);
-    cy.get('[data-cy=addToolToCollectionButton]').should('be.visible').click();
-    cy.get('[data-cy=addEntryToCollectionButton]').should('be.disabled');
-    cy.get('[data-cy=selectOrganization]').click();
-    cy.get('mat-option').contains('Dockstore').click();
-    cy.get('[data-cy=addEntryToCollectionButton]').should('be.disabled');
-    cy.get('[data-cy=selectCollection]').click();
-    cy.get('mat-option').contains(categoryDisplayName).click();
-    cy.get('[data-cy=addEntryToCollectionButton]').should('not.be.disabled').click();
-    cy.get('[data-cy=categoriesBubble]').should('contain', categoryDisplayName);
   }
 
   describe('Should be able to create a category', () => {
@@ -61,20 +48,23 @@ describe('Dockstore Categories', () => {
 
   describe('Should be able to add a tool to a category', () => {
     it('be able to add tool to category', () => {
-      addToCollection(toolPath);
+      addToCollection(toolPath, categoryDisplayName);
+      cy.get('[data-cy=categoriesBubble]').should('contain', categoryDisplayName);
     });
   });
 
   describe('Should be able to add a workflow to a category', () => {
     it('be able to add workflow to category', () => {
-      addToCollection(workflowPath);
+      addToCollection(workflowPath, categoryDisplayName);
+      cy.get('[data-cy=categoriesBubble]').should('contain', categoryDisplayName);
     });
   });
 
   describe('Should be able to add a notebook to a category', () => {
     insertNotebooks();
     it('be able to add notebook to category', () => {
-      addToCollection(notebookPath);
+      addToCollection(notebookPath, categoryDisplayName);
+      cy.get('[data-cy=categoriesBubble]').should('contain', categoryDisplayName);
     });
   });
 
