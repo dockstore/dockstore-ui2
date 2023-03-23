@@ -59,51 +59,54 @@ export class FormattedNotebookComponent implements OnChanges {
   }
 
   format(notebook: string): string {
-    const formatted: string[] = [];
     const json = JSON.parse(notebook);
-    const cells: any[] = json['cells'] ?? [];
-    cells.forEach((cell) => {
-      const type = cell['cell_type'];
-      if (type === 'markdown') {
-        formatted.push(this.convertMarkdownCell(cell));
-      } else if (type === 'code') {
-        formatted.push(this.convertCodeCell(cell));
+    const chunks = this.convertCells(json['cells']);
+    return chunks.join('\n');
+  }
+
+  formatByType(values: any, typeField: string, typeToFormatter: Map<string, (json: any) => string[]>) {
+    const formatted: string[] = [];
+    (values.forEach ? values : [values]).forEach((value) => {
+      const formatter = typeToFormatter.get(value[typeField]);
+      if (formatter != undefined) {
+        formatted.push(...formatter.call(this, value));
       }
     });
-    return formatted.join('\n');
+    return formatted;
   }
 
-  convertMarkdownCell(cell: any): string {
-    const formattedMarkdown = this.renderMarkdown(this.join(cell['source']), cell['attachments']);
-    return this.div(formattedMarkdown, 'markdown');
+  cellTypeToFormatter = new Map<string, (json: any) => string[]>([
+    ['markdown', this.convertMarkdownCell],
+    ['code', this.convertCodeCell],
+  ]);
+
+  convertCells(cells: any): string[] {
+    return this.formatByType(cells, 'cell_type', this.cellTypeToFormatter);
   }
 
-  convertCodeCell(cell: any): string {
-    const formatted: string[] = [];
-    formatted.push(this.escapeAndDiv(this.join(cell['source']), 'code'));
-    formatted.push(this.convertOutputs(cell['outputs'] ?? {}));
-    return formatted.join('');
+  convertMarkdownCell(cell: any): string[] {
+    return [this.div(this.renderMarkdown(this.join(cell['source']), cell['attachments']), 'markdown')];
   }
 
-  convertOutputs(outputs: any): string {
-    const formatted: string[] = [];
-    outputs.forEach((output) => {
-      const type = output['output_type'];
-      if (type === 'stream') {
-        formatted.push(this.convertStreamOutput(output));
-      } else if (type === 'display_data') {
-        formatted.push(this.convertDisplayDataOutput(output));
-      }
-    });
-    return formatted.join('');
+  convertCodeCell(cell: any): string[] {
+    return [this.escapeAndDiv(this.join(cell['source']), 'code'), ...this.convertOutputs(cell['outputs'])];
   }
 
-  convertStreamOutput(output: any): string {
-    return this.escapeAndDiv(this.join(output['text']), 'output stream');
+  outputTypeToFormatter = new Map<string, (json: any) => string[]>([
+    ['stream', this.convertStreamOutput],
+    ['display_data', this.convertDisplayDataOutput],
+  ]);
+
+  convertOutputs(outputs: any): string[] {
+    return this.formatByType(outputs, 'output_type', this.outputTypeToFormatter);
   }
 
-  convertDisplayDataOutput(output: any): string {
-    return this.escapeAndDiv('A display_data output goes here.', 'output display_data');
+  convertStreamOutput(output: any): string[] {
+    return [this.escapeAndDiv(this.join(output['text']), 'output stream')];
+  }
+
+  convertDisplayDataOutput(output: any): string[] {
+    return [this.escapeAndDiv('A display_data output goes here.', 'output display_data')];
   }
 
   div(content: string, classes: string) {
