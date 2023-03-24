@@ -32,6 +32,7 @@ export class FormattedNotebookComponent implements OnChanges {
 
   retrieveAndFormatNotebook() {
     this.loading = true;
+    this.formatted = '';
     this.displayError = false;
     this.sourceFileTabsService
       .getSourceFiles(this.workflow.id, this.version.id)
@@ -148,7 +149,7 @@ export class FormattedNotebookComponent implements OnChanges {
     const renderer = new Renderer();
     const escape = this.escape;
     const extractFromMimeBundle = this.extractFromMimeBundle;
-    const createHtmlFromMimeTypeAndData = this.createHtmlFromMimeTypeAndData;
+    const createImgFromMimeTypeAndData = this.createImgFromMimeTypeAndData;
     renderer.image = function (href, title, text) {
       if (href.startsWith('attachment:')) {
         const name = href.substring('attachment:'.length);
@@ -156,7 +157,7 @@ export class FormattedNotebookComponent implements OnChanges {
         const mimeObject = extractFromMimeBundle(mimeBundle);
         const mimeType = mimeObject?.mimeType;
         if (mimeType?.startsWith('image/')) {
-          return createHtmlFromMimeTypeAndData(mimeType, mimeObject?.data);
+          return createImgFromMimeTypeAndData(mimeType, mimeObject?.data, text, title);
         }
       }
       return undefined;
@@ -164,7 +165,7 @@ export class FormattedNotebookComponent implements OnChanges {
     return renderer;
   }
 
-  supportedMimeTypes = ['image/png', 'image/jpeg', 'image/gif', 'text/json', 'text/plain'];
+  supportedMimeTypes = ['image/svg+xml', 'image/svg', 'image/png', 'image/jpeg', 'image/gif', 'text/json', 'text/plain'];
 
   extractFromMimeBundle(mimeBundle: any): { mimeType: string; data: string } {
     for (const mimeType of this.supportedMimeTypes) {
@@ -176,9 +177,27 @@ export class FormattedNotebookComponent implements OnChanges {
     return undefined;
   }
 
+  createAttribute(name: string, value: string): string {
+    if (value != undefined) {
+      return ` ${name}="${this.escape(value)}"`;
+    } else {
+      return '';
+    }
+  }
+
+  createImgFromMimeTypeAndData(mimeType: string, data: string, alt: string, title: string): string {
+    return (
+      '<img' +
+      this.createAttribute('src', `data:${mimeType};base64,${data}`) +
+      this.createAttribute('alt', alt) +
+      this.createAttribute('title', title) +
+      '>'
+    );
+  }
+
   createHtmlFromMimeTypeAndData(mimeType: string, data: string): string {
     if (mimeType?.startsWith('image/')) {
-      return `<img src="data:${this.escape(mimeType)};base64,${this.escape(data)}">`;
+      return this.createImgFromMimeTypeAndData(mimeType, data, undefined, undefined);
     }
     if (mimeType?.startsWith('text/')) {
       return this.escape(data);
