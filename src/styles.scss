@@ -1397,53 +1397,46 @@ div.mat-menu-panel {
   border: solid 1px #cfd1d7;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
   border-radius: 4px;
-}
 
-.notebook .count {
-  grid-column: 1;
-  margin: 0.3em;
-  padding: 1em 0.2em 0 0;
-  text-align: right;
-}
+  .count {
+    grid-column: 1;
+    margin: 0.3em;
+    padding: 1em 0.2em 0 0;
+    text-align: right;
+    color: #888;
+  }
 
-.notebook .markdown,
-.notebook .code,
-.notebook .output {
-  grid-column: 2;
-  margin: 0.3em;
-  overflow: auto;
-}
+  .markdown,
+  .code,
+  .output {
+    grid-column: 2;
+    margin: 0.3em;
+    overflow: auto;
+  }
 
-.notebook .count,
-.notebook .code,
-.notebook .output {
-  font-family: monospace, 'Courier New', Courier;
-}
+  .count,
+  .code,
+  .output {
+    font-family: monospace, 'Courier New', Courier;
+    white-space: pre;
+  }
 
-.notebook .code,
-.notebook .output {
-  white-space: pre;
-}
+  .markdown,
+  .output {
+    padding: 0;
+  }
 
-.notebook .markdown,
-.notebook .output {
-  padding: 0;
-}
+  .code {
+    padding: 1em;
+    background-color: #fcf8fa;
+    border: solid 1px #f2edf0;
+  }
 
-.notebook .code {
-  padding: 1em;
-  background-color: #fff8f0;
-  border: solid 1px #efe8e0;
-}
+  .markdown p:first-child {
+    margin-top: 0;
+  }
 
-.notebook .count {
-  color: #888;
-}
-
-.notebook .markdown p:first-child {
-  margin-top: 0;
-}
-
-.notebook .markdown p:last-child {
-  margin-bottom: 0;
+  .markdown p:last-child {
+    margin-bottom: 0;
+  }
 }
