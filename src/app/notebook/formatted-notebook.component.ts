@@ -119,13 +119,14 @@ export class FormattedNotebookComponent implements OnChanges {
   }
 
   convertMimeBundleOutput(output: any): string[] {
-    const mimeBundle = output['data'];
-    const mimeObject = this.extractFromMimeBundle(mimeBundle);
-    const html = this.createHtmlFromMimeTypeAndData(mimeObject?.mimeType, mimeObject?.data);
+    const mimeBundle = output['data'] ?? {};
+    const metadataBundle = output['metadata'] ?? {};
+    const html = this.createHtmlFromBundles(mimeBundle, metadataBundle, undefined, undefined);
     if (html != undefined) {
       return [this.div(html, 'output display_data')];
+    } else {
+      return [];
     }
-    return [];
   }
 
   div(content: string, classes: string) {
@@ -147,25 +148,19 @@ export class FormattedNotebookComponent implements OnChanges {
 
   createAttachedImageRenderer(attachments: any): Renderer {
     const renderer = new Renderer();
-    const escape = this.escape;
-    const extractFromMimeBundle = this.extractFromMimeBundle;
-    const createImgFromMimeTypeAndData = this.createImgFromMimeTypeAndData;
+    const createHtmlFromBundles = this.createHtmlFromBundles;
     renderer.image = function (href, title, text) {
       if (href.startsWith('attachment:')) {
         const name = href.substring('attachment:'.length);
         const mimeBundle = attachments[name] ?? {};
-        const mimeObject = extractFromMimeBundle(mimeBundle);
-        const mimeType = mimeObject?.mimeType;
-        if (mimeType?.startsWith('image/')) {
-          return createImgFromMimeTypeAndData(mimeType, mimeObject?.data, text, title);
-        }
+        return createHtmlFromBundles(mimeBundle, {}, text, title);
       }
       return undefined;
     };
     return renderer;
   }
 
-  supportedMimeTypes = ['image/svg+xml', 'image/svg', 'image/png', 'image/jpeg', 'image/gif', 'text/json', 'text/plain'];
+  supportedMimeTypes = ['image/png', 'image/webp', 'image/jpeg', 'image/gif', 'text/html', 'text/json', 'text/plain'];
 
   extractFromMimeBundle(mimeBundle: any): { mimeType: string; data: string } {
     for (const mimeType of this.supportedMimeTypes) {
@@ -185,19 +180,21 @@ export class FormattedNotebookComponent implements OnChanges {
     }
   }
 
-  createImgFromMimeTypeAndData(mimeType: string, data: string, alt: string, title: string): string {
-    return (
-      '<img' +
-      this.createAttribute('src', `data:${mimeType};base64,${data}`) +
-      this.createAttribute('alt', alt) +
-      this.createAttribute('title', title) +
-      '>'
-    );
-  }
-
-  createHtmlFromMimeTypeAndData(mimeType: string, data: string): string {
+  createHtmlFromBundles(mimeBundle: any, metadataBundle: any, alt: string, title: string): string {
+    const mimeObject = this.extractFromMimeBundle(mimeBundle);
+    const mimeType = mimeObject?.mimeType;
+    const data = mimeObject?.data;
+    const metadata = metadataBundle[mimeType];
     if (mimeType?.startsWith('image/')) {
-      return this.createImgFromMimeTypeAndData(mimeType, data, undefined, undefined);
+      return (
+        '<img' +
+        this.createAttribute('src', `data:${mimeType};base64,${data}`) +
+        this.createAttribute('alt', alt) +
+        this.createAttribute('title', title) +
+        this.createAttribute('width', metadata?.width) +
+        this.createAttribute('height', metadata?.height) +
+        '>'
+      );
     }
     if (mimeType?.startsWith('text/')) {
       return this.escape(data);
