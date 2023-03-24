@@ -162,7 +162,7 @@ export class FormattedNotebookComponent implements OnChanges {
 
   supportedMimeTypes = ['image/png', 'image/webp', 'image/jpeg', 'image/gif', 'text/html', 'text/json', 'text/plain'];
 
-  extractFromMimeBundle(mimeBundle: any): { mimeType: string; data: string } {
+  selectBestFromMimeBundle(mimeBundle: any): { mimeType: string; data: string } {
     for (const mimeType of this.supportedMimeTypes) {
       const data = mimeBundle[mimeType];
       if (data != undefined) {
@@ -181,7 +181,7 @@ export class FormattedNotebookComponent implements OnChanges {
   }
 
   createHtmlFromBundles(mimeBundle: any, metadataBundle: any, alt: string, title: string): string {
-    const mimeObject = this.extractFromMimeBundle(mimeBundle);
+    const mimeObject = this.selectBestFromMimeBundle(mimeBundle);
     const mimeType = mimeObject?.mimeType;
     const data = mimeObject?.data;
     const metadata = metadataBundle[mimeType];
