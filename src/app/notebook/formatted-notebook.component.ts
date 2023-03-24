@@ -25,6 +25,7 @@ export class FormattedNotebookComponent implements OnChanges {
   loading = true;
   formatted = '';
   displayError = false;
+  codeCellCount = 0;
 
   ngOnChanges() {
     this.retrieveAndFormatNotebook();
@@ -42,10 +43,16 @@ export class FormattedNotebookComponent implements OnChanges {
       )
       .subscribe(
         (sourceFiles: SourceFile[]) => {
-          // TODO catch exception here, convert to traditional for
           sourceFiles.forEach((sourceFile) => {
             if (this.isPrimaryDescriptor(sourceFile.path)) {
-              this.formatted = this.format(sourceFile.content);
+              try {
+                this.formatted = this.format(sourceFile.content);
+              } catch (e) {
+                this.displayError = true;
+                console.log('Exception formatting notebook');
+                console.log(e.message);
+                throw e;
+              }
             }
           });
         },
@@ -60,9 +67,10 @@ export class FormattedNotebookComponent implements OnChanges {
   }
 
   format(notebook: string): string {
+    this.codeCellCount = 0;
     const json = JSON.parse(notebook);
     const chunks = this.convertCells(json['cells']);
-    return chunks.join('\n');
+    return ['<div class="notebook">', ...chunks, '</div>'].join('\n');
   }
 
   formatByType(values: any, typeField: string, typeToFormatter: Map<string, (json: any) => string[]>) {
@@ -90,7 +98,15 @@ export class FormattedNotebookComponent implements OnChanges {
   }
 
   convertCodeCell(cell: any): string[] {
-    return [this.escapeAndDiv(this.join(cell['source']), 'code'), ...this.convertOutputs(cell['outputs'])];
+    return [
+      ...this.convertCount(++this.codeCellCount),
+      this.escapeAndDiv(this.join(cell['source']), 'code'),
+      ...this.convertOutputs(cell['outputs']),
+    ];
+  }
+
+  convertCount(count: number): string[] {
+    return [this.escapeAndDiv(`In [${count}]:`, 'count')];
   }
 
   outputTypeToFormatter = new Map<string, (json: any) => string[]>([
@@ -118,7 +134,7 @@ export class FormattedNotebookComponent implements OnChanges {
   }
 
   div(content: string, classes: string) {
-    return '<div class="' + classes + '">' + this.sanitize(content) + '</div>';
+    return `<div class="${classes}">${this.sanitize(content)}</div>`;
   }
 
   escapeAndDiv(content: string, classes: string) {
@@ -154,7 +170,6 @@ export class FormattedNotebookComponent implements OnChanges {
     return renderer;
   }
 
-  // TODO document
   supportedMimeTypes = ['image/png', 'image/jpeg', 'image/gif', 'text/json', 'text/plain'];
 
   extractFromMimeBundle(mimeBundle: any): { mimeType: string; data: string } {
@@ -169,7 +184,7 @@ export class FormattedNotebookComponent implements OnChanges {
 
   createHtmlFromMimeTypeAndData(mimeType: string, data: string): string {
     if (mimeType?.startsWith('image/')) {
-      return '<img src="data:' + this.escape(mimeType) + ';base64,' + this.escape(data) + '">';
+      return `<img src="data:${this.escape(mimeType)};base64,${this.escape(data)}">`;
     }
     if (mimeType?.startsWith('text/')) {
       return this.escape(data);

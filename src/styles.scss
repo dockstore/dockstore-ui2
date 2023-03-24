@@ -1385,3 +1385,65 @@ button.inline-text-btn {
 div.mat-menu-panel {
   min-height: min-content;
 }
+
+// Notebooks styles, which are here because the HTML is dynamically generated
+// see https://stackoverflow.com/questions/56265483/angular-how-to-style-dynamically-generated-html
+.notebook {
+  display: grid;
+  grid-template-columns: 6em auto;
+  grid-template-rows: auto;
+  grid-auto-flow: row;
+  padding: 1em 1.5em 1em 1em;
+  border: solid 1px #cfd1d7;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+}
+
+.notebook .count {
+  grid-column: 1;
+  margin: 0.3em;
+  padding: 1em 0.2em 0 0;
+  text-align: right;
+}
+
+.notebook .markdown,
+.notebook .code,
+.notebook .output {
+  grid-column: 2;
+  margin: 0.3em;
+  overflow: auto;
+}
+
+.notebook .count,
+.notebook .code,
+.notebook .output {
+  font-family: monospace, 'Courier New', Courier;
+}
+
+.notebook .code,
+.notebook .output {
+  white-space: pre;
+}
+
+.notebook .markdown,
+.notebook .output {
+  padding: 0;
+}
+
+.notebook .code {
+  padding: 1em;
+  background-color: #fff8f0;
+  border: solid 1px #efe8e0;
+}
+
+.notebook .count {
+  color: #888;
+}
+
+.notebook .markdown p:first-child {
+  margin-top: 0;
+}
+
+.notebook .markdown p:last-child {
+  margin-bottom: 0;
+}
