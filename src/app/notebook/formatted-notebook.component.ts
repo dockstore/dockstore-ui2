@@ -25,7 +25,6 @@ export class FormattedNotebookComponent implements OnChanges {
   loading = true;
   formatted = '';
   displayError = false;
-  codeCellCount = 0;
 
   ngOnChanges() {
     this.retrieveAndFormatNotebook();
@@ -67,7 +66,6 @@ export class FormattedNotebookComponent implements OnChanges {
   }
 
   format(notebook: string): string {
-    this.codeCellCount = 0;
     const json = JSON.parse(notebook);
     const chunks = this.convertCells(json['cells']);
     return ['<div class="notebook">', ...chunks, '</div>'].join('\n');
@@ -99,14 +97,10 @@ export class FormattedNotebookComponent implements OnChanges {
 
   convertCodeCell(cell: any): string[] {
     return [
-      ...this.convertCount(++this.codeCellCount),
+      this.escapeAndDiv(`[${cell['execution_count'] ?? ' '}]:`, 'count'),
       this.escapeAndDiv(this.join(cell['source']), 'code'),
       ...this.convertOutputs(cell['outputs']),
     ];
-  }
-
-  convertCount(count: number): string[] {
-    return [this.escapeAndDiv(`In [${count}]:`, 'count')];
   }
 
   outputTypeToFormatter = new Map<string, (json: any) => string[]>([
