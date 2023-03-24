@@ -8,126 +8,145 @@
   </div>
 </div>
 <div class="container">
-  <div class="row-fluid mt-3">
-    <h3 class="documentation">Tools and Workflows</h3>
-    <ul>
-      <li>
-        <a [routerLink]="['/tools']"> Tools </a>
-      </li>
-      <li>
-        <a [routerLink]="['/workflows']"> Workflows </a>
-      </li>
-      <li>
-        <a [routerLink]="['/services']"> Services </a>
-        <div class="bubble preview-bubble">PREVIEW</div>
-      </li>
-      <li>
-        <a [routerLink]="['/notebooks']"> Notebooks </a>
-        <div class="bubble preview-bubble">PREVIEW</div>
-      </li>
-      <li>
-        <a [routerLink]="['/apptools']">App Tools</a>
-      </li>
-      <li>
-        <a [routerLink]="['/search']"> Search </a>
-      </li>
-      <li>
-        <a [routerLink]="['/organizations']"> Organizations </a>
-      </li>
-    </ul>
-    <h3 class="documentation">Using Dockstore</h3>
-    <ul>
-      <li>
-        <a target="_blank" [href]="Dockstore.DOCUMENTATION_URL + '/news.html'" rel="noopener noreferrer"> News and Events </a>
-      </li>
-      <li>
-        <a target="_blank" [href]="Dockstore.DOCUMENTATION_URL + '/advanced-topics/advanced-features.html'" rel="noopener noreferrer">
-          Advanced Features
-        </a>
-      </li>
-      <li>
-        <a target="_blank" [href]="Dockstore.DOCUMENTATION_URL + '/faq.html'" rel="noopener noreferrer"> FAQ </a>
-      </li>
-      <!-- add terms of service here when ready
-      <li>
-        <a href="../assets/docs/<filename here>.pdf">
-          Terms of Service
-        </a>
-      </li>
-      -->
-      <li>
-        <a target="_blank" href="../assets/docs/Dockstore_Privacy Policy_v2.5.pdf" rel="noopener noreferrer"> Privacy Policy </a>
-      </li>
-      <li>
-        <a target="_blank" href="../assets/docs/Dockstore_Terms_of_Service.pdf" rel="noopener noreferrer"> Terms of Service </a>
-      </li>
-    </ul>
-    <h3>Adding to Dockstore</h3>
-    <ul>
-      <li>
-        <a target="_blank" [href]="Dockstore.DOCUMENTATION_URL + '/getting-started/register-on-dockstore.html'" rel="noopener noreferrer">
-          Sign Up for Accounts
-        </a>
-      </li>
-      <li>
-        <a
-          target="_blank"
-          [href]="Dockstore.DOCUMENTATION_URL + '/getting-started/getting-started-with-docker.html'"
-          rel="noopener noreferrer"
-        >
-          Create Your Tool
-        </a>
-      </li>
-      <li>
-        <a
-          target="_blank"
-          [href]="Dockstore.DOCUMENTATION_URL + '/getting-started/getting-started-with-cwl.html'"
-          rel="noopener noreferrer"
-        >
-          Describe Your Tool
-        </a>
-      </li>
-      <li>
-        <a target="_blank" [href]="Dockstore.DOCUMENTATION_URL + '/getting-started/dockstore-tools.html'" rel="noopener noreferrer">
-          Register Your Tool in Dockstore
-        </a>
-      </li>
-    </ul>
-    <h3>About Dockstore</h3>
-    <ul>
-      <li>
-        <a target="_blank" [href]="Dockstore.DOCUMENTATION_URL + '/dockstore-introduction.html'" rel="noopener noreferrer">
-          About the Dockstore
-        </a>
-      </li>
-      <li>
-        <a
-          target="_blank"
-          [href]="Dockstore.DOCUMENTATION_URL + '/dockstore-introduction.html#built-with-docker-and-git'"
-          rel="noopener noreferrer"
-        >
-          Built with Quay.io and Github
-        </a>
-      </li>
-      <li>
-        <a target="_blank" [href]="Dockstore.DOCUMENTATION_URL + '/dockstore-introduction.html#strategies'" rel="noopener noreferrer">
-          Best Practices
-        </a>
-      </li>
-      <li>
-        <a
-          target="_blank"
-          [href]="Dockstore.DOCUMENTATION_URL + '/dockstore-introduction.html#promoting-standards'"
-          rel="noopener noreferrer"
-        >
-          Promoting Standards
-        </a>
-      </li>
-      <li>
-        <a target="_blank" [href]="Dockstore.DOCUMENTATION_URL + '/dockstore-introduction.html#future-plans'" rel="noopener noreferrer">
-          Future Plans
-        </a>
-      </li>
-    </ul>
+  <!-- Notebooks Warning -->
+  <mat-card class="alert alert-info mat-elevation-z mt-5 w-100" *ngIf="Dockstore.FEATURES.enableNotebooks" data-cy="notebooks-warning">
+    <mat-icon>warning</mat-icon>
+    <strong> Notice:</strong> This is an early access feature. Consider this a prototype that may be more likely to have breaking changes
+    going forward than other Dockstore features.
+  </mat-card>
+  <!-- End of Notebooks Warning -->
+  <div fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutAlign="space-between start" class="mt-5">
+    <div>
+      <h3 class="documentation">Tools and Workflows</h3>
+      <ul>
+        <li>
+          <a [routerLink]="['/tools']"> Tools </a>
+        </li>
+        <li>
+          <a [routerLink]="['/workflows']"> Workflows </a>
+        </li>
+        <li>
+          <a [routerLink]="['/services']"> Services </a>
+          <div class="bubble preview-bubble">PREVIEW</div>
+        </li>
+        <li *ngIf="Dockstore.FEATURES.enableNotebooks">
+          <a [routerLink]="['/notebooks']"> Notebooks </a>
+          <div class="bubble preview-bubble">PREVIEW</div>
+        </li>
+        <li>
+          <a [routerLink]="['/apptools']">App Tools</a>
+        </li>
+        <li>
+          <a [routerLink]="['/search']"> Search </a>
+        </li>
+        <li>
+          <a [routerLink]="['/organizations']"> Organizations </a>
+        </li>
+      </ul>
+    </div>
+    <div>
+      <h3 class="documentation">Using Dockstore</h3>
+      <ul>
+        <li>
+          <a target="_blank" [href]="Dockstore.DOCUMENTATION_URL + '/news.html'" rel="noopener noreferrer"> News and Events </a>
+        </li>
+        <li>
+          <a target="_blank" [href]="Dockstore.DOCUMENTATION_URL + '/advanced-topics/advanced-features.html'" rel="noopener noreferrer">
+            Advanced Features
+          </a>
+        </li>
+        <li>
+          <a target="_blank" [href]="Dockstore.DOCUMENTATION_URL + '/faq.html'" rel="noopener noreferrer"> FAQ </a>
+        </li>
+        <!-- add terms of service here when ready
+        <li>
+          <a href="../assets/docs/<filename here>.pdf">
+            Terms of Service
+          </a>
+        </li>
+        -->
+        <li>
+          <a target="_blank" href="../assets/docs/Dockstore_Privacy Policy_v2.5.pdf" rel="noopener noreferrer"> Privacy Policy </a>
+        </li>
+        <li>
+          <a target="_blank" href="../assets/docs/Dockstore_Terms_of_Service.pdf" rel="noopener noreferrer"> Terms of Service </a>
+        </li>
+      </ul>
+    </div>
+    <div>
+      <h3>Adding to Dockstore</h3>
+      <ul>
+        <li>
+          <a target="_blank" [href]="Dockstore.DOCUMENTATION_URL + '/getting-started/register-on-dockstore.html'" rel="noopener noreferrer">
+            Sign Up for Accounts
+          </a>
+        </li>
+        <li>
+          <a
+            target="_blank"
+            [href]="Dockstore.DOCUMENTATION_URL + '/getting-started/getting-started-with-docker.html'"
+            rel="noopener noreferrer"
+          >
+            Create Your Tool
+          </a>
+        </li>
+        <li>
+          <a
+            target="_blank"
+            [href]="Dockstore.DOCUMENTATION_URL + '/getting-started/getting-started-with-cwl.html'"
+            rel="noopener noreferrer"
+          >
+            Describe Your Tool
+          </a>
+        </li>
+        <li>
+          <a target="_blank" [href]="Dockstore.DOCUMENTATION_URL + '/getting-started/dockstore-tools.html'" rel="noopener noreferrer">
+            Register Your Tool in Dockstore
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div>
+      <h3>About Dockstore</h3>
+      <ul>
+        <li>
+          <a target="_blank" [href]="Dockstore.DOCUMENTATION_URL + '/dockstore-introduction.html'" rel="noopener noreferrer">
+            About Dockstore
+          </a>
+        </li>
+        <li>
+          <a
+            target="_blank"
+            [href]="Dockstore.DOCUMENTATION_URL + '/dockstore-introduction.html#built-with-docker-and-git'"
+            rel="noopener noreferrer"
+          >
+            Built with Quay.io and Github
+          </a>
+        </li>
+        <li>
+          <a
+            target="_blank"
+            [href]="Dockstore.DOCUMENTATION_URL + '/advanced-topics/best-practices/best-practices-secure-fair-workflows.html'"
+            rel="noopener noreferrer"
+          >
+            Best Practices
+          </a>
+        </li>
+        <li>
+          <a
+            target="_blank"
+            [href]="Dockstore.DOCUMENTATION_URL + '/dockstore-introduction.html#promoting-standards'"
+            rel="noopener noreferrer"
+          >
+            Promoting Standards
+          </a>
+        </li>
+        <li>
+          <a target="_blank" [href]="Dockstore.DOCUMENTATION_URL + '/dockstore-introduction.html#future-plans'" rel="noopener noreferrer">
+            Future Plans
+          </a>
+        </li>
+      </ul>
+    </div>
   </div>
 </div>

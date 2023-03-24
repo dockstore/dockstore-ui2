@@ -5,10 +5,30 @@
     <app-header>My Dockstore: Dashboard</app-header>
     <app-news-notifications class="w-100"></app-news-notifications>
     <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="2.5rem" class="p-4">
+      <!-- Notebooks Warning -->
+      <mat-card class="alert alert-info mat-elevation-z w-100" *ngIf="Dockstore.FEATURES.enableNotebooks" data-cy="notebooks-warning">
+        <mat-icon>warning</mat-icon>
+        <strong> Notice:</strong> This is an early access feature. Consider this a prototype that may be more likely to have breaking
+        changes going forward than other Dockstore features.
+      </mat-card>
+      <!-- End of Notebooks Warning -->
       <div fxFlex fxLayout fxLayout.lt-md="column" fxLayoutGap="2.5rem" class="w-100">
         <app-entry-box fxFlex="33" fxFlex.lt-md="100" class="entry-holder" entryType="WORKFLOW"></app-entry-box>
         <app-entry-box fxFlex="33" fxFlex.lt-md="100" class="entry-holder" entryType="TOOL"></app-entry-box>
-        <app-entry-box fxFlex="33" fxFlex.lt-md="100" class="entry-holder" entryType="SERVICE"></app-entry-box>
+        <app-entry-box
+          fxFlex="33"
+          fxFlex.lt-md="100"
+          class="entry-holder"
+          entryType="SERVICE"
+          *ngIf="Dockstore.FEATURES.enableNotebooks === false"
+        ></app-entry-box>
+        <app-entry-box
+          fxFlex="33"
+          fxFlex.lt-md="100"
+          class="entry-holder"
+          entryType="NOTEBOOK"
+          *ngIf="Dockstore.FEATURES.enableNotebooks"
+        ></app-entry-box>
       </div>
       <div fxFlex fxLayout fxLayout.lt-md="column" fxLayoutGap="2.5rem" class="w-100">
         <app-organization-box fxFlex="50" fxFlex.lt-md="100" class="updates-holder"></app-organization-box>

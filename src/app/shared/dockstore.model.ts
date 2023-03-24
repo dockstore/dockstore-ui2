@@ -103,5 +103,6 @@ export class Dockstore {
     enableMultiCloudLaunchWithDNAstack: false,
     enableOrcidExport: true,
     enableNewDashboard: false,
+    enableNotebooks: false,
   };
 }

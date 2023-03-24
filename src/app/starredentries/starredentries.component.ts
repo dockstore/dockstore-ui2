@@ -14,6 +14,7 @@ import { OrgLogoService } from '../shared/org-logo.service';
 import { EntryType } from '../shared/enum/entry-type';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Location } from '@angular/common';
+import { Dockstore } from 'app/shared/dockstore.model';
 
 @Component({
   selector: 'app-starredentries',
@@ -21,6 +22,7 @@ import { Location } from '@angular/common';
   styleUrls: ['./starredentries.component.scss'],
 })
 export class StarredEntriesComponent extends Base implements OnInit {
+  Dockstore = Dockstore;
   starredTools: Array<ExtendedDockstoreTool> | null;
   starredWorkflows: Array<ExtendedWorkflow> | null;
   starredServices: Array<Entry> | null;
@@ -33,7 +35,7 @@ export class StarredEntriesComponent extends Base implements OnInit {
   // Default to workflows tab
   currentTab = 'workflows';
   selected = new UntypedFormControl();
-  // TO DO: Add 'services' between tools and orgs when implemented
+  // TO DO: Add 'services' between notebooks and organizations when implemented
   validTabs = ['workflows', 'tools', 'notebooks', 'organizations'];
 
   constructor(

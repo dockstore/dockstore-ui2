@@ -69,6 +69,7 @@ interface FacetInfo {
 export class SearchService {
   private static readonly WORKFLOWS_TAB_INDEX = 0;
   private static readonly TOOLS_TAB_INDEX = 1;
+  private static readonly NOTEBOOKS_TAB_INDEX = 2;
   private searchInfoSource = new BehaviorSubject<any>(null);
   public toSaveSearch$ = new BehaviorSubject<boolean>(false);
   public searchTerm$ = new BehaviorSubject<boolean>(false);
@@ -166,12 +167,28 @@ export class SearchService {
     private alertService: AlertService
   ) {}
 
-  static convertTabIndexToEntryType(index: number): 'tools' | 'workflows' {
-    return index === this.WORKFLOWS_TAB_INDEX ? 'workflows' : 'tools';
+  static convertTabIndexToEntryType(index: number): 'tools' | 'workflows' | 'notebooks' | null {
+    switch (index) {
+      case this.WORKFLOWS_TAB_INDEX:
+        return 'workflows';
+      case this.TOOLS_TAB_INDEX:
+        return 'tools';
+      case this.NOTEBOOKS_TAB_INDEX:
+        return 'notebooks';
+    }
+    return null;
   }
 
-  static convertEntryTypeToTabIndex(entryType: string): number {
-    return entryType === 'workflows' ? this.WORKFLOWS_TAB_INDEX : this.TOOLS_TAB_INDEX;
+  static convertEntryTypeToTabIndex(entryType: string): number | null {
+    switch (entryType) {
+      case 'workflows':
+        return this.WORKFLOWS_TAB_INDEX;
+      case 'tools':
+        return this.TOOLS_TAB_INDEX;
+      case 'notebooks':
+        return this.NOTEBOOKS_TAB_INDEX;
+    }
+    return null;
   }
 
   /**
@@ -187,7 +204,7 @@ export class SearchService {
     b: DockstoreTool | Workflow,
     attribute: string,
     direction: SortDirection,
-    entryType: 'tool' | 'workflow'
+    entryType: 'tool' | 'workflow' | 'notebook'
   ) {
     // For sorting tools by name, sort tool_path
     // For sorting workflows by name, sort full_workflow_path
@@ -678,11 +695,7 @@ export class SearchService {
    * This navigates to the correct page and clears all facets, search text, and advanced search
    */
   saveCurrentTabAndClear(index: number) {
-    if (index === SearchService.WORKFLOWS_TAB_INDEX) {
-      this.router.navigateByUrl('search?entryType=workflows&searchMode=files');
-    } else {
-      this.router.navigateByUrl('search?entryType=tools&searchMode=files');
-    }
+    this.router.navigateByUrl('search?entryType=' + SearchService.convertTabIndexToEntryType(index) + '&searchMode=files');
   }
 
   goToCleanSearch() {

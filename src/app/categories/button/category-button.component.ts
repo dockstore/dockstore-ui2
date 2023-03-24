@@ -30,8 +30,12 @@ export class CategoryButtonComponent implements OnChanges {
 
   ngOnChanges(): void {
     const isWorkflow: boolean = this.entryType.startsWith('workflow');
-    this.className = isWorkflow ? 'workflow-background' : 'container-background';
+    this.className = isWorkflow ? 'workflow-background' : 'tool-background';
     this.routerLink = ['/search'];
-    this.queryParams = {'categories.name.keyword': this.category.name, 'entryType': isWorkflow ? 'workflows' : 'tools', 'searchMode': 'files'};
+    this.queryParams = {
+      'categories.name.keyword': this.category.name,
+      entryType: isWorkflow ? 'workflows' : 'tools',
+      searchMode: 'files',
+    };
   }
 }

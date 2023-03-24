@@ -6,6 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { RegisterToolComponent } from 'app/container/register-tool/register-tool.component';
 import { AlertService } from 'app/shared/alert/state/alert.service';
 import { TwitterService } from 'app/shared/twitter.service';
+import { Dockstore } from 'app/shared/dockstore.model';
 
 @Component({
   selector: 'app-new-dashboard',
@@ -13,6 +14,7 @@ import { TwitterService } from 'app/shared/twitter.service';
   styleUrls: ['./new-dashboard.component.scss'],
 })
 export class NewDashboardComponent extends Base implements OnInit {
+  public Dockstore = Dockstore;
   @ViewChild('twitter') twitterElement: ElementRef;
   constructor(
     private registerToolService: RegisterToolService,

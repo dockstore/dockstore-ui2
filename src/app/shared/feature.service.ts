@@ -12,5 +12,7 @@ export class FeatureService {
     const gitHubAppCallBackToNewDashBoard = urlSearchParams.has('state') && urlSearchParams.get('state').includes('newDashboard');
     const newDashboard = urlSearchParams.has('newDashboard') || gitHubAppCallBackToNewDashBoard;
     Dockstore.FEATURES.enableNewDashboard = newDashboard;
+    const notebooks = urlSearchParams.has('notebooks');
+    Dockstore.FEATURES.enableNotebooks = notebooks;
   }
 }

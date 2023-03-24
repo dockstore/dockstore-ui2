@@ -34,9 +34,7 @@
     </div>
   </div>
   <ng-template #search>
-    <img *ngIf="(entryType$ | async) === EntryType.BioWorkflow" src="../assets/svg/sub-nav/workflow.svg" alt="workflow icon" />
-    <img *ngIf="(entryType$ | async) === EntryType.Service" src="../assets/svg/sub-nav/services.svg" alt="service icon" />
-    <img *ngIf="(entryType$ | async) === EntryType.Notebook" src="../assets/svg/sub-nav/notebook.svg" alt="notebook icon" />
+    <img src="../assets/svg/sub-nav/{{ entryType$ | async }}.svg" alt="{{ entryType$ | async }} icon" />
     <span class="mx-1">{{ entryPageTitle$ | async | titlecase }}</span>
     <div *ngIf="(entryType$ | async) === EntryType.Service || (entryType$ | async) === EntryType.Notebook" class="bubble preview-bubble">
       PREVIEW
@@ -44,5 +42,16 @@
   </ng-template>
 </app-header>
 <div class="container">
+  <!-- Notebooks Warning -->
+  <mat-card
+    class="alert alert-info mat-elevation-z mt-4 w-100"
+    *ngIf="(entryType$ | async) === EntryType.Notebook"
+    data-cy="notebooks-warning"
+  >
+    <mat-icon>warning</mat-icon>
+    <strong> Notice:</strong> This is an early access feature. Consider this a prototype that may be more likely to have breaking changes
+    going forward than other Dockstore features.
+  </mat-card>
+  <!-- End of Notebooks Warning -->
   <router-outlet></router-outlet>
 </div>
