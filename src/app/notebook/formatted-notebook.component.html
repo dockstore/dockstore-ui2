@@ -1,4 +1,2 @@
-<app-loading class="w-100" [loading]="loading">
-  <div *ngIf="!displayError" [innerHtml]="formatted"></div>
-  <div *ngIf="displayError">An error occurred.</div>
-</app-loading>
+<div *ngIf="displayError">An error occurred.</div>
+<div #notebookTarget></div>

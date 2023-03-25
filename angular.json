@@ -29,6 +29,7 @@
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.css",
               "node_modules/academicons/css/academicons.css",
+              "node_modules/katex/dist/katex.min.css",
               "src/styles.scss",
               "src/material.scss"
             ],
@@ -50,7 +51,9 @@
               "node_modules/ace-builds/src-min-noconflict/mode-perl.js",
               "node_modules/ace-builds/src-min-noconflict/theme-idle_fingers.js",
               "node_modules/ace-builds/src-min-noconflict/ext-searchbox.js",
-              "node_modules/bootstrap/dist/js/bootstrap.js"
+              "node_modules/bootstrap/dist/js/bootstrap.js",
+              "node_modules/katex/dist/katex.min.js",
+              "node_modules/katex/dist/contrib/auto-render.min.js",
             ]
           },
           "configurations": {

@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, ElementRef, Input, OnChanges, ViewChild } from '@angular/core';
 import { FileService } from 'app/shared/file.service';
 import { SourceFile, Workflow, WorkflowVersion } from 'app/shared/openapi';
 import { finalize } from 'rxjs/operators';
@@ -22,6 +22,7 @@ export class FormattedNotebookComponent implements OnChanges {
   @Input() workflow: Workflow;
   @Input() version: WorkflowVersion;
   @Input() baseUrl: string;
+  @ViewChild('notebookTarget') target: ElementRef;
   loading = true;
   formatted = '';
   displayError = false;
@@ -46,7 +47,16 @@ export class FormattedNotebookComponent implements OnChanges {
           sourceFiles.forEach((sourceFile) => {
             if (this.isPrimaryDescriptor(sourceFile.path)) {
               try {
-                this.formatted = this.format(sourceFile.content);
+                this.target.nativeElement.innerHTML = this.format(sourceFile.content);
+                for (const element of this.target.nativeElement.getElementsByClassName('markdown')) {
+                  this.markdownWrapperService.katex(element);
+                }
+                /*
+                TODO syntax highlighting
+                for (const element of this.target.nativeElement.getElementsByClassName('code')) {
+                  this.markdownWrapperService.katex(element);
+                }
+                */
               } catch (e) {
                 this.displayError = true;
                 console.log('Exception formatting notebook');
@@ -93,7 +103,15 @@ export class FormattedNotebookComponent implements OnChanges {
   }
 
   convertMarkdownCell(cell: any): string[] {
-    return [this.div(this.renderMarkdown(this.join(cell['source']), cell['attachments']), 'markdown')];
+    return [
+      this.div(
+        this.renderMarkdown(
+          this.join(cell['source']) + ' $a=b^2b^2b^2b^2b^2b^2b^2b^2b^2b^2b^2b^2b^2b^2b^2b^2b^2b^2b^2b^2b^2b^2b^2b^2b^2b^2b^2b^2b^2b^2$',
+          cell['attachments']
+        ),
+        'markdown'
+      ),
+    ];
   }
 
   convertCodeCell(cell: any): string[] {

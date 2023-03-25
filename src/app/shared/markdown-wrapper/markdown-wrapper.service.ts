@@ -44,4 +44,8 @@ export class MarkdownWrapperService {
     // Passes HTML to DOMPurify to be sanitized.
     return DOMPurify.sanitize(html);
   }
+
+  katex(element) {
+    this.markdownService.render(element, { katex: true });
+  }
 }
