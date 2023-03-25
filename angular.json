@@ -29,9 +29,10 @@
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.css",
               "node_modules/academicons/css/academicons.css",
-              "node_modules/katex/dist/katex.min.css",
+              "node_modules/katex/dist/katex.css",
+              "node_modules/prismjs/themes/prism-dark.css",
               "src/styles.scss",
-              "src/material.scss"
+              "src/material.scss",
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.js",
@@ -52,8 +53,10 @@
               "node_modules/ace-builds/src-min-noconflict/theme-idle_fingers.js",
               "node_modules/ace-builds/src-min-noconflict/ext-searchbox.js",
               "node_modules/bootstrap/dist/js/bootstrap.js",
-              "node_modules/katex/dist/katex.min.js",
-              "node_modules/katex/dist/contrib/auto-render.min.js",
+              "node_modules/katex/dist/katex.js",
+              "node_modules/katex/dist/contrib/auto-render.js",
+              "node_modules/prismjs/prism.js",
+              "node_modules/prismjs/components/prism-python.js",
             ]
           },
           "configurations": {

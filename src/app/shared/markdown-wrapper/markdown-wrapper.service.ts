@@ -48,4 +48,8 @@ export class MarkdownWrapperService {
   katex(element) {
     this.markdownService.render(element, { katex: true });
   }
+
+  highlight(element) {
+    this.markdownService.highlight(element);
+  }
 }

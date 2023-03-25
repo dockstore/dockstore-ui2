@@ -51,12 +51,12 @@ export class FormattedNotebookComponent implements OnChanges {
                 for (const element of this.target.nativeElement.getElementsByClassName('markdown')) {
                   this.markdownWrapperService.katex(element);
                 }
-                /*
-                TODO syntax highlighting
                 for (const element of this.target.nativeElement.getElementsByClassName('code')) {
-                  this.markdownWrapperService.katex(element);
+                  console.log('CODE ' + element);
+                  this.markdownWrapperService.highlight(element);
                 }
-                */
+                console.log('PRISM ' + window['Prism']);
+                console.log('KATEX ' + window['katex']);
               } catch (e) {
                 this.displayError = true;
                 console.log('Exception formatting notebook');
@@ -117,7 +117,7 @@ export class FormattedNotebookComponent implements OnChanges {
   convertCodeCell(cell: any): string[] {
     return [
       this.escapeAndDiv(`[${cell['execution_count'] ?? ' '}]:`, 'count'),
-      this.escapeAndDiv(this.join(cell['source']), 'code'),
+      this.escapeAndCode(/*this.join(cell['source'])*/ 'for x in [1, 2, 3]:\n  if x > 3:\n    print(x)', 'code'),
       ...this.convertOutputs(cell['outputs']),
     ];
   }
@@ -151,8 +151,16 @@ export class FormattedNotebookComponent implements OnChanges {
     return `<div class="${classes}">${this.sanitize(content)}</div>`;
   }
 
+  code(content: string, classes: string) {
+    return `<div class="${classes}"><pre><code class="language-python">${this.sanitize(content)}</code></pre></div>`;
+  }
+
   escapeAndDiv(content: string, classes: string) {
     return this.div(this.escape(content), classes);
+  }
+
+  escapeAndCode(content: string, classes: string) {
+    return this.code(this.escape(content), classes);
   }
 
   sanitize(html: string): string {
