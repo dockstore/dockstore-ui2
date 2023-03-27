@@ -1,6 +1,11 @@
 <app-loading [loading]="loading$ | async">
   <div *ngIf="events?.length > 0 || isLoading; else noEvents">
-    <div *ngFor="let event of events" class="size-small widget-list-items event" fxLayout fxLayoutAlign="space-between center">
+    <div
+      *ngFor="let event of events | slice: 0:displayLimit"
+      class="size-small widget-list-items event"
+      fxLayout
+      fxLayoutAlign="space-between center"
+    >
       <div fxLayout>
         <a [routerLink]="'/users/' + event.initiatorUser?.username">
           <img src="{{ event?.initiatorUser?.avatarUrl }}" alt="User avatar" />

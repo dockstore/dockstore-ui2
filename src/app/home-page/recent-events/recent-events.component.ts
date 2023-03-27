@@ -35,12 +35,16 @@ export class RecentEventsComponent extends Base implements OnInit {
   public EventType = Event.TypeEnum;
   public EntryType = EntryType;
   public readonly starringDocUrl = `${Dockstore.DOCUMENTATION_URL}/end-user-topics/starring.html#starring-tools-and-workflows`;
+  public displayLimit: number;
+  private userPageDisplayLimit = 10;
+  private dashboardDisplayLimit = 4;
   private username: string;
-  private supportedEventTypes: string[];
+  private supportedEventTypes: Event.TypeEnum[];
   private readonly supportedUserEventTypes = [
     Event.TypeEnum.ADDVERSIONTOENTRY,
     Event.TypeEnum.CREATECOLLECTION,
     Event.TypeEnum.ADDTOCOLLECTION,
+    Event.TypeEnum.REMOVEFROMCOLLECTION,
     Event.TypeEnum.PUBLISHENTRY,
     Event.TypeEnum.UNPUBLISHENTRY,
     Event.TypeEnum.MODIFYCOLLECTION,
@@ -98,11 +102,14 @@ export class RecentEventsComponent extends Base implements OnInit {
           this.alertService.detailedError(error);
         }
       );
-      this.getAUsersEvents();
       this.loading$ = this.recentEventsQuery.selectLoading();
+      this.displayLimit = this.userPageDisplayLimit;
+      this.supportedEventTypes = this.supportedUserEventTypes;
+      this.getAUsersEvents();
     } else {
       // On dashboard, get my events
       this.isLoading = true;
+      this.displayLimit = this.dashboardDisplayLimit;
       this.supportedEventTypes = this.eventType === 'SELF_ORGANIZATIONS' ? this.supportedOrgEventTypes : this.supportedStarredEventTypes;
       this.getMyEventsByType();
     }
@@ -112,14 +119,12 @@ export class RecentEventsComponent extends Base implements OnInit {
    * Get another user's events when viewing their user page
    */
   private getAUsersEvents() {
-    this.recentEventsQuery.selectAll({ filterBy: (entity) => this.supportedUserEventTypes.includes(entity.type) }).subscribe(
-      (events) => {
-        this.events = events;
-      },
-      (error: HttpErrorResponse) => {
-        this.alertService.detailedError(error);
-      }
-    );
+    this.recentEventsQuery
+      .selectAll()
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((events) => {
+        this.events = this.filterByEventType(events);
+      });
   }
 
   /**
@@ -134,12 +139,21 @@ export class RecentEventsComponent extends Base implements OnInit {
       )
       .subscribe(
         (events) => {
-          this.events = events.filter((event) => this.supportedEventTypes.includes(event.type)).slice(0, 4);
+          this.events = this.filterByEventType(events);
         },
         (error: HttpErrorResponse) => {
           this.alertService.detailedError(error);
         }
       );
+  }
+
+  /**
+   * Filter events by supported event types
+   * @param events
+   * @returns Event[]
+   */
+  private filterByEventType(events: Event[]): Event[] {
+    return events.filter((event) => this.supportedEventTypes.includes(event.type));
   }
 
   add(recentEvent: Event) {
