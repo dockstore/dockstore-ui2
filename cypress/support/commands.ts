@@ -100,6 +100,19 @@ export function setTokenUserViewPortCurator() {
   });
 }
 
+// Sets it to the user where id = 5. Is a platform partner.
+export function setTokenUserViewPortPlatformPartner() {
+  beforeEach(() => {
+    // Login by adding user obj and token to local storage
+    localStorage.setItem('ng2-ui-auth_token', 'imamafakedockstoretoken3');
+  });
+}
+
+// Update the user user_platform_partner to be a platform partner
+export function setPlatformPartnerRole() {
+  invokeSql("update enduser set platformpartner=true where username = 'user_platform_partner'");
+}
+
 export function goToUnexpandedSidebarEntry(organization: string, repo: RegExp | string) {
   // This is needed because of a possible defect in the implementation.
   // All expansion panels are shown before any of them are expanded (after some logic of choosing which to expanded).
