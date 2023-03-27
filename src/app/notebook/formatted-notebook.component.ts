@@ -22,7 +22,7 @@ export class FormattedNotebookComponent implements OnChanges {
   @Input() workflow: Workflow;
   @Input() version: WorkflowVersion;
   @Input() baseUrl: string;
-  @ViewChild('notebookTarget') target: ElementRef;
+  @ViewChild('notebookTarget') notebookRef: ElementRef;
   loading = true;
   formatted = '';
   displayError = false;
@@ -47,11 +47,12 @@ export class FormattedNotebookComponent implements OnChanges {
           sourceFiles.forEach((sourceFile) => {
             if (this.isPrimaryDescriptor(sourceFile.path)) {
               try {
-                this.target.nativeElement.innerHTML = this.format(sourceFile.content);
-                for (const element of this.target.nativeElement.getElementsByClassName('markdown')) {
+                const notebookElement = this.notebookRef.nativeElement;
+                notebookElement.innerHTML = this.format(sourceFile.content);
+                for (const element of notebookElement.getElementsByClassName('markdown')) {
                   this.markdownWrapperService.katex(element);
                 }
-                for (const element of this.target.nativeElement.querySelectorAll('code')) {
+                for (const element of notebookElement.querySelectorAll('code')) {
                   this.markdownWrapperService.highlight(element.parent);
                 }
               } catch (e) {
