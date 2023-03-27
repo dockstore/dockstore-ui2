@@ -21,7 +21,7 @@ import { AlertService } from '../../shared/alert/state/alert.service';
 import { RefreshService } from '../../shared/refresh.service';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { WorkflowService } from '../../shared/state/workflow.service';
-import { AppTool, BioWorkflow, DockstoreTool, Service, Workflow } from '../../shared/swagger';
+import { AppTool, BioWorkflow, DockstoreTool, Service, Notebook, Workflow } from '../../shared/swagger';
 import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
 import { SourceFile } from '../../shared/swagger/model/sourceFile';
 import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
@@ -60,7 +60,7 @@ export class VersionModalService {
    * @memberof VersionModalService
    */
   saveVersion(
-    workflow: BioWorkflow | Service | AppTool,
+    workflow: BioWorkflow | Service | AppTool | Notebook,
     originalVersion: WorkflowVersion,
     workflowVersion: WorkflowVersion,
     originalTestParameterFilePaths,
@@ -77,7 +77,7 @@ export class VersionModalService {
     this.alertService.start(message1);
     this.workflowsService.updateWorkflowVersion(workflowId, [workflowVersion]).subscribe(
       (response) => {
-        const updatedWorkflow: BioWorkflow | Service | AppTool = { ...workflow, workflowVersions: response };
+        const updatedWorkflow: BioWorkflow | Service | AppTool | Notebook = { ...workflow, workflowVersions: response };
         this.workflowService.setWorkflow(updatedWorkflow);
         if (workflowMode === ModeEnum.HOSTED) {
           this.alertService.detailedSuccess();

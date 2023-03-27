@@ -69,7 +69,7 @@ describe('CodeEditorListService', () => {
     expect(service.determineFilesToAdd(ToolDescriptor.TypeEnum.CWL, 'descriptor', [])).toEqual([primaryCWLFile]);
     expect(service.determineFilesToAdd(ToolDescriptor.TypeEnum.WDL, 'descriptor', [])).toEqual([primaryWDLFile]);
     expect(service.determineFilesToAdd(ToolDescriptor.TypeEnum.NFL, 'descriptor', [])).toEqual(primaryNFLFiles);
-    expect(service.determineFilesToAdd(ToolDescriptor.TypeEnum.GXFORMAT2, 'descriptor', [])).toEqual([primaryGalaxyFile]);
+    expect(service.determineFilesToAdd(ToolDescriptor.TypeEnum.GALAXY, 'descriptor', [])).toEqual([primaryGalaxyFile]);
 
     const testSMKFile = { content: '', absolutePath: '/test.smk.json', path: '/test.smk.json', type: SourceFile.TypeEnum.SMKTESTPARAMS };
     const testCWLFile = { content: '', absolutePath: '/test.cwl.json', path: '/test.cwl.json', type: SourceFile.TypeEnum.CWLTESTJSON };
@@ -98,22 +98,20 @@ describe('CodeEditorListService', () => {
     expect(service.determineFilesToAdd(ToolDescriptor.TypeEnum.CWL, 'testParam', [])).toEqual([testCWLFile]);
     expect(service.determineFilesToAdd(ToolDescriptor.TypeEnum.WDL, 'testParam', [])).toEqual([testWDLFile]);
     expect(service.determineFilesToAdd(ToolDescriptor.TypeEnum.NFL, 'testParam', [])).toEqual([testNFLFile]);
-    expect(service.determineFilesToAdd(ToolDescriptor.TypeEnum.GXFORMAT2, 'testParam', [])).toEqual([testGalaxyFile]);
+    expect(service.determineFilesToAdd(ToolDescriptor.TypeEnum.GALAXY, 'testParam', [])).toEqual([testGalaxyFile]);
 
     // When there's already the primary descriptor
     expect(service.determineFilesToAdd(ToolDescriptor.TypeEnum.CWL, 'descriptor', [primaryCWLFile])).toEqual([secondaryCWLFile]);
     expect(service.determineFilesToAdd(ToolDescriptor.TypeEnum.WDL, 'descriptor', [primaryWDLFile])).toEqual([secondaryWDLFile]);
     expect(service.determineFilesToAdd(ToolDescriptor.TypeEnum.NFL, 'descriptor', primaryNFLFiles)).toEqual([secondaryNFLFile]);
-    expect(service.determineFilesToAdd(ToolDescriptor.TypeEnum.GXFORMAT2, 'descriptor', [primaryGalaxyFile])).toEqual([
-      secondaryGalaxyFile,
-    ]);
+    expect(service.determineFilesToAdd(ToolDescriptor.TypeEnum.GALAXY, 'descriptor', [primaryGalaxyFile])).toEqual([secondaryGalaxyFile]);
 
     // When there's already a test parameter file
     expect(service.determineFilesToAdd(ToolDescriptor.TypeEnum.SMK, 'testParam', [testSMKFile])).toEqual([testSMKFile]);
     expect(service.determineFilesToAdd(ToolDescriptor.TypeEnum.CWL, 'testParam', [testCWLFile])).toEqual([testCWLFile]);
     expect(service.determineFilesToAdd(ToolDescriptor.TypeEnum.WDL, 'testParam', [testWDLFile])).toEqual([testWDLFile]);
     expect(service.determineFilesToAdd(ToolDescriptor.TypeEnum.NFL, 'testParam', [testNFLFile])).toEqual([testNFLFile]);
-    expect(service.determineFilesToAdd(ToolDescriptor.TypeEnum.GXFORMAT2, 'testParam', [testGalaxyFile])).toEqual([testGalaxyFile]);
+    expect(service.determineFilesToAdd(ToolDescriptor.TypeEnum.GALAXY, 'testParam', [testGalaxyFile])).toEqual([testGalaxyFile]);
 
     expect(service.determineFilesToAdd(ToolDescriptor.TypeEnum.CWL, 'dockerfile', [])).toEqual([testDockerFile]);
     expect(service.determineFilesToAdd(ToolDescriptor.TypeEnum.WDL, 'dockerfile', [])).toEqual([testDockerFile]);
@@ -143,8 +141,8 @@ describe('CodeEditorListService', () => {
     expect(service.showSourcefile(SourceFile.TypeEnum.NEXTFLOW, 'descriptor', ToolDescriptor.TypeEnum.NFL)).toBe(true);
     expect(service.showSourcefile(SourceFile.TypeEnum.NEXTFLOWCONFIG, 'descriptor', ToolDescriptor.TypeEnum.NFL)).toBe(true);
     expect(service.showSourcefile(SourceFile.TypeEnum.NEXTFLOWTESTPARAMS, 'descriptor', ToolDescriptor.TypeEnum.NFL)).toBe(false);
-    expect(service.showSourcefile(SourceFile.TypeEnum.DOCKSTOREGXFORMAT2, 'descriptor', ToolDescriptor.TypeEnum.GXFORMAT2)).toBe(true);
-    expect(service.showSourcefile(SourceFile.TypeEnum.GXFORMAT2TESTFILE, 'descriptor', ToolDescriptor.TypeEnum.GXFORMAT2)).toBe(false);
+    expect(service.showSourcefile(SourceFile.TypeEnum.DOCKSTOREGXFORMAT2, 'descriptor', ToolDescriptor.TypeEnum.GALAXY)).toBe(true);
+    expect(service.showSourcefile(SourceFile.TypeEnum.GXFORMAT2TESTFILE, 'descriptor', ToolDescriptor.TypeEnum.GALAXY)).toBe(false);
 
     // Test file tab
     expect(service.showSourcefile(SourceFile.TypeEnum.DOCKSTORESMK, 'testParam', ToolDescriptor.TypeEnum.SMK)).toBe(false);
@@ -156,8 +154,8 @@ describe('CodeEditorListService', () => {
     expect(service.showSourcefile(SourceFile.TypeEnum.NEXTFLOW, 'testParam', ToolDescriptor.TypeEnum.NFL)).toBe(false);
     expect(service.showSourcefile(SourceFile.TypeEnum.NEXTFLOWCONFIG, 'testParam', ToolDescriptor.TypeEnum.NFL)).toBe(false);
     expect(service.showSourcefile(SourceFile.TypeEnum.NEXTFLOWTESTPARAMS, 'testParam', ToolDescriptor.TypeEnum.NFL)).toBe(true);
-    expect(service.showSourcefile(SourceFile.TypeEnum.DOCKSTOREGXFORMAT2, 'testParam', ToolDescriptor.TypeEnum.GXFORMAT2)).toBe(false);
-    expect(service.showSourcefile(SourceFile.TypeEnum.GXFORMAT2TESTFILE, 'testParam', ToolDescriptor.TypeEnum.GXFORMAT2)).toBe(true);
+    expect(service.showSourcefile(SourceFile.TypeEnum.DOCKSTOREGXFORMAT2, 'testParam', ToolDescriptor.TypeEnum.GALAXY)).toBe(false);
+    expect(service.showSourcefile(SourceFile.TypeEnum.GXFORMAT2TESTFILE, 'testParam', ToolDescriptor.TypeEnum.GALAXY)).toBe(true);
 
     // Dockerfile tab, everything is true because something else handles it...?
     expect(service.showSourcefile(SourceFile.TypeEnum.DOCKSTORECWL, 'dockerfile', ToolDescriptor.TypeEnum.CWL)).toBe(true);
@@ -167,8 +165,8 @@ describe('CodeEditorListService', () => {
     expect(service.showSourcefile(SourceFile.TypeEnum.NEXTFLOW, 'dockerfile', ToolDescriptor.TypeEnum.NFL)).toBe(true);
     expect(service.showSourcefile(SourceFile.TypeEnum.NEXTFLOWCONFIG, 'dockerfile', ToolDescriptor.TypeEnum.NFL)).toBe(true);
     expect(service.showSourcefile(SourceFile.TypeEnum.NEXTFLOWTESTPARAMS, 'dockerfile', ToolDescriptor.TypeEnum.NFL)).toBe(true);
-    expect(service.showSourcefile(SourceFile.TypeEnum.DOCKSTOREGXFORMAT2, 'dockerfile', ToolDescriptor.TypeEnum.GXFORMAT2)).toBe(true);
-    expect(service.showSourcefile(SourceFile.TypeEnum.GXFORMAT2TESTFILE, 'dockerfile', ToolDescriptor.TypeEnum.GXFORMAT2)).toBe(true);
+    expect(service.showSourcefile(SourceFile.TypeEnum.DOCKSTOREGXFORMAT2, 'dockerfile', ToolDescriptor.TypeEnum.GALAXY)).toBe(true);
+    expect(service.showSourcefile(SourceFile.TypeEnum.GXFORMAT2TESTFILE, 'dockerfile', ToolDescriptor.TypeEnum.GALAXY)).toBe(true);
     expect(service.showSourcefile(null, null, null)).toBe(true);
   });
 });

@@ -55,6 +55,9 @@
         <span *ngIf="entryType === EntryType.Service" data-cy="service-icon">
           <img src="../../assets/svg/service-circle.svg" alt="service icon" />
         </span>
+        <span *ngIf="entryType === EntryType.Notebook" data-cy="notebook-icon">
+          <img src="../../assets/svg/notebook-circle.svg" alt="notebook icon" />
+        </span>
         <span fxLayout.lt-sm="column" style="word-break: break-word">
           {{ title
           }}<span *ngIf="workflow?.workflowVersions.length > 0"
@@ -240,6 +243,15 @@
               [isOwner]="isOwner"
             ></app-info-tab>
           </mat-tab>
+          <div *ngIf="entryType === EntryType.Notebook">
+            <mat-tab id="codeTab" label="Code">
+              <div class="mt-4 ml-4 mr-4">
+                <p>A user-friendly representation of the notebook will appear here, after it is implemented in SEAB-5117.</p>
+                <p>For a Jupyter notebook, it'll be the contents of the code/documentation cells, nicely-formatted.</p>
+                <p>For other kinds of notebooks, it might be something different.</p>
+              </div>
+            </mat-tab>
+          </div>
           <div *ngIf="entryType === EntryType.BioWorkflow || entryType === EntryType.Tool">
             <mat-tab id="launchTab" label="Launch">
               <div *ngIf="(launchSupport$ | async) === false; else launchSupported">

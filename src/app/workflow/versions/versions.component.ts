@@ -22,6 +22,7 @@ import { AlertService } from '../../shared/alert/state/alert.service';
 import { DateService } from '../../shared/date.service';
 import { Dockstore } from '../../shared/dockstore.model';
 import { DockstoreService } from '../../shared/dockstore.service';
+import { EntryType } from '../../shared/openapi';
 import { ExtendedWorkflow } from '../../shared/models/ExtendedWorkflow';
 import { VersionVerifiedPlatform } from '../../shared/openapi';
 import { SessionQuery } from '../../shared/session/session.query';
@@ -54,6 +55,7 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
   @ViewChild(MatSort) sort: MatSort;
   public WorkflowType = Workflow;
   workflow: ExtendedWorkflow;
+  entryType = EntryType;
   setNoOrderCols(): Array<number> {
     return [4, 5];
   }

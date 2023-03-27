@@ -15,7 +15,7 @@
  */
 
 // Set the following variable to an appropriate value for your postgres setup.
-// const psqlInvocation: string = "PASSWORD=dockstore docker exec -i postgres1 psql";
+// const psqlInvocation: string = 'PASSWORD=dockstore docker exec -i postgres1 psql';
 const psqlInvocation: string = 'PASSWORD=dockstore psql';
 
 export function goToTab(tabName: string): void {
@@ -66,10 +66,18 @@ export function resetDB() {
   });
 }
 
-export function insertAppTools() {
+export function addBeforeSqlFromFile(fileName: string) {
   before(() => {
-    cy.exec(psqlInvocation + ' -h localhost webservice_test -U dockstore < test/github_app_tool_db_dump.sql');
+    cy.exec(psqlInvocation + ' -h localhost webservice_test -U dockstore < ' + fileName);
   });
+}
+
+export function insertAppTools() {
+  addBeforeSqlFromFile('test/github_app_tool_db_dump.sql');
+}
+
+export function insertNotebooks() {
+  addBeforeSqlFromFile('test/github_notebook_db_dump.sql');
 }
 
 export function typeInInput(fieldName: string, text: string) {

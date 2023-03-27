@@ -14,11 +14,27 @@
  *    limitations under the License.
  */
 
+import { setTokenUserViewPort } from '../../support/commands';
+
 describe('Notebooks Page', () => {
+  setTokenUserViewPort();
   it('should contain header and search', () => {
     cy.visit('/notebooks');
     cy.url().should('contain', 'notebooks');
     cy.get('[data-cy=header]').contains('h3', 'Notebooks');
     cy.contains('Search notebooks');
+  });
+
+  it('should star notebook', () => {
+    cy.visit('/starred?tab=notebooks');
+    cy.get('[data-cy=no-notebooks-banner]').should('contain', 'You have no starred notebooks.');
+    cy.fixture('sampleNotebook.json').then((json) => {
+      cy.intercept('GET', '*/users/starredNotebooks', {
+        body: json,
+        statusCode: 200,
+      });
+    });
+    cy.visit('/starred?tab=notebooks');
+    cy.get('[data-cy=starred-notebooks-count]').should('contain', '1');
   });
 });

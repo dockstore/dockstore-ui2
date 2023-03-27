@@ -19,7 +19,7 @@ describe('Service: DescriptorTypeCompat', () => {
       expect(service.toolDescriptorTypeEnumToPlainTRS(ToolDescriptor.TypeEnum.CWL)).toEqual('PLAIN_CWL');
       expect(service.toolDescriptorTypeEnumToPlainTRS(ToolDescriptor.TypeEnum.WDL)).toEqual('PLAIN_WDL');
       expect(service.toolDescriptorTypeEnumToPlainTRS(ToolDescriptor.TypeEnum.NFL)).toEqual('PLAIN_NFL');
-      expect(service.toolDescriptorTypeEnumToPlainTRS(ToolDescriptor.TypeEnum.GXFORMAT2)).toEqual('PLAIN_GALAXY');
+      expect(service.toolDescriptorTypeEnumToPlainTRS(ToolDescriptor.TypeEnum.GALAXY)).toEqual('PLAIN_GALAXY');
       expect(service.toolDescriptorTypeEnumToPlainTRS(ToolDescriptor.TypeEnum.SMK)).toEqual('PLAIN_SMK');
       expect(service.toolDescriptorTypeEnumToPlainTRS(ToolDescriptor.TypeEnum.SERVICE)).toEqual(null);
 
@@ -41,7 +41,7 @@ describe('Service: DescriptorTypeCompat', () => {
       expect(service.toolDescriptorTypeEnumToToolVersionDescriptorTypeEnum(ToolDescriptor.TypeEnum.NFL)).toEqual(
         ToolVersion.DescriptorTypeEnum.NFL
       );
-      expect(service.toolDescriptorTypeEnumToToolVersionDescriptorTypeEnum(ToolDescriptor.TypeEnum.GXFORMAT2)).toEqual(
+      expect(service.toolDescriptorTypeEnumToToolVersionDescriptorTypeEnum(ToolDescriptor.TypeEnum.GALAXY)).toEqual(
         ToolVersion.DescriptorTypeEnum.GALAXY
       );
       expect(service.toolDescriptorTypeEnumToToolVersionDescriptorTypeEnum(ToolDescriptor.TypeEnum.SMK)).toEqual(

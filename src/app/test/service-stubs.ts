@@ -355,6 +355,9 @@ export class UsersStubService {
   getStarredOrganizations() {
     return observableOf([]);
   }
+  getStarredNotebooks() {
+    return observableOf([]);
+  }
   refresh(userId: number, extraHttpRequestParams?: any): Observable<Array<DockstoreTool>> {
     return observableOf([]);
   }

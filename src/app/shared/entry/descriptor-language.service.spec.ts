@@ -96,7 +96,7 @@ describe('Service: DescriptorLanguage', () => {
     expect(placeholder).toEqual('e.g. /nextflow.config');
     placeholder = descriptorLanguageService.toolDescriptorTypeEnumToPlaceholderDescriptor(ToolDescriptor.TypeEnum.SERVICE);
     expect(placeholder).toEqual('e.g. /.dockstore.yml');
-    placeholder = descriptorLanguageService.toolDescriptorTypeEnumToPlaceholderDescriptor(ToolDescriptor.TypeEnum.GXFORMAT2);
+    placeholder = descriptorLanguageService.toolDescriptorTypeEnumToPlaceholderDescriptor(ToolDescriptor.TypeEnum.GALAXY);
     expect(placeholder).toEqual('e.g. /workflow-name.yml');
     placeholder = descriptorLanguageService.toolDescriptorTypeEnumToPlaceholderDescriptor(<ToolDescriptor.TypeEnum>'UnrecognizedType');
     expect(placeholder).toEqual('');
@@ -154,7 +154,7 @@ describe('Service: DescriptorLanguage', () => {
     expect(placeholder).toEqual('/nextflow.config');
     placeholder = descriptorLanguageService.toolDescriptorTypeEnumToDefaultDescriptorPath(ToolDescriptor.TypeEnum.SERVICE);
     expect(placeholder).toEqual('/.dockstore.yml');
-    placeholder = descriptorLanguageService.toolDescriptorTypeEnumToDefaultDescriptorPath(ToolDescriptor.TypeEnum.GXFORMAT2);
+    placeholder = descriptorLanguageService.toolDescriptorTypeEnumToDefaultDescriptorPath(ToolDescriptor.TypeEnum.GALAXY);
     expect(placeholder).toEqual('/workflow-name.yml');
     placeholder = descriptorLanguageService.toolDescriptorTypeEnumToDefaultDescriptorPath(null);
     expect(placeholder).toEqual(null);
@@ -175,7 +175,7 @@ describe('Service: DescriptorLanguage', () => {
     placeholder = descriptorLanguageService.testParameterTypeEnumToToolDescriptorEnum(SourceFile.TypeEnum.NEXTFLOWTESTPARAMS);
     expect(placeholder).toEqual(ToolDescriptor.TypeEnum.NFL);
     placeholder = descriptorLanguageService.testParameterTypeEnumToToolDescriptorEnum(SourceFile.TypeEnum.GXFORMAT2TESTFILE);
-    expect(placeholder).toEqual(ToolDescriptor.TypeEnum.GXFORMAT2);
+    expect(placeholder).toEqual(ToolDescriptor.TypeEnum.GALAXY);
     placeholder = descriptorLanguageService.testParameterTypeEnumToToolDescriptorEnum(<SourceFile.TypeEnum>'UnrecognizedType');
     expect(placeholder).toEqual(null);
   });
@@ -200,7 +200,7 @@ describe('Service: DescriptorLanguage', () => {
     const descriptorLanguageService = new DescriptorLanguageService(metadataServiceSpy, workflowQuerySpy);
     let placeholder = descriptorLanguageService.getDescriptorLanguagesToolTypes();
     expect(placeholder).toContain(ToolDescriptor.TypeEnum.CWL);
-    expect(placeholder).toContain(ToolDescriptor.TypeEnum.GXFORMAT2);
+    expect(placeholder).toContain(ToolDescriptor.TypeEnum.GALAXY);
     expect(placeholder).toContain(ToolDescriptor.TypeEnum.NFL);
     expect(placeholder).toContain(ToolDescriptor.TypeEnum.SMK);
     expect(placeholder).toContain(ToolDescriptor.TypeEnum.WDL);

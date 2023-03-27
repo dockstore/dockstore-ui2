@@ -78,10 +78,6 @@ export class DescriptorTypeCompatService {
    * Converts the ToolDescriptor.TypeEnum to ToolVersion.DescriptorTypeEnum
    */
   public toolDescriptorTypeEnumToToolVersionDescriptorTypeEnum(typeEnum: ToolDescriptor.TypeEnum): ToolVersion.DescriptorTypeEnum | null {
-    // Special case for Galaxy because TRS uses 'GALAXY' and not 'GXFORMAT2'
-    if (typeEnum === ToolDescriptor.TypeEnum.GXFORMAT2) {
-      return ToolVersion.DescriptorTypeEnum.GALAXY;
-    }
     const foundExtendedDescriptorLanguage = extendedDescriptorLanguages.find(
       (extendedDescriptorLanguage) => extendedDescriptorLanguage.toolDescriptorEnum === typeEnum
     );
@@ -99,8 +95,10 @@ export type DescriptorTypeWithPlain =
   | 'NFL'
   | 'GALAXY'
   | 'SMK'
+  | 'JUPYTER'
   | 'PLAIN_CWL'
   | 'PLAIN_WDL'
   | 'PLAIN_NFL'
   | 'PLAIN_GALAXY'
-  | 'PLAIN_SMK';
+  | 'PLAIN_SMK'
+  | 'PLAIN_JUPYTER';
