@@ -1408,7 +1408,7 @@ div.mat-menu-panel {
   }
 
   .markdown,
-  .code,
+  .source,
   .output {
     grid-column: 2;
     margin: 0.3em;
@@ -1416,7 +1416,7 @@ div.mat-menu-panel {
   }
 
   .count,
-  .code,
+  .source,
   .output {
     font-family: Menlo, Monaco, Consolas, 'Courier New', monospace;
     white-space: pre;

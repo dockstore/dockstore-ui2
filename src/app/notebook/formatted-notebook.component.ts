@@ -76,7 +76,7 @@ export class FormattedNotebookComponent implements OnChanges {
 
   format(notebook: string): string {
     const json = JSON.parse(notebook);
-    const divs = this.convertCells(json['cells']);
+    const divs = this.convertCells(json.cells);
     return ['<div class="notebook">', ...divs, '</div>'].join('\n');
   }
 
@@ -101,20 +101,20 @@ export class FormattedNotebookComponent implements OnChanges {
   }
 
   convertMarkdownCell(cell: any): string[] {
-    return [this.divMarkdown(this.renderMarkdown(this.join(cell['source']), cell['attachments']))];
+    return [this.divMarkdown(this.renderMarkdown(this.join(cell.source), cell.attachments))];
   }
 
   convertCodeCell(cell: any): string[] {
     const divs = [];
     const showSource = !cell?.metadata?.source_hidden;
     if (showSource) {
-      const divCount = this.divCount(this.escape(`[${cell['execution_count'] ?? ' '}]:`));
-      const divSource = this.divSource(this.escape(this.join(cell['source'])));
+      const divCount = this.divCount(this.escape(`[${cell.execution_count ?? ' '}]:`));
+      const divSource = this.divSource(this.escape(this.join(cell.source)));
       divs.push(divCount, divSource);
     }
     const showOutputs = !cell?.metadata?.outputs_hidden;
     if (showOutputs) {
-      const divsOutputs = this.convertOutputs(cell['outputs']);
+      const divsOutputs = this.convertOutputs(cell.outputs);
       divs.push(...divsOutputs);
     }
     return divs;
@@ -131,12 +131,12 @@ export class FormattedNotebookComponent implements OnChanges {
   }
 
   convertStreamOutput(output: any): string[] {
-    return [this.divOutput(this.escape(this.join(output['text'])), 'stream')];
+    return [this.divOutput(this.escape(this.join(output.text)), 'stream')];
   }
 
   convertMimeBundleOutput(output: any): string[] {
-    const mimeBundle = output['data'] ?? {};
-    const metadataBundle = output['metadata'] ?? {};
+    const mimeBundle = output.data ?? {};
+    const metadataBundle = output.metadata ?? {};
     const html = this.createHtmlFromBundles(mimeBundle, metadataBundle, undefined, undefined);
     if (html != undefined) {
       return [this.divOutput(html, 'display_data')];
