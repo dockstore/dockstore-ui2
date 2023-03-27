@@ -105,8 +105,8 @@ export class FormattedNotebookComponent implements OnChanges {
 
   convertCodeCell(cell: any): string[] {
     return [
-      this.escapeAndDiv(`[${cell['execution_count'] ?? ' '}]:`, 'count'),
-      this.escapeAndCode(this.join(cell['source']), 'code'),
+      this.div(this.escape(`[${cell['execution_count'] ?? ' '}]:`), 'count'),
+      this.code(this.escape(this.join(cell['source'])), 'code'),
       ...this.convertOutputs(cell['outputs']),
     ];
   }
@@ -122,7 +122,7 @@ export class FormattedNotebookComponent implements OnChanges {
   }
 
   convertStreamOutput(output: any): string[] {
-    return [this.escapeAndDiv(this.join(output['text']), 'output stream')];
+    return [this.div(this.escape(this.join(output['text'])), 'output stream')];
   }
 
   convertMimeBundleOutput(output: any): string[] {
@@ -143,14 +143,6 @@ export class FormattedNotebookComponent implements OnChanges {
   code(content: string, classes: string) {
     const languageClass = `language-${this.workflow.descriptorTypeSubclass.toLowerCase() ?? 'none'}`;
     return `<div class="${classes}"><pre><code class="${languageClass}">${this.sanitize(content)}</code></pre></div>`;
-  }
-
-  escapeAndDiv(content: string, classes: string) {
-    return this.div(this.escape(content), classes);
-  }
-
-  escapeAndCode(content: string, classes: string) {
-    return this.code(this.escape(content), classes);
   }
 
   sanitize(html: string): string {
