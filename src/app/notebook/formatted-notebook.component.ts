@@ -51,12 +51,9 @@ export class FormattedNotebookComponent implements OnChanges {
                 for (const element of this.target.nativeElement.getElementsByClassName('markdown')) {
                   this.markdownWrapperService.katex(element);
                 }
-                for (const element of this.target.nativeElement.getElementsByClassName('code')) {
-                  console.log('CODE ' + element);
-                  this.markdownWrapperService.highlight(element);
+                for (const element of this.target.nativeElement.querySelectorAll('code')) {
+                  this.markdownWrapperService.highlight(element.parent);
                 }
-                console.log('PRISM ' + window['Prism']);
-                console.log('KATEX ' + window['katex']);
               } catch (e) {
                 this.displayError = true;
                 console.log('Exception formatting notebook');
@@ -103,21 +100,13 @@ export class FormattedNotebookComponent implements OnChanges {
   }
 
   convertMarkdownCell(cell: any): string[] {
-    return [
-      this.div(
-        this.renderMarkdown(
-          this.join(cell['source']) + ' $a=b^2b^2b^2b^2b^2b^2b^2b^2b^2b^2b^2b^2b^2b^2b^2b^2b^2b^2b^2b^2b^2b^2b^2b^2b^2b^2b^2b^2b^2b^2$',
-          cell['attachments']
-        ),
-        'markdown'
-      ),
-    ];
+    return [this.div(this.renderMarkdown(this.join(cell['source']), cell['attachments']), 'markdown')];
   }
 
   convertCodeCell(cell: any): string[] {
     return [
       this.escapeAndDiv(`[${cell['execution_count'] ?? ' '}]:`, 'count'),
-      this.escapeAndCode(/*this.join(cell['source'])*/ 'for x in [1, 2, 3]:\n  if x > 3:\n    print(x)', 'code'),
+      this.escapeAndCode(this.join(cell['source']), 'code'),
       ...this.convertOutputs(cell['outputs']),
     ];
   }
@@ -152,7 +141,8 @@ export class FormattedNotebookComponent implements OnChanges {
   }
 
   code(content: string, classes: string) {
-    return `<div class="${classes}"><pre><code class="language-python">${this.sanitize(content)}</code></pre></div>`;
+    const languageClass = `language-${this.workflow.descriptorTypeSubclass.toLowerCase() ?? 'none'}`;
+    return `<div class="${classes}"><pre><code class="${languageClass}">${this.sanitize(content)}</code></pre></div>`;
   }
 
   escapeAndDiv(content: string, classes: string) {
