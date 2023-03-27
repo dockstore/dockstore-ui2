@@ -30,7 +30,6 @@
               "node_modules/bootstrap/dist/css/bootstrap.css",
               "node_modules/academicons/css/academicons.css",
               "node_modules/katex/dist/katex.css",
-              "node_modules/prismjs/themes/prism-dark.css",
               "src/styles.scss",
               "src/material.scss",
             ],

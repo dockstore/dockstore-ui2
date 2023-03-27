@@ -76,8 +76,8 @@ export class FormattedNotebookComponent implements OnChanges {
 
   format(notebook: string): string {
     const json = JSON.parse(notebook);
-    const chunks = this.convertCells(json['cells']);
-    return ['<div class="notebook">', ...chunks, '</div>'].join('\n');
+    const divs = this.convertCells(json['cells']);
+    return ['<div class="notebook">', ...divs, '</div>'].join('\n');
   }
 
   formatByType(values: any, typeField: string, typeToFormatter: Map<string, (json: any) => string[]>) {
@@ -101,15 +101,23 @@ export class FormattedNotebookComponent implements OnChanges {
   }
 
   convertMarkdownCell(cell: any): string[] {
-    return [this.div(this.renderMarkdown(this.join(cell['source']), cell['attachments']), 'markdown')];
+    return [this.divMarkdown(this.renderMarkdown(this.join(cell['source']), cell['attachments']))];
   }
 
   convertCodeCell(cell: any): string[] {
-    return [
-      this.div(this.escape(`[${cell['execution_count'] ?? ' '}]:`), 'count'),
-      this.code(this.escape(this.join(cell['source'])), 'code'),
-      ...this.convertOutputs(cell['outputs']),
-    ];
+    const divs = [];
+    const showSource = !cell?.metadata?.source_hidden;
+    if (showSource) {
+      const divCount = this.divCount(this.escape(`[${cell['execution_count'] ?? ' '}]:`));
+      const divSource = this.divSource(this.escape(this.join(cell['source'])));
+      divs.push(divCount, divSource);
+    }
+    const showOutputs = !cell?.metadata?.outputs_hidden;
+    if (showOutputs) {
+      const divsOutputs = this.convertOutputs(cell['outputs']);
+      divs.push(...divsOutputs);
+    }
+    return divs;
   }
 
   outputTypeToFormatter = new Map<string, (json: any) => string[]>([
@@ -123,7 +131,7 @@ export class FormattedNotebookComponent implements OnChanges {
   }
 
   convertStreamOutput(output: any): string[] {
-    return [this.div(this.escape(this.join(output['text'])), 'output stream')];
+    return [this.divOutput(this.escape(this.join(output['text'])), 'stream')];
   }
 
   convertMimeBundleOutput(output: any): string[] {
@@ -131,23 +139,27 @@ export class FormattedNotebookComponent implements OnChanges {
     const metadataBundle = output['metadata'] ?? {};
     const html = this.createHtmlFromBundles(mimeBundle, metadataBundle, undefined, undefined);
     if (html != undefined) {
-      return [this.div(html, 'output display_data')];
+      return [this.divOutput(html, 'display_data')];
     } else {
       return [];
     }
   }
 
-  div(content: string, classes: string) {
-    return `<div class="${classes}">${this.sanitize(content)}</div>`;
+  divMarkdown(content: string) {
+    return `<div class="markdown">${this.sanitize(content)}</div>`;
   }
 
-  code(content: string, classes: string) {
+  divCount(content: string) {
+    return `<div class="count">${this.sanitize(content)}</div>`;
+  }
+
+  divSource(content: string) {
     const languageClass = `language-${this.workflow.descriptorTypeSubclass.toLowerCase() ?? 'none'}`;
-    return `<div class="${classes}"><pre><code class="${languageClass}">${this.sanitize(content)}</code></pre></div>`;
+    return `<div class="source"><pre><code class="${languageClass}">${this.sanitize(content)}</code></pre></div>`;
   }
 
-  sanitize(html: string): string {
-    return this.markdownWrapperService.customSanitize(html);
+  divOutput(content: string, classes: string) {
+    return `<div class="output ${classes}"><pre>${this.sanitize(content)}</pre></div>`;
   }
 
   renderMarkdown(markdown: string, attachments: any): string {
@@ -211,7 +223,11 @@ export class FormattedNotebookComponent implements OnChanges {
     return undefined;
   }
 
-  // TODO make better https://stackoverflow.com/questions/1787322/what-is-the-htmlspecialchars-equivalent-in-javascript
+  sanitize(html: string): string {
+    return this.markdownWrapperService.customSanitize(html);
+  }
+
+  // from https://stackoverflow.com/questions/1787322/what-is-the-htmlspecialchars-equivalent-in-javascript
   escape(text: string): string {
     var map = {
       '&': '&amp;',
