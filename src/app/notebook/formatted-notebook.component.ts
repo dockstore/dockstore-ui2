@@ -44,8 +44,8 @@ export class FormattedNotebookComponent implements OnChanges {
       )
       .subscribe(
         (sourceFiles: SourceFile[]) => {
-          sourceFiles.forEach((sourceFile) => {
-            if (this.isPrimaryDescriptor(sourceFile.path)) {
+          for (const sourceFile of sourceFiles) {
+            if (this.isPrimaryDescriptor(sourceFile.path) && sourceFile.type === SourceFile.TypeEnum.DOCKSTOREJUPYTER) {
               try {
                 const notebookElement = this.notebookRef.nativeElement;
                 notebookElement.innerHTML = this.format(sourceFile.content);
@@ -55,6 +55,7 @@ export class FormattedNotebookComponent implements OnChanges {
                 for (const element of notebookElement.querySelectorAll('code')) {
                   this.markdownWrapperService.highlight(element.parent);
                 }
+                return;
               } catch (e) {
                 this.displayError = true;
                 console.log('Exception formatting notebook');
@@ -62,7 +63,8 @@ export class FormattedNotebookComponent implements OnChanges {
                 throw e;
               }
             }
-          });
+          }
+          this.displayError = true;
         },
         () => {
           this.displayError = true;
