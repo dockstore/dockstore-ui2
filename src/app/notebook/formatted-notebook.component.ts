@@ -52,8 +52,8 @@ export class FormattedNotebookComponent implements OnChanges {
                 for (const element of notebookElement.getElementsByClassName('markdown')) {
                   this.markdownWrapperService.katex(element);
                 }
-                for (const element of notebookElement.querySelectorAll('code')) {
-                  this.markdownWrapperService.highlight(element.parent);
+                for (const element of notebookElement.querySelectorAll('.source code')) {
+                  this.markdownWrapperService.highlight(element);
                 }
               } catch (e) {
                 this.displayError = true;
