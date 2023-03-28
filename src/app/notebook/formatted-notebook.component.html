@@ -1,2 +1,2 @@
 <div *ngIf="displayError">The notebook could not be displayed.</div>
-<div #notebookTarget></div>
+<div #notebookTarget [hidden]="displayError || loading"></div>
