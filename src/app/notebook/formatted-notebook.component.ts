@@ -55,13 +55,12 @@ export class FormattedNotebookComponent implements OnChanges {
                 for (const element of notebookElement.querySelectorAll('code')) {
                   this.markdownWrapperService.highlight(element.parent);
                 }
-                return;
               } catch (e) {
                 this.displayError = true;
                 console.log('Exception formatting notebook');
                 console.log(e.message);
-                throw e;
               }
+              return;
             }
           }
           this.displayError = true;
@@ -197,7 +196,7 @@ export class FormattedNotebookComponent implements OnChanges {
 
   createAttribute(name: string, value: string): string {
     if (value != undefined) {
-      return ` ${name}="${this.escape(value)}"`;
+      return ` ${name}="${this.escape(String(value))}"`;
     } else {
       return '';
     }
@@ -229,7 +228,7 @@ export class FormattedNotebookComponent implements OnChanges {
     return this.markdownWrapperService.customSanitize(html);
   }
 
-  // from https://stackoverflow.com/questions/1787322/what-is-the-htmlspecialchars-equivalent-in-javascript
+  // adapted from https://stackoverflow.com/questions/1787322/what-is-the-htmlspecialchars-equivalent-in-javascript
   escape(text: string): string {
     var charToEscaped = {
       '&': '&amp;',
