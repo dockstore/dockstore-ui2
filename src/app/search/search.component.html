@@ -322,17 +322,7 @@
             {{ query_size - 1 }} results are shown. We recommend that you narrow your search to find more relevant results.
           </p>
         </mat-card>
-        <!-- Notebooks Warning -->
-        <mat-card
-          class="alert alert-info mat-elevation-z"
-          *ngIf="Dockstore.FEATURES.enableNotebooks && (selectedIndex$ | async) === 2"
-          data-cy="notebooks-warning"
-        >
-          <mat-icon>warning</mat-icon>
-          <strong> Notice:</strong> This is an early access feature. Consider this a prototype that may be more likely to have breaking
-          changes going forward than other Dockstore features.
-        </mat-card>
-        <!-- End of Notebooks Warning -->
+        <app-notebooks-warning *ngIf="Dockstore.FEATURES.enableNotebooks && (selectedIndex$ | async) === 2"></app-notebooks-warning>
         <app-search-results></app-search-results>
       </div>
     </div>

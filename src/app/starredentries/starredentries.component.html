@@ -85,13 +85,7 @@
         </mat-tab>
 
         <mat-tab *ngIf="Dockstore.FEATURES.enableNotebooks">
-          <!-- Notebooks Warning -->
-          <mat-card class="alert alert-info mat-elevation-z" data-cy="notebooks-warning">
-            <mat-icon>warning</mat-icon>
-            <strong> Notice:</strong> This is an early access feature. Consider this a prototype that may be more likely to have breaking
-            changes going forward than other Dockstore features.
-          </mat-card>
-          <!-- End of Notebooks Warning -->
+          <div class="mb-4"><app-notebooks-warning></app-notebooks-warning></div>
           <ng-template mat-tab-label>
             <div fxLayoutGap="0.5rem">
               <img class="site-icons-tab" src="../../../assets/svg/sub-nav/notebook.svg" alt="notebook logo" />

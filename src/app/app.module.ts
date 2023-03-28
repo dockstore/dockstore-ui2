@@ -115,6 +115,7 @@ import { ExporterStepComponent } from './workflow/snapshot-exporter-modal/export
 import { SnaphotExporterModalComponent } from './workflow/snapshot-exporter-modal/snaphot-exporter-modal.component';
 import { ViewService } from './workflow/view/view.service';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { NotebooksWarningModule } from './shared/modules/notebooks-warning.module';
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   showDelay: 500,
@@ -207,6 +208,7 @@ export function initializerFactory(
     MySidebarModule,
     AccountSidebarModule,
     ChangeUsernameModule,
+    NotebooksWarningModule,
   ],
   providers: [
     AccountsService,

@@ -42,16 +42,6 @@
   </ng-template>
 </app-header>
 <div class="container">
-  <!-- Notebooks Warning -->
-  <mat-card
-    class="alert alert-info mat-elevation-z mt-4 w-100"
-    *ngIf="(entryType$ | async) === EntryType.Notebook"
-    data-cy="notebooks-warning"
-  >
-    <mat-icon>warning</mat-icon>
-    <strong> Notice:</strong> This is an early access feature. Consider this a prototype that may be more likely to have breaking changes
-    going forward than other Dockstore features.
-  </mat-card>
-  <!-- End of Notebooks Warning -->
+  <div *ngIf="(entryType$ | async) === EntryType.Notebook" class="mt-4"><app-notebooks-warning></app-notebooks-warning></div>
   <router-outlet></router-outlet>
 </div>

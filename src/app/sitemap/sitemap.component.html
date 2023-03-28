@@ -8,13 +8,7 @@
   </div>
 </div>
 <div class="container">
-  <!-- Notebooks Warning -->
-  <mat-card class="alert alert-info mat-elevation-z mt-5 w-100" *ngIf="Dockstore.FEATURES.enableNotebooks" data-cy="notebooks-warning">
-    <mat-icon>warning</mat-icon>
-    <strong> Notice:</strong> This is an early access feature. Consider this a prototype that may be more likely to have breaking changes
-    going forward than other Dockstore features.
-  </mat-card>
-  <!-- End of Notebooks Warning -->
+  <div *ngIf="Dockstore.FEATURES.enableNotebooks" class="mt-5"><app-notebooks-warning></app-notebooks-warning></div>
   <div fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutAlign="space-between start" class="mt-5">
     <div>
       <h3 class="documentation">Tools and Workflows</h3>
