@@ -229,7 +229,7 @@ export class FormattedNotebookComponent implements OnChanges {
 
   // from https://stackoverflow.com/questions/1787322/what-is-the-htmlspecialchars-equivalent-in-javascript
   escape(text: string): string {
-    var map = {
+    var charToEscaped = {
       '&': '&amp;',
       '<': '&lt;',
       '>': '&gt;',
@@ -237,9 +237,7 @@ export class FormattedNotebookComponent implements OnChanges {
       "'": '&#039;',
     };
 
-    return text.replace(/[&<>"']/g, function (m) {
-      return map[m];
-    });
+    return text.replace(/[&<>"']/g, (char) => charToEscaped[char]);
   }
 
   join(value: any): string {
