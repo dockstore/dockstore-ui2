@@ -81,7 +81,7 @@ export class FormattedNotebookComponent implements OnChanges {
     return ['<div class="notebook">', ...divs, '</div>'].join('\n');
   }
 
-  formatByType(values: any, typeField: string, typeToFormatter: Map<string, (json: any) => string[]>) {
+  formatByType(values: any, typeField: string, typeToFormatter: Map<string, (json: any) => string[]>): string[] {
     const formatted: string[] = [];
     (values.forEach ? values : [values]).forEach((value) => {
       const formatter = typeToFormatter.get(value[typeField]);
