@@ -146,21 +146,21 @@ export class FormattedNotebookComponent implements OnChanges {
     }
   }
 
-  divMarkdown(content: string): string {
-    return `<div class="markdown">${this.sanitize(content)}</div>`;
+  divMarkdown(html: string): string {
+    return `<div class="markdown">${this.sanitize(html)}</div>`;
   }
 
-  divCount(content: string): string {
-    return `<div class="count">${this.sanitize(content)}</div>`;
+  divCount(html: string): string {
+    return `<div class="count">${this.sanitize(html)}</div>`;
   }
 
-  divSource(content: string): string {
+  divSource(html: string): string {
     const languageClass = `language-${this.workflow.descriptorTypeSubclass.toLowerCase() ?? 'none'}`;
-    return `<div class="source"><pre><code class="${languageClass}">${this.sanitize(content)}</code></pre></div>`;
+    return `<div class="source"><pre><code class="${this.escape(languageClass)}">${this.sanitize(html)}</code></pre></div>`;
   }
 
-  divOutput(content: string, classes: string): string {
-    return `<div class="output ${classes}"><pre>${this.sanitize(content)}</pre></div>`;
+  divOutput(html: string, classes: string): string {
+    return `<div class="output ${this.escape(classes)}"><pre>${this.sanitize(html)}</pre></div>`;
   }
 
   compileMarkdown(markdown: string, attachments: any): string {
@@ -229,7 +229,7 @@ export class FormattedNotebookComponent implements OnChanges {
     return this.markdownWrapperService.customSanitize(html);
   }
 
-  // the below escape() implementation is adapted from mustache.js
+  // The below escape() implementation is adapted from mustache.js
   // https://github.com/janl/mustache.js/blob/972fd2b27a036888acfcb60d6119317744fac7ee/mustache.js#L60
   charToEntity = {
     '&': '&amp;',
