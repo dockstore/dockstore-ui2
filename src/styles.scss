@@ -907,7 +907,7 @@ app-workflow-sidebar-accordion
 // Set the background to the color associated with organizations (purple).
 // Used to set the background color in bubbles.
 .org-background {
-  background-color: mat.get-color-from-palette($dockstore-app-accent-1, 5) !important;
+  background: $org-selection-color !important;
 }
 
 // Styles an element as a "bubble", which is a small very-rounded rectangular element that typically contains a word or short phrase.
