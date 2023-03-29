@@ -165,7 +165,8 @@ export class FormattedNotebookComponent implements OnChanges {
 
   renderMarkdown(markdown: string, attachments: any): string {
     const renderer = this.createAttachedImageRenderer(attachments);
-    return this.markdownWrapperService.customCompileWithOptions(markdown, { baseUrl: this.baseUrl, renderer: renderer });
+    const escapedDollars = markdown.replace(/\\+\$/g, '<span>$</span>');
+    return this.markdownWrapperService.customCompileWithOptions(escapedDollars, { baseUrl: this.baseUrl, renderer: renderer });
   }
 
   createAttachedImageRenderer(attachments: any): Renderer {

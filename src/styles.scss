@@ -1412,7 +1412,8 @@ div.mat-menu-panel {
   .output {
     grid-column: 2;
     margin: 0.3em;
-    overflow: auto;
+    overflow-x: auto;
+    overflow-y: hidden;
   }
 
   .count,

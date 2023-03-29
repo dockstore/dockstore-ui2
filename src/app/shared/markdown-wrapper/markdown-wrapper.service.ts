@@ -47,7 +47,12 @@ export class MarkdownWrapperService {
   }
 
   katex(element) {
-    this.markdownService.render(element, { katex: true });
+    (<any>this.document?.defaultView)?.renderMathInElement(element, {
+      delimiters: [
+        { left: '$$', right: '$$', display: true },
+        { left: '$', right: '$', display: false },
+      ],
+    });
   }
 
   highlight(element) {
