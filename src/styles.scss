@@ -193,7 +193,7 @@ angular-tag-cloud > span.w1:hover {
 body {
   font-family: 'Roboto', 'Helvetica Neue', sans-serif;
   font-weight: normal;
-  color: #313131;
+  color: $body-color;
   font-size: 14px;
   line-height: 2em !important;
   margin: 0;

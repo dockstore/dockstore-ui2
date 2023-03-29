@@ -15,10 +15,16 @@
         <app-starred-box fxFlex="50" fxFlex.lt-md="100" class="updates-holder"></app-starred-box>
       </div>
       <div fxFlex fxLayout fxLayout.lt-md="column" fxLayoutGap="2.5rem" class="w-100">
-        <app-news-box fxFlex.md="65" fxFlex.gt-md="65" fxFlex.lt-md="100"></app-news-box>
+        <div fxFlex.md="65" fxFlex.gt-md="65" fxFlex.lt-md="100" class="py-4">
+          <app-news-box></app-news-box>
+        </div>
         <div fxFlex.md="35" fxFlex.gt-md="35" fxFlex.lt-md="100">
           <div class="my-3 twitter" #twitter></div>
         </div>
+      </div>
+      <div class="w-100">
+        <div class="mat-card-title text-align-center">Featured Content</div>
+        <app-featured-content></app-featured-content>
       </div>
     </div>
   </div>
