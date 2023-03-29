@@ -20,12 +20,7 @@ export class MarkdownWrapperService {
   forbidTags: string[] = [];
   forbidAttr: string[] = ['class'];
 
-  constructor(private markdownService: MarkdownService, @Inject(DOCUMENT) private document: Document) {
-    DOMPurify.setConfig({
-      FORBID_TAGS: this.forbidTags,
-      FORBID_ATTR: this.forbidAttr,
-    });
-  }
+  constructor(private markdownService: MarkdownService, @Inject(DOCUMENT) private document: Document) {}
 
   /**
    * Compiles markdown into HTML with custom options.
@@ -43,7 +38,10 @@ export class MarkdownWrapperService {
 
   customSanitize(html): string {
     // Passes HTML to DOMPurify to be sanitized.
-    return DOMPurify.sanitize(html);
+    return DOMPurify.sanitize(html, {
+      FORBID_TAGS: this.forbidTags,
+      FORBID_ATTR: this.forbidAttr,
+    });
   }
 
   katex(element) {

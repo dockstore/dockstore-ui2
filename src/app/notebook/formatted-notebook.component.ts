@@ -1,12 +1,13 @@
-import { Component, ElementRef, Input, OnChanges, ViewChild } from '@angular/core';
-import { FileService } from 'app/shared/file.service';
-import { SourceFile, Workflow, WorkflowVersion } from 'app/shared/openapi';
+import { Component, ElementRef, Inject, Input, OnChanges, ViewChild } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 import { finalize } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { SourceFile, Workflow, WorkflowVersion } from 'app/shared/openapi';
 import { SourceFileTabsService } from '../source-file-tabs/source-file-tabs.service';
 import { WorkflowQuery } from '../shared/state/workflow.query';
-import { Observable } from 'rxjs';
 import { MarkdownWrapperService } from '../shared/markdown-wrapper/markdown-wrapper.service';
 import { Renderer } from 'marked';
+import DOMPurify from 'dompurify';
 
 @Component({
   selector: 'app-formatted-notebook',
@@ -15,16 +16,15 @@ import { Renderer } from 'marked';
 })
 export class FormattedNotebookComponent implements OnChanges {
   constructor(
-    private fileService: FileService,
     private sourceFileTabsService: SourceFileTabsService,
-    private markdownWrapperService: MarkdownWrapperService
+    private markdownWrapperService: MarkdownWrapperService,
+    @Inject(DOCUMENT) private document: Document
   ) {}
   @Input() workflow: Workflow;
   @Input() version: WorkflowVersion;
   @Input() baseUrl: string;
-  @ViewChild('notebookTarget') notebookRef: ElementRef;
+  @ViewChild('notebookTarget') notebookTarget: ElementRef;
   loading = true;
-  formatted = '';
   displayError = false;
 
   ngOnChanges() {
@@ -32,8 +32,8 @@ export class FormattedNotebookComponent implements OnChanges {
   }
 
   retrieveAndFormatNotebook() {
+    this.notebookTarget?.nativeElement.replaceChildren();
     this.loading = true;
-    this.formatted = '';
     this.displayError = false;
     this.sourceFileTabsService
       .getSourceFiles(this.workflow.id, this.version.id)
@@ -45,16 +45,13 @@ export class FormattedNotebookComponent implements OnChanges {
       .subscribe(
         (sourceFiles: SourceFile[]) => {
           for (const sourceFile of sourceFiles) {
+            // Look for the primary descriptor with Jupyter file type.
             if (this.isPrimaryDescriptor(sourceFile.path) && sourceFile.type === SourceFile.TypeEnum.DOCKSTOREJUPYTER) {
               try {
-                const notebookElement = this.notebookRef.nativeElement;
-                notebookElement.innerHTML = this.format(sourceFile.content);
-                for (const element of notebookElement.getElementsByClassName('markdown')) {
-                  this.markdownWrapperService.katex(element);
-                }
-                for (const element of notebookElement.querySelectorAll('.source code')) {
-                  this.markdownWrapperService.highlight(element);
-                }
+                // Create an element containing the formatted notebook,
+                // and make it the child of template's '#notebookTarget' placeholder.
+                const notebookElement = this.createFormattedNotebookElement(sourceFile.content);
+                this.notebookTarget.nativeElement.replaceChildren(notebookElement);
               } catch (e) {
                 this.displayError = true;
                 console.log('Exception formatting notebook');
@@ -75,10 +72,31 @@ export class FormattedNotebookComponent implements OnChanges {
     return path === this.version.workflow_path;
   }
 
+  createFormattedNotebookElement(notebookJson: string): any {
+    // Create the notebook container div.
+    const element: any = this.document.createElement('div');
+    element.classList.add('notebook');
+    // Set the body of the container div to the formatted notebook HTML.
+    element.innerHTML = this.format(notebookJson);
+    // Render the equations in each markdown cell.
+    for (const markdownElement of element.getElementsByClassName('markdown')) {
+      this.markdownWrapperService.katex(markdownElement);
+    }
+    // Highlight the code elements in the source of each code cell.
+    for (const codeElement of element.querySelectorAll('.source code')) {
+      this.markdownWrapperService.highlight(codeElement);
+    }
+    // Lightly sanitize the entirety of the inner HTML, conserving 'class' attribute values to
+    // prevent mangling the output of the equation rendering and syntax highlighting steps,
+    // which set the 'class' attribute on the elements they generate, so that they may be styled.
+    element.innerHTML = this.sanitizeLightly(element.innerHTML);
+    return element;
+  }
+
   format(notebook: string): string {
     const json = JSON.parse(notebook);
     const divs = this.formatCells(json.cells);
-    return ['<div class="notebook">', ...divs, '</div>'].join('\n');
+    return divs.join('\n');
   }
 
   formatByType(values: any, typeField: string, typeToFormatter: Map<string, (json: any) => string[]>): string[] {
@@ -227,6 +245,10 @@ export class FormattedNotebookComponent implements OnChanges {
 
   sanitize(html: string): string {
     return this.markdownWrapperService.customSanitize(html);
+  }
+
+  sanitizeLightly(html: string): string {
+    return DOMPurify.sanitize(html, { FORBID_TAGS: [], FORBID_ATTR: [] });
   }
 
   // The below escape() implementation is adapted from mustache.js
