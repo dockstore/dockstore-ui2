@@ -33,7 +33,17 @@ describe('SourceFileTabsComponent', () => {
     fixture = TestBed.createComponent(SourceFileTabsComponent);
     component = fixture.componentInstance;
     component.version = { id: 0, name: 'abc', reference: '1' };
-    component.workflowId = 0;
+    component.entry = {
+      defaultTestParameterFilePath: '',
+      descriptorType: undefined,
+      descriptorTypeSubclass: undefined,
+      gitUrl: '',
+      mode: undefined,
+      organization: '',
+      repository: '',
+      sourceControl: '',
+      workflow_path: '',
+    };
     fixture.detectChanges();
   });
 

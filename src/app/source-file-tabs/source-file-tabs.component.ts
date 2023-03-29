@@ -7,10 +7,11 @@ import { FileTreeComponent } from 'app/file-tree/file-tree.component';
 import { bootstrap4largeModalSize } from 'app/shared/constants';
 import { FileService } from 'app/shared/file.service';
 import { SourceFile, ToolDescriptor, WorkflowVersion } from 'app/shared/openapi';
-import { finalize } from 'rxjs/operators';
-import { SourceFileTabsService } from './source-file-tabs.service';
-import { WorkflowQuery } from '../shared/state/workflow.query';
 import { Observable } from 'rxjs';
+import { finalize } from 'rxjs/operators';
+import { WorkflowQuery } from '../shared/state/workflow.query';
+import { BioWorkflow, Notebook, Service, Tag } from '../shared/swagger';
+import { SourceFileTabsService } from './source-file-tabs.service';
 
 @Component({
   selector: 'app-source-file-tabs',
@@ -27,9 +28,7 @@ export class SourceFileTabsComponent implements OnChanges {
     this.isPublished$ = this.workflowQuery.workflowIsPublished$;
     this.primaryDescriptors = [];
   }
-  // Used to generate the TRS file path
-  @Input() entryPath: string;
-  @Input() workflowId: number;
+  @Input() entry: BioWorkflow | Service | Notebook;
   // Used to generate the TRS file path
   @Input() descriptorType: ToolDescriptor.TypeEnum;
   // Version is strictly non-null because everything that uses this component has a truthy-check guard
@@ -61,7 +60,7 @@ export class SourceFileTabsComponent implements OnChanges {
     this.loading = true;
     this.displayError = false;
     this.sourceFileTabsService
-      .getSourceFiles(this.workflowId, this.version.id)
+      .getSourceFiles(this.entry.id, this.version.id)
       .pipe(
         finalize(() => {
           this.loading = false;
@@ -104,9 +103,8 @@ export class SourceFileTabsComponent implements OnChanges {
       this.fileName = this.fileService.getFileName(file.path);
       this.relativePath = file.absolutePath;
       this.downloadFilePath = this.sourceFileTabsService.getDescriptorPath(
-        this.workflowId,
+        this.entry,
         this.descriptorType,
-        this.entryPath,
         this.version.name,
         this.relativePath
       );
@@ -134,7 +132,7 @@ export class SourceFileTabsComponent implements OnChanges {
         data: {
           files: sourceFiles,
           selectedFile: this.currentFile,
-          entryPath: this.entryPath,
+          entryPath: this.entry.full_workflow_path,
           versionName: this.version.name,
           descriptorType: this.descriptorType,
           versionPath: this.version.workflow_path,

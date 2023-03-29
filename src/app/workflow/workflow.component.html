@@ -349,8 +349,7 @@
               </ng-template>
               <ng-template #dockstoreYmlComponent>
                 <app-source-file-tabs
-                  [entryPath]="workflow.full_workflow_path"
-                  [workflowId]="workflow?.id"
+                  [entry]="workflow"
                   [version]="selectedVersion"
                   [descriptorType]="descriptorType$ | async"
                 ></app-source-file-tabs>
