@@ -77,7 +77,7 @@ export class FormattedNotebookComponent implements OnChanges {
 
   format(notebook: string): string {
     const json = JSON.parse(notebook);
-    const divs = this.convertCells(json.cells);
+    const divs = this.formatCells(json.cells);
     return ['<div class="notebook">', ...divs, '</div>'].join('\n');
   }
 
@@ -93,19 +93,19 @@ export class FormattedNotebookComponent implements OnChanges {
   }
 
   cellTypeToFormatter = new Map<string, (json: any) => string[]>([
-    ['markdown', this.convertMarkdownCell],
-    ['code', this.convertCodeCell],
+    ['markdown', this.formatMarkdownCell],
+    ['code', this.formatCodeCell],
   ]);
 
-  convertCells(cells: any): string[] {
+  formatCells(cells: any): string[] {
     return this.formatByType(cells, 'cell_type', this.cellTypeToFormatter);
   }
 
-  convertMarkdownCell(cell: any): string[] {
-    return [this.divMarkdown(this.renderMarkdown(this.join(cell.source), cell.attachments))];
+  formatMarkdownCell(cell: any): string[] {
+    return [this.divMarkdown(this.compileMarkdown(this.join(cell.source), cell.attachments))];
   }
 
-  convertCodeCell(cell: any): string[] {
+  formatCodeCell(cell: any): string[] {
     const divs = [];
     const showSource = !cell?.metadata?.source_hidden;
     if (showSource) {
@@ -115,27 +115,27 @@ export class FormattedNotebookComponent implements OnChanges {
     }
     const showOutputs = !cell?.metadata?.outputs_hidden;
     if (showOutputs) {
-      const divsOutputs = this.convertOutputs(cell.outputs);
+      const divsOutputs = this.formatOutputs(cell.outputs);
       divs.push(...divsOutputs);
     }
     return divs;
   }
 
   outputTypeToFormatter = new Map<string, (json: any) => string[]>([
-    ['stream', this.convertStreamOutput],
-    ['display_data', this.convertMimeBundleOutput],
-    ['execute_result', this.convertMimeBundleOutput],
+    ['stream', this.formatStreamOutput],
+    ['display_data', this.formatMimeBundleOutput],
+    ['execute_result', this.formatMimeBundleOutput],
   ]);
 
-  convertOutputs(outputs: any): string[] {
+  formatOutputs(outputs: any): string[] {
     return this.formatByType(outputs, 'output_type', this.outputTypeToFormatter);
   }
 
-  convertStreamOutput(output: any): string[] {
+  formatStreamOutput(output: any): string[] {
     return [this.divOutput(this.escape(this.join(output.text)), 'stream')];
   }
 
-  convertMimeBundleOutput(output: any): string[] {
+  formatMimeBundleOutput(output: any): string[] {
     const mimeBundle = output.data ?? {};
     const metadataBundle = output.metadata ?? {};
     const html = this.createHtmlFromBundles(mimeBundle, metadataBundle, undefined, undefined);
@@ -146,24 +146,24 @@ export class FormattedNotebookComponent implements OnChanges {
     }
   }
 
-  divMarkdown(content: string) {
+  divMarkdown(content: string): string {
     return `<div class="markdown">${this.sanitize(content)}</div>`;
   }
 
-  divCount(content: string) {
+  divCount(content: string): string {
     return `<div class="count">${this.sanitize(content)}</div>`;
   }
 
-  divSource(content: string) {
+  divSource(content: string): string {
     const languageClass = `language-${this.workflow.descriptorTypeSubclass.toLowerCase() ?? 'none'}`;
     return `<div class="source"><pre><code class="${languageClass}">${this.sanitize(content)}</code></pre></div>`;
   }
 
-  divOutput(content: string, classes: string) {
+  divOutput(content: string, classes: string): string {
     return `<div class="output ${classes}"><pre>${this.sanitize(content)}</pre></div>`;
   }
 
-  renderMarkdown(markdown: string, attachments: any): string {
+  compileMarkdown(markdown: string, attachments: any): string {
     const renderer = this.createAttachedImageRenderer(attachments);
     const escapedDollars = markdown.replace(/\\+\$/g, '<span>$</span>');
     return this.markdownWrapperService.customCompileWithOptions(escapedDollars, { baseUrl: this.baseUrl, renderer: renderer });
@@ -229,9 +229,8 @@ export class FormattedNotebookComponent implements OnChanges {
     return this.markdownWrapperService.customSanitize(html);
   }
 
-  // solution adapted from mustache.js
+  // the below escape() implementation is adapted from mustache.js
   // https://github.com/janl/mustache.js/blob/972fd2b27a036888acfcb60d6119317744fac7ee/mustache.js#L60
-
   charToEntity = {
     '&': '&amp;',
     '<': '&lt;',
