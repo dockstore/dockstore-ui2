@@ -904,6 +904,12 @@ app-workflow-sidebar-accordion
   background: $service-selection-color !important;
 }
 
+// Set the background to the color associated with organizations (purple).
+// Used to set the background color in bubbles.
+.org-background {
+  background: $org-selection-color !important;
+}
+
 // Styles an element as a "bubble", which is a small very-rounded rectangular element that typically contains a word or short phrase.
 // Bubbles always render in a 12px font, are 28px tall, and default to gray background.
 .bubble {

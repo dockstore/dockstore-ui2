@@ -8,11 +8,23 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatDividerModule } from '@angular/material/divider';
 import { RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
+import { PipeModule } from '../../shared/pipe/pipe.module';
+import { ImgFallbackModule } from '../../shared/modules/img-fallback.module';
 
 @NgModule({
   declarations: [RecentEventsComponent, EntryToDisplayNamePipe],
   providers: [],
-  imports: [RefreshAlertModule, MatIconModule, CommonModule, MatCardModule, FlexLayoutModule, MatDividerModule, RouterModule],
+  imports: [
+    RefreshAlertModule,
+    MatIconModule,
+    CommonModule,
+    MatCardModule,
+    FlexLayoutModule,
+    MatDividerModule,
+    RouterModule,
+    PipeModule,
+    ImgFallbackModule,
+  ],
   exports: [RecentEventsComponent],
 })
 export class RecentEventsModule {}

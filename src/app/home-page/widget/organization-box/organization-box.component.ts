@@ -4,13 +4,12 @@ import { RequestsQuery } from 'app/loginComponents/state/requests.query';
 import { RequireAccountsModalComponent } from 'app/organizations/registerOrganization/requireAccountsModal/require-accounts-modal.component';
 import { Base } from 'app/shared/base';
 import { Dockstore } from 'app/shared/dockstore.model';
-import { Event, OrganizationUser, OrganizationUpdateTime } from 'app/shared/openapi';
-import { UsersService } from '../../../shared/openapi';
-import { finalize, takeUntil } from 'rxjs/operators';
-import { bootstrap4mediumModalSize } from 'app/shared/constants';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
-import { AlertService } from 'app/shared/alert/state/alert.service';
+import { Event, UsersService, OrganizationUser, OrganizationUpdateTime } from 'app/shared/openapi';
+import { bootstrap4mediumModalSize, bootstrap4largeModalSize } from 'app/shared/constants';
 import { Observable } from 'rxjs';
+import { finalize, takeUntil } from 'rxjs/operators';
+import { MyOrganizationsDialogComponent } from './my-organizations-dialog.component/my-organizations-dialog.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-organization-box',
@@ -19,11 +18,10 @@ import { Observable } from 'rxjs';
 })
 export class OrganizationBoxComponent extends Base implements OnInit {
   Dockstore = Dockstore;
-  public listOfOrganizations: Array<OrganizationUpdateTime> = [];
   public pendingRequests$: Observable<Array<OrganizationUser>>;
   public pendingInvites$: Observable<Array<OrganizationUser>>;
-  public filterText: string = '';
   public totalOrgs: number = 0;
+  public listOfOrgs: Array<OrganizationUpdateTime>;
   public EventType = Event.TypeEnum;
   public isLoading = true;
 
@@ -31,44 +29,41 @@ export class OrganizationBoxComponent extends Base implements OnInit {
     private usersService: UsersService,
     private requestsQuery: RequestsQuery,
     private matDialog: MatDialog,
-    private alertService: AlertService
+    private router: Router
   ) {
     super();
   }
 
   ngOnInit(): void {
-    this.getMyOrganizations();
-    this.pendingRequests$ = this.requestsQuery.myPendingOrganizationRequests$;
-    this.pendingInvites$ = this.requestsQuery.myOrganizationInvites$;
-  }
-
-  private getMyOrganizations() {
     this.usersService
-      .getUserDockstoreOrganizations(null, this.filterText, 'response')
+      .getUserDockstoreOrganizations()
       .pipe(
         finalize(() => (this.isLoading = false)),
         takeUntil(this.ngUnsubscribe)
       )
-      .subscribe(
-        (myOrgs: HttpResponse<OrganizationUpdateTime[]>) => {
-          this.listOfOrganizations = myOrgs.body.slice(0, 7);
-          // Update total orgs only when no search filter applied (i.e. non-filtered total)
-          // Handles cases with no filter param and empty filter param
-          const url = new URL(myOrgs.url);
-          if (!url.searchParams.get('filter')) {
-            this.totalOrgs = myOrgs.body.length;
-          }
-        },
-        (error: HttpErrorResponse) => {
-          this.listOfOrganizations = [];
-          this.alertService.detailedError(error);
-        }
-      );
+      .subscribe((myOrgs) => {
+        this.totalOrgs = myOrgs.length;
+        this.listOfOrgs = myOrgs;
+      });
+    this.pendingRequests$ = this.requestsQuery.myPendingOrganizationRequests$;
+    this.pendingInvites$ = this.requestsQuery.myOrganizationInvites$;
   }
 
-  onTextChange(event: any) {
-    this.isLoading = true;
-    this.getMyOrganizations();
+  /**
+   * Open dialog diaplaying user's organizations
+   * When user selects an organization, close dialog and navigate
+   *
+   * NOTE: Remove my organizations dialog once my organizations page is implemented
+   */
+  viewMyOrganizations(): void {
+    const dialogRef = this.matDialog.open(MyOrganizationsDialogComponent, { width: bootstrap4largeModalSize, data: this.listOfOrgs });
+
+    // Navigate to selected Organization
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result?.data) {
+        this.router.navigateByUrl('/organizations/' + result.data);
+      }
+    });
   }
 
   /**
