@@ -197,7 +197,7 @@ export class FormattedNotebookComponent implements OnChanges {
 
   createAttribute(name: string, value: string): string {
     if (value != undefined) {
-      return ` ${name}="${this.escape(String(value))}"`;
+      return ` ${name}="${this.escape(value)}"`;
     } else {
       return '';
     }
@@ -229,17 +229,24 @@ export class FormattedNotebookComponent implements OnChanges {
     return this.markdownWrapperService.customSanitize(html);
   }
 
-  // adapted from https://stackoverflow.com/questions/1787322/what-is-the-htmlspecialchars-equivalent-in-javascript
-  escape(text: string): string {
-    var charToEscaped = {
-      '&': '&amp;',
-      '<': '&lt;',
-      '>': '&gt;',
-      '"': '&quot;',
-      "'": '&#039;',
-    };
+  // solution adapted from mustache.js
+  // https://github.com/janl/mustache.js/blob/972fd2b27a036888acfcb60d6119317744fac7ee/mustache.js#L60
 
-    return text.replace(/[&<>"']/g, (char) => charToEscaped[char]);
+  charToEntity = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+    '/': '&#x2F;',
+    '`': '&#x60;',
+    '=': '&#x3D;',
+  };
+
+  escape(text: any): string {
+    return String(text).replace(/[&<>"'`=\/]/g, (c) => {
+      return this.charToEntity[c];
+    });
   }
 
   join(value: any): string {
