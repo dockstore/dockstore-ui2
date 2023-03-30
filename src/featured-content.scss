@@ -23,8 +23,6 @@ The following classes are used style the featured content external html
 a.cardClick {
   height: 100%;
   width: 100%;
-  color: $body-color;
-  text-decoration: none;
   display: flex;
   flex-direction: column;
 }
@@ -44,7 +42,7 @@ a.cardClick {
 
 .feat-card-btn-container {
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
 }
 
 @media (max-width: 50rem) {
