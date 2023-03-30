@@ -18,11 +18,11 @@ import { SearchWorkflowsComponent } from 'app/workflows/search/search.component'
 import { WorkflowsComponent } from 'app/workflows/workflows.component';
 import { ListWorkflowsModule } from './list-workflows.module';
 import { WorkflowModule } from './workflow.module';
-import { NotebooksWarningModule } from '../../shared/modules/notebooks-warning.module';
+import { PreviewWarningModule } from './preview-warning.module';
 
 @NgModule({
   declarations: [WorkflowsComponent, SearchWorkflowsComponent],
-  imports: [WorkflowModule, ListWorkflowsModule, NotebooksWarningModule],
+  imports: [WorkflowModule, ListWorkflowsModule, PreviewWarningModule],
   exports: [WorkflowsComponent, WorkflowModule, ListWorkflowsModule],
 })
 export class WorkflowsPageModule {}

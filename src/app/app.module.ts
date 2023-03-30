@@ -115,7 +115,7 @@ import { ExporterStepComponent } from './workflow/snapshot-exporter-modal/export
 import { SnaphotExporterModalComponent } from './workflow/snapshot-exporter-modal/snaphot-exporter-modal.component';
 import { ViewService } from './workflow/view/view.service';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
-import { NotebooksWarningModule } from './shared/modules/notebooks-warning.module';
+import { PreviewWarningModule } from './shared/modules/preview-warning.module';
 import { MyOrganizationsDialogComponent } from './home-page/widget/organization-box/my-organizations-dialog.component/my-organizations-dialog.component';
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
@@ -210,7 +210,7 @@ export function initializerFactory(
     MySidebarModule,
     AccountSidebarModule,
     ChangeUsernameModule,
-    NotebooksWarningModule,
+    PreviewWarningModule,
   ],
   providers: [
     AccountsService,

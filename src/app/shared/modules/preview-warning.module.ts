@@ -16,11 +16,11 @@
 
 import { NgModule } from '@angular/core';
 import { CustomMaterialModule } from 'app/shared/modules/material.module';
-import { NotebooksWarningComponent } from '../../notebooks-warning/notebooks-warning.component';
+import { PreviewWarningComponent } from '../../preview-warning/preview-warning.component';
 
 @NgModule({
-  declarations: [NotebooksWarningComponent],
+  declarations: [PreviewWarningComponent],
   imports: [CustomMaterialModule],
-  exports: [NotebooksWarningComponent],
+  exports: [PreviewWarningComponent],
 })
-export class NotebooksWarningModule {}
+export class PreviewWarningModule {}

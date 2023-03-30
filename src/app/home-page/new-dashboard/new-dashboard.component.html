@@ -5,7 +5,7 @@
     <app-header>My Dockstore: Dashboard</app-header>
     <app-news-notifications class="w-100"></app-news-notifications>
     <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="2.5rem" class="p-4">
-      <app-notebooks-warning *ngIf="Dockstore.FEATURES.enableNotebooks" class="w-100"></app-notebooks-warning>
+      <app-preview-warning *ngIf="Dockstore.FEATURES.enableNotebooks" class="w-100"></app-preview-warning>
       <div fxFlex fxLayout fxLayout.lt-md="column" fxLayoutGap="2.5rem" class="w-100">
         <app-entry-box fxFlex="33" fxFlex.lt-md="100" class="entry-holder" entryType="WORKFLOW"></app-entry-box>
         <app-entry-box fxFlex="33" fxFlex.lt-md="100" class="entry-holder" entryType="TOOL"></app-entry-box>

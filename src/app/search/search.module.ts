@@ -39,7 +39,7 @@ import { SearchWorkflowTableComponent } from './search-workflow-table/search-wor
 import { SearchComponent } from './search.component';
 import { searchRouting } from './search.routing';
 import { SearchService } from './state/search.service';
-import { NotebooksWarningModule } from '../shared/modules/notebooks-warning.module';
+import { PreviewWarningModule } from '../shared/modules/preview-warning.module';
 
 @NgModule({
   declarations: [
@@ -68,7 +68,7 @@ import { NotebooksWarningModule } from '../shared/modules/notebooks-warning.modu
     FlexLayoutModule,
     SnackbarModule,
     TagCloudComponent,
-    NotebooksWarningModule,
+    PreviewWarningModule,
   ],
   providers: [SearchService, QueryBuilderService],
   exports: [SearchComponent, IsAppToolPipe],

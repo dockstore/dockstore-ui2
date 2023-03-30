@@ -42,6 +42,6 @@
   </ng-template>
 </app-header>
 <div class="container">
-  <div *ngIf="(entryType$ | async) === EntryType.Notebook" class="mt-4"><app-notebooks-warning></app-notebooks-warning></div>
+  <div *ngIf="(entryType$ | async) === EntryType.Notebook" class="mt-4"><app-preview-warning></app-preview-warning></div>
   <router-outlet></router-outlet>
 </div>

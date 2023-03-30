@@ -42,8 +42,7 @@ import { StarredBoxComponent } from './widget/starred-box/starred-box.component'
 import { HeaderModule } from 'app/shared/modules/header.module';
 import { NewsBoxComponent } from './widget/news-box/news-box.component';
 import { MarkdownWrapperModule } from '../shared/modules/markdown-wrapper.module';
-import { NotebooksWarningModule } from '../shared/modules/notebooks-warning.module';
-import { PipeModule } from '../shared/pipe/pipe.module';
+import { PreviewWarningModule } from '../shared/modules/preview-warning.module';
 
 @NgModule({
   imports: [
@@ -66,8 +65,7 @@ import { PipeModule } from '../shared/pipe/pipe.module';
     RefreshWizardModule,
     HeaderModule,
     MarkdownWrapperModule,
-    NotebooksWarningModule,
-    PipeModule,
+    PreviewWarningModule,
   ],
   declarations: [
     HomeComponent,
