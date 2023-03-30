@@ -1,7 +1,7 @@
 import { Component, ElementRef, Inject, Input, OnChanges, ViewChild } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { finalize } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { SourceFile, Workflow, WorkflowVersion } from 'app/shared/openapi';
 import { SourceFileTabsService } from '../source-file-tabs/source-file-tabs.service';
 import { WorkflowQuery } from '../shared/state/workflow.query';
@@ -26,6 +26,7 @@ export class FormattedNotebookComponent implements OnChanges {
   @ViewChild('notebookTarget') notebookTarget: ElementRef;
   loading = true;
   displayError = false;
+  private currentSubscription: Subscription = null;
 
   ngOnChanges() {
     this.retrieveAndFormatNotebook();
@@ -35,7 +36,20 @@ export class FormattedNotebookComponent implements OnChanges {
     this.notebookTarget?.nativeElement.replaceChildren();
     this.loading = true;
     this.displayError = false;
-    this.sourceFileTabsService
+    // This code cancels any previous request that is still in progess,
+    // because the @Inputs have changed, and we're about to launch a new
+    // request to retrieve the corresponding notebook file, which we will
+    // display when it arrives.  The previous response is now irrelevant,
+    // and could actually cause problems if it arrives out of order.
+    // Assuming that Angular calls a component's `ngOnChanges()` directly
+    // after setting its @Input fields, a pleasant side effect of said
+    // cancellation is that when we handle a response, we know that @Input
+    // fields have the same values as when the corresponding request was
+    // started, which simplifies the code.  For example, the methods
+    // called by the handler to format the notebook can safely use the
+    // value of the `workflow` field to determine the notebook language.
+    this.currentSubscription?.unsubscribe();
+    this.currentSubscription = this.sourceFileTabsService
       .getSourceFiles(this.workflow.id, this.version.id)
       .pipe(
         finalize(() => {
@@ -49,13 +63,13 @@ export class FormattedNotebookComponent implements OnChanges {
             if (this.isPrimaryDescriptor(sourceFile.path) && sourceFile.type === SourceFile.TypeEnum.DOCKSTOREJUPYTER) {
               try {
                 // Create an element containing the formatted notebook,
-                // and make it the child of template's '#notebookTarget' placeholder.
+                // and make it the single child of the template's '#notebookTarget' placeholder.
                 const notebookElement = this.createFormattedNotebookElement(sourceFile.content);
                 this.notebookTarget.nativeElement.replaceChildren(notebookElement);
               } catch (e) {
-                this.displayError = true;
                 console.log('Exception formatting notebook');
                 console.log(e.message);
+                this.displayError = true;
                 return;
               }
               this.displayError = false;
