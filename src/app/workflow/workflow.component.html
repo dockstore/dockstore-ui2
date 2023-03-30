@@ -245,14 +245,16 @@
           </mat-tab>
           <div *ngIf="entryType === EntryType.Notebook">
             <mat-tab id="codeTab" label="Code">
-              <div class="mt-4 ml-4 mr-4">
-                <app-formatted-notebook
-                  *ngIf="workflow && selectedVersion"
-                  [workflow]="workflow"
-                  [version]="selectedVersion"
-                  [baseUrl]="workflow.providerUrl | baseUrl: selectedVersion.name"
-                ></app-formatted-notebook>
-              </div>
+              <ng-template matTabContent>
+                <div class="mt-4 ml-4 mr-4">
+                  <app-formatted-notebook
+                    *ngIf="workflow && selectedVersion && (extendedWorkflow$ | async)"
+                    [workflow]="workflow"
+                    [version]="selectedVersion"
+                    [baseUrl]="(extendedWorkflow$ | async).providerUrl | baseUrl: selectedVersion.name"
+                  ></app-formatted-notebook>
+                </div>
+              </ng-template>
             </mat-tab>
           </div>
           <div *ngIf="entryType === EntryType.BioWorkflow || entryType === EntryType.Tool">

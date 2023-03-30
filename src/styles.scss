@@ -1390,7 +1390,7 @@ div.mat-menu-panel {
 // see https://stackoverflow.com/questions/56265483/angular-how-to-style-dynamically-generated-html
 .notebook {
   display: grid;
-  grid-template-columns: 6em auto;
+  grid-template-columns: fit-content(7em) auto;
   grid-template-rows: auto;
   grid-auto-flow: row;
   padding: 1em 1.5em 1em 1em;
