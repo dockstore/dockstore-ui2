@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { DockstoreTool, Workflow } from './swagger';
+import { DockstoreTool, Workflow } from './openapi';
 
 /**
  * This pipe converts and entry (DockstoreTool or Workflow) to a name that is missing the registry or source control

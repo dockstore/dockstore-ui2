@@ -12,6 +12,8 @@ import { SelectTabPipe } from '../entry/select-tab.pipe';
 import { BaseUrlPipe } from '../entry/base-url.pipe';
 import { DescriptorLanguageVersionsPipe } from '../entry/descriptor-language-versions.pipe';
 import { DescriptorLanguagePipe } from '../entry/descriptor-language.pipe';
+import { RecentEventsPipe } from '../entry/recent-events.pipe';
+import { EntryToDisplayNamePipe } from '../entry-to-display-name.pipe';
 
 const DECLARATIONS: any[] = [
   FilePathPipe,
@@ -26,10 +28,12 @@ const DECLARATIONS: any[] = [
   BaseUrlPipe,
   DescriptorLanguageVersionsPipe,
   DescriptorLanguagePipe,
+  RecentEventsPipe,
 ];
 @NgModule({
   imports: [CommonModule],
   declarations: DECLARATIONS,
   exports: DECLARATIONS,
+  providers: [EntryToDisplayNamePipe],
 })
 export class PipeModule {}
