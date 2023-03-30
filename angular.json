@@ -54,6 +54,8 @@
               "node_modules/bootstrap/dist/js/bootstrap.js",
               "node_modules/katex/dist/katex.js",
               "node_modules/katex/dist/contrib/auto-render.js",
+              "src/mathjax-config.js",
+              "node_modules/mathjax/es5/tex-chtml-full.js",
               "node_modules/prismjs/prism.js",
               "node_modules/prismjs/components/prism-python.js",
             ]
