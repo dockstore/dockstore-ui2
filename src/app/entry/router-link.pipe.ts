@@ -6,7 +6,7 @@ import { Workflow } from '../shared/openapi';
   name: 'routerLink',
 })
 export class RouterLinkPipe implements PipeTransform {
-  transform(entryType: EntryType, workflow: Workflow): String | null {
+  transform(entryType: EntryType, workflow: Workflow): string | null {
     if (!workflow || !entryType) {
       return null;
     }

@@ -5,8 +5,6 @@ import { Dockstore } from './dockstore.model';
   providedIn: 'root',
 })
 export class FeatureService {
-  constructor() {}
-
   updateFeatureFlags(queryParams: string) {
     const urlSearchParams = new URLSearchParams(queryParams);
     const gitHubAppCallBackToNewDashBoard = urlSearchParams.has('state') && urlSearchParams.get('state').includes('newDashboard');

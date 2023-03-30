@@ -26,8 +26,6 @@ export abstract class EntryTab implements OnDestroy {
 
   protected ngUnsubscribe: Subject<{}> = new Subject();
 
-  constructor() {}
-
   ngOnDestroy() {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();

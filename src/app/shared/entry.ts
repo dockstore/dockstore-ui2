@@ -112,7 +112,7 @@ export abstract class Entry implements OnDestroy {
     this.verifiedLink = this.dateService.getVerifiedLink();
   }
 
-  private parseURL(url: String): void {
+  private parseURL(url: string): void {
     if (this.isPublic()) {
       this.title = this.getEntryPathFromURL();
       this.urlVersion = this.getVersionFromURL();
@@ -147,7 +147,7 @@ export abstract class Entry implements OnDestroy {
   abstract getDefaultVersionName(): string;
   abstract resetCopyBtn(): void;
   abstract isPublic(): boolean;
-  abstract setupPublicEntry(url: String): void;
+  abstract setupPublicEntry(url: string): void;
   /**
    * Upon entry init (either from the my-workflows page or public workflow page),
    * the previous active entry should be removed so that the component starts displaying with a the correct/current entry

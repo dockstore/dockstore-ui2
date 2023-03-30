@@ -17,10 +17,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { Organization, User } from '../../../shared/swagger';
-import { OrganizationsService } from '../../../shared/swagger';
-import { UsersService } from '../../../shared/swagger';
-import { StarRequest } from '../../../shared/swagger';
+import { Organization, User, OrganizationsService, UsersService, StarRequest } from '../../../shared/swagger';
 
 @Injectable()
 export class OrganizationStarringService {

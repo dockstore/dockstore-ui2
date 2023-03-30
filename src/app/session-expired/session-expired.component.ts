@@ -19,6 +19,4 @@ import { Component } from '@angular/core';
   selector: 'app-policy-update',
   templateUrl: './session-expired.component.html',
 })
-export class SessionExpiredComponent {
-  constructor() {}
-}
+export class SessionExpiredComponent {}

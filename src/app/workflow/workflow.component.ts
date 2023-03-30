@@ -387,7 +387,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
     }
   }
 
-  public setupPublicEntry(url: String) {
+  public setupPublicEntry(url: string) {
     const subclass: WorkflowSubClass = this.getWorkflowSubclass(this.entryType);
     this.workflowsService
       .getPublishedWorkflowByPath(this.title, subclass, includesValidation + ',' + includesAuthors, this.urlVersion)

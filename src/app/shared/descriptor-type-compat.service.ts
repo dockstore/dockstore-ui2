@@ -32,8 +32,6 @@ import { ToolDescriptor, Workflow } from './swagger';
   providedIn: 'root',
 })
 export class DescriptorTypeCompatService {
-  constructor() {}
-
   /**
    * Checks if the descriptor type string is valid
    *

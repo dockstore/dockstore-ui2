@@ -16,7 +16,7 @@ export class RecentEventsPipe implements PipeTransform {
    *
    * @param {Event} event
    * @param {string} type 'displayName' | 'entryLink' | 'entryType' | 'orgLink' | 'collectionLink'
-   * @returns String | null
+   * @returns string | null
    */
   transform(event: Event, type: 'displayName' | 'entryLink' | 'entryType' | 'orgLink' | 'collectionLink'): string | null {
     if (!event || !type) {

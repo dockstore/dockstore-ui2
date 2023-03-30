@@ -38,17 +38,20 @@
             <div fxLayout="row" fxLayoutAlign="space-between stretch">
               <div fxFlex fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="center center">
                 <img
-                  *ngIf="organizationUser.user?.avatarUrl"
+                  *ngIf="organizationUser.user?.avatarUrl; else noAvatar"
                   mat-card-avatar
                   class="header-image"
                   [src]="organizationUser.user?.avatarUrl"
+                  alt="User avatar"
                 />
-                <img
-                  *ngIf="!organizationUser.user?.avatarUrl"
-                  mat-card-avatar
-                  class="header-image"
-                  src="https://via.placeholder.com/300x300?text=Avatar+Not+Found"
-                />
+                <ng-template #noAvatar>
+                  <img
+                    mat-card-avatar
+                    class="header-image"
+                    src="https://via.placeholder.com/300x300?text=Avatar+Not+Found"
+                    alt="User avatar"
+                  />
+                </ng-template>
                 <div fxFlex="100" fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="0.5rem">
                   <div fxLayout="row" fxLayoutAlign="space-between center">
                     <a class="no-underline" routerLink="/users/{{ organizationUser.user?.username }}">
