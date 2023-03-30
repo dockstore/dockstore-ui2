@@ -20,10 +20,10 @@
       <div id="workflow-number" fxLayout="row">
         <mat-card-header fxLayout="row">
           <mat-card-title>{{ entryTypeLowerCase | titlecase }}s</mat-card-title>
-          <span class="bubble workflow-background" *ngIf="entryType === newEntryType.WORKFLOW">{{ totalEntries }}</span>
-          <span class="bubble container-background" *ngIf="entryType === newEntryType.TOOL">{{ totalEntries }}</span>
-          <span class="bubble service-background" *ngIf="entryType === newEntryType.SERVICE">{{ totalEntries }}</span>
-          <span class="bubble preview-bubble" *ngIf="entryType === newEntryType.SERVICE">PREVIEW</span>
+          <span class="bubble {{ entryTypeLowerCase }}-background">{{ totalEntries }}</span>
+          <span class="bubble preview-bubble" *ngIf="entryType === newEntryType.SERVICE || entryType === newEntryType.NOTEBOOK"
+            >PREVIEW</span
+          >
         </mat-card-header>
       </div>
       <button
@@ -40,8 +40,8 @@
       </button>
     </div>
     <mat-divider></mat-divider>
-    <mat-card-content class="mx-3 mt-3 mb-0 h-100">
-      <div *ngIf="totalEntries !== 0 || isLoading; else noEntries">
+    <mat-card-content class="p-3 h-100">
+      <div *ngIf="totalEntries > 0 || isLoading; else noEntries">
         <mat-form-field appearance="outline" class="search-form-field w-100 pb-0">
           <mat-label>Search your {{ entryTypeLowerCase | titlecase }}s...</mat-label>
           <input matInput data-cy="search-field" [(ngModel)]="filterText" (keyup)="onTextChange($event)" [matAutocomplete]="auto" />
@@ -72,13 +72,10 @@
       <ng-template #noEntries>
         <div *ngIf="!isLoading" fxLayout="column" class="h-100 text-align-center" fxLayoutAlign="center center">
           <img
-            *ngIf="entryType === 'WORKFLOW'"
-            src="../assets/svg/workflow-circle.svg"
-            alt="my workflows"
+            src="../assets/svg/{{ entryTypeLowerCase }}-circle.svg"
+            alt="my {{ entryTypeLowerCase }}s"
             class="widget-box-type-logo mb-4"
           />
-          <img *ngIf="entryType === 'TOOL'" src="../assets/svg/tool-circle.svg" alt="my tools" class="widget-box-type-logo mb-4" />
-          <img *ngIf="entryType === 'SERVICE'" src="../assets/svg/service-circle.svg" alt="my services" class="widget-box-type-logo mb-4" />
           <span>You have not registered any {{ entryTypeLowerCase }}s.</span>
           <div class="size-small">
             <span>Use the</span>

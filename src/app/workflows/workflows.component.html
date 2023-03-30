@@ -34,9 +34,7 @@
     </div>
   </div>
   <ng-template #search>
-    <img *ngIf="(entryType$ | async) === EntryType.BioWorkflow" src="../assets/svg/sub-nav/workflow.svg" alt="workflow icon" />
-    <img *ngIf="(entryType$ | async) === EntryType.Service" src="../assets/svg/sub-nav/services.svg" alt="service icon" />
-    <img *ngIf="(entryType$ | async) === EntryType.Notebook" src="../assets/svg/sub-nav/notebook.svg" alt="notebook icon" />
+    <img src="../assets/svg/sub-nav/{{ entryType$ | async }}.svg" alt="{{ entryType$ | async }} icon" />
     <span class="mx-1">{{ entryPageTitle$ | async | titlecase }}</span>
     <div *ngIf="(entryType$ | async) === EntryType.Service || (entryType$ | async) === EntryType.Notebook" class="bubble preview-bubble">
       PREVIEW
@@ -44,5 +42,6 @@
   </ng-template>
 </app-header>
 <div class="container">
+  <div *ngIf="(entryType$ | async) === EntryType.Notebook" class="mt-4"><app-preview-warning></app-preview-warning></div>
   <router-outlet></router-outlet>
 </div>

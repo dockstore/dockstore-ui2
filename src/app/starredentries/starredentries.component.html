@@ -23,8 +23,8 @@
     </div>
 
     <div class="container">
-      <!-- TO DO: When services are implemented add:'service-tab-group': selected.value === 2,' -->
-      <!-- TO DO: And change the purple-tab-group to:'purple-tab-group': selected.value === 3' -->
+      <!-- TO DO: When services are implemented add:'service-tab-group': selected.value === 3,' -->
+      <!-- TO DO: And change the purple-tab-group to:'purple-tab-group': selected.value === 4' -->
       <mat-tab-group
         mat-stretch-tabs
         class="container"
@@ -44,7 +44,7 @@
             <div fxLayoutGap="0.5rem">
               <img class="site-icons-tab" src="../../../assets/svg/sub-nav/workflow.svg" alt="workflow logo" />
               <span>Workflows</span>
-              <span class="tab-display">{{ starredWorkflows?.length }}</span>
+              <span class="tab-display workflow-background">{{ starredWorkflows?.length }}</span>
             </div>
           </ng-template>
           <mat-card class="alert alert-info mat-elevation-z starred-header" role="alert" *ngIf="starredWorkflows?.length === 0">
@@ -64,7 +64,7 @@
             <div fxLayoutGap="0.5rem">
               <img src="../../../assets/svg/sub-nav/tool.svg" alt="tool logo" />
               <span>Tools</span>
-              <span class="tab-display">{{ starredTools?.length }}</span>
+              <span class="tab-display tool-background">{{ starredTools?.length }}</span>
             </div>
           </ng-template>
           <div>
@@ -84,12 +84,14 @@
           </div>
         </mat-tab>
 
-        <mat-tab>
+        <mat-tab *ngIf="Dockstore.FEATURES.enableNotebooks">
+          <div class="mb-4"><app-preview-warning></app-preview-warning></div>
           <ng-template mat-tab-label>
             <div fxLayoutGap="0.5rem">
               <img class="site-icons-tab" src="../../../assets/svg/sub-nav/notebook.svg" alt="notebook logo" />
               <span>Notebooks</span>
-              <span class="tab-display" data-cy="starred-notebooks-count">{{ starredNotebooks?.length }}</span>
+              <span class="tab-display org-background" data-cy="starred-notebooks-count">{{ starredNotebooks?.length }}</span>
+              <span class="bubble preview-bubble">PREVIEW</span>
             </div>
           </ng-template>
           <div>
@@ -191,7 +193,7 @@
               <div fxLayout="row" fxLayoutAlign="flex-start" fxLayoutGap="1rem">
                 <small class="spacing">Last updated {{ tool?.lastUpdated | date }}</small>
                 <mat-chip-list>
-                  <mat-chip class="bubble container-background" *ngFor="let label of tool?.labels | slice: 0:3">{{ label.value }}</mat-chip>
+                  <mat-chip class="bubble tool-background" *ngFor="let label of tool?.labels | slice: 0:3">{{ label.value }}</mat-chip>
                   <mat-chip *ngIf="tool?.versionVerified" matTooltip="Verified" class="bubble">
                     <a class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">
                       <mat-icon class="verified-icon">done</mat-icon>
@@ -215,9 +217,9 @@
         <mat-tab *ngIf="starredServices">
           <ng-template mat-tab-label>
             <div fxLayoutGap="0.5rem">
-              <img class="site-icons-tab" src="../../../assets/svg/sub-nav/services.svg" alt="service logo" />
+              <img class="site-icons-tab" src="../../../assets/svg/sub-nav/service.svg" alt="service logo" />
               <span>Services</span>
-              <span class="tab-display">0</span>
+              <span class="tab-display service-background">0</span>
             </div>
           </ng-template>
           <mat-card class="alert alert-info mat-elevation-z starred-header" role="alert"> You have no starred services. </mat-card>
@@ -228,7 +230,7 @@
             <div fxLayoutGap="0.5rem">
               <img src="../../../assets/svg/sub-nav/organization.svg" alt="organization logo" />
               <span>Organizations</span>
-              <span class="tab-display">{{ starredOrganizations?.length }}</span>
+              <span class="tab-display org-background">{{ starredOrganizations?.length }}</span>
             </div>
           </ng-template>
           <mat-card class="alert alert-info mat-elevation-z starred-header" role="alert" *ngIf="starredOrganizations?.length === 0">

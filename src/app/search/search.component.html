@@ -17,7 +17,7 @@
 <app-header>
   <div fxLayout fxLayoutAlign="start center">
     <img src="../../assets/svg/search.svg" class="site-icons-small mr-3" alt="search icon" />
-    Explore {{ (selectedIndex$ | async) === 0 ? 'Workflows' : 'Tools' }}
+    Explore {{ (selectedIndex$ | async) === 0 ? 'Workflows' : (selectedIndex$ | async) === 1 ? 'Tools' : 'Notebooks' }}
   </div>
 </app-header>
 <mat-tab-group
@@ -26,19 +26,31 @@
   mat-align-tabs="center"
   [selectedIndex]="selectedIndex$ | async"
   (selectedTabChange)="saveTabIndex($event)"
-  [ngClass]="(selectedIndex$ | async) === 0 ? 'workflow-tab-group' : 'tool-tab-group'"
+  [ngClass]="{
+    'workflow-tab-group': (selectedIndex$ | async) === 0,
+    'tool-tab-group': (selectedIndex$ | async) === 1,
+    'notebook-tab-group': (selectedIndex$ | async) === 2
+  }"
 >
-  <mat-tab class="browserWorkflowsTab" data-cy="workflows-tab">
+  <mat-tab>
     <ng-template mat-tab-label>
       <img class="site-icons-tab m-2" src="../assets/svg/sub-nav/workflow.svg" alt="workflow icon" />
       <b>Workflows</b>
     </ng-template>
     <div class="mat-tab-content"></div>
   </mat-tab>
-  <mat-tab class="browserToolsTab" data-cy="tools-tab">
+  <mat-tab>
     <ng-template mat-tab-label>
       <img class="site-icons-tab m-2" src="../assets/svg/sub-nav/tool.svg" alt="tool icon" />
       <b>Tools</b>
+    </ng-template>
+    <div class="mat-tab-content"></div>
+  </mat-tab>
+  <mat-tab *ngIf="Dockstore.FEATURES.enableNotebooks">
+    <ng-template mat-tab-label>
+      <img class="site-icons-tab m-2" src="../../assets/svg/sub-nav/notebook.svg" alt="notebook icon" />
+      <b>Notebooks</b>
+      <span class="bubble preview-bubble">PREVIEW</span>
     </ng-template>
     <div class="mat-tab-content"></div>
   </mat-tab>
@@ -310,6 +322,7 @@
             {{ query_size - 1 }} results are shown. We recommend that you narrow your search to find more relevant results.
           </p>
         </mat-card>
+        <app-preview-warning *ngIf="Dockstore.FEATURES.enableNotebooks && (selectedIndex$ | async) === 2"></app-preview-warning>
         <app-search-results></app-search-results>
       </div>
     </div>

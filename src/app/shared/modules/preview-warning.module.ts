@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 OICR
+ *    Copyright 2023 OICR, UCSC
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -13,16 +13,14 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+
 import { NgModule } from '@angular/core';
-import { SearchWorkflowsComponent } from 'app/workflows/search/search.component';
-import { WorkflowsComponent } from 'app/workflows/workflows.component';
-import { ListWorkflowsModule } from './list-workflows.module';
-import { WorkflowModule } from './workflow.module';
-import { PreviewWarningModule } from './preview-warning.module';
+import { CustomMaterialModule } from 'app/shared/modules/material.module';
+import { PreviewWarningComponent } from '../../preview-warning/preview-warning.component';
 
 @NgModule({
-  declarations: [WorkflowsComponent, SearchWorkflowsComponent],
-  imports: [WorkflowModule, ListWorkflowsModule, PreviewWarningModule],
-  exports: [WorkflowsComponent, WorkflowModule, ListWorkflowsModule],
+  declarations: [PreviewWarningComponent],
+  imports: [CustomMaterialModule],
+  exports: [PreviewWarningComponent],
 })
-export class WorkflowsPageModule {}
+export class PreviewWarningModule {}

@@ -67,7 +67,7 @@ export class EntryBoxComponent extends Base implements OnInit {
       this.entryTypeLowerCase = this.entryType.toLowerCase();
     }
 
-    //Get the links for the specified entryType
+    // Get the links for the specified entryType
     if (this.entryType === NewEntryType.WORKFLOW) {
       this.helpLink = Dockstore.DOCUMENTATION_URL + '/getting-started/dockstore-workflows.html';
       this.allEntriesLink = '/my-workflows/';
@@ -84,8 +84,14 @@ export class EntryBoxComponent extends Base implements OnInit {
       this.helpLink = Dockstore.DOCUMENTATION_URL + '/getting-started/notebooks/notebooks.html';
       this.allEntriesLink = '/my-notebooks/';
       this.entryTypeParam = 'NOTEBOOKS';
+      // Not loading entries for Notebooks - remove when supported
+      this.isLoading = false;
     }
-    this.getMyEntries();
+
+    // Do not get Notebook entries, unsupported - remove when suported
+    if (this.entryType !== NewEntryType.NOTEBOOK) {
+      this.getMyEntries();
+    }
   }
 
   getMyEntries() {
