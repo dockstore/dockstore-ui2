@@ -56,6 +56,7 @@ export class FormattedNotebookComponent implements OnChanges {
                 this.displayError = true;
                 console.log('Exception formatting notebook');
                 console.log(e.message);
+                return;
               }
               this.displayError = false;
               return;
