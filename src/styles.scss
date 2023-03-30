@@ -1397,6 +1397,29 @@ div.mat-menu-panel {
   border: solid 1px #cfd1d7;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
   border-radius: 4px;
+  line-height: 1.5;
+  font-size: 12px;
+
+  h1 {
+    font-size: 24px;
+  }
+  h2 {
+    font-size: 20px;
+  }
+  h3 {
+    font-size: 16px;
+  }
+  code,
+  pre {
+    font-size: 12px;
+  }
+  ul,
+  ol,
+  dl,
+  li,
+  table {
+    font-size: 100%;
+  }
 
   .count {
     grid-column: 1;

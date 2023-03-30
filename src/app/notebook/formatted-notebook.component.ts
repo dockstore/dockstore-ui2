@@ -271,6 +271,9 @@ export class FormattedNotebookComponent implements OnChanges {
         '>'
       );
     }
+    if (mimeType === 'text/html') {
+      return data;
+    }
     if (mimeType?.startsWith('text/')) {
       return this.escape(data);
     }
