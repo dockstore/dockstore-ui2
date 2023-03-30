@@ -20,6 +20,8 @@ import {
   rejectPotatoMembership,
   resetDB,
   setTokenUserViewPort,
+  addToCollection,
+  insertNotebooks,
 } from '../../support/commands';
 import { TokenUser } from '../../../src/app/shared/swagger';
 import { TokenSource } from '../../../src/app/shared/enum/token-source.enum';
@@ -301,7 +303,15 @@ describe('Dockstore Organizations', () => {
         cy.wait(1000);
         cy.get('img[src*="default-org-logo"]').should('be.visible');
       }
+    });
+    insertNotebooks();
+    it('Should be able to add notebook to collection', () => {
+      const notebookPath = '/notebooks/github.com/dockstore-testing/simple-notebook';
+      addToCollection(notebookPath, 'Potatoe', 'veryFakeCollectionName');
+      cy.get('[data-cy=collectionLink]').should('contain', 'veryFakeCollectionName');
+    });
 
+    it('Should be able to remove collection', () => {
       cy.visit('/organizations/Potatoe/collections/veryFakeCollectionName');
       cy.get('[data-cy=removeCollectionButton]').click();
       cy.get('[data-cy=cancel-remove-collection]').click();

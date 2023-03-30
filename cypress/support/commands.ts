@@ -100,6 +100,19 @@ export function setTokenUserViewPortCurator() {
   });
 }
 
+// Sets it to the user where id = 5. Is a platform partner.
+export function setTokenUserViewPortPlatformPartner() {
+  beforeEach(() => {
+    // Login by adding user obj and token to local storage
+    localStorage.setItem('ng2-ui-auth_token', 'imamafakedockstoretoken3');
+  });
+}
+
+// Update the user user_platform_partner to be a platform partner
+export function setPlatformPartnerRole() {
+  invokeSql("update enduser set platformpartner=true where username = 'user_platform_partner'");
+}
+
 export function goToUnexpandedSidebarEntry(organization: string, repo: RegExp | string) {
   // This is needed because of a possible defect in the implementation.
   // All expansion panels are shown before any of them are expanded (after some logic of choosing which to expanded).
@@ -202,4 +215,16 @@ export function testNoGithubEntriesText(entryType: string, repository: string) {
       cy.get('[data-cy=no-unpublished-' + entryType + '-message]').should('contain', 'No unpublished ' + entryType + 's');
     }
   });
+}
+
+export function addToCollection(path: string, organizationName: string, collectionDisplayName: string) {
+  cy.visit(path);
+  cy.get('[data-cy=addToolToCollectionButton]').should('be.visible').click();
+  cy.get('[data-cy=addEntryToCollectionButton]').should('be.disabled');
+  cy.get('[data-cy=selectOrganization]').click();
+  cy.get('mat-option').contains(organizationName).click();
+  cy.get('[data-cy=addEntryToCollectionButton]').should('be.disabled');
+  cy.get('[data-cy=selectCollection]').click();
+  cy.get('mat-option').contains(collectionDisplayName).click();
+  cy.get('[data-cy=addEntryToCollectionButton]').should('not.be.disabled').click();
 }

@@ -1,5 +1,5 @@
 /*
- *    Copyright 2019 OICR
+ *    Copyright 2023 OICR, UCSC
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -13,9 +13,11 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { setTokenUserViewPort } from '../../support/commands';
-describe('Admin UI', () => {
-  setTokenUserViewPort();
+
+import { setTokenUserViewPortPlatformPartner, setPlatformPartnerRole } from '../../support/commands';
+
+describe('Platform Partner UI', () => {
+  setTokenUserViewPortPlatformPartner();
   beforeEach(() => {
     cy.visit('');
 
@@ -24,9 +26,10 @@ describe('Admin UI', () => {
   });
 
   describe('Profile', () => {
-    it('Admin status indicated on profile page', () => {
+    it('Platform Partner status indicated on profile page', () => {
+      setPlatformPartnerRole();
       cy.get('#dropdown-accounts').click();
-      cy.get('[data-cy=account-is-admin]').should('exist');
+      cy.get('[data-cy=account-is-platform-partner]').should('exist');
     });
   });
 });
