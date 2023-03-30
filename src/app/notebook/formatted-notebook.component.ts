@@ -199,23 +199,40 @@ export class FormattedNotebookComponent implements OnChanges {
   }
 
   compileMarkdown(markdown: string, attachments: any): string {
-    const renderer = this.createAttachedImageRenderer(attachments);
-    const escapedDollars = markdown.replace(/\\+\$/g, '<span>$</span>');
-    return this.markdownWrapperService.customCompileWithOptions(escapedDollars, { baseUrl: this.baseUrl, renderer: renderer });
+    const escapedDollars = this.escapeDollars(markdown);
+    const adjustedAttachedImages = this.adjustAttachedImages(escapedDollars, attachments);
+    return this.markdownWrapperService.customCompile(adjustedAttachedImages, this.baseUrl);
   }
 
-  createAttachedImageRenderer(attachments: any): Renderer {
-    const renderer = new Renderer();
-    const createHtmlFromBundles = this.createHtmlFromBundles;
-    renderer.image = function (href, title, text) {
-      if (href.startsWith('attachment:')) {
-        const name = href.substring('attachment:'.length);
-        const mimeBundle = attachments[name] ?? {};
-        return createHtmlFromBundles(mimeBundle, {}, text, title);
-      }
-      return undefined;
-    };
-    return renderer;
+  escapeDollars(markdown: string): string {
+    return markdown.replace(/\\+\$/g, '<span>$</span>');
+  }
+
+  adjustAttachedImages(markdown: string, attachments: any) {
+    if (attachments == undefined) {
+      return markdown;
+    }
+    return markdown
+      .split('\n')
+      .map((line) => {
+        if (line.startsWith('    ')) {
+          return line;
+        }
+        return line.replace(/]\(attachment:([^) "]+)/g, (match, key) => {
+          const mimeBundle = attachments[key] ?? {};
+          const mimeObject = this.selectBestFromMimeBundle(mimeBundle);
+          if (mimeObject) {
+            return `](data:${mimeObject.mimeType};base64,${mimeObject.data}`;
+          } else {
+            return match;
+          }
+        });
+      })
+      .join('\n');
+  }
+
+  replaceAll(value: string, from: string, to: string) {
+    return value.split(from).join(to);
   }
 
   supportedMimeTypes = ['image/png', 'image/webp', 'image/jpeg', 'image/gif', 'text/html', 'text/json', 'text/plain'];
