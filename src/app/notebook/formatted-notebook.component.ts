@@ -106,7 +106,7 @@ export class FormattedNotebookComponent implements OnChanges {
     // prevent mangling the output of the equation rendering and syntax highlighting steps,
     // which set the 'class' attribute on the elements they generate, so that they may be styled.
     // If we used MarkdownWrapper.sanitize(), it would remove 'class' attrs.
-    element.innerHTML = this.sanitizeLightly(element.innerHTML);
+    // element.innerHTML = this.sanitizeLightly(element.innerHTML);
     return element;
   }
 
