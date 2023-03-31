@@ -105,7 +105,7 @@ export class FormattedNotebookComponent implements OnChanges {
     // Lightly sanitize the entirety of the generated HTML, conserving 'class' attribute values to
     // prevent mangling the output of the equation rendering and syntax highlighting steps,
     // which set the 'class' attribute on the elements they generate, so that they may be styled.
-    // The sanitize() method delegates to the MarkdownWrapper sanitizer, which removes 'class' attrs.
+    // If we used MarkdownWrapper.sanitize(), it would remove 'class' attrs.
     element.innerHTML = this.sanitizeLightly(element.innerHTML);
     return element;
   }
@@ -199,9 +199,11 @@ export class FormattedNotebookComponent implements OnChanges {
   }
 
   compileMarkdown(markdown: string, attachments: any): string {
-    const escapedDollars = this.escapeDollars(markdown);
-    const adjustedAttachedImages = this.adjustAttachedImages(escapedDollars, attachments);
-    return this.markdownWrapperService.customCompile(adjustedAttachedImages, this.baseUrl);
+    let adjusted = markdown;
+    adjusted = this.escapeDollars(adjusted);
+    adjusted = this.adjustAttachedImages(adjusted, attachments);
+    adjusted = this.preprocessLatexMath(adjusted);
+    return this.markdownWrapperService.customCompile(adjusted, this.baseUrl);
   }
 
   escapeDollars(markdown: string): string {
@@ -229,6 +231,15 @@ export class FormattedNotebookComponent implements OnChanges {
         });
       })
       .join('\n');
+  }
+
+  preprocessLatexMath(markdown: string): string {
+    return markdown.replace(
+      /(\$+)\s*(\\begin\{[^}]*)([\s\S]*)(\\end\{[^}]*})\s*(\$+)/gm,
+      (match, leadingDollars, begin, content, end, trailingDollars) => {
+        return leadingDollars + begin + this.replaceAll(content, '\\\\', '\\\\\\\\') + end + trailingDollars;
+      }
+    );
   }
 
   replaceAll(value: string, from: string, to: string) {
