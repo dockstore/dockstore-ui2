@@ -13,7 +13,11 @@ The following classes are used style the featured content external html
 }
 
 .feat-content-card {
+  display: flex;
   flex: 1;
+  flex-direction: column;
+  justify-content: space-between;
+
   background-color: white;
   border-radius: 0.5rem;
   border: solid 1px mat.get-color-from-palette($dockstore-app-gray, 7);
@@ -21,9 +25,8 @@ The following classes are used style the featured content external html
 }
 
 a.cardClick {
-  height: 100%;
-  width: 100%;
   display: flex;
+  flex: 1;
   flex-direction: column;
 }
 
@@ -31,13 +34,6 @@ a.cardClick {
   min-height: 3rem;
   color: mat.get-color-from-palette($dockstore-app-accent);
   border-bottom: solid 1px mat.get-color-from-palette($dockstore-app-gray, 7);
-}
-
-.feat-card-description {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  justify-content: space-between;
 }
 
 .feat-card-btn-container {
