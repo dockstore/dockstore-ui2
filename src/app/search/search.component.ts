@@ -40,6 +40,7 @@ import { AdvancedSearchQuery } from './advancedsearch/state/advanced-search.quer
 import { QueryBuilderService } from './query-builder.service';
 import { SearchQuery } from './state/search.query';
 import { Hit, SearchService } from './state/search.service';
+import { Dockstore } from 'app/shared/dockstore.model';
 
 /**
  *
@@ -71,6 +72,7 @@ import { Hit, SearchService } from './state/search.service';
   styleUrls: ['./search.component.scss'],
 })
 export class SearchComponent implements OnInit, OnDestroy {
+  Dockstore = Dockstore;
   faAngleDoubleDown = faAngleDoubleDown;
   faAngleDoubleUp = faAngleDoubleUp;
   faSortAlphaDown = faSortAlphaDown;

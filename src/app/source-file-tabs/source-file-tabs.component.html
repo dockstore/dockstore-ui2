@@ -101,6 +101,7 @@
                   *ngIf="isPublished$ | async; else unpublishedDownloadLink"
                   download="{{ fileName }}"
                   [href]="downloadFilePath"
+                  data-cy="download-file"
                   matTooltip="Download {{ fileName }}"
                 >
                   <mat-icon>save_alt</mat-icon>

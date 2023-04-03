@@ -109,7 +109,7 @@ export class QueryBuilderStubService {
   ): string {
     return 'thisissomefakequery';
   }
-  getResultSingleIndexQuery(query_size: number, index: 'tools' | 'workflows'): string {
+  getResultSingleIndexQuery(query_size: number, index: 'tools' | 'workflows' | 'notebooks'): string {
     return 'thisissomefakequery';
   }
   getNonVerifiedQuery(query_size: number, values: string, advancedSearchObject: AdvancedSearchObject, searchTerm: boolean, filters: any) {
@@ -353,6 +353,9 @@ export class UsersStubService {
   }
 
   getStarredOrganizations() {
+    return observableOf([]);
+  }
+  getStarredNotebooks() {
     return observableOf([]);
   }
   refresh(userId: number, extraHttpRequestParams?: any): Observable<Array<DockstoreTool>> {

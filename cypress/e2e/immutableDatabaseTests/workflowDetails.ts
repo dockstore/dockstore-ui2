@@ -13,10 +13,9 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { goToTab, isActiveTab, resetDB, setTokenUserViewPort } from '../../support/commands';
+import { goToTab, isActiveTab, setTokenUserViewPort } from '../../support/commands';
 
 describe('Variations of URL', () => {
-  resetDB();
   setTokenUserViewPort();
   it('Should redirect to canonical url (encoding)', () => {
     cy.visit('/workflows/github.com%2FA%2Fl');
@@ -129,7 +128,6 @@ describe('Find workflow by alias', () => {
 });
 
 describe('Test primary descriptor bubble', () => {
-  resetDB();
   it('go to a workflow with multiple files', () => {
     cy.visit('/workflows/github.com/A/l');
     goToTab('Files');
@@ -139,5 +137,24 @@ describe('Test primary descriptor bubble', () => {
     cy.get('[data-cy=primary-descriptor-bubble]').should('not.exist');
     cy.get('[data-cy=go-to-primary-icon]').should('be.visible').click();
     cy.get('[data-cy=primary-descriptor-bubble]').should('be.visible');
+  });
+});
+
+describe('Test engine versions', () => {
+  it('Should not be visible if unknown engine versions', () => {
+    cy.visit('/workflows/github.com/A/l');
+    cy.get('[data-cy=sourceRepository]').should('exist');
+    cy.get('[data-cy=engine-versions]').should('not.exist');
+  });
+  it('Should show the engine versions', () => {
+    cy.intercept('**/published*', (req) => {
+      req.continue((resp) => {
+        // Only NextFlow workflows will have an engine to begin with, so mock it in the response
+        resp.body.workflowVersions[0].versionMetadata.engineVersions = ['Fake engine 1.0'];
+        resp.send();
+      });
+    });
+    cy.visit('/workflows/github.com/A/l');
+    cy.get('[data-cy=engine-versions]').should('be.visible');
   });
 });

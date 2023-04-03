@@ -20,9 +20,11 @@ import { UntypedFormControl, Validators } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatTabChangeEvent, MatTabGroup } from '@angular/material/tabs';
 import { ActivatedRoute, NavigationEnd, Params, Router, RouterEvent } from '@angular/router';
-import { Subject, Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
+import { EntryCategoriesService } from '../categories/state/entry-categories.service';
 import { Dockstore } from '../shared/dockstore.model';
+import { Category } from '../shared/openapi';
 import { Tag } from '../shared/swagger/model/tag';
 import { WorkflowVersion } from '../shared/swagger/model/workflowVersion';
 import { TrackLoginService } from '../shared/track-login.service';
@@ -38,8 +40,6 @@ import { SessionService } from './session/session.service';
 import { SourceFile } from './swagger';
 import { UrlResolverService } from './url-resolver.service';
 import { validationDescriptorPatterns, validationMessages } from './validationMessages.model';
-import { Category } from '../shared/openapi';
-import { EntryCategoriesService } from '../categories/state/entry-categories.service';
 
 @Directive()
 @Injectable()
@@ -62,7 +62,6 @@ export abstract class Entry implements OnDestroy {
   public urlVersion: string;
   EntryType = EntryType;
   location: Location;
-  public selectedVersion: WorkflowVersion | Tag | null = null;
   @Input() isWorkflowPublic = true;
   @Input() isToolPublic = true;
   public publicPage: boolean;
@@ -285,9 +284,9 @@ export abstract class Entry implements OnDestroy {
    * Updates the URL with both tab and version information
    * @returns {void}
    */
-  updateUrl(entryPath: string, myEntry: string, entry: string): void {
+  updateUrl(entryPath: string, myEntry: string, entry: string, selectedVersion: Tag | WorkflowVersion | null): void {
     if (this.publicPage) {
-      const newPath = this.urlResolverService.getPath(entryPath, myEntry, entry, this.router.url, this.selectedVersion, this.currentTab);
+      const newPath = this.urlResolverService.getPath(entryPath, myEntry, entry, this.router.url, selectedVersion, this.currentTab);
       this.location.replaceState(newPath);
     }
   }

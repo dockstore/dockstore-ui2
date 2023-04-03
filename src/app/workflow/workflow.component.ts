@@ -107,6 +107,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
   public filteredVersions: ReplaySubject<Array<Tag | WorkflowVersion>> = new ReplaySubject<Array<Tag | WorkflowVersion>>(1);
 
   @Input() user;
+  @Input() selectedVersion: WorkflowVersion;
 
   constructor(
     private dockstoreService: DockstoreService,
@@ -432,13 +433,13 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
     if (workflow != null) {
       const entryPath = workflow.full_workflow_path;
       if (this.entryType === EntryType.BioWorkflow) {
-        this.updateUrl(entryPath, myBioWorkflowsURLSegment, 'workflows');
+        this.updateUrl(entryPath, myBioWorkflowsURLSegment, 'workflows', this.selectedVersion);
       } else if (this.entryType === EntryType.Tool) {
-        this.updateUrl(entryPath, myToolsURLSegment, 'containers');
+        this.updateUrl(entryPath, myToolsURLSegment, 'containers', this.selectedVersion);
       } else if (this.entryType === EntryType.Notebook) {
-        this.updateUrl(entryPath, myNotebooksURLSegment, 'notebooks');
+        this.updateUrl(entryPath, myNotebooksURLSegment, 'notebooks', this.selectedVersion);
       } else {
-        this.updateUrl(entryPath, myServicesURLSegment, 'services');
+        this.updateUrl(entryPath, myServicesURLSegment, 'services', this.selectedVersion);
       }
     }
   }

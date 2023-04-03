@@ -1,5 +1,5 @@
 /*
- *    Copyright 2019 OICR
+ *    Copyright 2023 OICR, UCSC
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -13,20 +13,14 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { setTokenUserViewPort } from '../../support/commands';
-describe('Admin UI', () => {
-  setTokenUserViewPort();
-  beforeEach(() => {
-    cy.visit('');
 
-    // Select dropdown
-    cy.get('[data-cy=dropdown-main]:visible').click();
-  });
+import { NgModule } from '@angular/core';
+import { CustomMaterialModule } from 'app/shared/modules/material.module';
+import { PreviewWarningComponent } from '../../preview-warning/preview-warning.component';
 
-  describe('Profile', () => {
-    it('Admin status indicated on profile page', () => {
-      cy.get('#dropdown-accounts').click();
-      cy.get('[data-cy=account-is-admin]').should('exist');
-    });
-  });
-});
+@NgModule({
+  declarations: [PreviewWarningComponent],
+  imports: [CustomMaterialModule],
+  exports: [PreviewWarningComponent],
+})
+export class PreviewWarningModule {}

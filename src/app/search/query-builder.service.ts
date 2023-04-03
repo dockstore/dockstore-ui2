@@ -50,7 +50,7 @@ export class QueryBuilderService {
     bucketStubs: any,
     filters: any,
     sortModeMap: any,
-    index: 'workflows' | 'tools'
+    index: 'workflows' | 'tools' | 'notebooks'
   ): string {
     const count = this.getNumberOfFilters(filters);
     // Size to 0 here because https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations.html#agg-caches
@@ -104,7 +104,7 @@ export class QueryBuilderService {
     advancedSearchObject: AdvancedSearchObject,
     searchTerm: boolean,
     filters: any,
-    index: 'tools' | 'workflows'
+    index: 'tools' | 'workflows' | 'notebooks'
   ): string {
     let tableBody = bodybuilder().size(query_size);
     tableBody = this.sourceOptions(tableBody);
@@ -118,7 +118,7 @@ export class QueryBuilderService {
     return tableQuery;
   }
 
-  getResultSingleIndexQuery(query_size: number, index: 'tools' | 'workflows'): string {
+  getResultSingleIndexQuery(query_size: number, index: 'tools' | 'workflows' | 'notebooks'): string {
     let body = bodybuilder().size(query_size);
     body = this.sourceOptions(body);
     body = body.query('match', '_index', index);

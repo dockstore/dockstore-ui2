@@ -58,7 +58,7 @@
           {{ tool?.tool_path }}<span *ngIf="tool?.workflowVersions.length > 0">:</span
           ><span class="ds-steelblue">{{ selectedVersion?.name }}</span>
           <span id="verifiedIcon" *ngIf="(extendedTool$ | async)?.versionVerified" fxHide.lt-sm>
-            <mat-chip matTooltip="Verified" class="bubble container-background ml-3">
+            <mat-chip matTooltip="Verified" class="bubble tool-background ml-3">
               <a [href]="verifiedLink" class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">
                 <mat-icon class="verified-icon">done</mat-icon>
                 <span>Verified</span>
@@ -120,7 +120,7 @@
         <span *ngIf="containerEditData?.labels.length > 0" class="size-small mr-2">Labels</span>
         <mat-chip-list class="bubble-list">
           <mat-chip
-            class="bubble container-background pointer"
+            class="bubble tool-background pointer"
             *ngFor="let label of containerEditData?.labels"
             (click)="goToSearch(label, EntryType.Tool)"
             >{{ label }}</mat-chip
@@ -312,7 +312,7 @@
                 [ngClass]="{ 'selected-item weight-bold': selectedVersion?.name === sortedVersion?.name }"
               >
                 <div>
-                  <a (click)="onSelectedVersionChange(sortedVersion)" class="panel-body-anchor">{{ sortedVersion.name }}</a
+                  <a (click)="onSelectedVersionChange(sortedVersion)" class="pointer panel-body-anchor">{{ sortedVersion.name }}</a
                   >&nbsp;
                   <span *ngIf="sortedVersion?.verified">
                     <mat-chip matTooltip="Verified" class="bubble">
@@ -326,7 +326,7 @@
               </div>
               <mat-divider></mat-divider>
             </span>
-            <a (click)="selectTab(2)">See all tags</a>
+            <a (click)="selectTab(2)" class="pointer">See all tags</a>
           </div>
         </mat-card-content>
       </mat-card>

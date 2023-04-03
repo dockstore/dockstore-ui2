@@ -58,6 +58,10 @@
   text-decoration: none;
   transition: 0.4s color;
 }
+.entryType-icons {
+  align-self: center;
+  justify-content: center;
+}
 @media screen and (max-width: 750px) {
   .columns {
     column-gap: 0px;

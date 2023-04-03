@@ -23,6 +23,7 @@
         matTooltip="Add the entry to a collection"
         (click)="addEntryToCollection()"
         id="addToolToCollectionButton"
+        data-cy="addToolToCollectionButton"
       >
         <img src="../../../assets/svg/icons-plus.svg" class="pr-2 pb-1" alt="Add to my Collections" />
         <span fxHide.lt-lg>Add to my Collections</span>
@@ -59,6 +60,7 @@
             matTooltip="View the collection"
             [routerLink]="['/organizations', collectionOrganization.organizationName, 'collections', collectionOrganization.collectionName]"
             routerLinkActive="router-link-active"
+            data-cy="collectionLink"
             >{{ collectionOrganization.collectionDisplayName }}</a
           >
         </ng-template>

@@ -119,6 +119,13 @@ describe('GitHub App Tools', () => {
       isActiveTab('Files');
       cy.contains('tools/Dockstore.cwl');
       cy.contains('class: CommandLineTool');
+      cy.get('[data-cy=download-file]')
+        .invoke('attr', 'href')
+        .then((href) => {
+          cy.request(href as string)
+            .its('status')
+            .should('eq', 200);
+        });
       goToTab('Configuration');
       cy.contains('Configuration');
       cy.contains('/.dockstore.yml');

@@ -14,6 +14,7 @@ import { OrgLogoService } from '../shared/org-logo.service';
 import { EntryType } from '../shared/enum/entry-type';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Location } from '@angular/common';
+import { Dockstore } from 'app/shared/dockstore.model';
 
 @Component({
   selector: 'app-starredentries',
@@ -21,9 +22,11 @@ import { Location } from '@angular/common';
   styleUrls: ['./starredentries.component.scss'],
 })
 export class StarredEntriesComponent extends Base implements OnInit {
+  Dockstore = Dockstore;
   starredTools: Array<ExtendedDockstoreTool> | null;
   starredWorkflows: Array<ExtendedWorkflow> | null;
   starredServices: Array<Entry> | null;
+  starredNotebooks: Array<ExtendedWorkflow> | null;
   starredOrganizations: Array<Organization> | null;
   user: any;
   starGazersClicked = false;
@@ -32,8 +35,8 @@ export class StarredEntriesComponent extends Base implements OnInit {
   // Default to workflows tab
   currentTab = 'workflows';
   selected = new UntypedFormControl();
-  // TO DO: Add 'services' between tools and orgs when implemented
-  validTabs = ['workflows', 'tools', 'organizations'];
+  // TO DO: Add 'services' between notebooks and organizations when implemented
+  validTabs = ['workflows', 'tools', 'notebooks', 'organizations'];
 
   constructor(
     private userQuery: UserQuery,
@@ -59,16 +62,18 @@ export class StarredEntriesComponent extends Base implements OnInit {
       this.starredTools.forEach((tool) => {
         this.providerService.setUpProvider(tool);
         tool = this.imageProviderService.setUpImageProvider(tool);
-        // This doesn't work because there's no workflowVersions
-        // tool.versionVerified = this.dockstoreService.getVersionVerified(tool.workflowVersions);
       });
     });
     this.usersService.getStarredWorkflows().subscribe((starredWorkflow) => {
       this.starredWorkflows = <ExtendedWorkflow[]>starredWorkflow.filter((entry: Workflow) => entry.is_published);
       this.starredWorkflows.forEach((workflow) => {
         this.providerService.setUpProvider(workflow);
-        // This doesn't work because there's no workflowVersions
-        // workflow.versionVerified = this.dockstoreService.getVersionVerified(workflow.workflowVersions);
+      });
+    });
+    this.usersService.getStarredNotebooks().subscribe((starredNotebook) => {
+      this.starredNotebooks = <ExtendedWorkflow[]>starredNotebook.filter((entry: Workflow) => entry.is_published);
+      this.starredNotebooks.forEach((workflow) => {
+        this.providerService.setUpProvider(workflow);
       });
     });
     this.usersService.getStarredOrganizations().subscribe((starredOrganizations) => {

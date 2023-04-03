@@ -115,6 +115,8 @@ import { ExporterStepComponent } from './workflow/snapshot-exporter-modal/export
 import { SnaphotExporterModalComponent } from './workflow/snapshot-exporter-modal/snaphot-exporter-modal.component';
 import { ViewService } from './workflow/view/view.service';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { PreviewWarningModule } from './shared/modules/preview-warning.module';
+import { MyOrganizationsDialogComponent } from './home-page/widget/organization-box/my-organizations-dialog.component/my-organizations-dialog.component';
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   showDelay: 500,
@@ -171,6 +173,7 @@ export function initializerFactory(
     FileTreeComponent,
     ChangeUsernameBannerComponent,
     RevokeTokenDialogComponent,
+    MyOrganizationsDialogComponent,
   ],
   imports: [
     environment.production ? [] : AkitaNgDevtools.forRoot(),
@@ -207,6 +210,7 @@ export function initializerFactory(
     MySidebarModule,
     AccountSidebarModule,
     ChangeUsernameModule,
+    PreviewWarningModule,
   ],
   providers: [
     AccountsService,
