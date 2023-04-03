@@ -1,7 +1,7 @@
 <div *ngIf="showButtons" class="flex-wrap-gap" fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="0.5rem">
   <a
     *ngIf="workflow?.is_published"
-    [routerLink]="['/' + entryType + 's/', workflow.full_workflow_path]"
+    [routerLink]="['/' + entryType + 's/', workflow.full_workflow_path + ':' + selectedVersion.reference]"
     data-cy="viewPublicWorkflowButton"
     mat-flat-button
     class="secondary-1"
