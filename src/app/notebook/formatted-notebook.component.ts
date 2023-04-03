@@ -2,8 +2,7 @@ import { Component, ElementRef, Inject, Input, OnChanges, ViewChild } from '@ang
 import { DOCUMENT } from '@angular/common';
 import { finalize } from 'rxjs/operators';
 import { Observable, Subscription } from 'rxjs';
-import { SourceFile, Workflow, WorkflowVersion } from 'app/shared/openapi';
-import { SourceFileTabsService } from '../source-file-tabs/source-file-tabs.service';
+import { SourceFile, Workflow, WorkflowVersion, WorkflowsService } from 'app/shared/openapi';
 import { WorkflowQuery } from '../shared/state/workflow.query';
 import { MarkdownWrapperService } from '../shared/markdown-wrapper/markdown-wrapper.service';
 import { Renderer } from 'marked';
@@ -16,7 +15,7 @@ import DOMPurify from 'dompurify';
 })
 export class FormattedNotebookComponent implements OnChanges {
   constructor(
-    private sourceFileTabsService: SourceFileTabsService,
+    private workflowsService: WorkflowsService,
     private markdownWrapperService: MarkdownWrapperService,
     @Inject(DOCUMENT) private document: Document
   ) {}
@@ -33,14 +32,15 @@ export class FormattedNotebookComponent implements OnChanges {
   }
 
   retrieveAndFormatNotebook() {
-    this.notebookTarget?.nativeElement.replaceChildren();
+    this.notebookTarget?.nativeElement.replaceChildren(); // Remove the current formatted notebook.
     this.loading = true;
     this.displayError = false;
-    // This code cancels any previous request that is still in progess,
-    // because the @Inputs have changed, and we're about to launch a new
-    // request to retrieve the corresponding notebook file, which we will
-    // display when it arrives.  The previous response is now irrelevant,
-    // and could actually cause problems if it arrives out of order.
+    // The next line cancels any previous request that is still in progess,
+    // because if we're here, the @Inputs have changed, and we're about to
+    // launch a new request to retrieve the corresponding notebook file,
+    // which we will display when it arrives.  The previous response is now
+    // irrelevant, and could actually cause problems if it arrives out of
+    // order.
     // Assuming that Angular calls a component's `ngOnChanges()` directly
     // after setting its @Input fields, a pleasant side effect of said
     // cancellation is that when we handle a response, we know that @Input
@@ -49,8 +49,8 @@ export class FormattedNotebookComponent implements OnChanges {
     // called by the handler to format the notebook can safely use the
     // value of the `workflow` field to determine the notebook language.
     this.currentSubscription?.unsubscribe();
-    this.currentSubscription = this.sourceFileTabsService
-      .getSourceFiles(this.workflow.id, this.version.id)
+    this.currentSubscription = this.workflowsService
+      .getWorkflowVersionsSourcefiles(this.workflow.id, this.version.id, ['DOCKSTORE_JUPYTER'])
       .pipe(
         finalize(() => {
           this.loading = false;
@@ -59,8 +59,7 @@ export class FormattedNotebookComponent implements OnChanges {
       .subscribe(
         (sourceFiles: SourceFile[]) => {
           for (const sourceFile of sourceFiles) {
-            // Look for the primary descriptor with Jupyter file type.
-            if (this.isPrimaryDescriptor(sourceFile.path) && sourceFile.type === SourceFile.TypeEnum.DOCKSTOREJUPYTER) {
+            if (this.isPrimaryDescriptor(sourceFile.path)) {
               try {
                 // Create an element containing the formatted notebook,
                 // and make it the single child of the template's '#notebookTarget' placeholder.
@@ -96,9 +95,9 @@ export class FormattedNotebookComponent implements OnChanges {
     element.innerHTML = this.format(notebookJson);
     // Render the equations in each markdown cell.
     for (const markdownElement of element.getElementsByClassName('markdown')) {
-      this.markdownWrapperService.katex(markdownElement);
+      this.markdownWrapperService.equations(markdownElement);
     }
-    // Highlight the code elements in the source of each code cell.
+    // Highlight the code elements in the "source" div of each code cell.
     for (const codeElement of element.querySelectorAll('.source code')) {
       this.markdownWrapperService.highlight(codeElement);
     }
