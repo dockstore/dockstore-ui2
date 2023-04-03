@@ -923,6 +923,10 @@ export class MarkdownWrapperStubService {
   customSanitize(html): string {
     return `sanitized(${html})`;
   }
-  katex(element) {}
-  highlight(element) {}
+  equations(element) {
+    // intentionally blank
+  }
+  highlight(element) {
+    // intentionally blank
+  }
 }

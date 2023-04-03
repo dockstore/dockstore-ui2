@@ -1,17 +1,13 @@
 import { Component, ElementRef, Inject, Input, OnChanges, ViewChild } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { finalize } from 'rxjs/operators';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { SourceFile, Workflow, WorkflowVersion, WorkflowsService } from 'app/shared/openapi';
-import { WorkflowQuery } from '../shared/state/workflow.query';
 import { MarkdownWrapperService } from '../shared/markdown-wrapper/markdown-wrapper.service';
-import { Renderer } from 'marked';
-import DOMPurify from 'dompurify';
 
 @Component({
   selector: 'app-formatted-notebook',
   templateUrl: './formatted-notebook.component.html',
-  styleUrls: ['./formatted-notebook.component.scss'],
 })
 export class FormattedNotebookComponent implements OnChanges {
   constructor(
@@ -303,10 +299,6 @@ export class FormattedNotebookComponent implements OnChanges {
     return this.markdownWrapperService.customSanitize(html);
   }
 
-  sanitizeLightly(html: string): string {
-    return DOMPurify.sanitize(html, { FORBID_TAGS: [], FORBID_ATTR: [] });
-  }
-
   // The below escape() implementation is adapted from mustache.js
   // https://github.com/janl/mustache.js/blob/972fd2b27a036888acfcb60d6119317744fac7ee/mustache.js#L60
   charToEntity = {
@@ -321,7 +313,7 @@ export class FormattedNotebookComponent implements OnChanges {
   };
 
   escape(text: any): string {
-    return String(text).replace(/[&<>"'`=\/]/g, (c) => {
+    return String(text).replace(/[&<>"'`=\\/]/g, (c) => {
       return this.charToEntity[c];
     });
   }

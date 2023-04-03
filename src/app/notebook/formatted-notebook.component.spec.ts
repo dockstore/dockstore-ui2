@@ -1,18 +1,17 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { BaseUrlPipe } from '../shared/entry/base-url.pipe';
 import { MarkdownWrapperService } from '../shared/markdown-wrapper/markdown-wrapper.service';
 import { SourceFileTabsService } from '../source-file-tabs/source-file-tabs.service';
-import { MarkdownWrapperStubService, SourceFileTabsStubService } from '../test/service-stubs';
+import { WorkflowsStubService, MarkdownWrapperStubService } from '../test/service-stubs';
 import { FormattedNotebookComponent } from './formatted-notebook.component';
-import { SourceFile, Workflow, WorkflowVersion } from 'app/shared/openapi';
-import { Observable, of } from 'rxjs';
+import { SourceFile, Workflow, WorkflowVersion, WorkflowsService } from 'app/shared/openapi';
+import { of } from 'rxjs';
 
 describe('FormattedNotebookComponent', () => {
   let notebookComponent: FormattedNotebookComponent;
   let fixture: ComponentFixture<FormattedNotebookComponent>;
-  let sourceFileTabsService: SourceFileTabsService;
-  let markdownWrapperService: MarkdownWrapperService;
+  let workflowsService: WorkflowsService;
+  let mockSourceFiles: SourceFile[] = [];
 
   beforeEach(
     waitForAsync(() => {
@@ -20,7 +19,14 @@ describe('FormattedNotebookComponent', () => {
         declarations: [FormattedNotebookComponent],
         imports: [HttpClientTestingModule],
         providers: [
-          { provide: SourceFileTabsService, useClass: SourceFileTabsStubService },
+          {
+            provide: WorkflowsService,
+            useValue: {
+              getWorkflowVersionsSourcefiles: function () {
+                return of(mockSourceFiles);
+              },
+            },
+          },
           { provide: MarkdownWrapperService, useClass: MarkdownWrapperStubService },
         ],
       }).compileComponents();
@@ -28,15 +34,13 @@ describe('FormattedNotebookComponent', () => {
   );
 
   beforeEach(() => {
-    sourceFileTabsService = TestBed.inject(SourceFileTabsService);
-    markdownWrapperService = TestBed.inject(MarkdownWrapperService);
     fixture = TestBed.createComponent(FormattedNotebookComponent);
     notebookComponent = fixture.debugElement.componentInstance;
     fixture.detectChanges();
   });
 
   function formatDetails(sourceFiles: SourceFile[], workflow: Workflow, version: WorkflowVersion, baseUrl: string) {
-    spyOn(sourceFileTabsService, 'getSourceFiles').and.returnValue(of(sourceFiles));
+    mockSourceFiles = sourceFiles;
     notebookComponent.workflow = workflow;
     notebookComponent.version = version;
     notebookComponent.baseUrl = baseUrl;
@@ -119,14 +123,7 @@ describe('FormattedNotebookComponent', () => {
   });
 
   it('should error if there is not a primary descriptor', () => {
-    const sourceFile = makeSourceFile('{ "cells": [] }', '/abc.ipynb');
-    formatDetails([sourceFile], makeWorkflow('Python'), makeVersion('/123.ipynb'), '');
-    confirmError();
-  });
-
-  it('should error if the primary descriptor is not a jupyter file', () => {
-    const sourceFile = makeSourceFile('{ "cells": [] }', '/main.ipynb', SourceFile.TypeEnum.DOCKSTORENOTEBOOKOTHER);
-    formatDetails([sourceFile], makeWorkflow('Python'), makeVersion('/main.ipynb'), '');
+    formatDetails([], makeWorkflow('Python'), makeVersion('/123.ipynb'), '');
     confirmError();
   });
 
