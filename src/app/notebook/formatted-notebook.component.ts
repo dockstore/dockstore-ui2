@@ -97,11 +97,6 @@ export class FormattedNotebookComponent implements OnChanges {
     for (const codeElement of element.querySelectorAll('.source code')) {
       this.markdownWrapperService.highlight(codeElement);
     }
-    // Lightly sanitize the entirety of the generated HTML, conserving 'class' attribute values to
-    // prevent mangling the output of the equation rendering and syntax highlighting steps,
-    // which set the 'class' attribute on the elements they generate, so that they may be styled.
-    // If we used MarkdownWrapper.sanitize(), it would remove 'class' attrs.
-    // element.innerHTML = this.sanitizeLightly(element.innerHTML);
     return element;
   }
 
