@@ -112,7 +112,7 @@ export class FormattedNotebookComponent implements OnChanges {
 
   format(notebook: string): string {
     const json = JSON.parse(notebook);
-    const divs = this.formatCells(json.cells);
+    const divs = this.formatCells(this.filterSpam(json.cells));
     return divs.join('\n');
   }
 
@@ -289,6 +289,15 @@ export class FormattedNotebookComponent implements OnChanges {
       return this.escape(data);
     }
     return undefined;
+  }
+
+  filterSpam(cells: any[]): any[] {
+    return cells.filter((cell) => !this.isSpam(cell));
+  }
+
+  isSpam(cell: any): boolean {
+    // Flag the "Open in Colab" cell that Google Colab inserts at the top of the notebook.
+    return cell.cell_type === 'markdown' && cell.metadata?.id === 'view-in-github' && cell.metadata?.colab_type === 'text';
   }
 
   sanitize(html: string): string {
