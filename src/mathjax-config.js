@@ -1,4 +1,7 @@
 window.MathJax = {
+  startup: {
+    typeset: false, // disable automatic formatting
+  },
   tex: {
     inlineMath: [['$', '$']],
     displayMath: [['$$', '$$']],
