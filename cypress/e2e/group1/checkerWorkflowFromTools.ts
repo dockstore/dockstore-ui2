@@ -138,7 +138,7 @@ describe('Should be able to see the checker workflow from a tool', () => {
       .click();
 
     // In the parent tool right now
-    cy.url().should('contain', Cypress.config().baseUrl + '/containers/quay.io/A2/b3');
+    cy.url().should('eq', Cypress.config().baseUrl + '/containers/quay.io/A2/b3:latest?tab=info');
     cy.get('#viewParentEntryButton').should('not.exist');
     cy.get('#addCheckerWorkflowButton').should('not.exist');
     goToTab('Launch');
@@ -147,7 +147,7 @@ describe('Should be able to see the checker workflow from a tool', () => {
     cy.get('#viewCheckerWorkflowButton').should('be.visible').click();
 
     // In the checker workflow right now
-    cy.url().should('contain', Cypress.config().baseUrl + '/workflows/github.com/A2/b3/_cwl_checker');
+    cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A2/b3/_cwl_checker?tab=info');
     cy.get('#viewCheckerWorkflowButton').should('not.exist');
     cy.get('#addCheckerWorkflowButton').should('not.exist');
     goToTab('Launch');
@@ -157,7 +157,7 @@ describe('Should be able to see the checker workflow from a tool', () => {
 
     // In the parent tool right now
     // Accidentally allow the uri "tools" to work
-    cy.url().should('contain', Cypress.config().baseUrl + '/containers/quay.io/A2/b3');
+    cy.url().should('eq', Cypress.config().baseUrl + '/containers/quay.io/A2/b3:latest?tab=info');
     cy.get('#viewParentEntryButton').should('not.exist');
     cy.get('#addCheckerWorkflowButton').should('not.exist');
     goToTab('Launch');

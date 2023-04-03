@@ -183,7 +183,7 @@ describe('Dockstore my tools', () => {
 
       cy.get('[data-cy=viewPublicToolButton]').should('be.visible').click();
 
-      cy.url().should('contain', Cypress.config().baseUrl + '/containers/quay.io/A2/b1');
+      cy.url().should('eq', Cypress.config().baseUrl + '/containers/quay.io/A2/b1:latest?tab=info');
     });
   });
 
