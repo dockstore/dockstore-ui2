@@ -45,12 +45,7 @@
                   alt="User avatar"
                 />
                 <ng-template #noAvatar>
-                  <img
-                    mat-card-avatar
-                    class="header-image"
-                    src="https://via.placeholder.com/300x300?text=Avatar+Not+Found"
-                    alt="User avatar"
-                  />
+                  <img mat-card-avatar class="header-image" [src]="gravatarService.gravatarUrlForMysteryPerson()" alt="User avatar" />
                 </ng-template>
                 <div fxFlex="100" fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="0.5rem">
                   <div fxLayout="row" fxLayoutAlign="space-between center">
