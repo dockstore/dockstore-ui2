@@ -4,6 +4,7 @@ import { finalize } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { SourceFile, Workflow, WorkflowVersion, WorkflowsService } from 'app/shared/openapi';
 import { MarkdownWrapperService } from '../shared/markdown-wrapper/markdown-wrapper.service';
+import DOMPurify from 'dompurify';
 
 @Component({
   selector: 'app-formatted-notebook',
@@ -96,6 +97,7 @@ export class FormattedNotebookComponent implements OnChanges {
     // Highlight the code elements in the "source" div of each code cell.
     for (const codeElement of element.querySelectorAll('.source code')) {
       this.markdownWrapperService.highlight(codeElement);
+      codeElement.innerHTML = this.sanitizeLightly(codeElement.innerHTML);
     }
     return element;
   }
@@ -224,9 +226,9 @@ export class FormattedNotebookComponent implements OnChanges {
   }
 
   preprocessLatexMath(markdown: string): string {
-    return markdown.replace(/(\$+)([^$]+)(\$+)/gms, (match, beforeDollars, content, afterDollars) => {
-      if (content.match(/^\s*\\begin\{[^}]*}/ms) && content.match(/\end\{[^}]*}\s*$/ms)) {
-        return beforeDollars + this.replaceAll(content, '\\\\', '\\\\\\\\') + afterDollars;
+    return markdown.replace(/(\$+)([^$]+)(?=\$+)/gms, (match, leadingDollars, content) => {
+      if (content.match(/^\s*\\begin\{[^}]*}/ms) && content.match(/\\end\{[^}]*}\s*$/ms)) {
+        return leadingDollars + this.replaceAll(content, '\\\\', '\\\\\\\\');
       }
       return match;
     });
@@ -292,6 +294,10 @@ export class FormattedNotebookComponent implements OnChanges {
 
   sanitize(html: string): string {
     return this.markdownWrapperService.customSanitize(html);
+  }
+
+  sanitizeLightly(html: string): string {
+    return DOMPurify.sanitize(html, { FORBID_TAGS: [], FORBID_ATTR: [] });
   }
 
   // The below escape() implementation is adapted from mustache.js
