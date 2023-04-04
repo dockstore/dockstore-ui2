@@ -1,8 +1,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MarkdownWrapperService } from '../shared/markdown-wrapper/markdown-wrapper.service';
-import { SourceFileTabsService } from '../source-file-tabs/source-file-tabs.service';
-import { WorkflowsStubService, MarkdownWrapperStubService } from '../test/service-stubs';
+import { MarkdownWrapperStubService } from '../test/service-stubs';
 import { FormattedNotebookComponent } from './formatted-notebook.component';
 import { SourceFile, Workflow, WorkflowVersion, WorkflowsService } from 'app/shared/openapi';
 import { of } from 'rxjs';

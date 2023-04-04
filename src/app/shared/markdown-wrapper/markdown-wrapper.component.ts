@@ -1,5 +1,4 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import DOMPurify from 'dompurify';
 import { MarkdownWrapperService } from './markdown-wrapper.service';
 
 @Component({
