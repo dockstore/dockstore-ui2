@@ -190,17 +190,17 @@ export class FormattedNotebookComponent implements OnChanges {
 
   compileMarkdown(markdown: string, attachments: any): string {
     let adjusted = markdown;
-    adjusted = this.escapeDollars(adjusted);
-    adjusted = this.adjustAttachedImages(adjusted, attachments);
+    adjusted = this.spanBackslashedDollars(adjusted);
+    adjusted = this.inlineAttachedImages(adjusted, attachments);
     adjusted = this.preprocessLatexMath(adjusted);
     return this.markdownWrapperService.customCompile(adjusted, this.baseUrl);
   }
 
-  escapeDollars(markdown: string): string {
-    return markdown.replace(/\\+\$/g, '<span>$</span>');
+  spanBackslashedDollars(markdown: string): string {
+    return markdown.replace(/(\\\$)/g, '<span>$1</span>');
   }
 
-  adjustAttachedImages(markdown: string, attachments: any) {
+  inlineAttachedImages(markdown: string, attachments: any) {
     if (attachments == undefined) {
       return markdown;
     }
