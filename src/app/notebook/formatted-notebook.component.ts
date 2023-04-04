@@ -84,12 +84,15 @@ export class FormattedNotebookComponent implements OnChanges {
     return path === this.version.workflow_path;
   }
 
-  createFormattedNotebookElement(notebookJson: string): any {
+  /**
+   * Convert the specified notebook to a DOM element that represents it.
+   */
+  createFormattedNotebookElement(notebook: string): any {
     // Create the notebook container div.
     const element: any = this.document.createElement('div');
     element.classList.add('notebook');
     // Set the body of the container div to the formatted notebook HTML.
-    element.innerHTML = this.format(notebookJson);
+    element.innerHTML = this.format(notebook);
     // Render the equations in each markdown cell.
     for (const markdownElement of element.getElementsByClassName('markdown')) {
       this.markdownWrapperService.equations(markdownElement);
@@ -102,16 +105,43 @@ export class FormattedNotebookComponent implements OnChanges {
     return element;
   }
 
+  /**
+   * Convert the specified notebook to a HTML string that represents it.
+   *
+   * The Jupyter notebook format:
+   * https://nbformat.readthedocs.io/en/latest/
+   *
+   * We examine and convert each notebook cell to HTML, one by one,
+   * and return the concatenated result.  The functions with names
+   * prefixed by `format` are helpers for the formatting process, and
+   * generally take a portion of the notebook json as an argument, and
+   * return a list of strings that represent the formatted notebook HTML.
+   */
   format(notebook: string): string {
     const json = JSON.parse(notebook);
     const divs = this.formatCells(this.filterSpam(json.cells));
     return divs.join('\n');
   }
 
-  formatByType(values: any, typeField: string, typeToFormatter: Map<string, (json: any) => string[]>): string[] {
+  /**
+   * This function iterates over the input `values`, which represent portion(s) of the notebook
+   * file such as cells or cell outputs, using the `typeName` property of each value to select
+   * a formatter fn, which is used to convert the value to HTML, represented by a list of strings.
+   * The resulting strings are concatenated in order and returned.
+   *
+   * `typeName` is the name of the "type" property, and `typeToFormatter` maps the type value to
+   * an appropriate formatter function.  For example:
+   *
+   * `formatByType([{cell_type: 'typeA'}, {cell_type, 'typeB'}], 'cell_type', map)`
+   *
+   * would format the first value using the formatter in `map` corresponding to `typeA`,
+   * then format the second value using the formatter in `map` corresponding to `typeB`, and
+   * return the concatenated list of results from the formatters.
+   */
+  formatByType(values: any, typeName: string, typeToFormatter: Map<string, (json: any) => string[]>): string[] {
     const formatted: string[] = [];
     (values.forEach ? values : [values]).forEach((value) => {
-      const formatter = typeToFormatter.get(value[typeField]);
+      const formatter = typeToFormatter.get(value[typeName]);
       if (formatter != undefined) {
         formatted.push(...formatter.call(this, value));
       }
@@ -198,10 +228,16 @@ export class FormattedNotebookComponent implements OnChanges {
     return this.markdownWrapperService.customCompile(adjusted, this.baseUrl);
   }
 
+  /**
+   * Change any dollar sign preceded by a backslash to the dollar HTML entity.
+   */
   convertBackslashedDollars(markdown: string): string {
     return markdown.replace(/\\\$/g, '&dollar;');
   }
 
+  /**
+   * Convert 'attachment:' image references to data urls.
+   */
   inlineAttachedImages(markdown: string, attachments: any) {
     if (attachments == undefined) {
       return markdown;
@@ -209,6 +245,7 @@ export class FormattedNotebookComponent implements OnChanges {
     return markdown
       .split('\n')
       .map((line) => {
+        // If we're in a code block, don't change anything.
         if (line.startsWith('    ')) {
           return line;
         }
@@ -225,6 +262,10 @@ export class FormattedNotebookComponent implements OnChanges {
       .join('\n');
   }
 
+  /**
+   * For any text between a run of dollar signs that looks like TeX mathematics,
+   * escape the double backslashes.
+   */
   preprocessLatexMath(markdown: string): string {
     return markdown.replace(/(\$+)([^$]+)(?=\$+)/gms, (match, leadingDollars, content) => {
       if (content.match(/^\s*\\begin\{[^}]*}/ms) && content.match(/\\end\{[^}]*}\s*$/ms)) {
@@ -238,6 +279,9 @@ export class FormattedNotebookComponent implements OnChanges {
     return value.split(from).join(to);
   }
 
+  /**
+   * A list of the mime types we will display, ordered from "best" to "worst".
+   */
   supportedMimeTypes = ['image/png', 'image/webp', 'image/jpeg', 'image/gif', 'text/html', 'text/json', 'text/plain'];
 
   selectBestFromMimeBundle(mimeBundle: any): { mimeType: string; data: string } {
@@ -314,7 +358,7 @@ export class FormattedNotebookComponent implements OnChanges {
   };
 
   escape(text: any): string {
-    return String(text).replace(/[&<>"'`=\\/]/g, (c) => {
+    return String(text).replace(/[&<>"'`=\/]/g, (c) => {
       return this.charToEntity[c];
     });
   }
