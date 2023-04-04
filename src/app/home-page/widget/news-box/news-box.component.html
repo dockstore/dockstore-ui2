@@ -2,10 +2,11 @@
   <div fxLayout="column" fxLayoutAlign="start stretch" class="h-100">
     <mat-card-header>
       <mat-card-title>News & Updates</mat-card-title>
+      <span class="bubble">{{ newsUpdates.newsEntriesCount }}</span>
     </mat-card-header>
     <mat-divider></mat-divider>
     <mat-card-content class="h-100 mx-3 mt-3 mb-0">
-      <app-news-and-updates></app-news-and-updates>
+      <app-news-and-updates #newsUpdates></app-news-and-updates>
     </mat-card-content>
   </div>
 </mat-card>
