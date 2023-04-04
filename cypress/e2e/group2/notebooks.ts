@@ -63,9 +63,9 @@ describe('Dockstore notebooks', () => {
       .and('include', 'ga4gh/trs/v2/tools/' + encodeURIComponent('#notebook/' + name));
   });
 
-  it('should have Code tab', () => {
+  it('should have Preview tab with formatted notebook', () => {
     cy.visit('/notebooks/' + name);
-    goToTab('Code');
+    goToTab('Preview');
     // Confirm the appearance of the text from the markdown and code cells.
     cy.contains('A simple notebook.');
     cy.contains('print("Hello world!")');
