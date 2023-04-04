@@ -9,7 +9,7 @@ import { of } from 'rxjs';
 describe('FormattedNotebookComponent', () => {
   let notebookComponent: FormattedNotebookComponent;
   let fixture: ComponentFixture<FormattedNotebookComponent>;
-  let workflowsService: WorkflowsService;
+  let element: any;
   let mockSourceFiles: SourceFile[] = [];
 
   beforeEach(
@@ -35,6 +35,7 @@ describe('FormattedNotebookComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(FormattedNotebookComponent);
     notebookComponent = fixture.debugElement.componentInstance;
+    element = fixture.nativeElement;
     fixture.detectChanges();
   });
 
@@ -128,42 +129,39 @@ describe('FormattedNotebookComponent', () => {
 
   it('should format a notebook with one markdown cell', () => {
     format('{ "cells": [ { "cell_type": "markdown", "source": ["a block of markdown"] } ] }');
-    expect(fixture.nativeElement.querySelector('.markdown').textContent).toContain('a block of markdown');
+    expect(element.querySelector('.markdown').textContent).toContain('a block of markdown');
     confirmSuccess();
   });
 
   it('should format a notebook with one code cell with a stream output', () => {
     format(makeNotebook([makeCodeCell('some source code', [makeStreamOutput('some output')])]));
-    expect(fixture.nativeElement.querySelector('.count').textContent).not.toBeUndefined();
-    expect(fixture.nativeElement.querySelector('.source').textContent).toContain('some source code');
-    expect(fixture.nativeElement.querySelector('.output').textContent).toContain('some output');
+    expect(element.querySelector('.count').textContent).not.toBeUndefined();
+    expect(element.querySelector('.source').textContent).toContain('some source code');
+    expect(element.querySelector('.output').textContent).toContain('some output');
     confirmSuccess();
   });
 
   it('should format a notebook with one code cell with a display_data output with image/jpeg available', () => {
     const jpegMimeBundle = { 'image/foo': toBase64('foo'), 'image/jpeg': toBase64('jpeg content'), 'text/plain': ['some plain text'] };
     format(makeNotebook([makeCodeCell('some source code', [makeDisplayDataOutput(jpegMimeBundle)])]));
-    console.log(fixture.nativeElement.querySelector('.output img'));
-    expect(fixture.nativeElement.querySelector('.source').textContent).toContain('some source code');
-    expect(fixture.nativeElement.querySelector('.output img').getAttribute('src')).toContain(
-      `data:image/jpeg;base64,${toBase64('jpeg content')}`
-    );
+    expect(element.querySelector('.source').textContent).toContain('some source code');
+    expect(element.querySelector('.output img').getAttribute('src')).toContain(`data:image/jpeg;base64,${toBase64('jpeg content')}`);
     confirmSuccess();
   });
 
   it('should format a notebook with one code cell with a display_data output with text/plain available', () => {
     const textMimeBundle = { 'image/foo': toBase64('foo'), 'application/root': 'foo', 'text/plain': ['some plain text'] };
     format(makeNotebook([makeCodeCell('some source code', [makeDisplayDataOutput(textMimeBundle)])]));
-    expect(fixture.nativeElement.querySelector('.source').textContent).toContain('some source code');
-    expect(fixture.nativeElement.querySelector('.output').innerHTML).toContain('some plain text');
+    expect(element.querySelector('.source').textContent).toContain('some source code');
+    expect(element.querySelector('.output').innerHTML).toContain('some plain text');
     confirmSuccess();
   });
 
   it('should gracefully handle a code cell display_data output with no suitable mime types', () => {
     const unsuitableMimeBundle = { 'image/foo': toBase64('foo'), 'application/foo': 'foo' };
     format(makeNotebook([makeCodeCell('some source code', [makeDisplayDataOutput(unsuitableMimeBundle)])]));
-    expect(fixture.nativeElement.querySelector('.source').textContent).toContain('some source code');
-    expect(fixture.nativeElement.querySelector('.output')).toBeNull();
+    expect(element.querySelector('.source').textContent).toContain('some source code');
+    expect(element.querySelector('.output')).toBeNull();
     confirmSuccess();
   });
 
@@ -171,8 +169,8 @@ describe('FormattedNotebookComponent', () => {
     const jpegMimeBundle = { 'image/foo': toBase64('foo'), 'image/jpeg': toBase64('jpeg content'), 'text/plain': ['some plain text'] };
     const metadataMimeBundle = { 'image/jpeg': { width: 640, height: 480 } };
     format(makeNotebook([makeCodeCell('some source code', [makeDisplayDataOutput(jpegMimeBundle, metadataMimeBundle)])]));
-    expect(fixture.nativeElement.querySelector('.output img').getAttribute('width')).toBe('640');
-    expect(fixture.nativeElement.querySelector('.output img').getAttribute('height')).toBe('480');
+    expect(element.querySelector('.output img').getAttribute('width')).toBe('640');
+    expect(element.querySelector('.output img').getAttribute('height')).toBe('480');
     confirmSuccess();
   });
 });
