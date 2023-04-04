@@ -38,7 +38,7 @@ describe('FormattedNotebookComponent', () => {
     fixture.detectChanges();
   });
 
-  function formatDetails(sourceFiles: SourceFile[], workflow: Workflow, version: WorkflowVersion, baseUrl: string) {
+  function formatEntities(sourceFiles: SourceFile[], workflow: Workflow, version: WorkflowVersion, baseUrl: string) {
     mockSourceFiles = sourceFiles;
     notebookComponent.workflow = workflow;
     notebookComponent.version = version;
@@ -48,7 +48,7 @@ describe('FormattedNotebookComponent', () => {
   }
 
   function format(notebook: string) {
-    formatDetails([makeSourceFile(notebook, '/main.ipynb')], makeWorkflow('Python'), makeVersion('/main.ipynb'), '');
+    formatEntities([makeSourceFile(notebook, '/main.ipynb')], makeWorkflow('Python'), makeVersion('/main.ipynb'), '');
   }
 
   function makeSourceFile(content: string, path: string, type: SourceFile.TypeEnum = SourceFile.TypeEnum.DOCKSTOREJUPYTER): SourceFile {
@@ -59,12 +59,12 @@ describe('FormattedNotebookComponent', () => {
     return { id: 123, descriptorTypeSubclass: language } as Workflow;
   }
 
-  function makeNotebook(cells: any[]): string {
-    return JSON.stringify({ cells: cells });
-  }
-
   function makeVersion(workflowPath: string): WorkflowVersion {
     return { id: 456, workflow_path: workflowPath } as WorkflowVersion;
+  }
+
+  function makeNotebook(cells: any[]): string {
+    return JSON.stringify({ cells: cells });
   }
 
   function makeCodeCell(source: string, outputs: any[]) {
@@ -79,7 +79,7 @@ describe('FormattedNotebookComponent', () => {
     return { output_type: 'display_data', data: dataMimeBundle, ...(metadataMimeBundle && { metadata: metadataMimeBundle }) };
   }
 
-  function base64(value: string) {
+  function toBase64(value: string) {
     return btoa(value);
   }
 
@@ -122,7 +122,7 @@ describe('FormattedNotebookComponent', () => {
   });
 
   it('should error if there is not a primary descriptor', () => {
-    formatDetails([], makeWorkflow('Python'), makeVersion('/123.ipynb'), '');
+    formatEntities([], makeWorkflow('Python'), makeVersion('/123.ipynb'), '');
     confirmError();
   });
 
@@ -141,18 +141,18 @@ describe('FormattedNotebookComponent', () => {
   });
 
   it('should format a notebook with one code cell with a display_data output with image/jpeg available', () => {
-    const jpegMimeBundle = { 'image/foo': base64('foo'), 'image/jpeg': base64('jpeg content'), 'text/plain': ['some plain text'] };
+    const jpegMimeBundle = { 'image/foo': toBase64('foo'), 'image/jpeg': toBase64('jpeg content'), 'text/plain': ['some plain text'] };
     format(makeNotebook([makeCodeCell('some source code', [makeDisplayDataOutput(jpegMimeBundle)])]));
     console.log(fixture.nativeElement.querySelector('.output img'));
     expect(fixture.nativeElement.querySelector('.source').textContent).toContain('some source code');
     expect(fixture.nativeElement.querySelector('.output img').getAttribute('src')).toContain(
-      `data:image/jpeg;base64,${base64('jpeg content')}`
+      `data:image/jpeg;base64,${toBase64('jpeg content')}`
     );
     confirmSuccess();
   });
 
   it('should format a notebook with one code cell with a display_data output with text/plain available', () => {
-    const textMimeBundle = { 'image/foo': base64('foo'), 'application/root': 'foo', 'text/plain': ['some plain text'] };
+    const textMimeBundle = { 'image/foo': toBase64('foo'), 'application/root': 'foo', 'text/plain': ['some plain text'] };
     format(makeNotebook([makeCodeCell('some source code', [makeDisplayDataOutput(textMimeBundle)])]));
     expect(fixture.nativeElement.querySelector('.source').textContent).toContain('some source code');
     expect(fixture.nativeElement.querySelector('.output').innerHTML).toContain('some plain text');
@@ -160,7 +160,7 @@ describe('FormattedNotebookComponent', () => {
   });
 
   it('should gracefully handle a code cell display_data output with no suitable mime types', () => {
-    const unsuitableMimeBundle = { 'image/foo': base64('foo'), 'application/foo': 'foo' };
+    const unsuitableMimeBundle = { 'image/foo': toBase64('foo'), 'application/foo': 'foo' };
     format(makeNotebook([makeCodeCell('some source code', [makeDisplayDataOutput(unsuitableMimeBundle)])]));
     expect(fixture.nativeElement.querySelector('.source').textContent).toContain('some source code');
     expect(fixture.nativeElement.querySelector('.output')).toBeNull();
@@ -168,7 +168,7 @@ describe('FormattedNotebookComponent', () => {
   });
 
   it('should read the img width and height for a display_data output if the metadata is present', () => {
-    const jpegMimeBundle = { 'image/foo': base64('foo'), 'image/jpeg': base64('jpeg content'), 'text/plain': ['some plain text'] };
+    const jpegMimeBundle = { 'image/foo': toBase64('foo'), 'image/jpeg': toBase64('jpeg content'), 'text/plain': ['some plain text'] };
     const metadataMimeBundle = { 'image/jpeg': { width: 640, height: 480 } };
     format(makeNotebook([makeCodeCell('some source code', [makeDisplayDataOutput(jpegMimeBundle, metadataMimeBundle)])]));
     expect(fixture.nativeElement.querySelector('.output img').getAttribute('width')).toBe('640');
