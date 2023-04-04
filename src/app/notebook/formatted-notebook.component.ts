@@ -32,7 +32,7 @@ export class FormattedNotebookComponent implements OnChanges {
     this.notebookTarget?.nativeElement.replaceChildren(); // Remove the current formatted notebook.
     this.loading = true;
     this.displayError = false;
-    // The next line cancels any previous request that is still in progess,
+    // The next line cancels any previous request that is still in progress,
     // because if we're here, the @Inputs have changed, and we're about to
     // launch a new request to retrieve the corresponding notebook file,
     // which we will display when it arrives.  The previous response is now
