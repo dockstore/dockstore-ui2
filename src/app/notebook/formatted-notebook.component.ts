@@ -190,14 +190,14 @@ export class FormattedNotebookComponent implements OnChanges {
 
   compileMarkdown(markdown: string, attachments: any): string {
     let adjusted = markdown;
-    adjusted = this.spanBackslashedDollars(adjusted);
+    adjusted = this.convertBackslashedDollars(adjusted);
     adjusted = this.inlineAttachedImages(adjusted, attachments);
     adjusted = this.preprocessLatexMath(adjusted);
     return this.markdownWrapperService.customCompile(adjusted, this.baseUrl);
   }
 
-  spanBackslashedDollars(markdown: string): string {
-    return markdown.replace(/(\\\$)/g, '<span>$1</span>');
+  convertBackslashedDollars(markdown: string): string {
+    return markdown.replace(/\\\$/g, '&dollar;');
   }
 
   inlineAttachedImages(markdown: string, attachments: any) {
@@ -224,12 +224,12 @@ export class FormattedNotebookComponent implements OnChanges {
   }
 
   preprocessLatexMath(markdown: string): string {
-    return markdown.replace(
-      /(\$+)\s*(\\begin\{[^}]*)([\s\S]*)(\\end\{[^}]*})\s*(\$+)/gm,
-      (match, leadingDollars, begin, content, end, trailingDollars) => {
-        return leadingDollars + begin + this.replaceAll(content, '\\\\', '\\\\\\\\') + end + trailingDollars;
+    return markdown.replace(/(\$+)([^$]+)(\$+)/gms, (match, beforeDollars, content, afterDollars) => {
+      if (content.match(/^\s*\\begin\{[^}]*}/ms) && content.match(/\end\{[^}]*}\s*$/ms)) {
+        return beforeDollars + this.replaceAll(content, '\\\\', '\\\\\\\\') + afterDollars;
       }
-    );
+      return match;
+    });
   }
 
   replaceAll(value: string, from: string, to: string) {
