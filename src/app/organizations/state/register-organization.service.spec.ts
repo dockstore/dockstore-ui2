@@ -110,18 +110,18 @@ describe('RegisterOrganizationService', () => {
 
   it('should have correct avatar URL regex', () => {
     const regexp = new RegExp(registerOrganizationService.logoUrlRegex);
-    expect(regexp.test('https://www.https://via.placeholder.com/150.jpg')).toBeTruthy();
-    expect(regexp.test('https://www.https://via.placeholder.com/150.jPG')).toBeTruthy();
-    expect(regexp.test('https://www.https://via.placeholder.com/150.jpeg')).toBeTruthy();
-    expect(regexp.test('https://www.https://via.placeholder.com/150.jPEG')).toBeTruthy();
-    expect(regexp.test('https://www.https://via.placeholder.com/150.pNg')).toBeTruthy();
-    expect(regexp.test('https://www.https://via.placeholder.com/150.png')).toBeTruthy();
-    expect(regexp.test('https://www.https://via.placeholder.com/150.gif')).toBeTruthy();
-    expect(regexp.test('https://www.https://via.placeholder.com/150.gIf')).toBeTruthy();
-    expect(regexp.test('https://www.https://via.placeholder.com/150')).toBeFalsy();
+    expect(regexp.test('https://www.gravatar.com/avatar/.jpg')).toBeTruthy();
+    expect(regexp.test('https://www.gravatar.com/avatar/.jPG')).toBeTruthy();
+    expect(regexp.test('https://www.gravatar.com/avatar/.jpeg')).toBeTruthy();
+    expect(regexp.test('https://www.gravatar.com/avatar/.jPEG')).toBeTruthy();
+    expect(regexp.test('https://www.gravatar.com/avatar/.pNg')).toBeTruthy();
+    expect(regexp.test('https://www.gravatar.com/avatar/.png')).toBeTruthy();
+    expect(regexp.test('https://www.gravatar.com/avatar/.gif')).toBeTruthy();
+    expect(regexp.test('https://www.gravatar.com/avatar/.gIf')).toBeTruthy();
+    expect(regexp.test('https://www.gravatar.com/avatar/')).toBeFalsy();
     expect(regexp.test('.png')).toBeFalsy();
-    expect(regexp.test('https://www.https://via.placeholder.com/150.png potato')).toBeFalsy();
+    expect(regexp.test('https://www.gravatar.com/avatar/.png potato')).toBeFalsy();
     expect(regexp.test('adf .jpg')).toBeFalsy();
-    expect(regexp.test('https://via.placeholder.com/150.jpg asdf')).toBeFalsy();
+    expect(regexp.test('https://avatar/.jpg asdf')).toBeFalsy();
   });
 });
