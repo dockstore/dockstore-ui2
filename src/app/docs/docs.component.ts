@@ -42,8 +42,6 @@ export class DocsComponent implements OnInit {
 
   public redirectLink = this.getLink();
 
-  constructor() {}
-
   ngOnInit() {
     setTimeout(() => {
       window.location.href = this.getLink();
@@ -66,7 +64,7 @@ export class DocsComponent implements OnInit {
     if (matchingDoc != null) {
       redirectPath = matchingDoc.newPath;
     }
-    return redirectBase + redirectPath + '.html';
+    return redirectBase + redirectPath;
   }
 
   // Returns a function to test elements of an array against a path

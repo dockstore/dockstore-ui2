@@ -17,5 +17,4 @@ import { Component, Input } from '@angular/core';
 export class LoadingComponent {
   @Input() loading = true;
   @Input() retainContent = false;
-  constructor() {}
 }

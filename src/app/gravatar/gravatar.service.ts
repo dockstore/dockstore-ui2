@@ -6,7 +6,6 @@ import { Md5 } from 'ts-md5/dist/md5';
 })
 export class GravatarService {
   readonly gravatarBaseUrl = 'https://www.gravatar.com/avatar/';
-  constructor() {}
 
   public gravatarUrlForEmail(email: string, defaultImage: string) {
     const hash = Md5.hashStr(email);

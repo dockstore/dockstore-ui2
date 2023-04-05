@@ -19,6 +19,4 @@ import { Component } from '@angular/core';
   selector: 'app-change-username-banner',
   templateUrl: './changeUsernameBanner.component.html',
 })
-export class ChangeUsernameBannerComponent {
-  constructor() {}
-}
+export class ChangeUsernameBannerComponent {}

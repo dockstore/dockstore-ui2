@@ -58,7 +58,7 @@ export class DagComponent extends EntryTab implements OnInit, OnChanges, AfterVi
 
   public dagResult$: Observable<any>;
   private cy: cytoscape.Core;
-  public expanded: Boolean = false;
+  public expanded: boolean = false;
   public workflow$: Observable<BioWorkflow>;
   public isNFL$: Observable<boolean>;
   public isWDL$: Observable<boolean>;

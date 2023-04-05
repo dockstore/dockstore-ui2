@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { combineLatest, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 import { Base } from '../shared/base';
 import { Collection, DockstoreTool, Organization, Workflow, WorkflowVersionPathInfo } from '../shared/swagger';

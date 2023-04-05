@@ -259,7 +259,7 @@ export class SearchStubService {
 
   initializeExpandedPanels() {
     if (localStorage.getItem(this.expandedPanelsStorageKey)) {
-      return new Map<string, Boolean>(JSON.parse(localStorage.getItem(this.expandedPanelsStorageKey)));
+      return new Map<string, boolean>(JSON.parse(localStorage.getItem(this.expandedPanelsStorageKey)));
     } else {
       return new Map([
         ['descriptorType', true],

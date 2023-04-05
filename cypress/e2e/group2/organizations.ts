@@ -86,7 +86,7 @@ describe('Dockstore Organizations', () => {
       typeInInput('Organization website', 'https://www.google.ca');
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('not.be.disabled');
 
-      cy.get('[data-cy=image-url-input').clear().type('https://via.placeholder.com/150');
+      cy.get('[data-cy=image-url-input').clear().type('https://www.gravatar.com/avatar/');
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('be.disabled');
 
       typeInInput('Contact Email Address', 'asdf@asdf.ca');

@@ -29,6 +29,7 @@ import { OrganizationMembersQuery } from '../state/organization-members.query';
 import { OrganizationMembersService } from '../state/organization-members.service';
 import { OrganizationQuery } from '../state/organization.query';
 import { UpsertOrganizationMemberComponent } from '../upsert-organization-member/upsert-organization-member.component';
+import { GravatarService } from '../../gravatar/gravatar.service';
 
 @Component({
   selector: 'app-organization-members',
@@ -49,7 +50,8 @@ export class OrganizationMembersComponent extends Base implements OnInit {
     private organizationMembersService: OrganizationMembersService,
     private matDialog: MatDialog,
     private userQuery: UserQuery,
-    private alertService: AlertService
+    private alertService: AlertService,
+    public gravatarService: GravatarService
   ) {
     super();
   }

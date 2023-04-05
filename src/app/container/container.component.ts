@@ -240,7 +240,7 @@ export class ContainerComponent extends Entry implements AfterViewInit, OnInit {
     this.selectTab(this.validTabs.indexOf('versions'));
   }
 
-  public setupPublicEntry(url: String) {
+  public setupPublicEntry(url: string) {
     if (url.includes('/containers/github.com') || url.includes('/tools/github.com')) {
       this.containerService.setTool(null);
       this.displayAppTool = true;

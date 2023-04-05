@@ -16,8 +16,7 @@
 
 import { Component, Input, OnInit } from '@angular/core';
 import { EntryType } from 'app/shared/enum/entry-type';
-import { EntryType as NewEntryType } from 'app/shared/openapi';
-import { EntryUpdateTime, UsersService } from 'app/shared/openapi';
+import { EntryUpdateTime, UsersService, EntryType as NewEntryType } from 'app/shared/openapi';
 import { debounceTime, finalize, takeUntil } from 'rxjs/operators';
 import { MyWorkflowsService } from 'app/myworkflows/myworkflows.service';
 import { RegisterToolService } from 'app/container/register-tool/register-tool.service';
