@@ -19,7 +19,7 @@
     <div id="header-bar" fxLayout="row wrap" fxLayoutGap="0.5rem" class="space-between">
       <div id="workflow-number" fxLayout="row">
         <mat-card-header fxLayout="row">
-          <mat-card-title>{{ entryTypeLowerCase | titlecase }}s</mat-card-title>
+          <mat-card-title class="ml-2">{{ entryTypeLowerCase | titlecase }}s</mat-card-title>
           <span class="bubble {{ entryTypeLowerCase }}-background">{{ totalEntries }}</span>
           <span class="bubble preview-bubble" *ngIf="entryType === newEntryType.SERVICE || entryType === newEntryType.NOTEBOOK"
             >PREVIEW</span
@@ -78,19 +78,16 @@
           />
           <span>You have not registered any {{ entryTypeLowerCase }}s.</span>
           <div class="size-small">
-            <span>Use the</span>
-            <button
-              mat-button
-              class="inline-text-btn"
-              id="register{{ entryTypeLowerCase }}Button"
+            <span>Use the </span>
+            <a
+              class="size-small pointer mt-3"
               matTooltip="Register {{ entryTypeLowerCase }}"
               matTooltipPosition="after"
               (click)="showRegisterEntryModal()"
               data-cy="no-entry-register-modal"
+              >{{ entryTypeLowerCase }} registration wizard</a
             >
-              {{ entryTypeLowerCase }} registration wizard
-            </button>
-            <span>to register a {{ entryTypeLowerCase }}.</span>
+            <span> to register a {{ entryTypeLowerCase }}.</span>
           </div>
           <a class="size-small" target="_blank" rel="noopener noreferrer" [href]="helpLink" data-cy="help-link"
             >Learn more about {{ entryTypeLowerCase }}s.

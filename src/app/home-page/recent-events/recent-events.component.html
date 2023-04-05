@@ -7,9 +7,17 @@
       fxLayoutAlign="space-between center"
     >
       <div fxLayout>
-        <a [routerLink]="'/users/' + event.initiatorUser?.username">
-          <img src="{{ event?.initiatorUser?.avatarUrl }}" alt="User avatar" />
-        </a>
+        <div *ngIf="event?.initiatorUser?.username; else defaultAvatar">
+          <a
+            *ngIf="event.type !== EventType.APPROVEORG && event.type !== EventType.REJECTORG && event.type"
+            [routerLink]="'/users/' + event.initiatorUser?.username"
+          >
+            <img *ngIf="event?.initiatorUser?.avatarUrl; else defaultAvatar" [src]="event?.initiatorUser?.avatarUrl" alt="User avatar" />
+          </a>
+        </div>
+        <ng-template #defaultAvatar>
+          <img [src]="gravatarService.gravatarUrlForMysteryPerson()" alt="User avatar" />
+        </ng-template>
         <div [ngSwitch]="event.type" class="my-3">
           <!-- Entries -->
           <div *ngSwitchCase="EventType.PUBLISHENTRY" class="truncate-text-2">
@@ -71,7 +79,7 @@
                 event.initiatorUser?.username
               }}</a></strong
             >
-            added {{ event.user.username }} to the organization
+            added <a [routerLink]="'/users/' + event.user?.username">{{ event.user?.username }}</a> to the organization
             <a [routerLink]="event | recentEvents: 'orgLink'">{{ event.organization?.displayName }}</a>
           </div>
           <div *ngSwitchCase="EventType.APPROVEORGINVITE" class="truncate-text-2">
@@ -100,7 +108,7 @@
               }}</a></strong
             >
             created the collection
-            <a [routerLink]="event | recentEvents: 'collectionLink'">{{ event.collection?.name }}</a>
+            <a [routerLink]="event | recentEvents: 'collectionLink'">{{ event.collection?.displayName }}</a>
             in organization
             <a [routerLink]="event | recentEvents: 'orgLink'">{{ event.organization?.displayName }}</a>
           </div>
@@ -111,7 +119,7 @@
                 event.initiatorUser?.username
               }}</a></strong
             >
-            removed the collection <strong>{{ event.collection?.name }}</strong> in organization
+            removed the collection <strong>{{ event.collection?.displayName }}</strong> in organization
             <a [routerLink]="event | recentEvents: 'orgLink'">{{ event.organization?.displayName }}</a>
           </div>
           <div *ngSwitchCase="EventType.ADDTOCOLLECTION" class="truncate-text-2">
@@ -123,7 +131,7 @@
             added the {{ event | recentEvents: 'entryType' }}
             <a [routerLink]="event | recentEvents: 'entryLink'">{{ event | recentEvents: 'displayName' }}</a>
             to the collection
-            <a [routerLink]="event | recentEvents: 'collectionLink'">{{ event.collection?.name }}</a>
+            <a [routerLink]="event | recentEvents: 'collectionLink'">{{ event.collection?.displayName }}</a>
             in organization
             <a [routerLink]="event | recentEvents: 'orgLink'">{{ event.organization?.displayName }}</a>
           </div>
@@ -134,7 +142,7 @@
               }}</a></strong
             >
             edited the collection
-            <a [routerLink]="event | recentEvents: 'collectionLink'">{{ event.collection?.name }}</a>
+            <a [routerLink]="event | recentEvents: 'collectionLink'">{{ event.collection?.displayName }}</a>
           </div>
           <div *ngSwitchCase="EventType.REMOVEFROMCOLLECTION" class="truncate-text-2">
             <strong
@@ -145,7 +153,7 @@
             removed the {{ event | recentEvents: 'entryType' }}
             <a [routerLink]="event | recentEvents: 'entryLink'">{{ event | recentEvents: 'displayName' }}</a>
             from the collection
-            <a [routerLink]="event | recentEvents: 'collectionLink'">{{ event.collection?.name }}</a>
+            <a [routerLink]="event | recentEvents: 'collectionLink'">{{ event.collection?.displayName }}</a>
           </div>
           <div class="subtitle">{{ event.dbCreateDate | date: 'medium' }}</div>
         </div>

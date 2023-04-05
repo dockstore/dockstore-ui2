@@ -35,6 +35,7 @@ export class NewDashboardComponent extends Base implements OnInit {
           .pipe(takeUntil(this.ngUnsubscribe))
           .subscribe(() => {
             this.alertService.clearEverything();
+            this.registerToolService.setIsModalShown(false);
           });
       } else {
         this.dialog.closeAll();

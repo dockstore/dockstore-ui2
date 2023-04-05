@@ -20,7 +20,7 @@
       <div class="h-100" fxLayout="column" fxLayoutAlign="space-between stretch">
         <div fxLayoutAlign="space-between">
           <mat-card-header>
-            <div mat-card-avatar matBadge="✓">
+            <div mat-card-avatar matBadge="✓" class="mr-4">
               <img src="../../../../assets/images/dockstore/dockstore.png" alt="Dockstore logo" class="w-100" />
             </div>
             <mat-card-title class="normal-line-height">Dockstore Account</mat-card-title>
@@ -93,7 +93,7 @@
         <div>
           <div fxLayoutAlign="space-between">
             <mat-card-header>
-              <div mat-card-avatar matBadge="✓" [matBadgeHidden]="!row.isLinked">
+              <div mat-card-avatar matBadge="✓" [matBadgeHidden]="!row.isLinked" class="mr-4">
                 <img src="../../../../assets/images/account-logos/{{ row.logo }}" alt="{{ row.name }} logo" class="w-100" />
               </div>
               <mat-card-title class="normal-line-height">{{ row.name }} Account&nbsp;</mat-card-title>

@@ -131,7 +131,7 @@
             </a>
             <app-starring class="pull-right" [workflow]="workflow" (starGazersChange)="starGazersChange()"></app-starring>
           </div>
-          <div class="ml-4 mr-2">
+          <div>
             <div class="truncate-text-3 mb-3">
               <app-markdown-wrapper
                 [data]="workflow?.description"
@@ -142,7 +142,7 @@
           </div>
           <div fxLayout="row" fxLayoutAlign="space-between stretch">
             <div fxLayout="row" fxLayoutAlign="flex-start" fxLayoutGap="1rem">
-              <small class="spacing">Last updated {{ workflow?.lastUpdated | date }}</small>
+              <small>Last updated {{ workflow?.lastUpdated | date }}</small>
               <div fxLayout="row wrap" fxLayoutGap="1rem">
                 <span>
                   <mat-chip-list>
@@ -191,7 +191,7 @@
             <hr />
             <div fxLayout="row" fxLayoutAlign="space-between stretch">
               <div fxLayout="row" fxLayoutAlign="flex-start" fxLayoutGap="1rem">
-                <small class="spacing">Last updated {{ tool?.lastUpdated | date }}</small>
+                <small>Last updated {{ tool?.lastUpdated | date }}</small>
                 <mat-chip-list>
                   <mat-chip class="bubble tool-background" *ngFor="let label of tool?.labels | slice: 0:3">{{ label.value }}</mat-chip>
                   <mat-chip *ngIf="tool?.versionVerified" matTooltip="Verified" class="bubble">
