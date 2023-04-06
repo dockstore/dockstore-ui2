@@ -37,7 +37,7 @@
       <mat-card-title>{{ entryType$ | async | titlecase }} Information</mat-card-title>
     </mat-card-header>
     <mat-divider></mat-divider>
-    <mat-card-content class="p-2 pt-3">
+    <mat-card-content class="p-1 pt-3">
       <ul class="list-unstyled container-info" *ngIf="workflow">
         <span *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED" class="truncate-text-1">
           <li *ngIf="workflow?.provider && workflow?.providerUrl">
@@ -395,7 +395,7 @@
       <mat-card-title>{{ entryType$ | async | titlecase }} Version Information</mat-card-title>
     </mat-card-header>
     <mat-divider></mat-divider>
-    <mat-card-content class="p-2 pt-3">
+    <mat-card-content class="p-1 pt-3">
       <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="2rem">
         <span class="bubble">
           {{ selectedVersion?.name }}
