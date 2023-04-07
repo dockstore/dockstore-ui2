@@ -80,6 +80,10 @@ export function insertNotebooks() {
   addBeforeSqlFromFile('test/github_notebook_db_dump.sql');
 }
 
+export function insertAuthors() {
+  addBeforeSqlFromFile('test/authors_db_dump.sql');
+}
+
 export function typeInInput(fieldName: string, text: string) {
   cy.contains('span', fieldName).parentsUntil('.mat-form-field-wrapper').find('input').first().should('be.visible').clear().type(text);
 }
