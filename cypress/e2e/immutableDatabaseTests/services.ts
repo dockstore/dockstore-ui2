@@ -40,8 +40,8 @@ describe('Dockstore Home', () => {
       cy.url().should('contain', '/services/github.com/garyluu/another-test-service');
     });
     it('Redirects to dashboard', () => {
-      cy.visit('githubCallback?state=/dashboard?newDashboard');
-      cy.url().should('contain', '/dashboard?newDashboard');
+      cy.visit('githubCallback?state=/dashboard');
+      cy.url().should('contain', '/dashboard');
     });
   });
 

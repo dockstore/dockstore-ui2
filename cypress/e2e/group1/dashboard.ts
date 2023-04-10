@@ -13,28 +13,28 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import { resetDB, setTokenUserViewPort, verifyGithubLinkNewDashboard } from '../../support/commands';
+import { resetDB, setTokenUserViewPort, verifyGithubLinkDashboard } from '../../support/commands';
 
 describe('Dockstore dashboard', () => {
   resetDB();
   setTokenUserViewPort();
 
-  it('have workflows visible from homepage', () => {
-    cy.visit('/dashboard?newDashboard');
+  it('have workflows visible from dashboard', () => {
+    cy.visit('/dashboard');
     cy.contains('Workflows');
     cy.contains('hosted-workflow');
     cy.get('[data-cy=all-entries-btn]').contains('All Workflows').should('have.attr', 'href').and('include', '/my-workflows');
   });
 
-  it('have tools visible from homepage', () => {
-    cy.visit('/dashboard?newDashboard');
+  it('have tools visible from dashboard', () => {
+    cy.visit('/dashboard');
     cy.contains('Tools');
     cy.contains('b1');
     cy.get('[data-cy=all-entries-btn]').contains('All Tools').should('have.attr', 'href').and('include', '/my-tools');
   });
 
   it('no services display correctly', () => {
-    cy.visit('/dashboard?newDashboard');
+    cy.visit('/dashboard');
     cy.contains('Services');
     cy.contains('You have not registered any services.');
     cy.get('[data-cy=no-entry-register-modal]').contains('service');
@@ -44,9 +44,9 @@ describe('Dockstore dashboard', () => {
       .and('include', 'getting-started-with-services');
   });
   it('Registering new tool through Github redirects correctly', () => {
-    verifyGithubLinkNewDashboard('Tool');
+    verifyGithubLinkDashboard('Tool');
   });
   it('Registering new workflow through Github redirects correctly', () => {
-    verifyGithubLinkNewDashboard('Workflow');
+    verifyGithubLinkDashboard('Workflow');
   });
 });

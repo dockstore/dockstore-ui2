@@ -23,14 +23,13 @@ describe('Dockstore my workflows', () => {
   const cwlDescriptorType = 'CWL';
   const wdlDescriptorType = 'WDL';
   const nextflowDescriptorType = 'Nextflow';
-  it('have entries shown on the homepage', () => {
+  it('have entries shown on the dashboard', () => {
     cy.visit('/dashboard');
-    cy.contains(/^l$/);
-    cy.contains('Find entries');
+    cy.contains('Search your Workflows...');
     cy.get('#mat-input-0').type('hosted');
     cy.contains('hosted-workflow');
     cy.get('#mat-input-0').type('potato');
-    cy.contains('No matching entries');
+    cy.contains('No matching workflows');
   });
 
   it('have action buttons which work', () => {
