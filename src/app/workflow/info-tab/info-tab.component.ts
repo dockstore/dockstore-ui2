@@ -84,6 +84,7 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   FULL: Full content synced from source control.
   HOSTED: Workflow metadata and files hosted on Dockstore.`;
   Dockstore = Dockstore;
+  readMeBasePath: string;
   constructor(
     private workflowService: WorkflowService,
     private extendedWorkflowsService: ExtendedWorkflowsService,
@@ -132,6 +133,12 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
       this.workflowsService.getWorkflowVersionOrcidAuthors(this.workflow.id, this.selectedVersion.id).subscribe((orcidAuthors) => {
         this.authors = [...this.selectedVersion.authors, ...orcidAuthors];
       });
+      if (this.selectedVersion.descriptionSource === 'CUSTOM_README') {
+        const slashIndex = this.selectedVersion.readMePath.slice(0, -1).lastIndexOf('/');
+        this.readMeBasePath = this.selectedVersion.name + this.selectedVersion.readMePath.substring(0, slashIndex);
+      } else {
+        this.readMeBasePath = this.selectedVersion.name;
+      }
     } else {
       this.isValidVersion = false;
       this.trsLink = null;
