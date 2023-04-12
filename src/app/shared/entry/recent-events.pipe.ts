@@ -6,7 +6,7 @@ import { EntryType } from '../../shared/enum/entry-type';
 @Pipe({
   name: 'recentEvents',
 })
-// TO DO: Accommodate for notebooks and services when we can retrieve those events
+// TODO: Accommodate for notebooks and services when we can retrieve those events
 export class RecentEventsPipe implements PipeTransform {
   private EntryType = EntryType;
   constructor(@Inject(EntryToDisplayNamePipe) private entryToDisplayNamePipe: EntryToDisplayNamePipe) {}

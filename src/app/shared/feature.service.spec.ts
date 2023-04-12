@@ -15,27 +15,16 @@ describe('FeatureService', () => {
     expect(service).toBeTruthy();
   });
   it('should set feature flag correctly', () => {
-    service.updateFeatureFlags('?newDashboard');
-    expect(Dockstore.FEATURES.enableNewDashboard).toBeTrue();
     service.updateFeatureFlags('?notebooks');
     expect(Dockstore.FEATURES.enableNotebooks).toBeTrue();
     // We're ignoring the value
-    service.updateFeatureFlags('?irrelevantKey&newDashboard');
-    expect(Dockstore.FEATURES.enableNewDashboard).toBeTrue();
-    service.updateFeatureFlags('?irrelevantKey&newDashboard&notebooks');
-    expect(Dockstore.FEATURES.enableNewDashboard).toBeTrue();
+    service.updateFeatureFlags('?irrelevantKey&notebooks');
     expect(Dockstore.FEATURES.enableNotebooks).toBeTrue();
-    service.updateFeatureFlags('?newDashboard=false');
-    expect(Dockstore.FEATURES.enableNewDashboard).toBeTrue();
-    expect(Dockstore.FEATURES.enableNotebooks).toBeFalse();
     service.updateFeatureFlags('?notebooks=false');
     expect(Dockstore.FEATURES.enableNotebooks).toBeTrue();
-    expect(Dockstore.FEATURES.enableNewDashboard).toBeFalse();
     service.updateFeatureFlags(null);
-    expect(Dockstore.FEATURES.enableNewDashboard).toBeFalse();
     expect(Dockstore.FEATURES.enableNotebooks).toBeFalse();
     service.updateFeatureFlags('');
-    expect(Dockstore.FEATURES.enableNewDashboard).toBeFalse();
     expect(Dockstore.FEATURES.enableNotebooks).toBeFalse();
   });
 });

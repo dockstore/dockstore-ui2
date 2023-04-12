@@ -58,7 +58,7 @@ describe('Notebooks Pages', () => {
     });
 
     it('should exist and have warning on dashboard', () => {
-      cy.visit('/dashboard?newDashboard=&notebooks=');
+      cy.visit('/dashboard?notebooks=');
       cy.get('[data-cy=preview-warning]').should('be.visible');
       cy.contains('Notebooks');
       cy.contains('You have not registered any notebooks.');
@@ -86,7 +86,7 @@ describe('Notebooks Pages', () => {
     });
 
     it('should not exist on dashboard', () => {
-      cy.visit('/dashboard?newDashboard=');
+      cy.visit('/dashboard');
       cy.get('[data-cy=preview-warning]').should('not.exist');
       cy.contains('Notebooks').should('not.exist');
       cy.contains('You have not registered any notebooks.').should('not.exist');

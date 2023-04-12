@@ -139,16 +139,10 @@ describe('Dockstore Organizations', () => {
       // cy.contains('asdf@asdf.ca');
 
       cy.visit('/dashboard');
-      cy.contains('1 organization request');
-      cy.contains('1 organization request requiring action');
-
-      cy.visit('/dashboard');
+      cy.contains('1 Pending Request');
+      cy.get('[data-cy=view-my-organizations]').click();
+      cy.contains('My Organizations');
       cy.contains('Potatoe');
-      cy.contains('Find organizations');
-      cy.get('[data-cy=filterOrganizationsInput]').type('Po');
-      cy.contains('Potatoe');
-      cy.get('[data-cy=filterOrganizationsInput]').type('r');
-      cy.contains('No matching organizations');
     });
   });
 

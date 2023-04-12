@@ -174,8 +174,8 @@ export function createOrganization(name: string, displayName: string, topic: str
   cy.reload();
 }
 
-export function verifyGithubLinkNewDashboard(entryType: string) {
-  cy.visit('/dashboard?newDashboard');
+export function verifyGithubLinkDashboard(entryType: string) {
+  cy.visit('/dashboard');
   cy.get('[data-cy=register-entry-btn]').contains(entryType).should('be.visible').click();
   cy.get('[data-cy=storage-type-choice]').contains('GitHub').click();
   cy.contains('button', 'Next').should('be.visible').click();
