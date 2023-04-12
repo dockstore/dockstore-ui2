@@ -10,7 +10,7 @@
         <div *ngIf="event?.initiatorUser?.username; else defaultAvatar">
           <a
             *ngIf="event.type !== EventType.APPROVEORG && event.type !== EventType.REJECTORG && event.type"
-            [routerLink]="'/users/' + event.initiatorUser?.username"
+            [routerLink]="'/users/' + event.initiatorUser.username"
           >
             <img *ngIf="event?.initiatorUser?.avatarUrl; else defaultAvatar" [src]="event?.initiatorUser?.avatarUrl" alt="User avatar" />
           </a>
