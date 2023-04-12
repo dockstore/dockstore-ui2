@@ -35,9 +35,9 @@ export class StarredEntriesComponent extends Base implements OnInit {
   // Default to workflows tab
   currentTab = 'workflows';
   selected = new UntypedFormControl();
-  // TO DO: Add 'services' to validTabs when implemented
+  // TODO: Add 'services' to validTabs when implemented
   validTabs = ['workflows', 'tools', 'organizations'];
-  // TO DO: Remove validTabsWithNotebooks and simply include 'notebooks' in validTabs when notebooks Feature Flag is removed
+  // TODO: Remove validTabsWithNotebooks and simply include 'notebooks' in validTabs when notebooks Feature Flag is removed
   validTabsWithNotebooks = ['workflows', 'tools', 'notebooks', 'organizations'];
 
   constructor(
