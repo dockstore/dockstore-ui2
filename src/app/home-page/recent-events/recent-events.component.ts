@@ -12,6 +12,7 @@ import { finalize, takeUntil } from 'rxjs/operators';
 import { Base } from 'app/shared/base';
 import { Observable } from 'rxjs';
 import { OrgLogoService } from '../../shared/org-logo.service';
+import { GravatarService } from '../../gravatar/gravatar.service';
 
 /**
  * Shows recent events related to starred organization and entries or user organization events
@@ -85,7 +86,8 @@ export class RecentEventsComponent extends Base implements OnInit {
     private usersService: UsersService,
     private alertService: AlertService,
     private eventsService: EventsService,
-    private orgLogoService: OrgLogoService
+    private orgLogoService: OrgLogoService,
+    public gravatarService: GravatarService
   ) {
     super();
     this.username = this.activatedRoute.snapshot.paramMap.get('username');
