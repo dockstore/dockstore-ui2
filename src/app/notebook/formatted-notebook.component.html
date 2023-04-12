@@ -2,7 +2,9 @@
   <div *ngIf="displayError">The notebook could not be displayed.</div>
   <div *ngIf="!displayError" class="notebook">
     <ng-container *ngFor="let cell of cells">
-      <div *ngIf="cell.cell_type === 'markdown'" class="markdown">{{ cell.source }}</div>
+      <div *ngIf="cell.cell_type === 'markdown'" class="markdown">
+        <app-notebook-markdown [cell]="cell" [baseUrl]="baseUrl"></app-notebook-markdown>
+      </div>
       <ng-container *ngIf="cell.cell_type === 'code'">
         <div class="count">[{{ cell.execution_count ?? ' ' }}]:</div>
         <div class="source">{{ cell.source }}</div>

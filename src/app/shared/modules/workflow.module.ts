@@ -27,6 +27,7 @@ import { OrderByModule } from '../../shared/modules/orderby.module';
 import { SourceFileTabsComponent } from '../../source-file-tabs/source-file-tabs.component';
 import { FormattedNotebookComponent } from '../../notebook/formatted-notebook.component';
 import { NotebookMimeBundleOutputComponent } from '../../notebook/notebook-mime-bundle-output.component';
+import { NotebookMarkdownComponent } from '../../notebook/notebook-markdown.component';
 import { StargazersModule } from '../../stargazers/stargazers.module';
 import { StarringModule } from '../../starring/starring.module';
 import { FilterCloudInstancesPipe } from '../../workflow/launch-third-party/filterCloudInstances.pipe';
@@ -80,6 +81,7 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
     SourceFileTabsComponent,
     FormattedNotebookComponent,
     NotebookMimeBundleOutputComponent,
+    NotebookMarkdownComponent,
     FilterCloudInstancesPipe,
     MultiCloudLaunchComponent,
   ],
