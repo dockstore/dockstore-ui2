@@ -22,6 +22,7 @@ export class FormattedNotebookComponent implements OnChanges {
   @ViewChild('notebookTarget') notebookTarget: ElementRef;
   loading = true;
   displayError = false;
+  cells = null;
   private currentSubscription: Subscription = null;
 
   ngOnChanges() {
@@ -32,6 +33,7 @@ export class FormattedNotebookComponent implements OnChanges {
     this.notebookTarget?.nativeElement.replaceChildren(); // Remove the current formatted notebook.
     this.loading = true;
     this.displayError = false;
+    this.cells = [];
     // The next line cancels any previous request that is still in progress,
     // because if we're here, the @Inputs have changed, and we're about to
     // launch a new request to retrieve the corresponding notebook file,
@@ -58,10 +60,12 @@ export class FormattedNotebookComponent implements OnChanges {
           for (const sourceFile of sourceFiles) {
             if (this.isPrimaryDescriptor(sourceFile.path)) {
               try {
-                // Create an element containing the formatted notebook,
-                // and make it the single child of the template's '#notebookTarget' placeholder.
-                const notebookElement = this.createFormattedNotebookElement(sourceFile.content);
-                this.notebookTarget.nativeElement.replaceChildren(notebookElement);
+                const json = JSON.parse(sourceFile.content);
+                if (!Array.isArray(json?.cells)) {
+                  this.displayError = true;
+                  return;
+                }
+                this.cells = this.filterSpam(json.cells);
               } catch (e) {
                 console.log('Exception formatting notebook');
                 console.log(e.message);

@@ -1,2 +1,17 @@
-<div *ngIf="displayError && !loading">The notebook could not be displayed.</div>
-<div #notebookTarget [hidden]="displayError || loading"></div>
+<div *ngIf="!loading">
+  <div *ngIf="displayError">The notebook could not be displayed.</div>
+  <div *ngIf="!displayError" class="notebook">
+    <ng-container *ngFor="let cell of cells">
+      <div *ngIf="cell.cell_type === 'markdown'" class="markdown">MARKDOWN {{ cell.source }}</div>
+      <ng-container *ngIf="cell.cell_type === 'code'">
+        <div class="count">[COUNT]</div>
+        <div class="source">SOURCE {{ cell.source }}</div>
+        <ng-container *ngFor="let output of cell.outputs ?? []">
+          <div *ngIf="output.output_type === 'stream'" class="output">STREAM OUTPUT</div>
+          <div *ngIf="output.output_type === 'display_data'" class="output">DISPLAY_DATA OUTPUT</div>
+          <div *ngIf="output.output_type === 'execute_result'" class="output">EXECUTE_RESULT OUTPUT</div>
+        </ng-container>
+      </ng-container>
+    </ng-container>
+  </div>
+</div>
