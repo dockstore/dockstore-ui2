@@ -14,7 +14,6 @@ import { DescriptorLanguageVersionsPipe } from '../entry/descriptor-language-ver
 import { DescriptorLanguagePipe } from '../entry/descriptor-language.pipe';
 import { RecentEventsPipe } from '../entry/recent-events.pipe';
 import { EntryToDisplayNamePipe } from '../entry-to-display-name.pipe';
-import { ToStringPipe } from '../to-string.pipe';
 
 const DECLARATIONS: any[] = [
   FilePathPipe,
@@ -30,7 +29,6 @@ const DECLARATIONS: any[] = [
   DescriptorLanguageVersionsPipe,
   DescriptorLanguagePipe,
   RecentEventsPipe,
-  ToStringPipe,
 ];
 @NgModule({
   imports: [CommonModule],
