@@ -1,84 +1,11 @@
-/*Source: https://codepen.io/dudleystorey/pen/yqrhw*/
-.dont-break-out {
-  /* These are technically the same, but use both */
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-
-  -ms-word-break: break-all;
-  /* This is the dangerous one in WebKit, as it breaks things wherever */
-  word-break: break-all;
-  /* Instead use this non-standard one: */
-  word-break: break-word;
-
-  /* Adds a hyphen where the word breaks, if supported (No Blink) */
-  -ms-hyphens: auto;
-  -moz-hyphens: auto;
-  -webkit-hyphens: auto;
-  hyphens: auto;
-}
-
-.columns {
-  column-width: 320px;
-  column-gap: 15px;
-}
-
-.columns figure {
-  background: #fefefe;
-  width: 98%;
-  height: auto;
-  padding: 0px;
-  transition: opacity 0.4s ease-in-out;
-  display: inline-block;
-  column-break-inside: avoid;
-}
-
-.columns figure img {
-  width: 390px;
-  height: auto;
-  border-bottom: 1px solid #ccc;
-  padding-bottom: 15px;
-  margin-bottom: 5px;
-}
-
-.columns figure figcaption {
-  font-size: 0.9rem;
-  color: #444;
-  line-height: 1.5;
-}
-
-.columns small {
-  font-size: 1rem;
-  float: right;
-  text-transform: uppercase;
-  color: #aaa;
-}
-
-.columns small a {
-  color: #666;
-  text-decoration: none;
-  transition: 0.4s color;
-}
 .entryType-icons {
   align-self: center;
   justify-content: center;
-}
-@media screen and (max-width: 750px) {
-  .columns {
-    column-gap: 0px;
-  }
-  .columns figure {
-    width: 100%;
-  }
 }
 
 .starred-header {
   margin-left: 30px;
   margin-right: 30px;
-}
-
-.spacing {
-  margin-left: 15px !important;
-  margin-right: 15px !important;
 }
 
 // Style for organization card.

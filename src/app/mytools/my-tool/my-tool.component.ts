@@ -128,6 +128,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
           .pipe(takeUntil(this.ngUnsubscribe))
           .subscribe(() => {
             this.alertService.clearEverything();
+            this.registerToolService.setIsModalShown(false);
           });
       } else {
         this.dialog.closeAll();

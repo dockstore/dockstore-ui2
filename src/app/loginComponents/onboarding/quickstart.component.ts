@@ -24,7 +24,7 @@ export class QuickStartComponent implements OnInit {
   public curStep = 1;
   public tokenSetComplete: boolean;
   Dockstore = Dockstore;
-  constructor() {}
+
   ngOnInit() {
     localStorage.setItem('page', '/quick-start');
   }

@@ -116,7 +116,7 @@
         <ng-template #workflowSummary let-workflow="workflow" let-type="entryType">
           <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-between">
             <a [routerLink]="type | routerLink: workflow" class="no-underline">
-              <mat-card-header>
+              <mat-card-header class="ml-2">
                 <mat-card-title fxLayoutAlign="space-between" fxLayoutGap="1rem">
                   <img
                     class="site-icons-small entryType-icons"
@@ -131,7 +131,7 @@
             </a>
             <app-starring class="pull-right" [workflow]="workflow" (starGazersChange)="starGazersChange()"></app-starring>
           </div>
-          <div class="ml-4 mr-2">
+          <div class="ml-2">
             <div class="truncate-text-3 mb-3">
               <app-markdown-wrapper
                 [data]="workflow?.description"
@@ -142,7 +142,7 @@
           </div>
           <div fxLayout="row" fxLayoutAlign="space-between stretch">
             <div fxLayout="row" fxLayoutAlign="flex-start" fxLayoutGap="1rem">
-              <small class="spacing">Last updated {{ workflow?.lastUpdated | date }}</small>
+              <small class="mx-2">Last updated {{ workflow?.lastUpdated | date }}</small>
               <div fxLayout="row wrap" fxLayoutGap="1rem">
                 <span>
                   <mat-chip-list>
@@ -177,7 +177,7 @@
         <ng-template #toolSummary let-tool="tool">
           <div fxLayout="row" fxLayoutAlign="space-between">
             <a routerLink="/containers/{{ tool.tool_path }}" class="no-underline">
-              <mat-card-header>
+              <mat-card-header class="ml-2">
                 <mat-card-title fxLayoutAlign="flex-start" fxLayoutGap="1rem">
                   <img class="site-icons-small entryType-icons" src="../../../assets/svg/sub-nav/tool.svg" alt="tool logo" />
                   <h4>{{ tool?.namespace + '/' + tool?.name + (tool?.toolname ? '/' + tool?.toolname : '') }}</h4>
@@ -191,7 +191,7 @@
             <hr />
             <div fxLayout="row" fxLayoutAlign="space-between stretch">
               <div fxLayout="row" fxLayoutAlign="flex-start" fxLayoutGap="1rem">
-                <small class="spacing">Last updated {{ tool?.lastUpdated | date }}</small>
+                <small class="mx-2">Last updated {{ tool?.lastUpdated | date }}</small>
                 <mat-chip-list>
                   <mat-chip class="bubble tool-background" *ngFor="let label of tool?.labels | slice: 0:3">{{ label.value }}</mat-chip>
                   <mat-chip *ngIf="tool?.versionVerified" matTooltip="Verified" class="bubble">

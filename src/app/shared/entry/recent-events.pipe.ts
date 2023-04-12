@@ -16,7 +16,7 @@ export class RecentEventsPipe implements PipeTransform {
    *
    * @param {Event} event
    * @param {string} type 'displayName' | 'entryLink' | 'entryType' | 'orgLink' | 'collectionLink'
-   * @returns String | null
+   * @returns string | null
    */
   transform(event: Event, type: 'displayName' | 'entryLink' | 'entryType' | 'orgLink' | 'collectionLink'): string | null {
     if (!event || !type) {
@@ -38,9 +38,9 @@ export class RecentEventsPipe implements PipeTransform {
         if (event.workflow) {
           return '/workflows/' + event.workflow.full_workflow_path;
         } else if (event.tool) {
-          return '/tools/' + event.tool.tool_path;
+          return '/containers/' + event.tool.tool_path;
         } else if (event.apptool) {
-          return '/tools/' + event.apptool.full_workflow_path;
+          return '/containers/' + event.apptool.full_workflow_path;
         }
         break;
       }

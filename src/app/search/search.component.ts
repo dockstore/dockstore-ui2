@@ -131,7 +131,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   public friendlyNames: Map<string, string>;
   public toolTips: Map<string, string>;
   private entryOrder: Map<string, SubBucket>;
-  private expandedPanels: Map<string, Boolean>;
+  private expandedPanels: Map<string, boolean>;
   public basicSearchText$: Observable<string>;
   private advancedSearchOptions = ['ANDSplitFilter', 'ANDNoSplitFilter', 'ORFilter', 'NOTFilter', 'searchMode'];
   public filterKeys$: Observable<Array<string>>;
@@ -673,10 +673,10 @@ export class SearchComponent implements OnInit, OnDestroy {
    * Saves state to local storage
    *
    * @param {string} key
-   * @param {Boolean} expanded
+   * @param {boolean} expanded
    * @memberof SearchComponent
    */
-  updateExpandedPanels(key: string, expanded: Boolean) {
+  updateExpandedPanels(key: string, expanded: boolean) {
     this.expandedPanels.set(key, expanded);
     this.clearExpandedPanelsState();
     this.saveExpandedPanelsState();

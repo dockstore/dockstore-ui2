@@ -31,8 +31,6 @@ import { Subject } from 'rxjs';
 export abstract class Base implements OnDestroy {
   protected ngUnsubscribe: Subject<{}> = new Subject();
 
-  constructor() {}
-
   ngOnDestroy() {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();

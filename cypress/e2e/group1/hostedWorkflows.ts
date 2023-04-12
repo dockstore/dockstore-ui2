@@ -13,14 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import {
-  clickFirstActionsButtonPublic,
-  clickFirstActionsButtonPrivate,
-  goToTab,
-  goToUnexpandedSidebarEntry,
-  resetDB,
-  setTokenUserViewPort,
-} from '../../support/commands';
+import { clickFirstActionsButtonPrivate, goToTab, goToUnexpandedSidebarEntry, resetDB, setTokenUserViewPort } from '../../support/commands';
 
 describe('Dockstore hosted workflows', () => {
   resetDB();

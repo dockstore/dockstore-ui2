@@ -111,5 +111,4 @@ export class FundingComponent {
   getFunders(): Funder[] {
     return this.funders;
   }
-  constructor() {}
 }

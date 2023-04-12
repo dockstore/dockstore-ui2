@@ -22,7 +22,7 @@ import { Organization } from './swagger';
 export class StarOrganizationService {
   private starOrganizationSource = new BehaviorSubject<any>(null);
   starOrganization$ = this.starOrganizationSource.asObservable();
-  constructor() {}
+
   setOrganization(organization: { theOrganization: Organization }) {
     this.starOrganizationSource.next(organization);
   }

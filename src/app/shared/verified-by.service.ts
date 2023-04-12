@@ -5,8 +5,6 @@ import { VersionVerifiedPlatform } from './openapi';
   providedIn: 'root',
 })
 export class VerifiedByService {
-  constructor() {}
-
   /**
    * This converts the verified source in a version's sourcefiles into a an array of strings
    * to be display in the right sidebar of an entry component

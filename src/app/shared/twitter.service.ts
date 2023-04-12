@@ -29,8 +29,6 @@ export class TwitterService {
   private TWITTER_SCRIPT_ID = 'twitter-wjs';
   private TWITTER_WIDGET_URL = 'https://platform.twitter.com/widgets.js';
 
-  constructor() {}
-
   loadScript(): Observable<any> {
     return new Observable((observer) => {
       this.startScriptLoad();

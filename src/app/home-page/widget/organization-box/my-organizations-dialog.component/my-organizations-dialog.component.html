@@ -2,6 +2,10 @@
   <h1 mat-dialog-title>My Organizations</h1>
   <span class="bubble org-background ml-4">{{ data.length }}</span>
 </div>
+<div fxLayout fxLayoutAlign="space-between" class="date-display widget-list-items py-3">
+  <span>Organization</span>
+  <span>Date Created</span>
+</div>
 <div>
   <div *ngFor="let org of data" fxLayout="row" fxLayoutAlign="space-between center" class="widget-list-items w-100 py-3">
     <a class="pointer no-wrap" (click)="dialogNavigate(org.name)">
@@ -11,5 +15,5 @@
   </div>
 </div>
 <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" class="mt-4">
-  <button data-cy="close-dialog-button" mat-button mat-dialog-close color="primary" cdkFocusInitial>Close</button>
+  <button data-cy="close-dialog-button" mat-flat-button mat-dialog-close class="secondary-1" cdkFocusInitial>Close</button>
 </div>

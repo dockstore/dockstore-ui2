@@ -3,20 +3,32 @@
     <div id="header-bar" fxLayout="row wrap" fxLayoutGap="1rem" class="space-between">
       <div id="organization-number" fxLayout="row">
         <mat-card-header fxLayout="row">
-          <mat-card-title>Organizations</mat-card-title>
+          <mat-card-title class="ml-2">Organizations</mat-card-title>
           <span class="bubble org-background">{{ totalOrgs }}</span>
         </mat-card-header>
       </div>
       <div fxLayout="row wrap" fxLayoutGap="1rem">
         <div id="pending-requests" fxLayout="row" fxLayoutAlign="center center" class="mb-3">
           <mat-icon [class.disabled]="(pendingRequests$ | async)?.length === 0" class="pending-requests mr-1">pending_icon</mat-icon>
-          <a routerLink="/accounts" [queryParams]="{ tab: 'requests' }" class="size-small pending-links">
+          <a
+            routerLink="/accounts"
+            [queryParams]="{ tab: 'requests' }"
+            class="size-small pending-links"
+            matTooltip="See organizations you have created that are pending approval."
+            matTooltipPosition="above"
+          >
             {{ (pendingRequests$ | async)?.length }} Pending Request<span *ngIf="(pendingRequests$ | async)?.length !== 1">s</span>
           </a>
         </div>
         <div id="pending-invites" fxLayout="row" fxLayoutAlign="center center" class="mb-3">
           <mat-icon [class.disabled]="(pendingInvites$ | async)?.length === 0" class="pending-invites mr-1">error</mat-icon>
-          <a routerLink="/accounts" [queryParams]="{ tab: 'requests' }" class="size-small pending-links">
+          <a
+            routerLink="/accounts"
+            [queryParams]="{ tab: 'requests' }"
+            class="size-small pending-links"
+            matTooltip="Accept and decline invitations to join organizations."
+            matTooltipPosition="above"
+          >
             {{ (pendingInvites$ | async)?.length }} Pending Invitation<span *ngIf="(pendingInvites$ | async)?.length !== 1">s</span>
           </a>
         </div>
@@ -39,26 +51,20 @@
         <app-recent-events [eventType]="'SELF_ORGANIZATIONS'"></app-recent-events>
         <div class="weight-bold py-2">
           <a (click)="viewMyOrganizations()" class="pointer"
-            >View my Organizations<mat-icon class="mat-icon-sm">keyboard_double_arrow_right</mat-icon></a
+            >All Organizations<mat-icon class="mat-icon-sm">keyboard_double_arrow_right</mat-icon></a
           >
         </div>
       </div>
       <ng-template #noOrganizations>
         <div *ngIf="!isLoading" fxLayout="column" class="h-100" fxLayoutAlign="center center">
           <img src="../../../../assets/svg/organization-circle.svg" alt="my organizations" class="widget-box-type-logo mb-4" />
-          <span>You are not in any organizations </span>
+          <span>You are not in any organizations.</span>
           <div class="size-small text-align-center">
             <span>Use the </span>
-            <button
-              mat-button
-              class="inline-text-btn"
-              matTooltip="Request Organization"
-              matTooltipPosition="after"
-              (click)="requireAccounts()"
+            <a class="size-small pointer mt-3" matTooltip="Request Organization" matTooltipPosition="after" (click)="requireAccounts()"
+              >organization request wizard</a
             >
-              organization request wizard
-            </button>
-            to request an organization
+            <span> to request an organization</span>
           </div>
           <a
             class="size-small mt-3"

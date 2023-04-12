@@ -37,7 +37,7 @@
       <mat-card-title>{{ entryType$ | async | titlecase }} Information</mat-card-title>
     </mat-card-header>
     <mat-divider></mat-divider>
-    <mat-card-content class="p-3">
+    <mat-card-content class="p-1 pt-3">
       <ul class="list-unstyled container-info" *ngIf="workflow">
         <span *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED" class="truncate-text-1">
           <li *ngIf="workflow?.provider && workflow?.providerUrl">
@@ -45,9 +45,9 @@
             <a
               id="sourceRepository"
               data-cy="sourceRepository"
-              [href]="workflow?.providerUrl | versionProviderUrl: (isPublic ? selectedVersion?.name : '') + '/' + sourceCodeFile"
+              [href]="workflow?.providerUrl | versionProviderUrl: selectedVersion?.name + '/' + sourceCodeFile"
             >
-              {{ workflow?.providerUrl | versionProviderUrl: (isPublic ? selectedVersion?.name : '') + '/' + sourceCodeFile }}
+              {{ workflow?.providerUrl | versionProviderUrl: selectedVersion?.name + '/' + sourceCodeFile }}
             </a>
           </li>
         </span>
@@ -395,7 +395,7 @@
       <mat-card-title>{{ entryType$ | async | titlecase }} Version Information</mat-card-title>
     </mat-card-header>
     <mat-divider></mat-divider>
-    <mat-card-content class="p-3">
+    <mat-card-content class="p-1 pt-3">
       <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="2rem">
         <span class="bubble">
           {{ selectedVersion?.name }}

@@ -8,5 +8,4 @@ import { Dockstore } from '../shared/dockstore.model';
 })
 export class SitemapComponent {
   Dockstore = Dockstore;
-  constructor() {}
 }
