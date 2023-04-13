@@ -103,7 +103,7 @@ export class FormattedNotebookComponent implements OnChanges {
     }
     // Highlight the code elements in the "source" div of each code cell.
     for (const codeElement of element.querySelectorAll('.source code')) {
-      this.markdownWrapperService.highlight(codeElement);
+      // this.markdownWrapperService.highlight(codeElement);
       codeElement.innerHTML = this.sanitizeLightly(codeElement.innerHTML);
     }
     return element;

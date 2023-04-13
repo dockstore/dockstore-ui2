@@ -1,4 +1,4 @@
-<div *ngIf="!loading">
+<ng-container *ngIf="!loading">
   <div *ngIf="displayError">The notebook could not be displayed.</div>
   <div *ngIf="!displayError" class="notebook">
     <ng-container *ngFor="let cell of cells">
@@ -7,17 +7,17 @@
       </div>
       <ng-container *ngIf="cell.cell_type === 'code'">
         <div class="count">[{{ cell.execution_count ?? ' ' }}]:</div>
-        <div class="source">{{ cell.source }}</div>
+        <div class="source"><app-notebook-source [cell]="cell"></app-notebook-source></div>
         <ng-container *ngFor="let output of cell.outputs ?? []">
           <div *ngIf="output.output_type === 'stream'" class="output">{{ output.text }}</div>
           <div *ngIf="output.output_type === 'display_data'" class="output">
-            DISPLAY_DATA <app-notebook-mime-bundle-output [output]="output"></app-notebook-mime-bundle-output>
+            <app-notebook-mime-bundle-output [output]="output"></app-notebook-mime-bundle-output>
           </div>
           <div *ngIf="output.output_type === 'execute_result'" class="output">
-            EXECUTE_RESULT <app-notebook-mime-bundle-output [output]="output"></app-notebook-mime-bundle-output>
+            <app-notebook-mime-bundle-output [output]="output"></app-notebook-mime-bundle-output>
           </div>
         </ng-container>
       </ng-container>
     </ng-container>
   </div>
-</div>
+</ng-container>

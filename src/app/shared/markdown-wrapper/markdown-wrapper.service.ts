@@ -48,7 +48,13 @@ export class MarkdownWrapperService {
     (<any>this.document?.defaultView)?.MathJax?.typeset([element]);
   }
 
-  highlight(element) {
-    (<any>this.document?.defaultView)?.Prism?.highlightElement(element);
+  highlight(code: string, language: string) {
+    language = language?.toLowerCase();
+    const Prism = (<any>this.document?.defaultView)?.Prism;
+    const module = Prism?.languages[language];
+    if (module == undefined) {
+      return code;
+    }
+    return Prism.highlight(code, module, language);
   }
 }
