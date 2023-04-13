@@ -7,13 +7,13 @@ import { MarkdownWrapperService } from '../shared/markdown-wrapper/markdown-wrap
 })
 export class NotebookSourceComponent implements OnChanges {
   @Input() cell: any;
-  // @Input() workflow: TODO;
+  @Input() language: string;
   html: string;
 
   constructor(private markdownWrapperService: MarkdownWrapperService) {}
 
   ngOnChanges(): void {
-    this.html = this.highlight(this.cell?.source, 'python' /* TODO */);
+    this.html = this.highlight(this.cell?.source, this.language ?? 'python');
   }
 
   highlight(code: string, language: string): string {
