@@ -1,4 +1,5 @@
 import { Component, Input, OnChanges } from '@angular/core';
+import { join, escape, selectBestFromMimeBundle } from './helpers';
 
 @Component({
   selector: 'app-notebook-mime-bundle-output',
@@ -16,23 +17,8 @@ export class NotebookMimeBundleOutputComponent implements OnChanges {
     this.html = this.createHtmlFromBundles(mimeBundle, metadataBundle);
   }
 
-  /**
-   * A list of the mime types we will display, ordered from "best" to "worst".
-   */
-  supportedMimeTypes = ['image/png', 'image/webp', 'image/jpeg', 'image/gif', 'text/html', 'text/json', 'text/plain'];
-
-  selectBestFromMimeBundle(mimeBundle: any): { mimeType: string; data: string } {
-    for (const mimeType of this.supportedMimeTypes) {
-      const data = mimeBundle[mimeType];
-      if (data != undefined) {
-        return { mimeType: mimeType, data: this.join(data) };
-      }
-    }
-    return undefined;
-  }
-
   createHtmlFromBundles(mimeBundle: any, metadataBundle: any): string {
-    const mimeObject = this.selectBestFromMimeBundle(mimeBundle);
+    const mimeObject = selectBestFromMimeBundle(mimeBundle);
     const mimeType = mimeObject?.mimeType;
     const data = mimeObject?.data;
     const metadata = metadataBundle[mimeType];
@@ -49,45 +35,16 @@ export class NotebookMimeBundleOutputComponent implements OnChanges {
       return data;
     }
     if (mimeType?.startsWith('text/')) {
-      return this.escape(data);
+      return escape(data);
     }
     return undefined;
   }
 
   createAttribute(name: string, value: string): string {
     if (value != undefined) {
-      return ` ${name}="${this.escape(value)}"`;
+      return ` ${name}="${escape(value)}"`;
     } else {
       return '';
     }
-  }
-
-  // The below escape() implementation is adapted from mustache.js
-  // https://github.com/janl/mustache.js/blob/972fd2b27a036888acfcb60d6119317744fac7ee/mustache.js#L60
-  charToEntity = {
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    "'": '&#39;',
-    '/': '&#x2F;',
-    '`': '&#x60;',
-    '=': '&#x3D;',
-  };
-
-  escape(text: string): string {
-    return String(text).replace(/[&<>"'`=\/]/g, (c) => {
-      return this.charToEntity[c];
-    });
-  }
-
-  join(value: any): string {
-    if (value == undefined) {
-      return '';
-    }
-    if (Array.isArray(value)) {
-      return value.join('');
-    }
-    return String(value);
   }
 }
