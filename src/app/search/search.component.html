@@ -105,7 +105,7 @@
           <!-- watch out for GetFacetSearchResultsPipe when adding facets with search -->
           <div
             *ngIf="
-              key === 'author' ||
+              key === 'all_authors.name.keyword' ||
               key === 'labels.value.keyword' ||
               key === 'namespace' ||
               key === 'organization' ||
@@ -224,7 +224,7 @@
                 <fa-icon [icon]="fullyExpandMap.get(key) ? faAngleDoubleUp : faAngleDoubleDown" aria-hidden="true"></fa-icon>
                 <span
                   *ngIf="
-                    key !== 'author' &&
+                    key !== 'all_authors.name.keyword' &&
                       key !== 'labels.value.keyword' &&
                       key !== 'namespace' &&
                       key !== 'organization' &&

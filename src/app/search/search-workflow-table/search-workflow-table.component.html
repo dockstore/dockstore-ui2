@@ -30,9 +30,15 @@
         </a>
       </mat-cell>
     </ng-container>
-    <ng-container matColumnDef="author">
+    <ng-container matColumnDef="all_authors">
       <mat-header-cell fxShow fxHide.lt-sm *matHeaderCellDef mat-sort-header>Author</mat-header-cell>
-      <mat-cell fxShow fxHide.lt-sm class="duration-cell" *matCellDef="let workflow">{{ workflow?.author || 'n/a' }}</mat-cell>
+      <mat-cell
+        fxShow
+        fxHide.lt-sm
+        class="duration-cell"
+        *matCellDef="let workflow"
+        [innerHTML]="workflow?.all_authors | getSearchAuthorsHtml"
+      ></mat-cell>
     </ng-container>
     <ng-container matColumnDef="descriptorType">
       <mat-header-cell fxShow fxHide.lt-sm data-cy="descriptorTypeHeader" *matHeaderCellDef mat-sort-header>Format</mat-header-cell>

@@ -55,9 +55,15 @@
         </a>
       </mat-cell>
     </ng-container>
-    <ng-container matColumnDef="author">
+    <ng-container matColumnDef="all_authors">
       <mat-header-cell fxShow fxHide.lt-sm *matHeaderCellDef mat-sort-header>Author</mat-header-cell>
-      <mat-cell fxShow fxHide.lt-sm class="duration-cell" *matCellDef="let tool">{{ tool?.author || 'n/a' }}</mat-cell>
+      <mat-cell
+        fxShow
+        fxHide.lt-sm
+        class="duration-cell"
+        *matCellDef="let tool"
+        [innerHTML]="tool?.all_authors | getSearchAuthorsHtml"
+      ></mat-cell>
     </ng-container>
     <ng-container matColumnDef="descriptorType" style="width: fit-content">
       <mat-header-cell fxShow fxHide.lt-sm *matHeaderCellDef mat-sort-header fxFlex="15%">Format</mat-header-cell>
