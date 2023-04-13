@@ -1,7 +1,10 @@
 import { Component, Input, OnChanges, SecurityContext } from '@angular/core';
 import { MarkdownWrapperService } from '../shared/markdown-wrapper/markdown-wrapper.service';
+import { Injectable, Inject } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 import { join, replaceAll, selectBestFromMimeBundle } from './helpers';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import DOMPurify from 'dompurify';
 
 @Component({
   selector: 'app-notebook-markdown',
@@ -10,22 +13,27 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 export class NotebookMarkdownComponent implements OnChanges {
   @Input() cell: any;
   @Input() baseUrl: string;
-  html: string;
+  html: string | SafeHtml;
+  domParser = new DOMParser();
 
-  constructor(private markdownWrapperService: MarkdownWrapperService, private sanitizer: DomSanitizer) {}
+  constructor(
+    private markdownWrapperService: MarkdownWrapperService,
+    private sanitizer: DomSanitizer,
+    @Inject(DOCUMENT) private document: Document
+  ) {}
 
   ngOnChanges(): void {
-    // Be very careful when modifying this function, because to accomodate MathJax markup,
-    // it must implement its own sanitization scheme.
+    // BE VERY CAREFUL when modifying this function, because to accomodate MathJax markup,
+    // which is destroyed by the Angular sanitizer, it must implement its own sanitization scheme.
     const dangerousHtml = this.compileMarkdown(join(this.cell.source), this.cell.attachments);
     // Sanitize using both the markdown wrapper and Angular sanitizers.
     const sanitizedHtml = this.sanitizer.sanitize(SecurityContext.HTML, this.markdownWrapperService.customSanitize(dangerousHtml));
 
-    // TODO Find, format, and sanitize the math expressions in <p> text
+    // Format embedded TeX math expressions.
     const mathjaxedSanitizedHtml = this.formatMath(sanitizedHtml);
 
     // TODO Mark as pre-sanitized and assign to html field
-    this.html = mathjaxedSanitizedHtml;
+    this.html = this.sanitizer.bypassSecurityTrustHtml(mathjaxedSanitizedHtml);
   }
 
   compileMarkdown(markdown: string, attachments: any): string {
@@ -40,9 +48,53 @@ export class NotebookMarkdownComponent implements OnChanges {
   }
 
   formatMath(html: string): string {
-    // parse html into elements
-    // find the non-code elements
-    return html;
+    // Find the global MathJax object.
+    const mathjax = (<any>this.document?.defaultView)?.MathJax;
+    if (mathjax == undefined) {
+      console.log('mathjax not found');
+      return html;
+    }
+
+    // Convert the input HTML to a DOM representation.
+    const doc = this.domParser.parseFromString(html, 'text/html');
+
+    // Apply mathjax to the DOM representation.
+    mathjax.startup.output.clearCache();
+    mathjax.typeset([doc.body]);
+
+    // Get a list of things that MathJax changed.
+    const mathItems = mathjax.startup.document.getMathItemsWithin(doc.body);
+
+    // If something changed, sanitize the elements that MathJax says it changed,
+    // convert the result to HTML, and prepend the MathJax Css.
+    // Otherwise, return the original HTML.
+    if (mathItems) {
+      // For each item that MathJax formatted, inspect the resulting
+      // elements and remove all elements with names that don't begin with 'mjx-'.
+      for (const item of mathItems) {
+        this.sanitizeMathElement(item.typesetRoot);
+      }
+      // Concatenate the MathJax stylesheet with the MathJax formatted HTML.
+      const styleHtml = mathjax.chtmlStylesheet().outerHTML;
+      const formattedHtml = doc.body.innerHTML;
+      return styleHtml + formattedHtml;
+    } else {
+      return html;
+    }
+  }
+
+  sanitizeMathElement(node: any) {
+    const type = node.nodeType;
+    const name = node.nodeName;
+    const isText = type === 3; // TODO change to constant
+    const isMjx = type === 1 && name.toLowerCase().startsWith('mjx-');
+    if (!(isText || isMjx)) {
+      node.parentElement.removeChild(node);
+      return;
+    }
+    for (const child of [...node.childNodes]) {
+      this.sanitizeMathElement(child);
+    }
   }
 
   /**
