@@ -13,7 +13,7 @@ import DOMPurify from 'dompurify';
 export class NotebookMarkdownComponent implements OnChanges {
   @Input() cell: any;
   @Input() baseUrl: string;
-  html: string | SafeHtml;
+  html: string | SafeHtml = '';
   domParser = new DOMParser();
 
   constructor(
@@ -33,7 +33,7 @@ export class NotebookMarkdownComponent implements OnChanges {
     // Format embedded TeX math expressions.
     const mathjaxedSanitizedHtml = this.formatMath(sanitizedHtml);
 
-    // TODO Mark as pre-sanitized and assign to html field
+    // Mark as pre-sanitized and assign to html field
     this.html = this.sanitizer.bypassSecurityTrustHtml(mathjaxedSanitizedHtml);
   }
 
