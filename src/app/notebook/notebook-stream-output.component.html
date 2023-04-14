@@ -1,3 +1,5 @@
-<div *ngIf="text != undefined">
-  <pre>{{ text }}</pre>
-</div>
+<ng-container *ngIf="text != undefined">
+  <div class="output">
+    <pre>{{ text }}</pre>
+  </div>
+</ng-container>

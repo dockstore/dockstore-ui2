@@ -9,7 +9,7 @@ import { join, escape } from './helpers';
 export class NotebookSourceComponent implements OnChanges {
   @Input() cell: any;
   @Input() language: string;
-  html: string;
+  html: string = '';
 
   constructor(private markdownWrapperService: MarkdownWrapperService) {}
 

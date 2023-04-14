@@ -1,1 +1,3 @@
-<div *ngIf="html != undefined" [innerHTML]="html"></div>
+<ng-container *ngIf="html != undefined">
+  <div class="markdown" [innerHTML]="html"></div>
+</ng-container>

@@ -1,3 +1,5 @@
-<div *ngIf="html != undefined">
-  <pre><code [innerHTML]="html"></code></pre>
-</div>
+<ng-container *ngIf="html != undefined">
+  <div class="source">
+    <pre><code [innerHTML]="html"></code></pre>
+  </div>
+</ng-container>
