@@ -113,11 +113,11 @@
             "
           >
             <mat-form-field appearance="outline">
-              <mat-label>Search for {{ key.substring(0, key.indexOf('.')) }}</mat-label>
+              <mat-label>Search for {{ friendlyNames.get(key) | lowercase }}</mat-label>
               <input
                 matInput
                 type="text"
-                placeholder="Search for {{ key.substring(0, key.indexOf('.')) }}"
+                placeholder="Search for {{ friendlyNames.get(key) | lowercase }}"
                 [ngModel]="facetSearchTextMap.get(key)"
                 [ngModelOptions]="{ updateOn: 'change' }"
                 (ngModelChange)="facetSearchTextMap.set(key, $event)"

@@ -55,13 +55,14 @@ export class BioschemaService {
     if (entry.dbCreateDate) {
       results.dateCreated = this.dateService.getISO8601Format(entry.dbCreateDate);
     }
-    if (entry.author) {
+    if (entry.authors) {
+      const author = entry.authors[0];
       results.publisher = {
         '@type': 'Person',
-        name: entry.author,
+        name: author.name,
       };
-      if (entry.email) {
-        results.publisher.email = entry.email;
+      if (author.email) {
+        results.publisher.email = author.email;
       }
     }
     if (entry.descriptorType) {
