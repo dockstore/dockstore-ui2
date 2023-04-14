@@ -25,9 +25,8 @@ describe('BioschemaService', () => {
     const date: number = new Date('2017-06-28T18:48:18.000Z').getTime();
     const tool: DockstoreTool = {
       // Attributes used in the method being tested
-      author: 'me',
+      authors: [{ name: 'me', email: 'me@ucsc.edu', affiliation: null, role: null }],
       description: 'text',
-      email: 'me@ucsc.edu',
       id: 1,
       dbCreateDate: date,
       lastUpdated: date,
