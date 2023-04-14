@@ -1,9 +1,9 @@
 <ng-container *ngIf="!loading">
-  <ng-container *ngIf="displayError">
+  <ng-container *ngIf="error">
     <div>The notebook could not be displayed.</div>
   </ng-container>
 
-  <ng-container *ngIf="!displayError">
+  <ng-container *ngIf="!error">
     <div class="notebook">
       <ng-container *ngFor="let cell of cells">
         <ng-container *ngIf="cell.cell_type === 'markdown'">

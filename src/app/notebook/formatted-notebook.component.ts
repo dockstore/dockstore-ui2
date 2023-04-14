@@ -20,8 +20,8 @@ export class FormattedNotebookComponent implements OnChanges {
   @Input() version: WorkflowVersion;
   @Input() baseUrl: string;
   loading = true;
-  displayError = false;
-  cells = null;
+  error = false;
+  cells = [];
   private currentSubscription: Subscription = null;
 
   ngOnChanges() {
@@ -30,7 +30,7 @@ export class FormattedNotebookComponent implements OnChanges {
 
   retrieveAndFormatNotebook() {
     this.loading = true;
-    this.displayError = false;
+    this.error = false;
     this.cells = [];
     // The next line cancels any previous request that is still in progress,
     // because if we're here, the @Inputs have changed, and we're about to
@@ -54,30 +54,35 @@ export class FormattedNotebookComponent implements OnChanges {
         })
       )
       .subscribe(
+        // Success.
         (sourceFiles: SourceFile[]) => {
           for (const sourceFile of sourceFiles) {
             if (this.isPrimaryDescriptor(sourceFile.path)) {
               try {
+                // Parse the JSON content of the notbook file.
                 const json = JSON.parse(sourceFile.content);
+                // If the `cells` property is not an array, abort.
                 if (!Array.isArray(json?.cells)) {
-                  this.displayError = true;
+                  this.error = true;
                   return;
                 }
+                // Filter spam and "pass" the cells to the template.
                 this.cells = this.filterSpam(json.cells);
               } catch (e) {
                 console.log('Exception formatting notebook');
                 console.log(e.message);
-                this.displayError = true;
+                this.error = true;
                 return;
               }
-              this.displayError = false;
+              this.error = false;
               return;
             }
           }
-          this.displayError = true;
+          this.error = true;
         },
+        // Failure.
         () => {
-          this.displayError = true;
+          this.error = true;
         }
       );
   }
