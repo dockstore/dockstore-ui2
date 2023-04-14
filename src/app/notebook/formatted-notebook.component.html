@@ -11,16 +11,19 @@
         </ng-container>
 
         <ng-container *ngIf="cell.cell_type === 'code'">
-          <div class="count">[{{ cell.execution_count ?? ' ' }}]:</div>
-          <app-notebook-source class="source" [cell]="cell" [language]="workflow?.descriptorTypeSubclass"></app-notebook-source>
+          <ng-container *ngIf="!cell.metadata?.source_hidden">
+            <div class="count">[{{ cell.execution_count ?? ' ' }}]:</div>
+            <app-notebook-source class="source" [cell]="cell" [language]="workflow?.descriptorTypeSubclass"></app-notebook-source>
+          </ng-container>
 
-          <ng-container *ngFor="let output of arrayOf(cell.outputs)">
-            <ng-container *ngIf="output.output_type === 'stream'">
-              <app-notebook-stream-output class="output" [output]="output"></app-notebook-stream-output>
-            </ng-container>
-
-            <ng-container *ngIf="output.output_type === 'display_data' || output.output_type === 'execute_result'">
-              <app-notebook-mime-bundle-output class="output" [output]="output"></app-notebook-mime-bundle-output>
+          <ng-container *ngIf="!cell.metadata?.outputs_hidden">
+            <ng-container *ngFor="let output of arrayOf(cell.outputs)">
+              <ng-container *ngIf="output.output_type === 'stream'">
+                <app-notebook-stream-output class="output" [output]="output"></app-notebook-stream-output>
+              </ng-container>
+              <ng-container *ngIf="output.output_type === 'display_data' || output.output_type === 'execute_result'">
+                <app-notebook-mime-bundle-output class="output" [output]="output"></app-notebook-mime-bundle-output>
+              </ng-container>
             </ng-container>
           </ng-container>
         </ng-container>
