@@ -9,7 +9,9 @@
         <div class="count">[{{ cell.execution_count ?? ' ' }}]:</div>
         <div class="source"><app-notebook-source [cell]="cell" [language]="workflow?.descriptorTypeSubclass"></app-notebook-source></div>
         <ng-container *ngFor="let output of cell.outputs ?? []">
-          <div *ngIf="output.output_type === 'stream'" class="output">{{ output.text }}</div>
+          <div *ngIf="output.output_type === 'stream'" class="output">
+            <app-notebook-stream-output [output]="output"></app-notebook-stream-output>
+          </div>
           <div *ngIf="output.output_type === 'display_data'" class="output">
             <app-notebook-mime-bundle-output [output]="output"></app-notebook-mime-bundle-output>
           </div>

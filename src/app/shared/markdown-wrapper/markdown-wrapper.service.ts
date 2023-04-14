@@ -48,12 +48,12 @@ export class MarkdownWrapperService {
     (<any>this.document?.defaultView)?.MathJax?.typeset([element]);
   }
 
-  highlight(code: string, language: string) {
+  highlight(code: string, language: string): string {
     language = language?.toLowerCase();
     const Prism = (<any>this.document?.defaultView)?.Prism;
     const module = Prism?.languages[language];
     if (module == undefined) {
-      return code;
+      return code; // TODO add escape
     }
     return Prism.highlight(code, module, language);
   }
