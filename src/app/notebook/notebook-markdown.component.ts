@@ -9,6 +9,7 @@ import DOMPurify from 'dompurify';
 @Component({
   selector: 'app-notebook-markdown',
   templateUrl: './notebook-markdown.component.html',
+  styleUrls: ['./notebook-display-contents.scss'],
 })
 export class NotebookMarkdownComponent implements OnChanges {
   @Input() cell: any;

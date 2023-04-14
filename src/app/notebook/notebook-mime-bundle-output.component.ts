@@ -4,6 +4,7 @@ import { join, escape, selectBestFromMimeBundle } from './helpers';
 @Component({
   selector: 'app-notebook-mime-bundle-output',
   templateUrl: './notebook-mime-bundle-output.component.html',
+  styleUrls: ['./notebook-display-contents.scss'],
 })
 export class NotebookMimeBundleOutputComponent implements OnChanges {
   @Input() output: any;

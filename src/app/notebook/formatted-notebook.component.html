@@ -7,7 +7,6 @@
     <div class="notebook">
       <ng-container *ngFor="let cell of cells">
         <ng-container *ngIf="cell.cell_type === 'markdown'">
-          <div></div>
           <app-notebook-markdown [cell]="cell" [baseUrl]="baseUrl"></app-notebook-markdown>
         </ng-container>
 
@@ -17,12 +16,10 @@
 
           <ng-container *ngFor="let output of cell.outputs ?? []">
             <ng-container *ngIf="output.output_type === 'stream'">
-              <div></div>
               <app-notebook-stream-output [output]="output"></app-notebook-stream-output>
             </ng-container>
 
             <ng-container *ngIf="output.output_type === 'display_data' || output.output_type === 'execute_result'">
-              <div></div>
               <app-notebook-mime-bundle-output [output]="output"></app-notebook-mime-bundle-output>
             </ng-container>
           </ng-container>

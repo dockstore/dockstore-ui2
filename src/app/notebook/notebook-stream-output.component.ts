@@ -4,6 +4,7 @@ import { join } from './helpers';
 @Component({
   selector: 'app-notebook-stream-output',
   templateUrl: './notebook-stream-output.component.html',
+  styleUrls: ['./notebook-display-contents.scss'],
 })
 export class NotebookStreamOutputComponent implements OnChanges {
   @Input() output: any;
