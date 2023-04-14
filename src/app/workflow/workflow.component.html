@@ -249,7 +249,7 @@
                 <div class="mt-4 ml-4 mr-4">
                   <app-formatted-notebook
                     *ngIf="workflow && selectedVersion && (extendedWorkflow$ | async)"
-                    [workflow]="workflow"
+                    [notebook]="workflow"
                     [version]="selectedVersion"
                     [baseUrl]="(extendedWorkflow$ | async).providerUrl | baseUrl: selectedVersion.name"
                   ></app-formatted-notebook>

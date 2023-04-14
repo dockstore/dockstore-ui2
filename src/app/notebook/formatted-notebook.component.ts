@@ -16,7 +16,7 @@ import { SourceFile, Workflow, WorkflowVersion, WorkflowsService } from 'app/sha
 })
 export class FormattedNotebookComponent implements OnChanges {
   constructor(private workflowsService: WorkflowsService) {}
-  @Input() workflow: Workflow;
+  @Input() notebook: Workflow;
   @Input() version: WorkflowVersion;
   @Input() baseUrl: string;
   loading = true;
@@ -44,10 +44,10 @@ export class FormattedNotebookComponent implements OnChanges {
     // fields have the same values as when the corresponding request was
     // started, which simplifies the code.  For example, the methods
     // called by the handler to format the notebook can safely use the
-    // value of the `workflow` field to determine the notebook language.
+    // value of the `notebook` field to determine the notebook language.
     this.currentSubscription?.unsubscribe();
     this.currentSubscription = this.workflowsService
-      .getWorkflowVersionsSourcefiles(this.workflow.id, this.version.id, ['DOCKSTORE_JUPYTER'])
+      .getWorkflowVersionsSourcefiles(this.notebook.id, this.version.id, ['DOCKSTORE_JUPYTER'])
       .pipe(
         finalize(() => {
           this.loading = false;
