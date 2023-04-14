@@ -926,10 +926,4 @@ export class MarkdownWrapperStubService {
   customSanitize(html): string {
     return `sanitized(${html})`;
   }
-  equations(element) {
-    // intentionally blank
-  }
-  highlight(element) {
-    // intentionally blank
-  }
 }

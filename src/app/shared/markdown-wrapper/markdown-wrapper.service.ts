@@ -1,5 +1,4 @@
-import { Injectable, Inject } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
+import { Injectable } from '@angular/core';
 import DOMPurify from 'dompurify';
 import { MarkdownService } from 'ngx-markdown';
 
@@ -20,7 +19,7 @@ export class MarkdownWrapperService {
   forbidTags: string[] = [];
   forbidAttr: string[] = ['class'];
 
-  constructor(private markdownService: MarkdownService, @Inject(DOCUMENT) private document: Document) {}
+  constructor(private markdownService: MarkdownService) {}
 
   /**
    * Compiles markdown into HTML with custom options.
@@ -42,19 +41,5 @@ export class MarkdownWrapperService {
       FORBID_TAGS: this.forbidTags,
       FORBID_ATTR: this.forbidAttr,
     });
-  }
-
-  equations(element) {
-    (<any>this.document?.defaultView)?.MathJax?.typeset([element]);
-  }
-
-  highlight(code: string, language: string): string {
-    language = language?.toLowerCase();
-    const Prism = (<any>this.document?.defaultView)?.Prism;
-    const module = Prism?.languages[language];
-    if (module == undefined) {
-      return code; // TODO add escape
-    }
-    return Prism.highlight(code, module, language);
   }
 }

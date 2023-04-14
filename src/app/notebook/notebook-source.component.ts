@@ -1,5 +1,5 @@
-import { Component, Input, OnChanges } from '@angular/core';
-import { MarkdownWrapperService } from '../shared/markdown-wrapper/markdown-wrapper.service';
+import { Component, Inject, Input, OnChanges } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 import { join, escape } from './helpers';
 
 @Component({
@@ -11,14 +11,19 @@ export class NotebookSourceComponent implements OnChanges {
   @Input() language: string;
   html: string = '';
 
-  constructor(private markdownWrapperService: MarkdownWrapperService) {}
+  constructor(@Inject(DOCUMENT) private document: Document) {}
 
   ngOnChanges(): void {
     this.html = this.highlight(join(this.cell?.source));
   }
 
   highlight(code: string): string {
-    // TODO move this into here
-    return this.markdownWrapperService.highlight(code, this.language);
+    const language = (this.language ?? 'python').toLowerCase();
+    const Prism = (<any>this.document?.defaultView)?.Prism;
+    const module = Prism?.languages[language];
+    if (module == undefined) {
+      return escape(code);
+    }
+    return Prism.highlight(code, module, language);
   }
 }
