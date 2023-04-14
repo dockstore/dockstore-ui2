@@ -65,8 +65,8 @@ COPY public.user_entry (userid, entryid) FROM stdin;
 -- Data for Name: version_metadata; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
-COPY public.version_metadata (doistatus, doiurl, hidden, verified, verifiedsource, id, author, description, description_source, email, dbcreatedate, dbupdatedate, publicaccessibletestparameterfile, descriptortypeversions) FROM stdin;
-NOT_REQUESTED	\N	f	f	\N	1000	\N	\N	\N	\N	2023-03-16 16:38:14.989	2023-03-16 16:38:14.989	\N	4.0
+COPY public.version_metadata (doistatus, doiurl, hidden, verified, verifiedsource, id, description, description_source, dbcreatedate, dbupdatedate, publicaccessibletestparameterfile, descriptortypeversions) FROM stdin;
+NOT_REQUESTED	\N	f	f	\N	1000	\N	\N	2023-03-16 16:38:14.989	2023-03-16 16:38:14.989	\N	4.0
 \.
 
 --
