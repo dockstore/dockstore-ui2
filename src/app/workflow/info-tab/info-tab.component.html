@@ -490,7 +490,7 @@
           <div *ngIf="selectedVersion?.description" class="well well-sm">
             <app-markdown-wrapper
               [data]="selectedVersion?.description"
-              [baseUrl]="workflow?.providerUrl | baseUrl: this.readMeBasePath"
+              [baseUrl]="workflow?.providerUrl | baseUrl: selectedVersion?.name:selectedVersion?.readMePath"
             ></app-markdown-wrapper>
           </div>
           <div *ngIf="!selectedVersion?.description && !isPublic" class="well well-sm">

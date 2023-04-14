@@ -99,7 +99,7 @@ describe('MarkdownWrapperComponent', () => {
     waitForAsync(() => {
       const pipe = new BaseUrlPipe();
       wrapperComponent.data = '[relative link here](docs/hello_world.md)';
-      wrapperComponent.baseUrl = pipe.transform('https://github.com/kathy-t/hello_world', 'master');
+      wrapperComponent.baseUrl = pipe.transform('https://github.com/kathy-t/hello_world', 'master', null);
       wrapperComponent.ngOnChanges(); // has to be called manually in unit tests (TestBed doesn't by default)
       fixture.detectChanges();
       expect(fixture.nativeElement.innerHTML).toContain(
