@@ -8,7 +8,7 @@ export class BaseUrlPipe implements PipeTransform {
    * Constructs a base url for relative links in markdown README files.
    * @param providerUrl
    * @param versionName
-   * @param customPath If applicable, the relative path of markdown file if its parent directory is not the root of the repo. Ex. custom readMePath defined in .dockstore.yml
+   * @param customPath If applicable, the relative path of markdown file if its parent directory is not the root of the repo. Note customPath will always lead with a slash. Example: custom readMePath defined in .dockstore.yml
    * @returns {string} base url to be used by ngx-markdown
    */
   transform(providerUrl: string, versionName: string, customPath?: string | null): string {
