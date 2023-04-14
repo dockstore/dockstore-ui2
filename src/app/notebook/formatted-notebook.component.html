@@ -7,20 +7,20 @@
     <div class="notebook">
       <ng-container *ngFor="let cell of cells">
         <ng-container *ngIf="cell.cell_type === 'markdown'">
-          <app-notebook-markdown [cell]="cell" [baseUrl]="baseUrl"></app-notebook-markdown>
+          <app-notebook-markdown class="markdown" [cell]="cell" [baseUrl]="baseUrl"></app-notebook-markdown>
         </ng-container>
 
         <ng-container *ngIf="cell.cell_type === 'code'">
           <div class="count">[{{ cell.execution_count ?? ' ' }}]:</div>
-          <app-notebook-source [cell]="cell" [language]="workflow?.descriptorTypeSubclass"></app-notebook-source>
+          <app-notebook-source class="source" [cell]="cell" [language]="workflow?.descriptorTypeSubclass"></app-notebook-source>
 
           <ng-container *ngFor="let output of cell.outputs ?? []">
             <ng-container *ngIf="output.output_type === 'stream'">
-              <app-notebook-stream-output [output]="output"></app-notebook-stream-output>
+              <app-notebook-stream-output class="output" [output]="output"></app-notebook-stream-output>
             </ng-container>
 
             <ng-container *ngIf="output.output_type === 'display_data' || output.output_type === 'execute_result'">
-              <app-notebook-mime-bundle-output [output]="output"></app-notebook-mime-bundle-output>
+              <app-notebook-mime-bundle-output class="output" [output]="output"></app-notebook-mime-bundle-output>
             </ng-container>
           </ng-container>
         </ng-container>

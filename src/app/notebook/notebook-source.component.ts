@@ -5,7 +5,6 @@ import { join, escape } from './helpers';
 @Component({
   selector: 'app-notebook-source',
   templateUrl: './notebook-source.component.html',
-  styleUrls: ['./notebook-display-contents.scss'],
 })
 export class NotebookSourceComponent implements OnChanges {
   @Input() cell: any;

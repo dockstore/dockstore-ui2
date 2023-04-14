@@ -9,7 +9,6 @@ import DOMPurify from 'dompurify';
 @Component({
   selector: 'app-notebook-markdown',
   templateUrl: './notebook-markdown.component.html',
-  styleUrls: ['./notebook-display-contents.scss'],
 })
 export class NotebookMarkdownComponent implements OnChanges {
   @Input() cell: any;
@@ -49,6 +48,7 @@ export class NotebookMarkdownComponent implements OnChanges {
   }
 
   formatMath(html: string): string {
+    // Format embedded math using MathJax: https://docs.mathjax.org/en/latest/web/typeset.html
     // Find the global MathJax object.
     const mathjax = (<any>this.document?.defaultView)?.MathJax;
     if (mathjax == undefined) {
@@ -69,7 +69,7 @@ export class NotebookMarkdownComponent implements OnChanges {
     // If something changed, sanitize each element that MathJax says it generated,
     // concatenate the MathJax-generated CSS with the modified+sanitized HTML, and return.
     // Otherwise, return the original HTML.
-    if (mathItems) {
+    if (mathItems.length > 0) {
       for (const item of mathItems) {
         this.sanitizeMathElement(item.typesetRoot);
       }
