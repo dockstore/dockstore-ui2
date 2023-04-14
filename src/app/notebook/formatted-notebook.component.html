@@ -14,7 +14,7 @@
           <div class="count">[{{ cell.execution_count ?? ' ' }}]:</div>
           <app-notebook-source class="source" [cell]="cell" [language]="workflow?.descriptorTypeSubclass"></app-notebook-source>
 
-          <ng-container *ngFor="let output of cell.outputs ?? []">
+          <ng-container *ngFor="let output of arrayOf(cell.outputs)">
             <ng-container *ngIf="output.output_type === 'stream'">
               <app-notebook-stream-output class="output" [output]="output"></app-notebook-stream-output>
             </ng-container>

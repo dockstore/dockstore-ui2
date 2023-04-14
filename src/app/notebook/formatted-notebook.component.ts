@@ -3,6 +3,13 @@ import { finalize } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { SourceFile, Workflow, WorkflowVersion, WorkflowsService } from 'app/shared/openapi';
 
+/**
+ * Convert the specified notebook to user-friendly preview that represents it.
+ *
+ * The Jupyter notebook format:
+ * https://nbformat.readthedocs.io/en/latest/
+ */
+
 @Component({
   selector: 'app-formatted-notebook',
   templateUrl: './formatted-notebook.component.html',
@@ -86,5 +93,9 @@ export class FormattedNotebookComponent implements OnChanges {
   isSpam(cell: any): boolean {
     // Flag the "Open in Colab" cell that Google Colab inserts at the top of the notebook.
     return cell.cell_type === 'markdown' && cell.metadata?.id === 'view-in-github' && cell.metadata?.colab_type === 'text';
+  }
+
+  arrayOf(value: any): any[] {
+    return Array.isArray(value) ? value : [];
   }
 }
