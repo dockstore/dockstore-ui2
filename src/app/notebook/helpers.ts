@@ -21,7 +21,7 @@ export var escapeCharToEntity = {
   '=': '&#x3D;',
 };
 
-export function replaceAll(value: string, from: string, to: string) {
+export function replaceAll(value: string, from: string, to: string): string {
   return value.split(from).join(to);
 }
 
