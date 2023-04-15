@@ -100,7 +100,7 @@ export class FormattedNotebookComponent implements OnChanges {
     return cell.cell_type === 'markdown' && cell.metadata?.id === 'view-in-github' && cell.metadata?.colab_type === 'text';
   }
 
-  arrayOf(value: any): any[] {
-    return Array.isArray(value) ? value : [];
+  isArray(value: any): boolean {
+    return Array.isArray(value);
   }
 }

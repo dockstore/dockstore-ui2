@@ -32,7 +32,7 @@ export function escape(text: string): string {
 }
 
 // A list of the mime types we will display, ordered from "best" to "worst".
-export var supportedMimeTypes = ['image/png', 'image/webp', 'image/jpeg', 'image/gif', 'text/html', 'text/json', 'text/plain'];
+export var supportedMimeTypes: string[] = ['image/png', 'image/webp', 'image/jpeg', 'image/gif', 'text/html', 'text/json', 'text/plain'];
 
 export function selectBestFromMimeBundle(mimeBundle: any): { mimeType: string; data: string } {
   for (const mimeType of supportedMimeTypes) {
