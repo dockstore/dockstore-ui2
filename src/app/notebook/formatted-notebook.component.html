@@ -16,8 +16,8 @@
             <app-notebook-source class="source" [cell]="cell" [language]="workflow?.descriptorTypeSubclass"></app-notebook-source>
           </ng-container>
 
-          <ng-container *ngIf="!cell.metadata?.outputs_hidden">
-            <ng-container *ngFor="let output of isArray(cell.outputs) ? cell.outputs : []">
+          <ng-container *ngIf="!cell.metadata?.outputs_hidden && isArray(cell.outputs)">
+            <ng-container *ngFor="let output of cell.outputs">
               <ng-container *ngIf="output.output_type === 'stream'">
                 <app-notebook-stream-output class="output" [output]="output"></app-notebook-stream-output>
               </ng-container>

@@ -3,6 +3,10 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MarkdownWrapperService } from '../shared/markdown-wrapper/markdown-wrapper.service';
 import { MarkdownWrapperStubService } from '../test/service-stubs';
 import { FormattedNotebookComponent } from './formatted-notebook.component';
+import { NotebookMarkdownComponent } from './notebook-markdown.component';
+import { NotebookSourceComponent } from './notebook-source.component';
+import { NotebookStreamOutputComponent } from './notebook-stream-output.component';
+import { NotebookMimeBundleOutputComponent } from './notebook-mime-bundle-output.component';
 import { SourceFile, Workflow, WorkflowVersion, WorkflowsService } from 'app/shared/openapi';
 import { of } from 'rxjs';
 
@@ -15,7 +19,13 @@ describe('FormattedNotebookComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [FormattedNotebookComponent],
+        declarations: [
+          FormattedNotebookComponent,
+          NotebookMarkdownComponent,
+          NotebookSourceComponent,
+          NotebookStreamOutputComponent,
+          NotebookMimeBundleOutputComponent,
+        ],
         imports: [HttpClientTestingModule],
         providers: [
           {
@@ -41,7 +51,7 @@ describe('FormattedNotebookComponent', () => {
 
   function formatEntities(sourceFiles: SourceFile[], workflow: Workflow, version: WorkflowVersion, baseUrl: string) {
     mockSourceFiles = sourceFiles;
-    notebookComponent.workflow = workflow;
+    notebookComponent.notebook = workflow;
     notebookComponent.version = version;
     notebookComponent.baseUrl = baseUrl;
     notebookComponent.ngOnChanges();
@@ -86,14 +96,14 @@ describe('FormattedNotebookComponent', () => {
 
   function confirmSuccess() {
     const element: HTMLElement = fixture.nativeElement;
-    expect(notebookComponent.displayError).toBeFalse();
+    expect(notebookComponent.error).toBeFalse();
     expect(element.querySelectorAll('.notebook').length).toBe(1);
     expect(element.textContent).not.toContain('The notebook could not be displayed.');
   }
 
   function confirmError() {
     const element: HTMLElement = fixture.nativeElement;
-    expect(notebookComponent.displayError).toBeTrue();
+    expect(notebookComponent.error).toBeTrue();
     expect(element.querySelectorAll('.notebook').length).toBe(0);
     expect(element.textContent).toContain('The notebook could not be displayed.');
   }
@@ -153,7 +163,7 @@ describe('FormattedNotebookComponent', () => {
     const textMimeBundle = { 'image/foo': toBase64('foo'), 'application/root': 'foo', 'text/plain': ['some plain text'] };
     format(makeNotebook([makeCodeCell('some source code', [makeDisplayDataOutput(textMimeBundle)])]));
     expect(element.querySelector('.source').textContent).toContain('some source code');
-    expect(element.querySelector('.output').innerHTML).toContain('some plain text');
+    expect(element.querySelector('.output').textContent).toContain('some plain text');
     confirmSuccess();
   });
 
@@ -161,7 +171,7 @@ describe('FormattedNotebookComponent', () => {
     const unsuitableMimeBundle = { 'image/foo': toBase64('foo'), 'application/foo': 'foo' };
     format(makeNotebook([makeCodeCell('some source code', [makeDisplayDataOutput(unsuitableMimeBundle)])]));
     expect(element.querySelector('.source').textContent).toContain('some source code');
-    expect(element.querySelector('.output')).toBeNull();
+    expect(element.querySelector('.output').textContent).toBe('');
     confirmSuccess();
   });
 
@@ -173,4 +183,6 @@ describe('FormattedNotebookComponent', () => {
     expect(element.querySelector('.output img').getAttribute('height')).toBe('480');
     confirmSuccess();
   });
+
+  // TODO add tests of sanitization
 });
