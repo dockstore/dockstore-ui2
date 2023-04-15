@@ -1433,6 +1433,11 @@ div.mat-menu-panel {
     font-size: 100%;
   }
 
+  table td,
+  table th {
+    padding: 2px 4px;
+  }
+
   .count {
     grid-column: 1;
     margin: 0.3em;
