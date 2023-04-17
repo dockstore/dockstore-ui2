@@ -183,6 +183,4 @@ describe('NotebookComponent', () => {
     expect(element.querySelector('.output img').getAttribute('height')).toBe('480');
     confirmSuccess();
   });
-
-  // TODO add tests of sanitization
 });
