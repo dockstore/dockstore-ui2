@@ -180,7 +180,7 @@
               </mat-card>
             </div>
           </div>
-          <div *ngIf="Dockstore.FEATURES.enableNotebooks && entryType == EntryType.Notebook" class="mt-3">
+          <div *ngIf="Dockstore.FEATURES.enableNotebooks && entryType === EntryType.Notebook" class="mt-3">
             <app-preview-warning></app-preview-warning>
           </div>
           <app-workflow [isWorkflowPublic]="false" [user]="user"></app-workflow>
