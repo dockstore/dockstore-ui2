@@ -48,8 +48,6 @@ import {
   WorkflowStubService,
 } from '../../test/service-stubs';
 import { RegisterWorkflowModalService } from '../../workflow/register-workflow-modal/register-workflow-modal.service';
-import { MyBioWorkflowsService } from '../my-bio-workflows.service';
-import { MyServicesService } from '../my-services.service';
 import { MyWorkflowsService } from '../myworkflows.service';
 import { MyWorkflowComponent } from './my-workflow.component';
 import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
@@ -76,8 +74,6 @@ describe('MyWorkflowsComponent', () => {
           { provide: RefreshService, useClass: RefreshStubService },
           { provide: RegisterWorkflowModalService, useClass: RegisterWorkflowModalStubService },
           MyWorkflowsService,
-          MyBioWorkflowsService,
-          MyServicesService,
           TokenQuery,
           { provide: AccountsService, useClass: AccountsStubService },
           { provide: WorkflowsService, useClass: WorkflowsStubService },

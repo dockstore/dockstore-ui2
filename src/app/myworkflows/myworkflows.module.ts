@@ -14,11 +14,11 @@
  *    limitations under the License.
  */
 import { NgModule } from '@angular/core';
-import { SharedWorkflowServicesModule } from '../shared-workflow-services/shared-workflow-services.module';
+import { SharedWorkflowServicesNotebooksModule } from '../shared-workflow-services-notebooks/shared-workflow-services-notebooks.module';
 import { myworkflowRouting } from './myworkflows.routing';
 import { GitHubAppsLogsModule } from './sidebar-accordion/github-apps-logs/github-apps-logs.module';
 
 @NgModule({
-  imports: [SharedWorkflowServicesModule, myworkflowRouting, GitHubAppsLogsModule],
+  imports: [SharedWorkflowServicesNotebooksModule, myworkflowRouting, GitHubAppsLogsModule],
 })
 export class MyWorkflowsModule {}

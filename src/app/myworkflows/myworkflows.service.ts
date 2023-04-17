@@ -29,11 +29,11 @@ import { BioWorkflow, DockstoreTool, SharedWorkflows, UsersService, Workflow, Wo
 import { UrlResolverService } from 'app/shared/url-resolver.service';
 import { UserQuery } from 'app/shared/user/user.query';
 import { RegisterWorkflowModalComponent } from 'app/workflow/register-workflow-modal/register-workflow-modal.component';
+import { RegisterGithubAppModalComponent } from 'app/workflow/register-workflow-modal/register-github-app-modal/register-github-app-modal.component';
 import { forkJoin, Observable, of as observableOf } from 'rxjs';
-import { catchError, finalize, take } from 'rxjs/operators';
-import { MyBioWorkflowsService } from './my-bio-workflows.service';
-import { MyServicesService } from './my-services.service';
+import { catchError, finalize } from 'rxjs/operators';
 import { OrgWorkflowObject } from './my-workflow/my-workflow.component';
+import { Location } from '@angular/common';
 
 @Injectable()
 export class MyWorkflowsService extends MyEntriesService<Workflow, OrgWorkflowObject<Workflow>> {
@@ -44,10 +44,9 @@ export class MyWorkflowsService extends MyEntriesService<Workflow, OrgWorkflowOb
     protected usersService: UsersService,
     protected workflowService: WorkflowService,
     protected workflowsService: WorkflowsService,
-    private myBioWorkflowsService: MyBioWorkflowsService,
-    private myServicesService: MyServicesService,
     private myEntriesStateService: MyEntriesStateService,
     private sessionQuery: SessionQuery,
+    private location: Location,
     public matDialog: MatDialog,
     protected urlResolverService: UrlResolverService
   ) {
@@ -73,9 +72,10 @@ export class MyWorkflowsService extends MyEntriesService<Workflow, OrgWorkflowOb
   getMyEntries(userId: number, entryType: EntryType) {
     if (entryType === EntryType.BioWorkflow) {
       this.getMyBioWorkflows(userId);
-    } else if (entryType === EntryType.Tool) {
-    } else {
+    } else if (entryType === EntryType.Service) {
       this.getMyServices(userId);
+    } else if (entryType === EntryType.Notebook) {
+      this.getMyNotebooks(userId);
     }
   }
 
@@ -91,10 +91,31 @@ export class MyWorkflowsService extends MyEntriesService<Workflow, OrgWorkflowOb
       )
       .subscribe(
         (services: Array<Workflow>) => {
-          this.workflowService.setWorkflows(services);
-          this.workflowService.setSharedWorkflows([]);
+          this.setupEntries(services, EntryType.Service);
           this.alertService.simpleSuccess();
-          this.selectEntry(this.recomputeWhatEntryToSelect([...(services || []), ...[]]), EntryType.Service);
+        },
+        (error) => {
+          this.workflowService.setWorkflows([]);
+          this.workflowService.setSharedWorkflows([]);
+          this.alertService.detailedSnackBarError(error);
+        }
+      );
+  }
+
+  getMyNotebooks(id: number): void {
+    this.alertService.start('Fetching notebooks');
+    this.myEntriesStateService.setRefreshingMyEntries(true);
+    this.usersService
+      .userNotebooks(id)
+      .pipe(
+        finalize(() => {
+          this.myEntriesStateService.setRefreshingMyEntries(false);
+        })
+      )
+      .subscribe(
+        (notebooks: Array<Workflow>) => {
+          this.setupEntries(notebooks, EntryType.Notebook);
+          this.alertService.simpleSuccess();
         },
         (error) => {
           this.workflowService.setWorkflows([]);
@@ -105,13 +126,25 @@ export class MyWorkflowsService extends MyEntriesService<Workflow, OrgWorkflowOb
   }
 
   /**
+   * Used to setup non-workflow entries ie. Services and Notebooks
+   *
+   * @param myEntries
+   * @param entryType
+   */
+  setupEntries(myEntries: Array<Workflow>, entryType: EntryType) {
+    this.workflowService.setWorkflows(myEntries);
+    this.workflowService.setSharedWorkflows([]);
+    this.selectEntry(this.recomputeWhatEntryToSelect([...(myEntries || []), ...[]]), entryType);
+  }
+
+  /**
    * Very strange function that gets both the user's workflows and the user's shared workflows
    * If one of them errors, the other should still continue executing.  This is done by catching it.
    * Once both of them finish, the error is determined whether the type is Array (which is normal) or not (which means HttpErrorResponse
    * If both errors, then only the user's workflows error message is displayed
    *
    * @param {number} id  The user ID
-   * @memberof MyBioWorkflowsService
+   * @memberof MyWorkflowsService
    */
   getMyBioWorkflows(id: number): void {
     this.alertService.start('Fetching workflows');
@@ -165,16 +198,15 @@ export class MyWorkflowsService extends MyEntriesService<Workflow, OrgWorkflowOb
   }
 
   /**
-   * Grabs the workflow from the webservice and loads it
+   * Grabs the workflow/service/notebook from the webservice and loads it
    * @param workflow Selected workflow
    */
   selectEntry(workflow: DockstoreTool | Workflow | null, entryType: EntryType | null): void {
     if (workflow && entryType && workflow.id) {
-      if (entryType === EntryType.BioWorkflow) {
-        this.myBioWorkflowsService.selectEntry(workflow.id, includesValidation + ',' + includesAuthors);
-      } else {
-        this.myServicesService.selectEntry(workflow.id, includesValidation + ',' + includesAuthors);
-      }
+      this.workflowsService.getWorkflow(workflow.id, includesValidation + ',' + includesAuthors).subscribe((result: Workflow) => {
+        this.location.go('/my-' + entryType + 's/' + result.full_workflow_path);
+        this.workflowService.setWorkflow(result);
+      });
     }
   }
 
@@ -203,6 +235,7 @@ export class MyWorkflowsService extends MyEntriesService<Workflow, OrgWorkflowOb
 
   registerEntry(entryType: EntryType | null) {
     if (entryType === EntryType.BioWorkflow) {
+      // Open modal with various workflow registration options
       const dialogRef = this.matDialog.open(RegisterWorkflowModalComponent, { width: '600px' });
       dialogRef.afterClosed().subscribe((reloadEntries) => {
         if (reloadEntries) {
@@ -213,9 +246,28 @@ export class MyWorkflowsService extends MyEntriesService<Workflow, OrgWorkflowOb
         }
       });
     }
-    if (entryType === EntryType.Service) {
-      this.gitHubAppInstallationLink$.pipe(take(1)).subscribe((link) => window.open(link));
+    if (entryType === EntryType.Service || entryType === EntryType.Notebook) {
+      // Open GitHub app registration modal
+      this.openRegisterGithubAppModal(entryType);
     }
+  }
+
+  /**
+   * Modal that navigates user to GitHub page that allows them to add our GitHub app to their repo
+   * Used by Register Service and Register Notebook buttons
+   *
+   * @param entryType
+   */
+  openRegisterGithubAppModal(entryType: EntryType) {
+    const dialogRef = this.matDialog.open(RegisterGithubAppModalComponent, { width: '600px', data: entryType });
+    dialogRef.afterClosed().subscribe((reloadEntries) => {
+      if (reloadEntries) {
+        const user = this.userQuery.getValue().user;
+        if (user) {
+          this.getMyEntries(user.id, entryType);
+        }
+      }
+    });
   }
 
   createNewOrgEntryObject(workflow: Workflow): OrgWorkflowObject<Workflow> {

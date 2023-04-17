@@ -119,7 +119,6 @@
               <mat-card-header class="ml-2">
                 <mat-card-title fxLayoutAlign="space-between" fxLayoutGap="1rem">
                   <img
-                    class="site-icons-small entryType-icons"
                     src="../../../assets/svg/sub-nav/{{ workflow?.entryTypeMetadata.term }}.svg"
                     alt="{{ workflow?.entryTypeMetadata.term }} logo"
                   />
@@ -179,7 +178,7 @@
             <a routerLink="/containers/{{ tool.tool_path }}" class="no-underline">
               <mat-card-header class="ml-2">
                 <mat-card-title fxLayoutAlign="flex-start" fxLayoutGap="1rem">
-                  <img class="site-icons-small entryType-icons" src="../../../assets/svg/sub-nav/tool.svg" alt="tool logo" />
+                  <img src="../../../assets/svg/sub-nav/tool.svg" alt="tool logo" />
                   <h4>{{ tool?.namespace + '/' + tool?.name + (tool?.toolname ? '/' + tool?.toolname : '') }}</h4>
                 </mat-card-title>
                 <div *ngIf="tool?.starredUsers.length !== 0" fxLayout="row" fxLayoutAlign="end center"></div>

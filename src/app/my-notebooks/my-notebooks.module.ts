@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { SharedWorkflowServicesNotebooksModule } from '../shared-workflow-services-notebooks/shared-workflow-services-notebooks.module';
-import { MyServicesRoutes } from './my-services.routing';
+import { MyNotebooksRoutes } from './my-notebooks.routing';
 
 @NgModule({
-  imports: [MyServicesRoutes, SharedWorkflowServicesNotebooksModule],
+  imports: [MyNotebooksRoutes, SharedWorkflowServicesNotebooksModule],
 })
-export class MyServicesModule {}
+export class MyNotebooksModule {}

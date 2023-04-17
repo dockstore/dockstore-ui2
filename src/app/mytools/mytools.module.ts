@@ -30,7 +30,7 @@ import { MyToolsComponent } from './mytools.component';
 import { mytoolsRouting } from './mytools.routing';
 import { MytoolsService } from './mytools.service';
 import { SidebarAccordionComponent } from './sidebar-accordion/sidebar-accordion.component';
-import { SharedWorkflowServicesModule } from '../shared-workflow-services/shared-workflow-services.module';
+import { SharedWorkflowServicesNotebooksModule } from '../shared-workflow-services-notebooks/shared-workflow-services-notebooks.module';
 import { IsAppToolPipe } from '../search/is-app-tool.pipe';
 import { WorkflowModule } from '../shared/modules/workflow.module';
 import { MySidebarModule } from '../shared/modules/my-sidebar.module';
@@ -47,7 +47,7 @@ import { MySidebarModule } from '../shared/modules/my-sidebar.module';
     PipeModule,
     MyEntriesModule,
     RefreshWizardModule,
-    SharedWorkflowServicesModule,
+    SharedWorkflowServicesNotebooksModule,
     WorkflowModule,
     MySidebarModule,
   ],

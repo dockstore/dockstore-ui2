@@ -1,0 +1,33 @@
+<div class="mb-3" *ngIf="Dockstore.FEATURES.enableNotebooks && entryType == EntryType.Notebook">
+  <app-preview-warning></app-preview-warning>
+</div>
+<p>
+  Navigate to GitHub to install our GitHub app on your repositories/organizations. See our
+  <a href="{{ Dockstore.DOCUMENTATION_URL }}/getting-started/github-apps/github-apps.html" target="_blank" rel="noopener noreferrer">
+    documentation <mat-icon>open_in_new</mat-icon>
+  </a>
+  for how to use GitHub Apps to automatically sync your {{ entryType }} with GitHub. A .dockstore.yml file is required.
+</p>
+<div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="2rem" class="mb-2">
+  <a
+    mat-raised-button
+    type="button"
+    class="accent-1-dark-btn mat-elevation-z"
+    [href]="gitHubAppInstallationLink$ | async"
+    [disabled]="usernameChangeRequired$ | async"
+    matTooltip="Manage Dockstore installations on GitHub"
+    ><mat-icon>add</mat-icon> Manage Dockstore installations on GitHub</a
+  >
+</div>
+<div class="modal-footer p-0 mt-4">
+  <button
+    type="button"
+    mat-flat-button
+    class="secondary-1 mt-2"
+    [mat-dialog-close]="true"
+    (click)="clearWorkflowRegisterError()"
+    data-cy="close-modal-btn"
+  >
+    Close
+  </button>
+</div>
