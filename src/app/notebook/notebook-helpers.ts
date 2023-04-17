@@ -1,3 +1,16 @@
+// A list of the mime types we will display, ordered from "best" to "worst".
+export var supportedMimeTypes: string[] = ['image/png', 'image/webp', 'image/jpeg', 'image/gif', 'text/html', 'text/json', 'text/plain'];
+
+export function selectBestFromMimeBundle(mimeBundle: any): { mimeType: string; data: string } {
+  for (const mimeType of supportedMimeTypes) {
+    const data = mimeBundle[mimeType];
+    if (data != undefined) {
+      return { mimeType: mimeType, data: join(data) };
+    }
+  }
+  return undefined;
+}
+
 export function join(value: any): string {
   if (value == undefined) {
     return '';
@@ -29,17 +42,4 @@ export function escape(text: string): string {
   return String(text).replace(/[&<>"'`=\/]/g, (c) => {
     return escapeCharToEntity[c];
   });
-}
-
-// A list of the mime types we will display, ordered from "best" to "worst".
-export var supportedMimeTypes: string[] = ['image/png', 'image/webp', 'image/jpeg', 'image/gif', 'text/html', 'text/json', 'text/plain'];
-
-export function selectBestFromMimeBundle(mimeBundle: any): { mimeType: string; data: string } {
-  for (const mimeType of supportedMimeTypes) {
-    const data = mimeBundle[mimeType];
-    if (data != undefined) {
-      return { mimeType: mimeType, data: join(data) };
-    }
-  }
-  return undefined;
 }

@@ -1,6 +1,6 @@
 import { Component, Inject, Input, OnChanges } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
-import { join, escape } from './helpers';
+import { join, escape } from './notebook-helpers';
 
 @Component({
   selector: 'app-notebook-source',

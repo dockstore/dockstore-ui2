@@ -2,7 +2,7 @@ import { DOCUMENT } from '@angular/common';
 import { Component, Inject, Injectable, Input, OnChanges, SecurityContext } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { MarkdownWrapperService } from '../shared/markdown-wrapper/markdown-wrapper.service';
-import { join, replaceAll, selectBestFromMimeBundle } from './helpers';
+import { join, replaceAll, selectBestFromMimeBundle } from './notebook-helpers';
 
 @Component({
   selector: 'app-notebook-markdown',

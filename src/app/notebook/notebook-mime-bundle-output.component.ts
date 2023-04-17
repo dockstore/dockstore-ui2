@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import { join, escape, selectBestFromMimeBundle } from './helpers';
 import { MarkdownWrapperService } from '../shared/markdown-wrapper/markdown-wrapper.service';
+import { join, escape, selectBestFromMimeBundle } from './notebook-helpers';
 
 @Component({
   selector: 'app-notebook-mime-bundle-output',

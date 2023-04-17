@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import { join } from './helpers';
+import { join } from './notebook-helpers';
 
 @Component({
   selector: 'app-notebook-stream-output',
