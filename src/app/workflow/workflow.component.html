@@ -247,12 +247,12 @@
             <mat-tab id="previewTab" label="Preview">
               <ng-template matTabContent>
                 <div class="mt-4 ml-4 mr-4">
-                  <app-formatted-notebook
+                  <app-notebook
                     *ngIf="workflow && selectedVersion && (extendedWorkflow$ | async)"
                     [notebook]="workflow"
                     [version]="selectedVersion"
                     [baseUrl]="(extendedWorkflow$ | async).providerUrl | baseUrl: selectedVersion.name"
-                  ></app-formatted-notebook>
+                  ></app-notebook>
                 </div>
               </ng-template>
             </mat-tab>

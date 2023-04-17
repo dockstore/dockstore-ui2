@@ -25,7 +25,7 @@ import { CurrentCollectionsModule } from '../../entry/current-collections.module
 import { AddEntryModule } from '../../organizations/collection/add-entry.module';
 import { OrderByModule } from '../../shared/modules/orderby.module';
 import { SourceFileTabsComponent } from '../../source-file-tabs/source-file-tabs.component';
-import { FormattedNotebookComponent } from '../../notebook/formatted-notebook.component';
+import { NotebookComponent } from '../../notebook/notebook.component';
 import { NotebookMimeBundleOutputComponent } from '../../notebook/notebook-mime-bundle-output.component';
 import { NotebookStreamOutputComponent } from '../../notebook/notebook-stream-output.component';
 import { NotebookMarkdownComponent } from '../../notebook/notebook-markdown.component';
@@ -81,7 +81,7 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
     InfoTabComponent,
     ToolTabComponent,
     SourceFileTabsComponent,
-    FormattedNotebookComponent,
+    NotebookComponent,
     NotebookMimeBundleOutputComponent,
     NotebookStreamOutputComponent,
     NotebookMarkdownComponent,

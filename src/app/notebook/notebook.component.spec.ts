@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MarkdownWrapperService } from '../shared/markdown-wrapper/markdown-wrapper.service';
 import { MarkdownWrapperStubService } from '../test/service-stubs';
-import { FormattedNotebookComponent } from './formatted-notebook.component';
+import { NotebookComponent } from './notebook.component';
 import { NotebookMarkdownComponent } from './notebook-markdown.component';
 import { NotebookSourceComponent } from './notebook-source.component';
 import { NotebookStreamOutputComponent } from './notebook-stream-output.component';
@@ -10,9 +10,9 @@ import { NotebookMimeBundleOutputComponent } from './notebook-mime-bundle-output
 import { SourceFile, Workflow, WorkflowVersion, WorkflowsService } from 'app/shared/openapi';
 import { of } from 'rxjs';
 
-describe('FormattedNotebookComponent', () => {
-  let notebookComponent: FormattedNotebookComponent;
-  let fixture: ComponentFixture<FormattedNotebookComponent>;
+describe('NotebookComponent', () => {
+  let notebookComponent: NotebookComponent;
+  let fixture: ComponentFixture<NotebookComponent>;
   let element: any;
   let mockSourceFiles: SourceFile[] = [];
 
@@ -20,7 +20,7 @@ describe('FormattedNotebookComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [
-          FormattedNotebookComponent,
+          NotebookComponent,
           NotebookMarkdownComponent,
           NotebookSourceComponent,
           NotebookStreamOutputComponent,
@@ -43,7 +43,7 @@ describe('FormattedNotebookComponent', () => {
   );
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(FormattedNotebookComponent);
+    fixture = TestBed.createComponent(NotebookComponent);
     notebookComponent = fixture.debugElement.componentInstance;
     element = fixture.nativeElement;
     fixture.detectChanges();

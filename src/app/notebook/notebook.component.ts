@@ -11,10 +11,10 @@ import { SourceFile, Workflow, WorkflowVersion, WorkflowsService } from 'app/sha
  */
 
 @Component({
-  selector: 'app-formatted-notebook',
-  templateUrl: './formatted-notebook.component.html',
+  selector: 'app-notebook',
+  templateUrl: './notebook.component.html',
 })
-export class FormattedNotebookComponent implements OnChanges {
+export class NotebookComponent implements OnChanges {
   constructor(private workflowsService: WorkflowsService) {}
   @Input() notebook: Workflow;
   @Input() version: WorkflowVersion;
