@@ -123,15 +123,13 @@ describe('Dockstore notebooks', () => {
       // Exploit via text/html display_data output cell:
       '{ "cell_type": "code", "source": "x = 1", "outputs": [ { "output_type": "display_data", "data": { "text/html": "good text C <a href=\\"javascript:alert(3)\\">Click Me</a>" } } ] }',
     ]);
-    const alertSpy = cy.spy(window, 'alert');
+    cy.spy(window, 'alert').as('alert');
     cy.visit('/notebooks/' + name);
     goToTab('Preview');
     cy.get('.markdown');
     // Wait and then check if the alert() was executed.
-    // Adapted from https://stackoverflow.com/questions/69446244/how-to-assert-that-an-alert-does-not-appear
     cy.wait(5000);
-    cy.expect(alertSpy).to.haveOwnProperty('callCount');
-    cy.expect(alertSpy).to.not.be.called;
+    cy.expect('@alert').its('callCount').should('equal', 0);
     cy.get('.markdown').contains('good text A');
     cy.get('.markdown').contains('good text B');
     cy.get('.markdown').contains('$$').should('not.exist');
