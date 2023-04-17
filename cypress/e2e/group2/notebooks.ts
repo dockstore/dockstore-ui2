@@ -129,11 +129,11 @@ describe('Dockstore notebooks', () => {
     cy.get('.markdown');
     // Wait and then check if the alert() was executed.
     cy.wait(5000);
-    cy.expect('@alert').its('callCount').should('equal', 0);
     cy.get('.markdown').contains('good text A');
     cy.get('.markdown').contains('good text B');
     cy.get('.markdown').contains('$$').should('not.exist');
     cy.get('.output').contains('good text C');
+    cy.get('@alert').its('callCount').should('equal', 0);
   });
 
   function substituteNotebookContent(cells: string[]): void {
