@@ -64,7 +64,7 @@
                 No published tools.
               </p>
               <p
-                data-cy="no-published-{{ pageEntryType }}-message"
+                [attr.data-cy]="'no-published-' + pageEntryType + '-message'"
                 *ngIf="
                   pageEntryType === EntryType.Service || pageEntryType === EntryType.BioWorkflow || pageEntryType === EntryType.Notebook
                 "
@@ -98,7 +98,7 @@
                 No unpublished tools.
               </p>
               <p
-                data-cy="no-unpublished-{{ pageEntryType }}-message"
+                [attr.data-cy]="'no-unpublished-' + pageEntryType + '-message'"
                 *ngIf="
                   pageEntryType === EntryType.Service || pageEntryType === EntryType.BioWorkflow || pageEntryType === EntryType.Notebook
                 "

@@ -111,6 +111,6 @@ describe('Dockstore notebooks', () => {
     cy.contains(/Author One/i);
     cy.contains(/Author Two/i);
     // Check for view public page button
-    cy.get('[data-cy=tviewPublicWorkflowButton]').click();
+    cy.get('[data-cy=viewPublicWorkflowButton]').should('be.visible').click();
   });
 });
