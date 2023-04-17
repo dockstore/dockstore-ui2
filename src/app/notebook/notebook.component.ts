@@ -59,22 +59,19 @@ export class NotebookComponent implements OnChanges {
           for (const sourceFile of sourceFiles) {
             if (this.isPrimaryDescriptor(sourceFile.path)) {
               try {
-                // Parse the JSON content of the notbook file.
+                // Parse the JSON content of the notebook file.
                 const json = JSON.parse(sourceFile.content);
-                // If the `cells` property is not an array, abort.
-                if (!Array.isArray(json?.cells)) {
-                  this.error = true;
+                // If the `cells` property is an array, filter spam and "pass" the cells to the template.
+                if (this.isArray(json?.cells)) {
+                  this.cells = this.filterSpam(json.cells);
+                  this.error = false;
                   return;
                 }
-                // Filter spam and "pass" the cells to the template.
-                this.cells = this.filterSpam(json.cells);
               } catch (e) {
-                console.log('Exception formatting notebook');
+                console.log('Exception formatting notebook:');
                 console.log(e.message);
-                this.error = true;
-                return;
               }
-              this.error = false;
+              this.error = true;
               return;
             }
           }

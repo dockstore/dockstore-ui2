@@ -99,7 +99,7 @@ describe('Dockstore notebooks', () => {
     substituteNotebookContent(['{ "cell_type": "markdown", "source": "$\\\\frac{123}{x}$" }']);
     cy.visit('/notebooks/' + name);
     goToTab('Preview');
-    // Confirm that there's a mathjax container tag and that the original TeT is gone.
+    // Confirm that there's a mathjax container tag and that the original TeX is gone.
     cy.get('.markdown mjx-container').should('be.visible');
     cy.get('.markdown').contains('$').should('not.exist');
     cy.get('.markdown').contains('\\frac{123}{x}').should('not.exist');
@@ -117,7 +117,7 @@ describe('Dockstore notebooks', () => {
     substituteNotebookContent([
       // Exploit via markdown link:
       '{ "cell_type": "markdown", "source": "good text A [an evil link](javascript:alert(1))" }',
-      // Exploit via mathjax tex:
+      // Exploit via mathjax TeX:
       // Based on an actual recent exploit: https://github.com/mathjax/MathJax/issues/2885
       '{ "cell_type": "markdown", "source": "good text B $$E = mc^2\\\\href{java\\nscript:alert(2)}{Click Me}$$" }',
       // Exploit via text/html display_data output cell:

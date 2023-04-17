@@ -1,5 +1,5 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, Inject, Injectable, Input, OnChanges, SecurityContext } from '@angular/core';
+import { Component, Inject, Input, OnChanges, SecurityContext } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { MarkdownWrapperService } from '../shared/markdown-wrapper/markdown-wrapper.service';
 import { NotebookHelpers } from './notebook-helpers';
@@ -31,7 +31,7 @@ export class NotebookMarkdownComponent implements OnChanges {
     // Format embedded TeX math expressions.
     const mathjaxedSanitizedHtml = this.formatMath(sanitizedHtml);
 
-    // Mark as pre-sanitized and assign to html field
+    // Mark as pre-sanitized and assign to html field.
     this.html = this.sanitizer.bypassSecurityTrustHtml(mathjaxedSanitizedHtml);
   }
 
