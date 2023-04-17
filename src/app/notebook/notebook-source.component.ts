@@ -1,6 +1,6 @@
 import { Component, Inject, Input, OnChanges } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
-import { join, escape } from './notebook-helpers';
+import { NotebookHelpers } from './notebook-helpers';
 
 @Component({
   selector: 'app-notebook-source',
@@ -14,7 +14,7 @@ export class NotebookSourceComponent implements OnChanges {
   constructor(@Inject(DOCUMENT) private document: Document) {}
 
   ngOnChanges(): void {
-    this.html = this.highlight(join(this.cell?.source));
+    this.html = this.highlight(NotebookHelpers.join(this.cell?.source));
   }
 
   highlight(code: string): string {
@@ -22,7 +22,7 @@ export class NotebookSourceComponent implements OnChanges {
     const Prism = (<any>this.document?.defaultView)?.Prism;
     const module = Prism?.languages[language];
     if (module == undefined) {
-      return escape(code);
+      return NotebookHelpers.escape(code);
     }
     return Prism.highlight(code, module, language);
   }
