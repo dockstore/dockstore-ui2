@@ -1,10 +1,8 @@
-import { Component, Input, OnChanges, SecurityContext } from '@angular/core';
-import { MarkdownWrapperService } from '../shared/markdown-wrapper/markdown-wrapper.service';
-import { Injectable, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
-import { join, replaceAll, selectBestFromMimeBundle } from './helpers';
+import { Component, Inject, Injectable, Input, OnChanges, SecurityContext } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import DOMPurify from 'dompurify';
+import { MarkdownWrapperService } from '../shared/markdown-wrapper/markdown-wrapper.service';
+import { join, replaceAll, selectBestFromMimeBundle } from './helpers';
 
 @Component({
   selector: 'app-notebook-markdown',
@@ -14,7 +12,7 @@ export class NotebookMarkdownComponent implements OnChanges {
   @Input() cell: any;
   @Input() baseUrl: string;
   html: string | SafeHtml = '';
-  domParser = new DOMParser();
+  private domParser = new DOMParser();
 
   constructor(
     private markdownWrapperService: MarkdownWrapperService,
@@ -57,6 +55,9 @@ export class NotebookMarkdownComponent implements OnChanges {
     }
 
     // Convert the input HTML to a DOM representation.
+    // DOMParser creates nodes that are detached from the browser context,
+    // which should prevent any embedded code or handlers from firing.
+    // For example, an `img` tag with an `onerror` handler.
     const doc = this.domParser.parseFromString(html, 'text/html');
 
     // Apply mathjax to the DOM representation.
@@ -146,7 +147,7 @@ export class NotebookMarkdownComponent implements OnChanges {
 
   /**
    * For any text between a run of dollar signs that looks like TeX mathematics,
-   * escape the double backslashes.
+   * escape the double backslashes so that the markdown conversion doesn't mangle them.
    */
   preprocessLatexMath(markdown: string): string {
     return markdown.replace(/(\$+)([^$]+)(?=\$+)/gms, (match, leadingDollars, content) => {

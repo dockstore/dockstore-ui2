@@ -1,5 +1,6 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { join, escape, selectBestFromMimeBundle } from './helpers';
+import { MarkdownWrapperService } from '../shared/markdown-wrapper/markdown-wrapper.service';
 
 @Component({
   selector: 'app-notebook-mime-bundle-output',
@@ -9,7 +10,7 @@ export class NotebookMimeBundleOutputComponent implements OnChanges {
   @Input() output: any;
   html: string;
 
-  constructor() {}
+  constructor(private markdownWrapperService: MarkdownWrapperService) {}
 
   ngOnChanges(): void {
     const mimeBundle = this.output?.data ?? {};
@@ -32,7 +33,7 @@ export class NotebookMimeBundleOutputComponent implements OnChanges {
       );
     }
     if (mimeType === 'text/html') {
-      return data;
+      return this.markdownWrapperService.customSanitize(data);
     }
     if (mimeType?.startsWith('text/')) {
       return `<pre>${escape(data)}</pre>`;
