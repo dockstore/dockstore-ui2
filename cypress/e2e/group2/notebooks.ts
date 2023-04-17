@@ -94,4 +94,56 @@ describe('Dockstore notebooks', () => {
     cy.get('app-source-file-tabs').contains('/notebook.ipynb');
     cy.get('app-source-file-tabs').contains('"nbformat"');
   });
+
+  it('should have Preview tab with formatted TeX equations', () => {
+    substituteNotebookContent(['{ "cell_type": "markdown", "source": "$\\\\frac{123}{x}$" }']);
+    cy.visit('/notebooks/' + name);
+    goToTab('Preview');
+    // Confirm that there's a mathjax container tag and that the original TeT is gone.
+    cy.get('.markdown mjx-container').should('be.visible');
+    cy.get('.markdown').contains('$').should('not.exist');
+    cy.get('.markdown').contains('\\frac{123}{x}').should('not.exist');
+  });
+
+  it('should have Preview tab with highlighted syntax', () => {
+    substituteNotebookContent(['{ "cell_type": "code", "source": [ "import xyz;" ] }']);
+    cy.visit('/notebooks/' + name);
+    goToTab('Preview');
+    // Confirm that spans have been introduced into the source code.
+    cy.get('.source span').should('be.visible');
+  });
+
+  it('should have Preview tab that sanitizes user-supplied HTML', () => {
+    substituteNotebookContent([
+      // Exploit via markdown link:
+      '{ "cell_type": "markdown", "source": "good text A [an evil link](javascript:alert(1))" }',
+      // Exploit via mathjax tex:
+      // Based on an actual recent exploit: https://github.com/mathjax/MathJax/issues/2885
+      '{ "cell_type": "markdown", "source": "good text B $$E = mc^2\\\\href{java\\nscript:alert(2)}{Click Me}$$" }',
+      // Exploit via text/html display_data output cell:
+      '{ "cell_type": "code", "source": "x = 1", "outputs": [ { "output_type": "display_data", "data": { "text/html": "good text C <a href=\\"javascript:alert(3)\\">Click Me</a>" } } ] }',
+    ]);
+    const alertSpy = cy.spy(window, 'alert');
+    cy.visit('/notebooks/' + name);
+    goToTab('Preview');
+    cy.get('.markdown');
+    // Wait and then check if the alert() was executed.
+    // Adapted from https://stackoverflow.com/questions/69446244/how-to-assert-that-an-alert-does-not-appear
+    cy.wait(5000);
+    cy.expect(alertSpy).to.haveOwnProperty('callCount');
+    cy.expect(alertSpy).to.not.be.called;
+    cy.get('.markdown').contains('good text A');
+    cy.get('.markdown').contains('good text B');
+    cy.get('.markdown').contains('$$').should('not.exist');
+    cy.get('.output').contains('good text C');
+  });
+
+  function substituteNotebookContent(cells: string[]): void {
+    cy.intercept('GET', '/api/workflows/*/workflowVersions/*/sourcefiles*', [
+      {
+        path: '/notebook.ipynb',
+        content: '{ "nbformat_major": 4, "nbformat_minor": 0, "cells": [' + cells.join(',') + '] }',
+      },
+    ]);
+  }
 });

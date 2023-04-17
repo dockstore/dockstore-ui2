@@ -28,11 +28,8 @@ export class MarkdownWrapperService {
    * @returns {string} HTML string
    */
   customCompile(data, baseUrl): string {
-    return this.customCompileWithOptions(data, { baseUrl: baseUrl });
-  }
-
-  customCompileWithOptions(data, options): string {
-    return this.markdownService.parse(data, { markedOptions: options });
+    const parseOptions = { markedOptions: { baseUrl: baseUrl } };
+    return this.markdownService.parse(data, parseOptions);
   }
 
   customSanitize(html): string {
