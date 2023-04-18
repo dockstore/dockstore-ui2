@@ -2,7 +2,7 @@ import { DOCUMENT } from '@angular/common';
 import { Component, Inject, Input, OnChanges, SecurityContext } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { MarkdownWrapperService } from '../shared/markdown-wrapper/markdown-wrapper.service';
-import { NotebookHelpers } from './notebook-helpers';
+import { join, replaceAll, selectBestFromMimeBundle } from './notebook-helpers';
 
 @Component({
   selector: 'app-notebook-markdown',
@@ -23,7 +23,7 @@ export class NotebookMarkdownComponent implements OnChanges {
   ngOnChanges(): void {
     // BE VERY CAREFUL when modifying this function, because to accomodate MathJax markup,
     // which is destroyed by the Angular sanitizer, it must implement its own sanitization scheme.
-    const dangerousHtml = this.compileMarkdown(NotebookHelpers.join(this.cell.source), this.cell.attachments);
+    const dangerousHtml = this.compileMarkdown(join(this.cell.source), this.cell.attachments);
 
     // Sanitize using both the markdown wrapper and Angular sanitizers.
     const sanitizedHtml = this.sanitizer.sanitize(SecurityContext.HTML, this.markdownWrapperService.customSanitize(dangerousHtml));
@@ -134,7 +134,7 @@ export class NotebookMarkdownComponent implements OnChanges {
         }
         return line.replace(/]\(attachment:([^) "]+)/g, (match, key) => {
           const mimeBundle = attachments[key] ?? {};
-          const mimeObject = NotebookHelpers.selectBestFromMimeBundle(mimeBundle);
+          const mimeObject = selectBestFromMimeBundle(mimeBundle);
           if (mimeObject) {
             return `](data:${mimeObject.mimeType};base64,${mimeObject.data}`;
           } else {
@@ -152,7 +152,7 @@ export class NotebookMarkdownComponent implements OnChanges {
   preprocessLatexMath(markdown: string): string {
     return markdown.replace(/(\$+)([^$]+)(?=\$+)/gms, (match, leadingDollars, content) => {
       if (content.match(/^\s*\\begin\{[^}]*}/ms) && content.match(/\\end\{[^}]*}\s*$/ms)) {
-        return leadingDollars + NotebookHelpers.replaceAll(content, '\\\\', '\\\\\\\\');
+        return leadingDollars + replaceAll(content, '\\\\', '\\\\\\\\');
       }
       return match;
     });
