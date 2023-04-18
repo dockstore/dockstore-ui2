@@ -920,9 +920,6 @@ export class MarkdownWrapperStubService {
   customCompile(data, baseUrl): string {
     return `compiled-markdown(${data})`;
   }
-  customCompileWithOptions(data, options): string {
-    return `compiled-markdown(${data})`;
-  }
   customSanitize(html): string {
     return `sanitized(${html})`;
   }
