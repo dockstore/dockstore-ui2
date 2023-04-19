@@ -138,7 +138,7 @@
   </div>
   <div class="row m-1" *ngIf="!showRedirect">
     <div *ngIf="workflow">
-      <span *ngIf="(categories$ | async).length > 0" class="inline-block mr-5 mt-1 mb-1">
+      <span *ngIf="(categories$ | async)?.length > 0" class="inline-block mr-5 mt-1 mb-1">
         <span class="size-small mr-2">Categories</span>
         <mat-chip-list class="bubble-list">
           <app-category-button
