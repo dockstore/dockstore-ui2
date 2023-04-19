@@ -14,10 +14,68 @@ import { MarkdownService } from 'ngx-markdown';
 })
 export class MarkdownWrapperService {
   // tags and attributes that will be sanitized by DOMPurify.
-  // specifically sanitize the 'class' attribute to prevent possible phishing scams by allowing user input to access
+  // list of potentially "dangerous" tags: https://stackoverflow.com/questions/17369559/html-dangerous-tags-to-avoid-while-developing-a-chat-application
+  // specifically sanitize the 'class' attribute to prevent possible phishing scams by allowing user input to access.
   // Dockstore's style classes.
-  forbidTags: string[] = [];
-  forbidAttr: string[] = ['class'];
+  forbidTags: string[] = [
+    'body',
+    'title',
+    'head',
+    'button',
+    'video',
+    'object',
+    'applet',
+    'script',
+    'style',
+    'link',
+    'iframe',
+    'frameset',
+    'comment',
+    'embed',
+    'link',
+    'listing',
+    'meta',
+    'noscript',
+    'plaintext',
+    'xmp',
+    'form',
+  ];
+  forbidAttr: string[] = [
+    'class',
+    'style',
+    'id',
+    'onabort',
+    'onblur',
+    'onchange',
+    'onclick',
+    'ondblclick',
+    'ondrag',
+    'ondragend',
+    'ondragenter',
+    'ondragleave',
+    'ondragover',
+    'ondragstart',
+    'ondrop',
+    'onerror',
+    'onfocus',
+    'oninput',
+    'onkeydown',
+    'onkeypress',
+    'onkeyup',
+    'onload',
+    'onmousedown',
+    'onmousemove',
+    'onmouseout',
+    'onmouseup',
+    'onpageshow',
+    'onpropertychange',
+    'onreset',
+    'onresize',
+    'onscroll',
+    'onselect',
+    'onsubmit',
+    'onunload',
+  ];
 
   constructor(private markdownService: MarkdownService) {}
 
