@@ -1,5 +1,5 @@
 <div *ngIf="!ifMetricsExist">
-  <mat-card class="alert alert-warning mat-elevation-z" role="alert">
+  <mat-card class="alert alert-warning mat-elevation-z" role="alert" data-cy="no-metrics-banner">
     <mat-icon class="alert-warning-icon">info</mat-icon> No metrics data exist for this version.
   </mat-card>
 </div>
@@ -9,7 +9,7 @@
     <div class="w-25">
       <div class="partner-dropdown">
         <span class="metrics-header">Partner: </span>
-        <mat-form-field>
+        <mat-form-field data-cy="metrics-partner-dropdown">
           <mat-select [value]="currentPartner" (selectionChange)="matSelectChange($event)">
             <mat-select-trigger>
               {{ currentPartner }}
@@ -36,7 +36,7 @@
       </div>
     </div>
     <div class="metrics-table-container">
-      <table mat-table class="metrics-table" [dataSource]="metricsTable" class="w-100">
+      <table mat-table class="metrics-table w-100" [dataSource]="metricsTable" data-cy="metrics-table">
         <ng-container matColumnDef="metric">
           <th mat-header-cell *matHeaderCellDef>Metric</th>
           <td mat-cell *matCellDef="let element">{{ element.metric }}</td>
@@ -63,7 +63,7 @@
     </div>
   </div>
   <div class="validations-table-container w-100">
-    <table mat-table class="validations-table" [dataSource]="validationsTable">
+    <table mat-table class="validations-table" [dataSource]="validationsTable" data-cy="validations-table">
       <ng-container matColumnDef="validatorTool">
         <th mat-header-cell *matHeaderCellDef>Validator Tool</th>
         <td mat-cell *matCellDef="let element">{{ element.validatorTool }}</td>
@@ -75,7 +75,7 @@
       </ng-container>
 
       <ng-container matColumnDef="isValid">
-        <th mat-header-cell *matHeaderCellDef>Most Recent is Valid</th>
+        <th mat-header-cell *matHeaderCellDef>Most Recent Run is Valid</th>
         <td mat-cell *matCellDef="let element">{{ element.isValid }}</td>
       </ng-container>
 

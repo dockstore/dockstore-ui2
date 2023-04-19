@@ -1,0 +1,48 @@
+{
+  "DNA_STACK": {
+    "cpu": null,
+    "executionStatusCount": null,
+    "executionTime": null,
+    "id": 99,
+    "memory": null,
+    "validationStatus": {
+      "id": 105,
+      "validatorToolToIsValid": {
+        "MINIWDL": {
+          "failedValidationVersions": [
+            "1.0"
+          ],
+          "mostRecentErrorMessage": null,
+          "mostRecentIsValid": false,
+          "mostRecentVersion": "1.0",
+          "numberOfRuns": 2,
+          "passingRate": 50,
+          "successfulValidationVersions": []
+        }
+      }
+    }
+  },
+  "AGC": {
+    "cpu": null,
+    "executionStatusCount": null,
+    "executionTime": null,
+    "id": 98,
+    "memory": null,
+    "validationStatus": {
+      "id": 104,
+      "validatorToolToIsValid": {
+        "CWLTOOL": {
+          "failedValidationVersions": [],
+          "mostRecentErrorMessage": null,
+          "mostRecentIsValid": true,
+          "mostRecentVersion": "1.0",
+          "numberOfRuns": 1,
+          "passingRate": 100,
+          "successfulValidationVersions": [
+            "1.0"
+          ]
+        }
+      }
+    }
+  }
+}

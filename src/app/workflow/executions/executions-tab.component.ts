@@ -98,6 +98,7 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
       }
     }
   }
+
   private loadMetricsData(partner: PartnerEnum) {
     this.metricsTable = [];
     const metrics = this.metrics.get(partner);
