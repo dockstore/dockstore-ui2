@@ -1,6 +1,7 @@
 import { MimeBundle } from './notebook-types';
 
-// A list of the mime types we will display, ordered from "best" to "worst".
+// A list of the mime types we will display from a mime bundle, ordered from most to least "preferable".
+// To determine which item to display from a mime bundle, we'll select the item with the mime type that appears first in this list.
 export const supportedMimeTypes: string[] = ['image/png', 'image/webp', 'image/jpeg', 'image/gif', 'text/html', 'text/json', 'text/plain'];
 
 export function selectBestFromMimeBundle(mimeBundle: MimeBundle): { mimeType: string; data: string } {
