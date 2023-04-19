@@ -17,7 +17,7 @@
             {{ totalStarredTools }} Tool<span *ngIf="totalStarredTools !== 1">s</span>
           </a>
         </div>
-        <!-- TO DO: remove *ngIf when services implemented-->
+        <!-- TODO: remove *ngIf when services implemented-->
         <div *ngIf="serviceImplemented" fxLayout fxLayoutAlign="center center">
           <mat-icon class="mat-icon-sm">{{ totalStarredServices ? 'star' : 'star_border' }}</mat-icon>
           <a [routerLink]="['/starred']" [queryParams]="{ tab: 'services' }">

@@ -59,7 +59,6 @@ describe('Dockstore tool/workflow search table', () => {
                 tool_path: 'quay.io/garyluu/dockstore-cgpmap/cgpmap-cramOut',
                 registry: 'QUAY_IO',
                 dbUpdateDate: null,
-                author: null,
                 registry_string: 'quay.io',
                 tags: [
                   {
@@ -94,6 +93,7 @@ describe('Dockstore tool/workflow search table', () => {
                 gitUrl: 'git@github.com:garyluu/dockstore-cgpmap.git',
                 defaultWDLTestParameterFile: '/test.wdl.json',
                 defaultVersion: null,
+                all_authors: [{ name: null, email: null, role: null, affiliation: null }],
               },
             },
             {
@@ -124,7 +124,6 @@ describe('Dockstore tool/workflow search table', () => {
                 tool_path: 'quay.io/A2/a',
                 registry: 'QUAY_IO',
                 dbUpdateDate: null,
-                author: null,
                 registry_string: 'quay.io',
                 tags: [
                   {
@@ -183,6 +182,7 @@ describe('Dockstore tool/workflow search table', () => {
                 defaultWDLTestParameterFile: null,
                 defaultVersion: null,
               },
+              all_authors: [{ name: null, email: null, role: null, affiliation: null }],
             },
             {
               _index: 'tools',
@@ -212,7 +212,6 @@ describe('Dockstore tool/workflow search table', () => {
                 tool_path: 'quay.io/A2/b3',
                 registry: 'QUAY_IO',
                 dbUpdateDate: null,
-                author: null,
                 registry_string: 'quay.io',
                 tags: [
                   {
@@ -270,6 +269,7 @@ describe('Dockstore tool/workflow search table', () => {
                 gitUrl: 'git@github.com:A2/b3.git',
                 defaultWDLTestParameterFile: null,
                 defaultVersion: null,
+                all_authors: [{ name: null, email: null, role: null, affiliation: null }],
               },
             },
             {
@@ -318,7 +318,6 @@ describe('Dockstore tool/workflow search table', () => {
                 last_modified: null,
                 email: null,
                 dbUpdateDate: null,
-                author: null,
                 defaultTestParameterFilePath: null,
                 workflowName: null,
                 workflow_path: '/1st-workflow.cwl',
@@ -327,6 +326,7 @@ describe('Dockstore tool/workflow search table', () => {
                 organization: 'A',
                 gitUrl: 'git@github.com:A/l.git',
                 defaultVersion: null,
+                all_authors: [{ name: null, email: null, role: null, affiliation: null }],
               },
             },
           ],

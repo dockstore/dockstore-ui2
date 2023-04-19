@@ -46,7 +46,6 @@
           "tool_path": "quay.io/garyluu/dockstore-cgpmap/cgpmap-cramOut",
           "registry": "QUAY_IO",
           "dbUpdateDate": null,
-          "author": null,
           "registry_string": "quay.io",
           "tags": [
             {
@@ -80,7 +79,8 @@
           "namespace": "garyluu",
           "gitUrl": "git@github.com:garyluu/dockstore-cgpmap.git",
           "defaultWDLTestParameterFile": "/test.wdl.json",
-          "defaultVersion": null
+          "defaultVersion": null,
+          "all_authors": [{"name": null, "email": null, "role": null, "affiliation": null}]
         }
       },
       {
@@ -113,7 +113,6 @@
           "tool_path": "quay.io/A2/a",
           "registry": "QUAY_IO",
           "dbUpdateDate": null,
-          "author": null,
           "registry_string": "quay.io",
           "tags": [
             {
@@ -170,7 +169,8 @@
           "namespace": "A2",
           "gitUrl": "git@github.com:A2/a.git",
           "defaultWDLTestParameterFile": null,
-          "defaultVersion": null
+          "defaultVersion": null,
+          "all_authors": [{"name": null, "email": null, "role": null, "affiliation": null}]
         }
       },
       {
@@ -260,7 +260,8 @@
           "namespace": "A2",
           "gitUrl": "git@github.com:A2/b3.git",
           "defaultWDLTestParameterFile": null,
-          "defaultVersion": null
+          "defaultVersion": null,
+          "all_authors": [{"name": null, "email": null, "role": null, "affiliation": null}]
         }
       },
       {
@@ -322,7 +323,8 @@
           "parent_id": null,
           "organization": "A",
           "gitUrl": "git@github.com:A/l.git",
-          "defaultVersion": null
+          "defaultVersion": null,
+          "all_authors": [{"name": null, "email": null, "role": null, "affiliation": null}]
         }
       }
     ]

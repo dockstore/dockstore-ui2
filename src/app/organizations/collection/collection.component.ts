@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { bootstrap4mediumModalSize } from '../../shared/constants';
+import { Dockstore } from '../../shared/dockstore.model';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
 import { OrgLogoService } from '../../shared/org-logo.service';
 import { Collection, Organization } from '../../shared/swagger';
@@ -143,4 +144,6 @@ export class CollectionComponent implements OnInit {
       width: '600px',
     });
   }
+
+  protected readonly Dockstore = Dockstore;
 }

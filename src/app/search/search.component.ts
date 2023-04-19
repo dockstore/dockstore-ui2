@@ -615,7 +615,7 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   private clearFacetSearches() {
     this.facetSearchTextMap = new Map<string, string>([
-      ['author', ''],
+      ['all_authors.name.keyword', ''],
       ['labels.value.keyword', ''],
       ['namespace', ''],
       ['organization', ''],

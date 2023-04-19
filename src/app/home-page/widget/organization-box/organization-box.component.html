@@ -50,7 +50,7 @@
         <h5 class="weight-bold mb-0">Recent Activity</h5>
         <app-recent-events [eventType]="'SELF_ORGANIZATIONS'"></app-recent-events>
         <div class="weight-bold py-2">
-          <a (click)="viewMyOrganizations()" class="pointer"
+          <a (click)="viewMyOrganizations()" class="pointer" data-cy="view-my-organizations"
             >All Organizations<mat-icon class="mat-icon-sm">keyboard_double_arrow_right</mat-icon></a
           >
         </div>
