@@ -409,7 +409,7 @@
             </mat-tab>
           </div>
           <mat-tab id="executionsTab" label="Executions">
-            <app-executions-tab></app-executions-tab>
+            <app-executions-tab [entry]="workflow" [version]="selectedVersion"></app-executions-tab>
           </mat-tab>
           <mat-tab *ngIf="!isPublic() && isHosted() && isOwner" id="permissionsTab" label="Permissions">
             <app-permissions [workflow]="workflow"></app-permissions>

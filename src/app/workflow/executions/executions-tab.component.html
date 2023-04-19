@@ -1,0 +1,111 @@
+<div *ngIf="!ifMetricsExist">
+  <mat-card class="alert alert-warning mat-elevation-z" role="alert">
+    <mat-icon class="alert-warning-icon">info</mat-icon> No metrics data exist for this version.
+  </mat-card>
+</div>
+
+<div *ngIf="ifMetricsExist">
+  <div class="metrics-container">
+    <div class="w-25">
+      <div class="partner-dropdown">
+        <span class="metrics-header">Partner: </span>
+        <mat-form-field>
+          <mat-select [value]="currentPartner" (selectionChange)="matSelectChange($event)">
+            <mat-select-trigger>
+              {{ currentPartner }}
+            </mat-select-trigger>
+            <mat-option [value]="partner" *ngFor="let partner of partners">
+              {{ partner }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="execution-counts-container">
+        <div>
+          <span class="metrics-header">Total executions: </span>
+          <span>{{ totalExecutions }}</span>
+        </div>
+        <div>
+          <span class="metrics-header">Successful executions: </span>
+          <span>{{ successfulExecutions }}</span>
+        </div>
+        <div>
+          <span class="metrics-header">Failed executions: </span>
+          <span>{{ failedExecutions }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="metrics-table-container">
+      <table mat-table class="metrics-table" [dataSource]="metricsTable" class="w-100">
+        <ng-container matColumnDef="metric">
+          <th mat-header-cell *matHeaderCellDef>Metric</th>
+          <td mat-cell *matCellDef="let element">{{ element.metric }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="min">
+          <th mat-header-cell *matHeaderCellDef>Minimum</th>
+          <td mat-cell *matCellDef="let element">{{ element.min }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="avg">
+          <th mat-header-cell *matHeaderCellDef>Average</th>
+          <td mat-cell *matCellDef="let element">{{ element.avg }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="max">
+          <th mat-header-cell *matHeaderCellDef>Maximum</th>
+          <td mat-cell *matCellDef="let element">{{ element.max }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="metricsColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: metricsColumns"></tr>
+      </table>
+    </div>
+  </div>
+  <div class="validations-table-container w-100">
+    <table mat-table class="validations-table" [dataSource]="validationsTable">
+      <ng-container matColumnDef="validatorTool">
+        <th mat-header-cell *matHeaderCellDef>Validator Tool</th>
+        <td mat-cell *matCellDef="let element">{{ element.validatorTool }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="mostRecentVersion">
+        <th mat-header-cell *matHeaderCellDef>Most Recent Version</th>
+        <td mat-cell *matCellDef="let element">{{ element.mostRecentVersion }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="isValid">
+        <th mat-header-cell *matHeaderCellDef>Most Recent is Valid</th>
+        <td mat-cell *matCellDef="let element">{{ element.isValid }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="mostRecentErrorMessage">
+        <th mat-header-cell *matHeaderCellDef>Most Recent Run's Error Message</th>
+        <td mat-cell *matCellDef="let element">{{ element.mostRecentErrorMessage }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="successfulValidationVersions">
+        <th mat-header-cell *matHeaderCellDef>Successful Validation Versions</th>
+        <td mat-cell *matCellDef="let element">{{ element.successfulValidationVersions }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="failedValidationVersions">
+        <th mat-header-cell *matHeaderCellDef>Failed Validation Versions</th>
+        <td mat-cell *matCellDef="let element">{{ element.failedValidationVersions }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="numberOfRuns">
+        <th mat-header-cell *matHeaderCellDef>Number of Runs</th>
+        <td mat-cell *matCellDef="let element">{{ element.numberOfRuns }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="passingRate">
+        <th mat-header-cell *matHeaderCellDef>Passing Rate</th>
+        <td mat-cell *matCellDef="let element">{{ element.passingRate }}%</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="validationsColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: validationsColumns"></tr>
+    </table>
+  </div>
+</div>
