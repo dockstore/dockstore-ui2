@@ -9,6 +9,7 @@ import { NotebookStreamOutputComponent } from './notebook-stream-output.componen
 import { NotebookMimeBundleOutputComponent } from './notebook-mime-bundle-output.component';
 import { SourceFile, Workflow, WorkflowVersion, WorkflowsService } from 'app/shared/openapi';
 import { of } from 'rxjs';
+import { Cell, MimeBundle, Output, OutputMetadata } from './notebook-types';
 
 describe('NotebookComponent', () => {
   let notebookComponent: NotebookComponent;
@@ -74,11 +75,11 @@ describe('NotebookComponent', () => {
     return { id: 456, workflow_path: workflowPath } as WorkflowVersion;
   }
 
-  function makeNotebook(cells: any[]): string {
+  function makeNotebook(cells: Cell[]): string {
     return JSON.stringify({ cells: cells });
   }
 
-  function makeCodeCell(source: string, outputs: any[]) {
+  function makeCodeCell(source: string, outputs: Output[]) {
     return { cell_type: 'code', source: source, outputs: outputs };
   }
 
@@ -86,7 +87,7 @@ describe('NotebookComponent', () => {
     return { output_type: 'stream', text: text };
   }
 
-  function makeDisplayDataOutput(dataMimeBundle: any, metadataMimeBundle?: any) {
+  function makeDisplayDataOutput(dataMimeBundle: MimeBundle, metadataMimeBundle?: OutputMetadata) {
     return { output_type: 'display_data', data: dataMimeBundle, ...(metadataMimeBundle && { metadata: metadataMimeBundle }) };
   }
 

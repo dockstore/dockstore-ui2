@@ -3,16 +3,17 @@ import { Component, Inject, Input, OnChanges, SecurityContext } from '@angular/c
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { MarkdownWrapperService } from '../shared/markdown-wrapper/markdown-wrapper.service';
 import { join, replaceAll, selectBestFromMimeBundle } from './notebook-helpers';
+import { Attachments, Cell } from './notebook-types';
 
 @Component({
   selector: 'app-notebook-markdown',
   templateUrl: './notebook-markdown.component.html',
 })
 export class NotebookMarkdownComponent implements OnChanges {
-  @Input() cell: any;
+  @Input() cell: Cell;
   @Input() baseUrl: string;
-  html: string | SafeHtml = '';
-  private domParser = new DOMParser();
+  html: string | SafeHtml;
+  private domParser: DOMParser = new DOMParser();
 
   constructor(
     private markdownWrapperService: MarkdownWrapperService,
@@ -23,7 +24,7 @@ export class NotebookMarkdownComponent implements OnChanges {
   ngOnChanges(): void {
     // BE VERY CAREFUL when modifying this function, because to accomodate MathJax markup,
     // which is destroyed by the Angular sanitizer, it must implement its own sanitization scheme.
-    const dangerousHtml = this.compileMarkdown(join(this.cell.source), this.cell.attachments);
+    const dangerousHtml = this.compileMarkdown(join(this.cell?.source), this.cell?.attachments ?? {});
 
     // Sanitize using both the markdown wrapper and Angular sanitizers.
     const sanitizedHtml = this.sanitize(dangerousHtml);
@@ -39,7 +40,7 @@ export class NotebookMarkdownComponent implements OnChanges {
     return this.sanitizer.sanitize(SecurityContext.HTML, this.markdownWrapperService.customSanitize(dangerousHtml));
   }
 
-  compileMarkdown(markdown: string, attachments: any): string {
+  compileMarkdown(markdown: string, attachments: Attachments): string {
     // Adjustment the markdown to support attached notebook images and embedded TeX math expressions.
     let adjusted = markdown;
     adjusted = this.convertBackslashedDollars(adjusted);
@@ -124,7 +125,7 @@ export class NotebookMarkdownComponent implements OnChanges {
   /**
    * Convert 'attachment:' image references to data urls.
    */
-  inlineAttachedImages(markdown: string, attachments: any) {
+  inlineAttachedImages(markdown: string, attachments?: Attachments) {
     if (attachments == undefined) {
       return markdown;
     }

@@ -2,6 +2,7 @@ import { Component, Input, OnChanges } from '@angular/core';
 import { finalize } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { SourceFile, Workflow, WorkflowVersion, WorkflowsService } from 'app/shared/openapi';
+import { Cell } from './notebook-types';
 
 /**
  * Convert the specified notebook to user-friendly preview that represents it.
@@ -21,7 +22,7 @@ export class NotebookComponent implements OnChanges {
   @Input() baseUrl: string;
   loading: boolean = true;
   error: boolean = false;
-  cells = [];
+  cells: Cell[] = [];
   private currentSubscription: Subscription = null;
 
   ngOnChanges() {
@@ -88,11 +89,11 @@ export class NotebookComponent implements OnChanges {
     return path === this.version.workflow_path;
   }
 
-  filterSpam(cells: any[]): any[] {
+  filterSpam(cells: Cell[]): Cell[] {
     return cells.filter((cell) => !this.isSpam(cell));
   }
 
-  isSpam(cell: any): boolean {
+  isSpam(cell: Cell): boolean {
     // Flag the "Open in Colab" cell that Google Colab inserts at the top of the notebook.
     return cell.cell_type === 'markdown' && cell.metadata?.id === 'view-in-github' && cell.metadata?.colab_type === 'text';
   }

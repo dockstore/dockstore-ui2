@@ -1,13 +1,14 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { MarkdownWrapperService } from '../shared/markdown-wrapper/markdown-wrapper.service';
 import { escape, selectBestFromMimeBundle } from './notebook-helpers';
+import { MimeBundle, Output, OutputMetadata } from './notebook-types';
 
 @Component({
   selector: 'app-notebook-mime-bundle-output',
   templateUrl: './notebook-mime-bundle-output.component.html',
 })
 export class NotebookMimeBundleOutputComponent implements OnChanges {
-  @Input() output: any;
+  @Input() output: Output;
   html: string;
 
   constructor(private markdownWrapperService: MarkdownWrapperService) {}
@@ -18,7 +19,7 @@ export class NotebookMimeBundleOutputComponent implements OnChanges {
     this.html = this.createHtmlFromBundles(mimeBundle, metadataBundle);
   }
 
-  createHtmlFromBundles(mimeBundle: any, metadataBundle: any): string {
+  createHtmlFromBundles(mimeBundle: MimeBundle, metadataBundle: OutputMetadata): string {
     const mimeObject = selectBestFromMimeBundle(mimeBundle);
     const mimeType = mimeObject?.mimeType;
     const data = mimeObject?.data;
@@ -41,9 +42,9 @@ export class NotebookMimeBundleOutputComponent implements OnChanges {
     return undefined;
   }
 
-  createAttribute(name: string, value: string): string {
+  createAttribute(name: string, value: string | number): string {
     if (value != undefined) {
-      return ` ${name}="${escape(value)}"`;
+      return ` ${name}="${escape(String(value))}"`;
     } else {
       return '';
     }

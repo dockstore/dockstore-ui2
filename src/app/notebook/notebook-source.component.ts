@@ -1,15 +1,16 @@
 import { Component, Inject, Input, OnChanges } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { escape, join } from './notebook-helpers';
+import { Cell } from './notebook-types';
 
 @Component({
   selector: 'app-notebook-source',
   templateUrl: './notebook-source.component.html',
 })
 export class NotebookSourceComponent implements OnChanges {
-  @Input() cell: any;
+  @Input() cell: Cell;
   @Input() language: string;
-  html: string = '';
+  html: string;
 
   constructor(@Inject(DOCUMENT) private document: Document) {}
 
