@@ -54,7 +54,7 @@ export class NotebookMarkdownComponent implements OnChanges {
     // Format embedded math using MathJax: https://docs.mathjax.org/en/latest/web/typeset.html
     // Find the global MathJax object.
     const mathjax = (<any>this.document?.defaultView)?.MathJax;
-    if (mathjax == undefined) {
+    if (mathjax === undefined || mathjax === null) {
       return html;
     }
 

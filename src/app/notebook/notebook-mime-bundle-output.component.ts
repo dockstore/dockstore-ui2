@@ -43,7 +43,7 @@ export class NotebookMimeBundleOutputComponent implements OnChanges {
   }
 
   createAttribute(name: string, value: string | number): string {
-    if (value != undefined) {
+    if (value !== undefined && value !== null) {
       return ` ${name}="${escape(String(value))}"`;
     } else {
       return '';

@@ -22,7 +22,7 @@ export class NotebookSourceComponent implements OnChanges {
     const language = (this.language ?? 'python').toLowerCase();
     const Prism = (<any>this.document?.defaultView)?.Prism;
     const module = Prism?.languages[language];
-    if (module == undefined) {
+    if (module === undefined || module === null) {
       return escape(code);
     }
     return Prism.highlight(code, module, language);
