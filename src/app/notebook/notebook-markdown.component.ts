@@ -139,7 +139,7 @@ export class NotebookMarkdownComponent implements OnChanges {
         return line.replace(/]\(attachment:([^) "]+)/g, (match, key) => {
           const mimeBundle = attachments[key] ?? {};
           const mimeObject = selectBestFromMimeBundle(mimeBundle);
-          if (mimeObject) {
+          if (mimeObject?.mimeType?.startsWith('image/')) {
             return `](data:${mimeObject.mimeType};base64,${mimeObject.data}`;
           } else {
             return match;
