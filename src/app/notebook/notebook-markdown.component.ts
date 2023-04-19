@@ -55,7 +55,6 @@ export class NotebookMarkdownComponent implements OnChanges {
     // Find the global MathJax object.
     const mathjax = (<any>this.document?.defaultView)?.MathJax;
     if (mathjax == undefined) {
-      console.log('mathjax not found');
       return html;
     }
 
