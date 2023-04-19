@@ -95,20 +95,9 @@ export class NotebookMarkdownComponent implements OnChanges {
     }
     // Recursively sanitize each child node.
     // childNodes is "live" so we duplicate it beforehand to avoid problems if we delete a child.
-    for (const child of this.dup(node.childNodes)) {
+    for (const child of Array.from(node.childNodes)) {
       this.sanitizeMathElement(child);
     }
-  }
-
-  dup(nodes: NodeListOf<Node>): Node[] {
-    // The clumsy syntax below is necessary because in ES5, NodeListOf is not iterable.
-    // In ES6, we could write this as a for-of loop, and even better, replace the above
-    // dup() invocation with [...iterable].
-    const list: Node[] = [];
-    for (let i = 0; i < nodes.length; i++) {
-      list.push(nodes[i]);
-    }
-    return list;
   }
 
   /**
