@@ -26,13 +26,17 @@ export class NotebookMarkdownComponent implements OnChanges {
     const dangerousHtml = this.compileMarkdown(join(this.cell.source), this.cell.attachments);
 
     // Sanitize using both the markdown wrapper and Angular sanitizers.
-    const sanitizedHtml = this.sanitizer.sanitize(SecurityContext.HTML, this.markdownWrapperService.customSanitize(dangerousHtml));
+    const sanitizedHtml = this.sanitize(dangerousHtml);
 
     // Format embedded TeX math expressions.
     const mathjaxedSanitizedHtml = this.formatMath(sanitizedHtml);
 
     // Mark as pre-sanitized and assign to html field.
     this.html = this.sanitizer.bypassSecurityTrustHtml(mathjaxedSanitizedHtml);
+  }
+
+  sanitize(dangerousHtml: string): string {
+    return this.sanitizer.sanitize(SecurityContext.HTML, this.markdownWrapperService.customSanitize(dangerousHtml));
   }
 
   compileMarkdown(markdown: string, attachments: any): string {
@@ -59,6 +63,16 @@ export class NotebookMarkdownComponent implements OnChanges {
     // which should prevent any embedded code or handlers from firing.
     // For example, an `img` tag with an `onerror` handler.
     const doc = this.domParser.parseFromString(html, 'text/html');
+
+    // DOMParser.parseFromString returns a `parsererror` element on error:
+    // https://developer.mozilla.org/en-US/docs/Web/API/DOMParser/parseFromString#error_handling
+    // The input HTML should be well-formed, because this function is
+    // invoked on the sanitized HTML generated from the markdown.
+    // If the HTML is not well-formed, sanitize again (just in case we
+    // forgot to) and return the result.
+    if (doc.querySelector('parsererror')) {
+      return this.sanitize(html);
+    }
 
     // Apply mathjax to the DOM representation.
     mathjax.startup.output.clearCache();

@@ -19,8 +19,8 @@ export class NotebookComponent implements OnChanges {
   @Input() notebook: Workflow;
   @Input() version: WorkflowVersion;
   @Input() baseUrl: string;
-  loading = true;
-  error = false;
+  loading: boolean = true;
+  error: boolean = false;
   cells = [];
   private currentSubscription: Subscription = null;
 
