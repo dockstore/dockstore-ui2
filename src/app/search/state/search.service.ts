@@ -126,7 +126,7 @@ export class SearchService {
     { friendlyName: 'Input File Formats', esName: 'input_file_formats.value.keyword', initiallyExpanded: false },
     { friendlyName: 'Output File Formats', esName: 'output_file_formats.value.keyword', initiallyExpanded: false },
     {
-      friendlyName: 'Verified Tool',
+      friendlyName: 'Verified',
       esName: 'verified',
       tooltip: 'Indicates that at least one version of a tool or workflow has been successfully run by our team or an outside party.',
       initiallyExpanded: true,
