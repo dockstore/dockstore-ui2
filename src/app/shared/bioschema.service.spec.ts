@@ -25,9 +25,8 @@ describe('BioschemaService', () => {
     const date: number = new Date('2017-06-28T18:48:18.000Z').getTime();
     const tool: DockstoreTool = {
       // Attributes used in the method being tested
-      author: 'me',
+      authors: [{ name: 'me', email: 'me@ucsc.edu', affiliation: null, role: null }],
       description: 'text',
-      email: 'me@ucsc.edu',
       id: 1,
       dbCreateDate: date,
       lastUpdated: date,
@@ -67,7 +66,7 @@ describe('BioschemaService', () => {
     const workflow: Workflow = {
       // Attributes used in the method being tested
       description: 'text',
-      email: 'us@ucsc.edu',
+      authors: [],
       id: 1,
       last_modified: date.getTime(),
       workflowName: 'workflow',
@@ -94,7 +93,7 @@ describe('BioschemaService', () => {
     expect(result.applicationSubCategory).toEqual('Workflow');
     expect(result.name).toEqual('workflow');
     expect(result.dateModified).toEqual('2017-06-28T18:48:18.000Z');
-    expect(result.publisher).toEqual({ '@type': 'Organization', name: 'us', email: 'us@ucsc.edu' });
+    expect(result.publisher).toEqual({ '@type': 'Organization', name: 'us' });
     expect(result.downloadUrl).toContain('/workflows/1/zip/2');
   }));
 });

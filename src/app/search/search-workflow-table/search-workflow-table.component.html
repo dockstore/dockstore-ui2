@@ -18,7 +18,9 @@
           <a [matTooltip]="workflow?.full_workflow_path" [routerLink]="'/workflows/' + workflow?.full_workflow_path">{{
             workflow?.organization + '/' + workflow?.repository + (workflow?.workflowName ? '/' + workflow?.workflowName : '')
           }}</a>
-          <div class="truncate-text-2 size-small" *ngIf="workflow.topicAutomatic">{{ workflow.topicAutomatic }}</div>
+          <div class="truncate-text-2 size-small" *ngIf="workflow.topicAutomatic" [matTooltip]="workflow.topicAutomatic">
+            {{ workflow.topicAutomatic }}
+          </div>
         </div>
       </mat-cell>
     </ng-container>
@@ -30,9 +32,16 @@
         </a>
       </mat-cell>
     </ng-container>
-    <ng-container matColumnDef="author">
+    <ng-container matColumnDef="all_authors">
       <mat-header-cell fxShow fxHide.lt-sm *matHeaderCellDef mat-sort-header>Author</mat-header-cell>
-      <mat-cell fxShow fxHide.lt-sm class="duration-cell" *matCellDef="let workflow">{{ workflow?.author || 'n/a' }}</mat-cell>
+      <mat-cell
+        fxShow
+        fxHide.lt-sm
+        class="duration-cell truncate-text-2"
+        *matCellDef="let workflow"
+        [matTooltip]="workflow?.all_authors | getSearchAuthorsHtml: false"
+        [innerHTML]="workflow?.all_authors | getSearchAuthorsHtml"
+      ></mat-cell>
     </ng-container>
     <ng-container matColumnDef="descriptorType">
       <mat-header-cell fxShow fxHide.lt-sm data-cy="descriptorTypeHeader" *matHeaderCellDef mat-sort-header>Format</mat-header-cell>

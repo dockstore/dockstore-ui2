@@ -74,7 +74,7 @@ describe('Shared with me workflow test from my-workflows', () => {
   function createHostedWorkflow(name: string, id: number): BioWorkflow {
     return {
       aliases: undefined,
-      author: undefined,
+      authors: [],
       checker_id: undefined,
       dbCreateDate: 1530729459942,
       dbUpdateDate: 1530729459942,
