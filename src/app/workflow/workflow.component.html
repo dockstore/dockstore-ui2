@@ -251,7 +251,7 @@
                     *ngIf="workflow && selectedVersion && (extendedWorkflow$ | async)"
                     [notebook]="workflow"
                     [version]="selectedVersion"
-                    [baseUrl]="(extendedWorkflow$ | async).providerUrl | baseUrl: selectedVersion.name"
+                    [baseUrl]="(extendedWorkflow$ | async).providerUrl | baseUrl: selectedVersion.name:selectedVersion.workflow_path"
                   ></app-notebook>
                 </div>
               </ng-template>
