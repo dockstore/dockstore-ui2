@@ -21,7 +21,7 @@ import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.
 import { SessionQuery } from 'app/shared/session/session.query';
 import { UserQuery } from 'app/shared/user/user.query';
 import { Observable, Subject } from 'rxjs';
-import { debounceTime, map, takeUntil } from 'rxjs/operators';
+import { debounceTime, takeUntil } from 'rxjs/operators';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { formInputDebounceTime } from '../../shared/constants';
 import { Dockstore } from '../../shared/dockstore.model';
