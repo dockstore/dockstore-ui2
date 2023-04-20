@@ -145,7 +145,7 @@ describe('Dockstore hosted workflows', () => {
       cy.contains('/Dockstore.wdl').should('be.visible');
     });
     it('Create a new hosted workflow', () => {
-      cy.get('[data-cy=registerWorkflowButton]').should('be.visible').should('be.enabled').click();
+      cy.get('[data-cy=register-workflow-button]').should('be.visible').should('be.enabled').click();
       cy.get('#3-register-workflow-option').should('be.visible').click();
       cy.contains('button', 'Next').click();
       cy.get('#hostedWorkflowRepository').type(NEW_WORKFLOW_NAME);

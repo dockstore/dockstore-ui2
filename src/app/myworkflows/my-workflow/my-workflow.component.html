@@ -52,7 +52,7 @@
                 <button
                   mat-button
                   class="private-btn small-btn-structure ml-3 mb-3"
-                  id="register{{ entryType | titlecase }}Button"
+                  [attr.data-cy]="'register-' + entryType + '-button'"
                   matTooltip="Register {{ entryType$ | async }}"
                   matTooltipPosition="after"
                   (click)="showRegisterEntryModal()"
