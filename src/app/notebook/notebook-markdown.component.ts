@@ -1,9 +1,9 @@
-import { DOCUMENT } from '@angular/common';
-import { Component, Inject, Input, OnChanges, SecurityContext } from '@angular/core';
+import { Component, Input, OnChanges, SecurityContext } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { MarkdownWrapperService } from '../shared/markdown-wrapper/markdown-wrapper.service';
 import { join, replaceAll, selectBestFromMimeBundle } from './notebook-helpers';
 import { Attachments, Cell } from './notebook-types';
+import './mathjax';
 
 @Component({
   selector: 'app-notebook-markdown',
@@ -15,11 +15,7 @@ export class NotebookMarkdownComponent implements OnChanges {
   html: string | SafeHtml;
   private domParser: DOMParser = new DOMParser();
 
-  constructor(
-    private markdownWrapperService: MarkdownWrapperService,
-    private sanitizer: DomSanitizer,
-    @Inject(DOCUMENT) private document: Document
-  ) {}
+  constructor(private markdownWrapperService: MarkdownWrapperService, private sanitizer: DomSanitizer) {}
 
   ngOnChanges(): void {
     // BE VERY CAREFUL when modifying this function, because to accomodate MathJax markup,
@@ -53,7 +49,7 @@ export class NotebookMarkdownComponent implements OnChanges {
   formatMath(html: string): string {
     // Format embedded math using MathJax: https://docs.mathjax.org/en/latest/web/typeset.html
     // Find the global MathJax object.
-    const mathjax = (<any>this.document?.defaultView)?.MathJax;
+    const mathjax = (<any>window)?.MathJax;
     if (mathjax === undefined || mathjax === null) {
       return html;
     }

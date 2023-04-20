@@ -1,7 +1,7 @@
-import { Component, Inject, Input, OnChanges } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
+import { Component, Input, OnChanges } from '@angular/core';
 import { escape, join } from './notebook-helpers';
 import { Cell } from './notebook-types';
+import './prism';
 
 @Component({
   selector: 'app-notebook-source',
@@ -12,7 +12,7 @@ export class NotebookSourceComponent implements OnChanges {
   @Input() language: string;
   html: string;
 
-  constructor(@Inject(DOCUMENT) private document: Document) {}
+  constructor() {}
 
   ngOnChanges(): void {
     this.html = this.highlight(join(this.cell?.source));
@@ -20,7 +20,7 @@ export class NotebookSourceComponent implements OnChanges {
 
   highlight(code: string): string {
     const language = (this.language ?? 'python').toLowerCase();
-    const Prism = (<any>this.document?.defaultView)?.Prism;
+    const Prism = (<any>window)?.Prism;
     const module = Prism?.languages[language];
     if (module === undefined || module === null) {
       return escape(code);

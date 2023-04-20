@@ -51,11 +51,6 @@
               "node_modules/ace-builds/src-min-noconflict/theme-idle_fingers.js",
               "node_modules/ace-builds/src-min-noconflict/ext-searchbox.js",
               "node_modules/bootstrap/dist/js/bootstrap.js",
-              "src/mathjax-config.js",
-              "node_modules/mathjax/es5/tex-chtml-full.js",
-              "node_modules/mathjax/es5/ui/safe.js",
-              "node_modules/prismjs/prism.js",
-              "node_modules/prismjs/components/prism-python.js",
             ]
           },
           "configurations": {
