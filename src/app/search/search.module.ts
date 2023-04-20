@@ -40,6 +40,7 @@ import { SearchComponent } from './search.component';
 import { searchRouting } from './search.routing';
 import { SearchService } from './state/search.service';
 import { PreviewWarningModule } from '../shared/modules/preview-warning.module';
+import { SearchAuthorsHtmlPipe } from './search-authors-html.pipe';
 
 @NgModule({
   declarations: [
@@ -70,7 +71,7 @@ import { PreviewWarningModule } from '../shared/modules/preview-warning.module';
     TagCloudComponent,
     PreviewWarningModule,
   ],
-  providers: [SearchService, QueryBuilderService],
+  providers: [SearchService, QueryBuilderService, SearchAuthorsHtmlPipe],
   exports: [SearchComponent, IsAppToolPipe],
 })
 export class SearchModule {}

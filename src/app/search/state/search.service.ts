@@ -31,6 +31,7 @@ import { ProviderService } from '../../shared/provider.service';
 import { DockstoreTool, Workflow } from '../../shared/swagger';
 import { SearchQuery } from './search.query';
 import { SearchStore } from './search.store';
+import { SearchAuthorsHtmlPipe } from '../search-authors-html.pipe';
 
 export interface Hit {
   _index: string;
@@ -97,7 +98,7 @@ export class SearchService {
       tooltip: 'The workflow engine versions required to run a workflow or tool',
       initiallyExpanded: false,
     },
-    { friendlyName: 'Author', esName: 'author', initiallyExpanded: true },
+    { friendlyName: 'Author', esName: 'all_authors.name.keyword', initiallyExpanded: true },
     { friendlyName: 'Registry', esName: 'registry', initiallyExpanded: true },
     { friendlyName: 'Source Control', esName: 'source_control_provider.keyword', initiallyExpanded: true },
     { friendlyName: 'Namespace', esName: 'namespace', initiallyExpanded: true },
@@ -111,13 +112,13 @@ export class SearchService {
       exclusive: true,
     },
     {
-      friendlyName: 'VerifiedSourceWorkflow',
+      friendlyName: 'Verified Source',
       esName: SearchFields.VERIFIED_SOURCE,
       tooltip: 'Indicates which party performed the verification process on a tool or workflow.',
       initiallyExpanded: false,
     },
     {
-      friendlyName: 'VerifiedPlatforms',
+      friendlyName: 'Verified Platforms',
       esName: 'verified_platforms.keyword',
       tooltip: 'Indicates which platform a tool or workflow (at least one version) was successfully run on.',
       initiallyExpanded: false,
@@ -125,14 +126,14 @@ export class SearchService {
     { friendlyName: 'Input File Formats', esName: 'input_file_formats.value.keyword', initiallyExpanded: false },
     { friendlyName: 'Output File Formats', esName: 'output_file_formats.value.keyword', initiallyExpanded: false },
     {
-      friendlyName: 'VerifiedTool',
+      friendlyName: 'Verified',
       esName: 'verified',
       tooltip: 'Indicates that at least one version of a tool or workflow has been successfully run by our team or an outside party.',
       initiallyExpanded: true,
       exclusive: true,
     },
     {
-      friendlyName: 'HasCheckerWorkflow',
+      friendlyName: 'Has Checker Workflow',
       esName: 'has_checker',
       tooltip:
         'Checker workflows are additional workflows you can associate with a tool or workflow to ensure ' +
@@ -164,7 +165,8 @@ export class SearchService {
     private router: Router,
     private imageProviderService: ImageProviderService,
     private extendedGA4GHService: ExtendedGA4GHService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private searchAuthorsHtmlPipe: SearchAuthorsHtmlPipe
   ) {}
 
   static convertTabIndexToEntryType(index: number): 'tools' | 'workflows' | 'notebooks' | null {
@@ -216,6 +218,12 @@ export class SearchService {
     let aVal = a[attribute];
     let bVal = b[attribute];
     const sortFactor = direction === 'asc' ? 1 : -1;
+
+    // Transform the all_authors list to a string
+    if (attribute === 'all_authors') {
+      aVal = this.searchAuthorsHtmlPipe.transform(aVal, false);
+      bVal = this.searchAuthorsHtmlPipe.transform(bVal, false);
+    }
 
     // if sorting the stars column, consider 'undefined' stars to be 0
     if (attribute === 'starredUsers') {

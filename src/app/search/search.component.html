@@ -105,7 +105,7 @@
           <!-- watch out for GetFacetSearchResultsPipe when adding facets with search -->
           <div
             *ngIf="
-              key === 'author' ||
+              key === 'all_authors.name.keyword' ||
               key === 'labels.value.keyword' ||
               key === 'namespace' ||
               key === 'organization' ||
@@ -113,11 +113,11 @@
             "
           >
             <mat-form-field appearance="outline">
-              <mat-label>Search for {{ key.substring(0, key.indexOf('.')) }}</mat-label>
+              <mat-label>Search for {{ friendlyNames.get(key) | lowercase }}</mat-label>
               <input
                 matInput
                 type="text"
-                placeholder="Search for {{ key.substring(0, key.indexOf('.')) }}"
+                placeholder="Search for {{ friendlyNames.get(key) | lowercase }}"
                 [ngModel]="facetSearchTextMap.get(key)"
                 [ngModelOptions]="{ updateOn: 'change' }"
                 (ngModelChange)="facetSearchTextMap.set(key, $event)"
@@ -224,7 +224,7 @@
                 <fa-icon [icon]="fullyExpandMap.get(key) ? faAngleDoubleUp : faAngleDoubleDown" aria-hidden="true"></fa-icon>
                 <span
                   *ngIf="
-                    key !== 'author' &&
+                    key !== 'all_authors.name.keyword' &&
                       key !== 'labels.value.keyword' &&
                       key !== 'namespace' &&
                       key !== 'organization' &&

@@ -93,7 +93,7 @@ export class MapFriendlyValuesPipe implements PipeTransform {
         ['DOCKSTORE', 'Dockstore'],
       ]),
     ],
-    ['author', new Map([['', 'n/a']])],
+    ['all_authors.name.keyword', new Map([['', 'n/a']])],
     [
       'ToolFile.FileTypeEnum',
       new Map([

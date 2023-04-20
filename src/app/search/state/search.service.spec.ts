@@ -25,6 +25,7 @@ import { elasticSearchResponse } from '../../test/mocked-objects';
 import { ProviderStubService } from '../../test/service-stubs';
 import { Hit, SearchService } from './search.service';
 import { SearchStore } from './search.store';
+import { SearchAuthorsHtmlPipe } from '../search-authors-html.pipe';
 
 describe('SearchService', () => {
   let searchService: SearchService;
@@ -35,6 +36,7 @@ describe('SearchService', () => {
         ImageProviderService,
         SearchService,
         SearchStore,
+        SearchAuthorsHtmlPipe,
         {
           provide: ProviderService,
           useClass: ProviderStubService,
