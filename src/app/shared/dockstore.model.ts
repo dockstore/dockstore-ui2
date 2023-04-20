@@ -104,5 +104,6 @@ export class Dockstore {
     enableOrcidExport: true,
     enableNewDashboard: false,
     enableNotebooks: false,
+    enableMetrics: false,
   };
 }
