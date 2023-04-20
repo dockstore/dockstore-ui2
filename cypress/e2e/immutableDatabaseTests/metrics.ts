@@ -1,4 +1,4 @@
-import { goToTab, isActiveTab, setTokenUserViewPort } from '../../support/commands';
+import { goToTab, setTokenUserViewPort } from '../../support/commands';
 
 describe('Dockstore Metrics', () => {
   setTokenUserViewPort();

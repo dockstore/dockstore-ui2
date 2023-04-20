@@ -38,7 +38,7 @@ import { MatSelectChange } from '@angular/material/select';
   templateUrl: './executions-tab.component.html',
   styleUrls: ['./executions-tab.component.css'],
 })
-export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChanges {
+export class ExecutionsTabComponent extends EntryTab implements OnChanges {
   metrics: Map<PartnerEnum, Metrics>;
   trsID: string;
   currentPartner: PartnerEnum;
@@ -88,8 +88,6 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
         }
       });
   }
-
-  ngOnInit() {}
 
   private setMetricsObject(metricsMap: Map<PartnerEnum, Metrics>, partner: string, metric: Metrics) {
     for (const partnerEnum in PartnerEnum) {
