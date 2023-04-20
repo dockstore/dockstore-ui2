@@ -9,11 +9,11 @@ import { TwitterService } from 'app/shared/twitter.service';
 import { Dockstore } from 'app/shared/dockstore.model';
 
 @Component({
-  selector: 'app-new-dashboard',
-  templateUrl: './new-dashboard.component.html',
-  styleUrls: ['./new-dashboard.component.scss'],
+  selector: 'app-dashboard',
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.scss'],
 })
-export class NewDashboardComponent extends Base implements OnInit {
+export class DashboardComponent extends Base implements OnInit {
   public Dockstore = Dockstore;
   @ViewChild('twitter') twitterElement: ElementRef;
   constructor(

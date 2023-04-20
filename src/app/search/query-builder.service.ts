@@ -71,7 +71,7 @@ export class QueryBuilderService {
   // These are the properties to return in the search to display the results table correctly
   private sourceOptions(body: any) {
     return body.rawOption('_source', [
-      'author',
+      'all_authors',
       'descriptorType',
       'full_workflow_path',
       'gitUrl',

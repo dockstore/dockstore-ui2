@@ -17,7 +17,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { AboutComponent } from './about/about.component';
 import { FundingComponent } from './funding/funding.component';
 import { GithubCallbackComponent } from './github-callback/github-callback.component';
-import { HomeLoggedInComponent } from './home-page/home-logged-in/home-logged-in.component';
 import { HomeComponent } from './home-page/home-logged-out/home.component';
 import { LoginComponent } from './login/login.component';
 import { AccountsComponent } from './loginComponents/accounts/accounts.component';
@@ -26,6 +25,7 @@ import { OnboardingComponent } from './loginComponents/onboarding/onboarding.com
 import { QuickStartComponent } from './loginComponents/onboarding/quickstart.component';
 import { LogoutComponent } from './logout/logout.component';
 import { MaintenanceComponent } from './maintenance/maintenance.component';
+import { DashboardComponent } from './home-page/dashboard/dashboard.component';
 import { SessionExpiredComponent } from './session-expired/session-expired.component';
 import { AuthGuard } from './shared/auth.guard';
 import { SitemapComponent } from './sitemap/sitemap.component';
@@ -38,8 +38,7 @@ const APP_ROUTES: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full', data: { title: 'Dockstore' } },
   {
     path: 'dashboard',
-    component: HomeLoggedInComponent,
-    pathMatch: 'full',
+    component: DashboardComponent,
     data: { title: 'Dockstore | Dashboard' },
     canActivate: [AuthGuard],
   },
