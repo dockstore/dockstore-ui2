@@ -14,14 +14,14 @@
             <mat-select-trigger>
               {{ currentPartner }}
             </mat-select-trigger>
-            <mat-option [value]="partner" *ngFor="let partner of partners">
+            <mat-option data-cy="metrics-partner-options" [value]="partner" *ngFor="let partner of partners">
               {{ partner }}
             </mat-option>
           </mat-select>
         </mat-form-field>
       </div>
       <div class="execution-counts-container">
-        <div>
+        <div data-cy="metrics-total-executions-div">
           <span class="metrics-header">Total executions: </span>
           <span>{{ totalExecutions }}</span>
         </div>
@@ -66,7 +66,7 @@
     <table mat-table class="validations-table" [dataSource]="validationsTable" data-cy="validations-table">
       <ng-container matColumnDef="validatorTool">
         <th mat-header-cell *matHeaderCellDef>Validator Tool</th>
-        <td mat-cell *matCellDef="let element">{{ element.validatorTool }}</td>
+        <td data-cy="metrics-validatorTool" mat-cell *matCellDef="let element">{{ element.validatorTool }}</td>
       </ng-container>
 
       <ng-container matColumnDef="mostRecentVersion">
@@ -80,7 +80,7 @@
       </ng-container>
 
       <ng-container matColumnDef="mostRecentErrorMessage">
-        <th mat-header-cell *matHeaderCellDef>Most Recent Run's Error Message</th>
+        <th data-cy="validations-mostRecentErrorMessage-col" mat-header-cell *matHeaderCellDef>Most Recent Run's Error Message</th>
         <td mat-cell *matCellDef="let element">{{ element.mostRecentErrorMessage }}</td>
       </ng-container>
 

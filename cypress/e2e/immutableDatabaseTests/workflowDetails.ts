@@ -37,10 +37,6 @@ describe('Variations of URL', () => {
     cy.visit('/workflows/github.com%2FA%2Fl:master?tab=files');
     cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=files');
   });
-  it('Should redirect to canonical url (executions tab)', () => {
-    cy.visit('/workflows/github.com%2FA%2Fl:master?tab=executions');
-    cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=executions');
-  });
 });
 
 describe('Dockstore Workflow Details', () => {
@@ -48,7 +44,7 @@ describe('Dockstore Workflow Details', () => {
   beforeEach(() => {
     cy.visit('/workflows/github.com/A/l');
     // Info, Launch, Version, Files, Tools, DAG
-    cy.get('.mat-tab-label').should('have.length', 7);
+    cy.get('.mat-tab-label').should('have.length', 6);
     cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=info');
   });
 
@@ -101,13 +97,12 @@ describe('Dockstore Workflow Details', () => {
   });
 
   describe('Change tab to Executions', () => {
-    beforeEach(() => {
+    it('Should see No Metrics banner', () => {
+      cy.visit('/workflows/github.com/A/l?metrics');
+      cy.get('.mat-tab-label').should('have.length', 7);
       cy.get('.mat-tab-header-pagination-after').click();
       goToTab('Executions');
       cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=executions');
-    });
-
-    it('Should see No Metrics banner', () => {
       cy.get('[data-cy=no-metrics-banner]').should('be.visible');
     });
   });

@@ -19,6 +19,8 @@ describe('FeatureService', () => {
     expect(Dockstore.FEATURES.enableNewDashboard).toBeTrue();
     service.updateFeatureFlags('?notebooks');
     expect(Dockstore.FEATURES.enableNotebooks).toBeTrue();
+    service.updateFeatureFlags('?metrics');
+    expect(Dockstore.FEATURES.enableMetrics).toBeTrue();
     // We're ignoring the value
     service.updateFeatureFlags('?irrelevantKey&newDashboard');
     expect(Dockstore.FEATURES.enableNewDashboard).toBeTrue();
@@ -34,8 +36,10 @@ describe('FeatureService', () => {
     service.updateFeatureFlags(null);
     expect(Dockstore.FEATURES.enableNewDashboard).toBeFalse();
     expect(Dockstore.FEATURES.enableNotebooks).toBeFalse();
+    expect(Dockstore.FEATURES.enableMetrics).toBeFalse();
     service.updateFeatureFlags('');
     expect(Dockstore.FEATURES.enableNewDashboard).toBeFalse();
     expect(Dockstore.FEATURES.enableNotebooks).toBeFalse();
+    expect(Dockstore.FEATURES.enableMetrics).toBeFalse();
   });
 });

@@ -1,8 +1,23 @@
 {
   "DNA_STACK": {
     "cpu": null,
-    "executionStatusCount": null,
-    "executionTime": null,
+    "executionStatusCount": {
+      "count": {
+        "SUCCESSFUL": 39
+      },
+      "id": 43,
+      "numberOfFailedExecutions": 0,
+      "numberOfSuccessfulExecutions": 39,
+      "valid": true
+    },
+    "executionTime": {
+      "average": 607.1282051282051,
+      "maximum": 1848,
+      "minimum": 5,
+      "numberOfDataPointsForAverage": 39,
+      "id": 43,
+      "unit": "s"
+    },
     "id": 99,
     "memory": null,
     "validationStatus": {
@@ -24,8 +39,24 @@
   },
   "AGC": {
     "cpu": null,
-    "executionStatusCount": null,
-    "executionTime": null,
+    "executionStatusCount": {
+      "count": {
+        "SUCCESSFUL": 6,
+        "FAILED_RUNTIME_INVALID": 1
+      },
+      "id": 51,
+      "numberOfFailedExecutions": 1,
+      "numberOfSuccessfulExecutions": 6,
+      "valid": false
+    },
+    "executionTime": {
+      "average": 1228.25,
+      "maximum": 1347,
+      "minimum": 1122,
+      "numberOfDataPointsForAverage": 4,
+      "id": 51,
+      "unit": "s"
+    },
     "id": 98,
     "memory": null,
     "validationStatus": {
