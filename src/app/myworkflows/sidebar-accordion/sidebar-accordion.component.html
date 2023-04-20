@@ -60,17 +60,13 @@
               </a>
             </mat-list-item>
             <mat-list-item *ngIf="!orgObj || orgObj?.published.length === 0">
-              <p data-cy="no-published-apptool-message" *ngIf="pageEntryType === EntryType.AppTool" class="text-center size-small">
-                No published tools.
-              </p>
-              <p
-                [attr.data-cy]="'no-published-' + pageEntryType + '-message'"
-                *ngIf="
+              <p [attr.data-cy]="'no-published-' + pageEntryType + '-message'" class="text-center size-small">
+                No published
+                {{
                   pageEntryType === EntryType.Service || pageEntryType === EntryType.BioWorkflow || pageEntryType === EntryType.Notebook
-                "
-                class="text-center size-small"
-              >
-                No published {{ pageEntryType }}s.
+                    ? pageEntryType
+                    : 'tool'
+                }}s.
               </p>
             </mat-list-item>
           </mat-list>
@@ -94,17 +90,13 @@
               </a>
             </mat-list-item>
             <mat-list-item *ngIf="!orgObj || orgObj?.unpublished.length === 0">
-              <p data-cy="no-unpublished-apptool-message" *ngIf="pageEntryType === EntryType.AppTool" class="text-center size-small">
-                No unpublished tools.
-              </p>
-              <p
-                [attr.data-cy]="'no-unpublished-' + pageEntryType + '-message'"
-                *ngIf="
+              <p [attr.data-cy]="'no-unpublished-' + pageEntryType + '-message'" class="text-center size-small">
+                No unpublished
+                {{
                   pageEntryType === EntryType.Service || pageEntryType === EntryType.BioWorkflow || pageEntryType === EntryType.Notebook
-                "
-                class="text-center size-small"
-              >
-                No unpublished {{ pageEntryType }}s.
+                    ? pageEntryType
+                    : 'tool'
+                }}s.
               </p>
             </mat-list-item>
           </mat-list>
@@ -112,7 +104,9 @@
       </mat-tab-group>
       <mat-action-row
         *ngIf="
-          ((entryType$ | async) === EntryType.BioWorkflow || (entryType$ | async) === EntryType.Tool) &&
+          ((entryType$ | async) === EntryType.BioWorkflow ||
+            (entryType$ | async) === EntryType.Tool ||
+            (entryType$ | async) === EntryType.Notebook) &&
           (orgObj.sourceControl.startsWith('github.com') ||
             (!orgObj?.sourceControl.startsWith('dockstore.org') && (entryType$ | async) !== EntryType.Tool))
         "

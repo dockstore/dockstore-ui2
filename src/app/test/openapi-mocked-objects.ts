@@ -1,4 +1,4 @@
-import { Workflow } from '../shared/openapi';
+import { Workflow, DockstoreTool, CollectionEntry } from '../shared/openapi';
 
 export const sampleWorkflow1: Workflow = {
   type: 'whatever',
@@ -13,4 +13,48 @@ export const sampleWorkflow1: Workflow = {
   sourceControl: 'github.com',
   source_control_provider: 'GITHUB',
   full_workflow_path: 'github.com/updatedOrganization/updatedWorkflowPath',
+};
+
+export const sampleTool1: DockstoreTool = {
+  id: 1,
+  default_cwl_path: 'sampleDefaultCWLPath',
+  default_dockerfile_path: 'sampleDefaultDockerfilePath',
+  default_wdl_path: 'sampleDefaultWDLPath',
+  gitUrl: 'sampleGitUrl',
+  mode: DockstoreTool.ModeEnum.MANUALIMAGEPATH,
+  name: 'sampleName',
+  namespace: 'sampleNamespace',
+  private_access: false,
+  registry_string: 'quay.io',
+  registry: DockstoreTool.RegistryEnum.QUAYIO,
+  toolname: 'sampleToolname',
+  defaultCWLTestParameterFile: 'sampleDefaultCWLTestParameterFile',
+  defaultWDLTestParameterFile: 'sampleDefaultWDLTestParameterFile',
+  tool_path: 'quay.io/sampleNamespace/sampleName',
+};
+
+// Tool Collection entry
+export const sampleCollectionEntry1: CollectionEntry = {
+  categories: [],
+  dbUpdateDate: 1648777051404,
+  descriptorTypes: ['CWL'],
+  entryPath: 'quay.io/pancancer/pcawg-dkfz-workflow',
+  entryType: 'tool',
+  id: 188,
+  labels: ['variant-caller', 'pcawg'],
+  verified: true,
+  versionName: null,
+};
+
+// Notebook Collection entry with version
+export const sampleCollectionEntry2: CollectionEntry = {
+  categories: [],
+  dbUpdateDate: 1681400016194,
+  descriptorTypes: ['jupyter'],
+  entryPath: 'github.com/david4096/simple-notebook/simplers',
+  entryType: 'notebook',
+  id: 21113,
+  labels: ['book'],
+  verified: false,
+  versionName: 'version',
 };

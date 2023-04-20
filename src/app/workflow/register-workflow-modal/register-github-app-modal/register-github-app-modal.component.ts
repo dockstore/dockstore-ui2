@@ -1,5 +1,5 @@
 /*
- *    Copyright 2018 OICR
+ *    Copyright 2023 OICR, UCSC
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -13,11 +13,11 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+
 import { Component, Inject, OnInit } from '@angular/core';
 import { SessionQuery } from 'app/shared/session/session.query';
 import { UserQuery } from 'app/shared/user/user.query';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { AlertQuery } from '../../../shared/alert/state/alert.query';
 import { Dockstore } from '../../../shared/dockstore.model';
 import { RegisterWorkflowModalService } from '../register-workflow-modal.service';
@@ -33,7 +33,7 @@ export class RegisterGithubAppModalComponent implements OnInit {
   public EntryType = EntryType;
   public isRefreshing$: Observable<boolean>;
   public gitHubAppInstallationLink$: Observable<string>;
-  public usernameChangeRequired$: Observable<boolean>;
+  public isUsernameChangeRequired$: Observable<boolean>;
   public username$: Observable<string>;
   Dockstore = Dockstore;
 
@@ -47,7 +47,7 @@ export class RegisterGithubAppModalComponent implements OnInit {
 
   ngOnInit() {
     this.username$ = this.userQuery.username$;
-    this.usernameChangeRequired$ = this.userQuery.user$.pipe(map((user) => user.usernameChangeRequired));
+    this.isUsernameChangeRequired$ = this.userQuery.isUsernameChangeRequired$;
     this.isRefreshing$ = this.alertQuery.showInfo$;
     this.gitHubAppInstallationLink$ = this.sessionQuery.gitHubAppInstallationLink$;
   }

@@ -1,3 +1,4 @@
+<h4 mat-dialog-title>Register {{ entryType | titlecase }}</h4>
 <div class="mb-3" *ngIf="Dockstore.FEATURES.enableNotebooks && entryType === EntryType.Notebook">
   <app-preview-warning></app-preview-warning>
 </div>
@@ -12,9 +13,9 @@
   <a
     mat-raised-button
     type="button"
-    class="accent-1-dark-btn mat-elevation-z"
+    class="accent-1-dark-btn mat-elevation-z no-underline"
     [href]="gitHubAppInstallationLink$ | async"
-    [disabled]="usernameChangeRequired$ | async"
+    [disabled]="isUsernameChangeRequired$ | async"
     matTooltip="Manage Dockstore installations on GitHub"
     ><mat-icon>add</mat-icon> Manage Dockstore installations on GitHub</a
   >
@@ -22,8 +23,8 @@
 <div class="modal-footer p-0 mt-4">
   <button
     type="button"
-    mat-flat-button
-    class="secondary-1 mt-2"
+    mat-raised-button
+    class="accent-1-dark-btn mat-elevation-z"
     [mat-dialog-close]="true"
     (click)="clearWorkflowRegisterError()"
     data-cy="close-modal-btn"

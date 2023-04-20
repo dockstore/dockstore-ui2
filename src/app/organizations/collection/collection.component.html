@@ -104,25 +104,8 @@
             <h3 *ngIf="!Dockstore.FEATURES.enableNotebooks">Workflows and Tools</h3>
 
             <div data-cy="collectionEntry" *ngFor="let entry of collection?.entries">
-              <mat-card
-                *ngIf="
-                  (entry.entryType !== entryType.Notebook && !Dockstore.FEATURES.enableNotebooks) || Dockstore.FEATURES.enableNotebooks
-                "
-                class="pb-3"
-              >
-                <a
-                  [routerLink]="[
-                    '/' +
-                      (entry.entryType === entryType.Tool
-                        ? 'container'
-                        : entry.entryType === entryType.Workflow
-                        ? 'workflow'
-                        : 'notebook') +
-                      's/',
-                    entry.entryPath + (entry.versionName ? ':' + entry.versionName : '')
-                  ]"
-                  class="no-underline"
-                >
+              <mat-card *ngIf="entry.entryType !== entryType.Notebook || Dockstore.FEATURES.enableNotebooks" class="pb-3">
+                <a [routerLink]="entry.entryType | routerLink: entry" class="no-underline">
                   <div fxLayout="row" fxLayoutAlign="space-between center">
                     <div fxLayout="row" fxLayoutAlign="flex-start" fxLayoutGap="1rem">
                       <img src="../assets/svg/sub-nav/{{ entry.entryType }}.svg" alt="{{ entry.entryType }}s icon" />

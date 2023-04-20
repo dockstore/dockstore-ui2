@@ -58,7 +58,7 @@
                   (click)="showRegisterEntryModal()"
                   [disabled]="isRefreshing$ | async"
                 >
-                  <img src="../../../assets/svg/icons-plus.svg" alt="Register a tool" class="pr-2 pb-1" />
+                  <img src="../../../assets/svg/icons-plus.svg" alt="Register a {{ entryType }}" class="pr-2 pb-1" />
                   Register a {{ entryType | titlecase }}
                 </button>
                 <button
@@ -134,17 +134,19 @@
               <mat-card class="alert alert-info mat-elevation-z" role="alert">
                 <p>
                   <mat-icon>info</mat-icon>
-                  There are currently no {{ entryType$ | async }}s registered under this account. To add your first
-                  {{ entryType$ | async }}, do one of the following:
+                  There are currently no {{ entryType$ | async }}s registered under this account. To add your first {{ entryType$ | async
+                  }}<span *ngIf="entryType === EntryType.BioWorkflow">, do one of the following</span>:
                 </p>
                 <ul>
-                  <li *ngIf="entryType === EntryType.Service || entryType === EntryType.Notebook">
-                    Press the 'Manage on GitHub' button and follow the GitHub apps web interface to create services from your GitHub
-                    repositories.
-                  </li>
                   <li>
-                    Press the 'Register {{ entryType$ | async | titlecase }}' button to manually add a {{ entryType$ | async }} using the
-                    registration wizard.
+                    Press the 'Register a {{ entryType$ | async | titlecase }}' button
+                    <span *ngIf="entryType === EntryType.BioWorkflow; else githubAppsRegistration"
+                      >to manually add a {{ entryType$ | async }} using the registration wizard.</span
+                    >
+                    <ng-template #githubAppsRegistration
+                      >and follow the GitHub apps web interface to create {{ entryType$ | async }}s from your GitHub
+                      repositories.</ng-template
+                    >
                   </li>
                   <button
                     mat-raised-button
@@ -153,7 +155,7 @@
                     (click)="showRegisterEntryModal()"
                     [disabled]="isRefreshing$ | async"
                   >
-                    Register {{ entryType$ | async | titlecase }}
+                    Register a {{ entryType$ | async | titlecase }}
                   </button>
 
                   <span *ngIf="entryType === EntryType.BioWorkflow">
