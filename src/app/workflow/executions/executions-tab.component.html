@@ -36,7 +36,7 @@
       </div>
     </div>
     <div class="metrics-table-container">
-      <table mat-table class="metrics-table w-100" [dataSource]="metricsTable" data-cy="metrics-table">
+      <table mat-table class="metrics-table w-100" aria-label="validations-table" [dataSource]="metricsTable" data-cy="metrics-table">
         <ng-container matColumnDef="metric">
           <th mat-header-cell *matHeaderCellDef>Metric</th>
           <td mat-cell *matCellDef="let element">{{ element.metric }}</td>
@@ -63,7 +63,7 @@
     </div>
   </div>
   <div class="validations-table-container w-100">
-    <table mat-table class="validations-table" [dataSource]="validationsTable" data-cy="validations-table">
+    <table mat-table class="validations-table" aria-label="validations-table" [dataSource]="validationsTable" data-cy="validations-table">
       <ng-container matColumnDef="validatorTool">
         <th mat-header-cell *matHeaderCellDef>Validator Tool</th>
         <td data-cy="metrics-validatorTool" mat-cell *matCellDef="let element">{{ element.validatorTool }}</td>
