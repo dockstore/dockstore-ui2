@@ -1,4 +1,4 @@
-import { Workflow, DockstoreTool, CollectionEntry } from '../shared/openapi';
+import { Workflow, DockstoreTool, CollectionEntry, EntryType } from '../shared/openapi';
 
 export const sampleWorkflow1: Workflow = {
   type: 'whatever',
@@ -13,6 +13,16 @@ export const sampleWorkflow1: Workflow = {
   sourceControl: 'github.com',
   source_control_provider: 'GITHUB',
   full_workflow_path: 'github.com/updatedOrganization/updatedWorkflowPath',
+  entryTypeMetadata: {
+    searchEntryType: 'workflows',
+    searchSupported: true,
+    sitePath: 'workflows',
+    term: 'workflow',
+    termPlural: 'workflows',
+    trsPrefix: '#workflow/',
+    trsSupported: true,
+    type: 'WORKFLOW',
+  },
 };
 
 export const sampleTool1: DockstoreTool = {
@@ -31,6 +41,16 @@ export const sampleTool1: DockstoreTool = {
   defaultCWLTestParameterFile: 'sampleDefaultCWLTestParameterFile',
   defaultWDLTestParameterFile: 'sampleDefaultWDLTestParameterFile',
   tool_path: 'quay.io/sampleNamespace/sampleName',
+  entryTypeMetadata: {
+    searchEntryType: 'tools',
+    searchSupported: true,
+    sitePath: 'containers',
+    term: 'tool',
+    termPlural: 'tools',
+    trsPrefix: '',
+    trsSupported: true,
+    type: 'TOOL',
+  },
 };
 
 // Tool Collection entry
