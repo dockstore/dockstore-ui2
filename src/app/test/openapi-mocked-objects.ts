@@ -1,4 +1,4 @@
-import { Workflow, DockstoreTool, CollectionEntry, EntryType } from '../shared/openapi';
+import { Workflow, DockstoreTool, CollectionEntry } from '../shared/openapi';
 
 export const sampleWorkflow1: Workflow = {
   type: 'whatever',
