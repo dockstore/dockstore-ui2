@@ -61,12 +61,7 @@
             </mat-list-item>
             <mat-list-item *ngIf="!orgObj || orgObj?.published.length === 0">
               <p [attr.data-cy]="'no-published-' + pageEntryType + '-message'" class="text-center size-small">
-                No published
-                {{
-                  pageEntryType === EntryType.Service || pageEntryType === EntryType.BioWorkflow || pageEntryType === EntryType.Notebook
-                    ? pageEntryType
-                    : 'tool'
-                }}s.
+                No published {{ pageEntryType === EntryType.AppTool ? 'tool' : pageEntryType }}s.
               </p>
             </mat-list-item>
           </mat-list>
@@ -91,12 +86,7 @@
             </mat-list-item>
             <mat-list-item *ngIf="!orgObj || orgObj?.unpublished.length === 0">
               <p [attr.data-cy]="'no-unpublished-' + pageEntryType + '-message'" class="text-center size-small">
-                No unpublished
-                {{
-                  pageEntryType === EntryType.Service || pageEntryType === EntryType.BioWorkflow || pageEntryType === EntryType.Notebook
-                    ? pageEntryType
-                    : 'tool'
-                }}s.
+                No unpublished {{ pageEntryType === EntryType.AppTool ? 'tool' : pageEntryType }}s.
               </p>
             </mat-list-item>
           </mat-list>
