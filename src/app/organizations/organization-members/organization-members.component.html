@@ -73,7 +73,12 @@
                 </div>
                 <a href="https://orcid.org/{{ organizationUser.user?.orcid }}">{{ organizationUser.user?.orcid }}</a>
               </span>
-              <div fxLayout fxLayoutAlign="end" *ngIf="canEditMembership$ | async" fxFlex="noshrink">
+              <div
+                fxLayout
+                fxLayoutAlign="end"
+                *ngIf="(canEditMembership$ | async) && organizationUser.user.id !== (userId$ | async)"
+                fxFlex="noshrink"
+              >
                 <button
                   mat-button
                   class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
