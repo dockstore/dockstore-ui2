@@ -21,6 +21,8 @@ import { SessionService } from 'app/shared/session/session.service';
 import { Observable } from 'rxjs';
 import { EntryType } from '../shared/enum/entry-type';
 import { UrlResolverService } from '../shared/url-resolver.service';
+import { EntryTypeMetadataService } from '../entry/type-metadata/entry-type-metadata.service';
+import { EntryType as newEntryType } from 'app/shared/openapi';
 
 @Component({
   selector: 'app-workflows',
@@ -39,7 +41,8 @@ export class WorkflowsComponent {
     private sessionService: SessionService,
     private route: ActivatedRoute,
     private router: Router,
-    private urlResolverService: UrlResolverService
+    private urlResolverService: UrlResolverService,
+    public entryTypeMetadataService: EntryTypeMetadataService
   ) {
     /* Force refresh of route when nagivating from /entryType to /entryType/entryName to update header */
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
@@ -48,5 +51,9 @@ export class WorkflowsComponent {
     this.entryType$ = this.sessionQuery.entryType$;
     this.searchPage = this.searchPageUrls.includes(this.urlResolverService.getEntryPathFromUrl());
     this.entryName = this.urlResolverService.getEntryPathFromUrl();
+  }
+
+  getEntryTerm(type: newEntryType): string {
+    return this.entryTypeMetadataService.get(type.toUpperCase() as newEntryType).term;
   }
 }

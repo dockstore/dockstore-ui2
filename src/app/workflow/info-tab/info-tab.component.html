@@ -405,7 +405,13 @@
             <mat-icon class="mat-icon-sm">file_download</mat-icon>
             Export as ZIP
           </button>
-          <a [href]="downloadZipLink" *ngIf="workflow?.is_published" mat-button color="accent" class="private-btn small-btn-structure">
+          <a
+            [href]="downloadZipLink"
+            *ngIf="workflow?.is_published"
+            mat-button
+            color="accent"
+            class="private-btn small-btn-structure no-underline"
+          >
             <mat-icon class="mat-icon-sm">file_download</mat-icon>
             Export as ZIP
           </a>
