@@ -34,7 +34,7 @@ export class ChangeUsernameComponent implements OnInit {
   username: string;
   user: User;
   usernameTaken = false;
-  usernameChangeRequired: boolean = false;
+  isUsernameChangeRequired$: Observable<boolean>;
   checkingIfValid = false;
   canChangeUsername$: Observable<boolean>;
   showEmailWarning = false;
@@ -53,9 +53,9 @@ export class ChangeUsernameComponent implements OnInit {
         this.user = user;
         this.username = user.username;
         this.showEmailWarning = this.user.username.includes('@');
-        this.usernameChangeRequired = this.user.usernameChangeRequired;
       }
     });
+    this.isUsernameChangeRequired$ = this.userQuery.isUsernameChangeRequired$;
     this.canChangeUsername$ = this.userQuery.canChangeUsername$;
     this.enableDisableFormControl();
     this.usernameFormControl.valueChanges.pipe(debounceTime(formInputDebounceTime), takeUntil(this.ngUnsubscribe)).subscribe((value) => {

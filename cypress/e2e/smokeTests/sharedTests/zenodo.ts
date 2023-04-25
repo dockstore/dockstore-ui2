@@ -73,7 +73,7 @@ describe('Create Zenodo DOI for workflow version', () => {
 
         if (workflowName !== zenodoWorkflow) {
           // Create the Zenodo test hosted workflow
-          cy.get('[id=registerWorkflowButton]').click();
+          cy.get('[data-cy=registerWorkflowButton]').click();
           // Select the Use CWL, WDL or Nextflow from GitHub, Bitbucket, etc.' option to create a hosted workflow
           cy.contains('Create and save CWL, WDL, or Nextflow on Dockstore.org').click();
           cy.contains('button', 'Next').click();

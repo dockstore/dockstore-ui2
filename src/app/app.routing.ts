@@ -106,6 +106,12 @@ const APP_ROUTES: Routes = [
     canActivate: [AuthGuard],
     data: { title: 'Dockstore | My Services' },
   },
+  {
+    path: 'my-notebooks',
+    loadChildren: () => import('app/my-notebooks/my-notebooks.module').then((m) => m.MyNotebooksModule),
+    canActivate: [AuthGuard],
+    data: { title: 'Dockstore | My Notebooks' },
+  },
   { path: 'githubCallback', component: GithubCallbackComponent },
   {
     path: 'aliases',

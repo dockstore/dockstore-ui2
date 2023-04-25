@@ -23,8 +23,6 @@ import { UsersService, WorkflowsService } from 'app/shared/swagger';
 import { UrlResolverService } from 'app/shared/url-resolver.service';
 import { UrlResolverStubService, UsersStubService, WorkflowsStubService, WorkflowStubService } from 'app/test/service-stubs';
 import { Workflow } from './../shared/swagger/model/workflow';
-import { MyBioWorkflowsService } from './my-bio-workflows.service';
-import { MyServicesService } from './my-services.service';
 import { OrgWorkflowObject } from './my-workflow/my-workflow.component';
 import { MyWorkflowsService } from './myworkflows.service';
 
@@ -141,8 +139,6 @@ describe('MyWorkflowsService', () => {
       imports: [CustomMaterialModule, RouterTestingModule, MyEntriesModule],
       providers: [
         MyWorkflowsService,
-        MyBioWorkflowsService,
-        MyServicesService,
         { provide: UrlResolverService, useClass: UrlResolverStubService },
         { provide: WorkflowService, useClass: WorkflowStubService },
         { provide: UsersService, useClass: UsersStubService },

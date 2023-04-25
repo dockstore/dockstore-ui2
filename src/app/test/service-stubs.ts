@@ -14,6 +14,7 @@
  *     limitations under the License.
  */
 import { EntryType } from 'app/shared/enum/entry-type';
+import { EntryType as newEntryType, EntryTypeMetadata } from 'app/shared/openapi';
 import { BehaviorSubject, EMPTY, Observable, of as observableOf } from 'rxjs';
 import { SearchFields } from '../search/state/search.service';
 import { TagEditorMode } from '../shared/enum/tagEditorMode.enum';
@@ -914,4 +915,72 @@ export class VersionModalStubService {
 
 export class OrgLogoStubService {
   setDefault(img: any) {}
+}
+
+export class EntryTypeMetadataStubService {
+  get(type: newEntryType): EntryTypeMetadata {
+    switch (type) {
+      case newEntryType.WORKFLOW: {
+        return {
+          searchEntryType: 'workflows',
+          searchSupported: true,
+          sitePath: 'workflows',
+          term: 'workflow',
+          termPlural: 'workflows',
+          trsPrefix: '#workflow/',
+          trsSupported: true,
+          type: 'WORKFLOW',
+        };
+      }
+      case newEntryType.TOOL: {
+        return {
+          searchEntryType: 'tools',
+          searchSupported: true,
+          sitePath: 'containers',
+          term: 'tool',
+          termPlural: 'tools',
+          trsPrefix: '',
+          trsSupported: true,
+          type: 'TOOL',
+        };
+      }
+      case newEntryType.SERVICE: {
+        return {
+          searchEntryType: '',
+          searchSupported: false,
+          sitePath: 'services',
+          term: 'service',
+          termPlural: 'services',
+          trsPrefix: '#service/',
+          trsSupported: true,
+          type: 'SERVICE',
+        };
+      }
+      case newEntryType.APPTOOL: {
+        return {
+          searchEntryType: 'tools',
+          searchSupported: true,
+          sitePath: 'containers',
+          term: 'tool',
+          termPlural: 'tools',
+          trsPrefix: '',
+          trsSupported: true,
+          type: 'APPTOOL',
+        };
+      }
+      case newEntryType.NOTEBOOK: {
+        return {
+          searchEntryType: '',
+          searchSupported: false,
+          sitePath: 'notebooks',
+          term: 'notebook',
+          termPlural: 'notebooks',
+          trsPrefix: '#notebook/',
+          trsSupported: true,
+          type: 'NOTEBOOK',
+        };
+      }
+    }
+    return null;
+  }
 }

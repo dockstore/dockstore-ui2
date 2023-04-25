@@ -42,6 +42,7 @@ import { UrlResolverService } from '../../shared/url-resolver.service';
 import { UserQuery } from '../../shared/user/user.query';
 import { RegisterWorkflowModalService } from '../../workflow/register-workflow-modal/register-workflow-modal.service';
 import { MyWorkflowsService } from '../myworkflows.service';
+import { Dockstore } from '../../shared/dockstore.model';
 
 /**
  * How the workflow selection works:
@@ -65,6 +66,7 @@ import { MyWorkflowsService } from '../myworkflows.service';
   styleUrls: ['../../shared/styles/my-entry.component.scss'],
 })
 export class MyWorkflowComponent extends MyEntry implements OnInit {
+  Dockstore = Dockstore;
   faGithub = faGithub;
   workflow: Service | BioWorkflow;
   workflows: Array<Workflow>;

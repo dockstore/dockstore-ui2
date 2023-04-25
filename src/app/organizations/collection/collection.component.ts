@@ -17,6 +17,7 @@ import { UpdateOrganizationOrCollectionDescriptionComponent } from '../organizat
 import { CollectionsQuery } from '../state/collections.query';
 import { CollectionsService } from '../state/collections.service';
 import { OrganizationQuery } from '../state/organization.query';
+import { EntryType } from 'app/shared/enum/entry-type';
 
 @Component({
   selector: 'app-collection-entry-confirm-remove',
@@ -50,6 +51,7 @@ export interface EntryDialogData {
   styleUrls: ['./collection.component.scss', '../organization/organization.component.scss'],
 })
 export class CollectionComponent implements OnInit {
+  entryType = EntryType;
   WorkflowMode = Workflow.ModeEnum;
   DescriptorType = ToolDescriptor.TypeEnum;
   collection$: Observable<Collection>;

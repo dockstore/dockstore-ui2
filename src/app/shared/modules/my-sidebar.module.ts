@@ -15,13 +15,14 @@
  */
 
 import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { MySidebarComponent } from '../../my-sidebar/my-sidebar.component';
 import { CustomMaterialModule } from 'app/shared/modules/material.module';
 import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [MySidebarComponent],
-  imports: [CustomMaterialModule, RouterModule],
+  imports: [CommonModule, CustomMaterialModule, RouterModule],
   providers: [],
   exports: [MySidebarComponent],
 })
