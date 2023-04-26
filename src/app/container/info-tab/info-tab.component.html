@@ -427,23 +427,6 @@
               </span>
             </td>
           </ng-container>
-          <ng-container matColumnDef="orcid_id">
-            <th
-              scope="col"
-              mat-header-cell
-              fxHide.lt-sm
-              *matHeaderCellDef
-              [ngClass]="{ 'inactive-table-header': this.authors.length === 0 }"
-            >
-              ORCID iD
-            </th>
-            <td mat-cell fxHide.lt-sm *matCellDef="let author">
-              <span *ngIf="author.orcid">
-                <img src="../../../assets/images/account-logos/orcid.svg" alt="ORCID iD logo" class="orcid-id-logo site-icons-small" />
-                <a href="https://orcid.org/{{ author.orcid }}">{{ author.orcid }}</a>
-              </span>
-            </td>
-          </ng-container>
           <tr class="mat-row" *matNoDataRow>
             <td class="mat-cell" [colSpan]="displayedColumns.length">Not Available</td>
           </tr>

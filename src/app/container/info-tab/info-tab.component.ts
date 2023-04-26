@@ -28,7 +28,6 @@ import { Tag } from '../../shared/swagger/model/tag';
 import { exampleDescriptorPatterns, validationDescriptorPatterns } from '../../shared/validationMessages.model';
 import { InfoTabService } from './info-tab.service';
 import { Author } from 'app/shared/openapi';
-import { OrcidAuthorInformation } from 'app/shared/openapi/model/orcidAuthorInformation';
 
 import DescriptorTypeEnum = ToolVersion.DescriptorTypeEnum;
 
@@ -49,8 +48,8 @@ export class InfoTabComponent extends Base implements OnInit, OnChanges {
   public tool: DockstoreTool;
   public topicEditing: boolean;
   public TopicSelectionEnum = DockstoreTool.TopicSelectionEnum;
-  public authors: (Author | OrcidAuthorInformation)[] = [];
-  public displayedColumns: string[] = ['name', 'role', 'affiliation', 'email', 'orcid_id'];
+  public authors: Array<Author> = [];
+  public displayedColumns: string[] = ['name', 'role', 'affiliation', 'email'];
   dockerFileEditing: boolean;
   cwlPathEditing: boolean;
   wdlPathEditing: boolean;
