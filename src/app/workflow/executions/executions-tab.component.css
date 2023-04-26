@@ -17,9 +17,11 @@
 .metrics-table-container {
   justify-content: center;
 }
+
 .validations-table {
   table-layout: fixed;
 }
+
 th,
 td {
   white-space: normal;
