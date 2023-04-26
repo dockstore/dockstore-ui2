@@ -166,19 +166,19 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.clearFacetSearches();
   }
 
-  private lastTabIndex: number | null = null;
+  private tabIndex: number | null = null;
 
-  initializeMappings(tabIndex: number) {
-    if (tabIndex !== this.lastTabIndex) {
-      console.log('reinitialize tabs');
-      this.bucketStubs = this.searchService.initializeCommonBucketStubs(tabIndex);
-      this.friendlyNames = this.searchService.initializeFriendlyNames(tabIndex);
-      this.entryOrder = this.searchService.initializeEntryOrder(tabIndex);
-      this.toolTips = this.searchService.initializeToolTips(tabIndex);
-      this.expandedPanels = this.searchService.initializeExpandedPanels(tabIndex);
-      this.exclusiveFilters = this.searchService.initializeExclusiveFilters(tabIndex);
+  initializeMappings(newTabIndex: number) {
+    if (newTabIndex !== this.tabIndex) {
+      this.tabIndex = newTabIndex;
+      console.log('generate new mappings');
+      this.bucketStubs = this.searchService.initializeCommonBucketStubs(newTabIndex);
+      this.friendlyNames = this.searchService.initializeFriendlyNames(newTabIndex);
+      this.entryOrder = this.searchService.initializeEntryOrder(newTabIndex);
+      this.toolTips = this.searchService.initializeToolTips(newTabIndex);
+      this.expandedPanels = this.searchService.initializeExpandedPanels(newTabIndex);
+      this.exclusiveFilters = this.searchService.initializeExclusiveFilters(newTabIndex);
     }
-    this.lastTabIndex = tabIndex;
   }
 
   getKeys(bucketMap: Map<any, any>): Array<string> {
@@ -553,7 +553,7 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   resetEntryOrder() {
     this.entryOrder.clear();
-    this.entryOrder = this.searchService.initializeEntryOrder(this.lastTabIndex);
+    this.entryOrder = this.searchService.initializeEntryOrder(this.tabIndex);
     this.orderedBuckets.clear();
   }
 
@@ -563,7 +563,7 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   resetExpansionPanels() {
     this.clearExpandedPanelsState();
-    this.expandedPanels = this.searchService.initializeExpandedPanels(this.lastTabIndex);
+    this.expandedPanels = this.searchService.initializeExpandedPanels(this.tabIndex);
   }
 
   /**===============================================
