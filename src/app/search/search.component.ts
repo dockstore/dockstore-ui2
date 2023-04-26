@@ -487,9 +487,9 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.extendedGA4GHService.toolsIndexSearch(value).subscribe(
       (hits: any) => {
         this.hits = hits.hits.hits;
-        const filteredHits: [Array<Hit>, Array<Hit>] = this.searchService.filterEntry(this.hits, this.query_size);
+        const filteredHits: [Array<Hit>, Array<Hit>, Array<Hit>] = this.searchService.filterEntry(this.hits, this.query_size);
         const searchText = this.searchQuery.getValue().searchText;
-        this.searchService.setHits(filteredHits[0], filteredHits[1]);
+        this.searchService.setHits(filteredHits[0], filteredHits[1], filteredHits[2]);
         if (searchText.length > 0 && hits) {
           this.searchTerm = true;
         }
@@ -520,8 +520,8 @@ export class SearchComponent implements OnInit, OnDestroy {
       const toolHits = results[0].hits.hits;
       const workflowHits = results[1].hits.hits;
       this.hits = toolHits.concat(workflowHits);
-      const filteredHits: [Array<Hit>, Array<Hit>] = this.searchService.filterEntry(this.hits, this.query_size);
-      this.searchService.setHits(filteredHits[0], filteredHits[1]);
+      const filteredHits: [Array<Hit>, Array<Hit>, Array<Hit>] = this.searchService.filterEntry(this.hits, this.query_size);
+      this.searchService.setHits(filteredHits[0], filteredHits[1], filteredHits[2]);
     });
   }
 

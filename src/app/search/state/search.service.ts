@@ -212,7 +212,7 @@ export class SearchService {
     // For sorting workflows by name, sort full_workflow_path
     if (entryType === 'tool' && attribute === 'name') {
       attribute = 'tool_path';
-    } else if (entryType === 'workflow' && attribute === 'name') {
+    } else if ((entryType === 'workflow' || entryType == 'notebook') && attribute === 'name') {
       attribute = 'full_workflow_path';
     }
     let aVal = a[attribute];
@@ -323,9 +323,10 @@ export class SearchService {
    * @param {number} query_size
    * @memberof SearchService
    */
-  filterEntry(hits: Array<Hit>, query_size: number): [Array<Hit>, Array<Hit>] {
+  filterEntry(hits: Array<Hit>, query_size: number): [Array<Hit>, Array<Hit>, Array<Hit>] {
     const workflowHits = [];
     const toolHits = [];
+    const notebookHits = [];
     hits.forEach((hit) => {
       hit['_source'] = this.providerService.setUpProvider(hit['_source']);
       if (workflowHits.length + toolHits.length < query_size - 1) {
@@ -334,18 +335,21 @@ export class SearchService {
           toolHits.push(hit);
         } else if (hit['_index'] === 'workflows') {
           workflowHits.push(hit);
+        } else if (hit['_index'] === 'notebooks') {
+          notebookHits.push(hit);
         }
       }
     });
-    return [toolHits, workflowHits];
+    return [toolHits, workflowHits, notebookHits];
   }
 
-  setHits(toolHits: Array<Hit>, workflowHits: Array<Hit>) {
+  setHits(toolHits: Array<Hit>, workflowHits: Array<Hit>, notebookHits: Array<Hit>) {
     this.searchStore.update((state) => {
       return {
         ...state,
         toolhit: toolHits,
         workflowhit: workflowHits,
+        notebookhit: notebookHits,
       };
     });
   }

@@ -80,3 +80,10 @@
     <app-search-tool-table></app-search-tool-table>
   </div>
 </div>
+
+<div *ngIf="getTabIndex() === 2">
+  <div class="mat-tab-content">
+    <!-- TODO add notebook tag cloud data -->
+    <app-search-notebook-table></app-search-notebook-table>
+  </div>
+</div>

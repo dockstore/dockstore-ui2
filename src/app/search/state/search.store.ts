@@ -21,6 +21,7 @@ export interface SearchState {
   shortUrl: string;
   workflowhit: any;
   toolhit: any;
+  notebookhit: any;
   showToolTagCloud: boolean;
   showWorkflowTagCloud: boolean;
   searchText: string;
@@ -39,6 +40,7 @@ export function createInitialState(): SearchState {
     shortUrl: null,
     workflowhit: null,
     toolhit: null,
+    notebookhit: null,
     showToolTagCloud: false,
     showWorkflowTagCloud: false,
     searchText: '',

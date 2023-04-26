@@ -33,6 +33,7 @@ export class SearchResultsComponent extends Base implements OnInit {
   faMinus = faMinus;
   public noToolHits$: Observable<boolean>;
   public noWorkflowHits$: Observable<boolean>;
+  public noNotebookHits$: Observable<boolean>;
   public showWorkflowTagCloud$: Observable<boolean>;
   public showToolTagCloud$: Observable<boolean>;
   public selectedIndex$: Observable<any>;
@@ -54,6 +55,7 @@ export class SearchResultsComponent extends Base implements OnInit {
     super();
     this.noWorkflowHits$ = this.searchQuery.noWorkflowHits$;
     this.noToolHits$ = this.searchQuery.noToolHits$;
+    this.noNotebookHits$ = this.searchQuery.noNotebookHits$;
     this.showToolTagCloud$ = this.searchQuery.showToolTagCloud$;
     this.showWorkflowTagCloud$ = this.searchQuery.showWorkflowTagCloud$;
   }
