@@ -132,6 +132,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   public toolTips: Map<string, string>;
   private entryOrder: Map<string, SubBucket>;
   private expandedPanels: Map<string, boolean>;
+  private exclusiveFilters: Array<string>;
   public basicSearchText$: Observable<string>;
   private advancedSearchOptions = ['ANDSplitFilter', 'ANDNoSplitFilter', 'ORFilter', 'NOTFilter', 'searchMode'];
   public filterKeys$: Observable<Array<string>>;
@@ -161,14 +162,23 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.filterKeys$ = this.searchQuery.filterKeys$;
     this.suggestTerm$ = this.searchQuery.suggestTerm$;
     this.selectedIndex$ = this.searchQuery.savedTabIndex$;
-    // Initialize mappings
-    this.bucketStubs = this.searchService.initializeCommonBucketStubs();
-    this.friendlyNames = this.searchService.initializeFriendlyNames();
-    this.entryOrder = this.searchService.initializeEntryOrder();
-    this.toolTips = this.searchService.initializeToolTips();
-    this.expandedPanels = this.searchService.initializeExpandedPanels();
-
+    this.initializeMappings(0);
     this.clearFacetSearches();
+  }
+
+  private lastTabIndex: number | null = null;
+
+  initializeMappings(tabIndex: number) {
+    if (tabIndex !== this.lastTabIndex) {
+      console.log('reinitialize tabs');
+      this.bucketStubs = this.searchService.initializeCommonBucketStubs(tabIndex);
+      this.friendlyNames = this.searchService.initializeFriendlyNames(tabIndex);
+      this.entryOrder = this.searchService.initializeEntryOrder(tabIndex);
+      this.toolTips = this.searchService.initializeToolTips(tabIndex);
+      this.expandedPanels = this.searchService.initializeExpandedPanels(tabIndex);
+      this.exclusiveFilters = this.searchService.initializeExclusiveFilters(tabIndex);
+    }
+    this.lastTabIndex = tabIndex;
   }
 
   getKeys(bucketMap: Map<any, any>): Array<string> {
@@ -181,6 +191,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    console.log('INIT');
     this.advancedSearchObject$ = this.advancedSearchQuery.advancedSearch$;
     this.hasAdvancedSearchText$ = this.advancedSearchQuery.hasAdvancedSearchText$;
     this.values$ = this.searchQuery.searchText$;
@@ -430,13 +441,15 @@ export class SearchComponent implements OnInit, OnDestroy {
    *                Update Functions
    * ===============================================
    */
-
   // Called from one place which is only when the URL has parsed and query non-result state has been set
   updateQuery() {
-    const tabIndex = SearchService.convertTabIndexToEntryType(this.searchQuery.getValue().currentTabIndex);
+    const tabIndex = this.searchQuery.getValue().currentTabIndex;
+    const entryType = SearchService.convertTabIndexToEntryType(tabIndex);
+    this.initializeMappings(tabIndex);
     // Separating into 2 queries otherwise the queries interfere with each other (filter applied before aggregation)
     // The first query handles the aggregation and is used to update the sidebar buckets
     // The second query updates the result table
+    console.log('UPDATE ' + tabIndex);
     const advancedSearchObject = this.advancedSearchQuery.getValue().advancedSearch;
     const values = this.advancedSearchQuery.getValue().searchText;
     const sideBarQuery = this.queryBuilderService.getSidebarAggregationQuery(
@@ -445,8 +458,9 @@ export class SearchComponent implements OnInit, OnDestroy {
       this.searchTerm,
       this.bucketStubs,
       this.filters,
+      this.exclusiveFilters,
       this.sortModeMap,
-      tabIndex
+      entryType
     );
     const tableQuery = this.queryBuilderService.getResultQuery(
       this.query_size,
@@ -454,7 +468,8 @@ export class SearchComponent implements OnInit, OnDestroy {
       advancedSearchObject,
       this.searchTerm,
       this.filters,
-      tabIndex
+      this.exclusiveFilters,
+      entryType
     );
     this.resetEntryOrder();
     this.resetPageIndex();
@@ -538,7 +553,7 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   resetEntryOrder() {
     this.entryOrder.clear();
-    this.entryOrder = this.searchService.initializeEntryOrder();
+    this.entryOrder = this.searchService.initializeEntryOrder(this.lastTabIndex);
     this.orderedBuckets.clear();
   }
 
@@ -548,7 +563,7 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   resetExpansionPanels() {
     this.clearExpandedPanelsState();
-    this.expandedPanels = this.searchService.initializeExpandedPanels();
+    this.expandedPanels = this.searchService.initializeExpandedPanels(this.lastTabIndex);
   }
 
   /**===============================================

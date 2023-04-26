@@ -49,6 +49,7 @@ export class QueryBuilderService {
     searchTerm: boolean,
     bucketStubs: any,
     filters: any,
+    exclusiveFilters: any,
     sortModeMap: any,
     index: 'workflows' | 'tools' | 'notebooks'
   ): string {
@@ -58,7 +59,7 @@ export class QueryBuilderService {
     sidebarBody = this.excludeContent(sidebarBody);
     sidebarBody = sidebarBody.query('match', '_index', index);
     sidebarBody = this.appendQuery(sidebarBody, values, advancedSearchObject, searchTerm);
-    sidebarBody = this.appendAggregations(count, sidebarBody, bucketStubs, filters, sortModeMap);
+    sidebarBody = this.appendAggregations(count, sidebarBody, bucketStubs, filters, exclusiveFilters, sortModeMap);
     const builtSideBarBody = sidebarBody.build();
     const sideBarQuery = JSON.stringify(builtSideBarBody);
     return sideBarQuery;
@@ -104,13 +105,14 @@ export class QueryBuilderService {
     advancedSearchObject: AdvancedSearchObject,
     searchTerm: boolean,
     filters: any,
+    exclusiveFilters: any,
     index: 'tools' | 'workflows' | 'notebooks'
   ): string {
     let tableBody = bodybuilder().size(query_size);
     tableBody = this.sourceOptions(tableBody);
     tableBody = tableBody.query('match', '_index', index);
     tableBody = this.appendQuery(tableBody, values, advancedSearchObject, searchTerm);
-    tableBody = this.appendFilter(tableBody, null, filters);
+    tableBody = this.appendFilter(tableBody, null, filters, exclusiveFilters);
     // most popular results should be returned first
     tableBody = tableBody.sort('stars_count', 'desc');
     const builtTableBody = tableBody.build();
@@ -138,10 +140,10 @@ export class QueryBuilderService {
    * @returns the new body builder object with filter applied
    * @memberof SearchComponent
    */
-  appendFilter(body: any, aggKey: string, filters: any): any {
+  appendFilter(body: any, aggKey: string, filters: any, exclusiveFilters: any): any {
     filters.forEach((value: Set<string>, key: string) => {
       value.forEach((insideFilter) => {
-        const isExclusiveFilter = this.searchService.exclusiveFilters.includes(key);
+        const isExclusiveFilter = exclusiveFilters.includes(key);
         if (aggKey === key && !isExclusiveFilter) {
           // Return some garbage filter because we've decided to append a filter, there's no turning back
           // return body;  // <--- this does not work
@@ -242,13 +244,13 @@ export class QueryBuilderService {
    * @returns {*} the new body builder object
    * @memberof SearchComponent
    */
-  appendAggregations(count: number, body: any, bucketStubs: any, filters: any, sortModeMap: any): any {
+  appendAggregations(count: number, body: any, bucketStubs: any, filters: any, exclusiveFilters: any, sortModeMap: any): any {
     // go through buckets
     bucketStubs.forEach((key) => {
       const order = this.searchService.parseOrderBy(key, sortModeMap);
       if (count > 0) {
         body = body.agg('filter', key, key, (a) => {
-          return this.appendFilter(a, key, filters).aggregation('terms', key, key, { size: this.shard_size, order });
+          return this.appendFilter(a, key, filters, exclusiveFilters).aggregation('terms', key, key, { size: this.shard_size, order });
         });
       } else {
         body = body.agg('terms', key, key, { size: this.shard_size, order });
