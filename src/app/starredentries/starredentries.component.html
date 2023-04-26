@@ -85,7 +85,7 @@
         </mat-tab>
 
         <mat-tab *ngIf="Dockstore.FEATURES.enableNotebooks">
-          <div class="mb-4"><app-preview-warning></app-preview-warning></div>
+          <div class="starred-header mb-4"><app-preview-warning featureName="Notebooks"></app-preview-warning></div>
           <ng-template mat-tab-label>
             <div fxLayoutGap="0.5rem">
               <img class="site-icons-tab" src="../../../assets/svg/sub-nav/notebook.svg" alt="notebook logo" />

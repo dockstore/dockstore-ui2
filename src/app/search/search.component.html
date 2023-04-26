@@ -322,7 +322,10 @@
             {{ query_size - 1 }} results are shown. We recommend that you narrow your search to find more relevant results.
           </p>
         </mat-card>
-        <app-preview-warning *ngIf="Dockstore.FEATURES.enableNotebooks && (selectedIndex$ | async) === 2"></app-preview-warning>
+        <app-preview-warning
+          *ngIf="Dockstore.FEATURES.enableNotebooks && (selectedIndex$ | async) === 2"
+          featureName="Notebooks"
+        ></app-preview-warning>
         <app-search-results></app-search-results>
       </div>
     </div>
