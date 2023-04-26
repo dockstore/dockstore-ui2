@@ -14,9 +14,6 @@
  *    limitations under the License.
  */
 
-.metrics-container {
-  flex-direction: row;
-}
 .metrics-table-container {
   justify-content: center;
 }

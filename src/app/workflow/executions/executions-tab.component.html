@@ -8,8 +8,8 @@
   <div class="metrics-container w-100" fxLayout="row">
     <div class="w-25">
       <div class="partner-dropdown">
-        <span class="weight-bold">Partner: </span>
-        <mat-form-field data-cy="metrics-partner-dropdown">
+        <div class="weight-bold">Partner:</div>
+        <mat-form-field data-cy="metrics-partner-dropdown" class="w-75">
           <mat-select [value]="currentPartner" (selectionChange)="matSelectChange($event)">
             <mat-select-trigger>
               {{ currentPartner }}

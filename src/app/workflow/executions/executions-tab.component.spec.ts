@@ -1,5 +1,5 @@
 /*
- *    Copyright 2023 OICR & UCSC
+ *    Copyright 2023 OICR, UCSC
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -19,7 +19,9 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { DescriptorLanguageStubService } from '../../test/service-stubs';
 import { ExecutionsTabComponent } from './executions-tab.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { AlertService } from '../../shared/alert/state/alert.service';
 import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
+import { CustomMaterialModule } from '../../shared/modules/material.module';
 
 describe('ExecutionsTabComponent', () => {
   let component: ExecutionsTabComponent;
@@ -30,8 +32,8 @@ describe('ExecutionsTabComponent', () => {
       TestBed.configureTestingModule({
         declarations: [ExecutionsTabComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        imports: [HttpClientTestingModule],
-        providers: [{ provide: DescriptorLanguageService, useClass: DescriptorLanguageStubService }],
+        imports: [HttpClientTestingModule, CustomMaterialModule],
+        providers: [{ provide: DescriptorLanguageService, useClass: DescriptorLanguageStubService }, AlertService],
       }).compileComponents();
     })
   );
