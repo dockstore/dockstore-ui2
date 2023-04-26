@@ -15,28 +15,10 @@
  */
 
 .metrics-container {
-  display: flex;
-  width: 100%;
   flex-direction: row;
 }
 .metrics-table-container {
   justify-content: center;
-  height: 100%;
-  width: 75%;
-  display: flex;
-}
-.partner-dropdown {
-  flex-direction: row;
-  margin: 2%;
-}
-.metrics-header {
-  font-weight: bold;
-}
-.execution-counts-container {
-  margin: 2%;
-}
-.validations-table-container {
-  margin-top: 5%;
 }
 .validations-table {
   table-layout: fixed;

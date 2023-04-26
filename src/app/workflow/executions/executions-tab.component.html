@@ -1,14 +1,14 @@
-<div *ngIf="!ifMetricsExist">
+<div *ngIf="!metricsExist">
   <mat-card class="alert alert-warning mat-elevation-z" role="alert" data-cy="no-metrics-banner">
     <mat-icon class="alert-warning-icon">info</mat-icon> No metrics data exist for this version.
   </mat-card>
 </div>
 
-<div *ngIf="ifMetricsExist">
-  <div class="metrics-container">
+<div *ngIf="metricsExist" fxFlex>
+  <div class="metrics-container w-100">
     <div class="w-25">
       <div class="partner-dropdown">
-        <span class="metrics-header">Partner: </span>
+        <span class="weight-bold">Partner: </span>
         <mat-form-field data-cy="metrics-partner-dropdown">
           <mat-select [value]="currentPartner" (selectionChange)="matSelectChange($event)">
             <mat-select-trigger>
@@ -22,20 +22,20 @@
       </div>
       <div class="execution-counts-container">
         <div data-cy="metrics-total-executions-div">
-          <span class="metrics-header">Total executions: </span>
+          <span class="weight-bold">Total executions: </span>
           <span>{{ totalExecutions }}</span>
         </div>
         <div>
-          <span class="metrics-header">Successful executions: </span>
+          <span class="weight-bold">Successful executions: </span>
           <span>{{ successfulExecutions }}</span>
         </div>
         <div>
-          <span class="metrics-header">Failed executions: </span>
+          <span class="weight-bold">Failed executions: </span>
           <span>{{ failedExecutions }}</span>
         </div>
       </div>
     </div>
-    <div class="metrics-table-container">
+    <div class="metrics-table-container h-100 w-75" fxFlex>
       <table mat-table class="metrics-table w-100" aria-label="validations-table" [dataSource]="metricsTable" data-cy="metrics-table">
         <ng-container matColumnDef="metric">
           <th mat-header-cell *matHeaderCellDef>Metric</th>
@@ -44,17 +44,23 @@
 
         <ng-container matColumnDef="min">
           <th mat-header-cell *matHeaderCellDef>Minimum</th>
-          <td mat-cell *matCellDef="let element">{{ element.min }}</td>
+          <td mat-cell *matCellDef="let element">
+            <span *ngIf="element.min">{{ element.min + element.unit }}</span>
+          </td>
         </ng-container>
 
         <ng-container matColumnDef="avg">
           <th mat-header-cell *matHeaderCellDef>Average</th>
-          <td mat-cell *matCellDef="let element">{{ element.avg }}</td>
+          <td mat-cell *matCellDef="let element">
+            <span *ngIf="element.avg">{{ element.avg + element.unit }}</span>
+          </td>
         </ng-container>
 
         <ng-container matColumnDef="max">
           <th mat-header-cell *matHeaderCellDef>Maximum</th>
-          <td mat-cell *matCellDef="let element">{{ element.max }}</td>
+          <td mat-cell *matCellDef="let element">
+            <span *ngIf="element.max">{{ element.max + element.unit }}</span>
+          </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="metricsColumns"></tr>
@@ -62,7 +68,7 @@
       </table>
     </div>
   </div>
-  <div class="validations-table-container w-100">
+  <div class="validations-table-container w-100 mt-5">
     <table mat-table class="validations-table" aria-label="validations-table" [dataSource]="validationsTable" data-cy="validations-table">
       <ng-container matColumnDef="validatorTool">
         <th mat-header-cell *matHeaderCellDef>Validator Tool</th>

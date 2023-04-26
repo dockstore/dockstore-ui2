@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 OICR
+ *    Copyright 2023 OICR & UCSC
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -32,6 +32,25 @@ import { CheckerWorkflowService } from '../../shared/state/checker-workflow.serv
 import { CheckerWorkflowQuery } from '../../shared/state/checker-workflow.query';
 import PartnerEnum = CloudInstance.PartnerEnum;
 import { MatSelectChange } from '@angular/material/select';
+import { AlertService } from '../../shared/alert/state/alert.service';
+
+interface MetricsTableObject {
+  metric: string;
+  min: number;
+  avg: number;
+  max: number;
+  unit: string;
+}
+interface ValidationsTableObject {
+  validatorTool: string;
+  mostRecentVersion: string;
+  isValid: boolean;
+  mostRecentErrorMessage: string;
+  successfulValidationVersions: string[];
+  failedValidationVersions: string[];
+  numberOfRuns: number;
+  passingRate: number;
+}
 
 @Component({
   selector: 'app-executions-tab',
@@ -43,14 +62,14 @@ export class ExecutionsTabComponent extends EntryTab implements OnChanges {
   trsID: string;
   currentPartner: PartnerEnum;
   partners: PartnerEnum[];
-  metricsTable: any[];
-  validationsTable: any[];
+  metricsTable: MetricsTableObject[];
+  validationsTable: ValidationsTableObject[];
   metricsColumns: string[];
   validationsColumns: string[];
   totalExecutions: number;
   successfulExecutions: number;
   failedExecutions: number;
-  ifMetricsExist: boolean;
+  metricsExist: boolean;
 
   @Input() entry: BioWorkflow | Service | Notebook;
   @Input() version: WorkflowVersion;
@@ -58,6 +77,7 @@ export class ExecutionsTabComponent extends EntryTab implements OnChanges {
   constructor(
     private extendedGA4GHService: ExtendedGA4GHService,
     private workflowQuery: WorkflowQuery,
+    private alertService: AlertService,
     protected sessionQuery: SessionQuery,
     private checkerWorkflowService: CheckerWorkflowService,
     private checkerWorkflowQuery: CheckerWorkflowQuery
@@ -66,27 +86,29 @@ export class ExecutionsTabComponent extends EntryTab implements OnChanges {
   }
 
   ngOnChanges() {
-    this.ifMetricsExist = false;
+    this.alertService.start('Retrieving metrics data');
     this.trsID = this.checkerWorkflowQuery.getTRSId(this.entry);
-    this.metrics = new Map();
-    this.metricsTable = [];
-    this.validationsTable = [];
-    this.partners = [];
     this.extendedGA4GHService
       .aggregatedMetricsGet(this.trsID, this.version.name)
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((metrics) => {
-        if (metrics) {
-          for (const [partner, metric] of Object.entries(metrics)) {
-            this.setMetricsObject(this.metrics, partner, metric);
+      .subscribe(
+        (metrics) => {
+          this.resetMetricsData();
+          if (metrics) {
+            for (const [partner, metric] of Object.entries(metrics)) {
+              this.setMetricsObject(this.metrics, partner, metric);
+            }
+            this.partners = Array.from(this.metrics.keys());
+            if (this.partners.length > 0) {
+              this.metricsExist = true;
+              this.selectPartner(this.partners[0]);
+            }
           }
-          this.partners = Array.from(this.metrics.keys());
-          if (this.partners.length > 0) {
-            this.ifMetricsExist = true;
-            this.selectPartner(this.partners[0]);
-          }
+        },
+        (error) => {
+          this.alertService.detailedError(error);
         }
-      });
+      );
   }
 
   private setMetricsObject(metricsMap: Map<PartnerEnum, Metrics>, partner: string, metric: Metrics) {
@@ -97,6 +119,20 @@ export class ExecutionsTabComponent extends EntryTab implements OnChanges {
     }
   }
 
+  private resetMetricsData() {
+    this.metricsExist = false;
+    this.metrics = new Map();
+    this.metricsTable = null;
+    this.validationsTable = null;
+    this.partners = [];
+    this.totalExecutions = null;
+    this.successfulExecutions = null;
+    this.failedExecutions = null;
+    this.currentPartner = null;
+    this.metricsColumns = null;
+    this.validationsColumns = null;
+  }
+
   private loadMetricsData(partner: PartnerEnum) {
     this.metricsTable = [];
     const metrics = this.metrics.get(partner);
@@ -104,7 +140,7 @@ export class ExecutionsTabComponent extends EntryTab implements OnChanges {
       this.metricsColumns = ['metric', 'min', 'avg', 'max'];
       this.insertToMetricsTable(this.metricsTable, metrics?.cpu, 'CPU');
       this.insertToMetricsTable(this.metricsTable, metrics?.memory, 'Memory');
-      this.insertToMetricsTable(this.metricsTable, metrics?.executionTime, 'Run Time (s)');
+      this.insertToMetricsTable(this.metricsTable, metrics?.executionTime, 'Run Time');
       if (metrics.executionStatusCount) {
         this.totalExecutions =
           metrics.executionStatusCount.numberOfSuccessfulExecutions + metrics.executionStatusCount.numberOfFailedExecutions;
@@ -115,54 +151,51 @@ export class ExecutionsTabComponent extends EntryTab implements OnChanges {
   }
 
   private insertToMetricsTable(table: any[], metricsData: CpuMetric | MemoryMetric | ExecutionTimeMetric, metricLabel: string) {
-    table.push({ metric: metricLabel, min: metricsData?.minimum, avg: metricsData?.average, max: metricsData?.maximum });
+    table.push({
+      metric: metricLabel,
+      min: metricsData?.minimum,
+      avg: metricsData?.average,
+      max: metricsData?.maximum,
+      unit: metricsData?.unit,
+    });
   }
 
   private loadValidationsData(partner: PartnerEnum) {
-    this.validationsTable = [];
     const validations = this.metrics.get(partner).validationStatus?.validatorToolToIsValid;
     if (validations) {
       for (const [validatorTool, isValid] of Object.entries(validations)) {
-        if (isValid.mostRecentIsValid) {
-          this.validationsColumns = [
-            'validatorTool',
-            'mostRecentVersion',
-            'isValid',
-            'successfulValidationVersions',
-            'failedValidationVersions',
-            'numberOfRuns',
-            'passingRate',
-          ];
-          this.validationsTable.push({
+        this.validationsTable = [
+          {
             validatorTool: validatorTool,
             mostRecentVersion: isValid.mostRecentVersion,
             isValid: isValid.mostRecentIsValid,
             successfulValidationVersions: isValid.successfulValidationVersions,
-            failedValidationVersions: isValid.failedValidationVersions,
-            numberOfRuns: isValid.numberOfRuns,
-            passingRate: isValid.passingRate,
-          });
-        } else {
-          this.validationsColumns = [
-            'validatorTool',
-            'mostRecentVersion',
-            'isValid',
-            'mostRecentErrorMessage',
-            'successfulValidationVersions',
-            'failedValidationVersions',
-            'numberOfRuns',
-            'passingRate',
-          ];
-          this.validationsTable.push({
-            validatorTool: validatorTool,
-            mostRecentVersion: isValid.mostRecentVersion,
-            isValid: isValid.mostRecentIsValid,
             mostRecentErrorMessage: isValid.mostRecentErrorMessage,
-            successfulValidationVersions: isValid.successfulValidationVersions,
             failedValidationVersions: isValid.failedValidationVersions,
             numberOfRuns: isValid.numberOfRuns,
             passingRate: isValid.passingRate,
-          });
+          },
+        ];
+        this.validationsColumns = [
+          'validatorTool',
+          'mostRecentVersion',
+          'isValid',
+          'successfulValidationVersions',
+          'failedValidationVersions',
+          'numberOfRuns',
+          'passingRate',
+        ];
+        if (!isValid.mostRecentIsValid) {
+          this.validationsColumns = [
+            'validatorTool',
+            'mostRecentVersion',
+            'isValid',
+            'mostRecentErrorMessage', //adds the error message column
+            'successfulValidationVersions',
+            'failedValidationVersions',
+            'numberOfRuns',
+            'passingRate',
+          ];
         }
       }
     }
