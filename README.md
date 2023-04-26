@@ -242,7 +242,7 @@ as this can cause constraint issues, but in some cases it is required.
 6. Verify the database dump doesn't have any live tokens in the tokens table 
 (Search for `Data for Name: token; Type: TABLE DATA; Schema: public; Owner: dockstore`), then commit the new database dump.
 
-## Further help
+## Further Help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
 ~~~~
