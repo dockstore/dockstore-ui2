@@ -1,0 +1,78 @@
+<div>
+  <div *ngIf="!dataSource">
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  </div>
+  <mat-table
+    [hidden]="!dataSource"
+    [dataSource]="dataSource"
+    matSort
+    matSortActive="starredUsers"
+    matSortDirection="desc"
+    matSortDisableClear
+    data-cy="search-notebook-results-table"
+  >
+    <ng-container matColumnDef="name">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
+      <mat-cell data-cy="notebookColumn" *matCellDef="let notebook">
+        <div>
+          <a [matTooltip]="notebook?.full_workflow_path" [routerLink]="'/notebooks/' + notebook?.full_workflow_path">{{
+            notebook?.organization + '/' + notebook?.repository + (notebook?.workflowName ? '/' + notebook?.workflowName : '')
+          }}</a>
+          <div class="truncate-text-2 size-small" *ngIf="notebook.topicAutomatic" [matTooltip]="notebook.topicAutomatic">
+            {{ notebook.topicAutomatic }}
+          </div>
+        </div>
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="verified">
+      <mat-header-cell fxShow fxHide.lt-md *matHeaderCellDef>Verified</mat-header-cell>
+      <mat-cell data-cy="verificationStatus" fxShow fxHide.lt-md *matCellDef="let notebook">
+        <a *ngIf="notebook.verified" [href]="verifiedLink">
+          <mat-icon matTooltip="Verified">done</mat-icon>
+        </a>
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="all_authors">
+      <mat-header-cell fxShow fxHide.lt-sm *matHeaderCellDef mat-sort-header>Author</mat-header-cell>
+      <mat-cell
+        fxShow
+        fxHide.lt-sm
+        class="duration-cell truncate-text-2"
+        *matCellDef="let notebook"
+        [matTooltip]="notebook?.all_authors | getSearchAuthorsHtml: false"
+        [innerHTML]="notebook?.all_authors | getSearchAuthorsHtml"
+      ></mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="descriptorType">
+      <mat-header-cell fxShow fxHide.lt-sm data-cy="descriptorTypeHeader" *matHeaderCellDef mat-sort-header>Format</mat-header-cell>
+      <mat-cell fxShow fxHide.lt-sm data-cy="descriptorType" *matCellDef="let notebook">
+        <div>
+          <span class="nonclick-badge">{{ notebook?.descriptorType | descriptorLanguage }}</span>
+        </div>
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="projectLinks">
+      <mat-header-cell fxShow fxHide.lt-md *matHeaderCellDef>Links</mat-header-cell>
+      <mat-cell fxShow fxHide.lt-md *matCellDef="let entry">
+        <a [href]="entry?.providerUrl" *ngIf="entry?.providerUrl">
+          <fa-icon class="fa-lg" [icon]="entry.providerIcon" [matTooltip]="entry?.provider"></fa-icon>
+        </a>
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="starredUsers">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Stars</mat-header-cell>
+      <mat-cell class="description-cell" *matCellDef="let notebook"
+        >{{ !notebook?.starredUsers || notebook?.starredUsers.length === 0 ? '' : notebook?.starredUsers?.length }}
+        <mat-icon class="star-icon" *ngIf="notebook?.starredUsers?.length > 0">star_rate</mat-icon>
+      </mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+  </mat-table>
+  <mat-paginator
+    data-cy="search-notebook-table-paginator"
+    [showFirstLastButtons]="true"
+    [pageSizeOptions]="[10, 20, 50, 100]"
+    (page)="updatePageSizeAndIndex($event)"
+  ></mat-paginator>
+</div>
