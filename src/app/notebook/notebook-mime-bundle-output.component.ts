@@ -19,7 +19,7 @@ export class NotebookMimeBundleOutputComponent implements OnChanges {
     this.html = this.createHtmlFromBundles(mimeBundle, metadataBundle);
   }
 
-  createHtmlFromBundles(mimeBundle: MimeBundle, metadataBundle: OutputMetadata): string {
+  createHtmlFromBundles(mimeBundle: MimeBundle, metadataBundle: OutputMetadata): string | undefined {
     const mimeObject = selectBestFromMimeBundle(mimeBundle);
     const mimeType = mimeObject?.mimeType;
     const data = mimeObject?.data;
