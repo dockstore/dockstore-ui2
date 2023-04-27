@@ -24,14 +24,6 @@
         </div>
       </mat-cell>
     </ng-container>
-    <ng-container matColumnDef="verified">
-      <mat-header-cell fxShow fxHide.lt-md *matHeaderCellDef>Verified</mat-header-cell>
-      <mat-cell data-cy="verificationStatus" fxShow fxHide.lt-md *matCellDef="let notebook">
-        <a *ngIf="notebook.verified" [href]="verifiedLink">
-          <mat-icon matTooltip="Verified">done</mat-icon>
-        </a>
-      </mat-cell>
-    </ng-container>
     <ng-container matColumnDef="all_authors">
       <mat-header-cell fxShow fxHide.lt-sm *matHeaderCellDef mat-sort-header>Author</mat-header-cell>
       <mat-cell
@@ -48,6 +40,16 @@
       <mat-cell fxShow fxHide.lt-sm data-cy="descriptorType" *matCellDef="let notebook">
         <div>
           <span class="nonclick-badge">{{ notebook?.descriptorType | descriptorLanguage }}</span>
+        </div>
+      </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="descriptorTypeSubclass">
+      <mat-header-cell fxShow fxHide.lt-sm data-cy="descriptorTypeSubclassHeader" *matHeaderCellDef mat-sort-header
+        >Language</mat-header-cell
+      >
+      <mat-cell fxShow fxHide.lt-sm data-cy="descriptorTypeSubclass" *matCellDef="let notebook">
+        <div>
+          <span class="nonclick-badge">{{ notebook?.descriptorTypeSubclass }}</span>
         </div>
       </mat-cell>
     </ng-container>

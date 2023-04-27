@@ -32,6 +32,7 @@ import { SearchService } from '../state/search.service';
   styleUrls: ['../../shared/styles/entry-table.scss', './search-notebook-table.component.scss'],
 })
 export class SearchNotebookTableComponent extends SearchEntryTable implements OnInit {
+  public readonly displayedColumns = ['name', 'all_authors', 'descriptorType', 'descriptorTypeSubclass', 'projectLinks', 'starredUsers'];
   readonly entryType = 'notebook';
   public dataSource: MatTableDataSource<Notebook>;
   constructor(dateService: DateService, searchQuery: SearchQuery, searchService: SearchService) {

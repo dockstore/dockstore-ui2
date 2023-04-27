@@ -74,6 +74,7 @@ export class QueryBuilderService {
     return body.rawOption('_source', [
       'all_authors',
       'descriptorType',
+      'descriptorTypeSubclass',
       'full_workflow_path',
       'gitUrl',
       'name',
