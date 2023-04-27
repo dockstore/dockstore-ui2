@@ -113,14 +113,14 @@
               <mat-card class="alert alert-info mat-elevation-z" role="alert">
                 <p>
                   <mat-icon>info</mat-icon>
-                  There are currently no tools registered under this account, to add your first tool, do one of the following:
+                  There are currently no tools registered under this account. To add your first tool, do one of the following:
                 </p>
                 <ul>
                   <li>
                     Go to 'Accounts' and link a Quay.io account that is set up to build Docker images from GitHub, Gitlab, or Bitbucket.
                     Tools will be synchronized in the linking process.
                   </li>
-                  <li>Press the 'Add Tool' button to manually add a tool using the registration wizard.</li>
+                  <li>Press the 'Register a Tool' button to manually add a tool using the registration wizard.</li>
                   <button
                     mat-raised-button
                     class="accent-1-dark-btn"
@@ -128,7 +128,7 @@
                     type="button"
                     [disabled]="isRefreshing$ | async"
                   >
-                    Add Tool
+                    Register a Tool
                   </button>
                 </ul>
                 <div *ngIf="!hasGitHubToken" class="mt-3">

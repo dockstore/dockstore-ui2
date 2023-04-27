@@ -37,7 +37,13 @@
     workflows or tools.
   </div>
 </mat-card>
-<mat-card *ngIf="usernameChangeRequired" class="alert alert-warning mat-elevation-z p-2" role="alert" fxLayout fxLayoutGap="1rem">
+<mat-card
+  *ngIf="isUsernameChangeRequired$ | async"
+  class="alert alert-warning mat-elevation-z p-2"
+  role="alert"
+  fxLayout
+  fxLayoutGap="1rem"
+>
   <mat-icon class="alert-warning-icon">warning</mat-icon>
   <div>
     <strong>Warning:</strong> Your username contains one or more banned words. Some operations on Dockstore will be blocked until you change

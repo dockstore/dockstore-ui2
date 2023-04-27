@@ -16,6 +16,7 @@ import { CollectionsComponent } from './collections/collections.component';
 import { CreateCollectionModule } from './collections/create-collection.module';
 import { RemoveCollectionDialogComponent } from './collections/remove-collection/remove-collection.component';
 import { UpdateOrganizationDescriptionModule } from './organization/update-organization-description.module';
+import { PreviewWarningModule } from '../shared/modules/preview-warning.module';
 
 @NgModule({
   imports: [
@@ -32,6 +33,7 @@ import { UpdateOrganizationDescriptionModule } from './organization/update-organ
     CategoryButtonModule,
     ImgFallbackModule,
     PipeModule,
+    PreviewWarningModule,
   ],
   declarations: [CollectionsComponent, CollectionComponent, CollectionRemoveEntryDialogComponent, RemoveCollectionDialogComponent],
   exports: [CollectionsComponent, CollectionComponent],

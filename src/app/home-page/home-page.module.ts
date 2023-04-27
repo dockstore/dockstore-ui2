@@ -22,8 +22,6 @@ import { MySidebarModule } from '../shared/modules/my-sidebar.module';
 import { EntryBoxComponent } from './widget/entry-box/entry-box.component';
 import { MytoolsService } from 'app/mytools/mytools.service';
 import { MyWorkflowsService } from 'app/myworkflows/myworkflows.service';
-import { MyServicesService } from 'app/myworkflows/my-services.service';
-import { MyBioWorkflowsService } from 'app/myworkflows/my-bio-workflows.service';
 import { MyEntriesStateService } from 'app/shared/state/my-entries.service';
 import { MyEntriesStore } from 'app/shared/state/my-entries.store';
 import { MyEntriesQuery } from 'app/shared/state/my-entries.query';
@@ -75,8 +73,6 @@ import { PreviewWarningModule } from '../shared/modules/preview-warning.module';
   providers: [
     MytoolsService,
     MyWorkflowsService,
-    MyServicesService,
-    MyBioWorkflowsService,
     MyEntriesStateService,
     MyEntriesStore,
     MyEntriesQuery,

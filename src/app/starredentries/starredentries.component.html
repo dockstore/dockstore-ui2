@@ -113,13 +113,12 @@
           </div>
         </mat-tab>
 
-        <ng-template #workflowSummary let-workflow="workflow" let-type="entryType">
+        <ng-template #workflowSummary let-workflow="workflow">
           <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-between">
-            <a [routerLink]="type | routerLink: workflow" class="no-underline">
+            <a [routerLink]="workflow | routerLink" class="no-underline">
               <mat-card-header class="ml-2">
                 <mat-card-title fxLayoutAlign="space-between" fxLayoutGap="1rem">
                   <img
-                    class="site-icons-small entryType-icons"
                     src="../../../assets/svg/sub-nav/{{ workflow?.entryTypeMetadata.term }}.svg"
                     alt="{{ workflow?.entryTypeMetadata.term }} logo"
                   />
@@ -168,7 +167,7 @@
                 </span>
               </div>
             </div>
-            <a [routerLink]="type | routerLink: workflow" class="no-underline">
+            <a [routerLink]="workflow | routerLink" class="no-underline">
               <button mat-raised-button class="small-mat-btn-skin small-btn-structure" color="accent">View</button>
             </a>
           </div>
@@ -176,10 +175,10 @@
 
         <ng-template #toolSummary let-tool="tool">
           <div fxLayout="row" fxLayoutAlign="space-between">
-            <a routerLink="/containers/{{ tool.tool_path }}" class="no-underline">
+            <a [routerLink]="tool | routerLink" class="no-underline">
               <mat-card-header class="ml-2">
                 <mat-card-title fxLayoutAlign="flex-start" fxLayoutGap="1rem">
-                  <img class="site-icons-small entryType-icons" src="../../../assets/svg/sub-nav/tool.svg" alt="tool logo" />
+                  <img src="../../../assets/svg/sub-nav/tool.svg" alt="tool logo" />
                   <h4>{{ tool?.namespace + '/' + tool?.name + (tool?.toolname ? '/' + tool?.toolname : '') }}</h4>
                 </mat-card-title>
                 <div *ngIf="tool?.starredUsers.length !== 0" fxLayout="row" fxLayoutAlign="end center"></div>
@@ -205,7 +204,7 @@
                   </mat-chip>
                 </mat-chip-list>
               </div>
-              <a routerLink="/containers/{{ tool.tool_path }}" class="no-underline">
+              <a [routerLink]="tool | routerLink" class="no-underline">
                 <button mat-raised-button class="small-mat-btn-skin small-btn-structure" color="accent">View</button>
               </a>
             </div>

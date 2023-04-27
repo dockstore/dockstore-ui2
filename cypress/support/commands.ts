@@ -195,7 +195,7 @@ export function testNoGithubEntriesText(entryType: string, repository: string) {
       .contains('.mat-tab-label-content', 'Published')
       .click();
     if (entryType === 'tool') {
-      cy.get('[data-cy=no-published-apptool-message]').should('contain', 'No published ' + entryType + 's');
+      cy.get('[data-cy=no-published-appTool-message]').should('contain', 'No published ' + entryType + 's');
     } else {
       cy.get('[data-cy=no-published-' + entryType + '-message]').should('contain', 'No published ' + entryType + 's');
     }
@@ -210,7 +210,7 @@ export function testNoGithubEntriesText(entryType: string, repository: string) {
       .contains('.mat-tab-label-content', 'Unpublished')
       .click();
     if (entryType === 'tool') {
-      cy.get('[data-cy=no-unpublished-apptool-message]').should('contain', 'No unpublished ' + entryType + 's');
+      cy.get('[data-cy=no-unpublished-appTool-message]').should('contain', 'No unpublished ' + entryType + 's');
     } else {
       cy.get('[data-cy=no-unpublished-' + entryType + '-message]').should('contain', 'No unpublished ' + entryType + 's');
     }

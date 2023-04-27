@@ -91,4 +91,26 @@ describe('Dockstore notebooks', () => {
     cy.get('app-source-file-tabs').contains('/notebook.ipynb');
     cy.get('app-source-file-tabs').contains('"nbformat"');
   });
+
+  it('should have my-notebooks page', () => {
+    cy.visit('/my-notebooks/' + name);
+    // Check the labels on the tabs.
+    cy.get('.mat-tab-list').contains('Info');
+    cy.get('.mat-tab-list').contains('Code');
+    cy.get('.mat-tab-list').contains('Versions');
+    cy.get('.mat-tab-list').contains('Files');
+    // Should initially display the Info tab.
+    // Check for some key information.
+    cy.contains(name);
+    cy.contains(/Notebook/i);
+    cy.contains(/Format/i);
+    cy.contains(/Jupyter/i);
+    cy.contains(/Programming Language/i);
+    cy.contains(/Python/i);
+    cy.contains(/Export as ZIP/i);
+    cy.contains(/Author One/i);
+    cy.contains(/Author Two/i);
+    // Check for view public page button
+    cy.get('[data-cy=viewPublicWorkflowButton]').should('be.visible').click();
+  });
 });
