@@ -99,7 +99,7 @@ describe('Dockstore notebooks', () => {
     cy.visit('/my-notebooks/' + name);
     // Check the labels on the tabs.
     cy.get('.mat-tab-list').contains('Info');
-    cy.get('.mat-tab-list').contains('Code');
+    cy.get('.mat-tab-list').contains('Preview');
     cy.get('.mat-tab-list').contains('Versions');
     cy.get('.mat-tab-list').contains('Files');
     // Should initially display the Info tab.
