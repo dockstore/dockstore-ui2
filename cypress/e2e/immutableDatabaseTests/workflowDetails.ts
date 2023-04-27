@@ -96,6 +96,17 @@ describe('Dockstore Workflow Details', () => {
     });
   });
 
+  describe('Change tab to Executions', () => {
+    it('Should see No Metrics banner', () => {
+      cy.visit('/workflows/github.com/A/l?metrics');
+      cy.get('.mat-tab-label').should('have.length', 7);
+      cy.get('.mat-tab-header-pagination-after').click();
+      goToTab('Executions');
+      cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=executions');
+      cy.get('[data-cy=no-metrics-banner]').should('be.visible');
+    });
+  });
+
   it('Change tab to tools', () => {
     goToTab('Tools');
     cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=tools');
