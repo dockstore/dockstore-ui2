@@ -45,7 +45,7 @@ interface ValidationsTableObject {
   validatorTool: string;
   mostRecentVersion: string;
   isValid: boolean;
-  mostRecentErrorMessage?: string;
+  mostRecentErrorMessage: string;
   successfulValidationVersions: string[];
   failedValidationVersions: string[];
   numberOfRuns: number;

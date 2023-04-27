@@ -5,9 +5,9 @@
 </div>
 
 <div *ngIf="metricsExist" fxFlex>
-  <div class="metrics-container w-100" fxLayout="row">
+  <div class="w-100" fxLayout="row">
     <div class="w-25">
-      <div class="partner-dropdown">
+      <div>
         <div class="weight-bold">Partner:</div>
         <mat-form-field data-cy="metrics-partner-dropdown" class="w-75">
           <mat-select [value]="currentPartner" (selectionChange)="matSelectChange($event)">
@@ -20,7 +20,7 @@
           </mat-select>
         </mat-form-field>
       </div>
-      <div class="execution-counts-container">
+      <div>
         <div data-cy="metrics-total-executions-div">
           <span class="weight-bold">Total executions: </span>
           <span>{{ totalExecutions }}</span>
@@ -36,7 +36,7 @@
       </div>
     </div>
     <div class="metrics-table-container h-100 w-75" fxFlex>
-      <table mat-table class="metrics-table w-100" aria-label="validations-table" [dataSource]="metricsTable" data-cy="metrics-table">
+      <table mat-table class="w-100" aria-label="metrics-table" [dataSource]="metricsTable" data-cy="metrics-table">
         <ng-container matColumnDef="metric">
           <th mat-header-cell *matHeaderCellDef>Metric</th>
           <td mat-cell *matCellDef="let element">{{ element.metric }}</td>
@@ -68,7 +68,7 @@
       </table>
     </div>
   </div>
-  <div class="validations-table-container w-100 mt-5">
+  <div class="w-100 mt-5">
     <table mat-table class="validations-table" aria-label="validations-table" [dataSource]="validationsTable" data-cy="validations-table">
       <ng-container matColumnDef="validatorTool">
         <th mat-header-cell *matHeaderCellDef>Validator Tool</th>
