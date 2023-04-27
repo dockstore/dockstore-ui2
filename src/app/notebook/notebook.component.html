@@ -1,0 +1,33 @@
+<ng-container *ngIf="!loading">
+  <ng-container *ngIf="error">
+    <div>The notebook could not be displayed.</div>
+  </ng-container>
+
+  <ng-container *ngIf="!error">
+    <div class="notebook">
+      <ng-container *ngFor="let cell of cells">
+        <ng-container *ngIf="cell.cell_type === 'markdown'">
+          <app-notebook-markdown class="markdown" [cell]="cell" [baseUrl]="baseUrl"></app-notebook-markdown>
+        </ng-container>
+
+        <ng-container *ngIf="cell.cell_type === 'code'">
+          <ng-container *ngIf="!cell.metadata?.source_hidden">
+            <div class="count">[{{ cell.execution_count ?? ' ' }}]:</div>
+            <app-notebook-source class="source" [cell]="cell" [language]="workflow?.descriptorTypeSubclass"></app-notebook-source>
+          </ng-container>
+
+          <ng-container *ngIf="!cell.metadata?.outputs_hidden && isArray(cell.outputs)">
+            <ng-container *ngFor="let output of cell.outputs">
+              <ng-container *ngIf="output.output_type === 'stream'">
+                <app-notebook-stream-output class="output" [output]="output"></app-notebook-stream-output>
+              </ng-container>
+              <ng-container *ngIf="output.output_type === 'display_data' || output.output_type === 'execute_result'">
+                <app-notebook-mime-bundle-output class="output" [output]="output"></app-notebook-mime-bundle-output>
+              </ng-container>
+            </ng-container>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+    </div>
+  </ng-container>
+</ng-container>

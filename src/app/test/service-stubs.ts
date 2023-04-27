@@ -984,3 +984,12 @@ export class EntryTypeMetadataStubService {
     return null;
   }
 }
+
+export class MarkdownWrapperStubService {
+  customCompile(data, baseUrl): string {
+    return `compiled-markdown(${data})`;
+  }
+  customSanitize(html): string {
+    return `sanitized(${html})`;
+  }
+}

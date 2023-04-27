@@ -8,7 +8,7 @@
   </div>
 </div>
 <div class="container">
-  <div *ngIf="Dockstore.FEATURES.enableNotebooks" class="mt-5"><app-preview-warning></app-preview-warning></div>
+  <div *ngIf="Dockstore.FEATURES.enableNotebooks" class="mt-5"><app-preview-warning featureName="Notebooks"></app-preview-warning></div>
   <div fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutAlign="space-between start" class="mt-5">
     <div>
       <h3 class="documentation">Tools and Workflows</h3>
@@ -114,7 +114,7 @@
             [href]="Dockstore.DOCUMENTATION_URL + '/dockstore-introduction.html#built-with-docker-and-git'"
             rel="noopener noreferrer"
           >
-            Built with Quay.io and Github
+            Built with Quay.io and GitHub
           </a>
         </li>
         <li>

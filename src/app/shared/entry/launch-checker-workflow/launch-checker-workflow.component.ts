@@ -38,7 +38,7 @@ export class LaunchCheckerWorkflowComponent {
           'dockstore workflow convert entry2json --entry ' +
           checkerWorkflowPath +
           (this.versionName ? ':' + this.versionName : '') +
-          '> checkparam.json'
+          ' > checkparam.json'
       )
     );
   }
