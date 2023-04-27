@@ -57,6 +57,7 @@ import { RegisterWorkflowModalService } from './../../workflow/register-workflow
 import { ToolTabComponent } from './../../workflow/tool-tab/tool-tab.component';
 import { VersionModalComponent } from './../../workflow/version-modal/version-modal.component';
 import { VersionModalService } from './../../workflow/version-modal/version-modal.service';
+import { ExecutionsTabComponent } from '../../workflow/executions/executions-tab.component';
 import { EntryModule } from './../entry/entry.module';
 import { CustomMaterialModule } from './../modules/material.module';
 import { RefreshService } from './../refresh.service';
@@ -79,6 +80,7 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
     VersionModalComponent,
     WorkflowActionsComponent,
     InfoTabComponent,
+    ExecutionsTabComponent,
     ToolTabComponent,
     SourceFileTabsComponent,
     NotebookComponent,
@@ -88,6 +90,7 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
     NotebookSourceComponent,
     FilterCloudInstancesPipe,
     MultiCloudLaunchComponent,
+    ExecutionsTabComponent,
   ],
   imports: [
     CommonModule,

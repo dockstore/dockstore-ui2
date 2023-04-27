@@ -17,6 +17,8 @@ describe('FeatureService', () => {
   it('should set feature flag correctly', () => {
     service.updateFeatureFlags('?notebooks');
     expect(Dockstore.FEATURES.enableNotebooks).toBeTrue();
+    service.updateFeatureFlags('?metrics');
+    expect(Dockstore.FEATURES.enableMetrics).toBeTrue();
     // We're ignoring the value
     service.updateFeatureFlags('?irrelevantKey&notebooks');
     expect(Dockstore.FEATURES.enableNotebooks).toBeTrue();
@@ -24,7 +26,9 @@ describe('FeatureService', () => {
     expect(Dockstore.FEATURES.enableNotebooks).toBeTrue();
     service.updateFeatureFlags(null);
     expect(Dockstore.FEATURES.enableNotebooks).toBeFalse();
+    expect(Dockstore.FEATURES.enableMetrics).toBeFalse();
     service.updateFeatureFlags('');
     expect(Dockstore.FEATURES.enableNotebooks).toBeFalse();
+    expect(Dockstore.FEATURES.enableMetrics).toBeFalse();
   });
 });
