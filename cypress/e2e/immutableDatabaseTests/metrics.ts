@@ -27,7 +27,6 @@ describe('Dockstore Metrics', () => {
     cy.get('[data-cy=metrics-total-executions-div]').should('contain', 39);
     cy.get('[data-cy=validations-table]').should('be.visible');
     cy.get('[data-cy=metrics-validatorTool]').should('contain', 'MINIWDL');
-    cy.get('[data-cy=validations-mostRecentErrorMessage-col]').should('be.visible');
     cy.get('[data-cy=metrics-partner-dropdown]').click();
     //change partner to AGC
     cy.get('[data-cy=metrics-partner-options]').contains('AGC').click();
@@ -35,6 +34,5 @@ describe('Dockstore Metrics', () => {
     cy.get('[data-cy=metrics-partner-dropdown]').should('contain', 'AGC');
     cy.get('[data-cy=metrics-total-executions-div]').should('contain', 7);
     cy.get('[data-cy=metrics-validatorTool]').should('contain', 'CWLTOOL');
-    cy.get('[data-cy=validations-mostRecentErrorMessage-col]').should('not.exist'); //since the most recent run was valid, there shouldn't be an error message column
   });
 });

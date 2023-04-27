@@ -36,16 +36,16 @@ import { AlertService } from '../../shared/alert/state/alert.service';
 
 interface MetricsTableObject {
   metric: string;
-  min: number;
-  avg: number;
-  max: number;
-  unit: string;
+  min?: number;
+  avg?: number;
+  max?: number;
+  unit?: string;
 }
 interface ValidationsTableObject {
   validatorTool: string;
   mostRecentVersion: string;
   isValid: boolean;
-  mostRecentErrorMessage: string;
+  mostRecentErrorMessage?: string;
   successfulValidationVersions: string[];
   failedValidationVersions: string[];
   numberOfRuns: number;
@@ -123,8 +123,8 @@ export class ExecutionsTabComponent extends EntryTab implements OnChanges {
   private resetMetricsData() {
     this.metricsExist = false;
     this.metrics = new Map();
-    this.metricsTable = null;
-    this.validationsTable = null;
+    this.metricsTable = [];
+    this.validationsTable = [];
     this.partners = [];
     this.totalExecutions = null;
     this.successfulExecutions = null;
@@ -151,7 +151,11 @@ export class ExecutionsTabComponent extends EntryTab implements OnChanges {
     }
   }
 
-  private insertToMetricsTable(table: any[], metricsData: CpuMetric | MemoryMetric | ExecutionTimeMetric, metricLabel: string) {
+  private insertToMetricsTable(
+    table: MetricsTableObject[],
+    metricsData: CpuMetric | MemoryMetric | ExecutionTimeMetric,
+    metricLabel: string
+  ) {
     table.push({
       metric: metricLabel,
       min: metricsData?.minimum,
@@ -162,42 +166,30 @@ export class ExecutionsTabComponent extends EntryTab implements OnChanges {
   }
 
   private loadValidationsData(partner: PartnerEnum) {
+    this.validationsTable = [];
     const validations = this.metrics.get(partner).validationStatus?.validatorToolToIsValid;
     if (validations) {
+      this.validationsColumns = [
+        'validatorTool',
+        'mostRecentVersion',
+        'isValid',
+        'mostRecentErrorMessage', // shows the error message (if exists) when isValid is false
+        'successfulValidationVersions',
+        'failedValidationVersions',
+        'numberOfRuns',
+        'passingRate',
+      ];
       for (const [validatorTool, isValid] of Object.entries(validations)) {
-        this.validationsTable = [
-          {
-            validatorTool: validatorTool,
-            mostRecentVersion: isValid.mostRecentVersion,
-            isValid: isValid.mostRecentIsValid,
-            successfulValidationVersions: isValid.successfulValidationVersions,
-            mostRecentErrorMessage: isValid.mostRecentErrorMessage,
-            failedValidationVersions: isValid.failedValidationVersions,
-            numberOfRuns: isValid.numberOfRuns,
-            passingRate: isValid.passingRate,
-          },
-        ];
-        this.validationsColumns = [
-          'validatorTool',
-          'mostRecentVersion',
-          'isValid',
-          'successfulValidationVersions',
-          'failedValidationVersions',
-          'numberOfRuns',
-          'passingRate',
-        ];
-        if (!isValid.mostRecentIsValid) {
-          this.validationsColumns = [
-            'validatorTool',
-            'mostRecentVersion',
-            'isValid',
-            'mostRecentErrorMessage', //adds the error message column
-            'successfulValidationVersions',
-            'failedValidationVersions',
-            'numberOfRuns',
-            'passingRate',
-          ];
-        }
+        this.validationsTable.push({
+          validatorTool: validatorTool,
+          mostRecentVersion: isValid.mostRecentVersion,
+          isValid: isValid.mostRecentIsValid,
+          successfulValidationVersions: isValid.successfulValidationVersions,
+          mostRecentErrorMessage: isValid?.mostRecentErrorMessage,
+          failedValidationVersions: isValid.failedValidationVersions,
+          numberOfRuns: isValid.numberOfRuns,
+          passingRate: isValid.passingRate,
+        });
       }
     }
   }
