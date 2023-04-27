@@ -635,11 +635,15 @@ export class SearchService {
    * Initialize expanded panels to default state or restore previous state from local storage
    */
   initializeExpandedPanels(tabIndex: number) {
-    if (localStorage.getItem(this.expandedPanelsStorageKey)) {
-      return new Map<string, boolean>(JSON.parse(localStorage.getItem(this.expandedPanelsStorageKey)));
-    } else {
-      return new Map(this.getOrderedFacetInfos(tabIndex).map((facetInfo) => [facetInfo.esName, facetInfo.initiallyExpanded]));
+    // Use the "canned" facet information to determine which panels should be expanded
+    const expandedPanels = new Map(this.getOrderedFacetInfos(tabIndex).map((facetInfo) => [facetInfo.esName, facetInfo.initiallyExpanded]));
+    // Override with any stored values
+    const storedValue = localStorage.getItem(this.expandedPanelsStorageKey);
+    if (storedValue) {
+      const storedMap = new Map<string, boolean>(JSON.parse(storedValue));
+      storedMap.forEach((expanded: boolean, key: string) => expandedPanels.set(key, expanded));
     }
+    return expandedPanels;
   }
 
   /**
