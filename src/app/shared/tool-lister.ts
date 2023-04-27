@@ -49,7 +49,6 @@ export abstract class ToolLister implements AfterViewInit, OnDestroy {
   }
 
   abstract type: 'tool' | 'workflow';
-  abstract displayedColumns: Array<string>;
   public dataSource: PublishedWorkflowsDataSource | PublishedToolsDataSource;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
