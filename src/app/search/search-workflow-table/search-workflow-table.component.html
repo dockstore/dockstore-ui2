@@ -12,7 +12,7 @@
     data-cy="search-workflow-results-table"
   >
     <ng-container matColumnDef="name">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Name & Description</mat-header-cell>
       <mat-cell data-cy="workflowColumn" *matCellDef="let workflow">
         <div>
           <a [matTooltip]="workflow?.full_workflow_path" [routerLink]="'/workflows/' + workflow?.full_workflow_path">{{
@@ -61,13 +61,13 @@
     </ng-container>
     <ng-container matColumnDef="starredUsers">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Stars</mat-header-cell>
-      <mat-cell class="description-cell" *matCellDef="let workflow"
-        >{{ !workflow?.starredUsers || workflow?.starredUsers.length === 0 ? '' : workflow?.starredUsers?.length }}
-        <mat-icon class="star-icon" *ngIf="workflow?.starredUsers?.length > 0">star_rate</mat-icon>
+      <mat-cell class="starred-cell weight-bold" *matCellDef="let workflow"
+        ><mat-icon class="star-icon" *ngIf="workflow?.starredUsers?.length > 0">star_rate</mat-icon>
+        {{ !workflow?.starredUsers || workflow?.starredUsers.length === 0 ? '' : workflow?.starredUsers?.length }}
       </mat-cell>
     </ng-container>
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns" class="py-2"></mat-row>
   </mat-table>
   <mat-paginator
     data-cy="search-workflow-table-paginator"
