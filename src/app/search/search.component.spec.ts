@@ -88,6 +88,7 @@ describe('SearchComponent', () => {
       shortUrl: null,
       workflowhit: null,
       toolhit: null,
+      notebookhit: null,
       showToolTagCloud: false,
       showWorkflowTagCloud: false,
       searchText: '',
