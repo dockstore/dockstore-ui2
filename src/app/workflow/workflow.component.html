@@ -138,7 +138,7 @@
   </div>
   <div class="row m-1" *ngIf="!showRedirect">
     <div *ngIf="workflow">
-      <span *ngIf="(categories$ | async).length > 0" class="inline-block mr-5 mt-1 mb-1">
+      <span *ngIf="(categories$ | async)?.length > 0" class="inline-block mr-5 mt-1 mb-1">
         <span class="size-small mr-2">Categories</span>
         <mat-chip-list class="bubble-list">
           <app-category-button
@@ -244,12 +244,17 @@
             ></app-info-tab>
           </mat-tab>
           <div *ngIf="entryType === EntryType.Notebook">
-            <mat-tab id="codeTab" label="Code">
-              <div class="mt-4 ml-4 mr-4">
-                <p>A user-friendly representation of the notebook will appear here, after it is implemented in SEAB-5117.</p>
-                <p>For a Jupyter notebook, it'll be the contents of the code/documentation cells, nicely-formatted.</p>
-                <p>For other kinds of notebooks, it might be something different.</p>
-              </div>
+            <mat-tab id="previewTab" label="Preview">
+              <ng-template matTabContent>
+                <div class="mt-4 ml-4 mr-4">
+                  <app-notebook
+                    *ngIf="workflow && selectedVersion && (extendedWorkflow$ | async)"
+                    [notebook]="workflow"
+                    [version]="selectedVersion"
+                    [baseUrl]="(extendedWorkflow$ | async).providerUrl | baseUrl: selectedVersion.name:selectedVersion.workflow_path"
+                  ></app-notebook>
+                </div>
+              </ng-template>
             </mat-tab>
           </div>
           <div *ngIf="entryType === EntryType.BioWorkflow || entryType === EntryType.Tool">
