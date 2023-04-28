@@ -40,6 +40,7 @@ export class ListWorkflowsComponent extends ToolLister implements OnInit {
   public typeToDisplayedColumns = {
     workflow: this.workflowColumns,
     service: this.workflowColumns,
+    appTool: this.workflowColumns,
     notebook: this.notebookColumns,
   };
   public entryType$: Observable<EntryType>;
