@@ -12,7 +12,7 @@
     data-cy="search-workflow-results-table"
   >
     <ng-container matColumnDef="name">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Name & Description</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Name and Description</mat-header-cell>
       <mat-cell data-cy="workflowColumn" *matCellDef="let workflow">
         <div>
           <a [matTooltip]="workflow?.full_workflow_path" [routerLink]="'/workflows/' + workflow?.full_workflow_path">{{
