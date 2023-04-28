@@ -91,6 +91,7 @@ describe('SearchComponent', () => {
       notebookhit: null,
       showToolTagCloud: false,
       showWorkflowTagCloud: false,
+      showNotebookTagCloud: false,
       searchText: '',
       filterKeys: [],
       autocompleteTerms: [],
