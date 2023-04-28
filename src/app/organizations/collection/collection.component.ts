@@ -140,7 +140,7 @@ export class CollectionComponent implements OnInit {
     });
   }
 
-  updateDescription(description: String, collectionId: number) {
+  updateDescription(description: string, collectionId: number) {
     this.dialog.open(UpdateOrganizationOrCollectionDescriptionComponent, {
       data: { description: description, type: 'collection', collectionId: collectionId },
       width: '600px',

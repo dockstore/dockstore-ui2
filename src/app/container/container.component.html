@@ -399,7 +399,7 @@
                 </a>
                 <div *ngIf="(extendedTool$ | async).imgProvider === 'Quay.io'">
                   <a [href]="(extendedTool$ | async)?.imgProviderUrl" target="_blank" rel="noopener">
-                    <img src="{{ (extendedTool$ | async).imgProviderUrl }}/status" />
+                    <img src="{{ (extendedTool$ | async).imgProviderUrl }}/status" alt="{{ (extendedTool$ | async).imgProvider }} Status" />
                   </a>
                 </div>
               </span>

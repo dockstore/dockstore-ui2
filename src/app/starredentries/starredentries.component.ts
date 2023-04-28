@@ -9,10 +9,9 @@ import { MatTabChangeEvent } from '@angular/material/tabs';
 import { UntypedFormControl } from '@angular/forms';
 import { ExtendedDockstoreTool } from 'app/shared/models/ExtendedDockstoreTool';
 import { ExtendedWorkflow } from 'app/shared/models/ExtendedWorkflow';
-// import { DockstoreService } from 'app/shared/dockstore.service';
 import { OrgLogoService } from '../shared/org-logo.service';
 import { EntryType } from '../shared/enum/entry-type';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { Dockstore } from 'app/shared/dockstore.model';
 
@@ -45,7 +44,6 @@ export class StarredEntriesComponent extends Base implements OnInit {
     private imageProviderService: ImageProviderService,
     private providerService: ProviderService,
     private usersService: UsersService,
-    // private dockstoreService: DockstoreService
     private orgLogoService: OrgLogoService,
     private activatedRoute: ActivatedRoute,
     private location: Location
