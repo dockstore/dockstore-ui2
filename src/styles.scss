@@ -1398,6 +1398,10 @@ div.mat-menu-panel {
   min-height: min-content;
 }
 
+// Import notebooks styles
+// We import these late in the file, because they are less likely to be of immediate use
+@import 'notebooks.scss';
+
 // Styles for News & Updates widget on Dashboard and Homepage, pure HTML and CSS needed for styling
 .news-and-updates-box {
   display: flex;
