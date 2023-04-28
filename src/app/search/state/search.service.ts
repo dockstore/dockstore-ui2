@@ -303,7 +303,7 @@ export class SearchService {
     this.setSearchText(suggestTerm);
   }
 
-  setShowTagCloud(entryType: 'tool' | 'workflow') {
+  setShowTagCloud(entryType: 'tool' | 'workflow' | 'notebook') {
     if (entryType === 'tool') {
       const showTagCloud: boolean = this.searchQuery.getValue().showToolTagCloud;
       this.searchStore.update((state) => {
@@ -312,12 +312,20 @@ export class SearchService {
           showToolTagCloud: !showTagCloud,
         };
       });
-    } else {
+    } else if (entryType === 'workflow') {
       const showTagCloud: boolean = this.searchQuery.getValue().showWorkflowTagCloud;
       this.searchStore.update((state) => {
         return {
           ...state,
           showWorkflowTagCloud: !showTagCloud,
+        };
+      });
+    } else {
+      const showTagCloud: boolean = this.searchQuery.getValue().showNotebookTagCloud;
+      this.searchStore.update((state) => {
+        return {
+          ...state,
+          showNotebookTagCloud: !showTagCloud,
         };
       });
     }

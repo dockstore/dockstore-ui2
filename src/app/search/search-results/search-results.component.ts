@@ -36,10 +36,12 @@ export class SearchResultsComponent extends Base implements OnInit {
   public noNotebookHits$: Observable<boolean>;
   public showWorkflowTagCloud$: Observable<boolean>;
   public showToolTagCloud$: Observable<boolean>;
+  public showNotebookTagCloud$: Observable<boolean>;
   public selectedIndex$: Observable<any>;
   public selectedTab: number;
   toolTagCloudData: Array<CloudData>;
   workflowTagCloudData: Array<CloudData>;
+  notebookTagCloudData: Array<CloudData>;
   options: CloudOptions = {
     width: 500,
     height: 200,
@@ -58,11 +60,13 @@ export class SearchResultsComponent extends Base implements OnInit {
     this.noNotebookHits$ = this.searchQuery.noNotebookHits$;
     this.showToolTagCloud$ = this.searchQuery.showToolTagCloud$;
     this.showWorkflowTagCloud$ = this.searchQuery.showWorkflowTagCloud$;
+    this.showNotebookTagCloud$ = this.searchQuery.showNotebookTagCloud$;
   }
 
   ngOnInit() {
     this.createTagCloud('tool');
     this.createTagCloud('workflow');
+    this.createTagCloud('notebook');
   }
 
   createTagCloud(type: string) {
@@ -70,7 +74,7 @@ export class SearchResultsComponent extends Base implements OnInit {
     this.createToolTagCloud(toolQuery, type);
   }
 
-  clickTagCloudBtn(type: 'tool' | 'workflow') {
+  clickTagCloudBtn(type: 'tool' | 'workflow' | 'notebook') {
     this.searchService.setShowTagCloud(type);
   }
 
@@ -97,11 +101,16 @@ export class SearchResultsComponent extends Base implements OnInit {
                 this.toolTagCloudData = new Array<CloudData>();
               }
               this.toolTagCloudData.push(theTag);
-            } else {
+            } else if (type === 'workflow') {
               if (!this.workflowTagCloudData) {
                 this.workflowTagCloudData = new Array<CloudData>();
               }
               this.workflowTagCloudData.push(theTag);
+            } else {
+              if (!this.notebookTagCloudData) {
+                this.notebookTagCloudData = new Array<CloudData>();
+              }
+              this.notebookTagCloudData.push(theTag);
             }
             count--;
           });

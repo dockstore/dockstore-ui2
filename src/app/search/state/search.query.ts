@@ -35,6 +35,7 @@ export class SearchQuery extends Query<SearchState> {
   public basicSearchText$: Observable<string> = this.searchText$.pipe(map((searchText) => this.joinComma(searchText)));
   public showToolTagCloud$: Observable<boolean> = this.select((state) => state.showToolTagCloud);
   public showWorkflowTagCloud$: Observable<boolean> = this.select((state) => state.showWorkflowTagCloud);
+  public showNotebookTagCloud$: Observable<boolean> = this.select((state) => state.showNotebookTagCloud);
   public filterKeys$: Observable<Array<string>> = this.select((state) => state.filterKeys);
   public autoCompleteTerms$: Observable<Array<string>> = this.select((state) => state.autocompleteTerms);
   public hasAutoCompleteTerms$: Observable<boolean> = this.autoCompleteTerms$.pipe(map((terms) => terms.length > 0));

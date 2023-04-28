@@ -24,6 +24,7 @@ export interface SearchState {
   notebookhit: any;
   showToolTagCloud: boolean;
   showWorkflowTagCloud: boolean;
+  showNotebookTagCloud: boolean;
   searchText: string;
   filterKeys: Array<string>;
   autocompleteTerms: Array<string>;
@@ -43,6 +44,7 @@ export function createInitialState(): SearchState {
     notebookhit: null,
     showToolTagCloud: false,
     showWorkflowTagCloud: false,
+    showNotebookTagCloud: false,
     searchText: '',
     filterKeys: [],
     autocompleteTerms: [],
