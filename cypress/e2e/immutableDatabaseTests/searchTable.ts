@@ -432,3 +432,19 @@ describe('search table items per page', () => {
     cy.get('[data-cy=share_button').should('be.visible').click();
   });
 });
+
+// make sure that search table and adjacent tabs have been adjusted for notebooks
+describe('check search table and tabs for notebooks', () => {
+  setTokenUserViewPort();
+  beforeEach(() => {
+    cy.fixture('searchTableResponse').then((json) => {
+      cy.intercept('POST', '*' + ga4ghExtendedPath + '/tools/entry/_search', {
+        body: json,
+      });
+    });
+  });
+  // TODO fill in
+  // Check that Notebooks table exists
+  // Check that column names are ok
+  // Check that notebook content appears
+});
