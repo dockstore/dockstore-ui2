@@ -112,7 +112,6 @@ describe('SearchService', () => {
       const filtered: [Array<Hit>, Array<Hit>, Array<Hit>] = service.filterEntry(elasticSearchResponse, 201);
       const tools = filtered[0];
       const workflows = filtered[1];
-      const notebooks = filtered[2];
       const toolsSource = tools[0]._source;
       const workflowSource = workflows[0]._source;
       expect(toolsSource.imgProvider).toBe('Docker Hub');
