@@ -446,15 +446,15 @@ describe('check search table and tabs for notebooks', () => {
   it('should contain notebooks-related information', () => {
     cy.visit('/search?notebooks');
     // Check that Notebooks tab exists
-    cy.get('Notebooks');
-    // Check that Notebooks page exists
+    cy.get('.mat-tab-label').contains('Notebooks');
+    // Select notebooks tab
     goToTab('Notebooks');
     cy.url().should('contain', 'notebooks');
     // Check that the notebooks variations are in the table header
-    cy.get('mat-header-cell').contains('Language');
-    cy.get('mat-header-cell').contains('Format');
+    cy.get('.mat-header-cell').contains('Language');
+    cy.get('.mat-header-cell').contains('Format');
     // Check that the notebooks variations are in the table body
-    cy.get('mat-cell').contains('jupyter', { matchCase: false });
-    cy.get('mat-cell').contains('python', { matchCase: false });
+    cy.get('.mat-cell').contains('jupyter', { matchCase: false });
+    cy.get('.mat-cell').contains('python', { matchCase: false });
   });
 });
