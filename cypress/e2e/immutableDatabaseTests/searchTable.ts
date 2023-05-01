@@ -433,7 +433,7 @@ describe('search table items per page', () => {
   });
 });
 
-// make sure that search table and adjacent tabs have been adjusted for notebooks
+// make sure that search table and tabs have been adjusted for notebooks
 describe('check search table and tabs for notebooks', () => {
   setTokenUserViewPort();
   beforeEach(() => {
@@ -443,8 +443,18 @@ describe('check search table and tabs for notebooks', () => {
       });
     });
   });
-  // TODO fill in
-  // Check that Notebooks table exists
-  // Check that column names are ok
-  // Check that notebook content appears
+  it('should contain notebooks-related information', () => {
+    cy.visit('/search?notebooks');
+    // Check that Notebooks tab exists
+    cy.get('Notebooks');
+    // Check that Notebooks page exists
+    goToTab('Notebooks');
+    cy.url().should('contain', 'notebooks');
+    // Check that the notebooks variations are in the table header
+    cy.get('mat-header-cell').contains('Language');
+    cy.get('mat-header-cell').contains('Format');
+    // Check that the notebooks variations are in the table body
+    cy.get('mat-cell').contains('jupyter', { matchCase: false });
+    cy.get('mat-cell').contains('python', { matchCase: false });
+  });
 });
