@@ -101,8 +101,8 @@ describe('Dockstore Workflow Details', () => {
       cy.visit('/workflows/github.com/A/l?metrics');
       cy.get('.mat-tab-label').should('have.length', 7);
       cy.get('.mat-tab-header-pagination-after').click();
-      goToTab('Executions');
-      cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=executions');
+      goToTab('Metrics');
+      cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=metrics');
       cy.get('[data-cy=no-metrics-banner]').should('be.visible');
     });
   });

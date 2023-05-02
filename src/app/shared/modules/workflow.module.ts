@@ -67,6 +67,7 @@ import { CategoryButtonModule } from './../../categories/button/category-button.
 import { MySidebarModule } from '../modules/my-sidebar.module';
 import { SourceFileTabsService } from '../../source-file-tabs/source-file-tabs.service';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { PreviewWarningModule } from './preview-warning.module';
 
 @NgModule({
   declarations: [
@@ -115,6 +116,7 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
     CategoryButtonModule,
     MySidebarModule,
     NgxMatSelectSearchModule,
+    PreviewWarningModule,
   ],
   providers: [
     DateService,
