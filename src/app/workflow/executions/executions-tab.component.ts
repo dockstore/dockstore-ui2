@@ -35,7 +35,6 @@ interface ExecutionMetricsTableObject {
 @Component({
   selector: 'app-executions-tab',
   templateUrl: './executions-tab.component.html',
-  styleUrls: ['./executions-tab.component.css'],
 })
 export class ExecutionsTabComponent extends EntryTab implements OnChanges {
   metrics: Map<PartnerEnum, Metrics>;
