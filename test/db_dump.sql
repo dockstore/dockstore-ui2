@@ -1136,6 +1136,10 @@ steps:
       infiles: inp
       pattern: "hello"
     out: [outfile]
+s:author:
+  - class: s:Person
+    s:email: Muhammad.Lee@oicr.on.ca
+    s:name: Muhammad Lee
 ', '/1st-workflow.cwl', 'DOCKSTORE_CWL', NULL, NULL);
 INSERT INTO public.sourcefile (id, content, path, type, dbcreatedate, dbupdatedate) VALUES (29, '#!/usr/bin/env cwl-runner
 class: CommandLineTool
