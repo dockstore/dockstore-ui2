@@ -94,8 +94,8 @@
               </mat-option>
             </mat-select>
           </mat-form-field>
-          <div fxFlexLayout="row" fxLayoutGap="2rem">
-            <span> <strong>Total number of runs: </strong>{{ validatorToolToValidatorInfo.get(currentValidatorTool).numberOfRuns }} </span>
+          <div fxLayout="row" fxLayoutGap="2rem">
+            <span><strong>Total number of runs: </strong>{{ validatorToolToValidatorInfo.get(currentValidatorTool).numberOfRuns }}</span>
             <span>
               <strong>Overall passing rate: </strong>
               <span matTooltip="{{ validatorToolToValidatorInfo.get(currentValidatorTool).passingRate }}%"
