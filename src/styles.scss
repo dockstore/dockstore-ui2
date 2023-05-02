@@ -973,8 +973,9 @@ app-select.longer {
 }
 
 mat-icon.star-icon {
-  font-size: 16px;
-  height: 16px;
+  font-size: 1.6rem;
+  height: 1.6rem;
+  width: 1.6rem;
 }
 
 .date-display {
@@ -1026,11 +1027,11 @@ mat-tab-group.no-pagination {
 // These badges are not clickable, thus different from Material Design Chips
 .nonclick-badge {
   display: inline-flex;
-  border-radius: 8px;
+  border-radius: 0.8rem;
   background-color: mat.get-color-from-palette($dockstore-app-gray, lighter);
-  padding: 5px 8px;
+  padding: 0.2rem 0.8rem;
   color: $header-color;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   font-weight: 500;
 }
 
