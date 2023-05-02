@@ -171,7 +171,6 @@ export class SearchComponent implements OnInit, OnDestroy {
   initializeMappings(newTabIndex: number) {
     if (newTabIndex !== this.tabIndex) {
       this.tabIndex = newTabIndex;
-      console.log('generate new mappings');
       this.bucketStubs = this.searchService.initializeCommonBucketStubs(newTabIndex);
       this.friendlyNames = this.searchService.initializeFriendlyNames(newTabIndex);
       this.entryOrder = this.searchService.initializeEntryOrder(newTabIndex);
@@ -191,7 +190,6 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    console.log('INIT');
     this.advancedSearchObject$ = this.advancedSearchQuery.advancedSearch$;
     this.hasAdvancedSearchText$ = this.advancedSearchQuery.hasAdvancedSearchText$;
     this.values$ = this.searchQuery.searchText$;
@@ -449,7 +447,6 @@ export class SearchComponent implements OnInit, OnDestroy {
     // Separating into 2 queries otherwise the queries interfere with each other (filter applied before aggregation)
     // The first query handles the aggregation and is used to update the sidebar buckets
     // The second query updates the result table
-    console.log('UPDATE ' + tabIndex);
     const advancedSearchObject = this.advancedSearchQuery.getValue().advancedSearch;
     const values = this.advancedSearchQuery.getValue().searchText;
     const sideBarQuery = this.queryBuilderService.getSidebarAggregationQuery(
