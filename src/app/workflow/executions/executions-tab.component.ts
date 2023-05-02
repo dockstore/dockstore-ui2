@@ -15,41 +15,21 @@
  */
 import { Component, Input, OnChanges } from '@angular/core';
 import { EntryTab } from '../../shared/entry/entry-tab';
-import {
-  CloudInstance,
-  CpuMetric,
-  ExecutionTimeMetric,
-  ExtendedGA4GHService,
-  MemoryMetric,
-  Metrics,
-  WorkflowVersion,
-} from '../../shared/openapi';
-import { WorkflowQuery } from '../../shared/state/workflow.query';
+import { CloudInstance, ExtendedGA4GHService, Metrics, ValidatorInfo, ValidatorVersionInfo, WorkflowVersion } from '../../shared/openapi';
 import { SessionQuery } from '../../shared/session/session.query';
 import { takeUntil } from 'rxjs/operators';
 import { BioWorkflow, Notebook, Service } from '../../shared/swagger';
-import { CheckerWorkflowService } from '../../shared/state/checker-workflow.service';
 import { CheckerWorkflowQuery } from '../../shared/state/checker-workflow.query';
 import PartnerEnum = CloudInstance.PartnerEnum;
 import { MatSelectChange } from '@angular/material/select';
 import { AlertService } from '../../shared/alert/state/alert.service';
 
-interface MetricsTableObject {
-  metric: string;
+interface ExecutionMetricsTableObject {
+  metric: string; // Name of the execution metric
   min?: number;
   avg?: number;
   max?: number;
   unit?: string;
-}
-interface ValidationsTableObject {
-  validatorTool: string;
-  mostRecentVersion: string;
-  isValid: boolean;
-  mostRecentErrorMessage: string;
-  successfulValidationVersions: string[];
-  failedValidationVersions: string[];
-  numberOfRuns: number;
-  passingRate: number;
 }
 
 @Component({
@@ -62,24 +42,37 @@ export class ExecutionsTabComponent extends EntryTab implements OnChanges {
   trsID: string;
   currentPartner: PartnerEnum;
   partners: PartnerEnum[];
-  metricsTable: MetricsTableObject[];
-  validationsTable: ValidationsTableObject[];
-  metricsColumns: string[];
-  validationsColumns: string[];
+  metricsExist: boolean;
+  // Fields for the execution metrics
+  executionMetricsColumns: string[] = ['metric', 'minimum', 'average', 'maximum'];
+  executionMetricsTable: ExecutionMetricsTableObject[];
   totalExecutions: number;
   successfulExecutions: number;
   failedExecutions: number;
-  metricsExist: boolean;
+  executionMetricsExist: boolean;
+  // Fields for validator tool metrics
+  validationsColumns: string[] = [
+    'validatorToolVersionName',
+    'isValid',
+    'errorMessage',
+    'isMostRecentVersion',
+    'dateExecuted',
+    'numberOfRuns',
+    'passingRate',
+  ];
+  validationsTable: ValidatorVersionInfo[];
+  validatorToolToValidatorInfo: Map<string, ValidatorInfo>;
+  currentValidatorTool: string;
+  validatorTools: string[];
+  validatorToolMetricsExist: boolean;
 
   @Input() entry: BioWorkflow | Service | Notebook;
   @Input() version: WorkflowVersion;
 
   constructor(
     private extendedGA4GHService: ExtendedGA4GHService,
-    private workflowQuery: WorkflowQuery,
     private alertService: AlertService,
     protected sessionQuery: SessionQuery,
-    private checkerWorkflowService: CheckerWorkflowService,
     private checkerWorkflowQuery: CheckerWorkflowQuery
   ) {
     super();
@@ -99,9 +92,14 @@ export class ExecutionsTabComponent extends EntryTab implements OnChanges {
               this.setMetricsObject(this.metrics, partner, metric);
             }
             this.partners = Array.from(this.metrics.keys());
-            if (this.partners.length > 0) {
-              this.metricsExist = true;
-              this.selectPartner(this.partners[0]);
+            this.metricsExist = this.partners.length > 0;
+            if (this.metricsExist) {
+              // Display metrics for ALL platforms
+              const platform =
+                this.partners.filter((partner) => partner === PartnerEnum.ALL).length === 1
+                  ? this.partners.filter((partner) => partner === PartnerEnum.ALL)[0]
+                  : this.partners[0];
+              this.selectPartner(platform);
             }
           }
           this.alertService.detailedSuccess();
@@ -123,73 +121,56 @@ export class ExecutionsTabComponent extends EntryTab implements OnChanges {
   private resetMetricsData() {
     this.metricsExist = false;
     this.metrics = new Map();
-    this.metricsTable = [];
+    this.executionMetricsTable = [];
     this.validationsTable = [];
     this.partners = [];
     this.totalExecutions = null;
     this.successfulExecutions = null;
     this.failedExecutions = null;
     this.currentPartner = null;
-    this.metricsColumns = null;
-    this.validationsColumns = null;
+    this.currentValidatorTool = null;
+    this.validatorTools = [];
   }
 
-  private loadMetricsData(partner: PartnerEnum) {
-    this.metricsTable = [];
+  private loadExecutionMetricsData(partner: PartnerEnum) {
     const metrics = this.metrics.get(partner);
-    if (metrics) {
-      this.metricsColumns = ['metric', 'min', 'avg', 'max'];
-      this.insertToMetricsTable(this.metricsTable, metrics?.cpu, 'CPU');
-      this.insertToMetricsTable(this.metricsTable, metrics?.memory, 'Memory');
-      this.insertToMetricsTable(this.metricsTable, metrics?.executionTime, 'Run Time');
-      if (metrics.executionStatusCount) {
-        this.totalExecutions =
-          metrics.executionStatusCount.numberOfSuccessfulExecutions + metrics.executionStatusCount.numberOfFailedExecutions;
-        this.successfulExecutions = metrics.executionStatusCount.numberOfSuccessfulExecutions;
-        this.failedExecutions = metrics.executionStatusCount.numberOfFailedExecutions;
-      }
+    this.executionMetricsTable = this.createExecutionsTable(metrics);
+    this.executionMetricsExist =
+      metrics?.cpu !== null || metrics?.memory !== null || metrics?.executionTime !== null || metrics?.executionStatusCount !== null;
+
+    if (metrics?.executionStatusCount) {
+      this.totalExecutions =
+        metrics.executionStatusCount.numberOfSuccessfulExecutions + metrics.executionStatusCount.numberOfFailedExecutions;
+      this.successfulExecutions = metrics.executionStatusCount.numberOfSuccessfulExecutions;
+      this.failedExecutions = metrics.executionStatusCount.numberOfFailedExecutions;
     }
   }
 
-  private insertToMetricsTable(
-    table: MetricsTableObject[],
-    metricsData: CpuMetric | MemoryMetric | ExecutionTimeMetric,
-    metricLabel: string
-  ) {
-    table.push({
-      metric: metricLabel,
-      min: metricsData?.minimum,
-      avg: metricsData?.average,
-      max: metricsData?.maximum,
-      unit: metricsData?.unit,
-    });
+  /**
+   * Create an executions table using the CPU, Memory, and Execution Time metrics.
+   * Returns an empty table if those metrics don't exist.
+   * @param metrics
+   * @returns
+   */
+  private createExecutionsTable(metrics: Metrics | null): ExecutionMetricsTableObject[] {
+    let executionsTable: ExecutionMetricsTableObject[] = [];
+    // Only create the table if one of the execution metrics exist
+    if (metrics && (metrics.cpu || metrics.memory || metrics.executionTime)) {
+      executionsTable.push({ metric: 'CPU', ...metrics?.cpu });
+      executionsTable.push({ metric: 'Memory', ...metrics?.memory });
+      executionsTable.push({ metric: 'Run Time', ...metrics?.executionTime });
+    }
+    return executionsTable;
   }
 
   private loadValidationsData(partner: PartnerEnum) {
-    this.validationsTable = [];
-    const validations = this.metrics.get(partner).validationStatus?.validatorToolToIsValid;
-    if (validations) {
-      this.validationsColumns = [
-        'validatorTool',
-        'mostRecentVersion',
-        'isValid',
-        'mostRecentErrorMessage', // shows the error message (if exists) when isValid is false
-        'successfulValidationVersions',
-        'failedValidationVersions',
-        'numberOfRuns',
-        'passingRate',
-      ];
-      for (const [validatorTool, isValid] of Object.entries(validations)) {
-        this.validationsTable.push({
-          validatorTool: validatorTool,
-          mostRecentVersion: isValid.mostRecentVersion,
-          isValid: isValid.mostRecentIsValid,
-          successfulValidationVersions: isValid.successfulValidationVersions,
-          mostRecentErrorMessage: isValid?.mostRecentErrorMessage,
-          failedValidationVersions: isValid.failedValidationVersions,
-          numberOfRuns: isValid.numberOfRuns,
-          passingRate: isValid.passingRate,
-        });
+    this.validatorToolMetricsExist = this.metrics.get(partner).validationStatus != null;
+    if (this.validatorToolMetricsExist) {
+      this.validatorToolToValidatorInfo = new Map(Object.entries(this.metrics.get(partner).validationStatus.validatorTools));
+      this.validatorTools = Array.from(this.validatorToolToValidatorInfo.keys());
+
+      if (this.validatorTools.length > 0) {
+        this.onSelectedValidatorToolChange(this.validatorTools[0]);
       }
     }
   }
@@ -201,10 +182,25 @@ export class ExecutionsTabComponent extends EntryTab implements OnChanges {
   selectPartner(partner: PartnerEnum) {
     if (partner) {
       this.currentPartner = partner;
-      this.loadMetricsData(this.currentPartner);
+      this.loadExecutionMetricsData(this.currentPartner);
       this.loadValidationsData(this.currentPartner);
     } else {
       this.currentPartner = null;
+    }
+  }
+
+  /**
+   * Called when the selected validator tool is changed
+   * @param {string} validatorTool - New validator tool
+   * @return {void}
+   */
+  onSelectedValidatorToolChange(validatorTool: string): void {
+    if (validatorTool) {
+      this.currentValidatorTool = validatorTool;
+      this.validationsTable = this.validatorToolToValidatorInfo.get(validatorTool).validatorVersions;
+    } else {
+      this.currentValidatorTool = null;
+      this.validationsTable = [];
     }
   }
 }
