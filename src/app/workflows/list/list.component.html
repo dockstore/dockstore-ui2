@@ -57,6 +57,10 @@
       <mat-header-cell *matHeaderCellDef mat-sort-header>Format</mat-header-cell>
       <mat-cell *matCellDef="let workflow">{{ workflow?.descriptorType | uppercase }}</mat-cell>
     </ng-container>
+    <ng-container matColumnDef="descriptorTypeSubclass">
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Language</mat-header-cell>
+      <mat-cell *matCellDef="let workflow">{{ workflow?.descriptorTypeSubclass }}</mat-cell>
+    </ng-container>
     <ng-container matColumnDef="projectLinks">
       <mat-header-cell *matHeaderCellDef>Links</mat-header-cell>
       <mat-cell *matCellDef="let entry">
@@ -65,8 +69,8 @@
         </a>
       </mat-cell>
     </ng-container>
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    <mat-header-row *matHeaderRowDef="typeToDisplayedColumns[entryType$ | async]"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: typeToDisplayedColumns[entryType$ | async]"></mat-row>
     <ng-container matColumnDef="disclaimer">
       <mat-footer-cell *matFooterCellDef colspan="6">
         <div class="row col-xs-12">

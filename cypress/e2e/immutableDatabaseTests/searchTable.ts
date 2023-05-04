@@ -432,3 +432,29 @@ describe('search table items per page', () => {
     cy.get('[data-cy=share_button').should('be.visible').click();
   });
 });
+
+// make sure that search table and tabs have been adjusted for notebooks
+describe('check search table and tabs for notebooks', () => {
+  setTokenUserViewPort();
+  beforeEach(() => {
+    cy.fixture('searchTableResponse').then((json) => {
+      cy.intercept('POST', '*' + ga4ghExtendedPath + '/tools/entry/_search', {
+        body: json,
+      });
+    });
+  });
+  it('should contain notebooks-related information', () => {
+    cy.visit('/search?notebooks');
+    // Check that Notebooks tab exists
+    cy.get('.mat-tab-label').contains('Notebooks');
+    // Select notebooks tab
+    goToTab('Notebooks');
+    cy.url().should('contain', 'notebooks');
+    // Check that the notebooks variations are in the table header
+    cy.get('.mat-header-cell').contains('Language');
+    cy.get('.mat-header-cell').contains('Format');
+    // Check that the notebooks variations are in the table body
+    cy.get('.mat-cell').contains('jupyter', { matchCase: false });
+    cy.get('.mat-cell').contains('python', { matchCase: false });
+  });
+});

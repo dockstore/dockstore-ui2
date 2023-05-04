@@ -23,6 +23,8 @@ describe('Notebooks Pages', () => {
     cy.url().should('contain', 'notebooks');
     cy.get('[data-cy=header]').contains('h3', 'Notebooks');
     cy.contains('Search notebooks');
+    cy.contains('Format');
+    cy.contains('Language');
   });
 
   it('should star notebook', () => {

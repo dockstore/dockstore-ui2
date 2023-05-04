@@ -35,7 +35,14 @@ import { PublishedWorkflowsDataSource } from './published-workflows.datasource';
 export class ListWorkflowsComponent extends ToolLister implements OnInit {
   @Input() previewMode: boolean;
 
-  public displayedColumns = ['repository', 'verified', 'author', 'descriptorType', 'projectLinks', 'stars'];
+  public workflowColumns = ['repository', 'verified', 'author', 'descriptorType', 'projectLinks', 'stars'];
+  public notebookColumns = ['repository', 'author', 'descriptorType', 'descriptorTypeSubclass', 'projectLinks', 'stars'];
+  public typeToDisplayedColumns = {
+    workflow: this.workflowColumns,
+    service: this.workflowColumns,
+    appTool: this.workflowColumns,
+    notebook: this.notebookColumns,
+  };
   public entryType$: Observable<EntryType>;
   public entryTypeDisplayName$: Observable<string>;
   type: 'tool' | 'workflow' = 'workflow';

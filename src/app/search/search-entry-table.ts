@@ -21,7 +21,7 @@ import { combineLatest, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Base } from '../shared/base';
 import { DateService } from '../shared/date.service';
-import { AppTool, DockstoreTool, Workflow } from '../shared/swagger';
+import { AppTool, DockstoreTool, Workflow, Notebook } from '../shared/swagger';
 import { SearchQuery } from './state/search.query';
 import { SearchService } from './state/search.service';
 
@@ -34,9 +34,9 @@ export abstract class SearchEntryTable extends Base implements OnInit {
   protected ngUnsubscribe: Subject<{}> = new Subject();
 
   public readonly displayedColumns = ['name', 'verified', 'all_authors', 'descriptorType', 'projectLinks', 'starredUsers'];
-  abstract readonly entryType: 'tool' | 'workflow';
-  abstract dataSource: MatTableDataSource<Workflow | DockstoreTool>;
-  abstract privateNgOnInit(): Observable<(DockstoreTool | Workflow)[]>;
+  abstract readonly entryType: 'tool' | 'workflow' | 'notebook';
+  abstract dataSource: MatTableDataSource<Workflow | DockstoreTool | Notebook>;
+  abstract privateNgOnInit(): Observable<(DockstoreTool | Workflow | Notebook)[]>;
 
   constructor(protected dateService: DateService, protected searchQuery: SearchQuery, protected searchService: SearchService) {
     super();
@@ -55,8 +55,8 @@ export abstract class SearchEntryTable extends Base implements OnInit {
         // Must set data after paginator, just a material datatables thing.
         this.dataSource.data = entries || [];
       });
-    this.dataSource.sortData = (data: DockstoreTool[] | AppTool[] | Workflow[], sort: MatSort) => {
-      return data.slice().sort((a: Workflow | AppTool | DockstoreTool, b: Workflow | AppTool | DockstoreTool) => {
+    this.dataSource.sortData = (data: DockstoreTool[] | AppTool[] | Workflow[] | Notebook[], sort: MatSort) => {
+      return data.slice().sort((a: Workflow | AppTool | DockstoreTool | Notebook, b: Workflow | AppTool | DockstoreTool | Notebook) => {
         return this.searchService.compareAttributes(a, b, sort.active, sort.direction, this.entryType);
       });
     };

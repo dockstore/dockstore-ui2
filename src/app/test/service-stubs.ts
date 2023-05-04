@@ -311,6 +311,11 @@ export class SearchStubService {
       ],
     ]);
   }
+
+  initializeExclusiveFilters() {
+    return new Map([]);
+  }
+
   handleLink(linkArray: Array<string>) {}
 }
 

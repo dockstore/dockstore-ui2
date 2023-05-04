@@ -80,3 +80,37 @@
     <app-search-tool-table></app-search-tool-table>
   </div>
 </div>
+
+<div *ngIf="getTabIndex() === 2">
+  <div class="mat-tab-content">
+    <div *ngIf="notebookTagCloudData">
+      <div fxLayout="row wrap" fxLayoutAlign="space-between center">
+        <span fxFlex="65%">
+          <p>A <b>Notebook</b> is a document containing code and text that can be interactively edited and run</p>
+        </span>
+        <div class="tag-cloud-dropdown">
+          <button fxFlex="21rem" type="button" class="btn btn-info tagCloud-btn notebook" (click)="clickTagCloudBtn('notebook')">
+            <div fxLayout="row" fxLayoutAlign="space-between center">
+              <div>
+                <img class="tag-cloud" src="../assets/images/dockstore/tag-cloud.svg" alt="Popular keywords icon" />
+                <span class="m-2"><b>Popular Keywords</b></span>
+              </div>
+              <fa-icon [icon]="(showNotebookTagCloud$ | async) ? faMinus : faPlus" aria-hidden="true"></fa-icon>
+            </div>
+          </button>
+          <div class="tagCloud notebook" *ngIf="showNotebookTagCloud$ | async">
+            <angular-tag-cloud
+              [data]="notebookTagCloudData"
+              [width]="options.width"
+              [height]="options.height"
+              [overflow]="options.overflow"
+              (clicked)="tagClicked($event)"
+            >
+            </angular-tag-cloud>
+          </div>
+        </div>
+      </div>
+    </div>
+    <app-search-notebook-table></app-search-notebook-table>
+  </div>
+</div>
