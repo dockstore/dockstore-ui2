@@ -62,9 +62,11 @@ export class NotebookComponent implements OnChanges {
               try {
                 // Parse the JSON content of the notebook file.
                 const json = JSON.parse(sourceFile.content);
+                // Find the cells and, if necessary, convert them to a representation that approximates nbformat 4.
+                const cells = json?.nbformat >= 4 ? json?.cells : this.toNbformat4(json?.worksheets[0]?.cells);
                 // If the `cells` property is an array, filter spam and "pass" the cells to the template.
-                if (this.isArray(json?.cells)) {
-                  this.cells = this.filterSpam(json.cells);
+                if (this.isArray(cells)) {
+                  this.cells = this.filterSpam(cells);
                   this.error = false;
                   return;
                 }
@@ -100,5 +102,17 @@ export class NotebookComponent implements OnChanges {
 
   isArray(value: any): boolean {
     return Array.isArray(value);
+  }
+
+  toNbformat4(cells: Cell[]): Cell[] {
+    if (this.isArray(cells)) {
+      cells.forEach((cell) => {
+        if (cell.cell_type === 'code') {
+          cell.source ??= cell.input;
+          cell.execution_count ??= cell.prompt_number;
+        }
+      });
+    }
+    return cells;
   }
 }
