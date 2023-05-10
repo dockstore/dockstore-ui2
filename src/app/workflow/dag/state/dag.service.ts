@@ -330,7 +330,7 @@ export class DagService {
     const destroy = () => {
       try {
         const tooltips = document.getElementsByClassName(dagTooltipAttribute);
-        for (var i = 0; i < tooltips.length; i++) {
+        for (let i = 0; i < tooltips.length; i++) {
           tooltips.item(i).remove();
         }
         popper.destroy();
