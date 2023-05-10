@@ -8,7 +8,7 @@ window.MathJax = {
     processEscapes: true,
   },
   chtml: {
-    fontURL: '/assets/fonts/mathjax',
+    fontURL: '../../../../assets/fonts/mathjax',
   },
   options: {
     // values adapted from https://docs.mathjax.org/en/latest/options/safe.html
