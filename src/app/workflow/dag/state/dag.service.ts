@@ -290,7 +290,7 @@ export class DagService {
     <div class="qtip-titlebar">${name}</div>
     <div class="qtip-content">${runText}</div>
     `;
-    div.setAttribute('class', 'opaq qtip-bootstrap bootstrap-tooltip-z-index' + dagTooltipAttribute);
+    div.setAttribute('class', 'opaq qtip-bootstrap bootstrap-tooltip-z-index ' + dagTooltipAttribute);
     if (this.isFullScreen()) {
       // If fullscreen append it to the cy element because the cdk-overlay-container div is not in the fullscreen element
       cyElement.appendChild(div);
