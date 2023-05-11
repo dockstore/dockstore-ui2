@@ -269,7 +269,9 @@
             matTooltipPosition="left"
             target="_blank"
             rel="noopener"
-            href="http://www.mybinder.org"
+            href="https://mybinder.org/v2/gh/{{ workflow.organization }}/{{ workflow.repository }}/{{ selectedVersion.name }}?labpath={{
+              selectedVersion.workflow_path
+            }}"
             [disabled]="(hasContent$ | async) === false"
             data-cy="mybinderLaunchWith"
             >MyBinder</a
