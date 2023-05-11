@@ -194,6 +194,14 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
     map(([hasContent, hasHttpImports]) => this.sevenBridgesTooltip(hasContent, hasHttpImports, 'Cavatica'))
   );
 
+  colabTooltip$: Observable<string> = combineLatest([this.hasContent$]).pipe(
+    map(([hasContent]) => (hasContent ? 'Run this notebook in Google Collaboratory' : 'The notebook has no content.'))
+  );
+
+  mybinderTooltip$: Observable<string> = combineLatest([this.hasContent$]).pipe(
+    map(([hasContent]) => (hasContent ? 'Run this notebook in My Binder' : 'The notebook has no content.'))
+  );
+
   constructor(
     private workflowsService: WorkflowsService,
     private descriptorTypeCompatService: DescriptorTypeCompatService,

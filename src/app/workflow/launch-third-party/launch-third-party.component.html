@@ -252,11 +252,12 @@
             mat-button
             class="launch-with-button private-btn"
             [matTooltip]="colabTooltip$ | async"
+            matTooltipPosition="left"
             target="_blank"
             rel="noopener"
             href="https://colab.research.google.com/github/{{ workflow.organization }}/{{ workflow.repository }}/blob/{{
               selectedVersion.name
-            }}/{{ selectedVersion.workflow_path }}"
+            }}{{ selectedVersion.workflow_path }}"
             [disabled]="(hasContent$ | async) === false"
             data-cy="colabLaunchWith"
             >Google Colab</a
@@ -264,13 +265,14 @@
           <a
             mat-button
             class="launch-with-button private-btn"
-            matTooltip="myBinder placeholder tooltip"
+            [matTooltip]="mybinderTooltip$ | async"
+            matTooltipPosition="left"
             target="_blank"
             rel="noopener"
             href="http://www.mybinder.org"
             [disabled]="(hasContent$ | async) === false"
             data-cy="mybinderLaunchWith"
-            >My Binder</a
+            >MyBinder</a
           >
         </div>
       </div>
