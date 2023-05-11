@@ -120,7 +120,7 @@ export class NotebookComponent implements OnChanges {
       if (this.isArray(cell.outputs)) {
         cell.outputs.forEach(
           (output) =>
-            // Map the previous representation of rich outputs to a "mime bundle'.
+            // Map the old representation of rich outputs to a "mime bundle'.
             (output.data ??= {
               'text/plain': output['text'],
               'text/html': output['html'],
