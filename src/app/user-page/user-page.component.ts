@@ -29,7 +29,6 @@ export class UserPageComponent implements OnInit {
     private alertService: AlertService
   ) {
     this.username = this.activatedRoute.snapshot.paramMap.get('username');
-    this.checkIfUsernameExists(this.username);
   }
 
   getUserInfo(username: string): void {
@@ -56,28 +55,9 @@ export class UserPageComponent implements OnInit {
       },
       (error: HttpErrorResponse) => {
         this.alertService.detailedError(error);
+        this.router.navigateByUrl(''); //returns to homepage if user doesn't exist or another error occurs;
       }
     );
-  }
-
-  /**
-   * Checks if username exists, if not, navigates to homepage
-   */
-  checkIfUsernameExists(value: string): void {
-    const username = value;
-    this.usersService
-      .checkUserExists(username)
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(
-        (userExists: boolean) => {
-          if (!userExists) {
-            this.router.navigateByUrl('');
-          }
-        },
-        (error: HttpErrorResponse) => {
-          this.alertService.detailedError(error);
-        }
-      );
   }
 
   ngOnInit(): void {
