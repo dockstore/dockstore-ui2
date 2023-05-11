@@ -247,14 +247,32 @@
         </div>
       </div>
       <div *ngIf="workflow?.descriptorType === WorkflowModel.DescriptorTypeEnum.Jupyter">
-        <a
-          target="_blank"
-          rel="noopener"
-          href="https://colab.research.google.com/github/{{ workflow.organization }}/{{ workflow.repository }}/blob/{{
-            selectedVersion.name
-          }}/{{ selectedVersion.workflow_path }}"
-          >Google Colab</a
-        >
+        <div fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="0.625rem">
+          <a
+            mat-button
+            class="launch-with-button private-btn"
+            [matTooltip]="colabTooltip$ | async"
+            target="_blank"
+            rel="noopener"
+            href="https://colab.research.google.com/github/{{ workflow.organization }}/{{ workflow.repository }}/blob/{{
+              selectedVersion.name
+            }}/{{ selectedVersion.workflow_path }}"
+            [disabled]="(hasContent$ | async) === false"
+            data-cy="colabLaunchWith"
+            >Google Colab</a
+          >
+          <a
+            mat-button
+            class="launch-with-button private-btn"
+            matTooltip="myBinder placeholder tooltip"
+            target="_blank"
+            rel="noopener"
+            href="http://www.mybinder.org"
+            [disabled]="(hasContent$ | async) === false"
+            data-cy="mybinderLaunchWith"
+            >My Binder</a
+          >
+        </div>
       </div>
     </div>
   </mat-card-content>
