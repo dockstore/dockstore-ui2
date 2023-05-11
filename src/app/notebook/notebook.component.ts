@@ -106,12 +106,12 @@ export class NotebookComponent implements OnChanges {
 
   cellsToNbformat4(cells: Cell[]): Cell[] {
     if (this.isArray(cells)) {
-      cells.map((cell) => this.cellToNbFormat4(cell));
+      cells.forEach((cell) => this.cellToNbFormat4(cell));
     }
     return cells;
   }
 
-  cellToNbFormat4(cell: Cell): Cell {
+  cellToNbFormat4(cell: Cell): void {
     if (cell.cell_type === 'code') {
       // Handle some field name changes: 'input' -> 'source', 'prompt_number' -> 'execution_count'
       cell.source ??= cell['input'];
@@ -129,6 +129,5 @@ export class NotebookComponent implements OnChanges {
         );
       }
     }
-    return cell;
   }
 }
