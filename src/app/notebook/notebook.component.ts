@@ -63,7 +63,7 @@ export class NotebookComponent implements OnChanges {
                 // Parse the JSON content of the notebook file.
                 const json = JSON.parse(sourceFile.content);
                 // Find the cells and, if necessary, convert them to a representation that approximates nbformat 4.
-                const cells = json?.nbformat >= 4 ? json?.cells : this.toNbformat4(json?.worksheets[0]?.cells);
+                const cells = json?.nbformat >= 4 ? json?.cells : this.cellsToNbformat4(json?.worksheets[0]?.cells);
                 // If the `cells` property is an array, filter spam and "pass" the cells to the template.
                 if (this.isArray(cells)) {
                   this.cells = this.filterSpam(cells);
@@ -104,15 +104,31 @@ export class NotebookComponent implements OnChanges {
     return Array.isArray(value);
   }
 
-  toNbformat4(cells: Cell[]): Cell[] {
+  cellsToNbformat4(cells: Cell[]): Cell[] {
     if (this.isArray(cells)) {
-      cells.forEach((cell) => {
-        if (cell.cell_type === 'code') {
-          cell.source ??= cell.input;
-          cell.execution_count ??= cell.prompt_number;
-        }
-      });
+      cells.map((cell) => this.cellToNbFormat4(cell));
     }
     return cells;
+  }
+
+  cellToNbFormat4(cell: Cell): Cell {
+    if (cell.cell_type === 'code') {
+      // Handle some field name changes: 'input' -> 'source', 'prompt_number' -> 'execution_count'
+      cell.source ??= cell['input'];
+      cell.execution_count ??= cell['prompt_number'];
+      // Convert each output.
+      if (this.isArray(cell.outputs)) {
+        cell.outputs.forEach(
+          (output) =>
+            // Map the previous representation of rich outputs to a "mime bundle'.
+            (output.data ??= {
+              'text/plain': output['text'],
+              'text/html': output['html'],
+              'image/png': output['png'],
+            })
+        );
+      }
+    }
+    return cell;
   }
 }

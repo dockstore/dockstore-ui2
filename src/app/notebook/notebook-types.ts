@@ -16,10 +16,8 @@ export interface Cell {
   cell_type?: string;
   metadata?: CellMetadata;
   source?: string | string[];
-  input?: string | string[];
   attachments?: Attachments;
   execution_count?: number | null;
-  prompt_number?: number | null;
   outputs?: Output[];
 }
 
