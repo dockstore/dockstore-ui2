@@ -184,4 +184,12 @@ describe('NotebookComponent', () => {
     expect(element.querySelector('.output img').getAttribute('height')).toBe('480');
     confirmSuccess();
   });
+
+  it('should do a reasonable job of displaying a format 3 notebook', () => {
+    const cell = '{"cell_type": "code", "input": "some input", "outputs": [{"output_type": "display_data", "html": "<p>some html</p>"}]}';
+    const notebook = `{"nbformat": 3, "worksheets": [{ "cells": [${cell}] }]}`;
+    format(notebook);
+    expect(element.querySelector('.source').textContent).toContain('some input');
+    expect(element.querySelector('.output').textContent).toContain('some html');
+  });
 });

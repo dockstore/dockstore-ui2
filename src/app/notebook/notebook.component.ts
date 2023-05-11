@@ -63,7 +63,7 @@ export class NotebookComponent implements OnChanges {
                 // Parse the JSON content of the notebook file.
                 const json = JSON.parse(sourceFile.content);
                 // Find the cells and, if necessary, convert them to a representation that approximates nbformat 4.
-                const cells = json?.nbformat >= 4 ? json?.cells : this.cellsToNbformat4(json?.worksheets[0]?.cells);
+                const cells = json?.nbformat < 4 ? this.cellsToNbformat4(json?.worksheets[0]?.cells) : json?.cells;
                 // If the `cells` property is an array, filter spam and "pass" the cells to the template.
                 if (this.isArray(cells)) {
                   this.cells = this.filterSpam(cells);
