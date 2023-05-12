@@ -55,7 +55,7 @@ export class UserPageComponent implements OnInit {
       },
       (error: HttpErrorResponse) => {
         this.alertService.detailedError(error);
-        this.router.navigateByUrl('/page-not-found'); //returns to Page Not Found if user doesn't exist or another error occurs;
+        this.router.navigateByUrl('/page-not-found'); //redirects to Page Not Found if user doesn't exist or another error occurs;
       }
     );
   }
