@@ -37,11 +37,13 @@
               [className]="'partner-launch'"
               [disabled]="(hasContent$ | async) === false"
               [matTooltip]="(hasContent$ | async) ? '' : 'The WDL workflow has no content.'"
+              matTooltipPosition="left"
             ></app-multi-cloud-launch>
             <a
               mat-button
               class="launch-with-button private-btn"
               [matTooltip]="(hasContent$ | async) ? '' : 'The WDL workflow has no content.'"
+              matTooltipPosition="left"
               target="_blank"
               rel="noopener"
               [attr.href]="config.DNANEXUS_IMPORT_URL + '?source=' + trsUrl"
@@ -53,6 +55,7 @@
               mat-button
               class="launch-with-button private-btn"
               [matTooltip]="terraTooltip$ | async"
+              matTooltipPosition="left"
               target="_blank"
               rel="noopener"
               [disabled]="disableTerraPlatform$ | async"
@@ -64,6 +67,7 @@
               mat-button
               class="launch-with-button private-btn"
               [matTooltip]="elwaziToolTip$ | async"
+              matTooltipPosition="left"
               target="_blank"
               rel="noopener"
               [disabled]="disableTerraPlatform$ | async"
@@ -75,6 +79,7 @@
               mat-button
               class="launch-with-button private-btn"
               [matTooltip]="anvilTooltip$ | async"
+              matTooltipPosition="left"
               target="_blank"
               rel="noopener"
               [disabled]="disableTerraPlatform$ | async"
@@ -86,6 +91,7 @@
               mat-button
               class="launch-with-button private-btn"
               [matTooltip]="bdCatalystTerraTooltip$ | async"
+              matTooltipPosition="left"
               target="_blank"
               rel="noopener"
               [disabled]="disableTerraPlatform$ | async"
@@ -113,6 +119,7 @@
                 mat-button
                 class="launch-with-button private-btn"
                 [matTooltip]="(hasContent$ | async) ? '' : 'The WDL workflow has no content.'"
+                matTooltipPosition="left"
                 target="_blank"
                 rel="noopener"
                 [attr.href]="config.DNANEXUS_IMPORT_URL + '?source=' + trsUrl"
@@ -124,6 +131,7 @@
                 mat-button
                 class="launch-with-button private-btn"
                 [matTooltip]="terraTooltip$ | async"
+                matTooltipPosition="left"
                 target="_blank"
                 rel="noopener"
                 [disabled]="disableTerraPlatform$ | async"
@@ -135,6 +143,7 @@
                 mat-button
                 class="launch-with-button private-btn"
                 [matTooltip]="elwaziToolTip$ | async"
+                matTooltipPosition="left"
                 target="_blank"
                 rel="noopener"
                 [disabled]="disableTerraPlatform$ | async"
@@ -146,6 +155,7 @@
                 mat-button
                 class="launch-with-button private-btn"
                 [matTooltip]="anvilTooltip$ | async"
+                matTooltipPosition="left"
                 target="_blank"
                 rel="noopener"
                 [disabled]="disableTerraPlatform$ | async"
@@ -157,6 +167,7 @@
                 mat-button
                 class="launch-with-button private-btn"
                 [matTooltip]="bdCatalystTerraTooltip$ | async"
+                matTooltipPosition="left"
                 target="_blank"
                 rel="noopener"
                 [disabled]="disableTerraPlatform$ | async"
@@ -177,6 +188,7 @@
             mat-button
             class="launch-with-button private-btn"
             [matTooltip]="cgcTooltip$ | async"
+            matTooltipPosition="left"
             target="_blank"
             rel="noopener"
             [attr.href]="config.CGC_IMPORT_URL + '?trs=' + trsUrl"
@@ -188,6 +200,7 @@
             mat-button
             class="launch-with-button private-btn"
             [matTooltip]="bdCatalystSevenBridgesTooltip$ | async"
+            matTooltipPosition="left"
             target="_blank"
             rel="noopener"
             [attr.href]="config.BD_CATALYST_SEVEN_BRIDGES_IMPORT_URL + '?trs=' + trsUrl"
@@ -199,6 +212,7 @@
             mat-button
             class="launch-with-button private-btn"
             [matTooltip]="cavaticaTooltip$ | async"
+            matTooltipPosition="left"
             target="_blank"
             rel="noopener"
             [attr.href]="config.CAVATICA_IMPORT_URL + '?trs=' + trsUrl"
@@ -218,6 +232,7 @@
             [className]="'galaxy-launch'"
             [disabled]="(hasContent$ | async) === false"
             [matTooltip]="(hasContent$ | async) ? '' : 'The Galaxy workflow has no content.'"
+            matTooltipPosition="left"
             data-cy="galaxyLaunchWith"
           ></app-multi-cloud-launch>
         </div>
@@ -226,6 +241,7 @@
             mat-button
             class="launch-with-button private-btn"
             [matTooltip]="(hasContent$ | async) ? 'Export this workflow to Nextflow Tower' : 'The Nextflow workflow has no content.'"
+            matTooltipPosition="left"
             target="_blank"
             rel="noopener"
             [attr.href]="
