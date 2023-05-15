@@ -23,6 +23,7 @@ import { CollectionsQuery } from '../state/collections.query';
 import { CollectionsService } from '../state/collections.service';
 import { OrganizationQuery } from '../state/organization.query';
 import { CreateCollectionComponent } from './create-collection/create-collection.component';
+import { Dockstore } from '../../shared/dockstore.model';
 
 @Component({
   selector: 'app-collections',
@@ -30,6 +31,7 @@ import { CreateCollectionComponent } from './create-collection/create-collection
   styleUrls: ['./collections.component.scss'],
 })
 export class CollectionsComponent implements OnInit, OnChanges {
+  public Dockstore = Dockstore;
   @Input() organizationID: number;
   @Input() organizationName: string;
   loading$: Observable<boolean>;
