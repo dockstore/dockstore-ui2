@@ -54,6 +54,7 @@
       <a [routerLink]="'/accounts'" [queryParams]="{ tab: 'requests' }">accounts page</a>.
     </mat-card>
 
+    <app-preview-warning *ngIf="Dockstore.FEATURES.enableNotebooks" featureName="Notebooks"></app-preview-warning>
     <div fxFlex class="my-3">
       <div fxLayout="row" fxLayout.lt-md="column" fxLayoutAlign="space-between">
         <div fxFlex="90" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="2rem">
