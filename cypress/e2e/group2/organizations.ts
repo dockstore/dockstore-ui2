@@ -303,6 +303,10 @@ describe('Dockstore Organizations', () => {
       const notebookPath = '/notebooks/github.com/dockstore-testing/simple-notebook';
       addToCollection(notebookPath, 'Potatoe', 'veryFakeCollectionName');
       cy.get('[data-cy=collectionLink]').should('contain', 'veryFakeCollectionName');
+      cy.visit('/organizations/Potatoe?notebooks');
+      cy.get('[data-cy=collections-notebooks-count-bubble]').should('be.visible');
+      cy.visit('/organizations/Potatoe/collections/veryFakeCollectionName?notebooks');
+      cy.contains('github.com/dockstore-testing/simple-notebook');
     });
 
     it('Should be able to remove collection', () => {
@@ -315,6 +319,8 @@ describe('Dockstore Organizations', () => {
       cy.get('[data-cy=accept-remove-collection]').click();
       cy.visit('/organizations/Potatoe/collections/veryFakeCollectionName');
       cy.contains('veryFakeCollectionName').should('not.exist');
+      cy.visit('/organizations/Potatoe?notebooks');
+      cy.get('[data-cy=collections-notebooks-count-bubble]').should('not.exist');
     });
   });
 
