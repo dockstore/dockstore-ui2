@@ -101,7 +101,7 @@
             <h3 *ngIf="!Dockstore.FEATURES.enableNotebooks">Workflows and Tools</h3>
 
             <div data-cy="collectionEntry" *ngFor="let entry of collection?.entries">
-              <mat-card class="pb-3">
+              <mat-card class="pb-3" *ngIf="entry.entryType !== 'notebook' || Dockstore.FEATURES.enableNotebooks">
                 <a
                   [routerLink]="[
                     '/' + (entry.entryType === 'tool' ? 'container' : 'workflow') + 's/',
