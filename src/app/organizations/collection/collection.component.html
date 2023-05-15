@@ -90,10 +90,14 @@
           </button>
         </mat-card-actions>
       </div>
-      <mat-card class="alert alert-info mat-elevation-z" *ngIf="collection?.entries?.length === 0">
+      <mat-card
+        class="alert alert-info mat-elevation-z"
+        *ngIf="collection?.entries?.length === 0 || (checkHasOnlyNotebooks(collection) && !Dockstore.FEATURES.enableNotebooks)"
+      >
         <mat-icon>info</mat-icon> This collection has no associated entries. To add an entry, navigate to the public page of the tool or
         workflow you want to add and select `Add to collection`
       </mat-card>
+      <app-preview-warning *ngIf="Dockstore.FEATURES.enableNotebooks" featureName="Notebooks"></app-preview-warning>
       <div fxLayout="row wrap" class="my-3">
         <div fxFlex="1 0 45%" class="mb-4">
           <div fxLayout="column" fxLayoutGap="15px">

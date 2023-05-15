@@ -17,6 +17,7 @@ import { UpdateOrganizationOrCollectionDescriptionComponent } from '../organizat
 import { CollectionsQuery } from '../state/collections.query';
 import { CollectionsService } from '../state/collections.service';
 import { OrganizationQuery } from '../state/organization.query';
+import { CollectionEntry } from '../../shared/openapi';
 
 @Component({
   selector: 'app-collection-entry-confirm-remove',
@@ -63,6 +64,7 @@ export class CollectionComponent implements OnInit {
 
   isAdmin$: Observable<boolean>;
   isCurator$: Observable<boolean>;
+
   constructor(
     private collectionsQuery: CollectionsQuery,
     private organizationQuery: OrganizationQuery,
@@ -85,6 +87,10 @@ export class CollectionComponent implements OnInit {
     this.collectionsService.updateCollectionFromName(organizationName, collectionName);
     this.isAdmin$ = this.userQuery.isAdmin$;
     this.isCurator$ = this.userQuery.isCurator$;
+  }
+
+  checkHasOnlyNotebooks(collection: Collection): boolean {
+    return collection.entries.length === collection.notebooksLength;
   }
 
   /**
