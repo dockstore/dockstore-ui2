@@ -272,7 +272,8 @@
             target="_blank"
             rel="noopener"
             [attr.href]="
-              'https://colab.research.google.com/github/' +
+              config.COLAB_IMPORT_URL +
+              '/' +
               workflow.organization +
               '/' +
               workflow.repository +
@@ -292,7 +293,8 @@
             target="_blank"
             rel="noopener"
             [attr.href]="
-              'https://mybinder.org/v2/gh/' +
+              config.MYBINDER_IMPORT_URL +
+              '/' +
               workflow.organization +
               '/' +
               workflow.repository +
