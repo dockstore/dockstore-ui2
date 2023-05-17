@@ -87,7 +87,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
   ];
   private githubAppOption = {
     label: 'Register using GitHub Apps (Recommended)',
-    extendedLabel: 'Install our GitHub App in your personal account or organization to automatically sync workflows with GitHub.',
+    extendedLabel: 'Install our GitHub App in an organization or your personal account to automatically sync workflows with GitHub.',
     value: 0,
   };
   public options = [this.githubAppOption, ...this.baseOptions];
