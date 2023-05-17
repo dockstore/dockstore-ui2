@@ -72,7 +72,7 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked, OnDestro
     {
       label: 'Register using GitHub Apps (Recommended)',
       extendedLabel:
-        'Install our GitHub App on your repository in your personal account or organization to automatically sync tools with GitHub. Allows you to register a tool descriptor without linking to a Docker image you own.',
+        'Install our GitHub App in your personal account or organization to automatically sync tools with GitHub. Allows you to register a tool descriptor without linking to a Docker image you own.',
       value: OptionChoice.GitHubApps,
     },
     {
