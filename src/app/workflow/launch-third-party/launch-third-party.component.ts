@@ -148,6 +148,27 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
    * The workflow path encoded for use as a query parameter value.
    */
   workflowPathAsQueryValue: string;
+
+  /**
+   * The workflow organization, URL encoded.
+   */
+  workflowOrganizationAsQueryValue: string;
+
+  /**
+   * The workflow repository, URL encoded.
+   */
+  workflowRepositoryAsQueryValue: string;
+
+  /**
+   * The name of the selected version, URL encoded.
+   */
+  selectedVersionNameAsQueryValue: string;
+
+  /**
+   * The workflow path of the selected version, in absolute form, URL encoded.
+   */
+  selectedVersionWorkflowPathAsQueryValue: string;
+
   partner = CloudInstance.PartnerEnum;
   cloudInstances: Array<CloudInstance>;
   usersCloudInstances: Array<CloudInstance>;
@@ -195,7 +216,7 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
   );
 
   colabTooltip$: Observable<string> = combineLatest([this.hasContent$]).pipe(
-    map(([hasContent]) => (hasContent ? 'Run this notebook in Google Collaboratory' : 'The notebook has no content.'))
+    map(([hasContent]) => (hasContent ? 'Run this notebook in Google Colaboratory' : 'The notebook has no content.'))
   );
 
   mybinderTooltip$: Observable<string> = combineLatest([this.hasContent$]).pipe(
@@ -261,9 +282,21 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
     this.trsUrl = this.trsUrlAsQueryValue = this.workflowPathAsQueryValue = null;
     if (this.workflow && this.selectedVersion) {
       this.trsUrl = this.descriptorsService.trsUrl(this.workflow.full_workflow_path, this.selectedVersion.name);
-      this.trsUrlAsQueryValue = new HttpUrlEncodingCodec().encodeValue(this.trsUrl);
-      this.workflowPathAsQueryValue = new HttpUrlEncodingCodec().encodeValue(this.workflow.full_workflow_path);
+      this.trsUrlAsQueryValue = this.encode(this.trsUrl);
+      this.workflowPathAsQueryValue = this.encode(this.workflow.full_workflow_path);
+      this.workflowOrganizationAsQueryValue = this.encode(this.workflow.organization);
+      this.workflowRepositoryAsQueryValue = this.encode(this.workflow.repository);
+      this.selectedVersionWorkflowPathAsQueryValue = this.encode(this.prependIfNotPrefix('/', this.selectedVersion.workflow_path));
+      this.selectedVersionNameAsQueryValue = this.encode(this.selectedVersion.name);
     }
+  }
+
+  private encode(value: string): string {
+    return new HttpUrlEncodingCodec().encodeValue(value);
+  }
+
+  private prependIfNotPrefix(prefix: string, value: string): string {
+    return value.startsWith(prefix) ? value : prefix + value;
   }
 
   private sevenBridgesTooltip(hasContent: boolean, hasHttpImports, platform: string): string {

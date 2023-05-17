@@ -274,12 +274,12 @@
             [attr.href]="
               config.COLAB_IMPORT_URL +
               '/' +
-              workflow.organization +
+              workflowOrganizationAsQueryValue +
               '/' +
-              workflow.repository +
+              workflowRepositoryAsQueryValue +
               '/blob/' +
-              selectedVersion.name +
-              selectedVersion.workflow_path
+              selectedVersionNameAsQueryValue +
+              selectedVersionWorkflowPathAsQueryValue
             "
             [disabled]="(hasContent$ | async) === false"
             data-cy="colabLaunchWith"
@@ -295,13 +295,13 @@
             [attr.href]="
               config.MYBINDER_IMPORT_URL +
               '/' +
-              workflow.organization +
+              workflowOrganizationAsQueryValue +
               '/' +
-              workflow.repository +
+              workflowRepositoryAsQueryValue +
               '/' +
-              selectedVersion.name +
+              selectedVersionNameAsQueryValue +
               '?labpath=' +
-              selectedVersion.workflow_path
+              selectedVersionWorkflowPathAsQueryValue
             "
             [disabled]="(hasContent$ | async) === false"
             data-cy="mybinderLaunchWith"
