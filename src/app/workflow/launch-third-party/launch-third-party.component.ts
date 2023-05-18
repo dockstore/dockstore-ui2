@@ -220,7 +220,7 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
   );
 
   mybinderTooltip$: Observable<string> = combineLatest([this.hasContent$]).pipe(
-    map(([hasContent]) => (hasContent ? 'Run this notebook in My Binder' : 'The notebook has no content.'))
+    map(([hasContent]) => (hasContent ? 'Run this notebook at mybinder.org' : 'The notebook has no content.'))
   );
 
   constructor(
