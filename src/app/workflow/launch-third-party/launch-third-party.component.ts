@@ -286,8 +286,8 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
       this.workflowPathAsQueryValue = this.encode(this.workflow.full_workflow_path);
       this.workflowOrganizationAsQueryValue = this.encode(this.workflow.organization);
       this.workflowRepositoryAsQueryValue = this.encode(this.workflow.repository);
-      this.selectedVersionWorkflowPathAsQueryValue = this.encode(this.prependIfNotPrefix('/', this.selectedVersion.workflow_path));
       this.selectedVersionNameAsQueryValue = this.encode(this.selectedVersion.name);
+      this.selectedVersionWorkflowPathAsQueryValue = this.encode(this.prependIfNotPrefix('/', this.selectedVersion.workflow_path));
     }
   }
 
