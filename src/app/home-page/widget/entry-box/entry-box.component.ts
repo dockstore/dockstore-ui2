@@ -87,10 +87,7 @@ export class EntryBoxComponent extends Base implements OnInit {
       this.isLoading = false;
     }
 
-    // Do not get Notebook entries, unsupported - remove when suported
-    if (this.entryType !== NewEntryType.NOTEBOOK) {
-      this.getMyEntries();
-    }
+    this.getMyEntries();
   }
 
   getMyEntries() {

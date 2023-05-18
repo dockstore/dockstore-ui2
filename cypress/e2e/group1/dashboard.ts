@@ -13,7 +13,7 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import { resetDB, setTokenUserViewPort, verifyGithubLinkDashboard } from '../../support/commands';
+import { insertNotebooks, resetDB, setTokenUserViewPort, verifyGithubLinkDashboard } from '../../support/commands';
 
 describe('Dockstore dashboard', () => {
   resetDB();
@@ -43,10 +43,33 @@ describe('Dockstore dashboard', () => {
       .should('have.attr', 'href')
       .and('include', 'getting-started-with-services');
   });
+
+  it('no notebooks display correctly', () => {
+    cy.visit('/dashboard?notebooks');
+    cy.contains('Notebooks');
+    cy.contains('You have not registered any notebooks.');
+    cy.get('[data-cy=no-entry-register-modal]').contains('notebook');
+    cy.get('[data-cy=help-link')
+      .contains('Learn more about notebooks')
+      .should('have.attr', 'href')
+      .and('include', 'getting-started/notebooks');
+  });
+
   it('Registering new tool through Github redirects correctly', () => {
     verifyGithubLinkDashboard('Tool');
   });
   it('Registering new workflow through Github redirects correctly', () => {
     verifyGithubLinkDashboard('Workflow');
+  });
+});
+
+describe('should display added notebook correctly', () => {
+  setTokenUserViewPort();
+  insertNotebooks();
+  it('notebooks display correctly', () => {
+    cy.visit('/dashboard?notebooks');
+    cy.contains('Notebooks');
+    cy.get('[data-cy=dashboard-entries-count-bubble]').contains(1);
+    cy.get('[data-cy=dashboard-entry-links]').contains('dockstore-testing/simple-notebook');
   });
 });
