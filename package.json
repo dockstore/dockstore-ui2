@@ -3,10 +3,10 @@
   "version": "2.10.0",
   "license": "Apache License 2.0",
   "config": {
-    "webservice_version": "1.13.0",
+    "webservice_version": "1.15.0",
     "use_circle": true,
-    "circle_ci_source": "https://app.circleci.com/pipelines/github/dockstore/dockstore/9892/workflows/fe1391ad-48ae-4f8a-bbd0-eefcc7124d8c/jobs/33471/artifacts",
-    "circle_build_id": "33471",
+    "circle_ci_source": "https://app.circleci.com/pipelines/github/dockstore/dockstore/9891/workflows/f59191af-06ea-49ae-aefa-cdce0011cb7f/jobs/33457/artifacts",
+    "circle_build_id": "33457",
     "base_branch": "develop"
   },
   "scripts": {

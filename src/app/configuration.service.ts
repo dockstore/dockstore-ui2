@@ -45,6 +45,8 @@ export class ConfigurationService {
     Dockstore.BD_CATALYST_SEVEN_BRIDGES_IMPORT_URL = config.bdCatalystSevenBridgesImportUrl;
     Dockstore.BD_CATALYST_TERRA_IMPORT_URL = config.bdCatalystTerraImportUrl;
     Dockstore.ELWAZI_IMPORT_URL = config.elwaziImportUrl;
+    Dockstore.COLAB_IMPORT_URL = config.colabImportUrl;
+    Dockstore.MYBINDER_IMPORT_URL = config.mybinderImportUrl;
 
     Dockstore.GITHUB_CLIENT_ID = config.githubClientId;
     Dockstore.GITHUB_AUTH_URL = config.gitHubAuthUrl;

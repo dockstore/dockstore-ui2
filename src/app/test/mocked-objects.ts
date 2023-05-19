@@ -140,6 +140,7 @@ export const sampleWorkflowVersion: WorkflowVersion = {
   id: 1,
   reference: '',
   name: 'master',
+  workflow_path: '/abc.wdl',
 };
 
 export const sampleToolVersion: Tag = {
