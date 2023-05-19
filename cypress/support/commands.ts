@@ -240,7 +240,6 @@ export function snapshot() {
 
   cy.get('[data-cy=snapshot-button]').click();
 
-  cy.wait(250);
   cy.get('[data-cy=dockstore-snapshot-locked]').should('have.length', 1);
   cy.get('td').contains('Actions').click();
   cy.get('[data-cy=dockstore-snapshot]').should('be.disabled');
