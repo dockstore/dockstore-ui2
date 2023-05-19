@@ -7,7 +7,7 @@ orbs:
 executors:
   integration_test_exec: # declares a reusable executor
     docker:
-      - image: cimg/base:stable-20.04
+      - image: cimg/openjdk:17.0
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
@@ -32,7 +32,7 @@ executors:
           - discovery.type: single-node
   accessibility_test_exec:
     docker:
-      - image: cimg/base:stable-20.04
+      - image: cimg/openjdk:17.0
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
@@ -63,7 +63,7 @@ jobs:
         type: string
     working_directory: ~/repo
     docker:
-      - image: cimg/base:stable-20.04
+      - image: cimg/openjdk:17.0
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
@@ -98,7 +98,7 @@ jobs:
         type: string
     working_directory: ~/repo
     docker:
-        - image: cimg/base:stable-20.04
+        - image: cimg/openjdk:17.0
           auth:
             username: dockstoretestuser
             password: $DOCKERHUB_PASSWORD
@@ -127,7 +127,7 @@ jobs:
   audit:
     working_directory: ~/repo
     docker:
-      - image: cimg/base:stable-20.04
+      - image: cimg/openjdk:17.0
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
@@ -155,7 +155,7 @@ jobs:
   lint_license_unit_test_coverage:
     working_directory: ~/repo
     docker:
-      - image: cimg/base:stable-20.04
+      - image: cimg/openjdk:17.0
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
@@ -367,6 +367,10 @@ jobs:
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
+      - image: cimg/openjdk:17.0
+        auth:
+          username: dockstoretestuser
+          password: $DOCKERHUB_PASSWORD
     parameters:
       aws_bucket:
         type: string
@@ -406,6 +410,10 @@ jobs:
     working_directory: ~/repo
     docker:
       - image: cimg/python:3.11
+        auth:
+          username: dockstoretestuser
+          password: $DOCKERHUB_PASSWORD
+      - image: cimg/openjdk:17.0
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
@@ -574,11 +582,6 @@ workflows:
 commands:
   install_container_dependencies:
     steps:
-      - run:
-          name: Install java
-          command: |
-            sudo apt update -y
-            sudo apt install openjdk-17-jre -yq
       - run:
           name: Install npm
           command: |
