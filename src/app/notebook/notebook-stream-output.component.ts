@@ -9,10 +9,17 @@ import { Output } from './notebook-types';
 export class NotebookStreamOutputComponent implements OnChanges {
   @Input() output: Output;
   text: string;
+  name: string;
 
   constructor() {}
 
   ngOnChanges(): void {
     this.text = join(this.output?.text);
+    const name = join(this.output?.name);
+    if (name === 'stderr' || name === 'stdout') {
+      this.name = name;
+    } else {
+      this.name = undefined;
+    }
   }
 }
