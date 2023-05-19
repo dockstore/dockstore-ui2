@@ -38,7 +38,7 @@ describe('Dockstore dashboard', () => {
     cy.contains('Services');
     cy.contains('You have not registered any services.');
     cy.get('[data-cy=no-entry-register-modal]').contains('service');
-    cy.get('[data-cy=help-link')
+    cy.get('[data-cy=help-link]')
       .contains('Learn more about services')
       .should('have.attr', 'href')
       .and('include', 'getting-started-with-services');
@@ -49,7 +49,7 @@ describe('Dockstore dashboard', () => {
     cy.contains('Notebooks');
     cy.contains('You have not registered any notebooks.');
     cy.get('[data-cy=no-entry-register-modal]').contains('notebook');
-    cy.get('[data-cy=help-link')
+    cy.get('[data-cy=help-link]')
       .contains('Learn more about notebooks')
       .should('have.attr', 'href')
       .and('include', 'getting-started/notebooks');
