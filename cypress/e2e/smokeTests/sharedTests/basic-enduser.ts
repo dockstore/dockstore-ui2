@@ -303,7 +303,11 @@ function testWorkflow(url: string, version1: string, version2: string, trsUrl: s
 }
 
 function testNotebook(url: string, version1: string, version2: string, trsUrl: string, type: string) {
-  // TODO add text
+  // Check Info tab contents
+  // Click on a Version and make sure the URL is correct
+  // Check Preview tab contents
+  // Check Files tab contents
+  // Check the "Launch with" buttons
 }
 
 // TODO: uncomment after tooltester logs are fixed
