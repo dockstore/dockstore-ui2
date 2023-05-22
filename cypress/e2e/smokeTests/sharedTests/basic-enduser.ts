@@ -193,10 +193,16 @@ const workflowVersionTuples = [
     'Galaxy',
   ],
 ];
-// This test shouldn't be run for smoke tests as it depends on 'real' entries
+const notebookVersionTuples = [
+  // TODO fill in
+];
+// These tests shouldn't be run for smoke tests as it depends on 'real' entries
 if (Cypress.config('baseUrl') !== 'http://localhost:4200') {
   describe('Monitor workflows', () => {
     workflowVersionTuples.forEach((t) => testWorkflow(t[0], t[1], t[2], t[3], t[4]));
+  });
+  describe('Monitor notebooks', () => {
+    notebookVersionTuples.forEach((t) => testNotebook(t[0], t[1], t[2], t[3], t[4]));
   });
 }
 
@@ -294,6 +300,10 @@ function testWorkflow(url: string, version1: string, version2: string, trsUrl: s
       });
     });
   });
+}
+
+function testNotebook(url: string, version1: string, version2: string, trsUrl: string, type: string) {
+  // TODO add text
 }
 
 // TODO: uncomment after tooltester logs are fixed
