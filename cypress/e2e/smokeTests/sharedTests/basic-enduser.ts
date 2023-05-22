@@ -6,13 +6,14 @@ import { ToolDescriptor } from '../../../../src/app/shared/swagger/model/toolDes
 describe('run stochastic smoke test', () => {
   testEntry('Tools');
   testEntry('Workflows');
+  testEntry('Notebooks');
 });
 function testEntry(tab: string) {
   beforeEach('get random entry on first page', () => {
     cy.visit('/search');
     cy.get('[data-cy=workflowColumn] a');
     goToTab(tab);
-    const linkName = tab === 'Workflows' ? 'workflowColumn' : 'toolNames';
+    const linkName = getLinkName(tab);
     // select a random entry on the first page and navigate to it
     let chosen_index = 0;
     cy.get('[data-cy=' + linkName + ']')
@@ -42,7 +43,7 @@ function testEntry(tab: string) {
   it('check files tab', () => {
     goToTab('Files');
     cy.url().should('contain', '?tab=files');
-    cy.contains('Descriptor Files');
+    cy.contains(tab === 'Notebooks' ? 'Notebook Files' : 'Descriptor Files');
   });
 
   it('check versions tab', () => {
@@ -50,6 +51,19 @@ function testEntry(tab: string) {
     cy.url().should('contain', '?tab=versions');
     cy.get('[data-cy=versionRow]').should('have.length.of.at.least', 1);
   });
+
+  function getLinkName(tab: string): string {
+    switch (tab) {
+      case 'Tools':
+        return 'toolNames';
+      case 'Workflows':
+        return 'workflowColumn';
+      case 'Notebooks':
+        return 'notebookColumn';
+      default:
+        fail('unknown tab');
+    }
+  }
 }
 
 const organizations = [['Broad Institute']];
