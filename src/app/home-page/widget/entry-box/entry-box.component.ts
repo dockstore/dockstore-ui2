@@ -83,8 +83,6 @@ export class EntryBoxComponent extends Base implements OnInit {
       this.helpLink = Dockstore.DOCUMENTATION_URL + '/getting-started/notebooks/notebooks.html';
       this.allEntriesLink = '/my-notebooks/';
       this.entryTypeParam = 'NOTEBOOKS';
-      // Not loading entries for Notebooks - remove when supported
-      this.isLoading = false;
     }
 
     this.getMyEntries();
