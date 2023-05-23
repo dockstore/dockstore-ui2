@@ -30,10 +30,6 @@ executors:
           - network.host: 127.0.0.1
           - http.port: 9200
           - discovery.type: single-node
-      - image: cimg/openjdk:17.0
-        auth:
-          username: dockstoretestuser
-          password: $DOCKERHUB_PASSWORD
   accessibility_test_exec:
     docker:
       - image: cimg/base:stable-20.04
@@ -57,10 +53,6 @@ executors:
           - network.host: 127.0.0.1
           - http.port: 9200
           - discovery.type: single-node
-      - image: cimg/openjdk:17.0
-        auth:
-          username: dockstoretestuser
-          password: $DOCKERHUB_PASSWORD
 
 jobs:
   # Specify the webpage url (https://dev.dockstore.net or https://staging.dockstore.org or https://dockstore.org)
@@ -151,7 +143,7 @@ jobs:
               git fetch origin +refs/pull/${CIRCLE_PULL_REQUEST##*/}/merge:
               git checkout -qf FETCH_HEAD
             fi
-      - install_container_dependencies
+      - install_npm
       - run:
           name: Run npm audit
           # Run npm audit on current branch and compare it with the results of running npm audit on the base branch that is set in the package.json. If there are more
@@ -179,7 +171,7 @@ jobs:
               git fetch origin +refs/pull/${CIRCLE_PULL_REQUEST##*/}/merge:
               git checkout -qf FETCH_HEAD
             fi
-      - install_container_dependencies
+      - install_npm
       - restore_cache:
           key: dep-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
       - run:
@@ -591,6 +583,18 @@ commands:
   install_container_dependencies:
     steps:
       - run:
+          name: Install java
+          command: |
+            sudo apt update -y
+            sudo apt install openjdk-17-jre -yq
+      - run:
+          name: Install npm
+          command: |
+            wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
+            bash -i -c 'nvm install'
+  install_npm:
+    steps:
+      - run:
           name: Install npm
           command: |
             wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
@@ -700,7 +704,7 @@ commands:
       - checkout
       - browser-tools/install-chrome
       - browser-tools/install-chromedriver
-      - install_container_dependencies
+      - install_npm
       - restore_cache:
           key: cypress-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
       - run:
