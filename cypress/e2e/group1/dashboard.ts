@@ -69,7 +69,7 @@ describe('should display added notebook correctly', () => {
   it('notebooks display correctly', () => {
     cy.visit('/dashboard?notebooks');
     cy.contains('Notebooks');
-    cy.get('[data-cy=dashboard-entries-count-bubble]').contains(1);
+    cy.get('[data-cy=dashboard-notebook-count-bubble]').contains(1);
     cy.get('[data-cy=dashboard-entry-links]').contains('simple-notebook');
   });
 });

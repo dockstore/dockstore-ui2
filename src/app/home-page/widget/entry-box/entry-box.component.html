@@ -20,7 +20,9 @@
       <div id="workflow-number" fxLayout="row">
         <mat-card-header fxLayout="row">
           <mat-card-title class="ml-2">{{ entryTypeLowerCase | titlecase }}s</mat-card-title>
-          <span class="bubble {{ entryTypeLowerCase }}-background" data-cy="dashboard-entries-count-bubble">{{ totalEntries }}</span>
+          <span class="bubble {{ entryTypeLowerCase }}-background" data-cy="dashboard-{{ entryTypeLowerCase }}-count-bubble">{{
+            totalEntries
+          }}</span>
           <span class="bubble preview-bubble" *ngIf="entryType === newEntryType.SERVICE || entryType === newEntryType.NOTEBOOK"
             >PREVIEW</span
           >
