@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { Repository } from '../../../src/app/shared/openapi/model/repository';
-import { goToTab, isActiveTab, resetDB, setTokenUserViewPort, setTokenUserViewPortCurator } from '../../support/commands';
+import { goToTab, isActiveTab, resetDB, setTokenUserViewPort, setTokenUserViewPortCurator, snapshot } from '../../support/commands';
 
 describe('Dockstore my workflows', () => {
   resetDB();
@@ -213,21 +213,7 @@ describe('Dockstore my workflows', () => {
 
     it('Should be able to snapshot', () => {
       gotoVersionsAndClickActions();
-      cy.get('[data-cy=dockstore-snapshot-locked]').should('have.length', 0);
-      // The buttons should be present
-      cy.get('[data-cy=dockstore-request-doi-button]').its('length').should('be.gt', 0);
-      cy.get('[data-cy=dockstore-snapshot]').its('length').should('be.gt', 0);
-
-      cy.get('[data-cy=dockstore-snapshot-unlocked]').its('length').should('be.gt', 0);
-
-      cy.get('[data-cy=dockstore-snapshot]').first().click();
-
-      cy.get('[data-cy=snapshot-button]').click();
-
-      cy.wait(250);
-      cy.get('[data-cy=dockstore-snapshot-locked]').should('have.length', 1);
-      cy.get('td').contains('Actions').click();
-      cy.get('[data-cy=dockstore-snapshot]').should('be.disabled');
+      snapshot();
     });
 
     it('Request DOI should require linked account', () => {
