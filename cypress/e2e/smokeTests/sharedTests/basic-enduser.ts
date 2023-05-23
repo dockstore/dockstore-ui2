@@ -9,20 +9,22 @@ describe('run stochastic smoke test', () => {
   testEntry('Notebooks');
 });
 function testEntry(tab: string) {
-  beforeEach('get random entry on first page', () => {
+  function goToRandomEntry() {
     // Notebooks search is not functional in staging or prod in 1.14.
-    // TODO change back to single code path after 1.15 release.
+    // TODO after 1.15 release: remove the following code path
     if (tab === 'Notebooks' && isStagingOrProd()) {
       cy.visit('/notebooks');
-      cy.get('[data-cy=entry-link]').within(() => {
-        cy.get('a').then((el) => {
-          cy.log(el.prop('href')); // log the href in case a test fails
-          cy.visit(el.prop('href'));
+      cy.get('[data-cy=entry-link]')
+        .eq(0)
+        .within(() => {
+          cy.get('a').then((el) => {
+            cy.log(el.prop('href')); // log the href in case a test fails
+            cy.visit(el.prop('href'));
+          });
         });
-      });
       return;
     }
-    cy.visit('/search');
+    cy.visit('/search' + (tab === 'Notebooks' ? '?notebooks' : ''));
     cy.get('[data-cy=workflowColumn] a');
     goToTab(tab);
     const linkName = getLinkName(tab);
@@ -39,12 +41,12 @@ function testEntry(tab: string) {
           cy.visit(el.prop('href'));
         });
       });
-  });
+  }
 
   it('check info tab', () => {
-    // test export to zip button
+    goToRandomEntry();
     goToTab('Info');
-
+    // test export to zip button
     cy.get('[data-cy=downloadZip]').within(() => {
       cy.get('a').then((el) => {
         cy.request(el.prop('href')).its('status').should('eq', 200);
@@ -53,12 +55,14 @@ function testEntry(tab: string) {
   });
 
   it('check files tab', () => {
+    goToRandomEntry();
     goToTab('Files');
     cy.url().should('contain', '?tab=files');
     cy.contains(tab === 'Notebooks' ? 'Notebook Files' : 'Descriptor Files');
   });
 
   it('check versions tab', () => {
+    goToRandomEntry();
     goToTab('Versions');
     cy.url().should('contain', '?tab=versions');
     cy.get('[data-cy=versionRow]').should('have.length.of.at.least', 1);
@@ -211,15 +215,16 @@ const workflowVersionTuples = [
   ],
 ];
 const notebookVersionTuples = [
-  // TODO add after notebooks appear on prod
+  // TODO when we add notebooks that will persist in the prod database, detail a few here
 ];
+
 // These tests shouldn't be run for smoke tests as it depends on 'real' entries
 if (Cypress.config('baseUrl') !== 'http://localhost:4200') {
   describe('Monitor workflows', () => {
     workflowVersionTuples.forEach((t) => testWorkflow(t[0], t[1], t[2], t[3], t[4]));
   });
   describe('Monitor notebooks', () => {
-    notebookVersionTuples.forEach((t) => testNotebook(t[0], t[1], t[2], t[3], t[4]));
+    notebookVersionTuples.forEach((t) => testNotebook(t[0], t[1], t[2], t[3], t[4], t[5]));
   });
 }
 
@@ -319,7 +324,7 @@ function testWorkflow(url: string, version1: string, version2: string, trsUrl: s
   });
 }
 
-function testNotebook(url: string, version1: string, version2: string, trsUrl: string, type: string) {
+function testNotebook(url: string, version1: string, version2: string, trsUrl: string, path: string, type: string) {
   it('notebook tabs work for ' + url, () => {
     cy.visit('/notebooks/' + url + ':' + version1);
 
@@ -334,21 +339,23 @@ function testNotebook(url: string, version1: string, version2: string, trsUrl: s
     cy.url().should('contain', '?tab=versions');
 
     // check that clicking on a different version goes to that version's url
-    cy.contains('[data-cy=versionName]', version2).click();
-    cy.url().should('contain', url + ':' + version2);
+    if (version1 !== version2) {
+      cy.contains('[data-cy=versionName]', version2).click();
+      cy.url().should('contain', url + ':' + version2);
+    }
 
     goToTab('Files');
     cy.url().should('contain', '?tab=files');
 
     // Check the "Launch with" buttons.
     // Notebooks "Launch with" is not fully functional in staging or prod in 1.14.
-    // TODO make the following code execute unconditionally after 1.15 release.
+    // TODO after 1.15 release: make the following code execute in all cases.
     if (!isStagingOrProd()) {
       let launchWithTuples: any[] = [];
-      if (type.toLowerCase() === 'jupyter') {
+      if (type === 'Jupyter') {
         launchWithTuples = [
-          ['colabLaunchWith', version2],
-          ['mybinderLaunchWith', version2],
+          ['colabLaunchWith', 'blob/' + version2 + path],
+          ['mybinderLaunchWith', version2 + '?labpath=' + path],
         ];
       }
       launchWithTuples.forEach((t) => {
