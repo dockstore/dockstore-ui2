@@ -2,7 +2,7 @@ import { ga4ghPath } from '../../../../src/app/shared/constants';
 import { goToTab } from '../../../support/commands';
 import { ToolDescriptor } from '../../../../src/app/shared/swagger/model/toolDescriptor';
 
-// Test an entry, these should be ambiguous between tools and workflows.
+// Test an entry, these should be ambiguous between tools, workflows, and notebooks.
 describe('run stochastic smoke test', () => {
   testEntry('Tools');
   testEntry('Workflows');
@@ -10,6 +10,18 @@ describe('run stochastic smoke test', () => {
 });
 function testEntry(tab: string) {
   beforeEach('get random entry on first page', () => {
+    // Notebooks search is not functional in staging or prod in 1.14.
+    // TODO change back to single code path after 1.15 release.
+    if (tab === 'Notebooks' && isStagingOrProd()) {
+      cy.visit('/notebooks');
+      cy.get('[data-cy=entry-link]').within(() => {
+        cy.get('a').then((el) => {
+          cy.log(el.prop('href')); // log the href in case a test fails
+          cy.visit(el.prop('href'));
+        });
+      });
+      return;
+    }
     cy.visit('/search');
     cy.get('[data-cy=workflowColumn] a');
     goToTab(tab);
@@ -51,19 +63,24 @@ function testEntry(tab: string) {
     cy.url().should('contain', '?tab=versions');
     cy.get('[data-cy=versionRow]').should('have.length.of.at.least', 1);
   });
+}
 
-  function getLinkName(tab: string): string {
-    switch (tab) {
-      case 'Tools':
-        return 'toolNames';
-      case 'Workflows':
-        return 'workflowColumn';
-      case 'Notebooks':
-        return 'notebookColumn';
-      default:
-        fail('unknown tab');
-    }
+function getLinkName(tab: string): string {
+  switch (tab) {
+    case 'Tools':
+      return 'toolNames';
+    case 'Workflows':
+      return 'workflowColumn';
+    case 'Notebooks':
+      return 'notebookColumn';
+    default:
+      throw new Error('unknown tab');
   }
+}
+
+function isStagingOrProd() {
+  const baseUrl = Cypress.config('baseUrl');
+  return baseUrl === 'https://dockstore.org' || baseUrl === 'https://staging.dockstore.org';
 }
 
 const organizations = [['Broad Institute']];
@@ -194,7 +211,7 @@ const workflowVersionTuples = [
   ],
 ];
 const notebookVersionTuples = [
-  // TODO fill in
+  // TODO add after notebooks appear on prod
 ];
 // These tests shouldn't be run for smoke tests as it depends on 'real' entries
 if (Cypress.config('baseUrl') !== 'http://localhost:4200') {
@@ -303,11 +320,45 @@ function testWorkflow(url: string, version1: string, version2: string, trsUrl: s
 }
 
 function testNotebook(url: string, version1: string, version2: string, trsUrl: string, type: string) {
-  // Check Info tab contents
-  // Click on a Version and make sure the URL is correct
-  // Check Preview tab contents
-  // Check Files tab contents
-  // Check the "Launch with" buttons
+  it('notebook tabs work for ' + url, () => {
+    cy.visit('/notebooks/' + url + ':' + version1);
+
+    goToTab('Info');
+    cy.url().should('contain', '?tab=info');
+    cy.contains('mat-card-header', 'Notebook Information');
+
+    goToTab('Preview');
+    cy.url().should('contain', '?tab=preview');
+
+    goToTab('Versions');
+    cy.url().should('contain', '?tab=versions');
+
+    // check that clicking on a different version goes to that version's url
+    cy.contains('[data-cy=versionName]', version2).click();
+    cy.url().should('contain', url + ':' + version2);
+
+    goToTab('Files');
+    cy.url().should('contain', '?tab=files');
+
+    // Check the "Launch with" buttons.
+    // Notebooks "Launch with" is not fully functional in staging or prod in 1.14.
+    // TODO make the following code execute unconditionally after 1.15 release.
+    if (!isStagingOrProd()) {
+      let launchWithTuples: any[] = [];
+      if (type.toLowerCase() === 'jupyter') {
+        launchWithTuples = [
+          ['colabLaunchWith', version2],
+          ['mybinderLaunchWith', version2],
+        ];
+      }
+      launchWithTuples.forEach((t) => {
+        cy.get('[data-cy=' + t[0] + ']').should(($el) => {
+          // @ts-ignore
+          expect($el.attr('href')).to.contain(t[1]);
+        });
+      });
+    }
+  });
 }
 
 // TODO: uncomment after tooltester logs are fixed
