@@ -446,7 +446,7 @@ parameters:
     default: false
   pull_request_url:
     type: string
-    default: $CIRCLE_PULL_REQUEST
+    default: "${CIRCLE_PULL_REQUEST}"
 
 workflows:
   version: 2
