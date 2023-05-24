@@ -17,7 +17,7 @@ export class GetFacetSearchResultsPipe implements PipeTransform {
     if (
       !items ||
       !searchText ||
-      (facet !== 'author' &&
+      (facet !== 'all_authors.name.keyword' &&
         facet !== 'organization' &&
         facet !== 'labels.value.keyword' &&
         facet !== 'namespace' &&

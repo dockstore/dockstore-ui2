@@ -22,6 +22,7 @@ import { AlertService } from '../../shared/alert/state/alert.service';
 import { DateService } from '../../shared/date.service';
 import { Dockstore } from '../../shared/dockstore.model';
 import { DockstoreService } from '../../shared/dockstore.service';
+import { EntryType } from '../../shared/openapi';
 import { ExtendedWorkflow } from '../../shared/models/ExtendedWorkflow';
 import { VersionVerifiedPlatform } from '../../shared/openapi';
 import { SessionQuery } from '../../shared/session/session.query';
@@ -38,7 +39,7 @@ import { Versions } from '../../shared/versions';
 export class VersionsWorkflowComponent extends Versions implements OnInit, OnChanges, AfterViewInit {
   faTag = faTag;
   faCodeBranch = faCodeBranch;
-  @Input() versions: Array<any>;
+  @Input() versions: Array<WorkflowVersion>;
   @Input() workflowId: number;
   @Input() verifiedVersionPlatforms: Array<VersionVerifiedPlatform>;
   zenodoUrl: string;
@@ -54,6 +55,7 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
   @ViewChild(MatSort) sort: MatSort;
   public WorkflowType = Workflow;
   workflow: ExtendedWorkflow;
+  entryType = EntryType;
   setNoOrderCols(): Array<number> {
     return [4, 5];
   }
@@ -71,9 +73,19 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
 
   setDisplayColumns(publicPage: boolean) {
     if (publicPage) {
-      this.displayedColumns = ['name', 'last_modified', 'valid', 'verified', 'snapshot', 'actions'];
+      this.displayedColumns = ['name', 'last_modified', 'descriptorTypeVersions', 'valid', 'verified', 'open', 'snapshot', 'actions'];
     } else {
-      this.displayedColumns = ['name', 'last_modified', 'valid', 'hidden', 'verified', 'snapshot', 'actions'];
+      this.displayedColumns = [
+        'name',
+        'last_modified',
+        'descriptorTypeVersions',
+        'valid',
+        'hidden',
+        'open',
+        'verified',
+        'snapshot',
+        'actions',
+      ];
     }
   }
 

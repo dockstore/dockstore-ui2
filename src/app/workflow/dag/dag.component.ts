@@ -32,7 +32,7 @@ import { DagStore } from './state/dag.store';
  * This is the DAG tab
  * TODO: Not have a fixed 500px normal sized DAG in case people are using different height screens
  * TODO: Material tooltips to appear in fullscreen mode.
- * The matTooltip DOM is in a seperate div than the fullscreen element's div, that's why it doesn't show
+ * The matTooltip DOM is in a separate div than the fullscreen element's div, that's why it doesn't show
  * TODO: Performance improvements
  * @export
  * @class DagComponent
@@ -58,7 +58,7 @@ export class DagComponent extends EntryTab implements OnInit, OnChanges, AfterVi
 
   public dagResult$: Observable<any>;
   private cy: cytoscape.Core;
-  public expanded: Boolean = false;
+  public expanded: boolean = false;
   public workflow$: Observable<BioWorkflow>;
   public isNFL$: Observable<boolean>;
   public isWDL$: Observable<boolean>;

@@ -1,6 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { FormBuilder } from '@angular/forms';
+import { UntypedFormBuilder } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { UpsertOrganizationMemberService } from './upsert-organization-member.service';
@@ -11,7 +11,7 @@ describe('UpsertOrganizationMemberService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [UpsertOrganizationMemberService, UpsertOrganizationMemberStore, FormBuilder],
+      providers: [UpsertOrganizationMemberService, UpsertOrganizationMemberStore, UntypedFormBuilder],
       imports: [HttpClientTestingModule, MatSnackBarModule, MatDialogModule],
     });
 

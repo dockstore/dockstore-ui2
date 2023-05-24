@@ -28,7 +28,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ### Prerequisites
 
-- Java 8+ 
+- Java 17+
 - Node and its included NPM (see [.nvmrc](.nvmrc) for the correct version of node to install)
 - wget 
 
@@ -38,14 +38,14 @@ wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | 
 ```
 Close current terminal and open a new one or `source ~/.bashrc`
 ```
-nvm install 10.13.0
+nvm install $(cat .nvmrc)
 ```
 Optionally, install a global Angular CLI in order to execute `ng` commands without prepending `npx`.   
 Otherwise, prepend `npx` to every command in this README if a global @angular/cli was not installed.
 Before installing, follow https://docs.npmjs.com/getting-started/fixing-npm-permissions#option-two-change-npms-default-directory to fix permissions if needed.
 
 ```
-$npm i -g @angular/cli@1.3.1		
+$npm i -g @angular/cli@14.2.8		
 ```
 
 #### NPM
@@ -74,29 +74,39 @@ ghusky > pre-commit (node v10.13.0)
 
 Check to make sure Angular CLI has been properly set up
 ```
-$ ng v
-    _                      _                 ____ _     ___
-   / \   _ __   __ _ _   _| | __ _ _ __     / ___| |   |_ _|
-  / △ \ | '_ \ / _` | | | | |/ _` | '__|   | |   | |    | |
- / ___ \| | | | (_| | |_| | | (_| | |      | |___| |___ | |
-/_/   \_\_| |_|\__, |\__,_|_|\__,_|_|       \____|_____|___|
-               |___/
-@angular/cli: 1.3.1
-node: 7.9.0
-os: linux x64
-@angular/animations: 4.3.6
-@angular/common: 4.3.6
-@angular/compiler: 4.3.6
-@angular/core: 4.3.6
-@angular/flex-layout: 2.0.0-beta.9
-@angular/forms: 4.3.6
-@angular/http: 4.3.6
-@angular/platform-browser: 4.3.6
-@angular/platform-browser-dynamic: 4.3.6
-@angular/router: 4.3.6
-@angular/cli: 1.3.1
-@angular/compiler-cli: 4.3.6
-@angular/language-service: 4.3.6
+ ng v
+
+     _                      _                 ____ _     ___
+    / \   _ __   __ _ _   _| | __ _ _ __     / ___| |   |_ _|
+   / △ \ | '_ \ / _` | | | | |/ _` | '__|   | |   | |    | |
+  / ___ \| | | | (_| | |_| | | (_| | |      | |___| |___ | |
+ /_/   \_\_| |_|\__, |\__,_|_|\__,_|_|       \____|_____|___|
+                |___/
+    
+
+Angular CLI: 14.2.7
+Node: 16.18.1
+Package Manager: npm 8.19.2 
+OS: darwin arm64
+
+Angular: 14.2.8
+... animations, common, compiler, compiler-cli, core, forms
+... language-service, platform-browser, platform-browser-dynamic
+... router
+
+Package                         Version
+---------------------------------------------------------
+@angular-devkit/architect       0.1402.7
+@angular-devkit/build-angular   14.2.7
+@angular-devkit/core            14.2.7
+@angular-devkit/schematics      14.2.7
+@angular/cdk                    14.2.6
+@angular/cli                    14.2.7
+@angular/flex-layout            14.0.0-beta.41
+@angular/material               14.2.6
+@schematics/angular             14.2.7
+rxjs                            6.6.7
+typescript                      4.8.4
 ```
 
 If you wish to serve the dist folder in a VM, make sure you have nginx and security rules set up properly.
@@ -206,7 +216,7 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 
 Cypress is no longer specified in the package.json, check the `.circleci/config.yml` for the version and how to install it.
 
-Run `$(npm bin)/cypress open` or `$(npm bin)/cypress run` to execute the end-to-end tests via Cypress.io.
+Run `npx cypress open` or `npx cypress run` to execute the end-to-end tests via Cypress.io.
 Before running the tests make sure you:
 - have a postgresql database
 - serve the app via `ng serve` or similar.
@@ -214,7 +224,7 @@ Before running the tests make sure you:
 
 ### Running smoke tests
 Smoke tests are part of the end-to-end testing suite and are located under `cypress/integration/smokeTests/`. The smoke tests
-can be executed alongside other integration tests when running `$(npm bin)/cypress open` or `$(npm bin)/cypress run`.
+can be executed alongside other integration tests when running `npx cypress open` or `npx cypress run`.
 
 Various sets of smoke tests are runnable from scripts in `package.json`. To run smoke tests against your local service,
 run `npm run test-local-no-auth`. Before running the tests make sure you have Dockstore set up locally, as described in the above section.

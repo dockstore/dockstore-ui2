@@ -27,6 +27,7 @@ import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
 import { Tag } from '../../shared/swagger/model/tag';
 import { exampleDescriptorPatterns, validationDescriptorPatterns } from '../../shared/validationMessages.model';
 import { InfoTabService } from './info-tab.service';
+import { Author } from 'app/shared/openapi';
 
 import DescriptorTypeEnum = ToolVersion.DescriptorTypeEnum;
 
@@ -47,6 +48,8 @@ export class InfoTabComponent extends Base implements OnInit, OnChanges {
   public tool: DockstoreTool;
   public topicEditing: boolean;
   public TopicSelectionEnum = DockstoreTool.TopicSelectionEnum;
+  public authors: Array<Author> = [];
+  public displayedColumns: string[] = ['name', 'role', 'affiliation', 'email'];
   dockerFileEditing: boolean;
   cwlPathEditing: boolean;
   wdlPathEditing: boolean;
@@ -65,6 +68,7 @@ export class InfoTabComponent extends Base implements OnInit, OnChanges {
   ngOnChanges() {
     this.tool = JSON.parse(JSON.stringify(this.extendedDockstoreTool));
     if (this.selectedVersion && this.tool) {
+      this.authors = this.selectedVersion.authors;
       this.currentVersion = this.selectedVersion;
       this.isValidVersion = this.validVersions.some((version: Tag) => version.id === this.selectedVersion.id);
       this.downloadZipLink = Dockstore.API_URI + '/containers/' + this.tool.id + '/zip/' + this.currentVersion.id;
@@ -193,7 +197,7 @@ export class InfoTabComponent extends Base implements OnInit, OnChanges {
   getTRSLink(path: string, versionName: string, descriptorType: ToolDescriptor.TypeEnum, relativePath: string): string {
     return (
       `${Dockstore.API_URI}${ga4ghPath}/tools/${encodeURIComponent(path)}` +
-      `/versions/${encodeURIComponent(versionName)}/plain-` +
+      `/versions/${encodeURIComponent(versionName)}/PLAIN_` +
       descriptorType +
       `/descriptor/` +
       relativePath

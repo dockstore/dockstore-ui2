@@ -68,6 +68,13 @@ export class MapFriendlyValuesPipe implements PipeTransform {
       ]),
     ],
     [
+      'openData',
+      new Map([
+        ['1', 'open data'],
+        ['0', 'requires restricted data'],
+      ]),
+    ],
+    [
       'registry',
       new Map([
         ['QUAY_IO', 'Quay.io'],
@@ -86,7 +93,7 @@ export class MapFriendlyValuesPipe implements PipeTransform {
         ['DOCKSTORE', 'Dockstore'],
       ]),
     ],
-    ['author', new Map([['', 'n/a']])],
+    ['all_authors.name.keyword', new Map([['', 'n/a']])],
     [
       'ToolFile.FileTypeEnum',
       new Map([

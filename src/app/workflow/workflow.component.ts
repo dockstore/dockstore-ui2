@@ -22,21 +22,25 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AlertService } from 'app/shared/alert/state/alert.service';
 import { BioWorkflow } from 'app/shared/swagger/model/bioWorkflow';
 import { Service } from 'app/shared/swagger/model/service';
-import { Observable } from 'rxjs';
+import { Notebook } from 'app/shared/swagger/model/notebook';
+import { Observable, ReplaySubject } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
 import { AlertQuery } from '../shared/alert/state/alert.query';
 import { BioschemaService } from '../shared/bioschema.service';
 import {
+  ga4ghNotebookIdPrefix,
   ga4ghServiceIdPrefix,
   ga4ghWorkflowIdPrefix,
   includesAuthors,
   includesValidation,
   myBioWorkflowsURLSegment,
+  myNotebooksURLSegment,
   myServicesURLSegment,
   myToolsURLSegment,
 } from '../shared/constants';
 import { DateService } from '../shared/date.service';
 import { DescriptorTypeCompatService } from '../shared/descriptor-type-compat.service';
+import { Dockstore } from '../shared/dockstore.model';
 import { DockstoreService } from '../shared/dockstore.service';
 import { Entry } from '../shared/entry';
 import { EntryType } from '../shared/enum/entry-type';
@@ -58,16 +62,18 @@ import { EntriesService, WorkflowSubClass } from '../shared/openapi';
 import { Title } from '@angular/platform-browser';
 import { EntryCategoriesService } from '../categories/state/entry-categories.service';
 import RoleEnum = Permission.RoleEnum;
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-workflow',
   templateUrl: './workflow.component.html',
-  styleUrls: ['./workflow.component.css'],
+  styleUrls: ['../shared/styles/workflow-container.component.scss'],
 })
 export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
   workflowEditData: any;
+  Dockstore = Dockstore;
   public isRefreshing$: Observable<boolean>;
-  public workflow: BioWorkflow | Service;
+  public workflow: BioWorkflow | Service | Notebook;
   public missingWarning: boolean;
   public title: string;
   public sortedVersions: Array<Tag | WorkflowVersion> = [];
@@ -97,7 +103,13 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
   public WorkflowModel = Workflow;
   public WorkflowVersionModel = WorkflowVersion;
   public launchSupport$: Observable<boolean>;
+  public workflowVersionAlphabetical: Array<Tag | WorkflowVersion> = [];
+  public workflowVersionsCtrl: FormControl<Tag | WorkflowVersion> = new FormControl<Tag | WorkflowVersion>(null); //control for the selected version
+  public versionFilterCtrl: FormControl<string> = new FormControl<string>(''); // control for the MatSelect filter keyword
+  public filteredVersions: ReplaySubject<Array<Tag | WorkflowVersion>> = new ReplaySubject<Array<Tag | WorkflowVersion>>(1);
+
   @Input() user;
+  @Input() selectedVersion: WorkflowVersion;
 
   constructor(
     private dockstoreService: DockstoreService,
@@ -142,6 +154,8 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
     );
     if (this.isAppTool(window.location.href)) {
       this._toolType = 'containers';
+    } else if (this.isNotebook(window.location.href)) {
+      this._toolType = 'notebooks';
     } else {
       this._toolType = 'workflows';
     }
@@ -154,6 +168,9 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
     } else if (this.entryType === EntryType.Tool) {
       this.validTabs = ['info', 'launch', 'versions', 'files'];
       this.redirectToCanonicalURL('/' + myToolsURLSegment);
+    } else if (this.entryType === EntryType.Notebook) {
+      this.validTabs = ['info', 'code', 'versions', 'files'];
+      this.redirectToCanonicalURL('/' + myNotebooksURLSegment);
     } else {
       this.validTabs = ['info', 'versions', 'files'];
       this.redirectToCanonicalURL('/' + myServicesURLSegment);
@@ -167,6 +184,10 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
 
   ngOnInit() {
     this.init();
+    //watch for changes in search
+    this.versionFilterCtrl.valueChanges.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
+      this.filterVersions();
+    });
   }
 
   ngAfterViewInit() {
@@ -181,7 +202,6 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
         }
       });
     }
-
     this.updateTabSelection();
   }
 
@@ -272,7 +292,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
             // for users that are not on FireCloud
             if (this.isOwner && this.isHosted() && this.workflow) {
               this.workflowsService
-                .getWorkflowPermissions(this.workflow.full_workflow_path, this.entryType === EntryType.Service)
+                .getWorkflowPermissions(this.workflow.full_workflow_path, this.getWorkflowSubclass(this.entryType))
                 .pipe(takeUntil(this.ngUnsubscribe))
                 .subscribe((userPermissions: Permission[]) => {
                   this.processPermissions(userPermissions);
@@ -286,7 +306,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
   }
 
   public subscriptions(): void {
-    this.workflowQuery.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((workflow: BioWorkflow | Service) => {
+    this.workflowQuery.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((workflow: BioWorkflow | Service | Notebook) => {
       this.workflow = workflow;
       if (workflow) {
         this.published = this.workflow.is_published;
@@ -302,9 +322,29 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
             this.gA4GHFilesService.updateFiles(trsID, this.selectedVersion.name, [this.workflow.descriptorType]);
           }
         }
+        this.workflowVersionAlphabetical = this.workflow.workflowVersions.slice().sort((a, b) => {
+          return a.name.localeCompare(b.name);
+        });
+        this.filteredVersions.next(this.workflowVersionAlphabetical.slice());
+        this.workflowVersionsCtrl.setValue(this.selectedVersion);
       }
       this.setUpWorkflow(workflow);
     });
+  }
+
+  //function for filtering list of versions according to search
+  protected filterVersions() {
+    if (!this.workflowVersionAlphabetical) {
+      return;
+    }
+    let search = this.versionFilterCtrl.value;
+    if (!search) {
+      this.filteredVersions.next(this.workflowVersionAlphabetical.slice());
+      return;
+    } else {
+      search = search.toLowerCase();
+    }
+    this.filteredVersions.next(this.workflowVersionAlphabetical.filter((version) => version.name.toLowerCase().indexOf(search) > -1));
   }
 
   public getTRSID(): string {
@@ -312,7 +352,14 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
     if (this.entryType === EntryType.Tool) {
       id = this.workflow.full_workflow_path;
     } else {
-      let prefix = this.entryType === EntryType.BioWorkflow ? ga4ghWorkflowIdPrefix : ga4ghServiceIdPrefix;
+      let prefix;
+      if (this.entryType === EntryType.BioWorkflow) {
+        prefix = ga4ghWorkflowIdPrefix;
+      } else if (this.entryType === EntryType.Notebook) {
+        prefix = ga4ghNotebookIdPrefix;
+      } else {
+        prefix = ga4ghServiceIdPrefix;
+      }
       id = prefix + this.workflow.full_workflow_path;
     }
     return id;
@@ -337,10 +384,12 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
         return WorkflowSubClass.BIOWORKFLOW;
       case EntryType.Service:
         return WorkflowSubClass.SERVICE;
+      case EntryType.Notebook:
+        return WorkflowSubClass.NOTEBOOK;
     }
   }
 
-  public setupPublicEntry(url: String) {
+  public setupPublicEntry(url: string) {
     const subclass: WorkflowSubClass = this.getWorkflowSubclass(this.entryType);
     this.workflowsService
       .getPublishedWorkflowByPath(this.title, subclass, includesValidation + ',' + includesAuthors, this.urlVersion)
@@ -351,10 +400,15 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
           this.updateWorkflowUrl(this.workflow);
         },
         (error) => {
+          const workflowOrgRegex = /\/workflows\/.+/;
           const workflowRegex = /\/workflows\/(github.com)|(gitlab.com)|(bitbucket.org)\/.+/;
           const gitHubAppToolRegex = /\/containers\/(github.com)\/.+/;
-          if (workflowRegex.test(this.resourcePath) || gitHubAppToolRegex.test(this.resourcePath)) {
-            this.router.navigate(['../']);
+          if (
+            workflowOrgRegex.test(this.resourcePath) ||
+            workflowRegex.test(this.resourcePath) ||
+            gitHubAppToolRegex.test(this.resourcePath)
+          ) {
+            this.router.navigate(['page-not-found']);
           } else {
             this.showRedirect = true;
             // Retrieve the workflow path from the URL
@@ -381,11 +435,13 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
     if (workflow != null) {
       const entryPath = workflow.full_workflow_path;
       if (this.entryType === EntryType.BioWorkflow) {
-        this.updateUrl(entryPath, myBioWorkflowsURLSegment, 'workflows');
+        this.updateUrl(entryPath, myBioWorkflowsURLSegment, 'workflows', this.selectedVersion);
       } else if (this.entryType === EntryType.Tool) {
-        this.updateUrl(entryPath, myToolsURLSegment, 'containers');
+        this.updateUrl(entryPath, myToolsURLSegment, 'containers', this.selectedVersion);
+      } else if (this.entryType === EntryType.Notebook) {
+        this.updateUrl(entryPath, myNotebooksURLSegment, 'notebooks', this.selectedVersion);
       } else {
-        this.updateUrl(entryPath, myServicesURLSegment, 'services');
+        this.updateUrl(entryPath, myServicesURLSegment, 'services', this.selectedVersion);
       }
     }
   }

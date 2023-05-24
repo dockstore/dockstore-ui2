@@ -49,10 +49,11 @@ export class HomeComponent extends Base implements OnInit, AfterViewInit {
   faGithub = faGithub;
   faGoogle = faGoogle;
   public user$: Observable<User>;
-  public selectedTab = 'toolTab';
   Dockstore = Dockstore;
   public toolCategories$: Observable<Array<Category>>;
   public workflowCategories$: Observable<Array<Category>>;
+  public orgSchema;
+  public websiteSchema;
 
   @ViewChild('twitter') twitterElement: ElementRef;
 
@@ -63,7 +64,7 @@ export class HomeComponent extends Base implements OnInit, AfterViewInit {
     private twitterService: TwitterService,
     private userQuery: UserQuery,
     private homePageService: HomePageService,
-    private allCategoriesService: AllCategoriesService,
+    private allCategoriesService: AllCategoriesService
   ) {
     super();
   }
@@ -73,6 +74,8 @@ export class HomeComponent extends Base implements OnInit, AfterViewInit {
     this.allCategoriesService.updateAllCategories();
     this.toolCategories$ = this.allCategoriesService.toolCategories$;
     this.workflowCategories$ = this.allCategoriesService.workflowCategories$;
+    this.orgSchema = this.homePageService.hpOrgSchema;
+    this.websiteSchema = this.homePageService.hpWebsiteSchema;
   }
   ngAfterViewInit() {
     this.loadTwitterWidget();

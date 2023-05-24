@@ -20,10 +20,16 @@
         <a id="home-nav-button" (click)="resetPageNumber()" routerLink="" data-cy="home-nav-button">
           <img src="../assets/svg/Dockstore-logo-horizontal-white.svg" height="41" alt="dockstore logo" />
         </a>
-        <a mat-button class="icon" [routerLink]="['/search']" routerLinkActive="icon-active">
+        <a mat-button class="icon navbar-button" [routerLink]="['/search']" routerLinkActive="navbar-button-active">
           <img class="site-icons-small hidden-sm" src="../assets/svg/main-nav/icons-navigation-search.svg" alt="search button" /> Search
         </a>
-        <a mat-button class="icon" (click)="resetPageNumber()" routerLink="/organizations" routerLinkActive="icon-active">
+        <a
+          mat-button
+          class="icon navbar-button"
+          (click)="resetPageNumber()"
+          routerLink="/organizations"
+          routerLinkActive="navbar-button-active"
+        >
           <img
             class="site-icons-small hidden-sm"
             src="../assets/svg/main-nav/icons-navigation-organization.svg"
@@ -31,26 +37,27 @@
           />
           Organizations
         </a>
-        <a mat-button class="icon" [routerLink]="['/about']" routerLinkActive="icon-active">
+        <a mat-button class="icon navbar-button" [routerLink]="['/about']" routerLinkActive="navbar-button-active">
           <img class="site-icons-small hidden-sm" src="../assets/svg/main-nav/icons-navigation-about.svg" alt="about button" /> About
         </a>
-        <a mat-button class="icon" [href]="Dockstore.DOCUMENTATION_URL" target="_blank" rel="noopener noreferrer">
+        <a mat-button class="icon navbar-button" [href]="Dockstore.DOCUMENTATION_URL" target="_blank" rel="noopener noreferrer">
           <img class="site-icons-small hidden-sm" src="../assets/svg/main-nav/icons-navigation-docs.svg" alt="stacked pages" /> Docs
         </a>
-        <a mat-button class="icon" [href]="Dockstore.DISCOURSE_URL" target="_blank" rel="noopener noreferrer">
+        <a mat-button class="icon navbar-button" [href]="Dockstore.DISCOURSE_URL" target="_blank" rel="noopener noreferrer">
           <img class="site-icons-small hidden-sm" src="../assets/svg/main-nav/icons-navigation-forum.svg" alt="stacked pages" /> Forum
         </a>
         <span class="spacer"></span>
         <a
           *ngIf="isLoggedIn"
           mat-button
-          class="icon"
+          class="icon navbar-button"
           (click)="resetPageNumber()"
           [routerLink]="['/dashboard']"
-          routerLinkActive="icon-active"
+          routerLinkActive="navbar-button-active"
         >
-          <img src="../assets/svg/my-nav/dashboard.svg" alt="dashboard" /> My Dockstore
+          <img src="../assets/svg/main-nav/icons-navigation-dashboard.svg" alt="dashboard" class="mr-1 mb-1" /> My Dockstore
         </a>
+
         <div fxLayoutGap="1rem" *ngIf="!isLoggedIn">
           <a routerLink="/login">
             <button mat-raised-button color="accent">Login</button>
@@ -59,59 +66,45 @@
             <button mat-raised-button color="accent">Register</button>
           </a>
         </div>
+
+        <a
+          *ngIf="isLoggedIn"
+          id="notifButton"
+          data-cy="notification-button"
+          mat-button
+          class="icon navbar-button"
+          [routerLink]="['/accounts']"
+          [queryParams]="{ tab: 'requests' }"
+          routerLinkActive="navbar-button-active"
+        >
+          <mat-icon
+            data-cy="bell-icon"
+            matBadge="{{ notificationCount$ | async }}"
+            matBadgeHidden="{{ (notificationCount$ | async) === 0 }}"
+            matBadgeColor="warn"
+            matBadgeSize="small"
+            matBadgeOverlap="true"
+            aria-label="requests button"
+            class="bell-icon"
+            >notifications</mat-icon
+          >
+        </a>
+
         <template [ngTemplateOutlet]="loginButton"></template>
         <mat-menu #menuLarge="matMenu">
           <button
             mat-menu-item
-            data-cy="my-tools-nav-button"
-            routerLink="/my-tools"
+            id="dropdown-accounts"
+            routerLink="/accounts"
             routerLinkActive="menu-item-active"
-            fxLayoutGap="0.5rem"
+            data-cy="dropdown-account-button"
+            class="weight-bold px-5"
           >
-            <img class="site-icons-tab" src="../assets/svg/tool-circle.svg" alt="tool logo" />
-            <span>My Tools</span>
+            <mat-icon class="menu-icon">settings</mat-icon>Profile & Account
           </button>
-          <button
-            mat-menu-item
-            data-cy="my-workflows-nav-button"
-            routerLink="/my-workflows"
-            routerLinkActive="menu-item-active"
-            fxLayoutGap="0.5rem"
-          >
-            <img class="site-icons-tab" src="../assets/svg/workflow-circle.svg" alt="workflow logo" />
-            <span>My Workflows</span>
+          <button mat-menu-item id="dropdown-logout" data-cy="dropdown-logout-button" (click)="logout()" class="weight-bold px-5">
+            <mat-icon class="menu-icon">logout</mat-icon>Log out
           </button>
-          <button
-            mat-menu-item
-            data-cy="my-services-nav-button"
-            routerLink="/my-services"
-            routerLinkActive="menu-item-active"
-            fxLayoutGap="0.5rem"
-          >
-            <img class="site-icons-tab" src="../assets/svg/service-circle.svg" alt="service logo" />
-            <span>My Services</span>
-            <div class="beta-label">preview</div>
-          </button>
-          <mat-divider></mat-divider>
-          <button mat-menu-item id="dropdown-accounts" routerLink="/accounts" routerLinkActive="menu-item-active">
-            <mat-icon color="accent" *ngIf="user?.isAdmin">lock</mat-icon>
-            <mat-icon color="accent" *ngIf="user?.curator && !user?.isAdmin">edit</mat-icon>
-            <mat-icon color="accent" *ngIf="!user?.isAdmin && !user?.curator">account_circle</mat-icon>Account
-          </button>
-          <button mat-menu-item id="dropdown-starred" routerLink="/starred" routerLinkActive="menu-item-active" color="accent">
-            <mat-icon>stars</mat-icon>Starred
-          </button>
-          <button
-            mat-menu-item
-            id="dropdown-onboarding"
-            routerLink="/onboarding"
-            routerLinkActive="menu-item-active"
-            *ngIf="extendedUser?.canChangeUsername"
-          >
-            <mat-icon color="accent" matBadge="!" matBadgePosition="before" matBadgeColor="warn">timeline</mat-icon>Setup
-          </button>
-          <mat-divider></mat-divider>
-          <button mat-menu-item id="dropdown-logout" (click)="logout()"><mat-icon color="accent">input</mat-icon>Log out</button>
         </mat-menu>
       </span>
     </div>
@@ -137,11 +130,20 @@
 </mat-toolbar>
 <!-- This is the login button used in both navbar sizes -->
 <ng-template #loginButton>
-  <button data-cy="dropdown-main" *ngIf="isLoggedIn" mat-raised-button color="accent" id="dropdown-main" [matMenuTriggerFor]="menuLarge">
+  <mat-button
+    [ngClass]="{ 'navbar-button-active': t.menuOpen === true }"
+    data-cy="dropdown-main"
+    class="navbar-button pointer"
+    *ngIf="isLoggedIn"
+    id="dropdown-main"
+    #t="matMenuTrigger"
+    [matMenuTriggerFor]="menuLarge"
+  >
     <mat-icon class="hidden-sm hidden-md hidden-lg" *ngIf="user?.isAdmin">lock</mat-icon>
     <mat-icon class="hidden-sm hidden-md hidden-lg" *ngIf="user?.curator && !user?.isAdmin">edit</mat-icon>
     <mat-icon class="hidden-sm hidden-md hidden-lg" *ngIf="!user?.isAdmin && !user?.curator">account_circle</mat-icon>
-    <span class="hidden-xs">{{ user?.username }} </span>
+    <img class="navbar-avatar" src="{{ user?.avatarUrl }}" alt="Dockstore avatar" />
+    <span class="hidden-xs dropdown-username">{{ user?.username }} </span>
     <mat-icon>keyboard_arrow_down</mat-icon>
-  </button>
+  </mat-button>
 </ng-template>

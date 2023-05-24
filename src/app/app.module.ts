@@ -33,6 +33,7 @@ import { CLIENT_ROUTER_PROVIDERS, routing } from './app.routing';
 import { BannerComponent } from './banner/banner.component';
 import { ChangeUsernameBannerComponent } from './changeUsernameBanner/changeUsernameBanner.component';
 import { ConfigurationService } from './configuration.service';
+import { EntryTypeMetadataService } from './entry/type-metadata/entry-type-metadata.service';
 import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
 import { FileTreeComponent } from './file-tree/file-tree.component';
 import { FooterComponent } from './footer/footer.component';
@@ -50,6 +51,7 @@ import { AccountSidebarModule } from './loginComponents/accounts/account-sidebar
 import { AccountsComponent } from './loginComponents/accounts/accounts.component';
 import { ControlsComponent } from './loginComponents/accounts/controls/controls.component';
 import { DeleteAccountDialogComponent } from './loginComponents/accounts/controls/delete-account-dialog/delete-account-dialog.component';
+import { RevokeTokenDialogComponent } from './loginComponents/accounts/external/revoke-token-dialog/revoke-token-dialog.component';
 import { AccountsExternalComponent } from './loginComponents/accounts/external/accounts.component';
 import { AccountsService } from './loginComponents/accounts/external/accounts.service';
 import { GetTokenUsernamePipe } from './loginComponents/accounts/external/getTokenUsername.pipe';
@@ -61,9 +63,9 @@ import { QuickStartComponent } from './loginComponents/onboarding/quickstart.com
 import { RequestsModule } from './loginComponents/requests.module';
 import { LogoutComponent } from './logout/logout.component';
 import { MaintenanceComponent } from './maintenance/maintenance.component';
-import { MetadataService } from './metadata/metadata.service';
+import { ServiceInfoService } from './service-info/service-info.service';
 import { NavbarComponent } from './navbar/navbar.component';
-import { NotificationsComponent } from './notifications/notifications.component';
+import { SitewideNotificationsComponent } from './notifications/sitewide-notifications.component';
 import { OrganizationStargazersModule } from './organizations/organization/organization-stargazers/organization-stargazers.module';
 import { OrganizationStarringModule } from './organizations/organization/organization-starring/organization-starring.module';
 import { PageNotFoundComponent } from './pagenotfound/pagenotfound.component';
@@ -112,6 +114,9 @@ import { TosBannerComponent } from './tosBanner/tos-banner.component';
 import { ExporterStepComponent } from './workflow/snapshot-exporter-modal/exporter-step/exporter-step.component';
 import { SnaphotExporterModalComponent } from './workflow/snapshot-exporter-modal/snaphot-exporter-modal.component';
 import { ViewService } from './workflow/view/view.service';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { PreviewWarningModule } from './shared/modules/preview-warning.module';
+import { MyOrganizationsDialogComponent } from './home-page/widget/organization-box/my-organizations-dialog.component/my-organizations-dialog.component';
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   showDelay: 500,
@@ -125,8 +130,11 @@ export const myCustomSnackbarDefaults: MatSnackBarConfig = {
   verticalPosition: 'bottom',
 };
 
-export function configurationServiceFactory(configurationService: ConfigurationService): Function {
-  return () => configurationService.load();
+export function initializerFactory(
+  configurationService: ConfigurationService,
+  entryTypeMetadataService: EntryTypeMetadataService
+): Function {
+  return () => Promise.all([configurationService.load(), entryTypeMetadataService.load()]);
 }
 
 @NgModule({
@@ -136,7 +144,7 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     DeleteAccountDialogComponent,
     NavbarComponent,
     FooterComponent,
-    NotificationsComponent,
+    SitewideNotificationsComponent,
     LoginComponent,
     OnboardingComponent,
     QuickStartComponent,
@@ -164,6 +172,8 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     ExporterStepComponent,
     FileTreeComponent,
     ChangeUsernameBannerComponent,
+    RevokeTokenDialogComponent,
+    MyOrganizationsDialogComponent,
   ],
   imports: [
     environment.production ? [] : AkitaNgDevtools.forRoot(),
@@ -181,6 +191,7 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     StarringModule,
     OrganizationStarringModule,
     OrganizationStargazersModule,
+    NgxMatSelectSearchModule,
     routing,
     StargazersModule,
     MarkdownModule.forRoot(),
@@ -199,6 +210,7 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     MySidebarModule,
     AccountSidebarModule,
     ChangeUsernameModule,
+    PreviewWarningModule,
   ],
   providers: [
     AccountsService,
@@ -222,7 +234,7 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     GA4GHV20Service,
     DescriptorLanguageService,
     UrlResolverService,
-    MetadataService,
+    ServiceInfoService,
     ExtendedWorkflowsService,
     ExtendedToolsService,
     VerifiedByService,
@@ -230,11 +242,12 @@ export function configurationServiceFactory(configurationService: ConfigurationS
     ViewService,
     TosBannerService,
     ConfigurationService,
+    EntryTypeMetadataService,
     OrgLogoService,
     {
       provide: APP_INITIALIZER,
-      useFactory: configurationServiceFactory,
-      deps: [ConfigurationService],
+      useFactory: initializerFactory,
+      deps: [ConfigurationService, EntryTypeMetadataService],
       multi: true,
     },
     { provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: myCustomTooltipDefaults },

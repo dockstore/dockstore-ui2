@@ -1,5 +1,5 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { AbstractControl, FormGroup } from '@angular/forms';
+import { AbstractControl, UntypedFormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { NgFormsManager } from '@ngneat/forms-manager';
 import { Observable } from 'rxjs';
@@ -19,7 +19,7 @@ import { CreateCollectionService, FormsState } from '../state/create-collection.
   templateUrl: './create-collection.component.html',
 })
 export class CreateCollectionComponent implements OnInit, OnDestroy {
-  createCollectionForm: FormGroup;
+  createCollectionForm: UntypedFormGroup;
   public loading$: Observable<boolean>;
   public title$: Observable<string>;
   public saveLabel$: Observable<string>;

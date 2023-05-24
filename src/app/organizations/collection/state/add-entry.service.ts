@@ -28,7 +28,10 @@ export class AddEntryService {
       .pipe(finalize(() => this.addEntryStore.setLoading(false)))
       .subscribe(
         (memberships: Array<OrganizationUser>) => {
-          memberships = memberships.filter((membership) => membership.accepted && membership.role !== OrganizationUser.RoleEnum.MEMBER);
+          memberships = memberships.filter(
+            (membership) =>
+              membership.status === OrganizationUser.StatusEnum.ACCEPTED && membership.role !== OrganizationUser.RoleEnum.MEMBER
+          );
           this.updateMembershipsState(memberships);
           this.addEntryStore.setError(false);
         },

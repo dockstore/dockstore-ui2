@@ -24,7 +24,7 @@
           <button fxFlex="21rem" type="button" class="btn btn-info tagCloud-btn workflow" (click)="clickTagCloudBtn('workflow')">
             <div fxLayout="row" fxLayoutAlign="space-between center">
               <div>
-                <img class="tag-cloud" src="../assets/images/dockstore/tag-cloud.svg" />
+                <img class="tag-cloud" src="../assets/images/dockstore/tag-cloud.svg" alt="Popular keywords icon" />
                 <span class="m-2"><b>Popular Keywords</b></span>
               </div>
               <fa-icon [icon]="(showWorkflowTagCloud$ | async) ? faMinus : faPlus" aria-hidden="true"></fa-icon>
@@ -43,6 +43,7 @@
         </div>
       </div>
     </div>
+    <mat-divider></mat-divider>
     <app-search-workflow-table></app-search-workflow-table>
   </div>
 </div>
@@ -58,7 +59,7 @@
           <button fxFlex="21rem" type="button" class="btn btn-info tagCloud-btn tool" (click)="clickTagCloudBtn('tool')">
             <div fxLayout="row" fxLayoutAlign="space-between center">
               <div>
-                <img class="tag-cloud" src="../assets/images/dockstore/tag-cloud.svg" />
+                <img class="tag-cloud" src="../assets/images/dockstore/tag-cloud.svg" alt="Popular keywords icon" />
                 <span class="m-2"><b>Popular Keywords</b></span>
               </div>
               <fa-icon [icon]="(showToolTagCloud$ | async) ? faMinus : faPlus" aria-hidden="true"></fa-icon>
@@ -77,6 +78,7 @@
         </div>
       </div>
     </div>
+    <mat-divider></mat-divider>
     <app-search-tool-table></app-search-tool-table>
   </div>
 </div>

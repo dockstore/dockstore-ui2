@@ -22,7 +22,7 @@ import { BehaviorSubject } from 'rxjs';
 export class StarentryService {
   private starEntrySource = new BehaviorSubject<StarEntry>(null);
   starEntry$ = this.starEntrySource.asObservable();
-  constructor() {}
+
   setEntry(entry: StarEntry) {
     this.starEntrySource.next(entry);
   }

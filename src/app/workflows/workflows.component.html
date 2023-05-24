@@ -13,13 +13,37 @@
   ~    See the License for the specific language governing permissions and
   ~    limitations under the License.
   -->
+
 <app-header>
-  <div fxLayout="row" fxLayoutAlign="start center">
-    <img src="../assets/svg/sub-nav/{{ (entryPageTitle$ | async | titlecase) === 'Services' ? 'services.svg' : 'workflow.svg' }}" />
-    <span>&nbsp;{{ entryPageTitle$ | async | titlecase }}&nbsp;</span>
-    <div *ngIf="(entryPageTitle$ | async | titlecase) === 'Services'" class="beta-label">preview</div>
+  <div fxLayout fxLayoutAlign="start center" *ngIf="searchPage === false; else search">
+    <img src="../../assets/svg/search.svg" class="site-icons-small mr-3" alt="search icon" />
+    <div fxLayout fxLayoutGap="1rem">
+      <a
+        *ngIf="(entryType$ | async) === EntryType.BioWorkflow; else serviceOrNotebook"
+        [routerLink]="['/search']"
+        [queryParams]="{ entryType: 'workflows' }"
+        class="white-space-no-wrap"
+        >Explore Workflows</a
+      >
+      <!-- To Do: When there is a notebooks tab on the search page, re-route to there instead similar to workflows above -->
+      <ng-template #serviceOrNotebook>
+        <a [routerLink]="['/', entryPageTitle$ | async]">Explore {{ entryPageTitle$ | async | titlecase }}</a>
+      </ng-template>
+      <span fxHide.lt-sm>/</span>
+      <span fxHide.lt-sm class="truncate-text-1">{{ entryName }}</span>
+    </div>
   </div>
+  <ng-template #search>
+    <img [src]="'../assets/svg/sub-nav/' + getEntryTerm(entryType$ | async) + '.svg'" [alt]="getEntryTerm(entryType$ | async) + 'icon'" />
+    <span class="mx-1">{{ entryPageTitle$ | async | titlecase }}</span>
+    <div *ngIf="(entryType$ | async) === EntryType.Service || (entryType$ | async) === EntryType.Notebook" class="bubble preview-bubble">
+      PREVIEW
+    </div>
+  </ng-template>
 </app-header>
 <div class="container">
+  <div *ngIf="(entryType$ | async) === EntryType.Notebook" class="mt-4">
+    <app-preview-warning featureName="Notebooks"></app-preview-warning>
+  </div>
   <router-outlet></router-outlet>
 </div>

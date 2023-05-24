@@ -4,6 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 import { AppTool, Workflow, WorkflowVersion } from '../swagger';
 import { BioWorkflow } from '../swagger/model/bioWorkflow';
 import { Service } from '../swagger/model/service';
+import { Notebook } from '../swagger/model/notebook';
 import { ExtendedWorkflowService } from './extended-workflow.service';
 import { WorkflowQuery } from './workflow.query';
 import { WorkflowStore } from './workflow.store';
@@ -41,7 +42,7 @@ export class WorkflowService {
   }
 
   @transaction()
-  setWorkflow(workflow: BioWorkflow | Service | AppTool | null) {
+  setWorkflow(workflow: BioWorkflow | Service | AppTool | Notebook | null) {
     if (workflow) {
       this.workflowStore.upsert(workflow.id, workflow);
       this.extendedWorkflowService.update(workflow);
@@ -77,11 +78,11 @@ export class WorkflowService {
     this.workflowStore.update({ version: null });
   }
 
-  add(workflow: Service | BioWorkflow | AppTool) {
+  add(workflow: Service | BioWorkflow | AppTool | Notebook) {
     this.workflowStore.add(workflow);
   }
 
-  update(id: ID, workflow: Partial<Service | BioWorkflow | AppTool>) {
+  update(id: ID, workflow: Partial<Service | BioWorkflow | AppTool | Notebook>) {
     this.workflowStore.update(id, workflow);
   }
 
@@ -89,7 +90,7 @@ export class WorkflowService {
     this.workflowStore.remove(id);
   }
 
-  setWorkflows(workflows: BioWorkflow[] | Service[] | AppTool[]) {
+  setWorkflows(workflows: BioWorkflow[] | Service[] | AppTool[] | Notebook[]) {
     this.workflows$.next(workflows);
   }
 
@@ -106,7 +107,7 @@ export class WorkflowService {
    * If not found will add to the workflows list (not shared workflows)
    * @param workflow Workflow to be upserted
    */
-  upsertWorkflowToWorkflow(workflow: BioWorkflow | Service | AppTool) {
+  upsertWorkflowToWorkflow(workflow: BioWorkflow | Service | AppTool | Notebook) {
     const workflows = this.workflows$.getValue();
     const sharedWorkflows = this.sharedWorkflows$.getValue();
     if (workflow && workflows && sharedWorkflows) {

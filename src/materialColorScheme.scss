@@ -1,6 +1,6 @@
 @use '@angular/material' as mat;
 /*
- *     Copyright 2018 OICR
+ *     Copyright 2022 OICR, UCSC
  *
  *     Licensed under the Apache License, Version 2.0 (the "License")
  *     you may not use this file except in compliance with the License
@@ -102,6 +102,23 @@ $kim-accent1-success: (
   ),
 );
 
+$kim-accent2: (
+  1: #0277bd,
+  2: #29b6f6,
+  3: #81d4fa,
+  4: #b3e5fc,
+  5: #d0effd,
+  6: #e1f5fe,
+  contrast: (
+    1: white,
+    2: white,
+    3: black,
+    4: black,
+    5: black,
+    6: black,
+  ),
+);
+
 // Grayscale
 $kim-gray: (
   1: #212121,
@@ -122,14 +139,33 @@ $kim-gray: (
   ),
 );
 
+$kim-accent-4: (
+  1: #f4511e,
+  2: #ff6e40,
+  3: #ff9370,
+  4: #ffbea9,
+  5: #ffdbcf,
+  6: #fff0eb,
+  contrast: (
+    1: white,
+    2: white,
+    3: black,
+    4: black,
+    5: black,
+    6: black,
+  ),
+);
+
 // main color is assumed to be 2 based on prevalence of it on the home page (buttons). It's also called default in zeplin
 // 1 is the darker version of it because it's the only one that's darker
-// 4 was arbitarily chosen to be the lighter version because while looking at the progress bar, there wasn't enough contrast
+// 4 was arbitrarily chosen to be the lighter version because while looking at the progress bar, there wasn't enough contrast
 $dockstore-app-primary: mat.define-palette($kim-primary, 2, 4, 1);
 $dockstore-app-accent: mat.define-palette($kim-secondary, 2, 4, 1);
 $dockstore-app-error: mat.define-palette($kim-error, 2, 4, 1);
 $dockstore-app-warn: mat.define-palette($kim-warn, 2, 4, 1);
 $dockstore-app-accent-1: mat.define-palette($kim-accent1-success, 2, 4, 1);
+$dockstore-app-accent-2: mat.define-palette($kim-accent2, 2, 4, 1);
+$dockstore-app-accent-4: mat.define-palette($kim-accent-4, 2, 4, 1);
 
 // 4 and 1 were chosen as darker and lighter versions, respectively, because those were used in styles.
 // Main color was chosen arbitrarily to be between darker and lighter.
@@ -159,6 +195,9 @@ $workflow-background-color: #f6fefc;
 $workflow-selection-color: #d2fbf0;
 
 $service-color: #ff6c44;
+$service-selection-color: #ffdbcf;
+
+$org-selection-color: #dde1f2;
 
 // Color used to indicate success in general (of an operation, verified badge, etc).
 $accent-3-dark: #00bfa5 !important;

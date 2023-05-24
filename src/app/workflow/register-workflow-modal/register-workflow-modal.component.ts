@@ -56,7 +56,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
   public isModalShown: boolean;
   public isRefreshing$: Observable<boolean>;
   public descriptorValidationPattern;
-  public workflowPathError: String | null;
+  public workflowPathError: string | null;
   public descriptorLanguages$: Observable<Array<Workflow.DescriptorTypeEnum>>;
   public Tooltip = Tooltip;
   public workflowPathPlaceholder: string;
@@ -87,7 +87,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
   ];
   private githubAppOption = {
     label: 'Register using GitHub Apps (Recommended)',
-    extendedLabel: 'Install our GitHub App on your repository/organization to automatically sync workflows with GitHub.',
+    extendedLabel: 'Install our GitHub App in an organization or your personal account to automatically sync workflows with GitHub.',
     value: 0,
   };
   public options = [this.githubAppOption, ...this.baseOptions];

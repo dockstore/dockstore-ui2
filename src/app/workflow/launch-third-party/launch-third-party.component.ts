@@ -1,7 +1,5 @@
 import { HttpUrlEncodingCodec } from '@angular/common/http';
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { MatIconRegistry } from '@angular/material/icon';
-import { DomSanitizer } from '@angular/platform-browser';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 import { combineLatest, Observable } from 'rxjs';
 import { map, shareReplay, takeUntil } from 'rxjs/operators';
@@ -166,7 +164,7 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
 
   bdCatalystSevenBridgesTooltip$: Observable<string> = combineLatest([this.hasContent$, this.hasHttpImports$]).pipe(
     map(([hasContent, hasHttpImports]) =>
-      this.sevenBridgesTooltip(hasContent, hasHttpImports, 'NHLBI BioData Catalyst powered by Seven Bridges')
+      this.sevenBridgesTooltip(hasContent, hasHttpImports, 'BioData Catalyst (BDC) Powered by Seven Bridges')
     )
   );
 
@@ -184,7 +182,7 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
 
   bdCatalystTerraTooltip$: Observable<string> = combineLatest([this.hasContent$, this.hasFileImports$]).pipe(
     map(([hasContent, hasFileImports]) =>
-      this.terraBasedPlatformTooltip(hasContent, hasFileImports, 'NHLBI BioData Catalyst powered by Terra')
+      this.terraBasedPlatformTooltip(hasContent, hasFileImports, 'BioData Catalyst (BDC) Powered by Terra')
     )
   );
 
@@ -199,8 +197,6 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
   constructor(
     private workflowsService: WorkflowsService,
     private descriptorTypeCompatService: DescriptorTypeCompatService,
-    iconRegistry: MatIconRegistry,
-    sanitizer: DomSanitizer,
     private gA4GHFilesQuery: GA4GHFilesQuery,
     private descriptorsQuery: DescriptorsQuery,
     private descriptorsService: DescriptorsService,
@@ -210,10 +206,6 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
     private descriptorLanguageService: DescriptorLanguageService
   ) {
     super();
-    iconRegistry.addSvgIcon('dnanexus', sanitizer.bypassSecurityTrustResourceUrl('../assets/images/thirdparty/DX_Logo_white_alpha.svg'));
-    iconRegistry.addSvgIcon('terra', sanitizer.bypassSecurityTrustResourceUrl('../assets/images/thirdparty/terra.svg'));
-    iconRegistry.addSvgIcon('anvil', sanitizer.bypassSecurityTrustResourceUrl('../assets/images/thirdparty/anvil.svg'));
-    iconRegistry.addSvgIcon('elwazi', sanitizer.bypassSecurityTrustResourceUrl('../assets/images/thirdparty/elwazi.svg'));
   }
 
   ngOnInit(): void {

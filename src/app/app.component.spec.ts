@@ -21,7 +21,7 @@ class FooterStubComponent {}
 @Component({ selector: 'app-tos-banner', template: '' })
 class TosBannerStubComponent {}
 
-@Component({ selector: 'app-notifications', template: '' })
+@Component({ selector: 'app-sitewide-notifications', template: '' })
 class NotificationStubComponent {}
 
 describe('AppComponent', () => {

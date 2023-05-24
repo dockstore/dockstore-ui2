@@ -14,7 +14,7 @@ export const extendedSMK: ExtendedDescriptorLanguageBean = {
   workflowDescriptorEnum: Workflow.DescriptorTypeEnum.SMK,
   languageDocumentationURL: 'https://snakemake.github.io/',
 
-  plainTRS: 'PLAIN-SMK',
+  plainTRS: 'PLAIN_SMK',
   descriptorFileTypes: [SourceFile.TypeEnum.DOCKSTORESMK],
   toolTab: {
     rowIdentifier: 'tool\xa0ID',

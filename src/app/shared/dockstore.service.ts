@@ -28,8 +28,6 @@ interface SourceObject {
   providedIn: 'root',
 })
 export class DockstoreService {
-  constructor() {}
-
   getValidVersions(versions: Array<WorkflowVersion | Tag>): Array<WorkflowVersion | Tag> {
     return versions.filter((version) => version.valid);
   }

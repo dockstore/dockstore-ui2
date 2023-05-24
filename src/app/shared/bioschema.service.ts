@@ -55,13 +55,14 @@ export class BioschemaService {
     if (entry.dbCreateDate) {
       results.dateCreated = this.dateService.getISO8601Format(entry.dbCreateDate);
     }
-    if (entry.author) {
+    if (entry.authors.length > 0) {
+      const author = entry.authors[0];
       results.publisher = {
         '@type': 'Person',
-        name: entry.author,
+        name: author.name,
       };
-      if (entry.email) {
-        results.publisher.email = entry.email;
+      if (author.email) {
+        results.publisher.email = author.email;
       }
     }
     if (entry.descriptorType) {
@@ -80,9 +81,6 @@ export class BioschemaService {
         '@type': 'Organization',
         name: tool.namespace,
       };
-      if (tool.email) {
-        results.publisher.email = tool.email;
-      }
     }
     if (tool.lastUpdated) {
       results.dateModified = this.dateService.getISO8601Format(tool.lastUpdated);
@@ -104,9 +102,6 @@ export class BioschemaService {
         '@type': 'Organization',
         name: workflow.organization,
       };
-      if (workflow.email) {
-        results.publisher.email = workflow.email;
-      }
     }
     if (workflow.last_modified) {
       results.dateModified = this.dateService.getISO8601Format(workflow.last_modified);

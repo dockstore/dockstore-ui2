@@ -1,8 +1,9 @@
 <div fxFlex.lt-md="100" class="p-3">
   <div fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="1rem" class="pt-2 pb-4">
-    <div fxLayout fxLayoutAlign="start start" class="w-100 ml-2">
-      <strong *ngIf="user?.isAdmin" id="account-is-admin" class="bubble">Administrator</strong>
-      <strong *ngIf="user?.curator && !user.isAdmin" id="account-is-curator" class="bubble">Curator</strong>
+    <div fxLayout="row wrap" fxLayoutAlign="start start" fxLayoutGap="0.5rem" class="w-100 ml-2">
+      <strong *ngIf="user?.isAdmin" data-cy="account-is-admin" class="bubble">Administrator</strong>
+      <strong *ngIf="user?.curator" data-cy="account-is-curator" class="bubble">Curator</strong>
+      <strong *ngIf="user?.platformPartner" data-cy="account-is-platform-partner" class="bubble">Platform Partner</strong>
     </div>
     <img src="{{ user?.avatarUrl }}" alt="Dockstore avatar" />
     <h4>{{ user?.name }}</h4>

@@ -7,11 +7,11 @@ import { FileTreeComponent } from 'app/file-tree/file-tree.component';
 import { bootstrap4largeModalSize } from 'app/shared/constants';
 import { FileService } from 'app/shared/file.service';
 import { SourceFile, ToolDescriptor, WorkflowVersion } from 'app/shared/openapi';
-import { finalize } from 'rxjs/operators';
-import { SourceFileTabsService } from './source-file-tabs.service';
-
-import { WorkflowQuery } from '../shared/state/workflow.query';
 import { Observable } from 'rxjs';
+import { finalize } from 'rxjs/operators';
+import { WorkflowQuery } from '../shared/state/workflow.query';
+import { BioWorkflow, Notebook, Service, Tag } from '../shared/swagger';
+import { SourceFileTabsService } from './source-file-tabs.service';
 
 @Component({
   selector: 'app-source-file-tabs',
@@ -26,10 +26,9 @@ export class SourceFileTabsComponent implements OnChanges {
     private workflowQuery: WorkflowQuery
   ) {
     this.isPublished$ = this.workflowQuery.workflowIsPublished$;
+    this.primaryDescriptors = [];
   }
-  // Used to generate the TRS file path
-  @Input() entryPath: string;
-  @Input() workflowId: number;
+  @Input() entry: BioWorkflow | Service | Notebook;
   // Used to generate the TRS file path
   @Input() descriptorType: ToolDescriptor.TypeEnum;
   // Version is strictly non-null because everything that uses this component has a truthy-check guard
@@ -42,6 +41,9 @@ export class SourceFileTabsComponent implements OnChanges {
   relativePath: string;
   downloadFilePath: string;
   fileTabs: Map<string, SourceFile[]>;
+  primaryDescriptors: SourceFile[] | null;
+  primaryDescriptorPath: string;
+  isCurrentFilePrimary: boolean | null;
   protected isPublished$: Observable<boolean>;
   /**
    * To prevent the Angular's keyvalue pipe from sorting by key
@@ -58,7 +60,7 @@ export class SourceFileTabsComponent implements OnChanges {
     this.loading = true;
     this.displayError = false;
     this.sourceFileTabsService
-      .getSourceFiles(this.workflowId, this.version.id)
+      .getSourceFiles(this.entry.id, this.version.id)
       .pipe(
         finalize(() => {
           this.loading = false;
@@ -74,6 +76,12 @@ export class SourceFileTabsComponent implements OnChanges {
           if (this.fileTabs.size > 0) {
             this.changeFileType(this.fileTabs.values().next().value);
           }
+          sourceFiles.forEach((sourceFile) => {
+            if (this.isPrimaryDescriptor(sourceFile.path)) {
+              this.primaryDescriptors.push(sourceFile);
+              this.primaryDescriptorPath = sourceFile.path;
+            }
+          });
         },
         () => {
           this.displayError = true;
@@ -95,9 +103,8 @@ export class SourceFileTabsComponent implements OnChanges {
       this.fileName = this.fileService.getFileName(file.path);
       this.relativePath = file.absolutePath;
       this.downloadFilePath = this.sourceFileTabsService.getDescriptorPath(
-        this.workflowId,
+        this.entry,
         this.descriptorType,
-        this.entryPath,
         this.version.name,
         this.relativePath
       );
@@ -107,6 +114,7 @@ export class SourceFileTabsComponent implements OnChanges {
       this.downloadFilePath = null;
     }
     this.currentFile = file;
+    this.isCurrentFilePrimary = this.isPrimaryDescriptor(this.currentFile.path);
   }
 
   matTabChange(event: MatTabChangeEvent) {
@@ -119,7 +127,17 @@ export class SourceFileTabsComponent implements OnChanges {
 
   openFileTree(sourceFiles: SourceFile[]) {
     this.matDialog
-      .open(FileTreeComponent, { width: bootstrap4largeModalSize, data: { files: sourceFiles, selectedFile: this.currentFile } })
+      .open(FileTreeComponent, {
+        width: bootstrap4largeModalSize,
+        data: {
+          files: sourceFiles,
+          selectedFile: this.currentFile,
+          entryPath: this.entry.full_workflow_path,
+          versionName: this.version.name,
+          descriptorType: this.descriptorType,
+          versionPath: this.version.workflow_path,
+        },
+      })
       .afterClosed()
       .subscribe((absoluteFilePath) => {
         const foundFile = sourceFiles.find((file) => file.absolutePath === absoluteFilePath);
@@ -131,5 +149,9 @@ export class SourceFileTabsComponent implements OnChanges {
 
   downloadFileContent() {
     this.fileService.downloadFileContent(this.currentFile.content, this.fileName);
+  }
+
+  isPrimaryDescriptor(path: string): boolean {
+    return path === this.version.workflow_path;
   }
 }

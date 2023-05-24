@@ -19,13 +19,18 @@
             "assets": [
               "src/assets",
               "src/favicon.ico",
-              "src/manifest.json"
+              "src/manifest.json",
+              {
+                "glob": "**/worker-*.js",
+                "input": "./node_modules/ace-builds/src-noconflict/",
+                "output": "/assets/ace"
+              }
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.css",
               "node_modules/academicons/css/academicons.css",
               "src/styles.scss",
-              "src/material.scss"
+              "src/material.scss",
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.js",
@@ -45,7 +50,7 @@
               "node_modules/ace-builds/src-min-noconflict/mode-perl.js",
               "node_modules/ace-builds/src-min-noconflict/theme-idle_fingers.js",
               "node_modules/ace-builds/src-min-noconflict/ext-searchbox.js",
-              "node_modules/bootstrap/dist/js/bootstrap.js"
+              "node_modules/bootstrap/dist/js/bootstrap.js",
             ]
           },
           "configurations": {
@@ -143,7 +148,6 @@
       }
     }
   },
-  "defaultProject": "dockstore-ui2",
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "app",
@@ -154,7 +158,9 @@
     }
   },
   "cli": {
-    "defaultCollection": "@angular-eslint/schematics",
-    "analytics": false
+    "analytics": false,
+    "schematicCollections": [
+      "@angular-eslint/schematics"
+    ]
   }
 }

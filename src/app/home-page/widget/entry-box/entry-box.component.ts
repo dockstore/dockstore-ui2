@@ -1,86 +1,122 @@
+/*
+ *    Copyright 2022 OICR, UCSC
+ *
+ *    Licensed under the Apache License, Version 2.0 (the "License")
+ *    you may not use this file except in compliance with the License
+ *    You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
+
 import { Component, Input, OnInit } from '@angular/core';
 import { EntryType } from 'app/shared/enum/entry-type';
-import { EntryUpdateTime, UsersService } from 'app/shared/openapi';
+import { EntryUpdateTime, UsersService, EntryType as NewEntryType } from 'app/shared/openapi';
 import { debounceTime, finalize, takeUntil } from 'rxjs/operators';
 import { MyWorkflowsService } from 'app/myworkflows/myworkflows.service';
 import { RegisterToolService } from 'app/container/register-tool/register-tool.service';
 import { Base } from 'app/shared/base';
 import { Dockstore } from 'app/shared/dockstore.model';
 import { AlertService } from 'app/shared/alert/state/alert.service';
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { SessionService } from '../../../shared/session/session.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-entry-box',
   templateUrl: './entry-box.component.html',
-  styleUrls: ['./entry-box.component.scss'],
+  styleUrls: ['../../../shared/styles/dashboard-boxes.scss'],
 })
 export class EntryBoxComponent extends Base implements OnInit {
   Dockstore = Dockstore;
-  @Input() entryType:
-    | typeof EntryUpdateTime.EntryTypeEnum.TOOL
-    | typeof EntryUpdateTime.EntryTypeEnum.SERVICE
-    | typeof EntryUpdateTime.EntryTypeEnum.WORKFLOW;
-  entryTypeLowerCase: string;
-  filterText: string;
-  listOfEntries: Array<EntryUpdateTime> = [];
-  helpLink: string;
-  allEntriesLink: string;
-  totalEntries: number = 0;
+  public newEntryType = NewEntryType;
+  @Input() entryType: typeof NewEntryType.TOOL | typeof NewEntryType.SERVICE | typeof NewEntryType.WORKFLOW | typeof NewEntryType.NOTEBOOK;
+  public entryTypeLowerCase: string;
+  public filterText: string = '';
+  public listOfEntries: Array<EntryUpdateTime> = [];
+  public listOfResults: Array<EntryUpdateTime> = [];
+  public helpLink: string = '';
+  public allEntriesLink: string = '';
+  public totalEntries: number = 0;
+  public totalResults: number = 0;
+  public noResults: boolean = false;
+  public resultsDisplayed: number = 5;
   public isLoading = true;
+  public entryTypeParam: any;
+  private readonly arrowKeyCodes: number[] = [37, 38, 39, 40];
 
   constructor(
     private registerToolService: RegisterToolService,
     private myWorkflowsService: MyWorkflowsService,
     private usersService: UsersService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private sessionService: SessionService,
+    private router: Router
   ) {
     super();
   }
 
   ngOnInit(): void {
-    this.getMyEntries();
-
     if (this.entryType) {
       this.entryTypeLowerCase = this.entryType.toLowerCase();
     }
 
-    //Get the links for the specified entryType
-    if (this.entryType === EntryUpdateTime.EntryTypeEnum.WORKFLOW) {
+    // Get the links for the specified entryType
+    if (this.entryType === NewEntryType.WORKFLOW) {
       this.helpLink = Dockstore.DOCUMENTATION_URL + '/getting-started/dockstore-workflows.html';
       this.allEntriesLink = '/my-workflows/';
-    } else if (this.entryType === EntryUpdateTime.EntryTypeEnum.TOOL) {
+      this.entryTypeParam = 'WORKFLOWS';
+    } else if (this.entryType === NewEntryType.TOOL) {
       this.helpLink = Dockstore.DOCUMENTATION_URL + '/getting-started/dockstore-tools.html';
       this.allEntriesLink = '/my-tools/';
-    } else if (this.entryType === EntryUpdateTime.EntryTypeEnum.SERVICE) {
+      this.entryTypeParam = 'TOOLS';
+    } else if (this.entryType === NewEntryType.SERVICE) {
       this.helpLink = Dockstore.DOCUMENTATION_URL + '/getting-started/getting-started-with-services.html';
       this.allEntriesLink = '/my-services/';
+      this.entryTypeParam = 'SERVICES';
+    } else if (this.entryType === NewEntryType.NOTEBOOK) {
+      this.helpLink = Dockstore.DOCUMENTATION_URL + '/getting-started/notebooks/notebooks.html';
+      this.allEntriesLink = '/my-notebooks/';
+      this.entryTypeParam = 'NOTEBOOKS';
+      // Not loading entries for Notebooks - remove when supported
+      this.isLoading = false;
+    }
+
+    // Do not get Notebook entries, unsupported - remove when suported
+    if (this.entryType !== NewEntryType.NOTEBOOK) {
+      this.getMyEntries();
     }
   }
 
   getMyEntries() {
     this.usersService
-      .getUserEntries(null, this.filterText)
+      .getUserEntries(null, this.filterText, this.entryTypeParam, 'response')
       .pipe(
         finalize(() => (this.isLoading = false)),
         debounceTime(750),
         takeUntil(this.ngUnsubscribe)
       )
       .subscribe(
-        (myEntries: Array<EntryUpdateTime>) => {
-          this.listOfEntries = [];
-          this.totalEntries = 0;
-          myEntries
-            .filter(
-              (entry) =>
-                entry.entryType === this.entryType ||
-                (this.entryType === EntryUpdateTime.EntryTypeEnum.TOOL && entry.entryType === EntryUpdateTime.EntryTypeEnum.APPTOOL)
-            )
-            .forEach((entry: EntryUpdateTime) => {
-              if (this.listOfEntries.length < 7) {
-                this.listOfEntries.push(entry);
-              }
-              this.totalEntries += 1;
-            });
+        (myEntries: HttpResponse<EntryUpdateTime[]>) => {
+          const url = new URL(myEntries.url);
+          if (url.searchParams.get('filter')) {
+            this.listOfResults = myEntries.body.slice(0, this.resultsDisplayed);
+            this.totalResults = myEntries.body.length;
+            // Display no search results message when there are no search results returned and a search filter is present
+            this.noResults = myEntries.body.length === 0;
+          } else {
+            // Update total entries only when no search filter applied (i.e. non-filtered total)
+            // Handles cases with no filter param and empty filter param
+            this.listOfEntries = myEntries.body.slice(0, 7);
+            this.totalEntries = myEntries.body.length;
+            // Clear search results if no filter applied
+            this.clearSearch();
+          }
         },
         (error: HttpErrorResponse) => {
           this.alertService.detailedError(error);
@@ -89,17 +125,36 @@ export class EntryBoxComponent extends Base implements OnInit {
   }
 
   onTextChange(event: any) {
-    this.isLoading = true;
-    this.getMyEntries();
+    // Ignore arrow key events as they are used for nagivation
+    if (!this.arrowKeyCodes.includes(event.keyCode)) {
+      this.isLoading = true;
+      this.getMyEntries();
+    }
+  }
+
+  navigateToEntry(path: string) {
+    this.router.navigateByUrl(this.allEntriesLink + path);
+  }
+
+  clearSearch() {
+    this.listOfResults = [];
+    this.filterText = '';
+    this.noResults = false;
   }
 
   showRegisterEntryModal(): void {
-    if (this.entryType === EntryUpdateTime.EntryTypeEnum.WORKFLOW) {
+    if (this.entryType === NewEntryType.WORKFLOW) {
+      this.sessionService.setEntryType(EntryType.BioWorkflow);
       this.myWorkflowsService.registerEntry(EntryType.BioWorkflow);
-    } else if (this.entryType === EntryUpdateTime.EntryTypeEnum.TOOL) {
+    } else if (this.entryType === NewEntryType.TOOL) {
+      this.sessionService.setEntryType(EntryType.Tool);
       this.registerToolService.setIsModalShown(true);
-    } else if (this.entryType === EntryUpdateTime.EntryTypeEnum.SERVICE) {
+    } else if (this.entryType === NewEntryType.SERVICE) {
+      this.sessionService.setEntryType(EntryType.Service);
       this.myWorkflowsService.registerEntry(EntryType.Service);
+    } else if (this.entryType === NewEntryType.NOTEBOOK) {
+      this.sessionService.setEntryType(EntryType.Notebook);
+      this.myWorkflowsService.registerEntry(EntryType.Notebook);
     }
   }
 }

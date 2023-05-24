@@ -5,11 +5,13 @@ import { Dockstore } from './dockstore.model';
   providedIn: 'root',
 })
 export class FeatureService {
-  constructor() {}
-
   updateFeatureFlags(queryParams: string) {
     const urlSearchParams = new URLSearchParams(queryParams);
-    const newDashboard = urlSearchParams.has('newDashboard');
-    Dockstore.FEATURES.enableNewDashboard = newDashboard;
+    const gitHubAppCallBackToNotebooks = urlSearchParams.has('state') && urlSearchParams.get('state').includes('notebooks');
+    const notebooks = urlSearchParams.has('notebooks') || gitHubAppCallBackToNotebooks;
+    Dockstore.FEATURES.enableNotebooks = notebooks;
+    const gitHubAppCallBackToMetrics = urlSearchParams.has('state') && urlSearchParams.get('state').includes('metrics');
+    const metrics = urlSearchParams.has('metrics') || gitHubAppCallBackToMetrics;
+    Dockstore.FEATURES.enableMetrics = metrics;
   }
 }

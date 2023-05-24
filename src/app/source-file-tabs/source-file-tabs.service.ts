@@ -3,9 +3,8 @@ import { DescriptorTypeCompatService } from 'app/shared/descriptor-type-compat.s
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 import { FileService } from 'app/shared/file.service';
 import { SourceFile, ToolDescriptor, WorkflowsService, WorkflowVersion } from 'app/shared/openapi';
-import { Validation } from 'app/shared/swagger';
+import { BioWorkflow, Notebook, Service, Validation } from 'app/shared/swagger';
 import { Observable } from 'rxjs';
-import { ga4ghWorkflowIdPrefix } from '../shared/constants';
 
 @Injectable({
   providedIn: 'root',
@@ -115,9 +114,8 @@ export class SourceFileTabsService {
    * @param versionName
    */
   getDescriptorPath(
-    workflowId: number,
+    entry: BioWorkflow | Service | Notebook,
     descriptorType: ToolDescriptor.TypeEnum,
-    fileId: string,
     versionName: string,
     relativePath: string
   ): string {
@@ -125,7 +123,8 @@ export class SourceFileTabsService {
     if (type === null) {
       return null;
     }
-    const id = ga4ghWorkflowIdPrefix + fileId;
+    const fileId = entry.full_workflow_path;
+    const id = entry.entryTypeMetadata.trsPrefix + fileId;
     return this.fileService.getDownloadFilePath(id, versionName, type, relativePath);
   }
 }

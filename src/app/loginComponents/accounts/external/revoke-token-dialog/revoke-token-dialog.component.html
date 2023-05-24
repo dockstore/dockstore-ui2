@@ -1,0 +1,42 @@
+<!--
+    Copyright 2022 OICR, UCSC
+
+    Licensed under the Apache License, Version 2.0 (the "License")
+    you may not use this file except in compliance with the License
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+
+<h1 mat-dialog-title>Are you sure you want to revoke this Dockstore token?</h1>
+<div mat-dialog-content>
+  <app-alert></app-alert>
+  <p>This action will be irreversible and you will be logged out. You will need to log back in to generate a new Dockstore token.</p>
+  <mat-divider></mat-divider>
+  <div *ngIf="username" class="text-center">
+    <p>Please enter your account username, {{ username }}, to revoke.</p>
+    <div [formGroup]="usernameForm">
+      <mat-form-field>
+        <input
+          id="revokeTokenUsernameInput"
+          data-cy="revoke-token-username-input"
+          matInput
+          [formControl]="usernameFormControl"
+          placeholder="Username"
+        />
+      </mat-form-field>
+    </div>
+    <div class="btn-group" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="1rem">
+      <button mat-flat-button mat-dialog-close class="secondary-1">No</button>
+      <button mat-flat-button (click)="revokeToken()" [disabled]="usernameForm.invalid" data-cy="confirm-revoke-token-button" color="warn">
+        Yes, revoke my Dockstore token
+      </button>
+    </div>
+  </div>
+</div>

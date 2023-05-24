@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { Component, Inject, OnInit } from '@angular/core';
-import { AbstractControl, FormGroup } from '@angular/forms';
+import { AbstractControl, UntypedFormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { UpdateOrganizationOrCollectionDescriptionService } from '../state/update-organization-description.service';
 
@@ -22,7 +22,7 @@ import { UpdateOrganizationOrCollectionDescriptionService } from '../state/updat
   templateUrl: './update-organization-description.component.html',
 })
 export class UpdateOrganizationOrCollectionDescriptionComponent implements OnInit {
-  updateOrganizationOrCollectionDescriptionForm: FormGroup;
+  updateOrganizationOrCollectionDescriptionForm: UntypedFormGroup;
 
   constructor(
     private updateOrganizationOrDescriptionDescriptionService: UpdateOrganizationOrCollectionDescriptionService,

@@ -45,7 +45,7 @@
       </th>
       <td mat-cell *matCellDef="let version">
         <span fxLayout="row wrap" fxLayoutGap="0.5rem" fxLayoutAlign="start center">
-          <mat-chip *ngIf="defaultVersion === version.name" class="bubble container-background">
+          <mat-chip *ngIf="defaultVersion === version.name" class="bubble tool-background">
             <a
               target="_blank"
               rel="noopener noreferrer"
@@ -92,6 +92,23 @@
       <th scope="col" mat-header-cell *matHeaderCellDef mat-sort-header matTooltip="">Date Built</th>
       <td mat-cell *matCellDef="let version">
         {{ version.last_built | date: 'yyyy-MM-dd HH:mm' }}
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="descriptorTypeVersions">
+      <th
+        scope="col"
+        mat-header-cell
+        *matHeaderCellDef
+        mat-sort-header
+        matTooltip="The language versions used by the version's descriptor file(s)."
+      >
+        Language Versions
+      </th>
+      <td mat-cell *matCellDef="let version">
+        <!-- Only display descriptor type versions if there's one descriptor type otherwise we can't tell which version belongs to which type without looking at the source files -->
+        <span *ngIf="tool?.descriptorType.length === 1">{{
+          tool.descriptorType[0] | descriptorLanguageVersions: version.versionMetadata?.descriptorTypeVersions
+        }}</span>
       </td>
     </ng-container>
     <ng-container matColumnDef="valid">

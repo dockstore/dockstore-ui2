@@ -25,6 +25,7 @@ import { elasticSearchResponse } from '../../test/mocked-objects';
 import { ProviderStubService } from '../../test/service-stubs';
 import { Hit, SearchService } from './search.service';
 import { SearchStore } from './search.store';
+import { SearchAuthorsHtmlPipe } from '../search-authors-html.pipe';
 
 describe('SearchService', () => {
   let searchService: SearchService;
@@ -35,6 +36,7 @@ describe('SearchService', () => {
         ImageProviderService,
         SearchService,
         SearchStore,
+        SearchAuthorsHtmlPipe,
         {
           provide: ProviderService,
           useClass: ProviderStubService,
@@ -48,7 +50,7 @@ describe('SearchService', () => {
   it('should be created', inject([SearchService], (service: SearchService) => {
     expect(service).toBeTruthy();
   }));
-  it('should get term from aggergation name', inject([SearchService], (service: SearchService) => {
+  it('should get term from aggregation name', inject([SearchService], (service: SearchService) => {
     expect(service.aggregationNameToTerm('agg_terms_type')).toEqual('type');
   }));
   it('should set observables', inject([SearchService], (service: SearchService) => {
@@ -90,7 +92,14 @@ describe('SearchService', () => {
           privateOnly: 'false',
           url: 'https://gitlab.com/',
         },
-        { customDockerPath: 'true', dockerPath: 'public.ecr.aws', enum: 'AMAZON_ECR', friendlyName: 'Amazon ECR', privateOnly: 'false', url: "https://gallery.ecr.aws/" },
+        {
+          customDockerPath: 'true',
+          dockerPath: 'public.ecr.aws',
+          enum: 'AMAZON_ECR',
+          friendlyName: 'Amazon ECR',
+          privateOnly: 'false',
+          url: 'https://gallery.ecr.aws/',
+        },
         {
           customDockerPath: 'true',
           dockerPath: null,
@@ -130,7 +139,7 @@ describe('SearchService', () => {
       ...a,
       author: 'B',
       full_workflow_path: 'Bcd',
-      starredUsers: [{ isAdmin: false, curator: false, setupComplete: true }],
+      starredUsers: [{ isAdmin: false, curator: false, platformPartner: false, setupComplete: true }],
     };
 
     const c: Workflow = { ...a, author: null, full_workflow_path: null, descriptorType: Workflow.DescriptorTypeEnum.WDL };

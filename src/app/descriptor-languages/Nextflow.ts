@@ -12,7 +12,7 @@ export const extendedNFL: ExtendedDescriptorLanguageBean = {
   toolDescriptorEnum: ToolDescriptor.TypeEnum.NFL,
   workflowDescriptorEnum: Workflow.DescriptorTypeEnum.NFL,
   languageDocumentationURL: 'https://www.nextflow.io/',
-  plainTRS: 'PLAIN-NFL',
+  plainTRS: 'PLAIN_NFL',
   descriptorFileTypes: [SourceFile.TypeEnum.NEXTFLOW, SourceFile.TypeEnum.NEXTFLOWCONFIG],
   toolTab: {
     rowIdentifier: 'process\xa0name',

@@ -9,7 +9,7 @@ export class SnackbarDirective {
 
   @HostListener('click')
   onClick() {
-    this.matSnackBar.open('Copied!', '', {
+    this.matSnackBar.open('Copied to clipboard', '', {
       duration: 1000,
       panelClass: 'custom_copy_snack_bar',
     });

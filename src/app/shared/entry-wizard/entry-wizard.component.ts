@@ -48,7 +48,7 @@ export class EntryWizardComponent implements OnInit {
 
   /**
    * Given an organization will retrieve all associated repositories for the logged in user
-   * @param selectedOrganization the seleceted organization
+   * @param selectedOrganization the selected organization
    */
   getRepositories(selectedOrganization: string) {
     this.entryWizardService.updateGitRepositoryStore(this.selectedGitRegistry, selectedOrganization);

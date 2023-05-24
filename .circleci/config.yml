@@ -7,7 +7,7 @@ orbs:
 executors:
   integration_test_exec: # declares a reusable executor
     docker:
-      - image: cimg/base:stable-18.04
+      - image: cimg/base:stable-20.04
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
@@ -68,8 +68,6 @@ jobs:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
     steps:
-      - browser-tools/install-chrome
-      - browser-tools/install-chromedriver
       - setup_nightly_tests
       - install_cypress_dependencies
       - run:
@@ -112,6 +110,10 @@ jobs:
           command: bash -i -c 'npm run test-<< parameters.stack >>-auth'
           environment:
             MOCHA_FILE: nightly-test-results/junit/test-<< parameters.stack >>-auth-[hash].xml
+      - run:
+          name: Reset dockstoretestuser4's resources
+          # Reset user dockstoretestuser4's resources such that it has no registered tools and published workflows
+          command: bash scripts/reset-dockstoretestuser4-resources.sh << parameters.stack >>
       - upload_nightly_artifacts
       - slack/notify:
           channel: $<< parameters.stack >>_id
@@ -130,9 +132,9 @@ jobs:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
     steps:
+      - checkout
       - browser-tools/install-chrome
       - browser-tools/install-chromedriver
-      - checkout
       - run:
           name: Checkout merge commit (PRs only)
           command: |
@@ -158,9 +160,9 @@ jobs:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
     steps:
+      - checkout
       - browser-tools/install-chrome
       - browser-tools/install-chromedriver
-      - checkout
       - run:
           name: Checkout merge commit (PRs only)
           command: |
@@ -225,7 +227,7 @@ jobs:
           key: cypress-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
       - run:
           name: Test
-          command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/integration/group1/**/*'
+          command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/e2e/group1/**/*'
           no_output_timeout: 30m
           environment:
             MOCHA_FILE: integration-tests/test-results/junit/test-results-[hash].xml
@@ -240,7 +242,7 @@ jobs:
           key: cypress-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
       - run:
           name: Test
-          command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/integration/group2/**/*'
+          command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/e2e/group2/**/*'
           no_output_timeout: 30m
           environment:
             MOCHA_FILE: integration-tests/test-results/junit/test-results-[hash].xml
@@ -255,7 +257,7 @@ jobs:
           key: cypress-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
       - run:
           name: Test
-          command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/integration/group3/**/*'
+          command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/e2e/group3/**/*'
           no_output_timeout: 30m
           environment:
             MOCHA_FILE: integration-tests/test-results/junit/test-results-[hash].xml
@@ -270,7 +272,7 @@ jobs:
           key: cypress-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
       - run:
           name: Test
-          command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/integration/immutableDatabaseTests/**/*'
+          command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/e2e/immutableDatabaseTests/**/*'
           no_output_timeout: 30m
           environment:
             MOCHA_FILE: integration-tests/test-results/junit/test-results-[hash].xml
@@ -361,7 +363,7 @@ jobs:
   upload_to_s3:
     working_directory: ~/repo
     docker:
-      - image: cimg/python:2.7
+      - image: cimg/python:3.11
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
@@ -384,7 +386,7 @@ jobs:
             # TODO: https://gui.dockstore.org/${CIRCLE_TAG:-$CIRCLE_BRANCH}-$(echo $CIRCLE_SHA1 | cut -c -7) can probably be made into a bash/circle-ci variable.
             - run:
                 name: Swap for CDN paths
-                command: bash -i -c "find src \( -iname '*.html' -o -iname '*.ts' -o -iname '*.json' \) -exec sed -i 's~\(\.\./\)\+assets/~https://gui\.dockstore\.org/${CIRCLE_TAG:-$CIRCLE_BRANCH}-$(echo $CIRCLE_SHA1 | cut -c -7)/assets/~g' {} +"
+                command: bash -i -c "find src \( -iname '*.html' -o -iname '*.ts' -o -iname '*.js' -o -iname '*.json' \) -exec sed -i 's~\(\.\./\)\+assets/~https://gui\.dockstore\.org/${CIRCLE_TAG:-$CIRCLE_BRANCH}-$(echo $CIRCLE_SHA1 | cut -c -7)/assets/~g' {} +"
             - run:
                 name: Build
                 command: NODE_OPTIONS="--max-old-space-size=1610" bash -i -c 'npm run build.prod -- --deploy-url https://gui.dockstore.org/${CIRCLE_TAG:-$CIRCLE_BRANCH}-$(echo $CIRCLE_SHA1 | cut -c -7)/'
@@ -403,7 +405,7 @@ jobs:
   check_build_develop:
     working_directory: ~/repo
     docker:
-      - image: cimg/python:2.7
+      - image: cimg/python:3.11
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
@@ -418,9 +420,22 @@ jobs:
           name: Build
           command: NODE_OPTIONS="--max-old-space-size=1610" bash -i -c 'npm run build.prod'
 
+parameters:
+  run_nightly_auth:
+    type: boolean
+    default: false
+  run_nightly_no_auth:
+    type: boolean
+    default: false
+
 workflows:
   version: 2
   everything:
+    when:
+      not:
+        or:
+          - << pipeline.parameters.run_nightly_auth >>
+          - << pipeline.parameters.run_nightly_no_auth >>
     jobs:
       # Add the tags filter to all jobs so they will run before upload_to_s3
       - audit:
@@ -513,17 +528,11 @@ workflows:
             - dockerhub
 
   nightly_no_auth:
-    triggers:
-      - schedule:
-          cron: "0 10 * * *" # This is 3am PDT / 2am PST
-          filters:
-            branches:
-              only:
-                - develop
+    when: << pipeline.parameters.run_nightly_no_auth >>
     jobs:
       - no_auth_smoke_tests:
-          name: "no_auth_smoke_tests_dev"
-          stack: "dev"
+          name: "no_auth_smoke_tests_qa"
+          stack: "qa"
           context:
             - dockerhub
             - oicr-slack
@@ -541,17 +550,11 @@ workflows:
             - oicr-slack
 
   nightly_auth:
-    triggers:
-      - schedule:
-          cron: "0 11 * * *" # This is 4am PDT / 3am PST
-          filters:
-            branches:
-              only:
-                - develop
+    when: << pipeline.parameters.run_nightly_auth >>
     jobs:
       - auth_smoke_tests:
-          name: "auth_smoke_tests_dev"
-          stack: "dev"
+          name: "auth_smoke_tests_qa"
+          stack: "qa"
           context:
             - dockerhub
             - oicr-slack
@@ -575,7 +578,7 @@ commands:
           name: Install java
           command: |
             sudo apt update -y
-            sudo apt install openjdk-17-jdk -yq
+            sudo apt install openjdk-17-jre -yq
       - run:
           name: Install npm
           command: |
@@ -683,9 +686,9 @@ commands:
           command: bash scripts/wait-for.sh
   setup_nightly_tests:
     steps:
+      - checkout
       - browser-tools/install-chrome
       - browser-tools/install-chromedriver
-      - checkout
       - install_container_dependencies
       - restore_cache:
           key: cypress-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}

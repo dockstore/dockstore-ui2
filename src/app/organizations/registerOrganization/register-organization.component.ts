@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { AbstractControl, FormGroup } from '@angular/forms';
+import { AbstractControl, UntypedFormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { NgFormsManager } from '@ngneat/forms-manager';
 import { Organization } from 'app/shared/swagger';
@@ -36,7 +36,7 @@ import { FormsState, RegisterOrganizationService } from '../state/register-organ
   styleUrls: ['./register-organization.component.scss'],
 })
 export class RegisterOrganizationComponent implements OnInit, OnDestroy {
-  registerOrganizationForm: FormGroup;
+  registerOrganizationForm: UntypedFormGroup;
   public title: string;
   public TagEditorMode = TagEditorMode;
   public Organization = Organization;

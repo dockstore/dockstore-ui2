@@ -8,6 +8,11 @@ export interface Funder {
   content: string;
 }
 
+export interface FundingSections {
+  sectionHeader: string;
+  funders: Funder[];
+}
+
 @Component({
   selector: 'app-funding',
   templateUrl: './funding.component.html',
@@ -49,12 +54,12 @@ export class FundingComponent {
   };
   // Due to not having permission to use BD Catalyst's logo, the source here is a text generated placeholder
   BioDataCatalyst: Funder = {
-    title: '',
+    title: 'NHLBI BioData Catalyst®',
     website: 'https://biodatacatalyst.nhlbi.nih.gov/',
     // imageSource: '../assets/images/sponsors/bioDataCatalyst.svg',
     imageSource: '../assets/images/sponsors/BDCatalyst-text-generated.png',
-    altImageText: 'BioData Catalyst Logo',
-    content: `NHLBI BioData Catalyst is a cloud-based platform providing tools, applications, and workflows in secure workspaces. By increasing access to NHLBI datasets and innovative data analysis capabilities, BioData Catalyst accelerates efficient biomedical research that drives discovery and scientific advancement, leading to novel diagnostic tools, therapeutics, and prevention strategies for heart, lung, blood, and sleep disorders.`,
+    altImageText: 'NHLBI BioData Catalyst® Logo',
+    content: `NHLBI BioData Catalyst® (BDC) is a cloud-based platform providing tools, applications, and workflows in secure workspaces. By increasing access to NHLBI datasets and innovative data analysis capabilities, BDC accelerates efficient biomedical research that drives discovery and scientific advancement, leading to novel diagnostic tools, therapeutics, and prevention strategies for heart, lung, blood, and sleep disorders.`,
   };
   CFIFunder: Funder = {
     title: 'CFI',
@@ -63,17 +68,47 @@ export class FundingComponent {
     altImageText: 'CFI Logo',
     content: `The authors wish to acknowledge the funding support of the Canada Foundation for Innovation Cyberinfrastructure Initiative, the Ontario Research Fund, BC Knowledge Development Fund and the Ministère de l'Économie, de la Science et l'Innovation for 'The Cancer Genome Collaboratory' project.`,
   };
+  AmazonFunder: Funder = {
+    title: 'Amazon',
+    website: 'https://aws.amazon.com/genomics-cli/',
+    imageSource: '../assets/images/sponsors/aws.png',
+    altImageText: 'AWS Logo',
+    content: `Amazon has partnered with Dockstore to allow Amazon Genomics CLI users quick and easy access to the workflows registered with Dockstore.`,
+  };
+  NHGRIFunder: Funder = {
+    title: 'NHGRI',
+    website: 'https://www.genome.gov/',
+    imageSource: '../assets/images/sponsors/NHGRI.png',
+    altImageText: 'NHGRI Logo',
+    content: `NHGRI is part of the National Institute of Health (NIH). As a leading authority in the field of genomics, NHGRI's mission is to accelerate scientific and medical breakthroughs that improve human health. We do this by driving cutting-edge research, developing new technologies, and studying the impact of genomics on society.`,
+  };
+
   funders: Funder[] = [
     this.GenomeCanadaFunder,
     this.ProvinceOfOntarioFunder,
-    this.NIHFunder,
-    this.BISTIFunder,
-    this.BioDataCatalyst,
     this.CFIFunder,
+    this.AmazonFunder,
+    this.BISTIFunder,
+    this.NIHFunder,
+    this.NHGRIFunder,
+    this.BioDataCatalyst,
+  ];
+
+  currentFunders: Funder[] = [this.AmazonFunder, this.GenomeCanadaFunder, this.NHGRIFunder, this.NIHFunder, this.ProvinceOfOntarioFunder];
+  previousFunders: Funder[] = [this.BISTIFunder, this.CFIFunder, this.BioDataCatalyst];
+
+  fundingDisplay: FundingSections[] = [
+    {
+      sectionHeader: 'Current Funding',
+      funders: this.currentFunders,
+    },
+    {
+      sectionHeader: 'Previous Funding',
+      funders: this.previousFunders,
+    },
   ];
 
   getFunders(): Funder[] {
     return this.funders;
   }
-  constructor() {}
 }

@@ -34,7 +34,8 @@ export class QueryBuilderService {
   getTagCloudQuery(type: string): string {
     const tagCloudSize = 20;
     const index = type + 's';
-    let body = bodybuilder().size(tagCloudSize);
+    // Size to 0 here because https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations.html#agg-caches
+    let body = bodybuilder().size(0);
     body = this.excludeContent(body);
     body = body.query('match', '_index', index);
     body = body.aggregation('significant_text', 'description', 'tagcloud', { size: tagCloudSize });
@@ -42,18 +43,18 @@ export class QueryBuilderService {
     return toolQuery;
   }
 
-  getSidebarQuery(
-    query_size: number,
+  getSidebarAggregationQuery(
     values: string,
     advancedSearchObject: AdvancedSearchObject,
     searchTerm: boolean,
     bucketStubs: any,
     filters: any,
     sortModeMap: any,
-    index: 'workflows' | 'tools'
+    index: 'workflows' | 'tools' | 'notebooks'
   ): string {
     const count = this.getNumberOfFilters(filters);
-    let sidebarBody = bodybuilder().size(query_size);
+    // Size to 0 here because https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations.html#agg-caches
+    let sidebarBody = bodybuilder().size(0);
     sidebarBody = this.excludeContent(sidebarBody);
     sidebarBody = sidebarBody.query('match', '_index', index);
     sidebarBody = this.appendQuery(sidebarBody, values, advancedSearchObject, searchTerm);
@@ -70,7 +71,7 @@ export class QueryBuilderService {
   // These are the properties to return in the search to display the results table correctly
   private sourceOptions(body: any) {
     return body.rawOption('_source', [
-      'author',
+      'all_authors',
       'descriptorType',
       'full_workflow_path',
       'gitUrl',
@@ -103,7 +104,7 @@ export class QueryBuilderService {
     advancedSearchObject: AdvancedSearchObject,
     searchTerm: boolean,
     filters: any,
-    index: 'tools' | 'workflows'
+    index: 'tools' | 'workflows' | 'notebooks'
   ): string {
     let tableBody = bodybuilder().size(query_size);
     tableBody = this.sourceOptions(tableBody);
@@ -117,7 +118,7 @@ export class QueryBuilderService {
     return tableQuery;
   }
 
-  getResultSingleIndexQuery(query_size: number, index: 'tools' | 'workflows'): string {
+  getResultSingleIndexQuery(query_size: number, index: 'tools' | 'workflows' | 'notebooks'): string {
     let body = bodybuilder().size(query_size);
     body = this.sourceOptions(body);
     body = body.query('match', '_index', index);

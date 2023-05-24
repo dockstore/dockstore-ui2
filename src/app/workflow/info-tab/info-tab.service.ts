@@ -15,7 +15,7 @@
  */
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ga4ghPath, ga4ghServiceIdPrefix, ga4ghWorkflowIdPrefix } from 'app/shared/constants';
+import { ga4ghPath, ga4ghNotebookIdPrefix, ga4ghServiceIdPrefix, ga4ghWorkflowIdPrefix } from 'app/shared/constants';
 import { Dockstore } from 'app/shared/dockstore.model';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { BehaviorSubject } from 'rxjs';
@@ -218,7 +218,7 @@ export class InfoTabService {
   getTRSLink(path: string, versionName: string, descriptorType: string, descriptorPath: string, entryType: EntryType): string {
     return (
       `${Dockstore.API_URI}${ga4ghPath}/tools/${encodeURIComponent(this.getTRSIDFromPath(path, entryType))}` +
-      `/versions/${encodeURIComponent(versionName)}/plain-` +
+      `/versions/${encodeURIComponent(versionName)}/PLAIN_` +
       descriptorType.toUpperCase() +
       `/descriptor/` +
       descriptorPath
@@ -242,6 +242,8 @@ export class InfoTabService {
         return ga4ghWorkflowIdPrefix;
       case EntryType.Service:
         return ga4ghServiceIdPrefix;
+      case EntryType.Notebook:
+        return ga4ghNotebookIdPrefix;
       case EntryType.Tool: // This one shouldn't get invoked from this code
       case EntryType.AppTool:
       default:

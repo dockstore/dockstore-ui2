@@ -14,9 +14,7 @@
  *    limitations under the License.
  */
 import { Component } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
-import { Subject } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
+import { Router } from '@angular/router';
 import { toExtendSite } from '../shared/helpers';
 
 @Component({
@@ -25,16 +23,8 @@ import { toExtendSite } from '../shared/helpers';
 })
 export class HeaderComponent {
   isExtended = false;
-  protected ngUnsubscribe: Subject<{}> = new Subject();
 
   constructor(private router: Router) {
-    this.router.events
-      .pipe(
-        filter((event) => event instanceof NavigationEnd),
-        takeUntil(this.ngUnsubscribe)
-      )
-      .subscribe((event) => {
-        this.isExtended = toExtendSite(this.router.url);
-      });
+    this.isExtended = toExtendSite(this.router.url);
   }
 }

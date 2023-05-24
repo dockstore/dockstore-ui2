@@ -16,7 +16,6 @@
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { TagCloudModule } from 'angular-tag-cloud-module';
 import { ExtendedGA4GHStubService, QueryBuilderStubService, SearchStubService } from './../../test/service-stubs';
 import { QueryBuilderService } from './../query-builder.service';
 
@@ -34,7 +33,7 @@ describe('SearchResultsComponent', () => {
       TestBed.configureTestingModule({
         declarations: [SearchResultsComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        imports: [TagCloudModule, RouterTestingModule],
+        imports: [RouterTestingModule],
         providers: [
           { provide: SearchService, useClass: SearchStubService },
           { provide: QueryBuilderService, useClass: QueryBuilderStubService },

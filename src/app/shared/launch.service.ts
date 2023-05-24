@@ -118,8 +118,8 @@ export abstract class LaunchService {
       case ToolDescriptor.TypeEnum.NFL:
         urlType = 'PLAIN_NFL';
         break;
-      case ToolDescriptor.TypeEnum.GXFORMAT2:
-        urlType = 'PLAIN_GAFORMAT2';
+      case ToolDescriptor.TypeEnum.GALAXY:
+        urlType = 'PLAIN_GALAXY';
         break;
       default:
         console.error('Unknown descriptor type: ' + descriptorType);

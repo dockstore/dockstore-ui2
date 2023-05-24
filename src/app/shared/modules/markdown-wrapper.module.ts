@@ -17,11 +17,12 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { MarkdownModule } from 'ngx-markdown';
 import { MarkdownWrapperComponent } from '../markdown-wrapper/markdown-wrapper.component';
+import { MarkdownWrapperService } from '../markdown-wrapper/markdown-wrapper.service';
 
 @NgModule({
   declarations: [MarkdownWrapperComponent],
   imports: [CommonModule, MarkdownModule],
-  providers: [],
+  providers: [MarkdownWrapperService],
   exports: [MarkdownWrapperComponent],
 })
 export class MarkdownWrapperModule {}

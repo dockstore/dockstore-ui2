@@ -3,18 +3,19 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'ng2-ui-auth';
 import { Dockstore } from '../../../shared/dockstore.model';
 import { MetadataService } from '../../../shared/swagger';
-import { GA4GHService } from './../../../shared/swagger/api/gA4GH.service';
-import { Metadata } from './../../../shared/swagger/model/metadata';
+import { ServiceInfoService } from '../../../service-info/service-info.service';
+import { TRSService } from 'app/shared/openapi';
 import { AlertService } from './../../../shared/alert/state/alert.service';
 import { forkJoin } from 'rxjs';
-import { finalize } from 'rxjs/operators';
+import { finalize, takeUntil } from 'rxjs/operators';
+import { Base } from 'app/shared/base';
 
 @Component({
   selector: 'app-downloadcliclient',
   templateUrl: './downloadcliclient.component.html',
   styleUrls: ['./downloadcliclient.component.scss'],
 })
-export class DownloadCLIClientComponent implements OnInit {
+export class DownloadCLIClientComponent extends Base implements OnInit {
   public downloadCli = 'dummy-start-value';
   public dockstoreVersion = 'dummy-start-value';
   public dsToken = 'dummy-token';
@@ -30,9 +31,11 @@ export class DownloadCLIClientComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private metadataService: MetadataService,
-    private gA4GHService: GA4GHService,
+    private serviceInfoService: ServiceInfoService,
     private alertService: AlertService
-  ) {}
+  ) {
+    super();
+  }
 
   ngOnInit() {
     if (this.authService.getToken()) {
@@ -41,54 +44,57 @@ export class DownloadCLIClientComponent implements OnInit {
     this.dsServerURI = Dockstore.API_URI;
     this.isCopied2 = false;
     let apiVersion = 'unreachable';
-    this.alertService.start('Fetching metadata');
-    this.gA4GHService.metadataGet().subscribe(
-      (resultFromApi: Metadata) => {
-        apiVersion = resultFromApi.version;
-        this.dockstoreVersion = `${apiVersion}`;
+    this.alertService.start('Fetching service-info');
+    this.serviceInfoService
+      .getServiceInfo()
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(
+        (serviceInfo: TRSService) => {
+          apiVersion = serviceInfo.version;
+          this.dockstoreVersion = `${apiVersion}`;
 
-        // forkJoin returns an array of values, here we map those values to an object
-        forkJoin([this.metadataService.getCliVersion(), this.metadataService.getRunnerDependencies(apiVersion, '3', 'cwltool', 'json')])
-          .pipe(finalize(() => this.generateMarkdown()))
-          .subscribe(
-            ([cliInfo, dependencies]) => {
-              this.downloadCli = cliInfo.cliLatestDockstoreScriptDownloadUrl;
-              this.cwltoolVersion = JSON.parse(JSON.stringify(dependencies)).cwltool;
-              this.alertService.simpleSuccess();
-            },
-            (forkError) => {
-              this.alertService.detailedError(forkError);
-            }
-          );
-      },
-      (metadataError) => {
-        this.generateMarkdown();
-        this.alertService.detailedError(metadataError);
-      }
-    );
+          // forkJoin returns an array of values, here we map those values to an object
+          forkJoin([this.metadataService.getCliVersion(), this.metadataService.getRunnerDependencies(apiVersion, '3', 'cwltool', 'json')])
+            .pipe(finalize(() => this.generateMarkdown()))
+            .subscribe(
+              ([cliInfo, dependencies]) => {
+                this.downloadCli = cliInfo.cliLatestDockstoreScriptDownloadUrl;
+                this.cwltoolVersion = JSON.parse(JSON.stringify(dependencies)).cwltool;
+                this.alertService.simpleSuccess();
+              },
+              (forkError) => {
+                this.alertService.detailedError(forkError);
+              }
+            );
+        },
+        (serviceInfoError) => {
+          this.generateMarkdown();
+          this.alertService.detailedError(serviceInfoError);
+        }
+      );
   }
   generateMarkdown(): void {
     this.textDataRequirements = `
 ### Setup Command Line Interface
 ------------------------------
-Setup our Dockstore CLI application to start launching workflows from the command line.
+Set up our Dockstore CLI application in order to test workflows from the command line for [local development](${Dockstore.DOCUMENTATION_URL}/launch-with/launch.html#dockstore-cli), [validate .dockstore.yml files](${Dockstore.DOCUMENTATION_URL}/advanced-topics/dockstore-cli/yaml-command-line-validator-tool.html) for registering tools and workflows,
+run scripts or interact programmatically against Dockstore APIs, and [run workflows via the GA4GH WES standard](${Dockstore.DOCUMENTATION_URL}/advanced-topics/wes/wes-agc-tutorial.html) in platforms such as Amazon Genomics CLI.
 
 #### Requirements
-1. Linux/Ubuntu (Recommended - Tested on 18.04.3 LTS) or Mac OS X machine
-2. Java 11 (Tested with OpenJDK 11, Oracle JDK may work but is untested)
+1. Linux/Ubuntu (Recommended - Tested on 22.04 LTS) or Mac OS X machine
+2. Java 17 (Tested with OpenJDK 17, Oracle JDK may work but is untested)
 3. Python3 and pip3 (Required if working with CWL, optional otherwise)
     `;
 
     this.textDataUbuntuLinux = `
 #### Part 1 - Install dependencies
-1. Install Java 11 (This example installs OpenJDK 11)
+1. Install Java 17 (This example installs OpenJDK 17)
 \`\`\`
-sudo add-apt-repository ppa:openjdk-r/ppa \
-&& sudo apt-get update -q \
-&& sudo apt install -y openjdk-11-jdk
+sudo apt-get update -q \
+&& sudo apt install -y openjdk-17-jdk
 \`\`\`
-2. Install Docker following the instructions on [Docker's website](https://docs.docker.com/install/linux/docker-ce/ubuntu/). You should have at least version 19.03.1 installed.
-Ensure that you are able to run Docker without using sudo directly with the
+2. Install Docker Engine following the instructions on [Docker's website](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository). You should have at least version 19.03.1 installed. Ensure that you install Docker Engine. Docker Desktop does not run containers natively and the Dockstore CLI is not currently compatible with Docker Desktop's use of a VM.
+3. Ensure that you are able to run Docker without using sudo directly with the
 [post install instructions](https://docs.docker.com/engine/installation/linux/linux-postinstall/#manage-docker-as-a-non-root-user).
 \`\`\`
 sudo usermod -aG docker $USER
@@ -166,9 +172,9 @@ printf "token: ${this.dsToken}\\nserver-url: ${this.dsServerURI}\\n" > ~/.dockst
 1. Run our dependencies to verify that they have been installed properly.
 \`\`\`
 $ java -version
-openjdk version "11.0.4" 2019-07-16
-OpenJDK Runtime Environment (build 11.0.4+11-post-Ubuntu-1ubuntu218.04.3)
-OpenJDK 64-Bit Server VM (build 11.0.4+11-post-Ubuntu-1ubuntu218.04.3, mixed mode, sharing)
+openjdk 17.0.5 2022-10-18
+OpenJDK Runtime Environment (build 17.0.5+8-Ubuntu-2ubuntu122.04)
+OpenJDK 64-Bit Server VM (build 17.0.5+8-Ubuntu-2ubuntu122.04, mixed mode, sharing)
 $ dockstore --version
 Dockstore version ${this.dockstoreVersion}
 $ docker run hello-world

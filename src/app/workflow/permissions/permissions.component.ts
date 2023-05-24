@@ -2,7 +2,6 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
 import { MatChipInputEvent } from '@angular/material/chips';
-import { EntryType } from 'app/shared/enum/entry-type';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AlertService } from '../../shared/alert/state/alert.service';
@@ -10,6 +9,7 @@ import { Dockstore } from '../../shared/dockstore.model';
 import { TokenSource } from '../../shared/enum/token-source.enum';
 import { TokenQuery } from '../../shared/state/token.query';
 import { Permission, Workflow, WorkflowsService } from '../../shared/swagger';
+import { WorkflowSubClass } from '../../shared/openapi';
 import RoleEnum = Permission.RoleEnum;
 
 @Component({
@@ -29,7 +29,6 @@ export class PermissionsComponent implements OnInit {
   public terraUrl = Dockstore.TERRA_IMPORT_URL.substr(0, Dockstore.TERRA_IMPORT_URL.indexOf('/#'));
   private _workflow: Workflow;
   protected ngUnsubscribe: Subject<{}> = new Subject();
-  public entryType: EntryType;
   separatorKeysCodes = [ENTER, COMMA];
   addOnBlur = true;
 
@@ -53,18 +52,16 @@ export class PermissionsComponent implements OnInit {
   remove(email: string, permission: RoleEnum) {
     this.updating++;
     this.alertService.start(`Removing ${email}`);
-    this.workflowsService
-      .removeWorkflowRole(this.workflow.full_workflow_path, email, permission, this.entryType === EntryType.Service)
-      .subscribe(
-        (userPermissions: Permission[]) => {
-          this.alertService.detailedSuccess(`Removed ${email}`);
-          this.updating--;
-          this.processResponse(userPermissions);
-        },
-        (e: HttpErrorResponse) => {
-          this.handleError(e);
-        }
-      );
+    this.workflowsService.removeWorkflowRole(this.workflow.full_workflow_path, email, permission, WorkflowSubClass.BIOWORKFLOW).subscribe(
+      (userPermissions: Permission[]) => {
+        this.alertService.detailedSuccess(`Removed ${email}`);
+        this.updating--;
+        this.processResponse(userPermissions);
+      },
+      (e: HttpErrorResponse) => {
+        this.handleError(e);
+      }
+    );
   }
 
   add(event: MatChipInputEvent, permission: RoleEnum): void {
@@ -75,7 +72,10 @@ export class PermissionsComponent implements OnInit {
       this.updating++;
       this.alertService.start(`Adding ${email}`);
       this.workflowsService
-        .addWorkflowPermission(this.workflow.full_workflow_path, { email: email, role: permission }, this.entryType === EntryType.Service)
+        .addWorkflowPermission(this.workflow.full_workflow_path, WorkflowSubClass.BIOWORKFLOW, {
+          email: email,
+          role: permission,
+        })
         .subscribe(
           (userPermissions: Permission[]) => {
             this.alertService.detailedSuccess(`Added ${email}`);
@@ -107,9 +107,9 @@ export class PermissionsComponent implements OnInit {
   private onChange() {
     this.canViewPermissions = false;
     this.owners = [];
-    if (this._workflow) {
+    if (this.workflow) {
       this.hosted = this.workflow.mode === 'HOSTED';
-      this.workflowsService.getWorkflowPermissions(this._workflow.full_workflow_path, this.entryType === EntryType.Service).subscribe(
+      this.workflowsService.getWorkflowPermissions(this.workflow.full_workflow_path, WorkflowSubClass.BIOWORKFLOW).subscribe(
         (userPermissions: Permission[]) => {
           this.canViewPermissions = true;
           this.processResponse(userPermissions);

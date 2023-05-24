@@ -13,16 +13,16 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnDestroy, OnInit, ViewChild, HostListener } from '@angular/core';
 import { Location } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatAccordion } from '@angular/material/expansion';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import {
   faAngleDoubleDown,
   faAngleDoubleUp,
-  faShareAlt,
+  faCopy,
   faSortAlphaDown,
   faSortAlphaUp,
   faSortNumericDown,
@@ -40,6 +40,7 @@ import { AdvancedSearchQuery } from './advancedsearch/state/advanced-search.quer
 import { QueryBuilderService } from './query-builder.service';
 import { SearchQuery } from './state/search.query';
 import { Hit, SearchService } from './state/search.service';
+import { Dockstore } from 'app/shared/dockstore.model';
 
 /**
  *
@@ -71,13 +72,14 @@ import { Hit, SearchService } from './state/search.service';
   styleUrls: ['./search.component.scss'],
 })
 export class SearchComponent implements OnInit, OnDestroy {
-  faShareAlt = faShareAlt;
+  Dockstore = Dockstore;
   faAngleDoubleDown = faAngleDoubleDown;
   faAngleDoubleUp = faAngleDoubleUp;
   faSortAlphaDown = faSortAlphaDown;
   faSortAlphaUp = faSortAlphaUp;
   faSortNumericDown = faSortNumericDown;
   faSortNumericUp = faSortNumericUp;
+  faCopy = faCopy;
   private ngUnsubscribe: Subject<{}> = new Subject();
   @ViewChild(MatAccordion, { static: true }) accordion: MatAccordion;
   public advancedSearchObject$: Observable<AdvancedSearchObject>;
@@ -129,6 +131,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   public friendlyNames: Map<string, string>;
   public toolTips: Map<string, string>;
   private entryOrder: Map<string, SubBucket>;
+  private expandedPanels: Map<string, boolean>;
   public basicSearchText$: Observable<string>;
   private advancedSearchOptions = ['ANDSplitFilter', 'ANDNoSplitFilter', 'ORFilter', 'NOTFilter', 'searchMode'];
   public filterKeys$: Observable<Array<string>>;
@@ -163,6 +166,8 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.friendlyNames = this.searchService.initializeFriendlyNames();
     this.entryOrder = this.searchService.initializeEntryOrder();
     this.toolTips = this.searchService.initializeToolTips();
+    this.expandedPanels = this.searchService.initializeExpandedPanels();
+
     this.clearFacetSearches();
   }
 
@@ -362,7 +367,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   setupAllBuckets(hits: SearchResponse<Hit>) {
     this.checkboxMap = new Map<string, Map<string, boolean>>();
     const aggregations = hits.aggregations;
-    Object.entries(aggregations).forEach(([key, value]) => {
+    Object.entries(aggregations || {}).forEach(([key, value]) => {
       if (value['buckets'] != null) {
         this.setupBuckets(this.searchService.aggregationNameToTerm(key), value['buckets']);
       }
@@ -434,8 +439,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     // The second query updates the result table
     const advancedSearchObject = this.advancedSearchQuery.getValue().advancedSearch;
     const values = this.advancedSearchQuery.getValue().searchText;
-    const sideBarQuery = this.queryBuilderService.getSidebarQuery(
-      this.query_size,
+    const sideBarQuery = this.queryBuilderService.getSidebarAggregationQuery(
       values,
       advancedSearchObject,
       this.searchTerm,
@@ -542,6 +546,11 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.searchService.setPageSizeAndIndex(this.searchQuery.getValue().pageSize, 0);
   }
 
+  resetExpansionPanels() {
+    this.clearExpandedPanelsState();
+    this.expandedPanels = this.searchService.initializeExpandedPanels();
+  }
+
   /**===============================================
    *                Event Functions
    * ==============================================
@@ -606,7 +615,7 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   private clearFacetSearches() {
     this.facetSearchTextMap = new Map<string, string>([
-      ['author', ''],
+      ['all_authors.name.keyword', ''],
       ['labels.value.keyword', ''],
       ['namespace', ''],
       ['organization', ''],
@@ -659,6 +668,20 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.searchService.setFacetAutocompleteTerms(filteredItems);
   }
 
+  /**
+   * Updates the state of the expansion panels on expand or collapse events
+   * Saves state to local storage
+   *
+   * @param {string} key
+   * @param {boolean} expanded
+   * @memberof SearchComponent
+   */
+  updateExpandedPanels(key: string, expanded: boolean) {
+    this.expandedPanels.set(key, expanded);
+    this.clearExpandedPanelsState();
+    this.saveExpandedPanelsState();
+  }
+
   /**===============================================
    *                Helper Functions
    * ===============================================
@@ -667,5 +690,13 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   getBucketKeys(key: string) {
     return Array.from(this.orderedBuckets.get(key).SelectedItems.keys());
+  }
+
+  saveExpandedPanelsState() {
+    localStorage.setItem(this.searchService.expandedPanelsStorageKey, JSON.stringify(Array.from(this.expandedPanels.entries())));
+  }
+
+  clearExpandedPanelsState() {
+    localStorage.removeItem(this.searchService.expandedPanelsStorageKey);
   }
 }

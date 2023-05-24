@@ -20,8 +20,6 @@ import { SourceFile, ToolDescriptor } from './swagger';
 
 @Injectable({ providedIn: 'root' })
 export class DescriptorService {
-  constructor() {}
-
   /**
    * Gets the descriptor types (cwl/wdl/nfl) that the version has a sourcefile of
    *

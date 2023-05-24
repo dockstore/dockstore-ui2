@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { NgFormsManager } from '@ngneat/forms-manager';
 import { finalize } from 'rxjs/operators';
@@ -24,7 +24,7 @@ export class UpsertOrganizationMemberService {
   constructor(
     private upsertOrganizationMemberStore: UpsertOrganizationMemberStore,
     private organizationMembersService: OrganizationMembersService,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private organizationsService: OrganizationsService,
     private organizationQuery: OrganizationQuery,
     private matDialog: MatDialog,
@@ -39,7 +39,7 @@ export class UpsertOrganizationMemberService {
    * @returns {FormGroup}
    * @memberof UpsertOrganizationMemberService
    */
-  createForm(formsManager: NgFormsManager<FormsState>, data: any): FormGroup {
+  createForm(formsManager: NgFormsManager<FormsState>, data: any): UntypedFormGroup {
     formsManager.clear('upsertUser');
     let username = null;
     let role = OrganizationUser.RoleEnum.MEMBER;
@@ -50,7 +50,7 @@ export class UpsertOrganizationMemberService {
       disabled = true;
     }
     const form = this.formBuilder.group({
-      username: new FormControl({ value: username, disabled: disabled }, [
+      username: new UntypedFormControl({ value: username, disabled: disabled }, [
         Validators.required,
         Validators.maxLength(39),
         Validators.minLength(3),
@@ -62,15 +62,17 @@ export class UpsertOrganizationMemberService {
   }
 
   /**
-   * Get the title based on the mode
+   * Get the description
    *
-   * @param {*} data
    * @returns {string}
    * @memberof UpsertOrganizationMemberService
    */
-  getTitle(data: any): string {
-    const mode: TagEditorMode = data.mode;
-    return mode === TagEditorMode.Add ? 'Add User' : 'Edit User';
+  getDescription(prefix: string): string {
+    const rolePermissions = ` Role permissions are:<br>
+      <strong>Admin:</strong> can update the organization, collections, and memberships.<br>
+      <strong>Maintainer:</strong> can update the organization and collections.<br>
+      <strong>Member:</strong> no editing permissions. Joins to show support for the organization.`;
+    return prefix + rolePermissions;
   }
 
   /**
@@ -86,7 +88,7 @@ export class UpsertOrganizationMemberService {
     } else {
       this.upsertOrganizationMemberStore.setLoading(true);
       this.upsertOrganizationMemberStore.setError(false);
-      this.alertService.start('Adding/updating user');
+      this.alertService.start('Inviting/updating member');
       const organizationId = this.organizationQuery.getValue().organization.id;
       // Have to grab the username from data because a disabled form value isn't recorded
       const username = formState.username ? formState.username : data.username;

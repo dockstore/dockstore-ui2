@@ -5,6 +5,7 @@ import { ToolQuery } from '../../shared/tool/tool.query';
 import { OrgToolObject } from '../my-tool/my-tool.component';
 import { KeyValue } from '@angular/common';
 import { MetadataService } from '../../shared/swagger/api/metadata.service';
+import { WorkflowQuery } from 'app/shared/state/workflow.query';
 
 interface GroupEntriesByRegistry {
   groupEntryInfo: OrgToolObject<DockstoreTool>[];
@@ -21,10 +22,11 @@ export class SidebarAccordionComponent implements OnInit, OnChanges {
   @Input() groupEntriesObject: OrgToolObject<DockstoreTool>[];
   @Input() refreshMessage;
   public toolId$: Observable<number>;
+  appToolId$: Observable<number>;
   public registryToTools: Map<string, GroupEntriesByRegistry> = new Map<string, GroupEntriesByRegistry>();
   activeTab = 0;
 
-  constructor(private toolQuery: ToolQuery, private metadataService: MetadataService) {
+  constructor(private toolQuery: ToolQuery, private workflowQuery: WorkflowQuery, private metadataService: MetadataService) {
     this.metadataService.getDockerRegistries().subscribe((map) => {
       map.forEach((registry) => {
         // Do not create new keys for amazon and seven bridges, to be put in additional category
@@ -68,5 +70,6 @@ export class SidebarAccordionComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.toolId$ = this.toolQuery.toolId$;
+    this.appToolId$ = this.workflowQuery.workflowId$;
   }
 }

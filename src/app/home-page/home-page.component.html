@@ -1,9 +1,0 @@
-<ng-container *ngIf="(user$ | async) === null; then loggedOutHomePage; else loggedInHomePage"></ng-container>
-
-<ngx-json-ld [json]="orgSchema"></ngx-json-ld>
-<ngx-json-ld [json]="websiteSchema"></ngx-json-ld>
-
-<ng-template #loggedInHomePage>
-  <app-home-logged-in></app-home-logged-in>
-</ng-template>
-<ng-template #loggedOutHomePage><app-home></app-home></ng-template>

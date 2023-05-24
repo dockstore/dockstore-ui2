@@ -16,13 +16,15 @@
 import { Location } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Directive, Injectable, Input, OnDestroy, ViewChild } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { UntypedFormControl, Validators } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatTabChangeEvent, MatTabGroup } from '@angular/material/tabs';
 import { ActivatedRoute, NavigationEnd, Params, Router, RouterEvent } from '@angular/router';
-import { Subject, Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
+import { EntryCategoriesService } from '../categories/state/entry-categories.service';
 import { Dockstore } from '../shared/dockstore.model';
+import { Category } from '../shared/openapi';
 import { Tag } from '../shared/swagger/model/tag';
 import { WorkflowVersion } from '../shared/swagger/model/workflowVersion';
 import { TrackLoginService } from '../shared/track-login.service';
@@ -38,8 +40,6 @@ import { SessionService } from './session/session.service';
 import { SourceFile } from './swagger';
 import { UrlResolverService } from './url-resolver.service';
 import { validationDescriptorPatterns, validationMessages } from './validationMessages.model';
-import { Category } from '../shared/openapi';
-import { EntryCategoriesService } from '../categories/state/entry-categories.service';
 
 @Directive()
 @Injectable()
@@ -62,7 +62,6 @@ export abstract class Entry implements OnDestroy {
   public urlVersion: string;
   EntryType = EntryType;
   location: Location;
-  public selectedVersion: WorkflowVersion | Tag | null = null;
   @Input() isWorkflowPublic = true;
   @Input() isToolPublic = true;
   public publicPage: boolean;
@@ -70,8 +69,8 @@ export abstract class Entry implements OnDestroy {
   public versionsWithVerifiedPlatforms: Array<VersionVerifiedPlatform> = [];
   public validationMessage = validationMessages;
   protected ngUnsubscribe: Subject<{}> = new Subject();
-  protected selected = new FormControl(0);
-  labelFormControl = new FormControl('', [Validators.pattern('^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*$')]);
+  protected selected = new UntypedFormControl(0);
+  labelFormControl = new UntypedFormControl('', [Validators.pattern('^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*$')]);
   public verifiedLink: string;
   public categories$: Observable<Array<Category>>;
   constructor(
@@ -113,7 +112,7 @@ export abstract class Entry implements OnDestroy {
     this.verifiedLink = this.dateService.getVerifiedLink();
   }
 
-  private parseURL(url: String): void {
+  private parseURL(url: string): void {
     if (this.isPublic()) {
       this.title = this.getEntryPathFromURL();
       this.urlVersion = this.getVersionFromURL();
@@ -125,11 +124,12 @@ export abstract class Entry implements OnDestroy {
     }
   }
 
-  protected isAppTool(url: String): boolean {
-    if (url.includes('/containers/github.com')) {
-      return true;
-    }
-    return false;
+  protected isAppTool(url: string): boolean {
+    return url.includes('/containers/github.com');
+  }
+
+  protected isNotebook(url: string): boolean {
+    return url.includes('/notebooks/github.com');
   }
 
   starGazersChange(): void {
@@ -147,7 +147,7 @@ export abstract class Entry implements OnDestroy {
   abstract getDefaultVersionName(): string;
   abstract resetCopyBtn(): void;
   abstract isPublic(): boolean;
-  abstract setupPublicEntry(url: String): void;
+  abstract setupPublicEntry(url: string): void;
   /**
    * Upon entry init (either from the my-workflows page or public workflow page),
    * the previous active entry should be removed so that the component starts displaying with a the correct/current entry
@@ -284,9 +284,9 @@ export abstract class Entry implements OnDestroy {
    * Updates the URL with both tab and version information
    * @returns {void}
    */
-  updateUrl(entryPath: string, myEntry: string, entry: string): void {
+  updateUrl(entryPath: string, myEntry: string, entry: string, selectedVersion: Tag | WorkflowVersion | null): void {
     if (this.publicPage) {
-      const newPath = this.urlResolverService.getPath(entryPath, myEntry, entry, this.router.url, this.selectedVersion, this.currentTab);
+      const newPath = this.urlResolverService.getPath(entryPath, myEntry, entry, this.router.url, selectedVersion, this.currentTab);
       this.location.replaceState(newPath);
     }
   }
@@ -461,6 +461,18 @@ export abstract class Entry implements OnDestroy {
    * @param topicId The ID of the topic on discourse
    */
   discourseHelper(topicId: number): void {
+    // The #discourse-comments element, included in the entry component's html template,
+    // marks the location where the discourse embed script will add the discourse link.
+    // If the #discourse-comments element does not exist, or if the previous topicId
+    // (from the previous call) is the same as the requested topicId, do nothing.
+    const comments = document.getElementById('discourse-comments');
+    if (!comments || (<any>comments).topicId === topicId) {
+      return;
+    }
+    // Store the topicId so we can check it the next time this function is called.
+    // The stored topicId will persist until the view is regenerated.
+    (<any>comments).topicId = topicId;
+
     const element = document.getElementById('discourse-embed-frame');
     if (element !== null) {
       element.remove();
@@ -497,6 +509,8 @@ export abstract class Entry implements OnDestroy {
       searchType = 'tools';
     } else if (entryType === EntryType.BioWorkflow) {
       searchType = 'workflows';
+    } else if (entryType === EntryType.Notebook) {
+      searchType = 'notebooks';
     }
     // construct the url, adding parameters in an order that will remain the same when the search page later rewrites it
     let url = '/search?labels.value.keyword=' + searchValue;

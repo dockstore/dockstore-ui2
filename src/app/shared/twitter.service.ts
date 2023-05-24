@@ -29,8 +29,6 @@ export class TwitterService {
   private TWITTER_SCRIPT_ID = 'twitter-wjs';
   private TWITTER_WIDGET_URL = 'https://platform.twitter.com/widgets.js';
 
-  constructor() {}
-
   loadScript(): Observable<any> {
     return new Observable((observer) => {
       this.startScriptLoad();
@@ -73,9 +71,8 @@ export class TwitterService {
       .createTimeline({ sourceType: 'url', url: 'https://twitter.com/dockstoreOrg' }, nativeElement, {
         theme: 'light',
         tweetLimit: tweetLimit,
-      })
-      .then((embed) => {
-        // console.log(embed);
+        chrome: 'nofooter',
+        height: 500,
       })
       .catch((error) => console.error(error));
   }

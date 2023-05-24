@@ -5,6 +5,7 @@ import { extendedWDL } from 'app/descriptor-languages/WDL';
 import { DescriptorLanguageBean, SourceFile, ToolDescriptor, Workflow } from 'app/shared/swagger';
 import { extendedCWL } from '../descriptor-languages/CWL';
 import { extendedSMK } from '../descriptor-languages/Snakemake';
+import { extendedJupyter } from '../descriptor-languages/Jupyter';
 
 /**
  * The idea is that this file serves as a collection of language plugins.
@@ -25,7 +26,7 @@ export interface ExtendedDescriptorLanguageBean extends DescriptorLanguageBean {
   toolDescriptorEnum: ToolDescriptor.TypeEnum;
   workflowDescriptorEnum: Workflow.DescriptorTypeEnum;
   languageDocumentationURL: string;
-  plainTRS: string;
+  plainTRS: PlainTRSDescriptorLanguageEnum;
   descriptorFileTypes: SourceFile.TypeEnum[];
   toolTab: {
     // Example: If rowIdentifier is "tool ID", then the the first column of each row will say something like "tool ID: hello-world"
@@ -68,6 +69,9 @@ export const extendedDescriptorLanguages: ExtendedDescriptorLanguageBean[] = [
   extendedNFL,
   extendedService,
   extendedGalaxy,
+  extendedJupyter,
 ];
 
-export type DescriptorLanguageEnum = 'SMK' | 'CWL' | 'WDL' | 'GXFORMAT2' | 'SWL' | 'NEXTFLOW' | 'SERVICE';
+export type DescriptorLanguageEnum = 'SMK' | 'CWL' | 'WDL' | 'GXFORMAT2' | 'SWL' | 'NEXTFLOW' | 'SERVICE' | 'JUPYTER';
+
+export type PlainTRSDescriptorLanguageEnum = 'PLAIN_SMK' | 'PLAIN_CWL' | 'PLAIN_WDL' | 'PLAIN_GALAXY' | 'PLAIN_NFL' | 'PLAIN_JUPYTER';

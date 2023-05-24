@@ -111,7 +111,7 @@ export class CodeEditorListService {
         }
       }
     } else if (!CodeEditorListService.hasPrimaryTestParam(descriptorType, sourcefiles) && fileType === 'testParam') {
-      if (descriptorType === ToolDescriptor.TypeEnum.GXFORMAT2) {
+      if (descriptorType === ToolDescriptor.TypeEnum.GALAXY) {
         CodeEditorListService.pushFileIfNotNull(filesToAdd, this.createSourceFile('/test.galaxy.json', descriptorType, fileType));
       } else {
         CodeEditorListService.pushFileIfNotNull(
@@ -224,7 +224,7 @@ export class CodeEditorListService {
           case ToolDescriptor.TypeEnum.NFL: {
             return '.nf';
           }
-          case ToolDescriptor.TypeEnum.GXFORMAT2: {
+          case ToolDescriptor.TypeEnum.GALAXY: {
             return '.yml';
           }
           default: {

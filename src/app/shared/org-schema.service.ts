@@ -20,7 +20,6 @@ export interface ContactPoint {
 
 @Injectable()
 export class OrgSchemaService {
-  constructor() {}
   getSchema(org: Organization): OrganizationSchema | null {
     if (!org) {
       return null;

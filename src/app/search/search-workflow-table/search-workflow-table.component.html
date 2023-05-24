@@ -12,13 +12,15 @@
     data-cy="search-workflow-results-table"
   >
     <ng-container matColumnDef="name">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Name and Description</mat-header-cell>
       <mat-cell data-cy="workflowColumn" *matCellDef="let workflow">
         <div>
           <a [matTooltip]="workflow?.full_workflow_path" [routerLink]="'/workflows/' + workflow?.full_workflow_path">{{
             workflow?.organization + '/' + workflow?.repository + (workflow?.workflowName ? '/' + workflow?.workflowName : '')
           }}</a>
-          <div class="truncate-text-2 size-small" *ngIf="workflow.topicAutomatic">{{ workflow.topicAutomatic }}</div>
+          <div class="truncate-text-2 size-small" *ngIf="workflow.topicAutomatic" [matTooltip]="workflow.topicAutomatic">
+            {{ workflow.topicAutomatic }}
+          </div>
         </div>
       </mat-cell>
     </ng-container>
@@ -30,17 +32,22 @@
         </a>
       </mat-cell>
     </ng-container>
-    <ng-container matColumnDef="author">
+    <ng-container matColumnDef="all_authors">
       <mat-header-cell fxShow fxHide.lt-sm *matHeaderCellDef mat-sort-header>Author</mat-header-cell>
-      <mat-cell fxShow fxHide.lt-sm class="duration-cell" *matCellDef="let workflow">{{ workflow?.author || 'n/a' }}</mat-cell>
+      <mat-cell
+        fxShow
+        fxHide.lt-sm
+        class="duration-cell truncate-text-2"
+        *matCellDef="let workflow"
+        [matTooltip]="workflow?.all_authors | getSearchAuthorsHtml: false"
+        [innerHTML]="workflow?.all_authors | getSearchAuthorsHtml"
+      ></mat-cell>
     </ng-container>
     <ng-container matColumnDef="descriptorType">
       <mat-header-cell fxShow fxHide.lt-sm data-cy="descriptorTypeHeader" *matHeaderCellDef mat-sort-header>Format</mat-header-cell>
       <mat-cell fxShow fxHide.lt-sm data-cy="descriptorType" *matCellDef="let workflow">
         <div>
-          <span class="nonclick-badge">{{
-            workflow?.descriptorType === 'gxformat2' ? galaxyShortfriendlyName : (workflow?.descriptorType | uppercase)
-          }}</span>
+          <span class="nonclick-badge">{{ workflow?.descriptorType | descriptorLanguage }}</span>
         </div>
       </mat-cell>
     </ng-container>
@@ -54,13 +61,13 @@
     </ng-container>
     <ng-container matColumnDef="starredUsers">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Stars</mat-header-cell>
-      <mat-cell class="description-cell" *matCellDef="let workflow"
-        >{{ !workflow?.starredUsers || workflow?.starredUsers.length === 0 ? '' : workflow?.starredUsers?.length }}
-        <mat-icon class="star-icon" *ngIf="workflow?.starredUsers?.length > 0">star_rate</mat-icon>
+      <mat-cell class="starred-cell weight-bold" *matCellDef="let workflow"
+        ><mat-icon class="star-icon" *ngIf="workflow?.starredUsers?.length > 0">star_rate</mat-icon>
+        {{ !workflow?.starredUsers || workflow?.starredUsers.length === 0 ? '' : workflow?.starredUsers?.length }}
       </mat-cell>
     </ng-container>
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns" class="py-2"></mat-row>
   </mat-table>
   <mat-paginator
     data-cy="search-workflow-table-paginator"

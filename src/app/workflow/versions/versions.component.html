@@ -89,6 +89,23 @@
       </td>
     </ng-container>
 
+    <ng-container matColumnDef="descriptorTypeVersions">
+      <th
+        scope="col"
+        mat-header-cell
+        *matHeaderCellDef
+        mat-sort-header
+        matTooltip="The {{
+          workflow.entryType === entryType.NOTEBOOK ? 'format' : 'language versions'
+        }} used by the version's descriptor file(s)."
+      >
+        {{ workflow.entryType === entryType.NOTEBOOK ? 'Format' : 'Language Versions' }}
+      </th>
+      <td mat-cell *matCellDef="let version">
+        <span>{{ this.workflow.descriptorType | descriptorLanguageVersions: version.versionMetadata?.descriptorTypeVersions }}</span>
+      </td>
+    </ng-container>
+
     <ng-container matColumnDef="valid">
       <th
         scope="col"
@@ -116,6 +133,28 @@
       </th>
       <td mat-cell *matCellDef="let version">
         <mat-icon data-cy="hidden" *ngIf="version.hidden">check</mat-icon>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="open" [matTooltip]="openTooltip">
+      <th
+        scope="col"
+        mat-header-cell
+        *matHeaderCellDef
+        mat-sort-header
+        matTooltip="The version has a test parameter file with open data or requires no input files."
+      >
+        Open
+        <a
+          class="ds-green"
+          [href]="Dockstore.DOCUMENTATION_URL + '/faq.html#what-is-an-open-tool-or-workflow'"
+          target="_blank"
+          rel="noopener noreferrer"
+          ><mat-icon>info</mat-icon></a
+        >
+      </th>
+      <td mat-cell *matCellDef="let version">
+        <mat-icon data-cy="openData" *ngIf="version?.versionMetadata?.publicAccessibleTestParameterFile">check</mat-icon>
       </td>
     </ng-container>
 

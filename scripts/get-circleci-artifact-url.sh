@@ -14,6 +14,6 @@ fi
 
 CIRCLECI_BUILD_ID=${1}
 ARTIFACT_NAME=${2}
-ARTIFACT_URL=$(curl "https://circleci.com/api/v2/project/gh/dockstore/dockstore/${CIRCLECI_BUILD_ID}/artifacts" -H "Accept: application/json" | jq -r --arg ARTIFACT_NAME "${ARTIFACT_NAME}" '.items[] | select( .path | contains($ARTIFACT_NAME) ) | .url ')
+ARTIFACT_URL=$(curl "https://circleci.com/api/v2/project/gh/dockstore/dockstore/${CIRCLECI_BUILD_ID}/artifacts" -H "Accept: application/json" | jq -r --arg ARTIFACT_NAME "${ARTIFACT_NAME}" '[.items[] | select( .path | contains($ARTIFACT_NAME) ) | .url] | first ')
 
 echo "${ARTIFACT_URL}"

@@ -15,7 +15,7 @@
   -->
 <div class="p-3">
   <mat-card
-    class="alert alert-info"
+    class="alert alert-info mat-elevation-z"
     *ngIf="
       !isPublic &&
       workflow?.source_control_provider === 'GITHUB' &&
@@ -37,35 +37,44 @@
       <mat-card-title>{{ entryType$ | async | titlecase }} Information</mat-card-title>
     </mat-card-header>
     <mat-divider></mat-divider>
-    <mat-card-content class="p-3">
+    <mat-card-content class="p-1 pt-3">
       <ul class="list-unstyled container-info" *ngIf="workflow">
-        <span *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED">
+        <span *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED" class="truncate-text-1">
           <li *ngIf="workflow?.provider && workflow?.providerUrl">
             <strong matTooltip="Git repository for the associated descriptors">Source Code</strong>:
             <a
+              *ngIf="sourceCodeFile; else stub"
               id="sourceRepository"
               data-cy="sourceRepository"
-              [href]="workflow?.providerUrl | versionProviderUrl: (isPublic ? selectedVersion?.name : '')"
+              [href]="workflow?.providerUrl | versionProviderUrl: selectedVersion?.name + '/' + sourceCodeFile"
             >
-              {{ workflow?.providerUrl | urlDeconstruct: (isPublic ? selectedVersion?.name : '') }}
+              {{ workflow?.providerUrl | versionProviderUrl: selectedVersion?.name + '/' + sourceCodeFile }}
             </a>
+            <ng-template #stub>
+              <a id="sourceRepository" data-cy="sourceRepository" [href]="workflow?.providerUrl">
+                {{ workflow?.providerUrl }}
+              </a>
+            </ng-template>
           </li>
         </span>
         <li *ngIf="workflow?.mode === WorkflowType.ModeEnum.HOSTED">
           <strong matTooltip="The source code for this workflow is stored on Dockstore.org">Source Code</strong>:
           <i>The source code for this workflow is stored on Dockstore.org</i>
         </li>
-        <li *ngIf="isPublic && isValidVersion" data-cy="trs-link">
+        <li *ngIf="isPublic && isValidVersion && workflow?.entryTypeMetadata.trsSupported" data-cy="trs-link">
           <strong matTooltip="TRS link to the main descriptor for the selected workflow version">TRS</strong>:
-          <a [href]="trsLink" *ngIf="(entryType$ | async) === EntryType.BioWorkflow || (entryType$ | async) === EntryType.Service">
-            #{{ entryType$ | async }}/{{ workflow?.full_workflow_path }}</a
-          >
-          <a [href]="trsLink" *ngIf="(entryType$ | async) === EntryType.Tool"> {{ workflow?.full_workflow_path }}</a>
+          <a [href]="trsLink">{{ workflow?.entryTypeMetadata.trsPrefix }}{{ workflow?.full_workflow_path }}</a>
           <button mat-icon-button color="secondary" matTooltip="Copy TRS ID" [cdkCopyToClipboard]="displayTextForButton" appSnackbar>
             <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
           </button>
         </li>
-        <div *ngIf="(entryType$ | async) === EntryType.BioWorkflow || (entryType$ | async) === EntryType.Tool">
+        <div
+          *ngIf="
+            (entryType$ | async) === EntryType.BioWorkflow ||
+            (entryType$ | async) === EntryType.Tool ||
+            (entryType$ | async) === EntryType.Notebook
+          "
+        >
           <span>
             <li *ngIf="workflow?.workflow_path || !isPublic">
               <form
@@ -320,15 +329,17 @@
               </form>
             </li>
           </span>
-          <app-info-tab-checker-workflow-path
-            *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED && (isNFL$ | async) === false"
-            [canRead]="canRead"
-            [canWrite]="canWrite"
-            [isOwner]="isOwner"
-          ></app-info-tab-checker-workflow-path>
-          <!-- TODO: Remove once hosted workflows and Nextflow support checker workflows -->
-          <div *ngIf="workflow?.mode === WorkflowType.ModeEnum.HOSTED || (isNFL$ | async)">
-            <strong matTooltip="Currently disabled for Hosted Workflows and Nextflow Workflows">Checker Workflow</strong>: n/a
+          <div *ngIf="(entryType$ | async) === EntryType.BioWorkflow">
+            <app-info-tab-checker-workflow-path
+              *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED && (isNFL$ | async) === false"
+              [canRead]="canRead"
+              [canWrite]="canWrite"
+              [isOwner]="isOwner"
+            ></app-info-tab-checker-workflow-path>
+            <!-- TODO: Remove once hosted workflows and Nextflow support checker workflows -->
+            <div *ngIf="workflow?.mode === WorkflowType.ModeEnum.HOSTED || (isNFL$ | async)">
+              <strong matTooltip="Currently disabled for Hosted Workflows and Nextflow Workflows">Checker Workflow</strong>: n/a
+            </div>
           </div>
           <li *ngIf="!isPublic">
             <div fxFlex="noshrink" fxLayoutAlign="start center">
@@ -345,9 +356,16 @@
               <img src="../assets/svg/icons-reject-small.svg" alt="Cancel" class="pr-2 pb-1" />Restub
             </button>
           </li>
+          <li *ngIf="(entryType$ | async) === EntryType.Notebook">
+            <strong matTooltip="Programming language used in the notebook">Programming Language</strong>:
+            {{ workflow?.descriptorTypeSubclass }}
+          </li>
           <li>
             <div *ngIf="workflow?.mode === WorkflowType.ModeEnum.STUB" class="form-inline">
-              <Strong matTooltip="Type of descriptor language used">Descriptor Type</Strong>:
+              <Strong
+                matTooltip="{{ (entryType$ | async) === EntryType.Notebook ? 'Format of notebook' : 'Type of descriptor language used' }}"
+                >{{ (entryType$ | async) === EntryType.Notebook ? 'Format' : 'Descriptor Type' }}</Strong
+              >:
               <select class="form-control input-sm" (change)="updateDescriptorType()" [(ngModel)]="temporaryDescriptorType">
                 <option *ngFor="let descriptorLanguage of descriptorLanguages$ | async" [value]="descriptorLanguage">
                   {{ 'descriptor_type' | mapFriendlyValue: descriptorLanguage }}
@@ -355,7 +373,10 @@
               </select>
             </div>
             <div *ngIf="workflow?.mode !== WorkflowType.ModeEnum.STUB && workflow?.descriptorType">
-              <Strong matTooltip="Type of descriptor language used">Descriptor Type</Strong>:
+              <Strong
+                matTooltip="{{ (entryType$ | async) === EntryType.Notebook ? 'Format of notebook' : 'Type of descriptor language used' }}"
+                >{{ (entryType$ | async) === EntryType.Notebook ? 'Format' : 'Descriptor Type' }}</Strong
+              >:
               {{ 'descriptor_type' | mapFriendlyValue: workflow?.descriptorType }}
             </div>
           </li>
@@ -380,7 +401,7 @@
       <mat-card-title>{{ entryType$ | async | titlecase }} Version Information</mat-card-title>
     </mat-card-header>
     <mat-divider></mat-divider>
-    <mat-card-content class="p-3">
+    <mat-card-content class="p-1 pt-3">
       <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="2rem">
         <span class="bubble">
           {{ selectedVersion?.name }}
@@ -390,7 +411,13 @@
             <mat-icon class="mat-icon-sm">file_download</mat-icon>
             Export as ZIP
           </button>
-          <a [href]="downloadZipLink" *ngIf="workflow?.is_published" mat-button color="accent" class="private-btn small-btn-structure">
+          <a
+            [href]="downloadZipLink"
+            *ngIf="workflow?.is_published"
+            mat-button
+            color="accent"
+            class="private-btn small-btn-structure no-underline"
+          >
             <mat-icon class="mat-icon-sm">file_download</mat-icon>
             Export as ZIP
           </a>
@@ -446,6 +473,10 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
       </table>
+      <div *ngIf="selectedVersion?.versionMetadata.engineVersions?.length">
+        <strong matTooltip="Required engine versions" data-cy="engine-versions">Engine Versions</strong>:
+        {{ selectedVersion.versionMetadata.engineVersions }}
+      </div>
       <div *ngIf="(entryType$ | async) === EntryType.BioWorkflow">
         <strong matTooltip="Digital Object Identifier">DOI</strong>:
         <a
@@ -460,8 +491,8 @@
         {{ selectedVersion?.doiURL ? '' : 'n/a' }}
       </div>
       <div *ngIf="publicAccessibleTestParameterFile !== null && publicAccessibleTestParameterFile !== undefined">
-        <strong matTooltip="Version has a test parameter file where all URLs are publicly accessible"
-          >Test Parameter File With Open Data</strong
+        <strong matTooltip="Version either has a test parameter file where all URLs are publicly accessible or does not require test data"
+          >Open</strong
         >:
         {{ publicAccessibleTestParameterFile ? 'Yes' : 'No' }}
       </div>
@@ -471,7 +502,7 @@
           <div *ngIf="selectedVersion?.description" class="well well-sm">
             <app-markdown-wrapper
               [data]="selectedVersion?.description"
-              [baseUrl]="workflow?.providerUrl | baseUrl: selectedVersion?.name"
+              [baseUrl]="workflow?.providerUrl | baseUrl: selectedVersion?.name:selectedVersion?.readMePath"
             ></app-markdown-wrapper>
           </div>
           <div *ngIf="!selectedVersion?.description && !isPublic" class="well well-sm">

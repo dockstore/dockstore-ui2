@@ -15,8 +15,10 @@
   -->
 
 <app-header>
-  <mat-icon>search</mat-icon>
-  Search
+  <div fxLayout fxLayoutAlign="start center">
+    <img src="../../assets/svg/search.svg" class="site-icons-small mr-3" alt="search icon" />
+    Explore {{ (selectedIndex$ | async) === 0 ? 'Workflows' : (selectedIndex$ | async) === 1 ? 'Tools' : 'Notebooks' }}
+  </div>
 </app-header>
 <mat-tab-group
   class="homeComponent no-pagination"
@@ -24,19 +26,31 @@
   mat-align-tabs="center"
   [selectedIndex]="selectedIndex$ | async"
   (selectedTabChange)="saveTabIndex($event)"
-  [ngClass]="(selectedIndex$ | async) === 0 ? 'workflow-tab-group' : 'tool-tab-group'"
+  [ngClass]="{
+    'workflow-tab-group': (selectedIndex$ | async) === 0,
+    'tool-tab-group': (selectedIndex$ | async) === 1,
+    'notebook-tab-group': (selectedIndex$ | async) === 2
+  }"
 >
-  <mat-tab class="browserWorkflowsTab" data-cy="workflows-tab">
+  <mat-tab>
     <ng-template mat-tab-label>
       <img class="site-icons-tab m-2" src="../assets/svg/sub-nav/workflow.svg" alt="workflow icon" />
       <b>Workflows</b>
     </ng-template>
     <div class="mat-tab-content"></div>
   </mat-tab>
-  <mat-tab class="browserToolsTab" data-cy="tools-tab">
+  <mat-tab>
     <ng-template mat-tab-label>
       <img class="site-icons-tab m-2" src="../assets/svg/sub-nav/tool.svg" alt="tool icon" />
       <b>Tools</b>
+    </ng-template>
+    <div class="mat-tab-content"></div>
+  </mat-tab>
+  <mat-tab *ngIf="Dockstore.FEATURES.enableNotebooks">
+    <ng-template mat-tab-label>
+      <img class="site-icons-tab m-2" src="../../assets/svg/sub-nav/notebook.svg" alt="notebook icon" />
+      <b>Notebooks</b>
+      <span class="bubble preview-bubble">PREVIEW</span>
     </ng-template>
     <div class="mat-tab-content"></div>
   </mat-tab>
@@ -58,7 +72,7 @@
             fxFlex="1 0 auto"
             class="m-1 private-btn mat-accent small-btn-structure"
             mat-button
-            (click)="resetFilters()"
+            (click)="resetFilters(); resetExpansionPanels()"
             type="button"
           >
             <img src="../assets/svg/reset.svg" alt="Reset filters" class="pb-1 pr-1" />
@@ -72,7 +86,12 @@
           (changedDebounced)="handleChangedDebounced($event)"
           (submitted)="handleSubmitted($event)"
         ></app-basic-search>
-        <mat-expansion-panel *ngFor="let key of getKeys(orderedBuckets)" #bucket expanded>
+        <mat-expansion-panel
+          *ngFor="let key of getKeys(orderedBuckets)"
+          [expanded]="expandedPanels.get(key)"
+          (afterExpand)="updateExpandedPanels(key, true)"
+          (afterCollapse)="updateExpandedPanels(key, false)"
+        >
           <mat-expansion-panel-header>
             {{ friendlyNames.get(key) }}
             <img
@@ -86,7 +105,7 @@
           <!-- watch out for GetFacetSearchResultsPipe when adding facets with search -->
           <div
             *ngIf="
-              key === 'author' ||
+              key === 'all_authors.name.keyword' ||
               key === 'labels.value.keyword' ||
               key === 'namespace' ||
               key === 'organization' ||
@@ -94,11 +113,11 @@
             "
           >
             <mat-form-field appearance="outline">
-              <mat-label>Search for {{ key.substring(0, key.indexOf('.')) }}</mat-label>
+              <mat-label>Search for {{ friendlyNames.get(key) | lowercase }}</mat-label>
               <input
                 matInput
                 type="text"
-                placeholder="Search for {{ key.substring(0, key.indexOf('.')) }}"
+                placeholder="Search for {{ friendlyNames.get(key) | lowercase }}"
                 [ngModel]="facetSearchTextMap.get(key)"
                 [ngModelOptions]="{ updateOn: 'change' }"
                 (ngModelChange)="facetSearchTextMap.set(key, $event)"
@@ -205,7 +224,7 @@
                 <fa-icon [icon]="fullyExpandMap.get(key) ? faAngleDoubleUp : faAngleDoubleDown" aria-hidden="true"></fa-icon>
                 <span
                   *ngIf="
-                    key !== 'author' &&
+                    key !== 'all_authors.name.keyword' &&
                       key !== 'labels.value.keyword' &&
                       key !== 'namespace' &&
                       key !== 'organization' &&
@@ -239,40 +258,19 @@
           >
         </mat-card>
 
-        <mde-popover #appPopover="mdePopover" [mdePopoverOverlapTrigger]="false">
-          <mat-card class="row">
-            <div>Link to this page</div>
-            <div class="input-group" style="padding: 5px">
-              <input type="text" class="form-control" [value]="shortUrl$ | async" readonly />
-              <span class="input-group-btn">
-                <button
-                  data-cy="copy_button"
-                  class="btn btn-default"
-                  [ngClass]="{ 'btn-copy': isCopied }"
-                  type="button"
-                  [cdkCopyToClipboard]="shortUrl$ | async"
-                  (cbOnSuccess)="isCopied = true"
-                  appSnackbar
-                >
-                  <mat-icon>file_copy</mat-icon>
-                </button>
-              </span>
-            </div>
-          </mat-card>
-        </mde-popover>
-
         <div *ngIf="searchService.hasSearchText(advancedSearchObject, searchTerm, hits) || searchService.hasFilters(filters)">
-          <mat-card class="alert alert-info text-break">
+          <mat-card class="alert alert-info mat-elevation-z text-break">
             <button
               data-cy="share_button"
               mat-raised-button
               type="button"
-              [mdePopoverTriggerFor]="appPopover"
-              mdePopoverTriggerOn="click"
+              type="button"
+              [cdkCopyToClipboard]="shortUrl$ | async"
+              appSnackbar
               class="mr-2 accent-1-dark-btn"
             >
-              <fa-icon [icon]="faShareAlt" aria-hidden="true"></fa-icon>
-              Share
+              <fa-icon [icon]="faCopy" aria-hidden="true"></fa-icon>
+              Copy search link
             </button>
 
             <span *ngIf="searchService.hasResults(searchTerm, hits)">
@@ -316,7 +314,7 @@
           </mat-card>
         </div>
         <mat-card
-          class="alert alert-info"
+          class="alert alert-info mat-elevation-z"
           *ngIf="hits?.length > query_size - 1 && searchService.hasNarrowedSearch(advancedSearchObject, searchTerm, hits, filters)"
         >
           <p>
@@ -324,6 +322,10 @@
             {{ query_size - 1 }} results are shown. We recommend that you narrow your search to find more relevant results.
           </p>
         </mat-card>
+        <app-preview-warning
+          *ngIf="Dockstore.FEATURES.enableNotebooks && (selectedIndex$ | async) === 2"
+          featureName="Notebooks"
+        ></app-preview-warning>
         <app-search-results></app-search-results>
       </div>
     </div>

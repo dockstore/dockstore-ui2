@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { Component, Input, OnInit } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { UntypedFormControl, Validators } from '@angular/forms';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, finalize, takeUntil } from 'rxjs/operators';
 import { formInputDebounceTime } from '../../../../shared/constants';
@@ -39,7 +39,7 @@ export class ChangeUsernameComponent implements OnInit {
   canChangeUsername$: Observable<boolean>;
   showEmailWarning = false;
   matcher = new MyErrorStateMatcher();
-  usernameFormControl = new FormControl('', [
+  usernameFormControl = new UntypedFormControl('', [
     Validators.required,
     Validators.pattern('^[a-zA-Z][a-zA-Z0-9]*([-_]?[a-zA-Z0-9]+)*$'),
     Validators.maxLength(39),

@@ -66,7 +66,10 @@
               <div *ngIf="isService$ | async" class="label-value">
                 {{ version.workflow_path }}
               </div>
-              <mat-card *ngIf="formErrors.workflow_path && (isService$ | async) === false" class="alert alert-danger mat-elevation-z">
+              <mat-card
+                *ngIf="formErrors.workflow_path && (isService$ | async) === false && (isNotebook$ | async) === false"
+                class="alert alert-danger mat-elevation-z"
+              >
                 {{ formErrors.workflow_path }}
               </mat-card>
             </div>
@@ -175,6 +178,7 @@
               <div>
                 <label>
                   <input
+                    data-cy="hiddenCheck"
                     [disabled]="version.doiURL"
                     type="checkbox"
                     name="checkbox"

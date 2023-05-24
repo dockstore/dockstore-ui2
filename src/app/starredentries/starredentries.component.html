@@ -6,10 +6,7 @@
   </div>
 
   <div fxFlex="calc(100vw - 11rem)">
-    <app-header>
-      <mat-icon>star</mat-icon>
-      My Starred
-    </app-header>
+    <app-header> My Dockstore: Starred </app-header>
 
     <div class="container" *ngIf="starGazersClicked">
       <app-stargazers></app-stargazers>
@@ -26,49 +23,52 @@
     </div>
 
     <div class="container">
+      <!-- TODO: When services are implemented add:'service-tab-group': selected.value === 3,' -->
+      <!-- TODO: And change the purple-tab-group to:'purple-tab-group': selected.value === 4' -->
       <mat-tab-group
         mat-stretch-tabs
         class="container"
         *ngIf="!starGazersClicked && !organizationStarGazersClicked"
         [selectedIndex]="selected.value"
-        (selectedTabChange)="onTabChange($event)"
+        (selectedIndexChange)="selected.setValue($event)"
+        (selectedTabChange)="selectedTabChange($event)"
         [ngClass]="{
           'workflow-tab-group': selected.value === 0,
           'tool-tab-group': selected.value === 1,
-          'service-tab-group': selected.value === 2,
+          'notebook-tab-group': selected.value === 2,
           'purple-tab-group': selected.value === 3
         }"
       >
-        <mat-tab *ngIf="starredWorkflows">
+        <mat-tab>
           <ng-template mat-tab-label>
             <div fxLayoutGap="0.5rem">
               <img class="site-icons-tab" src="../../../assets/svg/sub-nav/workflow.svg" alt="workflow logo" />
               <span>Workflows</span>
-              <span class="tab-display">{{ starredWorkflows?.length }}</span>
+              <span class="tab-display workflow-background">{{ starredWorkflows?.length }}</span>
             </div>
           </ng-template>
-          <mat-card class="alert alert-info starred-header" role="alert" *ngIf="starredWorkflows?.length === 0">
-            <mat-icon>warning</mat-icon>
+          <mat-card class="alert alert-info mat-elevation-z starred-header" role="alert" *ngIf="starredWorkflows?.length === 0">
             You have no starred workflows.
           </mat-card>
           <div fxLayout="column" fxLayoutGap="1rem" class="mb-2 mx-1">
             <mat-card fxFlex *ngFor="let workflow of starredWorkflows; let last = last" class="pb-3">
-              <ng-container *ngTemplateOutlet="workflowSummary; context: { workflow: workflow, isAppTool: false }"></ng-container>
+              <ng-container
+                *ngTemplateOutlet="workflowSummary; context: { workflow: workflow, entryType: entryType.BioWorkflow }"
+              ></ng-container>
             </mat-card>
           </div>
         </mat-tab>
 
-        <mat-tab *ngIf="starredTools">
+        <mat-tab>
           <ng-template mat-tab-label>
             <div fxLayoutGap="0.5rem">
               <img src="../../../assets/svg/sub-nav/tool.svg" alt="tool logo" />
               <span>Tools</span>
-              <span class="tab-display">{{ starredTools?.length }}</span>
+              <span class="tab-display tool-background">{{ starredTools?.length }}</span>
             </div>
           </ng-template>
           <div>
-            <mat-card class="alert alert-info starred-header" role="alert" *ngIf="starredTools?.length === 0">
-              <mat-icon>warning</mat-icon>
+            <mat-card class="alert alert-info mat-elevation-z starred-header" role="alert" *ngIf="starredTools?.length === 0">
               You have no starred tools.
             </mat-card>
             <div fxLayout="column" fxLayoutGap="1rem" class="mb-2 mx-1">
@@ -76,7 +76,7 @@
                 <ng-container
                   *ngTemplateOutlet="
                     tool.mode === 'DOCKSTORE_YML' ? workflowSummary : toolSummary;
-                    context: tool.mode === 'DOCKSTORE_YML' ? { workflow: tool, isAppTool: true } : { tool: tool }
+                    context: tool.mode === 'DOCKSTORE_YML' ? { workflow: tool, entryType: entryType.AppTool } : { tool: tool }
                   "
                 ></ng-container>
               </mat-card>
@@ -84,14 +84,44 @@
           </div>
         </mat-tab>
 
-        <ng-template #workflowSummary let-workflow="workflow" let-isAppTool="isAppTool">
+        <mat-tab *ngIf="Dockstore.FEATURES.enableNotebooks">
+          <div class="starred-header mb-4"><app-preview-warning featureName="Notebooks"></app-preview-warning></div>
+          <ng-template mat-tab-label>
+            <div fxLayoutGap="0.5rem">
+              <img class="site-icons-tab" src="../../../assets/svg/sub-nav/notebook.svg" alt="notebook logo" />
+              <span>Notebooks</span>
+              <span class="tab-display org-background" data-cy="starred-notebooks-count">{{ starredNotebooks?.length }}</span>
+              <span class="bubble preview-bubble">PREVIEW</span>
+            </div>
+          </ng-template>
+          <div>
+            <mat-card
+              class="alert alert-info mat-elevation-z starred-header"
+              data-cy="no-notebooks-banner"
+              role="alert"
+              *ngIf="starredNotebooks?.length === 0"
+            >
+              You have no starred notebooks.
+            </mat-card>
+            <div fxLayout="column" fxLayoutGap="1rem" class="mb-2 mx-1">
+              <mat-card fxFlex *ngFor="let notebook of starredNotebooks; let last = last" class="m-1 pb-3">
+                <ng-container
+                  *ngTemplateOutlet="workflowSummary; context: { workflow: notebook, entryType: entryType.Notebook }"
+                ></ng-container>
+              </mat-card>
+            </div>
+          </div>
+        </mat-tab>
+
+        <ng-template #workflowSummary let-workflow="workflow" let-type="entryType">
           <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-between">
-            <a [routerLink]="(isAppTool ? entryType.AppTool : entryType.BioWorkflow) | routerLink: workflow" class="no-underline">
-              <mat-card-header>
+            <a [routerLink]="type | routerLink: workflow" class="no-underline">
+              <mat-card-header class="ml-2">
                 <mat-card-title fxLayoutAlign="space-between" fxLayoutGap="1rem">
                   <img
-                    src="../../../assets/svg/sub-nav/{{ isAppTool ? 'tool' : 'workflow' }}.svg"
-                    alt="{{ isAppTool ? 'tool' : 'workflow' }} logo"
+                    class="site-icons-small entryType-icons"
+                    src="../../../assets/svg/sub-nav/{{ workflow?.entryTypeMetadata.term }}.svg"
+                    alt="{{ workflow?.entryTypeMetadata.term }} logo"
                   />
                   <h4>
                     {{ workflow?.organization + '/' + workflow?.repository + (workflow?.workflowName ? '/' + workflow?.workflowName : '') }}
@@ -101,7 +131,7 @@
             </a>
             <app-starring class="pull-right" [workflow]="workflow" (starGazersChange)="starGazersChange()"></app-starring>
           </div>
-          <div class="ml-4 mr-2">
+          <div class="ml-2">
             <div class="truncate-text-3 mb-3">
               <app-markdown-wrapper
                 [data]="workflow?.description"
@@ -112,7 +142,7 @@
           </div>
           <div fxLayout="row" fxLayoutAlign="space-between stretch">
             <div fxLayout="row" fxLayoutAlign="flex-start" fxLayoutGap="1rem">
-              <small class="spacing">Last updated {{ workflow?.lastUpdated | date }}</small>
+              <small class="mx-2">Last updated {{ workflow?.lastUpdated | date }}</small>
               <div fxLayout="row wrap" fxLayoutGap="1rem">
                 <span>
                   <mat-chip-list>
@@ -126,7 +156,7 @@
                       </span>
                     </mat-chip>
                     <mat-chip class="bubble">
-                      {{ workflow?.descriptorType | uppercase }}
+                      {{ workflow?.descriptorType | descriptorLanguage }}
                     </mat-chip>
                     <mat-chip class="bubble" *ngIf="workflow.versionVerified === true">
                       <span class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">
@@ -138,7 +168,7 @@
                 </span>
               </div>
             </div>
-            <a [routerLink]="(isAppTool ? entryType.AppTool : entryType.BioWorkflow) | routerLink: workflow" class="no-underline">
+            <a [routerLink]="type | routerLink: workflow" class="no-underline">
               <button mat-raised-button class="small-mat-btn-skin small-btn-structure" color="accent">View</button>
             </a>
           </div>
@@ -147,9 +177,9 @@
         <ng-template #toolSummary let-tool="tool">
           <div fxLayout="row" fxLayoutAlign="space-between">
             <a routerLink="/containers/{{ tool.tool_path }}" class="no-underline">
-              <mat-card-header>
+              <mat-card-header class="ml-2">
                 <mat-card-title fxLayoutAlign="flex-start" fxLayoutGap="1rem">
-                  <img src="../../../assets/svg/sub-nav/tool.svg" alt="tool logo" />
+                  <img class="site-icons-small entryType-icons" src="../../../assets/svg/sub-nav/tool.svg" alt="tool logo" />
                   <h4>{{ tool?.namespace + '/' + tool?.name + (tool?.toolname ? '/' + tool?.toolname : '') }}</h4>
                 </mat-card-title>
                 <div *ngIf="tool?.starredUsers.length !== 0" fxLayout="row" fxLayoutAlign="end center"></div>
@@ -161,9 +191,9 @@
             <hr />
             <div fxLayout="row" fxLayoutAlign="space-between stretch">
               <div fxLayout="row" fxLayoutAlign="flex-start" fxLayoutGap="1rem">
-                <small class="spacing">Last updated {{ tool?.lastUpdated | date }}</small>
+                <small class="mx-2">Last updated {{ tool?.lastUpdated | date }}</small>
                 <mat-chip-list>
-                  <mat-chip class="bubble container-background" *ngFor="let label of tool?.labels | slice: 0:3">{{ label.value }}</mat-chip>
+                  <mat-chip class="bubble tool-background" *ngFor="let label of tool?.labels | slice: 0:3">{{ label.value }}</mat-chip>
                   <mat-chip *ngIf="tool?.versionVerified" matTooltip="Verified" class="bubble">
                     <a class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">
                       <mat-icon class="verified-icon">done</mat-icon>
@@ -183,30 +213,27 @@
         </ng-template>
 
         <!-- Services not done -->
+        <!-- TODO: remove *ngIf when implemented to allow for routing of tabs -->
         <mat-tab *ngIf="starredServices">
           <ng-template mat-tab-label>
             <div fxLayoutGap="0.5rem">
-              <img class="site-icons-tab" src="../../../assets/svg/sub-nav/services.svg" alt="service logo" />
+              <img class="site-icons-tab" src="../../../assets/svg/sub-nav/service.svg" alt="service logo" />
               <span>Services</span>
-              <span class="tab-display">0</span>
+              <span class="tab-display service-background">0</span>
             </div>
           </ng-template>
-          <mat-card class="alert alert-info starred-header" role="alert">
-            <mat-icon>warning</mat-icon>
-            You have no starred services.
-          </mat-card>
+          <mat-card class="alert alert-info mat-elevation-z starred-header" role="alert"> You have no starred services. </mat-card>
         </mat-tab>
 
-        <mat-tab *ngIf="starredOrganizations">
+        <mat-tab>
           <ng-template mat-tab-label>
             <div fxLayoutGap="0.5rem">
               <img src="../../../assets/svg/sub-nav/organization.svg" alt="organization logo" />
               <span>Organizations</span>
-              <span class="tab-display">{{ starredOrganizations?.length }}</span>
+              <span class="tab-display org-background">{{ starredOrganizations?.length }}</span>
             </div>
           </ng-template>
-          <mat-card class="alert alert-info starred-header" role="alert" *ngIf="starredOrganizations?.length === 0">
-            <mat-icon>warning</mat-icon>
+          <mat-card class="alert alert-info mat-elevation-z starred-header" role="alert" *ngIf="starredOrganizations?.length === 0">
             You have no starred organizations.
           </mat-card>
           <div *ngIf="starredOrganizations?.length > 0">

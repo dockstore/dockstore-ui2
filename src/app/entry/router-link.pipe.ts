@@ -6,7 +6,7 @@ import { Workflow } from '../shared/openapi';
   name: 'routerLink',
 })
 export class RouterLinkPipe implements PipeTransform {
-  transform(entryType: EntryType, workflow: Workflow): String | null {
+  transform(entryType: EntryType, workflow: Workflow): string | null {
     if (!workflow || !entryType) {
       return null;
     }
@@ -17,6 +17,8 @@ export class RouterLinkPipe implements PipeTransform {
         return '/services/' + workflow.full_workflow_path;
       case EntryType.AppTool:
         return '/containers/' + workflow.full_workflow_path;
+      case EntryType.Notebook:
+        return '/notebooks/' + workflow.full_workflow_path;
     }
     return null;
   }

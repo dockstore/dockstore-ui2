@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { NgFormsManager } from '@ngneat/forms-manager';
@@ -61,7 +61,7 @@ export class RegisterOrganizationService {
     private matDialog: MatDialog,
     private router: Router,
     private organizationService: OrganizationService,
-    private builder: FormBuilder
+    private builder: UntypedFormBuilder
   ) {}
 
   /**
@@ -71,7 +71,7 @@ export class RegisterOrganizationService {
    * @param {FormGroup} form
    * @memberof RegisterOrganizationService
    */
-  createOrUpdateOrganization(data: any, form: FormGroup) {
+  createOrUpdateOrganization(data: any, form: UntypedFormGroup) {
     if (data.mode === TagEditorMode.Add) {
       this.createOrganization(form.value);
     } else {
@@ -93,7 +93,7 @@ export class RegisterOrganizationService {
    * @returns {FormGroup}
    * @memberof RegisterOrganizationService
    */
-  createForm(formsManager: NgFormsManager<FormsState>, data: any): FormGroup {
+  createForm(formsManager: NgFormsManager<FormsState>, data: any): UntypedFormGroup {
     formsManager.clear('registerOrganization');
     let name = null;
     let displayName = null;

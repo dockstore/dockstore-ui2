@@ -14,6 +14,7 @@ import { ContainerService } from './../../shared/container.service';
 import { ContainerStubService, RegisterToolStubService } from './../../test/service-stubs';
 import { SidebarAccordionComponent } from './sidebar-accordion.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 
 describe('SidebarAccordionComponent', () => {
   let component: SidebarAccordionComponent;
@@ -37,6 +38,7 @@ describe('SidebarAccordionComponent', () => {
         providers: [
           { provide: RegisterToolService, useClass: RegisterToolStubService },
           { provide: ContainerService, useClass: ContainerStubService },
+          { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
         ],
       }).compileComponents();
     })

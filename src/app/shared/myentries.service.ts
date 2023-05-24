@@ -23,16 +23,22 @@ export abstract class MyEntriesService<E extends DockstoreTool | Workflow, O ext
   protected constructor(protected urlResolverService: UrlResolverService) {}
 
   recomputeWhatEntryToSelect(entries: E[]): E | null {
-    const foundEntry = this.findEntryFromPath(this.urlResolverService.getEntryPathFromUrl(), entries);
+    const entryPath = this.urlResolverService.getEntryPathFromUrl();
+    const foundEntry = this.findEntryFromPath(entryPath, entries);
     if (foundEntry) {
       return foundEntry;
     } else {
-      const initialEntry = this.getInitialEntry(entries);
-      if (initialEntry) {
-        return initialEntry;
+      let initialEntry;
+      const orgEntryObjects = this.convertEntriesToOrgEntryObject(entries, null);
+      const foundOrgEntryObject = this.matchingOrgEntryObjectByPath(orgEntryObjects, entryPath);
+      if (foundOrgEntryObject) {
+        // If the entry from the URL doesn't exist, pick an entry from the same organization
+        initialEntry = this.getInitialEntry([...foundOrgEntryObject.published, ...foundOrgEntryObject.unpublished]);
       } else {
-        return null;
+        // Use the initial entry from all entries
+        initialEntry = this.getInitialEntry(entries);
       }
+      return initialEntry ? initialEntry : null;
     }
   }
 
@@ -54,7 +60,9 @@ export abstract class MyEntriesService<E extends DockstoreTool | Workflow, O ext
       }
     });
     this.recursiveSortOrgEntryObjects(orgEntryObjects);
-    this.setExpand(orgEntryObjects, selectedEntry);
+    if (selectedEntry) {
+      this.setExpand(orgEntryObjects, selectedEntry);
+    }
     return orgEntryObjects;
   }
 
@@ -131,4 +139,6 @@ export abstract class MyEntriesService<E extends DockstoreTool | Workflow, O ext
   }
 
   protected abstract matchingOrgEntryObject(orgEntryObjects: O[], selectedEntry: E): O | undefined;
+
+  protected abstract matchingOrgEntryObjectByPath(orgEntryObjects: O[], entryPath: string): O | undefined | null;
 }

@@ -12,7 +12,7 @@ export const extendedCWL: ExtendedDescriptorLanguageBean = {
   toolDescriptorEnum: ToolDescriptor.TypeEnum.CWL,
   workflowDescriptorEnum: Workflow.DescriptorTypeEnum.CWL,
   languageDocumentationURL: 'https://www.commonwl.org/',
-  plainTRS: 'PLAIN-CWL',
+  plainTRS: 'PLAIN_CWL',
   descriptorFileTypes: [SourceFile.TypeEnum.DOCKSTORECWL],
   toolTab: {
     rowIdentifier: 'tool\xa0ID',

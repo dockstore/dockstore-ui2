@@ -25,6 +25,11 @@ import { CurrentCollectionsModule } from '../../entry/current-collections.module
 import { AddEntryModule } from '../../organizations/collection/add-entry.module';
 import { OrderByModule } from '../../shared/modules/orderby.module';
 import { SourceFileTabsComponent } from '../../source-file-tabs/source-file-tabs.component';
+import { NotebookComponent } from '../../notebook/notebook.component';
+import { NotebookMimeBundleOutputComponent } from '../../notebook/notebook-mime-bundle-output.component';
+import { NotebookStreamOutputComponent } from '../../notebook/notebook-stream-output.component';
+import { NotebookMarkdownComponent } from '../../notebook/notebook-markdown.component';
+import { NotebookSourceComponent } from '../../notebook/notebook-source.component';
 import { StargazersModule } from '../../stargazers/stargazers.module';
 import { StarringModule } from '../../starring/starring.module';
 import { FilterCloudInstancesPipe } from '../../workflow/launch-third-party/filterCloudInstances.pipe';
@@ -52,6 +57,7 @@ import { RegisterWorkflowModalService } from './../../workflow/register-workflow
 import { ToolTabComponent } from './../../workflow/tool-tab/tool-tab.component';
 import { VersionModalComponent } from './../../workflow/version-modal/version-modal.component';
 import { VersionModalService } from './../../workflow/version-modal/version-modal.service';
+import { ExecutionsTabComponent } from '../../workflow/executions/executions-tab.component';
 import { EntryModule } from './../entry/entry.module';
 import { CustomMaterialModule } from './../modules/material.module';
 import { RefreshService } from './../refresh.service';
@@ -59,6 +65,9 @@ import { MarkdownWrapperModule } from './markdown-wrapper.module';
 import { SnackbarModule } from './snackbar.module';
 import { CategoryButtonModule } from './../../categories/button/category-button.module';
 import { MySidebarModule } from '../modules/my-sidebar.module';
+import { SourceFileTabsService } from '../../source-file-tabs/source-file-tabs.service';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { PreviewWarningModule } from './preview-warning.module';
 
 @NgModule({
   declarations: [
@@ -72,10 +81,17 @@ import { MySidebarModule } from '../modules/my-sidebar.module';
     VersionModalComponent,
     WorkflowActionsComponent,
     InfoTabComponent,
+    ExecutionsTabComponent,
     ToolTabComponent,
     SourceFileTabsComponent,
+    NotebookComponent,
+    NotebookMimeBundleOutputComponent,
+    NotebookStreamOutputComponent,
+    NotebookMarkdownComponent,
+    NotebookSourceComponent,
     FilterCloudInstancesPipe,
     MultiCloudLaunchComponent,
+    ExecutionsTabComponent,
   ],
   imports: [
     CommonModule,
@@ -99,6 +115,8 @@ import { MySidebarModule } from '../modules/my-sidebar.module';
     SnackbarModule,
     CategoryButtonModule,
     MySidebarModule,
+    NgxMatSelectSearchModule,
+    PreviewWarningModule,
   ],
   providers: [
     DateService,
@@ -109,6 +127,7 @@ import { MySidebarModule } from '../modules/my-sidebar.module';
     RefreshService,
     RegisterWorkflowModalService,
     VersionModalService,
+    SourceFileTabsService,
   ],
   exports: [
     WorkflowComponent,

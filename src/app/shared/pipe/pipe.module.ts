@@ -10,6 +10,11 @@ import { GetHistogramStylePipe } from '../../search/get-histogram-style.pipe';
 import { MapFriendlyValuesPipe } from '../../search/map-friendly-values.pipe';
 import { SelectTabPipe } from '../entry/select-tab.pipe';
 import { BaseUrlPipe } from '../entry/base-url.pipe';
+import { DescriptorLanguageVersionsPipe } from '../entry/descriptor-language-versions.pipe';
+import { DescriptorLanguagePipe } from '../entry/descriptor-language.pipe';
+import { RecentEventsPipe } from '../entry/recent-events.pipe';
+import { EntryToDisplayNamePipe } from '../entry-to-display-name.pipe';
+import { SearchAuthorsHtmlPipe } from 'app/search/search-authors-html.pipe';
 
 const DECLARATIONS: any[] = [
   FilePathPipe,
@@ -22,10 +27,15 @@ const DECLARATIONS: any[] = [
   GravatarPipe,
   RouterLinkPipe,
   BaseUrlPipe,
+  DescriptorLanguageVersionsPipe,
+  DescriptorLanguagePipe,
+  RecentEventsPipe,
+  SearchAuthorsHtmlPipe,
 ];
 @NgModule({
   imports: [CommonModule],
   declarations: DECLARATIONS,
   exports: DECLARATIONS,
+  providers: [EntryToDisplayNamePipe],
 })
 export class PipeModule {}

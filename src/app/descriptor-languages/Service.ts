@@ -16,7 +16,7 @@ export const extendedService: ExtendedDescriptorLanguageBean = {
   toolDescriptorEnum: ToolDescriptor.TypeEnum.SERVICE,
   workflowDescriptorEnum: Workflow.DescriptorTypeEnum.Service,
   languageDocumentationURL: SERVICE_DOCUMENTATION_URL,
-  plainTRS: 'PLAIN-SERVICE',
+  plainTRS: null,
   descriptorFileTypes: [],
   toolTab: {
     rowIdentifier: 'tool\xa0ID',

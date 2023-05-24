@@ -31,6 +31,7 @@ import { ProviderService } from '../../shared/provider.service';
 import { DockstoreTool, Workflow } from '../../shared/swagger';
 import { SearchQuery } from './search.query';
 import { SearchStore } from './search.store';
+import { SearchAuthorsHtmlPipe } from '../search-authors-html.pipe';
 
 export interface Hit {
   _index: string;
@@ -57,23 +58,106 @@ export enum SearchFields {
   VERIFIED_SOURCE = 'workflowVersions.verifiedSources.keyword',
 }
 
+interface FacetInfo {
+  friendlyName: string;
+  esName: string;
+  tooltip?: string;
+  initiallyExpanded: boolean;
+  exclusive?: boolean;
+}
+
 @Injectable()
 export class SearchService {
   private static readonly WORKFLOWS_TAB_INDEX = 0;
   private static readonly TOOLS_TAB_INDEX = 1;
+  private static readonly NOTEBOOKS_TAB_INDEX = 2;
   private searchInfoSource = new BehaviorSubject<any>(null);
   public toSaveSearch$ = new BehaviorSubject<boolean>(false);
   public searchTerm$ = new BehaviorSubject<boolean>(false);
   public tagClicked$ = new BehaviorSubject<boolean>(false);
+  public readonly expandedPanelsStorageKey = 'expandedPanels';
   searchInfo$ = this.searchInfoSource.asObservable();
+
+  /**
+   * The definition order is also the order in which facets are displayed, i.e., Category is displayed first, Language
+   * is displayed second, etc.
+   * @private
+   */
+  private orderedFacetInfos: Array<FacetInfo> = [
+    { friendlyName: 'Category', esName: 'categories.name.keyword', initiallyExpanded: true },
+    { friendlyName: 'Language', esName: 'descriptorType', initiallyExpanded: true },
+    {
+      friendlyName: 'Language Versions',
+      esName: 'descriptor_type_versions.keyword',
+      tooltip: 'Indicates that the tool or workflow contains at least one version that is written with the workflow language version',
+      initiallyExpanded: false,
+    },
+    {
+      friendlyName: 'Engine Versions',
+      esName: 'engine_versions.keyword',
+      tooltip: 'The workflow engine versions required to run a workflow or tool',
+      initiallyExpanded: false,
+    },
+    { friendlyName: 'Author', esName: 'all_authors.name.keyword', initiallyExpanded: true },
+    { friendlyName: 'Registry', esName: 'registry', initiallyExpanded: true },
+    { friendlyName: 'Source Control', esName: 'source_control_provider.keyword', initiallyExpanded: true },
+    { friendlyName: 'Namespace', esName: 'namespace', initiallyExpanded: true },
+    { friendlyName: 'Organization', esName: 'organization', initiallyExpanded: true },
+    { friendlyName: 'Labels', esName: 'labels.value.keyword', initiallyExpanded: false },
+    {
+      friendlyName: 'Private Access',
+      esName: 'private_access',
+      tooltip: "A private tool requires authentication to view on Docker's registry website and to pull the Docker image.",
+      initiallyExpanded: false,
+      exclusive: true,
+    },
+    {
+      friendlyName: 'Verified Source',
+      esName: SearchFields.VERIFIED_SOURCE,
+      tooltip: 'Indicates which party performed the verification process on a tool or workflow.',
+      initiallyExpanded: false,
+    },
+    {
+      friendlyName: 'Verified Platforms',
+      esName: 'verified_platforms.keyword',
+      tooltip: 'Indicates which platform a tool or workflow (at least one version) was successfully run on.',
+      initiallyExpanded: false,
+    },
+    { friendlyName: 'Input File Formats', esName: 'input_file_formats.value.keyword', initiallyExpanded: false },
+    { friendlyName: 'Output File Formats', esName: 'output_file_formats.value.keyword', initiallyExpanded: false },
+    {
+      friendlyName: 'Verified',
+      esName: 'verified',
+      tooltip: 'Indicates that at least one version of a tool or workflow has been successfully run by our team or an outside party.',
+      initiallyExpanded: true,
+      exclusive: true,
+    },
+    {
+      friendlyName: 'Has Checker Workflow',
+      esName: 'has_checker',
+      tooltip:
+        'Checker workflows are additional workflows you can associate with a tool or workflow to ensure ' +
+        'that, when given some inputs, it produces the expected outputs on a different platform other than the one it was developed on.',
+      initiallyExpanded: false,
+      exclusive: true,
+    },
+    {
+      friendlyName: 'Open Data',
+      esName: 'openData',
+      tooltip:
+        'Indicates whether an entry can be run with no additional access permissions, potentially via an included test parameter file referencing open data.',
+      initiallyExpanded: false,
+      exclusive: true,
+    },
+  ];
 
   /**
    * These are the terms which use "must" filters
    * Example: Results returned can be private or public but never both
-   * @private
    * @memberof SearchService
    */
-  public exclusiveFilters = ['verified', 'private_access', 'has_checker'];
+  public exclusiveFilters = this.orderedFacetInfos.filter((facetInfo) => facetInfo.exclusive).map((facetInfo) => facetInfo.esName);
+
   constructor(
     private searchStore: SearchStore,
     private searchQuery: SearchQuery,
@@ -81,15 +165,32 @@ export class SearchService {
     private router: Router,
     private imageProviderService: ImageProviderService,
     private extendedGA4GHService: ExtendedGA4GHService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private searchAuthorsHtmlPipe: SearchAuthorsHtmlPipe
   ) {}
 
-  static convertTabIndexToEntryType(index: number): 'tools' | 'workflows' {
-    return index === this.WORKFLOWS_TAB_INDEX ? 'workflows' : 'tools';
+  static convertTabIndexToEntryType(index: number): 'tools' | 'workflows' | 'notebooks' | null {
+    switch (index) {
+      case this.WORKFLOWS_TAB_INDEX:
+        return 'workflows';
+      case this.TOOLS_TAB_INDEX:
+        return 'tools';
+      case this.NOTEBOOKS_TAB_INDEX:
+        return 'notebooks';
+    }
+    return null;
   }
 
-  static convertEntryTypeToTabIndex(entryType: string): number {
-    return entryType === 'workflows' ? this.WORKFLOWS_TAB_INDEX : this.TOOLS_TAB_INDEX;
+  static convertEntryTypeToTabIndex(entryType: string): number | null {
+    switch (entryType) {
+      case 'workflows':
+        return this.WORKFLOWS_TAB_INDEX;
+      case 'tools':
+        return this.TOOLS_TAB_INDEX;
+      case 'notebooks':
+        return this.NOTEBOOKS_TAB_INDEX;
+    }
+    return null;
   }
 
   /**
@@ -105,7 +206,7 @@ export class SearchService {
     b: DockstoreTool | Workflow,
     attribute: string,
     direction: SortDirection,
-    entryType: 'tool' | 'workflow'
+    entryType: 'tool' | 'workflow' | 'notebook'
   ) {
     // For sorting tools by name, sort tool_path
     // For sorting workflows by name, sort full_workflow_path
@@ -117,6 +218,12 @@ export class SearchService {
     let aVal = a[attribute];
     let bVal = b[attribute];
     const sortFactor = direction === 'asc' ? 1 : -1;
+
+    // Transform the all_authors list to a string
+    if (attribute === 'all_authors') {
+      aVal = this.searchAuthorsHtmlPipe.transform(aVal, false);
+      bVal = this.searchAuthorsHtmlPipe.transform(bVal, false);
+    }
 
     // if sorting the stars column, consider 'undefined' stars to be 0
     if (attribute === 'starredUsers') {
@@ -210,7 +317,7 @@ export class SearchService {
   }
 
   /**
-   * Seperates the 'hits' object into 'toolHits' and 'workflowHits'
+   * Separates the 'hits' object into 'toolHits' and 'workflowHits'
    * Also sets up provider information
    * @param {Array<any>} hits
    * @param {number} query_size
@@ -494,79 +601,32 @@ export class SearchService {
 
   // Initialization Functions
   initializeCommonBucketStubs() {
-    return new Map([
-      ['Language', 'descriptorType'],
-      ['Registry', 'registry'],
-      ['Source Control', 'source_control_provider.keyword'],
-      ['Input File Formats', 'input_file_formats.value.keyword'],
-      ['Output File Formats', 'output_file_formats.value.keyword'],
-      ['Private Access', 'private_access'],
-      ['VerifiedTool', 'verified'],
-      ['Author', 'author'],
-      ['Namespace', 'namespace'],
-      ['Labels', 'labels.value.keyword'],
-      ['VerifiedSourceWorkflow', SearchFields.VERIFIED_SOURCE],
-      ['HasCheckerWorkflow', 'has_checker'],
-      ['Organization', 'organization'],
-      ['VerifiedPlatforms', 'verified_platforms.keyword'],
-      ['Category', 'categories.name.keyword'],
-    ]);
+    return new Map(this.orderedFacetInfos.map((facetInfo) => [facetInfo.friendlyName, facetInfo.esName]));
   }
 
   initializeFriendlyNames() {
-    return new Map([
-      ['descriptorType', 'Language'],
-      ['registry', 'Registry'],
-      ['source_control_provider.keyword', 'Source Control'],
-      ['private_access', 'Private Access'],
-      ['verified', 'Verified'],
-      ['author', 'Author'],
-      ['namespace', 'Namespace'],
-      ['labels.value.keyword', 'Labels'],
-      ['input_file_formats.value.keyword', 'Input File Formats'],
-      ['output_file_formats.value.keyword', 'Output File Formats'],
-      [SearchFields.VERIFIED_SOURCE, 'Verified Source'],
-      ['has_checker', 'Has Checker Workflows'],
-      ['organization', 'Organization'],
-      ['verified_platforms.keyword', 'Verified Platforms'],
-      ['categories.name.keyword', 'Category'],
-    ]);
+    return new Map(this.orderedFacetInfos.map((facetInfo) => [facetInfo.esName, facetInfo.friendlyName]));
   }
 
   initializeToolTips() {
-    return new Map([
-      // Git hook auto fixes from single quotes with an escaped 's but linter complains about double quotes.
-      /* eslint-disable-next-line quotes, @typescript-eslint/quotes */
-      ['private_access', "A private tool requires authentication to view on Docker's registry website and to pull the Docker image."],
-      ['verified', 'Indicates that at least one version of a tool or workflow has been successfuly run by our team or an outside party.'],
-      [SearchFields.VERIFIED_SOURCE, 'Indicates which party performed the verification process on a tool or workflow.'],
-      [
-        'has_checker',
-        'Checker workflows are additional workflows you can associate with a tool or workflow to ensure ' +
-          'that, when given some inputs, it produces the expected outputs on a different platform other than the one it was developed on.',
-      ],
-      ['verified_platforms.keyword', 'Indicates which platform a tool or workflow (at least one version) was successfully run on.'],
-    ]);
+    return new Map(
+      this.orderedFacetInfos.filter((facetInfo) => facetInfo.tooltip).map((facetInfo) => [facetInfo.esName, facetInfo.tooltip])
+    );
   }
 
   initializeEntryOrder() {
-    return new Map([
-      ['categories.name.keyword', new SubBucket()],
-      ['descriptorType', new SubBucket()],
-      ['author', new SubBucket()],
-      ['registry', new SubBucket()],
-      ['source_control_provider.keyword', new SubBucket()],
-      ['namespace', new SubBucket()],
-      ['organization', new SubBucket()],
-      ['labels.value.keyword', new SubBucket()],
-      ['private_access', new SubBucket()],
-      ['verified', new SubBucket()],
-      [SearchFields.VERIFIED_SOURCE, new SubBucket()],
-      ['verified_platforms.keyword', new SubBucket()],
-      ['input_file_formats.value.keyword', new SubBucket()],
-      ['output_file_formats.value.keyword', new SubBucket()],
-      ['has_checker', new SubBucket()],
-    ]);
+    return new Map(this.orderedFacetInfos.map((facetInfo) => [facetInfo.esName, new SubBucket()]));
+  }
+
+  /**
+   * Initialize expanded panels to default state or restore previous state from local storage
+   */
+  initializeExpandedPanels() {
+    if (localStorage.getItem(this.expandedPanelsStorageKey)) {
+      return new Map<string, boolean>(JSON.parse(localStorage.getItem(this.expandedPanelsStorageKey)));
+    } else {
+      return new Map(this.orderedFacetInfos.map((facetInfo) => [facetInfo.esName, facetInfo.initiallyExpanded]));
+    }
   }
 
   // Functions called from HTML
@@ -643,11 +703,7 @@ export class SearchService {
    * This navigates to the correct page and clears all facets, search text, and advanced search
    */
   saveCurrentTabAndClear(index: number) {
-    if (index === SearchService.WORKFLOWS_TAB_INDEX) {
-      this.router.navigateByUrl('search?entryType=workflows&searchMode=files');
-    } else {
-      this.router.navigateByUrl('search?entryType=tools&searchMode=files');
-    }
+    this.router.navigateByUrl('search?entryType=' + SearchService.convertTabIndexToEntryType(index) + '&searchMode=files');
   }
 
   goToCleanSearch() {

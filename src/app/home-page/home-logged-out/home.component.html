@@ -15,6 +15,8 @@
   -->
 
 <div fxLayout="column" fxLayoutGap="0rem" class="mb-5">
+  <app-json-ld [json]="orgSchema"></app-json-ld>
+  <app-json-ld [json]="websiteSchema"></app-json-ld>
   <div fxLayout="column" class="title">
     <div
       class="container"
@@ -142,19 +144,14 @@
               <div fxLayout="row" class="gray-sections px-3 pt-3">
                 <span>Requirements</span>
                 <ul class="unordered-list">
-                  <li><strong>Linux/Ubuntu</strong> (recommended, tested with 18.04.3 LTS)</li>
+                  <li><strong>Linux/Ubuntu</strong> (recommended, tested with Ubuntu 22.04.1)</li>
                   <li>or <strong>Mac OS X</strong></li>
                 </ul>
               </div>
               <ul class="ordered-list">
                 <li>
                   Install
-                  <a
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    href="https://www.oracle.com/ca-en/java/technologies/javase-jdk11-downloads.html"
-                    >Java 11</a
-                  >
+                  <a target="_blank" rel="noopener noreferrer" href="https://adoptium.net/">Java 17</a>
                   and <a target="_blank" rel="noopener noreferrer" href="https://docs.docker.com/get-docker/">Docker</a> dependencies.
                 </li>
                 <li>
@@ -273,22 +270,23 @@
     </div>
 
     <div fxLayout="row" fxLayout.lt-md="column" class="container mt-5" fxLayoutGap="2rem">
-      <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="3rem" fxFlex="33" fxFlex.lt-md="100" id="news">
-        <h3>News & Events</h3>
-        <app-featured-news></app-featured-news>
+      <div fxLayout="column" fxLayoutAlign="start stretch" fxFlex="33" fxFlex.lt-md="100" id="news" class="p-3">
+        <h3>News & Updates</h3>
+        <app-news-and-updates></app-news-and-updates>
       </div>
-      <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="3rem" fxFlex="33" fxFlex.lt-md="100" id="resources">
+      <div fxLayout="column" fxLayoutAlign="start stretch" fxFlex="33" fxFlex.lt-md="100" id="resources" class="p-3">
         <h3>Helpful Resources</h3>
         <div>
-          <h4>
+          <h5 class="mb-0">
             <a target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/watch?v=shMr_Bd01Ko"
               >Introduction to Dockstore Webinar</a
             >
-          </h4>
+          </h5>
           <span>Fundamentals of finding workflows and running analyses.</span>
+          <mat-divider class="my-3"></mat-divider>
         </div>
         <div>
-          <h4>
+          <h5 class="mb-0">
             <a
               target="_blank"
               rel="noopener noreferrer"
@@ -296,19 +294,22 @@
               data-cy="homepage-getting-started-link"
               >Developer Tutorial</a
             >
-          </h4>
+          </h5>
           <span>An introduction to everything required to properly use Dockstore as a contributor.</span>
+          <mat-divider class="my-3"></mat-divider>
         </div>
         <div>
-          <h4>
+          <h5 class="mb-0">
             <a target="_blank" rel="noopener noreferrer" href="https://discuss.dockstore.org/" data-cy="homepage-discuss-link"
               >Join the Discussion</a
             >
-          </h4>
+          </h5>
           <span>Discourse forum about helpful Dockstore topics.</span>
         </div>
       </div>
-      <div #twitter fxFlex fxLayoutAlign="start start" class="twitter-widget"></div>
+      <div fxFlex.md="33" fxFlex.gt-md="33" fxFlex.lt-md="100">
+        <div class="my-3 twitter" #twitter></div>
+      </div>
     </div>
   </div>
 </div>

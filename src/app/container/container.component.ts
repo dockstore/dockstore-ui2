@@ -15,7 +15,7 @@
  */
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Location } from '@angular/common';
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatDialog } from '@angular/material/dialog';
 import { Title } from '@angular/platform-browser';
@@ -56,7 +56,7 @@ import { EntryCategoriesService } from '../categories/state/entry-categories.ser
 @Component({
   selector: 'app-container',
   templateUrl: './container.component.html',
-  styleUrls: ['./container.component.css'],
+  styleUrls: ['../shared/styles/workflow-container.component.scss'],
 })
 export class ContainerComponent extends Entry implements AfterViewInit, OnInit {
   dockerPullCmd: string;
@@ -80,6 +80,8 @@ export class ContainerComponent extends Entry implements AfterViewInit, OnInit {
   public schema: BioschemaTool;
   public extendedTool$: Observable<ExtendedDockstoreTool>;
   public isRefreshing$: Observable<boolean>;
+  @Input() selectedVersion: Tag;
+
   constructor(
     private dockstoreService: DockstoreService,
     dateService: DateService,
@@ -238,7 +240,7 @@ export class ContainerComponent extends Entry implements AfterViewInit, OnInit {
     this.selectTab(this.validTabs.indexOf('versions'));
   }
 
-  public setupPublicEntry(url: String) {
+  public setupPublicEntry(url: string) {
     if (url.includes('/containers/github.com') || url.includes('/tools/github.com')) {
       this.containerService.setTool(null);
       this.displayAppTool = true;
@@ -252,11 +254,13 @@ export class ContainerComponent extends Entry implements AfterViewInit, OnInit {
 
           this.selectTab(this.validTabs.indexOf(this.currentTab));
           if (this.tool != null) {
-            this.updateUrl(this.tool.tool_path, 'my-tools', 'containers');
+            this.updateUrl(this.tool.tool_path, 'my-tools', 'containers', this.selectedVersion);
           }
         },
-        () => {
-          this.router.navigate(['../']);
+        (error) => {
+          if (error.status === 404) {
+            this.router.navigate(['page-not-found']);
+          }
         }
       );
     }
@@ -328,7 +332,7 @@ export class ContainerComponent extends Entry implements AfterViewInit, OnInit {
   onSelectedVersionChange(tag: Tag): void {
     this.selectedVersion = tag;
     if (this.tool != null) {
-      this.updateUrl(this.tool.tool_path, 'my-tools', 'containers');
+      this.updateUrl(this.tool.tool_path, 'my-tools', 'containers', this.selectedVersion);
     }
     if (this.selectVersion) {
       this.gA4GHFilesService.updateFiles(this.tool.path, this.selectedVersion.name);
@@ -341,7 +345,7 @@ export class ContainerComponent extends Entry implements AfterViewInit, OnInit {
   setEntryTab(tabName: string): void {
     this.currentTab = tabName;
     if (this.tool != null) {
-      this.updateUrl(this.tool.tool_path, 'my-tools', 'containers');
+      this.updateUrl(this.tool.tool_path, 'my-tools', 'containers', this.selectedVersion);
     }
   }
 

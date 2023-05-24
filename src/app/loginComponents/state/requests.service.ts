@@ -105,12 +105,12 @@ export class RequestsService {
       .pipe(finalize(() => this.requestsStore.setLoading(false)))
       .subscribe(
         (myMemberships: Array<OrganizationUser>) => {
-          const myOrganizationInvites = myMemberships.filter((membership) => !membership.accepted);
+          const myOrganizationInvites = myMemberships.filter((membership) => membership.status === OrganizationUser.StatusEnum.PENDING);
           const myPendingOrganizationRequests = myMemberships.filter(
-            (membership) => membership.organization.status === 'PENDING' && membership.accepted
+            (membership) => membership.organization.status === 'PENDING' && membership.status === OrganizationUser.StatusEnum.ACCEPTED
           );
           const myRejectedOrganizationRequests = myMemberships.filter(
-            (membership) => membership.organization.status === 'REJECTED' && membership.accepted
+            (membership) => membership.organization.status === 'REJECTED' && membership.status === OrganizationUser.StatusEnum.ACCEPTED
           );
 
           this.updateMyMembershipState(myMemberships, myOrganizationInvites, myPendingOrganizationRequests, myRejectedOrganizationRequests);

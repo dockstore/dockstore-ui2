@@ -60,5 +60,4 @@ export class VersionModalService {
 
     return sizeStr;
   }
-  constructor() {}
 }

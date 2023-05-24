@@ -17,7 +17,7 @@ import { EntryType } from 'app/shared/enum/entry-type';
 import { BehaviorSubject, EMPTY, Observable, of as observableOf } from 'rxjs';
 import { SearchFields } from '../search/state/search.service';
 import { TagEditorMode } from '../shared/enum/tagEditorMode.enum';
-import { CloudInstance } from '../shared/openapi';
+import { CloudInstance, TRSService } from '../shared/openapi';
 import { Dockstore } from './../shared/dockstore.model';
 import { AdvancedSearchObject } from './../shared/models/AdvancedSearchObject';
 import { SubBucket } from './../shared/models/SubBucket';
@@ -109,7 +109,7 @@ export class QueryBuilderStubService {
   ): string {
     return 'thisissomefakequery';
   }
-  getResultSingleIndexQuery(query_size: number, index: 'tools' | 'workflows'): string {
+  getResultSingleIndexQuery(query_size: number, index: 'tools' | 'workflows' | 'notebooks'): string {
     return 'thisissomefakequery';
   }
   getNonVerifiedQuery(query_size: number, values: string, advancedSearchObject: AdvancedSearchObject, searchTerm: boolean, filters: any) {
@@ -137,9 +137,25 @@ export class ExtendedGA4GHStubService {
   }
 }
 
-export class GA4GHV20StubService {}
+export class GA4GHV20StubService {
+  getServiceInfo(): Observable<TRSService> {
+    const serviceInfo: TRSService = {
+      version: '1.14.0-SNAPSHOT',
+      type: {
+        artifact: 'TRS',
+        group: 'org.ga4gh',
+        version: '2.0.1',
+      },
+      id: '1',
+      name: 'Dockstore',
+      organization: undefined,
+    };
+    return observableOf(serviceInfo);
+  }
+}
 
 export class SearchStubService {
+  public readonly expandedPanelsStorageKey = 'expandedPanels';
   workflowhit$ = observableOf([]);
   toolhit$ = observableOf([]);
   searchInfo$ = observableOf({});
@@ -217,7 +233,7 @@ export class SearchStubService {
       // Git hook auto fixes from single quotes with an escaped 's but linter complains about double quotes.
       /* eslint-disable-next-line quotes, @typescript-eslint/quotes */
       ['private_access', "A private tool requires authentication to view on Docker's registry website and to pull the Docker image."],
-      ['verified', 'Indicates that at least one version of a tool or workflow has been successfuly run by our team or an outside party.'],
+      ['verified', 'Indicates that at least one version of a tool or workflow has been successfully run by our team or an outside party.'],
       [SearchFields.VERIFIED_SOURCE, 'Indicates which party performed the verification process on a tool or workflow.'],
       [
         'has_checker',
@@ -239,6 +255,32 @@ export class SearchStubService {
       ['verified', new SubBucket()],
       ['verifiedSource', new SubBucket()],
     ]);
+  }
+
+  initializeExpandedPanels() {
+    if (localStorage.getItem(this.expandedPanelsStorageKey)) {
+      return new Map<string, boolean>(JSON.parse(localStorage.getItem(this.expandedPanelsStorageKey)));
+    } else {
+      return new Map([
+        ['descriptorType', true],
+        ['registry', true],
+        ['source_control_provider.keyword', true],
+        ['private_access', false],
+        ['verified', true],
+        ['author', false],
+        ['namespace', true],
+        ['labels.value.keyword', false],
+        ['input_file_formats.value.keyword', false],
+        ['output_file_formats.value.keyword', false],
+        [SearchFields.VERIFIED_SOURCE, false],
+        ['has_checker', false],
+        ['organization', true],
+        ['verified_platforms.keyword', false],
+        ['categories.name.keyword', true],
+        ['descriptor_type_versions.keyword', false],
+        ['openData', false],
+      ]);
+    }
   }
 
   initializeFriendlyValueNames() {
@@ -311,6 +353,9 @@ export class UsersStubService {
   }
 
   getStarredOrganizations() {
+    return observableOf([]);
+  }
+  getStarredNotebooks() {
     return observableOf([]);
   }
   refresh(userId: number, extraHttpRequestParams?: any): Observable<Array<DockstoreTool>> {
@@ -869,4 +914,13 @@ export class VersionModalStubService {
 
 export class OrgLogoStubService {
   setDefault(img: any) {}
+}
+
+export class MarkdownWrapperStubService {
+  customCompile(data, baseUrl): string {
+    return `compiled-markdown(${data})`;
+  }
+  customSanitize(html): string {
+    return `sanitized(${html})`;
+  }
 }

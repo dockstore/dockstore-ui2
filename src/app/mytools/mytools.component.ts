@@ -20,6 +20,4 @@ import { Component } from '@angular/core';
   templateUrl: './mytools.component.html',
   styleUrls: ['./mytools.component.css'],
 })
-export class MyToolsComponent {
-  constructor() {}
-}
+export class MyToolsComponent {}

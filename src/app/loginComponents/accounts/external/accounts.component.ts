@@ -1,5 +1,5 @@
 /*
- *     Copyright 2018 OICR
+ *     Copyright 2022 OICR, UCSC
  *
  *     Licensed under the Apache License, Version 2.0 (the "License")
  *     you may not use this file except in compliance with the License
@@ -28,6 +28,12 @@ import { UserQuery } from '../../../shared/user/user.query';
 import { UserService } from '../../../shared/user/user.service';
 import { TokenUser } from './../../../shared/swagger/model/tokenUser';
 import { AccountsService } from './accounts.service';
+import { LogoutService } from '../../../shared/logout.service';
+import { RevokeTokenDialogComponent } from './revoke-token-dialog/revoke-token-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { bootstrap4largeModalSize } from '../../../shared/constants';
+import { AlertService } from '../../../shared/alert/state/alert.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 export interface AccountInfo {
   name: string;
@@ -139,6 +145,7 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
   public show: false;
   public dockstoreToken: string;
   public orcidRootUrl: string;
+
   constructor(
     private trackLoginService: TrackLoginService,
     private tokenService: TokenService,
@@ -148,7 +155,10 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
     private accountsService: AccountsService,
     private matSnackBar: MatSnackBar,
     private userQuery: UserQuery,
-    private tokenQuery: TokenQuery
+    private tokenQuery: TokenQuery,
+    private logoutService: LogoutService,
+    private alertService: AlertService,
+    public dialog: MatDialog
   ) {
     this.trackLoginService.isLoggedIn$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((state) => {
       if (!state) {
@@ -237,5 +247,45 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
+  }
+
+  revokeToken() {
+    let dialogRef = this.dialog.open(RevokeTokenDialogComponent, {
+      width: bootstrap4largeModalSize,
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.alertService.start('Revoking Dockstore token');
+        this.deleteToken(TokenSource.DOCKSTORE).subscribe(
+          () => {
+            this.revokeTokenSuccess();
+          },
+          (error) => {
+            this.revokeTokenFailure(error);
+          }
+        );
+      }
+    });
+  }
+
+  /**
+   * When the user's Dockstore token is successfully revoked, the user gets logged out.
+   *
+   * @private
+   * @memberof RevokeTokenDialogComponent
+   */
+  private revokeTokenSuccess(): void {
+    this.logoutService.logout();
+    this.alertService.detailedSuccess('Revoking Dockstore token succeeded');
+  }
+
+  /**
+   * What happens when revoking the Dockstore token has failed.
+   *
+   * @private
+   * @memberof RevokeTokenDialogComponent
+   */
+  private revokeTokenFailure(error: HttpErrorResponse): void {
+    this.alertService.detailedError(error);
   }
 }
