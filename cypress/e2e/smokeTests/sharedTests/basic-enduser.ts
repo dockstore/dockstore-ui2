@@ -82,7 +82,7 @@ function getLinkName(tab: string): string {
 
 function isStagingOrProd() {
   const baseUrl = Cypress.config('baseUrl');
-  return baseUrl === 'https://dockstore.org' || baseUrl === 'https://staging.dockstore.org';
+  return baseUrl === 'https://staging.dockstore.org' || baseUrl === 'https://dockstore.org';
 }
 
 const organizations = [['Broad Institute']];
