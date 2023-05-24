@@ -16,11 +16,9 @@ function testEntry(tab: string) {
       cy.visit('/notebooks');
       cy.get('[data-cy=entry-link]')
         .eq(0)
-        .within(() => {
-          cy.get('a').then((el) => {
-            cy.log(el.prop('href')); // log the href in case a test fails
-            cy.visit(el.prop('href'));
-          });
+        .then((el) => {
+          cy.log(el.prop('href')); // log the href in case a test fails
+          cy.visit(el.prop('href'));
         });
       return;
     }
