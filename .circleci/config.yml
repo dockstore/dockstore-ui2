@@ -286,15 +286,18 @@ jobs:
       db_dump:
         type: string
         default: "db_dump.sql"
+      pull_request_url:
+        type: string
+        default: "${CIRCLE_PULL_REQUEST}"
     steps:
       - when:
           # Execute if there's a pull request URL
-          condition: << pipeline.parameters.pull_request_url >>
+          condition: << parameters.pull_request_url >>
           steps:
             - run: 
                 name: Check PR URL
                 command: |
-                  echo << pipeline.parameters.pull_request_url >>
+                  echo << parameters.pull_request_url >>
                   echo $CIRCLE_PULL_REQUEST
             - checkout
             - install_container_dependencies
@@ -313,10 +316,14 @@ jobs:
     resource_class: medium+
     executor: accessibility_test_exec
     working_directory: ~/repo
+    parameters:
+      pull_request_url:
+        type: string
+        default: "${CIRCLE_PULL_REQUEST}"
     steps:
       - when:
           # Execute if there's a pull request URL
-          condition: << pipeline.parameters.pull_request_url >>
+          condition: << parameters.pull_request_url >>
           steps:
             - checkout
             - checkout:
@@ -344,10 +351,14 @@ jobs:
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
+    parameters:
+      pull_request_url:
+        type: string
+        default: "${CIRCLE_PULL_REQUEST}"
     steps:
       - when:
           # Execute if there's a pull request URL
-          condition: << pipeline.parameters.pull_request_url >>
+          condition: << parameters.pull_request_url >>
           steps:
             - checkout
             - run:
@@ -444,9 +455,6 @@ parameters:
   run_nightly_no_auth:
     type: boolean
     default: false
-  pull_request_url:
-    type: string
-    default: "${CIRCLE_PULL_REQUEST}"
 
 workflows:
   version: 2
