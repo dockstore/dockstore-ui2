@@ -40,6 +40,7 @@ import {
 } from '../shared/constants';
 import { DateService } from '../shared/date.service';
 import { DescriptorTypeCompatService } from '../shared/descriptor-type-compat.service';
+import { Dockstore } from '../shared/dockstore.model';
 import { DockstoreService } from '../shared/dockstore.service';
 import { Entry } from '../shared/entry';
 import { EntryType } from '../shared/enum/entry-type';
@@ -70,6 +71,7 @@ import { FormControl } from '@angular/forms';
 })
 export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
   workflowEditData: any;
+  Dockstore = Dockstore;
   public isRefreshing$: Observable<boolean>;
   public workflow: BioWorkflow | Service | Notebook;
   public missingWarning: boolean;

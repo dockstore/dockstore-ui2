@@ -1,0 +1,188 @@
+<div class="w-100 mt-3">
+  <app-preview-warning featureName="Metrics"></app-preview-warning>
+</div>
+<div *ngIf="!metricsExist" class="w-100">
+  <mat-card class="alert alert-info mat-elevation-z mt-3" role="alert" data-cy="no-metrics-banner">
+    <mat-icon class="alert-info-icon">info</mat-icon> No metrics data exist for this version.
+  </mat-card>
+</div>
+
+<div *ngIf="metricsExist" class="mt-3">
+  <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1rem">
+    <mat-form-field>
+      <mat-label>Select a Platform</mat-label>
+      <mat-select data-cy="metrics-partner-dropdown" [value]="currentPartner" (selectionChange)="matSelectChange($event)">
+        <mat-option data-cy="metrics-partner-options" [value]="partner" *ngFor="let partner of partners">
+          {{ partner }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Execution Metrics</mat-card-title>
+    </mat-card-header>
+    <mat-divider></mat-divider>
+    <mat-card-content class="pt-3">
+      <div *ngIf="!executionMetricsExist">No execution metrics exist</div>
+      <div *ngIf="executionMetricsExist">
+        <div data-cy="execution-metrics-total-executions-div" fxLayout="row" fxLayoutGap="2rem">
+          <div><strong>Total executions: </strong>{{ totalExecutions }}</div>
+          <div><strong>Successful executions: </strong>{{ successfulExecutions }}</div>
+          <div><strong>Failed executions: </strong>{{ failedExecutions }}</div>
+        </div>
+        <table
+          mat-table
+          *ngIf="executionMetricsTable.length > 0"
+          class="w-100"
+          aria-label="execution-metrics-table"
+          [dataSource]="executionMetricsTable"
+          data-cy="execution-metrics-table"
+        >
+          <ng-container matColumnDef="metric">
+            <th mat-header-cell *matHeaderCellDef>Metric</th>
+            <td mat-cell *matCellDef="let executionMetric">{{ executionMetric.metric }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="minimum">
+            <th mat-header-cell *matHeaderCellDef>Minimum</th>
+            <td mat-cell *matCellDef="let executionMetric">
+              <span *ngIf="executionMetric.minimum" matTooltip="{{ executionMetric.minimum + executionMetric.unit }}"
+                >{{ executionMetric.minimum | number: '1.0-2' }}{{ executionMetric.unit }}</span
+              >
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="average">
+            <th mat-header-cell *matHeaderCellDef>Average</th>
+            <td mat-cell *matCellDef="let executionMetric">
+              <span *ngIf="executionMetric.average" matTooltip="{{ executionMetric.average + executionMetric.unit }}"
+                >{{ executionMetric.average | number: '1.0-2' }}{{ executionMetric.unit }}</span
+              >
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="maximum">
+            <th mat-header-cell *matHeaderCellDef>Maximum</th>
+            <td mat-cell *matCellDef="let executionMetric">
+              <span *ngIf="executionMetric.maximum" matTooltip="{{ executionMetric.maximum + executionMetric.unit }}"
+                >{{ executionMetric.maximum | number: '1.0-2' }}{{ executionMetric.unit }}</span
+              >
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="executionMetricsColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: executionMetricsColumns"></tr>
+        </table>
+      </div>
+    </mat-card-content>
+  </mat-card>
+  <div class="mt-5">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Validator Tool Metrics</mat-card-title>
+      </mat-card-header>
+      <mat-divider></mat-divider>
+      <mat-card-content class="pt-3">
+        <div *ngIf="!validatorToolMetricsExist">No validator tool metrics exist</div>
+        <div *ngIf="validatorToolMetricsExist">
+          <mat-form-field data-cy="metrics-validator-tool-dropdown">
+            <mat-label>Select a Validator Tool</mat-label>
+            <mat-select [value]="currentValidatorTool" (selectionChange)="onSelectedValidatorToolChange($event.value)">
+              <mat-option data-cy="metrics-validator-tool-options" [value]="validatorTool" *ngFor="let validatorTool of validatorTools">
+                {{ validatorTool }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <div fxLayout="row" fxLayoutGap="2rem">
+            <span><strong>Total number of runs: </strong>{{ validatorToolToValidatorInfo.get(currentValidatorTool).numberOfRuns }}</span>
+            <span>
+              <strong>Overall passing rate: </strong>
+              <span matTooltip="{{ validatorToolToValidatorInfo.get(currentValidatorTool).passingRate }}%"
+                >{{ validatorToolToValidatorInfo.get(currentValidatorTool).passingRate | number: '1.0-2' }}%</span
+              >
+            </span>
+          </div>
+
+          <table mat-table class="w-100" aria-label="validations-table" [dataSource]="validationsTable" data-cy="validations-table">
+            <ng-container matColumnDef="validatorToolVersionName">
+              <th mat-header-cell *matHeaderCellDef matTooltip="The name of the validator tool version">Validator Tool Version</th>
+              <td mat-cell *matCellDef="let validatorToolVersion">{{ validatorToolVersion.name }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="isValid">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                matTooltip="Indicates if the workflow was validated successfully by this version of the validator tool"
+              >
+                Valid
+              </th>
+              <td mat-cell *matCellDef="let validatorToolVersion"><mat-icon *ngIf="validatorToolVersion.isValid">check</mat-icon></td>
+            </ng-container>
+
+            <ng-container matColumnDef="errorMessage">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                matTooltip="The error message if the workflow failed validation by this version of the validator tool"
+              >
+                Error Message
+              </th>
+              <td mat-cell *matCellDef="let validatorToolVersion">
+                <span class="truncate-text-1" [matTooltip]="validatorToolVersion.errorMessage">{{
+                  validatorToolVersion.errorMessage
+                }}</span>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="isMostRecentVersion">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                matTooltip="Indicates if this validator tool version was the most recently executed version amongst all versions"
+              >
+                Most Recent Version
+              </th>
+              <td mat-cell *matCellDef="let validatorToolVersion">
+                <mat-icon *ngIf="validatorToolVersion.name === validatorToolToValidatorInfo.get(currentValidatorTool).mostRecentVersionName"
+                  >check</mat-icon
+                >
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="dateExecuted">
+              <th mat-header-cell *matHeaderCellDef matTooltip="The date that this validator tool version was most recently executed">
+                Most Recent Execution Date
+              </th>
+              <td mat-cell *matCellDef="let validatorToolVersion">{{ validatorToolVersion.dateExecuted | date }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="numberOfRuns">
+              <th mat-header-cell *matHeaderCellDef matTooltip="The number of times this validator tool version was executed">
+                Number of Runs
+              </th>
+              <td mat-cell *matCellDef="let validatorToolVersion">{{ validatorToolVersion.numberOfRuns }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="passingRate">
+              <th
+                mat-header-cell
+                *matHeaderCellDef
+                matTooltip="The percentage of runs where the validator tool version successfully validated the workflow"
+              >
+                Passing Rate
+              </th>
+              <td mat-cell *matCellDef="let validatorToolVersion" matTooltip="{{ validatorToolVersion.passingRate }}%">
+                {{ validatorToolVersion.passingRate | number: '1.0-4' }}%
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="validationsColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: validationsColumns"></tr>
+          </table>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

@@ -14,7 +14,15 @@
  *    limitations under the License.
  */
 import { Repository } from '../../../src/app/shared/openapi/model/repository';
-import { goToTab, isActiveTab, resetDB, setTokenUserViewPort, setTokenUserViewPortCurator, snapshot } from '../../support/commands';
+import {
+  goToTab,
+  insertAuthors,
+  isActiveTab,
+  resetDB,
+  setTokenUserViewPort,
+  setTokenUserViewPortCurator,
+  snapshot,
+} from '../../support/commands';
 
 describe('Dockstore my workflows', () => {
   resetDB();
@@ -203,17 +211,29 @@ describe('Dockstore my workflows', () => {
     });
   });
 
-  describe('Should be able to snapshot, request DOI, and export to ORCID', () => {
-    function gotoVersionsAndClickActions() {
-      cy.visit('/my-workflows/github.com/A/l');
-      cy.url().should('eq', Cypress.config().baseUrl + '/my-workflows/github.com/A/l');
-      goToTab('Versions');
-      cy.get('td').contains('Actions').click();
-    }
+  function gotoVersionsAndClickActions() {
+    cy.visit('/my-workflows/github.com/A/l');
+    cy.url().should('eq', Cypress.config().baseUrl + '/my-workflows/github.com/A/l');
+    goToTab('Versions');
+    cy.get('td').contains('Actions').click();
+  }
 
+  describe('Should not be able to snapshot if no authors', () => {
+    it('Should not be able to snapshot if no authors', () => {
+      cy.visit('/my-workflows/github.com/A/l');
+      gotoVersionsAndClickActions();
+      cy.get('[data-cy=dockstore-snapshot]').first().click();
+      cy.get('[data-cy=snapshot-button]').should('be.disabled');
+      cy.get('[data-cy=no-authors]').should('exist');
+    });
+  });
+
+  describe('Should be able to snapshot, request DOI, and export to ORCID', () => {
+    insertAuthors();
     it('Should be able to snapshot', () => {
       gotoVersionsAndClickActions();
       snapshot();
+      cy.get('[data-cy=no-authors]').should('not.exist');
     });
 
     it('Request DOI should require linked account', () => {

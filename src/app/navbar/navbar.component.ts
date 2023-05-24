@@ -77,7 +77,9 @@ export class NavbarComponent extends Logout implements OnInit {
       if (user) {
         // You may not be logged in
         this.requestsService.updateMyMemberships();
-        this.requestsService.updateCuratorOrganizations();
+        if (user.curator || user.isAdmin) {
+          this.requestsService.updateCuratorOrganizations();
+        }
       } else {
         // In case you went from logged in to logged out
         this.requestsService.updateMyMembershipState(null, null, null, null);
