@@ -287,42 +287,50 @@ jobs:
         type: string
         default: "db_dump.sql"
     steps:
-      - checkout
-      - install_container_dependencies
-      - prepare_accessibility_test
-      - run:
-          name: Run accesibility test on current branch
-          command: bash -i -c "npm run accessibility-test -- -R"
-      - persist_to_workspace:
-          root: .
-          paths:
-            - accessibility-results
-      - store_artifacts:
-          path: accessibility-results
+      - when:
+          # Execute if there's a pull request URL
+          condition: << parameters.pull_request_url >>
+          steps:
+            - checkout
+            - install_container_dependencies
+            - prepare_accessibility_test
+            - run:
+                name: Run accesibility test on current branch
+                command: bash -i -c "npm run accessibility-test -- -R"
+            - persist_to_workspace:
+                root: .
+                paths:
+                  - accessibility-results
+            - store_artifacts:
+                path: accessibility-results
 
   accessibility_test_base:
     resource_class: medium+
     executor: accessibility_test_exec
     working_directory: ~/repo
     steps:
-      - checkout
-      - checkout:
-          path: accessibility
-      - install_container_dependencies
-      - run:
-          name: Checkout base branch
-          command: bash -i -c "npm run accessibility-test -- -C"
-      - prepare_accessibility_test
-      - run:
-          name: Run accesibility test on base branch
-          command: bash -i -c "npm run accessibility-test -- -RB"
-          working_directory: accessibility
-      - persist_to_workspace:
-          root: accessibility
-          paths:
-            - accessibility-results
-      - store_artifacts:
-          path: accessibility/accessibility-results
+      - when:
+          # Execute if there's a pull request URL
+          condition: << parameters.pull_request_url >>
+          steps:
+            - checkout
+            - checkout:
+                path: accessibility
+            - install_container_dependencies
+            - run:
+                name: Checkout base branch
+                command: bash -i -c "npm run accessibility-test -- -C"
+            - prepare_accessibility_test
+            - run:
+                name: Run accesibility test on base branch
+                command: bash -i -c "npm run accessibility-test -- -RB"
+                working_directory: accessibility
+            - persist_to_workspace:
+                root: accessibility
+                paths:
+                  - accessibility-results
+            - store_artifacts:
+                path: accessibility/accessibility-results
 
   compare_accessibility_results:
     working_directory: ~/repo
@@ -332,18 +340,22 @@ jobs:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
     steps:
-      - checkout
-      - run:
-          name: Install npm
-          command: |
-            wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
-            bash -i -c 'nvm install'
-      - get_workspace
-      - store_artifacts:
-          path: accessibility-results
-      - run:
-          name: Compare accessibility results
-          command: bash -i -c "npm run accessibility-test -- -A"
+      - when:
+          # Execute if there's a pull request URL
+          condition: << parameters.pull_request_url >>
+          steps:
+            - checkout
+            - run:
+                name: Install npm
+                command: |
+                  wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
+                  bash -i -c 'nvm install'
+            - get_workspace
+            - store_artifacts:
+                path: accessibility-results
+            - run:
+                name: Compare accessibility results
+                command: bash -i -c "npm run accessibility-test -- -A"
 
   local_smoke_tests:
     executor: integration_test_exec
@@ -427,6 +439,9 @@ parameters:
   run_nightly_no_auth:
     type: boolean
     default: false
+  pull_request_url:
+    type: string
+    default: $CIRCLE_PULL_REQUEST
 
 workflows:
   version: 2
