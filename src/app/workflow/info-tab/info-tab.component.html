@@ -43,12 +43,18 @@
           <li *ngIf="workflow?.provider && workflow?.providerUrl">
             <strong matTooltip="Git repository for the associated descriptors">Source Code</strong>:
             <a
+              *ngIf="sourceCodeFile; else stub"
               id="sourceRepository"
               data-cy="sourceRepository"
               [href]="workflow?.providerUrl | versionProviderUrl: selectedVersion?.name + '/' + sourceCodeFile"
             >
               {{ workflow?.providerUrl | versionProviderUrl: selectedVersion?.name + '/' + sourceCodeFile }}
             </a>
+            <ng-template #stub>
+              <a id="sourceRepository" data-cy="sourceRepository" [href]="workflow?.providerUrl">
+                {{ workflow?.providerUrl }}
+              </a>
+            </ng-template>
           </li>
         </span>
         <li *ngIf="workflow?.mode === WorkflowType.ModeEnum.HOSTED">

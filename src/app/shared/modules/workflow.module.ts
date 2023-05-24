@@ -57,6 +57,7 @@ import { RegisterWorkflowModalService } from './../../workflow/register-workflow
 import { ToolTabComponent } from './../../workflow/tool-tab/tool-tab.component';
 import { VersionModalComponent } from './../../workflow/version-modal/version-modal.component';
 import { VersionModalService } from './../../workflow/version-modal/version-modal.service';
+import { ExecutionsTabComponent } from '../../workflow/executions/executions-tab.component';
 import { EntryModule } from './../entry/entry.module';
 import { CustomMaterialModule } from './../modules/material.module';
 import { RefreshService } from './../refresh.service';
@@ -66,6 +67,7 @@ import { CategoryButtonModule } from './../../categories/button/category-button.
 import { MySidebarModule } from '../modules/my-sidebar.module';
 import { SourceFileTabsService } from '../../source-file-tabs/source-file-tabs.service';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { PreviewWarningModule } from './preview-warning.module';
 
 @NgModule({
   declarations: [
@@ -79,6 +81,7 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
     VersionModalComponent,
     WorkflowActionsComponent,
     InfoTabComponent,
+    ExecutionsTabComponent,
     ToolTabComponent,
     SourceFileTabsComponent,
     NotebookComponent,
@@ -88,6 +91,7 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
     NotebookSourceComponent,
     FilterCloudInstancesPipe,
     MultiCloudLaunchComponent,
+    ExecutionsTabComponent,
   ],
   imports: [
     CommonModule,
@@ -112,6 +116,7 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
     CategoryButtonModule,
     MySidebarModule,
     NgxMatSelectSearchModule,
+    PreviewWarningModule,
   ],
   providers: [
     DateService,

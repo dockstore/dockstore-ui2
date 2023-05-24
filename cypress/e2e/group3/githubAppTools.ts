@@ -45,7 +45,7 @@ describe('GitHub App Tools', () => {
       cy.get('#register_tool_button').click();
       cy.contains('Register using GitHub Apps');
       cy.get('#GitHubApps-register-workflow-option').click();
-      cy.contains('Install our GitHub App on your');
+      cy.contains('Install our GitHub App in');
       cy.get('.modal-footer').contains('Next').first().click();
       cy.contains('Navigate to GitHub to install our GitHub app');
       cy.contains('Tool storage type').click();
