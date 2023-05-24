@@ -291,6 +291,11 @@ jobs:
           # Execute if there's a pull request URL
           condition: << pipeline.parameters.pull_request_url >>
           steps:
+            - run: 
+                name: Check PR URL
+                command: |
+                  echo << pipeline.parameters.pull_request_url >>
+                  echo $CIRCLE_PULL_REQUEST
             - checkout
             - install_container_dependencies
             - prepare_accessibility_test
