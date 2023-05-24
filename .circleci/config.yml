@@ -289,7 +289,7 @@ jobs:
     steps:
       - when:
           # Execute if there's a pull request URL
-          condition: << parameters.pull_request_url >>
+          condition: << pipeline.parameters.pull_request_url >>
           steps:
             - checkout
             - install_container_dependencies
@@ -311,7 +311,7 @@ jobs:
     steps:
       - when:
           # Execute if there's a pull request URL
-          condition: << parameters.pull_request_url >>
+          condition: << pipeline.parameters.pull_request_url >>
           steps:
             - checkout
             - checkout:
@@ -342,7 +342,7 @@ jobs:
     steps:
       - when:
           # Execute if there's a pull request URL
-          condition: << parameters.pull_request_url >>
+          condition: << pipeline.parameters.pull_request_url >>
           steps:
             - checkout
             - run:
