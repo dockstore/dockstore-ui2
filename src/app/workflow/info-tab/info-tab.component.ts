@@ -133,6 +133,13 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
         this.authors = [...this.selectedVersion.authors, ...orcidAuthors];
       });
     } else {
+      this.currentVersion = null;
+      this.publicAccessibleTestParameterFile = null;
+      this.trsLink = null;
+      this.sourceCodeFile = null;
+      this.isValidVersion = null;
+      this.downloadZipLink = null;
+      this.authors = null;
       this.isValidVersion = false;
       this.trsLink = null;
     }
