@@ -290,27 +290,24 @@ jobs:
         type: string
         default: "${CIRCLE_PULL_REQUEST}"
     steps:
-      - when:
-          # Execute if there's a pull request URL
-          condition: << parameters.pull_request_url >>
-          steps:
-            - run: 
-                name: Check PR URL
-                command: |
-                  echo << parameters.pull_request_url >>
-                  echo $CIRCLE_PULL_REQUEST
-            - checkout
-            - install_container_dependencies
-            - prepare_accessibility_test
-            - run:
-                name: Run accesibility test on current branch
-                command: bash -i -c "npm run accessibility-test -- -R"
-            - persist_to_workspace:
-                root: .
-                paths:
-                  - accessibility-results
-            - store_artifacts:
-                path: accessibility-results
+      - check_if_pull_request_exists
+      - run: 
+          name: Check PR URL
+          command: |
+            echo << parameters.pull_request_url >>
+            echo $CIRCLE_PULL_REQUEST
+      - checkout
+      - install_container_dependencies
+      - prepare_accessibility_test
+      - run:
+          name: Run accesibility test on current branch
+          command: bash -i -c "npm run accessibility-test -- -R"
+      - persist_to_workspace:
+          root: .
+          paths:
+            - accessibility-results
+      - store_artifacts:
+          path: accessibility-results
 
   accessibility_test_base:
     resource_class: medium+
@@ -321,28 +318,25 @@ jobs:
         type: string
         default: "${CIRCLE_PULL_REQUEST}"
     steps:
-      - when:
-          # Execute if there's a pull request URL
-          condition: << parameters.pull_request_url >>
-          steps:
-            - checkout
-            - checkout:
-                path: accessibility
-            - install_container_dependencies
-            - run:
-                name: Checkout base branch
-                command: bash -i -c "npm run accessibility-test -- -C"
-            - prepare_accessibility_test
-            - run:
-                name: Run accesibility test on base branch
-                command: bash -i -c "npm run accessibility-test -- -RB"
-                working_directory: accessibility
-            - persist_to_workspace:
-                root: accessibility
-                paths:
-                  - accessibility-results
-            - store_artifacts:
-                path: accessibility/accessibility-results
+      - check_if_pull_request_exists
+      - checkout
+      - checkout:
+          path: accessibility
+      - install_container_dependencies
+      - run:
+          name: Checkout base branch
+          command: bash -i -c "npm run accessibility-test -- -C"
+      - prepare_accessibility_test
+      - run:
+          name: Run accesibility test on base branch
+          command: bash -i -c "npm run accessibility-test -- -RB"
+          working_directory: accessibility
+      - persist_to_workspace:
+          root: accessibility
+          paths:
+            - accessibility-results
+      - store_artifacts:
+          path: accessibility/accessibility-results
 
   compare_accessibility_results:
     working_directory: ~/repo
@@ -356,22 +350,19 @@ jobs:
         type: string
         default: "${CIRCLE_PULL_REQUEST}"
     steps:
-      - when:
-          # Execute if there's a pull request URL
-          condition: << parameters.pull_request_url >>
-          steps:
-            - checkout
-            - run:
-                name: Install npm
-                command: |
-                  wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
-                  bash -i -c 'nvm install'
-            - get_workspace
-            - store_artifacts:
-                path: accessibility-results
-            - run:
-                name: Compare accessibility results
-                command: bash -i -c "npm run accessibility-test -- -A"
+      - check_if_pull_request_exists
+      - checkout
+      - run:
+          name: Install npm
+          command: |
+            wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
+            bash -i -c 'nvm install'
+      - get_workspace
+      - store_artifacts:
+          path: accessibility-results
+      - run:
+          name: Compare accessibility results
+          command: bash -i -c "npm run accessibility-test -- -A"
 
   local_smoke_tests:
     executor: integration_test_exec
@@ -752,3 +743,13 @@ commands:
           path: cypress/videos
       - store_artifacts:
           path: cypress/screenshots
+  check_if_pull_request_exists:
+    steps:
+      - run:
+          name: Check if pull request exists
+          command: |
+            if [[ -z "${CIRCLE_PULL_REQUEST}" ]]; then
+              circleci-agent step halt
+            fi
+
+
