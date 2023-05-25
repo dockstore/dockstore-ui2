@@ -288,11 +288,6 @@ jobs:
         default: "${CIRCLE_PULL_REQUEST}"
     steps:
       - check_if_pull_request_exists
-      - run: 
-          name: Check PR URL
-          command: |
-            echo << parameters.pull_request_url >>
-            echo $CIRCLE_PULL_REQUEST
       - checkout
       - install_container_dependencies
       - prepare_accessibility_test
@@ -316,6 +311,7 @@ jobs:
         default: "${CIRCLE_PULL_REQUEST}"
     steps:
       - check_if_pull_request_exists
+      - checkout
       - install_container_dependencies
       - run:
           name: Checkout base branch
@@ -324,7 +320,6 @@ jobs:
       - run:
           name: Run accessibility test on base branch
           command: bash -i -c "npm run accessibility-test -- -RB"
-          working_directory: accessibility
       - persist_to_workspace:
           root: accessibility
           paths:
