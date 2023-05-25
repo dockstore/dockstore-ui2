@@ -283,9 +283,6 @@ jobs:
     executor: accessibility_test_exec
     working_directory: ~/repo
     parameters:
-      db_dump:
-        type: string
-        default: "db_dump.sql"
       pull_request_url:
         type: string
         default: "${CIRCLE_PULL_REQUEST}"
@@ -312,23 +309,20 @@ jobs:
   accessibility_test_base:
     resource_class: medium+
     executor: accessibility_test_exec
-    working_directory: ~/repo
+    working_directory: ~/repo/accessibility
     parameters:
       pull_request_url:
         type: string
         default: "${CIRCLE_PULL_REQUEST}"
     steps:
       - check_if_pull_request_exists
-      - checkout
-      - checkout:
-          path: accessibility
       - install_container_dependencies
       - run:
           name: Checkout base branch
           command: bash -i -c "npm run accessibility-test -- -C"
       - prepare_accessibility_test
       - run:
-          name: Run accesibility test on base branch
+          name: Run accessibility test on base branch
           command: bash -i -c "npm run accessibility-test -- -RB"
           working_directory: accessibility
       - persist_to_workspace:
