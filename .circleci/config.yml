@@ -282,10 +282,6 @@ jobs:
     resource_class: medium+
     executor: accessibility_test_exec
     working_directory: ~/repo
-    parameters:
-      pull_request_url:
-        type: string
-        default: "${CIRCLE_PULL_REQUEST}"
     steps:
       - check_if_pull_request_exists
       - checkout
@@ -306,16 +302,13 @@ jobs:
     executor: accessibility_test_exec
     working_directory: ~/repo/accessibility
     parameters:
-      pull_request_url:
-        type: string
-        default: "${CIRCLE_PULL_REQUEST}"
     steps:
       - check_if_pull_request_exists
       - checkout
       - install_container_dependencies
       - run:
           name: Checkout base branch
-          command: bash -i -c "npm run accessibility-test -- -C"
+          command: git checkout $(bash scripts/get-base-branch.sh)
       - prepare_accessibility_test
       - run:
           name: Run accessibility test on base branch
@@ -334,10 +327,6 @@ jobs:
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
-    parameters:
-      pull_request_url:
-        type: string
-        default: "${CIRCLE_PULL_REQUEST}"
     steps:
       - check_if_pull_request_exists
       - checkout
