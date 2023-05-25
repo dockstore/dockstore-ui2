@@ -325,7 +325,7 @@ jobs:
           paths:
             - accessibility-results
       - store_artifacts:
-          path: accessibility/accessibility-results
+          path: accessibility-results
 
   compare_accessibility_results:
     working_directory: ~/repo
