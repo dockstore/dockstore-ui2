@@ -321,7 +321,7 @@ jobs:
           name: Run accessibility test on base branch
           command: bash -i -c "npm run accessibility-test -- -RB"
       - persist_to_workspace:
-          root: accessibility
+          root: .
           paths:
             - accessibility-results
       - store_artifacts:
