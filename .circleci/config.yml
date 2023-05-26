@@ -132,6 +132,7 @@ jobs:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
     steps:
+      - check_if_pull_request_exists
       - checkout
       - browser-tools/install-chrome
       - browser-tools/install-chromedriver
@@ -150,7 +151,7 @@ jobs:
           # high or critical findings in the current branch, then the test fails. If the same number of findings are found, then check that the vulnerabilities are the same.
           # If they are are different, then the test fails.
           command: |
-            bash -i -c "npm run compare-audits"
+            bash -i -c "npm run compare-audits -- $(bash scripts/get-base-branch.sh)"
 
   lint_license_unit_test_coverage:
     working_directory: ~/repo
