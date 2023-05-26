@@ -145,6 +145,7 @@ jobs:
               git checkout -qf FETCH_HEAD
             fi
       - install_container_dependencies
+      - check_github_rate_limit
       - run:
           name: Run npm audit
           # Run npm audit on current branch and compare it with the results of running npm audit on the base branch that is set in the package.json. If there are more
@@ -152,6 +153,7 @@ jobs:
           # If they are are different, then the test fails.
           command: |
             bash -i -c "npm run compare-audits -- $(bash scripts/get-base-branch.sh)"
+      - check_github_rate_limit
 
   lint_license_unit_test_coverage:
     working_directory: ~/repo
@@ -307,9 +309,11 @@ jobs:
       - check_if_pull_request_exists
       - checkout
       - install_container_dependencies
+      - check_github_rate_limit
       - run:
           name: Checkout base branch
           command: git checkout $(bash scripts/get-base-branch.sh)
+      - check_github_rate_limit
       - prepare_accessibility_test
       - run:
           name: Run accessibility test on base branch
@@ -730,5 +734,10 @@ commands:
             if [[ -z "${CIRCLE_PULL_REQUEST}" ]]; then
               circleci-agent step halt
             fi
+  check_github_rate_limit:
+    steps:
+      - run:
+          name: Check GitHub rate limit
+          command: curl -L https://api.github.com/rate_limit | jq '.rate'
 
 
