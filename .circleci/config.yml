@@ -30,29 +30,6 @@ executors:
           - network.host: 127.0.0.1
           - http.port: 9200
           - discovery.type: single-node
-  accessibility_test_exec:
-    docker:
-      - image: cimg/base:stable-20.04
-        auth:
-          username: dockstoretestuser
-          password: $DOCKERHUB_PASSWORD
-      - image: cimg/postgres:13.3
-        command: postgres -c max_connections=200 -c jit=off
-        auth:
-          username: dockstoretestuser
-          password: $DOCKERHUB_PASSWORD
-        environment:
-          POSTGRES_USER: postgres
-          POSTGRES_DB: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_HOST_AUTH_METHOD: trust
-      - image: docker.elastic.co/elasticsearch/elasticsearch:7.10.1
-        environment:
-          - xpack.security.enabled: false
-          - transport.host: localhost
-          - network.host: 127.0.0.1
-          - http.port: 9200
-          - discovery.type: single-node
 
 jobs:
   # Specify the webpage url (https://dev.dockstore.net or https://staging.dockstore.org or https://dockstore.org)
@@ -175,16 +152,7 @@ jobs:
               git checkout -qf FETCH_HEAD
             fi
       - install_container_dependencies
-      - restore_cache:
-          key: dep-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
-      - run:
-          name: Install dependencies
-          #Only run 'npm ci' if node_modules was not restored from cache
-          command: |
-              if [ ! -d "./node_modules" ]
-              then
-                bash -i -c 'npm ci'
-              fi
+      - install_ui_dependencies
       - save_cache:
           key: dep-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
           paths:
@@ -283,15 +251,14 @@ jobs:
       - upload_artifacts
   accessibility_test:
     resource_class: medium+
-    executor: accessibility_test_exec
+    executor: integration_test_exec
     working_directory: ~/repo
     steps:
       - check_if_pull_request_exists
       - checkout
-      - install_container_dependencies
       - prepare_accessibility_test
       - run:
-          name: Run accesibility test on current branch
+          name: Run accessibility test on current branch
           command: bash -i -c "npm run accessibility-test -- -R"
       - persist_to_workspace:
           root: .
@@ -302,7 +269,7 @@ jobs:
 
   accessibility_test_base:
     resource_class: medium+
-    executor: accessibility_test_exec
+    executor: integration_test_exec
     working_directory: ~/repo/accessibility
     parameters:
     steps:
@@ -594,11 +561,7 @@ commands:
     steps:
       - browser-tools/install-chrome
       - browser-tools/install-chromedriver
-      - restore_cache:
-          key: dep-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
-      - run:
-          name: Install dependencies
-          command: bash -i -c 'npm ci'
+      - install_ui_dependencies
       - run:
           name: Build
           command: NODE_OPTIONS="--max-old-space-size=1610" bash -i -c 'npm run build.prod'
@@ -694,15 +657,10 @@ commands:
       - install_container_dependencies
       - restore_cache:
           key: cypress-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
+      - install_ui_dependencies
       - run:
-          name: Install dependencies
-          #Only run 'npm ci' if node_modules was not restored from cache
-          command: |
-            if [ ! -d "./node_modules" ]
-            then
-              bash -i -c 'npm ci'
-            fi
-            mkdir -p nightly-test-results/junit
+            name: Create test results directory
+            command: kdir -p nightly-test-results/junit
       - run:
           name: Prebuild
           command: bash -i -c 'npm run prebuild.prod'
@@ -739,5 +697,16 @@ commands:
       - run:
           name: Check GitHub rate limit
           command: curl -L https://api.github.com/rate_limit | jq '.rate'
-
+  install_ui_dependencies:
+    steps:
+      - restore_cache:
+          key: dep-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
+      - run:
+          name: Install dependencies 
+          #Only run 'npm ci' if node_modules was not restored from cache
+          command: |
+              if [ ! -d "./node_modules" ]
+              then
+                bash -i -c 'npm ci'
+              fi
 
