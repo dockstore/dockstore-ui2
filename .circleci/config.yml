@@ -275,7 +275,6 @@ jobs:
     steps:
       - check_if_pull_request_exists
       - checkout
-      - install_container_dependencies
       - check_github_rate_limit
       - run:
           name: Checkout base branch
@@ -561,6 +560,7 @@ commands:
     steps:
       - browser-tools/install-chrome
       - browser-tools/install-chromedriver
+      - install_container_dependencies
       - install_ui_dependencies
       - run:
           name: Build
