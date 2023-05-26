@@ -173,9 +173,7 @@ jobs:
           command: |
             bash -i -c 'npm run circle-ci-license-test-file'
             bash scripts/detect-package-json-changes.sh
-      - run:
-          name: Build
-          command: NODE_OPTIONS="--max-old-space-size=1610" bash -i -c 'npm run build.prod'
+      - build-ui
       - run:
           name: Install codecov
           command: bash -i -c 'npm i --no-save codecov'
@@ -384,9 +382,7 @@ jobs:
       - run:
           name: set webservice to develop
           command: bash -i -c 'npm config set dockstore-ui2:webservice_version develop'
-      - run:
-          name: Build
-          command: NODE_OPTIONS="--max-old-space-size=1610" bash -i -c 'npm run build.prod'
+      - build-ui
 
 parameters:
   run_nightly_auth:
@@ -562,10 +558,7 @@ commands:
       - browser-tools/install-chromedriver
       - install_container_dependencies
       - install_ui_dependencies
-      - run:
-          name: Build
-          command: NODE_OPTIONS="--max-old-space-size=1610" bash -i -c 'npm run build.prod'
-          no_output_timeout: 30m
+      - build-ui
       - run:
           name: Install postgresql client
           command: sudo apt install -y postgresql-client || true
@@ -709,4 +702,9 @@ commands:
               then
                 bash -i -c 'npm ci'
               fi
+  build-ui:
+    steps:
+      - run:
+          name: Build
+          command: NODE_OPTIONS="--max-old-space-size=1610" bash -i -c 'npm run build.prod'
 

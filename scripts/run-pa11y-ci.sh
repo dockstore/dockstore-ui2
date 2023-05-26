@@ -29,7 +29,7 @@ RUN_ACCESSIBILITY_TEST="false"
 COMPARE_RESULTS="false"
 
 no_args="true"
-while getopts 'HBCRA' OPTION; do
+while getopts 'HBRA' OPTION; do
   case "$OPTION" in
     H)
       usage
