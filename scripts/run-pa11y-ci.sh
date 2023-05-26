@@ -39,11 +39,6 @@ while getopts 'HBCRA' OPTION; do
     B)
       RESULT_FILE="$BASE_BRANCH_RESULT_FILE_NAME"
       ;;
-    C)
-      git checkout "$npm_package_config_base_branch"
-      echo "The base branch has been checked out, all other flags (if any) have been ignored"
-      exit 0
-      ;;
     R)
       RUN_ACCESSIBILITY_TEST="true"
       if [ "$COMPARE_RESULTS" == "true" ]
