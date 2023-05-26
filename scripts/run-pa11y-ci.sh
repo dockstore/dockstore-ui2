@@ -20,7 +20,6 @@ usage() {
   echo ""
   echo "-H, Display help command"
   echo "-B, Do all commands on base branch (if this option is not given all commands are done on current branch)"
-  echo "-C, Checkouts the code from the base branch (note: the option -B is not required to do this)"
   echo "-R, Runs pa11y-ci on branch (requires webservice to be running) and outputs results in a form that can be analysed"
   echo "-A, Determines if current branch has more accessibility issues then base branch, requires the results from option -R to be available"
 }
