@@ -211,13 +211,7 @@ jobs:
         default: false
     resource_class: medium+
     executor: integration_test_exec
-    when:
-      condition: << parameters.execute_on_base_branch >>
-      working_directory: ~/repo/accessibility
-     when:
-      condition:
-        not: << parameters.execute_on_base_branch >>
-      working_directory: ~/repo
+    working_directory: ~/repo
     parameters:
     steps:
       - check_if_pull_request_exists
