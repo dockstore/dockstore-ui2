@@ -585,6 +585,7 @@ commands:
     steps:
       - run:
           name: Check if pull request exists
+          # End the job gracefully if it has no pull request
           command: |
             if [[ -z "${CIRCLE_PULL_REQUEST}" ]]; then
               circleci-agent step halt
