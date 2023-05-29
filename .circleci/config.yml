@@ -583,7 +583,7 @@ commands:
       - get_workspace
       - install_container_dependencies
       - install_cypress_dependencies
-      - run_services
+      - run_services:
           db_dump: << parameters.db_dump >>
       - run: mkdir -p integration-tests/test-results/junit
   setup_nightly_tests:
