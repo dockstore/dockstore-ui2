@@ -418,7 +418,7 @@ workflows:
               only: /.*/
           requires:
             - accessibility_test_base
-            - accessibility_test
+            - accessibility_test_current
       - local_smoke_tests:
           filters:
             tags:
