@@ -575,6 +575,7 @@ commands:
           # End the job gracefully if it has no pull request
           command: |
             if [[ -z "${CIRCLE_PULL_REQUEST}" ]]; then
+              echo "No pull request exists, so there is no base branch to compare against. Skipping the rest of the steps."
               circleci-agent step halt
             fi
   install_ui_dependencies:
