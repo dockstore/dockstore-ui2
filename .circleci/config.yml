@@ -212,7 +212,6 @@ jobs:
     resource_class: medium+
     executor: integration_test_exec
     working_directory: ~/repo
-    parameters:
     steps:
       - check_if_pull_request_exists
       - checkout
