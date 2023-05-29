@@ -5,7 +5,7 @@ orbs:
   slack: circleci/slack@4.4.4
   browser-tools: circleci/browser-tools@1.2.4
 executors:
-  integration_test_exec: # Declares a reusable executor
+  integration_test_exec: # declares a reusable executor
     docker:
       - image: cimg/base:stable-20.04
         auth:
@@ -626,7 +626,6 @@ commands:
           name: Run webservice
           command: java -jar dockstore-webservice.jar server test/web.yml 1>/dev/null
           background: true
-      - run: mkdir -p integration-tests/test-results/junit
       - run:
           name: Wait for services
           command: bash scripts/wait-for.sh
