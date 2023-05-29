@@ -550,6 +550,7 @@ commands:
             bash -i -c 'nvm install'
   prepare_accessibility_test:
     steps:
+      - install_browser_tools
       - install_container_dependencies
       - install_ui_dependencies
       - build_ui
@@ -580,6 +581,7 @@ commands:
         type: string
         default: "db_dump.sql"
     steps:
+      - install_browser_tools
       - get_workspace
       - install_container_dependencies
       - install_cypress_dependencies
@@ -651,14 +653,16 @@ commands:
       - run:
           name: Build
           command: NODE_OPTIONS="--max-old-space-size=1610" bash -i -c 'npm run build.prod'
+  install_browser_tools:
+    steps:
+      - browser-tools/install-chrome
+      - browser-tools/install-chromedriver
   run_services:
     parameters:
       db_dump:
         type: string
         default: "db_dump.sql"
     steps:
-      - browser-tools/install-chrome
-      - browser-tools/install-chromedriver
       - run:
           name: Install postgresql client
           command: sudo apt install -y postgresql-client || true
