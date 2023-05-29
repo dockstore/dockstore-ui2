@@ -576,24 +576,15 @@ commands:
           command: sudo apt-get install libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb -yq
   setup_integration_test:
     parameters:
-      # Boolean indicating whether to use "smoke_test_db.sql" or "db_dump.sql" when setting up webservice
-      use_smoke_test_db:
-        type: boolean
-        default: false
+      db_dump:
+        type: string
+        default: "db_dump.sql"
     steps:
       - get_workspace
       - install_container_dependencies
       - install_cypress_dependencies
-      - when: 
-          condition: << parameters.use_smoke_test_db >>
-          steps:
-            - run_services
-                db_dump: "smoke_test_db.sql"
-      - when: 
-          condition: 
-            not: << parameters.use_smoke_test_db >>
-          steps:
-            - run_services
+      - run_services
+          db_dump: << parameters.db_dump >>
       - run: mkdir -p integration-tests/test-results/junit
   setup_nightly_tests:
     steps:
@@ -613,7 +604,7 @@ commands:
   setup_smoke_tests:
     steps:
       - setup_integration_test:
-          use_smoke_test_db: true
+          db_dump: "smoke_test_db.sql"
       - run:
           name: Index ES
           command: |
