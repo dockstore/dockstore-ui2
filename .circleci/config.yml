@@ -110,14 +110,7 @@ jobs:
       - check_if_pull_request_exists
       - checkout
       - install_browser_tools
-      - run:
-          name: Checkout merge commit (PRs only)
-          command: |
-            if [[ -n "${CIRCLE_PULL_REQUEST}" ]]
-            then
-              git fetch origin +refs/pull/${CIRCLE_PULL_REQUEST##*/}/merge:
-              git checkout -qf FETCH_HEAD
-            fi
+      - checkout_merge_commit
       - install_container_dependencies
       - check_github_rate_limit
       - run:
@@ -139,14 +132,7 @@ jobs:
     steps:
       - checkout
       - install_browser_tools
-      - run:
-          name: Checkout merge commit (PRs only)
-          command: |
-            if [[ -n "${CIRCLE_PULL_REQUEST}" ]]
-            then
-              git fetch origin +refs/pull/${CIRCLE_PULL_REQUEST##*/}/merge:
-              git checkout -qf FETCH_HEAD
-            fi
+      - checkout_merge_commit
       - install_container_dependencies
       - install_ui_dependencies
       - save_cache:
@@ -222,6 +208,11 @@ jobs:
             - run:
                 name: Checkout base branch
                 command: git checkout $(bash scripts/get-base-branch.sh)
+      - when:
+          condition: 
+            not: << parameters.execute_on_base_branch >>
+          steps:
+            - checkout_merge_commit
       - check_github_rate_limit
       - prepare_accessibility_test
       - run:
@@ -655,3 +646,13 @@ commands:
     steps:
       - restore_cache:
           key: dep-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
+  checkout_merge_commit:
+    steps:
+      - run:
+          name: Checkout merge commit (PRs only)
+          command: |
+            if [[ -n "${CIRCLE_PULL_REQUEST}" ]]
+            then
+              git fetch origin +refs/pull/${CIRCLE_PULL_REQUEST##*/}/merge:
+              git checkout -qf FETCH_HEAD
+            fi
