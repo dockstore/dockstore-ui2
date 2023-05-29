@@ -111,8 +111,7 @@ jobs:
     steps:
       - check_if_pull_request_exists
       - checkout
-      - browser-tools/install-chrome
-      - browser-tools/install-chromedriver
+      - install_browser_tools
       - run:
           name: Checkout merge commit (PRs only)
           command: |
@@ -141,8 +140,7 @@ jobs:
           password: $DOCKERHUB_PASSWORD
     steps:
       - checkout
-      - browser-tools/install-chrome
-      - browser-tools/install-chromedriver
+      - install_browser_tools
       - run:
           name: Checkout merge commit (PRs only)
           command: |
@@ -591,8 +589,7 @@ commands:
   setup_nightly_tests:
     steps:
       - checkout
-      - browser-tools/install-chrome
-      - browser-tools/install-chromedriver
+      - install_browser_tools
       - install_container_dependencies
       - restore_cache:
           key: cypress-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
