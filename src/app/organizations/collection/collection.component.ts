@@ -18,7 +18,6 @@ import { CollectionsQuery } from '../state/collections.query';
 import { CollectionsService } from '../state/collections.service';
 import { OrganizationQuery } from '../state/organization.query';
 import { EntryType } from 'app/shared/enum/entry-type';
-import { CollectionEntry } from '../../shared/openapi';
 
 @Component({
   selector: 'app-collection-entry-confirm-remove',
