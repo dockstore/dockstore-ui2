@@ -184,6 +184,7 @@ jobs:
           paths:
             - .
 
+  # Reusable job to run integration tests. Specify the integration test folder name (examples: group1, group2, etc.)
   integration_test:
     parameters:
       integration_test_name:
@@ -202,41 +203,41 @@ jobs:
           when: always
       - upload_artifacts
 
+  # Reusable job to execute accessibility tests on a branch. Specify if it should be executed on the base branch using the parameter
   accessibility_test:
+    parameters:
+      execute_on_base_branch:
+        type: boolean
+        default: false
     resource_class: medium+
     executor: integration_test_exec
-    working_directory: ~/repo
-    steps:
-      - check_if_pull_request_exists
-      - checkout
-      - prepare_accessibility_test
-      - run:
-          name: Run accessibility test on current branch
-          command: bash -i -c "npm run accessibility-test -- -R"
-      - persist_to_workspace:
-          root: .
-          paths:
-            - accessibility-results
-      - store_artifacts:
-          path: accessibility-results
-
-  accessibility_test_base:
-    resource_class: medium+
-    executor: integration_test_exec
-    working_directory: ~/repo/accessibility
+    when:
+      condition: << parameters.execute_on_base_branch >>
+      working_directory: ~/repo/accessibility
+     when:
+      condition:
+        not: << parameters.execute_on_base_branch >>
+      working_directory: ~/repo
     parameters:
     steps:
       - check_if_pull_request_exists
       - checkout
       - check_github_rate_limit
-      - run:
-          name: Checkout base branch
-          command: git checkout $(bash scripts/get-base-branch.sh)
+      - when:
+          condition: << parameters.execute_on_base_branch >>
+          steps:
+            - run:
+                name: Checkout base branch
+                command: git checkout $(bash scripts/get-base-branch.sh)
       - check_github_rate_limit
       - prepare_accessibility_test
       - run:
-          name: Run accessibility test on base branch
-          command: bash -i -c "npm run accessibility-test -- -RB"
+          command: |
+            if [[ "<< parameters.execute_on_base_branch >>" == "true" ]]; then
+              bash -i -c "npm run accessibility-test -- -RB"
+            else 
+              bash -i -c "npm run accessibility-test -- -R"
+            fi
       - persist_to_workspace:
           root: .
           paths:
@@ -408,10 +409,13 @@ workflows:
           context:
             - dockerhub
       - accessibility_test:
+          name: accessibility_test_current
           filters:
             tags:
               only: /.*/
-      - accessibility_test_base:
+      - accessibility_test:
+          name: accessibility_test_base
+          execute_on_base_branch: true
           filters:
             tags:
               only: /.*/
