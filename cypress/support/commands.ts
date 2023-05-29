@@ -80,6 +80,10 @@ export function insertNotebooks() {
   addBeforeSqlFromFile('test/github_notebook_db_dump.sql');
 }
 
+export function insertAuthors() {
+  addBeforeSqlFromFile('test/authors_db_dump.sql');
+}
+
 export function typeInInput(fieldName: string, text: string) {
   cy.contains('span', fieldName).parentsUntil('.mat-form-field-wrapper').find('input').first().should('be.visible').clear().type(text);
 }
@@ -227,4 +231,20 @@ export function addToCollection(path: string, organizationName: string, collecti
   cy.get('[data-cy=selectCollection]').click();
   cy.get('mat-option').contains(collectionDisplayName).click();
   cy.get('[data-cy=addEntryToCollectionButton]').should('not.be.disabled').click();
+}
+export function snapshot() {
+  cy.get('[data-cy=dockstore-snapshot-locked]').should('have.length', 0);
+  // The buttons should be present
+  cy.get('[data-cy=dockstore-request-doi-button]').its('length').should('be.gt', 0);
+  cy.get('[data-cy=dockstore-snapshot]').its('length').should('be.gt', 0);
+
+  cy.get('[data-cy=dockstore-snapshot-unlocked]').its('length').should('be.gt', 0);
+
+  cy.get('[data-cy=dockstore-snapshot]').first().click();
+
+  cy.get('[data-cy=snapshot-button]').click();
+
+  cy.get('[data-cy=dockstore-snapshot-locked]').should('have.length', 1);
+  cy.get('td').contains('Actions').click();
+  cy.get('[data-cy=dockstore-snapshot]').should('be.disabled');
 }

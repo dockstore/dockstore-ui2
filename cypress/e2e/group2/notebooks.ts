@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-import { goToTab, insertNotebooks, resetDB, setTokenUserViewPort } from '../../support/commands';
+import { goToTab, insertNotebooks, resetDB, setTokenUserViewPort, snapshot } from '../../support/commands';
 
 describe('Dockstore notebooks', () => {
   resetDB();
@@ -126,6 +126,12 @@ describe('Dockstore notebooks', () => {
     cy.get('.markdown').contains('\\frac{123}{x}').should('not.exist');
   });
 
+  it('should be able to snapshot', () => {
+    cy.visit('/my-notebooks/' + name);
+    goToTab('Versions');
+    cy.get('td').contains('Actions').click();
+    snapshot();
+  });
   it('should have Preview tab with highlighted syntax', () => {
     substituteNotebookContent(['{ "cell_type": "code", "source": [ "import xyz;" ] }']);
     cy.visit('/notebooks/' + name);

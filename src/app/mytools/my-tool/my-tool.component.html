@@ -116,11 +116,7 @@
                   There are currently no tools registered under this account. To add your first tool, do one of the following:
                 </p>
                 <ul>
-                  <li>
-                    Go to 'Accounts' and link a Quay.io account that is set up to build Docker images from GitHub, Gitlab, or Bitbucket.
-                    Tools will be synchronized in the linking process.
-                  </li>
-                  <li>Press the 'Register a Tool' button to manually add a tool using the registration wizard.</li>
+                  <li>Press the 'Add Tool' button to add a tool using the registration wizard.</li>
                   <button
                     mat-raised-button
                     class="accent-1-dark-btn"
@@ -129,6 +125,17 @@
                     [disabled]="isRefreshing$ | async"
                   >
                     Register a Tool
+                  </button>
+                  <li>If there are already tools on Dockstore added by other users that you have access to, press the button below.</li>
+                  <button
+                    mat-raised-button
+                    class="accent-1-dark-btn"
+                    type="button"
+                    (click)="addToExistingTools()"
+                    [disabled]="(isRefreshing$ | async) || (user$ | async) === false"
+                    matTooltip="Discover tools added by others using your linked source control accounts"
+                  >
+                    Discover Existing Dockstore Tools
                   </button>
                 </ul>
                 <div *ngIf="!hasGitHubToken" class="mt-3">

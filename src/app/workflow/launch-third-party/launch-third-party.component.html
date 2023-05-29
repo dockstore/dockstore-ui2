@@ -263,14 +263,51 @@
         </div>
       </div>
       <div *ngIf="workflow?.descriptorType === WorkflowModel.DescriptorTypeEnum.Jupyter">
-        <a
-          target="_blank"
-          rel="noopener"
-          href="https://colab.research.google.com/github/{{ workflow.organization }}/{{ workflow.repository }}/blob/{{
-            selectedVersion.name
-          }}/{{ selectedVersion.workflow_path }}"
-          >Google Colab</a
-        >
+        <div fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="0.625rem">
+          <a
+            mat-button
+            class="launch-with-button private-btn"
+            [matTooltip]="colabTooltip$ | async"
+            matTooltipPosition="left"
+            target="_blank"
+            rel="noopener"
+            [attr.href]="
+              config.COLAB_IMPORT_URL +
+              '/' +
+              workflowOrganizationAsQueryValue +
+              '/' +
+              workflowRepositoryAsQueryValue +
+              '/blob/' +
+              selectedVersionNameAsQueryValue +
+              selectedVersionWorkflowPathAsQueryValue
+            "
+            [disabled]="(hasContent$ | async) === false"
+            data-cy="colabLaunchWith"
+            ><img class="partner-icon mr-2" src="../assets/images/thirdparty/colab.svg" alt="Google Colab icon" />Google Colab</a
+          >
+          <a
+            mat-button
+            class="launch-with-button private-btn"
+            [matTooltip]="mybinderTooltip$ | async"
+            matTooltipPosition="left"
+            target="_blank"
+            rel="noopener"
+            [attr.href]="
+              config.MYBINDER_IMPORT_URL +
+              '/' +
+              workflowOrganizationAsQueryValue +
+              '/' +
+              workflowRepositoryAsQueryValue +
+              '/' +
+              selectedVersionNameAsQueryValue +
+              '?labpath=' +
+              selectedVersionWorkflowPathAsQueryValue
+            "
+            [disabled]="(hasContent$ | async) === false"
+            data-cy="mybinderLaunchWith"
+            ><img class="partner-icon mr-2" src="../assets/images/thirdparty/binder.svg" alt="Binder icon" />mybinder.org</a
+          >
+        </div>
       </div>
     </div>
   </mat-card-content>
