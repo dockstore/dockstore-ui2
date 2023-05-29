@@ -650,8 +650,10 @@ commands:
           name: Wait for services
           command: bash scripts/wait-for.sh
   restore_cypress_cache:
-    - restore_cache:
+    steps:
+      - restore_cache:
           key: cypress-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
   restore_dep_cache:
-    - restore_cache:
+    steps:
+      - restore_cache:
           key: dep-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
