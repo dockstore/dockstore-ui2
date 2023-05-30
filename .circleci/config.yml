@@ -127,7 +127,7 @@ jobs:
   audit:
     working_directory: ~/repo
     docker:
-      - image: cimg/openjdk:17.0
+      - image: cimg/openjdk:17.0-browsers
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
@@ -155,7 +155,7 @@ jobs:
   lint_license_unit_test_coverage:
     working_directory: ~/repo
     docker:
-      - image: cimg/openjdk:17.0
+      - image: cimg/openjdk:17.0-browsers
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
@@ -363,7 +363,7 @@ jobs:
   upload_to_s3:
     working_directory: ~/repo
     docker:
-      - image: cimg/openjdk:17.0
+      - image: cimg/openjdk:17.0-browsers
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
@@ -409,7 +409,7 @@ jobs:
   check_build_develop:
     working_directory: ~/repo
     docker:
-      - image: cimg/openjdk:17.0
+      - image: cimg/openjdk:17.0-browsers
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
