@@ -42,7 +42,7 @@ export class StarredEntriesComponent extends Base implements OnInit {
     private imageProviderService: ImageProviderService,
     private providerService: ProviderService,
     private usersService: UsersService,
-    private orgLogoService: OrgLogoService,
+    public orgLogoService: OrgLogoService,
     private activatedRoute: ActivatedRoute,
     private location: Location
   ) {
