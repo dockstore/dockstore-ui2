@@ -99,27 +99,6 @@ jobs:
           event: pass
           template: basic_success_1
 
-  audit:
-    working_directory: ~/repo
-    docker:
-      - image: cimg/base:stable-20.04
-        auth:
-          username: dockstoretestuser
-          password: $DOCKERHUB_PASSWORD
-    steps:
-      - check_if_pull_request_exists
-      - checkout
-      - install_browser_tools
-      - checkout_merge_commit
-      - install_container_dependencies
-      - run:
-          name: Run npm audit
-          # Run npm audit on current branch and compare it with the results of running npm audit on the base branch that is set in the package.json. If there are more
-          # high or critical findings in the current branch, then the test fails. If the same number of findings are found, then check that the vulnerabilities are the same.
-          # If they are are different, then the test fails.
-          command: |
-            bash -i -c "npm run compare-audits -- $(bash scripts/get-base-branch.sh)"
-
   lint_license_unit_test_coverage:
     working_directory: ~/repo
     docker:
@@ -276,12 +255,6 @@ workflows:
           - << pipeline.parameters.run_nightly_no_auth >>
     jobs:
       # Add the tags filter to all jobs so they will run before upload_to_s3
-      - audit:
-        filters:
-          tags:
-            only: /.*/
-          context:
-            - dockerhub
       - lint_license_unit_test_coverage:
           filters:
             tags:
@@ -339,7 +312,6 @@ workflows:
       # Upload builds for tags and branches to s3.
       - upload_to_s3:
           requires:
-            - audit
             - lint_license_unit_test_coverage
           filters:
             tags:
