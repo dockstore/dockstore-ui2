@@ -6,11 +6,12 @@ jobs:
   run-accessibility-test:
     strategy:
       matrix:
+        # Run against the current branch (represented by '', which will use the default ref when using the checkout action) and the base branch
         branch: [ '', '${{ github.base_ref }}' ]
 
     # Uses if/else expression evaluation workaround from https://github.com/actions/runner/issues/409#issuecomment-752775072
     # 'matrix.branch == github.base_ref' is the condition, 'base' is the true value and 'current' is the false value
-    name: Run accessibility test on ${{ matrix.branch == github.base_ref && 'base' || 'current' }} branch
+    name: accessibility_test_${{ matrix.branch == github.base_ref && 'base' || 'current' }}
   
     runs-on: ubuntu-20.04
     services:
