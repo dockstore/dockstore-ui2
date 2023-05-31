@@ -6,13 +6,13 @@ jobs:
   run-accessibility-test:
     strategy:
       matrix:
-        ref: [$GITHUB_HEAD_REF, $GITHUB_BASE_REF]
+        branch: [ '${{ github.head_ref }}', '${{ github.base_ref }}' ]
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout branch
         uses: actions/checkout@v3
         with:
-          ref: ${{ matrix.ref }}
+          ref: ${{ matrix.branch }}
 
       - name: Install browser
         uses: browser-actions/setup-chrome@v1
@@ -70,9 +70,11 @@ jobs:
 
       - name: Run accessibility test
         run: |
-          if [[ "${{ matrix.ref }}" == "$GITHUB_HEAD_REF" ]]; then
+          if [[ "${{ matrix.branch }}" == "$GITHUB_HEAD_REF" ]]; then
+            echo "Running accessibility test for current branch"
             bash -i -c "npm run accessibility-test -- -R"
           else 
+            echo "Running accessibility test for base branch"
             bash -i -c "npm run accessibility-test -- -RB"
           fi
           
