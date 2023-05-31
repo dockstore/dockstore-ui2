@@ -11,7 +11,7 @@ jobs:
 
     # Uses if/else expression evaluation workaround from https://github.com/actions/runner/issues/409#issuecomment-752775072
     # 'matrix.branch == github.base_ref' is the condition, 'base' is the true value and 'current' is the false value
-    name: accessibility_test_${{ matrix.branch == github.base_ref && 'base' || 'current' }}
+    name: Accessibility test (${{ matrix.branch == github.base_ref && 'base' || 'current' }} branch)
   
     runs-on: ubuntu-20.04
     services:

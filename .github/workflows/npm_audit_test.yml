@@ -4,6 +4,7 @@ on: pull_request
 
 jobs:
   npm-audit-test:
+    name: npm audit test
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout branch
