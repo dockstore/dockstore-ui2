@@ -6,7 +6,8 @@ jobs:
   run-accessibility-test:
     strategy:
       matrix:
-        branch: [ '${{ github.head_ref }}', '${{ github.base_ref }}' ]
+        branch: [ '', '${{ github.base_ref }}' ]
+  
     runs-on: ubuntu-20.04
     services:
       postgres:
@@ -70,8 +71,6 @@ jobs:
 
       - name: Prepare webservice
         run: DB_DUMP="db_dump.sql" npm run webservice
-        # environment:
-        #   PAGER: cat # prevent psql commands using less https://stackoverflow.com/questions/53055044/rails-rake-dbstructureload-times-out-on-circleci-2-0
 
       - name: Install nginx
         run: sudo apt install -y nginx || true
@@ -90,12 +89,12 @@ jobs:
 
       - name: Run accessibility test
         run: |
-          if [[ "${{ matrix.branch }}" == "$GITHUB_HEAD_REF" ]]; then
-            echo "Running accessibility test for current branch"
-            npm run accessibility-test -- -R
-          else 
+          if [[ "${{ matrix.branch }}" == "$GITHUB_BASE_REF" ]]; then
             echo "Running accessibility test for base branch"
             npm run accessibility-test -- -RB
+          else 
+            echo "Running accessibility test for current branch"
+            npm run accessibility-test -- -R
           fi
           
       - name: Save accessibility results
@@ -119,7 +118,8 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: accessibility-results
-          path: accessibility-results # Download to this directory because this is the directory that the accessibility script looks at for the results
+          # Download to this directory because this is the directory that the accessibility script looks at for the results
+          path: accessibility-results 
           
       - name: Compare accessibility results
         run: npm run accessibility-test -- -A
