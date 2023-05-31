@@ -7,6 +7,10 @@ jobs:
     strategy:
       matrix:
         branch: [ '', '${{ github.base_ref }}' ]
+
+    # Uses if/else expression evaluation workaround from https://github.com/actions/runner/issues/409#issuecomment-752775072
+    # 'matrix.branch == github.base_ref' is the condition, 'base' is the true value and 'current' is the false value
+    name: Run accessibility test on ${{ matrix.branch == github.base_ref && 'base' || 'current' }} branch
   
     runs-on: ubuntu-20.04
     services:
