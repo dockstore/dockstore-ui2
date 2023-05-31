@@ -454,16 +454,6 @@ commands:
           path: cypress/videos
       - store_artifacts:
           path: cypress/screenshots
-  check_if_pull_request_exists:
-    steps:
-      - run:
-          name: Check if pull request exists
-          # End the job gracefully if it has no pull request
-          command: |
-            if [[ -z "${CIRCLE_PULL_REQUEST}" ]]; then
-              echo "No pull request exists, so there is no base branch to compare against. Skipping the rest of the steps."
-              circleci-agent step halt
-            fi
   install_ui_dependencies:
     steps:
       - restore_dep_cache
