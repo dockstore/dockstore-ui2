@@ -24,7 +24,7 @@ jobs:
           network.host: 127.0.0.1
           http.port: 9200
           discovery.type: single-node
-          
+
     steps:
       - name: Checkout branch
         uses: actions/checkout@v3
@@ -56,17 +56,17 @@ jobs:
 
       - if: ${{ steps.cache-dependencies.outputs.cache-hit != 'true' }}
         name: Install dependencies if cache miss
-        run: bash -i -c 'npm ci'
+        run: npm ci
 
       - name: Build
-        run: NODE_OPTIONS="--max-old-space-size=1610" bash -i -c 'npm run build.prod'
+        run: NODE_OPTIONS="--max-old-space-size=1610" npm run build.prod
 
       # Run the services
       - name: Install postgresql client
         run: sudo apt install -y postgresql-client || true
 
       - name: Prepare webservice
-        run: bash -i -c 'DB_DUMP="db_dump.sql" npm run webservice'
+        run: DB_DUMP="db_dump.sql" npm run webservice
         # environment:
         #   PAGER: cat # prevent psql commands using less https://stackoverflow.com/questions/53055044/rails-rake-dbstructureload-times-out-on-circleci-2-0
 
@@ -89,10 +89,10 @@ jobs:
         run: |
           if [[ "${{ matrix.branch }}" == "$GITHUB_HEAD_REF" ]]; then
             echo "Running accessibility test for current branch"
-            bash -i -c "npm run accessibility-test -- -R"
+            npm run accessibility-test -- -R
           else 
             echo "Running accessibility test for base branch"
-            bash -i -c "npm run accessibility-test -- -RB"
+            npm run accessibility-test -- -RB
           fi
           
       - name: Save accessibility results
@@ -118,5 +118,5 @@ jobs:
           name: accessibility-results
           
       - name: Compare accessibility results
-        run: bash -i -c "npm run accessibility-test -- -A"
+        run: npm run accessibility-test -- -A
         
