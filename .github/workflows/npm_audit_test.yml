@@ -3,7 +3,7 @@ name: npm audit test
 on: pull_request
 
 jobs:
-  run-accessibility-test:
+  npm-audit-test:
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout branch
