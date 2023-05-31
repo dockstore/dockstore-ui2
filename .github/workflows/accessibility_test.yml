@@ -119,6 +119,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: accessibility-results
+          path: accessibility-results # Download to this directory because this is the directory that the accessibility script looks at for the results
           
       - name: Compare accessibility results
         run: npm run accessibility-test -- -A
