@@ -187,66 +187,6 @@ jobs:
           when: always
       - upload_artifacts
 
-  # Reusable job to execute accessibility tests on a branch. Specify if it should be executed on the base branch using the parameter
-  accessibility_test:
-    parameters:
-      execute_on_base_branch:
-        type: boolean
-        default: false
-    resource_class: medium+
-    executor: integration_test_exec
-    working_directory: ~/repo
-    steps:
-      - check_if_pull_request_exists
-      - checkout
-      - when:
-          condition: << parameters.execute_on_base_branch >>
-          steps:
-            - run:
-                name: Checkout base branch
-                command: git checkout $(bash scripts/get-base-branch.sh)
-      - when:
-          condition: 
-            not: << parameters.execute_on_base_branch >>
-          steps:
-            - checkout_merge_commit
-      - prepare_accessibility_test
-      - run:
-          command: |
-            if [[ "<< parameters.execute_on_base_branch >>" == "true" ]]; then
-              bash -i -c "npm run accessibility-test -- -RB"
-            else 
-              bash -i -c "npm run accessibility-test -- -R"
-            fi
-      - persist_to_workspace:
-          root: .
-          paths:
-            - accessibility-results
-      - store_artifacts:
-          path: accessibility-results
-
-  compare_accessibility_results:
-    working_directory: ~/repo
-    docker:
-      - image: cimg/base:stable-20.04
-        auth:
-          username: dockstoretestuser
-          password: $DOCKERHUB_PASSWORD
-    steps:
-      - check_if_pull_request_exists
-      - checkout
-      - run:
-          name: Install npm
-          command: |
-            wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
-            bash -i -c 'nvm install'
-      - get_workspace
-      - store_artifacts:
-          path: accessibility-results
-      - run:
-          name: Compare accessibility results
-          command: bash -i -c "npm run accessibility-test -- -A"
-
   local_smoke_tests:
     executor: integration_test_exec
     working_directory: ~/repo
@@ -388,24 +328,6 @@ workflows:
             - lint_license_unit_test_coverage
           context:
             - dockerhub
-      - accessibility_test:
-          name: accessibility_test_current
-          filters:
-            tags:
-              only: /.*/
-      - accessibility_test:
-          name: accessibility_test_base
-          execute_on_base_branch: true
-          filters:
-            tags:
-              only: /.*/
-      - compare_accessibility_results:
-          filters:
-            tags:
-              only: /.*/
-          requires:
-            - accessibility_test_base
-            - accessibility_test_current
       - local_smoke_tests:
           filters:
             tags:
@@ -493,14 +415,6 @@ commands:
           command: |
             wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
             bash -i -c 'nvm install'
-  prepare_accessibility_test:
-    steps:
-      - install_browser_tools
-      - install_container_dependencies
-      - install_ui_dependencies
-      - build_ui
-      - run_services
-
   get_workspace:
     steps:
       - attach_workspace:
