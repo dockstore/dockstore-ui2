@@ -34,11 +34,11 @@ jobs:
       - name: Install browser
         uses: browser-actions/setup-chrome@v1
 
-      - name: Install java
+      - name: Set up JDK
         uses: actions/setup-java@v3
         with:
-          distribution: 'temurin'
-          java-version: '17'
+          java-version: '17.0.4+8'
+          distribution: 'adopt'
 
       - name: Install npm
         uses: actions/setup-node@v3
