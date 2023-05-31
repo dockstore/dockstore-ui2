@@ -1,0 +1,103 @@
+name: Accessibility test
+
+on: pull_request
+
+jobs:
+  run-accessibility-test:
+    strategy:
+      matrix:
+        ref: [$GITHUB_HEAD_REF, $GITHUB_BASE_REF]
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ matrix.ref }}
+
+      - name: Install browser
+        uses: browser-actions/setup-chrome@v1
+
+      - name: Install java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Install npm
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+
+      - name: Cache dependencies
+        id: cache-dependencies
+        uses: actions/cache@v3
+        env:
+          cache-version: version1
+        with:
+          path: ./node_modules
+          key: dep-cache-${{ env.cache-version }}-${{ hashFiles('**/package-lock.json') }}
+
+      - if: ${{ steps.cache-dependencies.outputs.cache-hit != 'true' }}
+        name: Install dependencies if cache miss
+        run: bash -i -c 'npm ci'
+
+      - name: Build
+        run: NODE_OPTIONS="--max-old-space-size=1610" bash -i -c 'npm run build.prod'
+
+      # Run the services
+      - name: Install postgresql client
+        run: sudo apt install -y postgresql-client || true
+
+      - name: Prepare webservice
+        run: bash -i -c 'DB_DUMP=<< parameters.db_dump >> npm run webservice'
+        # environment:
+        #   PAGER: cat # prevent psql commands using less https://stackoverflow.com/questions/53055044/rails-rake-dbstructureload-times-out-on-circleci-2-0
+
+      - name: Install nginx
+        run: sudo apt install -y nginx || true
+
+      - name: Prepare nginx config
+        run: sed "s%REPLACEME%`pwd`%" .circleci/nginx.conf.tmpl > .circleci/nginx.conf
+
+      - name: Run nginx
+        run: sudo nginx -c `pwd`/.circleci/nginx.conf &
+
+      - name: Run webservice
+        run: java -jar dockstore-webservice.jar server test/web.yml 1>/dev/null &
+
+      - name: Wait for services
+        run: bash scripts/wait-for.sh
+
+      - name: Run accessibility test
+        run: |
+          if [[ "${{ matrix.ref }}" == "$GITHUB_HEAD_REF" ]]; then
+            bash -i -c "npm run accessibility-test -- -R"
+          else 
+            bash -i -c "npm run accessibility-test -- -RB"
+          fi
+          
+      - name: Save accessibility results
+        uses: actions/upload-artifact@v3
+        with:
+          name: accessibility-results
+          path: accessibility-results/
+  
+  compare_accessibility_results:
+    needs: run-accessibility-test
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install npm
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+
+      - name: Download accessibility results
+        uses: actions/download-artifact@v3
+        with:
+          name: accessibility-results
+          
+      - name: Compare accessibility results
+        run: bash -i -c "npm run accessibility-test -- -A"
+        
