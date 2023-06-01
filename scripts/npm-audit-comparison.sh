@@ -4,6 +4,13 @@ set -o pipefail
 set -o nounset
 set -o xtrace
 
+if [[ -z ${1} ]]; then
+    echo "Usage: $0 <base-branch>"
+    exit 1
+fi
+
+BASE_BRANCH="${1}"
+
 # Run npm audit on current branch and compare it with the results of running npm audit on the base branch that is set in the package.json. If there are more
 # high or critical findings in the current branch, then the test fails. If the same number of findings are found, then check that the vulnerabilities are the same.
 # If they are are different, then the test fails.
@@ -22,7 +29,7 @@ echo $HIGH_VULN > compare-num-vulnerabilities.txt
 echo $CRITICAL_VULN >> compare-num-vulnerabilities.txt
 
 # Save high and critical vulns from the base branch (e.g. develop, hotfix/1.11.2)
-git checkout "$npm_package_config_base_branch"
+git checkout "${BASE_BRANCH}"
 npm ci
 npm audit | grep -E "(High)" -B3 -A10 > base-branch-high-vulnerabilities.txt || true
 npm audit | grep -E "(Critical)" -B3 -A10 > base-branch-critical-vulnerabilities.txt || true

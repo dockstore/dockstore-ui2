@@ -1,0 +1,131 @@
+name: Accessibility test
+
+on: pull_request
+
+jobs:
+  run-accessibility-test:
+    strategy:
+      matrix:
+        # Run against the current branch (represented by '', which will use the default ref when using the checkout action) and the base branch
+        branch: [ '', '${{ github.base_ref }}' ]
+
+    # Uses if/else expression evaluation workaround from https://github.com/actions/runner/issues/409#issuecomment-752775072
+    # 'matrix.branch == github.base_ref' is the condition, 'base' is the true value and 'current' is the false value
+    name: Accessibility test (${{ matrix.branch == github.base_ref && 'base' || 'current' }} branch)
+  
+    runs-on: ubuntu-20.04
+    services:
+      postgres:
+        image: postgres:13.3
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_DB: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_HOST_AUTH_METHOD: trust
+        ports:
+          # Maps tcp port 5432 on service container to the host
+          - 5432:5432
+      elasticsearch:
+        image: docker.elastic.co/elasticsearch/elasticsearch:7.10.1
+        env:
+          xpack.security.enabled: false
+          transport.host: localhost
+          network.host: 127.0.0.1
+          http.port: 9200
+          discovery.type: single-node
+
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ matrix.branch }}
+
+      - name: Install browser
+        uses: browser-actions/setup-chrome@v1
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17.0.4+8'
+          distribution: 'adopt'
+
+      - name: Install npm
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+
+      - name: Cache dependencies
+        id: cache-dependencies
+        uses: actions/cache@v3
+        env:
+          cache-version: version1
+        with:
+          path: ./node_modules
+          key: dep-cache-${{ env.cache-version }}-${{ hashFiles('**/package-lock.json') }}
+
+      - if: ${{ steps.cache-dependencies.outputs.cache-hit != 'true' }}
+        name: Install dependencies if cache miss
+        run: npm ci
+
+      - name: Build
+        run: NODE_OPTIONS="--max-old-space-size=1610" npm run build.prod
+
+      # Run the services
+      - name: Install postgresql client
+        run: sudo apt install -y postgresql-client || true
+
+      - name: Prepare webservice
+        run: DB_DUMP="db_dump.sql" npm run webservice
+
+      - name: Install nginx
+        run: sudo apt install -y nginx || true
+
+      - name: Prepare nginx config
+        run: sed "s%REPLACEME%`pwd`%" .circleci/nginx.conf.tmpl > .circleci/nginx.conf
+
+      - name: Run nginx
+        run: sudo nginx -c `pwd`/.circleci/nginx.conf &
+
+      - name: Run webservice
+        run: java -jar dockstore-webservice.jar server test/web.yml 1>/dev/null &
+
+      - name: Wait for services
+        run: bash scripts/wait-for.sh
+
+      - name: Run accessibility test
+        run: |
+          if [[ "${{ matrix.branch }}" == "$GITHUB_BASE_REF" ]]; then
+            echo "Running accessibility test for base branch"
+            npm run accessibility-test -- -RB
+          else 
+            echo "Running accessibility test for current branch"
+            npm run accessibility-test -- -R
+          fi
+          
+      - name: Save accessibility results
+        uses: actions/upload-artifact@v3
+        with:
+          name: accessibility-results
+          path: accessibility-results/
+  
+  compare_accessibility_results:
+    needs: run-accessibility-test
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install npm
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+
+      - name: Download accessibility results
+        uses: actions/download-artifact@v3
+        with:
+          name: accessibility-results
+          # Download to this directory because this is the directory that the accessibility script looks at for the results
+          path: accessibility-results 
+          
+      - name: Compare accessibility results
+        run: npm run accessibility-test -- -A
+        
