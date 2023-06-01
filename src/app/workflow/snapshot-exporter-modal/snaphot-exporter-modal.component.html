@@ -5,6 +5,9 @@
 
   <div [ngSwitch]="action">
     <div *ngSwitchCase="SnapshotExporterAction.SNAPSHOT">
+      <ng-container *ngIf="!version.authors?.length && !version.orcidAuthors?.length">
+        <ng-template *ngTemplateOutlet="warning; context: { innerTemplate: noAuthors }"></ng-template>
+      </ng-container>
       <ng-template *ngTemplateOutlet="snapshotBlurb"></ng-template>
       <div>
         <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
@@ -12,7 +15,7 @@
           <button
             class="accent-1-dark-btn mat-elevation-z"
             data-cy="snapshot-button"
-            [disabled]="isAjaxing$ | async"
+            [disabled]="(isAjaxing$ | async) || (!version.authors?.length && !version.orcidAuthors?.length)"
             mat-raised-button
             (click)="snapshot()"
           >
@@ -43,9 +46,11 @@
         ></app-exporter-step>
       </div>
 
-      <ng-template *ngTemplateOutlet="zenodoCheck"></ng-template>
-      <div *ngIf="action === SnapshotExporterAction.ORCID">
-        <ng-template *ngTemplateOutlet="orcidCheck"></ng-template>
+      <ng-container *ngIf="action === SnapshotExporterAction.DOI && (hasZenodoToken$ | async) === false && !version.doiURL">
+        <ng-template *ngTemplateOutlet="warning; context: { innerTemplate: zenodoNotLinked }"></ng-template>
+      </ng-container>
+      <div *ngIf="(hasOrcidToken$ | async) === false">
+        <ng-template *ngTemplateOutlet="warning; context: { innerTemplate: orcidNotLinked }"></ng-template>
       </div>
 
       <div *ngIf="action === SnapshotExporterAction.DOI">
@@ -139,47 +144,65 @@
     </ol>
   </ng-template>
 
-  <ng-template #zenodoCheck>
-    <div
-      *ngIf="(hasZenodoToken$ | async) === false && !version.doiURL"
-      class="alert-danger p-2"
-      fxLayout="row"
-      fxLayoutGap="0.625rem;"
-      fxLayoutAlign="end top"
-    >
-      <div>
-        <mat-icon class="alert-danger-icon">warning</mat-icon>
+  <ng-template #zenodoNotLinked>
+    <div>
+      <div data-cy="zenodo-not-linked">
+        To request a DOI, you must first link your Zenodo account in your Dockstore Linked Accounts section. After linking, come back to
+        this screen and try again.
       </div>
       <div>
-        <div data-cy="zenodo-not-linked">
-          To request a DOI, you must first link your Zenodo account in your Dockstore Linked Accounts section. After linking, come back to
-          this screen and try again.
-        </div>
-        <div>
-          <button data-cy="link-zenodo" class="ml-1 accent-1-dark mat-elevation-z" mat-raised-button (click)="linkAccount()">
-            <mat-icon>link</mat-icon>
-            Link account now
-          </button>
-        </div>
+        <button data-cy="link-zenodo" class="ml-1 accent-1-dark mat-elevation-z" mat-raised-button (click)="linkAccount()">
+          <mat-icon>link</mat-icon>
+          Link account now
+        </button>
       </div>
     </div>
   </ng-template>
 
-  <ng-template #orcidCheck>
-    <div *ngIf="(hasOrcidToken$ | async) === false" class="alert-danger p-2" fxLayout="row" fxLayoutGap="0.625rem;" fxLayoutAlign="end top">
-      <div>
-        <mat-icon class="account-warning alert-danger-icon">warning</mat-icon>
+  <ng-template #orcidNotLinked>
+    <div>
+      <div data-cy="orcid-not-linked">
+        To export a workflow to ORCID, you must first link your ORCID account in your Dockstore Linked Accounts section. After linking, come
+        back to this screen and try again.
+        <button data-cy="link-orcid" class="ml-1 accent-1-dark mat-elevation-z" mat-raised-button (click)="linkAccount()">
+          <mat-icon>link</mat-icon>
+          Link account now
+        </button>
       </div>
-      <div>
-        <div data-cy="orcid-not-linked">
-          To export a workflow to ORCID, you must first link your ORCID account in your Dockstore Linked Accounts section. After linking,
-          come back to this screen and try again.
-          <button data-cy="link-orcid" class="ml-1 accent-1-dark mat-elevation-z" mat-raised-button (click)="linkAccount()">
-            <mat-icon>link</mat-icon>
-            Link account now
-          </button>
-        </div>
+    </div>
+  </ng-template>
+
+  <ng-template #noAuthors>
+    <div>
+      <div data-cy="no-authors">
+        Before snapshotting, you should ensure your version has its author(s) set. The authors cannot be added after you have snapshotted
+        the version. You can either add authors via
+        <a
+          href="{{
+            Dockstore.DOCUMENTATION_URL
+          }}/assets/templates/tools/tools.html?highlight=authors#filled-out-example-of-multiple-tools-in-the-same-repository"
+          target="_blank"
+          rel="noopener noreferrer"
+          >the .dockstore.yml</a
+        >, which is preferred if you have ORCID ids for the authors, or by adding them
+        <a
+          href="{{
+            Dockstore.DOCUMENTATION_URL
+          }}/advanced-topics/best-practices/best-practices-dockstore.html?highlight=author#making-it-easier-to-find"
+          target="_blank"
+          rel="noopener noreferrer"
+          >to the descriptor</a
+        >.
       </div>
+    </div>
+  </ng-template>
+
+  <ng-template #warning let-innerTemplate="innerTemplate">
+    <div class="alert-danger p-2" fxLayout="row" fxLayoutGap="0.625rem;" fxLayoutAlign="end top">
+      <div>
+        <mat-icon class="alert-danger-icon">warning</mat-icon>
+      </div>
+      <ng-container *ngTemplateOutlet="innerTemplate"></ng-container>
     </div>
   </ng-template>
 </div>

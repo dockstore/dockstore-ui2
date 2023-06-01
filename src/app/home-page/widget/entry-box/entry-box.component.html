@@ -20,7 +20,9 @@
       <div id="workflow-number" fxLayout="row">
         <mat-card-header fxLayout="row">
           <mat-card-title class="ml-2">{{ entryTypeLowerCase | titlecase }}s</mat-card-title>
-          <span class="bubble {{ entryTypeLowerCase }}-background">{{ totalEntries }}</span>
+          <span class="bubble {{ entryTypeLowerCase }}-background" [attr.data-cy]="'dashboard-' + entryTypeLowerCase + '-count-bubble'">{{
+            totalEntries
+          }}</span>
           <span class="bubble preview-bubble" *ngIf="entryType === newEntryType.SERVICE || entryType === newEntryType.NOTEBOOK"
             >PREVIEW</span
           >
@@ -58,7 +60,7 @@
         </mat-autocomplete>
         <h5 class="weight-bold my-0">Recent Activity</h5>
         <div *ngFor="let entry of listOfEntries" fxLayout="row" class="widget-list-items space-between w-100 py-2">
-          <a class="no-wrap" [routerLink]="allEntriesLink + entry.path">
+          <a class="no-wrap" data-cy="dashboard-entry-links" [routerLink]="allEntriesLink + entry.path">
             {{ entry.prettyPath }}
           </a>
           <div class="date-display">{{ entry.lastUpdateDate | date: 'MMM d, yyyy' }}</div>

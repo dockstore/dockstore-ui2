@@ -1095,7 +1095,7 @@
 "slide@1.1.6","ISC","https://github.com/isaacs/slide-flow-control"
 "smart-buffer@4.2.0","MIT","https://github.com/JoshGlazebrook/smart-buffer"
 "socket.io-adapter@2.5.2","MIT","https://github.com/socketio/socket.io-adapter"
-"socket.io-parser@4.2.1","MIT","https://github.com/socketio/socket.io-parser"
+"socket.io-parser@4.2.3","MIT","https://github.com/socketio/socket.io-parser"
 "socket.io@4.6.1","MIT","https://github.com/socketio/socket.io"
 "sockjs@0.3.24","MIT","https://github.com/sockjs/sockjs-node"
 "socks-proxy-agent@4.0.2","MIT","https://github.com/TooTallNate/node-socks-proxy-agent"

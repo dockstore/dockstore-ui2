@@ -285,11 +285,12 @@ export class DagService {
    */
   private createPopupHTML(name: string, runText: string, cyElement: HTMLDivElement): HTMLDivElement {
     const div = document.createElement('div');
+    const dagTooltipAttribute = 'dag-tooltip';
     div.innerHTML = `
     <div class="qtip-titlebar">${name}</div>
     <div class="qtip-content">${runText}</div>
     `;
-    div.setAttribute('class', 'opaq qtip-bootstrap bootstrap-tooltip-z-index');
+    div.setAttribute('class', `opaq qtip-bootstrap bootstrap-tooltip-z-index ${dagTooltipAttribute}`);
     if (this.isFullScreen()) {
       // If fullscreen append it to the cy element because the cdk-overlay-container div is not in the fullscreen element
       cyElement.appendChild(div);
@@ -314,6 +315,8 @@ export class DagService {
     const docker = node.data('docker');
     const run = node.data('run');
     const runText = this.getTooltipText(name, tool, type, docker, run);
+    const dagTooltipAttribute = 'dag-tooltip';
+
     const update = () => {
       // popper() doesn't exist on type cytoscape.NodeSingular because type definitions don't know about extensions
       popper = (<any>node).popper({
@@ -326,6 +329,10 @@ export class DagService {
     };
     const destroy = () => {
       try {
+        const tooltips = document.getElementsByClassName(dagTooltipAttribute);
+        for (let i = 0; i < tooltips.length; i++) {
+          tooltips.item(i).remove();
+        }
         popper.destroy();
       } catch (error) {
         return;

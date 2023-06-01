@@ -47,9 +47,9 @@
     </ng-container>
     <ng-container matColumnDef="stars">
       <mat-header-cell *matHeaderCellDef mat-sort-header fxHide.xs>Stars</mat-header-cell>
-      <mat-cell class="description-cell" *matCellDef="let tool" fxHide.xs>
-        {{ tool?.starredUsers.length === 0 ? '' : tool?.starredUsers.length }}
+      <mat-cell class="description-cell weight-bold" *matCellDef="let tool" fxHide.xs>
         <mat-icon class="star-icon" *ngIf="tool?.starredUsers?.length > 0">star_rate</mat-icon>
+        {{ tool?.starredUsers.length === 0 ? '' : tool?.starredUsers.length }}
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="author">
@@ -58,7 +58,11 @@
     </ng-container>
     <ng-container matColumnDef="format">
       <mat-header-cell *matHeaderCellDef>Format</mat-header-cell>
-      <mat-cell *matCellDef="let tool">{{ tool?.descriptorType ? (tool?.descriptorType.toString() | uppercase) : '' }}</mat-cell>
+      <mat-cell *matCellDef="let tool">
+        <span *ngFor="let language of tool?.descriptorType" class="nonclick-badge m-1">
+          {{ language ? (language.toString() | uppercase) : '' }}
+        </span>
+      </mat-cell>
     </ng-container>
     <ng-container matColumnDef="projectLinks">
       <mat-header-cell *matHeaderCellDef>Links</mat-header-cell>

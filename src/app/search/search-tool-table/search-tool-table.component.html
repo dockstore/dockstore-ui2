@@ -26,7 +26,7 @@
     matSortDisableClear
   >
     <ng-container matColumnDef="name">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Name and Description</mat-header-cell>
       <!-- the wrap causes slightly odd behavior with the mat-icon but is needed for the topic -->
       <mat-cell data-cy="toolNames" *matCellDef="let tool">
         <div>
@@ -100,12 +100,12 @@
     <ng-container matColumnDef="starredUsers">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Stars</mat-header-cell>
       <mat-cell class="description-cell" *matCellDef="let tool"
-        >{{ !tool?.starredUsers || tool?.starredUsers.length === 0 ? '' : tool?.starredUsers.length }}
-        <mat-icon class="star-icon" *ngIf="tool?.starredUsers?.length > 0">star_rate</mat-icon>
+        ><mat-icon class="star-icon" *ngIf="tool?.starredUsers?.length > 0">star_rate</mat-icon>
+        {{ !tool?.starredUsers || tool?.starredUsers.length === 0 ? '' : tool?.starredUsers.length }}
       </mat-cell>
     </ng-container>
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns" class="py-2"></mat-row>
   </mat-table>
   <mat-paginator
     data-cy="search-tool-table-paginator"

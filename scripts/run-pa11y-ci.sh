@@ -3,7 +3,7 @@
 set -o errexit
 set -o pipefail
 set -o nounset
-#set -o xtrace
+set -o xtrace
 
 # Run pa11y-ci shows any accessibility issues related to the UI.
 # NOTE: This script will not be useful if you are running it locally,
@@ -20,7 +20,6 @@ usage() {
   echo ""
   echo "-H, Display help command"
   echo "-B, Do all commands on base branch (if this option is not given all commands are done on current branch)"
-  echo "-C, Checkouts the code from the base branch (note: the option -B is not required to do this)"
   echo "-R, Runs pa11y-ci on branch (requires webservice to be running) and outputs results in a form that can be analysed"
   echo "-A, Determines if current branch has more accessibility issues then base branch, requires the results from option -R to be available"
 }
@@ -30,7 +29,7 @@ RUN_ACCESSIBILITY_TEST="false"
 COMPARE_RESULTS="false"
 
 no_args="true"
-while getopts 'HBCRA' OPTION; do
+while getopts 'HBRA' OPTION; do
   case "$OPTION" in
     H)
       usage
@@ -38,11 +37,6 @@ while getopts 'HBCRA' OPTION; do
       ;;
     B)
       RESULT_FILE="$BASE_BRANCH_RESULT_FILE_NAME"
-      ;;
-    C)
-      git checkout "$npm_package_config_base_branch"
-      echo "The base branch has been checked out, all other flags (if any) have been ignored"
-      exit 0
       ;;
     R)
       RUN_ACCESSIBILITY_TEST="true"
