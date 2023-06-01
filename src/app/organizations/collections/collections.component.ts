@@ -18,7 +18,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { HashMap } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
-import { Collection } from '../../shared/swagger';
+import { Collection } from '../../shared/openapi';
 import { CollectionsQuery } from '../state/collections.query';
 import { CollectionsService } from '../state/collections.service';
 import { OrganizationQuery } from '../state/organization.query';
