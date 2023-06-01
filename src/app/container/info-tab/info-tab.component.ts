@@ -45,7 +45,7 @@ export class InfoTabComponent extends Base implements OnInit, OnChanges {
   public validationPatterns = validationDescriptorPatterns;
   public exampleDescriptorPatterns = exampleDescriptorPatterns;
   public DockstoreToolType = DockstoreTool;
-  public tool: DockstoreTool;
+  public tool: ExtendedDockstoreTool;
   public topicEditing: boolean;
   public TopicSelectionEnum = DockstoreTool.TopicSelectionEnum;
   public authors: Array<Author> = [];

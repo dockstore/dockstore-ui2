@@ -17,7 +17,7 @@ export class CodeEditorComponent implements AfterViewInit {
   aceId: string;
   readOnly = true;
   @Input() entryType: 'tool' | 'workflow';
-  @Input() set editing(value: string) {
+  @Input() set editing(value: boolean) {
     if (value !== undefined) {
       this.toggleReadOnly(!value);
     }

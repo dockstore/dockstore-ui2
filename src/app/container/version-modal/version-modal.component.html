@@ -144,7 +144,7 @@
             <div
               class="col-sm-9 col-md-9 col-lg-9 form-margin"
               [ngClass]="{ 'col-sm-offset-3': i > 0 }"
-              *ngFor="let item of unsavedCWLTestParameterFilePaths; let i = index; trackBy: trackByIndex"
+              *ngFor="let item of unsavedCWLTestParameterFilePaths; let i = index; trackBy: trackByIdx"
             >
               <div class="input-group">
                 <input
@@ -240,7 +240,7 @@
             <div
               class="col-sm-9 col-md-9 col-lg-9 form-margin"
               [ngClass]="{ 'col-sm-offset-3': i > 0 }"
-              *ngFor="let item of unsavedWDLTestParameterFilePaths; let i = index; trackBy: trackByIndex"
+              *ngFor="let item of unsavedWDLTestParameterFilePaths; let i = index; trackBy: trackByIdx"
             >
               <div class="input-group">
                 <input
