@@ -14,15 +14,15 @@
  *    limitations under the License.
  */
 import { Component, Input } from '@angular/core';
-import { BioWorkflow } from 'app/shared/swagger/model/bioWorkflow';
-import { Service } from 'app/shared/swagger/model/service';
-import { Notebook } from 'app/shared/swagger/model/notebook';
+import { BioWorkflow } from 'app/shared/openapi/model/bioWorkflow';
+import { Service } from 'app/shared/openapi/model/service';
+import { Notebook } from 'app/shared/openapi/model/notebook';
 import { Observable } from 'rxjs';
 import { finalize, map } from 'rxjs/operators';
 import { EntryTab } from '../../shared/entry/entry-tab';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
-import { ToolDescriptor, WorkflowVersion } from '../../shared/swagger';
-import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
+import { ToolDescriptor, WorkflowVersion } from '../../shared/openapi';
+import { WorkflowsService } from './../../shared/openapi/api/workflows.service';
 import { ToolTabService } from './tool-tab.service';
 
 @Component({

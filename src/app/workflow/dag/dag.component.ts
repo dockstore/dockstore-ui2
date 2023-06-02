@@ -15,15 +15,15 @@
  */
 import { AfterViewInit, Component, ElementRef, HostListener, Input, NgZone, OnChanges, OnInit, ViewChild } from '@angular/core';
 import { filterNil } from '@datorama/akita';
-import { BioWorkflow } from 'app/shared/swagger/model/bioWorkflow';
+import { BioWorkflow } from 'app/shared/openapi/model/bioWorkflow';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Dockstore } from '../../shared/dockstore.model';
 import { EntryTab } from '../../shared/entry/entry-tab';
 import { SessionQuery } from '../../shared/session/session.query';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
-import { ToolDescriptor } from '../../shared/swagger';
-import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
+import { ToolDescriptor } from '../../shared/openapi';
+import { WorkflowVersion } from './../../shared/openapi/model/workflowVersion';
 import { DagQuery } from './state/dag.query';
 import { DagService } from './state/dag.service';
 import { DagStore } from './state/dag.store';

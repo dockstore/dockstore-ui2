@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { ID, transaction } from '@datorama/akita';
 import { Observable, throwError } from 'rxjs';
 import { Provider } from '../enum/provider.enum';
-import { TokensService, UsersService } from '../swagger';
-import { TokenUser } from '../swagger/model/tokenUser';
+import { TokensService, UsersService } from '../openapi';
+import { TokenUser } from '../openapi/model/tokenUser';
 import { TokenStore } from './token.store';
 
 @Injectable({ providedIn: 'root' })

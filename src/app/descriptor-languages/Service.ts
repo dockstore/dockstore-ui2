@@ -1,11 +1,11 @@
 import { ExtendedDescriptorLanguageBean } from 'app/entry/extendedDescriptorLanguage';
-import { SourceFile, ToolDescriptor, Workflow } from 'app/shared/swagger';
+import { SourceFile, ToolDescriptor, Workflow } from 'app/shared/openapi';
 import { Dockstore } from '../shared/dockstore.model';
 
 const SERVICE_DOCUMENTATION_URL = Dockstore.DOCUMENTATION_URL + '/getting-started/getting-started-with-services.html';
 
 export const extendedService: ExtendedDescriptorLanguageBean = {
-  descriptorLanguageEnum: 'SERVICE',
+  descriptorLanguageEnum: 'service',
   value: 'service',
   shortFriendlyName: 'Service',
   friendlyName: 'generic placeholder for services',

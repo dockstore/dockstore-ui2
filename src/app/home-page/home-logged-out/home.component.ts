@@ -21,7 +21,7 @@ import { Base } from 'app/shared/base';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Dockstore } from '../../shared/dockstore.model';
-import { User } from '../../shared/swagger/model/user';
+import { User } from '../../shared/openapi/model/user';
 import { TwitterService } from '../../shared/twitter.service';
 import { UserQuery } from '../../shared/user/user.query';
 import { Category } from '../../shared/openapi';

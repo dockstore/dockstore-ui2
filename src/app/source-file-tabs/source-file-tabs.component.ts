@@ -10,7 +10,7 @@ import { SourceFile, ToolDescriptor, WorkflowVersion } from 'app/shared/openapi'
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { WorkflowQuery } from '../shared/state/workflow.query';
-import { BioWorkflow, Notebook, Service } from '../shared/swagger';
+import { BioWorkflow, Notebook, Service } from '../shared/openapi';
 import { SourceFileTabsService } from './source-file-tabs.service';
 
 @Component({

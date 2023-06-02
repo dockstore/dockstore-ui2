@@ -1,5 +1,5 @@
 import { ExtendedDescriptorLanguageBean } from 'app/entry/extendedDescriptorLanguage';
-import { SourceFile, ToolDescriptor, Workflow } from 'app/shared/swagger';
+import { SourceFile, ToolDescriptor, Workflow } from 'app/shared/openapi';
 
 export const extendedWDL: ExtendedDescriptorLanguageBean = {
   descriptorLanguageEnum: 'WDL',

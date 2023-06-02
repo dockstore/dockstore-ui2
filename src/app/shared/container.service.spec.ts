@@ -30,7 +30,7 @@ import { DockstoreService } from './dockstore.service';
 import { ImageProviderService } from './image-provider.service';
 import { ProviderService } from './provider.service';
 import { CheckerWorkflowService } from './state/checker-workflow.service';
-import { DockstoreTool } from './swagger/model/dockstoreTool';
+import { DockstoreTool } from './openapi/model/dockstoreTool';
 
 describe('ContainerService', () => {
   beforeEach(() => {

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { QueryEntity } from '@datorama/akita';
 import { Observable } from 'rxjs';
-import { Organization, OrganizationUser } from '../../shared/swagger';
+import { Organization, OrganizationUser } from '../../shared/openapi';
 import { Request } from './request.model';
 import { RequestsState, RequestsStore } from './requests.store';
 

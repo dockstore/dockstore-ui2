@@ -14,7 +14,7 @@ import { MyEntriesQuery } from 'app/shared/state/my-entries.query';
 import { MyEntriesStateService } from 'app/shared/state/my-entries.service';
 import { MyEntriesStore } from 'app/shared/state/my-entries.store';
 import { WorkflowService } from 'app/shared/state/workflow.service';
-import { UsersService, WorkflowsService } from 'app/shared/swagger';
+import { UsersService, WorkflowsService } from 'app/shared/openapi';
 import { UrlResolverService } from 'app/shared/url-resolver.service';
 import {
   RegisterToolStubService,

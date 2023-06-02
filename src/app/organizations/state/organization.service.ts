@@ -16,7 +16,7 @@
 import { Injectable } from '@angular/core';
 import { transaction } from '@datorama/akita';
 import { finalize } from 'rxjs/operators';
-import { Organization, OrganizationsService } from '../../shared/swagger';
+import { Organization, OrganizationsService } from '../../shared/openapi';
 import { OrganizationMembersService } from './organization-members.service';
 import { OrganizationStore } from './organization.store';
 import { Router } from '@angular/router';

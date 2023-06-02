@@ -16,18 +16,19 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { DescriptorLanguageEnum } from 'app/entry/extendedDescriptorLanguage';
 import { BehaviorSubject, merge as observableMerge, Observable } from 'rxjs';
 import { filter, first } from 'rxjs/operators';
 import { AlertService } from '../../alert/state/alert.service';
 import { ContainerService } from '../../container.service';
+import { ParsedInformation } from '../../openapi';
 import { WorkflowQuery } from '../../state/workflow.query';
 import { WorkflowService } from '../../state/workflow.service';
-import { WorkflowsService } from '../../swagger/api/workflows.service';
-import { DockstoreTool } from '../../swagger/model/dockstoreTool';
-import { Entry } from '../../swagger/model/entry';
-import { Workflow } from '../../swagger/model/workflow';
+import { WorkflowsService } from '../../openapi/api/workflows.service';
+import { DockstoreTool } from '../../openapi/model/dockstoreTool';
+import { Entry } from '../../openapi/model/entry';
+import { Workflow } from '../../openapi/model/workflow';
 import { ToolQuery } from '../../tool/tool.query';
+import DescriptorLanguageEnum = ParsedInformation.DescriptorLanguageEnum;
 
 @Injectable()
 export class RegisterCheckerWorkflowService {
@@ -54,7 +55,7 @@ export class RegisterCheckerWorkflowService {
       const message = 'Registering checker workflow';
       this.alertService.start(message);
       // Figure out why testParameterFilePath and descriptorType is swapped
-      this.workflowsService.registerCheckerWorkflow(workflowPath, this.entryId, descriptorLanguageEnum, testParameterFilePath).subscribe(
+      this.workflowsService.registerCheckerWorkflow(this.entryId, descriptorLanguageEnum, workflowPath, testParameterFilePath).subscribe(
         (entry: Entry) => {
           // Only update our current list of workflows when the current entry is a workflow
           // Switching to my-workflows will automatically update the entire list with a fresh HTTP request
@@ -68,7 +69,7 @@ export class RegisterCheckerWorkflowService {
           const refreshCheckerMessage = 'Refreshing checker workflow';
           this.alertService.start(refreshCheckerMessage);
           this.workflowsService
-            .refresh(entry.checker_id)
+            .refresh1(entry.checker_id)
             .pipe(first())
             .subscribe(
               (workflow: Workflow) => {

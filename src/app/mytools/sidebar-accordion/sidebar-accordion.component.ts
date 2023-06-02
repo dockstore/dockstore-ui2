@@ -1,10 +1,10 @@
 import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
-import { DockstoreTool } from 'app/shared/swagger';
+import { DockstoreTool } from 'app/shared/openapi';
 import { Observable } from 'rxjs';
 import { ToolQuery } from '../../shared/tool/tool.query';
 import { OrgToolObject } from '../my-tool/my-tool.component';
 import { KeyValue } from '@angular/common';
-import { MetadataService } from '../../shared/swagger/api/metadata.service';
+import { MetadataService } from '../../shared/openapi/api/metadata.service';
 import { WorkflowQuery } from 'app/shared/state/workflow.query';
 
 interface GroupEntriesByRegistry {

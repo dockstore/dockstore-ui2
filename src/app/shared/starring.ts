@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-import { User } from './swagger';
+import { User } from './openapi';
 
 export function isStarredByUser(starredUsers: User[], currentUser: User): boolean {
   if (!currentUser || !starredUsers) {

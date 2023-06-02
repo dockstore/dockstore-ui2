@@ -2,9 +2,9 @@ import { Component, Input } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { WorkflowQuery } from '../state/workflow.query';
-import { SourceFile } from '../swagger';
-import { ToolDescriptor } from './../../shared/swagger/model/toolDescriptor';
-import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
+import { SourceFile } from '../openapi';
+import { ToolDescriptor } from './../../shared/openapi/model/toolDescriptor';
+import { WorkflowVersion } from './../../shared/openapi/model/workflowVersion';
 import { CodeEditorListService } from './code-editor-list.service';
 import { FileService } from 'app/shared/file.service';
 

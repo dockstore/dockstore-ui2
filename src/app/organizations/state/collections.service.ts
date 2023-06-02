@@ -20,8 +20,8 @@ import { Router } from '@angular/router';
 import { ID, transaction } from '@datorama/akita';
 import { finalize } from 'rxjs/operators';
 import { AlertService } from '../../shared/alert/state/alert.service';
-import { OrganizationsService } from '../../shared/swagger';
-import { Collection, OrganizationsService as OpenApiOrganizationsService } from '../../shared/openapi';
+import { Collection, OrganizationsService } from '../../shared/openapi';
+import { OrganizationsService as OpenApiOrganizationsService } from '../../shared/openapi';
 import { CollectionsQuery } from './collections.query';
 import { CollectionsStore } from './collections.store';
 import { OrganizationQuery } from './organization.query';
@@ -54,7 +54,7 @@ export class CollectionsService {
     const activeId: ID = this.collectionsQuery.getActiveId();
     this.collectionsStore.remove();
     this.organizationsService
-      .getCollectionsFromOrganization(organizationID)
+      .getCollectionsFromOrganization(organizationID, '')
       .pipe(finalize(() => this.collectionsStore.setLoading(false)))
       .subscribe(
         (collections: Array<Collection>) => {

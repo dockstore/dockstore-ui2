@@ -17,8 +17,8 @@ import { inject, TestBed } from '@angular/core/testing';
 import { faSort, faSortAlphaDown, faSortAlphaUp } from '@fortawesome/free-solid-svg-icons';
 
 import { DockstoreService } from './dockstore.service';
-import { Label } from './swagger/model/label';
-import { WorkflowVersion } from './swagger/model/workflowVersion';
+import { Label } from './openapi/model/label';
+import { WorkflowVersion } from './openapi/model/workflowVersion';
 
 describe('DockstoreService', () => {
   beforeEach(() => {

@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Query } from '@datorama/akita';
 import { combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { AppTool, DockstoreTool, Workflow, Notebook } from '../../shared/swagger';
+import { AppTool, DockstoreTool, Workflow, Notebook } from '../../shared/openapi';
 import { SearchState, SearchStore } from './search.store';
 
 @Injectable({ providedIn: 'root' })

@@ -18,8 +18,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 
 import { ContainersStubService, ContainerStubService, WorkflowsStubService, WorkflowStubService } from '../../test/service-stubs';
 import { ContainerService } from '../container.service';
-import { ContainersService } from '../swagger/api/containers.service';
-import { WorkflowsService } from '../swagger/api/workflows.service';
+import { ContainersService } from '../openapi/api/containers.service';
+import { WorkflowsService } from '../openapi/api/workflows.service';
 import { CheckerWorkflowService } from './checker-workflow.service';
 import { WorkflowService } from './workflow.service';
 import { DescriptorLanguageService } from '../entry/descriptor-language.service';

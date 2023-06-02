@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ActiveState, EntityState, EntityStore, StoreConfig } from '@datorama/akita';
-import { WorkflowVersion } from '../swagger';
-import { BioWorkflow } from '../swagger/model/bioWorkflow';
-import { Service } from '../swagger/model/service';
+import { WorkflowVersion } from '../openapi';
+import { BioWorkflow } from '../openapi/model/bioWorkflow';
+import { Service } from '../openapi/model/service';
 
 export interface WorkflowState extends EntityState<Service | BioWorkflow>, ActiveState {
   version: WorkflowVersion;

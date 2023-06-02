@@ -26,8 +26,8 @@ import { ExtendedDockstoreToolQuery } from '../../shared/extended-dockstoreTool/
 import { ExtendedDockstoreTool } from '../../shared/models/ExtendedDockstoreTool';
 import { VersionVerifiedPlatform } from '../../shared/openapi';
 import { SessionQuery } from '../../shared/session/session.query';
-import { Tag } from '../../shared/swagger';
-import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
+import { Tag } from '../../shared/openapi';
+import { DockstoreTool } from '../../shared/openapi/model/dockstoreTool';
 import { Versions } from '../../shared/versions';
 
 @Component({

@@ -26,8 +26,8 @@ import { AlertService } from '../../shared/alert/state/alert.service';
 import { RefreshOrganizationComponent } from '../../shared/refresh-organization/refresh-organization.component';
 import { ExtendedWorkflowQuery } from '../../shared/state/extended-workflow.query';
 import { WorkflowService } from '../../shared/state/workflow.service';
-import { WorkflowsService } from '../../shared/swagger';
-import { Workflow } from '../../shared/swagger/model/workflow';
+import { WorkflowsService } from '../../shared/openapi';
+import { Workflow } from '../../shared/openapi/model/workflow';
 import { UserQuery } from '../../shared/user/user.query';
 
 @Component({
@@ -88,7 +88,7 @@ export class RefreshWorkflowOrganizationComponent extends RefreshOrganizationCom
         .pipe(
           concatMap((workflow) => {
             this.alertService.start(`Refreshing ${workflow.full_workflow_path}`);
-            return this.workflowsService.refresh(workflow.id).pipe(
+            return this.workflowsService.refresh1(workflow.id).pipe(
               catchError((error) => {
                 this.alertService.detailedError(error);
                 return EMPTY;

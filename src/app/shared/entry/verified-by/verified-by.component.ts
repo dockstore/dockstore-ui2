@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AvailableLogsComponent } from '../../available-logs/available-logs.component';
 import { bootstrap4largeModalSize } from '../../constants';
 import { VersionVerifiedPlatform } from '../../openapi';
-import { Tag, WorkflowVersion } from '../../swagger';
+import { Tag, WorkflowVersion } from '../../openapi';
 import { VerifiedByService } from '../../verified-by.service';
 
 @Component({

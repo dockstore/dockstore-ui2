@@ -1,5 +1,5 @@
+import { ExtendedUserData, User } from '../../../src/app/shared/openapi';
 import { resetDB, setTokenUserViewPort } from '../../support/commands';
-import { ExtendedUserData, User } from '../../../src/app/shared/swagger';
 
 describe('Testing user with invalid username', () => {
   resetDB();

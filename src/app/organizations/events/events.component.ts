@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Event } from '../../shared/swagger';
+import { Event } from '../../shared/openapi';
 import { EventsQuery } from '../state/events.query';
 import { EventsService } from '../state/events.service';
 

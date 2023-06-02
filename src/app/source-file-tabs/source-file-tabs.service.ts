@@ -3,7 +3,7 @@ import { DescriptorTypeCompatService } from 'app/shared/descriptor-type-compat.s
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 import { FileService } from 'app/shared/file.service';
 import { SourceFile, ToolDescriptor, WorkflowsService, WorkflowVersion } from 'app/shared/openapi';
-import { BioWorkflow, Notebook, Service, Validation } from 'app/shared/swagger';
+import { BioWorkflow, Notebook, Service, Validation } from 'app/shared/openapi';
 import { Observable } from 'rxjs';
 
 @Injectable({

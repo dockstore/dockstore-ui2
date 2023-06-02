@@ -20,7 +20,7 @@ import { first, takeUntil } from 'rxjs/operators';
 import { AlertService } from '../shared/alert/state/alert.service';
 import { StarentryService } from '../shared/starentry.service';
 import { isStarredByUser } from '../shared/starring';
-import { User } from '../shared/swagger/model/user';
+import { User } from '../shared/openapi/model/user';
 import { TrackLoginService } from '../shared/track-login.service';
 import { UserQuery } from '../shared/user/user.query';
 import { StarEntry } from './StarEntry';

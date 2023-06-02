@@ -3,7 +3,7 @@ import { AbstractControl, UntypedFormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { NgFormsManager } from '@ngneat/forms-manager';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
-import { OrganizationUser } from '../../shared/swagger';
+import { OrganizationUser } from '../../shared/openapi';
 import { FormsState, UpsertOrganizationMemberService } from '../state/upsert-organization-member.service';
 
 export interface UpsertOrganizationMemberComponentData {

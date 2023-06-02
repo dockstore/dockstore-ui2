@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Query } from '@datorama/akita';
 import { combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Organization } from '../../shared/swagger';
+import { Organization } from '../../shared/openapi';
 import { OrganizationsState, OrganizationsStore } from './organizations.store';
 
 @Injectable({ providedIn: 'root' })

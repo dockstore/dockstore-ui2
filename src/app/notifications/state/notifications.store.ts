@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
-import { Notification } from '../../shared/swagger/model/notification';
+import { Notification } from '../../shared/openapi/model/notification';
 
 export interface NotificationsState extends EntityState<Notification> {}
 

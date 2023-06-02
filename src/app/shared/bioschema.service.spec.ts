@@ -4,10 +4,10 @@ import { BioschemaService, BioschemaTool } from './bioschema.service';
 import { DateService } from './date.service';
 import { ExtendedToolsService } from './extended-tools.service';
 import { ExtendedWorkflowsService } from './extended-workflows.service';
-import { DockstoreTool } from './swagger/model/dockstoreTool';
-import { Tag } from './swagger/model/tag';
-import { Workflow } from './swagger/model/workflow';
-import { WorkflowVersion } from './swagger/model/workflowVersion';
+import { DockstoreTool } from './openapi/model/dockstoreTool';
+import { Tag } from './openapi/model/tag';
+import { Workflow } from './openapi/model/workflow';
+import { WorkflowVersion } from './openapi/model/workflowVersion';
 
 describe('BioschemaService', () => {
   beforeEach(() => {
@@ -65,6 +65,7 @@ describe('BioschemaService', () => {
     const date: Date = new Date('2017-06-28T18:48:18.000Z');
     const workflow: Workflow = {
       // Attributes used in the method being tested
+      type: '',
       description: 'text',
       authors: [],
       id: 1,
@@ -75,11 +76,11 @@ describe('BioschemaService', () => {
       mode: Workflow.ModeEnum.HOSTED,
       organization: 'us',
       repository: '',
-      sourceControl: '',
+      sourceControl: null,
       descriptorType: Workflow.DescriptorTypeEnum.CWL,
       workflow_path: '',
       defaultTestParameterFilePath: '',
-      descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NOTAPPLICABLE,
+      descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NA,
     };
     const result: BioschemaTool = service.getWorkflowSchema(workflow, version);
     expect(result['@context']).toEqual('http://schema.org');

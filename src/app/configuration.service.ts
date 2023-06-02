@@ -4,7 +4,7 @@ import { IOauth2Options } from 'ng2-ui-auth/lib/config-interfaces';
 import { AuthConfig } from './shared/auth.model';
 import { Dockstore } from './shared/dockstore.model';
 import { FeatureService } from './shared/feature.service';
-import { Config, MetadataService } from './shared/swagger';
+import { Config, MetadataService } from './shared/openapi';
 
 @Injectable({
   providedIn: 'root',

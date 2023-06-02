@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { finalize } from 'rxjs/operators';
 import { AlertService } from '../alert/state/alert.service';
 import { BioWorkflow, UsersService, Workflow, WorkflowsService } from '../openapi';
-import { BioWorkflow as SwaggerBioWorkflow } from '../swagger';
+import { BioWorkflow as SwaggerBioWorkflow } from '../openapi';
 import { Repository } from '../openapi/model/repository';
 import { EntryWizardQuery } from './entry-wizard.query';
 import { EntryWizardStore } from './entry-wizard.store';

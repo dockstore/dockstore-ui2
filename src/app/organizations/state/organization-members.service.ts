@@ -4,7 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ID, transaction } from '@datorama/akita';
 import { finalize } from 'rxjs/operators';
 import { AlertService } from '../../shared/alert/state/alert.service';
-import { OrganizationsService, OrganizationUser } from '../../shared/swagger';
+import { OrganizationsService, OrganizationUser } from '../../shared/openapi';
 import { UserQuery } from '../../shared/user/user.query';
 import { OrganizationMembersStore } from './organization-members.store';
 import { OrganizationStore } from './organization.store';

@@ -22,7 +22,7 @@ import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { Base } from '../../shared/base';
 import { formInputDebounceTime } from '../../shared/constants';
-import { Organization } from '../../shared/swagger';
+import { Organization } from '../../shared/openapi';
 import { TrackLoginService } from '../../shared/track-login.service';
 import { OrganizationsQuery } from '../state/organizations.query';
 import { OrganizationsStateService } from '../state/organizations.service';

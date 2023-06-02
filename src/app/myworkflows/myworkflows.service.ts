@@ -25,7 +25,7 @@ import { MyEntriesService } from 'app/shared/myentries.service';
 import { SessionQuery } from 'app/shared/session/session.query';
 import { MyEntriesStateService } from 'app/shared/state/my-entries.service';
 import { WorkflowService } from 'app/shared/state/workflow.service';
-import { BioWorkflow, DockstoreTool, SharedWorkflows, UsersService, Workflow, WorkflowsService } from 'app/shared/swagger';
+import { BioWorkflow, DockstoreTool, SharedWorkflows, UsersService, Workflow, WorkflowsService } from 'app/shared/openapi';
 import { UrlResolverService } from 'app/shared/url-resolver.service';
 import { UserQuery } from 'app/shared/user/user.query';
 import { RegisterWorkflowModalComponent } from 'app/workflow/register-workflow-modal/register-workflow-modal.component';

@@ -26,7 +26,7 @@ import { TokenService } from '../../../shared/state/token.service';
 import { TrackLoginService } from '../../../shared/track-login.service';
 import { UserQuery } from '../../../shared/user/user.query';
 import { UserService } from '../../../shared/user/user.service';
-import { TokenUser } from './../../../shared/swagger/model/tokenUser';
+import { TokenUser } from './../../../shared/openapi/model/tokenUser';
 import { AccountsService } from './accounts.service';
 import { LogoutService } from '../../../shared/logout.service';
 import { RevokeTokenDialogComponent } from './revoke-token-dialog/revoke-token-dialog.component';

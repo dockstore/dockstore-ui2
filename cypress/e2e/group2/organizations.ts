@@ -13,6 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { TokenUser } from '../../../src/app/shared/openapi';
 import {
   approvePotatoMembership,
   approvePotatoOrganization,
@@ -23,7 +24,6 @@ import {
   insertNotebooks,
   resetDBWithService,
 } from '../../support/commands';
-import { TokenUser } from '../../../src/app/shared/swagger';
 import { TokenSource } from '../../../src/app/shared/enum/token-source.enum';
 
 const imageURL = 'https://superduperfakepotatourl.com/potato.png';

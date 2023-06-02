@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DockstoreTool } from '../shared/swagger/model/dockstoreTool';
+import { DockstoreTool } from '../shared/openapi/model/dockstoreTool';
 import { DockstoreService } from './../shared/dockstore.service';
 import { ExtendedDockstoreTool } from './../shared/models/ExtendedDockstoreTool';
 

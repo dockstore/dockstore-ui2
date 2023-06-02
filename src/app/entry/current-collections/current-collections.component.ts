@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { AddEntryComponent } from '../../organizations/collection/add-entry/add-entry.component';
-import { CollectionOrganization } from '../../shared/swagger';
+import { CollectionOrganization } from '../../shared/openapi';
 import { TrackLoginService } from '../../shared/track-login.service';
 import { CurrentCollectionsQuery } from '../state/current-collections.query';
 import { CurrentCollectionsService } from '../state/current-collections.service';

@@ -16,7 +16,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { ExtendedDockstoreToolService } from './extended-dockstoreTool/extended-dockstoreTool.service';
-import { DockstoreTool } from './swagger/model/dockstoreTool';
+import { DockstoreTool } from './openapi/model/dockstoreTool';
 import { ToolQuery } from './tool/tool.query';
 import { ToolService } from './tool/tool.service';
 import { ToolStore } from './tool/tool.store';

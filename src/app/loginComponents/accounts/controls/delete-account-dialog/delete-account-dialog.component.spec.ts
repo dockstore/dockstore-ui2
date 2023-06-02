@@ -5,7 +5,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { LogoutService } from '../../../../shared/logout.service';
 import { CustomMaterialModule } from '../../../../shared/modules/material.module';
-import { UsersService } from '../../../../shared/swagger';
+import { UsersService } from '../../../../shared/openapi';
 import { LogoutStubService, UsersStubService } from '../../../../test/service-stubs';
 import { DeleteAccountDialogComponent } from './delete-account-dialog.component';
 

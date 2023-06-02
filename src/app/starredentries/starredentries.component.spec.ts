@@ -4,7 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ImageProviderService } from '../shared/image-provider.service';
 import { ProviderService } from './../shared/provider.service';
 import { StarentryService } from './../shared/starentry.service';
-import { UsersService } from './../shared/swagger/api/users.service';
+import { UsersService } from './../shared/openapi/api/users.service';
 import { StarringService } from './../starring/starring.service';
 import { OrgLogoService } from './../shared/org-logo.service';
 import {

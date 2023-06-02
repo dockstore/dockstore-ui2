@@ -15,7 +15,7 @@
  */
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Workflow } from 'app/shared/swagger';
+import { Workflow } from 'app/shared/openapi';
 import { Observable } from 'rxjs';
 import { AlertQuery } from '../../alert/state/alert.query';
 import { Base } from '../../base';

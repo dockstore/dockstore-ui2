@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { ToolFile } from '../swagger';
+import { ToolFile } from '../openapi';
 
 export interface GA4GHFiles {
   toolFiles: Array<ToolFile>;

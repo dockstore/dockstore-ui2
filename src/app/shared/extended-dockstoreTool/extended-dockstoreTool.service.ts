@@ -21,7 +21,7 @@ import { DockstoreService } from '../dockstore.service';
 import { ImageProviderService } from '../image-provider.service';
 import { ExtendedDockstoreTool } from '../models/ExtendedDockstoreTool';
 import { ProviderService } from '../provider.service';
-import { DockstoreTool } from '../swagger';
+import { DockstoreTool } from '../openapi';
 import { ExtendedDockstoreToolStore } from './extended-dockstoreTool.store';
 
 @Injectable({

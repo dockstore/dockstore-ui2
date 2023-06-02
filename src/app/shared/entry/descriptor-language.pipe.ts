@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
-import { Workflow } from '../../shared/swagger';
+import { Workflow } from '../../shared/openapi';
 
 @Pipe({
   name: 'descriptorLanguage',

@@ -17,7 +17,7 @@ import { Injectable } from '@angular/core';
 import { QueryEntity } from '@datorama/akita';
 import { Observable, of as observableOf } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
-import { ToolDescriptor, ToolFile } from '../swagger';
+import { ToolDescriptor, ToolFile } from '../openapi';
 import { GA4GHFiles } from './ga4gh-files.model';
 import { GA4GHFilesState, GA4GHFilesStore } from './ga4gh-files.store';
 

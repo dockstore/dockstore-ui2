@@ -27,9 +27,9 @@ import { MyEntriesModule } from '../../shared/modules/my-entries.module';
 import { RefreshService } from '../../shared/refresh.service';
 import { TokenQuery } from '../../shared/state/token.query';
 import { WorkflowService } from '../../shared/state/workflow.service';
-import { UsersService } from '../../shared/swagger/api/users.service';
-import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
-import { Configuration } from '../../shared/swagger/configuration';
+import { UsersService } from '../../shared/openapi/api/users.service';
+import { WorkflowsService } from '../../shared/openapi/api/workflows.service';
+import { Configuration } from '../../shared/openapi/configuration';
 import { UrlResolverService } from '../../shared/url-resolver.service';
 import { UserQuery } from '../../shared/user/user.query';
 import { RouterLinkStubDirective } from '../../test';
@@ -51,7 +51,7 @@ import { RegisterWorkflowModalService } from '../../workflow/register-workflow-m
 import { MyWorkflowsService } from '../myworkflows.service';
 import { MyWorkflowComponent } from './my-workflow.component';
 import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
-import { MetadataService } from '../../shared/swagger';
+import { MetadataService } from '../../shared/openapi';
 
 describe('MyWorkflowsComponent', () => {
   let component: MyWorkflowComponent;

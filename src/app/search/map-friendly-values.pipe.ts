@@ -16,7 +16,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 import { DockstoreTool } from 'app/shared/openapi';
-import { ToolFile, Workflow } from 'app/shared/swagger';
+import { ToolFile, Workflow } from 'app/shared/openapi';
 
 @Pipe({
   name: 'mapFriendlyValue',

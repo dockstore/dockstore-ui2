@@ -6,9 +6,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { ExtendedDockstoreToolService } from 'app/shared/extended-dockstoreTool/extended-dockstoreTool.service';
 import { ProviderService } from 'app/shared/provider.service';
-import { ContainersService } from 'app/shared/swagger';
+import { ContainersService } from 'app/shared/openapi';
 import { RefreshService } from '../../shared/refresh.service';
-import { UsersService } from './../../shared/swagger/api/users.service';
+import { UsersService } from './../../shared/openapi/api/users.service';
 import {
   ContainersStubService,
   ExtendedDockstoreToolStubService,

@@ -4,7 +4,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { CustomMaterialModule } from '../../../shared/modules/material.module';
 import { RefreshService } from '../../../shared/refresh.service';
-import { UsersService } from '../../../shared/swagger';
+import { UsersService } from '../../../shared/openapi';
 import { UserService } from '../../../shared/user/user.service';
 import { RefreshStubService, UsersStubService, UserStubService } from '../../../test/service-stubs';
 import { ChangeUsernameComponent } from '../internal/change-username/change-username.component';

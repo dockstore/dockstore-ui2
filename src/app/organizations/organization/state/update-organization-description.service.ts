@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { finalize } from 'rxjs/operators';
-import { Organization, OrganizationsService } from '../../../shared/swagger';
+import { Organization, OrganizationsService } from '../../../shared/openapi';
 import { CollectionsService } from '../../state/collections.service';
 import { OrganizationQuery } from '../../state/organization.query';
 import { OrganizationService } from '../../state/organization.service';

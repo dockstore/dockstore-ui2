@@ -1,5 +1,5 @@
 import { inject, TestBed } from '@angular/core/testing';
-import { ToolDescriptor } from '../../shared/swagger';
+import { ToolDescriptor } from '../../shared/openapi';
 import { ToolTabService } from './tool-tab.service';
 import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';

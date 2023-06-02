@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ID, Order } from '@datorama/akita';
-import { CurationService } from '../../shared/swagger/api/curation.service';
-import { Notification } from '../../shared/swagger/model/notification';
+import { CurationService } from '../../shared/openapi/api/curation.service';
+import { Notification } from '../../shared/openapi/model/notification';
 import { NotificationsStore } from './notifications.store';
 import { NotificationsQuery } from '../../notifications/state/notifications.query';
 import { Observable } from 'rxjs';

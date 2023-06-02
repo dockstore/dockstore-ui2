@@ -7,7 +7,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { of as observableOf, throwError } from 'rxjs';
 
 import { UntypedFormBuilder } from '@angular/forms';
-import { OrganizationsService } from '../../shared/swagger';
+import { OrganizationsService } from '../../shared/openapi';
 import { RegisterOrganizationService } from './register-organization.service';
 
 let organizationsServiceSpy: jasmine.SpyObj<OrganizationsService>;

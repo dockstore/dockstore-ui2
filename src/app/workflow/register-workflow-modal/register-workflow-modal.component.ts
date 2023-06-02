@@ -25,7 +25,7 @@ import { debounceTime, takeUntil } from 'rxjs/operators';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { formInputDebounceTime } from '../../shared/constants';
 import { Dockstore } from '../../shared/dockstore.model';
-import { BioWorkflow, Service, ToolDescriptor, Workflow } from '../../shared/swagger';
+import { BioWorkflow, Service, ToolDescriptor, Workflow } from '../../shared/openapi';
 import { Tooltip } from '../../shared/tooltip';
 
 import {

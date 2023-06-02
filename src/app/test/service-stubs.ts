@@ -13,8 +13,9 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
+import { HttpResponse } from '@angular/common/http';
 import { EntryType } from 'app/shared/enum/entry-type';
-import { EntryType as newEntryType, EntryTypeMetadata } from 'app/shared/openapi';
+import { EntryType as newEntryType, EntryTypeMetadata, EntryUpdateTime } from 'app/shared/openapi';
 import { BehaviorSubject, EMPTY, Observable, of as observableOf } from 'rxjs';
 import { SearchFields } from '../search/state/search.service';
 import { TagEditorMode } from '../shared/enum/tagEditorMode.enum';
@@ -22,15 +23,14 @@ import { CloudInstance, TRSService } from '../shared/openapi';
 import { Dockstore } from './../shared/dockstore.model';
 import { AdvancedSearchObject } from './../shared/models/AdvancedSearchObject';
 import { SubBucket } from './../shared/models/SubBucket';
-import { Permission, ToolDescriptor } from './../shared/swagger';
-import { DockstoreTool } from './../shared/swagger/model/dockstoreTool';
-import { Metadata } from './../shared/swagger/model/metadata';
-import { SourceFile } from './../shared/swagger/model/sourceFile';
-import { StarRequest } from './../shared/swagger/model/starRequest';
-import { TokenUser } from './../shared/swagger/model/tokenUser';
-import { User } from './../shared/swagger/model/user';
-import { Workflow } from './../shared/swagger/model/workflow';
-import { WorkflowVersion } from './../shared/swagger/model/workflowVersion';
+import { Permission, ToolDescriptor } from './../shared/openapi';
+import { DockstoreTool } from './../shared/openapi/model/dockstoreTool';
+import { SourceFile } from './../shared/openapi/model/sourceFile';
+import { StarRequest } from './../shared/openapi/model/starRequest';
+import { TokenUser } from './../shared/openapi/model/tokenUser';
+import { User } from './../shared/openapi/model/user';
+import { Workflow } from './../shared/openapi/model/workflow';
+import { WorkflowVersion } from './../shared/openapi/model/workflowVersion';
 import { bitbucketToken, gitHubToken, gitLabToken, quayToken, sampleTag, sampleWorkflow1, updatedWorkflow } from './mocked-objects';
 import RoleEnum = Permission.RoleEnum;
 import DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
@@ -119,16 +119,6 @@ export class QueryBuilderStubService {
 
   getVerifiedQuery(query_size: number, values: string, advancedSearchObject: AdvancedSearchObject, searchTerm: boolean, filters: any) {
     return 'thisissomefakequery';
-  }
-}
-
-export class GA4GHStubService {
-  metadataGet(): Observable<Metadata> {
-    const metadata: Metadata = {
-      version: '3',
-      api_version: '3',
-    };
-    return observableOf(metadata);
   }
 }
 
@@ -394,6 +384,14 @@ export class UsersStubService {
 
   postUserCloudInstance(userId: number, body: CloudInstance): Observable<Array<CloudInstance>> {
     return observableOf([]);
+  }
+  getUserEntries(
+    count?: number,
+    filter?: string,
+    type?: 'TOOLS' | 'WORKFLOWS' | 'SERVICES' | 'NOTEBOOKS',
+    observe?: 'response'
+  ): Observable<HttpResponse<Array<EntryUpdateTime>>> {
+    return observableOf(null);
   }
 }
 
@@ -776,11 +774,11 @@ export class WorkflowsStubService {
   sharedWorkflows() {
     return observableOf([]);
   }
-  getTestParameterFiles(workflowId: number, version?: string, extraHttpRequestParams?: any): Observable<Array<SourceFile>> {
+  getTestParameterFiles1(workflowId: number, version?: string, extraHttpRequestParams?: any): Observable<Array<SourceFile>> {
     return observableOf([]);
   }
 
-  starEntry(workflowId: number, body: StarRequest, extraHttpRequestParams?: any): Observable<{}> {
+  starEntry1(workflowId: number, body: StarRequest, extraHttpRequestParams?: any): Observable<{}> {
     return observableOf({});
   }
 
@@ -788,7 +786,7 @@ export class WorkflowsStubService {
     return observableOf({});
   }
 
-  getStarredUsers(workflowId: number, extraHttpRequestParams?: any): Observable<Array<User>> {
+  getStarredUsers1(workflowId: number, extraHttpRequestParams?: any): Observable<Array<User>> {
     return observableOf([]);
   }
 
@@ -802,8 +800,9 @@ export class WorkflowsStubService {
   ): Observable<Workflow> {
     return observableOf(sampleWorkflow1);
   }
-  refresh(workflowId: number, extraHttpRequestParams?: any): Observable<Workflow> {
+  refresh1(workflowId: number, extraHttpRequestParams?: any): Observable<Workflow> {
     const refreshedWorkflow: Workflow = {
+      type: '',
       descriptorType: DescriptorTypeEnum.CWL,
       gitUrl: 'refreshedGitUrl',
       mode: Workflow.ModeEnum.FULL,
@@ -814,7 +813,7 @@ export class WorkflowsStubService {
       defaultTestParameterFilePath: 'refreshedDefaultTestParameterFilePath',
       sourceControl: 'github.com',
       source_control_provider: 'GITHUB',
-      descriptorTypeSubclass: 'NOT_APPLICABLE',
+      descriptorTypeSubclass: 'n/a',
     };
     return observableOf(refreshedWorkflow);
   }
@@ -829,7 +828,7 @@ export class WorkflowsStubService {
     const updatedWorkflowVersions: WorkflowVersion[] = [];
     return observableOf(updatedWorkflowVersions);
   }
-  addTestParameterFiles(
+  addTestParameterFiles1(
     workflowId: number,
     testParameterPaths: Array<string>,
     body?: string,
@@ -838,7 +837,7 @@ export class WorkflowsStubService {
   ): Observable<Array<SourceFile>> {
     return observableOf([]);
   }
-  deleteTestParameterFiles(
+  deleteTestParameterFiles1(
     workflowId: number,
     testParameterPaths: Array<string>,
     version?: string,

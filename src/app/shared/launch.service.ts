@@ -17,7 +17,7 @@ import { Injectable } from '@angular/core';
 import { ga4ghPath } from './constants';
 import { DescriptorTypeCompatService } from './descriptor-type-compat.service';
 import { Dockstore } from './dockstore.model';
-import { ToolDescriptor } from './swagger';
+import { ToolDescriptor } from './openapi';
 
 @Injectable()
 export abstract class LaunchService {

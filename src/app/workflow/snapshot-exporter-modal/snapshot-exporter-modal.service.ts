@@ -5,7 +5,7 @@ import { AlertService } from '../../shared/alert/state/alert.service';
 import { EntriesService } from '../../shared/openapi';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { WorkflowService } from '../../shared/state/workflow.service';
-import { Workflow, WorkflowsService, WorkflowVersion } from '../../shared/swagger';
+import { Workflow, WorkflowsService, WorkflowVersion } from '../../shared/openapi';
 
 @Injectable({
   providedIn: 'root',

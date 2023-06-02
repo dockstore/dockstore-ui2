@@ -39,18 +39,18 @@ import { EntriesService } from '../shared/openapi';
 import { ProviderService } from '../shared/provider.service';
 import { SessionQuery } from '../shared/session/session.query';
 import { SessionService } from '../shared/session/session.service';
-import { Tag } from '../shared/swagger/model/tag';
-import { WorkflowVersion } from '../shared/swagger/model/workflowVersion';
+import { Tag } from '../shared/openapi/model/tag';
+import { WorkflowVersion } from '../shared/openapi/model/workflowVersion';
 import { ToolQuery } from '../shared/tool/tool.query';
 import { ToolService } from '../shared/tool/tool.service';
 import { TrackLoginService } from '../shared/track-login.service';
 import { ExtendedDockstoreTool } from './../shared/models/ExtendedDockstoreTool';
-import { ContainersService } from './../shared/swagger/api/containers.service';
-import { DockstoreTool } from './../shared/swagger/model/dockstoreTool';
+import { ContainersService } from './../shared/openapi/api/containers.service';
+import { DockstoreTool } from './../shared/openapi/model/dockstoreTool';
 import { UrlResolverService } from './../shared/url-resolver.service';
 import { AddTagComponent } from './add-tag/add-tag.component';
 import { EmailService } from './email.service';
-import { Workflow } from '../shared/swagger';
+import { Workflow } from '../shared/openapi';
 import { EntryCategoriesService } from '../categories/state/entry-categories.service';
 
 @Component({

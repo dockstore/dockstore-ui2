@@ -19,15 +19,16 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { CustomMaterialModule } from 'app/shared/modules/material.module';
 import { MyEntriesModule } from 'app/shared/modules/my-entries.module';
 import { WorkflowService } from 'app/shared/state/workflow.service';
-import { UsersService, WorkflowsService } from 'app/shared/swagger';
+import { UsersService, WorkflowsService } from 'app/shared/openapi';
 import { UrlResolverService } from 'app/shared/url-resolver.service';
 import { UrlResolverStubService, UsersStubService, WorkflowsStubService, WorkflowStubService } from 'app/test/service-stubs';
-import { Workflow } from './../shared/swagger/model/workflow';
+import { Workflow } from './../shared/openapi/model/workflow';
 import { OrgWorkflowObject } from './my-workflow/my-workflow.component';
 import { MyWorkflowsService } from './myworkflows.service';
 
 describe('MyWorkflowsService', () => {
   const tool1: Workflow = {
+    type: '',
     defaultTestParameterFilePath: '',
     descriptorType: null,
     gitUrl: '',
@@ -39,9 +40,10 @@ describe('MyWorkflowsService', () => {
     path: 'github.com/cc/aa',
     full_workflow_path: 'github.com/cc/aa',
     source_control_provider: 'GITHUB',
-    descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NOTAPPLICABLE,
+    descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NA,
   };
   const tool2: Workflow = {
+    type: '',
     defaultTestParameterFilePath: '',
     descriptorType: null,
     gitUrl: '',
@@ -53,9 +55,10 @@ describe('MyWorkflowsService', () => {
     path: 'github.com/cc/bb',
     full_workflow_path: 'github.com/cc/bb',
     source_control_provider: 'GITHUB',
-    descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NOTAPPLICABLE,
+    descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NA,
   };
   const tool3: Workflow = {
+    type: '',
     defaultTestParameterFilePath: '',
     descriptorType: null,
     gitUrl: '',
@@ -67,9 +70,10 @@ describe('MyWorkflowsService', () => {
     path: 'github.com/bb/cc',
     full_workflow_path: 'github.com/bb/cc',
     source_control_provider: 'GITHUB',
-    descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NOTAPPLICABLE,
+    descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NA,
   };
   const tool4: Workflow = {
+    type: '',
     defaultTestParameterFilePath: '',
     descriptorType: null,
     gitUrl: '',
@@ -81,9 +85,10 @@ describe('MyWorkflowsService', () => {
     path: 'github.com/bb/dd',
     full_workflow_path: 'github.com/bb/dd',
     source_control_provider: 'GITHUB',
-    descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NOTAPPLICABLE,
+    descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NA,
   };
   const tool5: Workflow = {
+    type: '',
     defaultTestParameterFilePath: '',
     descriptorType: null,
     gitUrl: '',
@@ -95,9 +100,10 @@ describe('MyWorkflowsService', () => {
     path: 'github.com/aa/ee',
     full_workflow_path: 'github.com/aa/ee',
     source_control_provider: 'GITHUB',
-    descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NOTAPPLICABLE,
+    descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NA,
   };
   const tool6: Workflow = {
+    type: '',
     defaultTestParameterFilePath: '',
     descriptorType: null,
     gitUrl: '',
@@ -109,7 +115,7 @@ describe('MyWorkflowsService', () => {
     path: 'github.com/aa/ee',
     full_workflow_path: 'github.com/aa/ee',
     source_control_provider: 'GITHUB',
-    descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NOTAPPLICABLE,
+    descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NA,
   };
   const tools: Workflow[] = [tool1, tool2, tool4, tool3, tool5, tool6];
   const expectedResult1: OrgWorkflowObject<Workflow> = {

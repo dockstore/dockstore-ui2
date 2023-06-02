@@ -3,7 +3,7 @@
 import { inject, TestBed } from '@angular/core/testing';
 import { DescriptorTypeCompatService } from './descriptor-type-compat.service';
 import { ToolVersion } from './openapi';
-import { ToolDescriptor } from './swagger';
+import { ToolDescriptor } from './openapi';
 
 describe('Service: DescriptorTypeCompat', () => {
   beforeEach(() => {

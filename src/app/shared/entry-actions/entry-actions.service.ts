@@ -5,7 +5,7 @@ import { includesAuthors, includesVersions } from '../constants';
 import { ContainerService } from '../container.service';
 import { EntryType } from '../enum/entry-type';
 import { WorkflowService } from '../state/workflow.service';
-import { ContainersService, DockstoreTool, Entry, PublishRequest, Workflow, WorkflowsService } from '../swagger';
+import { ContainersService, DockstoreTool, Entry, PublishRequest, Workflow, WorkflowsService } from '../openapi';
 import { InformationDialogData } from '../../information-dialog/information-dialog.component';
 import { InformationDialogService } from '../../information-dialog/information-dialog.service';
 import { bootstrap4mediumModalSize } from '../../shared/constants';
@@ -136,7 +136,7 @@ export class EntryActionsService {
       };
       const message = !currentlyPublished ? `Publishing ${entryType}` : `Unpublishing ${entryType}`;
       this.alertService.start(message);
-      this.workflowsService.publish(workflow.id, request).subscribe(
+      this.workflowsService.publish1(workflow.id, request).subscribe(
         (response: Workflow) => {
           this.workflowService.upsertWorkflowToWorkflow(response);
           this.workflowService.setWorkflow(response);

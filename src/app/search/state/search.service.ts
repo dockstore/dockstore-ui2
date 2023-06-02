@@ -28,7 +28,7 @@ import { ImageProviderService } from '../../shared/image-provider.service';
 import { SubBucket } from '../../shared/models/SubBucket';
 import { ExtendedGA4GHService } from '../../shared/openapi/api/extendedGA4GH.service';
 import { ProviderService } from '../../shared/provider.service';
-import { DockstoreTool, Workflow } from '../../shared/swagger';
+import { DockstoreTool, Workflow } from '../../shared/openapi';
 import { SearchQuery } from './search.query';
 import { SearchStore } from './search.store';
 import { SearchAuthorsHtmlPipe } from '../search-authors-html.pipe';

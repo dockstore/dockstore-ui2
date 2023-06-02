@@ -23,10 +23,10 @@ import { FileEditing } from '../../shared/file-editing';
 
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { WorkflowService } from '../../shared/state/workflow.service';
-import { ToolDescriptor, Workflow } from '../../shared/swagger';
-import { HostedService } from './../../shared/swagger/api/hosted.service';
-import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
-import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
+import { ToolDescriptor, Workflow } from '../../shared/openapi';
+import { HostedService } from './../../shared/openapi/api/hosted.service';
+import { WorkflowsService } from './../../shared/openapi/api/workflows.service';
+import { WorkflowVersion } from './../../shared/openapi/model/workflowVersion';
 
 @Component({
   selector: 'app-workflow-file-editor',

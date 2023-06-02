@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ga4ghPath, ga4ghWorkflowIdPrefix } from '../../../shared/constants';
 import { Dockstore } from '../../../shared/dockstore.model';
-import { SourceFile } from '../../../shared/swagger';
+import { SourceFile } from '../../../shared/openapi';
 import { DescriptorsStore } from './descriptors-store';
 
 @Injectable()

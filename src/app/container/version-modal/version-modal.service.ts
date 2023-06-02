@@ -18,7 +18,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
-import { Tag } from '../../shared/swagger';
+import { Tag } from '../../shared/openapi';
 
 @Injectable()
 export class VersionModalService {

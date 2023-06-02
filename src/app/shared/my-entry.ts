@@ -28,7 +28,7 @@ import { SessionService } from './session/session.service';
 import { MyEntriesQuery } from './state/my-entries.query';
 import { MyEntriesStateService } from './state/my-entries.service';
 import { TokenQuery } from './state/token.query';
-import { Configuration } from './swagger';
+import { Configuration } from './openapi';
 import { UrlResolverService } from './url-resolver.service';
 import { UserQuery } from './user/user.query';
 

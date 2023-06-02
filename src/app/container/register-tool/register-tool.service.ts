@@ -21,11 +21,11 @@ import { BehaviorSubject } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { ContainerService } from '../../shared/container.service';
-import { SourceControlBean } from '../../shared/swagger';
-import { ContainersService } from '../../shared/swagger/api/containers.service';
-import { HostedService } from '../../shared/swagger/api/hosted.service';
-import { MetadataService } from '../../shared/swagger/api/metadata.service';
-import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
+import { SourceControlBean } from '../../shared/openapi';
+import { ContainersService } from '../../shared/openapi/api/containers.service';
+import { HostedService } from '../../shared/openapi/api/hosted.service';
+import { MetadataService } from '../../shared/openapi/api/metadata.service';
+import { DockstoreTool } from '../../shared/openapi/model/dockstoreTool';
 import { ToolQuery } from '../../shared/tool/tool.query';
 import { Tool } from './tool';
 
@@ -134,7 +134,7 @@ export class RegisterToolService {
   registerHostedTool(hostedTool: any): void {
     const splitPath = hostedTool.path.split('/');
     const namespace = splitPath[0];
-    const name = splitPath.slice(1, splitPath.length).join("/");
+    const name = splitPath.slice(1, splitPath.length).join('/');
     this.alertService.start('Registering tool');
     this.hostedService
       .createHostedTool(name, hostedTool.registry, undefined, namespace, hostedTool.entryName ? hostedTool.entryName : undefined)

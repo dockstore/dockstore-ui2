@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Order, QueryEntity } from '@datorama/akita';
 import { Observable } from 'rxjs';
-import { Notification } from '../../shared/swagger/model/notification';
+import { Notification } from '../../shared/openapi/model/notification';
 import { NotificationsState, NotificationsStore } from './notifications.store';
 
 @Injectable({ providedIn: 'root' })

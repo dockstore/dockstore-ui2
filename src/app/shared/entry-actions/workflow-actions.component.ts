@@ -6,8 +6,8 @@ import { EntryType } from '../enum/entry-type';
 import { RefreshService } from '../refresh.service';
 import { SessionQuery } from '../session/session.query';
 import { TokenQuery } from '../state/token.query';
-import { BioWorkflow, Service, Notebook, WorkflowVersion } from '../swagger';
-import { Workflow } from '../swagger/model/workflow';
+import { BioWorkflow, Service, Notebook, WorkflowVersion } from '../openapi';
+import { Workflow } from '../openapi/model/workflow';
 import { EntryActionsComponent } from './entry-actions.component';
 import { EntryActionsService } from './entry-actions.service';
 

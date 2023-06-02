@@ -5,9 +5,9 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DescriptorTypeCompatService } from '../descriptor-type-compat.service';
 import { DescriptorLanguageService } from '../entry/descriptor-language.service';
-import { ToolDescriptor } from '../swagger';
-import { BioWorkflow } from '../swagger/model/bioWorkflow';
-import { Service } from '../swagger/model/service';
+import { ToolDescriptor } from '../openapi';
+import { BioWorkflow } from '../openapi/model/bioWorkflow';
+import { Service } from '../openapi/model/service';
 import { WorkflowState, WorkflowStore } from './workflow.store';
 
 @Injectable({

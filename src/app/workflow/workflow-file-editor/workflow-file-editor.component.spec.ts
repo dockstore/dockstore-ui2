@@ -22,8 +22,8 @@ import { PrivateFilePathPipe } from './../../shared/entry/private-file-path.pipe
 import { PublicFileDownloadPipe } from './../../shared/entry/public-file-download.pipe';
 import { FileService } from './../../shared/file.service';
 import { RefreshService } from './../../shared/refresh.service';
-import { HostedService } from './../../shared/swagger/api/hosted.service';
-import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
+import { HostedService } from './../../shared/openapi/api/hosted.service';
+import { WorkflowsService } from './../../shared/openapi/api/workflows.service';
 import { HostedStubService, RefreshStubService, WorkflowsStubService, WorkflowStubService } from './../../test/service-stubs';
 import { WorkflowFileEditorComponent } from './workflow-file-editor.component';
 

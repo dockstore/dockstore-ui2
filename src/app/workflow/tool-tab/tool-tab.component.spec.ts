@@ -18,7 +18,7 @@ import { FormsModule } from '@angular/forms';
 import { RefreshAlertModule } from '../../shared/alert/alert.module';
 import { CustomMaterialModule } from '../../shared/modules/material.module';
 import { WorkflowService } from '../../shared/state/workflow.service';
-import { WorkflowsService } from '../../shared/swagger';
+import { WorkflowsService } from '../../shared/openapi';
 import { WorkflowsStubService, WorkflowStubService } from '../../test/service-stubs';
 import { ToolTabComponent } from './tool-tab.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable } from 'rxjs';
 import { DateService } from '../../shared/date.service';
-import { AppTool, DockstoreTool } from '../../shared/swagger';
+import { AppTool, DockstoreTool } from '../../shared/openapi';
 import { SearchEntryTable } from '../search-entry-table';
 import { SearchQuery } from '../state/search.query';
 import { SearchService } from '../state/search.service';

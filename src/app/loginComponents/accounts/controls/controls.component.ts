@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
-import { UsersService } from '../../../shared/swagger';
+import { UsersService } from '../../../shared/openapi';
 import { UserQuery } from '../../../shared/user/user.query';
 import { UserService } from '../../../shared/user/user.service';
 import { DeleteAccountDialogComponent } from './delete-account-dialog/delete-account-dialog.component';

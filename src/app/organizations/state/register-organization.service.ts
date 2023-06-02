@@ -7,7 +7,7 @@ import { NgFormsManager } from '@ngneat/forms-manager';
 
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
-import { Organization, OrganizationsService } from '../../shared/swagger';
+import { Organization, OrganizationsService } from '../../shared/openapi';
 import { OrganizationService } from './organization.service';
 
 // This is recorded into the Akita state
@@ -164,7 +164,6 @@ export class RegisterOrganizationService {
         email: organizationFormState.contactEmail,
         status: Organization.StatusEnum.PENDING,
         avatarUrl: organizationFormState.avatarUrl || null,
-        users: [],
       };
       this.alertService.start('Adding organization');
       this.organizationsService.createOrganization(newOrganization).subscribe(
@@ -217,7 +216,6 @@ export class RegisterOrganizationService {
         status: Organization.StatusEnum.PENDING,
         avatarUrl: organizationFormState.avatarUrl || null,
         description: organizationDescription,
-        users: [],
       };
       this.alertService.start('Updating organization');
       this.organizationsService.updateOrganization(organizationId, editedOrganization).subscribe(

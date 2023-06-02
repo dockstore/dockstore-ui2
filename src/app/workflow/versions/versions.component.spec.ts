@@ -30,7 +30,7 @@ import { ProviderService } from '../../shared/provider.service';
 import { RefreshService } from '../../shared/refresh.service';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { WorkflowService } from '../../shared/state/workflow.service';
-import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
+import { WorkflowsService } from '../../shared/openapi/api/workflows.service';
 import {
   DateStubService,
   ImageProviderStubService,

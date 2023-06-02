@@ -3,7 +3,7 @@ import { QueryEntity } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { OrganizationUser } from '../../shared/swagger';
+import { OrganizationUser } from '../../shared/openapi';
 import { OrganizationMembersState, OrganizationMembersStore } from './organization-members.store';
 
 @Injectable({

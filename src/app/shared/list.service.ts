@@ -17,9 +17,9 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { ContainersService } from './swagger';
-import { UsersService } from './swagger/api/users.service';
-import { WorkflowsService } from './swagger/api/workflows.service';
+import { ContainersService } from './openapi';
+import { UsersService } from './openapi/api/users.service';
+import { WorkflowsService } from './openapi/api/workflows.service';
 
 @Injectable()
 export class ListService {

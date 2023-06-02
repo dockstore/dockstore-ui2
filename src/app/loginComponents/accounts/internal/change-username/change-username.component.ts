@@ -19,10 +19,10 @@ import { Observable, Subject } from 'rxjs';
 import { debounceTime, finalize, takeUntil } from 'rxjs/operators';
 import { formInputDebounceTime } from '../../../../shared/constants';
 import { MyErrorStateMatcher } from '../../../../shared/error-state-matcher';
-import { User } from '../../../../shared/swagger/model/user';
+import { User } from '../../../../shared/openapi/model/user';
 import { UserQuery } from '../../../../shared/user/user.query';
 import { UserService } from '../../../../shared/user/user.service';
-import { UsersService } from './../../../../shared/swagger/api/users.service';
+import { UsersService } from './../../../../shared/openapi/api/users.service';
 
 @Component({
   selector: 'app-change-username',

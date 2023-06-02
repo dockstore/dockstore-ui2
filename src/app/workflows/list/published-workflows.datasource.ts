@@ -22,7 +22,7 @@ import { catchError, finalize } from 'rxjs/operators';
 import { ExtendedWorkflow } from '../../shared/models/ExtendedWorkflow';
 import { WorkflowSubClass } from '../../shared/openapi';
 import { ProviderService } from '../../shared/provider.service';
-import { Workflow, WorkflowsService } from '../../shared/swagger';
+import { Workflow, WorkflowsService } from '../../shared/openapi';
 
 @Injectable()
 export class PublishedWorkflowsDataSource implements DataSource<ExtendedWorkflow> {

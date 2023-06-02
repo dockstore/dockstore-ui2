@@ -18,11 +18,11 @@ import { IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { takeUntil } from 'rxjs/operators';
 import { DockstoreService } from '../shared/dockstore.service';
 import { EntryTab } from '../shared/entry/entry-tab';
-import { Tag } from '../shared/swagger/model/tag';
-import { WorkflowVersion } from './../shared/swagger/model/workflowVersion';
+import { Tag } from '../shared/openapi/model/tag';
+import { WorkflowVersion } from './../shared/openapi/model/workflowVersion';
 import { DateService } from './date.service';
 import { SessionQuery } from './session/session.query';
-import { DockstoreTool } from './swagger/model/dockstoreTool';
+import { DockstoreTool } from './openapi/model/dockstoreTool';
 import { Tooltip } from './tooltip';
 
 @Directive()

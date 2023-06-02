@@ -3,7 +3,7 @@ import { inject, TestBed } from '@angular/core/testing';
 import { sampleTool1 } from '../test/mocked-objects';
 import { DockstoreService } from './../shared/dockstore.service';
 import { ExtendedDockstoreTool } from './../shared/models/ExtendedDockstoreTool';
-import { DockstoreTool } from './../shared/swagger/model/dockstoreTool';
+import { DockstoreTool } from './../shared/openapi/model/dockstoreTool';
 import { EmailService } from './email.service';
 
 describe('Service: Email', () => {

@@ -8,7 +8,7 @@ import { EntryType } from 'app/shared/enum/entry-type';
 import { CustomMaterialModule } from 'app/shared/modules/material.module';
 import { ExtendedWorkflowQuery } from 'app/shared/state/extended-workflow.query';
 import { WorkflowService } from 'app/shared/state/workflow.service';
-import { WorkflowsService } from 'app/shared/swagger';
+import { WorkflowsService } from 'app/shared/openapi';
 import { WorkflowsStubService, WorkflowStubService } from 'app/test/service-stubs';
 import { sampleWorkflow3 } from '../../test/mocked-objects';
 import { InfoTabService } from './info-tab.service';

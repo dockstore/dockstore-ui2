@@ -15,7 +15,7 @@
  */
 import { Injectable } from '@angular/core';
 import { Store, StoreConfig } from '@datorama/akita';
-import { Entry, Workflow } from '../swagger';
+import { Entry, Workflow } from '../openapi';
 
 export interface CheckerWorkflowState {
   entry: Entry;

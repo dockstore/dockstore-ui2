@@ -1,4 +1,4 @@
-import { LambdaEvent } from '../../../src/app/shared/swagger';
+import { LambdaEvent } from '../../../src/app/shared/openapi';
 import { goToTab, insertAppTools, isActiveTab, resetDB, setTokenUserViewPort } from '../../support/commands';
 
 describe('GitHub App Tools', () => {
