@@ -19,7 +19,6 @@ if [ "$npm_package_config_use_circle" = true ]
 then
         OPENAPI_PATH=$(./scripts/get-circleci-artifact-url.sh "$npm_package_config_circle_build_id" openapi.yaml)
 else
-        SWAGGER_PATH="${BASE_PATH}""/dockstore-webservice/src/main/resources/swagger.yaml"
         OPENAPI_PATH="${BASE_PATH}""/dockstore-webservice/src/main/resources/openapi3/openapi.yaml"
 fi
 
