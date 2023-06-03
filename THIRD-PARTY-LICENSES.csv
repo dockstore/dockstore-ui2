@@ -628,7 +628,7 @@
 "es-module-lexer@0.9.3","MIT","https://github.com/guybedford/es-module-lexer"
 "es6-promise@4.2.8","MIT","https://github.com/stefanpenner/es6-promise"
 "es6-promisify@5.0.0","MIT","https://github.com/digitaldesignlabs/es6-promisify"
-"esbuild-darwin-arm64@0.15.5","MIT","https://github.com/evanw/esbuild"
+"esbuild-linux-64@0.15.5","MIT","https://github.com/evanw/esbuild"
 "esbuild-wasm@0.15.5","MIT","https://github.com/evanw/esbuild"
 "esbuild@0.15.5","MIT","https://github.com/evanw/esbuild"
 "escalade@3.1.1","MIT","https://github.com/lukeed/escalade"
