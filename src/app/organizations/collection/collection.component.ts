@@ -6,6 +6,7 @@ import { Dockstore } from '../../shared/dockstore.model';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
 import { OrgLogoService } from '../../shared/org-logo.service';
 import { Collection, Organization } from '../../shared/swagger';
+import { Collection as OpenAPICollection, OrganizationsService } from '../../shared/openapi';
 import { ToolDescriptor } from '../../shared/swagger/model/toolDescriptor';
 import { Workflow } from '../../shared/swagger/model/workflow';
 import { UserQuery } from '../../shared/user/user.query';
@@ -55,6 +56,7 @@ export class CollectionComponent implements OnInit {
   WorkflowMode = Workflow.ModeEnum;
   DescriptorType = ToolDescriptor.TypeEnum;
   collection$: Observable<Collection>;
+  openAPICollection: OpenAPICollection;
   loadingCollection$: Observable<boolean>;
 
   organization$: Observable<Organization>;
@@ -69,6 +71,7 @@ export class CollectionComponent implements OnInit {
   constructor(
     private collectionsQuery: CollectionsQuery,
     private organizationQuery: OrganizationQuery,
+    private organizationsService: OrganizationsService,
     private collectionsService: CollectionsService,
     public dialog: MatDialog,
     private activatedRoute: ActivatedRoute,
@@ -88,10 +91,13 @@ export class CollectionComponent implements OnInit {
     this.collectionsService.updateCollectionFromName(organizationName, collectionName);
     this.isAdmin$ = this.userQuery.isAdmin$;
     this.isCurator$ = this.userQuery.isCurator$;
+    this.organizationsService.getCollectionByName(organizationName, collectionName).subscribe((openAPICollection) => {
+      this.openAPICollection = openAPICollection;
+    });
   }
 
   checkHasOnlyNotebooks(collection: Collection): boolean {
-    return collection.entries.length === collection.notebooksLength;
+    return collection.entries.length === this.openAPICollection.notebooksLength;
   }
 
   /**
