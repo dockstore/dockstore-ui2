@@ -18,17 +18,17 @@ import {
   approvePotatoOrganization,
   createPotatoMembership,
   rejectPotatoMembership,
-  resetDB,
   setTokenUserViewPort,
   addToCollection,
   insertNotebooks,
+  resetDBWithService,
 } from '../../support/commands';
 import { TokenUser } from '../../../src/app/shared/swagger';
 import { TokenSource } from '../../../src/app/shared/enum/token-source.enum';
 
 const imageURL = 'https://superduperfakepotatourl.com/potato.png';
 describe('Dockstore Organizations', () => {
-  resetDB();
+  resetDBWithService();
   setTokenUserViewPort();
 
   function typeInInput(fieldName: string, text: string) {
