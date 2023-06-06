@@ -7,7 +7,7 @@ orbs:
 executors:
   integration_test_exec: # declares a reusable executor
     docker:
-      - image: cimg/openjdk:17.0-browsers
+      - image: cimg/base:stable-20.04
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
@@ -425,6 +425,7 @@ commands:
     steps:
       - install_browser_tools
       - get_workspace
+      - install_container_dependencies
       - install_cypress_dependencies
       - run_services:
           db_dump: << parameters.db_dump >>
