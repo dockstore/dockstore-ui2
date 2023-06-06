@@ -203,6 +203,7 @@ jobs:
                 role-arn: $AWS_ROLE_ARN
                 role-session-name: "CircleCI-${CIRCLE_WORKFLOW_ID}-${CIRCLE_JOB}"
             - get_workspace
+            - install_npm
             # Build again for the upload to s3
             # TODO: https://gui.dockstore.org/${CIRCLE_TAG:-$CIRCLE_BRANCH}-$(echo $CIRCLE_SHA1 | cut -c -7) can probably be made into a bash/circle-ci variable.
             - run:
@@ -509,7 +510,7 @@ commands:
           background: true
       - run:
           name: Run webservice
-          command: java -jar dockstore-webservice.jar server test/web.yml 1
+          command: java -jar dockstore-webservice.jar server test/web.yml
           background: true
       - run:
           name: Wait for services
