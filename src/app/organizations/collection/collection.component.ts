@@ -19,6 +19,8 @@ import { CollectionsQuery } from '../state/collections.query';
 import { CollectionsService } from '../state/collections.service';
 import { OrganizationQuery } from '../state/organization.query';
 import { EntryType } from 'app/shared/enum/entry-type';
+import { HttpErrorResponse } from '@angular/common/http';
+import { AlertService } from '../../shared/alert/state/alert.service';
 
 @Component({
   selector: 'app-collection-entry-confirm-remove',
@@ -75,6 +77,7 @@ export class CollectionComponent implements OnInit {
     private collectionsService: CollectionsService,
     public dialog: MatDialog,
     private activatedRoute: ActivatedRoute,
+    private alertService: AlertService,
     private userQuery: UserQuery,
     public orgLogoService: OrgLogoService
   ) {}
@@ -91,9 +94,14 @@ export class CollectionComponent implements OnInit {
     this.collectionsService.updateCollectionFromName(organizationName, collectionName);
     this.isAdmin$ = this.userQuery.isAdmin$;
     this.isCurator$ = this.userQuery.isCurator$;
-    this.organizationsService.getCollectionByName(organizationName, collectionName).subscribe((openAPICollection) => {
-      this.openAPICollection = openAPICollection;
-    });
+    this.organizationsService.getCollectionByName(organizationName, collectionName).subscribe(
+      (openAPICollection) => {
+        this.openAPICollection = openAPICollection;
+      },
+      (error: HttpErrorResponse) => {
+        this.alertService.detailedError(error);
+      }
+    );
   }
 
   checkHasOnlyNotebooks(collection: Collection): boolean {
