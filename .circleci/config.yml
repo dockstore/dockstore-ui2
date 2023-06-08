@@ -142,6 +142,33 @@ jobs:
       - run:
           name: Codecov
           command: bash -i -c 'npx codecov'
+      - run:
+          name: SonarScanner
+          command: |
+            if [ -n $CIRCLE_PULL_REQUEST ]
+            then
+              pr=$(echo https://api.github.com/repos/${CIRCLE_PULL_REQUEST:19} | sed "s/\/pull\//\/pulls\//")
+              base=$(curl -s $pr | jq '.base.ref')
+              number=$(curl -s $pr | jq '.number')
+              echo "base: ${base}, number: ${number}"
+              SONAR_TOKEN="bb4869100da0a3548e91397f5a59fe32bb95254a"
+              base="develop"
+              number="1"
+
+              docker run \
+                --rm \
+                -e SONAR_SCANNER_OPTS="-Dsonar.pullrequest.key=${number} -Dsonar.pullrequest.branch=SEAB-3959 -Dsonar.pullrequest.base=${base}" \
+                -e SONAR_TOKEN="${SONAR_TOKEN}" \
+                -v "$(pwd):/usr/src" \
+                sonarsource/sonar-scanner-cli
+            elif [ -n $CIRCLE_BRANCH ] && [ "${CIRCLE_BRANCH}" == "develop" ]
+            then
+              docker run \
+                --rm \
+                -e SONAR_TOKEN="${SONAR_TOKEN}" \
+                -v "$(pwd):/usr/src" \
+                sonarsource/sonar-scanner-cli
+            fi
       - persist_to_workspace:
           root: .
           paths:
@@ -458,7 +485,7 @@ commands:
     steps:
       - restore_dep_cache
       - run:
-          name: Install dependencies 
+          name: Install dependencies
           #Only run 'npm ci' if node_modules was not restored from cache
           command: |
               if [ ! -d "./node_modules" ]
