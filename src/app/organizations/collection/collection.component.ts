@@ -5,7 +5,7 @@ import { bootstrap4mediumModalSize } from '../../shared/constants';
 import { Dockstore } from '../../shared/dockstore.model';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
 import { OrgLogoService } from '../../shared/org-logo.service';
-import { Collection, Organization } from '../../shared/openapi';
+import { Collection, Organization, OrganizationsService } from '../../shared/openapi';
 import { ToolDescriptor } from '../../shared/openapi/model/toolDescriptor';
 import { Workflow } from '../../shared/openapi/model/workflow';
 import { UserQuery } from '../../shared/user/user.query';
@@ -57,7 +57,7 @@ export class CollectionComponent implements OnInit {
   WorkflowMode = Workflow.ModeEnum;
   DescriptorType = ToolDescriptor.TypeEnum;
   collection$: Observable<Collection>;
-  openAPICollection: OpenAPICollection;
+  openAPICollection: Collection;
   loadingCollection$: Observable<boolean>;
 
   organization$: Observable<Organization>;
@@ -104,7 +104,8 @@ export class CollectionComponent implements OnInit {
   }
 
   checkHasOnlyNotebooks(collection: Collection): boolean {
-    return collection.entries.length === this.openAPICollection.notebooksLength;
+    return false;
+    // return collection.entries.length === this.openAPICollection.notebooksLength;
   }
 
   /**
