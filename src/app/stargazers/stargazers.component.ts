@@ -47,6 +47,5 @@ export class StargazersComponent extends Base implements OnInit {
         });
       }
     });
-    k;
   }
 }
