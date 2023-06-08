@@ -146,29 +146,31 @@ jobs:
       - run:
           name: SonarScanner
           command: |
+            export SONAR_SCANNER_VERSION=4.7.0.2747
+            export SONAR_SCANNER_HOME=$HOME/.sonar/sonar-scanner-$SONAR_SCANNER_VERSION-linux
+            curl --create-dirs -sSLo $HOME/.sonar/sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-$SONAR_SCANNER_VERSION-linux.zip
+            unzip -o $HOME/.sonar/sonar-scanner.zip -d $HOME/.sonar/
+            export PATH=$SONAR_SCANNER_HOME/bin:$PATH
+            export SONAR_SCANNER_OPTS="-server"
+
             if [ -n $CIRCLE_PULL_REQUEST ]
             then
               pr=$(echo https://api.github.com/repos/${CIRCLE_PULL_REQUEST:19} | sed "s/\/pull\//\/pulls\//")
               base=$(curl -s $pr | jq '.base.ref')
               number=$(curl -s $pr | jq '.number')
-              echo "base: ${base}, number: ${number}"
-              SONAR_TOKEN="bb4869100da0a3548e91397f5a59fe32bb95254a"
+              echo "base: ${base}, number: ${number}, pr: ${pr}"
+              echo $(pwd)
+              export SONAR_TOKEN="bb4869100da0a3548e91397f5a59fe32bb95254a"
               base="develop"
               number="1"
 
-              docker run \
-                --rm \
-                -e SONAR_SCANNER_OPTS="-Dsonar.pullrequest.key=${number} -Dsonar.pullrequest.branch=SEAB-3959 -Dsonar.pullrequest.base=${base}" \
-                -e SONAR_TOKEN="${SONAR_TOKEN}" \
-                -v "$(pwd):/usr/src" \
-                sonarsource/sonar-scanner-cli
+              sonar-scanner \
+                -Dsonar.pullrequest.key=$number \
+                -Dsonar.pullrequest.branch=SEAB-3959 \
+                -Dsonar.pullrequest.base=$base
             elif [ -n $CIRCLE_BRANCH ] && [ "${CIRCLE_BRANCH}" == "develop" ]
             then
-              docker run \
-                --rm \
-                -e SONAR_TOKEN="${SONAR_TOKEN}" \
-                -v "$(pwd):/usr/src" \
-                sonarsource/sonar-scanner-cli
+              sonar-scanner
             fi
       - persist_to_workspace:
           root: .
