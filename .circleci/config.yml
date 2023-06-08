@@ -7,7 +7,7 @@ orbs:
 executors:
   integration_test_exec: # declares a reusable executor
     docker:
-      - image: cimg/openjdk_17.0-browsers
+      - image: cimg/openjdk:17.0-browsers
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
