@@ -500,13 +500,13 @@ commands:
             PAGER: cat # prevent psql commands using less https://stackoverflow.com/questions/53055044/rails-rake-dbstructureload-times-out-on-circleci-2-0
       - run:
           name: Install nginx
-          command: sudo apt install -y nginx || true
+          command: sudo apt install -y nginx=1.18.0-0ubuntu1.4 || true
       - run:
           name: Prepapre nginx config
           command: sed "s%REPLACEME%`pwd`%" .circleci/nginx.conf.tmpl > .circleci/nginx.conf
       - run:
           name: Run nginx
-          command: sudo service nginx start -c `pwd`/.circleci/nginx.conf
+          command: sudo nginx -c `pwd`/.circleci/nginx.conf
           background: true
       - run:
           name: Run webservice
