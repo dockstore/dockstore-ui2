@@ -431,6 +431,7 @@ commands:
       - run: mkdir -p integration-tests/test-results/junit
       - restore_cypress_cache
       - install_ui_dependencies
+      - build_ui
   setup_nightly_tests:
     steps:
       - checkout
