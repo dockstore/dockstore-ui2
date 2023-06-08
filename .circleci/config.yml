@@ -430,8 +430,6 @@ commands:
           db_dump: << parameters.db_dump >>
       - run: mkdir -p integration-tests/test-results/junit
       - restore_cypress_cache
-      - install_ui_dependencies
-      - build_ui
   setup_nightly_tests:
     steps:
       - checkout
@@ -514,6 +512,13 @@ commands:
           name: Run webservice
           command: java -jar dockstore-webservice.jar server test/web.yml
           background: true
+      - install_ui_dependencies
+      - run:
+          name: Run ui
+          command: |
+            bash -i -c "npm run prebuild"
+            bash -i -c "npm run build"
+            bash -i -c "npm run start"
       - run:
           name: Wait for services
           command: bash scripts/wait-for.sh
