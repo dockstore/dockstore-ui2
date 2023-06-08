@@ -506,19 +506,12 @@ commands:
           command: sed "s%REPLACEME%`pwd`%" .circleci/nginx.conf.tmpl > .circleci/nginx.conf
       - run:
           name: Run nginx
-          command: sudo nginx -c `pwd`/.circleci/nginx.conf
+          command: sudo service nginx start -c `pwd`/.circleci/nginx.conf
           background: true
       - run:
           name: Run webservice
           command: java -jar dockstore-webservice.jar server test/web.yml
           background: true
-      - install_ui_dependencies
-      - run:
-          name: Run ui
-          command: |
-            bash -i -c "npm run prebuild"
-            bash -i -c "npm run build"
-            bash -i -c "npm run start"
       - run:
           name: Wait for services
           command: bash scripts/wait-for.sh
