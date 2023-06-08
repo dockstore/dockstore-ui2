@@ -64,6 +64,20 @@
                   <span *ngIf="collection.value.toolsLength !== 1; else oneTool"> Tools</span>
                   <ng-template #oneTool> Tool</ng-template>
                 </span>
+                <span class="bubble" data-cy="collections-services-count-bubble" *ngIf="collection.value.servicesLength > 0">
+                  {{ collection.value.servicesLength }}
+                  <span *ngIf="collection.value.servicesLength !== 1; else oneService"> Services</span>
+                  <ng-template #oneService> Service</ng-template>
+                </span>
+                <span
+                  class="bubble"
+                  data-cy="collections-notebooks-count-bubble"
+                  *ngIf="collection.value.notebooksLength > 0 && Dockstore.FEATURES.enableNotebooks"
+                >
+                  {{ collection.value.notebooksLength }}
+                  <span *ngIf="collection.value.notebooksLength !== 1; else oneNotebook"> Notebooks</span>
+                  <ng-template #oneNotebook> Notebook</ng-template>
+                </span>
               </div>
               <div *ngIf="canEdit$ | async; else viewBtn">
                 <button

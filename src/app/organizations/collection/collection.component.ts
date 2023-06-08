@@ -6,6 +6,7 @@ import { Dockstore } from '../../shared/dockstore.model';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
 import { OrgLogoService } from '../../shared/org-logo.service';
 import { Collection, Organization } from '../../shared/swagger';
+import { Collection as OpenAPICollection, OrganizationsService } from '../../shared/openapi';
 import { ToolDescriptor } from '../../shared/swagger/model/toolDescriptor';
 import { Workflow } from '../../shared/swagger/model/workflow';
 import { UserQuery } from '../../shared/user/user.query';
@@ -18,6 +19,8 @@ import { CollectionsQuery } from '../state/collections.query';
 import { CollectionsService } from '../state/collections.service';
 import { OrganizationQuery } from '../state/organization.query';
 import { EntryType } from 'app/shared/enum/entry-type';
+import { HttpErrorResponse } from '@angular/common/http';
+import { AlertService } from '../../shared/alert/state/alert.service';
 
 @Component({
   selector: 'app-collection-entry-confirm-remove',
@@ -55,6 +58,7 @@ export class CollectionComponent implements OnInit {
   WorkflowMode = Workflow.ModeEnum;
   DescriptorType = ToolDescriptor.TypeEnum;
   collection$: Observable<Collection>;
+  openAPICollection: OpenAPICollection;
   loadingCollection$: Observable<boolean>;
 
   organization$: Observable<Organization>;
@@ -65,12 +69,15 @@ export class CollectionComponent implements OnInit {
 
   isAdmin$: Observable<boolean>;
   isCurator$: Observable<boolean>;
+
   constructor(
     private collectionsQuery: CollectionsQuery,
     private organizationQuery: OrganizationQuery,
+    private organizationsService: OrganizationsService,
     private collectionsService: CollectionsService,
     public dialog: MatDialog,
     private activatedRoute: ActivatedRoute,
+    private alertService: AlertService,
     private userQuery: UserQuery,
     public orgLogoService: OrgLogoService
   ) {}
@@ -87,6 +94,18 @@ export class CollectionComponent implements OnInit {
     this.collectionsService.updateCollectionFromName(organizationName, collectionName);
     this.isAdmin$ = this.userQuery.isAdmin$;
     this.isCurator$ = this.userQuery.isCurator$;
+    this.organizationsService.getCollectionByName(organizationName, collectionName).subscribe(
+      (openAPICollection) => {
+        this.openAPICollection = openAPICollection;
+      },
+      (error: HttpErrorResponse) => {
+        this.alertService.detailedError(error);
+      }
+    );
+  }
+
+  checkHasOnlyNotebooks(collection: Collection): boolean {
+    return collection.entries.length === this.openAPICollection.notebooksLength;
   }
 
   /**
