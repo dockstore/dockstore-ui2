@@ -142,6 +142,7 @@ jobs:
       - run:
           name: Codecov
           command: bash -i -c 'npx codecov'
+      - setup_remote_docker
       - run:
           name: SonarScanner
           command: |
