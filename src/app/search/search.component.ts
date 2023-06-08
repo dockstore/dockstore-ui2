@@ -265,6 +265,12 @@ export class SearchComponent implements OnInit, OnDestroy {
       this.searchService.setSearchText('');
       this.unsubmittedSearchText = '';
     }
+    if (paramMap.has('entryType')) {
+      const value = paramMap.getAll('entryType');
+      const tabIndex = SearchService.convertEntryTypeToTabIndex(value[0]);
+      this.searchService.saveCurrentTab(tabIndex);
+      this.initializeMappings(tabIndex);
+    }
     paramMap.keys.forEach((key) => {
       const value = paramMap.getAll(key);
       if (this.friendlyNames.get(key)) {
@@ -272,8 +278,6 @@ export class SearchComponent implements OnInit, OnDestroy {
           categoryValue = decodeURIComponent(categoryValue);
           newFilters = this.searchService.updateFiltersFromParameter(key, categoryValue, newFilters);
         });
-      } else if (key === 'entryType') {
-        this.searchService.saveCurrentTab(SearchService.convertEntryTypeToTabIndex(value[0]));
       } else if (key === 'search') {
         this.searchTerm = true;
         this.searchService.setSearchText(value[0]);
@@ -443,7 +447,6 @@ export class SearchComponent implements OnInit, OnDestroy {
   updateQuery() {
     const tabIndex = this.searchQuery.getValue().currentTabIndex;
     const entryType = SearchService.convertTabIndexToEntryType(tabIndex);
-    this.initializeMappings(tabIndex);
     // Separating into 2 queries otherwise the queries interfere with each other (filter applied before aggregation)
     // The first query handles the aggregation and is used to update the sidebar buckets
     // The second query updates the result table
