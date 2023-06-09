@@ -143,7 +143,7 @@ export class VersionModalComponent extends Base implements OnInit, AfterViewChec
     const newCWL = this.unsavedCWLTestParameterFilePaths.filter((x) => !this.savedCWLTestParameterFilePaths.includes(x));
     if (newCWL && newCWL.length > 0) {
       // Using the string 'CWL' because this parameter only accepts 'CWL' or 'WDL' and not 'NFL'
-      this.containersService.addTestParameterFiles(id, newCWL, 'CWL', tagName, null).subscribe(
+      this.containersService.addTestParameterFiles(id, newCWL, tagName, 'CWL', null).subscribe(
         (response) => {},
         (err) => this.alertService.detailedError(err)
       );
@@ -159,7 +159,7 @@ export class VersionModalComponent extends Base implements OnInit, AfterViewChec
     const newWDL = this.unsavedWDLTestParameterFilePaths.filter((x) => !this.savedWDLTestParameterFilePaths.includes(x));
     if (newWDL && newWDL.length > 0) {
       // Using the string 'WDL' because this parameter only accepts 'CWL' or 'WDL' and not 'NFL'
-      this.containersService.addTestParameterFiles(id, newWDL, 'WDL', tagName, null).subscribe(
+      this.containersService.addTestParameterFiles(id, newWDL, tagName, 'WDL', null).subscribe(
         (response) => {},
         (err) => this.alertService.detailedError(err)
       );

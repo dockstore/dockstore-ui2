@@ -162,16 +162,16 @@ export class AddTagComponent extends Base implements OnInit, AfterViewChecked {
         const addCWL: Observable<SourceFile[]> = this.containersService.addTestParameterFiles(
           id,
           toAddCWLTestParameterFiles,
-          'CWL',
           tagName,
+          'CWL',
           null
         );
         // Using the string 'WDL' because this parameter only accepts 'CWL' or 'WDL' and not 'NFL'
         const addWDL: Observable<SourceFile[]> = this.containersService.addTestParameterFiles(
           id,
           toAddWDLTestParameterFiles,
-          'WDL',
           tagName,
+          'WDL',
           null
         );
         forkJoin([addCWL, addWDL]).subscribe(
