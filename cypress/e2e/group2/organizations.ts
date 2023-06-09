@@ -155,6 +155,7 @@ describe('Dockstore Organizations', () => {
       typeInInput('Display Name', 'fakeCollectionName');
       typeInInput('Topic', 'fake collection topic');
       cy.get('#createOrUpdateCollectionButton').should('be.visible').should('not.be.disabled').click();
+      cy.wait(2000);
       cy.contains('fakeCollectionName');
       cy.contains('fake collection topic');
 
