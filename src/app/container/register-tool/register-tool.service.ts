@@ -137,7 +137,7 @@ export class RegisterToolService {
     const name = splitPath.slice(1, splitPath.length).join('/');
     this.alertService.start('Registering tool');
     this.hostedService
-      .createHostedTool(name, hostedTool.registry, undefined, namespace, hostedTool.entryName ? hostedTool.entryName : undefined)
+      .createHostedTool(hostedTool.registry, name, undefined, namespace, hostedTool.entryName ? hostedTool.entryName : undefined)
       .subscribe(
         (result: DockstoreTool) => {
           this.alertService.detailedSuccess();

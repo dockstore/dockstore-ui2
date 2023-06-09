@@ -141,8 +141,8 @@ export class RegisterWorkflowModalService {
     this.alertService.start('Registering new workflow');
     this.hostedService
       .createHostedWorkflow(
-        hostedWorkflow.repository,
         undefined,
+        hostedWorkflow.repository,
         descriptorLanguageEnum,
         undefined,
         hostedWorkflow.entryName ? hostedWorkflow.entryName : undefined
