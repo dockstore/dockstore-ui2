@@ -69,11 +69,7 @@
                   <span *ngIf="collection.value.servicesLength !== 1; else oneService"> Services</span>
                   <ng-template #oneService> Service</ng-template>
                 </span>
-                <span
-                  class="bubble"
-                  data-cy="collections-notebooks-count-bubble"
-                  *ngIf="collection.value.notebooksLength > 0 && Dockstore.FEATURES.enableNotebooks"
-                >
+                <span class="bubble" data-cy="collections-notebooks-count-bubble" *ngIf="collection.value.notebooksLength > 0">
                   {{ collection.value.notebooksLength }}
                   <span *ngIf="collection.value.notebooksLength !== 1; else oneNotebook"> Notebooks</span>
                   <ng-template #oneNotebook> Notebook</ng-template>

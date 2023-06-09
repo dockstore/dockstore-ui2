@@ -312,9 +312,9 @@ describe('Dockstore Organizations', () => {
       const notebookPath = '/notebooks/github.com/dockstore-testing/simple-notebook';
       addToCollection(notebookPath, 'Potatoe', 'veryFakeCollectionName');
       cy.get('[data-cy=collectionLink]').should('contain', 'veryFakeCollectionName');
-      cy.visit('/organizations/Potatoe?notebooks');
+      cy.visit('/organizations/Potatoe');
       cy.get('[data-cy=collections-notebooks-count-bubble]').should('be.visible');
-      cy.visit('/organizations/Potatoe/collections/veryFakeCollectionName?notebooks');
+      cy.visit('/organizations/Potatoe/collections/veryFakeCollectionName');
       cy.contains('github.com/dockstore-testing/simple-notebook');
     });
 
@@ -330,7 +330,7 @@ describe('Dockstore Organizations', () => {
       cy.contains('veryFakeCollectionName').should('not.exist');
       cy.visit('/organizations/Potatoe');
       cy.get('[data-cy=collections-services-count-bubble]').should('not.exist');
-      cy.visit('/organizations/Potatoe?notebooks');
+      cy.visit('/organizations/Potatoe');
       cy.get('[data-cy=collections-notebooks-count-bubble]').should('not.exist');
     });
   });

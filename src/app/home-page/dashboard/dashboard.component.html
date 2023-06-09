@@ -5,16 +5,10 @@
     <app-header>My Dockstore: Dashboard</app-header>
     <app-news-notifications class="w-100"></app-news-notifications>
     <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="2.5rem" class="p-4">
-      <app-preview-warning *ngIf="Dockstore.FEATURES.enableNotebooks" featureName="Notebooks" class="w-100"></app-preview-warning>
       <div fxFlex fxLayout fxLayout.lt-md="column" fxLayoutGap="2.5rem" class="w-100">
         <app-entry-box fxFlex="33" fxFlex.lt-md="100" class="entry-holder" entryType="WORKFLOW"></app-entry-box>
         <app-entry-box fxFlex="33" fxFlex.lt-md="100" class="entry-holder" entryType="TOOL"></app-entry-box>
-        <app-entry-box
-          fxFlex="33"
-          fxFlex.lt-md="100"
-          class="entry-holder"
-          entryType="{{ Dockstore.FEATURES.enableNotebooks ? 'NOTEBOOK' : 'SERVICE' }}"
-        ></app-entry-box>
+        <app-entry-box fxFlex="33" fxFlex.lt-md="100" class="entry-holder" entryType="NOTEBOOK"></app-entry-box>
       </div>
       <div fxFlex fxLayout fxLayout.lt-md="column" fxLayoutGap="2.5rem" class="w-100">
         <app-organization-box fxFlex="50" fxFlex.lt-md="100" class="updates-holder"></app-organization-box>

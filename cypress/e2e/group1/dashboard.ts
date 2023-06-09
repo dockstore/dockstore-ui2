@@ -45,7 +45,7 @@ describe('Dockstore dashboard', () => {
   });
 
   it('no notebooks display correctly', () => {
-    cy.visit('/dashboard?notebooks');
+    cy.visit('/dashboard');
     cy.contains('Notebooks');
     cy.contains('You have not registered any notebooks.');
     cy.get('[data-cy=no-entry-register-modal]').contains('notebook');
@@ -67,7 +67,7 @@ describe('should display added notebook correctly', () => {
   setTokenUserViewPort();
   insertNotebooks();
   it('notebooks display correctly', () => {
-    cy.visit('/dashboard?notebooks');
+    cy.visit('/dashboard');
     cy.contains('Notebooks');
     cy.get('[data-cy=dashboard-notebook-count-bubble]').contains(1);
     cy.get('[data-cy=dashboard-entry-links]').contains('simple-notebook');
