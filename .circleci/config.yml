@@ -13,7 +13,7 @@ executors:
           password: $DOCKERHUB_PASSWORD
         environment:
           JAVA_TOOL_OPTIONS: -Xmx2g # Java can read cgroup. Sadly the cgroup in CircleCI is wrong. Have to manually set. Using 1/2 memory as heap.
-      - image: cimg/postgres:13.9
+      - image: cimg/postgres:13.3
         command: postgres -c max_connections=200 -c jit=off
         auth:
           username: dockstoretestuser
@@ -40,7 +40,7 @@ jobs:
         type: string
     working_directory: ~/repo
     docker:
-      - image: cimg/base:stable-20.04
+      - image: cimg/openjdk:17.0.4-browsers
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
@@ -74,7 +74,7 @@ jobs:
         type: string
     working_directory: ~/repo
     docker:
-        - image: cimg/base:stable-20.04
+        - image: cimg/openjdk:17.0.4-browsers
           auth:
             username: dockstoretestuser
             password: $DOCKERHUB_PASSWORD
@@ -102,7 +102,7 @@ jobs:
   lint_license_unit_test_coverage:
     working_directory: ~/repo
     docker:
-      - image: cimg/openjdk:17.0-browsers
+      - image: cimg/openjdk:17.0.4-browsers
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
@@ -181,7 +181,7 @@ jobs:
   upload_to_s3:
     working_directory: ~/repo
     docker:
-      - image: cimg/openjdk:17.0-node
+      - image: cimg/openjdk:17.0.4-node
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
@@ -226,7 +226,7 @@ jobs:
   check_build_develop:
     working_directory: ~/repo
     docker:
-      - image: cimg/openjdk:17.0-node
+      - image: cimg/openjdk:17.0.4-node
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
@@ -380,18 +380,6 @@ workflows:
             - oicr-slack
 
 commands:
-  install_container_dependencies:
-    steps:
-      - run:
-          name: Install java
-          command: |
-            sudo apt update -y
-            sudo apt install openjdk-17-jre -yq
-      - run:
-          name: Install npm
-          command: |
-            wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
-            bash -i -c 'nvm install'
   get_workspace:
     steps:
       - attach_workspace:
@@ -430,7 +418,6 @@ commands:
     steps:
       - checkout
       - install_browser_tools
-      - install_container_dependencies
       - install_cypress_dependencies
       - restore_cypress_cache
       - install_ui_dependencies
@@ -506,7 +493,7 @@ commands:
           background: true
       - run:
           name: Run webservice
-          command: java -jar dockstore-webservice.jar server test/web.yml
+          command: java -jar dockstore-webservice.jar server test/web.yml 1>/dev/null
           background: true
       - run:
           name: Wait for services
