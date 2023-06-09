@@ -7,7 +7,7 @@ orbs:
 executors:
   integration_test_exec: # declares a reusable executor
     docker:
-      - image: cimg/openjdk:17.0.4-browsers
+      - image: cimg/openjdk:<< pipeline.parameters.java-tag >>-browsers
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
@@ -40,7 +40,7 @@ jobs:
         type: string
     working_directory: ~/repo
     docker:
-      - image: cimg/openjdk:17.0.4-browsers
+      - image: cimg/openjdk:<< pipeline.parameters.java-tag >>-browsers
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
@@ -74,7 +74,7 @@ jobs:
         type: string
     working_directory: ~/repo
     docker:
-        - image: cimg/openjdk:17.0.4-browsers
+        - image: cimg/openjdk:<< pipeline.parameters.java-tag >>-browsers
           auth:
             username: dockstoretestuser
             password: $DOCKERHUB_PASSWORD
@@ -102,7 +102,7 @@ jobs:
   lint_license_unit_test_coverage:
     working_directory: ~/repo
     docker:
-      - image: cimg/openjdk:17.0.4-browsers
+      - image: cimg/openjdk:<< pipeline.parameters.java-tag >>-browsers
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
@@ -181,7 +181,7 @@ jobs:
   upload_to_s3:
     working_directory: ~/repo
     docker:
-      - image: cimg/openjdk:17.0.4-node
+      - image: cimg/openjdk:<< pipeline.parameters.java-tag >>-node
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
@@ -226,7 +226,7 @@ jobs:
   check_build_develop:
     working_directory: ~/repo
     docker:
-      - image: cimg/openjdk:17.0.4-node
+      - image: cimg/openjdk:<< pipeline.parameters.java-tag >>-node
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
@@ -249,6 +249,9 @@ parameters:
   run_nightly_no_auth:
     type: boolean
     default: false
+  java-tag:
+    type: string
+    default: "17.0.4"
 
 workflows:
   version: 2
