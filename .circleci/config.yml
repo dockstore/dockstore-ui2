@@ -7,7 +7,7 @@ orbs:
 executors:
   integration_test_exec: # declares a reusable executor
     docker:
-      - image: cimg/openjdk:17.0-browsers
+      - image: cimg/openjdk:17.0-node
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
@@ -181,7 +181,7 @@ jobs:
   upload_to_s3:
     working_directory: ~/repo
     docker:
-      - image: cimg/openjdk:17.0
+      - image: cimg/openjdk:17.0-node
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
@@ -203,7 +203,6 @@ jobs:
                 role-arn: $AWS_ROLE_ARN
                 role-session-name: "CircleCI-${CIRCLE_WORKFLOW_ID}-${CIRCLE_JOB}"
             - get_workspace
-            - install_npm
             # Build again for the upload to s3
             # TODO: https://gui.dockstore.org/${CIRCLE_TAG:-$CIRCLE_BRANCH}-$(echo $CIRCLE_SHA1 | cut -c -7) can probably be made into a bash/circle-ci variable.
             - run:
@@ -227,7 +226,7 @@ jobs:
   check_build_develop:
     working_directory: ~/repo
     docker:
-      - image: cimg/openjdk:17.0
+      - image: cimg/openjdk:17.0-node
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
@@ -381,13 +380,6 @@ workflows:
             - oicr-slack
 
 commands:
-  install_npm:
-    steps:
-      - run:
-          name: Install npm
-          command: |
-            wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
-            bash -i -c 'nvm install'
   install_container_dependencies:
     steps:
       - run:
@@ -395,7 +387,11 @@ commands:
           command: |
             sudo apt update -y
             sudo apt install openjdk-17-jre -yq
-      - install_npm
+      - run:
+          name: Install npm
+          command: |
+            wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
+            bash -i -c 'nvm install'
   get_workspace:
     steps:
       - attach_workspace:
