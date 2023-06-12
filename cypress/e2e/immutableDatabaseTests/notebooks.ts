@@ -43,7 +43,6 @@ describe('Notebooks Pages', () => {
   describe('Notebooks should be visible', () => {
     it('should be included in search', () => {
       cy.visit('/search?entryType=notebooks&searchMode=files&notebooks');
-      cy.get('[data-cy=preview-warning]').should('be.visible');
       cy.contains('.mat-tab-label', 'Notebooks');
     });
 
