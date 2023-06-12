@@ -7,7 +7,7 @@ orbs:
 executors:
   integration_test_exec: # declares a reusable executor
     docker:
-      - image: cimg/base:stable-20.04
+      - image: cimg/openjdk:<< pipeline.parameters.java-tag >>-browsers
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
@@ -40,7 +40,7 @@ jobs:
         type: string
     working_directory: ~/repo
     docker:
-      - image: cimg/base:stable-20.04
+      - image: cimg/openjdk:<< pipeline.parameters.java-tag >>-browsers
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
@@ -74,7 +74,7 @@ jobs:
         type: string
     working_directory: ~/repo
     docker:
-        - image: cimg/base:stable-20.04
+        - image: cimg/openjdk:<< pipeline.parameters.java-tag >>-browsers
           auth:
             username: dockstoretestuser
             password: $DOCKERHUB_PASSWORD
@@ -102,7 +102,7 @@ jobs:
   lint_license_unit_test_coverage:
     working_directory: ~/repo
     docker:
-      - image: cimg/base:stable-20.04
+      - image: cimg/openjdk:<< pipeline.parameters.java-tag >>-browsers
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
@@ -110,7 +110,6 @@ jobs:
       - checkout
       - install_browser_tools
       - checkout_merge_commit
-      - install_container_dependencies
       - install_ui_dependencies
       - save_cache:
           key: dep-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
@@ -212,6 +211,10 @@ jobs:
   upload_to_s3:
     working_directory: ~/repo
     docker:
+      - image: cimg/openjdk:<< pipeline.parameters.java-tag >>-node
+        auth:
+          username: dockstoretestuser
+          password: $DOCKERHUB_PASSWORD
       - image: cimg/python:3.11
         auth:
           username: dockstoretestuser
@@ -230,7 +233,6 @@ jobs:
                 role-arn: $AWS_ROLE_ARN
                 role-session-name: "CircleCI-${CIRCLE_WORKFLOW_ID}-${CIRCLE_JOB}"
             - get_workspace
-            - install_container_dependencies
             # Build again for the upload to s3
             # TODO: https://gui.dockstore.org/${CIRCLE_TAG:-$CIRCLE_BRANCH}-$(echo $CIRCLE_SHA1 | cut -c -7) can probably be made into a bash/circle-ci variable.
             - run:
@@ -254,13 +256,16 @@ jobs:
   check_build_develop:
     working_directory: ~/repo
     docker:
+      - image: cimg/openjdk:<< pipeline.parameters.java-tag >>-node
+        auth:
+          username: dockstoretestuser
+          password: $DOCKERHUB_PASSWORD
       - image: cimg/python:3.11
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
     steps:
       - get_workspace
-      - install_container_dependencies
       # Override the webservice version in package.json to instead build against develop webservice
       - run:
           name: set webservice to develop
@@ -274,6 +279,9 @@ parameters:
   run_nightly_no_auth:
     type: boolean
     default: false
+  java-tag:
+    type: string
+    default: "17.0.4"
 
 workflows:
   version: 2
@@ -405,18 +413,6 @@ workflows:
             - oicr-slack
 
 commands:
-  install_container_dependencies:
-    steps:
-      - run:
-          name: Install java
-          command: |
-            sudo apt update -y
-            sudo apt install openjdk-17-jre -yq
-      - run:
-          name: Install npm
-          command: |
-            wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
-            bash -i -c 'nvm install'
   get_workspace:
     steps:
       - attach_workspace:
@@ -435,7 +431,9 @@ commands:
     steps:
       - run:
           name: Install cypress dependencies
-          command: sudo apt-get install libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb -yq
+          command: |
+            sudo apt update -y
+            sudo apt-get install libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb -yq
   setup_integration_test:
     parameters:
       db_dump:
@@ -444,7 +442,6 @@ commands:
     steps:
       - install_browser_tools
       - get_workspace
-      - install_container_dependencies
       - install_cypress_dependencies
       - run_services:
           db_dump: << parameters.db_dump >>
@@ -454,7 +451,6 @@ commands:
     steps:
       - checkout
       - install_browser_tools
-      - install_container_dependencies
       - install_cypress_dependencies
       - restore_cypress_cache
       - install_ui_dependencies

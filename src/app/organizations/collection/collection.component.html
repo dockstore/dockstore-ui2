@@ -32,7 +32,7 @@
   <div *ngIf="organization$ | async as organization">
     <div class="container mb-5" *ngIf="collection$ | async as collection" fxLayout="column">
       <div *ngIf="Dockstore.FEATURES.enableNotebooks" class="mt-3">
-        <app-preview-warning></app-preview-warning>
+        <app-preview-warning featureName="Notebooks"></app-preview-warning>
       </div>
       <mat-card fxFlex class="my-3 alert alert-info mat-elevation-z" *ngIf="organization?.status === pendingEnum">
         <mat-icon>info</mat-icon> This collection is part of an organization that is pending approval by a Dockstore curator.
@@ -93,15 +93,18 @@
           </button>
         </mat-card-actions>
       </div>
-      <mat-card class="alert alert-info mat-elevation-z" *ngIf="collection?.entries?.length === 0">
+      <mat-card
+        class="alert alert-info mat-elevation-z"
+        *ngIf="collection?.entries?.length === 0 || (checkHasOnlyNotebooks(collection) && !Dockstore.FEATURES.enableNotebooks)"
+      >
         <mat-icon>info</mat-icon> This collection has no associated entries. To add an entry, navigate to the public page of the tool or
         workflow you want to add and select `Add to collection`
       </mat-card>
       <div fxLayout="row wrap" class="my-3">
         <div fxFlex="1 0 45%" class="mb-4">
           <div fxLayout="column" fxLayoutGap="15px">
-            <h3 *ngIf="Dockstore.FEATURES.enableNotebooks">Workflows, Notebooks, and Tools</h3>
-            <h3 *ngIf="!Dockstore.FEATURES.enableNotebooks">Workflows and Tools</h3>
+            <h3 *ngIf="Dockstore.FEATURES.enableNotebooks">Workflows, Notebooks, Services, and Tools</h3>
+            <h3 *ngIf="!Dockstore.FEATURES.enableNotebooks">Workflows, Services, and Tools</h3>
 
             <div data-cy="collectionEntry" *ngFor="let entry of collection?.entries">
               <mat-card *ngIf="entry.entryType !== entryType.Notebook || Dockstore.FEATURES.enableNotebooks" class="pb-3">
