@@ -23,9 +23,7 @@
           <span class="bubble {{ entryTypeLowerCase }}-background" [attr.data-cy]="'dashboard-' + entryTypeLowerCase + '-count-bubble'">{{
             totalEntries
           }}</span>
-          <span class="bubble preview-bubble" *ngIf="entryType === newEntryType.SERVICE || entryType === newEntryType.NOTEBOOK"
-            >PREVIEW</span
-          >
+          <span class="bubble preview-bubble" *ngIf="entryType === newEntryType.SERVICE">PREVIEW</span>
         </mat-card-header>
       </div>
       <button

@@ -26,7 +26,7 @@
           <mat-icon>chevron_{{ showSidebar ? 'left' : 'right' }}</mat-icon>
         </button>
         <span>{{ myEntryPageTitle$ | async | titlecase }}</span>
-        <span *ngIf="entryType === EntryType.Service || entryType === EntryType.Notebook" class="bubble preview-bubble">PREVIEW</span>
+        <span *ngIf="entryType === EntryType.Service" class="bubble preview-bubble">PREVIEW</span>
       </div>
     </app-header>
 
