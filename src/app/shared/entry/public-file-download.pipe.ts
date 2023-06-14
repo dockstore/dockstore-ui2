@@ -1,8 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-import { SourceFile } from '../../shared/swagger/model/sourceFile';
+import { SourceFile } from '../../shared/openapi/model/sourceFile';
 import { FileService } from '../file.service';
-import { ToolDescriptor } from '../swagger';
+import { ToolDescriptor } from '../openapi';
 
 @Pipe({
   name: 'publicFileDownload',

@@ -23,7 +23,7 @@ import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
-import { OrganizationUser } from '../../shared/swagger';
+import { OrganizationUser } from '../../shared/openapi';
 import { UserQuery } from '../../shared/user/user.query';
 import { OrganizationMembersQuery } from '../state/organization-members.query';
 import { OrganizationMembersService } from '../state/organization-members.service';
@@ -96,7 +96,7 @@ export class OrganizationMembersComponent extends Base implements OnInit {
       username: organizationUser.user.username,
       role: organizationUser.role,
       title: 'Resend Invitation',
-      descriptionPrefix: `Resend an invitation to the user <strong>${organizationUser.user.username}</strong> 
+      descriptionPrefix: `Resend an invitation to the user <strong>${organizationUser.user.username}</strong>
           who rejected the invitation to the organization <strong>${organizationUser.organization.displayName}</strong>. You may optionally edit the role.`,
       confirmationButtonText: 'Resend Invitation',
     };
@@ -146,7 +146,7 @@ export class OrganizationMembersComponent extends Base implements OnInit {
       title: 'Delete Invitation',
       message: `The member has a <strong>${organizationUser.status.toLowerCase()}</strong> invitation to the organization <strong>${
         organizationUser.organization.displayName
-      }</strong>. 
+      }</strong>.
         Are you sure you want to <strong>delete</strong> the invitation to the member <strong>${organizationUser.user.username}</strong>?`,
       cancelButtonText: 'Cancel',
       confirmationButtonText: 'Delete Invitation',

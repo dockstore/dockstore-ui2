@@ -16,7 +16,7 @@
 import { Injectable } from '@angular/core';
 
 import { extendedDescriptorLanguages } from 'app/entry/extendedDescriptorLanguage';
-import { SourceFile, ToolDescriptor } from './swagger';
+import { SourceFile, ToolDescriptor } from './openapi';
 
 @Injectable({ providedIn: 'root' })
 export class DescriptorService {

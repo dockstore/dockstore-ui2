@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FileWrapper } from '../../../shared/swagger';
+import { FileWrapper } from '../../../shared/openapi';
 import { FilesStore } from './files.store';
 
 @Injectable({ providedIn: 'root' })

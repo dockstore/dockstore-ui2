@@ -16,7 +16,7 @@
 
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { Organization } from './swagger';
+import { Organization } from './openapi';
 
 @Injectable()
 export class StarOrganizationService {

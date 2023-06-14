@@ -23,7 +23,7 @@ import { EntryType } from 'app/shared/enum/entry-type';
 import { ImageProviderService } from '../../shared/image-provider.service';
 import { ExtendedDockstoreTool } from '../../shared/models/ExtendedDockstoreTool';
 import { ProviderService } from '../../shared/provider.service';
-import { ContainersService, DockstoreTool } from '../../shared/swagger';
+import { ContainersService, DockstoreTool } from '../../shared/openapi';
 
 @Injectable()
 export class PublishedToolsDataSource implements DataSource<ExtendedDockstoreTool> {

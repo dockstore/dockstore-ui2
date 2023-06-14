@@ -19,10 +19,10 @@ import { ContainerService } from './container.service';
 import { GA4GHFilesService } from './ga4gh-files/ga4gh-files.service';
 import { WorkflowQuery } from './state/workflow.query';
 import { WorkflowService } from './state/workflow.service';
-import { ContainersService } from './swagger/api/containers.service';
-import { WorkflowsService } from './swagger/api/workflows.service';
-import { DockstoreTool } from './swagger/model/dockstoreTool';
-import { Workflow } from './swagger/model/workflow';
+import { ContainersService } from './openapi/api/containers.service';
+import { WorkflowsService } from './openapi/api/workflows.service';
+import { DockstoreTool } from './openapi/model/dockstoreTool';
+import { Workflow } from './openapi/model/workflow';
 import { ToolQuery } from './tool/tool.query';
 
 @Injectable()
@@ -67,7 +67,7 @@ export class RefreshService {
     const workflow = this.workflowQuery.getActive();
     const message = 'Refreshing ' + workflow.full_workflow_path;
     this.alertService.start(message);
-    this.workflowsService.refresh(workflow.id, false).subscribe(
+    this.workflowsService.refresh1(workflow.id, false).subscribe(
       (refreshedWorkflow: Workflow) => {
         this.workflowService.upsertWorkflowToWorkflow(refreshedWorkflow);
         this.workflowService.setWorkflow(refreshedWorkflow);

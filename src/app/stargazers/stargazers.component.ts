@@ -18,8 +18,8 @@ import { StarEntry } from 'app/starring/StarEntry';
 import { takeUntil } from 'rxjs/operators';
 import { Base } from '../shared/base';
 import { altAvatarImg } from '../shared/constants';
+import { User } from '../shared/openapi';
 import { StarentryService } from '../shared/starentry.service';
-import { User } from '../shared/swagger';
 import { UserService } from '../shared/user/user.service';
 import { StarringService } from '../starring/starring.service';
 

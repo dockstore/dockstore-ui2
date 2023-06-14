@@ -23,7 +23,7 @@ import { DockstoreService } from '../../shared/dockstore.service';
 import { ProviderService } from '../../shared/provider.service';
 import { PaginatorQuery } from '../../shared/state/paginator.query';
 import { PaginatorService } from '../../shared/state/paginator.service';
-import { Workflow, WorkflowsService } from '../../shared/swagger';
+import { Workflow, WorkflowsService } from '../../shared/openapi';
 import { ToolLister } from '../../shared/tool-lister';
 import { PublishedWorkflowsDataSource } from './published-workflows.datasource';
 

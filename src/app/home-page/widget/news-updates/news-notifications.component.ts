@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { NotificationsService } from '../../../notifications/state/notifications.service';
-import { Notification } from '../../../shared/swagger';
+import { Notification } from '../../../shared/openapi';
 
 @Component({
   selector: 'app-news-notifications',

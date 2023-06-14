@@ -34,6 +34,7 @@ describe('SourceFileTabsComponent', () => {
     component = fixture.componentInstance;
     component.version = { id: 0, name: 'abc', reference: '1' };
     component.entry = {
+      type: '',
       defaultTestParameterFilePath: '',
       descriptorType: undefined,
       descriptorTypeSubclass: undefined,
@@ -41,7 +42,7 @@ describe('SourceFileTabsComponent', () => {
       mode: undefined,
       organization: '',
       repository: '',
-      sourceControl: '',
+      sourceControl: null,
       workflow_path: '',
     };
     fixture.detectChanges();

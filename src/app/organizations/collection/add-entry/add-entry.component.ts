@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
-import { Collection, OrganizationUser } from '../../../shared/swagger';
+import { Collection, OrganizationUser } from '../../../shared/openapi';
 import { AddEntryQuery } from '../state/add-entry.query';
 import { AddEntryService } from '../state/add-entry.service';
 

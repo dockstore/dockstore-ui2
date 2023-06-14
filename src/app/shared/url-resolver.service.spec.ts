@@ -2,7 +2,7 @@ import { inject, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { RouterStub } from './../test/router-stubs';
-import { Tag, WorkflowVersion } from './swagger';
+import { Tag, WorkflowVersion } from './openapi';
 import { UrlResolverService } from './url-resolver.service';
 
 describe('Service: UrlResolver', () => {

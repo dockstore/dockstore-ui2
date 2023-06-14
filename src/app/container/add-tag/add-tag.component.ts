@@ -23,10 +23,10 @@ import { AlertService } from '../../shared/alert/state/alert.service';
 import { Base } from '../../shared/base';
 import { formInputDebounceTime } from '../../shared/constants';
 import { ContainerService } from '../../shared/container.service';
-import { ContainersService, DockstoreTool, SourceFile } from '../../shared/swagger';
-import { ContainertagsService } from '../../shared/swagger/api/containertags.service';
-import { Tag } from '../../shared/swagger/model/tag';
-import { ToolDescriptor } from '../../shared/swagger/model/toolDescriptor';
+import { ContainersService, DockstoreTool, SourceFile } from '../../shared/openapi';
+import { ContainertagsService } from '../../shared/openapi/api/containertags.service';
+import { Tag } from '../../shared/openapi/model/tag';
+import { ToolDescriptor } from '../../shared/openapi/model/toolDescriptor';
 import { ToolQuery } from '../../shared/tool/tool.query';
 import { formErrors, validationDescriptorPatterns, validationMessages } from '../../shared/validationMessages.model';
 
@@ -162,16 +162,16 @@ export class AddTagComponent extends Base implements OnInit, AfterViewChecked {
         const addCWL: Observable<SourceFile[]> = this.containersService.addTestParameterFiles(
           id,
           toAddCWLTestParameterFiles,
-          'CWL',
           tagName,
+          'CWL',
           null
         );
         // Using the string 'WDL' because this parameter only accepts 'CWL' or 'WDL' and not 'NFL'
         const addWDL: Observable<SourceFile[]> = this.containersService.addTestParameterFiles(
           id,
           toAddWDLTestParameterFiles,
-          'WDL',
           tagName,
+          'WDL',
           null
         );
         forkJoin([addCWL, addWDL]).subscribe(

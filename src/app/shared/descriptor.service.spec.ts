@@ -15,9 +15,9 @@
  */
 
 import { inject, TestBed } from '@angular/core/testing';
-import { SourceFile } from './../shared/swagger/model/sourceFile';
+import { SourceFile } from './../shared/openapi/model/sourceFile';
 import { DescriptorService } from './descriptor.service';
-import { ToolDescriptor } from './swagger';
+import { ToolDescriptor } from './openapi';
 
 describe('DescriptorService', () => {
   beforeEach(() => {

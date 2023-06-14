@@ -6,7 +6,7 @@ import { ConfirmationDialogData } from '../../confirmation-dialog/confirmation-d
 import { ConfirmationDialogService } from '../../confirmation-dialog/confirmation-dialog.service';
 import { Base } from '../../shared/base';
 import { bootstrap4mediumModalSize } from '../../shared/constants';
-import { Organization, OrganizationUser } from '../../shared/swagger';
+import { Organization, OrganizationUser } from '../../shared/openapi';
 import { UserQuery } from '../../shared/user/user.query';
 import { RequestsQuery } from '../state/requests.query';
 import { RequestsService } from '../state/requests.service';

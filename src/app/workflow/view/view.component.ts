@@ -18,9 +18,9 @@ import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { RefreshService } from 'app/shared/refresh.service';
-import { BioWorkflow } from 'app/shared/swagger/model/bioWorkflow';
-import { Service } from 'app/shared/swagger/model/service';
-import { Notebook } from 'app/shared/swagger/model/notebook';
+import { BioWorkflow } from 'app/shared/openapi/model/bioWorkflow';
+import { Service } from 'app/shared/openapi/model/service';
+import { Notebook } from 'app/shared/openapi/model/notebook';
 import { UserQuery } from 'app/shared/user/user.query';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -29,12 +29,13 @@ import { AlertService } from '../../shared/alert/state/alert.service';
 import { bootstrap4largeModalSize, ga4ghServiceIdPrefix, ga4ghWorkflowIdPrefix } from '../../shared/constants';
 import { DateService } from '../../shared/date.service';
 import { Dockstore } from '../../shared/dockstore.model';
+import { Entry } from '../../shared/openapi';
 import { SessionQuery } from '../../shared/session/session.query';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { WorkflowService } from '../../shared/state/workflow.service';
-import { HostedService } from '../../shared/swagger/api/hosted.service';
-import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
-import { Workflow } from '../../shared/swagger/model/workflow';
+import { HostedService } from '../../shared/openapi/api/hosted.service';
+import { WorkflowsService } from '../../shared/openapi/api/workflows.service';
+import { Workflow } from '../../shared/openapi/model/workflow';
 import { View } from '../../shared/view';
 import { SnaphotExporterModalComponent, SnapshotExporterAction } from '../snapshot-exporter-modal/snaphot-exporter-modal.component';
 import { VersionModalComponent } from '../version-modal/version-modal.component';
@@ -81,7 +82,7 @@ export class ViewWorkflowComponent extends View implements OnInit {
   showVersionModal() {
     this.versionModalService.setVersion(this.version);
     this.alertService.start('Getting test parameter files');
-    this.workflowsService.getTestParameterFiles(this.workflowId, this.version.name).subscribe(
+    this.workflowsService.getTestParameterFiles1(this.workflowId, this.version.name).subscribe(
       (items) => {
         this.items = items;
         this.versionModalService.setTestParameterFiles(this.items);
@@ -175,7 +176,9 @@ export class ViewWorkflowComponent extends View implements OnInit {
       this.alertService.start('Deleting version ' + this.version.name);
       this.hostedService.deleteHostedWorkflowVersion(this.workflow.id, this.version.name).subscribe(
         (result) => {
-          this.workflowService.setWorkflow(result);
+          if (this.isWorkflow(result)) {
+            this.workflowService.setWorkflow(result);
+          }
           this.alertService.simpleSuccess();
         },
         (error: HttpErrorResponse) => {
@@ -183,5 +186,9 @@ export class ViewWorkflowComponent extends View implements OnInit {
         }
       );
     }
+  }
+
+  private isWorkflow(entry: Entry): entry is Workflow {
+    return (entry as Workflow).entryType === 'WORKFLOW';
   }
 }

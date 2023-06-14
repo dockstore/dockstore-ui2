@@ -25,9 +25,9 @@ import { ContainerService } from '../../shared/container.service';
 import { DateService } from '../../shared/date.service';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
 import { SessionQuery } from '../../shared/session/session.query';
-import { ContainertagsService } from '../../shared/swagger/api/containertags.service';
-import { HostedService } from '../../shared/swagger/api/hosted.service';
-import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
+import { ContainertagsService } from '../../shared/openapi/api/containertags.service';
+import { HostedService } from '../../shared/openapi/api/hosted.service';
+import { DockstoreTool } from '../../shared/openapi/model/dockstoreTool';
 import { ToolQuery } from '../../shared/tool/tool.query';
 import { View } from '../../shared/view';
 import { VersionModalComponent } from '../version-modal/version-modal.component';
@@ -75,12 +75,10 @@ export class ViewContainerComponent extends View implements OnInit {
       this.containertagsService.deleteTags(this.tool.id, this.version.id).subscribe(
         () => {
           this.alertService.simpleSuccess();
-          this.containertagsService.getTagsByPath(this.tool.id).subscribe(
-            (response) => {
-              this.tool.workflowVersions = response;
-              this.containerService.setTool(this.tool);
-            }
-          );
+          this.containertagsService.getTagsByPath(this.tool.id).subscribe((response) => {
+            this.tool.workflowVersions = response;
+            this.containerService.setTool(this.tool);
+          });
         },
         (error: HttpErrorResponse) => {
           this.alertService.detailedError(error);

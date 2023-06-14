@@ -7,7 +7,7 @@ import { Subject } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
 
 import { LogoutService } from '../../../../shared/logout.service';
-import { UsersService } from '../../../../shared/swagger';
+import { UsersService } from '../../../../shared/openapi';
 import { UserQuery } from '../../../../shared/user/user.query';
 
 @Component({

@@ -25,9 +25,9 @@ import { DescriptorLanguageService } from '../../shared/entry/descriptor-languag
 import { ExtendedWorkflow } from '../../shared/models/ExtendedWorkflow';
 import { ExtendedWorkflowQuery } from '../../shared/state/extended-workflow.query';
 import { WorkflowService } from '../../shared/state/workflow.service';
-import { ToolDescriptor } from '../../shared/swagger';
-import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
-import { Workflow } from '../../shared/swagger/model/workflow';
+import { ToolDescriptor } from '../../shared/openapi';
+import { WorkflowsService } from '../../shared/openapi/api/workflows.service';
+import { Workflow } from '../../shared/openapi/model/workflow';
 
 @Injectable()
 export class InfoTabService {
@@ -111,7 +111,7 @@ export class InfoTabService {
     const partialEntryForUpdate = this.getPartialEntryForUpdate(workflow);
     this.workflowsService.updateWorkflow(workflow.id, partialEntryForUpdate).subscribe((response) => {
       this.alertService.start('Updating ' + message);
-      this.workflowsService.refresh(workflow.id).subscribe(
+      this.workflowsService.refresh1(workflow.id).subscribe(
         (refreshResponse) => {
           this.workflowService.upsertWorkflowToWorkflow(refreshResponse);
           this.workflowService.setWorkflow(refreshResponse);

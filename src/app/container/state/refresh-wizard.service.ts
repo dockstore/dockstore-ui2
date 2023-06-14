@@ -7,7 +7,7 @@ import { TokenSource } from 'app/shared/enum/token-source.enum';
 import { UsersService } from 'app/shared/openapi';
 import { SessionQuery } from 'app/shared/session/session.query';
 import { SessionService } from 'app/shared/session/session.service';
-import { UsersService as SwaggerUsersService } from 'app/shared/swagger';
+import { UsersService as SwaggerUsersService } from 'app/shared/openapi';
 import { UserQuery } from 'app/shared/user/user.query';
 import { finalize } from 'rxjs/operators';
 import { RefreshWizardQuery } from './refresh-wizard.query';

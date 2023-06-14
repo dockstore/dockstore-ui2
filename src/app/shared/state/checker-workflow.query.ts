@@ -18,7 +18,7 @@ import { Query } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ga4ghWorkflowIdPrefix } from '../constants';
-import { BioWorkflow, DockstoreTool, Entry, Workflow } from '../swagger';
+import { BioWorkflow, DockstoreTool, Entry, Workflow } from '../openapi';
 import { CheckerWorkflowState, CheckerWorkflowStore } from './checker-workflow.store';
 
 @Injectable({ providedIn: 'root' })

@@ -20,13 +20,13 @@ import { AlertQuery } from 'app/shared/alert/state/alert.query';
 import { bootstrap4largeModalSize } from 'app/shared/constants';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { SessionQuery } from 'app/shared/session/session.query';
-import { Workflow } from 'app/shared/swagger';
+import { Workflow } from 'app/shared/openapi';
 import { Observable } from 'rxjs';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { OrgWorkflowObject } from '../my-workflow/my-workflow.component';
 import { GithubAppsLogsComponent } from './github-apps-logs/github-apps-logs.component';
 import { KeyValue } from '@angular/common';
-import { MetadataService } from '../../shared/swagger/api/metadata.service';
+import { MetadataService } from '../../shared/openapi/api/metadata.service';
 
 interface GroupEntriesBySource {
   groupEntryInfo: OrgWorkflowObject<Workflow>[];

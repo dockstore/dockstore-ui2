@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { ID, transaction } from '@datorama/akita';
 import { BehaviorSubject } from 'rxjs';
-import { AppTool, Workflow, WorkflowVersion } from '../swagger';
-import { BioWorkflow } from '../swagger/model/bioWorkflow';
-import { Service } from '../swagger/model/service';
-import { Notebook } from '../swagger/model/notebook';
+import { AppTool, Workflow, WorkflowVersion } from '../openapi';
+import { BioWorkflow } from '../openapi/model/bioWorkflow';
+import { Service } from '../openapi/model/service';
+import { Notebook } from '../openapi/model/notebook';
 import { ExtendedWorkflowService } from './extended-workflow.service';
 import { WorkflowQuery } from './workflow.query';
 import { WorkflowStore } from './workflow.store';

@@ -16,7 +16,7 @@
 import { Injectable } from '@angular/core';
 import { transaction } from '@datorama/akita';
 import { ExtendedDockstoreToolService } from '../extended-dockstoreTool/extended-dockstoreTool.service';
-import { DockstoreTool, Tag } from '../swagger';
+import { DockstoreTool, Tag } from '../openapi';
 import { ToolQuery } from './tool.query';
 import { ToolStore } from './tool.store';
 

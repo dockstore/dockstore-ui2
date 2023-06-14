@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { finalize } from 'rxjs/operators';
 import { AlertService } from '../../shared/alert/state/alert.service';
-import { Organization, OrganizationsService } from '../../shared/swagger';
+import { Organization, OrganizationsService } from '../../shared/openapi';
 import { OrganizationsState, OrganizationsStore } from './organizations.store';
 
 @Injectable({ providedIn: 'root' })

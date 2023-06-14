@@ -19,7 +19,7 @@ import { Injectable } from '@angular/core';
 import { faDocker, faGitlab, IconDefinition } from '@fortawesome/free-brands-svg-icons';
 import { faAmazonECR, faQuay, faWhale } from './custom-icons';
 import { ExtendedDockstoreTool } from './models/ExtendedDockstoreTool';
-import { DockstoreTool, MetadataService } from './swagger';
+import { DockstoreTool, MetadataService } from './openapi';
 import RegistryEnum = DockstoreTool.RegistryEnum;
 
 @Injectable()

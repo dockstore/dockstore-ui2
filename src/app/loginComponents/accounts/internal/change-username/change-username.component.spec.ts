@@ -10,7 +10,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { RefreshService } from '../../../../shared/refresh.service';
-import { UsersService } from '../../../../shared/swagger/api/users.service';
+import { UsersService } from '../../../../shared/openapi/api/users.service';
 import { UserService } from '../../../../shared/user/user.service';
 import { RefreshStubService, UsersStubService, UserStubService } from '../../../../test/service-stubs';
 import { ChangeUsernameComponent } from './change-username.component';

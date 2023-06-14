@@ -25,9 +25,9 @@ import { UserQuery } from '../shared/user/user.query';
 import { LogoutService } from './../shared/logout.service';
 import { PageInfo } from './../shared/models/PageInfo';
 import { PagenumberService } from './../shared/pagenumber.service';
-import { User } from './../shared/swagger/model/user';
+import { User } from './../shared/openapi/model/user';
 import { TrackLoginService } from './../shared/track-login.service';
-import { Organization, OrganizationUser } from '../shared/swagger';
+import { Organization, OrganizationUser } from '../shared/openapi';
 import { RequestsQuery } from '../loginComponents/state/requests.query';
 import { RequestsService } from '../loginComponents/state/requests.service';
 

@@ -15,7 +15,7 @@
  */
 import { Injectable } from '@angular/core';
 import { ActiveState, EntityState, EntityStore, StoreConfig } from '@datorama/akita';
-import { DockstoreTool } from '../swagger';
+import { DockstoreTool } from '../openapi';
 
 export interface ToolState extends EntityState<DockstoreTool>, ActiveState {}
 const initialState: ToolState = {

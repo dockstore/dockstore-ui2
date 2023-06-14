@@ -8,9 +8,9 @@ import { DescriptorTypeCompatService } from '../../shared/descriptor-type-compat
 import { Dockstore } from '../../shared/dockstore.model';
 import { GA4GHFilesQuery } from '../../shared/ga4gh-files/ga4gh-files.query';
 import { CloudInstance, CloudInstancesService, User, UsersService } from '../../shared/openapi';
-import { ToolFile, Workflow, WorkflowVersion } from '../../shared/swagger';
-import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
-import { SourceFile } from '../../shared/swagger/model/sourceFile';
+import { ToolFile, Workflow, WorkflowVersion } from '../../shared/openapi';
+import { WorkflowsService } from '../../shared/openapi/api/workflows.service';
+import { SourceFile } from '../../shared/openapi/model/sourceFile';
 import { UserQuery } from '../../shared/user/user.query';
 import { DescriptorsQuery } from './state/descriptors-query';
 import { DescriptorsStore } from './state/descriptors-store';
@@ -263,11 +263,11 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
             this.descriptorLanguageService.workflowDescriptorTypeEnumToExtendedDescriptorLanguageBean(
               descriptorType
             ).descriptorLanguageEnum;
-          this.workflowsService.primaryDescriptor(this.workflow.id, this.selectedVersion.name, descriptorType).subscribe((sourceFile) => {
+          this.workflowsService.primaryDescriptor1(this.workflow.id, this.selectedVersion.name, descriptorType).subscribe((sourceFile) => {
             this.descriptorsService.updatePrimaryDescriptor(sourceFile);
             if (fileDescriptors.some((file) => file.file_type === FileTypeEnum.SECONDARYDESCRIPTOR)) {
               this.workflowsService
-                .secondaryDescriptors(this.workflow.id, this.selectedVersion.name, descriptorLanguageEnum)
+                .secondaryDescriptors1(this.workflow.id, this.selectedVersion.name, descriptorLanguageEnum)
                 .subscribe((sourceFiles: Array<SourceFile>) => {
                   this.descriptorsService.updateSecondaryDescriptors(sourceFiles);
                 });

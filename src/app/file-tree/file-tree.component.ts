@@ -2,7 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { SourceFile } from 'app/shared/swagger';
+import { SourceFile } from 'app/shared/openapi';
 import { ToolDescriptor } from '../shared/openapi';
 
 /** File node data with possible child nodes. */

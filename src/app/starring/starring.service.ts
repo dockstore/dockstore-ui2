@@ -16,10 +16,10 @@
 import { Injectable } from '@angular/core';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { Observable } from 'rxjs';
-import { ContainersService, WorkflowsService } from '../shared/swagger';
-import { UsersService } from './../shared/swagger/api/users.service';
-import { StarRequest } from './../shared/swagger/model/starRequest';
-import { User } from './../shared/swagger/model/user';
+import { ContainersService, WorkflowsService } from '../shared/openapi';
+import { UsersService } from './../shared/openapi/api/users.service';
+import { StarRequest } from './../shared/openapi/model/starRequest';
+import { User } from './../shared/openapi/model/user';
 
 @Injectable()
 export class StarringService {
@@ -34,7 +34,7 @@ export class StarringService {
       star: toStar,
     };
     if (entryType === EntryType.BioWorkflow) {
-      return this.workflowsService.starEntry(entryID, body);
+      return this.workflowsService.starEntry1(entryID, body);
     } else {
       return this.containersService.starEntry(entryID, body);
     }
@@ -42,7 +42,7 @@ export class StarringService {
 
   getStarring(entryID: number, entryType: EntryType): Observable<Array<User>> {
     if (entryType === EntryType.BioWorkflow) {
-      return this.workflowsService.getStarredUsers(entryID);
+      return this.workflowsService.getStarredUsers1(entryID);
     } else {
       return this.containersService.getStarredUsers(entryID);
     }

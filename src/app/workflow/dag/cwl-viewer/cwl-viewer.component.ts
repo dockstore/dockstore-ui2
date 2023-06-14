@@ -19,7 +19,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ExtendedWorkflow } from '../../../shared/models/ExtendedWorkflow';
 import { ExtendedWorkflowQuery } from '../../../shared/state/extended-workflow.query';
-import { WorkflowVersion } from '../../../shared/swagger/model/workflowVersion';
+import { WorkflowVersion } from '../../../shared/openapi/model/workflowVersion';
 import { CwlViewerDescriptor, CwlViewerService } from './cwl-viewer.service';
 
 @Component({

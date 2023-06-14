@@ -1,6 +1,6 @@
 import { ga4ghPath } from '../../../../src/app/shared/constants';
+import { ToolDescriptor } from '../../../../src/app/shared/openapi';
 import { goToTab } from '../../../support/commands';
-import { ToolDescriptor } from '../../../../src/app/shared/swagger/model/toolDescriptor';
 
 // Test an entry, these should be ambiguous between tools, workflows, and notebooks.
 describe('run stochastic smoke test', () => {
@@ -212,7 +212,7 @@ const workflowVersionTuples = [
     'Galaxy',
   ],
 ];
-const notebookVersionTuples = [
+const notebookVersionTuples: string[][] = [
   // TODO when we add notebooks that will persist in the prod database, detail a few here
 ];
 

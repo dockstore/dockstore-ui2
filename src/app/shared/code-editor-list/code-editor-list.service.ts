@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DescriptorLanguageService } from '../entry/descriptor-language.service';
-import { SourceFile, ToolDescriptor } from '../swagger';
+import { SourceFile, ToolDescriptor } from '../openapi';
 import { FileCategory } from './code-editor-list.component';
 
 /**

@@ -20,7 +20,7 @@ import {
   PlainTRSDescriptorLanguageEnum,
 } from 'app/entry/extendedDescriptorLanguage';
 import { ToolVersion } from './openapi';
-import { ToolDescriptor, Workflow } from './swagger';
+import { ToolDescriptor, Workflow } from './openapi';
 
 /**
  * This service is for maintaining compatibility until descriptor types are standardized across all of Dockstore

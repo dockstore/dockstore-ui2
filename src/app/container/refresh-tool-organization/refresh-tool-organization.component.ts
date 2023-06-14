@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { Component, Input, OnInit } from '@angular/core';
-import { ContainersService } from 'app/shared/swagger';
+import { ContainersService } from 'app/shared/openapi';
 import { ToolQuery } from 'app/shared/tool/tool.query';
 import { ToolService } from 'app/shared/tool/tool.service';
 import { EMPTY, from } from 'rxjs';
@@ -23,7 +23,7 @@ import { OrgToolObject } from '../../mytools/my-tool/my-tool.component';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { RefreshOrganizationComponent } from '../../shared/refresh-organization/refresh-organization.component';
-import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
+import { DockstoreTool } from '../../shared/openapi/model/dockstoreTool';
 import { UserQuery } from '../../shared/user/user.query';
 
 @Component({

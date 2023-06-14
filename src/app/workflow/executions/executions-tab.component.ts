@@ -18,7 +18,7 @@ import { EntryTab } from '../../shared/entry/entry-tab';
 import { CloudInstance, ExtendedGA4GHService, Metrics, ValidatorInfo, ValidatorVersionInfo, WorkflowVersion } from '../../shared/openapi';
 import { SessionQuery } from '../../shared/session/session.query';
 import { takeUntil } from 'rxjs/operators';
-import { BioWorkflow, Notebook, Service } from '../../shared/swagger';
+import { BioWorkflow, Notebook, Service } from '../../shared/openapi';
 import { CheckerWorkflowQuery } from '../../shared/state/checker-workflow.query';
 import PartnerEnum = CloudInstance.PartnerEnum;
 import { MatSelectChange } from '@angular/material/select';

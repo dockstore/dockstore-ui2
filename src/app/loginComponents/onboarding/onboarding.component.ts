@@ -3,7 +3,7 @@ import { combineLatest, Subject } from 'rxjs';
 import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { Dockstore } from '../../shared/dockstore.model';
 import { TokenQuery } from '../../shared/state/token.query';
-import { ExtendedUserData, User } from '../../shared/swagger';
+import { ExtendedUserData, User } from '../../shared/openapi';
 import { UserQuery } from '../../shared/user/user.query';
 
 @Component({

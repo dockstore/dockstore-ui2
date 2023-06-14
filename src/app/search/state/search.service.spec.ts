@@ -20,7 +20,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { first } from 'rxjs/operators';
 import { ImageProviderService } from '../../shared/image-provider.service';
 import { ProviderService } from '../../shared/provider.service';
-import { Workflow } from '../../shared/swagger';
+import { Workflow } from '../../shared/openapi';
 import { elasticSearchResponse } from '../../test/mocked-objects';
 import { ProviderStubService } from '../../test/service-stubs';
 import { Hit, SearchService } from './search.service';
@@ -122,16 +122,17 @@ describe('SearchService', () => {
   ));
   it('should sort workflows correctly', inject([SearchService], (service: SearchService) => {
     const a: Workflow = {
+      type: '',
       author: 'a',
       gitUrl: 'https://giturl',
       mode: Workflow.ModeEnum.FULL,
       organization: '',
       repository: '',
-      sourceControl: '',
+      sourceControl: null,
       descriptorType: Workflow.DescriptorTypeEnum.CWL,
       workflow_path: '',
       defaultTestParameterFilePath: '',
-      descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NOTAPPLICABLE,
+      descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NA,
       full_workflow_path: 'abc',
     };
 

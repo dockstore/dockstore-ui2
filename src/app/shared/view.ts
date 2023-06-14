@@ -17,7 +17,7 @@ import { Directive, Input, OnDestroy } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { AlertQuery } from './alert/state/alert.query';
 import { DateService } from './date.service';
-import { Tag, WorkflowVersion } from './swagger';
+import { Tag, WorkflowVersion } from './openapi';
 
 @Directive()
 // eslint-disable-next-line @angular-eslint/directive-class-suffix

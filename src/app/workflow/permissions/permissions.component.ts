@@ -8,7 +8,7 @@ import { AlertService } from '../../shared/alert/state/alert.service';
 import { Dockstore } from '../../shared/dockstore.model';
 import { TokenSource } from '../../shared/enum/token-source.enum';
 import { TokenQuery } from '../../shared/state/token.query';
-import { Permission, Workflow, WorkflowsService } from '../../shared/swagger';
+import { Permission, Workflow, WorkflowsService } from '../../shared/openapi';
 import { WorkflowSubClass } from '../../shared/openapi';
 import RoleEnum = Permission.RoleEnum;
 
@@ -52,7 +52,7 @@ export class PermissionsComponent implements OnInit {
   remove(email: string, permission: RoleEnum) {
     this.updating++;
     this.alertService.start(`Removing ${email}`);
-    this.workflowsService.removeWorkflowRole(this.workflow.full_workflow_path, email, permission, WorkflowSubClass.BIOWORKFLOW).subscribe(
+    this.workflowsService.removeWorkflowRole(this.workflow.full_workflow_path, WorkflowSubClass.BIOWORKFLOW, email, permission).subscribe(
       (userPermissions: Permission[]) => {
         this.alertService.detailedSuccess(`Removed ${email}`);
         this.updating--;

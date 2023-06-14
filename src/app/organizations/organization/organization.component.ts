@@ -20,7 +20,7 @@ import { map } from 'rxjs/operators';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
 import { OrgLogoService } from '../../shared/org-logo.service';
 import { OrganizationSchema, OrgSchemaService } from '../../shared/org-schema.service';
-import { Organization } from '../../shared/swagger';
+import { Organization } from '../../shared/openapi';
 import { UserQuery } from '../../shared/user/user.query';
 import { ActivatedRoute } from '../../test';
 import { RegisterOrganizationComponent } from '../registerOrganization/register-organization.component';

@@ -23,10 +23,10 @@ import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { EntryType } from '../enum/entry-type';
 import { SessionQuery } from '../session/session.query';
-import { SourceFile, ToolDescriptor } from '../swagger';
-import { Workflow } from '../swagger/model/workflow';
-import { MetadataService } from './../swagger/api/metadata.service';
-import { DescriptorLanguageBean } from './../swagger/model/descriptorLanguageBean';
+import { SourceFile, ToolDescriptor } from '../openapi';
+import { Workflow } from '../openapi/model/workflow';
+import { MetadataService } from './../openapi/api/metadata.service';
+import { DescriptorLanguageBean } from './../openapi/model/descriptorLanguageBean';
 
 @Injectable()
 export class DescriptorLanguageService {

@@ -20,9 +20,9 @@ import { MatChipInputEvent } from '@angular/material/chips';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertService } from 'app/shared/alert/state/alert.service';
-import { BioWorkflow } from 'app/shared/swagger/model/bioWorkflow';
-import { Service } from 'app/shared/swagger/model/service';
-import { Notebook } from 'app/shared/swagger/model/notebook';
+import { BioWorkflow } from 'app/shared/openapi/model/bioWorkflow';
+import { Service } from 'app/shared/openapi/model/service';
+import { Notebook } from 'app/shared/openapi/model/notebook';
 import { Observable, ReplaySubject } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
 import { AlertQuery } from '../shared/alert/state/alert.query';
@@ -52,10 +52,10 @@ import { SessionService } from '../shared/session/session.service';
 import { ExtendedWorkflowQuery } from '../shared/state/extended-workflow.query';
 import { WorkflowQuery } from '../shared/state/workflow.query';
 import { WorkflowService } from '../shared/state/workflow.service';
-import { Permission, ToolDescriptor, WorkflowsService } from '../shared/swagger';
-import { Tag } from '../shared/swagger/model/tag';
-import { Workflow } from '../shared/swagger/model/workflow';
-import { WorkflowVersion } from '../shared/swagger/model/workflowVersion';
+import { Permission, ToolDescriptor, WorkflowsService } from '../shared/openapi';
+import { Tag } from '../shared/openapi/model/tag';
+import { Workflow } from '../shared/openapi/model/workflow';
+import { WorkflowVersion } from '../shared/openapi/model/workflowVersion';
 import { TrackLoginService } from '../shared/track-login.service';
 import { UrlResolverService } from '../shared/url-resolver.service';
 import { EntriesService, WorkflowSubClass } from '../shared/openapi';
@@ -489,7 +489,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
   // TODO: Move most of this function to the service, sadly 'this.labelsEditMode' makes it more difficult
   setWorkflowLabels() {
     this.alertService.start('Setting labels');
-    this.workflowsService.updateLabels(this.workflow.id, this.workflowEditData.labels.join(', ')).subscribe(
+    this.workflowsService.updateLabels1(this.workflow.id, this.workflowEditData.labels.join(', ')).subscribe(
       (workflow) => {
         this.workflowService.setWorkflow(workflow);
         this.labelsEditMode = false;

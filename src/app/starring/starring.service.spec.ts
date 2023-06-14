@@ -16,9 +16,9 @@
 
 import { inject, TestBed } from '@angular/core/testing';
 import { EntryType } from 'app/shared/enum/entry-type';
-import { ContainersService } from '../shared/swagger';
-import { UsersService } from './../shared/swagger/api/users.service';
-import { WorkflowsService } from './../shared/swagger/api/workflows.service';
+import { ContainersService } from '../shared/openapi';
+import { UsersService } from './../shared/openapi/api/users.service';
+import { WorkflowsService } from './../shared/openapi/api/workflows.service';
 import { ContainersStubService, UsersStubService, WorkflowsStubService } from './../test/service-stubs';
 import { StarringService } from './starring.service';
 

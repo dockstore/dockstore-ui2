@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { finalize } from 'rxjs/operators';
 import { CurrentCollectionsService } from '../../../entry/state/current-collections.service';
 import { AlertService } from '../../../shared/alert/state/alert.service';
-import { Collection, OrganizationsService, OrganizationUser, UsersService } from '../../../shared/swagger';
+import { Collection, OrganizationsService, OrganizationUser, UsersService } from '../../../shared/openapi';
 import { AddEntryState, AddEntryStore } from './add-entry.store';
 import { EntryCategoriesService } from '../../../categories/state/entry-categories.service';
 
@@ -67,7 +67,7 @@ export class AddEntryService {
   updateCollections(orgId: number): void {
     this.beforeCall();
     this.organizationsService
-      .getCollectionsFromOrganization(orgId)
+      .getCollectionsFromOrganization(orgId, '')
       .pipe(finalize(() => this.addEntryStore.setLoading(false)))
       .subscribe(
         (collections: Array<Collection>) => {

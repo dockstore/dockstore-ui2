@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 import { Base } from '../shared/base';
-import { Collection, DockstoreTool, Organization, Workflow, WorkflowVersionPathInfo } from '../shared/swagger';
+import { Collection, DockstoreTool, Organization, Workflow, WorkflowVersionPathInfo } from '../shared/openapi';
 import { ActivatedRoute, Router } from '../test';
 import { AliasesQuery } from './state/aliases.query';
 import { AliasesService } from './state/aliases.service';

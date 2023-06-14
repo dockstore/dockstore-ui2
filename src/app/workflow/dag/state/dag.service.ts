@@ -22,7 +22,7 @@ import popperExtension from 'cytoscape-popper';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { WorkflowQuery } from '../../../shared/state/workflow.query';
-import { WorkflowsService, WorkflowVersion } from '../../../shared/swagger';
+import { WorkflowsService, WorkflowVersion } from '../../../shared/openapi';
 import { DynamicPopover } from '../dynamicPopover.model';
 import { DagQuery } from './dag.query';
 import { DagStore } from './dag.store';

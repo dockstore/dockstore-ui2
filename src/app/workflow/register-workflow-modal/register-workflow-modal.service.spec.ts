@@ -19,10 +19,10 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
 import { WorkflowService } from '../../shared/state/workflow.service';
-import { ToolDescriptor } from '../../shared/swagger';
-import { HostedService } from '../../shared/swagger/api/hosted.service';
-import { MetadataService } from '../../shared/swagger/api/metadata.service';
-import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
+import { ToolDescriptor } from '../../shared/openapi';
+import { HostedService } from '../../shared/openapi/api/hosted.service';
+import { MetadataService } from '../../shared/openapi/api/metadata.service';
+import { WorkflowsService } from '../../shared/openapi/api/workflows.service';
 import {
   DescriptorLanguageStubService,
   HostedStubService,

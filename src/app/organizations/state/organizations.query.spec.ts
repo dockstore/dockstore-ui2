@@ -1,4 +1,4 @@
-import { Organization } from '../../shared/swagger';
+import { Organization } from '../../shared/openapi';
 import { OrganizationsQuery } from './organizations.query';
 import { OrganizationsStore } from './organizations.store';
 
@@ -17,7 +17,6 @@ describe('OrganizationsQuery', () => {
     const potatoOrganization: Organization = {
       name: 'potato',
       status: Organization.StatusEnum.APPROVED,
-      users: [],
       topic: 'someTopic',
       displayName: 'someDisplayName',
       email: 'someEmail',
@@ -27,21 +26,19 @@ describe('OrganizationsQuery', () => {
       avatarUrl: 'someAvatarUrl',
     };
 
-    const beefOrganization: Organization = { name: 'beef', status: Organization.StatusEnum.APPROVED, users: [], topic: 'nothing relevent' };
+    const beefOrganization: Organization = { name: 'beef', status: Organization.StatusEnum.APPROVED, topic: 'nothing relevent' };
     const chickenOrganization: Organization = {
       name: 'chicken',
       status: Organization.StatusEnum.APPROVED,
-      users: [],
       topic: 'nothing relevent',
     };
-    const porkOrganization: Organization = { name: 'pork', status: Organization.StatusEnum.APPROVED, users: [], topic: 'nothing relevent' };
+    const porkOrganization: Organization = { name: 'pork', status: Organization.StatusEnum.APPROVED, topic: 'nothing relevent' };
     const muttonOrganization: Organization = {
       name: 'mutton',
       status: Organization.StatusEnum.APPROVED,
-      users: [],
       topic: 'nothing relevent',
     };
-    const duckOrganization: Organization = { name: 'duck', status: Organization.StatusEnum.APPROVED, users: [], topic: 'nothing relevent' };
+    const duckOrganization: Organization = { name: 'duck', status: Organization.StatusEnum.APPROVED, topic: 'nothing relevent' };
     const exampleOrganizations: Array<Organization> = [
       potatoOrganization,
       beefOrganization,

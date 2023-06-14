@@ -2,7 +2,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'ng2-ui-auth';
 import { Dockstore } from '../../../shared/dockstore.model';
-import { MetadataService } from '../../../shared/swagger';
+import { MetadataService } from '../../../shared/openapi';
 import { ServiceInfoService } from '../../../service-info/service-info.service';
 import { TRSService } from 'app/shared/openapi';
 import { AlertService } from './../../../shared/alert/state/alert.service';

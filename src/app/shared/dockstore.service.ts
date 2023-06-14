@@ -17,7 +17,7 @@ import { Injectable } from '@angular/core';
 import { faSort, faSortAlphaDown, faSortAlphaUp, IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { ExtendedDockstoreTool } from './models/ExtendedDockstoreTool';
 import { ExtendedWorkflow } from './models/ExtendedWorkflow';
-import { Tag, WorkflowVersion } from './swagger';
+import { Tag, WorkflowVersion } from './openapi';
 
 interface SourceObject {
   version: string;

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
-import { ToolDescriptor } from '../../shared/swagger';
+import { ToolDescriptor } from '../../shared/openapi';
 
 @Injectable({
   providedIn: 'root',

@@ -18,8 +18,8 @@ import { Observable } from 'rxjs';
 import { finalize, first } from 'rxjs/operators';
 
 import { FileService } from '../../shared/file.service';
-import { ContainersService } from '../../shared/swagger';
-import { Tag } from '../../shared/swagger/model/tag';
+import { ContainersService } from '../../shared/openapi';
+import { Tag } from '../../shared/openapi/model/tag';
 import { ToolQuery } from '../../shared/tool/tool.query';
 
 @Component({

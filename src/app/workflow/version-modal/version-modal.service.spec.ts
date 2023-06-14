@@ -21,16 +21,17 @@ import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { RefreshService } from '../../shared/refresh.service';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { WorkflowService } from '../../shared/state/workflow.service';
-import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
-import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
+import { WorkflowsService } from '../../shared/openapi/api/workflows.service';
+import { WorkflowVersion } from '../../shared/openapi/model/workflowVersion';
 import { RefreshStubService, WorkflowsStubService, WorkflowStubService } from '../../test/service-stubs';
 import { VersionModalService } from './version-modal.service';
-import { BioWorkflow, Workflow } from '../../shared/swagger';
+import { BioWorkflow, Workflow } from '../../shared/openapi';
 import DescriptorTypeSubclassEnum = Workflow.DescriptorTypeSubclassEnum;
 
 describe('Service: version-modal.service.ts', () => {
   let workflowQuery: jasmine.SpyObj<WorkflowQuery>;
   const workflow: BioWorkflow = {
+    type: '',
     mode: 'FULL',
     gitUrl: 'git@github.com:test/potato.git',
     organization: 'test',
@@ -39,7 +40,7 @@ describe('Service: version-modal.service.ts', () => {
     descriptorType: 'CWL',
     workflow_path: 'github.com/test/potato',
     defaultTestParameterFilePath: null,
-    descriptorTypeSubclass: DescriptorTypeSubclassEnum.NOTAPPLICABLE,
+    descriptorTypeSubclass: DescriptorTypeSubclassEnum.NA,
   };
   beforeEach(() => {
     TestBed.configureTestingModule({

@@ -16,7 +16,7 @@
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { ContainersService } from '../../shared/swagger';
+import { ContainersService } from '../../shared/openapi';
 import { ContainerService } from './../../shared/container.service';
 import { FileService } from './../../shared/file.service';
 import { ContainersStubService, ContainerStubService, FileStubService } from './../../test/service-stubs';

@@ -99,8 +99,7 @@ import { PipeModule } from './shared/pipe/pipe.module';
 import { ProviderService } from './shared/provider.service';
 import { RefreshService } from './shared/refresh.service';
 import { ApiModule } from './shared/swagger/api.module';
-import { GA4GHService } from './shared/swagger/api/gA4GH.service';
-import { Configuration } from './shared/swagger/configuration';
+import { Configuration } from './shared/openapi/configuration';
 import { TrackLoginService } from './shared/track-login.service';
 import { TwitterService } from './shared/twitter.service';
 import { UrlResolverService } from './shared/url-resolver.service';
@@ -230,7 +229,6 @@ export function initializerFactory(
     RefreshService,
     PagenumberService,
     TwitterService,
-    GA4GHService,
     GA4GHV20Service,
     DescriptorLanguageService,
     UrlResolverService,

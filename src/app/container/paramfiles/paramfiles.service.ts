@@ -15,11 +15,11 @@
  */
 import { Injectable } from '@angular/core';
 
-import { SourceFile, ToolDescriptor, Validation } from '../../shared/swagger';
-import { ContainersService } from './../../shared/swagger/api/containers.service';
-import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
-import { Tag } from './../../shared/swagger/model/tag';
-import { WorkflowVersion } from './../../shared/swagger/model/workflowVersion';
+import { SourceFile, ToolDescriptor, Validation } from '../../shared/openapi';
+import { ContainersService } from './../../shared/openapi/api/containers.service';
+import { WorkflowsService } from './../../shared/openapi/api/workflows.service';
+import { Tag } from './../../shared/openapi/model/tag';
+import { WorkflowVersion } from './../../shared/openapi/model/workflowVersion';
 import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
 import { extendedDescriptorLanguages } from '../../entry/extendedDescriptorLanguage';
 
@@ -38,10 +38,10 @@ export class ParamfilesService {
 
   getFiles(id: number, type: string, versionName?: string, descriptor?: ToolDescriptor.TypeEnum) {
     if (type === 'workflows') {
-      return this.workflowsService.getTestParameterFiles(id, versionName);
+      return this.workflowsService.getTestParameterFiles1(id, versionName);
     } else {
       if (descriptor === 'CWL' || descriptor === 'WDL') {
-        return this.containersService.getTestParameterFiles(id, descriptor, versionName);
+        return this.containersService.getTestParameterFiles(id, versionName, descriptor);
       }
     }
   }

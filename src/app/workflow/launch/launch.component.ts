@@ -22,11 +22,11 @@ import { EntryTab } from '../../shared/entry/entry-tab';
 import { GA4GHFilesQuery } from '../../shared/ga4gh-files/ga4gh-files.query';
 import { GA4GHFilesService } from '../../shared/ga4gh-files/ga4gh-files.service';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
-import { ToolDescriptor, ToolFile } from '../../shared/swagger';
-import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
+import { ToolDescriptor, ToolFile } from '../../shared/openapi';
+import { DockstoreTool } from '../../shared/openapi/model/dockstoreTool';
 import { Dockstore } from '../../shared/dockstore.model';
-import { Workflow } from '../../shared/swagger/model/workflow';
-import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
+import { Workflow } from '../../shared/openapi/model/workflow';
+import { WorkflowVersion } from '../../shared/openapi/model/workflowVersion';
 import { WorkflowLaunchService } from '../launch/workflow-launch.service';
 import { EntryType } from '../../shared/enum/entry-type';
 

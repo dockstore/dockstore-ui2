@@ -4,7 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTreeModule } from '@angular/material/tree';
-import { SourceFile } from 'app/shared/swagger';
+import { SourceFile } from 'app/shared/openapi';
 import { DescriptorLanguageService } from '../shared/entry/descriptor-language.service';
 import { SourceFileTabsService } from '../source-file-tabs/source-file-tabs.service';
 import { DescriptorLanguageStubService, SourceFileTabsStubService } from '../test/service-stubs';

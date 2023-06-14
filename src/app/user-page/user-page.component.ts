@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TokenSource } from '../shared/enum/token-source.enum';
-import { Profile } from '../shared/swagger';
-import { UsersService } from '../shared/swagger/api/users.service';
+import { Profile } from '../shared/openapi';
+import { UsersService } from '../shared/openapi/api/users.service';
 import { UserService } from '../shared/user/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';

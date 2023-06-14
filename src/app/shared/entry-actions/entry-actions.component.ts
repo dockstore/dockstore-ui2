@@ -2,7 +2,7 @@ import { Directive, Input } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AlertQuery } from '../alert/state/alert.query';
 import { EntryType } from '../enum/entry-type';
-import { BioWorkflow, DockstoreTool, Service, Notebook } from '../swagger';
+import { BioWorkflow, DockstoreTool, Service, Notebook } from '../openapi';
 import { EntryActionsService } from './entry-actions.service';
 
 @Directive()

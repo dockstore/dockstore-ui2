@@ -26,8 +26,8 @@ import { EntryType, VersionVerifiedPlatform } from '../../shared/openapi';
 import { ExtendedWorkflow } from '../../shared/models/ExtendedWorkflow';
 import { SessionQuery } from '../../shared/session/session.query';
 import { ExtendedWorkflowQuery } from '../../shared/state/extended-workflow.query';
-import { Workflow } from '../../shared/swagger/model/workflow';
-import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
+import { Workflow } from '../../shared/openapi/model/workflow';
+import { WorkflowVersion } from '../../shared/openapi/model/workflowVersion';
 import { Versions } from '../../shared/versions';
 
 @Component({

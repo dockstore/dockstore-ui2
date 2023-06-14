@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { finalize } from 'rxjs/operators';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { OrganizationsService as openapiOrganizationsService } from '../../shared/openapi';
-import { Organization, OrganizationsService, OrganizationUser, User, UsersService } from '../../shared/swagger';
+import { Organization, OrganizationsService, OrganizationUser, User, UsersService } from '../../shared/openapi';
 import { RequestsState, RequestsStore } from './requests.store';
 
 @Injectable({ providedIn: 'root' })

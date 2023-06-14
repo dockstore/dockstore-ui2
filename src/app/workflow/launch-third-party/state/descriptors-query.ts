@@ -3,7 +3,7 @@ import { Query } from '@datorama/akita';
 import { Observable, of as observableOf } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
 import { FileService } from '../../../shared/file.service';
-import { SourceFile } from '../../../shared/swagger';
+import { SourceFile } from '../../../shared/openapi';
 import { createInitialState, DescriptorsState, DescriptorsStore } from './descriptors-store';
 
 @Injectable()

@@ -21,10 +21,9 @@ import { AlertService } from '../../shared/alert/state/alert.service';
 import { RefreshService } from '../../shared/refresh.service';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { WorkflowService } from '../../shared/state/workflow.service';
-import { AppTool, BioWorkflow, DockstoreTool, Service, Notebook, Workflow } from '../../shared/swagger';
-import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
-import { SourceFile } from '../../shared/swagger/model/sourceFile';
-import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
+import { AppTool, BioWorkflow, DockstoreTool, Service, Notebook, Workflow, WorkflowsService } from '../../shared/openapi';
+import { SourceFile } from '../../shared/openapi/model/sourceFile';
+import { WorkflowVersion } from '../../shared/openapi/model/workflowVersion';
 import ModeEnum = DockstoreTool.ModeEnum;
 
 @Injectable()
@@ -131,14 +130,14 @@ export class VersionModalService {
     const workflowId = this.workflowQuery.getActive().id;
     if (toDelete && toAdd) {
       return this.workflowsService
-        .addTestParameterFiles(workflowId, newCWL, workflowVersion.name)
-        .pipe(concatMap(() => this.workflowsService.deleteTestParameterFiles(workflowId, missingCWL, workflowVersion.name)));
+        .addTestParameterFiles1(workflowId, newCWL, workflowVersion.name)
+        .pipe(concatMap(() => this.workflowsService.deleteTestParameterFiles1(workflowId, missingCWL, workflowVersion.name)));
     }
     if (toDelete && !toAdd) {
-      return this.workflowsService.deleteTestParameterFiles(workflowId, missingCWL, workflowVersion.name);
+      return this.workflowsService.deleteTestParameterFiles1(workflowId, missingCWL, workflowVersion.name);
     }
     if (toAdd && !toDelete) {
-      return this.workflowsService.addTestParameterFiles(workflowId, newCWL, workflowVersion.name);
+      return this.workflowsService.addTestParameterFiles1(workflowId, newCWL, workflowVersion.name);
     }
     if (!toAdd && !toDelete) {
       return observableOf(null);

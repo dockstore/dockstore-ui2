@@ -9,7 +9,7 @@ import { ToolTesterLog } from '../openapi/model/toolTesterLog';
 import { AvailableLogsQuery } from '../state/available-logs.query';
 import { AvailableLogsService } from '../state/available-logs.service';
 import { CheckerWorkflowQuery } from '../state/checker-workflow.query';
-import { Tag, WorkflowVersion } from '../swagger';
+import { Tag, WorkflowVersion } from '../openapi';
 
 interface VersionVerifiedInformation {
   version: WorkflowVersion | Tag;

@@ -18,7 +18,7 @@ import { inject, TestBed } from '@angular/core/testing';
 import { ga4ghPath } from '../../shared/constants';
 import { Dockstore } from '../../shared/dockstore.model';
 import { WorkflowService } from '../../shared/state/workflow.service';
-import { ToolDescriptor } from '../../shared/swagger';
+import { ToolDescriptor } from '../../shared/openapi';
 import { WorkflowStubService } from '../../test/service-stubs';
 import { WorkflowLaunchService } from './workflow-launch.service';
 

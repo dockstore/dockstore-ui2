@@ -3,7 +3,7 @@ import { Query } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { ExtendedUserData, User } from '../swagger';
+import { ExtendedUserData, User } from '../openapi';
 import { UserState, UserStore } from './user.store';
 
 @Injectable({ providedIn: 'root' })

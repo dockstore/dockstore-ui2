@@ -20,7 +20,7 @@ import { validTool } from '../test/mocked-objects';
 import { faDockstore } from './custom-icons';
 import { ExtendedDockstoreTool } from './models/ExtendedDockstoreTool';
 import { ProviderService } from './provider.service';
-import { DockstoreTool } from './swagger/model/dockstoreTool';
+import { DockstoreTool } from './openapi/model/dockstoreTool';
 
 describe('ProviderService', () => {
   beforeEach(() => {

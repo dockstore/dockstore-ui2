@@ -8,7 +8,7 @@ import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { Base } from '../../shared/base';
 import { Dockstore } from '../../shared/dockstore.model';
 import { TokenQuery } from '../../shared/state/token.query';
-import { BioWorkflow, WorkflowVersion } from '../../shared/swagger';
+import { BioWorkflow, WorkflowVersion } from '../../shared/openapi';
 import { SnapshotExporterModalService } from './snapshot-exporter-modal.service';
 
 export enum SnapshotExporterAction {

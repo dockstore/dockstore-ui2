@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Notification } from '../shared/swagger/model/notification';
+import { Notification } from '../shared/openapi/model/notification';
 import { NotificationsService } from './state/notifications.service';
 
 @Component({

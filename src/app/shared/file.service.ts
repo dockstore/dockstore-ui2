@@ -19,7 +19,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ga4ghPath, ga4ghWorkflowIdPrefix } from './constants';
 import { DescriptorTypeCompatService } from './descriptor-type-compat.service';
 import { Dockstore } from './dockstore.model';
-import { SourceFile, Tag, ToolDescriptor, WorkflowVersion } from './swagger';
+import { SourceFile, Tag, ToolDescriptor, WorkflowVersion } from './openapi';
 
 const wdlImportHttpRegEx: RegExp = new RegExp(/^\s*import\s+"?https?/, 'm');
 const cwlImportHttpRegEx: RegExp = new RegExp(/^[^#]+((run)|(\$((import)|(include)|(mixin))))\s*:\s+\"?https?/, 'm');

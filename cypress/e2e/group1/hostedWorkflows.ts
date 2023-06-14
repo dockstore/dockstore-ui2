@@ -147,6 +147,7 @@ describe('Dockstore hosted workflows', () => {
     it('Create a new hosted workflow', () => {
       cy.get('[data-cy=register-workflow-button]').should('be.visible').should('be.enabled').click();
       cy.get('#3-register-workflow-option').should('be.visible').click();
+      cy.wait(250); // It's flaky without this, not clear why, perhaps the debounce time?
       cy.contains('button', 'Next').click();
       cy.get('#hostedWorkflowRepository').type(NEW_WORKFLOW_NAME);
       cy.contains('button', 'Register Workflow').click();

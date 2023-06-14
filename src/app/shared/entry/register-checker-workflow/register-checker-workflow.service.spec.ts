@@ -27,7 +27,7 @@ import {
 import { ContainerService } from '../../container.service';
 import { RefreshService } from '../../refresh.service';
 import { WorkflowService } from '../../state/workflow.service';
-import { WorkflowsService } from '../../swagger/api/workflows.service';
+import { WorkflowsService } from '../../openapi/api/workflows.service';
 import { RegisterCheckerWorkflowService } from './register-checker-workflow.service';
 
 describe('Service: RegisterCheckerWorkflow', () => {

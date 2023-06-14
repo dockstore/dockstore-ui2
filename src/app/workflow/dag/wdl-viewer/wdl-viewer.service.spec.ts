@@ -18,7 +18,7 @@
 // import { inject, TestBed } from '@angular/core/testing';
 // import { of as observableOf, throwError } from 'rxjs';
 // import { ExtendedWorkflow } from '../../../shared/models/ExtendedWorkflow';
-// import { ToolDescriptor, WorkflowVersion } from '../../../shared/swagger';
+// import { ToolDescriptor, WorkflowVersion } from '../../../shared/openapi';
 // import { sampleWorkflow1, sampleWorkflow2, sampleWorkflowVersion } from '../../../test/mocked-objects';
 // import { WdlViewerService } from './state/wdl-viewer.service';
 //

@@ -26,7 +26,7 @@ import { EntryType } from './enum/entry-type';
 import { ProviderService } from './provider.service';
 import { SessionQuery } from './session/session.query';
 import { PaginatorService } from './state/paginator.service';
-import { DockstoreTool, Workflow } from './swagger';
+import { DockstoreTool, Workflow } from './openapi';
 
 @Directive()
 // eslint-disable-next-line @angular-eslint/directive-class-suffix

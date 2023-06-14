@@ -18,7 +18,7 @@ import { OrgToolObject } from '../../mytools/my-tool/my-tool.component';
 import { OrgWorkflowObject } from '../../myworkflows/my-workflow/my-workflow.component';
 import { ExtendedDockstoreTool } from '../models/ExtendedDockstoreTool';
 import { ExtendedWorkflow } from '../models/ExtendedWorkflow';
-import { DockstoreTool, Entry, Workflow } from '../swagger';
+import { DockstoreTool, Entry, Workflow } from '../openapi';
 
 @Pipe({
   name: 'selectTab',

@@ -11,7 +11,7 @@ import {
   Workflow,
   WorkflowsService,
   WorkflowVersionPathInfo,
-} from '../../shared/swagger';
+} from '../../shared/openapi';
 import { AliasesStore } from './aliases.store';
 
 @Injectable({ providedIn: 'root' })

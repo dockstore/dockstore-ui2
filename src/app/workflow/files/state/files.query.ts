@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { QueryEntity } from '@datorama/akita';
 
-import { FileWrapper } from '../../../shared/swagger';
+import { FileWrapper } from '../../../shared/openapi';
 import { FilesState, FilesStore } from './files.store';
 
 /**
