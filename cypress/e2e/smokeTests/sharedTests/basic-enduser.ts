@@ -22,7 +22,7 @@ function testEntry(tab: string) {
         });
       return;
     }
-    cy.visit('/search' + (tab === 'Notebooks' ? '?notebooks' : ''));
+    cy.visit('/search');
     cy.get('[data-cy=workflowColumn] a');
     goToTab(tab);
     const linkName = getLinkName(tab);

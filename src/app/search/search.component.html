@@ -46,7 +46,7 @@
     </ng-template>
     <div class="mat-tab-content"></div>
   </mat-tab>
-  <mat-tab *ngIf="Dockstore.FEATURES.enableNotebooks">
+  <mat-tab>
     <ng-template mat-tab-label>
       <img class="site-icons-tab m-2" src="../../assets/svg/sub-nav/notebook.svg" alt="notebook icon" />
       <b>Notebooks</b>
@@ -322,10 +322,6 @@
             {{ query_size - 1 }} results are shown. We recommend that you narrow your search to find more relevant results.
           </p>
         </mat-card>
-        <app-preview-warning
-          *ngIf="Dockstore.FEATURES.enableNotebooks && (selectedIndex$ | async) === 2"
-          featureName="Notebooks"
-        ></app-preview-warning>
         <app-search-results></app-search-results>
       </div>
     </div>

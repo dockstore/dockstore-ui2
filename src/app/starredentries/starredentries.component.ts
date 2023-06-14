@@ -35,9 +35,7 @@ export class StarredEntriesComponent extends Base implements OnInit {
   currentTab = 'workflows';
   selected = new UntypedFormControl();
   // TODO: Add 'services' to validTabs when implemented
-  validTabs = ['workflows', 'tools', 'organizations'];
-  // TODO: Remove validTabsWithNotebooks and simply include 'notebooks' in validTabs when notebooks Feature Flag is removed
-  validTabsWithNotebooks = ['workflows', 'tools', 'notebooks', 'organizations'];
+  validTabs = ['workflows', 'tools', 'notebooks', 'organizations'];
 
   constructor(
     private userQuery: UserQuery,
@@ -103,11 +101,6 @@ export class StarredEntriesComponent extends Base implements OnInit {
 
   // Runs on first page load
   public setupTab(tabName: string) {
-    // If notebooks Feature Flag enabled, update validTabs to include the notebooks tab
-    // Remove check once feature flag removed
-    if (Dockstore.FEATURES.enableNotebooks) {
-      this.validTabs = this.validTabsWithNotebooks;
-    }
     const tabIndex = this.validTabs.indexOf(tabName);
     if (tabIndex >= 0) {
       this.currentTab = tabName;

@@ -444,7 +444,7 @@ describe('check search table and tabs for notebooks', () => {
     });
   });
   it('should contain notebooks-related information', () => {
-    cy.visit('/search?notebooks');
+    cy.visit('/search');
     // Check that Notebooks tab exists
     cy.get('.mat-tab-label').contains('Notebooks');
     // Select notebooks tab
