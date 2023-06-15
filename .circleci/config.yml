@@ -295,6 +295,7 @@ workflows:
               only: /.*/
           context:
             - dockerhub
+            - sonarcloud
       - integration_test:
           name: integration_test_1
           integration_test_name: group1
