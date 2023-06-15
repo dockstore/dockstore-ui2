@@ -34,11 +34,49 @@ export class QueryBuilderService {
   getTagCloudQuery(type: string): string {
     const tagCloudSize = 20;
     const index = type + 's';
+    const commonTerms: string[] = [
+      'tool',
+      'workflow',
+      'dockstore',
+      'master',
+      'build_status',
+      'server',
+      'different',
+      'given',
+      'the',
+      'a',
+      'an',
+      'between',
+      'this',
+      'that',
+      'these',
+      'those',
+      'I',
+      'you',
+      'he',
+      'she',
+      'it',
+      'we',
+      'us',
+      'him',
+      'her',
+      'they',
+      'them',
+      'mine',
+      'their',
+      'to',
+      'from',
+      'of',
+      'and',
+      'in',
+      'is',
+      'on',
+    ];
     // Size to 0 here because https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations.html#agg-caches
     let body = bodybuilder().size(0);
     body = this.excludeContent(body);
     body = body.query('match', '_index', index);
-    body = body.aggregation('significant_text', 'description', 'tagcloud', { size: tagCloudSize });
+    body = body.aggregation('significant_text', 'description', 'tagcloud', { size: tagCloudSize, exclude: commonTerms });
     const toolQuery = JSON.stringify(body.build(), null, 1);
     return toolQuery;
   }
