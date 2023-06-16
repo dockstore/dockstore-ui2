@@ -73,12 +73,7 @@
             </mat-card>
             <div fxLayout="column" fxLayoutGap="1rem" class="mb-2 mx-1">
               <mat-card fxFlex *ngFor="let tool of starredTools; let last = last" class="m-1 pb-3">
-                <ng-container
-                  *ngTemplateOutlet="
-                    tool.mode === 'DOCKSTORE_YML' ? workflowSummary : toolSummary;
-                    context: tool.mode === 'DOCKSTORE_YML' ? { workflow: tool, entryType: entryType.AppTool } : { tool: tool }
-                  "
-                ></ng-container>
+                <ng-container *ngTemplateOutlet="toolSummary; context: { tool: tool }"></ng-container>
               </mat-card>
             </div>
           </div>
