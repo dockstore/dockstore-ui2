@@ -13,7 +13,7 @@
       <mat-label>Select a Platform</mat-label>
       <mat-select data-cy="metrics-partner-dropdown" [value]="currentPartner" (selectionChange)="matSelectChange($event)">
         <mat-option data-cy="metrics-partner-options" [value]="partner" *ngFor="let partner of partners">
-          {{ getPartnerDisplayName(partner) }}
+          {{ partner | platformPartner }}
         </mat-option>
       </mat-select>
     </mat-form-field>
