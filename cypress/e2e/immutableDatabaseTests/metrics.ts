@@ -34,7 +34,7 @@ describe('Dockstore Metrics', () => {
     // Change partner to Galaxy, which only has validator tool metrics
     cy.get('[data-cy=metrics-partner-dropdown]').click();
     cy.get('[data-cy=metrics-partner-options]').contains('Galaxy').click();
-    cy.get('[data-cy=metrics-partner-dropdown]').should('contain', 'GALAXY');
+    cy.get('[data-cy=metrics-partner-dropdown]').should('contain', 'Galaxy');
     cy.get('[data-cy=execution-metrics-table]').should('not.exist');
     cy.get('[data-cy=execution-metrics-total-executions-div]').should('not.exist');
     cy.get('[data-cy=validations-table]').should('be.visible');
