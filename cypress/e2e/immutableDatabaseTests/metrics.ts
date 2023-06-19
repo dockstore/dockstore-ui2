@@ -22,7 +22,7 @@ describe('Dockstore Metrics', () => {
     goToTab('Metrics');
 
     cy.get('[data-cy=no-metrics-banner]').should('not.exist');
-    cy.get('[data-cy=metrics-partner-dropdown]').should('contain', 'ALL');
+    cy.get('[data-cy=metrics-partner-dropdown]').should('contain', 'All Platforms');
     cy.get('[data-cy=execution-metrics-table]').should('be.visible');
     cy.get('[data-cy=execution-metrics-total-executions-div]').should('contain', 9);
     cy.get('[data-cy=validations-table]').should('be.visible');
