@@ -22,6 +22,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
 import { CustomMaterialModule } from '../../shared/modules/material.module';
+import { PipeModule } from '../../shared/pipe/pipe.module';
 
 describe('ExecutionsTabComponent', () => {
   let component: ExecutionsTabComponent;
@@ -32,7 +33,7 @@ describe('ExecutionsTabComponent', () => {
       TestBed.configureTestingModule({
         declarations: [ExecutionsTabComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        imports: [HttpClientTestingModule, CustomMaterialModule],
+        imports: [HttpClientTestingModule, CustomMaterialModule, PipeModule],
         providers: [{ provide: DescriptorLanguageService, useClass: DescriptorLanguageStubService }, AlertService],
       }).compileComponents();
     })

@@ -23,6 +23,7 @@ import { CheckerWorkflowQuery } from '../../shared/state/checker-workflow.query'
 import PartnerEnum = CloudInstance.PartnerEnum;
 import { MatSelectChange } from '@angular/material/select';
 import { AlertService } from '../../shared/alert/state/alert.service';
+import { PlatformPartnerPipe } from '../../shared/entry/platform-partner.pipe';
 
 interface ExecutionMetricsTableObject {
   metric: string; // Name of the execution metric
@@ -69,6 +70,7 @@ export class ExecutionsTabComponent extends EntryTab implements OnChanges {
   @Input() version: WorkflowVersion;
 
   constructor(
+    private partnerPipe: PlatformPartnerPipe,
     private extendedGA4GHService: ExtendedGA4GHService,
     private alertService: AlertService,
     protected sessionQuery: SessionQuery,
@@ -174,6 +176,9 @@ export class ExecutionsTabComponent extends EntryTab implements OnChanges {
     }
   }
 
+  getPartnerDisplayName(partner: PartnerEnum) {
+    return this.partnerPipe.transform(partner);
+  }
   matSelectChange(event: MatSelectChange) {
     this.selectPartner(event.value);
   }

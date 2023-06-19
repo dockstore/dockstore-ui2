@@ -15,6 +15,7 @@ import { DescriptorLanguagePipe } from '../entry/descriptor-language.pipe';
 import { RecentEventsPipe } from '../entry/recent-events.pipe';
 import { EntryToDisplayNamePipe } from '../entry-to-display-name.pipe';
 import { SearchAuthorsHtmlPipe } from 'app/search/search-authors-html.pipe';
+import { PlatformPartnerPipe } from '../entry/platform-partner.pipe';
 
 const DECLARATIONS: any[] = [
   FilePathPipe,
@@ -31,11 +32,12 @@ const DECLARATIONS: any[] = [
   DescriptorLanguagePipe,
   RecentEventsPipe,
   SearchAuthorsHtmlPipe,
+  PlatformPartnerPipe,
 ];
 @NgModule({
   imports: [CommonModule],
   declarations: DECLARATIONS,
   exports: DECLARATIONS,
-  providers: [EntryToDisplayNamePipe],
+  providers: [EntryToDisplayNamePipe, PlatformPartnerPipe],
 })
 export class PipeModule {}
