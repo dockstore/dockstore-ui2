@@ -22,7 +22,7 @@ describe('Dockstore Metrics', () => {
     goToTab('Metrics');
 
     cy.get('[data-cy=no-metrics-banner]').should('not.exist');
-    cy.get('[data-cy=metrics-partner-dropdown]').should('contain', 'ALL');
+    cy.get('[data-cy=metrics-partner-dropdown]').should('contain', 'All Platforms');
     cy.get('[data-cy=execution-metrics-table]').should('be.visible');
     cy.get('[data-cy=execution-metrics-total-executions-div]').should('contain', 9);
     cy.get('[data-cy=validations-table]').should('be.visible');
@@ -31,10 +31,10 @@ describe('Dockstore Metrics', () => {
     cy.get('[data-cy=metrics-validator-tool-options]').should('contain', 'WOMTOOL');
     cy.get('[data-cy=metrics-validator-tool-options]').contains('WOMTOOL').click();
     cy.get('[data-cy=validations-table]').should('be.visible');
-    // Change partner to DNAstack, which only has validator tool metrics
+    // Change partner to Galaxy, which only has validator tool metrics
     cy.get('[data-cy=metrics-partner-dropdown]').click();
-    cy.get('[data-cy=metrics-partner-options]').contains('GALAXY').click();
-    cy.get('[data-cy=metrics-partner-dropdown]').should('contain', 'GALAXY');
+    cy.get('[data-cy=metrics-partner-options]').contains('Galaxy').click();
+    cy.get('[data-cy=metrics-partner-dropdown]').should('contain', 'Galaxy');
     cy.get('[data-cy=execution-metrics-table]').should('not.exist');
     cy.get('[data-cy=execution-metrics-total-executions-div]').should('not.exist');
     cy.get('[data-cy=validations-table]').should('be.visible');

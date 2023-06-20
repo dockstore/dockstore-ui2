@@ -16,9 +16,11 @@
 import { NgModule } from '@angular/core';
 import { WorkflowsPageModule } from 'app/shared/modules/workflowsPage.module';
 import { workflowsRouting } from './workflows.routing';
+import { PlatformPartnerPipe } from '../shared/entry/platform-partner.pipe';
 
 @NgModule({
   declarations: [],
   imports: [workflowsRouting, WorkflowsPageModule],
+  providers: [PlatformPartnerPipe],
 })
 export class WorkflowsModule {}
