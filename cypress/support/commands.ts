@@ -258,3 +258,13 @@ export function snapshot() {
   cy.get('td').contains('Actions').click();
   cy.get('[data-cy=dockstore-snapshot]').should('be.disabled');
 }
+
+export function checkFeaturedContent() {
+  cy.contains('Featured Content');
+  cy.get('app-featured-content').should('exist');
+}
+
+export function checkNewsAndUpdates() {
+  cy.contains('News & Updates');
+  cy.get('app-news-and-updates').should('exist');
+}
