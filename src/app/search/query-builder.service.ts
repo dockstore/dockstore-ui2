@@ -18,6 +18,7 @@ import { Injectable } from '@angular/core';
 import * as bodybuilder from 'bodybuilder';
 import { AdvancedSearchObject } from './../shared/models/AdvancedSearchObject';
 import { SearchService } from './state/search.service';
+import { tagCloudCommonTerms } from './../shared/constants';
 
 /**
  * This service constructs all the querys and should be only class that interacts with the bodybuilder library.
@@ -38,7 +39,7 @@ export class QueryBuilderService {
     let body = bodybuilder().size(0);
     body = this.excludeContent(body);
     body = body.query('match', '_index', index);
-    body = body.aggregation('significant_text', 'description', 'tagcloud', { size: tagCloudSize });
+    body = body.aggregation('significant_text', 'description', 'tagcloud', { size: tagCloudSize, exclude: tagCloudCommonTerms });
     const toolQuery = JSON.stringify(body.build(), null, 1);
     return toolQuery;
   }
