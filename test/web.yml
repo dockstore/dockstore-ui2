@@ -111,3 +111,5 @@ uiConfig:
 
   cwlVisualizerUri: https://view.commonwl.org
 
+  featuredContentUrl: https://content.dockstore.org/develop/feat-content.html
+  featuredNewsUrl: https://content.dockstore.org/develop/news.html
