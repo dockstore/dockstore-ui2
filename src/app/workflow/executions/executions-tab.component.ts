@@ -19,7 +19,6 @@ import { CloudInstance, ExtendedGA4GHService, Metrics, ValidatorInfo, ValidatorV
 import { SessionQuery } from '../../shared/session/session.query';
 import { takeUntil } from 'rxjs/operators';
 import { BioWorkflow, Notebook, Service } from '../../shared/swagger';
-import { CheckerWorkflowQuery } from '../../shared/state/checker-workflow.query';
 import PartnerEnum = CloudInstance.PartnerEnum;
 import { MatSelectChange } from '@angular/material/select';
 import { AlertService } from '../../shared/alert/state/alert.service';
@@ -71,15 +70,14 @@ export class ExecutionsTabComponent extends EntryTab implements OnChanges {
   constructor(
     private extendedGA4GHService: ExtendedGA4GHService,
     private alertService: AlertService,
-    protected sessionQuery: SessionQuery,
-    private checkerWorkflowQuery: CheckerWorkflowQuery
+    protected sessionQuery: SessionQuery
   ) {
     super();
   }
 
   ngOnChanges() {
     this.alertService.start('Retrieving metrics data');
-    this.trsID = this.checkerWorkflowQuery.getTRSId(this.entry);
+    this.trsID = this.entry.entryTypeMetadata.trsPrefix + this.entry.full_workflow_path;
     this.extendedGA4GHService
       .aggregatedMetricsGet(this.trsID, this.version.name)
       .pipe(takeUntil(this.ngUnsubscribe))

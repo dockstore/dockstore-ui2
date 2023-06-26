@@ -1,9 +1,15 @@
-import { goToTab, setTokenUserViewPort } from '../../support/commands';
+import { goToTab, insertNotebooks, setTokenUserViewPort } from '../../support/commands';
 
 describe('Dockstore Metrics', () => {
+  insertNotebooks();
   setTokenUserViewPort();
   it('Should see no metrics banner', () => {
     cy.visit('/workflows/github.com/A/l:master?metrics');
+    cy.get('.mat-tab-header-pagination-after').click();
+    goToTab('Metrics');
+    cy.get('[data-cy=no-metrics-banner]').should('be.visible');
+
+    cy.visit('/notebooks/github.com/dockstore-testing/simple-notebook?metrics');
     cy.get('.mat-tab-header-pagination-after').click();
     goToTab('Metrics');
     cy.get('[data-cy=no-metrics-banner]').should('be.visible');
