@@ -202,9 +202,4 @@ export class ExecutionsTabComponent extends EntryTab implements OnChanges {
       this.validationsTable = [];
     }
   }
-
-  ngOnDestroy() {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
-  }
 }
