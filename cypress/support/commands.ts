@@ -258,3 +258,22 @@ export function snapshot() {
   cy.get('td').contains('Actions').click();
   cy.get('[data-cy=dockstore-snapshot]').should('be.disabled');
 }
+
+export function checkFeaturedContent() {
+  cy.contains('Featured Content');
+  cy.get('app-featured-content').should('exist');
+  cy.get('.feat-content-container').within(() => {
+    cy.get('.feat-content-card').its('length').should('be.gt', 0);
+    cy.get('.feat-content-card').first().contains('a').should('have.attr', 'href');
+    cy.get('.small-btn-structure').first().contains('View');
+  });
+}
+
+export function checkNewsAndUpdates() {
+  cy.contains('News & Updates');
+  cy.get('app-news-and-updates').should('exist');
+  cy.get('.news-and-updates-box').within(() => {
+    cy.get('.news-entry').its('length').should('be.gt', 0);
+    cy.get('.news-entry').first().contains('a').should('have.attr', 'href');
+  });
+}
