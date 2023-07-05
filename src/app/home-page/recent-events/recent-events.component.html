@@ -18,43 +18,37 @@
         <ng-template #defaultAvatar>
           <img [src]="gravatarService.gravatarUrlForMysteryPerson()" alt="User avatar" />
         </ng-template>
+        <ng-template #withUsername>
+          <strong>
+            <a class="no-underline" [routerLink]="'/users/' + event.initiatorUser?.username">
+              {{ event.initiatorUser?.username }}
+            </a>
+          </strong>
+        </ng-template>
+        <ng-template #withoutUsername>
+          <a class="no-underline"> Unknown user </a>
+        </ng-template>
         <div [ngSwitch]="event.type" class="my-3">
           <!-- Entries -->
           <div *ngSwitchCase="EventType.PUBLISHENTRY" class="truncate-text-2">
-            <strong
-              ><a class="no-underline" [routerLink]="'/users/' + event.initiatorUser?.username">{{
-                event.initiatorUser?.username
-              }}</a></strong
-            >
+            <ng-container *ngIf="event.initiatorUser?.username; then withUsername; else withoutUsername"></ng-container>
             published the {{ event | recentEvents: 'entryType' }}
             <a [routerLink]="event | recentEvents: 'entryLink'">{{ event | recentEvents: 'displayName' }}</a>
           </div>
           <div *ngSwitchCase="EventType.UNPUBLISHENTRY" class="truncate-text-2">
             <!-- Do not link to an entry that doesn't exist - 404 -->
-            <strong
-              ><a class="no-underline" [routerLink]="'/users/' + event.initiatorUser?.username">{{
-                event.initiatorUser?.username
-              }}</a></strong
-            >
+            <ng-container *ngIf="event.initiatorUser?.username; then withUsername; else withoutUsername"></ng-container>
             unpublished the {{ event | recentEvents: 'entryType' }} <strong>{{ event | recentEvents: 'displayName' }}</strong>
           </div>
           <div *ngSwitchCase="EventType.ADDVERSIONTOENTRY" class="truncate-text-2">
-            <strong
-              ><a class="no-underline" [routerLink]="'/users/' + event.initiatorUser?.username">{{
-                event.initiatorUser?.username
-              }}</a></strong
-            >
+            <ng-container *ngIf="event.initiatorUser?.username; then withUsername; else withoutUsername"></ng-container>
             created the {{ event.version?.referenceType | lowercase }} <strong>{{ event.version?.name }}</strong> in
             {{ event | recentEvents: 'entryType' }}
             <a [routerLink]="event | recentEvents: 'entryLink'">{{ event | recentEvents: 'displayName' }}</a>
           </div>
           <!-- Organizations -->
           <div *ngSwitchCase="EventType.CREATEORG" class="truncate-text-2">
-            <strong
-              ><a class="no-underline" [routerLink]="'/users/' + event.initiatorUser?.username">{{
-                event.initiatorUser?.username
-              }}</a></strong
-            >
+            <ng-container *ngIf="event.initiatorUser?.username; then withUsername; else withoutUsername"></ng-container>
             created the organization
             <a [routerLink]="event | recentEvents: 'orgLink'">{{ event.organization?.displayName }}</a>
           </div>
@@ -74,39 +68,23 @@
             was re-requested for review.
           </div>
           <div *ngSwitchCase="EventType.ADDUSERTOORG" class="truncate-text-2">
-            <strong
-              ><a class="no-underline" [routerLink]="'/users/' + event.initiatorUser?.username">{{
-                event.initiatorUser?.username
-              }}</a></strong
-            >
+            <ng-container *ngIf="event.initiatorUser?.username; then withUsername; else withoutUsername"></ng-container>
             added <a [routerLink]="'/users/' + event.user?.username">{{ event.user?.username }}</a> to the organization
             <a [routerLink]="event | recentEvents: 'orgLink'">{{ event.organization?.displayName }}</a>
           </div>
           <div *ngSwitchCase="EventType.APPROVEORGINVITE" class="truncate-text-2">
-            <strong
-              ><a class="no-underline" [routerLink]="'/users/' + event.initiatorUser?.username">{{
-                event.initiatorUser?.username
-              }}</a></strong
-            >
+            <ng-container *ngIf="event.initiatorUser?.username; then withUsername; else withoutUsername"></ng-container>
             joined the organization
             <a [routerLink]="event | recentEvents: 'orgLink'">{{ event.organization?.displayName }}</a>
           </div>
           <div *ngSwitchCase="EventType.MODIFYORG" class="truncate-text-2">
-            <strong
-              ><a class="no-underline" [routerLink]="'/users/' + event.initiatorUser?.username">{{
-                event.initiatorUser?.username
-              }}</a></strong
-            >
+            <ng-container *ngIf="event.initiatorUser?.username; then withUsername; else withoutUsername"></ng-container>
             updated the organization
             <a [routerLink]="event | recentEvents: 'orgLink'">{{ event.organization?.displayName }}</a>
           </div>
           <!-- Collections -->
           <div *ngSwitchCase="EventType.CREATECOLLECTION" class="truncate-text-2">
-            <strong
-              ><a class="no-underline" [routerLink]="'/users/' + event.initiatorUser?.username">{{
-                event.initiatorUser?.username
-              }}</a></strong
-            >
+            <ng-container *ngIf="event.initiatorUser?.username; then withUsername; else withoutUsername"></ng-container>
             created the collection
             <a [routerLink]="event | recentEvents: 'collectionLink'">{{ event.collection?.displayName }}</a>
             in organization
@@ -114,20 +92,12 @@
           </div>
           <div *ngSwitchCase="EventType.DELETECOLLECTION" class="truncate-text-2">
             <!-- Do not link to a collection that doesn't exist - 404 -->
-            <strong
-              ><a class="no-underline" [routerLink]="'/users/' + event.initiatorUser?.username">{{
-                event.initiatorUser?.username
-              }}</a></strong
-            >
+            <ng-container *ngIf="event.initiatorUser?.username; then withUsername; else withoutUsername"></ng-container>
             removed the collection <strong>{{ event.collection?.displayName }}</strong> in organization
             <a [routerLink]="event | recentEvents: 'orgLink'">{{ event.organization?.displayName }}</a>
           </div>
           <div *ngSwitchCase="EventType.ADDTOCOLLECTION" class="truncate-text-2">
-            <strong
-              ><a class="no-underline" [routerLink]="'/users/' + event.initiatorUser?.username">{{
-                event.initiatorUser?.username
-              }}</a></strong
-            >
+            <ng-container *ngIf="event.initiatorUser?.username; then withUsername; else withoutUsername"></ng-container>
             added the {{ event | recentEvents: 'entryType' }}
             <a [routerLink]="event | recentEvents: 'entryLink'">{{ event | recentEvents: 'displayName' }}</a>
             to the collection
@@ -136,20 +106,12 @@
             <a [routerLink]="event | recentEvents: 'orgLink'">{{ event.organization?.displayName }}</a>
           </div>
           <div *ngSwitchCase="EventType.MODIFYCOLLECTION" class="truncate-text-2">
-            <strong
-              ><a class="no-underline" [routerLink]="'/users/' + event.initiatorUser?.username">{{
-                event.initiatorUser?.username
-              }}</a></strong
-            >
+            <ng-container *ngIf="event.initiatorUser?.username; then withUsername; else withoutUsername"></ng-container>
             edited the collection
             <a [routerLink]="event | recentEvents: 'collectionLink'">{{ event.collection?.displayName }}</a>
           </div>
           <div *ngSwitchCase="EventType.REMOVEFROMCOLLECTION" class="truncate-text-2">
-            <strong
-              ><a class="no-underline" [routerLink]="'/users/' + event.initiatorUser?.username">{{
-                event.initiatorUser?.username
-              }}</a></strong
-            >
+            <ng-container *ngIf="event.initiatorUser?.username; then withUsername; else withoutUsername"></ng-container>
             removed the {{ event | recentEvents: 'entryType' }}
             <a [routerLink]="event | recentEvents: 'entryLink'">{{ event | recentEvents: 'displayName' }}</a>
             from the collection
