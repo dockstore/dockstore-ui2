@@ -65,4 +65,8 @@ export class WorkflowActionsComponent extends EntryActionsComponent implements O
     const prefix = this.sessionQuery.getValue().entryType === EntryType.Service ? ga4ghServiceIdPrefix : ga4ghWorkflowIdPrefix;
     this.refreshService.refreshWorkflow(prefix + this.workflow.full_workflow_path, versionName);
   }
+
+  delete() {
+    console.log('delete attempted');
+  }
 }
