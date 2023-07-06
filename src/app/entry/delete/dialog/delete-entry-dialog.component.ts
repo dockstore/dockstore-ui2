@@ -1,6 +1,9 @@
+// TODO add copyright header
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 import { finalize } from 'rxjs/operators';
 import { Entry } from '../../../shared/openapi';
 import { EntriesService } from '../../../shared/openapi';
@@ -16,6 +19,8 @@ export class DeleteEntryDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<DeleteEntryDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public entry: Entry,
+    public matSnackBar: MatSnackBar,
+    public router: Router,
     public entriesService: EntriesService
   ) {
     this.clicked = false;
@@ -40,16 +45,14 @@ export class DeleteEntryDialogComponent {
   }
 
   inform(message: string): void {
-    // TODO make a snackbar
-    console.log('MESSAGE: ' + message);
+    this.matSnackBar.open(message, 'Dismiss');
   }
 
   redirect(): void {
-    // TODO add code that redirects
+    this.router.navigate(['/dashboard']);
   }
 
   deleteEntry(): void {
-    console.log('in deleteEntry()');
     this.entriesService
       .deleteEntry(this.entry.id)
       .pipe(
@@ -59,11 +62,11 @@ export class DeleteEntryDialogComponent {
       )
       .subscribe(
         () => {
-          this.inform(`Successfully deleted the ${this.entry.entryTypeMetadata.term}`);
+          this.inform(`The ${this.entry.entryTypeMetadata.term} was deleted.`);
           this.redirect();
         },
         (error: HttpErrorResponse) => {
-          this.inform(`Failed to delete the ${this.entry.entryTypeMetadata.term}`);
+          this.inform(`Could not delete this ${this.entry.entryTypeMetadata.term}.`);
         }
       );
   }
