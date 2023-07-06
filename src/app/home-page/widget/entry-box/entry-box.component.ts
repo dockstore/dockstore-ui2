@@ -80,7 +80,7 @@ export class EntryBoxComponent extends Base implements OnInit {
       this.allEntriesLink = '/my-services/';
       this.entryTypeParam = 'SERVICES';
     } else if (this.entryType === NewEntryType.NOTEBOOK) {
-      this.helpLink = Dockstore.DOCUMENTATION_URL + '/getting-started/notebooks/notebooks.html';
+      this.helpLink = Dockstore.DOCUMENTATION_URL + '/getting-started/getting-started-with-notebooks.html';
       this.allEntriesLink = '/my-notebooks/';
       this.entryTypeParam = 'NOTEBOOKS';
       // Not loading entries for Notebooks - remove when supported
