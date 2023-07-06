@@ -1,5 +1,9 @@
-import { Component, OnDestroy } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, Inject, OnDestroy } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { finalize } from 'rxjs/operators';
+import { Entry } from '../../../shared/openapi';
+import { EntriesService } from '../../../shared/openapi';
 
 @Component({
   selector: 'app-delete-entry-dialog',
@@ -7,17 +11,21 @@ import { MatDialogRef } from '@angular/material/dialog';
   styleUrls: ['./delete-entry-dialog.component.scss'],
 })
 export class DeleteEntryDialogComponent implements OnDestroy {
-  dialogRef: MatDialogRef<DeleteEntryDialogComponent>;
+  // entriesService: EntriesService;
+  // dialogRef: MatDialogRef<DeleteEntryDialogComponent>;
+  // entry: Entry;
   constructor(
-    // TODO add deleteEntryService
-    dialogRef: MatDialogRef<DeleteEntryDialogComponent>
+    public entriesService: EntriesService,
+    public dialogRef: MatDialogRef<DeleteEntryDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public entry: Entry
   ) {
-    this.dialogRef = dialogRef;
+    // this.dialogRef = dialogRef;
+    // this.entry = entry;
   }
 
   // Close dialog
   onNoClick(): void {
-    // this.dialogRef.close();
+    this.dialogRef.close();
   }
 
   ngOnDestroy(): void {
@@ -25,13 +33,30 @@ export class DeleteEntryDialogComponent implements OnDestroy {
   }
 
   /**
-   * Delete the user account
+   * Delete the entry
    *
-   * @memberof DeleteAccountDialogComponent
+   * @memberof DeleteEntryDialogComponent
    */
   deleteEntry(): void {
-    // TODO fill in
+    // TODO disable the buttons
     console.log('in deleteEntry()');
-    this.onNoClick();
+    this.entriesService
+      .deleteEntry(this.entry.id)
+      .pipe(
+        finalize(() => {
+          this.onNoClick();
+        })
+      )
+      .subscribe(
+        () => {
+          console.log('successfully deleted entry');
+          // TODO display something
+          // TODO redirect to an appropriate location
+        },
+        (error: HttpErrorResponse) => {
+          console.log('failed to delete entry');
+          // TODO display something
+        }
+      );
   }
 }

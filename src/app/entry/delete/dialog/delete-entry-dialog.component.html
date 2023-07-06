@@ -2,9 +2,10 @@
 TODO add new copyright header
 -->
 
-<h1 mat-dialog-title>Are you sure you want to delete this Dockstore entry?</h1>
+<h1 mat-dialog-title>Are you sure you want to delete this Dockstore {{ entry.entryTypeMetadata.term }}?</h1>
 <div mat-dialog-content>
   <app-alert></app-alert>
+  ID: {{ entry.id }}
   <p>TODO explain the ramifications: entry and events permanently deleted.</p>
   <p>TODO explain the requirements</p>
   <p>TODO Explain that you need to remove the GitHub app from the account, or delete the .dockstore.yml</p>
@@ -12,6 +13,6 @@ TODO add new copyright header
   <p>TODO are you sure?</p>
   <div class="btn-group" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="1rem">
     <button mat-flat-button mat-dialog-close class="secondary-1">No</button>
-    <button mat-flat-button (click)="deleteEntry()" color="warn">Yes, delete this entry</button>
+    <button mat-flat-button (click)="deleteEntry()" color="warn">Yes, delete this {{ entry.entryTypeMetadata.term }}</button>
   </div>
 </div>

@@ -33,7 +33,7 @@
     {{ 'Refresh' }}
   </button>
   <button
-    *ngIf="workflow.deletable"
+    *ngIf="workflow.deletable || true"
     mat-raised-button
     class="accent-1-dark-btn mat-elevation-z"
     (click)="delete()"
