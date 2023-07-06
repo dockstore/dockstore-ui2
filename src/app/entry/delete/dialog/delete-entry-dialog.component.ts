@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, Inject, OnDestroy } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { finalize } from 'rxjs/operators';
 import { Entry } from '../../../shared/openapi';
@@ -10,32 +10,15 @@ import { EntriesService } from '../../../shared/openapi';
   templateUrl: './delete-entry-dialog.component.html',
   styleUrls: ['./delete-entry-dialog.component.scss'],
 })
-export class DeleteEntryDialogComponent implements OnDestroy {
-  // entriesService: EntriesService;
-  // dialogRef: MatDialogRef<DeleteEntryDialogComponent>;
-  // entry: Entry;
+export class DeleteEntryDialogComponent {
   clicked: boolean;
+
   constructor(
-    public entriesService: EntriesService,
     public dialogRef: MatDialogRef<DeleteEntryDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public entry: Entry
+    @Inject(MAT_DIALOG_DATA) public entry: Entry,
+    public entriesService: EntriesService
   ) {
     this.clicked = false;
-    // this.dialogRef = dialogRef;
-    // this.entry = entry;
-  }
-
-  click(): void {
-    this.clicked = true;
-  }
-
-  // Close dialog
-  close(): void {
-    this.dialogRef.close();
-  }
-
-  ngOnDestroy(): void {
-    // TODO this space intentionally blank
   }
 
   no(): void {
@@ -48,6 +31,14 @@ export class DeleteEntryDialogComponent implements OnDestroy {
     this.deleteEntry();
   }
 
+  click(): void {
+    this.clicked = true;
+  }
+
+  close(): void {
+    this.dialogRef.close();
+  }
+
   inform(message: string): void {
     // TODO make a snackbar
     console.log('MESSAGE: ' + message);
@@ -57,11 +48,6 @@ export class DeleteEntryDialogComponent implements OnDestroy {
     // TODO add code that redirects
   }
 
-  /**
-   * Delete the entry
-   *
-   * @memberof DeleteEntryDialogComponent
-   */
   deleteEntry(): void {
     console.log('in deleteEntry()');
     this.entriesService
@@ -73,11 +59,11 @@ export class DeleteEntryDialogComponent implements OnDestroy {
       )
       .subscribe(
         () => {
-          this.inform('successfully deleted entry');
+          this.inform(`Successfully deleted the ${this.entry.entryTypeMetadata.term}`);
           this.redirect();
         },
         (error: HttpErrorResponse) => {
-          this.inform('failed to delete entry');
+          this.inform(`Failed to delete the ${this.entry.entryTypeMetadata.term}`);
         }
       );
   }
