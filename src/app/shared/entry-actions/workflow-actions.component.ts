@@ -1,4 +1,5 @@
 import { Component, Input, Output, EventEmitter, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { AlertQuery } from '../alert/state/alert.query';
 import { ga4ghServiceIdPrefix, ga4ghWorkflowIdPrefix } from '../constants';
@@ -10,6 +11,7 @@ import { BioWorkflow, Service, Notebook, WorkflowVersion } from '../openapi';
 import { Workflow } from '../openapi/model/workflow';
 import { EntryActionsComponent } from './entry-actions.component';
 import { EntryActionsService } from './entry-actions.service';
+import { DeleteEntryDialogComponent } from '../../entry/delete/dialog/delete-entry-dialog.component';
 
 @Component({
   selector: 'app-workflow-actions',
@@ -31,7 +33,8 @@ export class WorkflowActionsComponent extends EntryActionsComponent implements O
     protected alertQuery: AlertQuery,
     private tokenQuery: TokenQuery,
     private refreshService: RefreshService,
-    private sessionQuery: SessionQuery
+    private sessionQuery: SessionQuery,
+    public dialog: MatDialog
   ) {
     super(alertQuery, entryActionsService);
     this.zenodoAccountIsLinked$ = this.tokenQuery.hasZenodoToken$;
@@ -67,6 +70,7 @@ export class WorkflowActionsComponent extends EntryActionsComponent implements O
   }
 
   delete() {
-    console.log('delete attempted');
+    console.log('delete initiated');
+    this.dialog.open(DeleteEntryDialogComponent, { width: '600px' });
   }
 }
