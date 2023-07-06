@@ -12,7 +12,7 @@ TODO add new copyright header
   <p></p>
   <p>TODO are you sure?</p>
   <div class="btn-group" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="1rem">
-    <button mat-flat-button mat-dialog-close class="secondary-1">No</button>
-    <button mat-flat-button (click)="deleteEntry()" color="warn">Yes, delete this {{ entry.entryTypeMetadata.term }}</button>
+    <button mat-flat-button (click)="no()" [disabled]="clicked" mat-dialog-close class="secondary-1">No</button>
+    <button mat-flat-button (click)="yes()" [disabled]="clicked" color="warn">Yes, delete this {{ entry.entryTypeMetadata.term }}</button>
   </div>
 </div>

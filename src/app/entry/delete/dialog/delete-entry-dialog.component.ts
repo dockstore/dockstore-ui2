@@ -14,22 +14,47 @@ export class DeleteEntryDialogComponent implements OnDestroy {
   // entriesService: EntriesService;
   // dialogRef: MatDialogRef<DeleteEntryDialogComponent>;
   // entry: Entry;
+  clicked: boolean;
   constructor(
     public entriesService: EntriesService,
     public dialogRef: MatDialogRef<DeleteEntryDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public entry: Entry
   ) {
+    this.clicked = false;
     // this.dialogRef = dialogRef;
     // this.entry = entry;
   }
 
+  click(): void {
+    this.clicked = true;
+  }
+
   // Close dialog
-  onNoClick(): void {
+  close(): void {
     this.dialogRef.close();
   }
 
   ngOnDestroy(): void {
     // TODO this space intentionally blank
+  }
+
+  no(): void {
+    this.click();
+    this.close();
+  }
+
+  yes(): void {
+    this.click();
+    this.deleteEntry();
+  }
+
+  inform(message: string): void {
+    // TODO make a snackbar
+    console.log('MESSAGE: ' + message);
+  }
+
+  redirect(): void {
+    // TODO add code that redirects
   }
 
   /**
@@ -38,24 +63,21 @@ export class DeleteEntryDialogComponent implements OnDestroy {
    * @memberof DeleteEntryDialogComponent
    */
   deleteEntry(): void {
-    // TODO disable the buttons
     console.log('in deleteEntry()');
     this.entriesService
       .deleteEntry(this.entry.id)
       .pipe(
         finalize(() => {
-          this.onNoClick();
+          this.close();
         })
       )
       .subscribe(
         () => {
-          console.log('successfully deleted entry');
-          // TODO display something
-          // TODO redirect to an appropriate location
+          this.inform('successfully deleted entry');
+          this.redirect();
         },
         (error: HttpErrorResponse) => {
-          console.log('failed to delete entry');
-          // TODO display something
+          this.inform('failed to delete entry');
         }
       );
   }
