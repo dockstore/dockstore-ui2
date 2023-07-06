@@ -13,7 +13,14 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import { insertNotebooks, resetDB, setTokenUserViewPort, verifyGithubLinkDashboard } from '../../support/commands';
+import {
+  insertNotebooks,
+  resetDB,
+  setTokenUserViewPort,
+  verifyGithubLinkDashboard,
+  checkFeaturedContent,
+  checkNewsAndUpdates,
+} from '../../support/commands';
 
 describe('Dockstore dashboard', () => {
   resetDB();
@@ -49,6 +56,16 @@ describe('Dockstore dashboard', () => {
   });
   it('Registering new workflow through Github redirects correctly', () => {
     verifyGithubLinkDashboard('Workflow');
+  });
+
+  it('have featured content visible from dashboard', () => {
+    cy.visit('/dashboard');
+    checkFeaturedContent();
+  });
+
+  it('have news and updates visible from dashboard', () => {
+    cy.visit('/dashboard');
+    checkNewsAndUpdates();
   });
 });
 

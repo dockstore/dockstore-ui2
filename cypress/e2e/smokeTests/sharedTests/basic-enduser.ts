@@ -1,6 +1,6 @@
 import { ga4ghPath } from '../../../../src/app/shared/constants';
 import { ToolDescriptor } from '../../../../src/app/shared/openapi';
-import { goToTab } from '../../../support/commands';
+import { goToTab, checkFeaturedContent, checkNewsAndUpdates } from '../../../support/commands';
 
 // Test an entry, these should be ambiguous between tools, workflows, and notebooks.
 describe('run stochastic smoke test', () => {
@@ -361,6 +361,18 @@ function testNotebook(url: string, version1: string, version2: string, trsUrl: s
     }
   });
 }
+
+describe('Check extra content', () => {
+  it('featured content is visible from home page', () => {
+    cy.visit('/');
+    checkFeaturedContent();
+  });
+
+  it('news and updates are visible from home page', () => {
+    cy.visit('/');
+    checkNewsAndUpdates();
+  });
+});
 
 // TODO: uncomment after tooltester logs are fixed
 // describe('Test existence of Logs', () => {
