@@ -25,6 +25,7 @@ import { AdvancedSearchObject } from './../shared/models/AdvancedSearchObject';
 import { SubBucket } from './../shared/models/SubBucket';
 import { Permission, ToolDescriptor } from './../shared/openapi';
 import { DockstoreTool } from './../shared/openapi/model/dockstoreTool';
+import { Entry } from './../shared/openapi/model/entry';
 import { SourceFile } from './../shared/openapi/model/sourceFile';
 import { StarRequest } from './../shared/openapi/model/starRequest';
 import { TokenUser } from './../shared/openapi/model/tokenUser';
@@ -434,9 +435,12 @@ export class WorkflowStubService {
   }
 }
 
-export class EntryStubService {
+export class EntriesStubService {
   getVersionsFileTypes(entryid: number, versionid: number): Observable<Array<string>> {
     return observableOf([]);
+  }
+  deleteEntry(entryid: number): Observable<HttpResponse<Entry>> {
+    return observableOf(null);
   }
 }
 

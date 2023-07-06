@@ -18,7 +18,12 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
-import { ContainersStubService, ContainerStubService, EntryStubService, GA4GHV20StubService } from '../../../../src/app/test/service-stubs';
+import {
+  ContainersStubService,
+  ContainerStubService,
+  EntriesStubService,
+  GA4GHV20StubService,
+} from '../../../../src/app/test/service-stubs';
 import { ContainerService } from '../../shared/container.service';
 import { DescriptorService } from '../../shared/descriptor.service';
 import { FileService } from '../../shared/file.service';
@@ -46,7 +51,7 @@ describe('DescriptorsComponent', () => {
           { provide: ContainerService, useClass: ContainerStubService },
           { provide: FileService, useClass: FileStubService },
           { provide: GA4GHV20Service, useClass: GA4GHV20StubService },
-          { provide: EntriesService, useClass: EntryStubService },
+          { provide: EntriesService, useClass: EntriesStubService },
           { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
         ],
       }).compileComponents();
