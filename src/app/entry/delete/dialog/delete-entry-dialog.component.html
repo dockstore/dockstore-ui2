@@ -1,10 +1,8 @@
-<h1 mat-dialog-title>Are you sure you want to delete this Dockstore {{ entry.entryTypeMetadata.term }}?</h1>
+<h1 mat-dialog-title>Are you sure you want to delete this Dockstore {{ term }}?</h1>
 <div mat-dialog-content>
   <app-alert></app-alert>
-  <p>
-    You are about to permanently delete this {{ entry.entryTypeMetadata.term }}. After you delete it, it will no longer appear on Dockstore.
-  </p>
-  <p>A {{ entry.entryTypeMetadata.term }} can be deleted if it:</p>
+  <p>You are about to permanently delete this {{ term }}. After you delete it, it will no longer appear on Dockstore.</p>
+  <p>A {{ term }} can be deleted if it:</p>
   <ul>
     <li>Has never been published,</li>
     <li>Was created on/after April 1, 2022, and</li>
@@ -12,13 +10,13 @@
   </ul>
 
   <p>
-    After you delete the {{ entry.entryTypeMetadata.term }}, you must uninstall the Dockstore GitHub App from the source GitHub repo, or
-    edit/remove the .dockstore.yml file so that it no longer describes the {{ entry.entryTypeMetadata.term }}. If you do not, the
-    {{ entry.entryTypeMetadata.term }} may reappear on Dockstore the next time you push to the repo.
+    After you delete the {{ term }}, you must uninstall the Dockstore GitHub App from the source GitHub repo, or edit/remove the
+    .dockstore.yml file so that it no longer describes the {{ term }}. If you do not, the {{ term }} may reappear on Dockstore the next time
+    you push to the repo.
   </p>
-  <p>Are you sure you want to delete this {{ entry.entryTypeMetadata.term }}?</p>
+  <p>Are you sure you want to delete this {{ term }}?</p>
   <div class="btn-group" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="1rem">
     <button mat-flat-button (click)="no()" [disabled]="clicked" mat-dialog-close class="secondary-1">No</button>
-    <button mat-flat-button (click)="yes()" [disabled]="clicked" color="warn">Yes, delete this {{ entry.entryTypeMetadata.term }}</button>
+    <button mat-flat-button (click)="yes()" [disabled]="clicked" color="warn">Yes, delete this {{ term }}</button>
   </div>
 </div>

@@ -15,6 +15,7 @@ import { EntriesService } from '../../../shared/openapi';
 })
 export class DeleteEntryDialogComponent {
   clicked: boolean;
+  term: string;
 
   constructor(
     public dialogRef: MatDialogRef<DeleteEntryDialogComponent>,
@@ -24,6 +25,7 @@ export class DeleteEntryDialogComponent {
     public entriesService: EntriesService
   ) {
     this.clicked = false;
+    this.term = entry.entryTypeMetadata.term;
   }
 
   no(): void {
@@ -62,11 +64,11 @@ export class DeleteEntryDialogComponent {
       )
       .subscribe(
         () => {
-          this.inform(`The ${this.entry.entryTypeMetadata.term} was deleted.`);
+          this.inform(`The ${this.term} was deleted.`);
           this.redirect();
         },
         (error: HttpErrorResponse) => {
-          this.inform(`Could not delete this ${this.entry.entryTypeMetadata.term}.`);
+          this.inform(`Could not delete this ${this.term}.`);
         }
       );
   }
