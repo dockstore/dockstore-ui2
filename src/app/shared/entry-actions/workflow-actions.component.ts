@@ -70,7 +70,6 @@ export class WorkflowActionsComponent extends EntryActionsComponent implements O
   }
 
   delete() {
-    console.log('delete initiated');
     this.dialog.open(DeleteEntryDialogComponent, { width: '600px', data: this.workflow });
   }
 }
