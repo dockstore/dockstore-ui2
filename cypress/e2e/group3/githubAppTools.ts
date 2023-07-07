@@ -53,7 +53,7 @@ describe('GitHub App Tools', () => {
 
       // GitHub App Logs
       cy.contains('Apps Logs').click();
-      cy.contains('There were problems retrieving GitHub App logs for this organization.');
+      cy.contains('There were problems retrieving the GitHub App logs for this organization.');
       cy.contains('Close').click();
       cy.intercept('GET', '/api/lambdaEvents/**', {
         body: [],
