@@ -138,7 +138,7 @@ export function goToUnexpandedSidebarEntry(organization: string, repo: RegExp | 
 }
 
 export function invokeSql(sqlStatement: string) {
-  return cy.exec(psqlInvocation + ' -h localhost webservice_test -U dockstore -c "' + sqlStatement + '"');
+  cy.exec(psqlInvocation + ' -h localhost webservice_test -U dockstore -c "' + sqlStatement + '"');
 }
 
 export function createPotatoMembership() {

@@ -1,8 +1,10 @@
-import { resetDB, setTokenUserViewPort, invokeSql, goToTab } from '../../support/commands';
+import { resetDBWithService, setTokenUserViewPort, insertNotebooks, insertAppTools, invokeSql, goToTab } from '../../support/commands';
 
 describe('Entry Deletion', () => {
-  resetDB();
+  resetDBWithService();
   setTokenUserViewPort();
+  insertNotebooks();
+  insertAppTools();
 
   type Entry = {
     path: string;
@@ -11,27 +13,22 @@ describe('Entry Deletion', () => {
     myPrefix: string;
   };
 
+  const entries: Entry[] = [
+    { table: 'workflow', id: 11, versionId: 14, myPrefix: 'my-workflows', path: 'github.com/A/l' },
+    // { table: 'notebook', id: 11, versionId: 14, myPrefix: 'my-notebooks', path: 'github.com/A/l' }
+    // { table: 'apptool', id: 11, versionId: 14, myPrefix: 'my-containers', path: 'github.com/A/l' }
+    // { table: 'service', id: 11, versionId: 14, myPrefix: 'my-services', path: 'github.com/A/l' }
+  ];
+
   function unpublicize(entry: Entry): void {
     invokeSql(`update ${entry.table} set ispublished = false, waseverpublic = false where id = ${entry.id}`);
     invokeSql(`update ${entry.table} set actualdefaultversion = ${entry.versionId} where id = ${entry.id}`);
-    /*
-    goToPrivatePage(entry);
-    goToTab('Versions');
-    cy.contains('button', 'Actions').should('be.visible').click();
-    cy.contains('button', 'Set as Default Version').should('be.visible').click();
-    */
   }
 
   function goToPrivatePage(entry: Entry): void {
     console.log(`${entry.myPrefix}/${entry.path}`);
     cy.visit(`${entry.myPrefix}/${entry.path}`);
   }
-
-  function doesEntryExist(entry: Entry): boolean {
-    return invokeSql(`select count(*) from ${entry.table} where id = ${entry.id}`).then((result) => result.stdout > 0);
-  }
-
-  const entries: Entry[] = [{ table: 'workflow', id: 11, versionId: 14, myPrefix: 'my-workflows', path: 'github.com/A/l' }];
 
   it('Should not be able to delete an entry that is published', () => {
     entries.forEach((entry) => {
@@ -62,12 +59,13 @@ describe('Entry Deletion', () => {
       unpublicize(entry);
       goToPrivatePage(entry);
       cy.contains('button', 'Delete').should('be.visible').click();
-      cy.contains('button', 'No').should('be.visible').click(); // TODO reference the data-cy attribute
-      expect(doesEntryExist(entry)).to.be.true;
+      cy.get('[data-cy=delete-no]').should('be.visible').click();
+      goToPrivatePage(entry);
+      cy.contains(entry.path).should('exist');
       cy.contains('button', 'Delete').should('be.visible').click();
-      cy.contains('button', 'Yes').should('be.visible').click(); // TODO reference the data-cy attribute
-      expect(doesEntryExist(entry)).to.be.false;
-      // TODO confirm that location is dashboard
+      cy.get('[data-cy=delete-yes]').should('be.visible').click();
+      goToPrivatePage(entry);
+      cy.contains(entry.path).should('not.exist');
     });
   });
 });
