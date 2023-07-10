@@ -22,8 +22,7 @@ import { ContainersStubService, ContainerStubService, EntryStubService, GA4GHV20
 import { ContainerService } from '../../shared/container.service';
 import { DescriptorService } from '../../shared/descriptor.service';
 import { FileService } from '../../shared/file.service';
-import { EntriesService, GA4GHV20Service } from '../../shared/openapi';
-import { ContainersService } from '../../shared/openapi';
+import { EntriesService, GA4GHV20Service, ContainersService } from '../../shared/openapi';
 import { sampleToolVersion } from '../../test/mocked-objects';
 import { DescriptorsComponent } from './descriptors.component';
 import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';

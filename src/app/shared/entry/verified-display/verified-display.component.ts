@@ -16,8 +16,7 @@
 import { Component, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { VersionVerifiedPlatform } from '../../openapi';
-import { Tag, VerificationInformation, WorkflowVersion } from '../../openapi';
+import { VersionVerifiedPlatform, Tag, VerificationInformation, WorkflowVersion } from '../../openapi';
 
 @Component({
   selector: 'app-verified-display',

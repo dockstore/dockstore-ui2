@@ -16,14 +16,13 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input } from '@angular/core';
 import { includesAuthors } from 'app/shared/constants';
-import { SourceFile, WorkflowsService as OpenApiWorkflowServices } from 'app/shared/openapi';
+import { SourceFile, WorkflowsService as OpenApiWorkflowServices, ToolDescriptor, Workflow } from 'app/shared/openapi';
 import { Observable } from 'rxjs';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { FileEditing } from '../../shared/file-editing';
 
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { WorkflowService } from '../../shared/state/workflow.service';
-import { ToolDescriptor, Workflow } from '../../shared/openapi';
 import { HostedService } from './../../shared/openapi/api/hosted.service';
 import { WorkflowsService } from './../../shared/openapi/api/workflows.service';
 import { WorkflowVersion } from './../../shared/openapi/model/workflowVersion';

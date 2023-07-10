@@ -6,11 +6,10 @@ import { MatTabChangeEvent } from '@angular/material/tabs';
 import { FileTreeComponent } from 'app/file-tree/file-tree.component';
 import { bootstrap4largeModalSize } from 'app/shared/constants';
 import { FileService } from 'app/shared/file.service';
-import { SourceFile, ToolDescriptor, WorkflowVersion } from 'app/shared/openapi';
+import { SourceFile, ToolDescriptor, WorkflowVersion, BioWorkflow, Notebook, Service } from 'app/shared/openapi';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { WorkflowQuery } from '../shared/state/workflow.query';
-import { BioWorkflow, Notebook, Service } from '../shared/openapi';
 import { SourceFileTabsService } from './source-file-tabs.service';
 
 @Component({

@@ -35,7 +35,7 @@ import { EntryType } from '../shared/enum/entry-type';
 import { ExtendedDockstoreToolQuery } from '../shared/extended-dockstoreTool/extended-dockstoreTool.query';
 import { GA4GHFilesService } from '../shared/ga4gh-files/ga4gh-files.service';
 import { ImageProviderService } from '../shared/image-provider.service';
-import { EntriesService } from '../shared/openapi';
+import { EntriesService, Workflow } from '../shared/openapi';
 import { ProviderService } from '../shared/provider.service';
 import { SessionQuery } from '../shared/session/session.query';
 import { SessionService } from '../shared/session/session.service';
@@ -50,7 +50,6 @@ import { DockstoreTool } from './../shared/openapi/model/dockstoreTool';
 import { UrlResolverService } from './../shared/url-resolver.service';
 import { AddTagComponent } from './add-tag/add-tag.component';
 import { EmailService } from './email.service';
-import { Workflow } from '../shared/openapi';
 import { EntryCategoriesService } from '../categories/state/entry-categories.service';
 
 @Component({

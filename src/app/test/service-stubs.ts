@@ -15,15 +15,21 @@
  */
 import { HttpResponse } from '@angular/common/http';
 import { EntryType } from 'app/shared/enum/entry-type';
-import { EntryType as newEntryType, EntryTypeMetadata, EntryUpdateTime } from 'app/shared/openapi';
+import {
+  EntryType as newEntryType,
+  EntryTypeMetadata,
+  EntryUpdateTime,
+  Permission,
+  ToolDescriptor,
+  CloudInstance,
+  TRSService,
+} from 'app/shared/openapi';
 import { BehaviorSubject, EMPTY, Observable, of as observableOf } from 'rxjs';
 import { SearchFields } from '../search/state/search.service';
 import { TagEditorMode } from '../shared/enum/tagEditorMode.enum';
-import { CloudInstance, TRSService } from '../shared/openapi';
 import { Dockstore } from './../shared/dockstore.model';
 import { AdvancedSearchObject } from './../shared/models/AdvancedSearchObject';
 import { SubBucket } from './../shared/models/SubBucket';
-import { Permission, ToolDescriptor } from './../shared/openapi';
 import { DockstoreTool } from './../shared/openapi/model/dockstoreTool';
 import { SourceFile } from './../shared/openapi/model/sourceFile';
 import { StarRequest } from './../shared/openapi/model/starRequest';
