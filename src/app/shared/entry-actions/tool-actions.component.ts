@@ -1,11 +1,9 @@
 import { Component, Input, Output, EventEmitter, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { AlertQuery } from '../alert/state/alert.query';
 import { RefreshService } from '../refresh.service';
 import { DockstoreTool, Tag } from '../openapi';
 import { EntryActionsComponent } from './entry-actions.component';
 import { EntryActionsService } from './entry-actions.service';
-import { DeleteEntryDialogComponent } from '../../entry/delete/dialog/delete-entry-dialog.component';
 
 @Component({
   selector: 'app-tool-actions',
@@ -21,8 +19,7 @@ export class ToolActionsComponent extends EntryActionsComponent implements OnIni
   constructor(
     protected entryActionsService: EntryActionsService,
     protected alertQuery: AlertQuery,
-    private refreshService: RefreshService,
-    public dialog: MatDialog
+    private refreshService: RefreshService
   ) {
     super(alertQuery, entryActionsService);
   }
@@ -51,9 +48,5 @@ export class ToolActionsComponent extends EntryActionsComponent implements OnIni
    */
   refresh() {
     this.refreshService.refreshTool();
-  }
-
-  delete() {
-    this.dialog.open(DeleteEntryDialogComponent, { width: '600px', data: this.tool });
   }
 }
