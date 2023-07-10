@@ -51,7 +51,7 @@ export class DeleteEntryDialogComponent {
   }
 
   redirect(): void {
-    this.router.navigate(['/dashboard']);
+    this.router.navigate([`/my-${this.entry.entryTypeMetadata.termPlural}`]);
   }
 
   deleteEntry(): void {
