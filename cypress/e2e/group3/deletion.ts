@@ -21,6 +21,7 @@ describe('Entry Deletion', () => {
   function unpublicize(entry: Entry): void {
     invokeSql(`update ${entry.table} set ispublished = false, waseverpublic = false where id = ${entry.id}`);
     invokeSql(`update ${entry.table} set actualdefaultversion = ${entry.versionId} where id = ${entry.id}`);
+    invokeSql(`delete from event where ${entry.table}id = ${entry.id}`);
   }
 
   function goToPrivatePage(entry: Entry): void {
@@ -62,6 +63,8 @@ describe('Entry Deletion', () => {
       cy.contains(entry.path).should('exist');
       cy.contains('button', 'Delete').should('be.visible').click();
       cy.get('[data-cy=delete-yes]').should('be.visible').click();
+      cy.wait(1000);
+      cy.contains(entry.path).should('not.exist');
       goToPrivatePage(entry);
       cy.wait(1000);
       cy.contains(entry.path).should('not.exist');
