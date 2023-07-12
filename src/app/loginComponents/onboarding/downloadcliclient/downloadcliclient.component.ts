@@ -109,12 +109,17 @@ exec newgrp docker
 #### Part 1a - Install Java dependencies
 We'll cover two ways to install Java 11.
 
-1. The first way is to download OpenJDK for Mac OS from [here](https://jdk.java.net/archive/), and execute the following commands.  First, unpack the downloaded tar archive, then move the resulting JDK directory to its standard location. Then check the Java version:
+1. The first way is to download OpenJDK 11.0.2 for Mac OS from [here](https://jdk.java.net/archive/), and execute the following commands. First, unpack the downloaded tar archive, then move the resulting JDK directory to its standard location. 
 \`\`\`
+tar -xf jdk-11.0.2.jdk.tar.gz
 sudo mv jdk-11.0.2.jdk /Library/Java/JavaVirtualMachines/
+\`\`\`
+Then check the Java version:
+\`\`\`
 java -version
 \`\`\`
-If the reported version is JDK 11, you've correctly installed Java!  If not, check the list of the JDKs that are installed; you should see version 11:
+Some versions of Mac OS will pop up a window saying that the program cannot be run as it is from an unidentified developer. [See this help page from Apple](https://support.apple.com/guide/mac-help/open-a-mac-app-from-an-unidentified-developer-mh40616/mac) on how to fix this.
+If the reported version is JDK 11, you've correctly installed Java! If not, check the list of the JDKs that are installed; you should see version 11:
 \`\`\`
 /usr/libexec/java_home -V
 \`\`\`
@@ -125,7 +130,7 @@ unset JAVA_HOME
 export JAVA_HOME=\`/usr/libexec/java_home -v 11\`
 java -version
 \`\`\`
-Add the above export line to your \`.bashrc\` or \`.bash_profile\` to set \`JAVA_HOME\` properly every time you invoke a shell.
+If you are using Bash, add the above export line to your \`.bashrc\` or \`.bash_profile\` to set \`JAVA_HOME\` properly every time you invoke a shell. Newer versions of Mac OS default to using zsh instead of bash, in which case, add this line to \`.zshrc\` instead.
 
 2. Alternatively, to install Java 11 using Homebrew, execute the following commands:
 \`\`\`
@@ -143,6 +148,7 @@ unset JAVA_HOME
 export JAVA_HOME=\`/usr/libexec/java_home -v 11\`
 java -version
 \`\`\`
+As with the option above, you may have to [follow these directions](https://support.apple.com/guide/mac-help/open-a-mac-app-from-an-unidentified-developer-mh40616/mac) if your computer thinks it is from an unidentified developer.
 
 #### Part 1b - Install Docker dependencies
 Install Docker following the instructions on [Docker's website](https://docs.docker.com/docker-for-mac/install/). You should have at least version 2.0.0.3 installed.
