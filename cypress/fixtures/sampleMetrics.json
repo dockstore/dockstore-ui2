@@ -5,6 +5,7 @@
 		"executionTime": null,
 		"id": 124,
 		"memory": null,
+		"cost": null,
 		"validationStatus": {
 			"id": 134,
 			"validatorTools": {
@@ -77,7 +78,8 @@
 		"executionTime": null,
 		"id": 126,
 		"memory": null,
-		"validationStatus": null
+		"validationStatus": null,
+		"cost": null
 	},
 	"AGC": {
 		"cpu": {
@@ -113,6 +115,14 @@
 			"numberOfDataPointsForAverage": 4,
 			"id": 105,
 			"unit": "GB"
+		},
+		"cost": {
+			"average": 3.25,
+			"maximum": 4,
+			"minimum": 2,
+			"numberOfDataPointsForAverage": 4,
+			"id": 200,
+			"unit": "USD"
 		},
 		"validationStatus": null
 	},
@@ -150,6 +160,7 @@
 			"id": 108,
 			"unit": "GB"
 		},
+		"cost": null,
 		"validationStatus": null
 	},
 	"ALL": {
@@ -186,6 +197,14 @@
 			"numberOfDataPointsForAverage": 6,
 			"id": 111,
 			"unit": "GB"
+		},
+		"cost": {
+			"average": 3.25,
+			"maximum": 4,
+			"minimum": 2,
+			"numberOfDataPointsForAverage": 4,
+			"id": 201,
+			"unit": "USD"
 		},
 		"validationStatus": {
 			"id": 138,
