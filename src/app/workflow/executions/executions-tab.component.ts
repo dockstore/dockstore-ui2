@@ -135,7 +135,11 @@ export class ExecutionsTabComponent extends EntryTab implements OnChanges {
     const metrics = this.metrics.get(partner);
     this.executionMetricsTable = this.createExecutionsTable(metrics);
     this.executionMetricsExist =
-      metrics?.cpu !== null || metrics?.memory !== null || metrics?.executionTime !== null || metrics?.executionStatusCount !== null;
+      metrics?.cpu !== null ||
+      metrics?.memory !== null ||
+      metrics?.executionTime !== null ||
+      metrics?.executionStatusCount !== null ||
+      metrics?.cost !== null;
 
     if (metrics?.executionStatusCount) {
       this.totalExecutions =
@@ -154,10 +158,11 @@ export class ExecutionsTabComponent extends EntryTab implements OnChanges {
   private createExecutionsTable(metrics: Metrics | null): ExecutionMetricsTableObject[] {
     let executionsTable: ExecutionMetricsTableObject[] = [];
     // Only create the table if one of the execution metrics exist
-    if (metrics && (metrics.cpu || metrics.memory || metrics.executionTime)) {
+    if (metrics && (metrics.cpu || metrics.memory || metrics.executionTime || metrics.cost)) {
       executionsTable.push({ metric: 'CPU', ...metrics?.cpu });
       executionsTable.push({ metric: 'Memory', ...metrics?.memory });
       executionsTable.push({ metric: 'Run Time', ...metrics?.executionTime });
+      executionsTable.push({ metric: 'Cost', ...metrics?.cost });
     }
     return executionsTable;
   }
