@@ -403,7 +403,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       value.forEach((innerValue: boolean, innerKey: string) => {
         if (innerValue && this.orderedBuckets.get(key)) {
           if (!this.orderedBuckets.get(key).SelectedItems.get(innerKey)) {
-            this.orderedBuckets.get(key).SelectedItems.set(innerKey, '0');
+            this.orderedBuckets.get(key).SelectedItems.set(innerKey, 0);
           }
         }
       });

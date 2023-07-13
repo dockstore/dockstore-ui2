@@ -12,7 +12,7 @@
     mat-raised-button
     mat-dialog-close
     class="accent-1-dark-btn mat-elevation-z"
-    [disabled]="(numLinkedAccounts$ | async) < 2"
+    [disabled]="(numLinkedAccounts$ | async) < 1"
     (click)="createOrganization()"
   >
     Next

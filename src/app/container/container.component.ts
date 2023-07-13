@@ -56,7 +56,7 @@ import { EntryCategoriesService } from '../categories/state/entry-categories.ser
   templateUrl: './container.component.html',
   styleUrls: ['../shared/styles/workflow-container.component.scss'],
 })
-export class ContainerComponent extends Entry implements AfterViewInit, OnInit {
+export class ContainerComponent extends Entry<Tag> implements AfterViewInit, OnInit {
   dockerPullCmd: string;
   privateOnlyRegistry: boolean;
   containerEditData: any;
