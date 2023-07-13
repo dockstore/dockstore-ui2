@@ -139,7 +139,7 @@
                 <span>
                   <mat-chip-list>
                     <mat-chip class="bubble workflow-background" *ngFor="let label of workflow?.labels | slice: 0:3">{{
-                      label.value
+                      $any(label).value
                     }}</mat-chip>
                     <mat-chip class="bubble" *ngIf="workflow.versionVerified === true">
                       <span class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">
@@ -185,7 +185,9 @@
               <div fxLayout="row" fxLayoutAlign="flex-start" fxLayoutGap="1rem">
                 <small class="mx-2">Last updated {{ tool?.lastUpdated | date }}</small>
                 <mat-chip-list>
-                  <mat-chip class="bubble tool-background" *ngFor="let label of tool?.labels | slice: 0:3">{{ label.value }}</mat-chip>
+                  <mat-chip class="bubble tool-background" *ngFor="let label of tool?.labels | slice: 0:3">{{
+                    $any(label).value
+                  }}</mat-chip>
                   <mat-chip *ngIf="tool?.versionVerified" matTooltip="Verified" class="bubble">
                     <a class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">
                       <mat-icon class="verified-icon">done</mat-icon>

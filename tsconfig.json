@@ -27,6 +27,6 @@
   "angularCompilerOptions": {
     "skipTemplateCodegen": false,
     "strictInjectionParameters": true,
-    "strictTemplates": false
+    "strictTemplates": true
   }
 }
