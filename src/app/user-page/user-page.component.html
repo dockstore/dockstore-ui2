@@ -46,11 +46,10 @@
               <span *ngIf="loggedInUserIsAdminOrCurator">
                 <button
                   mat-button
-                  class="small-mat-btn accent-1-dark small-btn-structure mat-elevation-z"
+                  class="small-mat-btn private-btn small-btn-structure mat-elevation-z"
                   (click)="openGitHubAppsLogs(user.id)"
                   data-cy="user-app-logs-button"
                 >
-                  <img src="../../../assets/svg/git-hub.svg" alt="GitHub app logs" class="pr-2" />
                   Apps Logs
                 </button>
               </span>
