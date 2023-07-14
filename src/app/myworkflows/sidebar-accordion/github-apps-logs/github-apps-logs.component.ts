@@ -48,7 +48,7 @@ export class GithubAppsLogsComponent implements OnInit {
   isExpansionDetailRow = (i: number, row: Object) => row.hasOwnProperty('detailRow');
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public matDialogData: string,
+    @Inject(MAT_DIALOG_DATA) public matDialogData: any,
     private lambdaEventsService: LambdaEventsService,
     private matSnackBar: MatSnackBar,
     private descriptorLanguageService: DescriptorLanguageService
@@ -67,22 +67,41 @@ export class GithubAppsLogsComponent implements OnInit {
     this.loading = true;
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
-    this.lambdaEventsService
-      .getLambdaEventsByOrganization(this.matDialogData)
-      .pipe(
-        finalize(() => {
-          this.loading = false;
-          this.updateContentToShow(this.lambdaEvents);
-        })
-      )
-      .subscribe(
-        (lambdaEvents) => (this.lambdaEvents = lambdaEvents),
-        (error) => {
-          this.lambdaEvents = null;
-          const detailedErrorMessage = AlertService.getDetailedErrorMessage(error);
-          this.matSnackBar.open(detailedErrorMessage);
-        }
-      );
+    if (this.matDialogData.getUserEvents) {
+      this.lambdaEventsService
+        .getUserLambdaEvents(this.matDialogData.value)
+        .pipe(
+          finalize(() => {
+            this.loading = false;
+            this.updateContentToShow(this.lambdaEvents);
+          })
+        )
+        .subscribe(
+          (lambdaEvents) => (this.lambdaEvents = lambdaEvents),
+          (error) => {
+            this.lambdaEvents = null;
+            const detailedErrorMessage = AlertService.getDetailedErrorMessage(error);
+            this.matSnackBar.open(detailedErrorMessage);
+          }
+        );
+    } else {
+      this.lambdaEventsService
+        .getLambdaEventsByOrganization(this.matDialogData.value)
+        .pipe(
+          finalize(() => {
+            this.loading = false;
+            this.updateContentToShow(this.lambdaEvents);
+          })
+        )
+        .subscribe(
+          (lambdaEvents) => (this.lambdaEvents = lambdaEvents),
+          (error) => {
+            this.lambdaEvents = null;
+            const detailedErrorMessage = AlertService.getDetailedErrorMessage(error);
+            this.matSnackBar.open(detailedErrorMessage);
+          }
+        );
+    }
   }
 
   updateContentToShow(lambdaEvents: LambdaEvent[] | null) {

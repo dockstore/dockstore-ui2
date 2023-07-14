@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { TokenSource } from '../shared/enum/token-source.enum';
 import { Profile } from '../shared/openapi';
 import { UsersService } from '../shared/openapi/api/users.service';
@@ -8,6 +8,11 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AlertService } from '../shared/alert/state/alert.service';
+import { GithubAppsLogsComponent } from '../myworkflows/sidebar-accordion/github-apps-logs/github-apps-logs.component';
+import { bootstrap4largeModalSize } from '../shared/constants';
+import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { AuthService } from 'ng2-ui-auth';
+import { UserQuery } from '../shared/user/user.query';
 
 @Component({
   selector: 'app-user-page',
@@ -17,18 +22,25 @@ import { AlertService } from '../shared/alert/state/alert.service';
 export class UserPageComponent implements OnInit {
   public user: any;
   public username: string;
+  protected lambdaEvents: string[];
   public TokenSource = TokenSource;
   public googleProfile: Profile;
   public gitHubProfile: Profile;
   protected ngUnsubscribe: Subject<{}> = new Subject();
+  public loggedInUserIsAdminOrCurator: boolean;
   constructor(
+    public dialog: MatDialog,
     private userService: UserService,
     private usersService: UsersService,
+    private userQuery: UserQuery,
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private alertService: AlertService
   ) {
     this.username = this.activatedRoute.snapshot.paramMap.get('username');
+    this.userQuery.isAdminOrCurator$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((isAdminOrCurator) => {
+      this.loggedInUserIsAdminOrCurator = isAdminOrCurator;
+    });
   }
 
   getUserInfo(username: string): void {
@@ -58,6 +70,10 @@ export class UserPageComponent implements OnInit {
         this.router.navigateByUrl('/page-not-found'); //redirects to Page Not Found if user doesn't exist or another error occurs;
       }
     );
+  }
+
+  openGitHubAppsLogs(user: any) {
+    this.dialog.open(GithubAppsLogsComponent, { width: bootstrap4largeModalSize, data: { value: user, getUserEvents: true } });
   }
 
   ngOnInit(): void {
