@@ -91,8 +91,6 @@ export class ConfigurationService {
 
     Dockstore.DEPLOY_VERSION = config.deployVersion;
 
-    Dockstore.COMPOSE_SETUP_VERSION = config.composeSetupVersion;
-
     Dockstore.WEBSERVICE_COMMIT_ID = config.gitCommitId;
     Dockstore.CWL_PARSING_LAMBDA_VERSION = config.cwlParsingLambdaVersion;
     Dockstore.WDL_PARSING_LAMBDA_VERSION = config.wdlParsingLambdaVersion;
