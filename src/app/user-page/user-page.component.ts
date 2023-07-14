@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TokenSource } from '../shared/enum/token-source.enum';
 import { Profile } from '../shared/openapi';
 import { UsersService } from '../shared/openapi/api/users.service';
@@ -10,8 +10,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { AlertService } from '../shared/alert/state/alert.service';
 import { GithubAppsLogsComponent } from '../myworkflows/sidebar-accordion/github-apps-logs/github-apps-logs.component';
 import { bootstrap4largeModalSize } from '../shared/constants';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
-import { AuthService } from 'ng2-ui-auth';
+import { MatDialog } from '@angular/material/dialog';
 import { UserQuery } from '../shared/user/user.query';
 
 @Component({
