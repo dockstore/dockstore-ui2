@@ -11,11 +11,6 @@ import { AlertService } from '../shared/alert/state/alert.service';
 import { UserQuery } from '../shared/user/user.query';
 import { TokenQuery } from '../shared/state/token.query';
 
-export interface OtherAccountInfo {
-  name: string;
-  source: TokenSource;
-  logo: string;
-}
 @Component({
   selector: 'app-user-page',
   templateUrl: './user-page.component.html',
