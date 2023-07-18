@@ -134,6 +134,7 @@ jobs:
     steps:
       - checkout
       - browser-tools/install-chrome
+          chrome-version: "114.0.5735.90"
       - browser-tools/install-chromedriver
       - run:
           name: Checkout merge commit (PRs only)
@@ -162,6 +163,7 @@ jobs:
     steps:
       - checkout
       - browser-tools/install-chrome
+          chrome-version: "114.0.5735.90"
       - browser-tools/install-chromedriver
       - run:
           name: Checkout merge commit (PRs only)
@@ -591,6 +593,7 @@ commands:
         default: "db_dump.sql"
     steps:
       - browser-tools/install-chrome
+          chrome-version: "114.0.5735.90"
       - browser-tools/install-chromedriver
       - restore_cache:
           key: dep-cache-{{ .Environment.CACHE_VERSION }}-{{ checksum "./package-lock.json" }}
@@ -654,6 +657,7 @@ commands:
         default: "db_dump.sql"
     steps:
       - browser-tools/install-chrome
+          chrome-version: "114.0.5735.90"
       - browser-tools/install-chromedriver
       - get_workspace
       - install_container_dependencies
@@ -688,6 +692,7 @@ commands:
     steps:
       - checkout
       - browser-tools/install-chrome
+          chrome-version: "114.0.5735.90"
       - browser-tools/install-chromedriver
       - install_container_dependencies
       - restore_cache:
