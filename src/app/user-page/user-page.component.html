@@ -111,6 +111,49 @@
         <app-recent-events></app-recent-events>
       </div>
     </mat-tab>
+    <mat-tab *ngIf="loggedInUserIsAdminOrCurator">
+      <ng-template mat-tab-label>
+        <div fxLayoutGap="0.5rem">
+          <span>Other Linked Accounts</span>
+        </div>
+      </ng-template>
+      <div class="p-2">
+        <div *ngFor="let token of tokens">
+          <mat-card *ngIf="token.tokenSource === 'quay.io'" data-cy="other-linked-accounts-quay">
+            <mat-card-header>
+              <div mat-card-avatar matBadge="✓" class="mr-4">
+                <img src="../../assets/images/account-logos/quay.svg" alt="Quay.io logo" class="w-100" />
+              </div>
+              <mat-card-title class="normal-line-height">Quay.io Account</mat-card-title>
+            </mat-card-header>
+          </mat-card>
+          <mat-card *ngIf="token.tokenSource === 'zenodo.org'" data-cy="other-linked-accounts-zenodo">
+            <mat-card-header>
+              <div mat-card-avatar matBadge="✓" class="mr-4">
+                <img src="../../assets/images/account-logos/zenodo.svg" alt="Zenodo logo" class="w-100" />
+              </div>
+              <mat-card-title class="normal-line-height">Zenodo Account</mat-card-title>
+            </mat-card-header>
+          </mat-card>
+          <mat-card *ngIf="token.tokenSource === 'bitbucket.org'" data-cy="other-linked-accounts-bitbucket">
+            <mat-card-header>
+              <div mat-card-avatar matBadge="✓" class="mr-4">
+                <img src="../../assets/images/account-logos/bitbucket.svg" alt="BitBucket logo" class="w-100" />
+              </div>
+              <mat-card-title class="normal-line-height">BitBucket Account</mat-card-title>
+            </mat-card-header>
+          </mat-card>
+          <mat-card *ngIf="token.tokenSource === 'gitlab.com'" data-cy="other-linked-accounts-gitlab">
+            <mat-card-header>
+              <div mat-card-avatar matBadge="✓" class="mr-4">
+                <img src="../../assets/images/account-logos/gitlab.svg" alt="GitLab logo" class="w-100" />
+              </div>
+              <mat-card-title class="normal-line-height">GitLab Account</mat-card-title>
+            </mat-card-header>
+          </mat-card>
+        </div>
+      </div>
+    </mat-tab>
     <!-- TODO: Comment back in once we have the required resources to display user specific tools, workflows etc. -->
     <!-- When commented back in, also add mat-stretch-tabs to the tab-group -->
     <!-- <mat-tab>

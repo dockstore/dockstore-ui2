@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TokenSource } from '../shared/enum/token-source.enum';
-import { Profile } from '../shared/openapi';
+import { Profile, TokenUser } from '../shared/openapi';
 import { UsersService } from '../shared/openapi/api/users.service';
 import { UserService } from '../shared/user/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -8,7 +8,14 @@ import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AlertService } from '../shared/alert/state/alert.service';
+import { UserQuery } from '../shared/user/user.query';
+import { TokenQuery } from '../shared/state/token.query';
 
+export interface OtherAccountInfo {
+  name: string;
+  source: TokenSource;
+  logo: string;
+}
 @Component({
   selector: 'app-user-page',
   templateUrl: './user-page.component.html',
@@ -21,12 +28,16 @@ export class UserPageComponent implements OnInit {
   public googleProfile: Profile;
   public gitHubProfile: Profile;
   protected ngUnsubscribe: Subject<{}> = new Subject();
+  protected loggedInUserIsAdminOrCurator: boolean;
+  protected tokens: TokenUser[];
   constructor(
     private userService: UserService,
     private usersService: UsersService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private userQuery: UserQuery,
+    private tokenQuery: TokenQuery
   ) {
     this.username = this.activatedRoute.snapshot.paramMap.get('username');
   }
@@ -39,6 +50,9 @@ export class UserPageComponent implements OnInit {
           if (!this.user.avatarUrl) {
             this.user.avatarUrl = this.userService.gravatarUrl(null);
           }
+          this.userQuery.isAdminOrCurator$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((isAdminOrCurator) => {
+            this.loggedInUserIsAdminOrCurator = isAdminOrCurator;
+          });
           const userProfiles = user.userProfiles;
           if (userProfiles) {
             this.googleProfile = userProfiles[TokenSource.GOOGLE];
@@ -62,5 +76,8 @@ export class UserPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.getUserInfo(this.username);
+    this.tokenQuery.tokens$.subscribe((tokens: TokenUser[]) => {
+      this.tokens = tokens;
+    });
   }
 }
