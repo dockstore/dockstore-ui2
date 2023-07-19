@@ -12,20 +12,19 @@ import { GithubAppsLogsComponent } from '../myworkflows/sidebar-accordion/github
 import { bootstrap4largeModalSize } from '../shared/constants';
 import { MatDialog } from '@angular/material/dialog';
 import { UserQuery } from '../shared/user/user.query';
+import { Base } from '../shared/base';
 
 @Component({
   selector: 'app-user-page',
   templateUrl: './user-page.component.html',
   styleUrls: ['./user-page.component.scss'],
 })
-export class UserPageComponent implements OnInit {
+export class UserPageComponent extends Base implements OnInit {
   public user: any;
   public username: string;
-  protected lambdaEvents: string[];
   public TokenSource = TokenSource;
   public googleProfile: Profile;
   public gitHubProfile: Profile;
-  protected ngUnsubscribe: Subject<{}> = new Subject();
   public loggedInUserIsAdminOrCurator: boolean;
   constructor(
     public dialog: MatDialog,
@@ -36,6 +35,7 @@ export class UserPageComponent implements OnInit {
     private router: Router,
     private alertService: AlertService
   ) {
+    super();
     this.username = this.activatedRoute.snapshot.paramMap.get('username');
     this.userQuery.isAdminOrCurator$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((isAdminOrCurator) => {
       this.loggedInUserIsAdminOrCurator = isAdminOrCurator;
@@ -71,8 +71,8 @@ export class UserPageComponent implements OnInit {
     );
   }
 
-  openGitHubAppsLogs(user: any) {
-    this.dialog.open(GithubAppsLogsComponent, { width: bootstrap4largeModalSize, data: { value: user, getUserEvents: true } });
+  openGitHubAppsLogs(userId: number) {
+    this.dialog.open(GithubAppsLogsComponent, { width: bootstrap4largeModalSize, data: { userId: userId } });
   }
 
   ngOnInit(): void {

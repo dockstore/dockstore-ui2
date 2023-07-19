@@ -45,6 +45,7 @@
               </span>
               <span *ngIf="loggedInUserIsAdminOrCurator">
                 <button
+                  matTooltip="View the user's GitHub App Logs"
                   mat-button
                   class="small-mat-btn private-btn small-btn-structure mat-elevation-z"
                   (click)="openGitHubAppsLogs(user.id)"

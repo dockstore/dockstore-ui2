@@ -113,6 +113,6 @@ export class SidebarAccordionComponent implements OnInit, OnChanges {
   }
 
   openGitHubAppsLogs(organization: string) {
-    this.dialog.open(GithubAppsLogsComponent, { width: bootstrap4largeModalSize, data: { value: organization } });
+    this.dialog.open(GithubAppsLogsComponent, { width: bootstrap4largeModalSize, data: { organization: organization } });
   }
 }
