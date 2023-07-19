@@ -19,7 +19,6 @@ import { CloudInstance, ExtendedGA4GHService, Metrics, ValidatorInfo, ValidatorV
 import { SessionQuery } from '../../shared/session/session.query';
 import { takeUntil } from 'rxjs/operators';
 import { BioWorkflow, Notebook, Service } from '../../shared/swagger';
-import { CheckerWorkflowQuery } from '../../shared/state/checker-workflow.query';
 import PartnerEnum = CloudInstance.PartnerEnum;
 import { MatSelectChange } from '@angular/material/select';
 import { AlertService } from '../../shared/alert/state/alert.service';
@@ -71,42 +70,43 @@ export class ExecutionsTabComponent extends EntryTab implements OnChanges {
   constructor(
     private extendedGA4GHService: ExtendedGA4GHService,
     private alertService: AlertService,
-    protected sessionQuery: SessionQuery,
-    private checkerWorkflowQuery: CheckerWorkflowQuery
+    protected sessionQuery: SessionQuery
   ) {
     super();
   }
 
   ngOnChanges() {
-    this.alertService.start('Retrieving metrics data');
-    this.trsID = this.checkerWorkflowQuery.getTRSId(this.entry);
-    this.extendedGA4GHService
-      .aggregatedMetricsGet(this.trsID, this.version.name)
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(
-        (metrics) => {
-          this.resetMetricsData();
-          if (metrics) {
-            for (const [partner, metric] of Object.entries(metrics)) {
-              this.setMetricsObject(this.metrics, partner, metric);
+    this.resetMetricsData();
+    if (this.version) {
+      this.alertService.start('Retrieving metrics data');
+      this.trsID = this.entry.entryTypeMetadata.trsPrefix + this.entry.full_workflow_path;
+      this.extendedGA4GHService
+        .aggregatedMetricsGet(this.trsID, this.version.name)
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe(
+          (metrics) => {
+            if (metrics) {
+              for (const [partner, metric] of Object.entries(metrics)) {
+                this.setMetricsObject(this.metrics, partner, metric);
+              }
+              this.partners = Array.from(this.metrics.keys());
+              this.metricsExist = this.partners.length > 0;
+              if (this.metricsExist) {
+                // Display metrics for ALL platforms
+                const platform =
+                  this.partners.filter((partner) => partner === PartnerEnum.ALL).length === 1
+                    ? this.partners.filter((partner) => partner === PartnerEnum.ALL)[0]
+                    : this.partners[0];
+                this.selectPartner(platform);
+              }
             }
-            this.partners = Array.from(this.metrics.keys());
-            this.metricsExist = this.partners.length > 0;
-            if (this.metricsExist) {
-              // Display metrics for ALL platforms
-              const platform =
-                this.partners.filter((partner) => partner === PartnerEnum.ALL).length === 1
-                  ? this.partners.filter((partner) => partner === PartnerEnum.ALL)[0]
-                  : this.partners[0];
-              this.selectPartner(platform);
-            }
+            this.alertService.detailedSuccess();
+          },
+          (error) => {
+            this.alertService.detailedError(error);
           }
-          this.alertService.detailedSuccess();
-        },
-        (error) => {
-          this.alertService.detailedError(error);
-        }
-      );
+        );
+    }
   }
 
   private setMetricsObject(metricsMap: Map<PartnerEnum, Metrics>, partner: string, metric: Metrics) {
