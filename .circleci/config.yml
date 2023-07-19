@@ -3,7 +3,7 @@ orbs:
   aws-s3: circleci/aws-s3@3.0.0
   aws-cli: circleci/aws-cli@3.1.1
   slack: circleci/slack@4.4.4
-  browser-tools: circleci/browser-tools@1.4.2
+  browser-tools: circleci/browser-tools@1.2.4
 executors:
   integration_test_exec: # declares a reusable executor
     docker:
@@ -490,7 +490,8 @@ commands:
               fi
   install_browser_tools:
     steps:
-      - browser-tools/install-chrome
+      - browser-tools/install-chrome:
+          chrome-version: "114.0.5735.90"
       - browser-tools/install-chromedriver
   build_ui:
     steps:
