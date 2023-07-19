@@ -48,7 +48,7 @@ export class GithubAppsLogsComponent implements OnInit {
   isExpansionDetailRow = (i: number, row: Object) => row.hasOwnProperty('detailRow');
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public matDialogData: { userId: number; organization: string },
+    @Inject(MAT_DIALOG_DATA) public matDialogData: { userId: number, organization: string },
     private lambdaEventsService: LambdaEventsService,
     private matSnackBar: MatSnackBar,
     private descriptorLanguageService: DescriptorLanguageService
