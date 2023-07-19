@@ -21,9 +21,12 @@
         <mat-icon class="alert-warning-icon">warning</mat-icon>&nbsp;DAG display is still experimental for Nextflow.
       </mat-card>
     </div>
-    <div fxFlex *ngIf="dagType === 'classic' && (isNFL$ | async) === false && (dagResult$ | async) === false">
+    <div
+      fxFlex
+      *ngIf="dagType === 'classic' && (isNFL$ | async) === false && (!(dagResult$ | async) || (dagResult$ | async | json) === '{}')"
+    >
       <!-- This covers CWL, WDL, Service, and other plugin languages (everything except NFL) -->
-      <mat-card class="alert alert-warning mat-elevation-z" role="alert" *ngIf="(dagResult$ | async) === false && !selectedVersion?.valid">
+      <mat-card class="alert alert-warning mat-elevation-z" role="alert" *ngIf="!selectedVersion?.valid">
         <mat-icon class="alert-warning-icon">warning</mat-icon>&nbsp;
         <span *ngIf="(descriptorType$ | async) !== ToolDescriptor.TypeEnum.SERVICE">
           The DAG cannot be displayed because the descriptor is either missing or not valid.
