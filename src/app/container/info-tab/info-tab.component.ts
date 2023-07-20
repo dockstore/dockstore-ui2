@@ -22,7 +22,7 @@ import { Dockstore } from '../../shared/dockstore.model';
 import { ExtendedToolsService } from '../../shared/extended-tools.service';
 import { ExtendedDockstoreTool } from '../../shared/models/ExtendedDockstoreTool';
 import { SessionQuery } from '../../shared/session/session.query';
-import { ToolDescriptor, ToolVersion, WorkflowVersion } from '../../shared/openapi';
+import { ContainertagsService, ToolDescriptor, ToolVersion, WorkflowVersion } from '../../shared/openapi';
 import { DockstoreTool } from '../../shared/openapi/model/dockstoreTool';
 import { Tag } from '../../shared/openapi/model/tag';
 import { exampleDescriptorPatterns, validationDescriptorPatterns } from '../../shared/validationMessages.model';
@@ -42,10 +42,11 @@ export class InfoTabComponent extends Base implements OnInit, OnChanges {
   @Input() selectedVersion: Tag;
   @Input() privateOnlyRegistry: boolean;
   @Input() extendedDockstoreTool: ExtendedDockstoreTool;
+  public description: string | null;
   public validationPatterns = validationDescriptorPatterns;
   public exampleDescriptorPatterns = exampleDescriptorPatterns;
   public DockstoreToolType = DockstoreTool;
-  public tool: DockstoreTool;
+  public tool: ExtendedDockstoreTool;
   public topicEditing: boolean;
   public TopicSelectionEnum = DockstoreTool.TopicSelectionEnum;
   public authors: Array<Author> = [];
@@ -61,12 +62,18 @@ export class InfoTabComponent extends Base implements OnInit, OnChanges {
   downloadZipLink: string;
   isValidVersion = false;
   Dockstore = Dockstore;
-  constructor(private infoTabService: InfoTabService, private sessionQuery: SessionQuery, private containersService: ExtendedToolsService) {
+  constructor(
+    private infoTabService: InfoTabService,
+    private sessionQuery: SessionQuery,
+    private containersService: ExtendedToolsService,
+    private containerTagsService: ContainertagsService
+  ) {
     super();
   }
 
   ngOnChanges() {
     this.tool = JSON.parse(JSON.stringify(this.extendedDockstoreTool));
+    this.description = null;
     if (this.selectedVersion && this.tool) {
       this.authors = this.selectedVersion.authors;
       this.currentVersion = this.selectedVersion;
@@ -88,6 +95,9 @@ export class InfoTabComponent extends Base implements OnInit, OnChanges {
           this.currentVersion.wdl_path
         );
       }
+      this.containerTagsService
+        .getTagDescription(this.tool.id, this.selectedVersion.id)
+        .subscribe((description) => (this.description = description));
     } else {
       this.isValidVersion = false;
       this.trsLinkCWL = null;

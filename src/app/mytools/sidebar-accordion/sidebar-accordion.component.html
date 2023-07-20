@@ -22,7 +22,7 @@
               <mat-icon class="arrow mat-icon-sm">arrow_forward</mat-icon>
               <a
                 class="no-wrap"
-                title="{{ toolObj?.repository + (toolObj?.toolname ? '/' + toolObj?.toolname : '') }}"
+                title="{{ toolObj?.namespace + (toolObj?.toolname ? '/' + toolObj?.toolname : '') }}"
                 [routerLink]="'/my-tools/' + toolObj.tool_path"
               >
                 {{ toolObj?.name + (toolObj?.toolname ? '/' + toolObj?.toolname : '') }}

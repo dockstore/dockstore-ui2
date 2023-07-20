@@ -86,7 +86,7 @@ export class RecentEventsComponent extends Base implements OnInit {
     private usersService: UsersService,
     private alertService: AlertService,
     private eventsService: EventsService,
-    private orgLogoService: OrgLogoService,
+    public orgLogoService: OrgLogoService,
     public gravatarService: GravatarService
   ) {
     super();

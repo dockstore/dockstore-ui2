@@ -20,7 +20,7 @@ export class CodeEditorListComponent {
   @Input() editing: boolean;
   @Input() fileType: FileCategory;
   @Input() descriptorType: ToolDescriptor.TypeEnum;
-  @Input() entryType: string;
+  @Input() entryType: 'tool' | 'workflow';
   @Input() entrypath: string;
   @Input() selectedVersion: WorkflowVersion;
   protected published$: Observable<boolean>;
