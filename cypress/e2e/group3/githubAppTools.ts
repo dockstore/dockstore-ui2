@@ -37,6 +37,32 @@ describe('GitHub App Tools', () => {
     cy.get('#workflow-path').contains(tool);
   }
 
+  describe('User Page', () => {
+    it('Admins should see user GitHub app logs', () => {
+      cy.visit('/users/user_A');
+      const mockEvent: LambdaEvent[] = [
+        {
+          eventDate: 1582165220000,
+          githubUsername: 'testUser',
+          id: 1,
+          message: 'HTTP 400 ',
+          organization: 'C',
+          reference: 'refs/head/main',
+          repository: 'test-github-app-tools',
+          success: false,
+          type: 'PUSH',
+        },
+      ];
+      cy.intercept('GET', '/api/lambdaEvents/user/**', {
+        body: mockEvent,
+      }).as('lambdaEvents');
+      cy.get('[data-cy=user-app-logs-button]').should('be.visible').click();
+      cy.contains('refs/head/main');
+      cy.contains('1 – 1 of 1');
+      cy.contains('Close').click();
+    });
+  });
+
   describe('My Tools', () => {
     it('Side Bar', () => {
       cy.visit('/my-tools');
@@ -45,6 +71,7 @@ describe('GitHub App Tools', () => {
       cy.get('#register_tool_button').click();
       cy.contains('Register using GitHub Apps');
       cy.get('#GitHubApps-register-workflow-option').click();
+
       cy.contains('Install our GitHub App in');
       cy.get('.modal-footer').contains('Next').first().click();
       cy.contains('Navigate to GitHub to install our GitHub app');
