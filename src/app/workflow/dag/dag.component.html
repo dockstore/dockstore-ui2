@@ -23,7 +23,7 @@
     </div>
     <div
       fxFlex
-      *ngIf="dagType === 'classic' && (isNFL$ | async) === false && (!(dagResult$ | async) || (dagResult$ | async | json) === '{}')"
+      *ngIf="dagType === 'classic' && (isNFL$ | async) === false && ((dagResult$ | async) === null || (dagResult$ | async | json) === '{}')"
     >
       <!-- This covers CWL, WDL, Service, and other plugin languages (everything except NFL) -->
       <mat-card class="alert alert-warning mat-elevation-z" role="alert" *ngIf="!selectedVersion?.valid">
