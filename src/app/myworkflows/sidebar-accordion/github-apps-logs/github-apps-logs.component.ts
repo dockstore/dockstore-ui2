@@ -48,7 +48,7 @@ export class GithubAppsLogsComponent implements OnInit {
   isExpansionDetailRow = (i: number, row: Object) => row.hasOwnProperty('detailRow');
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public matDialogData: { userId: number, organization: string },
+    @Inject(MAT_DIALOG_DATA) public matDialogData: { userId?: number; organization?: string },
     private lambdaEventsService: LambdaEventsService,
     private matSnackBar: MatSnackBar,
     private descriptorLanguageService: DescriptorLanguageService
@@ -73,7 +73,7 @@ export class GithubAppsLogsComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
     const lambdaEvents = this.matDialogData.userId
       ? this.lambdaEventsService.getUserLambdaEvents(this.matDialogData.userId)
-      : this.lambdaEventsService.getLambdaEventsByOrganization(this.matDialogData.organization); // Or have this logic in a method
+      : this.lambdaEventsService.getLambdaEventsByOrganization(this.matDialogData.organization);
     lambdaEvents
       .pipe(
         finalize(() => {
