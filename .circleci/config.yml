@@ -490,8 +490,7 @@ commands:
               fi
   install_browser_tools:
     steps:
-      - browser-tools/install-chrome:
-          chrome-version: "114.0.5735.90"
+      - browser-tools/install-chrome
       - browser-tools/install-chromedriver
   build_ui:
     steps:
