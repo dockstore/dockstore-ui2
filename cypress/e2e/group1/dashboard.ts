@@ -48,7 +48,7 @@ describe('Dockstore dashboard', () => {
     cy.get('[data-cy=help-link]')
       .contains('Learn more about notebooks')
       .should('have.attr', 'href')
-      .and('include', 'getting-started/notebooks');
+      .and('include', 'getting-started/getting-started-with-notebooks');
   });
 
   it('Registering new tool through Github redirects correctly', () => {
