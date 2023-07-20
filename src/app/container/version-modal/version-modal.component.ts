@@ -327,6 +327,10 @@ export class VersionModalComponent extends Base implements OnInit, AfterViewChec
     }
   }
 
+  trackByIdx(index: number, value: string): number {
+    return index;
+  }
+
   ngOnDestroy() {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();

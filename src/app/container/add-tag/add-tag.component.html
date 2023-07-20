@@ -101,7 +101,7 @@
     </mat-form-field>
     <div class="form-group">
       <mat-label> CWL Test Parameter File(s): </mat-label>
-      <div *ngFor="let item of unsavedCWLTestParameterFilePaths; let i = index; trackBy: trackByIndex">
+      <div *ngFor="let item of unsavedCWLTestParameterFilePaths; let i = index; trackBy: trackByIdx">
         <div class="input-group py-1">
           <input
             [ngClass]="{ 'input-right-button': editMode, 'input-no-button': !editMode }"
@@ -179,7 +179,7 @@
     </div>
     <div class="form-group">
       <mat-label>WDL Test Parameter File(s):</mat-label>
-      <div *ngFor="let item of unsavedWDLTestParameterFilePaths; let i = index; trackBy: trackByIndex">
+      <div *ngFor="let item of unsavedWDLTestParameterFilePaths; let i = index; trackBy: trackByIdx">
         <div class="input-group py-1">
           <input
             [ngClass]="{ 'input-right-button': editMode, 'input-no-button': !editMode }"

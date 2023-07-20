@@ -204,6 +204,10 @@ export class AddTagComponent extends Base implements OnInit, AfterViewChecked {
     );
   }
 
+  trackByIdx(index: number, value: string) {
+    return index;
+  }
+
   // Validation starts here, should move most of these to a service somehow
   ngAfterViewChecked() {
     this.formChanged();

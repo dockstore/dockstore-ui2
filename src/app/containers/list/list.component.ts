@@ -31,7 +31,7 @@ import { PublishedToolsDataSource } from './published-tools.datasource';
   templateUrl: './list.component.html',
   styleUrls: ['../../shared/styles/entry-table.scss', './list.component.scss'],
 })
-export class ListContainersComponent extends ToolLister implements OnInit {
+export class ListContainersComponent extends ToolLister<PublishedToolsDataSource> implements OnInit {
   @Input() previewMode: boolean;
 
   public displayedColumns = ['name', 'verified', 'author', 'format', 'projectLinks', 'stars'];

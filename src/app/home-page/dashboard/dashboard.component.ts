@@ -7,6 +7,7 @@ import { RegisterToolComponent } from 'app/container/register-tool/register-tool
 import { AlertService } from 'app/shared/alert/state/alert.service';
 import { TwitterService } from 'app/shared/twitter.service';
 import { Dockstore } from 'app/shared/dockstore.model';
+import { EntryType } from '../../shared/openapi';
 
 @Component({
   selector: 'app-dashboard',
@@ -54,4 +55,6 @@ export class DashboardComponent extends Base implements OnInit {
         (error) => console.error(error)
       );
   }
+
+  protected readonly EntryType = EntryType;
 }

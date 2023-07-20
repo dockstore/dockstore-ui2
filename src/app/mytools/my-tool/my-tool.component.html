@@ -74,7 +74,7 @@
                     color="primary"
                     type="button"
                     (click)="addToExistingTools()"
-                    [disabled]="(isRefreshing$ | async) || (user$ | async) === false"
+                    [disabled]="(isRefreshing$ | async) || (userQuery.user$ | async) === null"
                     matTooltip="Discover tools added by others using your linked source control accounts"
                     matTooltipPosition="after"
                     id="addToExistingTools"
@@ -132,7 +132,7 @@
                     class="accent-1-dark-btn"
                     type="button"
                     (click)="addToExistingTools()"
-                    [disabled]="(isRefreshing$ | async) || (user$ | async) === false"
+                    [disabled]="(isRefreshing$ | async) || (userQuery.user$ | async) === false"
                     matTooltip="Discover tools added by others using your linked source control accounts"
                   >
                     Discover Existing Dockstore Tools
