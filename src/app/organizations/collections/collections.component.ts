@@ -13,6 +13,8 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { P } from '@angular/cdk/keycodes';
+import { KeyValue } from '@angular/common';
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { HashMap } from '@datorama/akita';
@@ -57,7 +59,7 @@ export class CollectionsComponent implements OnInit, OnChanges {
     this.collectionsService.updateCollections(this.organizationID);
   }
 
-  editCollection(collection: Collection) {
+  editCollection(collection: KeyValue<string, Collection>) {
     this.matDialog.open(CreateCollectionComponent, { data: { collection: collection, mode: TagEditorMode.Edit }, width: '600px' });
   }
 

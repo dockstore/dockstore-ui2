@@ -44,15 +44,15 @@ import { validationDescriptorPatterns, validationMessages } from './validationMe
 @Directive()
 @Injectable()
 // eslint-disable-next-line @angular-eslint/directive-class-suffix
-export abstract class Entry implements OnDestroy {
+export abstract class Entry<V extends WorkflowVersion | Tag> implements OnDestroy {
   @ViewChild('entryTabs') entryTabs: MatTabGroup;
   protected shareURL: string;
   public starGazersClicked = false;
   public title: string;
   protected _toolType: string;
   protected isLoggedIn: boolean;
-  protected validVersions: Array<WorkflowVersion | Tag>;
-  protected defaultVersion: WorkflowVersion | Tag;
+  protected validVersions: Array<V>;
+  protected defaultVersion: V;
   protected published: boolean;
   public labelPattern = validationDescriptorPatterns.label;
   public labelsEditMode: boolean;
@@ -376,13 +376,9 @@ export abstract class Entry implements OnDestroy {
    * @param {Tag|WorkflowVersion} defaultVersion - Default version of the entry
    * @returns {Array<any>} Sorted array of versions
    */
-  getSortedVersions(
-    versions: Array<Tag | WorkflowVersion>,
-    defaultVersion: Tag | WorkflowVersion,
-    sortedVersions: Array<Tag | WorkflowVersion>
-  ): Array<Tag | WorkflowVersion> {
+  getSortedVersions(versions: Array<V>, defaultVersion: V, sortedVersions: Array<V>): Array<V> {
     // Get the top 6 versions
-    const recentVersions: Array<Tag | WorkflowVersion> = sortedVersions.slice(0, 6);
+    const recentVersions: Array<V> = sortedVersions.slice(0, 6);
     const index = recentVersions.indexOf(defaultVersion);
 
     // Deal with default version if it exists
@@ -404,13 +400,13 @@ export abstract class Entry implements OnDestroy {
     return recentVersions;
   }
 
-  getSortedWorkflowVersions(versions: Array<WorkflowVersion>, defaultVersion: WorkflowVersion): Array<WorkflowVersion> {
-    const sortedWorkflowVersions: Array<WorkflowVersion> = versions.slice().sort((a, b) => this.workflowVersionSorting(a, b));
+  getSortedWorkflowVersions(versions: Array<V>, defaultVersion: V): Array<V> {
+    const sortedWorkflowVersions: Array<V> = versions.slice().sort((a, b) => this.workflowVersionSorting(a, b));
     return this.getSortedVersions(versions, defaultVersion, sortedWorkflowVersions);
   }
 
-  getSortedTags(versions: Array<Tag>, defaultVersion: WorkflowVersion): Array<Tag> {
-    const sortedTags: Array<Tag> = versions.slice().sort((a, b) => this.tagSorting(a, b));
+  getSortedTags(versions: Array<V>, defaultVersion: V): Array<V> {
+    const sortedTags: Array<V> = versions.slice().sort((a, b) => this.tagSorting(a, b));
     return this.getSortedVersions(versions, defaultVersion, sortedTags);
   }
 

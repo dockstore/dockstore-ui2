@@ -131,7 +131,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   public friendlyNames: Map<string, string>;
   public toolTips: Map<string, string>;
   private entryOrder: Map<string, SubBucket>;
-  private expandedPanels: Map<string, boolean>;
+  public expandedPanels: Map<string, boolean>;
   private exclusiveFilters: Array<string>;
   public basicSearchText$: Observable<string>;
   private advancedSearchOptions = ['ANDSplitFilter', 'ANDNoSplitFilter', 'ORFilter', 'NOTFilter', 'searchMode'];
@@ -403,7 +403,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       value.forEach((innerValue: boolean, innerKey: string) => {
         if (innerValue && this.orderedBuckets.get(key)) {
           if (!this.orderedBuckets.get(key).SelectedItems.get(innerKey)) {
-            this.orderedBuckets.get(key).SelectedItems.set(innerKey, '0');
+            this.orderedBuckets.get(key).SelectedItems.set(innerKey, 0);
           }
         }
       });

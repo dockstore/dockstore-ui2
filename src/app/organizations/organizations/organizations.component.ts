@@ -41,7 +41,7 @@ export class OrganizationsComponent extends Base implements OnInit {
   public isLoggedIn$: Observable<boolean>;
   public pagedOrganizations: Array<Organization>;
   public readonly initialPageSize = 9;
-  private filteredOrganizations: Array<Organization>;
+  public filteredOrganizations: Array<Organization>;
 
   constructor(
     private organizationsStateService: OrganizationsStateService,
@@ -50,7 +50,7 @@ export class OrganizationsComponent extends Base implements OnInit {
     private alertQuery: AlertQuery,
     private matDialog: MatDialog,
     private trackLoginService: TrackLoginService,
-    private orgLogoService: OrgLogoService
+    public orgLogoService: OrgLogoService
   ) {
     super();
   }
