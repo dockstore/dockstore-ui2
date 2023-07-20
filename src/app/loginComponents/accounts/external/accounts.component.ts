@@ -142,7 +142,7 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
 
   public tokens: TokenUser[];
   private ngUnsubscribe: Subject<{}> = new Subject();
-  public show: false;
+  public show: boolean;
   public dockstoreToken: string;
   public orcidRootUrl: string;
 

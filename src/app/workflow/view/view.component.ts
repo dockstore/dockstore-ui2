@@ -29,7 +29,7 @@ import { AlertService } from '../../shared/alert/state/alert.service';
 import { bootstrap4largeModalSize, ga4ghServiceIdPrefix, ga4ghWorkflowIdPrefix } from '../../shared/constants';
 import { DateService } from '../../shared/date.service';
 import { Dockstore } from '../../shared/dockstore.model';
-import { Entry } from '../../shared/openapi';
+import { Entry, Tag, WorkflowVersion } from '../../shared/openapi';
 import { SessionQuery } from '../../shared/session/session.query';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { WorkflowService } from '../../shared/state/workflow.service';
@@ -47,7 +47,7 @@ import { ViewService } from './view.service';
   templateUrl: './view.component.html',
   styleUrls: ['./view.component.css'],
 })
-export class ViewWorkflowComponent extends View implements OnInit {
+export class ViewWorkflowComponent extends View<WorkflowVersion> implements OnInit {
   @Input() workflowId: number;
   @Input() canRead: boolean;
   @Input() canWrite: boolean;

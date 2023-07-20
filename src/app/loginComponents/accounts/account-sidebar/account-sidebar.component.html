@@ -38,10 +38,6 @@
         <th>Name</th>
         <td>{{ gitHubProfile.name }}</td>
       </tr>
-      <tr *ngIf="gitHubProfile.email">
-        <th>Email</th>
-        <td>{{ gitHubProfile.email }}</td>
-      </tr>
       <tr *ngIf="gitHubProfile.company">
         <th>Company</th>
         <td>{{ gitHubProfile.company }}</td>
@@ -83,10 +79,6 @@
       <tr *ngIf="googleProfile.name">
         <th>Name</th>
         <td>{{ googleProfile.name }}</td>
-      </tr>
-      <tr *ngIf="googleProfile.email">
-        <th>Email</th>
-        <td>{{ googleProfile.email }}</td>
       </tr>
     </table>
     <button

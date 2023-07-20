@@ -46,7 +46,7 @@ export class UpdateOrganizationOrCollectionDescriptionComponent implements OnIni
     }
   }
 
-  get descriptionValue(): AbstractControl {
+  get descriptionValue(): string {
     return this.updateOrganizationOrCollectionDescriptionForm.get('description').value;
   }
 }

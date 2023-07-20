@@ -13,7 +13,7 @@
         <ng-container *ngIf="cell.cell_type === 'code'">
           <ng-container *ngIf="!cell.metadata?.source_hidden">
             <div class="count">[{{ cell.execution_count ?? ' ' }}]:</div>
-            <app-notebook-source class="source" [cell]="cell" [language]="workflow?.descriptorTypeSubclass"></app-notebook-source>
+            <app-notebook-source class="source" [cell]="cell" [language]="notebook?.descriptorTypeSubclass"></app-notebook-source>
           </ng-container>
 
           <ng-container *ngIf="!cell.metadata?.outputs_hidden && isArray(cell.outputs)">
