@@ -33,7 +33,13 @@ describe('Admin UI', () => {
     it('Admin can view other linked accounts of a user', () => {
       cy.visit('/users/user_A');
       goToTab('Other Linked Accounts');
-      cy.get('[data-cy=other-linked-accounts-quay]').should('be.visible');
+      cy.get('[data-cy=other-linked-accounts-Quay]').should('be.visible');
+
+      //log out and confirm the tab does not exist
+      cy.get('[data-cy=dropdown-main]:visible').click();
+      cy.get('[data-cy=dropdown-logout-button]').click();
+      cy.visit('/users/user_A');
+      cy.get('.mat-tab-label').contains('Other Linked Accounts').should('not.exist');
     });
   });
 });

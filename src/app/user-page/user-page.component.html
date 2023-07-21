@@ -127,38 +127,19 @@
           <span>Other Linked Accounts</span>
         </div>
       </ng-template>
-      <div class="p-2">
-        <div *ngFor="let token of tokens">
-          <mat-card *ngIf="token.tokenSource === 'quay.io'" data-cy="other-linked-accounts-quay">
-            <mat-card-header>
-              <div mat-card-avatar matBadge="✓" class="mr-4">
-                <img src="../../assets/images/account-logos/quay.svg" alt="Quay.io logo" class="w-100" />
-              </div>
-              <mat-card-title class="normal-line-height">Quay.io Account</mat-card-title>
-            </mat-card-header>
+      <div class="w-100">
+        <div *ngIf="otherLinkedAccountsInfo.length === 0">
+          <mat-card class="alert alert-info mat-elevation-z starred-header" role="alert" data-cy="no-other-linked-accounts-banner">
+            This user has no other linked accounts.
           </mat-card>
-          <mat-card *ngIf="token.tokenSource === 'zenodo.org'" data-cy="other-linked-accounts-zenodo">
+        </div>
+        <div *ngFor="let row of otherLinkedAccountsInfo" class="p-3" fxFlex.lt-md="100">
+          <mat-card [attr.data-cy]="'other-linked-accounts-' + row.name">
             <mat-card-header>
               <div mat-card-avatar matBadge="✓" class="mr-4">
-                <img src="../../assets/images/account-logos/zenodo.svg" alt="Zenodo logo" class="w-100" />
+                <img src="../../assets/images/account-logos/{{ row.logo }}" alt="{{ row.name }} logo" class="w-100" />
               </div>
-              <mat-card-title class="normal-line-height">Zenodo Account</mat-card-title>
-            </mat-card-header>
-          </mat-card>
-          <mat-card *ngIf="token.tokenSource === 'bitbucket.org'" data-cy="other-linked-accounts-bitbucket">
-            <mat-card-header>
-              <div mat-card-avatar matBadge="✓" class="mr-4">
-                <img src="../../assets/images/account-logos/bitbucket.svg" alt="BitBucket logo" class="w-100" />
-              </div>
-              <mat-card-title class="normal-line-height">BitBucket Account</mat-card-title>
-            </mat-card-header>
-          </mat-card>
-          <mat-card *ngIf="token.tokenSource === 'gitlab.com'" data-cy="other-linked-accounts-gitlab">
-            <mat-card-header>
-              <div mat-card-avatar matBadge="✓" class="mr-4">
-                <img src="../../assets/images/account-logos/gitlab.svg" alt="GitLab logo" class="w-100" />
-              </div>
-              <mat-card-title class="normal-line-height">GitLab Account</mat-card-title>
+              <mat-card-title class="normal-line-height">{{ row.name }} Account</mat-card-title>
             </mat-card-header>
           </mat-card>
         </div>

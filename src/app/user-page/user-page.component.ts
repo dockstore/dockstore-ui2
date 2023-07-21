@@ -8,11 +8,12 @@ import { takeUntil } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AlertService } from '../shared/alert/state/alert.service';
 import { GithubAppsLogsComponent } from '../myworkflows/sidebar-accordion/github-apps-logs/github-apps-logs.component';
-import { bootstrap4largeModalSize } from '../shared/constants';
+import { accountInfo, bootstrap4largeModalSize } from '../shared/constants';
 import { MatDialog } from '@angular/material/dialog';
 import { UserQuery } from '../shared/user/user.query';
 import { Base } from '../shared/base';
 import { TokenQuery } from '../shared/state/token.query';
+import { AccountInfo } from '../loginComponents/accounts/external/accounts.component';
 
 @Component({
   selector: 'app-user-page',
@@ -26,7 +27,8 @@ export class UserPageComponent extends Base implements OnInit {
   public googleProfile: Profile;
   public gitHubProfile: Profile;
   public loggedInUserIsAdminOrCurator: boolean;
-  protected tokens: TokenUser[];
+  protected otherLinkedAccountsInfo: AccountInfo[] = [];
+
   constructor(
     public dialog: MatDialog,
     private userService: UserService,
@@ -79,8 +81,13 @@ export class UserPageComponent extends Base implements OnInit {
 
   ngOnInit(): void {
     this.getUserInfo(this.username);
-    this.tokenQuery.tokens$.subscribe((tokens: TokenUser[]) => {
-      this.tokens = tokens;
+    this.tokenQuery.tokens$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((tokens: TokenUser[]) => {
+      for (const account of accountInfo) {
+        const found = tokens.find((token) => token.tokenSource === account.source);
+        if (found && !['GitHub', 'Google'].includes(account.name)) {
+          this.otherLinkedAccountsInfo.push(account);
+        }
+      }
     });
   }
 }
