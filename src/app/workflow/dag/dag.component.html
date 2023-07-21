@@ -21,10 +21,7 @@
         <mat-icon class="alert-warning-icon">warning</mat-icon>&nbsp;DAG display is still experimental for Nextflow.
       </mat-card>
     </div>
-    <div
-      fxFlex
-      *ngIf="dagType === 'classic' && (isNFL$ | async) === false && ((dagResult$ | async) === null || (dagResult$ | async | json) === '{}')"
-    >
+    <div fxFlex *ngIf="dagType === 'classic' && (isNFL$ | async) === false && (missingTool$ | async)">
       <!-- This covers CWL, WDL, Service, and other plugin languages (everything except NFL) -->
       <mat-card class="alert alert-warning mat-elevation-z" role="alert" *ngIf="!selectedVersion?.valid">
         <mat-icon class="alert-warning-icon">warning</mat-icon>&nbsp;
@@ -37,7 +34,7 @@
           }}
         </span>
       </mat-card>
-      <mat-card class="alert alert-warning mat-elevation-z" role="alert" *ngIf="(missingTool$ | async) && selectedVersion?.valid">
+      <mat-card class="alert alert-warning mat-elevation-z" role="alert" *ngIf="selectedVersion?.valid">
         <mat-icon class="alert-warning-icon">warning</mat-icon>&nbsp; DAG cannot be created because some required tools are missing from
         GitHub repo.
       </mat-card>
