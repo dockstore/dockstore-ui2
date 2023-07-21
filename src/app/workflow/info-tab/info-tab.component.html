@@ -497,15 +497,15 @@
         {{ publicAccessibleTestParameterFile ? 'Yes' : 'No' }}
       </div>
       <div>
-        <div *ngIf="selectedVersion?.description || !isPublic">
+        <div *ngIf="description || !isPublic">
           <label matTooltip="Description of workflow obtained from workflow descriptor"> Description </label>:
-          <div *ngIf="selectedVersion?.description" class="well well-sm">
+          <div *ngIf="description" class="well well-sm">
             <app-markdown-wrapper
-              [data]="selectedVersion?.description"
+              [data]="description"
               [baseUrl]="workflow?.providerUrl | baseUrl: selectedVersion?.name:selectedVersion?.readMePath"
             ></app-markdown-wrapper>
           </div>
-          <div *ngIf="!selectedVersion?.description && !isPublic" class="well well-sm">
+          <div *ngIf="!description && !isPublic" class="well well-sm">
             <mat-icon>warning</mat-icon>
             <span ng-show="!containerObj.description">
               No description associated with this {{ entryType$ | async }}.

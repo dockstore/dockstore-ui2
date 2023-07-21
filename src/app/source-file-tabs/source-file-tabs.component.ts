@@ -47,7 +47,7 @@ export class SourceFileTabsComponent implements OnChanges {
   /**
    * To prevent the Angular's keyvalue pipe from sorting by key
    */
-  originalOrder = (a: KeyValue<number, string>, b: KeyValue<number, string>): number => {
+  originalOrder = (a: KeyValue<string, SourceFile[]>, b: KeyValue<string, SourceFile[]>): number => {
     return 0;
   };
 

@@ -32,7 +32,7 @@ import { PublishedWorkflowsDataSource } from './published-workflows.datasource';
   templateUrl: './list.component.html',
   styleUrls: ['../../shared/styles/entry-table.scss', './list.component.scss'],
 })
-export class ListWorkflowsComponent extends ToolLister implements OnInit {
+export class ListWorkflowsComponent extends ToolLister<PublishedWorkflowsDataSource> implements OnInit {
   @Input() previewMode: boolean;
 
   public workflowColumns = ['repository', 'verified', 'author', 'descriptorType', 'projectLinks', 'stars'];

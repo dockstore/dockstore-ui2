@@ -13,8 +13,8 @@ export class GravatarService {
   }
 
   public gravatarUrlForMysteryPerson() {
-    // https://en.gravatar.com/site/implement/images/ -- it's "mp", not "mm" there, but we've had it like this
-    return `${this.gravatarBaseUrl}?d=mm&s=500`;
+    // use "mp" (mystery-person) from https://en.gravatar.com/site/implement/images/
+    return `${this.gravatarBaseUrl}?d=mp&s=500`;
   }
 
   public gravatarUrlForImageUrl(imageUrl: string | null) {

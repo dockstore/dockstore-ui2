@@ -60,6 +60,7 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   public WorkflowType = Workflow;
   public TopicSelectionEnum = Workflow.TopicSelectionEnum;
   public tooltip = Tooltip;
+  public description: string | null;
   workflowPathEditing: boolean;
   temporaryDescriptorType: Workflow.DescriptorTypeEnum;
   descriptorLanguages$: Observable<Array<Workflow.DescriptorTypeEnum>>;
@@ -109,6 +110,7 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
     }
     this.workflow = this.deepCopy(this.extendedWorkflow);
     this.temporaryDescriptorType = this.workflow.descriptorType;
+    this.description = null;
     if (this.selectedVersion && this.workflow) {
       this.currentVersion = this.selectedVersion;
       this.publicAccessibleTestParameterFile = this.selectedVersion?.versionMetadata?.publicAccessibleTestParameterFile;
@@ -131,6 +133,9 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
       this.workflowsService.getWorkflowVersionOrcidAuthors(this.workflow.id, this.selectedVersion.id).subscribe((orcidAuthors) => {
         this.authors = [...this.selectedVersion.authors, ...orcidAuthors];
       });
+      this.workflowsService
+        .getWorkflowVersionDescription(this.workflow.id, this.selectedVersion.id)
+        .subscribe((description) => (this.description = description));
     } else {
       this.currentVersion = null;
       this.publicAccessibleTestParameterFile = null;
@@ -139,6 +144,7 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
       this.isValidVersion = null;
       this.downloadZipLink = null;
       this.authors = null;
+      this.description = null;
     }
   }
 

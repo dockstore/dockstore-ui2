@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit } from '@angular/core';
 import { AuthService } from 'ng2-ui-auth';
 import { Dockstore } from '../../../shared/dockstore.model';
 import { MetadataService, TRSService } from '../../../shared/openapi';
@@ -34,6 +34,10 @@ export class DownloadCLIClientComponent extends Base implements OnInit {
     private alertService: AlertService
   ) {
     super();
+  }
+
+  onClipboardCopy(copied: boolean) {
+    this.isCopied2 = copied;
   }
 
   ngOnInit() {

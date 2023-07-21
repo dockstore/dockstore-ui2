@@ -68,14 +68,14 @@ import { FormControl } from '@angular/forms';
   templateUrl: './workflow.component.html',
   styleUrls: ['../shared/styles/workflow-container.component.scss'],
 })
-export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
+export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterViewInit, OnInit {
   workflowEditData: any;
   Dockstore = Dockstore;
   public isRefreshing$: Observable<boolean>;
   public workflow: BioWorkflow | Service | Notebook;
   public missingWarning: boolean;
   public title: string;
-  public sortedVersions: Array<Tag | WorkflowVersion> = [];
+  public sortedVersions: Array<WorkflowVersion> = [];
   private resourcePath: string;
   public showRedirect = false;
   public githubPath = 'github.com/';

@@ -2,7 +2,7 @@ import { ExtendedDescriptorLanguageBean } from 'app/entry/extendedDescriptorLang
 import { SourceFile, ToolDescriptor, Workflow } from 'app/shared/openapi';
 import { Dockstore } from '../shared/dockstore.model';
 
-const JUPYTER_DOCUMENTATION_URL = Dockstore.DOCUMENTATION_URL + '/getting-started/notebooks/notebooks.html';
+const JUPYTER_DOCUMENTATION_URL = Dockstore.DOCUMENTATION_URL + '/getting-started/getting-started-with-notebooks.html';
 
 export const extendedJupyter: ExtendedDescriptorLanguageBean = {
   descriptorLanguageEnum: 'jupyter',

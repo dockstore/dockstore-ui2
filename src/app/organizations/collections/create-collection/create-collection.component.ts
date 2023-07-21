@@ -1,8 +1,12 @@
+import { KeyValue } from '@angular/common';
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, UntypedFormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { HashMap } from '@datorama/akita';
 import { NgFormsManager } from '@ngneat/forms-manager';
 import { Observable } from 'rxjs';
+import { TagEditorMode } from '../../../shared/enum/tagEditorMode.enum';
+import { Collection } from '../../../shared/openapi';
 
 import { CreateCollectionQuery } from '../state/create-collection.query';
 import { CreateCollectionService, FormsState } from '../state/create-collection.service';
@@ -26,7 +30,7 @@ export class CreateCollectionComponent implements OnInit, OnDestroy {
   constructor(
     private createCollectionQuery: CreateCollectionQuery,
     private createCollectionService: CreateCollectionService,
-    @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(MAT_DIALOG_DATA) public data: { collection: KeyValue<string, Collection> | null; mode: TagEditorMode },
     private formsManager: NgFormsManager<FormsState>
   ) {}
 
