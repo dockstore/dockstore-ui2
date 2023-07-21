@@ -140,10 +140,10 @@
                 <img src="../../assets/images/account-logos/{{ row.logo }}" alt="{{ row.name }} logo" class="w-100" />
               </div>
               <mat-card-title class="normal-line-height">{{ row.name }} Account</mat-card-title>
+              <mat-card-subtitle class="accent-1-dark normal-line-height weight-bold mt-2 mb-0" [attr.data-cy]="row.name + '-username'">
+                <span>Username: {{ row.username }}</span>
+              </mat-card-subtitle>
             </mat-card-header>
-            <mat-card-subtitle class="accent-1-dark normal-line-height weight-bold mt-2 mb-0" [attr.data-cy]="row.name + '-username'">
-              <span>Username: {{ row.username }}</span>
-            </mat-card-subtitle>
           </mat-card>
         </div>
       </div>
