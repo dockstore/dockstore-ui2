@@ -25,7 +25,6 @@ describe('Entry Deletion', () => {
   }
 
   function goToPrivatePage(entry: Entry): void {
-    console.log(`${entry.myPrefix}/${entry.path}`);
     cy.visit(`${entry.myPrefix}/${entry.path}`);
   }
 
