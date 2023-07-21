@@ -16,7 +16,7 @@ import { RefreshWizardStore } from './refresh-wizard.store';
 export class RefreshWizardService {
   constructor(
     private refreshWizardStore: RefreshWizardStore,
-    private dockerRegistriesService: UsersService,
+    private usersService: UsersService,
     private userQuery: UserQuery,
     private refreshWizardQuery: RefreshWizardQuery,
     private matSnackBar: MatSnackBar,
@@ -26,7 +26,7 @@ export class RefreshWizardService {
   ) {}
   getOrganizations(dockerRegistry: string) {
     this.refreshWizardStore.setLoading(true);
-    this.dockerRegistriesService
+    this.usersService
       .getDockerRegistriesOrganization(dockerRegistry)
       .pipe(finalize(() => this.refreshWizardStore.setLoading(false)))
       .subscribe(
@@ -53,7 +53,7 @@ export class RefreshWizardService {
     const userId = this.userQuery.getValue().user.id;
     const entryType = this.sessionQuery.getValue().entryType;
     const selectedOrganization = this.refreshWizardQuery.getValue().selectedOrganization;
-    this.dockerRegistriesService
+    this.usersService
       .refreshToolsByOrganization(userId, selectedOrganization, repository)
       .pipe(finalize(() => this.sessionService.setLoadingDialog(false)))
       .subscribe(
@@ -70,7 +70,7 @@ export class RefreshWizardService {
   @transaction()
   getRepositories(organization: string) {
     this.refreshWizardStore.setLoading(true);
-    this.dockerRegistriesService
+    this.usersService
       .getDockerRegistryOrganizationRepositories(TokenSource.QUAY, organization)
       .pipe(finalize(() => this.refreshWizardStore.setLoading(false)))
       .subscribe((repositories) => {

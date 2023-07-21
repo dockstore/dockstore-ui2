@@ -20,7 +20,7 @@ import { Router } from '@angular/router';
 import { ID, transaction } from '@datorama/akita';
 import { finalize } from 'rxjs/operators';
 import { AlertService } from '../../shared/alert/state/alert.service';
-import { Collection, OrganizationsService as OpenApiOrganizationsService } from '../../shared/openapi';
+import { Collection, OrganizationsService } from '../../shared/openapi';
 import { CollectionsQuery } from './collections.query';
 import { CollectionsStore } from './collections.store';
 import { OrganizationQuery } from './organization.query';
@@ -30,7 +30,7 @@ import { OrganizationService } from './organization.service';
 export class CollectionsService {
   constructor(
     private collectionsStore: CollectionsStore,
-    private openApiOrganizationsService: OpenApiOrganizationsService,
+    private organizationsService: OrganizationsService,
     private alertService: AlertService,
     private organizationService: OrganizationService,
     private organizationStore: OrganizationQuery,
@@ -51,7 +51,7 @@ export class CollectionsService {
     this.collectionsStore.setLoading(true);
     const activeId: ID = this.collectionsQuery.getActiveId();
     this.collectionsStore.remove();
-    this.openApiOrganizationsService
+    this.organizationsService
       .getCollectionsFromOrganization(organizationID, '')
       .pipe(finalize(() => this.collectionsStore.setLoading(false)))
       .subscribe(
@@ -89,7 +89,7 @@ export class CollectionsService {
   updateCollectionFromName(organizationName: string, collectionName: string) {
     this.collectionsStore.setError(false);
     this.collectionsStore.setLoading(true);
-    this.openApiOrganizationsService
+    this.organizationsService
       .getCollectionByName(organizationName, collectionName)
       .pipe(finalize(() => this.collectionsStore.setLoading(false)))
       .subscribe(
@@ -120,7 +120,7 @@ export class CollectionsService {
   updateCollectionFromId(organizationId: number, collectionId: number) {
     this.collectionsStore.setError(false);
     this.collectionsStore.setLoading(true);
-    this.openApiOrganizationsService
+    this.organizationsService
       .getCollectionById(organizationId, collectionId)
       .pipe(finalize(() => this.collectionsStore.setLoading(false)))
       .subscribe(
@@ -147,7 +147,7 @@ export class CollectionsService {
    */
   removeEntryFromCollection(organizationId: number, collectionId: number, entryId: number, entryName: string, versionName: string | null) {
     this.alertService.start('Removing entry ' + entryName);
-    this.openApiOrganizationsService
+    this.organizationsService
       .deleteEntryFromCollection(organizationId, collectionId, entryId, versionName)
       .pipe(finalize(() => this.collectionsStore.setLoading(false)))
       .subscribe(
@@ -176,7 +176,7 @@ export class CollectionsService {
     this.collectionsStore.setLoading(true);
     this.collectionsStore.setError(false);
     this.alertService.start('Removing collection ' + collectionName);
-    this.openApiOrganizationsService.deleteCollection(organizationId, collectionId).subscribe(
+    this.organizationsService.deleteCollection(organizationId, collectionId).subscribe(
       () => {
         this.collectionsStore.setLoading(false);
         this.collectionsStore.setError(false);
