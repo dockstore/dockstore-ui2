@@ -8,8 +8,7 @@ import { AlertService } from '../../shared/alert/state/alert.service';
 import { Dockstore } from '../../shared/dockstore.model';
 import { TokenSource } from '../../shared/enum/token-source.enum';
 import { TokenQuery } from '../../shared/state/token.query';
-import { Permission, Workflow, WorkflowsService } from '../../shared/openapi';
-import { WorkflowSubClass } from '../../shared/openapi';
+import { Permission, Workflow, WorkflowsService, WorkflowSubClass } from '../../shared/openapi';
 import RoleEnum = Permission.RoleEnum;
 
 @Component({

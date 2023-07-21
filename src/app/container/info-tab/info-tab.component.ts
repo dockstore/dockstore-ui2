@@ -22,12 +22,11 @@ import { Dockstore } from '../../shared/dockstore.model';
 import { ExtendedToolsService } from '../../shared/extended-tools.service';
 import { ExtendedDockstoreTool } from '../../shared/models/ExtendedDockstoreTool';
 import { SessionQuery } from '../../shared/session/session.query';
-import { ContainertagsService, ToolDescriptor, ToolVersion, WorkflowVersion } from '../../shared/openapi';
+import { ToolDescriptor, ToolVersion, WorkflowVersion, Author, ContainertagsService } from '../../shared/openapi';
 import { DockstoreTool } from '../../shared/openapi/model/dockstoreTool';
 import { Tag } from '../../shared/openapi/model/tag';
 import { exampleDescriptorPatterns, validationDescriptorPatterns } from '../../shared/validationMessages.model';
 import { InfoTabService } from './info-tab.service';
-import { Author } from 'app/shared/openapi';
 
 import DescriptorTypeEnum = ToolVersion.DescriptorTypeEnum;
 

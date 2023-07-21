@@ -8,8 +8,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ListContainersService } from '../../containers/list/list.service';
 import { ContainerService } from '../../shared/container.service';
 import { DateService } from '../../shared/date.service';
-import { ContainersService } from '../../shared/openapi';
-import { ContainertagsService } from '../../shared/openapi';
+import { ContainersService, ContainertagsService } from '../../shared/openapi';
 import { sampleTag, sampleTool1 } from '../../test/mocked-objects';
 import {
   ContainersStubService,

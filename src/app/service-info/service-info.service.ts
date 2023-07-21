@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, publishReplay, refCount } from 'rxjs/operators';
-import { GA4GHV20Service } from '../shared/openapi';
-import { TRSService } from 'app/shared/openapi';
+import { GA4GHV20Service, TRSService } from '../shared/openapi';
 
 @Injectable()
 export class ServiceInfoService {
