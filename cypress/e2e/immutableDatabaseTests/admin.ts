@@ -34,6 +34,7 @@ describe('Admin UI', () => {
       cy.visit('/users/user_A');
       goToTab('Other Linked Accounts');
       cy.get('[data-cy=other-linked-accounts-Quay]').should('be.visible');
+      cy.get('[data-cy=Quay-username]').contains('user_A').should('be.visible');
 
       //log out and confirm the tab does not exist
       cy.get('[data-cy=dropdown-main]:visible').click();

@@ -46,6 +46,7 @@ export interface AccountInfo {
   show: boolean;
   logo: string;
   isLinked?: boolean;
+  username?: string;
 }
 
 @Component({
@@ -187,10 +188,6 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
         );
       }
     });
-  }
-
-  getAccountsInfo(): AccountInfo[] {
-    return this.accountsInfo;
   }
 
   /**
