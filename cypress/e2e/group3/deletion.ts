@@ -15,6 +15,7 @@ describe('Entry Deletion', () => {
 
   const entries: Entry[] = [
     { table: 'workflow', id: 11, versionId: 14, myPrefix: 'my-workflows', path: 'github.com/A/l' },
+    { table: 'apptool', id: 50, versionId: 1000, myPrefix: 'my-tools', path: 'github.com/C/test-github-app-tools/testing' },
     { table: 'notebook', id: 1000, versionId: 1000, myPrefix: 'my-notebooks', path: 'github.com/dockstore-testing/simple-notebook' },
   ];
 
