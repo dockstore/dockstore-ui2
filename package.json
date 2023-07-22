@@ -5,8 +5,8 @@
   "config": {
     "webservice_version": "1.15.0",
     "use_circle": true,
-    "circle_ci_source": "https://app.circleci.com/pipelines/github/dockstore/dockstore/10135/workflows/670e8975-9acf-4211-a104-2c37b0142452/jobs/35244/artifacts",
-    "circle_build_id": "35244"
+    "circle_ci_source": "https://app.circleci.com/pipelines/github/dockstore/dockstore/10206/workflows/e7e87a62-d320-4e0c-a157-1cde1825aaa3/jobs/35711/artifacts",
+    "circle_build_id": "35711"
   },
   "scripts": {
     "ng": "npx ng",
@@ -17,8 +17,8 @@
     "build.prod": "npx ng build",
     "build": "npx ng build",
     "watch": "ng build --watch --configuration development",
-    "license": "license-checker --excludePackages dockstore-ui2@$npm_package_version --csv > THIRD-PARTY-LICENSES.csv",
-    "circle-ci-license-test-file": "license-checker --excludePackages dockstore-ui2@$npm_package_version --csv > CIRCLE-THIRD-PARTY-LICENSES.csv",
+    "license": "license-checker --production --excludePackages dockstore-ui2@$npm_package_version --csv > THIRD-PARTY-LICENSES.csv",
+    "circle-ci-license-test-file": "license-checker --production --excludePackages dockstore-ui2@$npm_package_version --csv > CIRCLE-THIRD-PARTY-LICENSES.csv",
     "compodoc": "npx compodoc -p src/tsconfig.compodoc.json --output docs",
     "install-git-secrets": "./scripts/install-git-secrets.sh",
     "test": "npx ng test",

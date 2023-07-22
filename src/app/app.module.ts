@@ -99,7 +99,7 @@ import { PagenumberService } from './shared/pagenumber.service';
 import { PipeModule } from './shared/pipe/pipe.module';
 import { ProviderService } from './shared/provider.service';
 import { RefreshService } from './shared/refresh.service';
-import { ApiModule } from './shared/swagger/api.module';
+import { ApiModule } from './shared/openapi/api.module';
 import { Configuration } from './shared/openapi/configuration';
 import { TrackLoginService } from './shared/track-login.service';
 import { TwitterService } from './shared/twitter.service';

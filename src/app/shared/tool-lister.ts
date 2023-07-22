@@ -30,7 +30,7 @@ import { DockstoreTool, Workflow } from './openapi';
 
 @Directive()
 // eslint-disable-next-line @angular-eslint/directive-class-suffix
-export abstract class ToolLister implements AfterViewInit, OnDestroy {
+export abstract class ToolLister<T extends PublishedWorkflowsDataSource | PublishedToolsDataSource> implements AfterViewInit, OnDestroy {
   private ngUnsubscribe: Subject<{}> = new Subject();
   protected previewMode = false;
   protected displayTable = false;
@@ -49,7 +49,7 @@ export abstract class ToolLister implements AfterViewInit, OnDestroy {
   }
 
   abstract type: 'tool' | 'workflow';
-  public dataSource: PublishedWorkflowsDataSource | PublishedToolsDataSource;
+  public dataSource: T;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild('input', { static: true }) input: ElementRef;

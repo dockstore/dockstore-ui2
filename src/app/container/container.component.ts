@@ -35,12 +35,10 @@ import { EntryType } from '../shared/enum/entry-type';
 import { ExtendedDockstoreToolQuery } from '../shared/extended-dockstoreTool/extended-dockstoreTool.query';
 import { GA4GHFilesService } from '../shared/ga4gh-files/ga4gh-files.service';
 import { ImageProviderService } from '../shared/image-provider.service';
-import { EntriesService } from '../shared/openapi';
+import { EntriesService, Workflow, Tag } from '../shared/openapi';
 import { ProviderService } from '../shared/provider.service';
 import { SessionQuery } from '../shared/session/session.query';
 import { SessionService } from '../shared/session/session.service';
-import { Tag } from '../shared/openapi/model/tag';
-import { WorkflowVersion } from '../shared/openapi/model/workflowVersion';
 import { ToolQuery } from '../shared/tool/tool.query';
 import { ToolService } from '../shared/tool/tool.service';
 import { TrackLoginService } from '../shared/track-login.service';
@@ -50,7 +48,6 @@ import { DockstoreTool } from './../shared/openapi/model/dockstoreTool';
 import { UrlResolverService } from './../shared/url-resolver.service';
 import { AddTagComponent } from './add-tag/add-tag.component';
 import { EmailService } from './email.service';
-import { Workflow } from '../shared/openapi';
 import { EntryCategoriesService } from '../categories/state/entry-categories.service';
 
 @Component({
@@ -58,7 +55,7 @@ import { EntryCategoriesService } from '../categories/state/entry-categories.ser
   templateUrl: './container.component.html',
   styleUrls: ['../shared/styles/workflow-container.component.scss'],
 })
-export class ContainerComponent extends Entry implements AfterViewInit, OnInit {
+export class ContainerComponent extends Entry<Tag> implements AfterViewInit, OnInit {
   dockerPullCmd: string;
   privateOnlyRegistry: boolean;
   containerEditData: any;
@@ -69,7 +66,7 @@ export class ContainerComponent extends Entry implements AfterViewInit, OnInit {
   public missingWarning: boolean;
   public tool: DockstoreTool;
   public toolCopyBtn: string;
-  public sortedVersions: Array<Tag | WorkflowVersion> = [];
+  public sortedVersions: Array<Tag> = [];
   public DockstoreToolType = DockstoreTool;
   public isManualMode$: Observable<boolean>;
   public displayAppTool: boolean = false;

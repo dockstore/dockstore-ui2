@@ -43,6 +43,17 @@
                   <span>{{ gitHubProfile.username }}</span>
                 </a>
               </span>
+              <span *ngIf="loggedInUserIsAdminOrCurator">
+                <button
+                  matTooltip="View the user's GitHub App Logs"
+                  mat-button
+                  class="small-mat-btn private-btn small-btn-structure mat-elevation-z"
+                  (click)="openGitHubAppsLogs(user.id)"
+                  data-cy="user-app-logs-button"
+                >
+                  Apps Logs
+                </button>
+              </span>
             </mat-card-subtitle>
           </mat-card-header>
           <span>
@@ -97,7 +108,6 @@
       </mat-card>
     </div>
   </div>
-
   <mat-tab-group class="pb-5 purple-tab-group">
     <mat-tab>
       <ng-template mat-tab-label>

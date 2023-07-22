@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Base } from '../shared/base';
 import { ImageProviderService } from '../shared/image-provider.service';
 import { ProviderService } from '../shared/provider.service';
-import { DockstoreTool, Entry, Organization, Workflow } from '../shared/openapi';
+import { DockstoreTool, Entry, Organization, Workflow, EntryType as OpenApiEntryType } from '../shared/openapi';
 import { UserQuery } from '../shared/user/user.query';
 import { UsersService } from './../shared/openapi/api/users.service';
 import { MatTabChangeEvent } from '@angular/material/tabs';
@@ -22,7 +22,7 @@ import { Dockstore } from 'app/shared/dockstore.model';
 })
 export class StarredEntriesComponent extends Base implements OnInit {
   Dockstore = Dockstore;
-  starredTools: Array<ExtendedDockstoreTool> | null;
+  starredTools: Array<ExtendedDockstoreTool | ExtendedWorkflow> | null;
   starredWorkflows: Array<ExtendedWorkflow> | null;
   starredServices: Array<Entry> | null;
   starredNotebooks: Array<ExtendedWorkflow> | null;
@@ -42,7 +42,7 @@ export class StarredEntriesComponent extends Base implements OnInit {
     private imageProviderService: ImageProviderService,
     private providerService: ProviderService,
     private usersService: UsersService,
-    private orgLogoService: OrgLogoService,
+    public orgLogoService: OrgLogoService,
     private activatedRoute: ActivatedRoute,
     private location: Location
   ) {
@@ -56,10 +56,12 @@ export class StarredEntriesComponent extends Base implements OnInit {
 
     this.userQuery.user$.subscribe((user) => (this.user = user));
     this.usersService.getStarredTools().subscribe((starredTool) => {
-      this.starredTools = <ExtendedDockstoreTool[]>starredTool.filter((entry: DockstoreTool) => entry.is_published);
+      this.starredTools = <(ExtendedDockstoreTool | ExtendedWorkflow)[]>starredTool.filter((entry: Entry) => entry.is_published);
       this.starredTools.forEach((tool) => {
         this.providerService.setUpProvider(tool);
-        tool = this.imageProviderService.setUpImageProvider(tool);
+        if (tool.entryType === OpenApiEntryType.TOOL) {
+          this.imageProviderService.setUpImageProvider(tool as ExtendedDockstoreTool);
+        }
       });
     });
     this.usersService.getStarredWorkflows().subscribe((starredWorkflow) => {
@@ -118,4 +120,6 @@ export class StarredEntriesComponent extends Base implements OnInit {
   updateStarredUrl(tabName: string) {
     this.location.replaceState('starred?tab=' + tabName);
   }
+
+  protected readonly OpenApiEntryType = OpenApiEntryType;
 }

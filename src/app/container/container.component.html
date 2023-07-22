@@ -14,16 +14,6 @@
   ~    limitations under the License.
   -->
 <div *ngIf="tool; else workflow">
-  <div class="row m-1" *ngIf="error || missingWarning">
-    <div class="col-md-12" *ngIf="!isToolPublic">
-      <mat-card class="alert alert-warning mat-elevation-z" ng-class="!editMode ? 'push-top' : ''" role="alert" *ngIf="missingWarning">
-        <button type="button" class="close" data-dismiss="alert" ng-click="missingWarning = false">&times;</button>
-        <mat-icon class="alert-warning-icon">warning</mat-icon>
-        {{ missingContent.length === 1 ? 'Field that is missing from file: ' : 'Fields that are missing from file: ' }} {{ missingContent }}
-      </mat-card>
-    </div>
-  </div>
-
   <div
     class="row m-1"
     *ngIf="
@@ -342,7 +332,7 @@
                 [ngClass]="{ 'btn-copy': toolCopyBtn === 'docker_pull_command' }"
                 type="button"
                 [cdkCopyToClipboard]="dockerPullCmd"
-                (cbOnSuccess)="toolCopyBtnClick('docker_pull_command')"
+                (cdkCopyToClipboardCopied)="toolCopyBtnClick('docker_pull_command')"
                 appSnackbar
               >
                 <mat-icon color="accent">file_copy</mat-icon>

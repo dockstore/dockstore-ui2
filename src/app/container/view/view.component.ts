@@ -24,6 +24,7 @@ import { AlertService } from '../../shared/alert/state/alert.service';
 import { ContainerService } from '../../shared/container.service';
 import { DateService } from '../../shared/date.service';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
+import { Tag } from '../../shared/openapi';
 import { SessionQuery } from '../../shared/session/session.query';
 import { ContainertagsService } from '../../shared/openapi/api/containertags.service';
 import { HostedService } from '../../shared/openapi/api/hosted.service';
@@ -39,7 +40,7 @@ import { VersionModalService } from '../version-modal/version-modal.service';
   styleUrls: ['./view.component.css'],
 })
 // This is actually the actions dropdown for tags
-export class ViewContainerComponent extends View implements OnInit {
+export class ViewContainerComponent extends View<Tag> implements OnInit {
   public TagEditorMode = TagEditorMode;
   public tool: DockstoreTool;
   public DockstoreToolType = DockstoreTool;

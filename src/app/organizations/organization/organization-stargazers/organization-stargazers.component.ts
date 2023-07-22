@@ -21,6 +21,7 @@ import { StarOrganizationService } from '../../../shared/star-organization.servi
 import { User } from '../../../shared/openapi';
 import { UserService } from '../../../shared/user/user.service';
 import { OrganizationStarringService } from '../organization-starring/organization-starring.service';
+import { altAvatarImg } from 'app/shared/constants';
 
 @Component({
   selector: 'app-organization-stargazers',
@@ -29,6 +30,7 @@ import { OrganizationStarringService } from '../organization-starring/organizati
 })
 export class OrganizationStargazersComponent extends Base implements OnInit {
   starGazers: Array<User>;
+  public altAvatarImg = altAvatarImg;
 
   constructor(
     private organizationStarringService: OrganizationStarringService,

@@ -5,10 +5,9 @@ import { bootstrap4mediumModalSize } from '../../shared/constants';
 import { Dockstore } from '../../shared/dockstore.model';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
 import { OrgLogoService } from '../../shared/org-logo.service';
-import { Collection as OpenAPICollection, Organization, OrganizationsService } from '../../shared/openapi';
+import { Collection, Organization, OrganizationsService } from '../../shared/openapi';
 import { ToolDescriptor } from '../../shared/openapi/model/toolDescriptor';
 import { Workflow } from '../../shared/openapi/model/workflow';
-import { Collection } from '../../shared/swagger';
 import { UserQuery } from '../../shared/user/user.query';
 import { ActivatedRoute } from '../../test';
 import { CreateCollectionComponent } from '../collections/create-collection/create-collection.component';
@@ -58,7 +57,7 @@ export class CollectionComponent implements OnInit {
   WorkflowMode = Workflow.ModeEnum;
   DescriptorType = ToolDescriptor.TypeEnum;
   collection$: Observable<Collection>;
-  openAPICollection: OpenAPICollection;
+  openAPICollection: Collection;
   loadingCollection$: Observable<boolean>;
 
   organization$: Observable<Organization>;

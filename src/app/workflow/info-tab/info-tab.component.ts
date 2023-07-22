@@ -19,7 +19,7 @@ import { MatRadioChange } from '@angular/material/radio';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { FileService } from 'app/shared/file.service';
-import { Author, WorkflowsService } from 'app/shared/openapi';
+import { Author, WorkflowsService, ToolDescriptor } from 'app/shared/openapi';
 import { OrcidAuthorInformation } from 'app/shared/openapi/model/orcidAuthorInformation';
 import { Observable } from 'rxjs';
 import { shareReplay, takeUntil } from 'rxjs/operators';
@@ -31,7 +31,6 @@ import { ExtendedWorkflow } from '../../shared/models/ExtendedWorkflow';
 import { SessionQuery } from '../../shared/session/session.query';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { WorkflowService } from '../../shared/state/workflow.service';
-import { ToolDescriptor } from '../../shared/openapi';
 import { Workflow } from '../../shared/openapi/model/workflow';
 import { WorkflowVersion } from '../../shared/openapi/model/workflowVersion';
 import { Tooltip } from '../../shared/tooltip';
@@ -61,6 +60,7 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   public WorkflowType = Workflow;
   public TopicSelectionEnum = Workflow.TopicSelectionEnum;
   public tooltip = Tooltip;
+  public description: string | null;
   workflowPathEditing: boolean;
   temporaryDescriptorType: Workflow.DescriptorTypeEnum;
   descriptorLanguages$: Observable<Array<Workflow.DescriptorTypeEnum>>;
@@ -110,6 +110,7 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
     }
     this.workflow = this.deepCopy(this.extendedWorkflow);
     this.temporaryDescriptorType = this.workflow.descriptorType;
+    this.description = null;
     if (this.selectedVersion && this.workflow) {
       this.currentVersion = this.selectedVersion;
       this.publicAccessibleTestParameterFile = this.selectedVersion?.versionMetadata?.publicAccessibleTestParameterFile;
@@ -132,6 +133,9 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
       this.workflowsService.getWorkflowVersionOrcidAuthors(this.workflow.id, this.selectedVersion.id).subscribe((orcidAuthors) => {
         this.authors = [...this.selectedVersion.authors, ...orcidAuthors];
       });
+      this.workflowsService
+        .getWorkflowVersionDescription(this.workflow.id, this.selectedVersion.id)
+        .subscribe((description) => (this.description = description));
     } else {
       this.currentVersion = null;
       this.publicAccessibleTestParameterFile = null;
@@ -140,6 +144,7 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
       this.isValidVersion = null;
       this.downloadZipLink = null;
       this.authors = null;
+      this.description = null;
     }
   }
 

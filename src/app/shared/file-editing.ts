@@ -17,8 +17,7 @@
 import { Directive } from '@angular/core';
 import { AlertService } from './alert/state/alert.service';
 import { Files } from './files';
-import { SourceFile } from './openapi';
-import { Tag, WorkflowVersion } from './openapi';
+import { SourceFile, Tag, WorkflowVersion } from './openapi';
 
 @Directive()
 // eslint-disable-next-line @angular-eslint/directive-class-suffix

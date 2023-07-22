@@ -52,13 +52,12 @@ import { SessionService } from '../shared/session/session.service';
 import { ExtendedWorkflowQuery } from '../shared/state/extended-workflow.query';
 import { WorkflowQuery } from '../shared/state/workflow.query';
 import { WorkflowService } from '../shared/state/workflow.service';
-import { Permission, ToolDescriptor, WorkflowsService } from '../shared/openapi';
+import { Permission, ToolDescriptor, WorkflowsService, EntriesService, WorkflowSubClass } from '../shared/openapi';
 import { Tag } from '../shared/openapi/model/tag';
 import { Workflow } from '../shared/openapi/model/workflow';
 import { WorkflowVersion } from '../shared/openapi/model/workflowVersion';
 import { TrackLoginService } from '../shared/track-login.service';
 import { UrlResolverService } from '../shared/url-resolver.service';
-import { EntriesService, WorkflowSubClass } from '../shared/openapi';
 import { Title } from '@angular/platform-browser';
 import { EntryCategoriesService } from '../categories/state/entry-categories.service';
 import RoleEnum = Permission.RoleEnum;
@@ -69,14 +68,14 @@ import { FormControl } from '@angular/forms';
   templateUrl: './workflow.component.html',
   styleUrls: ['../shared/styles/workflow-container.component.scss'],
 })
-export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
+export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterViewInit, OnInit {
   workflowEditData: any;
   Dockstore = Dockstore;
   public isRefreshing$: Observable<boolean>;
   public workflow: BioWorkflow | Service | Notebook;
   public missingWarning: boolean;
   public title: string;
-  public sortedVersions: Array<Tag | WorkflowVersion> = [];
+  public sortedVersions: Array<WorkflowVersion> = [];
   private resourcePath: string;
   public showRedirect = false;
   public githubPath = 'github.com/';

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { finalize } from 'rxjs/operators';
 import { AlertService } from '../../shared/alert/state/alert.service';
-import { OrganizationsService as openapiOrganizationsService } from '../../shared/openapi';
 import { Organization, OrganizationsService, OrganizationUser, User, UsersService } from '../../shared/openapi';
 import { RequestsState, RequestsStore } from './requests.store';
 
@@ -11,7 +10,6 @@ export class RequestsService {
     private requestsStore: RequestsStore,
     private alertService: AlertService,
     private organizationsService: OrganizationsService,
-    private openApiOrgService: openapiOrganizationsService,
     private usersService: UsersService
   ) {}
 
@@ -194,7 +192,7 @@ export class RequestsService {
   deleteOrganization(id: number, isAdminOrCurator: boolean): void {
     this.alertService.start('Deleting organization ' + id);
     this.requestsStore.setLoading(true);
-    this.openApiOrgService
+    this.organizationsService
       .deleteRejectedOrPendingOrganization(id)
       .pipe(finalize(() => this.requestsStore.setLoading(false)))
       .subscribe(
