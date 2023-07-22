@@ -33,8 +33,8 @@ describe('Entry Deletion', () => {
     entries.forEach((entry) => {
       unpublicize(entry);
       goToPrivatePage(entry);
-      cy.contains('button', 'Delete').should('be.visible');
-      cy.contains('button', 'Publish').should('be.visible').click();
+      cy.contains('button', 'Delete').should('be.visible').should('not.be.disabled');
+      cy.contains('button', 'Publish').should('be.visible').should('not.be.disabled').click();
       goToPrivatePage(entry);
       cy.contains('button', 'Delete').should('not.exist');
     });
@@ -44,10 +44,10 @@ describe('Entry Deletion', () => {
     entries.forEach((entry) => {
       unpublicize(entry);
       goToPrivatePage(entry);
-      cy.contains('button', 'Delete').should('be.visible');
-      cy.contains('button', 'Publish').should('be.visible').click();
+      cy.contains('button', 'Delete').should('be.visible').should('not.be.disabled');
+      cy.contains('button', 'Publish').should('be.visible').should('not.be.disabled').click();
       goToPrivatePage(entry);
-      cy.contains('button', 'Unpublish').should('be.visible').click();
+      cy.contains('button', 'Unpublish').should('be.visible').should('not.be.disabled').click();
       goToPrivatePage(entry);
       cy.contains('button', 'Delete').should('not.exist');
     });
@@ -57,12 +57,12 @@ describe('Entry Deletion', () => {
     entries.forEach((entry) => {
       unpublicize(entry);
       goToPrivatePage(entry);
-      cy.contains('button', 'Delete').should('be.visible').click();
-      cy.get('[data-cy=delete-no]').should('be.visible').click();
+      cy.contains('button', 'Delete').should('be.visible').should('not.be.disabled').click();
+      cy.get('[data-cy=delete-no]').should('be.visible').should('not.be.disabled').click();
       goToPrivatePage(entry);
       cy.contains(entry.path).should('exist');
-      cy.contains('button', 'Delete').should('be.visible').click();
-      cy.get('[data-cy=delete-yes]').should('be.visible').click();
+      cy.contains('button', 'Delete').should('be.visible').should('not.be.disabled').click();
+      cy.get('[data-cy=delete-yes]').should('be.visible').should('not.be.disabled').click();
       cy.wait(1000);
       cy.contains(entry.path).should('not.exist');
       goToPrivatePage(entry);
