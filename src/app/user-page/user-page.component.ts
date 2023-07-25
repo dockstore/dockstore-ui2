@@ -28,7 +28,7 @@ export class UserPageComponent extends Base implements OnInit {
   public gitHubProfile: Profile;
   public loggedInUserIsAdminOrCurator: boolean;
   protected otherLinkedAccountsInfo: AccountInfo[] = [];
-  accountsInfo: Array<AccountInfo> = Object.assign([], accountInfo);
+  accountsInfo: Array<AccountInfo> = accountInfo;
   //these type of accounts are visible to everyone on their userpage
   private publicAccountsSource: TokenSource[] = [TokenSource.GITHUB, TokenSource.GOOGLE, TokenSource.ORCID];
 
@@ -88,8 +88,7 @@ export class UserPageComponent extends Base implements OnInit {
       for (const account of this.accountsInfo) {
         const found = tokens.find((token) => token.tokenSource === account.source);
         if (found && !this.publicAccountsSource.includes(account.source)) {
-          account.username = found?.username;
-          this.otherLinkedAccountsInfo.push(account);
+          this.otherLinkedAccountsInfo.push(Object.assign({ username: found?.username }, account));
         }
       }
     });
