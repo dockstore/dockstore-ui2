@@ -30,7 +30,7 @@ export class UserPageComponent extends Base implements OnInit {
   protected otherLinkedAccountsInfo: AccountInfo[] = [];
   accountsInfo: Array<AccountInfo> = Object.assign([], accountInfo);
   //these type of accounts are visible to everyone on their userpage
-  private publicAccountsSource = [TokenSource.GITHUB, TokenSource.GOOGLE, TokenSource.ORCID];
+  private publicAccountsSource: TokenSource[] = [TokenSource.GITHUB, TokenSource.GOOGLE, TokenSource.ORCID];
 
   constructor(
     public dialog: MatDialog,
