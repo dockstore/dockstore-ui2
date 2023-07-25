@@ -28,7 +28,9 @@ export class UserPageComponent extends Base implements OnInit {
   public gitHubProfile: Profile;
   public loggedInUserIsAdminOrCurator: boolean;
   protected otherLinkedAccountsInfo: AccountInfo[] = [];
-  accountsInfo: Array<AccountInfo> = accountInfo;
+  accountsInfo: Array<AccountInfo> = Object.assign([], accountInfo);
+  //these type of accounts are visible to everyone on their userpage
+  private publicAccountsSource = [TokenSource.GITHUB, TokenSource.GOOGLE, TokenSource.ORCID];
 
   constructor(
     public dialog: MatDialog,
@@ -85,7 +87,7 @@ export class UserPageComponent extends Base implements OnInit {
     this.tokenQuery.tokens$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((tokens: TokenUser[]) => {
       for (const account of this.accountsInfo) {
         const found = tokens.find((token) => token.tokenSource === account.source);
-        if (found && !['GitHub', 'Google', 'ORCID'].includes(account.name)) {
+        if (found && !this.publicAccountsSource.includes(account.source)) {
           account.username = found?.username;
           this.otherLinkedAccountsInfo.push(account);
         }
