@@ -12,6 +12,7 @@ import { Workflow } from '../openapi/model/workflow';
 import { EntryActionsComponent } from './entry-actions.component';
 import { EntryActionsService } from './entry-actions.service';
 import { DeleteEntryDialogComponent } from '../../entry/delete/dialog/delete-entry-dialog.component';
+import { bootstrap4largeModalSize } from '../../shared/constants';
 
 @Component({
   selector: 'app-workflow-actions',
@@ -70,6 +71,6 @@ export class WorkflowActionsComponent extends EntryActionsComponent implements O
   }
 
   delete() {
-    this.dialog.open(DeleteEntryDialogComponent, { width: '600px', data: this.workflow });
+    this.dialog.open(DeleteEntryDialogComponent, { width: bootstrap4largeModalSize, data: this.workflow });
   }
 }

@@ -19,7 +19,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { finalize } from 'rxjs/operators';
-import { Entry } from '../../../shared/openapi';
+import { Entry, DockstoreTool, Workflow } from '../../../shared/openapi';
 import { EntriesService } from '../../../shared/openapi';
 
 @Component({
@@ -30,6 +30,8 @@ import { EntriesService } from '../../../shared/openapi';
 export class DeleteEntryDialogComponent {
   clicked: boolean;
   term: string;
+  path: string;
+  fromDockstoreYml: boolean;
 
   constructor(
     public dialogRef: MatDialogRef<DeleteEntryDialogComponent>,
@@ -40,6 +42,8 @@ export class DeleteEntryDialogComponent {
   ) {
     this.clicked = false;
     this.term = entry.entryTypeMetadata.term;
+    this.path = (entry as Workflow).full_workflow_path ?? (entry as DockstoreTool).tool_path;
+    this.fromDockstoreYml = (entry as Workflow | DockstoreTool).mode === Workflow.ModeEnum.DOCKSTOREYML; // The workflow and tool enums are confirmed to be equal in a test.
   }
 
   no(): void {
