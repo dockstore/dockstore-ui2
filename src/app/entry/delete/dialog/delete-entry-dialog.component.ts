@@ -18,10 +18,8 @@ import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { finalize } from 'rxjs/operators';
-import { Entry, DockstoreTool, Workflow } from '../../../shared/openapi';
+import { Entry, EntriesService, DockstoreTool, Workflow } from '../../../shared/openapi';
 import { AlertService } from '../../../shared/alert/state/alert.service';
-import { EntriesService } from '../../../shared/openapi';
 
 @Component({
   selector: 'app-delete-entry-dialog',
