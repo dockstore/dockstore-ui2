@@ -31,7 +31,7 @@ import { AccountsService } from './accounts.service';
 import { LogoutService } from '../../../shared/logout.service';
 import { RevokeTokenDialogComponent } from './revoke-token-dialog/revoke-token-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { bootstrap4largeModalSize } from '../../../shared/constants';
+import { accountInfo, bootstrap4largeModalSize } from '../../../shared/constants';
 import { AlertService } from '../../../shared/alert/state/alert.service';
 import { HttpErrorResponse } from '@angular/common/http';
 
@@ -46,6 +46,7 @@ export interface AccountInfo {
   show: boolean;
   logo: string;
   isLinked?: boolean;
+  username?: string;
 }
 
 @Component({
@@ -59,86 +60,7 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
   public TokenSource = TokenSource;
   public username$: Observable<string>;
   Dockstore = Dockstore;
-  accountsInfo: Array<AccountInfo> = [
-    {
-      name: 'GitHub',
-      source: TokenSource.GITHUB,
-      bold: 'One of GitHub or Google is required.',
-      control: true,
-      docker: false,
-      research: false,
-      message: 'GitHub credentials are used for login purposes as well as for pulling source code from GitHub.',
-      show: false,
-      logo: 'github.svg',
-    },
-    {
-      name: 'Google',
-      source: TokenSource.GOOGLE,
-      bold: 'One of GitHub or Google is required.',
-      control: false,
-      docker: false,
-      research: false,
-      message: 'Google credentials are used for login purposes and integration with Terra.',
-      show: false,
-      logo: 'google.svg',
-    },
-    {
-      name: 'Quay',
-      source: TokenSource.QUAY,
-      bold: '',
-      control: false,
-      docker: true,
-      research: false,
-      message: 'Quay.io credentials are used for pulling information about Docker images and automated builds.',
-      show: false,
-      logo: 'quay.svg',
-    },
-    {
-      name: 'Bitbucket',
-      source: TokenSource.BITBUCKET,
-      bold: '',
-      control: true,
-      docker: false,
-      research: false,
-      message: 'Bitbucket credentials are used for pulling source code from Bitbucket.',
-      show: false,
-      logo: 'bitbucket.svg',
-    },
-    {
-      name: 'GitLab',
-      source: TokenSource.GITLAB,
-      bold: '',
-      control: true,
-      docker: false,
-      research: false,
-      message: 'GitLab credentials are used for pulling source code from GitLab.',
-      show: false,
-      logo: 'gitlab.svg',
-    },
-    {
-      name: 'Zenodo',
-      source: TokenSource.ZENODO,
-      bold: '',
-      control: false,
-      docker: false,
-      research: true,
-      message: 'Zenodo credentials are used for creating Digital Object Identifiers (DOIs) on Zenodo.',
-      show: false,
-      logo: 'zenodo.jpg',
-    },
-    {
-      name: 'ORCID',
-      source: TokenSource.ORCID,
-      bold: '',
-      control: false,
-      docker: false,
-      research: true,
-      message:
-        'ORCID credentials are used for creating ORCID works by exporting snapshotted entries and versions from Dockstore and to link to your ORCID record when your Dockstore account is displayed on the site.',
-      show: false,
-      logo: 'orcid.svg',
-    },
-  ];
+  accountsInfo: Array<AccountInfo> = accountInfo;
 
   public tokens: TokenUser[];
   private ngUnsubscribe: Subject<{}> = new Subject();

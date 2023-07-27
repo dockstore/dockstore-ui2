@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TokenSource } from '../shared/enum/token-source.enum';
-import { Profile } from '../shared/openapi';
+import { Profile, TokenUser } from '../shared/openapi';
 import { UsersService } from '../shared/openapi/api/users.service';
 import { UserService } from '../shared/user/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -8,10 +8,12 @@ import { takeUntil } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AlertService } from '../shared/alert/state/alert.service';
 import { GithubAppsLogsComponent } from '../myworkflows/sidebar-accordion/github-apps-logs/github-apps-logs.component';
-import { bootstrap4largeModalSize } from '../shared/constants';
+import { accountInfo, bootstrap4largeModalSize } from '../shared/constants';
 import { MatDialog } from '@angular/material/dialog';
 import { UserQuery } from '../shared/user/user.query';
 import { Base } from '../shared/base';
+import { TokenQuery } from '../shared/state/token.query';
+import { AccountInfo } from '../loginComponents/accounts/external/accounts.component';
 
 @Component({
   selector: 'app-user-page',
@@ -25,14 +27,20 @@ export class UserPageComponent extends Base implements OnInit {
   public googleProfile: Profile;
   public gitHubProfile: Profile;
   public loggedInUserIsAdminOrCurator: boolean;
+  protected otherLinkedAccountsInfo: AccountInfo[] = [];
+  accountsInfo: Array<AccountInfo> = accountInfo;
+  //these type of accounts are visible to everyone on their userpage
+  private publicAccountsSource: TokenSource[] = [TokenSource.GITHUB, TokenSource.GOOGLE, TokenSource.ORCID];
+
   constructor(
     public dialog: MatDialog,
     private userService: UserService,
     private usersService: UsersService,
-    private userQuery: UserQuery,
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private userQuery: UserQuery,
+    private tokenQuery: TokenQuery
   ) {
     super();
     this.username = this.activatedRoute.snapshot.paramMap.get('username');
@@ -76,5 +84,13 @@ export class UserPageComponent extends Base implements OnInit {
 
   ngOnInit(): void {
     this.getUserInfo(this.username);
+    this.tokenQuery.tokens$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((tokens: TokenUser[]) => {
+      for (const account of this.accountsInfo) {
+        const found = tokens.find((token) => token.tokenSource === account.source);
+        if (found && !this.publicAccountsSource.includes(account.source)) {
+          this.otherLinkedAccountsInfo.push(Object.assign({ username: found?.username }, account));
+        }
+      }
+    });
   }
 }
