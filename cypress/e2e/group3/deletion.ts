@@ -43,7 +43,7 @@ describe('Entry Deletion', () => {
   function goToPrivatePage(entry: Entry): void {
     cy.wait(2000);
     cy.visit(`${entry.myPrefix}/${entry.path}`);
-    cy.wait(1000);
+    cy.wait(2000);
   }
 
   it('Should not be able to delete an entry that is published', () => {
