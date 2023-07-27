@@ -60,6 +60,10 @@ export class DeleteEntryDialogComponent {
     this.clicked = true;
   }
 
+  reset(): void {
+    this.clicked = false;
+  }
+
   close(): void {
     this.dialogRef.close();
   }
@@ -73,21 +77,16 @@ export class DeleteEntryDialogComponent {
   }
 
   deleteEntry(): void {
-    this.entriesService
-      .deleteEntry(this.entry.id)
-      .pipe(
-        finalize(() => {
-          this.close();
-        })
-      )
-      .subscribe(
-        () => {
-          this.inform(`The ${this.term} was deleted.`);
-          this.redirect();
-        },
-        (error: HttpErrorResponse) => {
-          this.inform(`Could not delete this ${this.term}.`);
-        }
-      );
+    this.entriesService.deleteEntry(this.entry.id).subscribe(
+      () => {
+        this.inform(`The ${this.term} was deleted.`);
+        this.close();
+        this.redirect();
+      },
+      (error: HttpErrorResponse) => {
+        this.inform(`Could not delete this ${this.term}.`);
+        this.reset();
+      }
+    );
   }
 }
