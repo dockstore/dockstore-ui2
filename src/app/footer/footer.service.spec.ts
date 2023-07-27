@@ -16,7 +16,6 @@ describe('FooterService', () => {
       'domainurl.com',
       '981edd1',
       '2.6.1-39-g597aeeed',
-      '1.9.0',
       '3723b1a"',
       null,
       null,
@@ -31,7 +30,7 @@ describe('FooterService', () => {
   });
 
   it('should handle nulls', () => {
-    const markdown = service.versionsToMarkdown(null, null, null, null, null, null, null, null, null, null);
+    const markdown = service.versionsToMarkdown(null, null, null, null, null, null, null, null, null);
     expect(markdown.length).toBeGreaterThan(100);
     expect(markdown).not.toContain('compose_setup');
     expect(markdown).not.toContain('dockstore-deploy');

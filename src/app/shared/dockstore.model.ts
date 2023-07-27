@@ -91,7 +91,6 @@ export class Dockstore {
   static FEATURED_NEWS_URL = 'will be filled in by configuration.service';
 
   static DEPLOY_VERSION = '';
-  static COMPOSE_SETUP_VERSION = '';
   static WEBSERVICE_COMMIT_ID = '';
   static CWL_PARSING_LAMBDA_VERSION = '';
   static WDL_PARSING_LAMBDA_VERSION = '';
