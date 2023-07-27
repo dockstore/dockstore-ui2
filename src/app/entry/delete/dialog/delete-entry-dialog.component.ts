@@ -20,6 +20,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { finalize } from 'rxjs/operators';
 import { Entry, DockstoreTool, Workflow } from '../../../shared/openapi';
+import { AlertService } from '../../../shared/alert/state/alert.service';
 import { EntriesService } from '../../../shared/openapi';
 
 @Component({
@@ -38,6 +39,7 @@ export class DeleteEntryDialogComponent {
     @Inject(MAT_DIALOG_DATA) public entry: Entry,
     public matSnackBar: MatSnackBar,
     public router: Router,
+    public alertService: AlertService,
     public entriesService: EntriesService
   ) {
     this.clicked = false;
@@ -68,23 +70,20 @@ export class DeleteEntryDialogComponent {
     this.dialogRef.close();
   }
 
-  inform(message: string): void {
-    this.matSnackBar.open(message, 'Dismiss');
-  }
-
   redirect(): void {
     this.router.navigate(['/dashboard']);
   }
 
   deleteEntry(): void {
+    this.alertService.start(`Deleting ${this.path}`);
     this.entriesService.deleteEntry(this.entry.id).subscribe(
       () => {
-        this.inform(`The ${this.term} was deleted.`);
+        this.alertService.detailedSuccess(`Successfully deleted ${this.path}`);
         this.close();
         this.redirect();
       },
       (error: HttpErrorResponse) => {
-        this.inform(`Could not delete this ${this.term}.`);
+        this.alertService.detailedError(error);
         this.reset();
       }
     );
