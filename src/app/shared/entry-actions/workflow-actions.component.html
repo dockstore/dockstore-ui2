@@ -32,4 +32,15 @@
   >
     {{ 'Refresh' }}
   </button>
+  <button
+    *ngIf="workflow?.deletable"
+    mat-raised-button
+    class="accent-1-dark-btn mat-elevation-z"
+    (click)="delete()"
+    [disabled]="isRefreshing$ | async"
+    matTooltip="Delete this {{ entryType }}"
+    data-cy="deleteButton"
+  >
+    Delete
+  </button>
 </div>
