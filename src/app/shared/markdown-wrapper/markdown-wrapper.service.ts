@@ -87,7 +87,9 @@ export class MarkdownWrapperService {
    */
   customCompile(data, baseUrl): string {
     const parseOptions = { markedOptions: { baseUrl: baseUrl } };
-    return this.markdownService.parse(data, parseOptions);
+    // Remove tab characters from markdown table headers or they won't display properly
+    const markdownData = data.replace(/(?<=\|[-:\t ]*)\t(?=[-:\t ]*\|)/g, '');
+    return this.markdownService.parse(markdownData, parseOptions);
   }
 
   customSanitize(html): string {
