@@ -67,7 +67,7 @@ export class GithubAppsLogsComponent implements OnInit {
     this.columnsToDisplay = this.matDialogData.userId
       ? ['organization', 'repository', 'reference', 'success', 'type']
       : ['repository', 'reference', 'success', 'type'];
-    this.displayedColumns = ['eventDate', 'githubUsername', ...this.columnsToDisplay];
+    this.displayedColumns = ['eventDate', 'githubUsername', 'entryName', 'deliveryId', ...this.columnsToDisplay];
     this.loading = true;
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;

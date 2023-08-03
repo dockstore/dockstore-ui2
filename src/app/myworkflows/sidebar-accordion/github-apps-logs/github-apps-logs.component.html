@@ -32,6 +32,14 @@
           <th mat-header-cell *matHeaderCellDef mat-sort-header>GitHub Username</th>
           <td mat-cell *matCellDef="let element">{{ element.githubUsername }}</td>
         </ng-container>
+        <ng-container matColumnDef="entryName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Entry Name</th>
+          <td mat-cell *matCellDef="let element">{{ element.entryName ? element.entryName : 'n/a' }}</td>
+        </ng-container>
+        <ng-container matColumnDef="deliveryId">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Delivery ID</th>
+          <td mat-cell *matCellDef="let element">{{ element.deliveryId }}</td>
+        </ng-container>
         <ng-container matColumnDef="{{ column }}" *ngFor="let column of columnsToDisplay">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ column | titlecase }}</th>
           <td mat-cell *matCellDef="let element">{{ column | mapFriendlyValue: element[column] }}</td>
