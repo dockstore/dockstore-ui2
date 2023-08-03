@@ -87,8 +87,7 @@ export class MarkdownWrapperService {
    */
   customCompile(data, baseUrl): string {
     const parseOptions = { markedOptions: { baseUrl: baseUrl } };
-    // Remove tab characters from markdown table headers or they won't display properly
-    const markdownData = data.replace(/(?<=\|[-:\t ]*)\t(?=[-:\t ]*\|)/g, '');
+    const markdownData = this.removeTabsFromTableHeaders(data);
     return this.markdownService.parse(markdownData, parseOptions);
   }
 
@@ -98,5 +97,18 @@ export class MarkdownWrapperService {
       FORBID_TAGS: this.forbidTags,
       FORBID_ATTR: this.forbidAttr,
     });
+  }
+
+  /**
+   * Removes tab characters from markdown table headers or they won't display properly
+   * Markdown uses pipes with three or more hyphens in between to create columns and headers, and colons to align text
+   * E.g., |---|---|---| or | :--- | ---: | where there can be spaces between pipes and hypens but not tabs
+   * @param {string} data A string containing the markdown data
+   * @returns {string}
+   */
+  removeTabsFromTableHeaders(data: string): string {
+    return data
+      .replace(/(?<=\|[\t ]*)\t(?=[\t ]*:?-+:?[\t ]*\|)/g, '    ') // remove tabs after the starting pipe before the hyphens
+      .replace(/(?<=\|[\t ]*:?-+:?[\t ]*)\t(?=[\t ]*\|)/g, '    '); // remove tabs after the hyphens before the ending pipe
   }
 }
