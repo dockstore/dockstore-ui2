@@ -42,6 +42,8 @@ describe('GitHub App Tools', () => {
       cy.visit('/users/user_A');
       const mockEvent: LambdaEvent[] = [
         {
+          deliveryId: '1',
+          entryName: 'entry1',
           eventDate: 1582165220000,
           githubUsername: 'testUser',
           id: 1,
@@ -91,6 +93,8 @@ describe('GitHub App Tools', () => {
 
       const realResponse: LambdaEvent[] = [
         {
+          deliveryId: '1',
+          entryName: 'entry1',
           eventDate: 1582165220000,
           githubUsername: 'testUser',
           id: 1,

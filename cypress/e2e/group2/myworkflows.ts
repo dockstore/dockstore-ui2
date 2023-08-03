@@ -71,6 +71,8 @@ describe('Dockstore my workflows', () => {
       cy.contains('Close').click();
       const realResponse = [
         {
+          deliveryId: '1',
+          entryName: 'entry1',
           eventDate: 1582165220000,
           githubUsername: 'boil',
           id: 1,
@@ -82,6 +84,8 @@ describe('Dockstore my workflows', () => {
           type: 'PUSH',
         },
         {
+          deliveryId: '2',
+          entryName: 'entry2',
           eventDate: 1591368041850,
           githubUsername: 'em',
           id: 2,
