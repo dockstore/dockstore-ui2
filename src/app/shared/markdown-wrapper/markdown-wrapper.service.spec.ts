@@ -20,8 +20,8 @@ describe('MarkdownWrapperService', () => {
       '|table|with|tabs|\n|    ---|---:|---    |\n|1|2|3|'
     );
     expect(service.removeTabsFromTableHeaders('|test||table|\n| --- \t|| --- \t\t|')).toEqual('|test||table|\n| ---     || ---         |');
-    expect(service.removeTabsFromTableHeaders('| :--: \t   \t| ------: \t | \t---------- |')).toEqual(
-      '| :--:            | ------:      |     ---------- |'
+    expect(service.removeTabsFromTableHeaders('| :---: \t   \t| ------: \t | \t---------- |')).toEqual(
+      '| :---:            | ------:      |     ---------- |'
     );
 
     // tab characters should not removed for strings that do not follow table syntax
