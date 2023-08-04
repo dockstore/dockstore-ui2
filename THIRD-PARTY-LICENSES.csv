@@ -210,7 +210,7 @@
 "schematics-utilities@2.0.3","MIT","https://github.com/nitayneeman/schematics-utilities"
 "select@1.1.2","MIT","https://github.com/zenorocha/select"
 "semver-intersect@1.4.0","MIT","https://github.com/snyamathi/semver-intersect"
-"semver@5.7.1","ISC","https://github.com/npm/node-semver"
+"semver@5.7.2","ISC","https://github.com/npm/node-semver"
 "semver@6.3.0","ISC","https://github.com/npm/node-semver"
 "smart-buffer@4.2.0","MIT","https://github.com/JoshGlazebrook/smart-buffer"
 "socks-proxy-agent@4.0.2","MIT","https://github.com/TooTallNate/node-socks-proxy-agent"

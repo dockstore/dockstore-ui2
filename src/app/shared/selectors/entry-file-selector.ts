@@ -24,8 +24,7 @@ import { ga4ghWorkflowIdPrefix } from '../constants';
 import { DescriptorTypeWithPlain } from '../descriptor-type-compat.service';
 import { FileService } from '../file.service';
 import { GA4GHFilesService } from '../ga4gh-files/ga4gh-files.service';
-import { EntriesService, GA4GHV20Service } from '../openapi';
-import { FileWrapper, Tag, ToolDescriptor, ToolFile, WorkflowVersion } from '../openapi';
+import { EntriesService, GA4GHV20Service, FileWrapper, Tag, ToolDescriptor, ToolFile, WorkflowVersion } from '../openapi';
 
 /**
  * Abstract class to be implemented by components that have select boxes for a given entry and version

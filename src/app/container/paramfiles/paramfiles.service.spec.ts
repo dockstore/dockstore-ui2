@@ -129,12 +129,12 @@ describe('Service: paramFiles.service.ts', () => {
   it('should ...', inject([ParamfilesService], (service: ParamfilesService) => {
     expect(service).toBeTruthy();
   }));
-  it('should get workflow test parameter files from swagger workflowsService', inject([ParamfilesService], (service: ParamfilesService) => {
+  it('should get workflow test parameter files from openapi workflowsService', inject([ParamfilesService], (service: ParamfilesService) => {
     service.getFiles(1, 'workflows', 'develop', 'CWL').subscribe((files) => {
       expect(files).toEqual([]);
     });
   }));
-  it('should get tool test parameter files from swagger containersService', inject([ParamfilesService], (service: ParamfilesService) => {
+  it('should get tool test parameter files from openapi containersService', inject([ParamfilesService], (service: ParamfilesService) => {
     service.getFiles(1, 'containers', 'develop', 'CWL').subscribe((files) => {
       expect(files).toEqual([]);
     });

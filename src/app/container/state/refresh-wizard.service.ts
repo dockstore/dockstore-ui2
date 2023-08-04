@@ -7,7 +7,6 @@ import { TokenSource } from 'app/shared/enum/token-source.enum';
 import { UsersService } from 'app/shared/openapi';
 import { SessionQuery } from 'app/shared/session/session.query';
 import { SessionService } from 'app/shared/session/session.service';
-import { UsersService as SwaggerUsersService } from 'app/shared/openapi';
 import { UserQuery } from 'app/shared/user/user.query';
 import { finalize } from 'rxjs/operators';
 import { RefreshWizardQuery } from './refresh-wizard.query';
@@ -17,8 +16,7 @@ import { RefreshWizardStore } from './refresh-wizard.store';
 export class RefreshWizardService {
   constructor(
     private refreshWizardStore: RefreshWizardStore,
-    private dockerRegistriesService: UsersService,
-    private swaggerUsersService: SwaggerUsersService,
+    private usersService: UsersService,
     private userQuery: UserQuery,
     private refreshWizardQuery: RefreshWizardQuery,
     private matSnackBar: MatSnackBar,
@@ -28,7 +26,7 @@ export class RefreshWizardService {
   ) {}
   getOrganizations(dockerRegistry: string) {
     this.refreshWizardStore.setLoading(true);
-    this.dockerRegistriesService
+    this.usersService
       .getDockerRegistriesOrganization(dockerRegistry)
       .pipe(finalize(() => this.refreshWizardStore.setLoading(false)))
       .subscribe(
@@ -55,7 +53,7 @@ export class RefreshWizardService {
     const userId = this.userQuery.getValue().user.id;
     const entryType = this.sessionQuery.getValue().entryType;
     const selectedOrganization = this.refreshWizardQuery.getValue().selectedOrganization;
-    this.swaggerUsersService
+    this.usersService
       .refreshToolsByOrganization(userId, selectedOrganization, repository)
       .pipe(finalize(() => this.sessionService.setLoadingDialog(false)))
       .subscribe(
@@ -72,7 +70,7 @@ export class RefreshWizardService {
   @transaction()
   getRepositories(organization: string) {
     this.refreshWizardStore.setLoading(true);
-    this.dockerRegistriesService
+    this.usersService
       .getDockerRegistryOrganizationRepositories(TokenSource.QUAY, organization)
       .pipe(finalize(() => this.refreshWizardStore.setLoading(false)))
       .subscribe((repositories) => {

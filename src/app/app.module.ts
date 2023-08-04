@@ -51,6 +51,7 @@ import { AccountSidebarModule } from './loginComponents/accounts/account-sidebar
 import { AccountsComponent } from './loginComponents/accounts/accounts.component';
 import { ControlsComponent } from './loginComponents/accounts/controls/controls.component';
 import { DeleteAccountDialogComponent } from './loginComponents/accounts/controls/delete-account-dialog/delete-account-dialog.component';
+import { DeleteEntryDialogComponent } from './entry/delete/dialog/delete-entry-dialog.component';
 import { RevokeTokenDialogComponent } from './loginComponents/accounts/external/revoke-token-dialog/revoke-token-dialog.component';
 import { AccountsExternalComponent } from './loginComponents/accounts/external/accounts.component';
 import { AccountsService } from './loginComponents/accounts/external/accounts.service';
@@ -98,7 +99,7 @@ import { PagenumberService } from './shared/pagenumber.service';
 import { PipeModule } from './shared/pipe/pipe.module';
 import { ProviderService } from './shared/provider.service';
 import { RefreshService } from './shared/refresh.service';
-import { ApiModule } from './shared/swagger/api.module';
+import { ApiModule } from './shared/openapi/api.module';
 import { Configuration } from './shared/openapi/configuration';
 import { TrackLoginService } from './shared/track-login.service';
 import { TwitterService } from './shared/twitter.service';
@@ -141,6 +142,7 @@ export function initializerFactory(
     AppComponent,
     ControlsComponent,
     DeleteAccountDialogComponent,
+    DeleteEntryDialogComponent,
     NavbarComponent,
     FooterComponent,
     SitewideNotificationsComponent,

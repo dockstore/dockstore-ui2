@@ -21,7 +21,7 @@ export class DagQuery extends Query<DagState> {
    * @memberof DagQuery
    */
   isMissingTool(dagResults: any): boolean {
-    if (!dagResults) {
+    if (!dagResults || !dagResults.edges || !dagResults.nodes) {
       return true;
     } else {
       return dagResults.edges.length < 1 && dagResults.nodes.length < 1;

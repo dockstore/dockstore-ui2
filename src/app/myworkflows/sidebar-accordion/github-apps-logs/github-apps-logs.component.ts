@@ -35,8 +35,8 @@ import { DescriptorLanguageService } from '../../../shared/entry/descriptor-lang
 export class GithubAppsLogsComponent implements OnInit {
   datePipe: DatePipe;
   mapPipe: MapFriendlyValuesPipe;
-  columnsToDisplay: string[] = ['repository', 'reference', 'success', 'type'];
-  displayedColumns: string[] = ['eventDate', 'githubUsername', ...this.columnsToDisplay];
+  columnsToDisplay: string[];
+  displayedColumns: string[];
   lambdaEvents: LambdaEvent[] | null;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -48,7 +48,7 @@ export class GithubAppsLogsComponent implements OnInit {
   isExpansionDetailRow = (i: number, row: Object) => row.hasOwnProperty('detailRow');
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public matDialogData: string,
+    @Inject(MAT_DIALOG_DATA) public matDialogData: { userId?: number; organization?: string },
     private lambdaEventsService: LambdaEventsService,
     private matSnackBar: MatSnackBar,
     private descriptorLanguageService: DescriptorLanguageService
@@ -64,11 +64,17 @@ export class GithubAppsLogsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.columnsToDisplay = this.matDialogData.userId
+      ? ['organization', 'repository', 'reference', 'success', 'type']
+      : ['repository', 'reference', 'success', 'type'];
+    this.displayedColumns = ['eventDate', 'githubUsername', ...this.columnsToDisplay];
     this.loading = true;
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
-    this.lambdaEventsService
-      .getLambdaEventsByOrganization(this.matDialogData)
+    const lambdaEvents = this.matDialogData.userId
+      ? this.lambdaEventsService.getUserLambdaEvents(this.matDialogData.userId)
+      : this.lambdaEventsService.getLambdaEventsByOrganization(this.matDialogData.organization);
+    lambdaEvents
       .pipe(
         finalize(() => {
           this.loading = false;

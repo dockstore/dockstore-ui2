@@ -20,8 +20,7 @@ import { Router } from '@angular/router';
 import { ID, transaction } from '@datorama/akita';
 import { finalize } from 'rxjs/operators';
 import { AlertService } from '../../shared/alert/state/alert.service';
-import { OrganizationsService } from '../../shared/swagger';
-import { Collection, OrganizationsService as OpenApiOrganizationsService } from '../../shared/openapi';
+import { Collection, OrganizationsService } from '../../shared/openapi';
 import { CollectionsQuery } from './collections.query';
 import { CollectionsStore } from './collections.store';
 import { OrganizationQuery } from './organization.query';
@@ -32,7 +31,6 @@ export class CollectionsService {
   constructor(
     private collectionsStore: CollectionsStore,
     private organizationsService: OrganizationsService,
-    private openApiOrganizationsService: OpenApiOrganizationsService,
     private alertService: AlertService,
     private organizationService: OrganizationService,
     private organizationStore: OrganizationQuery,
@@ -54,7 +52,7 @@ export class CollectionsService {
     const activeId: ID = this.collectionsQuery.getActiveId();
     this.collectionsStore.remove();
     this.organizationsService
-      .getCollectionsFromOrganization(organizationID)
+      .getCollectionsFromOrganization(organizationID, '')
       .pipe(finalize(() => this.collectionsStore.setLoading(false)))
       .subscribe(
         (collections: Array<Collection>) => {
@@ -178,7 +176,7 @@ export class CollectionsService {
     this.collectionsStore.setLoading(true);
     this.collectionsStore.setError(false);
     this.alertService.start('Removing collection ' + collectionName);
-    this.openApiOrganizationsService.deleteCollection(organizationId, collectionId).subscribe(
+    this.organizationsService.deleteCollection(organizationId, collectionId).subscribe(
       () => {
         this.collectionsStore.setLoading(false);
         this.collectionsStore.setError(false);

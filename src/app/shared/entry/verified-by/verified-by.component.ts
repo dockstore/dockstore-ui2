@@ -2,8 +2,7 @@ import { Component, Input, OnChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AvailableLogsComponent } from '../../available-logs/available-logs.component';
 import { bootstrap4largeModalSize } from '../../constants';
-import { VersionVerifiedPlatform } from '../../openapi';
-import { Tag, WorkflowVersion } from '../../openapi';
+import { VersionVerifiedPlatform, Tag, WorkflowVersion } from '../../openapi';
 import { VerifiedByService } from '../../verified-by.service';
 
 @Component({
