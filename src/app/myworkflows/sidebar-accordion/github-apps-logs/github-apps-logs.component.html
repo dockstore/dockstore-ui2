@@ -39,17 +39,19 @@
         <ng-container matColumnDef="deliveryId">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Delivery ID</th>
           <td mat-cell *matCellDef="let element">
-            {{ element.deliveryId.substring(0, 7) }}
-            <button
-              mat-icon-button
-              color="secondary"
-              type="button"
-              matTooltip="Copy Delivery ID"
-              [cdkCopyToClipboard]="element.deliveryId"
-              appSnackbar
-            >
-              <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
-            </button>
+            <div fxLayout fxLayoutAlign="start center">
+              <span class="w-100">{{ element.deliveryId.substring(0, 7) }}</span>
+              <button
+                mat-icon-button
+                color="secondary"
+                type="button"
+                matTooltip="Copy Delivery ID"
+                [cdkCopyToClipboard]="element.deliveryId"
+                appSnackbar
+              >
+                <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
+              </button>
+            </div>
           </td>
         </ng-container>
         <ng-container matColumnDef="{{ column }}" *ngFor="let column of columnsToDisplay">
