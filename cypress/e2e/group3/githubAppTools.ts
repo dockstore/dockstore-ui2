@@ -110,6 +110,21 @@ describe('GitHub App Tools', () => {
         body: realResponse,
       }).as('lambdaEvents');
       cy.contains('Apps Logs').click();
+
+      // Check that app logs contain the correct columns
+      const appLogColumns = [
+        'Date',
+        'GitHub Username',
+        'Entry Name',
+        'Delivery ID',
+        'Organization',
+        'Repository',
+        'Reference',
+        'Success',
+        'Type',
+      ];
+      appLogColumns.forEach((column) => cy.contains(column));
+
       cy.contains('1 – 1 of 1');
       cy.contains('Close').click();
 
