@@ -14,7 +14,7 @@ export class GravatarService {
 
   public gravatarUrlForMysteryPerson() {
     // use "mp" (mystery-person) from https://en.gravatar.com/site/implement/images/
-    return `${this.gravatarBaseUrl}?d=mp&s=500`;
+    return `${this.gravatarBaseUrl}000?s=500&d=mp`;
   }
 
   public gravatarUrlForImageUrl(imageUrl: string | null) {
