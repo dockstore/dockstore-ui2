@@ -104,11 +104,9 @@ export class MarkdownWrapperService {
    * Markdown uses pipes with three or more hyphens in between to create columns and headers, and colons to align text
    * E.g., |---|---|---| or | :--- | ---: | where there can be spaces between pipes and hyphens but not tabs
    * @param {string} data A string containing the markdown data
-   * @returns {string}
+   * @returns {string} The modified string where all tabs in lines beginning with '|' are replaced with four spaces
    */
   removeTabsFromTableHeaders(data: string): string {
-    return data
-      .replace(/(?<=\|[\t ]*)\t(?=[\t ]*:?-{3,}:?[\t ]*\|)/g, '    ') // remove tabs after the starting pipe before the hyphens
-      .replace(/(?<=\|[\t ]*:?-{3,}:?[\t ]*)\t(?=[\t ]*\|)/g, '    '); // remove tabs after the hyphens before the ending pipe
+    return data.replace(/(^\|.*)/gm, (match) => match.replace(/\t/g, '    '));
   }
 }

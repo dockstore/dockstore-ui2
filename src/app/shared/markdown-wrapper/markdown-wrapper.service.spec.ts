@@ -25,8 +25,8 @@ describe('MarkdownWrapperService', () => {
     );
 
     // tab characters should not removed for strings that do not follow table syntax
-    expect(service.removeTabsFromTableHeaders('| this | is | not | a\t | table |')).toEqual('| this | is | not | a\t | table |');
-    expect(service.removeTabsFromTableHeaders('not |\n|| | a |----||--\t  ---|table')).toEqual('not |\n|| | a |----||--\t  ---|table');
-    expect(service.removeTabsFromTableHeaders('|---\t-|----\t\t:|-\t---\t-::\t|\n')).toEqual('|---\t-|----\t\t:|-\t---\t-::\t|\n');
+    expect(service.removeTabsFromTableHeaders('someString\t')).toEqual('someString\t');
+    expect(service.removeTabsFromTableHeaders('this | is | not | a\t | table')).toEqual('this | is | not | a\t | table');
+    expect(service.removeTabsFromTableHeaders('---\t-|----\t\t:|-\t---\t-::\t|\n')).toEqual('---\t-|----\t\t:|-\t---\t-::\t|\n');
   }));
 });
