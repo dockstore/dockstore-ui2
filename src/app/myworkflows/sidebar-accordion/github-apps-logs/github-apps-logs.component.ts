@@ -65,9 +65,9 @@ export class GithubAppsLogsComponent implements OnInit {
 
   ngOnInit() {
     this.columnsToDisplay = this.matDialogData.userId
-      ? ['organization', 'repository', 'reference', 'success', 'type']
-      : ['repository', 'reference', 'success', 'type'];
-    this.displayedColumns = ['eventDate', 'githubUsername', 'entryName', 'deliveryId', ...this.columnsToDisplay];
+      ? ['organization', 'repository', 'entryName', 'deliveryId', 'reference', 'success', 'type']
+      : ['repository', 'entryName', 'deliveryId', 'reference', 'success', 'type'];
+    this.displayedColumns = ['eventDate', 'githubUsername', ...this.columnsToDisplay];
     this.loading = true;
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
