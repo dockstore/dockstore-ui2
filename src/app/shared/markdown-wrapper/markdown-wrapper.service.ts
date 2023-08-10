@@ -107,6 +107,6 @@ export class MarkdownWrapperService {
    * @returns {string} The modified string where all tabs in lines beginning with '|' are replaced with four spaces
    */
   removeTabsFromTableHeaders(data: string): string {
-    return data.replace(/(^\|.*)/gm, (match) => match.replace(/\t/g, '    '));
+    return data.replace(/(^ {0,3}\|.*)/gm, (match) => match.replace(/\t/g, '    '));
   }
 }
