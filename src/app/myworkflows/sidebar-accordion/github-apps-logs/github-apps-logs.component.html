@@ -32,9 +32,33 @@
           <th mat-header-cell *matHeaderCellDef mat-sort-header>GitHub Username</th>
           <td mat-cell *matCellDef="let element">{{ element.githubUsername }}</td>
         </ng-container>
-        <ng-container matColumnDef="{{ column }}" *ngFor="let column of columnsToDisplay">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ column | titlecase }}</th>
-          <td mat-cell *matCellDef="let element">{{ column | mapFriendlyValue: element[column] }}</td>
+        <ng-container matColumnDef="{{ column }}" *ngFor="let column of columnsToDisplay" [ngSwitch]="column">
+          <div *ngSwitchCase="'entryName'">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Entry Name</th>
+            <td mat-cell *matCellDef="let element">{{ element.entryName ? element.entryName : 'n/a' }}</td>
+          </div>
+          <div *ngSwitchCase="'deliveryId'">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Delivery ID</th>
+            <td mat-cell *matCellDef="let element">
+              <div fxLayout fxLayoutAlign="start center">
+                <span class="w-100">{{ element.deliveryId.substring(0, 7) }}</span>
+                <button
+                  mat-icon-button
+                  color="secondary"
+                  type="button"
+                  matTooltip="{{ element.deliveryId }}"
+                  [cdkCopyToClipboard]="element.deliveryId"
+                  appSnackbar
+                >
+                  <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
+                </button>
+              </div>
+            </td>
+          </div>
+          <div *ngSwitchDefault>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ column | titlecase }}</th>
+            <td mat-cell *matCellDef="let element">{{ column | mapFriendlyValue: element[column] }}</td>
+          </div>
         </ng-container>
 
         <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->

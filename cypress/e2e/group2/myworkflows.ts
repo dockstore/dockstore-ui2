@@ -71,6 +71,8 @@ describe('Dockstore my workflows', () => {
       cy.contains('Close').click();
       const realResponse = [
         {
+          deliveryId: '1',
+          entryName: 'entry1',
           eventDate: 1582165220000,
           githubUsername: 'boil',
           id: 1,
@@ -82,6 +84,8 @@ describe('Dockstore my workflows', () => {
           type: 'PUSH',
         },
         {
+          deliveryId: '2',
+          entryName: 'entry2',
           eventDate: 1591368041850,
           githubUsername: 'em',
           id: 2,
@@ -97,6 +101,9 @@ describe('Dockstore my workflows', () => {
         body: realResponse,
       }).as('refreshWorkflow');
       cy.contains('Apps Logs').click();
+      // Check that app logs contain the correct columns
+      const appLogColumns = ['Date', 'GitHub Username', 'Entry Name', 'Delivery ID', 'Repository', 'Reference', 'Success', 'Type'];
+      appLogColumns.forEach((column) => cy.contains(column));
       // These next 2 values work on Circle CI (UTC?) I would have thought East Coast time, but there's an 8 hour diff with West Coast time. Confused
       cy.contains('2020-02-20T02:20');
       cy.contains('2020-06-05T14:40');

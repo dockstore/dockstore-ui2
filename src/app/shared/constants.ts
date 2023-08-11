@@ -29,6 +29,7 @@ export const includesAuthors = 'authors';
 export const bootstrap4smallModalSize = '300px';
 export const bootstrap4mediumModalSize = '500px';
 export const bootstrap4largeModalSize = '800px';
+export const bootstrap4extraLargeModalSize = '1140px';
 export const myBioWorkflowsURLSegment = 'my-workflows';
 export const myServicesURLSegment = 'my-services';
 export const myToolsURLSegment = 'my-tools';
