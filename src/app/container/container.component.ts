@@ -70,6 +70,7 @@ export class ContainerComponent extends Entry<Tag> implements AfterViewInit, OnI
   public DockstoreToolType = DockstoreTool;
   public isManualMode$: Observable<boolean>;
   public displayAppTool: boolean = false;
+  public displayTool: boolean = false;
   tool$: Observable<DockstoreTool | null>;
   apptool$: Observable<Workflow | null>;
   validTabs = ['info', 'launch', 'versions', 'files'];
@@ -260,6 +261,7 @@ export class ContainerComponent extends Entry<Tag> implements AfterViewInit, OnI
           }
         }
       );
+      this.displayTool = true;
     }
   }
 

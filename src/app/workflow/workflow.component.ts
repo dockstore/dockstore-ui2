@@ -389,41 +389,39 @@ export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterVi
   }
 
   public setupPublicEntry(url: string) {
-    if (!url.includes('containers') && !url.includes('tools')) {
-      const subclass: WorkflowSubClass = this.getWorkflowSubclass(this.entryType);
-      this.workflowsService
-        .getPublishedWorkflowByPath(this.title, subclass, includesValidation + ',' + includesAuthors, this.urlVersion)
-        .subscribe(
-          (workflow) => {
-            this.workflowService.setWorkflow(workflow);
-            this.selectTab(this.validTabs.indexOf(this.currentTab));
-            this.updateWorkflowUrl(this.workflow);
-          },
-          (error) => {
-            const workflowOrgRegex = /\/workflows\/.+/;
-            const workflowRegex = /\/workflows\/(github.com)|(gitlab.com)|(bitbucket.org)\/.+/;
-            const gitHubAppToolRegex = /\/containers\/(github.com)\/.+/;
-            if (
-              workflowOrgRegex.test(this.resourcePath) ||
-              workflowRegex.test(this.resourcePath) ||
-              gitHubAppToolRegex.test(this.resourcePath)
-            ) {
-              this.router.navigate(['page-not-found']);
-            } else {
-              this.showRedirect = true;
-              // Retrieve the workflow path from the URL
-              const splitPath = this.resourcePath.split('/');
-              const workflowPath = splitPath.slice(2, 5);
-              const pathSuffix = workflowPath.join('/');
+    const subclass: WorkflowSubClass = this.getWorkflowSubclass(this.entryType);
+    this.workflowsService
+      .getPublishedWorkflowByPath(this.title, subclass, includesValidation + ',' + includesAuthors, this.urlVersion)
+      .subscribe(
+        (workflow) => {
+          this.workflowService.setWorkflow(workflow);
+          this.selectTab(this.validTabs.indexOf(this.currentTab));
+          this.updateWorkflowUrl(this.workflow);
+        },
+        (error) => {
+          const workflowOrgRegex = /\/workflows\/.+/;
+          const workflowRegex = /\/workflows\/(github.com)|(gitlab.com)|(bitbucket.org)\/.+/;
+          const gitHubAppToolRegex = /\/containers\/(github.com)\/.+/;
+          if (
+            workflowOrgRegex.test(this.resourcePath) ||
+            workflowRegex.test(this.resourcePath) ||
+            gitHubAppToolRegex.test(this.resourcePath)
+          ) {
+            this.router.navigate(['page-not-found']);
+          } else {
+            this.showRedirect = true;
+            // Retrieve the workflow path from the URL
+            const splitPath = this.resourcePath.split('/');
+            const workflowPath = splitPath.slice(2, 5);
+            const pathSuffix = workflowPath.join('/');
 
-              // Create suggested paths
-              this.gitlabPath += pathSuffix;
-              this.githubPath += pathSuffix;
-              this.bitbucketPath += pathSuffix;
-            }
+            // Create suggested paths
+            this.gitlabPath += pathSuffix;
+            this.githubPath += pathSuffix;
+            this.bitbucketPath += pathSuffix;
           }
-        );
-    }
+        }
+      );
   }
   /**
    * Updates the workflow (bio workflow or service) url and also checks for the null
