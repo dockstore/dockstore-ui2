@@ -31,11 +31,10 @@ import { ContainerService } from '../shared/container.service';
 import { DateService } from '../shared/date.service';
 import { DockstoreService } from '../shared/dockstore.service';
 import { Entry } from '../shared/entry';
-import { EntryType } from '../shared/enum/entry-type';
 import { ExtendedDockstoreToolQuery } from '../shared/extended-dockstoreTool/extended-dockstoreTool.query';
 import { GA4GHFilesService } from '../shared/ga4gh-files/ga4gh-files.service';
 import { ImageProviderService } from '../shared/image-provider.service';
-import { EntriesService, Workflow, Tag } from '../shared/openapi';
+import { EntriesService, Tag } from '../shared/openapi';
 import { ProviderService } from '../shared/provider.service';
 import { SessionQuery } from '../shared/session/session.query';
 import { SessionService } from '../shared/session/session.service';
@@ -63,16 +62,12 @@ export class ContainerComponent extends Entry<Tag> implements AfterViewInit, OnI
   ModeEnum = DockstoreTool.ModeEnum;
   public requestAccessHREF$: Observable<string>;
   public contactAuthorHREF: string;
-  public missingWarning: boolean;
   public tool: DockstoreTool;
   public toolCopyBtn: string;
   public sortedVersions: Array<Tag> = [];
   public DockstoreToolType = DockstoreTool;
   public isManualMode$: Observable<boolean>;
-  public displayAppTool: boolean = false;
   public displayTool: boolean = false;
-  tool$: Observable<DockstoreTool | null>;
-  apptool$: Observable<Workflow | null>;
   validTabs = ['info', 'launch', 'versions', 'files'];
   separatorKeysCodes = [ENTER, COMMA];
   public schema: BioschemaTool;
@@ -193,7 +188,6 @@ export class ContainerComponent extends Entry<Tag> implements AfterViewInit, OnI
     this.toolQuery.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((tool) => {
       this.tool = tool;
       if (tool) {
-        this.displayAppTool = true;
         this.published = this.tool.is_published;
         if (this.tool.workflowVersions.length === 0) {
           this.selectedVersion = null;
@@ -241,7 +235,6 @@ export class ContainerComponent extends Entry<Tag> implements AfterViewInit, OnI
   public setupPublicEntry(url: string) {
     if (url.includes('/containers/github.com') || url.includes('/tools/github.com')) {
       this.containerService.setTool(null);
-      this.displayAppTool = true;
     } else if (url.includes('containers') || url.includes('tools')) {
       // Only get published tool if the URI is for a specific tool (/containers/quay.io%2FA2%2Fb3)
       // as opposed to just /tools or /docs etc.
