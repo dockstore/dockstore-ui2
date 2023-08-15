@@ -42,6 +42,8 @@ describe('GitHub App Tools', () => {
       cy.visit('/users/user_A');
       const mockEvent: LambdaEvent[] = [
         {
+          deliveryId: '1',
+          entryName: 'entry1',
           eventDate: 1582165220000,
           githubUsername: 'testUser',
           id: 1,
@@ -91,6 +93,8 @@ describe('GitHub App Tools', () => {
 
       const realResponse: LambdaEvent[] = [
         {
+          deliveryId: '1',
+          entryName: 'entry1',
           eventDate: 1582165220000,
           githubUsername: 'testUser',
           id: 1,
@@ -106,6 +110,21 @@ describe('GitHub App Tools', () => {
         body: realResponse,
       }).as('lambdaEvents');
       cy.contains('Apps Logs').click();
+
+      // Check that app logs contain the correct columns
+      const appLogColumns = [
+        'Date',
+        'GitHub Username',
+        'Entry Name',
+        'Delivery ID',
+        'Organization',
+        'Repository',
+        'Reference',
+        'Success',
+        'Type',
+      ];
+      appLogColumns.forEach((column) => cy.contains(column));
+
       cy.contains('1 – 1 of 1');
       cy.contains('Close').click();
 

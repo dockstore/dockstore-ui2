@@ -14,6 +14,7 @@
  *    limitations under the License.
  */
 
+import { ClipboardModule } from '@angular/cdk/clipboard';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
@@ -21,10 +22,20 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { RefreshAlertModule } from 'app/shared/alert/alert.module';
 import { CustomMaterialModule } from 'app/shared/modules/material.module';
 import { PipeModule } from '../../../shared/pipe/pipe.module';
+import { SnackbarModule } from '../../../shared/modules/snackbar.module';
 import { GithubAppsLogsComponent } from './github-apps-logs.component';
 
 @NgModule({
-  imports: [CustomMaterialModule, CommonModule, RefreshAlertModule, FlexLayoutModule, PipeModule, RouterModule],
+  imports: [
+    CustomMaterialModule,
+    CommonModule,
+    RefreshAlertModule,
+    FlexLayoutModule,
+    PipeModule,
+    RouterModule,
+    ClipboardModule,
+    SnackbarModule,
+  ],
   declarations: [GithubAppsLogsComponent],
 })
 export class GitHubAppsLogsModule {}

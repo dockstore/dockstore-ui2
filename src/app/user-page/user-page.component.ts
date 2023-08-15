@@ -8,7 +8,7 @@ import { takeUntil } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AlertService } from '../shared/alert/state/alert.service';
 import { GithubAppsLogsComponent } from '../myworkflows/sidebar-accordion/github-apps-logs/github-apps-logs.component';
-import { accountInfo, bootstrap4largeModalSize } from '../shared/constants';
+import { accountInfo, bootstrap4extraLargeModalSize } from '../shared/constants';
 import { MatDialog } from '@angular/material/dialog';
 import { UserQuery } from '../shared/user/user.query';
 import { Base } from '../shared/base';
@@ -79,7 +79,7 @@ export class UserPageComponent extends Base implements OnInit {
   }
 
   openGitHubAppsLogs(userId: number) {
-    this.dialog.open(GithubAppsLogsComponent, { width: bootstrap4largeModalSize, data: { userId: userId } });
+    this.dialog.open(GithubAppsLogsComponent, { width: bootstrap4extraLargeModalSize, data: { userId: userId } });
   }
 
   ngOnInit(): void {

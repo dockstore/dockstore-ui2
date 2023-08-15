@@ -52,6 +52,22 @@ describe('MarkdownWrapperComponent', () => {
   );
 
   it(
+    'should contain table',
+    waitForAsync(() => {
+      wrapperComponent.data = '|this|is|a|test|\n|---|---|---|---|\n|1|2|3|4|';
+      wrapperComponent.ngOnChanges(); // has to be called manually in unit tests (TestBed doesn't by default)
+      fixture.detectChanges();
+      expect(fixture.nativeElement.innerHTML).toContain('table');
+
+      // tab characters should be removed
+      wrapperComponent.data = '|this|is|a|test|\n|---|---|---   \t|---\t|\n|1|2|3|4|';
+      wrapperComponent.ngOnChanges(); // has to be called manually in unit tests (TestBed doesn't by default)
+      fixture.detectChanges();
+      expect(fixture.nativeElement.innerHTML).toContain('table');
+    })
+  );
+
+  it(
     'should have correctly sanitized spans',
     waitForAsync(() => {
       // first <span> should contain just a link and no class
