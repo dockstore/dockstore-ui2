@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TokenSource } from '../shared/enum/token-source.enum';
-import { Profile, TokenUser } from '../shared/openapi';
+import { Profile, TokenUser, User } from '../shared/openapi';
 import { UsersService } from '../shared/openapi/api/users.service';
 import { UserService } from '../shared/user/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -23,6 +23,7 @@ import { AccountInfo } from '../loginComponents/accounts/external/accounts.compo
 export class UserPageComponent extends Base implements OnInit {
   public user: any;
   public username: string;
+  public userId: number;
   public TokenSource = TokenSource;
   public googleProfile: Profile;
   public gitHubProfile: Profile;
@@ -69,6 +70,7 @@ export class UserPageComponent extends Base implements OnInit {
               this.gitHubProfile.avatarURL = this.userService.gravatarUrl(this.gitHubProfile.avatarURL);
             }
           }
+          this.getOtherLinkedAccounts(this.user);
         }
       },
       (error: HttpErrorResponse) => {
@@ -82,15 +84,20 @@ export class UserPageComponent extends Base implements OnInit {
     this.dialog.open(GithubAppsLogsComponent, { width: bootstrap4extraLargeModalSize, data: { userId: userId } });
   }
 
+  getOtherLinkedAccounts(user: User) {
+    this.usersService
+      .getUserTokens(this.user.id)
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((tokens: TokenUser[]) => {
+        for (const account of this.accountsInfo) {
+          const found = tokens.find((token) => token.tokenSource === account.source);
+          if (found && !this.publicAccountsSource.includes(account.source)) {
+            this.otherLinkedAccountsInfo.push(Object.assign({ username: found?.username }, account));
+          }
+        }
+      });
+  }
   ngOnInit(): void {
     this.getUserInfo(this.username);
-    this.tokenQuery.tokens$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((tokens: TokenUser[]) => {
-      for (const account of this.accountsInfo) {
-        const found = tokens.find((token) => token.tokenSource === account.source);
-        if (found && !this.publicAccountsSource.includes(account.source)) {
-          this.otherLinkedAccountsInfo.push(Object.assign({ username: found?.username }, account));
-        }
-      }
-    });
   }
 }
