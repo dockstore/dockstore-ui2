@@ -13,7 +13,7 @@
   ~    See the License for the specific language governing permissions and
   ~    limitations under the License.
   -->
-<div *ngIf="displayTool; else workflow">
+<div *ngIf="tool || displayPublicTool; else workflow">
   <div
     class="row m-1"
     *ngIf="

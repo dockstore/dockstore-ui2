@@ -67,7 +67,7 @@ export class ContainerComponent extends Entry<Tag> implements AfterViewInit, OnI
   public sortedVersions: Array<Tag> = [];
   public DockstoreToolType = DockstoreTool;
   public isManualMode$: Observable<boolean>;
-  public displayTool: boolean = false;
+  public displayPublicTool: boolean = false;
   validTabs = ['info', 'launch', 'versions', 'files'];
   separatorKeysCodes = [ENTER, COMMA];
   public schema: BioschemaTool;
@@ -254,7 +254,7 @@ export class ContainerComponent extends Entry<Tag> implements AfterViewInit, OnI
           }
         }
       );
-      this.displayTool = true;
+      this.displayPublicTool = true;
     }
   }
 
