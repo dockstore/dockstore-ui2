@@ -12,7 +12,6 @@ import { accountInfo, bootstrap4extraLargeModalSize } from '../shared/constants'
 import { MatDialog } from '@angular/material/dialog';
 import { UserQuery } from '../shared/user/user.query';
 import { Base } from '../shared/base';
-import { TokenQuery } from '../shared/state/token.query';
 import { AccountInfo } from '../loginComponents/accounts/external/accounts.component';
 
 @Component({
@@ -21,9 +20,8 @@ import { AccountInfo } from '../loginComponents/accounts/external/accounts.compo
   styleUrls: ['./user-page.component.scss'],
 })
 export class UserPageComponent extends Base implements OnInit {
-  public user: any;
+  public user: User;
   public username: string;
-  public userId: number;
   public TokenSource = TokenSource;
   public googleProfile: Profile;
   public gitHubProfile: Profile;
@@ -40,8 +38,7 @@ export class UserPageComponent extends Base implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private alertService: AlertService,
-    private userQuery: UserQuery,
-    private tokenQuery: TokenQuery
+    private userQuery: UserQuery
   ) {
     super();
     this.username = this.activatedRoute.snapshot.paramMap.get('username');
@@ -70,7 +67,7 @@ export class UserPageComponent extends Base implements OnInit {
               this.gitHubProfile.avatarURL = this.userService.gravatarUrl(this.gitHubProfile.avatarURL);
             }
           }
-          this.getOtherLinkedAccounts(this.user);
+          this.getOtherLinkedAccounts();
         }
       },
       (error: HttpErrorResponse) => {
@@ -84,7 +81,7 @@ export class UserPageComponent extends Base implements OnInit {
     this.dialog.open(GithubAppsLogsComponent, { width: bootstrap4extraLargeModalSize, data: { userId: userId } });
   }
 
-  getOtherLinkedAccounts(user: User) {
+  getOtherLinkedAccounts() {
     this.usersService
       .getUserTokens(this.user.id)
       .pipe(takeUntil(this.ngUnsubscribe))
@@ -92,7 +89,7 @@ export class UserPageComponent extends Base implements OnInit {
         for (const account of this.accountsInfo) {
           const found = tokens.find((token) => token.tokenSource === account.source);
           if (found && !this.publicAccountsSource.includes(account.source)) {
-            this.otherLinkedAccountsInfo.push(Object.assign({ username: found?.username }, account));
+            this.otherLinkedAccountsInfo.push(Object.assign({ username: found.username }, account));
           }
         }
       });
