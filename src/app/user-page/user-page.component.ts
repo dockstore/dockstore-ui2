@@ -82,6 +82,7 @@ export class UserPageComponent extends Base implements OnInit {
   }
 
   getOtherLinkedAccounts() {
+    this.otherLinkedAccountsInfo = [];
     this.usersService
       .getUserTokens(this.user.id)
       .pipe(takeUntil(this.ngUnsubscribe))
