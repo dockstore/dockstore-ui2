@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TokenSource } from '../shared/enum/token-source.enum';
-import { Profile, TokenUser } from '../shared/openapi';
+import { Profile, TokenUser, User } from '../shared/openapi';
 import { UsersService } from '../shared/openapi/api/users.service';
 import { UserService } from '../shared/user/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -12,7 +12,6 @@ import { accountInfo, bootstrap4extraLargeModalSize } from '../shared/constants'
 import { MatDialog } from '@angular/material/dialog';
 import { UserQuery } from '../shared/user/user.query';
 import { Base } from '../shared/base';
-import { TokenQuery } from '../shared/state/token.query';
 import { AccountInfo } from '../loginComponents/accounts/external/accounts.component';
 
 @Component({
@@ -21,7 +20,7 @@ import { AccountInfo } from '../loginComponents/accounts/external/accounts.compo
   styleUrls: ['./user-page.component.scss'],
 })
 export class UserPageComponent extends Base implements OnInit {
-  public user: any;
+  public user: User;
   public username: string;
   public TokenSource = TokenSource;
   public googleProfile: Profile;
@@ -39,8 +38,7 @@ export class UserPageComponent extends Base implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private alertService: AlertService,
-    private userQuery: UserQuery,
-    private tokenQuery: TokenQuery
+    private userQuery: UserQuery
   ) {
     super();
     this.username = this.activatedRoute.snapshot.paramMap.get('username');
@@ -69,6 +67,7 @@ export class UserPageComponent extends Base implements OnInit {
               this.gitHubProfile.avatarURL = this.userService.gravatarUrl(this.gitHubProfile.avatarURL);
             }
           }
+          this.getOtherLinkedAccounts();
         }
       },
       (error: HttpErrorResponse) => {
@@ -82,15 +81,21 @@ export class UserPageComponent extends Base implements OnInit {
     this.dialog.open(GithubAppsLogsComponent, { width: bootstrap4extraLargeModalSize, data: { userId: userId } });
   }
 
+  getOtherLinkedAccounts() {
+    this.otherLinkedAccountsInfo = [];
+    this.usersService
+      .getUserTokens(this.user.id)
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((tokens: TokenUser[]) => {
+        for (const account of this.accountsInfo) {
+          const found = tokens.find((token) => token.tokenSource === account.source);
+          if (found && !this.publicAccountsSource.includes(account.source)) {
+            this.otherLinkedAccountsInfo.push(Object.assign({ username: found.username }, account));
+          }
+        }
+      });
+  }
   ngOnInit(): void {
     this.getUserInfo(this.username);
-    this.tokenQuery.tokens$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((tokens: TokenUser[]) => {
-      for (const account of this.accountsInfo) {
-        const found = tokens.find((token) => token.tokenSource === account.source);
-        if (found && !this.publicAccountsSource.includes(account.source)) {
-          this.otherLinkedAccountsInfo.push(Object.assign({ username: found?.username }, account));
-        }
-      }
-    });
   }
 }
