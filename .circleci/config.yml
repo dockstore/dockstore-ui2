@@ -142,6 +142,11 @@ jobs:
           name: Codecov
           command: bash -i -c 'npx codecov'
       - run:
+          name: Java and node versions
+          command: |
+            java -version
+            node -v
+      - run:
           name: Install and run sonarscanner
           command: |
             if [[ -n "${CIRCLE_BRANCH}" ]] && [[ -n "${CIRCLE_PULL_REQUEST}" || "${CIRCLE_BRANCH}" == "develop" ]]
