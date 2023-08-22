@@ -19,11 +19,12 @@ import { AccountSidebarComponent } from './account-sidebar.component';
 import { CustomMaterialModule } from 'app/shared/modules/material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { ChangeUsernameModule } from '../internal/change-username/change-username.module';
 
 @NgModule({
   declarations: [AccountSidebarComponent],
-  imports: [CustomMaterialModule, FlexLayoutModule, CommonModule, ChangeUsernameModule],
+  imports: [CustomMaterialModule, FlexLayoutModule, CommonModule, RouterModule, ChangeUsernameModule],
   providers: [],
   exports: [AccountSidebarComponent],
 })
