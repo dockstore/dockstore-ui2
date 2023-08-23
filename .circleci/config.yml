@@ -148,6 +148,7 @@ jobs:
             node -v
             echo $JAVA_HOME
             java -XshowSettings:properties -version 2>&1 > /dev/null | grep 'java.home'
+            export PATH=$JAVA_HOME/bin:$PATH
             echo $PATH 
       - run:
           name: Install and run sonarscanner
