@@ -188,6 +188,7 @@ export class ContainerComponent extends Entry<Tag> implements AfterViewInit, OnI
     this.toolQuery.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((tool) => {
       this.tool = tool;
       if (tool) {
+        this.displayAppTool = true;
         this.published = this.tool.is_published;
         if (this.tool.workflowVersions.length === 0) {
           this.selectedVersion = null;
