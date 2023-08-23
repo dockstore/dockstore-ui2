@@ -146,6 +146,8 @@ jobs:
           command: |
             java -version
             node -v
+            echo $JAVA_HOME
+            java -XshowSettings:properties -version 2>&1 > /dev/null | grep 'java.home' 
       - run:
           name: Install and run sonarscanner
           command: |
