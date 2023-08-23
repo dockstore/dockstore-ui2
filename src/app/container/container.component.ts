@@ -67,7 +67,7 @@ export class ContainerComponent extends Entry<Tag> implements AfterViewInit, OnI
   public sortedVersions: Array<Tag> = [];
   public DockstoreToolType = DockstoreTool;
   public isManualMode$: Observable<boolean>;
-  public displayPublicTool: boolean = false;
+  public displayAppTool: boolean = false;
   validTabs = ['info', 'launch', 'versions', 'files'];
   separatorKeysCodes = [ENTER, COMMA];
   public schema: BioschemaTool;
@@ -188,6 +188,7 @@ export class ContainerComponent extends Entry<Tag> implements AfterViewInit, OnI
     this.toolQuery.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((tool) => {
       this.tool = tool;
       if (tool) {
+        this.displayAppTool = true;
         this.published = this.tool.is_published;
         if (this.tool.workflowVersions.length === 0) {
           this.selectedVersion = null;
@@ -235,6 +236,7 @@ export class ContainerComponent extends Entry<Tag> implements AfterViewInit, OnI
   public setupPublicEntry(url: string) {
     if (url.includes('/containers/github.com') || url.includes('/tools/github.com')) {
       this.containerService.setTool(null);
+      this.displayAppTool = true;
     } else if (url.includes('containers') || url.includes('tools')) {
       // Only get published tool if the URI is for a specific tool (/containers/quay.io%2FA2%2Fb3)
       // as opposed to just /tools or /docs etc.
@@ -254,7 +256,6 @@ export class ContainerComponent extends Entry<Tag> implements AfterViewInit, OnI
           }
         }
       );
-      this.displayPublicTool = true;
     }
   }
 
