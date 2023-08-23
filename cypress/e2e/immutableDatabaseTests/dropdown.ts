@@ -100,7 +100,7 @@ describe('Dropdown test', () => {
     });
     // Check that link to user profile exists
     it('Should have the view profile button', () => {
-      cy.contains('View Dockstore Profile').click();
+      cy.contains('View Public Profile').click();
       cy.url().should('eq', Cypress.config().baseUrl + '/users/user_curator');
       cy.contains('Activity');
     });
