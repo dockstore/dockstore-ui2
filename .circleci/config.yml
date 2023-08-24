@@ -478,6 +478,7 @@ workflows:
               only: /.*/
           context:
             - dockerhub
+            - sonarcloud
       - integration_test_1:
           filters:
             tags:
@@ -486,7 +487,6 @@ workflows:
             - lint_license_unit_test_coverage
           context:
             - dockerhub
-            - sonarcloud
       - integration_test_2:
           filters:
             tags:
