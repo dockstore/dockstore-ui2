@@ -94,6 +94,7 @@ mat-menu {
   color: mat.get-color-from-palette($dockstore-app-primary, 3);
 }
 
+#dropdown-profile,
 #dropdown-accounts,
 #dropdown-logout {
   color: $header-color;
