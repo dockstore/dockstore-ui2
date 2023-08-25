@@ -55,6 +55,7 @@ export class CodeEditorComponent implements AfterViewInit {
       readOnly: this.readOnly,
       showLineNumbers: true,
       maxLines: 60,
+      wrap: true,
       theme: 'ace/theme/idle_fingers',
       fontSize: '12pt',
     });
