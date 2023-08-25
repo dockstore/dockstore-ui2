@@ -13,7 +13,7 @@
   ~    See the License for the specific language governing permissions and
   ~    limitations under the License.
   -->
-<div *ngIf="tool; else workflow">
+<div *ngIf="tool || !displayAppTool; else appTool">
   <div
     class="row m-1"
     *ngIf="
@@ -443,6 +443,6 @@
     </mat-card>
   </div>
 </ng-template>
-<ng-template #workflow>
+<ng-template #appTool>
   <app-workflow [isWorkflowPublic]="isToolPublic"></app-workflow>
 </ng-template>
