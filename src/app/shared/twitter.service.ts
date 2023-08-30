@@ -16,7 +16,6 @@
 
 import { ElementRef, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-
 /**
  * Handle twitter-related actions
  * See https://github.com/ABD-dev/ngx-twitter-timeline
@@ -27,7 +26,7 @@ import { Observable } from 'rxjs';
 @Injectable()
 export class TwitterService {
   private TWITTER_SCRIPT_ID = 'twitter-wjs';
-  private TWITTER_WIDGET_URL = 'https://platform.twitter.com/widgets.js';
+  private TWITTER_WIDGET_URL = 'assets/mastodon-timeline.js';
 
   loadScript(): Observable<any> {
     return new Observable((observer) => {
@@ -67,13 +66,6 @@ export class TwitterService {
   createTimeline(element: ElementRef, tweetLimit: number) {
     const nativeElement = element.nativeElement;
     nativeElement.innerHTML = '';
-    window['twttr'].widgets
-      .createTimeline({ sourceType: 'url', url: 'https://twitter.com/dockstoreOrg' }, nativeElement, {
-        theme: 'light',
-        tweetLimit: tweetLimit,
-        chrome: 'nofooter',
-        height: 500,
-      })
-      .catch((error) => console.error(error));
+    window['twttr'].buildTimeline().catch((error) => console.error(error));
   }
 }

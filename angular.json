@@ -31,6 +31,7 @@
               "node_modules/academicons/css/academicons.css",
               "src/styles.scss",
               "src/material.scss",
+              "src/assets/mastodon-timeline.css"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.js",
@@ -51,6 +52,7 @@
               "node_modules/ace-builds/src-min-noconflict/theme-idle_fingers.js",
               "node_modules/ace-builds/src-min-noconflict/ext-searchbox.js",
               "node_modules/bootstrap/dist/js/bootstrap.js",
+              "src/assets/mastodon-timeline.js"
             ]
           },
           "configurations": {
