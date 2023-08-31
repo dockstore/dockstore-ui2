@@ -31,23 +31,21 @@ export class TwitterService {
   loadScript(): Observable<any> {
     return new Observable((observer) => {
       this.startScriptLoad();
-
-      window['twttr'].ready((twttr) => {
-        observer.next(twttr);
+      window['mt-timeline'].ready((mttimeline) => {
+        observer.next(mttimeline);
         observer.complete();
       });
     });
   }
 
   private startScriptLoad() {
-    window['twttr'] = (function (d, s, id, url) {
+    window['mt-timeline'] = (function (d, s, id, url) {
       let script;
       const firstScriptEl = d.getElementsByTagName(s)[0],
-        twitterScript = window['twttr'] || {};
+        twitterScript = window['mt-timeline'] || {};
       if (d.getElementById(id)) {
         return twitterScript;
       }
-
       script = d.createElement(s);
       script.id = id;
       script.src = url;
@@ -58,14 +56,11 @@ export class TwitterService {
       twitterScript.ready = function (f) {
         twitterScript._e.push(f);
       };
-
       return twitterScript;
     })(document, 'script', this.TWITTER_SCRIPT_ID, this.TWITTER_WIDGET_URL);
   }
 
   createTimeline(element: ElementRef, tweetLimit: number) {
-    const nativeElement = element.nativeElement;
-    nativeElement.innerHTML = '';
-    window['twttr'].buildTimeline().catch((error) => console.error(error));
+    window['mt-timeline'].buildTimeline().catch((error) => console.error(error));
   }
 }

@@ -92,6 +92,8 @@ const MastodonApi = function (params_) {
  * Trigger functions and construct timeline
  */
 MastodonApi.prototype.buildTimeline = async function () {
+  console.log('in mastodon-timeline.js building');
+  console.trace();
   // Apply color theme
   this.setTheme();
 
