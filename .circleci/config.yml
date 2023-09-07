@@ -491,7 +491,7 @@ commands:
   install_browser_tools:
     steps:
       - browser-tools/install-chrome
-      - browser-tools/install-chromedriver
+      - browser-tools/install-chromedriver@1.4.5
   build_ui:
     steps:
       - run:
