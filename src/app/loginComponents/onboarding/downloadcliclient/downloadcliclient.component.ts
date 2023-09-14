@@ -78,9 +78,9 @@ export class DownloadCLIClientComponent extends Base implements OnInit {
   }
   generateMarkdown(): void {
     this.textDataRequirements = `
-### Setup Command Line Interface
+### Set Up Command Line Interface
 ------------------------------
-Set up our Dockstore CLI application in order to test workflows from the command line for [local development](${Dockstore.DOCUMENTATION_URL}/launch-with/launch.html#dockstore-cli), [validate .dockstore.yml files](${Dockstore.DOCUMENTATION_URL}/advanced-topics/dockstore-cli/yaml-command-line-validator-tool.html) for registering tools and workflows,
+You can search for workflows or launch them with our cloud partners using the Dockstore website, but we also provide a command-line tool to make developing and launching workflows more convenient. Set up our Dockstore CLI application in order to test workflows from the command line for [local development](${Dockstore.DOCUMENTATION_URL}/launch-with/launch.html#dockstore-cli), [validate .dockstore.yml files](${Dockstore.DOCUMENTATION_URL}/advanced-topics/dockstore-cli/yaml-command-line-validator-tool.html) for registering tools and workflows,
 run scripts or interact programmatically against Dockstore APIs, and [run workflows via the GA4GH WES standard](${Dockstore.DOCUMENTATION_URL}/advanced-topics/wes/wes-agc-tutorial.html) in platforms such as Amazon Genomics CLI.
 
 #### Requirements
@@ -90,7 +90,7 @@ run scripts or interact programmatically against Dockstore APIs, and [run workfl
     `;
 
     this.textDataUbuntuLinux = `
-#### Part 1 - Install Java dependencies
+#### Part 1 - Install Java
 Install Java 17 (This example installs OpenJDK 17)
 \`\`\`
 sudo apt-get update -q \
@@ -109,7 +109,7 @@ exec newgrp docker
 
 `;
     this.textDataMacOs = `
-#### Part 1 - Install Java dependencies
+#### Part 1 - Install Java
 There are two ways to install Java on Mac OS.
 
 ##### Option A: Install Java manually
@@ -162,7 +162,7 @@ java -version
 \`\`\`
 As with option A, you may have to [follow these directions](https://support.apple.com/guide/mac-help/open-a-mac-app-from-an-unidentified-developer-mh40616/mac) if your computer gives you a warning about an unidentified developer.
 
-#### Part 2 - Install Docker dependencies
+#### Part 2 - Install Docker
 Install Docker following the instructions on [Docker's website](https://docs.docker.com/docker-for-mac/install/). You should have at least version 4.3.0 installed. Make sure to install the correct version for your hardware.
     `;
 
@@ -180,7 +180,7 @@ As an alternative, click here to download and configure the CLI manually.
     `;
 
     this.textDataCLIConfig = `
-#### Part 4 - Setup Dockstore CLI Config
+#### Part 4 - Set up Dockstore CLI Config
 Create the folder \`~/.dockstore\` and create a configuration file \`~/.dockstore/config\`:
 \`\`\`
 mkdir -p ~/.dockstore
