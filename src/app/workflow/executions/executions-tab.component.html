@@ -48,7 +48,8 @@
             <th mat-header-cell *matHeaderCellDef>Minimum</th>
             <td mat-cell *matCellDef="let executionMetric">
               <span *ngIf="executionMetric.minimum" matTooltip="{{ executionMetric.minimum + ' ' + executionMetric.unit }}"
-                >{{ executionMetric.minimum | number: '1.0-2' }} {{ executionMetric.unit }}</span
+                >{{ executionMetric.minimum | number: (executionMetric.metric === 'Cost' ? '1.2-2' : '1.0-2') }}
+                {{ executionMetric.unit }}</span
               >
             </td>
           </ng-container>
@@ -57,7 +58,8 @@
             <th mat-header-cell *matHeaderCellDef>Average</th>
             <td mat-cell *matCellDef="let executionMetric">
               <span *ngIf="executionMetric.average" matTooltip="{{ executionMetric.average + ' ' + executionMetric.unit }}"
-                >{{ executionMetric.average | number: '1.0-2' }} {{ executionMetric.unit }}</span
+                >{{ executionMetric.average | number: (executionMetric.metric === 'Cost' ? '1.2-2' : '1.0-2') }}
+                {{ executionMetric.unit }}</span
               >
             </td>
           </ng-container>
@@ -66,7 +68,8 @@
             <th mat-header-cell *matHeaderCellDef>Maximum</th>
             <td mat-cell *matCellDef="let executionMetric">
               <span *ngIf="executionMetric.maximum" matTooltip="{{ executionMetric.maximum + ' ' + executionMetric.unit }}"
-                >{{ executionMetric.maximum | number: '1.0-2' }} {{ executionMetric.unit }}</span
+                >{{ executionMetric.maximum | number: (executionMetric.metric === 'Cost' ? '1.2-2' : '1.0-2') }}
+                {{ executionMetric.unit }}</span
               >
             </td>
           </ng-container>
