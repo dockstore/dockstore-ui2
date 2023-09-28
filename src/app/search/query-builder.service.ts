@@ -115,8 +115,11 @@ export class QueryBuilderService {
     tableBody = tableBody.query('match', '_index', index);
     tableBody = this.appendQuery(tableBody, values, advancedSearchObject, searchTerm);
     tableBody = this.appendFilter(tableBody, null, filters, exclusiveFilters);
-    // most popular results should be returned first
-    tableBody = tableBody.sort('stars_count', 'desc');
+    // the default sort order is by ES score
+    // only sort by stars if there's no search term
+    if (this.isEmpty(values)) {
+      tableBody = tableBody.sort('stars_count', 'desc');
+    }
     const builtTableBody = tableBody.build();
     const tableQuery = JSON.stringify(builtTableBody);
     return tableQuery;
@@ -191,7 +194,7 @@ export class QueryBuilderService {
    */
   appendQuery(body: any, values: string, oldAdvancedSearchObject: AdvancedSearchObject, searchTerm: boolean): any {
     const advancedSearchObject = { ...oldAdvancedSearchObject };
-    if (values.toString().length > 0) {
+    if (!this.isEmpty(values)) {
       body = this.searchEverything(body, values);
     } else {
       body = body.query('match_all', {});
@@ -208,6 +211,10 @@ export class QueryBuilderService {
     return body;
   }
 
+  isEmpty(values: string): boolean {
+    return values.toString().trim().length <= 0;
+  }
+
   /**
    * Appends search-everything filter to the query
    * Currently searches sourcefiles, description, labels, author, and path
@@ -221,16 +228,15 @@ export class QueryBuilderService {
    * @param searchString The string entered into the basic search bar by the user
    */
   private searchEverything(body: bodybuilder.Bodybuilder, searchString: string): bodybuilder.Bodybuilder {
-    return body.filter('bool', (filter) =>
-      filter
-        .orFilter('wildcard', { 'full_workflow_path.keyword': { value: '*' + searchString + '*', case_insensitive: true } })
-        .orFilter('wildcard', { 'tool_path.keyword': { value: '*' + searchString + '*', case_insensitive: true } })
-        .orFilter('match_phrase', 'workflowVersions.sourceFiles.content', searchString)
-        .orFilter('match_phrase', 'tags.sourceFiles.content', searchString)
-        .orFilter('match_phrase', 'description', searchString)
-        .orFilter('match_phrase', 'labels', searchString)
-        .orFilter('match_phrase', 'author', searchString)
-    );
+    body.orQuery('wildcard', { 'full_workflow_path.keyword': { value: '*' + searchString + '*', case_insensitive: true } });
+    body.orQuery('wildcard', { 'tool_path.keyword': { value: '*' + searchString + '*', case_insensitive: true } });
+    body.orQuery('match_phrase', 'workflowVersions.sourceFiles.content', searchString);
+    body.orQuery('match_phrase', 'tags.sourceFiles.content', searchString);
+    body.orQuery('match_phrase', 'description', searchString);
+    body.orQuery('match_phrase', 'labels', searchString);
+    body.orQuery('match_phrase', 'author', searchString);
+    // TODO add topic and categories
+    return body;
   }
 
   /**===============================================
