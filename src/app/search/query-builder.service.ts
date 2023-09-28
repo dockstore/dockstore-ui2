@@ -228,13 +228,15 @@ export class QueryBuilderService {
    * @param searchString The string entered into the basic search bar by the user
    */
   private searchEverything(body: bodybuilder.Bodybuilder, searchString: string): bodybuilder.Bodybuilder {
-    body.orQuery('wildcard', { 'full_workflow_path.keyword': { value: '*' + searchString + '*', case_insensitive: true } });
-    body.orQuery('wildcard', { 'tool_path.keyword': { value: '*' + searchString + '*', case_insensitive: true } });
-    body.orQuery('match_phrase', 'workflowVersions.sourceFiles.content', searchString);
-    body.orQuery('match_phrase', 'tags.sourceFiles.content', searchString);
-    body.orQuery('match_phrase', 'description', searchString);
-    body.orQuery('match_phrase', 'labels', searchString);
-    body.orQuery('match_phrase', 'author', searchString);
+    body
+      .orQuery('wildcard', { 'full_workflow_path.keyword': { value: '*' + searchString + '*', case_insensitive: true } })
+      .orQuery('wildcard', { 'tool_path.keyword': { value: '*' + searchString + '*', case_insensitive: true } })
+      .orQuery('match_phrase', 'workflowVersions.sourceFiles.content', searchString)
+      .orQuery('match_phrase', 'tags.sourceFiles.content', searchString)
+      .orQuery('match_phrase', 'description', searchString)
+      .orQuery('match_phrase', 'labels', searchString)
+      .orQuery('match_phrase', 'author', searchString)
+      .queryMinimumShouldMatch(1);
     // TODO add topic and categories
     return body;
   }
