@@ -230,16 +230,16 @@ export class QueryBuilderService {
    */
   private searchEverything(body: bodybuilder.Bodybuilder, searchString: string): bodybuilder.Bodybuilder {
     body
-      .orQuery('wildcard', { 'full_workflow_path.keyword': { value: '*' + searchString + '*', case_insensitive: true } })
-      .orQuery('wildcard', { 'tool_path.keyword': { value: '*' + searchString + '*', case_insensitive: true } })
-      .orQuery('match_phrase', 'workflowVersions.sourceFiles.content', searchString)
-      .orQuery('match_phrase', 'tags.sourceFiles.content', searchString)
-      .orQuery('match_phrase', 'description', searchString)
-      .orQuery('match_phrase', 'labels', searchString)
-      .orQuery('match_phrase', 'author', searchString)
-      .orQuery('match_phrase', 'topicAutomatic', searchString)
-      .orQuery('match_phrase', 'categories.topic', searchString)
-      .orQuery('match_phrase', 'categories.displayName', searchString)
+      .orQuery('match', 'full_workflow_path', { query: searchString, boost: 3 })
+      .orQuery('match', 'tool_path', { query: searchString, boost: 3 })
+      .orQuery('match', 'workflowVersions.sourceFiles.content', searchString)
+      .orQuery('match', 'tags.sourceFiles.content', searchString)
+      .orQuery('match', 'description', { query: searchString, boost: 1.5 })
+      .orQuery('match', 'labels', { query: searchString, boost: 2 })
+      .orQuery('match', 'author', { query: searchString, boost: 3 })
+      .orQuery('match', 'topicAutomatic', { query: searchString, boost: 2 })
+      .orQuery('match', 'categories.topic', { query: searchString, boost: 1.5 })
+      .orQuery('match', 'categories.displayName', { query: searchString, boost: 2 })
       .queryMinimumShouldMatch(1);
     // TODO add topic and categories
     return body;
