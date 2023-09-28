@@ -115,8 +115,9 @@ export class QueryBuilderService {
     tableBody = tableBody.query('match', '_index', index);
     tableBody = this.appendQuery(tableBody, values, advancedSearchObject, searchTerm);
     tableBody = this.appendFilter(tableBody, null, filters, exclusiveFilters);
-    // the default sort order is by ES score
-    // only sort by stars if there's no search term
+    // if there's no search term, tell ES to sort hits by stars
+    // otherwise, use the default ES hit ordering, which should be by
+    // ES-calcalated score if we craft our query correctly
     if (this.isEmpty(values)) {
       tableBody = tableBody.sort('stars_count', 'desc');
     }
@@ -236,6 +237,9 @@ export class QueryBuilderService {
       .orQuery('match_phrase', 'description', searchString)
       .orQuery('match_phrase', 'labels', searchString)
       .orQuery('match_phrase', 'author', searchString)
+      .orQuery('match_phrase', 'topicAutomatic', searchString)
+      .orQuery('match_phrase', 'categories.topic', searchString)
+      .orQuery('match_phrase', 'categories.displayName', searchString)
       .queryMinimumShouldMatch(1);
     // TODO add topic and categories
     return body;
