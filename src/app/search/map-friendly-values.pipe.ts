@@ -15,13 +15,15 @@
  */
 import { Pipe, PipeTransform } from '@angular/core';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
-import { DockstoreTool, ToolFile, Workflow } from 'app/shared/openapi';
+import { CloudInstance, DockstoreTool, ToolFile, Workflow } from 'app/shared/openapi';
+import { PlatformPartnerPipe } from '../shared/entry/platform-partner.pipe';
+import PartnerEnum = CloudInstance.PartnerEnum;
 
 @Pipe({
   name: 'mapFriendlyValue',
 })
 export class MapFriendlyValuesPipe implements PipeTransform {
-  constructor(private descriptorLanguageService: DescriptorLanguageService) {}
+  constructor(private descriptorLanguageService: DescriptorLanguageService, private platformPartnerPipe: PlatformPartnerPipe) {}
 
   // For instances in which we know it is nullable and don't need an console.error
   readonly nullableKeys = ['reference'];
@@ -160,6 +162,12 @@ export class MapFriendlyValuesPipe implements PipeTransform {
         const fileTypes = fileTabsSchematic.find((fileTab) => fileTab.fileTypes.find((fileType) => fileType === subBucketString));
         return fileTypes?.tabName ?? subBucketString;
       }
+      case 'execution_partners.keyword':
+      case 'validation_partners.keyword':
+        const partnerEnumKey = Object.keys(PartnerEnum).find((p) => PartnerEnum[p] === subBucketString);
+        if (partnerEnumKey) {
+          return this.platformPartnerPipe.transform(PartnerEnum[partnerEnumKey]);
+        }
       default:
         // Handle string
         if (this.friendlyValueNames.has(key) && this.friendlyValueNames.get(key).get(subBucketString)) {

@@ -9,6 +9,6 @@ export class FeatureService {
     const urlSearchParams = new URLSearchParams(queryParams);
     const gitHubAppCallBackToMetrics = urlSearchParams.has('state') && urlSearchParams.get('state').includes('metrics');
     const metrics = urlSearchParams.has('metrics') || gitHubAppCallBackToMetrics;
-    Dockstore.FEATURES.enableMetrics = metrics;
+    Dockstore.FEATURES.enableMetrics = true;
   }
 }

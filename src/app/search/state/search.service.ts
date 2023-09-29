@@ -162,6 +162,8 @@ export class SearchService {
         initiallyExpanded: false,
         exclusive: true,
       },
+      { friendlyName: 'Execution Metrics', esName: 'execution_partners.keyword', initiallyExpanded: false },
+      { friendlyName: 'Validation Metrics', esName: 'validation_partners.keyword', initiallyExpanded: false },
     ];
   }
 
