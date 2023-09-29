@@ -59,7 +59,7 @@ export class QueryBuilderService {
     let sidebarBody = bodybuilder().size(0);
     sidebarBody = this.excludeContent(sidebarBody);
     sidebarBody = sidebarBody.query('match', '_index', index);
-    sidebarBody = this.appendQuery(sidebarBody, values, advancedSearchObject, searchTerm);
+    sidebarBody = this.appendQuery(sidebarBody, values, advancedSearchObject, searchTerm, index);
     sidebarBody = this.appendAggregations(count, sidebarBody, bucketStubs, filters, exclusiveFilters, sortModeMap);
     const builtSideBarBody = sidebarBody.build();
     const sideBarQuery = JSON.stringify(builtSideBarBody);
@@ -113,12 +113,12 @@ export class QueryBuilderService {
     let tableBody = bodybuilder().size(query_size);
     tableBody = this.sourceOptions(tableBody);
     tableBody = tableBody.query('match', '_index', index);
-    tableBody = this.appendQuery(tableBody, values, advancedSearchObject, searchTerm);
+    tableBody = this.appendQuery(tableBody, values, advancedSearchObject, searchTerm, index);
     tableBody = this.appendFilter(tableBody, null, filters, exclusiveFilters);
-    // if there's no search term, tell ES to sort hits by stars
+    // if there's no inclusive search term, tell ES to sort hits by stars
     // otherwise, use the default ES hit ordering, which should be by
     // ES-calcalated score if we craft our query correctly
-    if (this.isEmpty(values)) {
+    if (this.isEmpty(values) && !this.hasInclusiveSettings(advancedSearchObject)) {
       tableBody = tableBody.sort('stars_count', 'desc');
     }
     const builtTableBody = tableBody.build();
@@ -193,14 +193,9 @@ export class QueryBuilderService {
    * @returns {*} the new body builder object
    * @memberof SearchComponent
    */
-  appendQuery(body: any, values: string, oldAdvancedSearchObject: AdvancedSearchObject, searchTerm: boolean): any {
+  appendQuery(body: any, values: string, oldAdvancedSearchObject: AdvancedSearchObject, searchTerm: boolean, index: string): any {
     const advancedSearchObject = { ...oldAdvancedSearchObject };
-    if (!this.isEmpty(values)) {
-      body = this.searchEverything(body, values);
-    } else {
-      body = body.query('match_all', {});
-    }
-    if (advancedSearchObject) {
+    if (this.hasSettings(advancedSearchObject)) {
       if (advancedSearchObject.searchMode === 'description') {
         this.advancedSearchDescription(body, advancedSearchObject);
       } else if (advancedSearchObject.searchMode === 'files') {
@@ -208,12 +203,35 @@ export class QueryBuilderService {
       }
       values = '';
       searchTerm = false;
+    } else {
+      if (!this.isEmpty(values)) {
+        body = this.searchEverything(body, values);
+      } else {
+        body = body.query('match_all', {});
+      }
     }
     return body;
   }
 
-  isEmpty(values: string): boolean {
-    return values.toString().trim().length <= 0;
+  private isEmpty(values: string): boolean {
+    return values == undefined || values.toString().trim().length <= 0;
+  }
+
+  private hasSettings(advancedSearchObject: AdvancedSearchObject): boolean {
+    return (
+      !this.isEmpty(advancedSearchObject?.ANDSplitFilter) ||
+      !this.isEmpty(advancedSearchObject?.ANDNoSplitFilter) ||
+      !this.isEmpty(advancedSearchObject?.ORFilter) ||
+      !this.isEmpty(advancedSearchObject?.NOTFilter)
+    );
+  }
+
+  private hasInclusiveSettings(advancedSearchObject: AdvancedSearchObject): boolean {
+    return (
+      !this.isEmpty(advancedSearchObject?.ANDSplitFilter) ||
+      !this.isEmpty(advancedSearchObject?.ANDNoSplitFilter) ||
+      !this.isEmpty(advancedSearchObject?.ORFilter)
+    );
   }
 
   /**
@@ -276,90 +294,38 @@ export class QueryBuilderService {
     return body;
   }
 
-  // Advanced search query related functions
-
-  /* TODO: Make this better */
-  advancedSearchFiles(body: any, advancedSearchObject: AdvancedSearchObject) {
-    if (advancedSearchObject.ANDSplitFilter) {
-      const filters = advancedSearchObject.ANDSplitFilter.split(' ');
-      let insideFilter_tool = bodybuilder();
-      filters.forEach((filter) => {
-        insideFilter_tool = insideFilter_tool.filter('match_phrase', 'tags.sourceFiles.content', filter);
-      });
-      let insideFilter_workflow = bodybuilder();
-      filters.forEach((filter) => {
-        insideFilter_workflow = insideFilter_workflow.filter('match_phrase', 'workflowVersions.sourceFiles.content', filter);
-      });
-      body = body.filter('bool', (filter) =>
-        filter
-          .orFilter('bool', (toolfilter) => (toolfilter = insideFilter_tool))
-          .orFilter('bool', (workflowfilter) => (workflowfilter = insideFilter_workflow))
-      );
-    }
-    if (advancedSearchObject.ANDNoSplitFilter) {
-      body = body.filter('bool', (filter) =>
-        filter
-          .orFilter('bool', (toolfilter) =>
-            toolfilter.filter('match_phrase', 'tags.sourceFiles.content', advancedSearchObject.ANDNoSplitFilter)
-          )
-          .orFilter('bool', (workflowfilter) =>
-            workflowfilter.filter('match_phrase', 'workflowVersions.sourceFiles.content', advancedSearchObject.ANDNoSplitFilter)
-          )
-      );
-    }
-    if (advancedSearchObject.ORFilter) {
-      const filters = advancedSearchObject.ORFilter.split(' ');
-      let insideFilter_tool = bodybuilder();
-      filters.forEach((filter) => {
-        insideFilter_tool = insideFilter_tool.orFilter('match_phrase', 'tags.sourceFiles.content', filter);
-      });
-      let insideFilter_workflow = bodybuilder();
-      filters.forEach((filter) => {
-        insideFilter_workflow = insideFilter_workflow.orFilter('match_phrase', 'workflowVersions.sourceFiles.content', filter);
-      });
-      body = body.filter('bool', (filter) =>
-        filter
-          .orFilter('bool', (toolfilter) => (toolfilter = insideFilter_tool))
-          .orFilter('bool', (workflowfilter) => (workflowfilter = insideFilter_workflow))
-      );
-    }
-    if (advancedSearchObject.NOTFilter) {
-      const filters = advancedSearchObject.NOTFilter.split(' ');
-      let insideFilter_tool = bodybuilder();
-      filters.forEach((filter) => {
-        insideFilter_tool = insideFilter_tool.notFilter('match_phrase', 'tags.sourceFiles.content', filter);
-      });
-      let insideFilter_workflow = bodybuilder();
-      filters.forEach((filter) => {
-        insideFilter_workflow = insideFilter_workflow.notFilter('match_phrase', 'workflowVersions.sourceFiles.content', filter);
-      });
-      body = body.filter('bool', (filter) =>
-        filter
-          .filter('bool', (toolfilter) => (toolfilter = insideFilter_tool))
-          .filter('bool', (workflowfilter) => (workflowfilter = insideFilter_workflow))
-      );
-    }
+  advancedSearchDescription(body: any, advancedSearchObject: AdvancedSearchObject) {
+    this.advancedSearch(body, advancedSearchObject, 'description');
   }
 
-  advancedSearchDescription(body: any, advancedSearchObject: AdvancedSearchObject) {
+  advancedSearchFiles(body: any, advancedSearchObject: AdvancedSearchObject) {
+    this.advancedSearch(body, advancedSearchObject, 'tags.sourceFiles.content');
+    this.advancedSearch(body, advancedSearchObject, 'workflowVersions.sourceFiles.content');
+  }
+
+  advancedSearch(body: any, advancedSearchObject: AdvancedSearchObject, fieldName: string): number {
+    let shouldCount: number = 0;
     if (advancedSearchObject.ANDSplitFilter) {
-      const filters = advancedSearchObject.ANDSplitFilter.split(' ');
-      filters.forEach((filter) => (body = body.filter('match_phrase', 'description', filter)));
+      body.orQuery('match', fieldName, { query: advancedSearchObject.ANDSplitFilter, operator: 'AND' });
+      shouldCount++;
     }
     if (advancedSearchObject.ANDNoSplitFilter) {
-      body = body.query('match_phrase', 'description', advancedSearchObject.ANDNoSplitFilter);
+      body.orQuery('match_phrase', fieldName, advancedSearchObject.ANDNoSplitFilter);
+      shouldCount++;
     }
     if (advancedSearchObject.ORFilter) {
-      const filters = advancedSearchObject.ORFilter.split(' ');
-      filters.forEach((filter) => {
-        body = body.orFilter('match_phrase', 'description', filter);
-      });
+      body.orQuery('match', fieldName, advancedSearchObject.ORFilter);
+      shouldCount++;
     }
     if (advancedSearchObject.NOTFilter) {
       const filters = advancedSearchObject.NOTFilter.split(' ');
       filters.forEach((filter) => {
-        body = body.notQuery('match_phrase', 'description', filter);
+        body = body.notQuery('match', fieldName, filter);
       });
     }
+    // Add a dummy no-op orQuery, to prevent a bodybuilder bug that omits a specified `minimum_should_match` when `orQuery` is called once
+    body.orQuery('match_none');
+    body.queryMinimumShouldMatch(shouldCount);
+    return shouldCount;
   }
 }
