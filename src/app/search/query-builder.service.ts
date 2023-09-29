@@ -59,7 +59,7 @@ export class QueryBuilderService {
     let sidebarBody = bodybuilder().size(0);
     sidebarBody = this.excludeContent(sidebarBody);
     sidebarBody = sidebarBody.query('match', '_index', index);
-    sidebarBody = this.appendQuery(sidebarBody, values, advancedSearchObject, searchTerm, index);
+    sidebarBody = this.appendQuery(sidebarBody, values, advancedSearchObject, searchTerm);
     sidebarBody = this.appendAggregations(count, sidebarBody, bucketStubs, filters, exclusiveFilters, sortModeMap);
     const builtSideBarBody = sidebarBody.build();
     const sideBarQuery = JSON.stringify(builtSideBarBody);
@@ -113,7 +113,7 @@ export class QueryBuilderService {
     let tableBody = bodybuilder().size(query_size);
     tableBody = this.sourceOptions(tableBody);
     tableBody = tableBody.query('match', '_index', index);
-    tableBody = this.appendQuery(tableBody, values, advancedSearchObject, searchTerm, index);
+    tableBody = this.appendQuery(tableBody, values, advancedSearchObject, searchTerm);
     tableBody = this.appendFilter(tableBody, null, filters, exclusiveFilters);
     // if there's no inclusive search term, tell ES to sort hits by stars
     // otherwise, use the default ES hit ordering, which should be by
@@ -193,7 +193,7 @@ export class QueryBuilderService {
    * @returns {*} the new body builder object
    * @memberof SearchComponent
    */
-  appendQuery(body: any, values: string, oldAdvancedSearchObject: AdvancedSearchObject, searchTerm: boolean, index: string): any {
+  appendQuery(body: any, values: string, oldAdvancedSearchObject: AdvancedSearchObject, searchTerm: boolean): any {
     const advancedSearchObject = { ...oldAdvancedSearchObject };
     if (this.hasSettings(advancedSearchObject)) {
       if (advancedSearchObject.searchMode === 'description') {
