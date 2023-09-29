@@ -229,18 +229,23 @@ export class QueryBuilderService {
    * @param searchString The string entered into the basic search bar by the user
    */
   private searchEverything(body: bodybuilder.Bodybuilder, searchString: string): bodybuilder.Bodybuilder {
-    return body
-      .orQuery('match', 'full_workflow_path', { query: searchString, boost: 4 })
-      .orQuery('match', 'tool_path', { query: searchString, boost: 4 })
-      .orQuery('match', 'workflowVersions.sourceFiles.content', searchString)
-      .orQuery('match', 'tags.sourceFiles.content', searchString)
-      .orQuery('match', 'description', { query: searchString, boost: 2 })
-      .orQuery('match', 'labels', { query: searchString, boost: 2 })
-      .orQuery('match', 'author', { query: searchString, boost: 3 })
-      .orQuery('match', 'topicAutomatic', { query: searchString, boost: 3 })
-      .orQuery('match', 'categories.topic', { query: searchString, boost: 1.5 })
-      .orQuery('match', 'categories.displayName', { query: searchString, boost: 2 })
-      .queryMinimumShouldMatch(1);
+    // Extract each search term from the search string, limiting to a maximum of 20 terms to prevent a DOS attack
+    const terms = searchString.trim().split(' ').slice(0, 20);
+    terms.forEach((term) => {
+      body
+        .orQuery('wildcard', 'full_workflow_path', { value: '*' + term + '*', case_insensitive: true, boost: 7 })
+        .orQuery('wildcard', 'tool_path', { value: '*' + term + '*', case_insensitive: true, boost: 7 })
+        .orQuery('match', 'workflowVersions.sourceFiles.content', { query: term, boost: 0.2 })
+        .orQuery('match', 'tags.sourceFiles.content', { query: term, boost: 0.2 })
+        .orQuery('match', 'description', { query: term, boost: 2 })
+        .orQuery('match', 'labels', { query: term, boost: 2 })
+        .orQuery('match', 'author', { query: term, boost: 3 })
+        .orQuery('match', 'topicAutomatic', { query: term, boost: 4 })
+        .orQuery('match', 'categories.topic', { query: term, boost: 1.5 })
+        .orQuery('match', 'categories.displayName', { query: term, boost: 2 });
+    });
+    body.queryMinimumShouldMatch(1);
+    return body;
   }
 
   /**===============================================
