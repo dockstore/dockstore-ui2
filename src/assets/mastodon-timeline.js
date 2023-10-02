@@ -8,7 +8,8 @@
  * Timeline settings
  * Adjust these parameters to customize your timeline
  */
-window.addEventListener('load', () => {
+setTimeout(() => {
+  //the use of setTimeout is explained in this comment: https://ucsc-cgl.atlassian.net/browse/SEAB-5820?focusedCommentId=46226
   const mastodonTimeline = new MastodonApi({
     // Id of the <div> containing the timeline
     container_body_id: 'mt-body',
