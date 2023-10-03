@@ -27,9 +27,9 @@ describe('Logged in Dockstore Home', () => {
     // expect(browser.getLocationAbsUrl()).toMatch("/");
   });
 
-  it('should have the twitter timeline', () => {
+  it('should have the mastodon timeline', () => {
     cy.scrollTo('bottom');
-    cy.get('.twitter-timeline').should('be.visible');
+    cy.get('[data-cy=mt-toot').should('be.visible');
   });
 
   function starColumn(url: string, type: string) {
@@ -67,7 +67,7 @@ describe('Logged out Dockstore Home', () => {
 
     it('should have the twitter timeline', () => {
       cy.scrollTo('bottom');
-      cy.get('.twitter-timeline').should('be.visible');
+      cy.get('[data-cy=mt-toot]').should('be.visible');
     });
   });
 });
