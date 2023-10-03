@@ -65,7 +65,7 @@ describe('Logged out Dockstore Home', () => {
       cy.get('#youtubeModal').should('not.exist');
     });
 
-    it('should have the twitter timeline', () => {
+    it('should have the mastodon timeline', () => {
       cy.scrollTo('bottom');
       cy.get('[data-cy=mt-toot]').should('be.visible');
     });
