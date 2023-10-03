@@ -17,14 +17,7 @@
   <div *ngIf="!dataSource">
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
   </div>
-  <mat-table
-    [hidden]="!dataSource"
-    [dataSource]="dataSource"
-    matSort
-    matSortActive="starredUsers"
-    matSortDirection="desc"
-    matSortDisableClear
-  >
+  <mat-table [hidden]="!dataSource" [dataSource]="dataSource" matSort>
     <ng-container matColumnDef="name">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Name and Description</mat-header-cell>
       <!-- the wrap causes slightly odd behavior with the mat-icon but is needed for the topic -->
@@ -98,7 +91,7 @@
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="starredUsers">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Stars</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header start="desc">Stars</mat-header-cell>
       <mat-cell class="description-cell" *matCellDef="let tool"
         ><mat-icon class="star-icon" *ngIf="tool?.starredUsers?.length > 0">star_rate</mat-icon>
         {{ !tool?.starredUsers || tool?.starredUsers.length === 0 ? '' : tool?.starredUsers.length }}

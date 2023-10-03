@@ -56,9 +56,14 @@ export abstract class SearchEntryTable extends Base implements OnInit {
         this.dataSource.data = entries || [];
       });
     this.dataSource.sortData = (data: DockstoreTool[] | AppTool[] | Workflow[] | Notebook[], sort: MatSort) => {
-      return data.slice().sort((a: Workflow | AppTool | DockstoreTool | Notebook, b: Workflow | AppTool | DockstoreTool | Notebook) => {
-        return this.searchService.compareAttributes(a, b, sort.active, sort.direction, this.entryType);
-      });
+      if (sort.active && sort.direction) {
+        return data.slice().sort((a: Workflow | AppTool | DockstoreTool | Notebook, b: Workflow | AppTool | DockstoreTool | Notebook) => {
+          return this.searchService.compareAttributes(a, b, sort.active, sort.direction, this.entryType);
+        });
+      } else {
+        // Either the active field or direction is unset, so return the data in the original order, unsorted.
+        return data;
+      }
     };
   }
 

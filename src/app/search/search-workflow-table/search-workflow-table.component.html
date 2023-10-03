@@ -2,15 +2,7 @@
   <div *ngIf="!dataSource">
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
   </div>
-  <mat-table
-    [hidden]="!dataSource"
-    [dataSource]="dataSource"
-    matSort
-    matSortActive="starredUsers"
-    matSortDirection="desc"
-    matSortDisableClear
-    data-cy="search-workflow-results-table"
-  >
+  <mat-table [hidden]="!dataSource" [dataSource]="dataSource" matSort data-cy="search-workflow-results-table">
     <ng-container matColumnDef="name">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Name and Description</mat-header-cell>
       <mat-cell data-cy="workflowColumn" *matCellDef="let workflow">
@@ -60,7 +52,7 @@
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="starredUsers">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Stars</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header start="desc">Stars</mat-header-cell>
       <mat-cell class="starred-cell weight-bold" *matCellDef="let workflow"
         ><mat-icon class="star-icon" *ngIf="workflow?.starredUsers?.length > 0">star_rate</mat-icon>
         {{ !workflow?.starredUsers || workflow?.starredUsers.length === 0 ? '' : workflow?.starredUsers?.length }}
