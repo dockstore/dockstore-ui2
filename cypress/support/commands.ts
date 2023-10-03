@@ -59,7 +59,7 @@ export function assertNoTab(tabName: string): any {
 export function resetDB() {
   before(() => {
     cy.exec('java -jar dockstore-webservice.jar db drop-all --confirm-delete-everything test/web.yml');
-    cy.exec(psqlInvocation + ' -h localhost webservice_test -U dockstore < test/db_dump.sql');
+    cy.exec(psqlInvocation + ' -h localhost cypress_webservice -U dockstore < test/db_dump.sql');
     cy.exec(
       'java -jar dockstore-webservice.jar db migrate -i 1.5.0,1.6.0,1.7.0,1.8.0,1.9.0,1.10.0,alter_test_user_1.10.2,1.11.0,1.12.0,1.13.0,1.14.0,1.15.0 test/web.yml'
     );
@@ -78,7 +78,7 @@ export function resetDBWithService() {
 
 export function addBeforeSqlFromFile(fileName: string) {
   before(() => {
-    cy.exec(psqlInvocation + ' -h localhost webservice_test -U dockstore < ' + fileName);
+    cy.exec(psqlInvocation + ' -h localhost cypress_webservice -U dockstore < ' + fileName);
   });
 }
 
@@ -138,7 +138,7 @@ export function goToUnexpandedSidebarEntry(organization: string, repo: RegExp | 
 }
 
 export function invokeSql(sqlStatement: string) {
-  cy.exec(psqlInvocation + ' -h localhost webservice_test -U dockstore -c "' + sqlStatement + '"');
+  cy.exec(psqlInvocation + ' -h localhost cypress_webservice -U dockstore -c "' + sqlStatement + '"');
 }
 
 export function createPotatoMembership() {
@@ -276,4 +276,8 @@ export function checkNewsAndUpdates() {
     cy.get('.news-entry').its('length').should('be.gt', 0);
     cy.get('.news-entry').first().contains('a').should('have.attr', 'href');
   });
+}
+
+export function checkMastodonFeed() {
+  cy.get('[data-cy=mt-toot]').should('exist');
 }

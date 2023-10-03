@@ -93,8 +93,6 @@ const MastodonApi = function (params_) {
  * Trigger functions and construct timeline
  */
 MastodonApi.prototype.buildTimeline = async function () {
-  console.log('in mastodon-timeline.js building');
-  console.trace();
   // Apply color theme
   this.setTheme();
 
@@ -463,7 +461,7 @@ MastodonApi.prototype.assambleToot = function (c, i) {
 
   // Add all to main toot container
   const toot =
-    '<article class="mt-toot" aria-posinset="' +
+    '<article class="mt-toot" data-cy="mt-toot" aria-posinset="' +
     (i + 1) +
     '" aria-setsize="' +
     this.TOOTS_LIMIT +
