@@ -29,7 +29,7 @@ describe('Logged in Dockstore Home', () => {
 
   it('should have the mastodon timeline', () => {
     cy.scrollTo('bottom');
-    cy.get('[data-cy=mt-toot').should('be.visible');
+    cy.get('[data-cy=mt-toot]').should('be.visible');
   });
 
   function starColumn(url: string, type: string) {
