@@ -214,12 +214,12 @@ describe('GitHub App Tools', () => {
       goToTab('Info');
       cy.get('[data-cy=trs-link]').contains('TRS: github.com/C/test-github-app-tools/md5sum');
 
-      // Make sure an ignored event is displayed correctly.
-      realResponse.ignored = true;
+      // Confirm that an ignored event is displayed correctly.
+      realResponse[0].ignored = true;
       cy.intercept('GET', '/api/lambdaEvents/**', {
         body: realResponse,
       }).as('lambdaEvents');
-      cy.contains('Close').click();
+      cy.visit('/my-tools');
       cy.contains('Apps Logs').click();
       cy.contains('Ignored');
     });
