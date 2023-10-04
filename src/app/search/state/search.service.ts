@@ -162,8 +162,18 @@ export class SearchService {
         initiallyExpanded: false,
         exclusive: true,
       },
-      { friendlyName: 'Execution Metrics', esName: 'execution_partners.keyword', initiallyExpanded: false },
-      { friendlyName: 'Validation Metrics', esName: 'validation_partners.keyword', initiallyExpanded: false },
+      {
+        friendlyName: 'Execution Metrics',
+        esName: 'execution_partners.keyword',
+        initiallyExpanded: false,
+        tooltip: 'Indicates there are execution metrics from a partner for the entry.',
+      },
+      {
+        friendlyName: 'Validation Metrics',
+        esName: 'validation_partners.keyword',
+        initiallyExpanded: false,
+        tooltip: 'Indicates there are validation metrics from a partner for the entry.',
+      },
     ];
   }
 
