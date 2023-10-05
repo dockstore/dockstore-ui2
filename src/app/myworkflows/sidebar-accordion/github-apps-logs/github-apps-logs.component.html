@@ -55,6 +55,10 @@
               </div>
             </td>
           </div>
+          <div *ngSwitchCase="'success'">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Success</th>
+            <td mat-cell *matCellDef="let element">{{ element.ignored ? 'Ignored' : (column | mapFriendlyValue: element[column]) }}</td>
+          </div>
           <div *ngSwitchDefault>
             <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ column | titlecase }}</th>
             <td mat-cell *matCellDef="let element">{{ column | mapFriendlyValue: element[column] }}</td>

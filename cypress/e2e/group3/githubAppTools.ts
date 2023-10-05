@@ -47,6 +47,7 @@ describe('GitHub App Tools', () => {
           eventDate: 1582165220000,
           githubUsername: 'testUser',
           id: 1,
+          ignored: false,
           message: 'HTTP 400 ',
           organization: 'C',
           reference: 'refs/head/main',
@@ -98,6 +99,7 @@ describe('GitHub App Tools', () => {
           eventDate: 1582165220000,
           githubUsername: 'testUser',
           id: 1,
+          ignored: false,
           message: 'HTTP 418 ',
           organization: 'C',
           reference: 'refs/head/main',
@@ -211,6 +213,15 @@ describe('GitHub App Tools', () => {
       cy.get('#starCountButton').should('contain', '1');
       goToTab('Info');
       cy.get('[data-cy=trs-link]').contains('TRS: github.com/C/test-github-app-tools/md5sum');
+
+      // Confirm that an ignored event is displayed correctly.
+      realResponse[0].ignored = true;
+      cy.intercept('GET', '/api/lambdaEvents/**', {
+        body: realResponse,
+      }).as('lambdaEvents');
+      cy.visit('/my-tools');
+      cy.contains('Apps Logs').click();
+      cy.contains('Ignored');
     });
 
     it('Table view', () => {
