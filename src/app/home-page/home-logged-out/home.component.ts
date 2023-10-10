@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { faGithub, faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { HomePageService } from 'app/home-page/home-page.service';
@@ -52,8 +52,6 @@ export class HomeComponent extends Base implements OnInit {
   public workflowCategories$: Observable<Array<Category>>;
   public orgSchema;
   public websiteSchema;
-
-  @ViewChild('twitter') twitterElement: ElementRef;
 
   @ViewChild('youtube') youtube: ElementRef;
 
