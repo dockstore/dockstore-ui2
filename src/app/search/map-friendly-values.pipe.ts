@@ -168,6 +168,7 @@ export class MapFriendlyValuesPipe implements PipeTransform {
         if (partnerEnumKey) {
           return this.platformPartnerPipe.transform(PartnerEnum[partnerEnumKey]);
         }
+        return subBucketString;
       default:
         // Handle string
         if (this.friendlyValueNames.has(key) && this.friendlyValueNames.get(key).get(subBucketString)) {

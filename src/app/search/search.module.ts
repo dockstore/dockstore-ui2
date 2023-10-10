@@ -24,7 +24,6 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { TagCloudComponent } from 'angular-tag-cloud-module';
 
 import { RefreshAlertModule } from '../shared/alert/alert.module';
-import { PlatformPartnerPipe } from '../shared/entry/platform-partner.pipe';
 import { HeaderModule } from '../shared/modules/header.module';
 import { CustomMaterialModule } from '../shared/modules/material.module';
 import { SnackbarModule } from '../shared/modules/snackbar.module';
