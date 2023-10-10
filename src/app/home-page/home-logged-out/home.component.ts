@@ -19,7 +19,6 @@ import { faGithub, faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { HomePageService } from 'app/home-page/home-page.service';
 import { Base } from 'app/shared/base';
 import { Observable } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 import { Dockstore } from '../../shared/dockstore.model';
 import { User } from '../../shared/openapi/model/user';
 import { UserQuery } from '../../shared/user/user.query';
@@ -44,7 +43,7 @@ export class YoutubeComponent {
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent extends Base implements OnInit, AfterViewInit {
+export class HomeComponent extends Base implements OnInit {
   faGithub = faGithub;
   faGoogle = faGoogle;
   public user$: Observable<User>;
@@ -75,7 +74,6 @@ export class HomeComponent extends Base implements OnInit, AfterViewInit {
     this.orgSchema = this.homePageService.hpOrgSchema;
     this.websiteSchema = this.homePageService.hpWebsiteSchema;
   }
-  ngAfterViewInit() {}
 
   goToSearch(searchValue: string) {
     this.homePageService.goToSearch(searchValue);
