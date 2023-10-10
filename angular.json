@@ -30,8 +30,7 @@
               "node_modules/bootstrap/dist/css/bootstrap.css",
               "node_modules/academicons/css/academicons.css",
               "src/styles.scss",
-              "src/material.scss",
-              "src/assets/mastodon-timeline.css"
+              "src/material.scss"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.js",

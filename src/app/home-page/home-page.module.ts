@@ -35,6 +35,7 @@ import { HeaderModule } from 'app/shared/modules/header.module';
 import { NewsBoxComponent } from './widget/news-box/news-box.component';
 import { MarkdownWrapperModule } from '../shared/modules/markdown-wrapper.module';
 import { PreviewWarningModule } from '../shared/modules/preview-warning.module';
+import { MastodonComponent } from '../shared/mastodon/mastodon.component';
 
 @NgModule({
   imports: [
@@ -69,6 +70,7 @@ import { PreviewWarningModule } from '../shared/modules/preview-warning.module';
     OrganizationBoxComponent,
     StarredBoxComponent,
     NewsBoxComponent,
+    MastodonComponent,
   ],
   providers: [
     MytoolsService,

@@ -22,7 +22,6 @@ import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Dockstore } from '../../shared/dockstore.model';
 import { User } from '../../shared/openapi/model/user';
-import { TwitterService } from '../../shared/twitter.service';
 import { UserQuery } from '../../shared/user/user.query';
 import { Category } from '../../shared/openapi';
 import { AllCategoriesService } from '../../categories/state/all-categories.service';
@@ -61,7 +60,6 @@ export class HomeComponent extends Base implements OnInit, AfterViewInit {
 
   constructor(
     private dialog: MatDialog,
-    private twitterService: TwitterService,
     private userQuery: UserQuery,
     private homePageService: HomePageService,
     private allCategoriesService: AllCategoriesService
@@ -77,21 +75,7 @@ export class HomeComponent extends Base implements OnInit, AfterViewInit {
     this.orgSchema = this.homePageService.hpOrgSchema;
     this.websiteSchema = this.homePageService.hpWebsiteSchema;
   }
-  ngAfterViewInit() {
-    this.loadTwitterWidget();
-  }
-
-  loadTwitterWidget() {
-    this.twitterService
-      .loadScript()
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(
-        () => {
-          this.twitterService.createTimeline(this.twitterElement, 2);
-        },
-        (err) => console.error(err)
-      );
-  }
+  ngAfterViewInit() {}
 
   goToSearch(searchValue: string) {
     this.homePageService.goToSearch(searchValue);

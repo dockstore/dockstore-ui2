@@ -20,8 +20,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 import { CustomMaterialModule } from 'app/shared/modules/material.module';
-import { TwitterService } from '../../shared/twitter.service';
 import { HomeComponent } from './home.component';
+import { MastodonService } from '../../shared/mastodon.service';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
@@ -33,7 +33,7 @@ describe('HomeComponent', () => {
         declarations: [HomeComponent],
         schemas: [NO_ERRORS_SCHEMA],
         imports: [CustomMaterialModule, RouterTestingModule, HttpClientTestingModule, BrowserAnimationsModule],
-        providers: [TwitterService, DescriptorLanguageService],
+        providers: [MastodonService, DescriptorLanguageService],
       }).compileComponents();
     })
   );
