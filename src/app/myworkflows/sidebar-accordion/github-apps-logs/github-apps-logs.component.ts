@@ -10,7 +10,6 @@ import { AlertService } from 'app/shared/alert/state/alert.service';
 import { LambdaEvent, LambdaEventsService } from 'app/shared/openapi';
 import { finalize } from 'rxjs/operators';
 import { MapFriendlyValuesPipe } from '../../../search/map-friendly-values.pipe';
-import { DescriptorLanguageService } from '../../../shared/entry/descriptor-language.service';
 
 /**
  * Based on https://material.angular.io/components/table/examples example with expandable rows
