@@ -39,6 +39,8 @@ export class MastodonComponent {
   markdownBlockquote: boolean = false; // Converts Markdown symbol ">" at the beginning of a paragraph into a blockquote HTML tag. Ddefault: don't apply
   textMaxLines: string = '0'; // Limit the text content to a maximum number of lines. Default: 0 (unlimited)
   linkSeeMore: string = 'See more posts at Mastodon'; // Customize the text of the link pointing to the Mastodon page (appears after the last toot)
+  mastodonDockstoreLink = this.instanceUrl + '/@' + this.profileName;
+
   constructor(private mastodonService: MastodonService) {}
 
   ngOnInit(): void {
