@@ -66,6 +66,13 @@ html[data-theme='dark'] {
   background: rgba(0, 0, 0, 0.1);
 }
 
+.mt-header-text {
+  color: #282c37;
+}
+
+.mt-header-link {
+  text-decoration: underline !important;
+}
 .mt-body {
   padding: 1rem 1.5rem;
   white-space: pre-wrap;

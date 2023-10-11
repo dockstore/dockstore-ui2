@@ -21,7 +21,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 import { CustomMaterialModule } from 'app/shared/modules/material.module';
 import { HomeComponent } from './home.component';
-import { MastodonService } from '../../shared/mastodon.service';
+import { MastodonService } from '../../shared/mastodon/mastodon.service';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;

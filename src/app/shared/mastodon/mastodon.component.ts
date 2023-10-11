@@ -1,5 +1,11 @@
+/**
+ * Mastodon embed feed timeline v3.8.2
+ * More info at:
+ * https://gitlab.com/idotj/mastodon-embed-feed-timeline
+ */
+
 import { Component } from '@angular/core';
-import { MastodonService } from '../mastodon.service'; // Import the service
+import { MastodonService } from './mastodon.service'; // Import the service
 
 export interface MastodonTimelineData {
   postUrl: string;
@@ -103,7 +109,6 @@ export class MastodonComponent {
           mediaContent = timeline[i]['media_attachments'];
           previewLink = timeline[i]['card'];
           poll = timeline[i]['poll'];
-          console.log(previewLink);
         }
         const timelinePost: MastodonTimelineData = {
           postUrl: postUrl,
@@ -120,7 +125,6 @@ export class MastodonComponent {
         };
         this.timelineData.push(timelinePost);
       }
-      console.log(this.timelineData);
     });
   }
 

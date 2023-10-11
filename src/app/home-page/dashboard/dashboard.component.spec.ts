@@ -10,7 +10,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ContainerService } from '../../shared/container.service';
 import { ContainerStubService } from '../../test/service-stubs';
-import { MastodonService } from '../../shared/mastodon.service';
+import { MastodonService } from '../../shared/mastodon/mastodon.service';
 
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
