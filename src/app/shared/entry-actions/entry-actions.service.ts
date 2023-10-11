@@ -5,7 +5,8 @@ import { includesAuthors, includesVersions } from '../constants';
 import { ContainerService } from '../container.service';
 import { EntryType } from '../enum/entry-type';
 import { WorkflowService } from '../state/workflow.service';
-import { ContainersService, DockstoreTool, Entry, PublishRequest, Workflow, WorkflowsService } from '../openapi';
+import { ContainersService, DockstoreTool, EntriesService, Entry, PublishRequest, Workflow, WorkflowsService } from '../openapi';
+import { EntryType as OpenApiEntryType } from '../openapi';
 import { InformationDialogData } from '../../information-dialog/information-dialog.component';
 import { InformationDialogService } from '../../information-dialog/information-dialog.service';
 import { bootstrap4mediumModalSize } from '../../shared/constants';
@@ -14,6 +15,7 @@ import { bootstrap4mediumModalSize } from '../../shared/constants';
 export class EntryActionsService {
   constructor(
     private alertService: AlertService,
+    private entriesService: EntriesService,
     private workflowsService: WorkflowsService,
     private workflowService: WorkflowService,
     private containersService: ContainersService,
@@ -182,6 +184,45 @@ export class EntryActionsService {
           this.alertService.detailedError(error);
         }
       );
+    }
+  }
+
+  archiveEntry(entry: Entry) {
+    // TODO display gate dialog
+    this.alertService.start('Archiving entry');
+    this.entriesService.archiveEntry(entry.id).subscribe(
+      (response: Entry) => {
+        this.updateBackingEntry(response);
+        this.alertService.detailedSuccess();
+      },
+      (error: HttpErrorResponse) => {
+        this.alertService.detailedError(error);
+      }
+    );
+  }
+
+  unarchiveEntry(entry: Entry) {
+    this.alertService.start('Unarchiving entry');
+    this.entriesService.unarchiveEntry(entry.id).subscribe(
+      (response: Entry) => {
+        this.updateBackingEntry(response);
+        this.alertService.detailedSuccess();
+      },
+      (error: HttpErrorResponse) => {
+        this.alertService.detailedError(error);
+      }
+    );
+  }
+
+  updateBackingEntry(entry: Entry) {
+    if (entry.entryType === OpenApiEntryType.TOOL) {
+      const tool = entry as DockstoreTool;
+      this.containerService.upsertToolToTools(tool);
+      this.containerService.setTool(tool);
+    } else {
+      const workflow = entry as Workflow;
+      this.workflowService.upsertWorkflowToWorkflow(workflow);
+      this.workflowService.setWorkflow(workflow);
     }
   }
 }
