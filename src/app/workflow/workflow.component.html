@@ -63,6 +63,7 @@
             </a>
           </mat-chip>
         </span>
+        <span *ngIf="workflow.archived" class="bubble {{ entryType }}-background ml-3">Archived</span>
       </h3>
       <div *ngIf="!publicPage && workflow.workflowVersions && workflow.workflowVersions.length > 0" class="input-group">
         <mat-form-field data-cy="version-dropdown">
