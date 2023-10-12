@@ -27,11 +27,10 @@ html[data-theme='dark'] {
   display: none;
 }
 .mt-timeline {
-  height: 100%;
-  overflow-y: auto;
+  display: flex;
+  height: 50rem;
   position: relative;
   background: var(--bg-color);
-  scrollbar-color: var(--bg-hover-color) rgba(0, 0, 0, 0.1);
 }
 
 .mt-timeline a:link,
@@ -77,6 +76,9 @@ html[data-theme='dark'] {
   padding: 1rem 1.5rem;
   white-space: pre-wrap;
   word-wrap: break-word;
+  overflow-y: auto;
+  height: 100%;
+  scrollbar-color: var(--bg-hover-color) rgba(0, 0, 0, 0.1);
 }
 
 .mt-body .invisible {
@@ -108,6 +110,9 @@ html[data-theme='dark'] {
   margin-bottom: 0;
 }
 
+mat-card-content {
+  height: 80%;
+}
 /* User icon */
 .mt-avatar {
   position: absolute;

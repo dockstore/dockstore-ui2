@@ -14,15 +14,20 @@
   ~    limitations under the License.
   -->
 
+<!--
+  ~    Adapted from the Mastodon embed feed timeline v3.8.2
+  ~    More info at: https://gitlab.com/idotj/mastodon-embed-feed-timeline
+  -->
+
 <div class="mt-timeline">
   <mat-card class="h-100">
-    <mat-card-header class="mt-header">
-      <mat-card-title class="mt-header-text" class="ml-2"
-        >Mastodon Posts from <a class="mt-header-link" [href]="mastodonDockstoreLink">@dockstore</a></mat-card-title
+    <mat-card-header>
+      <mat-card-title class="mt-header-text ml-2">
+        Mastodon Posts from <a class="mt-header-link" target="_blank" [href]="mastodonDockstoreLink">@dockstore</a></mat-card-title
       >
     </mat-card-header>
     <mat-divider></mat-divider>
-    <mat-card-content class="h-100 mx-3 mt-3 mb-0">
+    <mat-card-content class="mx-3 mt-3 mb-0">
       <div id="mt-body" role="feed" class="mt-body">
         <article
           *ngFor="let data of timelineData"
@@ -75,9 +80,9 @@
               <img src="{{ data.previewLink['image'] }}" alt="" />
             </div>
             <div class="toot-preview-content">
-              <span *ngIf="data.previewLink['provider_name']" class="toot-preview-provider">{{ data.previewLink['provider_name'] }}</span>
+              <span *ngIf="data.previewLink['provider_name']">{{ data.previewLink['provider_name'] }}</span>
               <span *ngIf="data.previewLink['title']" class="toot-preview-title">{{ data.previewLink['title'] }}</span>
-              <span *ngIf="data.previewLink['author_name']" class="toot-preview-author">By {{ data.previewLink['author_name'] }}</span>
+              <span *ngIf="data.previewLink['author_name']">By {{ data.previewLink['author_name'] }}</span>
             </div>
           </a>
           <div *ngIf="data.poll" class="toot-poll">
@@ -92,11 +97,12 @@
             <a [href]="data.postUrl" rel="nofollow noopener noreferrer" tabindex="-1" target="_blank">{{ data.postDate }}</a>
           </div>
         </article>
-        <div class="mt-footer">
-          <a [href]="mastodonDockstoreLink" class="btn" target="_blank" rel="nofollow noopener noreferrer">
-            {{ linkSeeMore }}
-          </a>
-        </div>
+      </div>
+      <mat-divider></mat-divider>
+      <div class="mt-footer">
+        <a [href]="mastodonDockstoreLink" class="btn" target="_blank" rel="nofollow noopener noreferrer">
+          {{ linkSeeMore }}
+        </a>
       </div>
     </mat-card-content>
   </mat-card>

@@ -36,7 +36,7 @@ export class MastodonComponent {
   userId: string = '110973634882132620'; // Your user ID on Mastodon instance. Leave empty if you didn't choose 'profile' as type of timeline
   profileName: string = 'dockstore'; // Your user name on Mastodon instance. Leave empty if you didn't choose 'profile' as type of timeline
   hashtagName: string = ''; // The name of the hashtag. Leave empty if you didn't choose 'hashtag' as type of timeline
-  tootsLimit: string = '2'; // Maximum amount of toots to get. Default: 20
+  tootsLimit: string = '5'; // Maximum amount of toots to get. Default: 20
   hideUnlisted: boolean = false; // Hide unlisted toots. Default: don't hide
   hideReblog: boolean = false; // Hide boosted toots. Default: don't hide
   hideReplies: boolean = false; // Hide replies toots. Default: don't hide
