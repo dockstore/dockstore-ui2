@@ -10,32 +10,56 @@
   >
     View public page
   </a>
-  <div [matTooltip]="pubUnpubMessage">
+  <ng-container *ngIf="!tool?.archived">
+    <div [matTooltip]="pubUnpubMessage">
+      <button
+        id="publishToolButton"
+        mat-raised-button
+        class="accent-1-dark-btn mat-elevation-z"
+        (click)="publishToggle()"
+        [disabled]="(isRefreshing$ | async) || publishDisabled"
+      >
+        {{ tool?.is_published ? 'Unpublish' : 'Publish' }}
+      </button>
+    </div>
+    <ng-container *ngIf="tool?.is_published; then disabledDeleteButton; else enabledDeleteButton"></ng-container>
+    <ng-template #disabledDeleteButton>
+      <button *ngIf="tool?.is_published" mat-flat-button color="warn" disabled matTooltip="Delete the tool">Delete</button>
+    </ng-template>
+    <ng-template #enabledDeleteButton>
+      <app-deregister-modal *ngIf="!tool?.is_published" [refreshMessage]="isRefreshing$ | async"></app-deregister-modal>
+    </ng-template>
     <button
-      id="publishToolButton"
       mat-raised-button
       class="accent-1-dark-btn mat-elevation-z"
-      (click)="publishToggle()"
-      [disabled]="(isRefreshing$ | async) || publishDisabled"
+      (click)="archive()"
+      [disabled]="isRefreshing$ | async"
+      matTooltip="Archive this tool"
+      data-cy="archiveButton"
     >
-      {{ tool?.is_published ? 'Unpublish' : 'Publish' }}
+      Archive
     </button>
-  </div>
-  <ng-container *ngIf="tool?.is_published; then disabledDeleteButton; else enabledDeleteButton"></ng-container>
-  <ng-template #disabledDeleteButton>
-    <button *ngIf="tool?.is_published" mat-flat-button color="warn" disabled matTooltip="Delete the tool">Delete</button>
-  </ng-template>
-  <ng-template #enabledDeleteButton>
-    <app-deregister-modal *ngIf="!tool?.is_published" [refreshMessage]="isRefreshing$ | async"></app-deregister-modal>
-  </ng-template>
-  <button
-    *ngIf="!isHosted"
-    mat-raised-button
-    class="accent-1-dark-btn mat-elevation-z"
-    (click)="refresh()"
-    [disabled]="isRefreshing$ | async"
-    matTooltip="Sync the tool with the Docker image repository, etc"
-  >
-    Refresh
-  </button>
+    <button
+      *ngIf="!isHosted"
+      mat-raised-button
+      class="accent-1-dark-btn mat-elevation-z"
+      (click)="refresh()"
+      [disabled]="isRefreshing$ | async"
+      matTooltip="Sync the tool with the Docker image repository, etc"
+    >
+      Refresh
+    </button>
+  </ng-container>
+  <ng-container *ngIf="tool?.archived">
+    <button
+      mat-raised-button
+      class="accent-1-dark-btn mat-elevation-z"
+      (click)="unarchive()"
+      [disabled]="isRefreshing$ | async"
+      matTooltip="Unarchive this tool"
+      data-cy="unarchiveButton"
+    >
+      Unarchive
+    </button>
+  </ng-container>
 </div>
