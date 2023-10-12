@@ -52,6 +52,7 @@ import { AccountsComponent } from './loginComponents/accounts/accounts.component
 import { ControlsComponent } from './loginComponents/accounts/controls/controls.component';
 import { DeleteAccountDialogComponent } from './loginComponents/accounts/controls/delete-account-dialog/delete-account-dialog.component';
 import { DeleteEntryDialogComponent } from './entry/delete/dialog/delete-entry-dialog.component';
+import { ArchiveEntryDialogComponent } from './entry/archive/dialog/archive-entry-dialog.component';
 import { RevokeTokenDialogComponent } from './loginComponents/accounts/external/revoke-token-dialog/revoke-token-dialog.component';
 import { AccountsExternalComponent } from './loginComponents/accounts/external/accounts.component';
 import { AccountsService } from './loginComponents/accounts/external/accounts.service';
@@ -143,6 +144,7 @@ export function initializerFactory(
     ControlsComponent,
     DeleteAccountDialogComponent,
     DeleteEntryDialogComponent,
+    ArchiveEntryDialogComponent,
     NavbarComponent,
     FooterComponent,
     SitewideNotificationsComponent,

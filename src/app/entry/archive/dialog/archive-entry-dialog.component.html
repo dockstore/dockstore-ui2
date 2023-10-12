@@ -1,0 +1,22 @@
+<h1 mat-dialog-title>Are you sure you want to archive this Dockstore {{ term }}?</h1>
+<div mat-dialog-content>
+  <app-alert></app-alert>
+  <p>
+    You are about to archive the {{ term }} <b>{{ path }}</b
+    >, which will make it read-only and less prominent in the Dockstore user interface. Specifically, after you archive the Dockstore
+    {{ term }}, it will be:
+  </p>
+
+  <ul>
+    <li>Marked as "Archived".</li>
+    <li>Unmodifiable.</li>
+    <li>Removed from Dockstore Search.</li>
+    <li>Displayed in a special "Archived" section of your Dockstore dashboard.</li>
+  </ul>
+  <p>Later, if desired, you can unarchive the {{ term }} to restore it to normal.</p>
+  <p>Are you sure you want to archive this {{ term }}?</p>
+  <div class="btn-group" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="1rem">
+    <button mat-flat-button (click)="no()" data-cy="archive-no" [disabled]="clicked" mat-dialog-close class="secondary-1">Cancel</button>
+    <button mat-flat-button (click)="yes()" data-cy="archive-yes" [disabled]="clicked" color="warn">Archive this {{ term }}</button>
+  </div>
+</div>

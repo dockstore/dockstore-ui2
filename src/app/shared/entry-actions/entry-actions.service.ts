@@ -1,5 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable, EventEmitter } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { AlertService } from '../alert/state/alert.service';
 import { includesAuthors, includesVersions } from '../constants';
 import { ContainerService } from '../container.service';
@@ -9,7 +10,8 @@ import { ContainersService, DockstoreTool, EntriesService, Entry, PublishRequest
 import { EntryType as OpenApiEntryType } from '../openapi';
 import { InformationDialogData } from '../../information-dialog/information-dialog.component';
 import { InformationDialogService } from '../../information-dialog/information-dialog.service';
-import { bootstrap4mediumModalSize } from '../../shared/constants';
+import { ArchiveEntryDialogComponent } from '../../entry/archive/dialog/archive-entry-dialog.component';
+import { bootstrap4mediumModalSize, bootstrap4largeModalSize } from '../../shared/constants';
 
 @Injectable()
 export class EntryActionsService {
@@ -20,7 +22,8 @@ export class EntryActionsService {
     private workflowService: WorkflowService,
     private containersService: ContainersService,
     private containerService: ContainerService,
-    private informationDialogService: InformationDialogService
+    private informationDialogService: InformationDialogService,
+    private dialog: MatDialog
   ) {}
 
   getViewPublicButtonTooltip(entryType: EntryType | null): string {
@@ -188,17 +191,7 @@ export class EntryActionsService {
   }
 
   archiveEntry(entry: Entry) {
-    // TODO display gate dialog
-    this.alertService.start('Archiving entry');
-    this.entriesService.archiveEntry(entry.id).subscribe(
-      (response: Entry) => {
-        this.updateBackingEntry(response);
-        this.alertService.detailedSuccess();
-      },
-      (error: HttpErrorResponse) => {
-        this.alertService.detailedError(error);
-      }
-    );
+    this.dialog.open(ArchiveEntryDialogComponent, { width: bootstrap4largeModalSize, data: entry });
   }
 
   unarchiveEntry(entry: Entry) {
