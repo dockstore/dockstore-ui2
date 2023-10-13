@@ -282,6 +282,7 @@ export class MyWorkflowsService extends MyEntriesService<Workflow, OrgWorkflowOb
       organization: organization,
       published: [],
       unpublished: [],
+      archived: [],
       expanded: false,
     };
   }
