@@ -5,6 +5,7 @@ import { combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AppTool, DockstoreTool, Workflow, Notebook } from '../../shared/openapi';
 import { SearchState, SearchStore } from './search.store';
+import { SearchResult } from '../search-entry-table';
 
 @Injectable({ providedIn: 'root' })
 export class SearchQuery extends Query<SearchState> {
@@ -12,25 +13,21 @@ export class SearchQuery extends Query<SearchState> {
   public toolhit$: Observable<any> = this.select((state) => state.toolhit);
   public notebookhit$: Observable<any> = this.select((state) => state.notebookhit);
   public shortUrl$: Observable<string> = this.select((state) => state.shortUrl);
-  public workflows$: Observable<Array<Workflow>> = this.workflowhit$.pipe(
-    map((elasticSearchResults: Array<any>) =>
-      elasticSearchResults ? elasticSearchResults.map((elasticSearchResult) => elasticSearchResult._source) : null
-    )
+  public workflows$: Observable<Array<SearchResult<Workflow>>> = this.getSearchResultsFromHits<Workflow>(this.workflowhit$);
+  public tools$: Observable<Array<SearchResult<DockstoreTool | AppTool>>> = this.getSearchResultsFromHits<DockstoreTool | AppTool>(
+    this.toolhit$
   );
-  public tools$: Observable<Array<DockstoreTool> | Array<AppTool>> = this.toolhit$.pipe(
-    map((elasticSearchResults: Array<any>) =>
-      elasticSearchResults ? elasticSearchResults.map((elasticSearchResult) => elasticSearchResult._source) : null
-    )
-  );
-  public notebooks$: Observable<Array<Notebook>> = this.notebookhit$.pipe(
-    map((elasticSearchResults: Array<any>) =>
-      elasticSearchResults ? elasticSearchResults.map((elasticSearchResult) => elasticSearchResult._source) : null
-    )
-  );
+  public notebooks$: Observable<Array<SearchResult<Notebook>>> = this.getSearchResultsFromHits<Notebook>(this.notebookhit$);
   public savedTabIndex$: Observable<number> = this.select((state) => state.currentTabIndex);
-  public noToolHits$: Observable<boolean> = this.tools$.pipe(map((tools: Array<DockstoreTool>) => this.haveNoHits(tools)));
-  public noWorkflowHits$: Observable<boolean> = this.workflows$.pipe(map((workflows: Array<Workflow>) => this.haveNoHits(workflows)));
-  public noNotebookHits$: Observable<boolean> = this.notebooks$.pipe(map((notebooks: Array<Notebook>) => this.haveNoHits(notebooks)));
+  public noToolHits$: Observable<boolean> = this.tools$.pipe(
+    map((tools: Array<SearchResult<DockstoreTool | AppTool>>) => this.haveNoHits(tools))
+  );
+  public noWorkflowHits$: Observable<boolean> = this.workflows$.pipe(
+    map((workflows: Array<SearchResult<Workflow>>) => this.haveNoHits(workflows))
+  );
+  public noNotebookHits$: Observable<boolean> = this.notebooks$.pipe(
+    map((notebooks: Array<SearchResult<Notebook>>) => this.haveNoHits(notebooks))
+  );
   public searchText$: Observable<string> = this.select((state) => state.searchText);
   public basicSearchText$: Observable<string> = this.searchText$.pipe(map((searchText) => this.joinComma(searchText)));
   public showToolTagCloud$: Observable<boolean> = this.select((state) => state.showToolTagCloud);
@@ -69,5 +66,22 @@ export class SearchQuery extends Query<SearchState> {
 
   joinComma(searchTerm: string): string {
     return searchTerm.trim().split(' ').join(', ');
+  }
+
+  /**
+   * Transforms ElasticSearch hits to SearchResult objects
+   * @param entryHits$
+   * @returns
+   */
+  getSearchResultsFromHits<T>(entryHits$: Observable<any>): Observable<Array<SearchResult<T>>> | null {
+    return entryHits$.pipe(
+      map((elasticSearchResults: Array<any>) =>
+        elasticSearchResults
+          ? elasticSearchResults.map((elasticSearchResult) => {
+              return { source: elasticSearchResult._source, highlight: elasticSearchResult.highlight } as SearchResult<T>;
+            })
+          : null
+      )
+    );
   }
 }

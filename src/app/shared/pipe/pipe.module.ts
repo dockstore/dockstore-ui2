@@ -16,6 +16,7 @@ import { RecentEventsPipe } from '../entry/recent-events.pipe';
 import { EntryToDisplayNamePipe } from '../entry-to-display-name.pipe';
 import { SearchAuthorsHtmlPipe } from 'app/search/search-authors-html.pipe';
 import { PlatformPartnerPipe } from '../entry/platform-partner.pipe';
+import { JoinWithEllipses } from 'app/search/join-with-ellipses.pipe';
 
 const DECLARATIONS: any[] = [
   FilePathPipe,
@@ -33,6 +34,7 @@ const DECLARATIONS: any[] = [
   RecentEventsPipe,
   SearchAuthorsHtmlPipe,
   PlatformPartnerPipe,
+  JoinWithEllipses,
 ];
 @NgModule({
   imports: [CommonModule],

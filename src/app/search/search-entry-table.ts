@@ -25,6 +25,11 @@ import { AppTool, DockstoreTool, Workflow, Notebook } from '../shared/openapi';
 import { SearchQuery } from './state/search.query';
 import { SearchService } from './state/search.service';
 
+export interface SearchResult<T = AppTool | DockstoreTool | Workflow | Notebook> {
+  source: T;
+  highlight: Map<string, string[]>;
+}
+
 @Directive()
 // eslint-disable-next-line @angular-eslint/directive-class-suffix
 export abstract class SearchEntryTable extends Base implements OnInit {
@@ -34,9 +39,22 @@ export abstract class SearchEntryTable extends Base implements OnInit {
   protected ngUnsubscribe: Subject<{}> = new Subject();
 
   public readonly displayedColumns = ['name', 'verified', 'all_authors', 'descriptorType', 'projectLinks', 'starredUsers'];
+  public readonly columnsToDisplayWithExpand = [...this.displayedColumns, 'expand'];
+  public readonly searchEverythingFriendlyNames = new Map([
+    ['full_workflow_path', 'Path'],
+    ['tool_path', 'Path'],
+    ['workflowVersions.sourceFiles.content', 'Source Files'],
+    ['tags.sourceFiles.content', 'Source Files'],
+    ['description', 'Description'],
+    ['labels', 'Labels'],
+    ['all_authors.name', 'Authors'],
+    ['topicAutomatic', 'Topic'],
+    ['categories.topic', 'Category Topic'],
+    ['categories.displayName', 'Category Name'],
+  ]);
   abstract readonly entryType: 'tool' | 'workflow' | 'notebook';
-  abstract dataSource: MatTableDataSource<Workflow | DockstoreTool | Notebook>;
-  abstract privateNgOnInit(): Observable<(DockstoreTool | Workflow | Notebook)[]>;
+  abstract dataSource: MatTableDataSource<SearchResult>;
+  abstract privateNgOnInit(): Observable<SearchResult[]>;
 
   constructor(protected dateService: DateService, protected searchQuery: SearchQuery, protected searchService: SearchService) {
     super();
@@ -55,10 +73,10 @@ export abstract class SearchEntryTable extends Base implements OnInit {
         // Must set data after paginator, just a material datatables thing.
         this.dataSource.data = entries || [];
       });
-    this.dataSource.sortData = (data: DockstoreTool[] | AppTool[] | Workflow[] | Notebook[], sort: MatSort) => {
+    this.dataSource.sortData = (data: SearchResult[], sort: MatSort) => {
       if (sort.active && sort.direction) {
-        return data.slice().sort((a: Workflow | AppTool | DockstoreTool | Notebook, b: Workflow | AppTool | DockstoreTool | Notebook) => {
-          return this.searchService.compareAttributes(a, b, sort.active, sort.direction, this.entryType);
+        return data.slice().sort((a: SearchResult, b: SearchResult) => {
+          return this.searchService.compareAttributes(a.source, b.source, sort.active, sort.direction, this.entryType);
         });
       } else {
         // Either the active field or direction is unset, so return the data in the original order, unsorted.

@@ -18,7 +18,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Observable } from 'rxjs';
 import { DateService } from '../../shared/date.service';
 import { Workflow } from '../../shared/openapi';
-import { SearchEntryTable } from '../search-entry-table';
+import { SearchEntryTable, SearchResult } from '../search-entry-table';
 import { SearchQuery } from '../state/search.query';
 import { SearchService } from '../state/search.service';
 
@@ -33,12 +33,12 @@ import { SearchService } from '../state/search.service';
 })
 export class SearchWorkflowTableComponent extends SearchEntryTable implements OnInit {
   readonly entryType = 'workflow';
-  public dataSource: MatTableDataSource<Workflow>;
+  public dataSource: MatTableDataSource<SearchResult<Workflow>>;
   constructor(dateService: DateService, searchQuery: SearchQuery, searchService: SearchService) {
     super(dateService, searchQuery, searchService);
   }
 
-  privateNgOnInit(): Observable<Array<Workflow>> {
+  privateNgOnInit(): Observable<Array<SearchResult<Workflow>>> {
     return this.searchQuery.workflows$;
   }
 }

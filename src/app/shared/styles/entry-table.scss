@@ -33,3 +33,37 @@
 .mat-column-name {
   word-break: break-word;
 }
+
+// To hide the search highlight row if there are no highlights
+.detail-row {
+  min-height: 0;
+}
+
+/* Material says it should highlight on hover, sadly Angular Material does not. Also don't highlight expanded row */
+// .element-row:not(.expanded-row):hover {
+//   background-color: rgba(0, 0, 0, 0.04);
+// }
+
+.mat-row:nth-child(even):hover,
+.mat-row:nth-child(even):hover + .mat-row {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.element-row:not(.expanded-row):active {
+  background: #efefef;
+}
+
+// To not have border between expanded details and the normal row
+.element-row {
+  border-bottom-width: 0;
+}
+
+// Cursor on unexpanded rows
+.element-row:not(.expanded).expandable {
+  cursor: pointer;
+}
+
+th {
+  white-space: nowrap;
+  vertical-align: top;
+}
