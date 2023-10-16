@@ -123,7 +123,8 @@
                       defaultTestFilePathEditing ||
                       forumUrlEditing ||
                       (workflowPathEditing && !editWorkflowPathForm.valid) ||
-                      (isRefreshing$ | async)
+                      (isRefreshing$ | async) ||
+                      !canWrite
                     "
                     (click)="toggleEditWorkflowPath()"
                   >
@@ -176,7 +177,8 @@
                       workflowPathEditing ||
                       forumUrlEditing ||
                       (defaultTestFilePathEditing && !editTestFilePathForm.valid) ||
-                      (isRefreshing$ | async)
+                      (isRefreshing$ | async) ||
+                      !canWrite
                     "
                     (click)="toggleEditDefaultTestFilePath()"
                   >
@@ -239,6 +241,7 @@
                   </button>
                   <button
                     *ngIf="workflow?.topic || topicEditing"
+                    [disabled]="!canWrite"
                     type="button"
                     mat-raised-button
                     class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
@@ -260,7 +263,7 @@
                     [(ngModel)]="workflow.topicSelection"
                     aria-label="Select an option"
                     (change)="radioChange($event)"
-                    [disabled]="workflow?.mode === WorkflowType.ModeEnum.HOSTED"
+                    [disabled]="workflow?.mode === WorkflowType.ModeEnum.HOSTED || !canWrite"
                     [matTooltip]="
                       workflow?.mode === WorkflowType.ModeEnum.HOSTED
                         ? 'Hosted workflow topics are always manually entered'
@@ -306,7 +309,7 @@
                   </button>
                   <button
                     *ngIf="!isPublic && !workflow?.forumUrl && !forumUrlEditing"
-                    [disabled]="topicEditing || workflowPathEditing || defaultTestFilePathEditing || (isRefreshing$ | async)"
+                    [disabled]="topicEditing || workflowPathEditing || defaultTestFilePathEditing || (isRefreshing$ | async) || !canWrite"
                     type="button"
                     mat-raised-button
                     class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
@@ -351,7 +354,7 @@
               type="button"
               *ngIf="workflow?.mode === WorkflowType.ModeEnum.FULL && !workflow?.is_published && !workflow?.isChecker"
               (click)="restubWorkflow()"
-              [disabled]="isRefreshing$ | async"
+              [disabled]="(isRefreshing$ | async) || !canWrite"
             >
               <img src="../assets/svg/icons-reject-small.svg" alt="Cancel" class="pr-2 pb-1" />Restub
             </button>

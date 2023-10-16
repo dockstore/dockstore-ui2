@@ -285,7 +285,7 @@ export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterVi
           .subscribe((actions: Array<string>) => {
             // Alas, Swagger codegen does not generate a type for the actions
             this.canRead = actions.indexOf('READ') !== -1;
-            this.canWrite = actions.indexOf('WRITE') !== -1;
+            this.canWrite = actions.indexOf('WRITE') !== -1 && !workflow.archived;
             this.isOwner = actions.indexOf('SHARE') !== -1;
             // TODO: when expanding permissions beyond hosted workflows, this component will need to tolerate a 401
             // for users that are not on FireCloud

@@ -155,6 +155,7 @@
             mat-button
             class="private-btn small-btn-structure"
             (click)="toggleLabelsEditMode()"
+            [disabled]="!canWrite"
           >
             <img src="../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit labels" />
             Manage labels
