@@ -1,5 +1,5 @@
 <!--
-  ~    Copyright 2019 OICR
+  ~    Copyright 2023 OICR
   ~
   ~    Licensed under the Apache License, Version 2.0 (the "License");
   ~    you may not use this file except in compliance with the License.
@@ -272,8 +272,8 @@
     <div fxLayout="row" fxLayout.lt-md="column" class="container mt-5" fxLayoutGap="2rem">
       <div fxLayout="column" fxLayoutAlign="start stretch" fxFlex="33" fxFlex.lt-md="100" id="news" class="p-3">
         <h3>News & Updates</h3>
-        <app-news-and-updates></app-news-and-updates>
       </div>
+      <app-news-and-updates></app-news-and-updates>
       <div fxLayout="column" fxLayoutAlign="start stretch" fxFlex="33" fxFlex.lt-md="100" id="resources" class="p-3">
         <h3>Helpful Resources</h3>
         <div>
@@ -320,9 +320,7 @@
           <span>Discourse forum about helpful Dockstore topics.</span>
         </div>
       </div>
-      <div fxFlex.md="33" fxFlex.gt-md="33" fxFlex.lt-md="100">
-        <div class="my-3 twitter" #twitter></div>
-      </div>
+      <app-mastodon-timeline fxLayout="column" fxFlex="33" fxFlex.lt-md="100" class="p-3 mh-100"></app-mastodon-timeline>
     </div>
   </div>
 </div>
