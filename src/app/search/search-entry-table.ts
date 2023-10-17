@@ -21,14 +21,8 @@ import { combineLatest, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Base } from '../shared/base';
 import { DateService } from '../shared/date.service';
-import { AppTool, DockstoreTool, Workflow, Notebook } from '../shared/openapi';
-import { SearchQuery } from './state/search.query';
+import { SearchQuery, SearchResult } from './state/search.query';
 import { SearchService } from './state/search.service';
-
-export interface SearchResult<T = AppTool | DockstoreTool | Workflow | Notebook> {
-  source: T;
-  highlight: Map<string, string[]>;
-}
 
 @Directive()
 // eslint-disable-next-line @angular-eslint/directive-class-suffix

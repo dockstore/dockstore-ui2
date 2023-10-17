@@ -18,8 +18,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Observable } from 'rxjs';
 import { DateService } from '../../shared/date.service';
 import { Workflow } from '../../shared/openapi';
-import { SearchEntryTable, SearchResult } from '../search-entry-table';
-import { SearchQuery } from '../state/search.query';
+import { SearchEntryTable } from '../search-entry-table';
+import { SearchQuery, SearchResult } from '../state/search.query';
 import { SearchService } from '../state/search.service';
 
 /**

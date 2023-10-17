@@ -5,7 +5,11 @@ import { combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AppTool, DockstoreTool, Workflow, Notebook } from '../../shared/openapi';
 import { SearchState, SearchStore } from './search.store';
-import { SearchResult } from '../search-entry-table';
+
+export interface SearchResult<T = AppTool | DockstoreTool | Workflow | Notebook> {
+  source: T;
+  highlight: any;
+}
 
 @Injectable({ providedIn: 'root' })
 export class SearchQuery extends Query<SearchState> {

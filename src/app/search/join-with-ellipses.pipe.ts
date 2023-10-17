@@ -4,10 +4,10 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'joinWithEllipses',
 })
 export class JoinWithEllipses implements PipeTransform {
-  transform(highlights: any): string {
-    if (!highlights) {
+  transform(fragments: any): string {
+    if (!fragments || !Array.isArray(fragments)) {
       return '';
     }
-    return highlights.join('...');
+    return fragments.join('...');
   }
 }
