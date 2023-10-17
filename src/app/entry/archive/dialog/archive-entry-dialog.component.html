@@ -9,11 +9,11 @@
 
   <ul>
     <li>Marked as "Archived".</li>
-    <li>Unmodifiable.</li>
-    <li>Removed from Dockstore Search.</li>
-    <li>Displayed in a special "Archived" section of your Dockstore dashboard.</li>
+    <li>Read-only, except to unarchive.</li>
+    <li>Ranked lower in Dockstore Search.</li>
+    <li>Displayed in the "Archived" section of your Dockstore dashboard.</li>
   </ul>
-  <p>Later, if desired, you can unarchive the {{ term }} to restore it to normal.</p>
+  <p>Later, you can unarchive the {{ term }} to restore it to normal.</p>
   <p>Are you sure you want to archive this {{ term }}?</p>
   <div class="btn-group" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="1rem">
     <button mat-flat-button (click)="no()" data-cy="archive-no" [disabled]="clicked" mat-dialog-close class="secondary-1">Cancel</button>
