@@ -46,6 +46,7 @@ export class ToolFileEditorComponent extends FileEditing {
       this.loadVersionSourcefiles();
     }
   }
+  @Input() canWrite: boolean;
 
   constructor(
     private hostedService: HostedService,
