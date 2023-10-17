@@ -62,7 +62,7 @@
       </mat-cell>
     </ng-container>
 
-    <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+    <!-- Search highlighting column - this row is made up of this one column that spans across all columns -->
     <ng-container matColumnDef="searchHighlight">
       <mat-cell *matCellDef="let workflow" [attr.colspan]="displayedColumns.length">
         <div *ngIf="workflow.highlight">
@@ -78,7 +78,7 @@
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let element; columns: displayedColumns" class="element-row"></mat-row>
-    <mat-row *matRowDef="let row; columns: ['searchHighlight']" class="detail-row"></mat-row>
+    <mat-row *matRowDef="let row; columns: ['searchHighlight']" class="search-highlight-row"></mat-row>
   </mat-table>
   <mat-paginator
     data-cy="search-workflow-table-paginator"
