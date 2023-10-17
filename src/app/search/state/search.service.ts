@@ -162,6 +162,12 @@ export class SearchService {
         initiallyExpanded: false,
         exclusive: true,
       },
+      {
+        friendlyName: 'Archived',
+        esName: 'archived',
+        initiallyExpanded: false,
+        exclusive: true,
+      },
     ];
   }
 
