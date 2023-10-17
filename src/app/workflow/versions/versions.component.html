@@ -168,6 +168,24 @@
       </td>
     </ng-container>
 
+    <ng-container matColumnDef="metrics" *ngIf="Dockstore.FEATURES.enableMetrics">
+      <th
+        scope="col"
+        mat-header-cell
+        *matHeaderCellDef
+        mat-sort-header
+        matTooltip="The version has has execution and/or validation metrics."
+      >
+        Metrics
+        <a class="ds-green" [href]="Dockstore.DOCUMENTATION_URL + 'advanced-topics/metrics.html'" target="_blank" rel="noopener noreferrer"
+          ><mat-icon>info</mat-icon></a
+        >
+      </th>
+      <td mat-cell *matCellDef="let version">
+        <mat-icon data-cy="metrics" *ngIf="(version.metricsByPlatform | json) !== '{}'">check</mat-icon>
+      </td>
+    </ng-container>
+
     <ng-container matColumnDef="snapshot">
       <th
         scope="col"
