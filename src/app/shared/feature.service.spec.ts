@@ -14,4 +14,12 @@ describe('FeatureService', () => {
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
+  it('should set feature flag correctly', () => {
+    service.updateFeatureFlags('?metrics');
+    expect(Dockstore.FEATURES.enableMetrics).toBeTrue();
+    service.updateFeatureFlags(null);
+    expect(Dockstore.FEATURES.enableMetrics).toBeFalse();
+    service.updateFeatureFlags('');
+    expect(Dockstore.FEATURES.enableMetrics).toBeFalse();
+  });
 });

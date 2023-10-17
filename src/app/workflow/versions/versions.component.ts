@@ -96,7 +96,7 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
         return false;
       }
       if (Dockstore.FEATURES.enableMetrics && column === verifiedColumn) {
-        // Give priority to metrics over verified, since space is at a priority
+        // Give priority to metrics over verified, since space is at a premium
         return false;
       }
       return true;
