@@ -119,7 +119,9 @@ export class QueryBuilderService {
     // otherwise, use the default ES hit ordering, which should be by
     // ES-calcalated score if we craft our query correctly
     if (this.isEmpty(values) && !this.hasInclusiveSettings(advancedSearchObject)) {
-      tableBody = tableBody.sort('stars_count', 'desc');
+      tableBody = tableBody.sort([{ archived: 'asc' }, { stars_count: 'desc' }]);
+    } else {
+      tableBody = tableBody.sort([{ archived: 'asc' }, { _score: 'desc' }]);
     }
     const builtTableBody = tableBody.build();
     const tableQuery = JSON.stringify(builtTableBody);
