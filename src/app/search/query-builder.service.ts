@@ -31,16 +31,6 @@ export class QueryBuilderService {
   // TODO: Comment on why shard_size is 10,000
   private shard_size = 10000;
   constructor(private searchService: SearchService) {}
-  public readonly searchEverythingFriendlyNames = new Map([
-    ['full_workflow_path.keyword', 'Workflow Path'],
-    ['tool_path.keyword', 'Tool Path'],
-    ['workflowVersions.sourceFiles.content', 'Source Files'],
-    ['tags.sourceFiles.content', 'Source Files'],
-    ['description', 'Description'],
-    ['labels', 'Labels'],
-    ['all_authors.name', 'Authors'],
-    ['topicAutomatic', 'Topic'],
-  ]);
 
   getTagCloudQuery(type: string): string {
     const tagCloudSize = 20;

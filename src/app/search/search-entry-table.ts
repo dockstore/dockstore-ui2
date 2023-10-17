@@ -44,7 +44,7 @@ export abstract class SearchEntryTable extends Base implements OnInit {
     ['all_authors.name', 'Authors'],
     ['topicAutomatic', 'Topic'],
     ['categories.topic', 'Category Topic'],
-    ['categories.displayName', 'Category Name'],
+    ['categories.displayName', 'Category'],
   ]);
   abstract readonly entryType: 'tool' | 'workflow' | 'notebook';
   abstract dataSource: MatTableDataSource<SearchResult>;
