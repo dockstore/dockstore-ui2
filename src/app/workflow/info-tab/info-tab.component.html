@@ -230,7 +230,9 @@
                   </button>
                   <button
                     *ngIf="!workflow?.topic && !topicEditing"
-                    [disabled]="forumUrlEditing || workflowPathEditing || defaultTestFilePathEditing || (isRefreshing$ | async)"
+                    [disabled]="
+                      forumUrlEditing || workflowPathEditing || defaultTestFilePathEditing || (isRefreshing$ | async) || !canWrite
+                    "
                     type="button"
                     mat-raised-button
                     class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
