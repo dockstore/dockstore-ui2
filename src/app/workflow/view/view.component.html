@@ -20,7 +20,7 @@
 </div>
 <!-- Display private workflow button design-->
 <ng-template #displayPrivateButton>
-  <button mat-button class="private-btn small-btn-structure" [matMenuTriggerFor]="menu" [disabled]="!canWrite">
+  <button mat-button class="private-btn small-btn-structure" [matMenuTriggerFor]="menu">
     <img src="../assets/svg/gear-icon.svg" alt="Gear icon" class="pb-1" />
     Actions
     <img src="../assets/svg/drop-down-arrow.svg" alt="Drop down menu icon" />
@@ -37,7 +37,7 @@
       mat-menu-item
       color="warn"
       class="btn-block deleteVersionButton"
-      [disabled]="isRefreshing$ | async"
+      [disabled]="(isRefreshing$ | async) || !canWrite"
       *ngIf="workflow?.mode === WorkflowType.ModeEnum.HOSTED && canWrite"
       (click)="deleteHostedVersion(); (false)"
     >
@@ -47,7 +47,7 @@
       type="button"
       mat-menu-item
       color="accent"
-      [disabled]="(isRefreshing$ | async) || !(!version.frozen && version.referenceType !== 'BRANCH')"
+      [disabled]="(isRefreshing$ | async) || !canWrite || !(!version.frozen && version.referenceType !== 'BRANCH')"
       (click)="snapshotVersion()"
       data-cy="dockstore-snapshot"
       matTooltip="Snapshotting a version makes it read-only."
@@ -60,7 +60,7 @@
       id="DOIButton"
       color="accent"
       (click)="requestDOIForWorkflowVersion()"
-      [disabled]="isRefreshing$ | async"
+      [disabled]="(isRefreshing$ | async) || !canWrite"
       data-cy="dockstore-request-doi-button"
       *ngIf="version.referenceType !== 'BRANCH' && !version.doiURL && workflow?.is_published"
       matTooltip="Request a Digital Object Identifier (DOI) for this version."
@@ -73,7 +73,7 @@
       id="OrcidButton"
       color="accent"
       (click)="exportToOrcid()"
-      [disabled]="isRefreshing$ | async"
+      [disabled]="(isRefreshing$ | async) || !canWrite"
       data-cy="dockstore-export-orcid-button"
       *ngIf="
         enableExportToOrcid &&
@@ -89,7 +89,7 @@
     <button
       data-cy="set-default-version-button"
       mat-menu-item
-      [disabled]="(isRefreshing$ | async) || version.name === workflow.defaultVersion"
+      [disabled]="(isRefreshing$ | async) || !canWrite || version.name === workflow.defaultVersion"
       (click)="updateDefaultVersion()"
     >
       Set as Default Version
@@ -103,6 +103,7 @@
         color="accent"
         [disabled]="
           (isRefreshing$ | async) ||
+          !canWrite ||
           version.frozen ||
           (workflow?.mode === WorkflowType.ModeEnum.DOCKSTOREYML && !version.legacyVersion) ||
           workflow?.mode === WorkflowType.ModeEnum.HOSTED
