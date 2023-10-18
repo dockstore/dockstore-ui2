@@ -27,7 +27,7 @@ describe('ArchiveEntryDialogComponent', () => {
           },
           {
             provide: MAT_DIALOG_DATA,
-            useValue: { entryTypeMetadata: { term: 'workflow' } }, // simulation of an Entry
+            useValue: { entry: { entryTypeMetadata: { term: 'workflow' } } }, // simulation of an Entry
           },
         ],
       }).compileComponents();
