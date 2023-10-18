@@ -121,6 +121,7 @@ describe('MyWorkflowsService', () => {
   const expectedResult1: OrgWorkflowObject<Workflow> = {
     unpublished: [tool5, tool6],
     published: [],
+    archived: [],
     expanded: false,
     sourceControl: 'github.com',
     organization: 'aa',
@@ -128,6 +129,7 @@ describe('MyWorkflowsService', () => {
   const expectedResult2: OrgWorkflowObject<Workflow> = {
     unpublished: [tool3, tool4],
     published: [],
+    archived: [],
     expanded: false,
     sourceControl: 'github.com',
     organization: 'bb',
@@ -135,6 +137,7 @@ describe('MyWorkflowsService', () => {
   const expectedResult3: OrgWorkflowObject<Workflow> = {
     unpublished: [tool1, tool2],
     published: [],
+    archived: [],
     expanded: true,
     sourceControl: 'github.com',
     organization: 'cc',
