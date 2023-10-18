@@ -15,8 +15,8 @@
  */
 
 // Set the following variable to an appropriate value for your postgres setup.
-const psqlInvocation: string = 'PASSWORD=dockstore docker exec -i postgres1 psql';
-// const psqlInvocation: string = 'PASSWORD=dockstore psql';
+// const psqlInvocation: string = 'PASSWORD=dockstore docker exec -i postgres1 psql';
+const psqlInvocation: string = 'PASSWORD=dockstore psql';
 
 export function goToTab(tabName: string): void {
   // cypress tests run asynchronously, so if the DOM changes and an element-of-interest becomes detached while we're manipulating it, the test will fail.
