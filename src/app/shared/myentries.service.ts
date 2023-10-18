@@ -111,12 +111,15 @@ export abstract class MyEntriesService<E extends DockstoreTool | Workflow, O ext
       return null;
     }
     entries.sort(this.sortEntry);
-    const publishedEntries = entries.filter((entry) => entry.is_published);
+    const publishedEntries = entries.filter((entry) => entry.is_published && !entry.archived);
     if (publishedEntries.length > 0) {
       return publishedEntries[0];
-    } else {
-      return entries[0];
     }
+    const unpublishedEntries = entries.filter((entry) => !entry.is_published && !entry.archived);
+    if (unpublishedEntries.length > 0) {
+      return unpublishedEntries[0];
+    }
+    return entries[0];
   }
 
   protected sortEntriesOfOrgEntryObjects(orgEntryObjects: O[]) {
