@@ -32,10 +32,10 @@
             <mat-icon class="arrow mat-icon-sm">arrow_forward</mat-icon>
             <a
               class="no-wrap"
-              title="{{ toolObj?.namespace + (toolObj?.toolname ? '/' + toolObj?.toolname : '') }}"
+              title="{{ toolObj?.name + (toolObj?.toolname ? '/' + toolObj?.toolname : '') }}"
               [routerLink]="'/my-tools/' + toolObj.tool_path"
             >
-              {{ toolObj?.namespace + (toolObj?.toolname ? '/' + toolObj?.toolname : '') }}
+              {{ toolObj?.name + (toolObj?.toolname ? '/' + toolObj?.toolname : '') }}
             </a>
           </mat-list-item>
           <mat-list-item *ngIf="items.length === 0">
