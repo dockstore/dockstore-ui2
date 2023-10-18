@@ -191,7 +191,15 @@ export class EntryActionsService {
   }
 
   archiveEntry(entry: Entry) {
-    this.dialog.open(ArchiveEntryDialogComponent, { width: bootstrap4largeModalSize, data: entry });
+    this.dialog.open(ArchiveEntryDialogComponent, {
+      width: bootstrap4largeModalSize,
+      data: {
+        entry: entry,
+        callback: (archived: Entry) => {
+          this.updateBackingEntry(archived);
+        },
+      },
+    });
   }
 
   unarchiveEntry(entry: Entry) {

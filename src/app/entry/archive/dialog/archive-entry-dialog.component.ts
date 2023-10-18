@@ -19,7 +19,6 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Entry, EntriesService, DockstoreTool, Workflow } from '../../../shared/openapi';
-import { EntryActionsService } from '../../../shared/entry-actions/entry-actions.service';
 import { AlertService } from '../../../shared/alert/state/alert.service';
 
 @Component({
@@ -35,13 +34,13 @@ export class ArchiveEntryDialogComponent {
 
   constructor(
     public dialogRef: MatDialogRef<ArchiveEntryDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public entry: Entry,
+    @Inject(MAT_DIALOG_DATA) public data: { entry: Entry; callback: (archived: Entry) => void },
     public matSnackBar: MatSnackBar,
     public router: Router,
     public alertService: AlertService,
-    public entriesService: EntriesService,
-    public entryActionsService: EntryActionsService
+    public entriesService: EntriesService
   ) {
+    const entry = this.data.entry;
     this.clicked = false;
     this.term = entry.entryTypeMetadata.term;
     this.path = (entry as Workflow).full_workflow_path ?? (entry as DockstoreTool).tool_path;
@@ -72,10 +71,10 @@ export class ArchiveEntryDialogComponent {
 
   archiveEntry(): void {
     this.alertService.start(`Archiving ${this.path}`);
-    this.entriesService.archiveEntry(this.entry.id).subscribe(
-      (response: Entry) => {
+    this.entriesService.archiveEntry(this.data.entry.id).subscribe(
+      (archived: Entry) => {
         this.alertService.detailedSuccess(`Successfully archived ${this.path}`);
-        this.entryActionsService.updateBackingEntry(response);
+        this.data.callback(archived);
         this.close();
       },
       (error: HttpErrorResponse) => {
