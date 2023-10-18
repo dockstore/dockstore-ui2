@@ -103,7 +103,6 @@ import { RefreshService } from './shared/refresh.service';
 import { ApiModule } from './shared/openapi/api.module';
 import { Configuration } from './shared/openapi/configuration';
 import { TrackLoginService } from './shared/track-login.service';
-import { TwitterService } from './shared/twitter.service';
 import { UrlResolverService } from './shared/url-resolver.service';
 import { VerifiedByService } from './shared/verified-by.service';
 import { SitemapComponent } from './sitemap/sitemap.component';
@@ -232,7 +231,6 @@ export function initializerFactory(
     RegisterCheckerWorkflowService,
     RefreshService,
     PagenumberService,
-    TwitterService,
     GA4GHV20Service,
     DescriptorLanguageService,
     UrlResolverService,

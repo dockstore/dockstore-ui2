@@ -1,6 +1,6 @@
 import { ga4ghPath } from '../../../../src/app/shared/constants';
 import { ToolDescriptor } from '../../../../src/app/shared/openapi';
-import { goToTab, checkFeaturedContent, checkNewsAndUpdates } from '../../../support/commands';
+import { goToTab, checkFeaturedContent, checkNewsAndUpdates, checkMastodonFeed } from '../../../support/commands';
 
 // Test an entry, these should be ambiguous between tools, workflows, and notebooks.
 describe('run stochastic smoke test', () => {
@@ -371,6 +371,11 @@ describe('Check extra content', () => {
   it('news and updates are visible from home page', () => {
     cy.visit('/');
     checkNewsAndUpdates();
+  });
+
+  it('mastodon feed should be visible', () => {
+    cy.visit('/');
+    checkMastodonFeed();
   });
 });
 

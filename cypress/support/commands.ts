@@ -277,3 +277,7 @@ export function checkNewsAndUpdates() {
     cy.get('.news-entry').first().contains('a').should('have.attr', 'href');
   });
 }
+
+export function checkMastodonFeed() {
+  cy.get('[data-cy=mt-toot]').should('exist');
+}

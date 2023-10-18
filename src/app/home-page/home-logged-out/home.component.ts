@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 OICR
+ *    Copyright 2023 OICR
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -13,16 +13,14 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { faGithub, faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { HomePageService } from 'app/home-page/home-page.service';
 import { Base } from 'app/shared/base';
 import { Observable } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 import { Dockstore } from '../../shared/dockstore.model';
 import { User } from '../../shared/openapi/model/user';
-import { TwitterService } from '../../shared/twitter.service';
 import { UserQuery } from '../../shared/user/user.query';
 import { Category } from '../../shared/openapi';
 import { AllCategoriesService } from '../../categories/state/all-categories.service';
@@ -45,7 +43,7 @@ export class YoutubeComponent {
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent extends Base implements OnInit, AfterViewInit {
+export class HomeComponent extends Base implements OnInit {
   faGithub = faGithub;
   faGoogle = faGoogle;
   public user$: Observable<User>;
@@ -55,13 +53,10 @@ export class HomeComponent extends Base implements OnInit, AfterViewInit {
   public orgSchema;
   public websiteSchema;
 
-  @ViewChild('twitter') twitterElement: ElementRef;
-
   @ViewChild('youtube') youtube: ElementRef;
 
   constructor(
     private dialog: MatDialog,
-    private twitterService: TwitterService,
     private userQuery: UserQuery,
     private homePageService: HomePageService,
     private allCategoriesService: AllCategoriesService
@@ -76,21 +71,6 @@ export class HomeComponent extends Base implements OnInit, AfterViewInit {
     this.workflowCategories$ = this.allCategoriesService.workflowCategories$;
     this.orgSchema = this.homePageService.hpOrgSchema;
     this.websiteSchema = this.homePageService.hpWebsiteSchema;
-  }
-  ngAfterViewInit() {
-    this.loadTwitterWidget();
-  }
-
-  loadTwitterWidget() {
-    this.twitterService
-      .loadScript()
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(
-        () => {
-          this.twitterService.createTimeline(this.twitterElement, 2);
-        },
-        (err) => console.error(err)
-      );
   }
 
   goToSearch(searchValue: string) {
