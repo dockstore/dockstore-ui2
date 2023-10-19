@@ -8,7 +8,7 @@ import { SearchState, SearchStore } from './search.store';
 
 export interface SearchResult<T = AppTool | DockstoreTool | Workflow | Notebook> {
   source: T;
-  highlight: any;
+  highlight: Map<string, string[]>;
 }
 
 @Injectable({ providedIn: 'root' })
