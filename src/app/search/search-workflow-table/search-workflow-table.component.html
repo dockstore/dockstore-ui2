@@ -65,7 +65,7 @@
     <!-- Search highlighting column - this row is made up of this one column that spans across all columns -->
     <ng-container matColumnDef="searchHighlight">
       <mat-cell *matCellDef="let workflow" [attr.colspan]="displayedColumns.length">
-        <div *ngIf="workflow.highlight">
+        <div *ngIf="workflow.highlight" class="pt-3">
           <table class="size-small">
             <tr *ngFor="let highlight of workflow.highlight | keyvalue">
               <th>{{ this.searchEverythingFriendlyNames.get(highlight.key.toString()) }}:</th>
