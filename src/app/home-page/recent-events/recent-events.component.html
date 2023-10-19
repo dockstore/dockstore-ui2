@@ -44,7 +44,7 @@
             <span *ngSwitchCase="EventType.ADDVERSIONTOENTRY">
               created
               <span *ngIf="event.version"
-                >the {{ event.version?.referenceType | lowercase }} <strong>{{ event.version?.name }}</strong></span
+                >the {{ event.version.referenceType | lowercase }} <strong>{{ event.version.name }}</strong></span
               >
               <span *ngIf="!event.version">a tag</span>
               in {{ event | recentEvents: 'entryType' }}
