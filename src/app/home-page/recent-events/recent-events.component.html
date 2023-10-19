@@ -42,8 +42,12 @@
               unpublished the {{ event | recentEvents: 'entryType' }} <strong>{{ event | recentEvents: 'displayName' }}</strong>
             </span>
             <span *ngSwitchCase="EventType.ADDVERSIONTOENTRY">
-              created the {{ event.version?.referenceType | lowercase }} <strong>{{ event.version?.name }}</strong> in
-              {{ event | recentEvents: 'entryType' }}
+              created
+              <span *ngIf="event.version"
+                >the {{ event.version?.referenceType | lowercase }} <strong>{{ event.version?.name }}</strong></span
+              >
+              <span *ngIf="!event.version">a tag</span>
+              in {{ event | recentEvents: 'entryType' }}
               <a [routerLink]="event | recentEvents: 'entryLink'">{{ event | recentEvents: 'displayName' }}</a>
             </span>
             <!-- Organizations -->
