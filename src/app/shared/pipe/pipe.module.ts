@@ -40,6 +40,6 @@ const DECLARATIONS: any[] = [
   imports: [CommonModule],
   declarations: DECLARATIONS,
   exports: DECLARATIONS,
-  providers: [EntryToDisplayNamePipe, PlatformPartnerPipe],
+  providers: [EntryToDisplayNamePipe, PlatformPartnerPipe, MapFriendlyValuesPipe],
 })
 export class PipeModule {}

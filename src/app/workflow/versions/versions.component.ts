@@ -70,22 +70,37 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
     this.sortColumn = 'last_modified';
   }
 
+  /**
+   * Sets the display columns; the order of the array determines the order in which columns are
+   * displayed -- it's not the HTML template that determines the display order.
+   * @param publicPage
+   */
   setDisplayColumns(publicPage: boolean) {
-    if (publicPage) {
-      this.displayedColumns = ['name', 'last_modified', 'descriptorTypeVersions', 'valid', 'verified', 'open', 'snapshot', 'actions'];
-    } else {
-      this.displayedColumns = [
-        'name',
-        'last_modified',
-        'descriptorTypeVersions',
-        'valid',
-        'hidden',
-        'open',
-        'verified',
-        'snapshot',
-        'actions',
-      ];
-    }
+    const hiddenColumn = 'hidden';
+    const metricsColumn = 'metrics';
+    const verifiedColumn = 'verified';
+    const allColumns = [
+      'name',
+      'last_modified',
+      'descriptorTypeVersions',
+      'valid',
+      hiddenColumn,
+      verifiedColumn,
+      'open',
+      metricsColumn,
+      'snapshot',
+      'actions',
+    ];
+    this.displayedColumns = allColumns.filter((column) => {
+      if ((publicPage && column === hiddenColumn) || (!Dockstore.FEATURES.enableMetrics && column === metricsColumn)) {
+        return false;
+      }
+      if (Dockstore.FEATURES.enableMetrics && column === verifiedColumn) {
+        // Give priority to metrics over verified, since space is at a premium
+        return false;
+      }
+      return true;
+    });
   }
 
   ngAfterViewInit(): void {

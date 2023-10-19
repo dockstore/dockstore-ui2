@@ -10,7 +10,6 @@ import { AlertService } from 'app/shared/alert/state/alert.service';
 import { LambdaEvent, LambdaEventsService } from 'app/shared/openapi';
 import { finalize } from 'rxjs/operators';
 import { MapFriendlyValuesPipe } from '../../../search/map-friendly-values.pipe';
-import { DescriptorLanguageService } from '../../../shared/entry/descriptor-language.service';
 
 /**
  * Based on https://material.angular.io/components/table/examples example with expandable rows
@@ -34,7 +33,6 @@ import { DescriptorLanguageService } from '../../../shared/entry/descriptor-lang
 })
 export class GithubAppsLogsComponent implements OnInit {
   datePipe: DatePipe;
-  mapPipe: MapFriendlyValuesPipe;
   columnsToDisplay: string[];
   displayedColumns: string[];
   lambdaEvents: LambdaEvent[] | null;
@@ -51,10 +49,9 @@ export class GithubAppsLogsComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public matDialogData: { userId?: number; organization?: string },
     private lambdaEventsService: LambdaEventsService,
     private matSnackBar: MatSnackBar,
-    private descriptorLanguageService: DescriptorLanguageService
+    private mapPipe: MapFriendlyValuesPipe
   ) {
     this.datePipe = new DatePipe('en');
-    this.mapPipe = new MapFriendlyValuesPipe(this.descriptorLanguageService);
     const defaultPredicate = this.dataSource.filterPredicate;
     this.dataSource.filterPredicate = (data, filter) => {
       const formattedDate = this.datePipe.transform(data.eventDate, 'yyyy-MM-ddTHH:mm').toLowerCase();
