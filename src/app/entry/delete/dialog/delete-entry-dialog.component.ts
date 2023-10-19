@@ -42,7 +42,7 @@ export class DeleteEntryDialogComponent {
   ) {
     this.clicked = false;
     this.term = entry.entryTypeMetadata.term;
-    this.path = (entry as Workflow).full_workflow_path ?? (entry as DockstoreTool).tool_path;
+    this.path = (entry as Workflow).full_workflow_path ?? (entry as DockstoreTool).tool_path ?? entry.gitUrl;
     this.fromDockstoreYml = (entry as Workflow | DockstoreTool).mode === Workflow.ModeEnum.DOCKSTOREYML; // The workflow and tool enums are confirmed to be equal in a test.
   }
 
