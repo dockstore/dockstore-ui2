@@ -1,3 +1,4 @@
+import { PlatformPartnerPipe } from '../shared/entry/platform-partner.pipe';
 import { MapFriendlyValuesPipe } from './map-friendly-values.pipe';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 import { TestBed } from '@angular/core/testing';
@@ -8,13 +9,14 @@ describe('Pipe: MapFriendlyValuese', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [MapFriendlyValuesPipe, { provide: DescriptorLanguageService, useClass: DescriptorLanguageService }],
+      providers: [MapFriendlyValuesPipe, { provide: DescriptorLanguageService, useClass: DescriptorLanguageService }, PlatformPartnerPipe],
     });
   });
 
   it('create an instance and test friendly verified conversion', () => {
     const service: DescriptorLanguageService = TestBed.inject(DescriptorLanguageService);
-    const pipe = new MapFriendlyValuesPipe(service);
+    const platformPartnerPipe = TestBed.inject(PlatformPartnerPipe);
+    const pipe = new MapFriendlyValuesPipe(service, platformPartnerPipe);
     expect(pipe).toBeTruthy();
     expect(pipe.transform('file_formats.keyword', 'potato')).toBe('potato');
     expect(pipe.transform('potato', null)).toBe(null);
@@ -43,5 +45,9 @@ describe('Pipe: MapFriendlyValuese', () => {
     expect(pipe.transform('SourceFile.TypeEnum', SourceFile.TypeEnum.NEXTFLOW)).toBe('Descriptor Files');
     expect(pipe.transform('SourceFile.TypeEnum', SourceFile.TypeEnum.GXFORMAT2TESTFILE)).toBe('Test Parameter Files');
     expect(pipe.transform('SourceFile.TypeEnum', 'goat')).toBe('goat');
+
+    // Confusingly, the response from ES is "DNA_STACK", the TS enum is "DNASTACK", the friendly value is "DNAstack".
+    expect(pipe.transform('execution_partners.keyword', 'DNA_STACK')).toBe('DNAstack');
+    expect(pipe.transform('execution_partners.keyword', 'AGC')).toBe('AGC');
   });
 });

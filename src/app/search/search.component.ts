@@ -519,27 +519,6 @@ export class SearchComponent implements OnInit, OnDestroy {
     );
   }
 
-  /**
-   * Updates the results table when there is no search term
-   * We need to send one request per index
-   * When each index returns its results, join the results into a single array and filter into table
-   *
-   * @param {string} toolsQuery the elastic search query for tools index
-   * @param {string} workflowsQuery the elastic search query for workflows index
-   * @memberof SearchComponent
-   */
-  updateResultsTableSeparately(toolsQuery: string, workflowsQuery: string) {
-    const toolsObservable: Observable<any> = this.extendedGA4GHService.toolsIndexSearch(toolsQuery);
-    const workflowsObservable: Observable<any> = this.extendedGA4GHService.toolsIndexSearch(workflowsQuery);
-    forkJoin([toolsObservable, workflowsObservable]).subscribe((results: Array<any>) => {
-      const toolHits = results[0].hits.hits;
-      const workflowHits = results[1].hits.hits;
-      this.hits = toolHits.concat(workflowHits);
-      const filteredHits: [Array<Hit>, Array<Hit>, Array<Hit>] = this.searchService.filterEntry(this.hits, this.query_size);
-      this.searchService.setHits(filteredHits[0], filteredHits[1], filteredHits[2]);
-    });
-  }
-
   /**===============================================
    *                Reset Functions
    * ==============================================

@@ -56,7 +56,8 @@ describe('Dockstore my workflows', () => {
   });
 
   describe('Should contain extended Workflow properties', () => {
-    it('visit another page then come back', () => {
+    // Flaky test, see https://github.com/dockstore/dockstore/issues/5696
+    it.skip('visit another page then come back', () => {
       cy.visit('/my-workflows');
       cy.contains('github.com/A/l');
 
