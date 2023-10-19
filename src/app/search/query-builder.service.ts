@@ -15,10 +15,14 @@
  */
 
 import { Injectable } from '@angular/core';
+import { Bodybuilder, SubAggregationBuilder } from 'bodybuilder';
 import * as bodybuilder from 'bodybuilder';
+import { CategorySort } from '../shared/models/CategorySort';
 import { AdvancedSearchObject } from './../shared/models/AdvancedSearchObject';
 import { SearchService } from './state/search.service';
 import { tagCloudCommonTerms } from './../shared/constants';
+
+type Index = 'workflows' | 'tools' | 'notebooks';
 
 /**
  * This service constructs all the querys and should be only class that interacts with the bodybuilder library.
@@ -48,11 +52,11 @@ export class QueryBuilderService {
     values: string,
     advancedSearchObject: AdvancedSearchObject,
     searchTerm: boolean,
-    bucketStubs: any,
-    filters: any,
-    exclusiveFilters: any,
-    sortModeMap: any,
-    index: 'workflows' | 'tools' | 'notebooks'
+    bucketStubs: Map<string, string>,
+    filters: Map<string, Set<string>>,
+    exclusiveFilters: string[],
+    sortModeMap: Map<string, CategorySort>,
+    index: Index
   ): string {
     const count = this.getNumberOfFilters(filters);
     // Size to 0 here because https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations.html#agg-caches
@@ -71,7 +75,7 @@ export class QueryBuilderService {
   }
 
   // These are the properties to return in the search to display the results table correctly
-  private sourceOptions(body: any) {
+  private sourceOptions(body: Bodybuilder) {
     return body.rawOption('_source', [
       'all_authors',
       'descriptorType',
@@ -93,7 +97,7 @@ export class QueryBuilderService {
     ]);
   }
 
-  getNumberOfFilters(filters: any) {
+  getNumberOfFilters(filters: Map<string, Set<string>>) {
     let count = 0;
     filters.forEach((filter) => {
       count += filter.size;
@@ -106,9 +110,9 @@ export class QueryBuilderService {
     values: string,
     advancedSearchObject: AdvancedSearchObject,
     searchTerm: boolean,
-    filters: any,
-    exclusiveFilters: any,
-    index: 'tools' | 'workflows' | 'notebooks'
+    filters: Map<string, Set<string>>,
+    exclusiveFilters: Array<string>,
+    index: Index
   ): string {
     let tableBody = bodybuilder().size(query_size);
     tableBody = this.sourceOptions(tableBody);
@@ -117,7 +121,7 @@ export class QueryBuilderService {
     tableBody = this.appendFilter(tableBody, null, filters, exclusiveFilters);
     // if there's no inclusive search term, tell ES to sort hits by stars
     // otherwise, use the default ES hit ordering, which should be by
-    // ES-calcalated score if we craft our query correctly
+    // ES-calculated score if we craft our query correctly
     if (this.isEmpty(values) && !this.hasInclusiveSettings(advancedSearchObject)) {
       tableBody = tableBody.sort('stars_count', 'desc');
     }
@@ -143,7 +147,7 @@ export class QueryBuilderService {
     return tableQuery;
   }
 
-  getResultSingleIndexQuery(query_size: number, index: 'tools' | 'workflows' | 'notebooks'): string {
+  getResultSingleIndexQuery(query_size: number, index: Index): string {
     let body = bodybuilder().size(query_size);
     body = this.sourceOptions(body);
     body = body.query('match', '_index', index);
@@ -163,7 +167,7 @@ export class QueryBuilderService {
    * @returns the new body builder object with filter applied
    * @memberof SearchComponent
    */
-  appendFilter(body: any, aggKey: string, filters: any, exclusiveFilters: any): any {
+  appendFilter(body: any, aggKey: string | null, filters: Map<string, Set<string>>, exclusiveFilters: Array<string>): Bodybuilder {
     filters.forEach((value: Set<string>, key: string) => {
       value.forEach((insideFilter) => {
         const isExclusiveFilter = exclusiveFilters.includes(key);
@@ -296,7 +300,14 @@ export class QueryBuilderService {
    * @returns {*} the new body builder object
    * @memberof SearchComponent
    */
-  appendAggregations(count: number, body: any, bucketStubs: any, filters: any, exclusiveFilters: any, sortModeMap: any): any {
+  appendAggregations(
+    count: number,
+    body: Bodybuilder,
+    bucketStubs: Map<string, string>,
+    filters: Map<string, Set<string>>,
+    exclusiveFilters: Array<string>,
+    sortModeMap: Map<string, CategorySort>
+  ): any {
     // go through buckets
     bucketStubs.forEach((key) => {
       const order = this.searchService.parseOrderBy(key, sortModeMap);
@@ -311,16 +322,16 @@ export class QueryBuilderService {
     return body;
   }
 
-  advancedSearchDescription(body: any, advancedSearchObject: AdvancedSearchObject) {
+  advancedSearchDescription(body: Bodybuilder, advancedSearchObject: AdvancedSearchObject) {
     this.advancedSearch(body, advancedSearchObject, 'description');
   }
 
-  advancedSearchFiles(body: any, advancedSearchObject: AdvancedSearchObject) {
+  advancedSearchFiles(body: Bodybuilder, advancedSearchObject: AdvancedSearchObject) {
     this.advancedSearch(body, advancedSearchObject, 'tags.sourceFiles.content');
     this.advancedSearch(body, advancedSearchObject, 'workflowVersions.sourceFiles.content');
   }
 
-  advancedSearch(body: any, advancedSearchObject: AdvancedSearchObject, fieldName: string): number {
+  advancedSearch(body: Bodybuilder, advancedSearchObject: AdvancedSearchObject, fieldName: string): number {
     let shouldCount: number = 0;
     if (advancedSearchObject.ANDSplitFilter) {
       body.orQuery('match', fieldName, { query: advancedSearchObject.ANDSplitFilter, operator: 'AND' });

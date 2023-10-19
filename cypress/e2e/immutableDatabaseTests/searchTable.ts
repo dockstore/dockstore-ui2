@@ -458,3 +458,18 @@ describe('check search table and tabs for notebooks', () => {
     cy.get('.mat-cell').contains('python', { matchCase: false });
   });
 });
+
+describe('No results displays warning', () => {
+  setTokenUserViewPort();
+  beforeEach(() => {
+    cy.fixture('noHitsSearchTableResponse').then((json) => {
+      cy.intercept('POST', '*' + ga4ghExtendedPath + '/tools/entry/_search', {
+        body: json,
+      });
+    });
+  });
+  it('should show a warning if there are no results', () => {
+    cy.visit('/search');
+    cy.get('[data-cy=no-results]').should('exist');
+  });
+});

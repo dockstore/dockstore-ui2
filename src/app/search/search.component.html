@@ -322,6 +322,9 @@
             {{ query_size - 1 }} results are shown. We recommend that you narrow your search to find more relevant results.
           </p>
         </mat-card>
+        <mat-card class="alert alert-info mat-elevation-z" *ngIf="hits?.length === 0" data-cy="no-results">
+          <p>Your search has returned no results. Click the Reset button to restart your search.</p>
+        </mat-card>
         <app-search-results></app-search-results>
       </div>
     </div>
