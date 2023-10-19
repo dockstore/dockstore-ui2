@@ -708,14 +708,14 @@ export class SearchService {
   /**
    * Returns true if basic search has no results
    */
-  noResults(searchTerm: boolean, hits: any) {
+  noResults(searchTerm: boolean, hits: Hit[]) {
     return searchTerm && hits && hits.length === 0;
   }
 
   /**
    * Returns true if basic search has results
    */
-  hasResults(searchTerm: boolean, hits: any) {
+  hasResults(searchTerm: boolean, hits: Hit[]) {
     return searchTerm && hits && hits.length > 0;
   }
 

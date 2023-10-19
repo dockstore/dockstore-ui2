@@ -458,3 +458,24 @@ describe('check search table and tabs for notebooks', () => {
     cy.get('.mat-cell').contains('python', { matchCase: false });
   });
 });
+
+describe('No results displays warning', () => {
+  setTokenUserViewPort();
+  beforeEach(() => {
+    cy.fixture('noHitsSearchTableResponse').then((json) => {
+      cy.intercept('POST', '*' + ga4ghExtendedPath + '/tools/entry/_search', {
+        body: json,
+      });
+    });
+  });
+  it('should not show a warning if there are no results', () => {
+    cy.visit('/search?descriptorType=WDL&entryType=workflows&searchMode=files');
+    cy.get('[data-cy=no-results]').should('exist');
+    cy.get('[data-cy=no-searchTerm-results]').should('not.exist');
+  });
+  it('should show a suggested search term and no reset warning', () => {
+    cy.visit('/search?entryType=workflows&search=asdf');
+    cy.get('[data-cy=no-results]').should('not.exist');
+    cy.get('[data-cy=no-searchTerm-results]').should('exist');
+  });
+});
