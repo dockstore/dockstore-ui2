@@ -14,6 +14,11 @@
   ~    limitations under the License.
   -->
 <div *ngIf="tool || !displayAppTool; else appTool">
+  <div class="row m-1 mt-3 mb-0" *ngIf="tool?.archived">
+    <mat-card class="alert alert-warning mat-elevation-z m-0">
+      This {{ tool.entryTypeMetadata.term }} was archived on {{ tool.dbUpdateDate | date: 'yyyy-MM-dd' }}. It is now read-only.
+    </mat-card>
+  </div>
   <div
     class="row m-1"
     *ngIf="
@@ -31,11 +36,9 @@
       <mat-icon>warning</mat-icon> Your manually added tool does not have any tags. Go to the versions tab to add one.
     </mat-card>
   </div>
-
   <div class="row m-1" fxLayout.lt-sm="column" fxLayout.gt-sm="row">
     <app-json-ld [json]="schema"></app-json-ld>
     <div fxFlex="80">
-      <div *ngIf="tool?.archived"><span class="bubble mt-3">Archived</span></div>
       <h3 id="tool-path" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1rem">
         <span fxLayout.lt-sm="column">
           <span>

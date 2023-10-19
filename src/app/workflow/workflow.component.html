@@ -42,10 +42,14 @@
       </ul>
     </div>
   </div>
+  <div class="row m-1 mt-3 mb-0" *ngIf="workflow.archived">
+    <mat-card class="alert alert-warning mat-elevation-z m-0">
+      This {{ workflow.entryTypeMetadata.term }} was archived on {{ workflow.dbUpdateDate | date: 'yyyy-MM-dd' }}. It is now read-only.
+    </mat-card>
+  </div>
   <div class="row m-1" *ngIf="!showRedirect" fxLayout.lt-sm="column" fxLayout.gt-sm="row">
     <app-json-ld [json]="schema"></app-json-ld>
     <div fxFlex="80">
-      <div *ngIf="workflow.archived"><span class="bubble mt-3">Archived</span></div>
       <h3 id="workflow-path" data-cy="workflowTitle" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1rem">
         <span [attr.data-cy]="entryType + '-icon'">
           <img src="../../assets/svg/{{ entryType }}-circle.svg" alt="{{ entryType }} icon" />

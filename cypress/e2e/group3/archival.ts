@@ -53,7 +53,7 @@ describe('Entry Archival', () => {
       // Entry is not archived, is deletable
       // "Archive" button should not appear
       goToPrivatePage(entry);
-      cy.contains('app-workflow', 'Archived').should('not.exist');
+      cy.contains('app-workflow', 'was archived').should('not.exist');
       cy.contains('button', 'Archive').should('not.exist');
 
       // Publish the entry
@@ -63,7 +63,7 @@ describe('Entry Archival', () => {
       // "Archived" column should not appear in sidebar
       // "Archive" button should appear
       goToPrivatePage(entry);
-      cy.contains('app-workflow', 'Archived').should('not.exist');
+      cy.contains('app-workflow', 'was archived').should('not.exist');
       cy.contains('.mat-accordion', 'Archived').should('not.exist');
       cy.contains('button', 'Archive').should('be.visible').should('not.be.disabled').click();
 
@@ -75,7 +75,7 @@ describe('Entry Archival', () => {
       // Entry modification UI should be disabled
       // "Unarchive" button should appear
       goToPrivatePage(entry);
-      cy.contains('app-workflow', 'Archived').should('exist');
+      cy.contains('app-workflow', 'was archived').should('exist');
       cy.contains('.mat-accordion', 'Archived').should('exist');
       cy.get('[data-cy=topicEditButton]').should('be.visible').should('be.disabled');
       cy.contains('button', 'Unarchive').should('be.visible').should('not.be.disabled').click();
@@ -84,7 +84,7 @@ describe('Entry Archival', () => {
       // "Archived" column should not appear in sidebar
       // "Archive" button should appear
       goToPrivatePage(entry);
-      cy.contains('app-workflow', 'Archived').should('not.exist');
+      cy.contains('app-workflow', 'was archived').should('not.exist');
       cy.contains('.mat-accordion', 'Archived').should('not.exist');
       cy.contains('button', 'Archive').should('be.visible').should('not.be.disabled');
     });
