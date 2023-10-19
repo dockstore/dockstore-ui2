@@ -42,7 +42,7 @@ import { searchRouting } from './search.routing';
 import { SearchService } from './state/search.service';
 import { PreviewWarningModule } from '../shared/modules/preview-warning.module';
 import { SearchAuthorsHtmlPipe } from './search-authors-html.pipe';
-import { JoinWithEllipses } from './join-with-ellipses.pipe';
+import { JoinWithEllipsesPipe } from './join-with-ellipses.pipe';
 
 @NgModule({
   declarations: [
@@ -74,7 +74,7 @@ import { JoinWithEllipses } from './join-with-ellipses.pipe';
     TagCloudComponent,
     PreviewWarningModule,
   ],
-  providers: [SearchService, QueryBuilderService, SearchAuthorsHtmlPipe, JoinWithEllipses],
+  providers: [SearchService, QueryBuilderService, SearchAuthorsHtmlPipe, JoinWithEllipsesPipe],
   exports: [SearchComponent, IsAppToolPipe],
 })
 export class SearchModule {}

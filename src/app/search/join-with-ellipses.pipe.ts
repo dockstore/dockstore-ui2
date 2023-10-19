@@ -3,7 +3,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 @Pipe({
   name: 'joinWithEllipses',
 })
-export class JoinWithEllipses implements PipeTransform {
+export class JoinWithEllipsesPipe implements PipeTransform {
   transform(fragments: any): string {
     if (!fragments || !Array.isArray(fragments)) {
       return '';
