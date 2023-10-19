@@ -17,6 +17,8 @@
   <p>Are you sure you want to archive this {{ term }}?</p>
   <div class="btn-group" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="1rem">
     <button mat-flat-button (click)="no()" data-cy="archive-no" [disabled]="clicked" mat-dialog-close class="secondary-1">Cancel</button>
-    <button mat-flat-button (click)="yes()" data-cy="archive-yes" [disabled]="clicked" color="warn">Archive this {{ term }}</button>
+    <button mat-flat-button (click)="yes()" data-cy="archive-yes" [disabled]="clicked" color="warn">
+      Archive This {{ term | titlecase }}
+    </button>
   </div>
 </div>
