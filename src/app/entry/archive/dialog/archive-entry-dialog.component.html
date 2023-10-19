@@ -3,17 +3,17 @@
   <app-alert></app-alert>
   <p>
     You are about to archive the {{ term }} <b>{{ path }}</b
-    >, which will make it read-only and less prominent in the Dockstore user interface. Specifically, after you archive the Dockstore
-    {{ term }}, it will be:
+    >, which will make it read-only and less prominent in the Dockstore user interface.
   </p>
-
+  <p>Before you archive, please update this {{ term }}'s README and/or topic to indicate any replacements or alternatives.</p>
+  <p>Specifically, after you archive the Dockstore {{ term }}, it will be:</p>
   <ul>
     <li>Marked as "Archived".</li>
-    <li>Read-only, except to unarchive.</li>
+    <li>Read-only, except to unarchive. GitHub updates will be ignored.</li>
     <li>Ranked lower in Dockstore Search.</li>
     <li>Displayed in the "Archived" section of your Dockstore dashboard.</li>
   </ul>
-  <p>Later, you can unarchive the {{ term }} to restore it to normal.</p>
+  <p>You can unarchive to restore the {{ term }} to normal at any time.</p>
   <p>Are you sure you want to archive this {{ term }}?</p>
   <div class="btn-group" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="1rem">
     <button mat-flat-button (click)="no()" data-cy="archive-no" [disabled]="clicked" mat-dialog-close class="secondary-1">Cancel</button>
