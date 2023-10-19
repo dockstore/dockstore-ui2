@@ -34,13 +34,12 @@ export class ArchiveEntryDialogComponent {
 
   constructor(
     public dialogRef: MatDialogRef<ArchiveEntryDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: { entry: Entry; callback: (archived: Entry) => void },
+    @Inject(MAT_DIALOG_DATA) public entry: Entry,
     public matSnackBar: MatSnackBar,
     public router: Router,
     public alertService: AlertService,
     public entriesService: EntriesService
   ) {
-    const entry = this.data.entry;
     this.clicked = false;
     this.term = entry.entryTypeMetadata.term;
     this.path = (entry as Workflow).full_workflow_path ?? (entry as DockstoreTool).tool_path;
@@ -65,17 +64,16 @@ export class ArchiveEntryDialogComponent {
     this.clicked = false;
   }
 
-  close(): void {
-    this.dialogRef.close();
+  close(archived: Entry = undefined): void {
+    this.dialogRef.close(archived);
   }
 
   archiveEntry(): void {
     this.alertService.start(`Archiving ${this.path}`);
-    this.entriesService.archiveEntry(this.data.entry.id).subscribe(
+    this.entriesService.archiveEntry(this.entry.id).subscribe(
       (archived: Entry) => {
         this.alertService.detailedSuccess(`Successfully archived ${this.path}`);
-        this.data.callback(archived);
-        this.close();
+        this.close(archived);
       },
       (error: HttpErrorResponse) => {
         this.alertService.detailedError(error);

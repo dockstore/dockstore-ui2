@@ -191,22 +191,22 @@ export class EntryActionsService {
   }
 
   archiveEntry(entry: Entry) {
-    this.dialog.open(ArchiveEntryDialogComponent, {
+    const dialogRef = this.dialog.open(ArchiveEntryDialogComponent, {
       width: bootstrap4largeModalSize,
-      data: {
-        entry: entry,
-        callback: (archived: Entry) => {
-          this.updateBackingEntry(archived);
-        },
-      },
+      data: entry,
+    });
+    dialogRef.afterClosed().subscribe((archived: Entry) => {
+      if (archived) {
+        this.updateBackingEntry(archived);
+      }
     });
   }
 
   unarchiveEntry(entry: Entry) {
     this.alertService.start('Unarchiving entry');
     this.entriesService.unarchiveEntry(entry.id).subscribe(
-      (response: Entry) => {
-        this.updateBackingEntry(response);
+      (unarchived: Entry) => {
+        this.updateBackingEntry(unarchived);
         this.alertService.detailedSuccess();
       },
       (error: HttpErrorResponse) => {
