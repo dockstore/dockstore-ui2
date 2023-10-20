@@ -32,6 +32,7 @@ import {
   ga4ghServiceIdPrefix,
   ga4ghWorkflowIdPrefix,
   includesAuthors,
+  includesMetrics,
   includesValidation,
   myBioWorkflowsURLSegment,
   myNotebooksURLSegment,
@@ -391,7 +392,7 @@ export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterVi
   public setupPublicEntry(url: string) {
     const subclass: WorkflowSubClass = this.getWorkflowSubclass(this.entryType);
     this.workflowsService
-      .getPublishedWorkflowByPath(this.title, subclass, includesValidation + ',' + includesAuthors, this.urlVersion)
+      .getPublishedWorkflowByPath(this.title, subclass, [includesValidation, includesAuthors, includesMetrics].toString(), this.urlVersion)
       .subscribe(
         (workflow) => {
           this.workflowService.setWorkflow(workflow);

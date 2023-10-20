@@ -85,7 +85,7 @@ export class SearchService {
    */
 
   private getOrderedFacetInfos(tabIndex: number): Array<FacetInfo> {
-    return [
+    const facetInfos = [
       { friendlyName: 'Category', esName: 'categories.name.keyword', initiallyExpanded: true },
       {
         friendlyName: tabIndex === SearchService.NOTEBOOKS_TAB_INDEX ? 'Format' : 'Language',
@@ -169,6 +169,21 @@ export class SearchService {
         exclusive: true,
       },
     ];
+    const metricsFacetInfos = [
+      {
+        friendlyName: 'Execution Metrics',
+        esName: 'execution_partners.keyword',
+        initiallyExpanded: false,
+        tooltip: 'Indicates there are execution metrics from a partner for the entry.',
+      },
+      {
+        friendlyName: 'Validation Metrics',
+        esName: 'validation_partners.keyword',
+        initiallyExpanded: false,
+        tooltip: 'Indicates there are validation metrics from a partner for the entry.',
+      },
+    ];
+    return Dockstore.FEATURES.enableMetrics ? [...facetInfos, ...metricsFacetInfos] : facetInfos;
   }
 
   constructor(
