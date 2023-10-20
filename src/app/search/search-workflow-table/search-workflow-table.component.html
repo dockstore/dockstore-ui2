@@ -65,7 +65,7 @@
     <!-- Search highlighting column - this row is made up of this one column that spans across all columns -->
     <ng-container matColumnDef="searchHighlight">
       <mat-cell *matCellDef="let workflow" [attr.colspan]="displayedColumns.length">
-        <div *ngIf="workflow.highlight" class="pt-3">
+        <div *ngIf="workflow.highlight" class="pb-3">
           <table class="size-small">
             <tr *ngFor="let highlight of workflow.highlight | keyvalue">
               <th>{{ this.searchEverythingFriendlyNames.get(highlight.key.toString()) }}:</th>
@@ -77,7 +77,7 @@
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let element; columns: displayedColumns" class="element-row"></mat-row>
+    <mat-row *matRowDef="let element; columns: displayedColumns" class="element-row py-3"></mat-row>
     <mat-row *matRowDef="let row; columns: ['searchHighlight']" class="search-highlight-row"></mat-row>
   </mat-table>
   <mat-paginator

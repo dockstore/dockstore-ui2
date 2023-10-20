@@ -101,7 +101,7 @@
     <!-- Search highlighting column - this row is made up of this one column that spans across all columns -->
     <ng-container matColumnDef="searchHighlight">
       <mat-cell *matCellDef="let tool" [attr.colspan]="displayedColumns.length">
-        <div *ngIf="tool.highlight">
+        <div *ngIf="tool.highlight" class="pb-3">
           <table class="size-small">
             <tr *ngFor="let highlight of tool.highlight | keyvalue">
               <th>{{ this.searchEverythingFriendlyNames.get(highlight.key.toString()) }}:</th>
@@ -113,7 +113,7 @@
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns" class="py-2 element-row"></mat-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns" class="py-3 element-row"></mat-row>
     <mat-row *matRowDef="let row; columns: ['searchHighlight']" class="search-highlight-row"></mat-row>
   </mat-table>
   <mat-paginator
