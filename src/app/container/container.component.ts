@@ -207,8 +207,9 @@ export class ContainerComponent extends Entry<Tag> implements AfterViewInit, OnI
     });
     this.workflowQuery.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((workflow) => {
       if (workflow) {
-        console.log('WORKFLOW');
         this.displayAppTool = true;
+        // Here, we don't need to set any other fields, because in the template,
+        // we defer to the "workflow" component, which takes care of all that.
       }
     });
     this.containerService.copyBtn$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((toolCopyBtn) => {
