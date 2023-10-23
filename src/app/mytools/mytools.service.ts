@@ -65,9 +65,11 @@ export class MytoolsService extends MyEntriesService<DockstoreTool, OrgToolObjec
   }
 
   selectEntry(tool: DockstoreTool | Workflow | null): void {
+    console.log('SELECTENTRY ' + tool);
     if (tool && tool.id) {
       if (MytoolsService.isWorkflowBasedObject(tool)) {
         this.workflowsService.getWorkflow(tool.id, includesValidation + ',' + includesAuthors).subscribe((result) => {
+          console.log('SET WORKFLOW');
           this.location.go('/my-tools/' + result.full_workflow_path);
           this.workflowService.setWorkflow(<AppTool>result);
           // We check that the shared workflows are not null in upsertWorkflowToWorkflow
@@ -76,6 +78,7 @@ export class MytoolsService extends MyEntriesService<DockstoreTool, OrgToolObjec
         });
       } else {
         this.containersService.getContainer(tool.id, includesValidation).subscribe((result) => {
+          console.log('SET CONTAINER');
           this.location.go('/my-tools/' + result.tool_path);
           this.containerService.setTool(result);
           this.workflowService.setWorkflow(null);

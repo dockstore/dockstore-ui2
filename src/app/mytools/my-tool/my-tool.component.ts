@@ -111,15 +111,12 @@ export class MyToolComponent extends MyEntry implements OnInit {
 
   ngOnInit() {
     this.isRefreshing$ = this.alertQuery.showInfo$;
-    this.router.events
-      .pipe(
-        filter((event) => event instanceof NavigationEnd),
-        takeUntil(this.ngUnsubscribe)
-      )
-      .subscribe((event: RouterEvent) => {
-        this.allTools = this.tools.concat(this.apptools);
-        this.selectEntry(this.mytoolsService.recomputeWhatEntryToSelect(this.allTools));
-      });
+    const routerObservable = this.router.events.pipe(
+      filter((event) => event instanceof NavigationEnd),
+      takeUntil(this.ngUnsubscribe)
+    );
+    routerObservable.subscribe(() => {}); // dummy
+
     this.registerToolService.isModalShown.pipe(takeUntil(this.ngUnsubscribe)).subscribe((isModalShown: boolean) => {
       if (isModalShown) {
         const dialogRef = this.dialog.open(RegisterToolComponent, { width: '600px' });
@@ -149,14 +146,26 @@ export class MyToolComponent extends MyEntry implements OnInit {
     });
 
     this.getMyEntries();
+    let subscribed = false;
 
     combineLatest([this.containerService.tools$, this.workflowService.workflows$])
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(([tools, workflows]) => {
-        this.tools = tools || [];
-        this.apptools = workflows || [];
-        this.allTools = this.tools.concat(this.apptools);
-        this.selectEntry(this.mytoolsService.recomputeWhatEntryToSelect(this.allTools));
+        console.log('TW ' + tools + ' ' + workflows);
+        if (tools && workflows) {
+          this.tools = tools;
+          this.apptools = workflows;
+          this.allTools = this.tools.concat(this.apptools);
+          this.selectEntry(this.mytoolsService.recomputeWhatEntryToSelect(this.allTools));
+          if (!subscribed) {
+            routerObservable.subscribe((event: RouterEvent) => {
+              console.log('RO');
+              this.allTools = this.tools.concat(this.apptools);
+              this.selectEntry(this.mytoolsService.recomputeWhatEntryToSelect(this.allTools));
+            });
+            subscribed = true;
+          }
+        }
       });
 
     this.groupEntriesObject$ = combineLatest([this.containerService.tools$, this.toolQuery.tool$]).pipe(

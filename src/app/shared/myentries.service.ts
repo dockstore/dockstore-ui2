@@ -26,8 +26,10 @@ export abstract class MyEntriesService<E extends DockstoreTool | Workflow, O ext
     const entryPath = this.urlResolverService.getEntryPathFromUrl();
     const foundEntry = this.findEntryFromPath(entryPath, entries);
     if (foundEntry) {
+      console.log('FOUND ' + entryPath);
       return foundEntry;
     } else {
+      console.log('NOT FOUND ' + entryPath);
       let initialEntry;
       const orgEntryObjects = this.convertEntriesToOrgEntryObject(entries, null);
       const foundOrgEntryObject = this.matchingOrgEntryObjectByPath(orgEntryObjects, entryPath);
