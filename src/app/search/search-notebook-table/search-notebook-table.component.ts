@@ -19,7 +19,7 @@ import { Observable } from 'rxjs';
 import { DateService } from '../../shared/date.service';
 import { Notebook } from '../../shared/openapi';
 import { SearchEntryTable } from '../search-entry-table';
-import { SearchQuery } from '../state/search.query';
+import { SearchQuery, SearchResult } from '../state/search.query';
 import { SearchService } from '../state/search.service';
 
 /**
@@ -34,12 +34,12 @@ import { SearchService } from '../state/search.service';
 export class SearchNotebookTableComponent extends SearchEntryTable implements OnInit {
   public readonly displayedColumns = ['name', 'all_authors', 'descriptorType', 'descriptorTypeSubclass', 'projectLinks', 'starredUsers'];
   readonly entryType = 'notebook';
-  public dataSource: MatTableDataSource<Notebook>;
+  public dataSource: MatTableDataSource<SearchResult<Notebook>>;
   constructor(dateService: DateService, searchQuery: SearchQuery, searchService: SearchService) {
     super(dateService, searchQuery, searchService);
   }
 
-  privateNgOnInit(): Observable<Array<Notebook>> {
+  privateNgOnInit(): Observable<Array<SearchResult<Notebook>>> {
     return this.searchQuery.notebooks$;
   }
 }

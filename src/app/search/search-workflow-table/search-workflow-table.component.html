@@ -2,16 +2,19 @@
   <div *ngIf="!dataSource">
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
   </div>
-  <mat-table [hidden]="!dataSource" [dataSource]="dataSource" matSort data-cy="search-workflow-results-table">
+  <mat-table [hidden]="!dataSource" [dataSource]="dataSource" matSort data-cy="search-workflow-results-table" multiTemplateDataRows>
     <ng-container matColumnDef="name">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Name and Description</mat-header-cell>
       <mat-cell data-cy="workflowColumn" *matCellDef="let workflow">
         <div>
-          <a [matTooltip]="workflow?.full_workflow_path" [routerLink]="'/workflows/' + workflow?.full_workflow_path">{{
-            workflow?.organization + '/' + workflow?.repository + (workflow?.workflowName ? '/' + workflow?.workflowName : '')
+          <a [matTooltip]="workflow?.source.full_workflow_path" [routerLink]="'/workflows/' + workflow?.source.full_workflow_path">{{
+            workflow?.source.organization +
+              '/' +
+              workflow?.source.repository +
+              (workflow?.source.workflowName ? '/' + workflow?.source.workflowName : '')
           }}</a>
-          <div class="truncate-text-2 size-small" *ngIf="workflow.topicAutomatic" [matTooltip]="workflow.topicAutomatic">
-            {{ workflow.topicAutomatic }}
+          <div class="truncate-text-2 size-small" *ngIf="workflow.source.topicAutomatic" [matTooltip]="workflow.source.topicAutomatic">
+            {{ workflow.source.topicAutomatic }}
           </div>
         </div>
       </mat-cell>
@@ -19,7 +22,7 @@
     <ng-container matColumnDef="verified">
       <mat-header-cell fxShow fxHide.lt-md *matHeaderCellDef>Verified</mat-header-cell>
       <mat-cell data-cy="verificationStatus" fxShow fxHide.lt-md *matCellDef="let workflow">
-        <a *ngIf="workflow.verified" [href]="verifiedLink">
+        <a *ngIf="workflow.source.verified" [href]="verifiedLink">
           <mat-icon matTooltip="Verified">done</mat-icon>
         </a>
       </mat-cell>
@@ -31,35 +34,51 @@
         fxHide.lt-sm
         class="duration-cell truncate-text-2"
         *matCellDef="let workflow"
-        [matTooltip]="workflow?.all_authors | getSearchAuthorsHtml: false"
-        [innerHTML]="workflow?.all_authors | getSearchAuthorsHtml"
+        [matTooltip]="workflow?.source?.all_authors | getSearchAuthorsHtml: false"
+        [innerHTML]="workflow?.source?.all_authors | getSearchAuthorsHtml"
       ></mat-cell>
     </ng-container>
     <ng-container matColumnDef="descriptorType">
       <mat-header-cell fxShow fxHide.lt-sm data-cy="descriptorTypeHeader" *matHeaderCellDef mat-sort-header>Format</mat-header-cell>
       <mat-cell fxShow fxHide.lt-sm data-cy="descriptorType" *matCellDef="let workflow">
         <div>
-          <span class="nonclick-badge">{{ workflow?.descriptorType | descriptorLanguage }}</span>
+          <span class="nonclick-badge">{{ workflow?.source.descriptorType | descriptorLanguage }}</span>
         </div>
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="projectLinks">
       <mat-header-cell fxShow fxHide.lt-md *matHeaderCellDef>Links</mat-header-cell>
       <mat-cell fxShow fxHide.lt-md *matCellDef="let entry">
-        <a [href]="entry?.providerUrl" *ngIf="entry?.providerUrl">
-          <fa-icon class="fa-lg" [icon]="entry.providerIcon" [matTooltip]="entry?.provider"></fa-icon>
+        <a [href]="entry?.source.providerUrl" *ngIf="entry?.source.providerUrl">
+          <fa-icon class="fa-lg" [icon]="entry.source.providerIcon" [matTooltip]="entry?.source.provider"></fa-icon>
         </a>
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="starredUsers">
       <mat-header-cell *matHeaderCellDef mat-sort-header start="desc">Stars</mat-header-cell>
       <mat-cell class="starred-cell weight-bold" *matCellDef="let workflow"
-        ><mat-icon class="star-icon" *ngIf="workflow?.starredUsers?.length > 0">star_rate</mat-icon>
-        {{ !workflow?.starredUsers || workflow?.starredUsers.length === 0 ? '' : workflow?.starredUsers?.length }}
+        ><mat-icon class="star-icon" *ngIf="workflow?.source.starredUsers?.length > 0">star_rate</mat-icon>
+        {{ !workflow?.source.starredUsers || workflow?.source.starredUsers.length === 0 ? '' : workflow?.source.starredUsers?.length }}
       </mat-cell>
     </ng-container>
+
+    <!-- Search highlighting column - this row is made up of this one column that spans across all columns -->
+    <ng-container matColumnDef="searchHighlight">
+      <mat-cell *matCellDef="let workflow" [attr.colspan]="displayedColumns.length">
+        <div *ngIf="workflow.highlight" class="pb-3">
+          <table class="size-small">
+            <tr *ngFor="let highlight of workflow.highlight | keyvalue">
+              <th>{{ this.searchEverythingFriendlyNames.get(highlight.key.toString()) }}:</th>
+              <td><span [innerHTML]="highlight.value | joinWithEllipses"></span></td>
+            </tr>
+          </table>
+        </div>
+      </mat-cell>
+    </ng-container>
+
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns" class="py-2"></mat-row>
+    <mat-row *matRowDef="let element; columns: displayedColumns" class="element-row py-3"></mat-row>
+    <mat-row *matRowDef="let row; columns: ['searchHighlight']" class="search-highlight-row"></mat-row>
   </mat-table>
   <mat-paginator
     data-cy="search-workflow-table-paginator"
