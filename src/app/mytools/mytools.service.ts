@@ -24,7 +24,7 @@ import { EntryType } from 'app/shared/enum/entry-type';
 import { MyEntriesStateService } from 'app/shared/state/my-entries.service';
 import { AppTool, ContainersService, DockstoreTool, UsersService, Workflow, WorkflowsService } from 'app/shared/openapi';
 import { UrlResolverService } from 'app/shared/url-resolver.service';
-import { forkJoin, Subscription } from 'rxjs';
+import { forkJoin } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { OrgWorkflowObject } from '../myworkflows/my-workflow/my-workflow.component';
 import { WorkflowService } from '../shared/state/workflow.service';
@@ -64,12 +64,10 @@ export class MytoolsService extends MyEntriesService<DockstoreTool, OrgToolObjec
       );
   }
 
-  subscription: Subscription = null;
   selectEntry(tool: DockstoreTool | Workflow | null): void {
     if (tool && tool.id) {
       if (MytoolsService.isWorkflowBasedObject(tool)) {
-        this.subscription?.unsubscribe();
-        this.subscription = this.workflowsService.getWorkflow(tool.id, includesValidation + ',' + includesAuthors).subscribe((result) => {
+        this.workflowsService.getWorkflow(tool.id, includesValidation + ',' + includesAuthors).subscribe((result) => {
           this.location.go('/my-tools/' + result.full_workflow_path);
           this.workflowService.setWorkflow(<AppTool>result);
           // We check that the shared workflows are not null in upsertWorkflowToWorkflow
@@ -77,8 +75,7 @@ export class MytoolsService extends MyEntriesService<DockstoreTool, OrgToolObjec
           this.containerService.setTool(null);
         });
       } else {
-        this.subscription?.unsubscribe();
-        this.subscription = this.containersService.getContainer(tool.id, includesValidation).subscribe((result) => {
+        this.containersService.getContainer(tool.id, includesValidation).subscribe((result) => {
           this.location.go('/my-tools/' + result.tool_path);
           this.containerService.setTool(result);
           this.workflowService.setWorkflow(null);

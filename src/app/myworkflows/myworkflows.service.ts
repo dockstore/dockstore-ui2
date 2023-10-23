@@ -30,7 +30,7 @@ import { UrlResolverService } from 'app/shared/url-resolver.service';
 import { UserQuery } from 'app/shared/user/user.query';
 import { RegisterWorkflowModalComponent } from 'app/workflow/register-workflow-modal/register-workflow-modal.component';
 import { RegisterGithubAppModalComponent } from 'app/workflow/register-workflow-modal/register-github-app-modal/register-github-app-modal.component';
-import { forkJoin, Observable, of as observableOf, Subscription } from 'rxjs';
+import { forkJoin, Observable, of as observableOf } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 import { OrgWorkflowObject } from './my-workflow/my-workflow.component';
 import { Location } from '@angular/common';
@@ -199,16 +199,12 @@ export class MyWorkflowsService extends MyEntriesService<Workflow, OrgWorkflowOb
    * Grabs the workflow/service/notebook from the webservice and loads it
    * @param workflow Selected workflow
    */
-  subscription: Subscription = null;
   selectEntry(workflow: DockstoreTool | Workflow | null, entryType: EntryType | null): void {
     if (workflow && entryType && workflow.id) {
-      this.subscription?.unsubscribe();
-      this.subscription = this.workflowsService
-        .getWorkflow(workflow.id, includesValidation + ',' + includesAuthors)
-        .subscribe((result: Workflow) => {
-          this.location.go('/my-' + entryType + 's/' + result.full_workflow_path);
-          this.workflowService.setWorkflow(result);
-        });
+      this.workflowsService.getWorkflow(workflow.id, includesValidation + ',' + includesAuthors).subscribe((result: Workflow) => {
+        this.location.go('/my-' + entryType + 's/' + result.full_workflow_path);
+        this.workflowService.setWorkflow(result);
+      });
     }
   }
 
