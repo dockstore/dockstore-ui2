@@ -120,6 +120,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
         this.allTools = this.tools.concat(this.apptools);
         this.selectEntry(this.mytoolsService.recomputeWhatEntryToSelect(this.allTools));
       });
+
     this.registerToolService.isModalShown.pipe(takeUntil(this.ngUnsubscribe)).subscribe((isModalShown: boolean) => {
       if (isModalShown) {
         const dialogRef = this.dialog.open(RegisterToolComponent, { width: '600px' });
@@ -153,10 +154,12 @@ export class MyToolComponent extends MyEntry implements OnInit {
     combineLatest([this.containerService.tools$, this.workflowService.workflows$])
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(([tools, workflows]) => {
-        this.tools = tools || [];
-        this.apptools = workflows || [];
-        this.allTools = this.tools.concat(this.apptools);
-        this.selectEntry(this.mytoolsService.recomputeWhatEntryToSelect(this.allTools));
+        if (tools && workflows) {
+          this.tools = tools;
+          this.apptools = workflows;
+          this.allTools = this.tools.concat(this.apptools);
+          this.selectEntry(this.mytoolsService.recomputeWhatEntryToSelect(this.allTools));
+        }
       });
 
     this.groupEntriesObject$ = combineLatest([this.containerService.tools$, this.toolQuery.tool$]).pipe(
