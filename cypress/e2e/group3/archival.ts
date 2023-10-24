@@ -43,7 +43,7 @@ describe('Entry Archival', () => {
   function goToPrivatePage(entry: Entry): void {
     cy.visit('/');
     cy.visit(`${entry.myPrefix}/${entry.path}`);
-    cy.wait(2000);
+    cy.contains(entry.path);
   }
 
   it('Should be able to archive/unarchive an entry', () => {
