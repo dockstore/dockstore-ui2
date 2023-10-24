@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { DateService } from '../../shared/date.service';
 import { AppTool, DockstoreTool } from '../../shared/openapi';
 import { SearchEntryTable } from '../search-entry-table';
-import { SearchQuery } from '../state/search.query';
+import { SearchQuery, SearchResult } from '../state/search.query';
 import { SearchService } from '../state/search.service';
 
 /**
@@ -18,12 +18,12 @@ import { SearchService } from '../state/search.service';
 })
 export class SearchToolTableComponent extends SearchEntryTable implements OnInit {
   readonly entryType = 'tool';
-  public dataSource: MatTableDataSource<DockstoreTool | AppTool>;
+  public dataSource: MatTableDataSource<SearchResult<DockstoreTool | AppTool>>;
   constructor(dateService: DateService, searchQuery: SearchQuery, searchService: SearchService) {
     super(dateService, searchQuery, searchService);
   }
 
-  privateNgOnInit(): Observable<Array<DockstoreTool> | Array<AppTool>> {
+  privateNgOnInit(): Observable<Array<SearchResult<DockstoreTool | AppTool>>> {
     return this.searchQuery.tools$;
   }
 }

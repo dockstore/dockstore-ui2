@@ -123,6 +123,23 @@ export class QueryBuilderService {
     } else {
       tableBody = tableBody.sort([{ archived: 'asc' }, { _score: 'desc' }]);
     }
+    tableBody.rawOption('highlight', {
+      type: 'unified',
+      pre_tags: ['<b>'],
+      post_tags: ['</b>'],
+      fields: {
+        full_workflow_path: {},
+        tool_path: {},
+        'workflowVersions.sourceFiles.content': {},
+        'tags.sourceFiles.content': {},
+        description: {},
+        labels: {},
+        'all_authors.name': {},
+        topicAutomatic: {},
+        'categories.topic': {},
+        'categories.displayName': {},
+      },
+    });
     const builtTableBody = tableBody.build();
     const tableQuery = JSON.stringify(builtTableBody);
     return tableQuery;
@@ -259,7 +276,7 @@ export class QueryBuilderService {
         .orQuery('match', 'tags.sourceFiles.content', { query: term, boost: 0.2 })
         .orQuery('match', 'description', { query: term, boost: 2 })
         .orQuery('match', 'labels', { query: term, boost: 2 })
-        .orQuery('match', 'author', { query: term, boost: 3 })
+        .orQuery('match', 'all_authors.name', { query: term, boost: 3 })
         .orQuery('match', 'topicAutomatic', { query: term, boost: 4 })
         .orQuery('match', 'categories.topic', { query: term, boost: 1.5 })
         .orQuery('match', 'categories.displayName', { query: term, boost: 2 });

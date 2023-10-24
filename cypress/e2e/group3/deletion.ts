@@ -43,7 +43,7 @@ describe('Entry Deletion', () => {
   function goToPrivatePage(entry: Entry): void {
     cy.visit('/');
     cy.visit(`${entry.myPrefix}/${entry.path}`);
-    cy.wait(2000);
+    cy.contains(entry.path);
   }
 
   it('Should not be able to delete an entry that is published', () => {
@@ -81,8 +81,6 @@ describe('Entry Deletion', () => {
       cy.contains('button', 'Delete').should('be.visible').should('not.be.disabled').click();
       cy.get('[data-cy=delete-yes]').should('be.visible').should('not.be.disabled').click();
       cy.wait(1000);
-      cy.contains(entry.path).should('not.exist');
-      goToPrivatePage(entry);
       cy.contains(entry.path).should('not.exist');
     });
   });

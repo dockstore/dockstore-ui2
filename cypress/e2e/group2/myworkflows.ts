@@ -24,13 +24,14 @@ import {
   snapshot,
 } from '../../support/commands';
 
+const cwlDescriptorType = 'CWL';
+const wdlDescriptorType = 'WDL';
+const nextflowDescriptorType = 'Nextflow';
+
 describe('Dockstore my workflows', () => {
   resetDB();
   setTokenUserViewPort();
 
-  const cwlDescriptorType = 'CWL';
-  const wdlDescriptorType = 'WDL';
-  const nextflowDescriptorType = 'Nextflow';
   it('have entries shown on the dashboard', () => {
     cy.visit('/dashboard');
     cy.contains('Search your Workflows...');
@@ -218,6 +219,11 @@ describe('Dockstore my workflows', () => {
       cy.contains('button', ' Save ').click();
     });
   });
+});
+
+describe('Dockstore my workflows part 2', () => {
+  resetDB();
+  setTokenUserViewPort();
 
   function gotoVersionsAndClickActions() {
     cy.visit('/my-workflows/github.com/A/l');
@@ -374,6 +380,11 @@ describe('Dockstore my workflows', () => {
       cy.get('[data-cy=refreshButton]').should('not.be.disabled');
     });
   });
+});
+
+describe('Dockstore my workflows part 3', () => {
+  resetDB();
+  setTokenUserViewPort();
 
   function haveAlert() {
     cy.get('.mat-error').should('be.visible');

@@ -39,6 +39,7 @@ import { ProviderService } from '../shared/provider.service';
 import { SessionQuery } from '../shared/session/session.query';
 import { SessionService } from '../shared/session/session.service';
 import { ToolQuery } from '../shared/tool/tool.query';
+import { WorkflowQuery } from '../shared/state/workflow.query';
 import { ToolService } from '../shared/tool/tool.service';
 import { TrackLoginService } from '../shared/track-login.service';
 import { ExtendedDockstoreTool } from './../shared/models/ExtendedDockstoreTool';
@@ -97,6 +98,7 @@ export class ContainerComponent extends Entry<Tag> implements AfterViewInit, OnI
     protected sessionQuery: SessionQuery,
     protected gA4GHFilesService: GA4GHFilesService,
     private toolQuery: ToolQuery,
+    private workflowQuery: WorkflowQuery,
     private extendedDockstoreToolQuery: ExtendedDockstoreToolQuery,
     private alertQuery: AlertQuery,
     public dialog: MatDialog,
@@ -188,7 +190,7 @@ export class ContainerComponent extends Entry<Tag> implements AfterViewInit, OnI
     this.toolQuery.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((tool) => {
       this.tool = tool;
       if (tool) {
-        this.displayAppTool = true;
+        this.displayAppTool = false;
         this.published = this.tool.is_published;
         if (this.tool.workflowVersions.length === 0) {
           this.selectedVersion = null;
@@ -202,6 +204,13 @@ export class ContainerComponent extends Entry<Tag> implements AfterViewInit, OnI
       }
       // Select version
       this.setUpTool(tool);
+    });
+    this.workflowQuery.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((workflow) => {
+      if (workflow) {
+        this.displayAppTool = true;
+        // Here, we don't need to set any other fields, because in the template,
+        // we defer to the "workflow" component, which takes care of all that.
+      }
     });
     this.containerService.copyBtn$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((toolCopyBtn) => {
       this.toolCopyBtn = toolCopyBtn;

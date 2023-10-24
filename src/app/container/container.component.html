@@ -13,7 +13,8 @@
   ~    See the License for the specific language governing permissions and
   ~    limitations under the License.
   -->
-<div *ngIf="tool || !displayAppTool; else appTool">
+<app-workflow *ngIf="displayAppTool" [isWorkflowPublic]="isToolPublic"></app-workflow>
+<div *ngIf="tool && !displayAppTool">
   <div class="row m-1 mt-3 mb-0" *ngIf="tool?.archived">
     <mat-card class="alert alert-warning mat-elevation-z m-0">
       This {{ tool.entryTypeMetadata.term }} was archived on {{ tool.dbUpdateDate | date: 'yyyy-MM-dd' }}. It is now read-only.
@@ -448,7 +449,4 @@
       </span>
     </mat-card>
   </div>
-</ng-template>
-<ng-template #appTool>
-  <app-workflow [isWorkflowPublic]="isToolPublic"></app-workflow>
 </ng-template>
