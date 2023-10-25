@@ -23,12 +23,6 @@ type Entry = {
   myPrefix: string;
 };
 
-const entries: Entry[] = [
-  { table: 'workflow', id: 11, versionId: 14, myPrefix: 'my-workflows', path: 'github.com/A/l' },
-  { table: 'apptool', id: 50, versionId: 1000, myPrefix: 'my-tools', path: 'github.com/C/test-github-app-tools/testing' },
-  { table: 'notebook', id: 1000, versionId: 1000, myPrefix: 'my-notebooks', path: 'github.com/dockstore-testing/simple-notebook' },
-];
-
 function unpublicize(entry: Entry): void {
   invokeSql(`update ${entry.table} set ispublished = false, waseverpublic = false where id = ${entry.id}`);
   invokeSql(`update ${entry.table} set actualdefaultversion = ${entry.versionId} where id = ${entry.id}`);
@@ -95,17 +89,26 @@ function deletionTests(entry: Entry) {
   });
 }
 
-describe('Entry Deletion 0', () => {
+describe('Workflow Deletion', () => {
   init();
-  deletionTests(entries[0]);
+  const workflow = { table: 'workflow', id: 11, versionId: 14, myPrefix: 'my-workflows', path: 'github.com/A/l' };
+  deletionTests(workflow);
 });
 
-describe('Entry Deletion 1', () => {
+describe('AppTool Deletion', () => {
   init();
-  deletionTests(entries[1]);
+  const appTool = { table: 'apptool', id: 50, versionId: 1000, myPrefix: 'my-tools', path: 'github.com/C/test-github-app-tools/testing' };
+  deletionTests(appTool);
 });
 
-describe('Entry Deletion 2', () => {
+describe('Notebook Deletion', () => {
   init();
-  deletionTests(entries[2]);
+  const notebook = {
+    table: 'notebook',
+    id: 1000,
+    versionId: 1000,
+    myPrefix: 'my-notebooks',
+    path: 'github.com/dockstore-testing/simple-notebook',
+  };
+  deletionTests(notebook);
 });
