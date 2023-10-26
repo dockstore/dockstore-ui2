@@ -27,9 +27,9 @@ describe('Logged in Dockstore Home', () => {
     // expect(browser.getLocationAbsUrl()).toMatch("/");
   });
 
-  it('should have the mastodon timeline', () => {
+  it('should have the mastodon or twitter timeline', () => {
     cy.scrollTo('bottom');
-    cy.get('[data-cy=mt-toot]').should('be.visible');
+    cy.get('[data-cy=mt-toot],.twitter-timeline').should('be.visible');
   });
 
   function starColumn(url: string, type: string) {
