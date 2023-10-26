@@ -278,6 +278,6 @@ export function checkNewsAndUpdates() {
   });
 }
 
-export function checkMastodonFeed() {
-  cy.get('[data-cy=mt-toot]').should('exist');
+export function checkMastodonFeedOrTwitterFeed() {
+  cy.get('[data-cy=mt-toot],.twitter-timeline').should('exist');
 }
