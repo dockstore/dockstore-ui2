@@ -541,6 +541,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   resetPageIndex() {
+    m;
     this.searchService.setPageSizeAndIndex(this.searchQuery.getValue().pageSize, 0);
   }
 
