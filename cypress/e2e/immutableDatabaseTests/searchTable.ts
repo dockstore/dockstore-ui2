@@ -471,5 +471,11 @@ describe('No results displays warning', () => {
   it('should show a warning if there are no results', () => {
     cy.visit('/search');
     cy.get('[data-cy=no-results]').should('exist');
+    cy.get('[data-cy=suggest-term]').should('not.exist');
+  });
+  it('should show a suggested search term and no reset warning', () => {
+    cy.visit('/search??entryType=workflows&search=asdf');
+    cy.get('[data-cy=no-results]').should('not.exist');
+    cy.get('[data-cy=suggest-term]').should('exist');
   });
 });
