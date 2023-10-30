@@ -22,18 +22,18 @@ import { Entry, EntriesService, DockstoreTool, Workflow } from '../../../shared/
 import { AlertService } from '../../../shared/alert/state/alert.service';
 
 @Component({
-  selector: 'app-delete-entry-dialog',
-  templateUrl: './delete-entry-dialog.component.html',
-  styleUrls: ['./delete-entry-dialog.component.scss'],
+  selector: 'app-archive-entry-dialog',
+  templateUrl: './archive-entry-dialog.component.html',
+  styleUrls: ['./archive-entry-dialog.component.scss'],
 })
-export class DeleteEntryDialogComponent {
+export class ArchiveEntryDialogComponent {
   clicked: boolean;
   term: string;
   path: string;
   fromDockstoreYml: boolean;
 
   constructor(
-    public dialogRef: MatDialogRef<DeleteEntryDialogComponent>,
+    public dialogRef: MatDialogRef<ArchiveEntryDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public entry: Entry,
     public matSnackBar: MatSnackBar,
     public router: Router,
@@ -53,7 +53,7 @@ export class DeleteEntryDialogComponent {
 
   yes(): void {
     this.click();
-    this.deleteEntry();
+    this.archiveEntry();
   }
 
   click(): void {
@@ -64,21 +64,16 @@ export class DeleteEntryDialogComponent {
     this.clicked = false;
   }
 
-  close(): void {
-    this.dialogRef.close();
+  close(archived: Entry = undefined): void {
+    this.dialogRef.close(archived);
   }
 
-  redirect(): void {
-    this.router.navigate(['/dashboard']);
-  }
-
-  deleteEntry(): void {
-    this.alertService.start(`Deleting ${this.path}`);
-    this.entriesService.deleteEntry(this.entry.id).subscribe(
-      () => {
-        this.alertService.detailedSuccess(`Successfully deleted ${this.path}`);
-        this.close();
-        this.redirect();
+  archiveEntry(): void {
+    this.alertService.start(`Archiving ${this.path}`);
+    this.entriesService.archiveEntry(this.entry.id).subscribe(
+      (archived: Entry) => {
+        this.alertService.detailedSuccess(`Successfully archived ${this.path}`);
+        this.close(archived);
       },
       (error: HttpErrorResponse) => {
         this.alertService.detailedError(error);

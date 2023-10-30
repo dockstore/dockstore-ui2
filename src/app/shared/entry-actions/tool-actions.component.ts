@@ -49,4 +49,12 @@ export class ToolActionsComponent extends EntryActionsComponent implements OnIni
   refresh() {
     this.refreshService.refreshTool();
   }
+
+  archive() {
+    this.entryActionsService.archiveEntry(this.tool);
+  }
+
+  unarchive() {
+    this.entryActionsService.unarchiveEntry(this.tool);
+  }
 }

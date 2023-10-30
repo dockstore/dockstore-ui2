@@ -186,7 +186,12 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
     this.hasGroupEntriesObject$ = this.groupEntriesObject$.pipe(
       map((orgToolObjects: OrgWorkflowObject<Workflow>[]) => {
         // Now that we have empty GitHub orgs showing up, check if they have any entries
-        return orgToolObjects && orgToolObjects.some((orgToolObject) => orgToolObject.unpublished.length || orgToolObject.published.length);
+        return (
+          orgToolObjects &&
+          orgToolObjects.some(
+            (orgToolObject) => orgToolObject.unpublished.length || orgToolObject.published.length || orgToolObject.archived.length
+          )
+        );
       })
     );
     this.hasGroupSharedEntriesObject$ = this.groupSharedEntriesObject$.pipe(

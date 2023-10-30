@@ -116,10 +116,12 @@ export class QueryBuilderService {
     tableBody = this.appendQuery(tableBody, values, advancedSearchObject, searchTerm);
     tableBody = this.appendFilter(tableBody, null, filters, exclusiveFilters);
     // if there's no inclusive search term, tell ES to sort hits by stars
-    // otherwise, use the default ES hit ordering, which should be by
-    // ES-calcalated score if we craft our query correctly
+    // otherwise, sort by ES-calculated score
+    // in both cases, sort so that archived entries appear last
     if (this.isEmpty(values) && !this.hasInclusiveSettings(advancedSearchObject)) {
-      tableBody = tableBody.sort('stars_count', 'desc');
+      tableBody = tableBody.sort([{ archived: 'asc' }, { stars_count: 'desc' }]);
+    } else {
+      tableBody = tableBody.sort([{ archived: 'asc' }, { _score: 'desc' }]);
     }
     tableBody.rawOption('highlight', {
       type: 'unified',

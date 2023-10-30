@@ -43,6 +43,7 @@ import { VersionModalService } from '../version-modal/version-modal.service';
 export class ViewContainerComponent extends View<Tag> implements OnInit {
   public TagEditorMode = TagEditorMode;
   public tool: DockstoreTool;
+  public canWrite: boolean;
   public DockstoreToolType = DockstoreTool;
   isPublic$: Observable<boolean>;
   isManualTool: boolean;
@@ -117,6 +118,7 @@ export class ViewContainerComponent extends View<Tag> implements OnInit {
     this.isPublic$ = this.sessionQuery.isPublic$;
     this.toolQuery.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((tool) => {
       this.tool = JSON.parse(JSON.stringify(tool));
+      this.canWrite = !tool.archived;
       if (this.tool) {
         this.isManualTool = this.tool.mode === DockstoreTool.ModeEnum.MANUALIMAGEPATH;
       } else {

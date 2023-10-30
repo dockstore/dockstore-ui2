@@ -48,7 +48,7 @@
   </mat-tab>
 </mat-tab-group>
 
-<div class="editor-button-container p-2" *ngIf="!publicPage && canWrite && isNewestVersion">
+<div class="editor-button-container p-2" *ngIf="!publicPage && isNewestVersion && canWrite">
   <span *ngIf="!editing">
     <button id="editFilesButton" mat-raised-button class="accent-1-dark-btn mat-elevation-z" (click)="toggleEdit()">Edit Files</button>
   </span>

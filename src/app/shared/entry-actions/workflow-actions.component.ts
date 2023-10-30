@@ -73,4 +73,12 @@ export class WorkflowActionsComponent extends EntryActionsComponent implements O
   delete() {
     this.dialog.open(DeleteEntryDialogComponent, { width: bootstrap4largeModalSize, data: this.workflow });
   }
+
+  archive() {
+    this.entryActionsService.archiveEntry(this.workflow);
+  }
+
+  unarchive() {
+    this.entryActionsService.unarchiveEntry(this.workflow);
+  }
 }

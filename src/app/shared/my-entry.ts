@@ -102,5 +102,6 @@ export abstract class MyEntry extends Base implements OnDestroy {
 export interface OrgEntryObject<T> {
   published: Array<T>;
   unpublished: Array<T>;
+  archived: Array<T>;
   expanded: boolean;
 }

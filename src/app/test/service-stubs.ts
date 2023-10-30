@@ -1007,3 +1007,7 @@ export class MarkdownWrapperStubService {
     return `sanitized(${html})`;
   }
 }
+
+export class EntryActionsStubService {
+  updateBackingEntry(entry) {}
+}

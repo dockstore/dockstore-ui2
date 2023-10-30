@@ -261,6 +261,7 @@ describe('MytoolsService', () => {
     namespace: 'aa',
     registry: 'quay.io',
     published: [],
+    archived: [],
   };
   const expectedResult2: OrgToolObject<DockstoreTool> = {
     unpublished: [tool3, tool4],
@@ -268,6 +269,7 @@ describe('MytoolsService', () => {
     namespace: 'bb',
     registry: 'quay.io',
     published: [],
+    archived: [],
   };
   const expectedResult3: OrgToolObject<DockstoreTool> = {
     unpublished: [tool1, tool2],
@@ -275,6 +277,7 @@ describe('MytoolsService', () => {
     registry: 'quay.io',
     namespace: 'cc',
     published: [],
+    archived: [],
   };
   const expectedResult: OrgToolObject<DockstoreTool>[] = [expectedResult1, expectedResult2, expectedResult3];
   beforeEach(() => {

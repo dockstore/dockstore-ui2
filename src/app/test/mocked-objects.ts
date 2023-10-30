@@ -213,6 +213,7 @@ export const orgObj1: OrgToolObject<DockstoreTool> = {
   namespace: 'stew',
   published: [sampleTool1],
   unpublished: [sampleTool2, sampleTool3],
+  archived: [],
   expanded: false,
 };
 // Case 2: sampleTool1 in unpublished entries, published doesn't matter
@@ -221,6 +222,7 @@ export const orgObj2: OrgToolObject<DockstoreTool> = {
   namespace: 'stew',
   published: [sampleTool2, sampleTool3],
   unpublished: [sampleTool1],
+  archived: [],
   expanded: false,
 };
 
@@ -230,6 +232,7 @@ export const orgObj3: OrgToolObject<DockstoreTool> = {
   namespace: 'stew',
   published: [sampleTool2],
   unpublished: [sampleTool3],
+  archived: [],
   expanded: false,
 };
 
@@ -239,6 +242,7 @@ export const orgObj4: OrgToolObject<DockstoreTool> = {
   namespace: 'stew',
   published: [],
   unpublished: [],
+  archived: [],
   expanded: false,
 };
 

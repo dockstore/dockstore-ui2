@@ -46,6 +46,7 @@ export class InfoTabComponent extends Base implements OnInit, OnChanges {
   public exampleDescriptorPatterns = exampleDescriptorPatterns;
   public DockstoreToolType = DockstoreTool;
   public tool: ExtendedDockstoreTool;
+  public canWrite: boolean;
   public topicEditing: boolean;
   public TopicSelectionEnum = DockstoreTool.TopicSelectionEnum;
   public authors: Array<Author> = [];
@@ -72,6 +73,7 @@ export class InfoTabComponent extends Base implements OnInit, OnChanges {
 
   ngOnChanges() {
     this.tool = JSON.parse(JSON.stringify(this.extendedDockstoreTool));
+    this.canWrite = !this.tool.archived;
     this.description = null;
     if (this.selectedVersion && this.tool) {
       this.authors = this.selectedVersion.authors;
