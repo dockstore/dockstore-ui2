@@ -200,11 +200,25 @@
                 }}</span>
               </div>
               <div *ngIf="!isPublic">
-                <span><strong matTooltip="Short description of the workflow">Topic Automatic</strong>:&nbsp;</span>
+                <span
+                  ><strong
+                    matTooltip="Short description of the {{
+                      entryType$ | async
+                    }}, retrieved automatically from the GitHub repository description"
+                    >Topic Automatic</strong
+                  >:&nbsp;</span
+                >
                 <span>{{ workflow?.topicAutomatic }}</span>
               </div>
               <form *ngIf="!isPublic" #editTopic="ngForm" fxLayout="row" fxLayoutAlign="start center" class="w-100">
-                <span><strong matTooltip="Short description of the workflow">Topic Manual</strong>:&nbsp;</span>
+                <span
+                  ><strong
+                    matTooltip="Short description of the {{ entryType$ | async }}, entered manually in the {{
+                      workflow?.mode === WorkflowType.ModeEnum.DOCKSTOREYML ? '.dockstore.yml' : 'UI'
+                    }}"
+                    >Topic Manual</strong
+                  >:&nbsp;</span
+                >
                 <span *ngIf="!topicEditing"> {{ workflow?.topicManual }} </span>
                 <span fxFlex>
                   <input
@@ -249,6 +263,16 @@
                     class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
                     (click)="toggleEditTopic()"
                     data-cy="topicSaveButton"
+                    [disabled]="workflow?.mode === WorkflowType.ModeEnum.DOCKSTOREYML"
+                    [matTooltip]="
+                      workflow?.mode === WorkflowType.ModeEnum.DOCKSTOREYML
+                        ? 'Edit the manual topic for this ' +
+                          (entryType$ | async) +
+                          ' in the .dockstore.yml file on GitHub. Editing the topic in the UI is deprecated for GitHub App ' +
+                          (entryType$ | async) +
+                          's.'
+                        : 'Edit the manual topic for this ' + (entryType$ | async)
+                    "
                   >
                     <mat-icon *ngIf="topicEditing" class="mat-icon-sm">save</mat-icon>
                     <img *ngIf="!topicEditing" src="../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit Topic Manual" />
