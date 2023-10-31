@@ -218,6 +218,10 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
     map(([hasContent]) => (hasContent ? 'Run this notebook in Google Colaboratory' : 'The notebook has no content.'))
   );
 
+  codespaceTooltip$: Observable<string> = combineLatest([this.hasContent$]).pipe(
+    map(([hasContent]) => (hasContent ? 'Run this notebook in a GitHub Codespace' : 'The notebook has no content.'))
+  );
+
   mybinderTooltip$: Observable<string> = combineLatest([this.hasContent$]).pipe(
     map(([hasContent]) => (hasContent ? 'Run this notebook at mybinder.org' : 'The notebook has no content.'))
   );

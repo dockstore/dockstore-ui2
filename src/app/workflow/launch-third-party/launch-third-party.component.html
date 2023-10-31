@@ -283,7 +283,28 @@
             "
             [disabled]="(hasContent$ | async) === false"
             data-cy="colabLaunchWith"
-            ><img class="partner-icon mr-2" src="../assets/images/thirdparty/colab.svg" alt="Google Colab icon" />Google Colab</a
+            ><img class="partner-icon mr-3" src="../assets/images/thirdparty/colab.svg" alt="Google Colab icon" />Google Colab</a
+          >
+          <a
+            mat-button
+            class="launch-with-button private-btn"
+            [matTooltip]="codespaceTooltip$ | async"
+            matTooltipPosition="left"
+            target="_blank"
+            rel="noopener"
+            [attr.href]="
+              'https://github.com/codespaces/new' +
+              '?hide_repo_select=true' +
+              '&ref=' +
+              selectedVersionNameAsQueryValue +
+              '&repo=' +
+              workflowOrganizationAsQueryValue +
+              '/' +
+              workflowRepositoryAsQueryValue
+            "
+            [disabled]="(hasContent$ | async) === false"
+            data-cy="codespaceLaunchWith"
+            ><img class="partner-icon mr-3" src="../assets/images/thirdparty/github.svg" alt="GitHub Codespace icon" />GitHub Codespace</a
           >
           <a
             mat-button
@@ -305,7 +326,7 @@
             "
             [disabled]="(hasContent$ | async) === false"
             data-cy="mybinderLaunchWith"
-            ><img class="partner-icon mr-2" src="../assets/images/thirdparty/binder.svg" alt="Binder icon" />mybinder.org</a
+            ><img class="partner-icon mr-3" src="../assets/images/thirdparty/binder.svg" alt="Binder icon" />mybinder.org</a
           >
         </div>
       </div>
