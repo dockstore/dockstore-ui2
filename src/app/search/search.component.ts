@@ -28,9 +28,10 @@ import {
   faSortNumericDown,
   faSortNumericUp,
 } from '@fortawesome/free-solid-svg-icons';
+import { Dockstore } from 'app/shared/dockstore.model';
 import { ExtendedGA4GHService } from 'app/shared/openapi';
 import { SearchResponse } from 'elasticsearch';
-import { forkJoin, Observable, Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { distinctUntilChanged, finalize, takeUntil } from 'rxjs/operators';
 import { AlertService } from '../shared/alert/state/alert.service';
 import { AdvancedSearchObject, initialAdvancedSearchObject } from '../shared/models/AdvancedSearchObject';
@@ -40,8 +41,6 @@ import { AdvancedSearchQuery } from './advancedsearch/state/advanced-search.quer
 import { QueryBuilderService } from './query-builder.service';
 import { SearchQuery } from './state/search.query';
 import { Hit, SearchService } from './state/search.service';
-import { Dockstore } from 'app/shared/dockstore.model';
-import { SearchStore } from './state/search.store';
 
 /**
  *

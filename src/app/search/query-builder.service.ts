@@ -15,12 +15,12 @@
  */
 
 import { Injectable } from '@angular/core';
-import { Bodybuilder, SubAggregationBuilder } from 'bodybuilder';
 import * as bodybuilder from 'bodybuilder';
+import { Bodybuilder } from 'bodybuilder';
 import { CategorySort } from '../shared/models/CategorySort';
+import { tagCloudCommonTerms } from './../shared/constants';
 import { AdvancedSearchObject } from './../shared/models/AdvancedSearchObject';
 import { SearchService } from './state/search.service';
-import { tagCloudCommonTerms } from './../shared/constants';
 
 type Index = 'workflows' | 'tools' | 'notebooks';
 
