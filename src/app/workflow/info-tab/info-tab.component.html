@@ -261,8 +261,12 @@
                     [disabled]="workflow?.mode === WorkflowType.ModeEnum.DOCKSTOREYML"
                     [matTooltip]="
                       workflow?.mode === WorkflowType.ModeEnum.DOCKSTOREYML
-                        ? 'Edit the manual topic for this ' + (entryType$ | async) + ' in the .dockstore.yml file on GitHub'
-                        : ''
+                        ? 'Edit the manual topic for this ' +
+                          (entryType$ | async) +
+                          ' in the .dockstore.yml file on GitHub. Editing the topic in the UI is deprecated for GitHub App ' +
+                          (entryType$ | async) +
+                          's.'
+                        : 'Edit the manual topic for this ' + (entryType$ | async)
                     "
                   >
                     <mat-icon *ngIf="topicEditing" class="mat-icon-sm">save</mat-icon>
