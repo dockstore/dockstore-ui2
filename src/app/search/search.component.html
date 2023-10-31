@@ -253,10 +253,10 @@
     <div class="col-md-9 containers-rsb" *ngIf="advancedSearchObject$ | async as advancedSearchObject">
       <div class="hits">
         <mat-card *ngIf="!isLoading && hits?.length === 0" class="alert alert-warning mat-elevation-z text-break">
-          <div *ngIf="searchTerm">
+          <div *ngIf="searchTerm" data-cy="no-searchTerm-results">
             Sorry, no matches found for <strong>{{ basicSearchText$ | async }}</strong
             >.
-            <span *ngIf="suggestTerm$ | async" data-cy="suggest-term"
+            <span *ngIf="suggestTerm$ | async"
               >Do you mean: <strong class="suggestTerm" (click)="searchSuggestTerm()">{{ suggestTerm$ | async }}</strong
               >?</span
             >
