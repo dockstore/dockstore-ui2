@@ -291,7 +291,7 @@
             [matTooltip]="codespaceTooltip$ | async"
             matTooltipPosition="left"
             (click)="launchToCodespace()"
-            [disabled]="(hasContent$ | async) === false"
+            [disabled]="(hasContent$ | async) === false || !devcontainers"
             data-cy="codespaceLaunchWith"
             ><img class="partner-icon mr-3" src="../assets/images/thirdparty/github.svg" alt="GitHub Codespace icon" />GitHub Codespace</a
           >

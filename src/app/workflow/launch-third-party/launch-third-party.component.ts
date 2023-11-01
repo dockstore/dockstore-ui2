@@ -126,6 +126,12 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
   hasHttpImports$ = this.descriptorsQuery.hasHttpImports$;
 
   /**
+   * The selected version's devcontainer files, currently retrieved only for notebooks.
+   * Set to "undefined" during retrieval or if not retrieved.
+   */
+  devcontainers: SourceFile[] | undefined;
+
+  /**
    * A reference to dockstore.model.ts
    */
   config = Dockstore;
@@ -291,6 +297,19 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
       this.workflowRepositoryAsQueryValue = this.encode(this.workflow.repository);
       this.selectedVersionNameAsQueryValue = this.encode(this.selectedVersion.name);
       this.selectedVersionWorkflowPathAsQueryValue = this.encode(this.prependIfNotPrefix('/', this.selectedVersion.workflow_path));
+      this.devcontainers = undefined;
+      if (this.workflow.descriptorType === Workflow.DescriptorTypeEnum.Jupyter) {
+        const workflowId = this.workflow.id;
+        const versionId = this.selectedVersion.id;
+        console.log('retrieving devcontainers ' + workflowId + ' ' + versionId);
+        this.workflowsService
+          .getWorkflowVersionsSourcefiles(workflowId, versionId, ['DOCKSTORE_NOTEBOOK_DEVCONTAINER'])
+          // TODO add pipe to disable button
+          .subscribe(
+            (devcontainers: SourceFile[]) => (this.devcontainers = devcontainers),
+            (error) => (this.devcontainers = [])
+          );
+      }
     }
   }
 
@@ -326,42 +345,8 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
     return `Export this workflow version to ${platform}.`;
   }
 
-  /*
   launchToCodespace() {
-    // retrieve list of devcontainer sourcefiles
-    //
-    // if no sourcefiles, pop up dialog
-    const launchUrl = // compute url
-    if (!devcontainers) {
-      const observable = displayGitHubCodespaceDialog(launchUrl, false);
-      if (no) return;
-    } else {
-      if (!devcontainerThatReferencesNotebook) {
-      const observable = displayGitHubCodespaceDialog(launchUrl, true);
-      if (no) return;
-    }
-    openWindow(launchUrl);
-  }
-  */
-
-  launchToCodespace() {
-    const workflowId = this.workflow.id;
-    const versionId = this.selectedVersion.id;
-    this.workflowsService
-      .getWorkflowVersionsSourcefiles(workflowId, versionId, ['DOCKSTORE_NOTEBOOK_DEVCONTAINER'])
-      // TODO add pipe to disable button
-      .subscribe(
-        (devcontainers: SourceFile[]) => {
-          this.launchToCodespaceWithDevcontainers(devcontainers);
-        },
-        (error) => {
-          this.launchToCodespaceWithDevcontainers([]);
-        }
-      );
-  }
-
-  private launchToCodespaceWithDevcontainers(devcontainers: SourceFile[]) {
-    const correctDevcontainerPath = this.computeCorrectDevcontainerPath(devcontainers);
+    const correctDevcontainerPath = this.computeCorrectDevcontainerPath(this.devcontainers);
     if (correctDevcontainerPath) {
       this.openNewCodespaceWindow(correctDevcontainerPath);
     } else {
@@ -376,8 +361,8 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
     // TODO
   }
 
+  // TODO document
   private computeCorrectDevcontainerPath(devcontainers: SourceFile[]): string | undefined {
-    // TODO scan for sourcefile with body that contains workflow_path
     return devcontainers.find((file) => file.content.includes(this.selectedVersion.workflow_path))?.absolutePath?.substring(1);
   }
 
