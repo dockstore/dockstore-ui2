@@ -1,5 +1,6 @@
 import { HttpUrlEncodingCodec } from '@angular/common/http';
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 import { combineLatest, Observable } from 'rxjs';
 import { map, shareReplay, takeUntil } from 'rxjs/operators';
@@ -14,6 +15,8 @@ import { UserQuery } from '../../shared/user/user.query';
 import { DescriptorsQuery } from './state/descriptors-query';
 import { DescriptorsStore } from './state/descriptors-store';
 import { DescriptorsService } from './state/descriptors.service';
+import { LaunchToCodespaceDialogComponent } from './dialog/launch-to-codespace-dialog.component';
+import { bootstrap4largeModalSize } from '../../shared/constants';
 import FileTypeEnum = ToolFile.FileTypeEnum;
 
 /* eslint-disable max-len */
@@ -241,7 +244,8 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
     private cloudInstanceService: CloudInstancesService,
     private usersService: UsersService,
     private userQuery: UserQuery,
-    private descriptorLanguageService: DescriptorLanguageService
+    private descriptorLanguageService: DescriptorLanguageService,
+    private dialog: MatDialog
   ) {
     super();
   }
@@ -350,15 +354,21 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
     if (correctDevcontainerPath) {
       this.openNewCodespaceWindow(correctDevcontainerPath);
     } else {
-      // const observable = displayLaunchToCodespaceDialog(this.workflow, devcontainers.length);
-      // if (yes) {
-      this.openNewCodespaceWindow(null);
-      // }
+      this.displayLaunchToCodespaceDialog(this.devcontainers.length > 0)
+        .afterClosed()
+        .subscribe((shouldLaunch: boolean) => {
+          if (shouldLaunch) {
+            this.openNewCodespaceWindow(undefined);
+          }
+        });
     }
   }
 
-  private displayLaunchToCodespaceDialog(hasDevcontainers: boolean) {
-    // TODO
+  private displayLaunchToCodespaceDialog(hasDevcontainer: boolean) {
+    return this.dialog.open(LaunchToCodespaceDialogComponent, {
+      width: bootstrap4largeModalSize,
+      data: { entry: this.workflow, hasDevcontainer: hasDevcontainer },
+    });
   }
 
   // TODO document
