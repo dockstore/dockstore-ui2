@@ -290,18 +290,7 @@
             class="launch-with-button private-btn"
             [matTooltip]="codespaceTooltip$ | async"
             matTooltipPosition="left"
-            target="_blank"
-            rel="noopener"
-            [attr.href]="
-              'https://github.com/codespaces/new' +
-              '?hide_repo_select=true' +
-              '&ref=' +
-              selectedVersionNameAsQueryValue +
-              '&repo=' +
-              workflowOrganizationAsQueryValue +
-              '/' +
-              workflowRepositoryAsQueryValue
-            "
+            (click)="launchToCodespace()"
             [disabled]="(hasContent$ | async) === false"
             data-cy="codespaceLaunchWith"
             ><img class="partner-icon mr-3" src="../assets/images/thirdparty/github.svg" alt="GitHub Codespace icon" />GitHub Codespace</a

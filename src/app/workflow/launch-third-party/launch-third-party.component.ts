@@ -325,4 +325,76 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
     }
     return `Export this workflow version to ${platform}.`;
   }
+
+  /*
+  launchToCodespace() {
+    // retrieve list of devcontainer sourcefiles
+    //
+    // if no sourcefiles, pop up dialog
+    const launchUrl = // compute url
+    if (!devcontainers) {
+      const observable = displayGitHubCodespaceDialog(launchUrl, false);
+      if (no) return;
+    } else {
+      if (!devcontainerThatReferencesNotebook) {
+      const observable = displayGitHubCodespaceDialog(launchUrl, true);
+      if (no) return;
+    }
+    openWindow(launchUrl);
+  }
+  */
+
+  launchToCodespace() {
+    const workflowId = this.workflow.id;
+    const versionId = this.selectedVersion.id;
+    this.workflowsService
+      .getWorkflowVersionsSourcefiles(workflowId, versionId, ['DOCKSTORE_NOTEBOOK_DEVCONTAINER'])
+      // TODO add pipe to disable button
+      .subscribe(
+        (devcontainers: SourceFile[]) => {
+          this.launchToCodespaceWithDevcontainers(devcontainers);
+        },
+        (error) => {
+          this.launchToCodespaceWithDevcontainers([]);
+        }
+      );
+  }
+
+  private launchToCodespaceWithDevcontainers(devcontainers: SourceFile[]) {
+    const correctDevcontainerPath = this.computeCorrectDevcontainerPath(devcontainers);
+    if (correctDevcontainerPath) {
+      this.openNewCodespaceWindow(correctDevcontainerPath);
+    } else {
+      // const observable = displayLaunchToCodespaceDialog(this.workflow, devcontainers.length);
+      // if (yes) {
+      this.openNewCodespaceWindow(null);
+      // }
+    }
+  }
+
+  private displayLaunchToCodespaceDialog(hasDevcontainers: boolean) {
+    // TODO
+  }
+
+  private computeCorrectDevcontainerPath(devcontainers: SourceFile[]): string | undefined {
+    // TODO scan for sourcefile with body that contains workflow_path
+    return devcontainers.find((file) => file.content.includes(this.selectedVersion.workflow_path))?.absolutePath?.substring(1);
+  }
+
+  private openNewCodespaceWindow(devcontainerPath: string | undefined) {
+    let url: string =
+      'https://github.com/codespaces/new' +
+      '?hide_repo_select=true' +
+      '&ref=' +
+      this.selectedVersionNameAsQueryValue +
+      '&repo=' +
+      this.workflowOrganizationAsQueryValue +
+      '/' +
+      this.workflowRepositoryAsQueryValue;
+    if (devcontainerPath) {
+      url += '&devcontainer=' + devcontainerPath;
+    }
+    console.log('OPEN NCSW ' + url);
+    window.open(url, '_blank');
+  }
 }
