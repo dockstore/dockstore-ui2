@@ -367,8 +367,9 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
     });
   }
 
-  // TODO document
   private computeCorrectDevcontainerPath(devcontainers: SourceFile[]): string | undefined {
+    // Return the path, relative to root, of the devcontainer with a body that contains the absolute notebook path as a substring,
+    // or undefined if there is no such devcontainer
     return devcontainers.find((file) => file.content.includes(this.selectedVersion.workflow_path))?.absolutePath?.substring(1);
   }
 
