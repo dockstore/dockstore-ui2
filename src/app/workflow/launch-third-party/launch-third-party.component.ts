@@ -305,13 +305,10 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
       if (this.workflow.descriptorType === Workflow.DescriptorTypeEnum.Jupyter) {
         const workflowId = this.workflow.id;
         const versionId = this.selectedVersion.id;
-        this.workflowsService
-          .getWorkflowVersionsSourcefiles(workflowId, versionId, ['DOCKSTORE_NOTEBOOK_DEVCONTAINER'])
-          // TODO add pipe to disable button
-          .subscribe(
-            (devcontainers: SourceFile[]) => (this.devcontainers = devcontainers),
-            (error) => (this.devcontainers = [])
-          );
+        this.workflowsService.getWorkflowVersionsSourcefiles(workflowId, versionId, ['DOCKSTORE_NOTEBOOK_DEVCONTAINER']).subscribe(
+          (devcontainers: SourceFile[]) => (this.devcontainers = devcontainers),
+          (error) => (this.devcontainers = [])
+        );
       }
     }
   }
