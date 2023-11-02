@@ -305,7 +305,6 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
       if (this.workflow.descriptorType === Workflow.DescriptorTypeEnum.Jupyter) {
         const workflowId = this.workflow.id;
         const versionId = this.selectedVersion.id;
-        console.log('retrieving devcontainers ' + workflowId + ' ' + versionId);
         this.workflowsService
           .getWorkflowVersionsSourcefiles(workflowId, versionId, ['DOCKSTORE_NOTEBOOK_DEVCONTAINER'])
           // TODO add pipe to disable button
@@ -378,7 +377,7 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
 
   private openNewCodespaceWindow(devcontainerPath: string | undefined) {
     let url: string =
-      'https://github.com/codespaces/new' +
+      this.config.GITHUB_CODESPACES_IMPORT_URL +
       '?hide_repo_select=true' +
       '&ref=' +
       this.selectedVersionNameAsQueryValue +
@@ -387,9 +386,8 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
       '/' +
       this.workflowRepositoryAsQueryValue;
     if (devcontainerPath) {
-      url += '&devcontainer=' + devcontainerPath;
+      url += '&devcontainer_path=' + this.encode(devcontainerPath);
     }
-    console.log('OPEN NCSW ' + url);
     window.open(url, '_blank');
   }
 }
