@@ -130,7 +130,7 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
 
   /**
    * The selected version's devcontainer files, currently retrieved only for notebooks.
-   * Set to "undefined" during retrieval or if not retrieved.
+   * Set to "undefined" during retrieval or if never retrieved.
    */
   devcontainers: SourceFile[] | undefined;
 
