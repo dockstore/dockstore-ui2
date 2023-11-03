@@ -117,6 +117,7 @@ import { ViewService } from './workflow/view/view.service';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { PreviewWarningModule } from './shared/modules/preview-warning.module';
 import { MyOrganizationsDialogComponent } from './home-page/widget/organization-box/my-organizations-dialog.component/my-organizations-dialog.component';
+import { LaunchToCodespaceDialogComponent } from './workflow/launch-third-party/dialog/launch-to-codespace-dialog.component';
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   showDelay: 500,
@@ -176,6 +177,7 @@ export function initializerFactory(
     ChangeUsernameBannerComponent,
     RevokeTokenDialogComponent,
     MyOrganizationsDialogComponent,
+    LaunchToCodespaceDialogComponent,
   ],
   imports: [
     environment.production ? [] : AkitaNgDevtools.forRoot(),

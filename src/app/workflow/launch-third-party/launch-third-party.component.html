@@ -283,7 +283,17 @@
             "
             [disabled]="(hasContent$ | async) === false"
             data-cy="colabLaunchWith"
-            ><img class="partner-icon mr-2" src="../assets/images/thirdparty/colab.svg" alt="Google Colab icon" />Google Colab</a
+            ><img class="partner-icon mr-3" src="../assets/images/thirdparty/colab.svg" alt="Google Colab icon" />Google Colab</a
+          >
+          <a
+            mat-button
+            class="launch-with-button private-btn"
+            [matTooltip]="codespaceTooltip$ | async"
+            matTooltipPosition="left"
+            (click)="launchToCodespace()"
+            [disabled]="(hasContent$ | async) === false || !devcontainers"
+            data-cy="codespaceLaunchWith"
+            ><img class="partner-icon mr-3" src="../assets/images/thirdparty/github.svg" alt="GitHub icon" />GitHub Codespaces</a
           >
           <a
             mat-button
@@ -305,7 +315,7 @@
             "
             [disabled]="(hasContent$ | async) === false"
             data-cy="mybinderLaunchWith"
-            ><img class="partner-icon mr-2" src="../assets/images/thirdparty/binder.svg" alt="Binder icon" />mybinder.org</a
+            ><img class="partner-icon mr-3" src="../assets/images/thirdparty/binder.svg" alt="Binder icon" />mybinder.org</a
           >
         </div>
       </div>

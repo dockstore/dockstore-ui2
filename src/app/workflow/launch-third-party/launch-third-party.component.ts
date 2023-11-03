@@ -1,5 +1,6 @@
 import { HttpUrlEncodingCodec } from '@angular/common/http';
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 import { combineLatest, Observable } from 'rxjs';
 import { map, shareReplay, takeUntil } from 'rxjs/operators';
@@ -14,6 +15,8 @@ import { UserQuery } from '../../shared/user/user.query';
 import { DescriptorsQuery } from './state/descriptors-query';
 import { DescriptorsStore } from './state/descriptors-store';
 import { DescriptorsService } from './state/descriptors.service';
+import { LaunchToCodespaceDialogComponent } from './dialog/launch-to-codespace-dialog.component';
+import { bootstrap4largeModalSize } from '../../shared/constants';
 import FileTypeEnum = ToolFile.FileTypeEnum;
 
 /* eslint-disable max-len */
@@ -126,6 +129,12 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
   hasHttpImports$ = this.descriptorsQuery.hasHttpImports$;
 
   /**
+   * The selected version's devcontainer files, currently retrieved only for notebooks.
+   * Set to "undefined" during retrieval or if never retrieved.
+   */
+  devcontainers: SourceFile[] | undefined;
+
+  /**
    * A reference to dockstore.model.ts
    */
   config = Dockstore;
@@ -218,6 +227,10 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
     map(([hasContent]) => (hasContent ? 'Run this notebook in Google Colaboratory' : 'The notebook has no content.'))
   );
 
+  codespaceTooltip$: Observable<string> = combineLatest([this.hasContent$]).pipe(
+    map(([hasContent]) => (hasContent ? 'Run this notebook in a GitHub Codespace' : 'The notebook has no content.'))
+  );
+
   mybinderTooltip$: Observable<string> = combineLatest([this.hasContent$]).pipe(
     map(([hasContent]) => (hasContent ? 'Run this notebook at mybinder.org' : 'The notebook has no content.'))
   );
@@ -231,7 +244,8 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
     private cloudInstanceService: CloudInstancesService,
     private usersService: UsersService,
     private userQuery: UserQuery,
-    private descriptorLanguageService: DescriptorLanguageService
+    private descriptorLanguageService: DescriptorLanguageService,
+    private dialog: MatDialog
   ) {
     super();
   }
@@ -287,6 +301,15 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
       this.workflowRepositoryAsQueryValue = this.encode(this.workflow.repository);
       this.selectedVersionNameAsQueryValue = this.encode(this.selectedVersion.name);
       this.selectedVersionWorkflowPathAsQueryValue = this.encode(this.prependIfNotPrefix('/', this.selectedVersion.workflow_path));
+      this.devcontainers = undefined;
+      if (this.workflow.descriptorType === Workflow.DescriptorTypeEnum.Jupyter) {
+        const workflowId = this.workflow.id;
+        const versionId = this.selectedVersion.id;
+        this.workflowsService.getWorkflowVersionsSourcefiles(workflowId, versionId, ['DOCKSTORE_NOTEBOOK_DEVCONTAINER']).subscribe(
+          (devcontainers: SourceFile[]) => (this.devcontainers = devcontainers),
+          (error) => (this.devcontainers = [])
+        );
+      }
     }
   }
 
@@ -320,5 +343,49 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
       return `This version of the WDL has file-path imports, which are only supported by ${platform} for GitHub-based workflows.`;
     }
     return `Export this workflow version to ${platform}.`;
+  }
+
+  launchToCodespace() {
+    const correctDevcontainerPath = this.computeCorrectDevcontainerPath(this.devcontainers);
+    if (correctDevcontainerPath) {
+      this.openNewCodespaceWindow(correctDevcontainerPath);
+    } else {
+      this.displayLaunchToCodespaceDialog(this.devcontainers.length > 0)
+        .afterClosed()
+        .subscribe((shouldLaunch: boolean) => {
+          if (shouldLaunch) {
+            this.openNewCodespaceWindow(undefined);
+          }
+        });
+    }
+  }
+
+  private displayLaunchToCodespaceDialog(hasDevcontainer: boolean) {
+    return this.dialog.open(LaunchToCodespaceDialogComponent, {
+      width: bootstrap4largeModalSize,
+      data: { entry: this.workflow, hasDevcontainer: hasDevcontainer },
+    });
+  }
+
+  private computeCorrectDevcontainerPath(devcontainers: SourceFile[]): string | undefined {
+    // Return the path, relative to root, of the devcontainer with a body that contains the absolute notebook path as a substring,
+    // or undefined if there is no such devcontainer
+    return devcontainers.find((file) => file.content.includes(this.selectedVersion.workflow_path))?.absolutePath?.substring(1);
+  }
+
+  private openNewCodespaceWindow(devcontainerPath: string | undefined) {
+    let url: string =
+      this.config.GITHUB_CODESPACES_IMPORT_URL +
+      '?hide_repo_select=true' +
+      '&ref=' +
+      this.selectedVersionNameAsQueryValue +
+      '&repo=' +
+      this.workflowOrganizationAsQueryValue +
+      '/' +
+      this.workflowRepositoryAsQueryValue;
+    if (devcontainerPath) {
+      url += '&devcontainer_path=' + this.encode(devcontainerPath);
+    }
+    window.open(url, '_blank', 'noopener,noreferrer');
   }
 }
