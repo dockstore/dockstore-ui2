@@ -7,11 +7,11 @@
     repository, which specifies the files to use and software to run.
   </p>
   <p *ngIf="!hasDevcontainer">
-    <b>No dev container files were detected in this version.</b> When GitHub can't find a dev container file, it creates a default Codespace
-    environment that may not automatically run the {{ term }} or the software required to support it.
+    <b>No dev container files were detected in this repository.</b> When GitHub can't find a dev container file, it creates a default
+    Codespace environment that may not automatically run the {{ term }} or the software required to support it.
   </p>
   <p *ngIf="hasDevcontainer">
-    This version contains dev container files, but Dockstore could not confirm that they will automatically run the {{ term }} when the
+    This repository contains dev container files, but Dockstore could not confirm that they will automatically run the {{ term }} when the
     Codespace starts.
   </p>
   <p>
@@ -31,7 +31,7 @@
   <p>Launch this {{ term }} to a GitHub Codespace?</p>
   <div class="btn-group" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="1rem">
     <button mat-flat-button (click)="no()" data-cy="archive-no" [disabled]="clicked" mat-dialog-close class="secondary-1">Cancel</button>
-    <button mat-flat-button (click)="yes()" data-cy="archive-yes" [disabled]="clicked" color="warn">
+    <button mat-flat-button (click)="yes()" data-cy="archive-yes" [disabled]="clicked" class="accent-1-dark-btn mat-elevation-z">
       Launch This {{ term | titlecase }}
     </button>
   </div>
