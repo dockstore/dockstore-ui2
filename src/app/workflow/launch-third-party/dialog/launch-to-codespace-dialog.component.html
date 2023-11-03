@@ -7,11 +7,11 @@
     repository, which specifies the files to use and software to run.
   </p>
   <p *ngIf="!hasDevcontainer">
-    <b>No dev container files were detected in this repository.</b> When GitHub can't find a dev container file, it creates a default
-    Codespace environment that may not automatically run the {{ term }} or the software required to support it.
+    <b>No dev container files were detected in this version.</b> When GitHub can't find a dev container file, it creates a default Codespace
+    environment that may not automatically run the {{ term }} or the software required to support it.
   </p>
   <p *ngIf="hasDevcontainer">
-    This repository contains dev container files, but Dockstore could not confirm that they will automatically run the {{ term }} when the
+    This version contains dev container files, but Dockstore could not confirm that they will automatically run the {{ term }} when the
     Codespace starts.
   </p>
   <p>
