@@ -386,6 +386,6 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
     if (devcontainerPath) {
       url += '&devcontainer_path=' + this.encode(devcontainerPath);
     }
-    window.open(url, '_blank');
+    window.open(url, '_blank', 'noopener,noreferrer');
   }
 }

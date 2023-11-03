@@ -17,6 +17,7 @@ import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { Dockstore } from '../../../shared/dockstore.model';
 import { DockstoreTool, Entry, Workflow } from '../../../shared/openapi';
 
 @Component({
@@ -29,6 +30,7 @@ export class LaunchToCodespaceDialogComponent {
   term: string;
   path: string;
   hasDevcontainer: boolean;
+  Dockstore = Dockstore;
 
   constructor(
     public dialogRef: MatDialogRef<LaunchToCodespaceDialogComponent>,

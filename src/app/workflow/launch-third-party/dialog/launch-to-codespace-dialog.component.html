@@ -3,8 +3,8 @@
   <app-alert></app-alert>
   <p>
     You are about to launch the {{ term }} <b>{{ path }}</b> in a GitHub Codespace. To configure the Codespace, GitHub reads a
-    <a href="https://containers.dev/">development container</a> ("dev container") file from the repository, which specifies the files to use
-    and software to run.
+    <a href="https://containers.dev" target="_blank" rel="noopener noreferrer">development container</a> ("dev container") file from the
+    repository, which specifies the files to use and software to run.
   </p>
   <p *ngIf="!hasDevcontainer">
     <b>No dev container files were detected in this repository.</b> When GitHub can't find a dev container file, it creates a default
@@ -20,7 +20,10 @@
   </p>
   <p>
     If you own the repository, you can create a dev container file that will automatically run this {{ term }}. See
-    <a href="https://docs.dockstore.org/en/stable/getting-started/getting-started-with-notebooks.html#launch-with-github-codespaces"
+    <a
+      href="{{ Dockstore.DOCUMENTATION_URL }}/getting-started/getting-started-with-notebooks.html#launch-with-github-codespaces"
+      target="_blank"
+      rel="noopener noreferrer"
       >our documentation</a
     >
     for more information.
