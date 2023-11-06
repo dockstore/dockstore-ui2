@@ -36,9 +36,7 @@
   <ng-template #search>
     <img [src]="'../assets/svg/sub-nav/' + getEntryTerm(entryType$ | async) + '.svg'" [alt]="getEntryTerm(entryType$ | async) + 'icon'" />
     <span class="mx-1">{{ entryPageTitle$ | async | titlecase }}</span>
-    <div *ngIf="(entryType$ | async) === EntryType.Service || (entryType$ | async) === EntryType.Notebook" class="bubble preview-bubble">
-      PREVIEW
-    </div>
+    <div *ngIf="(entryType$ | async) === EntryType.Service" class="bubble preview-bubble">PREVIEW</div>
   </ng-template>
 </app-header>
 <div class="container">
