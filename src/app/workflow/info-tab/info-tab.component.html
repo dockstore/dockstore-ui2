@@ -257,13 +257,12 @@
                   </button>
                   <button
                     *ngIf="workflow?.topic || topicEditing"
-                    [disabled]="!canWrite"
+                    [disabled]="!canWrite || workflow?.mode === WorkflowType.ModeEnum.DOCKSTOREYML"
                     type="button"
                     mat-raised-button
                     class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
                     (click)="toggleEditTopic()"
                     data-cy="topicSaveButton"
-                    [disabled]="workflow?.mode === WorkflowType.ModeEnum.DOCKSTOREYML"
                     [matTooltip]="
                       workflow?.mode === WorkflowType.ModeEnum.DOCKSTOREYML
                         ? 'Edit the manual topic for this ' +
