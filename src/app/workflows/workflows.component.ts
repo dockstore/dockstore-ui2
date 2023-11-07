@@ -22,7 +22,7 @@ import { Observable } from 'rxjs';
 import { EntryType } from '../shared/enum/entry-type';
 import { UrlResolverService } from '../shared/url-resolver.service';
 import { EntryTypeMetadataService } from '../entry/type-metadata/entry-type-metadata.service';
-import { EntryType as OpenApiEntryType } from 'app/shared/openapi';
+import { EntryType as OpenApiEntryType, EntryTypeMetadata } from 'app/shared/openapi';
 
 @Component({
   selector: 'app-workflows',
@@ -53,7 +53,7 @@ export class WorkflowsComponent {
     this.entryName = this.urlResolverService.getEntryPathFromUrl();
   }
 
-  getEntryTerm(type: EntryType): string {
-    return this.entryTypeMetadataService.get(type.toUpperCase() as OpenApiEntryType).term;
+  getEntryTypeMetadata(type: EntryType): EntryTypeMetadata {
+    return this.entryTypeMetadataService.get(type.toUpperCase() as OpenApiEntryType);
   }
 }
