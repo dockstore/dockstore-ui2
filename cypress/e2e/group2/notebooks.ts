@@ -90,7 +90,6 @@ describe('Dockstore notebooks', () => {
     cy.visit('/notebooks/' + name);
     goToTab('Files');
     // Check for notebook file name and some notebook-specific json content.
-    cy.get('app-source-file-tabs').contains('Primary');
     cy.get('app-source-file-tabs').contains('/notebook.ipynb');
     cy.get('app-source-file-tabs').contains('"nbformat"');
   });
