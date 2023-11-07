@@ -10,14 +10,14 @@
         >Click here to confirm that the Dockstore app is authorized</a
       >.
     </mat-card>
-    <mat-card *ngIf="showContent === 'empty'" class="alert alert-info mat-elevation-z" role="alert">
-      <mat-icon>warning</mat-icon> There are no GitHub App logs for this organization.
-    </mat-card>
     <!-- *ngIf doesn't work with the sorting implementation, using hidden for now -->
-    <div [hidden]="showContent !== 'table'">
+    <div [hidden]="showContent !== 'table' && showContent !== 'empty'">
+      <mat-card *ngIf="showContent === 'empty'" class="alert alert-info mat-elevation-z" role="alert">
+        <mat-icon>warning</mat-icon> No results.
+      </mat-card>
       <mat-form-field>
         <mat-label>Filter</mat-label>
-        <input #filter matInput (keyup)="applyFilter(filter.value)" placeholder="Ex. PUSH" />
+        <input #filter matInput placeholder="Ex. PUSH" />
       </mat-form-field>
       <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="w-100" matSort>
         <ng-container matColumnDef="eventDate">
@@ -90,7 +90,13 @@
         <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
       </table>
 
-      <mat-paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons></mat-paginator>
+      <mat-paginator
+        [pageSizeOptions]="[10, 20, 50]"
+        [length]="eventsLength$ | async"
+        [pageSize]="pageSize$ | async"
+        [pageIndex]="pageIndex$ | async"
+        showFirstLastButtons
+      ></mat-paginator>
     </div>
   </app-loading>
 </div>
