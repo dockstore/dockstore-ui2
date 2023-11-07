@@ -25,7 +25,6 @@
         class="white-space-no-wrap"
         >Explore {{ (entryTypeMetadata$ | async).termPlural | titlecase }}</a
       >
-      <!-- To Do: When there is a notebooks tab on the search page, re-route to there instead similar to workflows above -->
       <ng-template #service>
         <a [routerLink]="['/', entryPageTitle$ | async]">Explore {{ entryPageTitle$ | async | titlecase }}</a>
       </ng-template>
