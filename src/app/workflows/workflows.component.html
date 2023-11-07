@@ -21,9 +21,9 @@
       <a
         *ngIf="(entryType$ | async) === EntryType.BioWorkflow || (entryType$ | async) === EntryType.Notebook; else service"
         [routerLink]="['/search']"
-        [queryParams]="{ entryType: getEntryTypeMetadata(entryType$ | async).searchEntryType }"
+        [queryParams]="{ entryType: (entryTypeMetadata$ | async).searchEntryType }"
         class="white-space-no-wrap"
-        >Explore {{ getEntryTypeMetadata(entryType$ | async).termPlural | titlecase }}</a
+        >Explore {{ (entryTypeMetadata$ | async).termPlural | titlecase }}</a
       >
       <!-- To Do: When there is a notebooks tab on the search page, re-route to there instead similar to workflows above -->
       <ng-template #service>
@@ -35,8 +35,8 @@
   </div>
   <ng-template #search>
     <img
-      [src]="'../assets/svg/sub-nav/' + getEntryTypeMetadata(entryType$ | async).term + '.svg'"
-      [alt]="getEntryTypeMetadata(entryType$ | async).term + 'icon'"
+      [src]="'../assets/svg/sub-nav/' + (entryTypeMetadata$ | async).term + '.svg'"
+      [alt]="(entryTypeMetadata$ | async).term + ' icon'"
     />
     <span class="mx-1">{{ entryPageTitle$ | async | titlecase }}</span>
     <div *ngIf="(entryType$ | async) === EntryType.Service" class="bubble preview-bubble">PREVIEW</div>
