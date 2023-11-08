@@ -9,6 +9,7 @@ import { ListContainersService } from '../../containers/list/list.service';
 import { ContainerService } from '../../shared/container.service';
 import { DateService } from '../../shared/date.service';
 import { ContainersService, ContainertagsService } from '../../shared/openapi';
+import { EntryTypeMetadataService } from '../../entry/type-metadata/entry-type-metadata.service';
 import { sampleTag, sampleTool1 } from '../../test/mocked-objects';
 import {
   ContainersStubService,
@@ -17,6 +18,7 @@ import {
   DateStubService,
   ParamFilesStubService,
   VersionModalStubService,
+  EntryTypeMetadataStubService,
 } from '../../test/service-stubs';
 import { ParamfilesService } from '../paramfiles/paramfiles.service';
 import { VersionModalComponent } from './version-modal.component';
@@ -40,6 +42,7 @@ describe('VersionModalComponent', () => {
           { provide: ContainersService, useClass: ContainersStubService },
           { provide: ContainertagsService, useClass: ContainertagsStubService },
           { provide: DateService, useClass: DateStubService },
+          { provide: EntryTypeMetadataService, useClass: EntryTypeMetadataStubService },
         ],
       }).compileComponents();
     })
