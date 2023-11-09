@@ -88,7 +88,8 @@ export class MarkdownWrapperService {
   customCompile(data, baseUrl): string {
     const parseOptions = { markedOptions: { baseUrl: baseUrl } };
     const markdownData = this.removeTabsFromTableHeaders(data);
-    return this.markdownService.parse(markdownData, parseOptions);
+    const html = this.markdownService.parse(markdownData, parseOptions);
+    return this.makeGitHubImagesRaw(html);
   }
 
   customSanitize(html): string {
@@ -108,5 +109,19 @@ export class MarkdownWrapperService {
    */
   removeTabsFromTableHeaders(data: string): string {
     return data.replace(/(^ {0,3}\|.*)/gm, (match) => match.replace(/\t/g, '    '));
+  }
+
+  /**
+   * Add the query 'raw=true' to all img href urls that refer to github, causing github to redirect to the raw image.
+   */
+  makeGitHubImagesRaw(html: string): string {
+    return html.replace(/(<img.*? src=")(.*?)(".*?>)/gm, (all, before, href, after) => {
+      if (href.startsWith('https://github.com/')) {
+        const separator = href.includes('?') ? '&' : '?';
+        return `${before}${href}${separator}raw=true${after}`;
+      } else {
+        return all;
+      }
+    });
   }
 }
