@@ -10,9 +10,12 @@
         >Click here to confirm that the Dockstore app is authorized</a
       >.
     </mat-card>
+    <mat-card *ngIf="showContent === 'empty'" class="alert alert-info mat-elevation-z" role="alert">
+      <mat-icon>warning</mat-icon> There are no GitHub App logs for this organization.
+    </mat-card>
     <!-- *ngIf doesn't work with the sorting implementation, using hidden for now -->
-    <div [hidden]="showContent !== 'table' && showContent !== 'empty'">
-      <mat-card *ngIf="showContent === 'empty'" class="alert alert-info mat-elevation-z" role="alert">
+    <div [hidden]="showContent !== 'table' && showContent !== 'noResult'">
+      <mat-card *ngIf="showContent === 'noResult'" class="alert alert-info mat-elevation-z" role="alert">
         <mat-icon>warning</mat-icon> No results.
       </mat-card>
       <mat-form-field>

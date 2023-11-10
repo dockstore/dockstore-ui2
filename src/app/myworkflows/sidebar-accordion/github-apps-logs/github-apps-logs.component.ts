@@ -49,7 +49,7 @@ export class GithubAppsLogsComponent implements OnInit, AfterViewInit {
   public LambdaEvent = LambdaEvent;
   dataSource: MatTableDataSource<LambdaEvent> = new MatTableDataSource();
   expandedElement: LambdaEvent | null;
-  showContent: 'table' | 'error' | 'empty' | null;
+  showContent: 'table' | 'error' | 'empty' | 'noResult' | null;
   type: 'workflow' | 'tool' | 'lambdaEvent' = 'lambdaEvent';
   private eventsSubject$ = new BehaviorSubject<LambdaEvent[]>([]);
   public eventsLength$ = new BehaviorSubject<number>(0);
@@ -85,9 +85,6 @@ export class GithubAppsLogsComponent implements OnInit, AfterViewInit {
       : ['repository', 'entryName', 'deliveryId', 'reference', 'success', 'type'];
     this.displayedColumns = ['eventDate', 'githubUsername', ...this.columnsToDisplay];
     this.loading = true;
-    this.dataSource.sort = this.sort;
-    this.pageSize$ = this.paginatorQuery.eventPageSize$;
-    this.pageIndex$ = this.paginatorQuery.eventPageIndex$;
   }
 
   ngAfterViewInit() {
@@ -96,37 +93,43 @@ export class GithubAppsLogsComponent implements OnInit, AfterViewInit {
 
   loadAppsLogs() {
     setTimeout(() => {
+      this.dataSource.sort = this.sort;
+      this.pageSize$ = this.paginatorQuery.eventPageSize$;
+      this.pageIndex$ = this.paginatorQuery.eventPageIndex$;
+
       // Initial load
       this.loadEvent(this.matDialogData, this.paginator.pageIndex, this.paginator.pageSize, null, null, null);
+      this.paginatorService.setPaginator(this.type, this.paginator.pageSize, this.paginator.pageIndex);
 
       // Handle paginator changes
       merge(this.paginator.page)
-        .pipe(
-          distinctUntilChanged(),
-          tap(() => {
-            this.loadEvent(
-              this.matDialogData,
-              this.paginator.pageIndex * this.paginator.pageSize,
-              this.paginator.pageSize,
-              this.pageFilter,
-              this.sortDirection,
-              this.sortCol
-            );
-          })
-        )
+        .pipe(distinctUntilChanged())
         .subscribe(() => {
+          this.loadEvent(
+            this.matDialogData,
+            this.paginator.pageIndex * this.paginator.pageSize,
+            this.paginator.pageSize,
+            this.pageFilter,
+            this.sortDirection,
+            this.sortCol
+          );
           this.paginatorService.setPaginator(this.type, this.paginator.pageSize, this.paginator.pageIndex);
         });
 
       // Handle sort changes
-      this.sort.sortChange.pipe(
-        tap(() => {
-          this.paginator.pageIndex = 0;
-          if (this.sort.active === 'eventDate') {
-            this.sortCol = 'dbCreateDate';
-          } else {
-            this.sortCol = this.sort.active;
-          }
+      this.sort.sortChange
+        .pipe(
+          tap(() => {
+            this.paginator.pageIndex = 0;
+            if (this.sort.active === 'eventDate') {
+              this.sortCol = 'dbCreateDate';
+            } else {
+              this.sortCol = this.sort.active;
+            }
+          }),
+          takeUntil(this.ngUnsubscribe)
+        )
+        .subscribe(() => {
           this.loadEvent(
             this.matDialogData,
             this.paginator.pageIndex * this.paginator.pageSize,
@@ -135,9 +138,7 @@ export class GithubAppsLogsComponent implements OnInit, AfterViewInit {
             this.sort.direction,
             this.sortCol
           );
-        }),
-        takeUntil(this.ngUnsubscribe)
-      );
+        });
 
       // Handle input text field changes
       fromEvent(this.filter.nativeElement, 'keyup')
@@ -148,20 +149,22 @@ export class GithubAppsLogsComponent implements OnInit, AfterViewInit {
             this.sortDirection = this.sort.direction;
             this.pageFilter = this.filter.nativeElement.value;
             this.paginator.pageIndex = 0;
-            this.loadEvent(
-              this.matDialogData,
-              this.paginator.pageIndex * this.paginator.pageSize,
-              this.paginator.pageSize,
-              this.pageFilter,
-              this.sort.direction,
-              this.sortCol
-            );
           }),
           takeUntil(this.ngUnsubscribe)
         )
-        .subscribe();
+        .subscribe(() => {
+          this.loadEvent(
+            this.matDialogData,
+            this.paginator.pageIndex * this.paginator.pageSize,
+            this.paginator.pageSize,
+            this.pageFilter,
+            this.sort.direction,
+            this.sortCol
+          );
+        });
     });
   }
+
   loadEvent(
     matDialogData: { userId?: number; organization?: string },
     pageIndex: number,
@@ -170,21 +173,8 @@ export class GithubAppsLogsComponent implements OnInit, AfterViewInit {
     sortDirection: string,
     sortCol: string
   ) {
+    const filtered = filter !== null && filter !== undefined && filter.length > 0;
     let lambdaEvents: Observable<HttpResponse<LambdaEvent[]>>;
-    let direction: 'asc' | 'desc';
-    switch (this.sort.direction) {
-      case 'asc': {
-        direction = 'asc';
-        break;
-      }
-      case 'desc': {
-        direction = 'desc';
-        break;
-      }
-      default: {
-        direction = 'desc';
-      }
-    }
     if (matDialogData.userId) {
       lambdaEvents = this.lambdaEventsService.getUserLambdaEvents(
         this.matDialogData.userId,
@@ -192,17 +182,17 @@ export class GithubAppsLogsComponent implements OnInit, AfterViewInit {
         pageSize,
         filter,
         sortCol,
-        direction,
+        sortDirection,
         'response'
       );
     } else {
       lambdaEvents = this.lambdaEventsService.getLambdaEventsByOrganization(
         this.matDialogData.organization,
-        pageIndex.toString(),
+        pageIndex,
         pageSize,
         filter,
         sortCol,
-        direction,
+        sortDirection,
         'response'
       );
     }
@@ -210,7 +200,7 @@ export class GithubAppsLogsComponent implements OnInit, AfterViewInit {
       .pipe(
         finalize(() => {
           this.loading = false;
-          this.updateContentToShow(this.lambdaEvents);
+          this.updateContentToShow(this.lambdaEvents, filtered);
         })
       )
       .subscribe(
@@ -226,16 +216,22 @@ export class GithubAppsLogsComponent implements OnInit, AfterViewInit {
       );
   }
 
-  updateContentToShow(lambdaEvents: LambdaEvent[] | null) {
+  updateContentToShow(lambdaEvents: LambdaEvent[] | null, filtered: boolean) {
     this.dataSource.data = lambdaEvents ? lambdaEvents : [];
     if (!lambdaEvents) {
       this.showContent = 'error';
     } else {
-      if (lambdaEvents.length === 0) {
+      if (lambdaEvents.length === 0 && !filtered) {
         this.showContent = 'empty';
+      } else if (lambdaEvents.length === 0 && filtered) {
+        this.showContent = 'noResult';
       } else {
         this.showContent = 'table';
       }
     }
+  }
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }
