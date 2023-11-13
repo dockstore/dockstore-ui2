@@ -21,6 +21,8 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Dockstore } from '../dockstore.model';
 import { EntryType } from '../enum/entry-type';
+import { EntryType as OpenApiEntryType, EntryTypeMetadata } from 'app/shared/openapi';
+import { EntryTypeMetadataService } from 'app/entry/type-metadata/entry-type-metadata.service';
 import { SessionState, SessionStore } from './session.store';
 
 @Injectable({
@@ -29,6 +31,9 @@ import { SessionState, SessionStore } from './session.store';
 export class SessionQuery extends Query<SessionState> {
   isPublic$: Observable<boolean> = this.select((session) => session.isPublic);
   entryType$: Observable<EntryType> = this.select((session) => session.entryType);
+  entryTypeMetadata$: Observable<EntryTypeMetadata> = this.entryType$.pipe(
+    map((entryType: EntryType) => this.entryTypeMetadataService.get(entryType.toUpperCase() as OpenApiEntryType))
+  );
   entryTypeDisplayName$: Observable<string> = this.entryType$.pipe(
     map((entryType: EntryType) => {
       if (entryType === EntryType.AppTool) {
@@ -46,7 +51,7 @@ export class SessionQuery extends Query<SessionState> {
     map((entryType: EntryType) => (entryType ? this.generateGitHubAppInstallationUrl(this.route.url) : null))
   );
   loadingDialog$: Observable<boolean> = this.select((session) => session.loadingDialog);
-  constructor(protected store: SessionStore, private route: Router) {
+  constructor(protected store: SessionStore, private route: Router, private entryTypeMetadataService: EntryTypeMetadataService) {
     super(store);
   }
 

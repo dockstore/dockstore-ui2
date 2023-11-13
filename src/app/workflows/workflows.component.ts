@@ -20,9 +20,8 @@ import { SessionQuery } from 'app/shared/session/session.query';
 import { SessionService } from 'app/shared/session/session.service';
 import { Observable } from 'rxjs';
 import { EntryType } from '../shared/enum/entry-type';
+import { EntryTypeMetadata } from 'app/shared/openapi';
 import { UrlResolverService } from '../shared/url-resolver.service';
-import { EntryTypeMetadataService } from '../entry/type-metadata/entry-type-metadata.service';
-import { EntryType as OpenApiEntryType } from 'app/shared/openapi';
 
 @Component({
   selector: 'app-workflows',
@@ -32,6 +31,7 @@ export class WorkflowsComponent {
   public entryName: string;
   public entryPageTitle$: Observable<string>;
   public entryType$: Observable<EntryType>;
+  public entryTypeMetadata$: Observable<EntryTypeMetadata>;
   EntryType = EntryType;
   private searchPageUrls: string[] = ['/workflows', '/notebooks', '/apptools', '/services'];
   public searchPage: boolean = false;
@@ -41,19 +41,15 @@ export class WorkflowsComponent {
     private sessionService: SessionService,
     private route: ActivatedRoute,
     private router: Router,
-    private urlResolverService: UrlResolverService,
-    public entryTypeMetadataService: EntryTypeMetadataService
+    private urlResolverService: UrlResolverService
   ) {
     /* Force refresh of route when nagivating from /entryType to /entryType/entryName to update header */
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.sessionService.setEntryType(this.route.snapshot.data['entryType']);
     this.entryPageTitle$ = this.sessionQuery.entryPageTitle$;
     this.entryType$ = this.sessionQuery.entryType$;
+    this.entryTypeMetadata$ = this.sessionQuery.entryTypeMetadata$;
     this.searchPage = this.searchPageUrls.includes(this.urlResolverService.getEntryPathFromUrl());
     this.entryName = this.urlResolverService.getEntryPathFromUrl();
-  }
-
-  getEntryTerm(type: EntryType): string {
-    return this.entryTypeMetadataService.get(type.toUpperCase() as OpenApiEntryType).term;
   }
 }

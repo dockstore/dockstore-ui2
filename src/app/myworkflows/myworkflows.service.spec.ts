@@ -21,7 +21,14 @@ import { MyEntriesModule } from 'app/shared/modules/my-entries.module';
 import { WorkflowService } from 'app/shared/state/workflow.service';
 import { UsersService, WorkflowsService } from 'app/shared/openapi';
 import { UrlResolverService } from 'app/shared/url-resolver.service';
-import { UrlResolverStubService, UsersStubService, WorkflowsStubService, WorkflowStubService } from 'app/test/service-stubs';
+import { EntryTypeMetadataService } from 'app/entry/type-metadata/entry-type-metadata.service';
+import {
+  UrlResolverStubService,
+  UsersStubService,
+  WorkflowsStubService,
+  WorkflowStubService,
+  EntryTypeMetadataStubService,
+} from 'app/test/service-stubs';
 import { Workflow } from './../shared/openapi/model/workflow';
 import { OrgWorkflowObject } from './my-workflow/my-workflow.component';
 import { MyWorkflowsService } from './myworkflows.service';
@@ -152,6 +159,7 @@ describe('MyWorkflowsService', () => {
         { provide: WorkflowService, useClass: WorkflowStubService },
         { provide: UsersService, useClass: UsersStubService },
         { provide: WorkflowsService, useClass: WorkflowsStubService },
+        { provide: EntryTypeMetadataService, useClass: EntryTypeMetadataStubService },
       ],
     });
   });
