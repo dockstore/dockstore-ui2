@@ -115,7 +115,7 @@ export class MarkdownWrapperService {
    * Add the query 'raw=true' to all img tag src urls that refer to github, causing github to redirect to the raw image.
    */
   makeGitHubImagesRaw(html: string): string {
-    return html.replace(/(<img.*? src=")(.*?)(".*?>)/gm, (all, before, url, after) => {
+    return html.replace(/(<img[^>]*? src=")([^"]*?)("[^>]*?>)/gm, (all, before, url, after) => {
       if (url.startsWith('https://github.com/')) {
         const separator = url.includes('?') ? '&' : '?';
         return `${before}${url}${separator}raw=true${after}`;
