@@ -6,7 +6,7 @@ import { MatTabChangeEvent } from '@angular/material/tabs';
 import { FileTreeComponent } from 'app/file-tree/file-tree.component';
 import { bootstrap4largeModalSize } from 'app/shared/constants';
 import { FileService } from 'app/shared/file.service';
-import { SourceFile, ToolDescriptor, WorkflowVersion, BioWorkflow, Notebook, Service } from 'app/shared/openapi';
+import { EntryType, SourceFile, ToolDescriptor, WorkflowVersion, BioWorkflow, Notebook, Service } from 'app/shared/openapi';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { WorkflowQuery } from '../shared/state/workflow.query';
@@ -135,6 +135,7 @@ export class SourceFileTabsComponent implements OnChanges {
           versionName: this.version.name,
           descriptorType: this.descriptorType,
           versionPath: this.version.workflow_path,
+          entryType: this.entry.entryType,
         },
       })
       .afterClosed()
@@ -151,6 +152,6 @@ export class SourceFileTabsComponent implements OnChanges {
   }
 
   isPrimaryDescriptor(path: string): boolean {
-    return path === this.version.workflow_path;
+    return path === this.version.workflow_path && this.entry.entryType !== EntryType.NOTEBOOK;
   }
 }
