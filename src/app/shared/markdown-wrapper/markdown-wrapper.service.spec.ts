@@ -39,6 +39,10 @@ describe('MarkdownWrapperService', () => {
       expect(service.makeGitHubImagesRaw('<img src="https://github.com/some/repo/foo.png" alt="abc" title="123">')).toEqual(
         '<img src="https://github.com/some/repo/foo.png?raw=true" alt="abc" title="123">'
       );
+      // add "raw=true" to multiple imgs on same line
+      expect(
+        service.makeGitHubImagesRaw('<img src="https://github.com/foo.jpg"> some text <img src="https://github.com/bar.jpg">')
+      ).toEqual('<img src="https://github.com/foo.jpg?raw=true"> some text <img src="https://github.com/bar.jpg?raw=true">');
       // don't change anything else
       expect(service.makeGitHubImagesRaw('<img src="foo.html" width="120" height="120">')).toEqual(
         '<img src="foo.html" width="120" height="120">'
