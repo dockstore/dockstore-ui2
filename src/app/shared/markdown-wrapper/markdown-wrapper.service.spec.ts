@@ -31,4 +31,21 @@ describe('MarkdownWrapperService', () => {
     expect(service.removeTabsFromTableHeaders('this | is | not | a\t | table')).toEqual('this | is | not | a\t | table');
     expect(service.removeTabsFromTableHeaders('---\t-|----\t\t:|-\t---\t-::\t|\n')).toEqual('---\t-|----\t\t:|-\t---\t-::\t|\n');
   }));
+
+  it('should add "raw=true" to img.src attributes generated from inline markdown images and change nothing else', inject(
+    [MarkdownWrapperService],
+    (service: MarkdownWrapperService) => {
+      // add "raw=true" to an img.src that references github
+      expect(service.makeGitHubImagesRaw('<img src="https://github.com/some/repo/foo.png" alt="abc" title="123">')).toEqual(
+        '<img src="https://github.com/some/repo/foo.png?raw=true" alt="abc" title="123">'
+      );
+      // don't change anything else
+      expect(service.makeGitHubImagesRaw('<img src="foo.html" width="120" height="120">')).toEqual(
+        '<img src="foo.html" width="120" height="120">'
+      );
+      expect(service.makeGitHubImagesRaw('<a href="https://github.com/some/repo/foo.html">')).toEqual(
+        '<a href="https://github.com/some/repo/foo.html">'
+      );
+    }
+  ));
 });
