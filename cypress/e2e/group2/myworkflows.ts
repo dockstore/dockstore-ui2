@@ -101,6 +101,9 @@ describe('Dockstore my workflows', () => {
       ];
       cy.intercept('GET', '/api/lambdaEvents/**', {
         body: realResponse,
+        headers: {
+          'X-total-count': '2',
+        },
       }).as('refreshWorkflow');
       cy.contains('Apps Logs').click();
       // Check that app logs contain the correct columns
