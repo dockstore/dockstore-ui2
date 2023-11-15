@@ -77,7 +77,7 @@ describe('GitHub App Tools', () => {
 
       cy.contains('Install our GitHub App in');
       cy.get('.modal-footer').contains('Next').first().click();
-      cy.contains('Navigate to GitHub to install our GitHub app');
+      cy.contains('Click the button below to install the Dockstore GitHub app on your GitHub organizations or specific repositories.');
       cy.contains('Tool storage type').click();
       cy.contains('Close').click();
 
