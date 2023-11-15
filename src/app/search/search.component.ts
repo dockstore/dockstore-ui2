@@ -28,10 +28,11 @@ import {
   faSortNumericDown,
   faSortNumericUp,
 } from '@fortawesome/free-solid-svg-icons';
+import { Dockstore } from 'app/shared/dockstore.model';
 import { ExtendedGA4GHService } from 'app/shared/openapi';
 import { SearchResponse } from 'elasticsearch';
-import { forkJoin, Observable, Subject } from 'rxjs';
-import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { distinctUntilChanged, finalize, takeUntil } from 'rxjs/operators';
 import { AlertService } from '../shared/alert/state/alert.service';
 import { AdvancedSearchObject, initialAdvancedSearchObject } from '../shared/models/AdvancedSearchObject';
 import { CategorySort } from '../shared/models/CategorySort';
@@ -40,7 +41,6 @@ import { AdvancedSearchQuery } from './advancedsearch/state/advanced-search.quer
 import { QueryBuilderService } from './query-builder.service';
 import { SearchQuery } from './state/search.query';
 import { Hit, SearchService } from './state/search.service';
-import { Dockstore } from 'app/shared/dockstore.model';
 
 /**
  *
@@ -138,6 +138,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   public filterKeys$: Observable<Array<string>>;
   public suggestTerm$: Observable<string>;
   public values$: Observable<string>;
+  public isLoading = false;
 
   // For search within facets
   public facetAutocompleteTerms$: Observable<Array<string>>;
@@ -499,24 +500,28 @@ export class SearchComponent implements OnInit, OnDestroy {
    */
   updateResultsTable(value: string) {
     this.alertService.start('Performing search request');
-    this.extendedGA4GHService.toolsIndexSearch(value).subscribe(
-      (hits: any) => {
-        this.hits = hits.hits.hits;
-        const filteredHits: [Array<Hit>, Array<Hit>, Array<Hit>] = this.searchService.filterEntry(this.hits, this.query_size);
-        const searchText = this.searchQuery.getValue().searchText;
-        this.searchService.setHits(filteredHits[0], filteredHits[1], filteredHits[2]);
-        if (searchText.length > 0 && hits) {
-          this.searchTerm = true;
+    this.isLoading = true;
+    this.extendedGA4GHService
+      .toolsIndexSearch(value)
+      .pipe(finalize(() => (this.isLoading = false)))
+      .subscribe(
+        (hits: any) => {
+          this.hits = hits.hits.hits;
+          const filteredHits: [Array<Hit>, Array<Hit>, Array<Hit>] = this.searchService.filterEntry(this.hits, this.query_size);
+          const searchText = this.searchQuery.getValue().searchText;
+          this.searchService.setHits(filteredHits[0], filteredHits[1], filteredHits[2]);
+          if (searchText.length > 0 && hits) {
+            this.searchTerm = true;
+          }
+          if (this.searchTerm && this.hits.length === 0) {
+            this.searchService.suggestSearchTerm(searchText);
+          }
+          this.alertService.simpleSuccess();
+        },
+        (error: HttpErrorResponse) => {
+          this.alertService.detailedError(error);
         }
-        if (this.searchTerm && this.hits.length === 0) {
-          this.searchService.suggestSearchTerm(searchText);
-        }
-        this.alertService.simpleSuccess();
-      },
-      (error: HttpErrorResponse) => {
-        this.alertService.detailedError(error);
-      }
-    );
+      );
   }
 
   /**===============================================

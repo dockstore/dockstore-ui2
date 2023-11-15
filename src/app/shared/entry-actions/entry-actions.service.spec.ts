@@ -1,11 +1,18 @@
 import { inject, TestBed } from '@angular/core/testing';
-import { ContainersStubService, ContainerStubService, WorkflowsStubService, WorkflowStubService } from 'app/test/service-stubs';
+import { MatDialog } from '@angular/material/dialog';
+import {
+  ContainersStubService,
+  ContainerStubService,
+  WorkflowsStubService,
+  WorkflowStubService,
+  EntriesStubService,
+} from 'app/test/service-stubs';
 import { exampleEntry } from '../../test/mocked-objects';
 import { ContainerService } from '../container.service';
 import { EntryType } from '../enum/entry-type';
 import { CustomMaterialModule } from '../modules/material.module';
 import { WorkflowService } from '../state/workflow.service';
-import { ContainersService, DockstoreTool, Entry, Tag, Workflow, WorkflowsService } from '../openapi';
+import { ContainersService, DockstoreTool, Entry, Tag, Workflow, WorkflowsService, EntriesService } from '../openapi';
 import { EntryActionsService } from './entry-actions.service';
 
 describe('Service: EntryActionsService', () => {
@@ -28,6 +35,10 @@ describe('Service: EntryActionsService', () => {
         {
           provide: ContainerService,
           useClass: ContainerStubService,
+        },
+        {
+          provide: EntriesService,
+          useClass: EntriesStubService,
         },
       ],
       imports: [CustomMaterialModule],

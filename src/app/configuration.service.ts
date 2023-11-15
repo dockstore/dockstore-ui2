@@ -47,6 +47,7 @@ export class ConfigurationService {
     Dockstore.ELWAZI_IMPORT_URL = config.elwaziImportUrl;
     Dockstore.COLAB_IMPORT_URL = config.colabImportUrl;
     Dockstore.MYBINDER_IMPORT_URL = config.mybinderImportUrl;
+    Dockstore.GITHUB_CODESPACES_IMPORT_URL = config.gitHubCodespacesImportUrl;
 
     Dockstore.GITHUB_CLIENT_ID = config.githubClientId;
     Dockstore.GITHUB_AUTH_URL = config.gitHubAuthUrl;

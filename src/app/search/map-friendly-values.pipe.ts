@@ -120,6 +120,13 @@ export class MapFriendlyValuesPipe implements PipeTransform {
         ['INSTALL', 'Install'],
       ]),
     ],
+    [
+      'archived',
+      new Map([
+        ['1', 'archived'],
+        ['0', 'not archived'],
+      ]),
+    ],
   ]);
 
   /**

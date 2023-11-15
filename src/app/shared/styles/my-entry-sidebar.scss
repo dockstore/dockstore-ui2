@@ -67,6 +67,11 @@ mat-expansion-panel {
 }
 
 ////////// MAT TABS ///////////
+:host ::ng-deep .mat-tab-label {
+  min-width: 0 !important;
+  padding: 0.5em !important;
+}
+
 :host ::ng-deep .mat-tab-label-content {
   font-size: 12px;
 }

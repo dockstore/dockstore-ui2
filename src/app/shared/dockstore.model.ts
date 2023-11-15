@@ -45,6 +45,7 @@ export class Dockstore {
   static ELWAZI_IMPORT_URL = 'https://elwazi.terra.bio/#import-tool/dockstore';
   static COLAB_IMPORT_URL = 'https://colab.research.google.com/github/';
   static MYBINDER_IMPORT_URL = 'https://mybinder.org/v2/gh/';
+  static GITHUB_CODESPACES_IMPORT_URL = 'https://github.com/codespaces/new';
 
   static GITHUB_CLIENT_ID = 'will be filled in by configuration.service';
   static GITHUB_AUTH_URL = 'https://github.com/login/oauth/authorize';

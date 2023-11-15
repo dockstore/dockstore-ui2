@@ -21,7 +21,14 @@ import { MyEntriesModule } from 'app/shared/modules/my-entries.module';
 import { WorkflowService } from 'app/shared/state/workflow.service';
 import { UsersService, WorkflowsService } from 'app/shared/openapi';
 import { UrlResolverService } from 'app/shared/url-resolver.service';
-import { UrlResolverStubService, UsersStubService, WorkflowsStubService, WorkflowStubService } from 'app/test/service-stubs';
+import { EntryTypeMetadataService } from 'app/entry/type-metadata/entry-type-metadata.service';
+import {
+  UrlResolverStubService,
+  UsersStubService,
+  WorkflowsStubService,
+  WorkflowStubService,
+  EntryTypeMetadataStubService,
+} from 'app/test/service-stubs';
 import { Workflow } from './../shared/openapi/model/workflow';
 import { OrgWorkflowObject } from './my-workflow/my-workflow.component';
 import { MyWorkflowsService } from './myworkflows.service';
@@ -121,6 +128,7 @@ describe('MyWorkflowsService', () => {
   const expectedResult1: OrgWorkflowObject<Workflow> = {
     unpublished: [tool5, tool6],
     published: [],
+    archived: [],
     expanded: false,
     sourceControl: 'github.com',
     organization: 'aa',
@@ -128,6 +136,7 @@ describe('MyWorkflowsService', () => {
   const expectedResult2: OrgWorkflowObject<Workflow> = {
     unpublished: [tool3, tool4],
     published: [],
+    archived: [],
     expanded: false,
     sourceControl: 'github.com',
     organization: 'bb',
@@ -135,6 +144,7 @@ describe('MyWorkflowsService', () => {
   const expectedResult3: OrgWorkflowObject<Workflow> = {
     unpublished: [tool1, tool2],
     published: [],
+    archived: [],
     expanded: true,
     sourceControl: 'github.com',
     organization: 'cc',
@@ -149,6 +159,7 @@ describe('MyWorkflowsService', () => {
         { provide: WorkflowService, useClass: WorkflowStubService },
         { provide: UsersService, useClass: UsersStubService },
         { provide: WorkflowsService, useClass: WorkflowsStubService },
+        { provide: EntryTypeMetadataService, useClass: EntryTypeMetadataStubService },
       ],
     });
   });

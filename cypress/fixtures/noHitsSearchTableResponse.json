@@ -1,0 +1,174 @@
+{
+  "took": 2,
+  "timed_out": false,
+  "_shards": {
+    "total": 3,
+    "successful": 3,
+    "skipped": 0,
+    "failed": 0
+  },
+  "hits": {
+    "total": {
+      "value": 2723,
+      "relation": "eq"
+    },
+    "max_score": null,
+    "hits": []
+  },
+  "aggregations": {
+    "output_file_formats.value.keyword": {
+      "doc_count": 0,
+      "output_file_formats.value.keyword": {
+        "doc_count_error_upper_bound": 0,
+        "sum_other_doc_count": 0,
+        "buckets": []
+      }
+    },
+    "registry": {
+      "doc_count": 0,
+      "registry": {
+        "doc_count_error_upper_bound": 0,
+        "sum_other_doc_count": 0,
+        "buckets": []
+      }
+    },
+    "all_authors.name.keyword": {
+      "doc_count": 0,
+      "all_authors.name.keyword": {
+        "doc_count_error_upper_bound": 0,
+        "sum_other_doc_count": 0,
+        "buckets": []
+      }
+    },
+    "verified": {
+      "doc_count": 0,
+      "verified": {
+        "doc_count_error_upper_bound": 0,
+        "sum_other_doc_count": 0,
+        "buckets": []
+      }
+    },
+    "source_control_provider.keyword": {
+      "doc_count": 0,
+      "source_control_provider.keyword": {
+        "doc_count_error_upper_bound": 0,
+        "sum_other_doc_count": 0,
+        "buckets": []
+      }
+    },
+    "workflowVersions.verifiedSources.keyword": {
+      "doc_count": 0,
+      "workflowVersions.verifiedSources.keyword": {
+        "doc_count_error_upper_bound": 0,
+        "sum_other_doc_count": 0,
+        "buckets": []
+      }
+    },
+    "private_access": {
+      "doc_count": 0,
+      "private_access": {
+        "doc_count_error_upper_bound": 0,
+        "sum_other_doc_count": 0,
+        "buckets": []
+      }
+    },
+    "categories.name.keyword": {
+      "doc_count": 0,
+      "categories.name.keyword": {
+        "doc_count_error_upper_bound": 0,
+        "sum_other_doc_count": 0,
+        "buckets": []
+      }
+    },
+    "descriptorType": {
+      "meta": {},
+      "doc_count": 38,
+      "descriptorType": {
+        "doc_count_error_upper_bound": 0,
+        "sum_other_doc_count": 0,
+        "buckets": [
+          {
+            "key": "WDL",
+            "doc_count": 30
+          },
+          {
+            "key": "CWL",
+            "doc_count": 8
+          }
+        ]
+      }
+    },
+    "labels.value.keyword": {
+      "doc_count": 0,
+      "labels.value.keyword": {
+        "doc_count_error_upper_bound": 0,
+        "sum_other_doc_count": 0,
+        "buckets": []
+      }
+    },
+    "openData": {
+      "doc_count": 0,
+      "openData": {
+        "doc_count_error_upper_bound": 0,
+        "sum_other_doc_count": 0,
+        "buckets": []
+      }
+    },
+    "verified_platforms.keyword": {
+      "doc_count": 0,
+      "verified_platforms.keyword": {
+        "doc_count_error_upper_bound": 0,
+        "sum_other_doc_count": 0,
+        "buckets": []
+      }
+    },
+    "organization": {
+      "doc_count": 0,
+      "organization": {
+        "doc_count_error_upper_bound": 0,
+        "sum_other_doc_count": 0,
+        "buckets": []
+      }
+    },
+    "has_checker": {
+      "doc_count": 0,
+      "has_checker": {
+        "doc_count_error_upper_bound": 0,
+        "sum_other_doc_count": 0,
+        "buckets": []
+      }
+    },
+    "namespace": {
+      "doc_count": 0,
+      "namespace": {
+        "doc_count_error_upper_bound": 0,
+        "sum_other_doc_count": 0,
+        "buckets": []
+      }
+    },
+    "engine_versions.keyword": {
+      "doc_count": 0,
+      "engine_versions.keyword": {
+        "doc_count_error_upper_bound": 0,
+        "sum_other_doc_count": 0,
+        "buckets": []
+      }
+    },
+    "descriptor_type_versions.keyword": {
+      "doc_count": 0,
+      "descriptor_type_versions.keyword": {
+        "doc_count_error_upper_bound": 0,
+        "sum_other_doc_count": 0,
+        "buckets": []
+      }
+    },
+    "input_file_formats.value.keyword": {
+      "doc_count": 0,
+      "input_file_formats.value.keyword": {
+        "doc_count_error_upper_bound": 0,
+        "sum_other_doc_count": 0,
+        "buckets": []
+      }
+    }
+  }
+}
