@@ -36,7 +36,6 @@ export class RegisterWorkflowModalService {
   workflows: Array<any>;
   isModalShown$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public descriptorLanguages$: Observable<Array<DescriptorTypeEnum>>;
-  public filteredDescriptorLanguages$: Observable<Array<DescriptorTypeEnum>>;
   workflow: BehaviorSubject<Workflow> = new BehaviorSubject<Workflow>(this.sampleWorkflow);
   constructor(
     private workflowsService: WorkflowsService,

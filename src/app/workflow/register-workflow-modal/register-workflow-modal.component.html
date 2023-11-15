@@ -51,28 +51,7 @@
     <mat-step>
       <ng-template matStepLabel>Create a workflow</ng-template>
       <div *ngIf="selectedOption?.value === 0">
-        <p>
-          Navigate to GitHub to install our GitHub app in an organization or your personal account. See our
-          <a
-            href="{{ Dockstore.DOCUMENTATION_URL }}/getting-started/github-apps/github-apps.html"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            documentation <mat-icon>open_in_new</mat-icon>
-          </a>
-          for how to use GitHub Apps to automatically sync your workflows with GitHub. A .dockstore.yml file is required.
-        </p>
-        <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="2rem" class="mb-2">
-          <a
-            mat-raised-button
-            type="button"
-            class="accent-1-dark-btn mat-elevation-z no-underline"
-            [href]="gitHubAppInstallationLink$ | async"
-            [disabled]="isUsernameChangeRequired$ | async"
-            matTooltip="Manage Dockstore installations on GitHub"
-            ><mat-icon>add</mat-icon> Manage Dockstore installations on GitHub</a
-          >
-        </div>
+        <app-register-github-app entryType="workflow"></app-register-github-app>
         <div class="modal-footer">
           <button mat-flat-button class="secondary-1" matStepperPrevious>Back</button>
           <button
