@@ -7,13 +7,11 @@ import { UserQuery } from '../user/user.query';
   selector: 'app-register-github-app',
   templateUrl: './register-github-app.component.html',
 })
-export class RegisterGithubAppComponent implements OnInit {
+export class RegisterGithubAppComponent {
   public Dockstore = Dockstore;
   public gitHubAppInstallationLink$ = this.sessionQuery.gitHubAppInstallationLink$;
   public isUsernameChangeRequired$ = this.userQuery.isUsernameChangeRequired$;
   @Input() public entryType: string;
 
   constructor(private sessionQuery: SessionQuery, private userQuery: UserQuery) {}
-
-  ngOnInit(): void {}
 }
