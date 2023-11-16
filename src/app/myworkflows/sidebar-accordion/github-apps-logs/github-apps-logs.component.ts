@@ -10,7 +10,7 @@ import { AlertService } from 'app/shared/alert/state/alert.service';
 import { LambdaEvent, LambdaEventsService } from 'app/shared/openapi';
 import { debounceTime, distinctUntilChanged, finalize, takeUntil, tap } from 'rxjs/operators';
 import { MapFriendlyValuesPipe } from '../../../search/map-friendly-values.pipe';
-import { BehaviorSubject, fromEvent, merge, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, fromEvent, merge, Observable } from 'rxjs';
 import { formInputDebounceTime } from '../../../shared/constants';
 import { HttpResponse } from '@angular/common/http';
 import { PaginatorService } from '../../../shared/state/paginator.service';
