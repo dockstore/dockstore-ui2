@@ -99,7 +99,7 @@ export class GithubAppsLogsComponent extends Base implements OnInit, AfterViewIn
       this.pageIndex$ = this.paginatorQuery.eventPageIndex$;
 
       // Initial load
-      this.loadEvents(this.paginator.pageIndex, this.paginator.pageSize, null, null, null); //this.paginater.pageIndex is defaulted to zero initially
+      this.loadEvents(this.paginator.pageIndex * this.paginator.pageSize, this.paginator.pageSize, null, null, null);
       this.paginatorService.setPaginator(this.type, this.paginator.pageSize, this.paginator.pageIndex);
 
       // Handle paginator changes
@@ -155,6 +155,7 @@ export class GithubAppsLogsComponent extends Base implements OnInit, AfterViewIn
     const filtered = filter?.length > 0;
     let lambdaEvents: Observable<HttpResponse<LambdaEvent[]>>;
     this.loading = true;
+    this.dataSource.data = [];
     if (this.matDialogData.userId) {
       lambdaEvents = this.lambdaEventsService.getUserLambdaEvents(
         this.matDialogData.userId,
