@@ -15,6 +15,7 @@ import { formInputDebounceTime } from '../../../shared/constants';
 import { HttpResponse } from '@angular/common/http';
 import { PaginatorService } from '../../../shared/state/paginator.service';
 import { PaginatorQuery } from '../../../shared/state/paginator.query';
+import { Base } from '../../../shared/base';
 
 /**
  * Based on https://material.angular.io/components/table/examples example with expandable rows
@@ -36,8 +37,7 @@ import { PaginatorQuery } from '../../../shared/state/paginator.query';
     ]),
   ],
 })
-export class GithubAppsLogsComponent implements OnInit, AfterViewInit {
-  private ngUnsubscribe: Subject<{}> = new Subject();
+export class GithubAppsLogsComponent extends Base implements OnInit, AfterViewInit {
   datePipe: DatePipe;
   columnsToDisplay: string[];
   displayedColumns: string[];
@@ -70,6 +70,7 @@ export class GithubAppsLogsComponent implements OnInit, AfterViewInit {
     private mapPipe: MapFriendlyValuesPipe,
     private paginatorQuery: PaginatorQuery
   ) {
+    super();
     this.datePipe = new DatePipe('en');
     const defaultPredicate = this.dataSource.filterPredicate;
     this.dataSource.filterPredicate = (data, filter) => {
@@ -98,16 +99,15 @@ export class GithubAppsLogsComponent implements OnInit, AfterViewInit {
       this.pageIndex$ = this.paginatorQuery.eventPageIndex$;
 
       // Initial load
-      this.loadEvent(this.matDialogData, this.paginator.pageIndex, this.paginator.pageSize, null, null, null);
+      this.loadEvents(this.paginator.pageIndex, this.paginator.pageSize, null, null, null); //this.paginater.pageIndex is defaulted to zero initially
       this.paginatorService.setPaginator(this.type, this.paginator.pageSize, this.paginator.pageIndex);
 
       // Handle paginator changes
       merge(this.paginator.page)
         .pipe(distinctUntilChanged())
         .subscribe(() => {
-          this.loadEvent(
-            this.matDialogData,
-            this.paginator.pageIndex * this.paginator.pageSize,
+          this.loadEvents(
+            this.paginator.pageIndex * this.paginator.pageSize, // set offset to the new pageIndex * the page size
             this.paginator.pageSize,
             this.pageFilter,
             this.sortDirection,
@@ -120,7 +120,7 @@ export class GithubAppsLogsComponent implements OnInit, AfterViewInit {
       this.sort.sortChange
         .pipe(
           tap(() => {
-            this.paginator.pageIndex = 0;
+            this.paginator.pageIndex = 0; // go back to first page after changing sort
             if (this.sort.active === 'eventDate') {
               this.sortCol = 'dbCreateDate';
             } else {
@@ -130,14 +130,7 @@ export class GithubAppsLogsComponent implements OnInit, AfterViewInit {
           takeUntil(this.ngUnsubscribe)
         )
         .subscribe(() => {
-          this.loadEvent(
-            this.matDialogData,
-            this.paginator.pageIndex * this.paginator.pageSize,
-            this.paginator.pageSize,
-            this.pageFilter,
-            this.sort.direction,
-            this.sortCol
-          );
+          this.loadEvents(this.paginator.pageIndex, this.paginator.pageSize, this.pageFilter, this.sort.direction, this.sortCol);
         });
 
       // Handle input text field changes
@@ -148,34 +141,21 @@ export class GithubAppsLogsComponent implements OnInit, AfterViewInit {
           tap(() => {
             this.sortDirection = this.sort.direction;
             this.pageFilter = this.filter.nativeElement.value;
-            this.paginator.pageIndex = 0;
+            this.paginator.pageIndex = 0; //go back to first page after adding filter
           }),
           takeUntil(this.ngUnsubscribe)
         )
         .subscribe(() => {
-          this.loadEvent(
-            this.matDialogData,
-            this.paginator.pageIndex * this.paginator.pageSize,
-            this.paginator.pageSize,
-            this.pageFilter,
-            this.sort.direction,
-            this.sortCol
-          );
+          this.loadEvents(this.paginator.pageIndex, this.paginator.pageSize, this.pageFilter, this.sort.direction, this.sortCol);
         });
     });
   }
 
-  loadEvent(
-    matDialogData: { userId?: number; organization?: string },
-    pageIndex: number,
-    pageSize: number,
-    filter: string,
-    sortDirection: string,
-    sortCol: string
-  ) {
-    const filtered = filter !== null && filter !== undefined && filter.length > 0;
+  loadEvents(pageIndex: number, pageSize: number, filter: string, sortDirection: string, sortCol: string) {
+    const filtered = filter?.length > 0;
     let lambdaEvents: Observable<HttpResponse<LambdaEvent[]>>;
-    if (matDialogData.userId) {
+    this.loading = true;
+    if (this.matDialogData.userId) {
       lambdaEvents = this.lambdaEventsService.getUserLambdaEvents(
         this.matDialogData.userId,
         pageIndex,
@@ -227,9 +207,5 @@ export class GithubAppsLogsComponent implements OnInit, AfterViewInit {
     } else {
       this.showContent = 'table';
     }
-  }
-  ngOnDestroy() {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
   }
 }
