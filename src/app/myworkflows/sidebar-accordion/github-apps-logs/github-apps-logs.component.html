@@ -20,7 +20,7 @@
       </mat-card>
       <mat-form-field>
         <mat-label>Filter</mat-label>
-        <input #filter matInput placeholder="Ex. PUSH" />
+        <input #filter matInput placeholder="Ex. PUSH" data-cy="apps-logs-filter" />
       </mat-form-field>
       <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="w-100" matSort>
         <ng-container matColumnDef="eventDate">
