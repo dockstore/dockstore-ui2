@@ -29,20 +29,21 @@
       <p>Tools are a combination of Docker images describing the tool environment and descriptor files describing how the tool is run.</p>
       <div class="modal-body">
         <mat-radio-group class="radio-group" [(ngModel)]="selectedOption">
-          <mat-radio-button
-            class="radio-button"
-            *ngFor="let option of options"
-            [value]="option"
-            [id]="OptionChoice[option.value] + '-register-workflow-option'"
-            data-cy="storage-type-choice"
-          >
-            <span class="text-wrap">
-              {{ option.label }}
-              <div *ngIf="selectedOption.value === option.value" class="extended-label mat-small">
-                {{ selectedOption.extendedLabel }}
-              </div>
-            </span>
-          </mat-radio-button>
+          <div *ngFor="let option of options">
+            <mat-radio-button
+              class="radio-button"
+              [value]="option"
+              [id]="OptionChoice[option.value] + '-register-workflow-option'"
+              data-cy="storage-type-choice"
+            >
+              <span class="text-wrap">
+                {{ option.label }}
+                <div *ngIf="selectedOption.value === option.value" class="extended-label mat-small">
+                  {{ selectedOption.extendedLabel }}
+                </div>
+              </span>
+            </mat-radio-button>
+          </div>
         </mat-radio-group>
       </div>
       <div class="modal-footer">
