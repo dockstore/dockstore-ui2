@@ -1,29 +1,31 @@
 <div>
-  <p>
-    Install the Dockstore GitHub app on your repositories. This gives GitHub permission to notify Dockstore when pushes are made to GitHub.
-    For more details, see our
-    <a href="{{ Dockstore.DOCUMENTATION_URL }}/getting-started/github-apps/github-apps.html" target="_blank" rel="noopener noreferrer">
-      documentation <mat-icon>open_in_new</mat-icon> </a
-    >.
-  </p>
-  <p>Perform the following steps in order:</p>
   <ol>
-    <li>Click the button below to install the Dockstore GitHub app on your GitHub organizations or specific repositories.</li>
     <li>
-      Push a valid .dockstore.yml to the root of a GitHub repo that has the Dockstore GitHub app installed. The .dockstore.yml tells
-      Dockstore where the {{ entryType }}'s files are located.
+      Click the "Manage..." button below to install Dockstore's App on your GitHub repositories that contain {{ entryType }}s. The App
+      notifies Dockstore whenever the repositories change.
     </li>
     <li>
-      It takes about 2 minutes after a push to GitHub for Dockstore to get notified and process the update. After those 2 minutes, refresh
-      your dashboard, and you should see the {{ entryType }}.
+      Describe your {{ entryType }}s by adding a
+      <a href="{{ Dockstore.DOCUMENTATION_URL }}/assets/templates/template.html" target="_blank" rel="noopener noreferrer"
+        >.dockstore.yml</a
+      >
+      to the root directory of the repositories where you installed the App.
     </li>
+    <li>Push your changes and wait two minutes for Dockstore to read your {{ entryType }}s.</li>
     <li>
-      If you don't see the {{ entryType }}, navigate to the {{ entryType }}s section of My Dashboard, and click the Apps Logs link for the
-      GitHub organization for more details. It displays the notifications received from GitHub and will indicate if there were any errors
-      processing the GitHub notifications.
+      Refresh your Dockstore dashboard to see your {{ entryType }}s. If they don't appear, click the dashboard's "{{
+        entryType | titlecase
+      }}s" tile and click on the organization's "Apps Logs" button to see what went wrong.
     </li>
   </ol>
 
+  <p class="pb-1">
+    For more details, see our
+    <a href="{{ Dockstore.DOCUMENTATION_URL }}/getting-started/github-apps/github-apps.html" target="_blank" rel="noopener noreferrer">
+      documentation
+      <mat-icon>open_in_new</mat-icon> </a
+    >.
+  </p>
   <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="2rem" class="mb-2">
     <a
       mat-raised-button
