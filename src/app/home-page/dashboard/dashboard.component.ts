@@ -6,7 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { RegisterToolComponent } from 'app/container/register-tool/register-tool.component';
 import { AlertService } from 'app/shared/alert/state/alert.service';
 import { Dockstore } from 'app/shared/dockstore.model';
-import { bootstrap4largeModalSize, bootstrap4mediumModalSize } from '../../shared/constants';
+import { bootstrap4largeModalSize } from '../../shared/constants';
 import { EntryType } from '../../shared/openapi';
 
 @Component({

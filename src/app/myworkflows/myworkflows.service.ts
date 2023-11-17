@@ -19,7 +19,7 @@ import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { transaction } from '@datorama/akita';
 import { AlertService } from 'app/shared/alert/state/alert.service';
-import { includesAuthors, includesValidation, bootstrap4mediumModalSize, bootstrap4largeModalSize } from 'app/shared/constants';
+import { includesAuthors, includesValidation, bootstrap4largeModalSize } from 'app/shared/constants';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { MyEntriesService } from 'app/shared/myentries.service';
 import { SessionQuery } from 'app/shared/session/session.query';
