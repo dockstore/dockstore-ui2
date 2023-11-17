@@ -23,6 +23,7 @@ import {
   setTokenUserViewPortCurator,
   snapshot,
 } from '../../support/commands';
+import { LambdaEvent } from '../../../src/app/shared/openapi';
 
 const cwlDescriptorType = 'CWL';
 const wdlDescriptorType = 'WDL';
@@ -118,7 +119,7 @@ describe('Dockstore my workflows', () => {
       cy.contains('1 – 2 of 2');
 
       //Filtering
-      const filteredResponse = [
+      const filteredResponse: LambdaEvent[] = [
         {
           deliveryId: '1',
           entryName: 'entry1',
