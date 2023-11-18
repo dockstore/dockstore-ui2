@@ -6,6 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { RegisterToolComponent } from 'app/container/register-tool/register-tool.component';
 import { AlertService } from 'app/shared/alert/state/alert.service';
 import { Dockstore } from 'app/shared/dockstore.model';
+import { bootstrap4largeModalSize } from '../../shared/constants';
 import { EntryType } from '../../shared/openapi';
 
 @Component({
@@ -23,7 +24,7 @@ export class DashboardComponent extends Base implements OnInit {
   ngOnInit() {
     this.registerToolService.isModalShown.pipe(takeUntil(this.ngUnsubscribe)).subscribe((isModalShown: boolean) => {
       if (isModalShown) {
-        const dialogRef = this.dialog.open(RegisterToolComponent, { width: '500px' });
+        const dialogRef = this.dialog.open(RegisterToolComponent, { width: bootstrap4largeModalSize });
         dialogRef
           .afterClosed()
           .pipe(takeUntil(this.ngUnsubscribe))

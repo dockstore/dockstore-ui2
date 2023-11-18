@@ -19,7 +19,7 @@ import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { transaction } from '@datorama/akita';
 import { AlertService } from 'app/shared/alert/state/alert.service';
-import { includesAuthors, includesValidation, bootstrap4mediumModalSize } from 'app/shared/constants';
+import { includesAuthors, includesValidation, bootstrap4largeModalSize } from 'app/shared/constants';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { MyEntriesService } from 'app/shared/myentries.service';
 import { SessionQuery } from 'app/shared/session/session.query';
@@ -234,7 +234,7 @@ export class MyWorkflowsService extends MyEntriesService<Workflow, OrgWorkflowOb
   registerEntry(entryType: EntryType | null) {
     if (entryType === EntryType.BioWorkflow) {
       // Open modal with various workflow registration options
-      const dialogRef = this.matDialog.open(RegisterWorkflowModalComponent, { width: bootstrap4mediumModalSize });
+      const dialogRef = this.matDialog.open(RegisterWorkflowModalComponent, { width: bootstrap4largeModalSize });
       dialogRef.afterClosed().subscribe((reloadEntries) => {
         if (reloadEntries) {
           const user = this.userQuery.getValue().user;
@@ -257,7 +257,7 @@ export class MyWorkflowsService extends MyEntriesService<Workflow, OrgWorkflowOb
    * @param entryType
    */
   openRegisterGithubAppModal(entryType: EntryType) {
-    const dialogRef = this.matDialog.open(RegisterGithubAppModalComponent, { width: bootstrap4mediumModalSize, data: entryType });
+    const dialogRef = this.matDialog.open(RegisterGithubAppModalComponent, { width: bootstrap4largeModalSize, data: entryType });
     dialogRef.afterClosed().subscribe((reloadEntries) => {
       if (reloadEntries) {
         const user = this.userQuery.getValue().user;

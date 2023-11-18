@@ -13,6 +13,7 @@ import { RefreshWizardModule } from '../container/refresh-wizard.module';
 import { RefreshAlertModule } from '../shared/alert/alert.module';
 import { CategoryButtonModule } from '../categories/button/category-button.module';
 import { JsonLdModule } from '../shared/modules/json-ld.module';
+import { RegisterGithubAppModule } from '../shared/modules/register-github-app.module';
 import { RecentEventsModule } from './recent-events/recent-events.module';
 import { FeaturedContentComponent } from './widget/featured-content/featured-content.component';
 import { NewsAndUpdatesComponent } from './widget/featured-content/news-and-updates.component';
@@ -57,6 +58,7 @@ import { MastodonComponent } from '../shared/mastodon/mastodon.component';
     HeaderModule,
     MarkdownWrapperModule,
     PreviewWarningModule,
+    RegisterGithubAppModule,
   ],
   declarations: [
     HomeComponent,
