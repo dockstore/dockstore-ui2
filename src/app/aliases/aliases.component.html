@@ -16,13 +16,9 @@
       <mat-progress-bar mode="indeterminate"></mat-progress-bar>
       Redirecting to the collection <strong>{{ coll.displayName }}</strong>
     </div>
-    <div *ngIf="workflow$ | async as wf" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px">
+    <div *ngIf="entry$ | async as e" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px">
       <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-      Redirecting to the workflow <strong>{{ wf.full_workflow_path }}</strong>
-    </div>
-    <div *ngIf="tool$ | async as tool" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px">
-      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-      Redirecting to the tool <strong>{{ tool.tool_path }}</strong>
+      Redirecting to the workflow <strong>TODO</strong>
     </div>
     <mat-card class="alert alert-warning mat-elevation-z" role="alert" *ngIf="types.includes(type) && (aliasNotFound$ | async)">
       <mat-icon class="alert-warning-icon">warning</mat-icon>

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 import { Base } from '../shared/base';
-import { Collection, DockstoreTool, Organization, Workflow, WorkflowVersionPathInfo } from '../shared/openapi';
+import { Collection, Entry, Organization, WorkflowVersionPathInfo } from '../shared/openapi';
 import { ActivatedRoute, Router } from '../test';
 import { AliasesQuery } from './state/aliases.query';
 import { AliasesService } from './state/aliases.service';
@@ -16,15 +16,14 @@ export class AliasesComponent extends Base implements OnInit {
   loading$: Observable<boolean>;
   organization$: Observable<Organization | null>;
   collection$: Observable<Collection | null>;
-  workflow$: Observable<Workflow | null>;
+  entry$: Observable<Entry | null>;
   workflowVersionPathInfo$: Observable<WorkflowVersionPathInfo | null>;
-  tool$: Observable<DockstoreTool | null>;
   aliasNotFound$: Observable<boolean>;
   public type: string | null;
   public alias: string | null;
   public validType: boolean;
   // Types contains resource types that support aliases
-  public types = ['organizations', 'collections', 'workflows', 'tools', 'containers', 'workflow-versions'];
+  // public types = ['organizations', 'collections', 'workflows', 'tools', 'containers', 'workflow-versions'];
   constructor(
     private aliasesQuery: AliasesQuery,
     private aliasesService: AliasesService,
@@ -35,11 +34,11 @@ export class AliasesComponent extends Base implements OnInit {
   }
 
   ngOnInit() {
+    this.loading$ = this.aliasesQuery.loading$;
     this.type = this.route.snapshot.paramMap.get('type');
     this.alias = this.route.snapshot.paramMap.get('alias');
-    this.validType = this.type ? this.types.includes(this.type) : false;
-    this.loading$ = this.aliasesQuery.loading$;
-    if (this.type === 'organizations' && this.alias) {
+    // TODO check alias and type
+    if (this.type === 'organizations') {
       this.aliasesService.updateOrganizationFromAlias(this.alias);
       this.organization$ = this.aliasesQuery.organization$;
       this.organization$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((organization: Organization) => {
@@ -48,7 +47,8 @@ export class AliasesComponent extends Base implements OnInit {
         }
         this.aliasNotFound$ = this.organization$.pipe(map((tool) => !tool));
       });
-    } else if (this.type === 'collections' && this.alias) {
+    }
+    if (this.type === 'collections') {
       this.aliasesService.updateCollectionFromAlias(this.alias);
       this.collection$ = this.aliasesQuery.collection$;
       this.collection$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((collection: Collection) => {
@@ -57,7 +57,13 @@ export class AliasesComponent extends Base implements OnInit {
         }
         this.aliasNotFound$ = this.collection$.pipe(map((tool) => !tool));
       });
-    } else if (this.type === 'workflow-versions' && this.alias) {
+    }
+    if (
+      this.type === 'workflow-versions' ||
+      this.type === 'tool-versions' ||
+      this.type === 'service-versions' ||
+      this.type === 'notebook-versions'
+    ) {
       this.aliasesService.updateWorkflowVersionPathInfoFromAlias(this.alias);
       this.workflowVersionPathInfo$ = this.aliasesQuery.workflowVersionPathInfo$;
       this.workflowVersionPathInfo$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((workflowVersionPathInfo: WorkflowVersionPathInfo) => {
@@ -66,24 +72,21 @@ export class AliasesComponent extends Base implements OnInit {
         }
         this.aliasNotFound$ = this.workflowVersionPathInfo$.pipe(map((tool) => !tool));
       });
-    } else if (this.type === 'workflows' && this.alias) {
-      this.aliasesService.updateWorkflowFromAlias(this.alias);
-      this.workflow$ = this.aliasesQuery.workflow$;
-      this.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((workflow: Workflow) => {
-        if (workflow) {
-          this.router.navigate(['/workflows', workflow.full_workflow_path]);
-        }
-        this.aliasNotFound$ = this.workflow$.pipe(map((tool) => !tool));
-      });
-    } else if ((this.type === 'tools' || this.type === 'containers') && this.alias) {
-      this.aliasesService.updateToolFromAlias(this.alias);
-      this.tool$ = this.aliasesQuery.tool$;
-      this.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((tool: DockstoreTool) => {
-        if (tool) {
-          this.router.navigate(['/tools', tool.tool_path]);
-        }
-      });
-      this.aliasNotFound$ = this.tool$.pipe(map((tool) => !tool));
     }
+    if (this.type === 'workflows' || this.type === 'tools' || this.type === 'services' || this.type === 'notebooks') {
+      this.aliasesService.updateEntryFromAlias(this.alias);
+      this.entry$ = this.aliasesQuery.entry$;
+      this.entry$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((entry: Entry) => {
+        if (entry) {
+          // check if aliastype equals type
+          this.router.navigate(['/workflows', this.getPath(entry)]);
+        }
+        this.aliasNotFound$ = this.entry$.pipe(map((tool) => !tool));
+      });
+    }
+  }
+
+  getPath(entry: Entry): string {
+    // TODO fill
   }
 }
