@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TokenSource } from '../shared/enum/token-source.enum';
 import { Profile, TokenUser, User } from '../shared/openapi';
 import { UsersService } from '../shared/openapi/api/users.service';
@@ -19,7 +19,7 @@ import { AccountInfo } from '../loginComponents/accounts/external/accounts.compo
   templateUrl: './user-page.component.html',
   styleUrls: ['./user-page.component.scss'],
 })
-export class UserPageComponent extends Base implements OnInit, OnDestroy {
+export class UserPageComponent extends Base implements OnInit {
   public user: User;
   public TokenSource = TokenSource;
   public googleProfile: Profile;
