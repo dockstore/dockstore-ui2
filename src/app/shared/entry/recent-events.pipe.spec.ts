@@ -5,11 +5,20 @@ describe('Pipe: recentEvents', () => {
   const entryFields = ['tool', 'workflow', 'apptool', 'service', 'notebook'];
 
   function instantiate(): RecentEventsPipe {
-    return new RecentEventsPipe(undefined);
+    return new RecentEventsPipe({ transform: (entry) => entry.gitUrl });
   }
 
   it('Should instantiate', () => {
     expect(instantiate()).toBeTruthy();
+  });
+
+  it('Should calculate the correct "displayName"', () => {
+    const pipe = instantiate();
+    entryFields.forEach((field) => {
+      const value = `${field}-value`;
+      const event = { [field]: { gitUrl: value } };
+      expect(pipe.transform(event, 'displayName')).toBe(value);
+    });
   });
 
   it('Should calculate the correct "entryType"', () => {
