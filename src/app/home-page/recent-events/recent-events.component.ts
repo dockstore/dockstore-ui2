@@ -39,7 +39,6 @@ export class RecentEventsComponent extends Base implements OnInit {
   public displayLimit: number;
   private userPageDisplayLimit = 10;
   private dashboardDisplayLimit = 4;
-  private username: string;
   private supportedEventTypes: Event.TypeEnum[];
   private readonly supportedUserEventTypes = [
     Event.TypeEnum.ADDVERSIONTOENTRY,
@@ -93,7 +92,6 @@ export class RecentEventsComponent extends Base implements OnInit {
   }
 
   handleNewUser(username: string): void {
-    this.username = username;
     this.getUserInfo(username);
   }
 
