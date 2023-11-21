@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { TokenSource } from '../shared/enum/token-source.enum';
 import { Profile, TokenUser, User } from '../shared/openapi';
 import { UsersService } from '../shared/openapi/api/users.service';
 import { UserService } from '../shared/user/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AlertService } from '../shared/alert/state/alert.service';
@@ -19,7 +20,7 @@ import { AccountInfo } from '../loginComponents/accounts/external/accounts.compo
   templateUrl: './user-page.component.html',
   styleUrls: ['./user-page.component.scss'],
 })
-export class UserPageComponent extends Base implements OnInit {
+export class UserPageComponent extends Base implements OnInit, OnDestroy {
   public user: User;
   public username: string;
   public TokenSource = TokenSource;
@@ -41,13 +42,17 @@ export class UserPageComponent extends Base implements OnInit {
     private userQuery: UserQuery
   ) {
     super();
-    this.username = this.activatedRoute.snapshot.paramMap.get('username');
-    this.userQuery.isAdminOrCurator$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((isAdminOrCurator) => {
-      this.loggedInUserIsAdminOrCurator = isAdminOrCurator;
-    });
+  }
+
+  handleNewUser(username: string): void {
+    if (username) {
+      this.username = username;
+      this.getUserInfo(username);
+    }
   }
 
   getUserInfo(username: string): void {
+    console.log('NEW USER ' + username);
     this.usersService.listUser(username, 'userProfiles').subscribe(
       (user) => {
         this.user = user;
@@ -96,6 +101,9 @@ export class UserPageComponent extends Base implements OnInit {
       });
   }
   ngOnInit(): void {
-    this.getUserInfo(this.username);
+    this.activatedRoute.params.pipe(takeUntil(this.ngUnsubscribe)).subscribe((params) => this.handleNewUser(params['username']));
+    this.userQuery.isAdminOrCurator$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((isAdminOrCurator) => {
+      this.loggedInUserIsAdminOrCurator = isAdminOrCurator;
+    });
   }
 }
