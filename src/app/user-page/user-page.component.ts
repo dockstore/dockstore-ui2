@@ -45,14 +45,11 @@ export class UserPageComponent extends Base implements OnInit, OnDestroy {
   }
 
   handleNewUser(username: string): void {
-    if (username) {
-      this.username = username;
-      this.getUserInfo(username);
-    }
+    this.username = username;
+    this.getUserInfo(username);
   }
 
   getUserInfo(username: string): void {
-    console.log('NEW USER ' + username);
     this.usersService.listUser(username, 'userProfiles').subscribe(
       (user) => {
         this.user = user;

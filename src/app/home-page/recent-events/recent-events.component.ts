@@ -90,13 +90,17 @@ export class RecentEventsComponent extends Base implements OnInit {
     public gravatarService: GravatarService
   ) {
     super();
-    this.username = this.activatedRoute.snapshot.paramMap.get('username');
   }
 
-  ngOnInit() {
-    if (!this.eventType && this.username) {
+  handleNewUser(username: string): void {
+    this.username = username;
+    this.getUserInfo(username);
+  }
+
+  getUserInfo(username: string): void {
+    if (!this.eventType && username) {
       // On user page, get user, then get user's events
-      this.usersService.listUser(this.username).subscribe(
+      this.usersService.listUser(username).subscribe(
         (currentUser: User) => {
           this.recentEventsService.get(currentUser);
         },
@@ -168,5 +172,9 @@ export class RecentEventsComponent extends Base implements OnInit {
 
   remove(id: ID) {
     this.recentEventsService.remove(id);
+  }
+
+  ngOnInit(): void {
+    this.activatedRoute.params.pipe(takeUntil(this.ngUnsubscribe)).subscribe((params) => this.handleNewUser(params['username']));
   }
 }
