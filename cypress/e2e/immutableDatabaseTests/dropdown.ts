@@ -58,6 +58,22 @@ describe('Dropdown test', () => {
     });
   });
 
+  describe('Go to profile page from another profile page', () => {
+    it('Should show user correct profile', () => {
+      const fromUser = 'potato';
+      const currentUser = 'user_curator';
+      cy.visit(`/users/${fromUser}`);
+      cy.contains('Activity');
+      cy.get('app-user-page').contains(fromUser);
+      cy.get('app-user-page').contains(currentUser).should('not.exist');
+      cy.get('[data-cy=dropdown-main]:visible').click();
+      cy.get('[data-cy=dropdown-profile-button]').should('be.visible').click();
+      cy.contains('Activity');
+      cy.get('app-user-page').contains(currentUser);
+      cy.get('app-user-page').contains(fromUser).should('not.exist');
+    });
+  });
+
   describe('Go to accounts page', () => {
     beforeEach(() => {
       // Select dropdown accounts
