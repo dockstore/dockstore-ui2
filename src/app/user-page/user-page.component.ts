@@ -21,7 +21,6 @@ import { AccountInfo } from '../loginComponents/accounts/external/accounts.compo
 })
 export class UserPageComponent extends Base implements OnInit, OnDestroy {
   public user: User;
-  public username: string;
   public TokenSource = TokenSource;
   public googleProfile: Profile;
   public gitHubProfile: Profile;
@@ -44,7 +43,6 @@ export class UserPageComponent extends Base implements OnInit, OnDestroy {
   }
 
   handleNewUser(username: string): void {
-    this.username = username;
     this.getUserInfo(username);
   }
 
