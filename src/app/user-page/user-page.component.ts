@@ -4,7 +4,6 @@ import { Profile, TokenUser, User } from '../shared/openapi';
 import { UsersService } from '../shared/openapi/api/users.service';
 import { UserService } from '../shared/user/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AlertService } from '../shared/alert/state/alert.service';
