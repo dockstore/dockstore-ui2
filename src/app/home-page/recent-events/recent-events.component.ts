@@ -91,10 +91,6 @@ export class RecentEventsComponent extends Base implements OnInit {
     super();
   }
 
-  handleNewUser(username: string): void {
-    this.getUserInfo(username);
-  }
-
   getUserInfo(username: string): void {
     if (!this.eventType && username) {
       // On user page, get user, then get user's events
@@ -173,6 +169,6 @@ export class RecentEventsComponent extends Base implements OnInit {
   }
 
   ngOnInit(): void {
-    this.activatedRoute.params.pipe(takeUntil(this.ngUnsubscribe)).subscribe((params) => this.handleNewUser(params['username']));
+    this.activatedRoute.params.pipe(takeUntil(this.ngUnsubscribe)).subscribe((params) => this.getUserInfo(params['username']));
   }
 }

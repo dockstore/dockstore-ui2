@@ -42,10 +42,6 @@ export class UserPageComponent extends Base implements OnInit {
     super();
   }
 
-  handleNewUser(username: string): void {
-    this.getUserInfo(username);
-  }
-
   getUserInfo(username: string): void {
     this.usersService.listUser(username, 'userProfiles').subscribe(
       (user) => {
@@ -94,8 +90,9 @@ export class UserPageComponent extends Base implements OnInit {
         }
       });
   }
+
   ngOnInit(): void {
-    this.activatedRoute.params.pipe(takeUntil(this.ngUnsubscribe)).subscribe((params) => this.handleNewUser(params['username']));
+    this.activatedRoute.params.pipe(takeUntil(this.ngUnsubscribe)).subscribe((params) => this.getUserInfo(params['username']));
     this.userQuery.isAdminOrCurator$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((isAdminOrCurator) => {
       this.loggedInUserIsAdminOrCurator = isAdminOrCurator;
     });
