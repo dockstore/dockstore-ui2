@@ -117,7 +117,7 @@ export class EntryWizardService {
     this.entryWizardStore.setLoading(true);
     const registryEnum = this.convertSourceControlStringToEnum(repository.gitRegistry);
     this.workflowsService
-      .deleteWorkflow(registryEnum, repository.organization, repository.repositoryName)
+      .deleteWorkflow(registryEnum as 'github.com' | 'bitbucket.org' | 'gitlab.com', repository.organization, repository.repositoryName)
       .pipe(finalize(() => this.entryWizardStore.setLoading(false)))
       .subscribe(
         (workflow: BioWorkflow) => {
