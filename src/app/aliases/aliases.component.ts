@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 import { Base } from '../shared/base';
-import { Collection, Entry, Organization, WorkflowVersionPathInfo } from '../shared/openapi';
+import { Collection, DockstoreTool, Entry, Organization, Workflow, WorkflowVersionPathInfo } from '../shared/openapi';
 import { ActivatedRoute, Router } from '../test';
 import { AliasesQuery } from './state/aliases.query';
 import { AliasesService } from './state/aliases.service';
@@ -23,7 +23,7 @@ export class AliasesComponent extends Base implements OnInit {
   public alias: string | null;
   public validType: boolean;
   // Types contains resource types that support aliases
-  // public types = ['organizations', 'collections', 'workflows', 'tools', 'containers', 'workflow-versions'];
+  public types = ['organizations', 'collections', 'workflows', 'tools', 'containers', 'workflow-versions'];
   constructor(
     private aliasesQuery: AliasesQuery,
     private aliasesService: AliasesService,
@@ -41,22 +41,17 @@ export class AliasesComponent extends Base implements OnInit {
     if (this.type === 'organizations') {
       this.aliasesService.updateOrganizationFromAlias(this.alias);
       this.organization$ = this.aliasesQuery.organization$;
-      this.organization$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((organization: Organization) => {
-        if (organization) {
-          this.router.navigate(['/organizations', organization.name]);
-        }
-        this.aliasNotFound$ = this.organization$.pipe(map((tool) => !tool));
-      });
+      this.navigateTo(this.organization$, (organization: Organization) => ['/organizations', organization.name]);
     }
     if (this.type === 'collections') {
       this.aliasesService.updateCollectionFromAlias(this.alias);
       this.collection$ = this.aliasesQuery.collection$;
-      this.collection$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((collection: Collection) => {
-        if (collection) {
-          this.router.navigate(['/organizations', collection.organizationName, 'collections', collection.name]);
-        }
-        this.aliasNotFound$ = this.collection$.pipe(map((tool) => !tool));
-      });
+      this.navigateTo(this.collection$, (collection: Collection) => [
+        '/organizations',
+        collection.organizationName,
+        'collections',
+        collection.name,
+      ]);
     }
     if (
       this.type === 'workflow-versions' ||
@@ -66,27 +61,29 @@ export class AliasesComponent extends Base implements OnInit {
     ) {
       this.aliasesService.updateWorkflowVersionPathInfoFromAlias(this.alias);
       this.workflowVersionPathInfo$ = this.aliasesQuery.workflowVersionPathInfo$;
-      this.workflowVersionPathInfo$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((workflowVersionPathInfo: WorkflowVersionPathInfo) => {
-        if (workflowVersionPathInfo) {
-          this.router.navigate(['/workflows', workflowVersionPathInfo.fullWorkflowPath + ':' + workflowVersionPathInfo.tagName]);
-        }
-        this.aliasNotFound$ = this.workflowVersionPathInfo$.pipe(map((tool) => !tool));
-      });
+      this.navigateTo(this.workflowVersionPathInfo$, (info: WorkflowVersionPathInfo) => [
+        info.entryTypeMetadata.sitePath,
+        info.fullWorkflowPath + ':' + info.tagName,
+      ]);
     }
     if (this.type === 'workflows' || this.type === 'tools' || this.type === 'services' || this.type === 'notebooks') {
       this.aliasesService.updateEntryFromAlias(this.alias);
       this.entry$ = this.aliasesQuery.entry$;
-      this.entry$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((entry: Entry) => {
-        if (entry) {
-          // check if aliastype equals type
-          this.router.navigate(['/workflows', this.getPath(entry)]);
-        }
-        this.aliasNotFound$ = this.entry$.pipe(map((tool) => !tool));
-      });
+      this.navigateTo(this.entry$, (entry: Entry) => [entry.entryTypeMetadata.sitePath, this.getPath(entry)]);
     }
   }
 
-  getPath(entry: Entry): string {
-    // TODO fill
+  private getPath(entry: Entry): string {
+    return (entry as Workflow).full_workflow_path ?? (entry as DockstoreTool).tool_path;
+  }
+
+  private navigateTo<EntityType>(entity$: Observable<EntityType>, entityToPath: (entity: EntityType) => string[]): void {
+    entity$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((entity: EntityType | null) => {
+      if (entity) {
+        const path = entityToPath(entity);
+        this.router.navigate(path);
+      }
+      this.aliasNotFound$ = entity$.pipe(map((value) => !value));
+    });
   }
 }
