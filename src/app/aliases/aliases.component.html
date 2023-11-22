@@ -8,8 +8,8 @@
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
   </div>
   <ng-template #doneLoading>
-    <div *ngIf="validType && !aliasNotFound">Redirecting ...</div>
-    <mat-card class="alert alert-warning mat-elevation-z" role="alert" *ngIf="validType && aliasNotFound">
+    <div *ngIf="validType && found">Redirecting ...</div>
+    <mat-card class="alert alert-warning mat-elevation-z" role="alert" *ngIf="validType && !found">
       <mat-icon class="alert-warning-icon">warning</mat-icon>
       &nbsp;No <strong>{{ type }}</strong> with the alias <strong>{{ alias }}</strong> found
     </mat-card>

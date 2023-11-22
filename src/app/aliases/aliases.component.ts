@@ -17,7 +17,7 @@ export class AliasesComponent extends Base implements OnInit {
   public type: string | null;
   public alias: string | null;
   public validType: boolean;
-  public aliasNotFound: boolean;
+  public found: boolean;
   constructor(
     private aliasesQuery: AliasesQuery,
     private aliasesService: AliasesService,
@@ -91,9 +91,9 @@ export class AliasesComponent extends Base implements OnInit {
       if (entity && entityFilter(entity)) {
         const path = entityToPath(entity);
         this.router.navigate(path);
-        this.aliasNotFound = false;
+        this.found = true;
       } else {
-        this.aliasNotFound = true;
+        this.found = false;
       }
     });
   }
