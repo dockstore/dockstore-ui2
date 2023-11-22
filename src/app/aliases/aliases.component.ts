@@ -18,12 +18,10 @@ export class AliasesComponent extends Base implements OnInit {
   collection$: Observable<Collection | null>;
   entry$: Observable<Entry | null>;
   workflowVersionPathInfo$: Observable<WorkflowVersionPathInfo | null>;
-  aliasNotFound$: Observable<boolean>;
   public type: string | null;
   public alias: string | null;
   public validType: boolean;
-  // Types contains resource types that support aliases
-  public types = ['organizations', 'collections', 'workflows', 'tools', 'containers', 'workflow-versions'];
+  public aliasNotFound: boolean;
   constructor(
     private aliasesQuery: AliasesQuery,
     private aliasesService: AliasesService,
@@ -37,7 +35,7 @@ export class AliasesComponent extends Base implements OnInit {
     this.loading$ = this.aliasesQuery.loading$;
     this.type = this.route.snapshot.paramMap.get('type');
     this.alias = this.route.snapshot.paramMap.get('alias');
-    // TODO check alias and type
+    this.validType = false;
     if (this.type === 'organizations') {
       this.aliasesService.updateOrganizationFromAlias(this.alias);
       this.organization$ = this.aliasesQuery.organization$;
@@ -78,12 +76,13 @@ export class AliasesComponent extends Base implements OnInit {
   }
 
   private navigateTo<EntityType>(entity$: Observable<EntityType>, entityToPath: (entity: EntityType) => string[]): void {
+    this.validType = true;
     entity$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((entity: EntityType | null) => {
       if (entity) {
         const path = entityToPath(entity);
         this.router.navigate(path);
       }
-      this.aliasNotFound$ = entity$.pipe(map((value) => !value));
+      this.aliasNotFound = !entity;
     });
   }
 }

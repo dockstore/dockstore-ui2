@@ -16,11 +16,11 @@
       <mat-progress-bar mode="indeterminate"></mat-progress-bar>
       Redirecting to the collection <strong>{{ coll.displayName }}</strong>
     </div>
-    <div *ngIf="entry$ | async as e" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px">
+    <div *ngIf="entry$ | async as entry" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px">
       <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-      Redirecting to the workflow <strong>TODO</strong>
+      Redirecting to the workflow <strong>{{ entry | routerLink }}</strong>
     </div>
-    <mat-card class="alert alert-warning mat-elevation-z" role="alert" *ngIf="types.includes(type) && (aliasNotFound$ | async)">
+    <mat-card class="alert alert-warning mat-elevation-z" role="alert" *ngIf="validType && aliasNotFound">
       <mat-icon class="alert-warning-icon">warning</mat-icon>
       &nbsp;No <strong>{{ type }}</strong> with the alias <strong>{{ alias }}</strong> found
     </mat-card>
