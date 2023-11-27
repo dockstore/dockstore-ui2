@@ -1,5 +1,5 @@
 import { LambdaEvent } from '../../../src/app/shared/openapi';
-import { goToTab, insertAppTools, isActiveTab, resetDB, setTokenUserViewPort } from '../../support/commands';
+import { goToTab, insertAppTools, isActiveTab, resetDB, setTokenUserViewPort, typeInInput } from '../../support/commands';
 
 describe('GitHub App Tools', () => {
   resetDB();
@@ -55,13 +55,30 @@ describe('GitHub App Tools', () => {
           success: false,
           type: 'PUSH',
         },
+        {
+          deliveryId: '2',
+          entryName: 'entry2',
+          eventDate: 1582165220000,
+          githubUsername: 'testUser',
+          id: 1,
+          ignored: false,
+          message: 'HTTP 400 ',
+          organization: 'C',
+          reference: 'refs/head/main',
+          repository: 'test-github-app-tools',
+          success: false,
+          type: 'PUSH',
+        },
       ];
       cy.intercept('GET', '/api/lambdaEvents/user/**', {
         body: mockEvent,
+        headers: {
+          'X-total-count': '2',
+        },
       }).as('lambdaEvents');
       cy.get('[data-cy=user-app-logs-button]').should('be.visible').click();
       cy.contains('refs/head/main');
-      cy.contains('1 – 1 of 1');
+      cy.contains('1 – 2 of 2');
       cy.contains('Close').click();
     });
   });
@@ -110,6 +127,9 @@ describe('GitHub App Tools', () => {
       ];
       cy.intercept('GET', '/api/lambdaEvents/**', {
         body: realResponse,
+        headers: {
+          'X-total-count': '1',
+        },
       }).as('lambdaEvents');
       cy.contains('Apps Logs').click();
 

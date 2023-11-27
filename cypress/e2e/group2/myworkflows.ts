@@ -23,6 +23,7 @@ import {
   setTokenUserViewPortCurator,
   snapshot,
 } from '../../support/commands';
+import { LambdaEvent } from '../../../src/app/shared/openapi';
 
 const cwlDescriptorType = 'CWL';
 const wdlDescriptorType = 'WDL';
@@ -101,6 +102,9 @@ describe('Dockstore my workflows', () => {
       ];
       cy.intercept('GET', '/api/lambdaEvents/**', {
         body: realResponse,
+        headers: {
+          'X-total-count': '2',
+        },
       }).as('refreshWorkflow');
       cy.contains('Apps Logs').click();
       // Check that app logs contain the correct columns
@@ -113,6 +117,32 @@ describe('Dockstore my workflows', () => {
       // cy.contains('2020-02-19T18:20');
       // cy.contains('2020-06-05T07:40');
       cy.contains('1 – 2 of 2');
+
+      //Filtering
+      const filteredResponse: LambdaEvent[] = [
+        {
+          deliveryId: '1',
+          entryName: 'entry1',
+          eventDate: 1582165220000,
+          githubUsername: 'boil',
+          id: 1,
+          message: 'HTTP 418 ',
+          organization: 'dockstore',
+          reference: 'refs/tag/1.03',
+          repository: 'hello_world',
+          success: false,
+          type: 'PUSH',
+        },
+      ];
+      cy.intercept('GET', '/api/lambdaEvents/**', {
+        body: filteredResponse,
+        headers: {
+          'X-total-count': '1',
+        },
+      });
+      cy.get('[data-cy=apps-logs-filter]').type('entry1');
+      cy.contains('2020-02-20T02:20');
+      cy.contains('1 – 1 of 1');
       cy.contains('Close').click();
     });
     it('Should contain the extended properties and be able to edit the info tab', () => {
