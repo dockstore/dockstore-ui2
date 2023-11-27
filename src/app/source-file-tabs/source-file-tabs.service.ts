@@ -43,6 +43,7 @@ export class SourceFileTabsService {
     const fileTabsSchematic =
       this.descriptorLanguageService.toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorLanguage).fileTabs;
 
+    // Display all of the tabs, even if they are empty.
     fileTabsSchematic.forEach((fileTab) => {
       fileTabs.set(fileTab.tabName, []);
     });
