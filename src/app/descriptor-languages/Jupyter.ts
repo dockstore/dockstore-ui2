@@ -15,8 +15,8 @@ export const extendedJupyter: ExtendedDescriptorLanguageBean = {
   toolDescriptorEnum: ToolDescriptor.TypeEnum.JUPYTER,
   workflowDescriptorEnum: Workflow.DescriptorTypeEnum.Jupyter,
   languageDocumentationURL: JUPYTER_DOCUMENTATION_URL,
-  plainTRS: null,
-  descriptorFileTypes: [],
+  plainTRS: 'PLAIN_JUPYTER',
+  descriptorFileTypes: [SourceFile.TypeEnum.DOCKSTOREJUPYTER],
   toolTab: {
     rowIdentifier: 'tool\xa0ID',
     workflowStepHeader: 'Notebook',
