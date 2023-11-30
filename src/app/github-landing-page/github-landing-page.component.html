@@ -1,0 +1,88 @@
+<!--
+  ~    Copyright 2022 OICR, UCSC
+  ~
+  ~    Licensed under the Apache License, Version 2.0 (the "License");
+  ~    you may not use this file except in compliance with the License.
+  ~    You may obtain a copy of the License at
+  ~
+  ~        http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~    Unless required by applicable law or agreed to in writing, software
+  ~    distributed under the License is distributed on an "AS IS" BASIS,
+  ~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~    See the License for the specific language governing permissions and
+  ~    limitations under the License.
+  -->
+
+<div class="overflow-hidden">
+  <div class="mb-5 w-100">
+    <div class="container">
+      <div>
+        <h3>Please wait while we register your GitHub repository. This may take a few minutes.</h3>
+      </div>
+    </div>
+    <hr />
+
+    <div class="w-100 cards-container" fxLayout="row" fxLayoutAlign="space-evenly center">
+      <mat-card class="landing-page-card h-100" fxFlex.lt-md="100" fxLayout="column" fxLayoutAlign="center center">
+        <mat-card-header>
+          <mat-card-title>Do you have a .dockstore.yml file in your repo?</mat-card-title>
+        </mat-card-header>
+        <mat-divider></mat-divider>
+        <mat-card-content class="h-100 landing-page-card-content">
+          <div class="landing-page-card-content-text">
+            If you haven’t already, please create a .dockstore.yml file in your repo. This way, your workflows will be kept up-to-date
+            automatically. <br />
+
+            Here is the .dockstore.yml template:
+          </div>
+
+          <pre>
+          version: 1.2
+          workflows:
+          - subclass: &lt;CWL | WDL | NFL | GALAXY&gt;
+          primaryDescriptorPath: &lt;String&gt;
+          testParameterFiles: &lt;String Array&gt;
+          readMePath: &lt;String&gt;
+          authors:
+          - name: &lt;String&gt;
+          email: &lt;String&gt;
+          </pre>
+
+          <div class="landing-page-card-content-text">
+            Always use absolute paths to specify the primary descriptor, test parameter, and readMePath files.
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="landing-page-card" fxLayout="column" fxLayoutAlign="center center">
+        <mat-card-header>
+          <mat-card-title class="ml-2">Tips and Tricks</mat-card-title>
+        </mat-card-header>
+
+        <mat-divider></mat-divider>
+
+        <mat-card-content class="h-100 landing-page-card-content">
+          <ul>
+            <li>
+              Make sure your file is saved as <code>.dockstore.yml</code>, not <code>dockstore.yml</code> or <code>.dockstore.yaml</code>
+            </li>
+            <li>Put the .dockstore.yml file in the top of your repo or inside the <code>.github/</code> directory</li>
+            <li>
+              If you have multiple workflows/tools/services/notebooks in a single GitHub repository, each one needs a unique name, and
+              recommended to give each one a unique <code>readMePath</code> too.
+            </li>
+            <li>
+              The first line of a <code>.dockstore.yml</code> file references the version of <code>.dockstore.yml</code> syntax being used,
+              not the version/tag of the workflow/tool/service/notebook it describes
+            </li>
+            <li>
+              You can use a single <code>.dockstore.yml</code> file to register multiple tools, workflows, services, and notebooks, provided
+              they are all in the same repo as the <code>.dockstore.yml</code> file
+            </li>
+          </ul>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

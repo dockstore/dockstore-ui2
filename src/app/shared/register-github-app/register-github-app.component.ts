@@ -33,6 +33,6 @@ export class RegisterGithubAppComponent {
       }
     );
     this.parentDialogRef.close();
-    this.router.navigate(['/my-workflows']);
+    this.router.navigate(['/github-landing-page']);
   }
 }
