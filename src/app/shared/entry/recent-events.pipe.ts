@@ -1,12 +1,11 @@
 import { Inject, Pipe, PipeTransform } from '@angular/core';
-import { Event } from 'app/shared/openapi';
+import { Event, DockstoreTool, Workflow } from 'app/shared/openapi';
 import { EntryToDisplayNamePipe } from '../entry-to-display-name.pipe';
 import { EntryType } from '../../shared/enum/entry-type';
 
 @Pipe({
   name: 'recentEvents',
 })
-// TODO: Accommodate for notebooks and services when we can retrieve those events
 export class RecentEventsPipe implements PipeTransform {
   private EntryType = EntryType;
   constructor(@Inject(EntryToDisplayNamePipe) private entryToDisplayNamePipe: EntryToDisplayNamePipe) {}
@@ -25,27 +24,15 @@ export class RecentEventsPipe implements PipeTransform {
 
     switch (type) {
       case 'displayName': {
-        if (event.workflow) {
-          return this.entryToDisplayNamePipe.transform(event.workflow);
-        } else if (event.tool) {
-          return this.entryToDisplayNamePipe.transform(event.tool);
-        } else if (event.apptool) {
-          return this.entryToDisplayNamePipe.transform(event.apptool);
-        }
-        break;
+        const entry = this.getEntry(event);
+        return entry && this.entryToDisplayNamePipe.transform(entry);
       }
       case 'entryLink': {
-        if (event.workflow) {
-          return '/workflows/' + event.workflow.full_workflow_path;
-        } else if (event.tool) {
-          return '/containers/' + event.tool.tool_path;
-        } else if (event.apptool) {
-          return '/containers/' + event.apptool.full_workflow_path;
-        }
-        break;
+        const entry = this.getEntry(event);
+        return entry && '/' + entry.entryTypeMetadata.sitePath + '/' + this.getPath(entry);
       }
       case 'entryType': {
-        return event.tool || event.apptool ? this.EntryType.Tool : this.EntryType.BioWorkflow;
+        return this.getEntry(event)?.entryTypeMetadata.term ?? 'entry';
       }
       case 'orgLink': {
         return '/organizations/' + event.organization.name;
@@ -54,5 +41,13 @@ export class RecentEventsPipe implements PipeTransform {
         return '/organizations/' + event.organization.name + '/collections/' + event.collection.name;
       }
     }
+  }
+
+  private getEntry(event: Event): DockstoreTool | Workflow | null {
+    return event.tool ?? event.workflow ?? event.apptool ?? event.service ?? event.notebook;
+  }
+
+  private getPath(entry: DockstoreTool | Workflow): string {
+    return (entry as Workflow).full_workflow_path ?? (entry as DockstoreTool).tool_path;
   }
 }

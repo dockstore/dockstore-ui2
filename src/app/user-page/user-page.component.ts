@@ -21,7 +21,6 @@ import { AccountInfo } from '../loginComponents/accounts/external/accounts.compo
 })
 export class UserPageComponent extends Base implements OnInit {
   public user: User;
-  public username: string;
   public TokenSource = TokenSource;
   public googleProfile: Profile;
   public gitHubProfile: Profile;
@@ -41,10 +40,6 @@ export class UserPageComponent extends Base implements OnInit {
     private userQuery: UserQuery
   ) {
     super();
-    this.username = this.activatedRoute.snapshot.paramMap.get('username');
-    this.userQuery.isAdminOrCurator$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((isAdminOrCurator) => {
-      this.loggedInUserIsAdminOrCurator = isAdminOrCurator;
-    });
   }
 
   getUserInfo(username: string): void {
@@ -95,7 +90,11 @@ export class UserPageComponent extends Base implements OnInit {
         }
       });
   }
+
   ngOnInit(): void {
-    this.getUserInfo(this.username);
+    this.activatedRoute.params.pipe(takeUntil(this.ngUnsubscribe)).subscribe((params) => this.getUserInfo(params['username']));
+    this.userQuery.isAdminOrCurator$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((isAdminOrCurator) => {
+      this.loggedInUserIsAdminOrCurator = isAdminOrCurator;
+    });
   }
 }
