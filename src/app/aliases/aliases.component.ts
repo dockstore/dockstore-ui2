@@ -79,13 +79,21 @@ export class AliasesComponent extends Base implements OnInit {
     return (entry as Workflow).full_workflow_path ?? (entry as DockstoreTool).tool_path;
   }
 
+  /**
+   * Add a subscription to the specified Observable which will navigate to the entity that it produces.
+   * An "entity" is an Organization, Collection, Entry, etc.
+   * The specified functions calculate the absolute path and visibility of the entity.
+   * @param entity$ - Observable that will produce the entity
+   * @param entityToPath - Function that maps the entity to its absolute path
+   * @param entityIsVisible - Function that determines whether the entity is visible
+   */
   private navigateTo<EntityType>(
     entity$: Observable<EntityType>,
     entityToPath: (entity: EntityType) => string[],
-    entityFilter: (entity: EntityType) => boolean = () => true
+    entityIsVisible: (entity: EntityType) => boolean = () => true
   ): void {
     entity$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((entity: EntityType | null) => {
-      if (entity && entityFilter(entity)) {
+      if (entity && entityIsVisible(entity)) {
         const path = entityToPath(entity);
         this.router.navigate(path);
         this.found = true;
