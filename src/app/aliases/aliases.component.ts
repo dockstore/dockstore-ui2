@@ -77,7 +77,7 @@ export class AliasesComponent extends Base implements OnInit {
 
   /**
    * Calculate the list of possible version alias types.
-   * By convention, there is an alias type for each Entry type, denoted by the term for the Entry type concatenated with '-versions'.
+   * By convention, there is a version alias type for each Entry type, denoted by the term for the Entry type concatenated with '-versions'.
    * For example, the alias type for a Workflow version is 'workflow-versions'.
    */
   private versionTypes(): string[] {
@@ -86,7 +86,7 @@ export class AliasesComponent extends Base implements OnInit {
 
   /**
    * Calculate the list of possible entry alias types.
-   * By convention, there is an alias type for each Entry type, denoted by the plural term for the Entry type.
+   * By convention, there is an entry alias type for each Entry type, denoted by the plural term for the Entry type.
    * For example, the alias type for a Workflow is 'workflows'.
    */
   private entryTypes(): string[] {
