@@ -170,8 +170,8 @@ describe('Dockstore Tool Details of quay.io/A2/b3', () => {
 
 describe('Find tool by alias', () => {
   it('tool alias', () => {
-    cy.intercept('GET', '*/containers/fakeAlias/aliases', {
-      body: { tool_path: 'quay.io/A2/b3' },
+    cy.intercept('GET', '*/entries/fakeAlias/aliases', {
+      body: { tool_path: 'quay.io/A2/b3', entryTypeMetadata: { termPlural: 'tools' } },
       statusCode: 200,
     });
     cy.visit('/aliases/tools/fakeAlias');
