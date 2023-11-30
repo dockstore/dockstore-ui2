@@ -26,7 +26,7 @@ describe('Dockstore aliases', () => {
         body: {
           fullWorkflowPath: 'github.com/A/l',
           tagName: 'master',
-          entryTypeMetadata: { term: 'workflow' },
+          entryTypeMetadata: { term: 'workflow', sitePath: 'workflows' },
         },
         statusCode: 200,
       });

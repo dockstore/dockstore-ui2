@@ -130,7 +130,7 @@ describe('Dockstore Workflow Details', () => {
 describe('Find workflow by alias', () => {
   it('workflow alias', () => {
     cy.intercept('GET', '*/entries/fakeAlias/aliases', {
-      body: { full_workflow_path: 'github.com/A/l', entryTypeMetadata: { termPlural: 'workflows' } },
+      body: { full_workflow_path: 'github.com/A/l', entryTypeMetadata: { termPlural: 'workflows', sitePath: 'workflows' } },
       statusCode: 200,
     });
     cy.visit('/aliases/workflows/fakeAlias');
