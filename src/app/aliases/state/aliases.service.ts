@@ -4,12 +4,10 @@ import { finalize } from 'rxjs/operators';
 import {
   AliasesService as WorkflowVersionsAliasService,
   Collection,
-  ContainersService,
   EntriesService,
   Entry,
   Organization,
   OrganizationsService,
-  Workflow,
   WorkflowsService,
   WorkflowVersionPathInfo,
 } from '../../shared/openapi';
