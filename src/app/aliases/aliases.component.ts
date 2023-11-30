@@ -31,7 +31,6 @@ export class AliasesComponent extends Base implements OnInit {
     this.loading$ = this.aliasesQuery.loading$;
     this.type = this.normalizeType(this.route.snapshot.paramMap.get('type'));
     this.alias = this.route.snapshot.paramMap.get('alias');
-
     if (this.type === 'organizations') {
       this.validType = true;
       this.aliasesService.updateOrganizationFromAlias(this.alias);
@@ -66,8 +65,6 @@ export class AliasesComponent extends Base implements OnInit {
         (entry: Entry) => [entry.entryTypeMetadata.sitePath, this.getPath(entry)],
         (entry: Entry) => entry.entryTypeMetadata.termPlural === this.type
       );
-    } else {
-      this.validType = false;
     }
   }
 
