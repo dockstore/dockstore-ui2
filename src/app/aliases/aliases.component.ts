@@ -6,6 +6,7 @@ import { Collection, DockstoreTool, Entry, Organization, Workflow, WorkflowVersi
 import { ActivatedRoute, Router } from '../test';
 import { AliasesQuery } from './state/aliases.query';
 import { AliasesService } from './state/aliases.service';
+import { EntryTypeMetadataService } from '../entry/type-metadata/entry-type-metadata.service';
 
 @Component({
   selector: 'app-aliases',
@@ -21,6 +22,7 @@ export class AliasesComponent extends Base implements OnInit {
   constructor(
     private aliasesQuery: AliasesQuery,
     private aliasesService: AliasesService,
+    private entryTypeMetadataService: EntryTypeMetadataService,
     private route: ActivatedRoute,
     private router: Router
   ) {
@@ -44,12 +46,7 @@ export class AliasesComponent extends Base implements OnInit {
         'collections',
         collection.name,
       ]);
-    } else if (
-      this.type === 'workflow-versions' ||
-      this.type === 'tool-versions' ||
-      this.type === 'service-versions' ||
-      this.type === 'notebook-versions'
-    ) {
+    } else if (this.versionTypes().includes(this.type)) {
       this.validType = true;
       this.aliasesService.updateWorkflowVersionPathInfoFromAlias(this.alias);
       this.navigateTo(
@@ -57,7 +54,7 @@ export class AliasesComponent extends Base implements OnInit {
         (info: WorkflowVersionPathInfo) => [info.entryTypeMetadata.sitePath, info.fullWorkflowPath + ':' + info.tagName],
         (info: WorkflowVersionPathInfo) => info.entryTypeMetadata.term === this.type.split('-')[0]
       );
-    } else if (this.type === 'workflows' || this.type === 'tools' || this.type === 'services' || this.type === 'notebooks') {
+    } else if (this.entryTypes().includes(this.type)) {
       this.validType = true;
       this.aliasesService.updateEntryFromAlias(this.alias);
       this.navigateTo(
@@ -72,7 +69,28 @@ export class AliasesComponent extends Base implements OnInit {
     if (type === 'containers') {
       return 'tools';
     }
+    if (type === 'container-versions') {
+      return 'tool-versions';
+    }
     return type;
+  }
+
+  /**
+   * Calculate the list of possible version alias types.
+   * By convention, there is an alias type for each Entry type, denoted by the term for the Entry type concatenated with '-versions'.
+   * For example, the alias type for a Workflow version is 'workflow-versions'.
+   */
+  private versionTypes(): string[] {
+    return this.entryTypeMetadataService.getAll().map((metadata) => `${metadata.term}-versions`);
+  }
+
+  /**
+   * Calculate the list of possible entry alias types.
+   * By convention, there is an alias type for each Entry type, denoted by the plural term for the Entry type.
+   * For example, the alias type for a Workflow is 'workflows'.
+   */
+  private entryTypes(): string[] {
+    return this.entryTypeMetadataService.getAll().map((metadata) => metadata.termPlural);
   }
 
   private getPath(entry: Entry): string {
