@@ -30,6 +30,7 @@ export class AliasesService {
       return {
         ...state,
         organization: null,
+        collection: null,
         entry: null,
         workflowVersion: null,
       };
