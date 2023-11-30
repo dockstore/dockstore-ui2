@@ -26,15 +26,23 @@ export const extendedJupyter: ExtendedDescriptorLanguageBean = {
   fileTabs: [
     {
       tabName: 'Notebook Files',
-      fileTypes: [SourceFile.TypeEnum.DOCKSTOREJUPYTER, SourceFile.TypeEnum.DOCKSTORENOTEBOOKOTHER],
+      fileTypes: [SourceFile.TypeEnum.DOCKSTOREJUPYTER],
+    },
+    {
+      tabName: 'Configuration Files',
+      fileTypes: [
+        SourceFile.TypeEnum.DOCKSTOREYML,
+        SourceFile.TypeEnum.DOCKSTORENOTEBOOKREES,
+        SourceFile.TypeEnum.DOCKSTORENOTEBOOKDEVCONTAINER,
+      ],
     },
     {
       tabName: 'Test Files',
       fileTypes: [SourceFile.TypeEnum.DOCKSTORENOTEBOOKTESTFILE],
     },
     {
-      tabName: 'Configuration Files',
-      fileTypes: [SourceFile.TypeEnum.DOCKSTORENOTEBOOKREES],
+      tabName: 'Other Files',
+      fileTypes: [SourceFile.TypeEnum.DOCKSTORENOTEBOOKOTHER],
     },
   ],
 };

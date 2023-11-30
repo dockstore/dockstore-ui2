@@ -43,9 +43,10 @@ export class SourceFileTabsService {
     const fileTabsSchematic =
       this.descriptorLanguageService.toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorLanguage).fileTabs;
 
-    // Always have the Descriptor Files Tab and Test Parameter Files tab
-    fileTabs.set(fileTabsSchematic[0].tabName, []);
-    fileTabs.set(fileTabsSchematic[1].tabName, []);
+    // Display all of the tabs, even if they are empty.
+    fileTabsSchematic.forEach((fileTab) => {
+      fileTabs.set(fileTab.tabName, []);
+    });
     if (!sourcefiles || sourcefiles.length === 0) {
       return fileTabs;
     }
