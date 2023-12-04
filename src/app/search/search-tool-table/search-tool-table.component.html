@@ -27,9 +27,17 @@
             <app-private-icon></app-private-icon>
           </span>
           <div *ngIf="tool.source | isAppTool; else docktoreToolName">
-            <a [matTooltip]="tool?.source.full_workflow_path" [routerLink]="'/containers/' + tool.source.full_workflow_path">{{
-              tool?.source.organization + '/' + tool?.source.repository + (tool?.source.workflowName ? '/' + tool?.source.workflowName : '')
-            }}</a>
+            <a
+              [matTooltip]="tool?.source.full_workflow_path"
+              matTooltipPosition="left"
+              [routerLink]="'/containers/' + tool.source.full_workflow_path"
+              >{{
+                tool?.source.organization +
+                  '/' +
+                  tool?.source.repository +
+                  (tool?.source.workflowName ? '/' + tool?.source.workflowName : '')
+              }}</a
+            >
           </div>
           <ng-template #docktoreToolName>
             <a [matTooltip]="tool?.source.tool_path" [routerLink]="'/containers/' + tool.source.tool_path">{{

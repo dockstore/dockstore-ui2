@@ -7,12 +7,17 @@
       <mat-header-cell *matHeaderCellDef mat-sort-header>Name and Description</mat-header-cell>
       <mat-cell data-cy="workflowColumn" *matCellDef="let workflow">
         <div>
-          <a [matTooltip]="workflow?.source.full_workflow_path" [routerLink]="'/workflows/' + workflow?.source.full_workflow_path">{{
-            workflow?.source.organization +
-              '/' +
-              workflow?.source.repository +
-              (workflow?.source.workflowName ? '/' + workflow?.source.workflowName : '')
-          }}</a>
+          <a
+            [matTooltip]="workflow?.source.full_workflow_path"
+            matTooltipPosition="left"
+            [routerLink]="'/workflows/' + workflow?.source.full_workflow_path"
+            >{{
+              workflow?.source.organization +
+                '/' +
+                workflow?.source.repository +
+                (workflow?.source.workflowName ? '/' + workflow?.source.workflowName : '')
+            }}</a
+          >
           <div class="truncate-text-2 size-small" *ngIf="workflow.source.topicAutomatic" [matTooltip]="workflow.source.topicAutomatic">
             {{ workflow.source.topicAutomatic }}
           </div>
