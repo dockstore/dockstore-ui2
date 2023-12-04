@@ -33,8 +33,12 @@ export class RegisterService {
           observable.next(user);
           observable.complete();
         },
-        (error: HttpErrorResponse) => {
-          this.alertService.detailedError(error);
+        (error) => {
+          if (error.status !== undefined) {
+            this.alertService.detailedError(error);
+          } else {
+            this.alertService.customDetailedError('Registration failed', 'Could not register on Dockstore.');
+          }
         }
       );
     });
