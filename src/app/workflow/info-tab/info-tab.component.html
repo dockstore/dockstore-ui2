@@ -255,7 +255,7 @@
                     mat-raised-button
                     class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
                     (click)="toggleEditTopic()"
-                    data-cy="topicSaveButton"
+                    [attr.data-cy]="topicEditing ? 'topicSaveButton' : 'topicEditButton'"
                     [matTooltip]="
                       workflow?.mode === WorkflowType.ModeEnum.DOCKSTOREYML
                         ? 'Edit the manual topic for this ' +
