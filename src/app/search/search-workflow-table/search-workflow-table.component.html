@@ -18,7 +18,12 @@
                 (workflow?.source.workflowName ? '/' + workflow?.source.workflowName : '')
             }}</a
           >
-          <div class="truncate-text-2 size-small" *ngIf="workflow.source.topicAutomatic" [matTooltip]="workflow.source.topicAutomatic">
+          <div
+            class="truncate-text-2 size-small"
+            *ngIf="workflow.source.topicAutomatic"
+            [matTooltip]="workflow.source.topicAutomatic"
+            matTooltipPosition="left"
+          >
             {{ workflow.source.topicAutomatic }}
           </div>
         </div>
