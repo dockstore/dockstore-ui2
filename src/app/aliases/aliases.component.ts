@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 import { Base } from '../shared/base';
-import { Collection, DockstoreTool, Organization, Workflow, WorkflowVersionPathInfo } from '../shared/openapi';
+import { Collection, DockstoreTool, Entry, Organization, Workflow, WorkflowVersionPathInfo } from '../shared/openapi';
 import { ActivatedRoute, Router } from '../test';
 import { AliasesQuery } from './state/aliases.query';
 import { AliasesService } from './state/aliases.service';
+import { EntryTypeMetadataService } from '../entry/type-metadata/entry-type-metadata.service';
 
 @Component({
   selector: 'app-aliases',
@@ -14,20 +15,14 @@ import { AliasesService } from './state/aliases.service';
 })
 export class AliasesComponent extends Base implements OnInit {
   loading$: Observable<boolean>;
-  organization$: Observable<Organization | null>;
-  collection$: Observable<Collection | null>;
-  workflow$: Observable<Workflow | null>;
-  workflowVersionPathInfo$: Observable<WorkflowVersionPathInfo | null>;
-  tool$: Observable<DockstoreTool | null>;
-  aliasNotFound$: Observable<boolean>;
   public type: string | null;
   public alias: string | null;
   public validType: boolean;
-  // Types contains resource types that support aliases
-  public types = ['organizations', 'collections', 'workflows', 'tools', 'containers', 'workflow-versions'];
+  public found: boolean;
   constructor(
     private aliasesQuery: AliasesQuery,
     private aliasesService: AliasesService,
+    private entryTypeMetadataService: EntryTypeMetadataService,
     private route: ActivatedRoute,
     private router: Router
   ) {
@@ -35,55 +30,94 @@ export class AliasesComponent extends Base implements OnInit {
   }
 
   ngOnInit() {
-    this.type = this.route.snapshot.paramMap.get('type');
-    this.alias = this.route.snapshot.paramMap.get('alias');
-    this.validType = this.type ? this.types.includes(this.type) : false;
     this.loading$ = this.aliasesQuery.loading$;
-    if (this.type === 'organizations' && this.alias) {
+    this.type = this.normalizeType(this.route.snapshot.paramMap.get('type'));
+    this.alias = this.route.snapshot.paramMap.get('alias');
+    if (this.type === 'organizations') {
+      this.validType = true;
       this.aliasesService.updateOrganizationFromAlias(this.alias);
-      this.organization$ = this.aliasesQuery.organization$;
-      this.organization$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((organization: Organization) => {
-        if (organization) {
-          this.router.navigate(['/organizations', organization.name]);
-        }
-        this.aliasNotFound$ = this.organization$.pipe(map((tool) => !tool));
-      });
-    } else if (this.type === 'collections' && this.alias) {
+      this.navigateTo(this.aliasesQuery.organization$, (organization: Organization) => ['/organizations', organization.name]);
+    } else if (this.type === 'collections') {
+      this.validType = true;
       this.aliasesService.updateCollectionFromAlias(this.alias);
-      this.collection$ = this.aliasesQuery.collection$;
-      this.collection$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((collection: Collection) => {
-        if (collection) {
-          this.router.navigate(['/organizations', collection.organizationName, 'collections', collection.name]);
-        }
-        this.aliasNotFound$ = this.collection$.pipe(map((tool) => !tool));
-      });
-    } else if (this.type === 'workflow-versions' && this.alias) {
+      this.navigateTo(this.aliasesQuery.collection$, (collection: Collection) => [
+        '/organizations',
+        collection.organizationName,
+        'collections',
+        collection.name,
+      ]);
+    } else if (this.versionTypes().includes(this.type)) {
+      this.validType = true;
       this.aliasesService.updateWorkflowVersionPathInfoFromAlias(this.alias);
-      this.workflowVersionPathInfo$ = this.aliasesQuery.workflowVersionPathInfo$;
-      this.workflowVersionPathInfo$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((workflowVersionPathInfo: WorkflowVersionPathInfo) => {
-        if (workflowVersionPathInfo) {
-          this.router.navigate(['/workflows', workflowVersionPathInfo.fullWorkflowPath + ':' + workflowVersionPathInfo.tagName]);
-        }
-        this.aliasNotFound$ = this.workflowVersionPathInfo$.pipe(map((tool) => !tool));
-      });
-    } else if (this.type === 'workflows' && this.alias) {
-      this.aliasesService.updateWorkflowFromAlias(this.alias);
-      this.workflow$ = this.aliasesQuery.workflow$;
-      this.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((workflow: Workflow) => {
-        if (workflow) {
-          this.router.navigate(['/workflows', workflow.full_workflow_path]);
-        }
-        this.aliasNotFound$ = this.workflow$.pipe(map((tool) => !tool));
-      });
-    } else if ((this.type === 'tools' || this.type === 'containers') && this.alias) {
-      this.aliasesService.updateToolFromAlias(this.alias);
-      this.tool$ = this.aliasesQuery.tool$;
-      this.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((tool: DockstoreTool) => {
-        if (tool) {
-          this.router.navigate(['/tools', tool.tool_path]);
-        }
-      });
-      this.aliasNotFound$ = this.tool$.pipe(map((tool) => !tool));
+      this.navigateTo(
+        this.aliasesQuery.workflowVersionPathInfo$,
+        (info: WorkflowVersionPathInfo) => [info.entryTypeMetadata.sitePath, info.fullWorkflowPath + ':' + info.tagName],
+        (info: WorkflowVersionPathInfo) => info.entryTypeMetadata.term === this.type.split('-')[0]
+      );
+    } else if (this.entryTypes().includes(this.type)) {
+      this.validType = true;
+      this.aliasesService.updateEntryFromAlias(this.alias);
+      this.navigateTo(
+        this.aliasesQuery.entry$,
+        (entry: Entry) => [entry.entryTypeMetadata.sitePath, this.getPath(entry)],
+        (entry: Entry) => entry.entryTypeMetadata.termPlural === this.type
+      );
     }
+  }
+
+  private normalizeType(type: string): string {
+    if (type === 'containers') {
+      return 'tools';
+    }
+    if (type === 'container-versions') {
+      return 'tool-versions';
+    }
+    return type;
+  }
+
+  /**
+   * Calculate the list of possible version alias types.
+   * By convention, there is a version alias type for each Entry type, denoted by the term for the Entry type concatenated with '-versions'.
+   * For example, the alias type for a Workflow version is 'workflow-versions'.
+   */
+  private versionTypes(): string[] {
+    return this.entryTypeMetadataService.getAll().map((metadata) => `${metadata.term}-versions`);
+  }
+
+  /**
+   * Calculate the list of possible entry alias types.
+   * By convention, there is an entry alias type for each Entry type, denoted by the plural term for the Entry type.
+   * For example, the alias type for a Workflow is 'workflows'.
+   */
+  private entryTypes(): string[] {
+    return this.entryTypeMetadataService.getAll().map((metadata) => metadata.termPlural);
+  }
+
+  private getPath(entry: Entry): string {
+    return (entry as Workflow).full_workflow_path ?? (entry as DockstoreTool).tool_path;
+  }
+
+  /**
+   * Add a subscription to the specified Observable which will navigate to the entity that it produces.
+   * An "entity" is an Organization, Collection, Entry, etc.
+   * The specified functions calculate the absolute path and visibility of the entity.
+   * @param entity$ - Observable that will produce the entity
+   * @param entityToPath - Function that maps the entity to its absolute path
+   * @param entityIsVisible - Function that determines whether the entity is visible
+   */
+  private navigateTo<EntityType>(
+    entity$: Observable<EntityType>,
+    entityToPath: (entity: EntityType) => string[],
+    entityIsVisible: (entity: EntityType) => boolean = () => true
+  ): void {
+    entity$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((entity: EntityType | null) => {
+      if (entity && entityIsVisible(entity)) {
+        const path = entityToPath(entity);
+        this.router.navigate(path);
+        this.found = true;
+      } else {
+        this.found = false;
+      }
+    });
   }
 }
