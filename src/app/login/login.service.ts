@@ -32,8 +32,8 @@ export class LoginService {
           observable.next(user);
           observable.complete();
         },
-        (error) => {
-          if (error.status !== undefined) {
+        (error: HttpErrorResponse | {}) => {
+          if ('status' in error) {
             this.alertService.detailedError(error);
           } else {
             this.alertService.customDetailedError('Login failed', 'Could not login to Dockstore.');
