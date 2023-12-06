@@ -227,7 +227,10 @@ export class InfoTabService {
 
   getTRSPlainType(dockstoreDescriptorType: string): string {
     const trsDescriptorType = this.descriptorTypeCompatService.stringToDescriptorType(dockstoreDescriptorType);
-    return this.descriptorTypeCompatService.toolDescriptorTypeEnumToPlainTRS(trsDescriptorType);
+    return (
+      this.descriptorTypeCompatService.toolDescriptorTypeEnumToPlainTRS(trsDescriptorType) ??
+      `PLAIN_${dockstoreDescriptorType.toUpperCase()}`
+    );
   }
 
   getTRSId(workflow: Workflow | undefined, entryType: EntryType): string {

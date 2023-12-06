@@ -67,6 +67,6 @@ describe('ValueService', () => {
     expect(service.getTRSPlainType('NFL')).toBe('PLAIN_NFL');
     expect(service.getTRSPlainType('gxformat2')).toBe('PLAIN_GALAXY');
     expect(service.getTRSPlainType('jupyter')).toBe('PLAIN_JUPYTER');
-    expect(service.getTRSPlainType('bogus')).toBe(null);
+    expect(service.getTRSPlainType('bogus')).toBe('PLAIN_BOGUS');
   });
 });
