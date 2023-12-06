@@ -76,7 +76,7 @@ export class EmailService {
    * @param tool The tool to contact author for
    */
   public composeContactAuthorEmail(tool: DockstoreTool): string {
-    const email = EmailService.getInquiryEmailMailTo(tool.email);
+    const email = EmailService.getInquiryEmailMailTo(tool.authors.pop().email);
     const subject = EmailService.getInquiryEmailSubject(tool.tool_path);
     const body = EmailService.getInquiryEmailBody();
     return EmailService.composeEmail(email, subject, body);
