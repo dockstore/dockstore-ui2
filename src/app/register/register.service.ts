@@ -34,6 +34,9 @@ export class RegisterService {
           observable.complete();
         },
         (error: HttpErrorResponse | {}) => {
+          // Error will be an HttpErrorResponse, typically from the webservice,
+          // or an empty object, indicating that the user closed the login window.
+          // For more info, see https://github.com/dockstore/dockstore-ui2/pull/1888
           if ('status' in error) {
             this.alertService.detailedError(error);
           } else {
