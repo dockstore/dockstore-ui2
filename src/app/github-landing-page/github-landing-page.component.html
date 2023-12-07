@@ -15,16 +15,17 @@
   -->
 
 <div class="overflow-hidden">
-  <div class="mb-5 w-100">
-    <div class="container">
-      <div>
-        <h3>Please wait while we register your GitHub repository. This may take a few minutes.</h3>
-      </div>
+  <div class="mb-5 w-100 landing-page-container">
+    <div class="header-container w-100">
+      <h3>Please wait while we register your GitHub repository. This may take a few minutes.</h3>
+      <button class="back-button" mat-stroked-button color="primary" type="button" (click)="goBackToMyWorkflows()">
+        <mat-icon>chevron_left</mat-icon> Return to Dashboard
+      </button>
     </div>
     <hr />
 
-    <div class="w-100 cards-container" fxLayout="row" fxLayoutAlign="space-evenly center">
-      <mat-card class="landing-page-card h-100" fxFlex.lt-md="100" fxLayout="column" fxLayoutAlign="center center">
+    <div class="w-100 cards-container" fxLayout="row" fxLayoutAlign="space-evenly stretch">
+      <mat-card class="landing-page-card h-100">
         <mat-card-header>
           <mat-card-title>Do you have a .dockstore.yml file in your repo?</mat-card-title>
         </mat-card-header>
@@ -55,7 +56,7 @@
         </mat-card-content>
       </mat-card>
 
-      <mat-card class="landing-page-card" fxLayout="column" fxLayoutAlign="center center">
+      <mat-card class="landing-page-card">
         <mat-card-header>
           <mat-card-title class="ml-2">Tips and Tricks</mat-card-title>
         </mat-card-header>
@@ -84,5 +85,13 @@
         </mat-card-content>
       </mat-card>
     </div>
+    <p class="w-100 docs-link-text">
+      For more information on registering, please visit our
+      <a
+        target="_blank"
+        href="https://docs.dockstore.org/en/stable/getting-started/dockstore-workflows.html#register-a-workflow-on-dockstore"
+        >docs.</a
+      >
+    </p>
   </div>
 </div>

@@ -12,7 +12,7 @@ import { RegisterGithubAppModalComponent } from '../../workflow/register-workflo
 })
 export class RegisterGithubAppComponent {
   public Dockstore = Dockstore;
-  public gitHubAppInstallationLink$ = this.sessionQuery.gitHubAppInstallationLink$;
+  public gitHubAppInstallationLink$ = this.sessionQuery.gitHubAppInstallationLandingPageLink$;
   public isUsernameChangeRequired$ = this.userQuery.isUsernameChangeRequired$;
   @Input() public entryType: string;
 
@@ -26,13 +26,11 @@ export class RegisterGithubAppComponent {
   public registerGitHubApp(observable) {
     observable.subscribe(
       (response) => {
-        window.open(response, '_blank');
+        window.open(response, '_self');
       },
       (error) => {
         console.log('GitHub Apps registration error: ' + error);
       }
     );
-    this.parentDialogRef.close();
-    this.router.navigate(['/github-landing-page']);
   }
 }
