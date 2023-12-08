@@ -218,10 +218,18 @@ export class InfoTabService {
   getTRSLink(path: string, versionName: string, descriptorType: string, descriptorPath: string, entryType: EntryType): string {
     return (
       `${Dockstore.API_URI}${ga4ghPath}/tools/${encodeURIComponent(this.getTRSIDFromPath(path, entryType))}` +
-      `/versions/${encodeURIComponent(versionName)}/PLAIN_` +
-      descriptorType.toUpperCase() +
+      `/versions/${encodeURIComponent(versionName)}/` +
+      this.getTRSPlainType(descriptorType) +
       `/descriptor/` +
       descriptorPath
+    );
+  }
+
+  getTRSPlainType(dockstoreDescriptorType: string): string {
+    const trsDescriptorType = this.descriptorTypeCompatService.stringToDescriptorType(dockstoreDescriptorType);
+    return (
+      this.descriptorTypeCompatService.toolDescriptorTypeEnumToPlainTRS(trsDescriptorType) ??
+      `PLAIN_${dockstoreDescriptorType.toUpperCase()}`
     );
   }
 

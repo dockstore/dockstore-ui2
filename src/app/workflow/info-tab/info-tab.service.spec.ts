@@ -59,4 +59,14 @@ describe('ValueService', () => {
     expect(service.getTRSId(sampleWorkflow3, EntryType.Service)).toBe(`#service/${fullWorkflowPath}`);
     expect(service.getTRSId(null, EntryType.BioWorkflow)).toBe('');
   });
+
+  it(`getTRSPlainType should work for various descriptor types`, () => {
+    service = TestBed.inject(InfoTabService);
+    expect(service.getTRSPlainType('CWL')).toBe('PLAIN_CWL');
+    expect(service.getTRSPlainType('WDL')).toBe('PLAIN_WDL');
+    expect(service.getTRSPlainType('NFL')).toBe('PLAIN_NFL');
+    expect(service.getTRSPlainType('gxformat2')).toBe('PLAIN_GALAXY');
+    expect(service.getTRSPlainType('jupyter')).toBe('PLAIN_JUPYTER');
+    expect(service.getTRSPlainType('bogus')).toBe('PLAIN_BOGUS');
+  });
 });
