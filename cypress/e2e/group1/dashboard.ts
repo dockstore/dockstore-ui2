@@ -85,3 +85,11 @@ describe('should display added notebook correctly', () => {
     cy.get('[data-cy=dashboard-entry-links]').contains('simple-notebook');
   });
 });
+
+describe('landing page should redirect back to dashboard when button clicked', () => {
+  it('should go back to dashboard', () => {
+    cy.visit('/github-landing-page');
+    cy.get('[data-cy=back-to-dashboard-button]').click();
+    cy.url().should('include', '/dashboard');
+  });
+});

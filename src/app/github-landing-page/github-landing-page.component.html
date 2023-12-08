@@ -18,7 +18,14 @@
   <div class="mb-5 w-100 landing-page-container">
     <div class="header-container w-100">
       <h3>Please wait while we register your GitHub repository. This may take a few minutes.</h3>
-      <button class="back-button" mat-stroked-button color="primary" type="button" (click)="goBackToMyWorkflows()">
+      <button
+        class="back-button"
+        data-cy="back-to-dashboard-button"
+        mat-stroked-button
+        color="primary"
+        type="button"
+        (click)="goBackToMyWorkflows()"
+      >
         <mat-icon>chevron_left</mat-icon> Return to Dashboard
       </button>
     </div>
