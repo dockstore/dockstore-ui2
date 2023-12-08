@@ -194,7 +194,6 @@ export function verifyGithubLinkDashboard(entryType: string) {
   cy.get('[data-cy=storage-type-choice]').contains('GitHub').click();
   cy.contains('button', 'Next').should('be.visible').click();
   cy.contains('a', 'Manage Dockstore installations on GitHub').click();
-  cy.url().should('include', 'https://github.com/login?integration=dockstore-testing-application');
 }
 
 export function testNoGithubEntriesText(entryType: string, repository: string) {

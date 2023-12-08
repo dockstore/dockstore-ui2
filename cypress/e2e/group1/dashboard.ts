@@ -59,6 +59,12 @@ describe('Dockstore dashboard', () => {
     verifyGithubLinkDashboard('Workflow');
   });
 
+  it('should go back to dashboard', () => {
+    cy.visit('/github-landing-page');
+    cy.get('[data-cy=back-to-dashboard-button]').click();
+    cy.url().should('include', '/dashboard');
+  });
+
   it('have featured content visible from dashboard', () => {
     cy.visit('/dashboard');
     checkFeaturedContent();
@@ -83,13 +89,5 @@ describe('should display added notebook correctly', () => {
     cy.contains('Notebooks');
     cy.get('[data-cy=dashboard-notebook-count-bubble]').contains(1);
     cy.get('[data-cy=dashboard-entry-links]').contains('simple-notebook');
-  });
-});
-
-describe('landing page should redirect back to dashboard when button clicked', () => {
-  it('should go back to dashboard', () => {
-    cy.visit('/github-landing-page');
-    cy.get('[data-cy=back-to-dashboard-button]').click();
-    cy.url().should('include', '/dashboard');
   });
 });
