@@ -12,14 +12,6 @@ describe('RegisterGithubAppComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [RegisterGithubAppComponent],
       imports: [HttpClientTestingModule],
-      providers: [
-        {
-          provide: MatDialogRef,
-        },
-        {
-          provide: MAT_DIALOG_DATA,
-        },
-      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(RegisterGithubAppComponent);

@@ -2,9 +2,6 @@ import { Component, Input } from '@angular/core';
 import { Dockstore } from '../dockstore.model';
 import { SessionQuery } from '../session/session.query';
 import { UserQuery } from '../user/user.query';
-import { Router } from '@angular/router';
-import { MatDialogRef } from '@angular/material/dialog';
-import { RegisterGithubAppModalComponent } from '../../workflow/register-workflow-modal/register-github-app-modal/register-github-app-modal.component';
 
 @Component({
   selector: 'app-register-github-app',
