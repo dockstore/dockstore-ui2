@@ -46,19 +46,20 @@
           </div>
 
           <pre>
-          version: 1.2
-          workflows:
+      version: 1.2
+      workflows:
           - subclass: &lt;CWL | WDL | NFL | GALAXY&gt;
-          primaryDescriptorPath: &lt;String&gt;
-          testParameterFiles: &lt;String Array&gt;
-          readMePath: &lt;String&gt;
+          primaryDescriptorPath: &lt;String&gt;  # absolute path
+          testParameterFiles: &lt;String Array&gt;  # absolute path
+          readMePath: &lt;String&gt; # absolute path
           authors:
-          - name: &lt;String&gt;
-          email: &lt;String&gt;
+              - name: &lt;String&gt;
+                email: &lt;String&gt;
           </pre>
 
           <div class="landing-page-card-content-text">
-            Always use absolute paths to specify the primary descriptor, test parameter, and readMePath files.
+            Note: the first line of this file references the version of .dockstore.yml syntax being used, not the version/tag of the
+            workflow/tool/service/notebook it describes
           </div>
         </mat-card-content>
       </mat-card>
@@ -79,10 +80,6 @@
             <li>
               The Dockstore Yaml Command Line Validator Tool can be used with the following command in the Dockstore CLI,
               <pre>dockstore yaml validate --path directory/of/.dockstore.yml</pre>
-            </li>
-            <li>
-              The first line of a <code>.dockstore.yml</code> file references the version of <code>.dockstore.yml</code> syntax being used,
-              not the version/tag of the workflow/tool/service/notebook it describes
             </li>
             <li>
               You can use a single <code>.dockstore.yml</code> file to register multiple tools, workflows, and notebooks, provided they are
