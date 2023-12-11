@@ -32,12 +32,12 @@
     <hr />
 
     <div class="w-100 cards-container" fxLayout="row" fxLayoutAlign="space-evenly stretch">
-      <mat-card class="landing-page-card h-100">
+      <mat-card class="landing-page-card">
         <mat-card-header>
           <mat-card-title>Do you have a .dockstore.yml file in your repo?</mat-card-title>
         </mat-card-header>
         <mat-divider></mat-divider>
-        <mat-card-content class="h-100 landing-page-card-content">
+        <mat-card-content class="h-100 landing-page-card-content dockstoreyml-repo-card-content">
           <div class="landing-page-card-content-text">
             If you haven’t already, please create a .dockstore.yml file in your repo. This way, your workflows will be kept up-to-date
             automatically. <br />
@@ -77,16 +77,17 @@
             </li>
             <li>Put the .dockstore.yml file in the top of your repo or inside the <code>.github/</code> directory</li>
             <li>
-              If you have multiple workflows/tools/notebooks in a single GitHub repository, each one needs a unique name, and recommended to
-              give each one a unique <code>readMePath</code> too.
+              The Dockstore Yaml Command Line Validator Tool can be used with the following command in the Dockstore CLI,
+              <pre>dockstore yaml validate --path directory/of/.dockstore.yml</pre>
             </li>
             <li>
               The first line of a <code>.dockstore.yml</code> file references the version of <code>.dockstore.yml</code> syntax being used,
               not the version/tag of the workflow/tool/service/notebook it describes
             </li>
             <li>
-              You can use a single <code>.dockstore.yml</code> file to register multiple tools, workflows, services, and notebooks, provided
-              they are all in the same repo as the <code>.dockstore.yml</code> file
+              You can use a single <code>.dockstore.yml</code> file to register multiple tools, workflows, and notebooks, provided they are
+              all in the same repo as the <code>.dockstore.yml</code> file. If you do so, each one needs a unique name, and recommended to
+              give each one a unique <code>readMePath</code> too.
             </li>
           </ul>
         </mat-card-content>
@@ -97,7 +98,7 @@
       <a
         target="_blank"
         rel="noopener noreferrer"
-        href="https://docs.dockstore.org/en/stable/getting-started/dockstore-workflows.html#register-a-workflow-on-dockstore"
+        [href]="Dockstore.DOCUMENTATION_URL + 'getting-started/dockstore-workflows.html#register-a-workflow-on-dockstore'"
         >docs.</a
       >
     </p>
