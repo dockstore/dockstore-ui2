@@ -243,26 +243,19 @@
                     <img src="../assets/svg/icons-reject-small.svg" alt="Cancel" class="pr-2 pb-1" />Cancel
                   </button>
                   <button
-                    *ngIf="!workflow?.topic && !topicEditing"
                     [disabled]="
-                      forumUrlEditing || workflowPathEditing || defaultTestFilePathEditing || (isRefreshing$ | async) || !canWrite
+                      forumUrlEditing ||
+                      workflowPathEditing ||
+                      defaultTestFilePathEditing ||
+                      (isRefreshing$ | async) ||
+                      !canWrite ||
+                      workflow?.mode === WorkflowType.ModeEnum.DOCKSTOREYML
                     "
                     type="button"
                     mat-raised-button
                     class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
                     (click)="toggleEditTopic()"
-                    data-cy="topicEditButton"
-                  >
-                    <img src="../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit Topic Manual" />Edit
-                  </button>
-                  <button
-                    *ngIf="workflow?.topic || topicEditing"
-                    [disabled]="!canWrite || workflow?.mode === WorkflowType.ModeEnum.DOCKSTOREYML"
-                    type="button"
-                    mat-raised-button
-                    class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
-                    (click)="toggleEditTopic()"
-                    data-cy="topicSaveButton"
+                    [attr.data-cy]="topicEditing ? 'topicSaveButton' : 'topicEditButton'"
                     [matTooltip]="
                       workflow?.mode === WorkflowType.ModeEnum.DOCKSTOREYML
                         ? 'Edit the manual topic for this ' +
