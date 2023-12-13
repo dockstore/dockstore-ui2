@@ -170,7 +170,7 @@ describe('GitHub App Tools', () => {
       cy.contains('button', 'Refresh Version').should('be.disabled');
 
       // Fix hiding a version. You have to refresh the page to see that it was hidden in the table
-      cy.contains('Edit').click();
+      cy.contains('Edit Info').click();
       cy.contains('Edit Tool');
       cy.contains('Tool Path');
       cy.get('[type="checkbox"]').check();
@@ -178,7 +178,7 @@ describe('GitHub App Tools', () => {
       cy.get('[data-cy=valid').should('exist');
       cy.get('[data-cy=hidden').should('exist');
       cy.contains('button', 'Actions').should('be.visible').click();
-      cy.contains('Edit').click();
+      cy.contains('Edit Info').click();
       cy.get('[type="checkbox"]').uncheck();
       cy.get('[data-cy=save-version]').click();
       cy.get('[data-cy=hidden').should('not.exist');
