@@ -51,7 +51,7 @@
     </ng-container>
     <ng-container matColumnDef="author">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Author</mat-header-cell>
-      <mat-cell class="duration-cell" *matCellDef="let workflow">{{ workflow?.author || 'n/a' }}</mat-cell>
+      <mat-cell class="duration-cell" *matCellDef="let workflow">{{ workflow?.authors[0]?.name || 'n/a' }}</mat-cell>
     </ng-container>
     <ng-container matColumnDef="descriptorType">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Format</mat-header-cell>
