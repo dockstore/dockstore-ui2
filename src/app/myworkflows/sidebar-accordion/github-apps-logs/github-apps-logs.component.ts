@@ -109,7 +109,7 @@ export class GithubAppsLogsComponent extends Base implements OnInit, AfterViewIn
           this.paginator.pageIndex * this.paginator.pageSize, // set offset to the new pageIndex * the page size
           this.paginator.pageSize,
           this.pageFilter,
-          this.sortDirection,
+          this.mapSortOrder(this.sortDirection),
           this.sortCol
         );
         this.paginatorService.setPaginator(this.type, this.paginator.pageSize, this.paginator.pageIndex);
@@ -133,7 +133,13 @@ export class GithubAppsLogsComponent extends Base implements OnInit, AfterViewIn
         takeUntil(this.ngUnsubscribe)
       )
       .subscribe(() => {
-        this.loadEvents(this.paginator.pageIndex, this.paginator.pageSize, this.pageFilter, this.sort.direction, this.sortCol);
+        this.loadEvents(
+          this.paginator.pageIndex,
+          this.paginator.pageSize,
+          this.pageFilter,
+          this.mapSortOrder(this.sortDirection),
+          this.sortCol
+        );
       });
 
     // Handle input text field changes
@@ -149,7 +155,13 @@ export class GithubAppsLogsComponent extends Base implements OnInit, AfterViewIn
         takeUntil(this.ngUnsubscribe)
       )
       .subscribe(() => {
-        this.loadEvents(this.paginator.pageIndex, this.paginator.pageSize, this.pageFilter, this.sort.direction, this.sortCol);
+        this.loadEvents(
+          this.paginator.pageIndex,
+          this.paginator.pageSize,
+          this.pageFilter,
+          this.mapSortOrder(this.sortDirection),
+          this.sortCol
+        );
       });
   }
 
@@ -209,5 +221,23 @@ export class GithubAppsLogsComponent extends Base implements OnInit, AfterViewIn
     } else {
       this.showContent = 'table';
     }
+  }
+
+  mapSortOrder(rawSortOrder: string): 'asc' | 'desc' {
+    let direction: 'asc' | 'desc';
+    switch (this.sort.direction) {
+      case 'asc': {
+        direction = 'asc';
+        break;
+      }
+      case 'desc': {
+        direction = 'desc';
+        break;
+      }
+      default: {
+        direction = 'desc';
+      }
+    }
+    return direction;
   }
 }
