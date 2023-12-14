@@ -125,7 +125,7 @@ export class GithubAppsLogsComponent extends Base implements OnInit, AfterViewIn
           } else {
             this.sortCol = this.sort.active;
           }
-          if (this.sort.direction == '') {
+          if (this.sort.direction === '') {
             this.sortCol = null;
             this.sortDirection = null;
           }
