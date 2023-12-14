@@ -18,7 +18,7 @@ import { OrgToolObject } from '../mytools/my-tool/my-tool.component';
 import { Hit } from '../search/state/search.service';
 import { ExtendedDockstoreTool } from '../shared/models/ExtendedDockstoreTool';
 import { ExtendedWorkflow } from '../shared/models/ExtendedWorkflow';
-import { VersionVerifiedPlatform, Tag, WorkflowVersion } from '../shared/openapi';
+import { VersionVerifiedPlatform, Tag, WorkflowVersion, Author } from '../shared/openapi';
 import { Notification } from '../shared/openapi/model/notification';
 import { DockstoreTool } from './../shared/openapi/model/dockstoreTool';
 import { SourceFile } from './../shared/openapi/model/sourceFile';
@@ -155,6 +155,13 @@ export const sampleToolVersion: Tag = {
   name: 'master',
 };
 
+export const sampleAuthorsArray: Array<Author> = [
+  {
+    email: 'sampleEmail',
+    name: 'sampleName',
+  },
+];
+
 export const sampleTool1: DockstoreTool = {
   id: 1,
   default_cwl_path: 'sampleDefaultCWLPath',
@@ -163,6 +170,7 @@ export const sampleTool1: DockstoreTool = {
   gitUrl: 'sampleGitUrl',
   mode: DockstoreTool.ModeEnum.MANUALIMAGEPATH,
   name: 'sampleName',
+  authors: sampleAuthorsArray,
   namespace: 'sampleNamespace',
   private_access: false,
   registry_string: 'quay.io',

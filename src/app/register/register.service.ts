@@ -33,8 +33,15 @@ export class RegisterService {
           observable.next(user);
           observable.complete();
         },
-        (error: HttpErrorResponse) => {
-          this.alertService.detailedError(error);
+        (error: HttpErrorResponse | {}) => {
+          // Error will be an HttpErrorResponse, typically from the webservice,
+          // or an empty object, indicating that the user closed the login window.
+          // For more info, see https://github.com/dockstore/dockstore-ui2/pull/1888
+          if ('status' in error) {
+            this.alertService.detailedError(error);
+          } else {
+            this.alertService.customDetailedError('Registration failed', 'Could not register on Dockstore.');
+          }
         }
       );
     });
