@@ -54,13 +54,6 @@ describe('Test AWS Managed Common Rule Set', () => {
       expect(resp.status).to.eq(403);
     });
   });
-  // EC2MetaDataSSRF_URIPATH 	Inspects for attempts to exfiltrate Amazon EC2 metadata from the request URI path.
-  // it('Try a URL that SHOULD be blocked if EC2MetaDataSSRF_URIPATH were turned on', () => {
-  //   const uglyUrl = '/PARAM=127.0.0.1+-c+0%3B+cat+%2Fetc%2Fpasswd&DIAGNOSIS=PING';
-  //   cy.request({ url: uglyUrl, failOnStatusCode: false }).then((resp) => {
-  //     expect(resp.status).to.eq(403);
-  //   });
-  // });
   // GenericLFI_URIPATH 	Inspects for the presence of Local File Inclusion (LFI) exploits in the URI path.
   // Examples include path traversal attempts using techniques like ../../.
   // We definitely want URLs like this to work
