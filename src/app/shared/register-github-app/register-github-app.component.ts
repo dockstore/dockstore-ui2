@@ -16,17 +16,12 @@ export class RegisterGithubAppComponent {
   public isUsernameChangeRequired$ = this.userQuery.isUsernameChangeRequired$;
   @Input() public entryType: string;
 
-  constructor(
-    private sessionQuery: SessionQuery,
-    private userQuery: UserQuery,
-    private router: Router,
-    public parentDialogRef: MatDialogRef<RegisterGithubAppModalComponent>
-  ) {}
+  constructor(private sessionQuery: SessionQuery, private userQuery: UserQuery) {}
 
   public registerGitHubApp(observable) {
     observable.subscribe(
       (response) => {
-        window.open(response, '_blank', 'noopener, noreferrer');
+        window.open(response, '_blank', 'noopener,noreferrer');
       },
       (error) => {
         console.log('GitHub Apps registration error: ' + error);

@@ -9,10 +9,4 @@ import { Router } from '@angular/router';
 })
 export class GithubLandingPageComponent {
   Dockstore = Dockstore;
-
-  constructor(private router: Router) {}
-
-  public goBackToMyWorkflows() {
-    this.router.navigate(['/dashboard']);
-  }
 }
