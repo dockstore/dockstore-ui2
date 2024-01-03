@@ -103,7 +103,7 @@ jobs:
           fi
           
       - name: Save accessibility results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: accessibility-results
           path: accessibility-results/
