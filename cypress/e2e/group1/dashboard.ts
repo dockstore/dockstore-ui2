@@ -59,12 +59,6 @@ describe('Dockstore dashboard', () => {
     verifyGithubLinkDashboard('Workflow');
   });
 
-  it('should go back to dashboard', () => {
-    cy.visit('/github-landing-page');
-    cy.get('[data-cy=back-to-dashboard-button]').click();
-    cy.url().should('include', '/dashboard');
-  });
-
   it('have featured content visible from dashboard', () => {
     cy.visit('/dashboard');
     checkFeaturedContent();

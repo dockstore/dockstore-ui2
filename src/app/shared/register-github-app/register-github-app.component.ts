@@ -32,7 +32,5 @@ export class RegisterGithubAppComponent {
         console.log('GitHub Apps registration error: ' + error);
       }
     );
-    this.parentDialogRef.close();
-    this.router.navigate(['/github-landing-page']);
   }
 }
