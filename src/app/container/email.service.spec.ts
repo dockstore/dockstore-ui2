@@ -1,4 +1,5 @@
 import { inject, TestBed } from '@angular/core/testing';
+import { Author } from '../shared/openapi';
 
 import { sampleTool1 } from '../test/mocked-objects';
 import { DockstoreService } from './../shared/dockstore.service';
@@ -13,10 +14,18 @@ describe('Service: Email', () => {
     });
   });
 
+  const sampleAuthorsArray: Array<Author> = [
+    {
+      email: 'fake@email.ca',
+      name: 'sampleName',
+    },
+  ];
+
   const tool: ExtendedDockstoreTool = {
     ...sampleTool1,
     tool_maintainer_email: 'fake@maintainer.email.ca',
     email: 'fake@email.ca',
+    authors: sampleAuthorsArray,
     registry_string: 'registry.hub.docker.com',
     registry: DockstoreTool.RegistryEnum.DOCKERHUB,
     imgProvider: 'Docker Hub',
