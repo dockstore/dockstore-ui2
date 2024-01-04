@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { Dockstore } from '../shared/dockstore.model';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-github-landing-page',
