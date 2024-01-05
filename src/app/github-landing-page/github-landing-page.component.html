@@ -25,12 +25,12 @@
     <div class="w-100 cards-container" fxLayout="row" fxLayoutAlign="space-evenly stretch">
       <mat-card class="landing-page-card">
         <mat-card-header>
-          <mat-card-title>Do you have a .dockstore.yml file in your repo?</mat-card-title>
+          <mat-card-title>Do you have a .dockstore.yml file in your repository?</mat-card-title>
         </mat-card-header>
         <mat-divider></mat-divider>
         <mat-card-content class="h-100 landing-page-card-content dockstoreyml-repo-card-content">
           <div class="landing-page-card-content-text">
-            If you haven’t already, please create a .dockstore.yml file in your repo. This way, your workflows will be kept up-to-date
+            If you haven’t already, please create a .dockstore.yml file in your repository. This way, your workflows will be kept up-to-date
             automatically. <br />
 
             Here is the .dockstore.yml template:
@@ -67,16 +67,16 @@
             <li>
               Make sure your file is saved as <code>.dockstore.yml</code>, not <code>dockstore.yml</code> nor <code>.dockstore.yaml</code>
             </li>
-            <li>Put the .dockstore.yml file in the top of your repo or inside the <code>.github/</code> directory</li>
+            <li>Put the .dockstore.yml file in the top of your repository or inside the <code>.github/</code> directory</li>
             <li>
-              <a href="https://qa.dockstore.org/quick-start">The Dockstore Yaml Command Line Validator Tool</a> can be used with the
-              following command in the Dockstore CLI,
+              <a [routerLink]="['/quick-start']">The Dockstore Yaml Command Line Validator Tool</a> can be used with the following command
+              in the Dockstore CLI,
               <pre>dockstore yaml validate --path directory/of/.dockstore.yml</pre>
             </li>
             <li>
               You can use a single <code>.dockstore.yml</code> file to register multiple tools, workflows, and notebooks, provided they are
-              all in the same repo as the <code>.dockstore.yml</code> file. If you do so, each one needs a unique name, it is recommended to
-              give each one a unique <code>readMePath</code> too.
+              all in the same repository as the <code>.dockstore.yml</code> file. If you do so, each one needs a unique name, it is
+              recommended to give each one a unique <code>readMePath</code> too.
             </li>
           </ul>
         </mat-card-content>

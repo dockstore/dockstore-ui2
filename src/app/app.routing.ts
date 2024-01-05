@@ -146,7 +146,7 @@ const APP_ROUTES: Routes = [
   { path: 'maintenance', component: MaintenanceComponent, data: { title: 'Dockstore | Maintenance' } },
   { path: 'funding', component: FundingComponent, data: { title: 'Dockstore | Funding' } },
   { path: 'sitemap', component: SitemapComponent, data: { title: 'Dockstore | Sitemap' } },
-  { path: 'github-landing-page', component: GithubLandingPageComponent, data: { title: 'Dockstore | Landing Page' } },
+  { path: 'github-landing-page', component: GithubLandingPageComponent, data: { title: 'Dockstore | GitHub Apps Landing Page' } },
   { path: 'users', loadChildren: () => import('app/user-page/user-page.module').then((m) => m.UserPageModule) },
   {
     path: '**',
