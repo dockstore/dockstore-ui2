@@ -154,11 +154,10 @@ export class ExecutionsTabComponent extends EntryTab implements OnChanges {
       metrics?.cost !== null;
 
     if (metrics?.executionStatusCount) {
-      this.totalExecutions =
-        metrics.executionStatusCount.numberOfSuccessfulExecutions + metrics.executionStatusCount.numberOfFailedExecutions;
       this.successfulExecutions = metrics.executionStatusCount.numberOfSuccessfulExecutions;
       this.failedExecutions = metrics.executionStatusCount.numberOfFailedExecutions;
       this.abortedExecutions = metrics.executionStatusCount.numberOfAbortedExecutions;
+      this.totalExecutions = this.successfulExecutions + this.failedExecutions + this.abortedExecutions;
     }
   }
 
