@@ -57,6 +57,7 @@ export class ExecutionsTabComponent extends EntryTab implements OnChanges {
   totalExecutions: number;
   successfulExecutions: number;
   failedExecutions: number;
+  abortedExecutions: number;
   executionMetricsExist: boolean;
   // Fields for validator tool metrics
   validationsColumns: string[] = [
@@ -136,6 +137,7 @@ export class ExecutionsTabComponent extends EntryTab implements OnChanges {
     this.totalExecutions = null;
     this.successfulExecutions = null;
     this.failedExecutions = null;
+    this.abortedExecutions = null;
     this.currentPartner = null;
     this.currentValidatorTool = null;
     this.validatorTools = [];
@@ -156,6 +158,7 @@ export class ExecutionsTabComponent extends EntryTab implements OnChanges {
         metrics.executionStatusCount.numberOfSuccessfulExecutions + metrics.executionStatusCount.numberOfFailedExecutions;
       this.successfulExecutions = metrics.executionStatusCount.numberOfSuccessfulExecutions;
       this.failedExecutions = metrics.executionStatusCount.numberOfFailedExecutions;
+      this.abortedExecutions = metrics.executionStatusCount.numberOfAbortedExecutions;
     }
   }
 
