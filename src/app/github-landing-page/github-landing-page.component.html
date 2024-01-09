@@ -17,10 +17,10 @@
 <div class="overflow-hidden">
   <div class="mb-5 w-100 landing-page-container">
     <div class="header-container w-100">
-      <h3>Please wait while we register your GitHub repository. This may take a few minutes.</h3>
+      <h3>Please wait while your GitHub repository installation is being processed. This may take a few minutes.</h3>
     </div>
     <hr />
-    <h3 class="close-tab-message">You can close this tab and return to Dockstore on the original tab.</h3>
+    <h3 class="text-align-center">You can close this tab and return to Dockstore on the original tab.</h3>
 
     <div class="w-100 cards-container" fxLayout="row" fxLayoutAlign="space-evenly stretch">
       <mat-card class="landing-page-card">
@@ -28,18 +28,18 @@
           <mat-card-title>Do you have a .dockstore.yml file in your repository?</mat-card-title>
         </mat-card-header>
         <mat-divider></mat-divider>
-        <mat-card-content class="h-100 landing-page-card-content dockstoreyml-repo-card-content">
-          <div class="landing-page-card-content-text">
-            If you haven’t already, please create a .dockstore.yml file in your repository. This way, your workflows will be kept up-to-date
-            automatically. <br />
+        <mat-card-content class="h-100 landing-page-card-content">
+          <div class="text-align-center">
+            If you haven’t already, please create a <code>.dockstore.yml</code> file in your repository. This way, your workflows will be
+            kept up-to-date automatically. <br />
 
             Here is the .dockstore.yml template:
           </div>
 
           <pre>
-      version: 1.2
-      workflows:
-          - subclass: &lt;CWL | WDL | NFL | GALAXY&gt;
+    version: 1.2
+    workflows:
+        - subclass: &lt;CWL | WDL | NFL | GALAXY&gt;
           primaryDescriptorPath: &lt;String&gt;  # absolute path
           testParameterFiles: &lt;String Array&gt;  # absolute path
           readMePath: &lt;String&gt; # absolute path
@@ -49,8 +49,8 @@
           </pre>
 
           <div class="landing-page-card-content-text">
-            Note: the first line of this file references the version of .dockstore.yml syntax being used, not the version/tag of the
-            workflow/tool/service/notebook it describes
+            Note: the first line of this file references the version of <code>.dockstore.yml</code> syntax being used, not the version/tag
+            of the workflow/tool/service/notebook it describes
           </div>
         </mat-card-content>
       </mat-card>
@@ -87,7 +87,7 @@
       <a
         target="_blank"
         rel="noopener noreferrer"
-        [href]="Dockstore.DOCUMENTATION_URL + 'getting-started/github-apps/github-apps-landing-page.html'"
+        [href]="Dockstore.DOCUMENTATION_URL + '/getting-started/github-apps/github-apps-landing-page.html'"
         >docs.</a
       >
     </p>

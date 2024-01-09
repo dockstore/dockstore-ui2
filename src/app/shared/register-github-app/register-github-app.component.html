@@ -33,7 +33,9 @@
       mat-raised-button
       type="button"
       class="accent-1-dark-btn mat-elevation-z no-underline"
-      (click)="registerGitHubApp(gitHubAppInstallationLink$)"
+      [href]="gitHubAppInstallationLink$ | async"
+      target="_blank"
+      rel="noopener noreferrer"
       [disabled]="isUsernameChangeRequired$ | async"
       matTooltip="Manage Dockstore installations on GitHub"
       ><mat-icon>add</mat-icon> Manage Dockstore installations on GitHub</a

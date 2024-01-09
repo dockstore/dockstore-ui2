@@ -14,15 +14,4 @@ export class RegisterGithubAppComponent {
   @Input() public entryType: string;
 
   constructor(private sessionQuery: SessionQuery, private userQuery: UserQuery) {}
-
-  public registerGitHubApp(observable) {
-    observable.subscribe(
-      (response) => {
-        window.open(response, '_blank', 'noopener,noreferrer');
-      },
-      (error) => {
-        console.log('GitHub Apps registration error: ' + error);
-      }
-    );
-  }
 }
