@@ -2,6 +2,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { RegisterGithubAppComponent } from './register-github-app.component';
+import { MatDialogRef } from '@angular/material/dialog';
 
 describe('RegisterGithubAppComponent', () => {
   let component: RegisterGithubAppComponent;
@@ -11,6 +12,12 @@ describe('RegisterGithubAppComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [RegisterGithubAppComponent],
       imports: [HttpClientTestingModule],
+      providers: [
+        {
+          provide: MatDialogRef,
+          useValue: {},
+        },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(RegisterGithubAppComponent);

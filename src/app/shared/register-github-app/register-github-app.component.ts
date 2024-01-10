@@ -9,7 +9,7 @@ import { UserQuery } from '../user/user.query';
 })
 export class RegisterGithubAppComponent {
   public Dockstore = Dockstore;
-  public gitHubAppInstallationLink$ = this.sessionQuery.gitHubAppInstallationLink$;
+  public gitHubAppInstallationLink$ = this.sessionQuery.gitHubAppInstallationLandingPageLink$;
   public isUsernameChangeRequired$ = this.userQuery.isUsernameChangeRequired$;
   @Input() public entryType: string;
 

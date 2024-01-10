@@ -37,6 +37,7 @@ import { NewsBoxComponent } from './widget/news-box/news-box.component';
 import { MarkdownWrapperModule } from '../shared/modules/markdown-wrapper.module';
 import { PreviewWarningModule } from '../shared/modules/preview-warning.module';
 import { MastodonComponent } from '../shared/mastodon/mastodon.component';
+import { SharedWorkflowServicesNotebooksModule } from '../shared-workflow-services-notebooks/shared-workflow-services-notebooks.module';
 
 @NgModule({
   imports: [
@@ -59,6 +60,7 @@ import { MastodonComponent } from '../shared/mastodon/mastodon.component';
     MarkdownWrapperModule,
     PreviewWarningModule,
     RegisterGithubAppModule,
+    SharedWorkflowServicesNotebooksModule,
   ],
   declarations: [
     HomeComponent,

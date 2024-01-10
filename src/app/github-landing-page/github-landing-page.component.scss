@@ -1,0 +1,38 @@
+.cards-container {
+  padding: 2% 0;
+}
+
+.landing-page-card {
+  width: 40%;
+}
+
+.header-container {
+  text-align: center;
+  position: relative;
+}
+
+.back-button {
+  position: absolute;
+  bottom: 0.1em;
+  right: 10em;
+}
+
+mat-divider {
+  position: relative !important;
+}
+
+.landing-page-card-content {
+  width: 80%;
+  padding: 0 5%;
+  margin: auto;
+}
+
+.docs-link-text {
+  text-align: center;
+  font-size: 16px;
+  color: black;
+}
+
+.landing-page-container {
+  align-items: center;
+}
