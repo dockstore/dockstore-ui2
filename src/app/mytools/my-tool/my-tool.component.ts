@@ -32,6 +32,7 @@ import { AccountsService } from '../../loginComponents/accounts/external/account
 import { OrgWorkflowObject } from '../../myworkflows/my-workflow/my-workflow.component';
 import { MyWorkflowsService } from '../../myworkflows/myworkflows.service';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
+import { bootstrap4largeModalSize } from '../../shared/constants';
 import { ContainerService } from '../../shared/container.service';
 import { MyEntry, OrgEntryObject } from '../../shared/my-entry';
 import { TokenQuery } from '../../shared/state/token.query';
@@ -123,7 +124,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
 
     this.registerToolService.isModalShown.pipe(takeUntil(this.ngUnsubscribe)).subscribe((isModalShown: boolean) => {
       if (isModalShown) {
-        const dialogRef = this.dialog.open(RegisterToolComponent, { width: '600px' });
+        const dialogRef = this.dialog.open(RegisterToolComponent, { width: bootstrap4largeModalSize });
         dialogRef
           .afterClosed()
           .pipe(takeUntil(this.ngUnsubscribe))

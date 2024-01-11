@@ -122,7 +122,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
     this.username$ = this.userQuery.username$;
     this.isUsernameChangeRequired$ = this.userQuery.isUsernameChangeRequired$;
     this.isRefreshing$ = this.alertQuery.showInfo$;
-    this.gitHubAppInstallationLink$ = this.sessionQuery.gitHubAppInstallationLink$;
+    this.gitHubAppInstallationLink$ = this.sessionQuery.gitHubAppInstallationLandingPageLink$;
     this.registerWorkflowModalService.workflow.pipe(takeUntil(this.ngUnsubscribe)).subscribe((workflow: Service | BioWorkflow) => {
       this.workflow = workflow;
       this.workflowPathPlaceholder = this.getWorkflowPathPlaceholder(this.workflow.descriptorType);

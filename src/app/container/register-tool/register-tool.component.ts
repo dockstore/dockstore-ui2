@@ -166,7 +166,7 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked, OnDestro
 
   ngOnInit() {
     this.loading$ = this.sessionQuery.loadingDialog$;
-    this.gitHubAppInstallationLink$ = this.sessionQuery.gitHubAppInstallationLink$;
+    this.gitHubAppInstallationLink$ = this.sessionQuery.gitHubAppInstallationLandingPageLink$;
     this.registerToolService.toolRegisterError
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((toolRegisterError) => (this.toolRegisterError = toolRegisterError));

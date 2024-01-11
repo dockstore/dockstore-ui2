@@ -49,7 +49,7 @@ export class RegisterGithubAppModalComponent implements OnInit {
     this.username$ = this.userQuery.username$;
     this.isUsernameChangeRequired$ = this.userQuery.isUsernameChangeRequired$;
     this.isRefreshing$ = this.alertQuery.showInfo$;
-    this.gitHubAppInstallationLink$ = this.sessionQuery.gitHubAppInstallationLink$;
+    this.gitHubAppInstallationLink$ = this.sessionQuery.gitHubAppInstallationLandingPageLink$;
   }
 
   clearWorkflowRegisterError(): void {
