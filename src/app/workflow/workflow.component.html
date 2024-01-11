@@ -410,7 +410,7 @@
               </ng-template>
             </mat-tab>
           </div>
-          <mat-tab id="metricsTab" label="Metrics" *ngIf="Dockstore.FEATURES.enableMetrics">
+          <mat-tab id="metricsTab" label="Metrics">
             <app-executions-tab [entry]="workflow" [version]="selectedVersion"></app-executions-tab>
           </mat-tab>
           <mat-tab *ngIf="!isPublic() && isHosted() && isOwner" id="permissionsTab" label="Permissions">
