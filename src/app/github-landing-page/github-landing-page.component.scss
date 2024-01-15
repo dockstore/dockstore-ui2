@@ -1,9 +1,22 @@
 .cards-container {
+  display: flex;
   padding: 2% 0;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: stretch;
+
+  @media (max-width: 1300px) {
+    flex-direction: column;
+    align-items: center;
+  }
 }
 
 .landing-page-card {
-  width: 40%;
+  width: 45%;
+  @media (max-width: 1300px) {
+    width: 80%;
+    margin-bottom: 2%;
+  }
 }
 
 .header-container {
