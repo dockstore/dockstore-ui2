@@ -8,7 +8,7 @@ describe('Testing user with invalid username', () => {
   describe('Test UI for users with invalid usernames', () => {
     it('Check warnings', () => {
       const invalidUsernameUser: User = {
-        platformPartner: false,
+        platformPartner: undefined,
         isAdmin: true,
         curator: true,
         name: 'user_A',
