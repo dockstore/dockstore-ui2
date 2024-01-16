@@ -1,16 +1,9 @@
 .cards-container {
-  display: flex;
   padding: 2% 0;
-  flex-direction: row;
 }
 
 .landing-page-card {
-  width: 45%;
-
-  @media (max-width: 1279px) {
-    // 1279px is the cutoff for flex-layout's lg window size
-    width: 80%;
-  }
+  margin-bottom: 2%;
 }
 
 .header-container {
