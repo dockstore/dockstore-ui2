@@ -17,6 +17,7 @@ import { EntryToDisplayNamePipe } from '../entry-to-display-name.pipe';
 import { SearchAuthorsHtmlPipe } from 'app/search/search-authors-html.pipe';
 import { PlatformPartnerPipe } from '../entry/platform-partner.pipe';
 import { JoinWithEllipsesPipe } from 'app/search/join-with-ellipses.pipe';
+import { SecondsToHoursMinutesSecondsPipe } from 'app/workflow/executions/seconds-to-hours-minutes-seconds.pipe';
 
 const DECLARATIONS: any[] = [
   FilePathPipe,
@@ -35,6 +36,7 @@ const DECLARATIONS: any[] = [
   SearchAuthorsHtmlPipe,
   PlatformPartnerPipe,
   JoinWithEllipsesPipe,
+  SecondsToHoursMinutesSecondsPipe,
 ];
 @NgModule({
   imports: [CommonModule],

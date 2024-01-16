@@ -48,30 +48,66 @@
           <ng-container matColumnDef="minimum">
             <th mat-header-cell *matHeaderCellDef>Minimum</th>
             <td mat-cell *matCellDef="let executionMetric">
-              <span *ngIf="executionMetric.minimum" matTooltip="{{ executionMetric.minimum + ' ' + executionMetric.unit }}"
-                >{{ executionMetric.minimum | number: (executionMetric.metric === 'Cost' ? '1.2-2' : '1.0-2') }}
-                {{ executionMetric.unit }}</span
-              >
+              <span *ngIf="executionMetric.minimum !== null">
+                <!-- checking for null because minimum could be zero which is falsy -->
+                <span
+                  *ngIf="executionMetric.metric === 'Run Time'"
+                  matTooltip="{{ executionMetric.minimum | secondsToHoursMinutesSeconds }}"
+                  >{{ executionMetric.minimum | secondsToHoursMinutesSeconds }}</span
+                >
+                <span
+                  *ngIf="executionMetric.metric !== 'Run Time'"
+                  matTooltip="{{
+                    (executionMetric.minimum | number: (executionMetric.metric === 'Cost' ? '1.2-2' : '1.0-2')) + ' ' + executionMetric.unit
+                  }}"
+                  >{{ executionMetric.minimum | number: (executionMetric.metric === 'Cost' ? '1.2-2' : '1.0-2') }}
+                  {{ executionMetric.unit }}</span
+                >
+              </span>
             </td>
           </ng-container>
 
           <ng-container matColumnDef="average">
             <th mat-header-cell *matHeaderCellDef>Average</th>
             <td mat-cell *matCellDef="let executionMetric">
-              <span *ngIf="executionMetric.average" matTooltip="{{ executionMetric.average + ' ' + executionMetric.unit }}"
-                >{{ executionMetric.average | number: (executionMetric.metric === 'Cost' ? '1.2-2' : '1.0-2') }}
-                {{ executionMetric.unit }}</span
-              >
+              <span *ngIf="executionMetric.average !== null">
+                <!-- checking for null because average could be zero which is falsy -->
+                <span
+                  *ngIf="executionMetric.metric === 'Run Time'"
+                  matTooltip="{{ executionMetric.average | secondsToHoursMinutesSeconds }}"
+                  >{{ executionMetric.average | secondsToHoursMinutesSeconds }}</span
+                >
+                <span
+                  *ngIf="executionMetric.metric !== 'Run Time'"
+                  matTooltip="{{
+                    (executionMetric.average | number: (executionMetric.metric === 'Cost' ? '1.2-2' : '1.0-2')) + ' ' + executionMetric.unit
+                  }}"
+                  >{{ executionMetric.average | number: (executionMetric.metric === 'Cost' ? '1.2-2' : '1.0-2') }}
+                  {{ executionMetric.unit }}</span
+                >
+              </span>
             </td>
           </ng-container>
 
           <ng-container matColumnDef="maximum">
             <th mat-header-cell *matHeaderCellDef>Maximum</th>
             <td mat-cell *matCellDef="let executionMetric">
-              <span *ngIf="executionMetric.maximum" matTooltip="{{ executionMetric.maximum + ' ' + executionMetric.unit }}"
-                >{{ executionMetric.maximum | number: (executionMetric.metric === 'Cost' ? '1.2-2' : '1.0-2') }}
-                {{ executionMetric.unit }}</span
-              >
+              <span *ngIf="executionMetric.maximum !== null">
+                <!-- checking for null because maximum could be zero which is falsy -->
+                <span
+                  *ngIf="executionMetric.metric === 'Run Time'"
+                  matTooltip="{{ executionMetric.maximum | secondsToHoursMinutesSeconds }}"
+                  >{{ executionMetric.maximum | secondsToHoursMinutesSeconds }}</span
+                >
+                <span
+                  *ngIf="executionMetric.metric !== 'Run Time'"
+                  matTooltip="{{
+                    (executionMetric.maximum | number: (executionMetric.metric === 'Cost' ? '1.2-2' : '1.0-2')) + ' ' + executionMetric.unit
+                  }}"
+                  >{{ executionMetric.maximum | number: (executionMetric.metric === 'Cost' ? '1.2-2' : '1.0-2') }}
+                  {{ executionMetric.unit }}</span
+                >
+              </span>
             </td>
           </ng-container>
 
