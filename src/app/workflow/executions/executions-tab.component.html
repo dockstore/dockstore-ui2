@@ -26,11 +26,17 @@
     <mat-card-content class="pt-3">
       <div *ngIf="!executionMetricsExist">No execution metrics exist</div>
       <div *ngIf="executionMetricsExist">
-        <div data-cy="execution-metrics-total-executions-div" fxLayout="row" fxLayoutGap="2rem">
-          <div><strong>Total executions: </strong>{{ totalExecutions }}</div>
-          <div><strong>Successful executions: </strong>{{ successfulExecutions }}</div>
-          <div><strong>Failed executions: </strong>{{ failedExecutions }}</div>
-          <div><strong>Aborted executions: </strong>{{ abortedExecutions }}</div>
+        <div
+          data-cy="execution-metrics-total-executions-div"
+          fxLayout="row"
+          fxLayout.lt-md="column"
+          fxLayoutGap="2rem"
+          fxLayoutGap.lt-md="0rem"
+        >
+          <div><strong>Total executions: </strong>{{ totalExecutions | number }}</div>
+          <div><strong>Successful executions: </strong>{{ successfulExecutions | number }}</div>
+          <div><strong>Failed executions: </strong>{{ failedExecutions | number }}</div>
+          <div><strong>Aborted executions: </strong>{{ abortedExecutions | number }}</div>
         </div>
         <table
           mat-table
