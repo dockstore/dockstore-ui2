@@ -129,7 +129,7 @@
 "infer-owner@1.0.4","ISC","https://github.com/npm/infer-owner"
 "inflight@1.0.6","ISC","https://github.com/npm/inflight"
 "inherits@2.0.4","ISC","https://github.com/isaacs/inherits"
-"ini@1.3.5","ISC","https://github.com/isaacs/ini"
+"ini@1.3.8","ISC","https://github.com/isaacs/ini"
 "ini@4.1.1","ISC","https://github.com/npm/ini"
 "internmap@2.0.3","ISC","https://github.com/mbostock/internmap"
 "ip@1.1.5","MIT","https://github.com/indutny/node-ip"
