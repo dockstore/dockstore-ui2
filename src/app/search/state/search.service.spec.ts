@@ -140,7 +140,7 @@ describe('SearchService', () => {
       ...a,
       author: 'B',
       full_workflow_path: 'Bcd',
-      starredUsers: [{ isAdmin: false, curator: false, platformPartner: false, setupComplete: true }],
+      starredUsers: [{ isAdmin: false, curator: false, platformPartner: null, setupComplete: true }],
     };
 
     const c: Workflow = { ...a, author: null, full_workflow_path: null, descriptorType: Workflow.DescriptorTypeEnum.WDL };

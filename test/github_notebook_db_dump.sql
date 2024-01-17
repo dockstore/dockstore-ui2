@@ -23,8 +23,8 @@ COPY public.entry_defaultpaths (entry_id, path, filetype) FROM stdin;
 -- Data for Name: notebook; Type: TABLE DATA; Schema: public; Owner: dockstore
 --
 
-COPY public.notebook (id, author, conceptdoi, dbcreatedate, dbupdatedate, description, email, giturl, ispublished, lastmodified, lastupdated, licensename, topicid, checkerid, descriptortype, descriptortypesubclass, forumurl, mode, organization, repository, sourcecontrol, workflowname, actualdefaultversion, topicautomatic, topicmanual, topicselection, waseverpublic) FROM stdin;
-1000	\N	\N	2023-03-16 16:38:14.926	2023-03-16 16:38:14.994	\N	\N	git@github.com:dockstore-testing/simple-notebook.git	t	2023-02-14 14:43:15	2023-03-16 16:38:13.8	\N	\N	\N	jupyter	python	\N	DOCKSTORE_YML	dockstore-testing	simple-notebook	github.com	\N	\N	\N	\N	AUTOMATIC	t
+COPY public.notebook (id, conceptdoi, dbcreatedate, dbupdatedate, description, giturl, ispublished, lastmodified, lastupdated, licensename, topicid, checkerid, descriptortype, descriptortypesubclass, forumurl, mode, organization, repository, sourcecontrol, workflowname, actualdefaultversion, topicautomatic, topicmanual, topicselection, waseverpublic) FROM stdin;
+1000	\N	2023-03-16 16:38:14.926	2023-03-16 16:38:14.994	\N	git@github.com:dockstore-testing/simple-notebook.git	t	2023-02-14 14:43:15	2023-03-16 16:38:13.8	\N	\N	\N	jupyter	python	\N	DOCKSTORE_YML	dockstore-testing	simple-notebook	github.com	\N	\N	\N	\N	AUTOMATIC	t
 \.
 
 --

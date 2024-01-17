@@ -4,12 +4,12 @@ describe('Dockstore Metrics', () => {
   insertNotebooks();
   setTokenUserViewPort();
   it('Should see no metrics banner', () => {
-    cy.visit('/workflows/github.com/A/l:master?metrics');
+    cy.visit('/workflows/github.com/A/l:master');
     cy.get('.mat-tab-header-pagination-after').click();
     goToTab('Metrics');
     cy.get('[data-cy=no-metrics-banner]').should('be.visible');
 
-    cy.visit('/notebooks/github.com/dockstore-testing/simple-notebook?metrics');
+    cy.visit('/notebooks/github.com/dockstore-testing/simple-notebook');
     goToTab('Metrics');
     cy.get('[data-cy=no-metrics-banner]').should('be.visible');
   });
@@ -21,7 +21,7 @@ describe('Dockstore Metrics', () => {
         statusCode: 200,
       }).as('getMetrics');
     });
-    cy.visit('/workflows/github.com/A/l:master?metrics');
+    cy.visit('/workflows/github.com/A/l:master');
     cy.get('.mat-tab-header-pagination-after').click();
     cy.wait('@getMetrics');
     goToTab('Metrics');

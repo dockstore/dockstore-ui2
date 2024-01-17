@@ -104,6 +104,5 @@ export class Dockstore {
     enableLaunchWithGalaxy: true,
     enableMultiCloudLaunchWithDNAstack: false,
     enableOrcidExport: true,
-    enableMetrics: false,
   };
 }
