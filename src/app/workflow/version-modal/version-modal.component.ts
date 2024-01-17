@@ -25,7 +25,7 @@ import { formInputDebounceTime } from '../../shared/constants';
 import { DateService } from '../../shared/date.service';
 import { SessionQuery } from '../../shared/session/session.query';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
-import { AppTool, BioWorkflow, ToolDescriptor } from '../../shared/openapi';
+import { AppTool, BioWorkflow, ToolDescriptor, VersionVerifiedPlatform } from '../../shared/openapi';
 import { SourceFile } from '../../shared/openapi/model/sourceFile';
 import { Workflow } from '../../shared/openapi/model/workflow';
 import { WorkflowVersion } from '../../shared/openapi/model/workflowVersion';
@@ -33,11 +33,14 @@ import { Tooltip } from '../../shared/tooltip';
 import { formErrors, validationDescriptorPatterns, validationMessages } from '../../shared/validationMessages.model';
 import { VersionModalService } from './version-modal.service';
 import { EntryType } from '../../shared/enum/entry-type';
+import { DockstoreService } from 'app/shared/dockstore.service';
 
 export interface Dialogdata {
   canRead: boolean;
   canWrite: boolean;
   isOwner: boolean;
+  verifiedVersionPlatforms: Array<VersionVerifiedPlatform>;
+  verifiedSources: Array<any>;
 }
 
 @Component({
@@ -67,6 +70,8 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
   canRead: boolean;
   canWrite: boolean;
   isOwner: boolean;
+  verifiedVersionPlatforms: Array<VersionVerifiedPlatform>;
+  verifiedSources: Array<any>;
   isService$: Observable<boolean>;
   isNotebook$: Observable<boolean>;
   entryTypeText: string;
@@ -77,6 +82,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
   constructor(
     private versionModalService: VersionModalService,
     private dateService: DateService,
+    private dockstoreService: DockstoreService,
     private sessionQuery: SessionQuery,
     private workflowQuery: WorkflowQuery,
     private alertQuery: AlertQuery,
@@ -108,6 +114,8 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
     this.canRead = this.data.canRead;
     this.canWrite = this.data.canWrite;
     this.isOwner = this.data.isOwner;
+    this.verifiedVersionPlatforms = this.data.verifiedVersionPlatforms;
+    this.verifiedSources = this.data.verifiedSources;
     this.descriptorType$ = this.workflowQuery.descriptorType$;
     this.isRefreshing$ = this.alertQuery.showInfo$;
     this.versionModalService.version.pipe(takeUntil(this.ngUnsubscribe)).subscribe((version) => {
@@ -138,6 +146,10 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
 
   public getDateTimeMessage(timestamp) {
     return this.dateService.getDateTimeMessage(timestamp);
+  }
+
+  getVerifiedSource(name: string): string {
+    return this.dockstoreService.getVerifiedSource(name, this.verifiedSources);
   }
 
   public saveChanges() {

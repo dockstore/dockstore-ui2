@@ -43,8 +43,8 @@ describe('Dockstore Workflow Details', () => {
   setTokenUserViewPort();
   beforeEach(() => {
     cy.visit('/workflows/github.com/A/l');
-    // Info, Launch, Version, Files, Tools, DAG
-    cy.get('.mat-tab-label').should('have.length', 6);
+    // Info, Launch, Version, Files, Tools, DAG, Metrics
+    cy.get('.mat-tab-label').should('have.length', 7);
     cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=info');
   });
 
@@ -98,7 +98,7 @@ describe('Dockstore Workflow Details', () => {
 
   describe('Change tab to Executions', () => {
     it('Should see No Metrics banner', () => {
-      cy.visit('/workflows/github.com/A/l?metrics');
+      cy.visit('/workflows/github.com/A/l');
       cy.get('.mat-tab-label').should('have.length', 7);
       cy.get('.mat-tab-header-pagination-after').click();
       goToTab('Metrics');

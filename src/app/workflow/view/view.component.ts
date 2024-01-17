@@ -29,7 +29,7 @@ import { AlertService } from '../../shared/alert/state/alert.service';
 import { bootstrap4largeModalSize, ga4ghServiceIdPrefix, ga4ghWorkflowIdPrefix } from '../../shared/constants';
 import { DateService } from '../../shared/date.service';
 import { Dockstore } from '../../shared/dockstore.model';
-import { Entry, Tag, WorkflowVersion } from '../../shared/openapi';
+import { Entry, Tag, VersionVerifiedPlatform, WorkflowVersion } from '../../shared/openapi';
 import { SessionQuery } from '../../shared/session/session.query';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { WorkflowService } from '../../shared/state/workflow.service';
@@ -53,6 +53,8 @@ export class ViewWorkflowComponent extends View<WorkflowVersion> implements OnIn
   @Input() canWrite: boolean;
   @Input() isOwner: boolean;
   @Input() defaultVersion: string;
+  @Input() verifiedVersionPlatforms: Array<VersionVerifiedPlatform>;
+  @Input() verifiedSources: Array<any>;
   items: any[];
   isPublic: boolean;
   userId: number;
@@ -113,7 +115,13 @@ export class ViewWorkflowComponent extends View<WorkflowVersion> implements OnIn
   private openVersionModal(): void {
     this.matDialog.open(VersionModalComponent, {
       width: '600px',
-      data: { canRead: this.canRead, canWrite: this.canWrite && !this.version.frozen, isOwner: this.isOwner },
+      data: {
+        canRead: this.canRead,
+        canWrite: this.canWrite && !this.version.frozen,
+        isOwner: this.isOwner,
+        verifiedVersionPlatforms: this.verifiedVersionPlatforms,
+        verifiedSources: this.verifiedSources,
+      },
     });
   }
 
