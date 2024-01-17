@@ -130,7 +130,7 @@ describe('Dockstore Home', () => {
     cy.contains('tr', 'Date Modified');
     cy.contains('td', '2019-07-19 13:13');
     cy.contains('tr', 'Valid');
-    cy.contains('tr', 'Verified Platforms');
+    cy.contains('tr', 'Verified');
   }
   function checkFilesTab() {
     goToTab('Files');
