@@ -73,7 +73,8 @@
 			},
 			"id": 136,
 			"numberOfFailedExecutions": 1,
-			"numberOfSuccessfulExecutions": 2
+			"numberOfSuccessfulExecutions": 2,
+			"numberOfAbortedExecutions": 0
 		},
 		"executionTime": null,
 		"id": 126,
@@ -97,7 +98,8 @@
 			},
 			"id": 133,
 			"numberOfFailedExecutions": 2,
-			"numberOfSuccessfulExecutions": 2
+			"numberOfSuccessfulExecutions": 2,
+			"numberOfAbortedExecutions": 0
 		},
 		"executionTime": {
 			"average": 52.75,
@@ -141,7 +143,8 @@
 			},
 			"id": 135,
 			"numberOfFailedExecutions": 2,
-			"numberOfSuccessfulExecutions": 0
+			"numberOfSuccessfulExecutions": 0,
+			"numberOfAbortedExecutions": 0
 		},
 		"executionTime": {
 			"average": 45.5,
@@ -179,7 +182,8 @@
 			},
 			"id": 137,
 			"numberOfFailedExecutions": 5,
-			"numberOfSuccessfulExecutions": 4
+			"numberOfSuccessfulExecutions": 4,
+			"numberOfAbortedExecutions": 0
 		},
 		"executionTime": {
 			"average": 50.33333333333333,

@@ -92,11 +92,7 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
       'actions',
     ];
     this.displayedColumns = allColumns.filter((column) => {
-      if ((publicPage && column === hiddenColumn) || (!Dockstore.FEATURES.enableMetrics && column === metricsColumn)) {
-        return false;
-      }
-      if (Dockstore.FEATURES.enableMetrics && column === verifiedColumn) {
-        // Give priority to metrics over verified, since space is at a premium
+      if (publicPage && column === hiddenColumn) {
         return false;
       }
       return true;

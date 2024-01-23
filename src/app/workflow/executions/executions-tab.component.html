@@ -1,6 +1,3 @@
-<div class="w-100 mt-3">
-  <app-preview-warning featureName="Metrics"></app-preview-warning>
-</div>
 <div *ngIf="!metricsExist" class="w-100">
   <mat-card class="alert alert-info mat-elevation-z mt-3" role="alert" data-cy="no-metrics-banner">
     <mat-icon class="alert-info-icon">info</mat-icon> No metrics data exist for this version.
@@ -26,10 +23,17 @@
     <mat-card-content class="pt-3">
       <div *ngIf="!executionMetricsExist">No execution metrics exist</div>
       <div *ngIf="executionMetricsExist">
-        <div data-cy="execution-metrics-total-executions-div" fxLayout="row" fxLayoutGap="2rem">
-          <div><strong>Total executions: </strong>{{ totalExecutions }}</div>
-          <div><strong>Successful executions: </strong>{{ successfulExecutions }}</div>
-          <div><strong>Failed executions: </strong>{{ failedExecutions }}</div>
+        <div
+          data-cy="execution-metrics-total-executions-div"
+          fxLayout="row"
+          fxLayout.lt-md="column"
+          fxLayoutGap="2rem"
+          fxLayoutGap.lt-md="0rem"
+        >
+          <div><strong>Total executions: </strong>{{ totalExecutions | number }}</div>
+          <div><strong>Successful executions: </strong>{{ successfulExecutions | number }}</div>
+          <div><strong>Failed executions: </strong>{{ failedExecutions | number }}</div>
+          <div><strong>Aborted executions: </strong>{{ abortedExecutions | number }}</div>
         </div>
         <table
           mat-table
@@ -47,30 +51,27 @@
           <ng-container matColumnDef="minimum">
             <th mat-header-cell *matHeaderCellDef>Minimum</th>
             <td mat-cell *matCellDef="let executionMetric">
-              <span *ngIf="executionMetric.minimum" matTooltip="{{ executionMetric.minimum + ' ' + executionMetric.unit }}"
-                >{{ executionMetric.minimum | number: (executionMetric.metric === 'Cost' ? '1.2-2' : '1.0-2') }}
-                {{ executionMetric.unit }}</span
-              >
+              <ng-template
+                *ngTemplateOutlet="displayExecutionMetricStat; context: { num: executionMetric.minimum, executionMetric: executionMetric }"
+              ></ng-template>
             </td>
           </ng-container>
 
           <ng-container matColumnDef="average">
             <th mat-header-cell *matHeaderCellDef>Average</th>
             <td mat-cell *matCellDef="let executionMetric">
-              <span *ngIf="executionMetric.average" matTooltip="{{ executionMetric.average + ' ' + executionMetric.unit }}"
-                >{{ executionMetric.average | number: (executionMetric.metric === 'Cost' ? '1.2-2' : '1.0-2') }}
-                {{ executionMetric.unit }}</span
-              >
+              <ng-template
+                *ngTemplateOutlet="displayExecutionMetricStat; context: { num: executionMetric.average, executionMetric: executionMetric }"
+              ></ng-template>
             </td>
           </ng-container>
 
           <ng-container matColumnDef="maximum">
             <th mat-header-cell *matHeaderCellDef>Maximum</th>
             <td mat-cell *matCellDef="let executionMetric">
-              <span *ngIf="executionMetric.maximum" matTooltip="{{ executionMetric.maximum + ' ' + executionMetric.unit }}"
-                >{{ executionMetric.maximum | number: (executionMetric.metric === 'Cost' ? '1.2-2' : '1.0-2') }}
-                {{ executionMetric.unit }}</span
-              >
+              <ng-template
+                *ngTemplateOutlet="displayExecutionMetricStat; context: { num: executionMetric.maximum, executionMetric: executionMetric }"
+              ></ng-template>
             </td>
           </ng-container>
 
@@ -188,4 +189,22 @@
       </mat-card-content>
     </mat-card>
   </div>
+  <ng-template #displayExecutionMetricStat let-num="num" let-executionMetric="executionMetric">
+    <!-- checking for null because average could be zero which is falsy -->
+    <span *ngIf="num !== null">
+      <span *ngIf="executionMetric.metric === 'Run Time'" matTooltip="{{ num | secondsToHoursMinutesSeconds }}">{{
+        num | secondsToHoursMinutesSeconds
+      }}</span>
+      <span
+        *ngIf="executionMetric.metric !== 'Run Time' && executionMetric.metric === 'Cost'"
+        matTooltip="{{ (num | number: '1.2-2') + ' ' + executionMetric.unit }}"
+        >{{ num | number: '1.2-2' }} {{ executionMetric.unit }}</span
+      >
+      <span
+        *ngIf="executionMetric.metric !== 'Run Time' && executionMetric.metric !== 'Cost'"
+        matTooltip="{{ (num | number: '1.0-2') + ' ' + executionMetric.unit }}"
+        >{{ num | number: '1.0-2' }} {{ executionMetric.unit }}</span
+      >
+    </span>
+  </ng-template>
 </div>

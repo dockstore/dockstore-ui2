@@ -168,8 +168,6 @@ export class SearchService {
         initiallyExpanded: false,
         exclusive: true,
       },
-    ];
-    const metricsFacetInfos = [
       {
         friendlyName: 'Execution Metrics',
         esName: 'execution_partners.keyword',
@@ -183,7 +181,7 @@ export class SearchService {
         tooltip: 'Indicates there are validation metrics from a partner for the entry.',
       },
     ];
-    return Dockstore.FEATURES.enableMetrics ? [...facetInfos, ...metricsFacetInfos] : facetInfos;
+    return facetInfos;
   }
 
   constructor(

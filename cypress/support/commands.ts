@@ -124,7 +124,7 @@ export function setTokenUserViewPortPlatformPartner() {
 
 // Update the user user_platform_partner to be a platform partner
 export function setPlatformPartnerRole() {
-  invokeSql("update enduser set platformpartner=true where username = 'user_platform_partner'");
+  invokeSql("update enduser set platformpartner='TERRA' where username = 'user_platform_partner'");
 }
 
 export function goToUnexpandedSidebarEntry(organization: string, repo: RegExp | string) {
