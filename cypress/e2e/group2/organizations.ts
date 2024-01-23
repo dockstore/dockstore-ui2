@@ -487,7 +487,6 @@ describe('Dockstore Organizations', () => {
       cy.visit('/organizations');
       createOrganization('grapes', 'grapes', 'Walked up to the lemonade stand', 'Toronto', 'https://www.google.com', '123@123.com');
       invokeSql("update organization set status='APPROVED' where name like 'grapes'");
-
       cy.visit('/organizations');
       cy.contains('Potatoe');
       cy.contains('Apple');
