@@ -47,6 +47,19 @@ describe('OrganizationsQuery', () => {
       muttonOrganization,
       duckOrganization,
     ];
+    const fishOrganization: Organization = {
+      name: 'fish',
+      status: Organization.StatusEnum.APPROVED,
+      topic: 'nothing relevent',
+      displayName: 'TheDisplayName',
+    };
+    const shrimpOrganization: Organization = {
+      name: 'shrimp',
+      status: Organization.StatusEnum.APPROVED,
+      topic: 'nothing relevent',
+      displayName: 'ADisplayName',
+    };
+    const displayNameOrganizations: Array<Organization> = [potatoOrganization, fishOrganization, shrimpOrganization];
     expect(query.filterOrganizations(exampleOrganizations, 'potato')).toEqual([potatoOrganization]);
     expect(query.filterOrganizations(exampleOrganizations, 'po')).toEqual([potatoOrganization, porkOrganization]);
     expect(query.filterOrganizations(exampleOrganizations, 'POTATO')).toEqual([potatoOrganization]);
@@ -61,5 +74,10 @@ describe('OrganizationsQuery', () => {
     expect(query.filterOrganizations(exampleOrganizations, 'someLocation')).toEqual([potatoOrganization]);
     expect(query.filterOrganizations(exampleOrganizations, 'someAvatarUrl')).toEqual([]);
     expect(query.filterOrganizations([], 'CK')).toEqual([]);
+    expect(query.filterAndSortOrganizations(displayNameOrganizations, '', 'name')).toEqual([
+      shrimpOrganization,
+      potatoOrganization,
+      fishOrganization,
+    ]);
   });
 });
