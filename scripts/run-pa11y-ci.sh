@@ -21,7 +21,7 @@ usage() {
   echo "-H, Display help command"
   echo "-B, Do all commands on base branch (if this option is not given all commands are done on current branch)"
   echo "-R, Runs pa11y-ci on branch (requires webservice to be running) and outputs results in a form that can be analysed"
-  echo "-A, Determines if current branch has more accessibility issues then base branch, requires the results from option -R to be available"
+  echo "-A, Determines if current branch has more accessibility issues than base branch, requires the results from option -R to be available"
 }
 
 # Variables for determining which command to run
@@ -104,7 +104,7 @@ then
 
   # If the number of accessibility errors is equal, then check that if they are the same set of errors.
   if [ "$ACCESSIBILITY_ERRORS_CURRENT_BRANCH" -eq "$ACCESSIBILITY_ERRORS_BASE_BRANCH" ]; then
-    echo "The number of accessibility erorrs in this PR and the base branch are the same"
+    echo "The number of accessibility errors in this PR and the base branch are the same"
     exit 0
   fi
 
