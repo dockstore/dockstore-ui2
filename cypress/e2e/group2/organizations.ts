@@ -23,6 +23,8 @@ import {
   addToCollection,
   insertNotebooks,
   resetDBWithService,
+  createOrganization,
+  invokeSql,
 } from '../../support/commands';
 import { TokenSource } from '../../../src/app/shared/enum/token-source.enum';
 
@@ -474,6 +476,26 @@ describe('Dockstore Organizations', () => {
       cy.visit('/aliases/collections/incorrectAlias');
       cy.url().should('eq', Cypress.config().baseUrl + '/aliases/collections/incorrectAlias');
       cy.contains('No collections with the alias incorrectAlias found');
+    });
+  });
+
+  describe('Sort organizations', () => {
+    it('Sort by name', () => {
+      cy.visit('/organizations');
+      createOrganization('Apple', 'Apple', 'Keeps the doctor away', 'OICR', 'https://www.google.com', 'abcd@abcd.com');
+      invokeSql("update organization set status='APPROVED' where name like 'Apple'");
+      cy.visit('/organizations');
+      createOrganization('grapes', 'grapes', 'Walked up to the lemonade stand', 'Toronto', 'https://www.google.com', '123@123.com');
+      invokeSql("update organization set status='APPROVED' where name like 'grapes'");
+      cy.visit('/organizations');
+      cy.contains('Potatoe');
+      cy.contains('Apple');
+      cy.contains('grapes');
+      cy.get('mat-select[formControlName=sort]').click();
+      cy.get('mat-option').contains('Name').click();
+      cy.get('mat-card').eq(0).contains('Apple');
+      cy.get('mat-card').eq(1).contains('grapes');
+      cy.get('mat-card').eq(2).contains('Potatoe');
     });
   });
 });
