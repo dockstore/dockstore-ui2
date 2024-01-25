@@ -104,8 +104,9 @@
 
   <ng-template #snapshotBlurb>
     <p>
-      A snapshot freezes the workflow version, ensuring that the content of the workflow does not change, e.g., if cited in publications.
-      <strong>Important note: once a snapshot is made, the workflow version becomes uneditable, apart from some metadata.</strong>
+      A snapshot freezes the {{ workflowTerm }} version, ensuring that the content of the {{ workflowTerm }} does not change, e.g., if cited
+      in publications.
+      <strong>Important note: once a snapshot is made, the {{ workflowTerm }} version becomes uneditable, apart from some metadata.</strong>
     </p>
     <p>
       You can then use this snapshot to request a DOI or export to your ORCID record.
@@ -114,33 +115,36 @@
   </ng-template>
 
   <ng-template #doiBlurb>
-    <p>A Digital Object Identifier (DOI) allows a workflow version to be easily cited in publications. What’s involved in the request:</p>
+    <p>
+      A Digital Object Identifier (DOI) allows a {{ workflowTerm }} version to be easily cited in publications. What’s involved in the
+      request:
+    </p>
     <ol>
       <li>
-        Before a DOI can be issued, a <strong>snapshot</strong> of the workflow version must be made to ensure that the content referenced
-        by the DOI does not change.
-        <strong>Please note: a snapshot will make the workflow version uneditable, apart from some metadata.</strong>
+        Before a DOI can be issued, a <strong>snapshot</strong> of the {{ workflowTerm }} version must be made to ensure that the content
+        referenced by the DOI does not change.
+        <strong>Please note: a snapshot will make the {{ workflowTerm }} version uneditable, apart from some metadata.</strong>
       </li>
       <li>
-        Next, a DOI is requested, providing a unique identifier for this workflow version. The DOI identifier will be displayed in the
-        snapshot column of the versions table.
+        Next, a DOI is requested, providing a unique identifier for this {{ workflowTerm }} version. The DOI identifier will be displayed in
+        the snapshot column of the versions table.
       </li>
     </ol>
   </ng-template>
 
   <ng-template #orcidBlurb>
     <p>
-      Exporting to ORCID requires a Digital Object Identifier (DOI), which allows a workflow version to be easily cited in publications.
-      What’s involved:
+      Exporting to ORCID requires a Digital Object Identifier (DOI), which allows a {{ workflowTerm }} version to be easily cited in
+      publications. What’s involved:
     </p>
 
     <ol>
       <li>
-        Before a DOI can be issued, a snapshot of the workflow version must be made to ensure that the content referenced by the DOI does
-        not change. Please note: a snapshot will make the workflow version uneditable, apart from some metadata.
+        Before a DOI can be issued, a snapshot of the {{ workflowTerm }} version must be made to ensure that the content referenced by the
+        DOI does not change. Please note: a snapshot will make the {{ workflowTerm }} version uneditable, apart from some metadata.
       </li>
-      <li>Next, a DOI is requested, providing a unique identifier for this workflow version.</li>
-      <li>Lastly, the workflow will be exported to your ORCID record.</li>
+      <li>Next, a DOI is requested, providing a unique identifier for this {{ workflowTerm }} version.</li>
+      <li>Lastly, the {{ workflowTerm }} will be exported to your ORCID record.</li>
     </ol>
   </ng-template>
 
@@ -162,8 +166,8 @@
   <ng-template #orcidNotLinked>
     <div>
       <div data-cy="orcid-not-linked">
-        To export a workflow to ORCID, you must first link your ORCID account in your Dockstore Linked Accounts section. After linking, come
-        back to this screen and try again.
+        To export a {{ workflowTerm }} to ORCID, you must first link your ORCID account in your Dockstore Linked Accounts section. After
+        linking, come back to this screen and try again.
         <button data-cy="link-orcid" class="ml-1 accent-1-dark mat-elevation-z" mat-raised-button (click)="linkAccount()">
           <mat-icon>link</mat-icon>
           Link account now
