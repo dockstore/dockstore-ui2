@@ -49,7 +49,7 @@
                 [(ngModel)]="version.workflow_path"
                 minlength="3"
                 maxlength="1000"
-                [pattern]="validationPatterns.workflowDescriptorPath"
+                [pattern]="(isNotebook$ | async) === false ? validationPatterns.workflowDescriptorPath : undefined"
                 required
                 [matTooltip]="tooltip.workflowPath"
                 placeholder="e.g. CancerCollaboratory/dockstore-tool-liftover"
