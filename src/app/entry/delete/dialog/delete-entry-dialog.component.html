@@ -7,9 +7,9 @@
   </p>
   <p>A {{ term }} can be deleted if it:</p>
   <ul>
-    <li>Has never been published,</li>
-    <li>Was created on/after April 1, 2022, and</li>
-    <li>Is not a checked or checker workflow.</li>
+    <li>Has never been published.</li>
+    <li>Was created on/after April 1, 2022.</li>
+    <li *ngIf="!(isNotebook || isService)">Is not checked or a checker workflow.</li>
   </ul>
   <p *ngIf="fromDockstoreYml">
     After you delete the {{ term }}, you must uninstall the Dockstore GitHub App from the source GitHub repo, or edit/remove the
