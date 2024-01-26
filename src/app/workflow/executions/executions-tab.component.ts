@@ -111,7 +111,7 @@ export class ExecutionsTabComponent extends EntryTab implements OnChanges {
                 this.selectPartner(platform);
               }
             }
-            this.alertService.detailedSuccess();
+            this.alertService.simpleSuccess();
           },
           (error) => {
             this.alertService.detailedError(error);
