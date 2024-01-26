@@ -1,6 +1,7 @@
-import { goToTab, insertNotebooks, setTokenUserViewPort } from '../../support/commands';
+import { goToTab, insertNotebooks, resetDB, setTokenUserViewPort } from '../../support/commands';
 
 describe('Dockstore Metrics', () => {
+  resetDB();
   insertNotebooks();
   setTokenUserViewPort();
   it('Should see no metrics banner', () => {
@@ -55,5 +56,11 @@ describe('Dockstore Metrics', () => {
     cy.get('[data-cy=metrics-partner-dropdown]').should('contain', 'AGC');
     cy.get('[data-cy=execution-metrics-total-executions-div]').should('contain', 4);
     cy.get('[data-cy=validations-table]').should('not.exist');
+  });
+
+  it('Should not see metrics checked on versions table if no metrics', () => {
+    cy.visit('/my-workflows/github.com/A/l:master');
+    goToTab('Versions');
+    cy.get('[data-cy=metrics]').should('not.exist');
   });
 });
