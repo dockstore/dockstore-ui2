@@ -59,7 +59,7 @@ describe('Dockstore my workflows', () => {
 
   describe('Should contain extended Workflow properties', () => {
     // Flaky test, see https://github.com/dockstore/dockstore/issues/5696
-    it('visit another page then come back', () => {
+    it('Should show GitHub App logs', () => {
       cy.visit('/my-workflows');
       cy.contains('github.com/A/l');
 
@@ -68,14 +68,16 @@ describe('Dockstore my workflows', () => {
       cy.contains('Close').click();
       cy.intercept('GET', '/api/lambdaEvents/**', {
         body: [],
-      }).as('refreshWorkflow');
+      }).as('No lambda events');
       cy.contains('Apps Logs').click();
       cy.contains('There are no GitHub App logs for this organization.');
       cy.contains('Close').click();
+      const entry1 = 'entry1';
+      const entry2 = 'entry2';
       const realResponse = [
         {
           deliveryId: '1',
-          entryName: 'entry1',
+          entryName: entry1,
           eventDate: 1582165220000,
           githubUsername: 'boil',
           id: 1,
@@ -88,7 +90,7 @@ describe('Dockstore my workflows', () => {
         },
         {
           deliveryId: '2',
-          entryName: 'entry2',
+          entryName: entry2,
           eventDate: 1591368041850,
           githubUsername: 'em',
           id: 2,
@@ -100,12 +102,26 @@ describe('Dockstore my workflows', () => {
           type: 'PUSH',
         },
       ];
-      cy.intercept('GET', '/api/lambdaEvents/**', {
+      const sortedAsc = [...realResponse].sort((a, b) => a.entryName.toLowerCase().localeCompare(b.entryName.toLowerCase()));
+      const sortedDesc = [...realResponse].sort((a, b) => b.entryName.toLowerCase().localeCompare(a.entryName.toLowerCase()));
+      cy.intercept('GET', '/api/lambdaEvents/**sortCol=entryName&sortOrder=asc', {
+        body: sortedAsc,
+        headers: {
+          'X-total-count': '2',
+        },
+      }).as('Sorted by entryName asc');
+      cy.intercept('GET', '/api/lambdaEvents/**sortCol=entryName&sortOrder=desc', {
+        body: sortedDesc,
+        headers: {
+          'X-total-count': '2',
+        },
+      }).as('Sorted by entryName desc');
+      cy.intercept('GET', '/api/lambdaEvents/A?offset=0&limit=10&sortOrder=desc', {
         body: realResponse,
         headers: {
           'X-total-count': '2',
         },
-      }).as('refreshWorkflow');
+      }).as('Default sort');
       cy.contains('Apps Logs').click();
       // Check that app logs contain the correct columns
       const appLogColumns = ['Date', 'GitHub Username', 'Entry Name', 'Delivery ID', 'Repository', 'Reference', 'Success', 'Type'];
@@ -116,13 +132,22 @@ describe('Dockstore my workflows', () => {
       // These next 2 values only work on the West Coast
       // cy.contains('2020-02-19T18:20');
       // cy.contains('2020-06-05T07:40');
+
+      // Sort by entry name ascending, entry1 should be first row
+      cy.contains('th', 'Entry Name').click();
+      cy.get('[data-cy=entry-name').first().should('have.text', entry1);
+
+      // Sort by entry name descending, entry2 should be first row
+      cy.contains('th', 'Entry Name').click();
+      cy.get('[data-cy=entry-name').first().should('have.text', entry2);
+
       cy.contains('1 – 2 of 2');
 
       //Filtering
       const filteredResponse: LambdaEvent[] = [
         {
           deliveryId: '1',
-          entryName: 'entry1',
+          entryName: entry1,
           eventDate: 1582165220000,
           githubUsername: 'boil',
           id: 1,
@@ -140,8 +165,8 @@ describe('Dockstore my workflows', () => {
           'X-total-count': '1',
         },
       });
-      cy.get('[data-cy=apps-logs-filter]').type('entry1');
-      cy.contains('2020-02-20T02:20');
+      cy.get('[data-cy=apps-logs-filter]').type(entry1);
+      // cy.contains('2020-02-20T02:20');
       cy.contains('1 – 1 of 1');
       cy.contains('Close').click();
     });

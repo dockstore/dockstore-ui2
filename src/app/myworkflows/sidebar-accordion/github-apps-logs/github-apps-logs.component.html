@@ -38,7 +38,7 @@
         <ng-container matColumnDef="{{ column }}" *ngFor="let column of columnsToDisplay" [ngSwitch]="column">
           <div *ngSwitchCase="'entryName'">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Entry Name</th>
-            <td mat-cell *matCellDef="let element">{{ element.entryName ? element.entryName : 'n/a' }}</td>
+            <td data-cy="entry-name" mat-cell *matCellDef="let element">{{ element.entryName ? element.entryName : 'n/a' }}</td>
           </div>
           <div *ngSwitchCase="'deliveryId'">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Delivery ID</th>
