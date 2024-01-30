@@ -19,10 +19,8 @@
 
 import { CollectionViewer, DataSource } from '@angular/cdk/collections';
 import { HttpResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
-import { AlertService } from '../../../shared/alert/state/alert.service';
 import { LambdaEvent, LambdaEventsService } from '../../../shared/openapi';
 
 export type ShowContent = 'table' | 'error' | 'empty' | 'noResult' | null;
@@ -52,10 +50,9 @@ export class LambdaEventDataSource implements DataSource<LambdaEvent> {
     filter: string | null,
     sortDirection: string,
     sortCol: string,
-    userId: number | null,
-    organization: string
+    userId: number | undefined,
+    organization: string | undefined
   ) {
-    const filtered = filter?.length > 0;
     let lambdaEvents: Observable<HttpResponse<LambdaEvent[]>>;
     if (userId) {
       lambdaEvents = this.lambdaEventsService.getUserLambdaEvents(userId, pageIndex, pageSize, filter, sortCol, sortDirection, 'response');
@@ -74,7 +71,6 @@ export class LambdaEventDataSource implements DataSource<LambdaEvent> {
       .pipe(
         finalize(() => {
           this.loadingSubject$.next(false);
-          // this.updateContentToShow(this.lambdaEvents, filtered);
         })
       )
       .subscribe(
@@ -87,7 +83,6 @@ export class LambdaEventDataSource implements DataSource<LambdaEvent> {
         (error) => {
           this.showContentSubject$.next('error');
           this.eventsSubject$.error(error);
-          // this.matSnackBar.open(detailedErrorMessage);
         }
       );
   }
