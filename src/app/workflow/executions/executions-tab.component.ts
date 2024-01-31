@@ -172,16 +172,16 @@ export class ExecutionsTabComponent extends EntryTab implements OnChanges {
     // Only add the rows if there are data for that type
     if (metrics) {
       if (metrics.cpu) {
-        executionsTable.push({ metric: 'CPU', ...metrics?.cpu });
+        executionsTable.push({ metric: 'CPU', ...metrics.cpu });
       }
       if (metrics.memory) {
-        executionsTable.push({ metric: 'Memory', ...metrics?.memory });
+        executionsTable.push({ metric: 'Memory', ...metrics.memory });
       }
       if (metrics.executionTime) {
-        executionsTable.push({ metric: 'Run Time', ...metrics?.executionTime });
+        executionsTable.push({ metric: 'Run Time', ...metrics.executionTime });
       }
       if (metrics.cost) {
-        executionsTable.push({ metric: 'Cost', ...metrics?.cost });
+        executionsTable.push({ metric: 'Cost', ...metrics.cost });
       }
     }
     return executionsTable;
