@@ -100,7 +100,11 @@
             fxFlex
             fxLayout
             fxLayoutAlign="end"
-            *ngIf="!orgObj?.sourceControl.startsWith('dockstore.org') && (entryType$ | async) !== EntryType.Tool"
+            *ngIf="
+              !orgObj?.sourceControl.startsWith('dockstore.org') &&
+              (entryType$ | async) !== EntryType.Tool &&
+              (entryType$ | async) !== EntryType.Notebook
+            "
           >
             <app-refresh-workflow-organization [orgWorkflowObject]="orgObj"></app-refresh-workflow-organization>
           </span>
