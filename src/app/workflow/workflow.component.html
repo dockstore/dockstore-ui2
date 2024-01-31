@@ -374,18 +374,10 @@
               </ng-template>
             </ng-template>
           </mat-tab>
+          <mat-tab id="metricsTab" label="Metrics">
+            <app-executions-tab [entry]="workflow" [version]="selectedVersion"></app-executions-tab>
+          </mat-tab>
           <div *ngIf="entryType === EntryType.BioWorkflow">
-            <mat-tab id="toolsTab" label="Tools">
-              <div *ngIf="!isStub()">
-                <app-tool-tab [selectedVersion]="selectedVersion" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner">
-                </app-tool-tab>
-              </div>
-              <div *ngIf="isStub()" class="p-3">
-                <mat-card class="alert alert-warning mat-elevation-z" role="alert">
-                  <mat-icon class="alert-warning-icon">warning</mat-icon> To see tools, please refresh the workflow.
-                </mat-card>
-              </div>
-            </mat-tab>
             <mat-tab id="dagTab" label="DAG">
               <ng-template matTabContent>
                 <app-dag
@@ -409,10 +401,18 @@
                 </div>
               </ng-template>
             </mat-tab>
+            <mat-tab id="toolsTab" label="Tools">
+              <div *ngIf="!isStub()">
+                <app-tool-tab [selectedVersion]="selectedVersion" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner">
+                </app-tool-tab>
+              </div>
+              <div *ngIf="isStub()" class="p-3">
+                <mat-card class="alert alert-warning mat-elevation-z" role="alert">
+                  <mat-icon class="alert-warning-icon">warning</mat-icon> To see tools, please refresh the workflow.
+                </mat-card>
+              </div>
+            </mat-tab>
           </div>
-          <mat-tab id="metricsTab" label="Metrics">
-            <app-executions-tab [entry]="workflow" [version]="selectedVersion"></app-executions-tab>
-          </mat-tab>
           <mat-tab *ngIf="!isPublic() && isHosted() && isOwner" id="permissionsTab" label="Permissions">
             <app-permissions [workflow]="workflow"></app-permissions>
           </mat-tab>
