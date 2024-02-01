@@ -64,8 +64,8 @@ describe('Dockstore Metrics', () => {
     cy.get('[data-cy=execution-metrics-table]').should('be.visible');
     // Change execution status to FAILED_RUNTIME_INVALID
     cy.get('[data-cy=metrics-execution-status-dropdown]').click();
-    cy.get('[data-cy=metrics-execution-status-options]').contains('FAILED_RUNTIME_INVALID').click();
-    cy.get('[data-cy=metrics-execution-status-dropdown]').should('contain', 'FAILED_RUNTIME_INVALID');
+    cy.get('[data-cy=metrics-execution-status-options]').contains('Failed_runtime_invalid').click();
+    cy.get('[data-cy=metrics-execution-status-dropdown]').should('contain', 'Failed_runtime_invalid');
     cy.get('[data-cy=execution-metrics-table]').should('be.visible');
   });
 
