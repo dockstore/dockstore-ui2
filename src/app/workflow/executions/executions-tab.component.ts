@@ -58,6 +58,7 @@ export class ExecutionsTabComponent extends EntryTab implements OnChanges {
   successfulExecutions: number;
   failedExecutions: number;
   abortedExecutions: number;
+  successfulExecutionRate: number | null;
   executionMetricsExist: boolean;
   currentExecutionStatus: string;
   executionStatusToMetrics: Map<string, MetricsByStatus>;
@@ -141,6 +142,7 @@ export class ExecutionsTabComponent extends EntryTab implements OnChanges {
     this.successfulExecutions = null;
     this.failedExecutions = null;
     this.abortedExecutions = null;
+    this.successfulExecutionRate = null;
     this.currentExecutionStatus = null;
     this.currentPartner = null;
     this.currentValidatorTool = null;
@@ -168,6 +170,8 @@ export class ExecutionsTabComponent extends EntryTab implements OnChanges {
       this.failedExecutions = metrics.executionStatusCount.numberOfFailedExecutions;
       this.abortedExecutions = metrics.executionStatusCount.numberOfAbortedExecutions;
       this.totalExecutions = this.successfulExecutions + this.failedExecutions + this.abortedExecutions;
+      const completedExecutions = (this.successfulExecutions || 0) + (this.failedExecutions || 0); // Per schema, values could be undefined, even though in practice they currently aren't
+      this.successfulExecutionRate = completedExecutions > 0 ? (100 * this.successfulExecutions) / completedExecutions : null; // Don't divide by 0
     }
   }
 
