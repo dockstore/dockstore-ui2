@@ -58,10 +58,12 @@ describe('Dockstore Metrics', () => {
     cy.get('[data-cy=validations-table]').should('not.exist');
     cy.get('[data-cy=metrics-execution-status-dropdown]').should('contain', 'All');
     // Change execution status to Successful
+    cy.get('[data-cy=metrics-validator-tool-dropdown]').click();
     cy.get('[data-cy=metrics-execution-status-options]').contains('Successful').click();
     cy.get('[data-cy=metrics-execution-status-dropdown]').should('contain', 'Successful');
     cy.get('[data-cy=execution-metrics-table]').should('be.visible');
     // Change execution status to FAILED_RUNTIME_INVALID
+    cy.get('[data-cy=metrics-validator-tool-dropdown]').click();
     cy.get('[data-cy=metrics-execution-status-options]').contains('FAILED_RUNTIME_INVALID').click();
     cy.get('[data-cy=metrics-execution-status-dropdown]').should('contain', 'FAILED_RUNTIME_INVALID');
     cy.get('[data-cy=execution-metrics-table]').should('be.visible');
