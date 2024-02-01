@@ -537,6 +537,10 @@ describe('Dockstore my workflows part 3', () => {
       cy.visit('/my-workflows/github.com/A/l');
       isActiveTab('Info');
       tabs.forEach((tab) => {
+        if (tab === 'Tools') {
+          // Ugh, got to scroll to click this.
+          cy.get('#workflow_tabs').find('.mat-tab-header-pagination-after').first().click();
+        }
         goToTab(tab);
         isActiveTab(tab);
         if (tab === 'Versions') {
