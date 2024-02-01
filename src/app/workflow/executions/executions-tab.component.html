@@ -31,7 +31,10 @@
           fxLayoutGap.lt-md="0rem"
         >
           <div><strong>Total executions: </strong>{{ totalExecutions | number }}</div>
-          <div><strong>Successful executions: </strong>{{ successfulExecutions | number }}</div>
+          <div>
+            <strong>Successful executions: </strong>{{ successfulExecutions | number
+            }}<span *ngIf="successfulExecutionRate !== null"> ({{ successfulExecutionRate | number: '1.0-2' }}%)</span>
+          </div>
           <div><strong>Failed executions: </strong>{{ failedExecutions | number }}</div>
           <div><strong>Aborted executions: </strong>{{ abortedExecutions | number }}</div>
         </div>
