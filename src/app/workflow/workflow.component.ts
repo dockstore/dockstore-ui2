@@ -164,7 +164,7 @@ export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterVi
       this.validTabs = ['info', 'launch', 'versions', 'files', 'tools', 'dag', 'metrics'];
       this.redirectToCanonicalURL('/' + myBioWorkflowsURLSegment);
     } else if (this.entryType === EntryType.Tool) {
-      this.validTabs = ['info', 'launch', 'versions', 'files'];
+      this.validTabs = ['info', 'launch', 'versions', 'files', 'metrics'];
       this.redirectToCanonicalURL('/' + myToolsURLSegment);
     } else if (this.entryType === EntryType.Notebook) {
       this.validTabs = ['info', 'code', 'versions', 'files', 'metrics'];
