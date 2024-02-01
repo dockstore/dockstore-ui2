@@ -156,12 +156,11 @@ export class ExecutionsTabComponent extends EntryTab implements OnChanges {
     if (metrics?.executionStatusCount) {
       this.executionStatusToMetrics = new Map(Object.entries(metrics.executionStatusCount.count));
       this.executionStatuses = Array.from(this.executionStatusToMetrics.keys());
-      if (
-        this.executionStatuses.length === 2 &&
-        this.executionStatuses.filter((status) => status === MetricsByStatus.ExecutionStatusEnum.ALL).length === 1
-      ) {
-        this.executionStatuses = this.executionStatuses.filter((status) => status !== MetricsByStatus.ExecutionStatusEnum.ALL);
+      // Remove the ALL status if there's only one execution
+      if (this.executionStatuses.length === 2 && this.executionStatuses.filter((status) => status === 'ALL').length === 1) {
+        this.executionStatuses = this.executionStatuses.filter((status) => status !== 'ALL');
       }
+
       if (this.executionStatuses) {
         this.onSelectedExecutionStatusChange(this.executionStatuses[0]);
       }

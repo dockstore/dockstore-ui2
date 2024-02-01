@@ -1,11 +1,7 @@
 {
 	"GALAXY": {
-		"cpu": null,
 		"executionStatusCount": null,
-		"executionTime": null,
 		"id": 124,
-		"memory": null,
-		"cost": null,
 		"validationStatus": {
 			"id": 134,
 			"validatorTools": {
@@ -65,151 +61,305 @@
 		}
 	},
 	"TERRA": {
-		"cpu": null,
 		"executionStatusCount": {
 			"count": {
-				"SUCCESSFUL": 2,
-				"FAILED_RUNTIME_INVALID": 1
+				"ALL": {
+					"executionStatusCount": 3,
+					"cpu": null,
+					"executionTime": null,
+					"memory": null,
+					"cost": null
+				},
+				"SUCCESSFUL": {
+					"executionStatusCount": 2,
+					"cpu": null,
+					"executionTime": null,
+					"memory": null,
+					"cost": null
+				},
+				"FAILED_RUNTIME_INVALID": {
+					"executionStatusCount": 1,
+					"cpu": null,
+					"executionTime": null,
+					"memory": null,
+					"cost": null
+				}
 			},
 			"id": 136,
 			"numberOfFailedExecutions": 1,
 			"numberOfSuccessfulExecutions": 2,
 			"numberOfAbortedExecutions": 0
 		},
-		"executionTime": null,
 		"id": 126,
-		"memory": null,
-		"validationStatus": null,
-		"cost": null
+		"validationStatus": null
+		
 	},
 	"AGC": {
-		"cpu": {
-			"average": 1.75,
-			"id": 103,
-			"maximum": 2,
-			"minimum": 1,
-			"numberOfDataPointsForAverage": 4,
-			"unit": null
-		},
 		"executionStatusCount": {
 			"count": {
-				"SUCCESSFUL": 2,
-				"FAILED_RUNTIME_INVALID": 2
+				"ALL": {
+					"executionStatusCount": 4,
+					"cpu": {
+						"average": 2,
+						"id": 103,
+						"maximum": 2,
+						"minimum": 2,
+						"numberOfDataPointsForAverage": 2,
+						"unit": null
+					},
+					"executionTime": {
+						"average": 20,
+						"maximum": 20,
+						"minimum": 20,
+						"numberOfDataPointsForAverage": 2,
+						"id": 104,
+						"unit": "s"
+					},
+					"memory": {
+						"average": 2,
+						"maximum": 2,
+						"minimum": 2,
+						"numberOfDataPointsForAverage": 2,
+						"id": 105,
+						"unit": "GB"
+					},
+					"cost": {
+						"average": 2.00,
+						"maximum": 2,
+						"minimum": 2,
+						"numberOfDataPointsForAverage": 2,
+						"id": 200,
+						"unit": "USD"
+					}
+				},
+				"SUCCESSFUL": {
+					"executionStatusCount": 2,
+					"cpu": {
+						"average": 2,
+						"id": 103,
+						"maximum": 2,
+						"minimum": 2,
+						"numberOfDataPointsForAverage": 2,
+						"unit": null
+					},
+					"executionTime": {
+						"average": 20,
+						"maximum": 20,
+						"minimum": 20,
+						"numberOfDataPointsForAverage": 20,
+						"id": 104,
+						"unit": "s"
+					},
+					"memory": {
+						"average": 2,
+						"maximum": 2,
+						"minimum": 2,
+						"numberOfDataPointsForAverage": 2,
+						"id": 105,
+						"unit": "GB"
+					},
+					"cost": {
+						"average": 2.00,
+						"maximum": 2,
+						"minimum": 2,
+						"numberOfDataPointsForAverage": 2,
+						"id": 200,
+						"unit": "USD"
+					}
+				},
+				"FAILED_RUNTIME_INVALID": {
+					"executionStatusCount": 2,
+					"cpu": null,
+					"executionTime": null,
+					"memory": null,
+					"cost": null
+				}
 			},
 			"id": 133,
 			"numberOfFailedExecutions": 2,
 			"numberOfSuccessfulExecutions": 2,
 			"numberOfAbortedExecutions": 0
 		},
-		"executionTime": {
-			"average": 52.75,
-			"maximum": 90,
-			"minimum": 1,
-			"numberOfDataPointsForAverage": 4,
-			"id": 104,
-			"unit": "s"
-		},
 		"id": 123,
-		"memory": {
-			"average": 3.25,
-			"maximum": 4,
-			"minimum": 2,
-			"numberOfDataPointsForAverage": 4,
-			"id": 105,
-			"unit": "GB"
-		},
-		"cost": {
-			"average": 3.25,
-			"maximum": 4,
-			"minimum": 2,
-			"numberOfDataPointsForAverage": 4,
-			"id": 200,
-			"unit": "USD"
-		},
 		"validationStatus": null
 	},
 	"OTHER": {
-		"cpu": {
-			"average": 1.5,
-			"id": 106,
-			"maximum": 2,
-			"minimum": 1,
-			"numberOfDataPointsForAverage": 2,
-			"unit": null
-		},
 		"executionStatusCount": {
 			"count": {
-				"FAILED_RUNTIME_INVALID": 2
+				"ALL": {
+					"executionStatusCount": 2,
+					"cpu": {
+						"average": 1.5,
+						"id": 106,
+						"maximum": 2,
+						"minimum": 1,
+						"numberOfDataPointsForAverage": 2,
+						"unit": null
+					},
+					"executionTime": {
+						"average": 45.5,
+						"maximum": 90,
+						"minimum": 1,
+						"numberOfDataPointsForAverage": 2,
+						"id": 107,
+						"unit": "s"
+					},
+					"memory": {
+						"average": 3.5,
+						"maximum": 4,
+						"minimum": 3,
+						"numberOfDataPointsForAverage": 2,
+						"id": 108,
+						"unit": "GB"
+					},
+					"cost": null
+				},
+				"FAILED_RUNTIME_INVALID": {
+					"executionStatusCount": 2,
+					"cpu": {
+						"average": 1.5,
+						"id": 106,
+						"maximum": 2,
+						"minimum": 1,
+						"numberOfDataPointsForAverage": 2,
+						"unit": null
+					},
+					"executionTime": {
+						"average": 45.5,
+						"maximum": 90,
+						"minimum": 1,
+						"numberOfDataPointsForAverage": 2,
+						"id": 107,
+						"unit": "s"
+					},
+					"memory": {
+						"average": 3.5,
+						"maximum": 4,
+						"minimum": 3,
+						"numberOfDataPointsForAverage": 2,
+						"id": 108,
+						"unit": "GB"
+					},
+					"cost": null
+				}
 			},
 			"id": 135,
 			"numberOfFailedExecutions": 2,
 			"numberOfSuccessfulExecutions": 0,
 			"numberOfAbortedExecutions": 0
 		},
-		"executionTime": {
-			"average": 45.5,
-			"maximum": 90,
-			"minimum": 1,
-			"numberOfDataPointsForAverage": 2,
-			"id": 107,
-			"unit": "s"
-		},
 		"id": 125,
-		"memory": {
-			"average": 3.5,
-			"maximum": 4,
-			"minimum": 3,
-			"numberOfDataPointsForAverage": 2,
-			"id": 108,
-			"unit": "GB"
-		},
 		"cost": null,
 		"validationStatus": null
 	},
 	"ALL": {
-		"cpu": {
-			"average": 1.6666666666666665,
-			"id": 109,
-			"maximum": 2,
-			"minimum": 1,
-			"numberOfDataPointsForAverage": 6,
-			"unit": null
-		},
 		"executionStatusCount": {
 			"count": {
-				"SUCCESSFUL": 4,
-				"FAILED_RUNTIME_INVALID": 5
+				"ALL": {
+					"executionStatusCount": 9,
+					"cpu": {
+						"average": 2,
+						"id": 109,
+						"maximum": 2,
+						"minimum": 2,
+						"numberOfDataPointsForAverage": 6,
+						"unit": null
+					},
+					"executionTime": {
+						"average": 20,
+						"maximum": 20,
+						"minimum": 20,
+						"numberOfDataPointsForAverage": 6,
+						"id": 110,
+						"unit": "s"
+					},
+					"memory": {
+						"average": 2,
+						"maximum": 2,
+						"minimum": 2,
+						"numberOfDataPointsForAverage": 6,
+						"id": 111,
+						"unit": "GB"
+					},
+					"cost": {
+						"average": 2,
+						"maximum": 2,
+						"minimum": 2,
+						"numberOfDataPointsForAverage": 4,
+						"id": 201,
+						"unit": "USD"
+					}
+				},
+				"SUCCESSFUL": {
+					"executionStatusCount": 4,
+					"cpu": {
+						"average": 2,
+						"id": 103,
+						"maximum": 2,
+						"minimum": 2,
+						"numberOfDataPointsForAverage": 2,
+						"unit": null
+					},
+					"executionTime": {
+						"average": 20,
+						"maximum": 20,
+						"minimum": 20,
+						"numberOfDataPointsForAverage": 20,
+						"id": 104,
+						"unit": "s"
+					},
+					"memory": {
+						"average": 2,
+						"maximum": 2,
+						"minimum": 2,
+						"numberOfDataPointsForAverage": 2,
+						"id": 105,
+						"unit": "GB"
+					},
+					"cost": {
+						"average": 2.00,
+						"maximum": 2,
+						"minimum": 2,
+						"numberOfDataPointsForAverage": 2,
+						"id": 200,
+						"unit": "USD"
+					}
+				},
+				"FAILED_RUNTIME_INVALID": {
+					"executionStatusCount": 5,
+					"cpu": {
+						"average": 2,
+						"id": 106,
+						"maximum": 2,
+						"minimum": 2,
+						"numberOfDataPointsForAverage": 2,
+						"unit": null
+					},
+					"executionTime": {
+						"average": 20,
+						"maximum": 20,
+						"minimum": 20,
+						"numberOfDataPointsForAverage": 2,
+						"id": 107,
+						"unit": "s"
+					},
+					"memory": {
+						"average": 2,
+						"maximum": 2,
+						"minimum": 2,
+						"numberOfDataPointsForAverage": 2,
+						"id": 108,
+						"unit": "GB"
+					},
+					"cost": null
+				}
 			},
 			"id": 137,
 			"numberOfFailedExecutions": 5,
 			"numberOfSuccessfulExecutions": 4,
 			"numberOfAbortedExecutions": 0
 		},
-		"executionTime": {
-			"average": 50.33333333333333,
-			"maximum": 90,
-			"minimum": 1,
-			"numberOfDataPointsForAverage": 6,
-			"id": 110,
-			"unit": "s"
-		},
 		"id": 127,
-		"memory": {
-			"average": 3.333333333333333,
-			"maximum": 4,
-			"minimum": 2,
-			"numberOfDataPointsForAverage": 6,
-			"id": 111,
-			"unit": "GB"
-		},
-		"cost": {
-			"average": 3.25,
-			"maximum": 4,
-			"minimum": 2,
-			"numberOfDataPointsForAverage": 4,
-			"id": 201,
-			"unit": "USD"
-		},
 		"validationStatus": {
 			"id": 138,
 			"validatorTools": {
