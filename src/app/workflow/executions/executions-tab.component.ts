@@ -25,10 +25,10 @@ import {
   BioWorkflow,
   Notebook,
   Service,
+  MetricsByStatus,
 } from '../../shared/openapi';
 import { SessionQuery } from '../../shared/session/session.query';
 import { takeUntil } from 'rxjs/operators';
-import { CheckerWorkflowQuery } from '../../shared/state/checker-workflow.query';
 import PartnerEnum = CloudInstance.PartnerEnum;
 import { MatSelectChange } from '@angular/material/select';
 import { AlertService } from '../../shared/alert/state/alert.service';
@@ -59,6 +59,9 @@ export class ExecutionsTabComponent extends EntryTab implements OnChanges {
   failedExecutions: number;
   abortedExecutions: number;
   executionMetricsExist: boolean;
+  currentExecutionStatus: string;
+  executionStatusToMetrics: Map<string, MetricsByStatus>;
+  executionStatuses: string[];
   // Fields for validator tool metrics
   validationsColumns: string[] = [
     'validatorToolVersionName',
@@ -138,6 +141,7 @@ export class ExecutionsTabComponent extends EntryTab implements OnChanges {
     this.successfulExecutions = null;
     this.failedExecutions = null;
     this.abortedExecutions = null;
+    this.currentExecutionStatus = null;
     this.currentPartner = null;
     this.currentValidatorTool = null;
     this.validatorTools = [];
@@ -145,15 +149,21 @@ export class ExecutionsTabComponent extends EntryTab implements OnChanges {
 
   private loadExecutionMetricsData(partner: PartnerEnum) {
     const metrics = this.metrics.get(partner);
-    this.executionMetricsTable = this.createExecutionsTable(metrics);
-    this.executionMetricsExist =
-      metrics?.cpu !== null ||
-      metrics?.memory !== null ||
-      metrics?.executionTime !== null ||
-      metrics?.executionStatusCount !== null ||
-      metrics?.cost !== null;
+    this.executionMetricsExist = metrics?.executionStatusCount !== null;
 
     if (metrics?.executionStatusCount) {
+      this.executionStatusToMetrics = new Map(Object.entries(metrics.executionStatusCount.count));
+      this.executionStatuses = Array.from(this.executionStatusToMetrics.keys());
+      if (
+        this.executionStatuses.length === 2 &&
+        this.executionStatuses.filter((status) => status === MetricsByStatus.ExecutionStatusEnum.ALL).length === 1
+      ) {
+        this.executionStatuses = this.executionStatuses.filter((status) => status !== MetricsByStatus.ExecutionStatusEnum.ALL);
+      }
+      if (this.executionStatuses) {
+        this.onSelectedExecutionStatusChange(this.executionStatuses[0]);
+      }
+
       this.successfulExecutions = metrics.executionStatusCount.numberOfSuccessfulExecutions;
       this.failedExecutions = metrics.executionStatusCount.numberOfFailedExecutions;
       this.abortedExecutions = metrics.executionStatusCount.numberOfAbortedExecutions;
@@ -167,7 +177,7 @@ export class ExecutionsTabComponent extends EntryTab implements OnChanges {
    * @param metrics
    * @returns
    */
-  private createExecutionsTable(metrics: Metrics | null): ExecutionMetricsTableObject[] {
+  private createExecutionsTable(metrics: MetricsByStatus | null): ExecutionMetricsTableObject[] {
     let executionsTable: ExecutionMetricsTableObject[] = [];
     // Only create the table if one of the execution metrics exist
     if (metrics && (metrics.cpu || metrics.memory || metrics.executionTime || metrics.cost)) {
@@ -177,6 +187,21 @@ export class ExecutionsTabComponent extends EntryTab implements OnChanges {
       executionsTable.push({ metric: 'Cost', ...metrics?.cost });
     }
     return executionsTable;
+  }
+
+  /**
+   * Called when the selected execution status is changed
+   * @param {string} executionStatus - New execution status
+   * @return {void}
+   */
+  onSelectedExecutionStatusChange(executionStatus: string): void {
+    if (executionStatus) {
+      this.currentExecutionStatus = executionStatus;
+      this.executionMetricsTable = this.createExecutionsTable(this.executionStatusToMetrics.get(executionStatus));
+    } else {
+      this.currentExecutionStatus = null;
+      this.executionMetricsTable = [];
+    }
   }
 
   private loadValidationsData(partner: PartnerEnum) {

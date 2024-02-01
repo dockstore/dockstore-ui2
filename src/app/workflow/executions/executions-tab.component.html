@@ -35,6 +35,18 @@
           <div><strong>Failed executions: </strong>{{ failedExecutions | number }}</div>
           <div><strong>Aborted executions: </strong>{{ abortedExecutions | number }}</div>
         </div>
+        <mat-form-field data-cy="metrics-execution-status-dropdown">
+          <mat-label>Select an Execution Status</mat-label>
+          <mat-select [value]="currentExecutionStatus" (selectionChange)="onSelectedExecutionStatusChange($event.value)">
+            <mat-option
+              data-cy="metrics-execution-status-options"
+              [value]="executionStatus"
+              *ngFor="let executionStatus of executionStatuses"
+            >
+              {{ executionStatus | titlecase }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
         <table
           mat-table
           *ngIf="executionMetricsTable.length > 0"
