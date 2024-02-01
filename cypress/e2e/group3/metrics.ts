@@ -56,6 +56,15 @@ describe('Dockstore Metrics', () => {
     cy.get('[data-cy=metrics-partner-dropdown]').should('contain', 'AGC');
     cy.get('[data-cy=execution-metrics-total-executions-div]').should('contain', 4);
     cy.get('[data-cy=validations-table]').should('not.exist');
+    cy.get('[data-cy=metrics-execution-status-dropdown]').should('contain', 'All');
+    // Change execution status to Successful
+    cy.get('[data-cy=metrics-execution-status-options]').contains('Successful').click();
+    cy.get('[data-cy=metrics-execution-status-dropdown]').should('contain', 'Successful');
+    cy.get('[data-cy=execution-metrics-table]').should('be.visible');
+    // Change execution status to FAILED_RUNTIME_INVALID
+    cy.get('[data-cy=metrics-execution-status-options]').contains('FAILED_RUNTIME_INVALID').click();
+    cy.get('[data-cy=metrics-execution-status-dropdown]').should('contain', 'FAILED_RUNTIME_INVALID');
+    cy.get('[data-cy=execution-metrics-table]').should('be.visible');
   });
 
   it('Should not see metrics checked on versions table if no metrics', () => {
