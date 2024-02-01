@@ -100,7 +100,6 @@ describe('Dockstore Workflow Details', () => {
     it('Should see No Metrics banner', () => {
       cy.visit('/workflows/github.com/A/l');
       cy.get('.mat-tab-label').should('have.length', 7);
-      cy.get('.mat-tab-header-pagination-after').click();
       goToTab('Metrics');
       cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=metrics');
       cy.get('[data-cy=no-metrics-banner]').should('be.visible');
