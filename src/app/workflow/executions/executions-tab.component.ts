@@ -26,10 +26,12 @@ import {
   Notebook,
   Service,
   MetricsByStatus,
+  RunExecution,
 } from '../../shared/openapi';
 import { SessionQuery } from '../../shared/session/session.query';
 import { takeUntil } from 'rxjs/operators';
 import PartnerEnum = CloudInstance.PartnerEnum;
+import ExecutionStatusEnum = RunExecution.ExecutionStatusEnum;
 import { MatSelectChange } from '@angular/material/select';
 import { AlertService } from '../../shared/alert/state/alert.service';
 
@@ -163,12 +165,15 @@ export class ExecutionsTabComponent extends EntryTab implements OnChanges {
       this.executionStatuses = Array.from(this.executionStatusToMetrics.keys());
       if (this.executionStatuses) {
         // Remove the ALL status if there's only one execution
-        if (this.executionStatuses.length === 2 && this.executionStatuses.filter((status) => status === 'ALL').length === 1) {
-          this.executionStatuses = this.executionStatuses.filter((status) => status !== 'ALL');
+        if (
+          this.executionStatuses.length === 2 &&
+          this.executionStatuses.filter((status) => status === ExecutionStatusEnum.ALL).length === 1
+        ) {
+          this.executionStatuses = this.executionStatuses.filter((status) => status !== ExecutionStatusEnum.ALL);
         }
         const executionStatus =
-          this.executionStatuses.filter((status) => status === 'ALL').length === 1
-            ? this.executionStatuses.filter((status) => status === 'ALL')[0]
+          this.executionStatuses.filter((status) => status === ExecutionStatusEnum.ALL).length === 1
+            ? this.executionStatuses.filter((status) => status === ExecutionStatusEnum.ALL)[0]
             : this.executionStatuses[0];
 
         this.onSelectedExecutionStatusChange(executionStatus);
