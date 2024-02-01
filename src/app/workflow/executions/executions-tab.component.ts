@@ -107,7 +107,10 @@ export class ExecutionsTabComponent extends EntryTab implements OnChanges {
               this.partners = Array.from(this.metrics.keys());
               this.metricsExist = this.partners.length > 0;
               if (this.metricsExist) {
-                // Display metrics for ALL platforms
+                // Remove the ALL platform if there's only one execution
+                if (this.partners.length === 2 && this.partners.filter((partner) => partner === PartnerEnum.ALL).length === 1) {
+                  this.partners = this.partners.filter((partner) => partner !== PartnerEnum.ALL);
+                }
                 const platform =
                   this.partners.filter((partner) => partner === PartnerEnum.ALL).length === 1
                     ? this.partners.filter((partner) => partner === PartnerEnum.ALL)[0]
@@ -155,14 +158,20 @@ export class ExecutionsTabComponent extends EntryTab implements OnChanges {
 
     if (metrics?.executionStatusCount) {
       this.executionStatusToMetrics = new Map(Object.entries(metrics.executionStatusCount.count));
-      this.executionStatuses = Array.from(this.executionStatusToMetrics.keys());
-      // Remove the ALL status if there's only one execution
-      if (this.executionStatuses.length === 2 && this.executionStatuses.filter((status) => status === 'ALL').length === 1) {
-        this.executionStatuses = this.executionStatuses.filter((status) => status !== 'ALL');
-      }
 
+      // Set the default execution status
+      this.executionStatuses = Array.from(this.executionStatusToMetrics.keys());
       if (this.executionStatuses) {
-        this.onSelectedExecutionStatusChange(this.executionStatuses[0]);
+        // Remove the ALL status if there's only one execution
+        if (this.executionStatuses.length === 2 && this.executionStatuses.filter((status) => status === 'ALL').length === 1) {
+          this.executionStatuses = this.executionStatuses.filter((status) => status !== 'ALL');
+        }
+        const executionStatus =
+          this.executionStatuses.filter((status) => status === 'ALL').length === 1
+            ? this.executionStatuses.filter((status) => status === 'ALL')[0]
+            : this.executionStatuses[0];
+
+        this.onSelectedExecutionStatusChange(executionStatus);
       }
 
       this.successfulExecutions = metrics.executionStatusCount.numberOfSuccessfulExecutions;
