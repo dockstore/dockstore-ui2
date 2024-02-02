@@ -161,16 +161,16 @@ export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterVi
     // Entry type is set in the container, workflow, and service routing files.
     this.entryType = this.sessionQuery.getValue().entryType;
     if (this.entryType === EntryType.BioWorkflow) {
-      this.validTabs = ['info', 'launch', 'versions', 'files', 'tools', 'dag'];
+      this.validTabs = ['info', 'launch', 'versions', 'files', 'tools', 'dag', 'metrics'];
       this.redirectToCanonicalURL('/' + myBioWorkflowsURLSegment);
     } else if (this.entryType === EntryType.Tool) {
-      this.validTabs = ['info', 'launch', 'versions', 'files'];
+      this.validTabs = ['info', 'launch', 'versions', 'files', 'metrics'];
       this.redirectToCanonicalURL('/' + myToolsURLSegment);
     } else if (this.entryType === EntryType.Notebook) {
-      this.validTabs = ['info', 'code', 'versions', 'files'];
+      this.validTabs = ['info', 'code', 'versions', 'files', 'metrics'];
       this.redirectToCanonicalURL('/' + myNotebooksURLSegment);
     } else {
-      this.validTabs = ['info', 'versions', 'files'];
+      this.validTabs = ['info', 'versions', 'files', 'metrics'];
       this.redirectToCanonicalURL('/' + myServicesURLSegment);
     }
     this.resourcePath = this.location.prepareExternalUrl(this.location.path());
