@@ -46,7 +46,7 @@
               [value]="executionStatus"
               *ngFor="let executionStatus of executionStatuses"
             >
-              {{ executionStatus | titlecase }}
+              {{ executionStatus | executionStatus }}
             </mat-option>
           </mat-select>
         </mat-form-field>
