@@ -58,9 +58,7 @@
           data-cy="execution-metrics-table"
         >
           <ng-container matColumnDef="metric">
-            <th mat-header-cell *matHeaderCellDef [ngClass]="{ 'inactive-table-header': this.executionMetricsTable.length === 0 }">
-              Metric
-            </th>
+            <th mat-header-cell *matHeaderCellDef>Metric</th>
             <td mat-cell *matCellDef="let executionMetric">{{ executionMetric.metric }}</td>
           </ng-container>
 
