@@ -6,7 +6,6 @@ describe('Dockstore Metrics', () => {
   setTokenUserViewPort();
   it('Should see no metrics banner', () => {
     cy.visit('/workflows/github.com/A/l:master');
-    cy.get('.mat-tab-header-pagination-after').click();
     goToTab('Metrics');
     cy.get('[data-cy=no-metrics-banner]').should('be.visible');
 
@@ -23,7 +22,6 @@ describe('Dockstore Metrics', () => {
       }).as('getMetrics');
     });
     cy.visit('/workflows/github.com/A/l:master');
-    cy.get('.mat-tab-header-pagination-after').click();
     cy.wait('@getMetrics');
     goToTab('Metrics');
 
