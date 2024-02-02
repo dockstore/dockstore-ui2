@@ -171,12 +171,15 @@ export class ExecutionsTabComponent extends EntryTab implements OnChanges {
         ) {
           this.executionStatuses = this.executionStatuses.filter((status) => status !== ExecutionStatusEnum.ALL);
         }
-        const executionStatus =
-          this.executionStatuses.filter((status) => status === ExecutionStatusEnum.ALL).length === 1
-            ? this.executionStatuses.filter((status) => status === ExecutionStatusEnum.ALL)[0]
-            : this.executionStatuses[0];
+        // Pick the default execution status to display.
+        let defaultExecutionStatus = this.executionStatuses[0];
+        if (this.executionStatuses.includes(ExecutionStatusEnum.SUCCESSFUL)) {
+          defaultExecutionStatus = this.executionStatuses.find((status) => status === ExecutionStatusEnum.SUCCESSFUL);
+        } else if (this.executionStatuses.includes(ExecutionStatusEnum.ALL)) {
+          defaultExecutionStatus = this.executionStatuses.find((status) => status === ExecutionStatusEnum.ALL);
+        }
 
-        this.onSelectedExecutionStatusChange(executionStatus);
+        this.onSelectedExecutionStatusChange(defaultExecutionStatus);
       }
 
       this.successfulExecutions = metrics.executionStatusCount.numberOfSuccessfulExecutions;
