@@ -102,7 +102,7 @@ export class CollectionsService {
         (error: HttpErrorResponse) => {
           this.collectionsStore.setError(true);
           if (error.status === 404) {
-            this.router.navigate(['page-not-found']);
+            this.router.navigate(['page-not-found'], { skipLocationChange: true });
           }
         }
       );
