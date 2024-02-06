@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 // ***********************************************************
-// This example support/index.js is processed and
+// This example support/index.ts is processed and
 // loaded automatically before your other test files.
 //
 // This is a great place to put global configuration and

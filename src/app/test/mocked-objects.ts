@@ -13,22 +13,22 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Version } from 'app/shared/swagger/model/version';
+import { Version } from 'app/shared/openapi/model/version';
 import { OrgToolObject } from '../mytools/my-tool/my-tool.component';
 import { Hit } from '../search/state/search.service';
 import { ExtendedDockstoreTool } from '../shared/models/ExtendedDockstoreTool';
 import { ExtendedWorkflow } from '../shared/models/ExtendedWorkflow';
-import { VersionVerifiedPlatform } from '../shared/openapi';
-import { Tag, WorkflowVersion } from '../shared/swagger';
-import { Notification } from '../shared/swagger/model/notification';
-import { DockstoreTool } from './../shared/swagger/model/dockstoreTool';
-import { SourceFile } from './../shared/swagger/model/sourceFile';
-import { TokenUser } from './../shared/swagger/model/tokenUser';
-import { Workflow } from './../shared/swagger/model/workflow';
+import { VersionVerifiedPlatform, Tag, WorkflowVersion, Author } from '../shared/openapi';
+import { Notification } from '../shared/openapi/model/notification';
+import { DockstoreTool } from './../shared/openapi/model/dockstoreTool';
+import { SourceFile } from './../shared/openapi/model/sourceFile';
+import { TokenUser } from './../shared/openapi/model/tokenUser';
+import { Workflow } from './../shared/openapi/model/workflow';
 
 const DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
 
 export const updatedWorkflow: Workflow = {
+  type: '',
   descriptorType: DescriptorTypeEnum.CWL,
   gitUrl: 'updatedGitUrl',
   mode: Workflow.ModeEnum.FULL,
@@ -39,10 +39,11 @@ export const updatedWorkflow: Workflow = {
   defaultTestParameterFilePath: 'updatedTestParameterPath',
   sourceControl: 'github.com',
   source_control_provider: 'GITHUB',
-  descriptorTypeSubclass: 'NOT_APPLICABLE',
+  descriptorTypeSubclass: 'n/a',
 };
 
 export const sampleWorkflow1: Workflow = {
+  type: '',
   id: 1,
   descriptorType: DescriptorTypeEnum.CWL,
   gitUrl: 'updatedGitUrl',
@@ -54,10 +55,11 @@ export const sampleWorkflow1: Workflow = {
   defaultTestParameterFilePath: 'updatedTestParameterPath',
   sourceControl: 'github.com',
   source_control_provider: 'GITHUB',
-  descriptorTypeSubclass: 'NOT_APPLICABLE',
+  descriptorTypeSubclass: 'n/a',
 };
 
 export const sampleWorkflow2: Workflow = {
+  type: '',
   id: 2,
   descriptorType: DescriptorTypeEnum.CWL,
   gitUrl: 'updatedGitUrl',
@@ -69,10 +71,11 @@ export const sampleWorkflow2: Workflow = {
   defaultTestParameterFilePath: 'updatedTestParameterPath',
   sourceControl: 'github.com',
   source_control_provider: 'GITHUB',
-  descriptorTypeSubclass: 'NOT_APPLICABLE',
+  descriptorTypeSubclass: 'n/a',
 };
 
 export const sampleWorkflow3: Workflow = {
+  type: '',
   id: 3,
   descriptorType: DescriptorTypeEnum.CWL,
   gitUrl: 'sampleGitUrl',
@@ -85,10 +88,11 @@ export const sampleWorkflow3: Workflow = {
   sourceControl: 'github.com',
   source_control_provider: 'GITHUB',
   full_workflow_path: 'github.com/sampleWorkflowPath',
-  descriptorTypeSubclass: 'NOT_APPLICABLE',
+  descriptorTypeSubclass: 'n/a',
 };
 
 export const sampleWdlWorkflow1: Workflow = {
+  type: '',
   id: 4,
   descriptorType: DescriptorTypeEnum.WDL,
   gitUrl: 'sampleGitUrl',
@@ -101,10 +105,11 @@ export const sampleWdlWorkflow1: Workflow = {
   sourceControl: 'github.com',
   source_control_provider: 'GITHUB',
   full_workflow_path: 'github.com/DataBiosphere/topmed-workflows/Functional_Equivalence',
-  descriptorTypeSubclass: 'NOT_APPLICABLE',
+  descriptorTypeSubclass: 'n/a',
 };
 
 export const sampleCwlExtendedWorkflow: ExtendedWorkflow = {
+  type: '',
   id: 5,
   descriptorType: DescriptorTypeEnum.CWL,
   gitUrl: 'git@github.com:dockstore-testing/md5sum-checker.git',
@@ -117,10 +122,11 @@ export const sampleCwlExtendedWorkflow: ExtendedWorkflow = {
   sourceControl: 'github.com',
   source_control_provider: 'GITHUB',
   full_workflow_path: 'github.com/dockstore-testing/md5sum-checker',
-  descriptorTypeSubclass: 'NOT_APPLICABLE',
+  descriptorTypeSubclass: 'n/a',
 };
 
 export const sampleWdlWorkflow2: Workflow = {
+  type: '',
   id: 5,
   descriptorType: DescriptorTypeEnum.WDL,
   gitUrl: 'sampleGitUrl',
@@ -133,13 +139,14 @@ export const sampleWdlWorkflow2: Workflow = {
   sourceControl: 'github.com',
   source_control_provider: 'GITHUB',
   full_workflow_path: 'github.com/DataBiosphere/topmed-workflows/UM_aligner_wdl',
-  descriptorTypeSubclass: 'NOT_APPLICABLE',
+  descriptorTypeSubclass: 'n/a',
 };
 
 export const sampleWorkflowVersion: WorkflowVersion = {
   id: 1,
   reference: '',
   name: 'master',
+  workflow_path: '/abc.wdl',
 };
 
 export const sampleToolVersion: Tag = {
@@ -147,6 +154,13 @@ export const sampleToolVersion: Tag = {
   reference: '',
   name: 'master',
 };
+
+export const sampleAuthorsArray: Array<Author> = [
+  {
+    email: 'sampleEmail',
+    name: 'sampleName',
+  },
+];
 
 export const sampleTool1: DockstoreTool = {
   id: 1,
@@ -156,6 +170,7 @@ export const sampleTool1: DockstoreTool = {
   gitUrl: 'sampleGitUrl',
   mode: DockstoreTool.ModeEnum.MANUALIMAGEPATH,
   name: 'sampleName',
+  authors: sampleAuthorsArray,
   namespace: 'sampleNamespace',
   private_access: false,
   registry_string: 'quay.io',
@@ -206,6 +221,7 @@ export const orgObj1: OrgToolObject<DockstoreTool> = {
   namespace: 'stew',
   published: [sampleTool1],
   unpublished: [sampleTool2, sampleTool3],
+  archived: [],
   expanded: false,
 };
 // Case 2: sampleTool1 in unpublished entries, published doesn't matter
@@ -214,6 +230,7 @@ export const orgObj2: OrgToolObject<DockstoreTool> = {
   namespace: 'stew',
   published: [sampleTool2, sampleTool3],
   unpublished: [sampleTool1],
+  archived: [],
   expanded: false,
 };
 
@@ -223,6 +240,7 @@ export const orgObj3: OrgToolObject<DockstoreTool> = {
   namespace: 'stew',
   published: [sampleTool2],
   unpublished: [sampleTool3],
+  archived: [],
   expanded: false,
 };
 
@@ -232,6 +250,7 @@ export const orgObj4: OrgToolObject<DockstoreTool> = {
   namespace: 'stew',
   published: [],
   unpublished: [],
+  archived: [],
   expanded: false,
 };
 

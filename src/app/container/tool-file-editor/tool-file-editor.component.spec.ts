@@ -24,7 +24,7 @@ import { PrivateFilePathPipe } from './../../shared/entry/private-file-path.pipe
 import { PublicFileDownloadPipe } from './../../shared/entry/public-file-download.pipe';
 import { FileService } from './../../shared/file.service';
 import { RefreshService } from './../../shared/refresh.service';
-import { HostedService } from './../../shared/swagger/api/hosted.service';
+import { HostedService } from './../../shared/openapi/api/hosted.service';
 import { ContainerStubService, HostedStubService, RefreshStubService, WorkflowStubService } from './../../test/service-stubs';
 import { ToolFileEditorComponent } from './tool-file-editor.component';
 

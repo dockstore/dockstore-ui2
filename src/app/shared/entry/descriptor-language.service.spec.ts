@@ -15,9 +15,8 @@
  */
 import { of as observableOf } from 'rxjs';
 import { first } from 'rxjs/operators';
-import { DescriptorLanguageBean, ToolDescriptor, Workflow } from '../swagger';
+import { DescriptorLanguageBean, ToolDescriptor, Workflow, SourceFile } from '../openapi';
 import { DescriptorLanguageService } from './descriptor-language.service';
-import { SourceFile } from '../openapi';
 
 describe('Service: DescriptorLanguage', () => {
   let metadataServiceSpy;

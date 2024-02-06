@@ -23,7 +23,7 @@ import { DockstoreService } from '../../shared/dockstore.service';
 import { ProviderService } from '../../shared/provider.service';
 import { PaginatorQuery } from '../../shared/state/paginator.query';
 import { PaginatorService } from '../../shared/state/paginator.service';
-import { Workflow, WorkflowsService } from '../../shared/swagger';
+import { Workflow, WorkflowsService } from '../../shared/openapi';
 import { ToolLister } from '../../shared/tool-lister';
 import { PublishedWorkflowsDataSource } from './published-workflows.datasource';
 
@@ -32,10 +32,17 @@ import { PublishedWorkflowsDataSource } from './published-workflows.datasource';
   templateUrl: './list.component.html',
   styleUrls: ['../../shared/styles/entry-table.scss', './list.component.scss'],
 })
-export class ListWorkflowsComponent extends ToolLister implements OnInit {
+export class ListWorkflowsComponent extends ToolLister<PublishedWorkflowsDataSource> implements OnInit {
   @Input() previewMode: boolean;
 
-  public displayedColumns = ['repository', 'verified', 'author', 'descriptorType', 'projectLinks', 'stars'];
+  public workflowColumns = ['repository', 'verified', 'author', 'descriptorType', 'projectLinks', 'stars'];
+  public notebookColumns = ['repository', 'author', 'descriptorType', 'descriptorTypeSubclass', 'projectLinks', 'stars'];
+  public typeToDisplayedColumns = {
+    workflow: this.workflowColumns,
+    service: this.workflowColumns,
+    appTool: this.workflowColumns,
+    notebook: this.notebookColumns,
+  };
   public entryType$: Observable<EntryType>;
   public entryTypeDisplayName$: Observable<string>;
   type: 'tool' | 'workflow' = 'workflow';

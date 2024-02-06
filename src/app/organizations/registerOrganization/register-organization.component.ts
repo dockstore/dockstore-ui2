@@ -17,7 +17,7 @@ import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, UntypedFormGroup } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { NgFormsManager } from '@ngneat/forms-manager';
-import { Organization } from 'app/shared/swagger';
+import { Organization } from 'app/shared/openapi';
 
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
 import { FormsState, RegisterOrganizationService } from '../state/register-organization.service';

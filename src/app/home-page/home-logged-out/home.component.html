@@ -1,5 +1,5 @@
 <!--
-  ~    Copyright 2019 OICR
+  ~    Copyright 2023 OICR
   ~
   ~    Licensed under the Apache License, Version 2.0 (the "License");
   ~    you may not use this file except in compliance with the License.
@@ -102,14 +102,17 @@
               <h3><span class="title-strong">Use</span> in many analysis environments.</h3>
               <span class="subtitle"
                 >Try out the
-                <a [routerLink]="'/workflows/github.com/dockstore/bcc2020-training/HelloWorld:master?tab=info'">Hello World Workflow</a> in
-                the cloud.</span
+                <a [routerLink]="'/workflows/github.com/dockstore/bcc2020-training/HelloWorld:master'" [queryParams]="{ tab: 'info' }"
+                  >Hello World Workflow</a
+                >
+                in the cloud.</span
               >
               <ul class="ordered-list">
                 <li>
                   Visit the
-                  <a [routerLink]="'/workflows/github.com/dockstore/bcc2020-training/HelloWorld:master?tab=info'">Hello World Workflow</a>;
-                  a tutorial from our
+                  <a [routerLink]="'/workflows/github.com/dockstore/bcc2020-training/HelloWorld:master'" [queryParams]="{ tab: 'info' }"
+                    >Hello World Workflow</a
+                  >; a tutorial from our
                   <a target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/watch?v=shMr_Bd01Ko&t=3226s"
                     >BCC 2020 workshop</a
                   >.
@@ -138,7 +141,9 @@
               <h3><span class="title-strong">Use</span> in many analysis environments.</h3>
               <span class="subtitle"
                 >Try out the
-                <a [routerLink]="'/workflows/github.com/dockstore/bcc2020-training/HelloWorld:master?tab=info'">Hello World Workflow</a>
+                <a [routerLink]="'/workflows/github.com/dockstore/bcc2020-training/HelloWorld:master'" [queryParams]="{ tab: 'info' }"
+                  >Hello World Workflow</a
+                >
                 locally using the Dockstore CLI.</span
               >
               <div fxLayout="row" class="gray-sections px-3 pt-3">
@@ -300,6 +305,19 @@
         </div>
         <div>
           <h5 class="mb-0">
+            <a
+              target="_blank"
+              rel="noopener noreferrer"
+              [href]="Dockstore.DOCUMENTATION_URL + '/faq.html#how-do-i-cite-dockstore'"
+              data-cy="homepage-citation-link"
+              >How to Cite Dockstore</a
+            >
+          </h5>
+          <span>Find out how to cite Dockstore in your work.</span>
+          <mat-divider class="my-3"></mat-divider>
+        </div>
+        <div>
+          <h5 class="mb-0">
             <a target="_blank" rel="noopener noreferrer" href="https://discuss.dockstore.org/" data-cy="homepage-discuss-link"
               >Join the Discussion</a
             >
@@ -307,9 +325,7 @@
           <span>Discourse forum about helpful Dockstore topics.</span>
         </div>
       </div>
-      <div fxFlex.md="33" fxFlex.gt-md="33" fxFlex.lt-md="100">
-        <div class="my-3 twitter" #twitter></div>
-      </div>
+      <app-mastodon-timeline fxLayout="column" fxFlex="33" fxFlex.lt-md="100" class="p-3 mh-100"></app-mastodon-timeline>
     </div>
   </div>
 </div>

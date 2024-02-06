@@ -17,34 +17,40 @@
   <div *ngIf="!dataSource">
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
   </div>
-  <mat-table
-    [hidden]="!dataSource"
-    [dataSource]="dataSource"
-    matSort
-    matSortActive="starredUsers"
-    matSortDirection="desc"
-    matSortDisableClear
-  >
+  <mat-table [hidden]="!dataSource" [dataSource]="dataSource" matSort multiTemplateDataRows>
     <ng-container matColumnDef="name">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Name and Description</mat-header-cell>
       <!-- the wrap causes slightly odd behavior with the mat-icon but is needed for the topic -->
       <mat-cell data-cy="toolNames" *matCellDef="let tool">
         <div>
-          <span *ngIf="tool.private_access">
+          <span *ngIf="tool?.source.private_access">
             <app-private-icon></app-private-icon>
           </span>
-          <div *ngIf="tool | isAppTool; else docktoreToolName">
-            <a [matTooltip]="tool?.full_workflow_path" [routerLink]="'/containers/' + tool.full_workflow_path">{{
-              tool?.organization + '/' + tool?.repository + (tool?.workflowName ? '/' + tool?.workflowName : '')
-            }}</a>
+          <div *ngIf="tool.source | isAppTool; else docktoreToolName">
+            <a
+              [matTooltip]="tool?.source.full_workflow_path"
+              matTooltipPosition="left"
+              [routerLink]="'/containers/' + tool.source.full_workflow_path"
+              >{{
+                tool?.source.organization +
+                  '/' +
+                  tool?.source.repository +
+                  (tool?.source.workflowName ? '/' + tool?.source.workflowName : '')
+              }}</a
+            >
           </div>
           <ng-template #docktoreToolName>
-            <a [matTooltip]="tool?.tool_path" [routerLink]="'/containers/' + tool.tool_path">{{
-              tool?.namespace + '/' + tool?.name + (tool?.toolname ? '/' + tool?.toolname : '')
+            <a [matTooltip]="tool?.source.tool_path" matTooltipPosition="left" [routerLink]="'/containers/' + tool.source.tool_path">{{
+              tool?.source.namespace + '/' + tool?.source.name + (tool?.source.toolname ? '/' + tool?.source.toolname : '')
             }}</a>
           </ng-template>
-          <div class="truncate-text-2 size-small" *ngIf="tool.topicAutomatic" [matTooltip]="tool.topicAutomatic">
-            {{ tool.topicAutomatic }}
+          <div
+            class="truncate-text-2 size-small"
+            *ngIf="tool.source.topicAutomatic"
+            [matTooltip]="tool.source.topicAutomatic"
+            matTooltipPosition="left"
+          >
+            {{ tool.source.topicAutomatic }}
           </div>
         </div>
       </mat-cell>
@@ -52,7 +58,7 @@
     <ng-container matColumnDef="verified">
       <mat-header-cell fxShow fxHide.lt-md *matHeaderCellDef>Verified</mat-header-cell>
       <mat-cell fxShow fxHide.lt-md *matCellDef="let tool">
-        <a *ngIf="tool.verified" [href]="verifiedLink">
+        <a *ngIf="tool.source.verified" [href]="verifiedLink">
           <mat-icon matTooltip="Verified">check</mat-icon>
         </a>
       </mat-cell>
@@ -64,20 +70,20 @@
         fxHide.lt-sm
         class="duration-cell truncate-text-2"
         *matCellDef="let tool"
-        [matTooltip]="tool?.all_authors | getSearchAuthorsHtml: false"
-        [innerHTML]="tool?.all_authors | getSearchAuthorsHtml"
+        [matTooltip]="tool?.source.all_authors | getSearchAuthorsHtml: false"
+        [innerHTML]="tool?.source.all_authors | getSearchAuthorsHtml"
       ></mat-cell>
     </ng-container>
     <ng-container matColumnDef="descriptorType" style="width: fit-content">
       <mat-header-cell fxShow fxHide.lt-sm *matHeaderCellDef mat-sort-header fxFlex="15%">Format</mat-header-cell>
       <mat-cell data-cy="toolTypes" fxShow fxHide.lt-sm *matCellDef="let tool" fxFlex="15%" class="align-languages">
-        <ng-container *ngIf="tool | isAppTool; else dockstoreToolDescriptorType">
+        <ng-container *ngIf="tool.source | isAppTool; else dockstoreToolDescriptorType">
           <div class="m-1">
-            <span class="nonclick-badge">{{ tool?.descriptorType | uppercase }}</span>
+            <span class="nonclick-badge">{{ tool?.source.descriptorType | uppercase }}</span>
           </div>
         </ng-container>
         <ng-template #dockstoreToolDescriptorType>
-          <div *ngFor="let language of tool?.descriptorType" class="m-1">
+          <div *ngFor="let language of tool?.source.descriptorType" class="m-1">
             <span class="nonclick-badge">
               {{ language ? (language.toString() | uppercase) : '' }}
             </span>
@@ -88,24 +94,40 @@
     <ng-container matColumnDef="projectLinks">
       <mat-header-cell fxShow fxHide.lt-md *matHeaderCellDef>Links</mat-header-cell>
       <mat-cell fxShow fxHide.lt-md *matCellDef="let tool">
-        <a [href]="tool?.providerUrl" *ngIf="tool?.providerUrl">
-          <fa-icon class="fa-lg" [icon]="tool.providerIcon" [matTooltip]="tool?.provider"></fa-icon>
+        <a [href]="tool?.source.providerUrl" *ngIf="tool?.source.providerUrl">
+          <fa-icon class="fa-lg" [icon]="tool.source.providerIcon" [matTooltip]="tool?.source.provider"></fa-icon>
         </a>
         &nbsp; &nbsp;
-        <a [href]="tool?.imgProviderUrl" *ngIf="tool?.imgProviderUrl">
-          <fa-icon class="fa-lg" [icon]="tool.imgProviderIcon" [matTooltip]="tool?.imgProvider"></fa-icon>
+        <a [href]="tool?.source.imgProviderUrl" *ngIf="tool?.source.imgProviderUrl">
+          <fa-icon class="fa-lg" [icon]="tool.source.imgProviderIcon" [matTooltip]="tool?.source.imgProvider"></fa-icon>
         </a>
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="starredUsers">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Stars</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header start="desc">Stars</mat-header-cell>
       <mat-cell class="description-cell" *matCellDef="let tool"
-        ><mat-icon class="star-icon" *ngIf="tool?.starredUsers?.length > 0">star_rate</mat-icon>
-        {{ !tool?.starredUsers || tool?.starredUsers.length === 0 ? '' : tool?.starredUsers.length }}
+        ><mat-icon class="star-icon" *ngIf="tool?.source.starredUsers?.length > 0">star_rate</mat-icon>
+        {{ !tool?.source.starredUsers || tool?.source.starredUsers.length === 0 ? '' : tool?.source.starredUsers.length }}
       </mat-cell>
     </ng-container>
+
+    <!-- Search highlighting column - this row is made up of this one column that spans across all columns -->
+    <ng-container matColumnDef="searchHighlight">
+      <mat-cell *matCellDef="let tool" [attr.colspan]="displayedColumns.length">
+        <div *ngIf="tool.highlight" class="pb-3">
+          <table class="size-small">
+            <tr *ngFor="let highlight of tool.highlight | keyvalue">
+              <th>{{ this.searchEverythingFriendlyNames.get(highlight.key.toString()) }}:</th>
+              <td><span [innerHTML]="highlight.value | joinWithEllipses"></span></td>
+            </tr>
+          </table>
+        </div>
+      </mat-cell>
+    </ng-container>
+
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns" class="py-2"></mat-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns" class="py-3 element-row"></mat-row>
+    <mat-row *matRowDef="let row; columns: ['searchHighlight']" class="search-highlight-row"></mat-row>
   </mat-table>
   <mat-paginator
     data-cy="search-tool-table-paginator"

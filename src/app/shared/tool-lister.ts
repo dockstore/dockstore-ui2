@@ -26,11 +26,11 @@ import { EntryType } from './enum/entry-type';
 import { ProviderService } from './provider.service';
 import { SessionQuery } from './session/session.query';
 import { PaginatorService } from './state/paginator.service';
-import { DockstoreTool, Workflow } from './swagger';
+import { DockstoreTool, Workflow } from './openapi';
 
 @Directive()
 // eslint-disable-next-line @angular-eslint/directive-class-suffix
-export abstract class ToolLister implements AfterViewInit, OnDestroy {
+export abstract class ToolLister<T extends PublishedWorkflowsDataSource | PublishedToolsDataSource> implements AfterViewInit, OnDestroy {
   private ngUnsubscribe: Subject<{}> = new Subject();
   protected previewMode = false;
   protected displayTable = false;
@@ -49,8 +49,7 @@ export abstract class ToolLister implements AfterViewInit, OnDestroy {
   }
 
   abstract type: 'tool' | 'workflow';
-  abstract displayedColumns: Array<string>;
-  public dataSource: PublishedWorkflowsDataSource | PublishedToolsDataSource;
+  public dataSource: T;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild('input', { static: true }) input: ElementRef;

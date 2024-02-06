@@ -13,16 +13,19 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { P } from '@angular/cdk/keycodes';
+import { KeyValue } from '@angular/common';
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { HashMap } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
-import { Collection } from '../../shared/swagger';
+import { Collection } from '../../shared/openapi';
 import { CollectionsQuery } from '../state/collections.query';
 import { CollectionsService } from '../state/collections.service';
 import { OrganizationQuery } from '../state/organization.query';
 import { CreateCollectionComponent } from './create-collection/create-collection.component';
+import { Dockstore } from '../../shared/dockstore.model';
 
 @Component({
   selector: 'app-collections',
@@ -30,6 +33,7 @@ import { CreateCollectionComponent } from './create-collection/create-collection
   styleUrls: ['./collections.component.scss'],
 })
 export class CollectionsComponent implements OnInit, OnChanges {
+  public Dockstore = Dockstore;
   @Input() organizationID: number;
   @Input() organizationName: string;
   loading$: Observable<boolean>;
@@ -55,7 +59,7 @@ export class CollectionsComponent implements OnInit, OnChanges {
     this.collectionsService.updateCollections(this.organizationID);
   }
 
-  editCollection(collection: Collection) {
+  editCollection(collection: KeyValue<string, Collection>) {
     this.matDialog.open(CreateCollectionComponent, { data: { collection: collection, mode: TagEditorMode.Edit }, width: '600px' });
   }
 

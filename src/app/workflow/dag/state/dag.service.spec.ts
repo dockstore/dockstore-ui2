@@ -16,7 +16,7 @@
 
 import { Renderer2 } from '@angular/core';
 import { inject, TestBed } from '@angular/core/testing';
-import { WorkflowsService } from '../../../shared/swagger/api/workflows.service';
+import { WorkflowsService } from '../../../shared/openapi/api/workflows.service';
 import { WorkflowsStubService } from '../../../test/service-stubs';
 import { DagQuery } from './dag.query';
 import { DagService } from './dag.service';

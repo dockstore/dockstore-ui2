@@ -2,8 +2,16 @@ import { Injectable } from '@angular/core';
 import { DescriptorTypeCompatService } from 'app/shared/descriptor-type-compat.service';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 import { FileService } from 'app/shared/file.service';
-import { SourceFile, ToolDescriptor, WorkflowsService, WorkflowVersion } from 'app/shared/openapi';
-import { BioWorkflow, Notebook, Service, Validation } from 'app/shared/swagger';
+import {
+  SourceFile,
+  ToolDescriptor,
+  WorkflowsService,
+  WorkflowVersion,
+  BioWorkflow,
+  Notebook,
+  Service,
+  Validation,
+} from 'app/shared/openapi';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -35,9 +43,10 @@ export class SourceFileTabsService {
     const fileTabsSchematic =
       this.descriptorLanguageService.toolDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorLanguage).fileTabs;
 
-    // Always have the Descriptor Files Tab and Test Parameter Files tab
-    fileTabs.set(fileTabsSchematic[0].tabName, []);
-    fileTabs.set(fileTabsSchematic[1].tabName, []);
+    // Display all of the tabs, even if they are empty.
+    fileTabsSchematic.forEach((fileTab) => {
+      fileTabs.set(fileTab.tabName, []);
+    });
     if (!sourcefiles || sourcefiles.length === 0) {
       return fileTabs;
     }

@@ -6,8 +6,7 @@ import { AliasesState, AliasesStore } from './aliases.store';
 export class AliasesQuery extends Query<AliasesState> {
   organization$ = this.select((state) => state.organization);
   collection$ = this.select((state) => state.collection);
-  tool$ = this.select((state) => state.tool);
-  workflow$ = this.select((state) => state.workflow);
+  entry$ = this.select((state) => state.entry);
   workflowVersionPathInfo$ = this.select((state) => state.workflowVersionPathInfo);
   loading$ = this.selectLoading();
 

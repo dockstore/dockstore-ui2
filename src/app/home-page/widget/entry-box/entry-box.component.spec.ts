@@ -8,15 +8,13 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { RegisterToolService } from 'app/container/register-tool/register-tool.service';
-import { MyBioWorkflowsService } from 'app/myworkflows/my-bio-workflows.service';
-import { MyServicesService } from 'app/myworkflows/my-services.service';
 import { MyWorkflowsService } from 'app/myworkflows/myworkflows.service';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 import { MyEntriesQuery } from 'app/shared/state/my-entries.query';
 import { MyEntriesStateService } from 'app/shared/state/my-entries.service';
 import { MyEntriesStore } from 'app/shared/state/my-entries.store';
 import { WorkflowService } from 'app/shared/state/workflow.service';
-import { UsersService, WorkflowsService } from 'app/shared/swagger';
+import { UsersService, WorkflowsService } from 'app/shared/openapi';
 import { UrlResolverService } from 'app/shared/url-resolver.service';
 import {
   RegisterToolStubService,
@@ -55,8 +53,6 @@ describe('EntryBoxComponent', () => {
           { provide: WorkflowsService, useClass: WorkflowsStubService },
           { provide: UrlResolverService, useClass: UrlResolverStubService },
           { provide: UsersService, useClass: UsersStubService },
-          MyServicesService,
-          MyBioWorkflowsService,
           MyWorkflowsService,
           MyEntriesStateService,
           MyEntriesStore,

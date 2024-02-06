@@ -13,6 +13,7 @@ import { RefreshWizardModule } from '../container/refresh-wizard.module';
 import { RefreshAlertModule } from '../shared/alert/alert.module';
 import { CategoryButtonModule } from '../categories/button/category-button.module';
 import { JsonLdModule } from '../shared/modules/json-ld.module';
+import { RegisterGithubAppModule } from '../shared/modules/register-github-app.module';
 import { RecentEventsModule } from './recent-events/recent-events.module';
 import { FeaturedContentComponent } from './widget/featured-content/featured-content.component';
 import { NewsAndUpdatesComponent } from './widget/featured-content/news-and-updates.component';
@@ -22,8 +23,6 @@ import { MySidebarModule } from '../shared/modules/my-sidebar.module';
 import { EntryBoxComponent } from './widget/entry-box/entry-box.component';
 import { MytoolsService } from 'app/mytools/mytools.service';
 import { MyWorkflowsService } from 'app/myworkflows/myworkflows.service';
-import { MyServicesService } from 'app/myworkflows/my-services.service';
-import { MyBioWorkflowsService } from 'app/myworkflows/my-bio-workflows.service';
 import { MyEntriesStateService } from 'app/shared/state/my-entries.service';
 import { MyEntriesStore } from 'app/shared/state/my-entries.store';
 import { MyEntriesQuery } from 'app/shared/state/my-entries.query';
@@ -37,6 +36,8 @@ import { HeaderModule } from 'app/shared/modules/header.module';
 import { NewsBoxComponent } from './widget/news-box/news-box.component';
 import { MarkdownWrapperModule } from '../shared/modules/markdown-wrapper.module';
 import { PreviewWarningModule } from '../shared/modules/preview-warning.module';
+import { MastodonComponent } from '../shared/mastodon/mastodon.component';
+import { SharedWorkflowServicesNotebooksModule } from '../shared-workflow-services-notebooks/shared-workflow-services-notebooks.module';
 
 @NgModule({
   imports: [
@@ -58,6 +59,8 @@ import { PreviewWarningModule } from '../shared/modules/preview-warning.module';
     HeaderModule,
     MarkdownWrapperModule,
     PreviewWarningModule,
+    RegisterGithubAppModule,
+    SharedWorkflowServicesNotebooksModule,
   ],
   declarations: [
     HomeComponent,
@@ -71,12 +74,11 @@ import { PreviewWarningModule } from '../shared/modules/preview-warning.module';
     OrganizationBoxComponent,
     StarredBoxComponent,
     NewsBoxComponent,
+    MastodonComponent,
   ],
   providers: [
     MytoolsService,
     MyWorkflowsService,
-    MyServicesService,
-    MyBioWorkflowsService,
     MyEntriesStateService,
     MyEntriesStore,
     MyEntriesQuery,

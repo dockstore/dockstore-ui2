@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
-import { TokenUser } from '../swagger';
+import { TokenUser } from '../openapi';
 
 export interface TokenState extends EntityState<TokenUser> {
   gitHubOrganizations: Array<string>;

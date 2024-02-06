@@ -123,7 +123,8 @@
                       defaultTestFilePathEditing ||
                       forumUrlEditing ||
                       (workflowPathEditing && !editWorkflowPathForm.valid) ||
-                      (isRefreshing$ | async)
+                      (isRefreshing$ | async) ||
+                      !canWrite
                     "
                     (click)="toggleEditWorkflowPath()"
                   >
@@ -176,7 +177,8 @@
                       workflowPathEditing ||
                       forumUrlEditing ||
                       (defaultTestFilePathEditing && !editTestFilePathForm.valid) ||
-                      (isRefreshing$ | async)
+                      (isRefreshing$ | async) ||
+                      !canWrite
                     "
                     (click)="toggleEditDefaultTestFilePath()"
                   >
@@ -198,11 +200,25 @@
                 }}</span>
               </div>
               <div *ngIf="!isPublic">
-                <span><strong matTooltip="Short description of the workflow">Topic Automatic</strong>:&nbsp;</span>
+                <span
+                  ><strong
+                    matTooltip="Short description of the {{
+                      entryType$ | async
+                    }}, retrieved automatically from the GitHub repository description"
+                    >Topic Automatic</strong
+                  >:&nbsp;</span
+                >
                 <span>{{ workflow?.topicAutomatic }}</span>
               </div>
               <form *ngIf="!isPublic" #editTopic="ngForm" fxLayout="row" fxLayoutAlign="start center" class="w-100">
-                <span><strong matTooltip="Short description of the workflow">Topic Manual</strong>:&nbsp;</span>
+                <span
+                  ><strong
+                    matTooltip="Short description of the {{ entryType$ | async }}, entered manually in the {{
+                      workflow?.mode === WorkflowType.ModeEnum.DOCKSTOREYML ? '.dockstore.yml' : 'UI'
+                    }}"
+                    >Topic Manual</strong
+                  >:&nbsp;</span
+                >
                 <span *ngIf="!topicEditing"> {{ workflow?.topicManual }} </span>
                 <span fxFlex>
                   <input
@@ -227,23 +243,28 @@
                     <img src="../assets/svg/icons-reject-small.svg" alt="Cancel" class="pr-2 pb-1" />Cancel
                   </button>
                   <button
-                    *ngIf="!workflow?.topic && !topicEditing"
-                    [disabled]="forumUrlEditing || workflowPathEditing || defaultTestFilePathEditing || (isRefreshing$ | async)"
+                    [disabled]="
+                      forumUrlEditing ||
+                      workflowPathEditing ||
+                      defaultTestFilePathEditing ||
+                      (isRefreshing$ | async) ||
+                      !canWrite ||
+                      workflow?.mode === WorkflowType.ModeEnum.DOCKSTOREYML
+                    "
                     type="button"
                     mat-raised-button
                     class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
                     (click)="toggleEditTopic()"
-                    data-cy="topicEditButton"
-                  >
-                    <img src="../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit Topic Manual" />Edit
-                  </button>
-                  <button
-                    *ngIf="workflow?.topic || topicEditing"
-                    type="button"
-                    mat-raised-button
-                    class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
-                    (click)="toggleEditTopic()"
-                    data-cy="topicSaveButton"
+                    [attr.data-cy]="topicEditing ? 'topicSaveButton' : 'topicEditButton'"
+                    [matTooltip]="
+                      workflow?.mode === WorkflowType.ModeEnum.DOCKSTOREYML
+                        ? 'Edit the manual topic for this ' +
+                          (entryType$ | async) +
+                          ' in the .dockstore.yml file on GitHub. Editing the topic in the UI is deprecated for GitHub App ' +
+                          (entryType$ | async) +
+                          's.'
+                        : 'Edit the manual topic for this ' + (entryType$ | async)
+                    "
                   >
                     <mat-icon *ngIf="topicEditing" class="mat-icon-sm">save</mat-icon>
                     <img *ngIf="!topicEditing" src="../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit Topic Manual" />
@@ -260,7 +281,7 @@
                     [(ngModel)]="workflow.topicSelection"
                     aria-label="Select an option"
                     (change)="radioChange($event)"
-                    [disabled]="workflow?.mode === WorkflowType.ModeEnum.HOSTED"
+                    [disabled]="workflow?.mode === WorkflowType.ModeEnum.HOSTED || !canWrite"
                     [matTooltip]="
                       workflow?.mode === WorkflowType.ModeEnum.HOSTED
                         ? 'Hosted workflow topics are always manually entered'
@@ -306,7 +327,7 @@
                   </button>
                   <button
                     *ngIf="!isPublic && !workflow?.forumUrl && !forumUrlEditing"
-                    [disabled]="topicEditing || workflowPathEditing || defaultTestFilePathEditing || (isRefreshing$ | async)"
+                    [disabled]="topicEditing || workflowPathEditing || defaultTestFilePathEditing || (isRefreshing$ | async) || !canWrite"
                     type="button"
                     mat-raised-button
                     class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
@@ -351,7 +372,7 @@
               type="button"
               *ngIf="workflow?.mode === WorkflowType.ModeEnum.FULL && !workflow?.is_published && !workflow?.isChecker"
               (click)="restubWorkflow()"
-              [disabled]="isRefreshing$ | async"
+              [disabled]="(isRefreshing$ | async) || !canWrite"
             >
               <img src="../assets/svg/icons-reject-small.svg" alt="Cancel" class="pr-2 pb-1" />Restub
             </button>
@@ -497,15 +518,15 @@
         {{ publicAccessibleTestParameterFile ? 'Yes' : 'No' }}
       </div>
       <div>
-        <div *ngIf="selectedVersion?.description || !isPublic">
+        <div *ngIf="description || !isPublic">
           <label matTooltip="Description of workflow obtained from workflow descriptor"> Description </label>:
-          <div *ngIf="selectedVersion?.description" class="well well-sm">
+          <div *ngIf="description" class="well well-sm">
             <app-markdown-wrapper
-              [data]="selectedVersion?.description"
+              [data]="description"
               [baseUrl]="workflow?.providerUrl | baseUrl: selectedVersion?.name:selectedVersion?.readMePath"
             ></app-markdown-wrapper>
           </div>
-          <div *ngIf="!selectedVersion?.description && !isPublic" class="well well-sm">
+          <div *ngIf="!description && !isPublic" class="well well-sm">
             <mat-icon>warning</mat-icon>
             <span ng-show="!containerObj.description">
               No description associated with this {{ entryType$ | async }}.

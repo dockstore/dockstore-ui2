@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Store, StoreConfig } from '@datorama/akita';
-import { ExtendedUserData, User } from '../swagger';
+import { ExtendedUserData, User } from '../openapi';
 
 export interface UserState {
   user: User;

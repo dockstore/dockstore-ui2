@@ -56,33 +56,6 @@
                   <img src="../../../assets/svg/icons-plus.svg" alt="Register a tool" class="pr-2 pb-1" />
                   Register a Tool
                 </button>
-                <button
-                  mat-button
-                  class="private-btn small-btn-structure ml-3 mb-3"
-                  [matMenuTriggerFor]="myToolsActions"
-                  [disabled]="isRefreshing$ | async"
-                  id="myToolsMoreActionButtons"
-                  data-cy="myToolsMoreActionButtons"
-                >
-                  <img src="../../../assets/svg/gear-icon.svg" alt="Gear icon" />
-                  More
-                  <img src="../../../assets/svg/drop-down-arrow.svg" alt="Drop down menu icon" />
-                </button>
-                <mat-menu #myToolsActions="matMenu">
-                  <button
-                    mat-menu-item
-                    color="primary"
-                    type="button"
-                    (click)="addToExistingTools()"
-                    [disabled]="(isRefreshing$ | async) || (user$ | async) === false"
-                    matTooltip="Discover tools added by others using your linked source control accounts"
-                    matTooltipPosition="after"
-                    id="addToExistingTools"
-                    data-cy="addToExistingTools"
-                  >
-                    <span>Discover Existing Dockstore Tools</span>
-                  </button>
-                </mat-menu>
               </div>
               <p *ngIf="(hasGroupEntriesObject$ | async) === false && (hasGroupGitHubAppToolEntriesObjects$ | async) === false">
                 You have not registered any tools
@@ -124,7 +97,7 @@
                     type="button"
                     [disabled]="isRefreshing$ | async"
                   >
-                    Add Tool
+                    Register a Tool
                   </button>
                   <li>If there are already tools on Dockstore added by other users that you have access to, press the button below.</li>
                   <button
@@ -132,7 +105,7 @@
                     class="accent-1-dark-btn"
                     type="button"
                     (click)="addToExistingTools()"
-                    [disabled]="(isRefreshing$ | async) || (user$ | async) === false"
+                    [disabled]="(isRefreshing$ | async) || (userQuery.user$ | async) === false"
                     matTooltip="Discover tools added by others using your linked source control accounts"
                   >
                     Discover Existing Dockstore Tools

@@ -43,6 +43,17 @@
                   <span>{{ gitHubProfile.username }}</span>
                 </a>
               </span>
+              <span *ngIf="loggedInUserIsAdminOrCurator">
+                <button
+                  matTooltip="View the user's GitHub App Logs"
+                  mat-button
+                  class="small-mat-btn private-btn small-btn-structure mat-elevation-z"
+                  (click)="openGitHubAppsLogs(user.id)"
+                  data-cy="user-app-logs-button"
+                >
+                  Apps Logs
+                </button>
+              </span>
             </mat-card-subtitle>
           </mat-card-header>
           <span>
@@ -97,7 +108,6 @@
       </mat-card>
     </div>
   </div>
-
   <mat-tab-group class="pb-5 purple-tab-group">
     <mat-tab>
       <ng-template mat-tab-label>
@@ -109,6 +119,33 @@
       <div class="p-2">
         <!-- Note: this is currently a placeholder until a new endpoint is created to retrieve user specific recent events and not just your own -->
         <app-recent-events></app-recent-events>
+      </div>
+    </mat-tab>
+    <mat-tab *ngIf="loggedInUserIsAdminOrCurator">
+      <ng-template mat-tab-label>
+        <div fxLayoutGap="0.5rem">
+          <span>Other Linked Accounts</span>
+        </div>
+      </ng-template>
+      <div class="w-100">
+        <div *ngIf="otherLinkedAccountsInfo.length === 0">
+          <mat-card class="alert alert-info mat-elevation-z starred-header" role="alert" data-cy="no-other-linked-accounts-banner">
+            This user has no other linked accounts.
+          </mat-card>
+        </div>
+        <div *ngFor="let row of otherLinkedAccountsInfo" class="p-3" fxFlex.lt-md="100">
+          <mat-card [attr.data-cy]="'other-linked-accounts-' + row.name">
+            <mat-card-header>
+              <div mat-card-avatar matBadge="✓" class="mr-4">
+                <img src="../../assets/images/account-logos/{{ row.logo }}" alt="{{ row.name }} logo" class="w-100" />
+              </div>
+              <mat-card-title class="normal-line-height">{{ row.name }} Account</mat-card-title>
+              <mat-card-subtitle class="accent-1-dark normal-line-height weight-bold mt-2 mb-0" [attr.data-cy]="row.name + '-username'">
+                <span>Username: {{ row.username }}</span>
+              </mat-card-subtitle>
+            </mat-card-header>
+          </mat-card>
+        </div>
       </div>
     </mat-tab>
     <!-- TODO: Comment back in once we have the required resources to display user specific tools, workflows etc. -->

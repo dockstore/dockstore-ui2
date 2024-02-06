@@ -1,18 +1,31 @@
 import { ga4ghPath } from '../../../../src/app/shared/constants';
-import { goToTab } from '../../../support/commands';
-import { ToolDescriptor } from '../../../../src/app/shared/swagger/model/toolDescriptor';
+import { ToolDescriptor } from '../../../../src/app/shared/openapi';
+import { goToTab, checkFeaturedContent, checkNewsAndUpdates, checkMastodonFeedOrTwitterFeed } from '../../../support/commands';
 
-// Test an entry, these should be ambiguous between tools and workflows.
+// Test an entry, these should be ambiguous between tools, workflows, and notebooks.
 describe('run stochastic smoke test', () => {
   testEntry('Tools');
   testEntry('Workflows');
+  testEntry('Notebooks');
 });
 function testEntry(tab: string) {
-  beforeEach('get random entry on first page', () => {
+  function goToRandomEntry() {
+    // Notebooks search is not functional in staging or prod in 1.14.
+    // TODO after 1.15 release: remove the following code path
+    if (tab === 'Notebooks' && isStagingOrProd()) {
+      cy.visit('/notebooks');
+      cy.get('[data-cy=entry-link]')
+        .eq(0)
+        .then((el) => {
+          cy.log(el.prop('href')); // log the href in case a test fails
+          cy.visit(el.prop('href'));
+        });
+      return;
+    }
     cy.visit('/search');
     cy.get('[data-cy=workflowColumn] a');
     goToTab(tab);
-    const linkName = tab === 'Workflows' ? 'workflowColumn' : 'toolNames';
+    const linkName = getLinkName(tab);
     // select a random entry on the first page and navigate to it
     let chosen_index = 0;
     cy.get('[data-cy=' + linkName + ']')
@@ -26,12 +39,12 @@ function testEntry(tab: string) {
           cy.visit(el.prop('href'));
         });
       });
-  });
+  }
 
   it('check info tab', () => {
-    // test export to zip button
+    goToRandomEntry();
     goToTab('Info');
-
+    // test export to zip button
     cy.get('[data-cy=downloadZip]').within(() => {
       cy.get('a').then((el) => {
         cy.request(el.prop('href')).its('status').should('eq', 200);
@@ -40,16 +53,36 @@ function testEntry(tab: string) {
   });
 
   it('check files tab', () => {
+    goToRandomEntry();
     goToTab('Files');
     cy.url().should('contain', '?tab=files');
-    cy.contains('Descriptor Files');
+    cy.contains(tab === 'Notebooks' ? 'Notebook Files' : 'Descriptor Files');
   });
 
   it('check versions tab', () => {
+    goToRandomEntry();
     goToTab('Versions');
     cy.url().should('contain', '?tab=versions');
     cy.get('[data-cy=versionRow]').should('have.length.of.at.least', 1);
   });
+}
+
+function getLinkName(tab: string): string {
+  switch (tab) {
+    case 'Tools':
+      return 'toolNames';
+    case 'Workflows':
+      return 'workflowColumn';
+    case 'Notebooks':
+      return 'notebookColumn';
+    default:
+      throw new Error('unknown tab');
+  }
+}
+
+function isStagingOrProd() {
+  const baseUrl = Cypress.config('baseUrl');
+  return baseUrl === 'https://staging.dockstore.org' || baseUrl === 'https://dockstore.org';
 }
 
 const organizations = [['Broad Institute']];
@@ -107,9 +140,7 @@ describe('Test search page functionality', () => {
     cy.wait(2500); // Wait less than ideal, facets keep getting rerendered is the problem
     cy.contains('mat-checkbox', 'Nextflow'); // wait for the checkbox to reappear, indicating the filtering is almost complete
     cy.get('[data-cy=descriptorType]').each(($el, index, $list) => {
-      // In 1.13, the Nextflow badge displays as 'NFL'
-      // In 1.14, the Nextflow badge displays as 'Nextflow'
-      expect($el.text()).to.be.oneOf(['Nextflow', 'NFL']);
+      cy.wrap($el).contains('Nextflow');
     });
     cy.url().should('contain', 'descriptorType=NFL');
     cy.url().should('contain', 'searchMode=files');
@@ -142,11 +173,10 @@ describe('Test workflow page functionality', () => {
 });
 
 describe('Check external links', () => {
-  it('github, twitter, gitter, discuss links are correct', () => {
+  it('github, twitter, discuss links are correct', () => {
     cy.visit('');
     cy.get('[data-cy=GitHubFooterLink]').should('have.attr', 'href', 'https://github.com/dockstore/dockstore');
     cy.contains('a', '@DockstoreOrg').should('have.attr', 'href', 'https://twitter.com/DockstoreOrg');
-    cy.contains('a', 'Gitter').should('have.attr', 'href', 'https://gitter.im/ga4gh/dockstore');
     cy.contains('a', 'Help Desk').should('have.attr', 'href', 'https://discuss.dockstore.org/t/opening-helpdesk-tickets/1506');
   });
 });
@@ -179,10 +209,17 @@ const workflowVersionTuples = [
     'Galaxy',
   ],
 ];
-// This test shouldn't be run for smoke tests as it depends on 'real' entries
+const notebookVersionTuples: string[][] = [
+  // TODO when we add notebooks that will persist in the prod database, detail a few here
+];
+
+// These tests shouldn't be run for smoke tests as it depends on 'real' entries
 if (Cypress.config('baseUrl') !== 'http://localhost:4200') {
   describe('Monitor workflows', () => {
     workflowVersionTuples.forEach((t) => testWorkflow(t[0], t[1], t[2], t[3], t[4]));
+  });
+  describe('Monitor notebooks', () => {
+    notebookVersionTuples.forEach((t) => testNotebook(t[0], t[1], t[2], t[3], t[4], t[5]));
   });
 }
 
@@ -246,9 +283,7 @@ function testWorkflow(url: string, version1: string, version2: string, trsUrl: s
     if (type === 'WDL') {
       const launchSelectors = ['dnanexusLaunchWith', 'terraLaunchWith', 'anvilLaunchWith'];
       launchSelectors
-        // In 1.13, launch button images are <svg>
-        // In 1.14, launch button images are <img>
-        .map((launchSelector) => `[data-cy=${launchSelector}] svg, [data-cy=${launchSelector}] img`)
+        .map((launchSelector) => `[data-cy=${launchSelector}] img`)
         .forEach((launchSelector) => cy.get(launchSelector).should('exist'));
     }
     if (type === 'CWL') {
@@ -281,6 +316,67 @@ function testWorkflow(url: string, version1: string, version2: string, trsUrl: s
     });
   });
 }
+
+function testNotebook(url: string, version1: string, version2: string, trsUrl: string, path: string, type: string) {
+  it('notebook tabs work for ' + url, () => {
+    cy.visit('/notebooks/' + url + ':' + version1);
+
+    goToTab('Info');
+    cy.url().should('contain', '?tab=info');
+    cy.contains('mat-card-header', 'Notebook Information');
+
+    goToTab('Preview');
+    cy.url().should('contain', '?tab=preview');
+
+    goToTab('Versions');
+    cy.url().should('contain', '?tab=versions');
+
+    // check that clicking on a different version goes to that version's url
+    if (version1 !== version2) {
+      cy.contains('[data-cy=versionName]', version2).click();
+      cy.url().should('contain', url + ':' + version2);
+    }
+
+    goToTab('Files');
+    cy.url().should('contain', '?tab=files');
+
+    // Check the "Launch with" buttons.
+    // Notebooks "Launch with" is not fully functional in staging or prod in 1.14.
+    // TODO after 1.15 release: make the following code execute in all cases.
+    if (!isStagingOrProd()) {
+      let launchWithTuples: any[] = [];
+      if (type === 'Jupyter') {
+        launchWithTuples = [
+          ['colabLaunchWith', 'blob/' + version2 + path],
+          ['mybinderLaunchWith', version2 + '?labpath=' + path],
+        ];
+      }
+      launchWithTuples.forEach((t) => {
+        cy.get('[data-cy=' + t[0] + ']').should(($el) => {
+          // @ts-ignore
+          expect($el.attr('href')).to.contain(t[1]);
+        });
+      });
+    }
+  });
+}
+
+describe('Check extra content', () => {
+  it('featured content is visible from home page', () => {
+    cy.visit('/');
+    checkFeaturedContent();
+  });
+
+  it('news and updates are visible from home page', () => {
+    cy.visit('/');
+    checkNewsAndUpdates();
+  });
+
+  it('mastodon feed should be visible', () => {
+    cy.visit('/');
+    checkMastodonFeedOrTwitterFeed();
+  });
+});
 
 // TODO: uncomment after tooltester logs are fixed
 // describe('Test existence of Logs', () => {

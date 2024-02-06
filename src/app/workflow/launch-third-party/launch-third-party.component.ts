@@ -1,5 +1,6 @@
 import { HttpUrlEncodingCodec } from '@angular/common/http';
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 import { combineLatest, Observable } from 'rxjs';
 import { map, shareReplay, takeUntil } from 'rxjs/operators';
@@ -7,14 +8,15 @@ import { Base } from '../../shared/base';
 import { DescriptorTypeCompatService } from '../../shared/descriptor-type-compat.service';
 import { Dockstore } from '../../shared/dockstore.model';
 import { GA4GHFilesQuery } from '../../shared/ga4gh-files/ga4gh-files.query';
-import { CloudInstance, CloudInstancesService, User, UsersService } from '../../shared/openapi';
-import { ToolFile, Workflow, WorkflowVersion } from '../../shared/swagger';
-import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
-import { SourceFile } from '../../shared/swagger/model/sourceFile';
+import { CloudInstance, CloudInstancesService, User, UsersService, ToolFile, Workflow, WorkflowVersion } from '../../shared/openapi';
+import { WorkflowsService } from '../../shared/openapi/api/workflows.service';
+import { SourceFile } from '../../shared/openapi/model/sourceFile';
 import { UserQuery } from '../../shared/user/user.query';
 import { DescriptorsQuery } from './state/descriptors-query';
 import { DescriptorsStore } from './state/descriptors-store';
 import { DescriptorsService } from './state/descriptors.service';
+import { LaunchToCodespaceDialogComponent } from './dialog/launch-to-codespace-dialog.component';
+import { bootstrap4largeModalSize } from '../../shared/constants';
 import FileTypeEnum = ToolFile.FileTypeEnum;
 
 /* eslint-disable max-len */
@@ -127,6 +129,12 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
   hasHttpImports$ = this.descriptorsQuery.hasHttpImports$;
 
   /**
+   * The selected version's devcontainer files, currently retrieved only for notebooks.
+   * Set to "undefined" during retrieval or if never retrieved.
+   */
+  devcontainers: SourceFile[] | undefined;
+
+  /**
    * A reference to dockstore.model.ts
    */
   config = Dockstore;
@@ -148,6 +156,27 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
    * The workflow path encoded for use as a query parameter value.
    */
   workflowPathAsQueryValue: string;
+
+  /**
+   * The workflow organization, URL encoded.
+   */
+  workflowOrganizationAsQueryValue: string;
+
+  /**
+   * The workflow repository, URL encoded.
+   */
+  workflowRepositoryAsQueryValue: string;
+
+  /**
+   * The name of the selected version, URL encoded.
+   */
+  selectedVersionNameAsQueryValue: string;
+
+  /**
+   * The workflow path of the selected version, in absolute form, URL encoded.
+   */
+  selectedVersionWorkflowPathAsQueryValue: string;
+
   partner = CloudInstance.PartnerEnum;
   cloudInstances: Array<CloudInstance>;
   usersCloudInstances: Array<CloudInstance>;
@@ -194,6 +223,18 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
     map(([hasContent, hasHttpImports]) => this.sevenBridgesTooltip(hasContent, hasHttpImports, 'Cavatica'))
   );
 
+  colabTooltip$: Observable<string> = combineLatest([this.hasContent$]).pipe(
+    map(([hasContent]) => (hasContent ? 'Run this notebook in Google Colaboratory' : 'The notebook has no content.'))
+  );
+
+  codespaceTooltip$: Observable<string> = combineLatest([this.hasContent$]).pipe(
+    map(([hasContent]) => (hasContent ? 'Run this notebook in a GitHub Codespace' : 'The notebook has no content.'))
+  );
+
+  mybinderTooltip$: Observable<string> = combineLatest([this.hasContent$]).pipe(
+    map(([hasContent]) => (hasContent ? 'Run this notebook at mybinder.org' : 'The notebook has no content.'))
+  );
+
   constructor(
     private workflowsService: WorkflowsService,
     private descriptorTypeCompatService: DescriptorTypeCompatService,
@@ -203,7 +244,8 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
     private cloudInstanceService: CloudInstancesService,
     private usersService: UsersService,
     private userQuery: UserQuery,
-    private descriptorLanguageService: DescriptorLanguageService
+    private descriptorLanguageService: DescriptorLanguageService,
+    private dialog: MatDialog
   ) {
     super();
   }
@@ -234,11 +276,11 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
             this.descriptorLanguageService.workflowDescriptorTypeEnumToExtendedDescriptorLanguageBean(
               descriptorType
             ).descriptorLanguageEnum;
-          this.workflowsService.primaryDescriptor(this.workflow.id, this.selectedVersion.name, descriptorType).subscribe((sourceFile) => {
+          this.workflowsService.primaryDescriptor1(this.workflow.id, this.selectedVersion.name, descriptorType).subscribe((sourceFile) => {
             this.descriptorsService.updatePrimaryDescriptor(sourceFile);
             if (fileDescriptors.some((file) => file.file_type === FileTypeEnum.SECONDARYDESCRIPTOR)) {
               this.workflowsService
-                .secondaryDescriptors(this.workflow.id, this.selectedVersion.name, descriptorLanguageEnum)
+                .secondaryDescriptors1(this.workflow.id, this.selectedVersion.name, descriptorLanguageEnum)
                 .subscribe((sourceFiles: Array<SourceFile>) => {
                   this.descriptorsService.updateSecondaryDescriptors(sourceFiles);
                 });
@@ -253,9 +295,30 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
     this.trsUrl = this.trsUrlAsQueryValue = this.workflowPathAsQueryValue = null;
     if (this.workflow && this.selectedVersion) {
       this.trsUrl = this.descriptorsService.trsUrl(this.workflow.full_workflow_path, this.selectedVersion.name);
-      this.trsUrlAsQueryValue = new HttpUrlEncodingCodec().encodeValue(this.trsUrl);
-      this.workflowPathAsQueryValue = new HttpUrlEncodingCodec().encodeValue(this.workflow.full_workflow_path);
+      this.trsUrlAsQueryValue = this.encode(this.trsUrl);
+      this.workflowPathAsQueryValue = this.encode(this.workflow.full_workflow_path);
+      this.workflowOrganizationAsQueryValue = this.encode(this.workflow.organization);
+      this.workflowRepositoryAsQueryValue = this.encode(this.workflow.repository);
+      this.selectedVersionNameAsQueryValue = this.encode(this.selectedVersion.name);
+      this.selectedVersionWorkflowPathAsQueryValue = this.encode(this.prependIfNotPrefix('/', this.selectedVersion.workflow_path));
+      this.devcontainers = undefined;
+      if (this.workflow.descriptorType === Workflow.DescriptorTypeEnum.Jupyter) {
+        const workflowId = this.workflow.id;
+        const versionId = this.selectedVersion.id;
+        this.workflowsService.getWorkflowVersionsSourcefiles(workflowId, versionId, ['DOCKSTORE_NOTEBOOK_DEVCONTAINER']).subscribe(
+          (devcontainers: SourceFile[]) => (this.devcontainers = devcontainers),
+          (error) => (this.devcontainers = [])
+        );
+      }
     }
+  }
+
+  private encode(value: string): string {
+    return new HttpUrlEncodingCodec().encodeValue(value);
+  }
+
+  private prependIfNotPrefix(prefix: string, value: string): string {
+    return value.startsWith(prefix) ? value : prefix + value;
   }
 
   private sevenBridgesTooltip(hasContent: boolean, hasHttpImports, platform: string): string {
@@ -280,5 +343,49 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
       return `This version of the WDL has file-path imports, which are only supported by ${platform} for GitHub-based workflows.`;
     }
     return `Export this workflow version to ${platform}.`;
+  }
+
+  launchToCodespace() {
+    const correctDevcontainerPath = this.computeCorrectDevcontainerPath(this.devcontainers);
+    if (correctDevcontainerPath) {
+      this.openNewCodespaceWindow(correctDevcontainerPath);
+    } else {
+      this.displayLaunchToCodespaceDialog(this.devcontainers.length > 0)
+        .afterClosed()
+        .subscribe((shouldLaunch: boolean) => {
+          if (shouldLaunch) {
+            this.openNewCodespaceWindow(undefined);
+          }
+        });
+    }
+  }
+
+  private displayLaunchToCodespaceDialog(hasDevcontainer: boolean) {
+    return this.dialog.open(LaunchToCodespaceDialogComponent, {
+      width: bootstrap4largeModalSize,
+      data: { entry: this.workflow, hasDevcontainer: hasDevcontainer },
+    });
+  }
+
+  private computeCorrectDevcontainerPath(devcontainers: SourceFile[]): string | undefined {
+    // Return the path, relative to root, of the devcontainer with a body that contains the absolute notebook path as a substring,
+    // or undefined if there is no such devcontainer
+    return devcontainers.find((file) => file.content.includes(this.selectedVersion.workflow_path))?.absolutePath?.substring(1);
+  }
+
+  private openNewCodespaceWindow(devcontainerPath: string | undefined) {
+    let url: string =
+      this.config.GITHUB_CODESPACES_IMPORT_URL +
+      '?hide_repo_select=true' +
+      '&ref=' +
+      this.selectedVersionNameAsQueryValue +
+      '&repo=' +
+      this.workflowOrganizationAsQueryValue +
+      '/' +
+      this.workflowRepositoryAsQueryValue;
+    if (devcontainerPath) {
+      url += '&devcontainer_path=' + this.encode(devcontainerPath);
+    }
+    window.open(url, '_blank', 'noopener,noreferrer');
   }
 }

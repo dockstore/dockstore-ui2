@@ -5,15 +5,17 @@ import { PaginatorInfo, PaginatorStore } from './paginator.store';
 export class PaginatorService {
   constructor(private paginatorStore: PaginatorStore) {}
 
-  setPaginator(type: 'tool' | 'workflow', pageSize: number, pageNumber: number): void {
+  setPaginator(type: 'tool' | 'workflow' | 'lambdaEvent', pageSize: number, pageNumber: number): void {
     const paginatorInfo: PaginatorInfo = {
       pageSize: pageSize,
       pageIndex: pageNumber,
     };
     if (type === 'tool') {
       this.setToolPaginatorSize(paginatorInfo);
-    } else {
+    } else if (type === 'workflow') {
       this.setWorkflowPaginatorSize(paginatorInfo);
+    } else {
+      this.setLambdaEventPaginatorSize(paginatorInfo);
     }
   }
 
@@ -31,6 +33,14 @@ export class PaginatorService {
       return {
         ...state,
         workflow: paginatorInfo,
+      };
+    });
+  }
+  setLambdaEventPaginatorSize(paginatorInfo: PaginatorInfo) {
+    this.paginatorStore.update((state) => {
+      return {
+        ...state,
+        lambdaEvent: paginatorInfo,
       };
     });
   }

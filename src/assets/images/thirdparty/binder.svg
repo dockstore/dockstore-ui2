@@ -1,0 +1,13 @@
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="65px" height="65.883px" viewBox="-11 10 54 50.883">
+<switch>
+	<g>
+		<circle fill="none" stroke="#F5A252" stroke-width="4.8342" stroke-miterlimit="10" cx="27.879" cy="23.939" r="9.542"/>
+		<circle fill="none" stroke="#579ACA" stroke-width="4.8342" stroke-miterlimit="10" cx="27.879" cy="42.499" r="9.543"/>
+		<circle fill="none" stroke="#E66581" stroke-width="4.8342" stroke-miterlimit="10" cx="18.551" cy="33.289" r="9.543"/>
+		<path fill="none" stroke="#579ACA" stroke-width="4.8342" stroke-miterlimit="10" d="M20.196,36.836
+			c0.759-1.031,1.74-1.927,2.921-2.607c4.566-2.63,10.401-1.06,13.031,3.507"/>
+		<path fill="none" stroke="#F5A252" stroke-width="4.8342" stroke-miterlimit="10" d="M19.61,28.701
+			c-2.63-4.566-1.061-10.401,3.507-13.032c4.567-2.63,10.401-1.059,13.031,3.508"/>
+	</g>
+</switch>
+</svg>

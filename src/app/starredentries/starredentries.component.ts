@@ -2,17 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { Base } from '../shared/base';
 import { ImageProviderService } from '../shared/image-provider.service';
 import { ProviderService } from '../shared/provider.service';
-import { DockstoreTool, Entry, Organization, Workflow } from '../shared/swagger';
+import { DockstoreTool, Entry, Organization, Workflow, EntryType as OpenApiEntryType } from '../shared/openapi';
 import { UserQuery } from '../shared/user/user.query';
-import { UsersService } from './../shared/swagger/api/users.service';
+import { UsersService } from './../shared/openapi/api/users.service';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { UntypedFormControl } from '@angular/forms';
 import { ExtendedDockstoreTool } from 'app/shared/models/ExtendedDockstoreTool';
 import { ExtendedWorkflow } from 'app/shared/models/ExtendedWorkflow';
-// import { DockstoreService } from 'app/shared/dockstore.service';
 import { OrgLogoService } from '../shared/org-logo.service';
 import { EntryType } from '../shared/enum/entry-type';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { Dockstore } from 'app/shared/dockstore.model';
 
@@ -23,7 +22,7 @@ import { Dockstore } from 'app/shared/dockstore.model';
 })
 export class StarredEntriesComponent extends Base implements OnInit {
   Dockstore = Dockstore;
-  starredTools: Array<ExtendedDockstoreTool> | null;
+  starredTools: Array<ExtendedDockstoreTool | ExtendedWorkflow> | null;
   starredWorkflows: Array<ExtendedWorkflow> | null;
   starredServices: Array<Entry> | null;
   starredNotebooks: Array<ExtendedWorkflow> | null;
@@ -36,17 +35,14 @@ export class StarredEntriesComponent extends Base implements OnInit {
   currentTab = 'workflows';
   selected = new UntypedFormControl();
   // TODO: Add 'services' to validTabs when implemented
-  validTabs = ['workflows', 'tools', 'organizations'];
-  // TODO: Remove validTabsWithNotebooks and simply include 'notebooks' in validTabs when notebooks Feature Flag is removed
-  validTabsWithNotebooks = ['workflows', 'tools', 'notebooks', 'organizations'];
+  validTabs = ['workflows', 'tools', 'notebooks', 'organizations'];
 
   constructor(
     private userQuery: UserQuery,
     private imageProviderService: ImageProviderService,
     private providerService: ProviderService,
     private usersService: UsersService,
-    // private dockstoreService: DockstoreService
-    private orgLogoService: OrgLogoService,
+    public orgLogoService: OrgLogoService,
     private activatedRoute: ActivatedRoute,
     private location: Location
   ) {
@@ -60,10 +56,12 @@ export class StarredEntriesComponent extends Base implements OnInit {
 
     this.userQuery.user$.subscribe((user) => (this.user = user));
     this.usersService.getStarredTools().subscribe((starredTool) => {
-      this.starredTools = <ExtendedDockstoreTool[]>starredTool.filter((entry: DockstoreTool) => entry.is_published);
+      this.starredTools = <(ExtendedDockstoreTool | ExtendedWorkflow)[]>starredTool.filter((entry: Entry) => entry.is_published);
       this.starredTools.forEach((tool) => {
         this.providerService.setUpProvider(tool);
-        tool = this.imageProviderService.setUpImageProvider(tool);
+        if (tool.entryType === OpenApiEntryType.TOOL) {
+          this.imageProviderService.setUpImageProvider(tool as ExtendedDockstoreTool);
+        }
       });
     });
     this.usersService.getStarredWorkflows().subscribe((starredWorkflow) => {
@@ -105,11 +103,6 @@ export class StarredEntriesComponent extends Base implements OnInit {
 
   // Runs on first page load
   public setupTab(tabName: string) {
-    // If notebooks Feature Flag enabled, update validTabs to include the notebooks tab
-    // Remove check once feature flag removed
-    if (Dockstore.FEATURES.enableNotebooks) {
-      this.validTabs = this.validTabsWithNotebooks;
-    }
     const tabIndex = this.validTabs.indexOf(tabName);
     if (tabIndex >= 0) {
       this.currentTab = tabName;
@@ -127,4 +120,6 @@ export class StarredEntriesComponent extends Base implements OnInit {
   updateStarredUrl(tabName: string) {
     this.location.replaceState('starred?tab=' + tabName);
   }
+
+  protected readonly OpenApiEntryType = OpenApiEntryType;
 }

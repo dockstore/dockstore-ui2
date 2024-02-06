@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-import { TokenUser } from './../../../shared/swagger/model/tokenUser';
+import { TokenUser } from './../../../shared/openapi/model/tokenUser';
 
 @Pipe({
   name: 'getTokenUsername',

@@ -1,5 +1,5 @@
+import { ExtendedUserData, User } from '../../../src/app/shared/openapi';
 import { resetDB, setTokenUserViewPort } from '../../support/commands';
-import { ExtendedUserData, User } from '../../../src/app/shared/swagger';
 
 describe('Testing user with invalid username', () => {
   resetDB();
@@ -8,7 +8,7 @@ describe('Testing user with invalid username', () => {
   describe('Test UI for users with invalid usernames', () => {
     it('Check warnings', () => {
       const invalidUsernameUser: User = {
-        platformPartner: false,
+        platformPartner: undefined,
         isAdmin: true,
         curator: true,
         name: 'user_A',

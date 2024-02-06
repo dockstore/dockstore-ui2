@@ -16,7 +16,7 @@
 import { OrgToolObject } from 'app/mytools/my-tool/my-tool.component';
 import { OrgWorkflowObject } from 'app/myworkflows/my-workflow/my-workflow.component';
 import { EntryType } from './enum/entry-type';
-import { DockstoreTool, Workflow } from './swagger';
+import { DockstoreTool, Workflow } from './openapi';
 import { UrlResolverService } from './url-resolver.service';
 
 export abstract class MyEntriesService<E extends DockstoreTool | Workflow, O extends OrgToolObject<E> | OrgWorkflowObject<E>> {
@@ -33,7 +33,11 @@ export abstract class MyEntriesService<E extends DockstoreTool | Workflow, O ext
       const foundOrgEntryObject = this.matchingOrgEntryObjectByPath(orgEntryObjects, entryPath);
       if (foundOrgEntryObject) {
         // If the entry from the URL doesn't exist, pick an entry from the same organization
-        initialEntry = this.getInitialEntry([...foundOrgEntryObject.published, ...foundOrgEntryObject.unpublished]);
+        initialEntry = this.getInitialEntry([
+          ...foundOrgEntryObject.published,
+          ...foundOrgEntryObject.unpublished,
+          ...foundOrgEntryObject.archived,
+        ]);
       } else {
         // Use the initial entry from all entries
         initialEntry = this.getInitialEntry(entries);
@@ -50,10 +54,14 @@ export abstract class MyEntriesService<E extends DockstoreTool | Workflow, O ext
     entries.forEach((entry) => {
       const existingOrgEntryObject = this.matchingOrgEntryObject(orgEntryObjects, entry);
       if (existingOrgEntryObject) {
-        if (entry.is_published) {
-          existingOrgEntryObject.published.push(entry);
+        if (entry.archived) {
+          existingOrgEntryObject.archived.push(entry);
         } else {
-          existingOrgEntryObject.unpublished.push(entry);
+          if (entry.is_published) {
+            existingOrgEntryObject.published.push(entry);
+          } else {
+            existingOrgEntryObject.unpublished.push(entry);
+          }
         }
       } else {
         orgEntryObjects.push(this.createNewOrgEntryObject(entry));
@@ -68,8 +76,9 @@ export abstract class MyEntriesService<E extends DockstoreTool | Workflow, O ext
 
   protected createPartial(entry: E) {
     return {
-      published: entry.is_published ? [entry] : [],
-      unpublished: entry.is_published ? [] : [entry],
+      published: entry.is_published && !entry.archived ? [entry] : [],
+      unpublished: !entry.is_published && !entry.archived ? [entry] : [],
+      archived: entry.archived ? [entry] : [],
       expanded: false,
     };
   }
@@ -102,18 +111,22 @@ export abstract class MyEntriesService<E extends DockstoreTool | Workflow, O ext
       return null;
     }
     entries.sort(this.sortEntry);
-    const publishedEntries = entries.filter((entry) => entry.is_published);
+    const publishedEntries = entries.filter((entry) => entry.is_published && !entry.archived);
     if (publishedEntries.length > 0) {
       return publishedEntries[0];
-    } else {
-      return entries[0];
     }
+    const unpublishedEntries = entries.filter((entry) => !entry.is_published && !entry.archived);
+    if (unpublishedEntries.length > 0) {
+      return unpublishedEntries[0];
+    }
+    return entries[0];
   }
 
   protected sortEntriesOfOrgEntryObjects(orgEntryObjects: O[]) {
     orgEntryObjects.forEach((orgEntryObject: O) => {
       orgEntryObject.published.sort(this.sortEntry);
       orgEntryObject.unpublished.sort(this.sortEntry);
+      orgEntryObject.archived.sort(this.sortEntry);
     });
   }
 

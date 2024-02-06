@@ -4,6 +4,7 @@ import { Store, StoreConfig } from '@datorama/akita';
 export interface PaginatorState {
   tool: PaginatorInfo;
   workflow: PaginatorInfo;
+  lambdaEvent: PaginatorInfo;
 }
 
 export interface PaginatorInfo {
@@ -14,6 +15,7 @@ export interface PaginatorInfo {
 const initialState: PaginatorState = {
   tool: { pageSize: 10, pageIndex: 0 },
   workflow: { pageSize: 10, pageIndex: 0 },
+  lambdaEvent: { pageSize: 10, pageIndex: 0 },
 };
 
 @Injectable({ providedIn: 'root' })

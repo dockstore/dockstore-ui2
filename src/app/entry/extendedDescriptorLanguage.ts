@@ -2,10 +2,11 @@ import { extendedGalaxy } from 'app/descriptor-languages/Galaxy';
 import { extendedNFL } from 'app/descriptor-languages/Nextflow';
 import { extendedService } from 'app/descriptor-languages/Service';
 import { extendedWDL } from 'app/descriptor-languages/WDL';
-import { DescriptorLanguageBean, SourceFile, ToolDescriptor, Workflow } from 'app/shared/swagger';
+import { DescriptorLanguageBean, LanguageParsingRequest, SourceFile, ToolDescriptor, Workflow } from 'app/shared/openapi';
 import { extendedCWL } from '../descriptor-languages/CWL';
 import { extendedSMK } from '../descriptor-languages/Snakemake';
 import { extendedJupyter } from '../descriptor-languages/Jupyter';
+import DescriptorLanguageEnum = LanguageParsingRequest.DescriptorLanguageEnum;
 
 /**
  * The idea is that this file serves as a collection of language plugins.
@@ -15,9 +16,6 @@ import { extendedJupyter } from '../descriptor-languages/Jupyter';
  * TODO: Use the value property to map the DescriptorLanguageBean to this
  */
 export interface ExtendedDescriptorLanguageBean extends DescriptorLanguageBean {
-  // There's supposed to be a DescriptorLanguage enum in the openapi.yaml, this is to replace it.
-  // If a new language is added to the DescriptorLanguage.java, then its toString() value should be added here
-  // For some reason the OpenAPI yaml shows DescriptorLanguage with uppercase and lowercase names, but the generated API uses all uppercase which still works
   descriptorLanguageEnum: DescriptorLanguageEnum;
   shortFriendlyName: string;
   defaultDescriptorPath: string;
@@ -71,7 +69,5 @@ export const extendedDescriptorLanguages: ExtendedDescriptorLanguageBean[] = [
   extendedGalaxy,
   extendedJupyter,
 ];
-
-export type DescriptorLanguageEnum = 'SMK' | 'CWL' | 'WDL' | 'GXFORMAT2' | 'SWL' | 'NEXTFLOW' | 'SERVICE' | 'JUPYTER';
 
 export type PlainTRSDescriptorLanguageEnum = 'PLAIN_SMK' | 'PLAIN_CWL' | 'PLAIN_WDL' | 'PLAIN_GALAXY' | 'PLAIN_NFL' | 'PLAIN_JUPYTER';

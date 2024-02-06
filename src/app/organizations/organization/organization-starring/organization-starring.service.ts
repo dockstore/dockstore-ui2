@@ -17,7 +17,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { Organization, User, OrganizationsService, UsersService, StarRequest } from '../../../shared/swagger';
+import { Organization, User, OrganizationsService, UsersService, StarRequest } from '../../../shared/openapi';
 
 @Injectable()
 export class OrganizationStarringService {

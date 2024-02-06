@@ -22,9 +22,9 @@ import { ContainersStubService, MetadataStubService } from '../test/service-stub
 import { faAmazonECR, faQuay, faWhale } from './custom-icons';
 import { ImageProviderService } from './image-provider.service';
 import { ExtendedDockstoreTool } from './models/ExtendedDockstoreTool';
-import { MetadataService } from './swagger';
-import { ContainersService } from './swagger/api/containers.service';
-import { DockstoreTool } from './swagger/model/dockstoreTool';
+import { MetadataService } from './openapi';
+import { ContainersService } from './openapi/api/containers.service';
+import { DockstoreTool } from './openapi/model/dockstoreTool';
 
 describe('ImageProviderService', () => {
   beforeEach(() => {

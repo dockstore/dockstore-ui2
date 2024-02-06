@@ -17,7 +17,7 @@ export class CodeEditorComponent implements AfterViewInit {
   aceId: string;
   readOnly = true;
   @Input() entryType: 'tool' | 'workflow';
-  @Input() set editing(value: string) {
+  @Input() set editing(value: boolean) {
     if (value !== undefined) {
       this.toggleReadOnly(!value);
     }
@@ -55,6 +55,7 @@ export class CodeEditorComponent implements AfterViewInit {
       readOnly: this.readOnly,
       showLineNumbers: true,
       maxLines: 60,
+      wrap: true,
       theme: 'ace/theme/idle_fingers',
       fontSize: '12pt',
     });

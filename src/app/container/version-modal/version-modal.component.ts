@@ -26,11 +26,11 @@ import { ContainerService } from '../../shared/container.service';
 import { DateService } from '../../shared/date.service';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
 import { SessionQuery } from '../../shared/session/session.query';
-import { ContainersService } from '../../shared/swagger/api/containers.service';
-import { ContainertagsService } from '../../shared/swagger/api/containertags.service';
-import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
-import { Tag } from '../../shared/swagger/model/tag';
-import { ToolDescriptor } from '../../shared/swagger/model/toolDescriptor';
+import { ContainersService } from '../../shared/openapi/api/containers.service';
+import { ContainertagsService } from '../../shared/openapi/api/containertags.service';
+import { DockstoreTool } from '../../shared/openapi/model/dockstoreTool';
+import { Tag } from '../../shared/openapi/model/tag';
+import { ToolDescriptor } from '../../shared/openapi/model/toolDescriptor';
 import { ToolQuery } from '../../shared/tool/tool.query';
 import { formErrors, validationDescriptorPatterns, validationMessages } from '../../shared/validationMessages.model';
 import { ParamfilesService } from '../paramfiles/paramfiles.service';
@@ -143,7 +143,7 @@ export class VersionModalComponent extends Base implements OnInit, AfterViewChec
     const newCWL = this.unsavedCWLTestParameterFilePaths.filter((x) => !this.savedCWLTestParameterFilePaths.includes(x));
     if (newCWL && newCWL.length > 0) {
       // Using the string 'CWL' because this parameter only accepts 'CWL' or 'WDL' and not 'NFL'
-      this.containersService.addTestParameterFiles(id, newCWL, 'CWL', tagName, null).subscribe(
+      this.containersService.addTestParameterFiles(id, newCWL, tagName, 'CWL', null).subscribe(
         (response) => {},
         (err) => this.alertService.detailedError(err)
       );
@@ -159,7 +159,7 @@ export class VersionModalComponent extends Base implements OnInit, AfterViewChec
     const newWDL = this.unsavedWDLTestParameterFilePaths.filter((x) => !this.savedWDLTestParameterFilePaths.includes(x));
     if (newWDL && newWDL.length > 0) {
       // Using the string 'WDL' because this parameter only accepts 'CWL' or 'WDL' and not 'NFL'
-      this.containersService.addTestParameterFiles(id, newWDL, 'WDL', tagName, null).subscribe(
+      this.containersService.addTestParameterFiles(id, newWDL, tagName, 'WDL', null).subscribe(
         (response) => {},
         (err) => this.alertService.detailedError(err)
       );
@@ -325,6 +325,10 @@ export class VersionModalComponent extends Base implements OnInit, AfterViewChec
       const paths = this.unsavedCWLTestParameterFilePaths.concat(this.unsavedWDLTestParameterFilePaths).concat(unfocusedTestFilePath);
       return paths.includes(focusedTestFilePath);
     }
+  }
+
+  trackByIdx(index: number, value: string): number {
+    return index;
   }
 
   ngOnDestroy() {

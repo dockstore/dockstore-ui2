@@ -28,7 +28,7 @@ import { SessionService } from './session/session.service';
 import { MyEntriesQuery } from './state/my-entries.query';
 import { MyEntriesStateService } from './state/my-entries.service';
 import { TokenQuery } from './state/token.query';
-import { Configuration } from './swagger';
+import { Configuration, User } from './openapi';
 import { UrlResolverService } from './url-resolver.service';
 import { UserQuery } from './user/user.query';
 
@@ -37,7 +37,7 @@ export abstract class MyEntry extends Base implements OnDestroy {
   abstract readonly pageName: string;
   public refreshingMyEntries$: Observable<boolean>;
   oneAtATime = true;
-  user: any;
+  user: User;
   public hasGitHubToken = true;
   public hasGroupEntriesObject$: Observable<boolean>;
   public myEntryPageTitle$: Observable<string>;
@@ -102,5 +102,6 @@ export abstract class MyEntry extends Base implements OnDestroy {
 export interface OrgEntryObject<T> {
   published: Array<T>;
   unpublished: Array<T>;
+  archived: Array<T>;
   expanded: boolean;
 }

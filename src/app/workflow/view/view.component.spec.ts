@@ -19,9 +19,9 @@ import { CustomMaterialModule } from 'app/shared/modules/material.module';
 import { RefreshService } from 'app/shared/refresh.service';
 import { DateService } from '../../shared/date.service';
 import { WorkflowService } from '../../shared/state/workflow.service';
-import { WorkflowsService } from '../../shared/swagger';
-import { HostedService } from '../../shared/swagger/api/hosted.service';
-import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
+import { WorkflowsService } from '../../shared/openapi';
+import { HostedService } from '../../shared/openapi/api/hosted.service';
+import { WorkflowVersion } from '../../shared/openapi/model/workflowVersion';
 import {
   AccountsStubService,
   DateStubService,

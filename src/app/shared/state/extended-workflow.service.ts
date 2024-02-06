@@ -20,10 +20,10 @@ import { DateService } from '../date.service';
 import { DockstoreService } from '../dockstore.service';
 import { ExtendedWorkflow } from '../models/ExtendedWorkflow';
 import { ProviderService } from '../provider.service';
-import { Workflow } from '../swagger';
-import { BioWorkflow } from '../swagger/model/bioWorkflow';
-import { Service } from '../swagger/model/service';
-import { Notebook } from '../swagger/model/notebook';
+import { Workflow } from '../openapi';
+import { BioWorkflow } from '../openapi/model/bioWorkflow';
+import { Service } from '../openapi/model/service';
+import { Notebook } from '../openapi/model/notebook';
 import { ExtendedWorkflowStore } from './extended-workflow.store';
 
 @Injectable({ providedIn: 'root' })

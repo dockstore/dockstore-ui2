@@ -16,13 +16,13 @@ describe('Admin UI', () => {
       cy.go('forward');
       cy.url().should('include', '/search?descriptorType=WDL');
       cy.contains('the Language is WDL').should('exist');
-      cy.get('[data-cy=basic-search]').type('dockstore_i{enter}');
-      cy.contains(' Sorry, no matches found for dockstore_i');
+      cy.get('[data-cy=basic-search]').type('dhockstore{enter}');
+      cy.contains(' Sorry, no matches found for dhockstore');
       cy.contains(/Do[ ]you[ ]mean:[ ].+/);
-      cy.url().should('include', 'search=dockstore_i');
+      cy.url().should('include', 'search=dhockstore');
 
       cy.contains('Reset').click();
-      cy.url().should('not.include', 'search=dockstore_i');
+      cy.url().should('not.include', 'search=dhockstore');
 
       cy.contains('Items per page');
       cy.get('[data-cy=search-workflow-table-paginator]').within(() => {

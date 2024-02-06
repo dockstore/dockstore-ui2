@@ -20,7 +20,7 @@ import { map } from 'rxjs/operators';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
 import { OrgLogoService } from '../../shared/org-logo.service';
 import { OrganizationSchema, OrgSchemaService } from '../../shared/org-schema.service';
-import { Organization } from '../../shared/swagger';
+import { Organization } from '../../shared/openapi';
 import { UserQuery } from '../../shared/user/user.query';
 import { ActivatedRoute } from '../../test';
 import { RegisterOrganizationComponent } from '../registerOrganization/register-organization.component';
@@ -32,6 +32,7 @@ import { OrganizationQuery } from '../state/organization.query';
 import { OrganizationService } from '../state/organization.service';
 // eslint-disable-next-line max-len
 import { UpdateOrganizationOrCollectionDescriptionComponent } from './update-organization-description/update-organization-description.component';
+import { Dockstore } from '../../shared/dockstore.model';
 
 @Component({
   selector: 'app-organization',
@@ -100,4 +101,6 @@ export class OrganizationComponent implements OnInit {
   organizationStarGazersChange(): void {
     this.organizationStarGazersClicked = !this.organizationStarGazersClicked;
   }
+
+  protected readonly Dockstore = Dockstore;
 }

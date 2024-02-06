@@ -31,4 +31,8 @@ describe('Service: QueryBuilder', () => {
   it('should ...', inject([QueryBuilderService], (service: QueryBuilderService) => {
     expect(service).toBeTruthy();
   }));
+  it('should exclude terms from tagcloud query', inject([QueryBuilderService], (service: QueryBuilderService) => {
+    expect(service.getTagCloudQuery('tool')).toContain('significant_text');
+    expect(service.getTagCloudQuery('tool')).toContain('exclude');
+  }));
 });

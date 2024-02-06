@@ -1,24 +1,29 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable, EventEmitter } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { AlertService } from '../alert/state/alert.service';
 import { includesAuthors, includesVersions } from '../constants';
 import { ContainerService } from '../container.service';
 import { EntryType } from '../enum/entry-type';
 import { WorkflowService } from '../state/workflow.service';
-import { ContainersService, DockstoreTool, Entry, PublishRequest, Workflow, WorkflowsService } from '../swagger';
+import { ContainersService, DockstoreTool, EntriesService, Entry, PublishRequest, Workflow, WorkflowsService } from '../openapi';
+import { EntryType as OpenApiEntryType } from '../openapi';
 import { InformationDialogData } from '../../information-dialog/information-dialog.component';
 import { InformationDialogService } from '../../information-dialog/information-dialog.service';
-import { bootstrap4mediumModalSize } from '../../shared/constants';
+import { ArchiveEntryDialogComponent } from '../../entry/archive/dialog/archive-entry-dialog.component';
+import { bootstrap4mediumModalSize, bootstrap4largeModalSize } from '../../shared/constants';
 
 @Injectable()
 export class EntryActionsService {
   constructor(
     private alertService: AlertService,
+    private entriesService: EntriesService,
     private workflowsService: WorkflowsService,
     private workflowService: WorkflowService,
     private containersService: ContainersService,
     private containerService: ContainerService,
-    private informationDialogService: InformationDialogService
+    private informationDialogService: InformationDialogService,
+    private dialog: MatDialog
   ) {}
 
   getViewPublicButtonTooltip(entryType: EntryType | null): string {
@@ -136,7 +141,7 @@ export class EntryActionsService {
       };
       const message = !currentlyPublished ? `Publishing ${entryType}` : `Unpublishing ${entryType}`;
       this.alertService.start(message);
-      this.workflowsService.publish(workflow.id, request).subscribe(
+      this.workflowsService.publish1(workflow.id, request).subscribe(
         (response: Workflow) => {
           this.workflowService.upsertWorkflowToWorkflow(response);
           this.workflowService.setWorkflow(response);
@@ -182,6 +187,43 @@ export class EntryActionsService {
           this.alertService.detailedError(error);
         }
       );
+    }
+  }
+
+  archiveEntry(entry: Entry) {
+    const dialogRef = this.dialog.open(ArchiveEntryDialogComponent, {
+      width: bootstrap4largeModalSize,
+      data: entry,
+    });
+    dialogRef.afterClosed().subscribe((archived: Entry) => {
+      if (archived) {
+        this.updateBackingEntry(archived);
+      }
+    });
+  }
+
+  unarchiveEntry(entry: Entry) {
+    this.alertService.start('Unarchiving entry');
+    this.entriesService.unarchiveEntry(entry.id).subscribe(
+      (unarchived: Entry) => {
+        this.updateBackingEntry(unarchived);
+        this.alertService.detailedSuccess();
+      },
+      (error: HttpErrorResponse) => {
+        this.alertService.detailedError(error);
+      }
+    );
+  }
+
+  updateBackingEntry(entry: Entry) {
+    if (entry.entryType === OpenApiEntryType.TOOL) {
+      const tool = entry as DockstoreTool;
+      this.containerService.upsertToolToTools(tool);
+      this.containerService.setTool(tool);
+    } else {
+      const workflow = entry as Workflow;
+      this.workflowService.upsertWorkflowToWorkflow(workflow);
+      this.workflowService.setWorkflow(workflow);
     }
   }
 }

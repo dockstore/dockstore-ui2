@@ -20,7 +20,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { first } from 'rxjs/operators';
 import { ImageProviderService } from '../../shared/image-provider.service';
 import { ProviderService } from '../../shared/provider.service';
-import { Workflow } from '../../shared/swagger';
+import { Workflow } from '../../shared/openapi';
 import { elasticSearchResponse } from '../../test/mocked-objects';
 import { ProviderStubService } from '../../test/service-stubs';
 import { Hit, SearchService } from './search.service';
@@ -109,7 +109,7 @@ describe('SearchService', () => {
           url: null,
         },
       ]);
-      const filtered: [Array<Hit>, Array<Hit>] = service.filterEntry(elasticSearchResponse, 201);
+      const filtered: [Array<Hit>, Array<Hit>, Array<Hit>] = service.filterEntry(elasticSearchResponse, 201);
       const tools = filtered[0];
       const workflows = filtered[1];
       const toolsSource = tools[0]._source;
@@ -122,16 +122,17 @@ describe('SearchService', () => {
   ));
   it('should sort workflows correctly', inject([SearchService], (service: SearchService) => {
     const a: Workflow = {
+      type: '',
       author: 'a',
       gitUrl: 'https://giturl',
       mode: Workflow.ModeEnum.FULL,
       organization: '',
       repository: '',
-      sourceControl: '',
+      sourceControl: null,
       descriptorType: Workflow.DescriptorTypeEnum.CWL,
       workflow_path: '',
       defaultTestParameterFilePath: '',
-      descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NOTAPPLICABLE,
+      descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NA,
       full_workflow_path: 'abc',
     };
 
@@ -139,7 +140,7 @@ describe('SearchService', () => {
       ...a,
       author: 'B',
       full_workflow_path: 'Bcd',
-      starredUsers: [{ isAdmin: false, curator: false, platformPartner: false, setupComplete: true }],
+      starredUsers: [{ isAdmin: false, curator: false, platformPartner: null, setupComplete: true }],
     };
 
     const c: Workflow = { ...a, author: null, full_workflow_path: null, descriptorType: Workflow.DescriptorTypeEnum.WDL };

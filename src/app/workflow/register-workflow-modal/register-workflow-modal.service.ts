@@ -21,7 +21,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
 import { WorkflowService } from '../../shared/state/workflow.service';
-import { HostedService, MetadataService, Workflow, WorkflowsService } from '../../shared/swagger';
+import { HostedService, MetadataService, Workflow, WorkflowsService } from '../../shared/openapi';
 import { RegisterWorkflowModalComponent } from './register-workflow-modal.component';
 
 import DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
@@ -36,7 +36,6 @@ export class RegisterWorkflowModalService {
   workflows: Array<any>;
   isModalShown$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public descriptorLanguages$: Observable<Array<DescriptorTypeEnum>>;
-  public filteredDescriptorLanguages$: Observable<Array<DescriptorTypeEnum>>;
   workflow: BehaviorSubject<Workflow> = new BehaviorSubject<Workflow>(this.sampleWorkflow);
   constructor(
     private workflowsService: WorkflowsService,
@@ -112,7 +111,7 @@ export class RegisterWorkflowModalService {
       )
       .subscribe(
         (result) => {
-          this.workflowsService.refresh(result.id).subscribe(
+          this.workflowsService.refresh1(result.id).subscribe(
             (refreshResult) => {
               this.workflows.push(refreshResult);
               this.alertService.detailedSuccess();
@@ -141,8 +140,8 @@ export class RegisterWorkflowModalService {
     this.alertService.start('Registering new workflow');
     this.hostedService
       .createHostedWorkflow(
-        hostedWorkflow.repository,
         undefined,
+        hostedWorkflow.repository,
         descriptorLanguageEnum,
         undefined,
         hostedWorkflow.entryName ? hostedWorkflow.entryName : undefined

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HashMap, QueryEntity } from '@datorama/akita';
 import { Observable } from 'rxjs';
-import { Collection } from '../../shared/swagger';
+import { Collection } from '../../shared/openapi';
 import { CollectionsState, CollectionsStore } from './collections.store';
 
 @Injectable({

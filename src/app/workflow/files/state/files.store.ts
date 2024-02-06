@@ -15,7 +15,7 @@
  */
 import { Injectable } from '@angular/core';
 import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
-import { FileWrapper } from '../../../shared/swagger';
+import { FileWrapper } from '../../../shared/openapi';
 
 export interface FilesState extends EntityState<FileWrapper> {}
 

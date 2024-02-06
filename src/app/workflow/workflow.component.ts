@@ -20,9 +20,9 @@ import { MatChipInputEvent } from '@angular/material/chips';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertService } from 'app/shared/alert/state/alert.service';
-import { BioWorkflow } from 'app/shared/swagger/model/bioWorkflow';
-import { Service } from 'app/shared/swagger/model/service';
-import { Notebook } from 'app/shared/swagger/model/notebook';
+import { BioWorkflow } from 'app/shared/openapi/model/bioWorkflow';
+import { Service } from 'app/shared/openapi/model/service';
+import { Notebook } from 'app/shared/openapi/model/notebook';
 import { Observable, ReplaySubject } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
 import { AlertQuery } from '../shared/alert/state/alert.query';
@@ -32,6 +32,7 @@ import {
   ga4ghServiceIdPrefix,
   ga4ghWorkflowIdPrefix,
   includesAuthors,
+  includesMetrics,
   includesValidation,
   myBioWorkflowsURLSegment,
   myNotebooksURLSegment,
@@ -40,7 +41,6 @@ import {
 } from '../shared/constants';
 import { DateService } from '../shared/date.service';
 import { DescriptorTypeCompatService } from '../shared/descriptor-type-compat.service';
-import { Dockstore } from '../shared/dockstore.model';
 import { DockstoreService } from '../shared/dockstore.service';
 import { Entry } from '../shared/entry';
 import { EntryType } from '../shared/enum/entry-type';
@@ -52,13 +52,12 @@ import { SessionService } from '../shared/session/session.service';
 import { ExtendedWorkflowQuery } from '../shared/state/extended-workflow.query';
 import { WorkflowQuery } from '../shared/state/workflow.query';
 import { WorkflowService } from '../shared/state/workflow.service';
-import { Permission, ToolDescriptor, WorkflowsService } from '../shared/swagger';
-import { Tag } from '../shared/swagger/model/tag';
-import { Workflow } from '../shared/swagger/model/workflow';
-import { WorkflowVersion } from '../shared/swagger/model/workflowVersion';
+import { Permission, ToolDescriptor, WorkflowsService, EntriesService, WorkflowSubClass } from '../shared/openapi';
+import { Tag } from '../shared/openapi/model/tag';
+import { Workflow } from '../shared/openapi/model/workflow';
+import { WorkflowVersion } from '../shared/openapi/model/workflowVersion';
 import { TrackLoginService } from '../shared/track-login.service';
 import { UrlResolverService } from '../shared/url-resolver.service';
-import { EntriesService, WorkflowSubClass } from '../shared/openapi';
 import { Title } from '@angular/platform-browser';
 import { EntryCategoriesService } from '../categories/state/entry-categories.service';
 import RoleEnum = Permission.RoleEnum;
@@ -69,14 +68,13 @@ import { FormControl } from '@angular/forms';
   templateUrl: './workflow.component.html',
   styleUrls: ['../shared/styles/workflow-container.component.scss'],
 })
-export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
+export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterViewInit, OnInit {
   workflowEditData: any;
-  Dockstore = Dockstore;
   public isRefreshing$: Observable<boolean>;
   public workflow: BioWorkflow | Service | Notebook;
   public missingWarning: boolean;
   public title: string;
-  public sortedVersions: Array<Tag | WorkflowVersion> = [];
+  public sortedVersions: Array<WorkflowVersion> = [];
   private resourcePath: string;
   public showRedirect = false;
   public githubPath = 'github.com/';
@@ -163,16 +161,16 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
     // Entry type is set in the container, workflow, and service routing files.
     this.entryType = this.sessionQuery.getValue().entryType;
     if (this.entryType === EntryType.BioWorkflow) {
-      this.validTabs = ['info', 'launch', 'versions', 'files', 'tools', 'dag'];
+      this.validTabs = ['info', 'launch', 'versions', 'files', 'tools', 'dag', 'metrics'];
       this.redirectToCanonicalURL('/' + myBioWorkflowsURLSegment);
     } else if (this.entryType === EntryType.Tool) {
-      this.validTabs = ['info', 'launch', 'versions', 'files'];
+      this.validTabs = ['info', 'launch', 'versions', 'files', 'metrics'];
       this.redirectToCanonicalURL('/' + myToolsURLSegment);
     } else if (this.entryType === EntryType.Notebook) {
-      this.validTabs = ['info', 'code', 'versions', 'files'];
+      this.validTabs = ['info', 'code', 'versions', 'files', 'metrics'];
       this.redirectToCanonicalURL('/' + myNotebooksURLSegment);
     } else {
-      this.validTabs = ['info', 'versions', 'files'];
+      this.validTabs = ['info', 'versions', 'files', 'metrics'];
       this.redirectToCanonicalURL('/' + myServicesURLSegment);
     }
     this.resourcePath = this.location.prepareExternalUrl(this.location.path());
@@ -286,7 +284,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
           .subscribe((actions: Array<string>) => {
             // Alas, Swagger codegen does not generate a type for the actions
             this.canRead = actions.indexOf('READ') !== -1;
-            this.canWrite = actions.indexOf('WRITE') !== -1;
+            this.canWrite = actions.indexOf('WRITE') !== -1 && !workflow.archived;
             this.isOwner = actions.indexOf('SHARE') !== -1;
             // TODO: when expanding permissions beyond hosted workflows, this component will need to tolerate a 401
             // for users that are not on FireCloud
@@ -392,7 +390,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
   public setupPublicEntry(url: string) {
     const subclass: WorkflowSubClass = this.getWorkflowSubclass(this.entryType);
     this.workflowsService
-      .getPublishedWorkflowByPath(this.title, subclass, includesValidation + ',' + includesAuthors, this.urlVersion)
+      .getPublishedWorkflowByPath(this.title, subclass, [includesValidation, includesAuthors, includesMetrics].toString(), this.urlVersion)
       .subscribe(
         (workflow) => {
           this.workflowService.setWorkflow(workflow);
@@ -489,7 +487,7 @@ export class WorkflowComponent extends Entry implements AfterViewInit, OnInit {
   // TODO: Move most of this function to the service, sadly 'this.labelsEditMode' makes it more difficult
   setWorkflowLabels() {
     this.alertService.start('Setting labels');
-    this.workflowsService.updateLabels(this.workflow.id, this.workflowEditData.labels.join(', ')).subscribe(
+    this.workflowsService.updateLabels1(this.workflow.id, this.workflowEditData.labels.join(', ')).subscribe(
       (workflow) => {
         this.workflowService.setWorkflow(workflow);
         this.labelsEditMode = false;

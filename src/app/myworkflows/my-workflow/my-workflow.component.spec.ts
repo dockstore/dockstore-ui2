@@ -27,9 +27,9 @@ import { MyEntriesModule } from '../../shared/modules/my-entries.module';
 import { RefreshService } from '../../shared/refresh.service';
 import { TokenQuery } from '../../shared/state/token.query';
 import { WorkflowService } from '../../shared/state/workflow.service';
-import { UsersService } from '../../shared/swagger/api/users.service';
-import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
-import { Configuration } from '../../shared/swagger/configuration';
+import { UsersService } from '../../shared/openapi/api/users.service';
+import { WorkflowsService } from '../../shared/openapi/api/workflows.service';
+import { Configuration } from '../../shared/openapi/configuration';
 import { UrlResolverService } from '../../shared/url-resolver.service';
 import { UserQuery } from '../../shared/user/user.query';
 import { RouterLinkStubDirective } from '../../test';
@@ -48,12 +48,10 @@ import {
   WorkflowStubService,
 } from '../../test/service-stubs';
 import { RegisterWorkflowModalService } from '../../workflow/register-workflow-modal/register-workflow-modal.service';
-import { MyBioWorkflowsService } from '../my-bio-workflows.service';
-import { MyServicesService } from '../my-services.service';
 import { MyWorkflowsService } from '../myworkflows.service';
 import { MyWorkflowComponent } from './my-workflow.component';
 import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
-import { MetadataService } from '../../shared/swagger';
+import { MetadataService } from '../../shared/openapi';
 
 describe('MyWorkflowsComponent', () => {
   let component: MyWorkflowComponent;
@@ -76,8 +74,6 @@ describe('MyWorkflowsComponent', () => {
           { provide: RefreshService, useClass: RefreshStubService },
           { provide: RegisterWorkflowModalService, useClass: RegisterWorkflowModalStubService },
           MyWorkflowsService,
-          MyBioWorkflowsService,
-          MyServicesService,
           TokenQuery,
           { provide: AccountsService, useClass: AccountsStubService },
           { provide: WorkflowsService, useClass: WorkflowsStubService },

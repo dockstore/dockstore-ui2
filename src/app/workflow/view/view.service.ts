@@ -19,8 +19,7 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { WorkflowService } from '../../shared/state/workflow.service';
-import { WorkflowVersion } from '../../shared/swagger';
-import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
+import { WorkflowsService, WorkflowVersion } from '../../shared/openapi';
 
 @Injectable()
 export class ViewService {
@@ -45,7 +44,7 @@ export class ViewService {
     const workflowId = this.workflowQuery.getActive().id;
     const message = 'Updating default workflow version';
     this.alertService.start(message);
-    this.workflowsService.updateWorkflowDefaultVersion(workflowId, newDefaultVersion).subscribe(
+    this.workflowsService.updateDefaultVersion1(workflowId, newDefaultVersion).subscribe(
       (updatedWorkflow) => {
         this.alertService.detailedSuccess();
         this.workflowService.upsertWorkflowToWorkflow(updatedWorkflow);

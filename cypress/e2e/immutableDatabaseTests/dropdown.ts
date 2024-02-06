@@ -46,6 +46,34 @@ describe('Dropdown test', () => {
     });
   });
 
+  describe('Go to profile page', () => {
+    beforeEach(() => {
+      // Select dropdown profile
+      cy.get('[data-cy=dropdown-profile-button]').should('be.visible').click();
+    });
+
+    it('Should show user profile', () => {
+      cy.url().should('eq', Cypress.config().baseUrl + '/users/user_curator');
+      cy.contains('Activity');
+    });
+  });
+
+  describe('Go to profile page from another profile page', () => {
+    it('Should show user correct profile', () => {
+      const fromUser = 'potato';
+      const currentUser = 'user_curator';
+      cy.visit(`/users/${fromUser}`);
+      cy.contains('Activity');
+      cy.get('app-user-page').contains(fromUser);
+      cy.get('app-user-page').contains(currentUser).should('not.exist');
+      cy.get('[data-cy=dropdown-main]:visible').click();
+      cy.get('[data-cy=dropdown-profile-button]').should('be.visible').click();
+      cy.contains('Activity');
+      cy.get('app-user-page').contains(currentUser);
+      cy.get('app-user-page').contains(fromUser).should('not.exist');
+    });
+  });
+
   describe('Go to accounts page', () => {
     beforeEach(() => {
       // Select dropdown accounts
@@ -85,6 +113,12 @@ describe('Dropdown test', () => {
     it('Link to requests tab', () => {
       cy.visit('/accounts?tab=requests');
       isActiveTab('Requests');
+    });
+    // Check that link to user profile exists
+    it('Should have the view profile button', () => {
+      cy.contains('View Public Profile').click();
+      cy.url().should('eq', Cypress.config().baseUrl + '/users/user_curator');
+      cy.contains('Activity');
     });
   });
 

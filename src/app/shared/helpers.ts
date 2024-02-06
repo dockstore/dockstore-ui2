@@ -6,6 +6,7 @@ export function toExtendSite(url: string): boolean {
     url.startsWith('/my-workflows') ||
     url.startsWith('/my-tools') ||
     url.startsWith('/my-services') ||
+    url.startsWith('/my-notebooks') ||
     url.startsWith('/starred') ||
     url.startsWith('/accounts') ||
     url.startsWith('/dashboard')

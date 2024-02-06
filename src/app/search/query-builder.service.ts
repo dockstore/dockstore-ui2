@@ -16,8 +16,13 @@
 
 import { Injectable } from '@angular/core';
 import * as bodybuilder from 'bodybuilder';
+import { Bodybuilder } from 'bodybuilder';
+import { CategorySort } from '../shared/models/CategorySort';
+import { tagCloudCommonTerms } from './../shared/constants';
 import { AdvancedSearchObject } from './../shared/models/AdvancedSearchObject';
 import { SearchService } from './state/search.service';
+
+type Index = 'workflows' | 'tools' | 'notebooks';
 
 /**
  * This service constructs all the querys and should be only class that interacts with the bodybuilder library.
@@ -38,7 +43,7 @@ export class QueryBuilderService {
     let body = bodybuilder().size(0);
     body = this.excludeContent(body);
     body = body.query('match', '_index', index);
-    body = body.aggregation('significant_text', 'description', 'tagcloud', { size: tagCloudSize });
+    body = body.aggregation('significant_text', 'description', 'tagcloud', { size: tagCloudSize, exclude: tagCloudCommonTerms });
     const toolQuery = JSON.stringify(body.build(), null, 1);
     return toolQuery;
   }
@@ -47,10 +52,11 @@ export class QueryBuilderService {
     values: string,
     advancedSearchObject: AdvancedSearchObject,
     searchTerm: boolean,
-    bucketStubs: any,
-    filters: any,
-    sortModeMap: any,
-    index: 'workflows' | 'tools' | 'notebooks'
+    bucketStubs: Map<string, string>,
+    filters: Map<string, Set<string>>,
+    exclusiveFilters: string[],
+    sortModeMap: Map<string, CategorySort>,
+    index: Index
   ): string {
     const count = this.getNumberOfFilters(filters);
     // Size to 0 here because https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations.html#agg-caches
@@ -58,7 +64,7 @@ export class QueryBuilderService {
     sidebarBody = this.excludeContent(sidebarBody);
     sidebarBody = sidebarBody.query('match', '_index', index);
     sidebarBody = this.appendQuery(sidebarBody, values, advancedSearchObject, searchTerm);
-    sidebarBody = this.appendAggregations(count, sidebarBody, bucketStubs, filters, sortModeMap);
+    sidebarBody = this.appendAggregations(count, sidebarBody, bucketStubs, filters, exclusiveFilters, sortModeMap);
     const builtSideBarBody = sidebarBody.build();
     const sideBarQuery = JSON.stringify(builtSideBarBody);
     return sideBarQuery;
@@ -69,10 +75,11 @@ export class QueryBuilderService {
   }
 
   // These are the properties to return in the search to display the results table correctly
-  private sourceOptions(body: any) {
+  private sourceOptions(body: Bodybuilder) {
     return body.rawOption('_source', [
       'all_authors',
       'descriptorType',
+      'descriptorTypeSubclass',
       'full_workflow_path',
       'gitUrl',
       'name',
@@ -90,7 +97,7 @@ export class QueryBuilderService {
     ]);
   }
 
-  getNumberOfFilters(filters: any) {
+  getNumberOfFilters(filters: Map<string, Set<string>>) {
     let count = 0;
     filters.forEach((filter) => {
       count += filter.size;
@@ -103,22 +110,46 @@ export class QueryBuilderService {
     values: string,
     advancedSearchObject: AdvancedSearchObject,
     searchTerm: boolean,
-    filters: any,
-    index: 'tools' | 'workflows' | 'notebooks'
+    filters: Map<string, Set<string>>,
+    exclusiveFilters: Array<string>,
+    index: Index
   ): string {
     let tableBody = bodybuilder().size(query_size);
     tableBody = this.sourceOptions(tableBody);
     tableBody = tableBody.query('match', '_index', index);
     tableBody = this.appendQuery(tableBody, values, advancedSearchObject, searchTerm);
-    tableBody = this.appendFilter(tableBody, null, filters);
-    // most popular results should be returned first
-    tableBody = tableBody.sort('stars_count', 'desc');
+    tableBody = this.appendFilter(tableBody, null, filters, exclusiveFilters);
+    // if there's no inclusive search term, tell ES to sort hits by stars
+    // otherwise, sort by ES-calculated score
+    // in both cases, sort so that archived entries appear last
+    if (this.isEmpty(values) && !this.hasInclusiveSettings(advancedSearchObject)) {
+      tableBody = tableBody.sort([{ archived: 'asc' }, { stars_count: 'desc' }]);
+    } else {
+      tableBody = tableBody.sort([{ archived: 'asc' }, { _score: 'desc' }]);
+    }
+    tableBody.rawOption('highlight', {
+      type: 'unified',
+      pre_tags: ['<b>'],
+      post_tags: ['</b>'],
+      fields: {
+        full_workflow_path: {},
+        tool_path: {},
+        'workflowVersions.sourceFiles.content': {},
+        'tags.sourceFiles.content': {},
+        description: {},
+        labels: {},
+        'all_authors.name': {},
+        topicAutomatic: {},
+        'categories.topic': {},
+        'categories.displayName': {},
+      },
+    });
     const builtTableBody = tableBody.build();
     const tableQuery = JSON.stringify(builtTableBody);
     return tableQuery;
   }
 
-  getResultSingleIndexQuery(query_size: number, index: 'tools' | 'workflows' | 'notebooks'): string {
+  getResultSingleIndexQuery(query_size: number, index: Index): string {
     let body = bodybuilder().size(query_size);
     body = this.sourceOptions(body);
     body = body.query('match', '_index', index);
@@ -138,10 +169,10 @@ export class QueryBuilderService {
    * @returns the new body builder object with filter applied
    * @memberof SearchComponent
    */
-  appendFilter(body: any, aggKey: string, filters: any): any {
+  appendFilter(body: any, aggKey: string | null, filters: Map<string, Set<string>>, exclusiveFilters: Array<string>): Bodybuilder {
     filters.forEach((value: Set<string>, key: string) => {
       value.forEach((insideFilter) => {
-        const isExclusiveFilter = this.searchService.exclusiveFilters.includes(key);
+        const isExclusiveFilter = exclusiveFilters.includes(key);
         if (aggKey === key && !isExclusiveFilter) {
           // Return some garbage filter because we've decided to append a filter, there's no turning back
           // return body;  // <--- this does not work
@@ -187,12 +218,7 @@ export class QueryBuilderService {
    */
   appendQuery(body: any, values: string, oldAdvancedSearchObject: AdvancedSearchObject, searchTerm: boolean): any {
     const advancedSearchObject = { ...oldAdvancedSearchObject };
-    if (values.toString().length > 0) {
-      body = this.searchEverything(body, values);
-    } else {
-      body = body.query('match_all', {});
-    }
-    if (advancedSearchObject) {
+    if (this.hasSettings(advancedSearchObject)) {
       if (advancedSearchObject.searchMode === 'description') {
         this.advancedSearchDescription(body, advancedSearchObject);
       } else if (advancedSearchObject.searchMode === 'files') {
@@ -200,8 +226,35 @@ export class QueryBuilderService {
       }
       values = '';
       searchTerm = false;
+    } else {
+      if (!this.isEmpty(values)) {
+        body = this.searchEverything(body, values);
+      } else {
+        body = body.query('match_all', {});
+      }
     }
     return body;
+  }
+
+  private isEmpty(values: string): boolean {
+    return values == undefined || values.toString().trim().length <= 0;
+  }
+
+  private hasSettings(advancedSearchObject: AdvancedSearchObject): boolean {
+    return (
+      !this.isEmpty(advancedSearchObject?.ANDSplitFilter) ||
+      !this.isEmpty(advancedSearchObject?.ANDNoSplitFilter) ||
+      !this.isEmpty(advancedSearchObject?.ORFilter) ||
+      !this.isEmpty(advancedSearchObject?.NOTFilter)
+    );
+  }
+
+  private hasInclusiveSettings(advancedSearchObject: AdvancedSearchObject): boolean {
+    return (
+      !this.isEmpty(advancedSearchObject?.ANDSplitFilter) ||
+      !this.isEmpty(advancedSearchObject?.ANDNoSplitFilter) ||
+      !this.isEmpty(advancedSearchObject?.ORFilter)
+    );
   }
 
   /**
@@ -217,16 +270,23 @@ export class QueryBuilderService {
    * @param searchString The string entered into the basic search bar by the user
    */
   private searchEverything(body: bodybuilder.Bodybuilder, searchString: string): bodybuilder.Bodybuilder {
-    return body.filter('bool', (filter) =>
-      filter
-        .orFilter('wildcard', { 'full_workflow_path.keyword': { value: '*' + searchString + '*', case_insensitive: true } })
-        .orFilter('wildcard', { 'tool_path.keyword': { value: '*' + searchString + '*', case_insensitive: true } })
-        .orFilter('match_phrase', 'workflowVersions.sourceFiles.content', searchString)
-        .orFilter('match_phrase', 'tags.sourceFiles.content', searchString)
-        .orFilter('match_phrase', 'description', searchString)
-        .orFilter('match_phrase', 'labels', searchString)
-        .orFilter('match_phrase', 'author', searchString)
-    );
+    // Extract each search term from the search string, limiting to a maximum of 20 terms to prevent a DOS attack
+    const terms = searchString.trim().split(' ').slice(0, 20);
+    terms.forEach((term) => {
+      body
+        .orQuery('wildcard', 'full_workflow_path', { value: '*' + term + '*', case_insensitive: true, boost: 7 })
+        .orQuery('wildcard', 'tool_path', { value: '*' + term + '*', case_insensitive: true, boost: 7 })
+        .orQuery('match', 'workflowVersions.sourceFiles.content', { query: term, boost: 0.2 })
+        .orQuery('match', 'tags.sourceFiles.content', { query: term, boost: 0.2 })
+        .orQuery('match', 'description', { query: term, boost: 2 })
+        .orQuery('match', 'labels', { query: term, boost: 2 })
+        .orQuery('match', 'all_authors.name', { query: term, boost: 3 })
+        .orQuery('match', 'topicAutomatic', { query: term, boost: 4 })
+        .orQuery('match', 'categories.topic', { query: term, boost: 1.5 })
+        .orQuery('match', 'categories.displayName', { query: term, boost: 2 });
+    });
+    body.queryMinimumShouldMatch(1);
+    return body;
   }
 
   /**===============================================
@@ -242,13 +302,20 @@ export class QueryBuilderService {
    * @returns {*} the new body builder object
    * @memberof SearchComponent
    */
-  appendAggregations(count: number, body: any, bucketStubs: any, filters: any, sortModeMap: any): any {
+  appendAggregations(
+    count: number,
+    body: Bodybuilder,
+    bucketStubs: Map<string, string>,
+    filters: Map<string, Set<string>>,
+    exclusiveFilters: Array<string>,
+    sortModeMap: Map<string, CategorySort>
+  ): any {
     // go through buckets
     bucketStubs.forEach((key) => {
       const order = this.searchService.parseOrderBy(key, sortModeMap);
       if (count > 0) {
         body = body.agg('filter', key, key, (a) => {
-          return this.appendFilter(a, key, filters).aggregation('terms', key, key, { size: this.shard_size, order });
+          return this.appendFilter(a, key, filters, exclusiveFilters).aggregation('terms', key, key, { size: this.shard_size, order });
         });
       } else {
         body = body.agg('terms', key, key, { size: this.shard_size, order });
@@ -257,90 +324,38 @@ export class QueryBuilderService {
     return body;
   }
 
-  // Advanced search query related functions
-
-  /* TODO: Make this better */
-  advancedSearchFiles(body: any, advancedSearchObject: AdvancedSearchObject) {
-    if (advancedSearchObject.ANDSplitFilter) {
-      const filters = advancedSearchObject.ANDSplitFilter.split(' ');
-      let insideFilter_tool = bodybuilder();
-      filters.forEach((filter) => {
-        insideFilter_tool = insideFilter_tool.filter('match_phrase', 'tags.sourceFiles.content', filter);
-      });
-      let insideFilter_workflow = bodybuilder();
-      filters.forEach((filter) => {
-        insideFilter_workflow = insideFilter_workflow.filter('match_phrase', 'workflowVersions.sourceFiles.content', filter);
-      });
-      body = body.filter('bool', (filter) =>
-        filter
-          .orFilter('bool', (toolfilter) => (toolfilter = insideFilter_tool))
-          .orFilter('bool', (workflowfilter) => (workflowfilter = insideFilter_workflow))
-      );
-    }
-    if (advancedSearchObject.ANDNoSplitFilter) {
-      body = body.filter('bool', (filter) =>
-        filter
-          .orFilter('bool', (toolfilter) =>
-            toolfilter.filter('match_phrase', 'tags.sourceFiles.content', advancedSearchObject.ANDNoSplitFilter)
-          )
-          .orFilter('bool', (workflowfilter) =>
-            workflowfilter.filter('match_phrase', 'workflowVersions.sourceFiles.content', advancedSearchObject.ANDNoSplitFilter)
-          )
-      );
-    }
-    if (advancedSearchObject.ORFilter) {
-      const filters = advancedSearchObject.ORFilter.split(' ');
-      let insideFilter_tool = bodybuilder();
-      filters.forEach((filter) => {
-        insideFilter_tool = insideFilter_tool.orFilter('match_phrase', 'tags.sourceFiles.content', filter);
-      });
-      let insideFilter_workflow = bodybuilder();
-      filters.forEach((filter) => {
-        insideFilter_workflow = insideFilter_workflow.orFilter('match_phrase', 'workflowVersions.sourceFiles.content', filter);
-      });
-      body = body.filter('bool', (filter) =>
-        filter
-          .orFilter('bool', (toolfilter) => (toolfilter = insideFilter_tool))
-          .orFilter('bool', (workflowfilter) => (workflowfilter = insideFilter_workflow))
-      );
-    }
-    if (advancedSearchObject.NOTFilter) {
-      const filters = advancedSearchObject.NOTFilter.split(' ');
-      let insideFilter_tool = bodybuilder();
-      filters.forEach((filter) => {
-        insideFilter_tool = insideFilter_tool.notFilter('match_phrase', 'tags.sourceFiles.content', filter);
-      });
-      let insideFilter_workflow = bodybuilder();
-      filters.forEach((filter) => {
-        insideFilter_workflow = insideFilter_workflow.notFilter('match_phrase', 'workflowVersions.sourceFiles.content', filter);
-      });
-      body = body.filter('bool', (filter) =>
-        filter
-          .filter('bool', (toolfilter) => (toolfilter = insideFilter_tool))
-          .filter('bool', (workflowfilter) => (workflowfilter = insideFilter_workflow))
-      );
-    }
+  advancedSearchDescription(body: Bodybuilder, advancedSearchObject: AdvancedSearchObject) {
+    this.advancedSearch(body, advancedSearchObject, 'description');
   }
 
-  advancedSearchDescription(body: any, advancedSearchObject: AdvancedSearchObject) {
+  advancedSearchFiles(body: Bodybuilder, advancedSearchObject: AdvancedSearchObject) {
+    this.advancedSearch(body, advancedSearchObject, 'tags.sourceFiles.content');
+    this.advancedSearch(body, advancedSearchObject, 'workflowVersions.sourceFiles.content');
+  }
+
+  advancedSearch(body: Bodybuilder, advancedSearchObject: AdvancedSearchObject, fieldName: string): number {
+    let shouldCount: number = 0;
     if (advancedSearchObject.ANDSplitFilter) {
-      const filters = advancedSearchObject.ANDSplitFilter.split(' ');
-      filters.forEach((filter) => (body = body.filter('match_phrase', 'description', filter)));
+      body.orQuery('match', fieldName, { query: advancedSearchObject.ANDSplitFilter, operator: 'AND' });
+      shouldCount++;
     }
     if (advancedSearchObject.ANDNoSplitFilter) {
-      body = body.query('match_phrase', 'description', advancedSearchObject.ANDNoSplitFilter);
+      body.orQuery('match_phrase', fieldName, advancedSearchObject.ANDNoSplitFilter);
+      shouldCount++;
     }
     if (advancedSearchObject.ORFilter) {
-      const filters = advancedSearchObject.ORFilter.split(' ');
-      filters.forEach((filter) => {
-        body = body.orFilter('match_phrase', 'description', filter);
-      });
+      body.orQuery('match', fieldName, advancedSearchObject.ORFilter);
+      shouldCount++;
     }
     if (advancedSearchObject.NOTFilter) {
       const filters = advancedSearchObject.NOTFilter.split(' ');
       filters.forEach((filter) => {
-        body = body.notQuery('match_phrase', 'description', filter);
+        body = body.notQuery('match', fieldName, filter);
       });
     }
+    // Add a dummy no-op orQuery, to prevent a bodybuilder bug that omits a specified `minimum_should_match` when `orQuery` is called once
+    body.orQuery('match_none');
+    body.queryMinimumShouldMatch(shouldCount);
+    return shouldCount;
   }
 }

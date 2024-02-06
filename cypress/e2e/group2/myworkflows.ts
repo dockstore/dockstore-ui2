@@ -14,15 +14,25 @@
  *    limitations under the License.
  */
 import { Repository } from '../../../src/app/shared/openapi/model/repository';
-import { goToTab, insertAuthors, isActiveTab, resetDB, setTokenUserViewPort, setTokenUserViewPortCurator } from '../../support/commands';
+import {
+  goToTab,
+  insertAuthors,
+  isActiveTab,
+  resetDB,
+  setTokenUserViewPort,
+  setTokenUserViewPortCurator,
+  snapshot,
+} from '../../support/commands';
+import { LambdaEvent } from '../../../src/app/shared/openapi';
+
+const cwlDescriptorType = 'CWL';
+const wdlDescriptorType = 'WDL';
+const nextflowDescriptorType = 'Nextflow';
 
 describe('Dockstore my workflows', () => {
   resetDB();
   setTokenUserViewPort();
 
-  const cwlDescriptorType = 'CWL';
-  const wdlDescriptorType = 'WDL';
-  const nextflowDescriptorType = 'Nextflow';
   it('have entries shown on the dashboard', () => {
     cy.visit('/dashboard');
     cy.contains('Search your Workflows...');
@@ -48,12 +58,13 @@ describe('Dockstore my workflows', () => {
   });
 
   describe('Should contain extended Workflow properties', () => {
+    // Flaky test, see https://github.com/dockstore/dockstore/issues/5696
     it('visit another page then come back', () => {
       cy.visit('/my-workflows');
       cy.contains('github.com/A/l');
 
       cy.contains('Apps Logs').click();
-      cy.contains('There were problems retrieving GitHub App logs for this organization.');
+      cy.contains('There were problems retrieving the GitHub App logs for this organization.');
       cy.contains('Close').click();
       cy.intercept('GET', '/api/lambdaEvents/**', {
         body: [],
@@ -63,6 +74,8 @@ describe('Dockstore my workflows', () => {
       cy.contains('Close').click();
       const realResponse = [
         {
+          deliveryId: '1',
+          entryName: 'entry1',
           eventDate: 1582165220000,
           githubUsername: 'boil',
           id: 1,
@@ -74,6 +87,8 @@ describe('Dockstore my workflows', () => {
           type: 'PUSH',
         },
         {
+          deliveryId: '2',
+          entryName: 'entry2',
           eventDate: 1591368041850,
           githubUsername: 'em',
           id: 2,
@@ -87,8 +102,14 @@ describe('Dockstore my workflows', () => {
       ];
       cy.intercept('GET', '/api/lambdaEvents/**', {
         body: realResponse,
+        headers: {
+          'X-total-count': '2',
+        },
       }).as('refreshWorkflow');
       cy.contains('Apps Logs').click();
+      // Check that app logs contain the correct columns
+      const appLogColumns = ['Date', 'GitHub Username', 'Entry Name', 'Delivery ID', 'Repository', 'Reference', 'Success', 'Type'];
+      appLogColumns.forEach((column) => cy.contains(column));
       // These next 2 values work on Circle CI (UTC?) I would have thought East Coast time, but there's an 8 hour diff with West Coast time. Confused
       cy.contains('2020-02-20T02:20');
       cy.contains('2020-06-05T14:40');
@@ -96,6 +117,32 @@ describe('Dockstore my workflows', () => {
       // cy.contains('2020-02-19T18:20');
       // cy.contains('2020-06-05T07:40');
       cy.contains('1 – 2 of 2');
+
+      //Filtering
+      const filteredResponse: LambdaEvent[] = [
+        {
+          deliveryId: '1',
+          entryName: 'entry1',
+          eventDate: 1582165220000,
+          githubUsername: 'boil',
+          id: 1,
+          message: 'HTTP 418 ',
+          organization: 'dockstore',
+          reference: 'refs/tag/1.03',
+          repository: 'hello_world',
+          success: false,
+          type: 'PUSH',
+        },
+      ];
+      cy.intercept('GET', '/api/lambdaEvents/**', {
+        body: filteredResponse,
+        headers: {
+          'X-total-count': '1',
+        },
+      });
+      cy.get('[data-cy=apps-logs-filter]').type('entry1');
+      cy.contains('2020-02-20T02:20');
+      cy.contains('1 – 1 of 1');
       cy.contains('Close').click();
     });
     it('Should contain the extended properties and be able to edit the info tab', () => {
@@ -202,6 +249,11 @@ describe('Dockstore my workflows', () => {
       cy.contains('button', ' Save ').click();
     });
   });
+});
+
+describe('Dockstore my workflows part 2', () => {
+  resetDB();
+  setTokenUserViewPort();
 
   function gotoVersionsAndClickActions() {
     cy.visit('/my-workflows/github.com/A/l');
@@ -224,22 +276,8 @@ describe('Dockstore my workflows', () => {
     insertAuthors();
     it('Should be able to snapshot', () => {
       gotoVersionsAndClickActions();
-      cy.get('[data-cy=dockstore-snapshot-locked]').should('have.length', 0);
-      // The buttons should be present
-      cy.get('[data-cy=dockstore-request-doi-button]').its('length').should('be.gt', 0);
-      cy.get('[data-cy=dockstore-snapshot]').its('length').should('be.gt', 0);
+      snapshot();
       cy.get('[data-cy=no-authors]').should('not.exist');
-
-      cy.get('[data-cy=dockstore-snapshot-unlocked]').its('length').should('be.gt', 0);
-
-      cy.get('[data-cy=dockstore-snapshot]').first().click();
-
-      cy.get('[data-cy=snapshot-button]').click();
-
-      cy.wait(250);
-      cy.get('[data-cy=dockstore-snapshot-locked]').should('have.length', 1);
-      cy.get('td').contains('Actions').click();
-      cy.get('[data-cy=dockstore-snapshot]').should('be.disabled');
     });
 
     it('Request DOI should require linked account', () => {
@@ -372,6 +410,11 @@ describe('Dockstore my workflows', () => {
       cy.get('[data-cy=refreshButton]').should('not.be.disabled');
     });
   });
+});
+
+describe('Dockstore my workflows part 3', () => {
+  resetDB();
+  setTokenUserViewPort();
 
   function haveAlert() {
     cy.get('.mat-error').should('be.visible');
@@ -420,7 +463,7 @@ describe('Dockstore my workflows', () => {
       });
 
       cy.visit('/my-workflows');
-      cy.get('#registerWorkflowButton').should('be.visible').should('be.enabled').click();
+      cy.get('[data-cy=register-workflow-button]').should('be.visible').should('be.enabled').click();
       // TODO: Fix this.  When 'Next' is clicked too fast, the next step is empty
       cy.wait(1000);
       cy.get('#1-register-workflow-option').click();
@@ -445,7 +488,7 @@ describe('Dockstore my workflows', () => {
   describe('Test register workflow form validation', () => {
     it('It should have 3 separate descriptor path validation patterns', () => {
       cy.visit('/my-workflows');
-      cy.get('#registerWorkflowButton').should('be.visible').should('be.enabled').click();
+      cy.get('[data-cy=register-workflow-button]').should('be.visible').should('be.enabled').click();
       // TODO: Fix this.  When 'Next' is clicked too fast, the next step is empty
       cy.wait(1000);
       cy.get('#2-register-workflow-option').click();
@@ -554,6 +597,6 @@ describe('Should handle no workflows correctly', () => {
   });
   it('My workflows should prompt to register a workflow', () => {
     cy.visit('/my-workflows');
-    cy.contains('Register Workflow');
+    cy.contains('Register a Workflow');
   });
 });

@@ -61,7 +61,17 @@ export function resetDB() {
     cy.exec('java -jar dockstore-webservice.jar db drop-all --confirm-delete-everything test/web.yml');
     cy.exec(psqlInvocation + ' -h localhost webservice_test -U dockstore < test/db_dump.sql');
     cy.exec(
-      'java -jar dockstore-webservice.jar db migrate -i 1.5.0,1.6.0,1.7.0,1.8.0,1.9.0,1.10.0,alter_test_user_1.10.2,1.11.0,1.12.0,1.13.0,1.14.0 test/web.yml'
+      'java -jar dockstore-webservice.jar db migrate -i 1.5.0,1.6.0,1.7.0,1.8.0,1.9.0,1.10.0,alter_test_user_1.10.2,1.11.0,1.12.0,1.13.0,1.14.0,1.15.0 test/web.yml'
+    );
+  });
+}
+
+export function resetDBWithService() {
+  before(() => {
+    cy.exec('java -jar dockstore-webservice.jar db drop-all --confirm-delete-everything test/web.yml');
+    cy.exec(psqlInvocation + ' -h localhost webservice_test -U dockstore < test/db_dump.sql');
+    cy.exec(
+      'java -jar dockstore-webservice.jar db migrate -i 1.5.0,1.6.0,1.7.0,add_service_1.7.0,1.8.0,1.9.0,1.10.0,alter_test_user_1.10.2,1.11.0,1.12.0,1.13.0,1.14.0,1.15.0 test/web.yml'
     );
   });
 }
@@ -114,7 +124,7 @@ export function setTokenUserViewPortPlatformPartner() {
 
 // Update the user user_platform_partner to be a platform partner
 export function setPlatformPartnerRole() {
-  invokeSql("update enduser set platformpartner=true where username = 'user_platform_partner'");
+  invokeSql("update enduser set platformpartner='TERRA' where username = 'user_platform_partner'");
 }
 
 export function goToUnexpandedSidebarEntry(organization: string, repo: RegExp | string) {
@@ -183,9 +193,7 @@ export function verifyGithubLinkDashboard(entryType: string) {
   cy.get('[data-cy=register-entry-btn]').contains(entryType).should('be.visible').click();
   cy.get('[data-cy=storage-type-choice]').contains('GitHub').click();
   cy.contains('button', 'Next').should('be.visible').click();
-  cy.contains('a', 'Manage Dockstore installations on GitHub')
-    .should('have.attr', 'href')
-    .and('include', 'https://github.com/apps/dockstore-testing-application');
+  cy.contains('a', 'Manage Dockstore installations on GitHub').click();
 }
 
 export function testNoGithubEntriesText(entryType: string, repository: string) {
@@ -199,7 +207,7 @@ export function testNoGithubEntriesText(entryType: string, repository: string) {
       .contains('.mat-tab-label-content', 'Published')
       .click();
     if (entryType === 'tool') {
-      cy.get('[data-cy=no-published-apptool-message]').should('contain', 'No published ' + entryType + 's');
+      cy.get('[data-cy=no-published-appTool-message]').should('contain', 'No published ' + entryType + 's');
     } else {
       cy.get('[data-cy=no-published-' + entryType + '-message]').should('contain', 'No published ' + entryType + 's');
     }
@@ -214,7 +222,7 @@ export function testNoGithubEntriesText(entryType: string, repository: string) {
       .contains('.mat-tab-label-content', 'Unpublished')
       .click();
     if (entryType === 'tool') {
-      cy.get('[data-cy=no-unpublished-apptool-message]').should('contain', 'No unpublished ' + entryType + 's');
+      cy.get('[data-cy=no-unpublished-appTool-message]').should('contain', 'No unpublished ' + entryType + 's');
     } else {
       cy.get('[data-cy=no-unpublished-' + entryType + '-message]').should('contain', 'No unpublished ' + entryType + 's');
     }
@@ -231,4 +239,43 @@ export function addToCollection(path: string, organizationName: string, collecti
   cy.get('[data-cy=selectCollection]').click();
   cy.get('mat-option').contains(collectionDisplayName).click();
   cy.get('[data-cy=addEntryToCollectionButton]').should('not.be.disabled').click();
+}
+export function snapshot() {
+  cy.get('[data-cy=dockstore-snapshot-locked]').should('have.length', 0);
+  // The buttons should be present
+  cy.get('[data-cy=dockstore-request-doi-button]').its('length').should('be.gt', 0);
+  cy.get('[data-cy=dockstore-snapshot]').its('length').should('be.gt', 0);
+
+  cy.get('[data-cy=dockstore-snapshot-unlocked]').its('length').should('be.gt', 0);
+
+  cy.get('[data-cy=dockstore-snapshot]').first().click();
+
+  cy.get('[data-cy=snapshot-button]').click();
+
+  cy.get('[data-cy=dockstore-snapshot-locked]').should('have.length', 1);
+  cy.get('td').contains('Actions').click();
+  cy.get('[data-cy=dockstore-snapshot]').should('be.disabled');
+}
+
+export function checkFeaturedContent() {
+  cy.contains('Featured Content');
+  cy.get('app-featured-content').should('exist');
+  cy.get('.feat-content-container').within(() => {
+    cy.get('.feat-content-card').its('length').should('be.gt', 0);
+    cy.get('.feat-content-card').first().contains('a').should('have.attr', 'href');
+    cy.get('.small-btn-structure').first().contains('View');
+  });
+}
+
+export function checkNewsAndUpdates() {
+  cy.contains('News & Updates');
+  cy.get('app-news-and-updates').should('exist');
+  cy.get('.news-and-updates-box').within(() => {
+    cy.get('.news-entry').its('length').should('be.gt', 0);
+    cy.get('.news-entry').first().contains('a').should('have.attr', 'href');
+  });
+}
+
+export function checkMastodonFeedOrTwitterFeed() {
+  cy.get('[data-cy=mt-toot],.twitter-timeline').should('exist');
 }

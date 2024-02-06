@@ -13,22 +13,22 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { TokenUser } from '../../../src/app/shared/openapi';
 import {
   approvePotatoMembership,
   approvePotatoOrganization,
   createPotatoMembership,
   rejectPotatoMembership,
-  resetDB,
   setTokenUserViewPort,
   addToCollection,
   insertNotebooks,
+  resetDBWithService,
 } from '../../support/commands';
-import { TokenUser } from '../../../src/app/shared/swagger';
 import { TokenSource } from '../../../src/app/shared/enum/token-source.enum';
 
 const imageURL = 'https://superduperfakepotatourl.com/potato.png';
 describe('Dockstore Organizations', () => {
-  resetDB();
+  resetDBWithService();
   setTokenUserViewPort();
 
   function typeInInput(fieldName: string, text: string) {
@@ -155,6 +155,7 @@ describe('Dockstore Organizations', () => {
       typeInInput('Display Name', 'fakeCollectionName');
       typeInInput('Topic', 'fake collection topic');
       cy.get('#createOrUpdateCollectionButton').should('be.visible').should('not.be.disabled').click();
+      cy.wait(2000);
       cy.contains('fakeCollectionName');
       cy.contains('fake collection topic');
 
@@ -298,11 +299,24 @@ describe('Dockstore Organizations', () => {
         cy.get('img[src*="default-org-logo"]').should('be.visible');
       }
     });
+    it('Should be able to add a service to collection', () => {
+      const servicePath = '/services/github.com/garyluu/another-test-service';
+      addToCollection(servicePath, 'Potatoe', 'veryFakeCollectionName');
+      cy.get('[data-cy=collectionLink]').should('contain', 'veryFakeCollectionName');
+      cy.visit('/organizations/Potatoe');
+      cy.get('[data-cy=collections-services-count-bubble]').should('be.visible');
+      cy.visit('/organizations/Potatoe/collections/veryFakeCollectionName');
+      cy.contains('github.com/garyluu/another-test-service');
+    });
     insertNotebooks();
     it('Should be able to add notebook to collection', () => {
       const notebookPath = '/notebooks/github.com/dockstore-testing/simple-notebook';
       addToCollection(notebookPath, 'Potatoe', 'veryFakeCollectionName');
       cy.get('[data-cy=collectionLink]').should('contain', 'veryFakeCollectionName');
+      cy.visit('/organizations/Potatoe');
+      cy.get('[data-cy=collections-notebooks-count-bubble]').should('be.visible');
+      cy.visit('/organizations/Potatoe/collections/veryFakeCollectionName');
+      cy.contains('github.com/dockstore-testing/simple-notebook');
     });
 
     it('Should be able to remove collection', () => {
@@ -315,6 +329,10 @@ describe('Dockstore Organizations', () => {
       cy.get('[data-cy=accept-remove-collection]').click();
       cy.visit('/organizations/Potatoe/collections/veryFakeCollectionName');
       cy.contains('veryFakeCollectionName').should('not.exist');
+      cy.visit('/organizations/Potatoe');
+      cy.get('[data-cy=collections-services-count-bubble]').should('not.exist');
+      cy.visit('/organizations/Potatoe');
+      cy.get('[data-cy=collections-notebooks-count-bubble]').should('not.exist');
     });
   });
 

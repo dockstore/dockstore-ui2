@@ -18,7 +18,7 @@ import { ga4ghPath, ga4ghWorkflowIdPrefix } from '../../shared/constants';
 import { DescriptorTypeCompatService } from '../../shared/descriptor-type-compat.service';
 import { Dockstore } from '../../shared/dockstore.model';
 import { LaunchService } from '../../shared/launch.service';
-import { ToolDescriptor } from '../../shared/swagger';
+import { ToolDescriptor } from '../../shared/openapi';
 import { EntryType } from '../../shared/enum/entry-type';
 
 @Injectable()

@@ -31,26 +31,23 @@ import { ContainerService } from '../shared/container.service';
 import { DateService } from '../shared/date.service';
 import { DockstoreService } from '../shared/dockstore.service';
 import { Entry } from '../shared/entry';
-import { EntryType } from '../shared/enum/entry-type';
 import { ExtendedDockstoreToolQuery } from '../shared/extended-dockstoreTool/extended-dockstoreTool.query';
 import { GA4GHFilesService } from '../shared/ga4gh-files/ga4gh-files.service';
 import { ImageProviderService } from '../shared/image-provider.service';
-import { EntriesService } from '../shared/openapi';
+import { EntriesService, Tag } from '../shared/openapi';
 import { ProviderService } from '../shared/provider.service';
 import { SessionQuery } from '../shared/session/session.query';
 import { SessionService } from '../shared/session/session.service';
-import { Tag } from '../shared/swagger/model/tag';
-import { WorkflowVersion } from '../shared/swagger/model/workflowVersion';
 import { ToolQuery } from '../shared/tool/tool.query';
+import { WorkflowQuery } from '../shared/state/workflow.query';
 import { ToolService } from '../shared/tool/tool.service';
 import { TrackLoginService } from '../shared/track-login.service';
 import { ExtendedDockstoreTool } from './../shared/models/ExtendedDockstoreTool';
-import { ContainersService } from './../shared/swagger/api/containers.service';
-import { DockstoreTool } from './../shared/swagger/model/dockstoreTool';
+import { ContainersService } from './../shared/openapi/api/containers.service';
+import { DockstoreTool } from './../shared/openapi/model/dockstoreTool';
 import { UrlResolverService } from './../shared/url-resolver.service';
 import { AddTagComponent } from './add-tag/add-tag.component';
 import { EmailService } from './email.service';
-import { Workflow } from '../shared/swagger';
 import { EntryCategoriesService } from '../categories/state/entry-categories.service';
 
 @Component({
@@ -58,7 +55,7 @@ import { EntryCategoriesService } from '../categories/state/entry-categories.ser
   templateUrl: './container.component.html',
   styleUrls: ['../shared/styles/workflow-container.component.scss'],
 })
-export class ContainerComponent extends Entry implements AfterViewInit, OnInit {
+export class ContainerComponent extends Entry<Tag> implements AfterViewInit, OnInit {
   dockerPullCmd: string;
   privateOnlyRegistry: boolean;
   containerEditData: any;
@@ -66,15 +63,12 @@ export class ContainerComponent extends Entry implements AfterViewInit, OnInit {
   ModeEnum = DockstoreTool.ModeEnum;
   public requestAccessHREF$: Observable<string>;
   public contactAuthorHREF: string;
-  public missingWarning: boolean;
   public tool: DockstoreTool;
   public toolCopyBtn: string;
-  public sortedVersions: Array<Tag | WorkflowVersion> = [];
+  public sortedVersions: Array<Tag> = [];
   public DockstoreToolType = DockstoreTool;
   public isManualMode$: Observable<boolean>;
   public displayAppTool: boolean = false;
-  tool$: Observable<DockstoreTool | null>;
-  apptool$: Observable<Workflow | null>;
   validTabs = ['info', 'launch', 'versions', 'files'];
   separatorKeysCodes = [ENTER, COMMA];
   public schema: BioschemaTool;
@@ -104,6 +98,7 @@ export class ContainerComponent extends Entry implements AfterViewInit, OnInit {
     protected sessionQuery: SessionQuery,
     protected gA4GHFilesService: GA4GHFilesService,
     private toolQuery: ToolQuery,
+    private workflowQuery: WorkflowQuery,
     private extendedDockstoreToolQuery: ExtendedDockstoreToolQuery,
     private alertQuery: AlertQuery,
     public dialog: MatDialog,
@@ -195,7 +190,7 @@ export class ContainerComponent extends Entry implements AfterViewInit, OnInit {
     this.toolQuery.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((tool) => {
       this.tool = tool;
       if (tool) {
-        this.displayAppTool = true;
+        this.displayAppTool = false;
         this.published = this.tool.is_published;
         if (this.tool.workflowVersions.length === 0) {
           this.selectedVersion = null;
@@ -209,6 +204,13 @@ export class ContainerComponent extends Entry implements AfterViewInit, OnInit {
       }
       // Select version
       this.setUpTool(tool);
+    });
+    this.workflowQuery.workflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((workflow) => {
+      if (workflow) {
+        this.displayAppTool = true;
+        // Here, we don't need to set any other fields, because in the template,
+        // we defer to the "workflow" component, which takes care of all that.
+      }
     });
     this.containerService.copyBtn$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((toolCopyBtn) => {
       this.toolCopyBtn = toolCopyBtn;

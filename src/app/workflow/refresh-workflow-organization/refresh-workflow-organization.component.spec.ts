@@ -27,7 +27,7 @@ import { ProviderService } from '../../shared/provider.service';
 
 import { RefreshService } from '../../shared/refresh.service';
 import { WorkflowService } from '../../shared/state/workflow.service';
-import { UsersService } from '../../shared/swagger/api/users.service';
+import { UsersService } from '../../shared/openapi/api/users.service';
 import {
   DateStubService,
   ExtendedDockstoreToolStubService,

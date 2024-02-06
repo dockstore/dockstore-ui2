@@ -31,6 +31,7 @@ import { AuthGuard } from './shared/auth.guard';
 import { SitemapComponent } from './sitemap/sitemap.component';
 import { StarredEntriesComponent } from './starredentries/starredentries.component';
 import { PageNotFoundComponent } from './pagenotfound/pagenotfound.component';
+import { GithubLandingPageComponent } from './github-landing-page/github-landing-page.component';
 
 export const CLIENT_ROUTER_PROVIDERS = [AuthGuard];
 
@@ -106,6 +107,12 @@ const APP_ROUTES: Routes = [
     canActivate: [AuthGuard],
     data: { title: 'Dockstore | My Services' },
   },
+  {
+    path: 'my-notebooks',
+    loadChildren: () => import('app/my-notebooks/my-notebooks.module').then((m) => m.MyNotebooksModule),
+    canActivate: [AuthGuard],
+    data: { title: 'Dockstore | My Notebooks' },
+  },
   { path: 'githubCallback', component: GithubCallbackComponent },
   {
     path: 'aliases',
@@ -139,6 +146,7 @@ const APP_ROUTES: Routes = [
   { path: 'maintenance', component: MaintenanceComponent, data: { title: 'Dockstore | Maintenance' } },
   { path: 'funding', component: FundingComponent, data: { title: 'Dockstore | Funding' } },
   { path: 'sitemap', component: SitemapComponent, data: { title: 'Dockstore | Sitemap' } },
+  { path: 'github-landing-page', component: GithubLandingPageComponent, data: { title: 'Dockstore | GitHub Apps Landing Page' } },
   { path: 'users', loadChildren: () => import('app/user-page/user-page.module').then((m) => m.UserPageModule) },
   {
     path: '**',

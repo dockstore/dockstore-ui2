@@ -21,11 +21,11 @@ import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.
 import { SessionQuery } from 'app/shared/session/session.query';
 import { UserQuery } from 'app/shared/user/user.query';
 import { Observable, Subject } from 'rxjs';
-import { debounceTime, map, takeUntil } from 'rxjs/operators';
+import { debounceTime, takeUntil } from 'rxjs/operators';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { formInputDebounceTime } from '../../shared/constants';
 import { Dockstore } from '../../shared/dockstore.model';
-import { BioWorkflow, Service, ToolDescriptor, Workflow } from '../../shared/swagger';
+import { BioWorkflow, Service, ToolDescriptor, Workflow } from '../../shared/openapi';
 import { Tooltip } from '../../shared/tooltip';
 
 import {
@@ -61,7 +61,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
   public Tooltip = Tooltip;
   public workflowPathPlaceholder: string;
   public gitHubAppInstallationLink$: Observable<string>;
-  public usernameChangeRequired$: Observable<boolean>;
+  public isUsernameChangeRequired$: Observable<boolean>;
   public hostedWorkflow = {
     repository: '',
     descriptorType: Workflow.DescriptorTypeEnum.CWL,
@@ -120,9 +120,9 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
 
   ngOnInit() {
     this.username$ = this.userQuery.username$;
-    this.usernameChangeRequired$ = this.userQuery.user$.pipe(map((user) => user.usernameChangeRequired));
+    this.isUsernameChangeRequired$ = this.userQuery.isUsernameChangeRequired$;
     this.isRefreshing$ = this.alertQuery.showInfo$;
-    this.gitHubAppInstallationLink$ = this.sessionQuery.gitHubAppInstallationLink$;
+    this.gitHubAppInstallationLink$ = this.sessionQuery.gitHubAppInstallationLandingPageLink$;
     this.registerWorkflowModalService.workflow.pipe(takeUntil(this.ngUnsubscribe)).subscribe((workflow: Service | BioWorkflow) => {
       this.workflow = workflow;
       this.workflowPathPlaceholder = this.getWorkflowPathPlaceholder(this.workflow.descriptorType);

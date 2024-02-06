@@ -8,5 +8,6 @@ import { RouterLinkStubDirective, RouterOutletStubComponent } from './router-stu
 @NgModule({
   imports: [AppModule],
   declarations: [RouterLinkStubDirective, RouterOutletStubComponent],
+  exports: [RouterLinkStubDirective],
 })
 export class RouterModule {}

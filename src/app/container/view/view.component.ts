@@ -24,10 +24,11 @@ import { AlertService } from '../../shared/alert/state/alert.service';
 import { ContainerService } from '../../shared/container.service';
 import { DateService } from '../../shared/date.service';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
+import { Tag } from '../../shared/openapi';
 import { SessionQuery } from '../../shared/session/session.query';
-import { ContainertagsService } from '../../shared/swagger/api/containertags.service';
-import { HostedService } from '../../shared/swagger/api/hosted.service';
-import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
+import { ContainertagsService } from '../../shared/openapi/api/containertags.service';
+import { HostedService } from '../../shared/openapi/api/hosted.service';
+import { DockstoreTool } from '../../shared/openapi/model/dockstoreTool';
 import { ToolQuery } from '../../shared/tool/tool.query';
 import { View } from '../../shared/view';
 import { VersionModalComponent } from '../version-modal/version-modal.component';
@@ -39,9 +40,10 @@ import { VersionModalService } from '../version-modal/version-modal.service';
   styleUrls: ['./view.component.css'],
 })
 // This is actually the actions dropdown for tags
-export class ViewContainerComponent extends View implements OnInit {
+export class ViewContainerComponent extends View<Tag> implements OnInit {
   public TagEditorMode = TagEditorMode;
   public tool: DockstoreTool;
+  public canWrite: boolean;
   public DockstoreToolType = DockstoreTool;
   isPublic$: Observable<boolean>;
   isManualTool: boolean;
@@ -75,12 +77,10 @@ export class ViewContainerComponent extends View implements OnInit {
       this.containertagsService.deleteTags(this.tool.id, this.version.id).subscribe(
         () => {
           this.alertService.simpleSuccess();
-          this.containertagsService.getTagsByPath(this.tool.id).subscribe(
-            (response) => {
-              this.tool.workflowVersions = response;
-              this.containerService.setTool(this.tool);
-            }
-          );
+          this.containertagsService.getTagsByPath(this.tool.id).subscribe((response) => {
+            this.tool.workflowVersions = response;
+            this.containerService.setTool(this.tool);
+          });
         },
         (error: HttpErrorResponse) => {
           this.alertService.detailedError(error);
@@ -118,6 +118,7 @@ export class ViewContainerComponent extends View implements OnInit {
     this.isPublic$ = this.sessionQuery.isPublic$;
     this.toolQuery.tool$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((tool) => {
       this.tool = JSON.parse(JSON.stringify(tool));
+      this.canWrite = !tool.archived;
       if (this.tool) {
         this.isManualTool = this.tool.mode === DockstoreTool.ModeEnum.MANUALIMAGEPATH;
       } else {

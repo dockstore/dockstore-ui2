@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { OrganizationsService } from 'app/shared/swagger';
+import { OrganizationsService } from 'app/shared/openapi';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Funder, FundingComponent } from '../funding/funding.component';

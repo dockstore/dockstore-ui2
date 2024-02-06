@@ -15,7 +15,7 @@
  */
 import { Injectable } from '@angular/core';
 import { DescriptorTypeCompatService } from '../../shared/descriptor-type-compat.service';
-import { ToolDescriptor } from '../../shared/swagger';
+import { ToolDescriptor } from '../../shared/openapi';
 import { ga4ghPath } from './../../shared/constants';
 import { Dockstore } from './../../shared/dockstore.model';
 import { LaunchService } from './../../shared/launch.service';

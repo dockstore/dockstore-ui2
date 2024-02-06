@@ -20,7 +20,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { of as observableOf, throwError } from 'rxjs';
-import { OrganizationsService } from '../../../shared/swagger';
+import { OrganizationsService } from '../../../shared/openapi';
 import { CollectionsService } from '../../state/collections.service';
 import { OrganizationQuery } from '../../state/organization.query';
 import { CreateCollectionService } from './create-collection.service';

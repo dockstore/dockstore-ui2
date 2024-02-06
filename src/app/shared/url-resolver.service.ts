@@ -1,7 +1,7 @@
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Tag, WorkflowVersion } from './swagger';
+import { Tag, WorkflowVersion } from './openapi';
 
 @Injectable()
 export class UrlResolverService {

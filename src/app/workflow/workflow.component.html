@@ -42,6 +42,11 @@
       </ul>
     </div>
   </div>
+  <div class="row m-1 mt-3 mb-0" *ngIf="workflow.archived">
+    <mat-card class="alert alert-warning mat-elevation-z m-0">
+      This {{ workflow.entryTypeMetadata.term }} was archived on {{ workflow.dbUpdateDate | date: 'yyyy-MM-dd' }}. It is now read-only.
+    </mat-card>
+  </div>
   <div class="row m-1" *ngIf="!showRedirect" fxLayout.lt-sm="column" fxLayout.gt-sm="row">
     <app-json-ld [json]="schema"></app-json-ld>
     <div fxFlex="80">
@@ -95,7 +100,7 @@
           <span
             *ngIf="WorkflowVersionModel.ReferenceTypeEnum.TAG !== selectedVersion.referenceType"
             [matTooltip]="selectedVersion.last_modified | date: 'medium'"
-            >Last update to this workflow version: {{ versionAgoMessage || 'n/a' }}</span
+            >Last update to this {{ entryType }} version: {{ versionAgoMessage || 'n/a' }}</span
           >
           <br />
           <span [matTooltip]="(extendedWorkflow$ | async)?.last_modified_date | date: 'medium'"
@@ -154,6 +159,7 @@
             mat-button
             class="private-btn small-btn-structure"
             (click)="toggleLabelsEditMode()"
+            [disabled]="!canWrite"
           >
             <img src="../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit labels" />
             Manage labels
@@ -404,7 +410,7 @@
               </ng-template>
             </mat-tab>
           </div>
-          <mat-tab id="metricsTab" label="Metrics" *ngIf="Dockstore.FEATURES.enableMetrics">
+          <mat-tab id="metricsTab" label="Metrics">
             <app-executions-tab [entry]="workflow" [version]="selectedVersion"></app-executions-tab>
           </mat-tab>
           <mat-tab *ngIf="!isPublic() && isHosted() && isOwner" id="permissionsTab" label="Permissions">

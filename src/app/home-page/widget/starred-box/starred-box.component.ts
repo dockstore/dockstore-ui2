@@ -12,6 +12,7 @@ export class StarredBoxComponent extends Base implements OnInit {
   public Dockstore = Dockstore;
   public totalStarredWorkflows: number = 0;
   public totalStarredTools: number = 0;
+  public totalStarredNotebooks: number = 0;
   public totalStarredServices: number = 0;
   public totalStarredOrganizations: number = 0;
 
@@ -23,14 +24,17 @@ export class StarredBoxComponent extends Base implements OnInit {
   }
 
   ngOnInit(): void {
-    this.usersService.getStarredServices().subscribe((starredServices) => {
-      this.totalStarredServices = starredServices.length;
+    this.usersService.getStarredWorkflows().subscribe((starredWorkflows) => {
+      this.totalStarredWorkflows = starredWorkflows.length;
     });
     this.usersService.getStarredTools().subscribe((starredTools) => {
       this.totalStarredTools = starredTools.length;
     });
-    this.usersService.getStarredWorkflows().subscribe((starredWorkflows) => {
-      this.totalStarredWorkflows = starredWorkflows.length;
+    this.usersService.getStarredNotebooks().subscribe((starredNotebooks) => {
+      this.totalStarredNotebooks = starredNotebooks.length;
+    });
+    this.usersService.getStarredServices().subscribe((starredServices) => {
+      this.totalStarredServices = starredServices.length;
     });
     this.usersService.getStarredOrganizations().subscribe((starredOrganizations) => {
       this.totalStarredOrganizations = starredOrganizations.length;

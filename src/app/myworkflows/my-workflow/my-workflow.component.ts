@@ -18,14 +18,13 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { EntryType } from 'app/shared/enum/entry-type';
-import { User } from 'app/shared/openapi';
 import { SessionQuery } from 'app/shared/session/session.query';
 import { SessionService } from 'app/shared/session/session.service';
 import { MyEntriesQuery } from 'app/shared/state/my-entries.query';
 import { MyEntriesStateService } from 'app/shared/state/my-entries.service';
 import { TokenService } from 'app/shared/state/token.service';
-import { BioWorkflow } from 'app/shared/swagger/model/bioWorkflow';
-import { Service } from 'app/shared/swagger/model/service';
+import { BioWorkflow } from 'app/shared/openapi/model/bioWorkflow';
+import { Service } from 'app/shared/openapi/model/service';
 import { UserService } from 'app/shared/user/user.service';
 import { AuthService } from 'ng2-ui-auth';
 import { combineLatest, Observable } from 'rxjs';
@@ -36,12 +35,13 @@ import { MyEntry, OrgEntryObject } from '../../shared/my-entry';
 import { TokenQuery } from '../../shared/state/token.query';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { WorkflowService } from '../../shared/state/workflow.service';
-import { DockstoreTool, Workflow } from '../../shared/swagger';
-import { Configuration } from '../../shared/swagger/configuration';
+import { User, DockstoreTool, Workflow } from '../../shared/openapi';
+import { Configuration } from '../../shared/openapi/configuration';
 import { UrlResolverService } from '../../shared/url-resolver.service';
 import { UserQuery } from '../../shared/user/user.query';
 import { RegisterWorkflowModalService } from '../../workflow/register-workflow-modal/register-workflow-modal.service';
 import { MyWorkflowsService } from '../myworkflows.service';
+import { Dockstore } from '../../shared/dockstore.model';
 
 /**
  * How the workflow selection works:
@@ -65,6 +65,7 @@ import { MyWorkflowsService } from '../myworkflows.service';
   styleUrls: ['../../shared/styles/my-entry.component.scss'],
 })
 export class MyWorkflowComponent extends MyEntry implements OnInit {
+  Dockstore = Dockstore;
   faGithub = faGithub;
   workflow: Service | BioWorkflow;
   workflows: Array<Workflow>;
@@ -185,7 +186,12 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
     this.hasGroupEntriesObject$ = this.groupEntriesObject$.pipe(
       map((orgToolObjects: OrgWorkflowObject<Workflow>[]) => {
         // Now that we have empty GitHub orgs showing up, check if they have any entries
-        return orgToolObjects && orgToolObjects.some((orgToolObject) => orgToolObject.unpublished.length || orgToolObject.published.length);
+        return (
+          orgToolObjects &&
+          orgToolObjects.some(
+            (orgToolObject) => orgToolObject.unpublished.length || orgToolObject.published.length || orgToolObject.archived.length
+          )
+        );
       })
     );
     this.hasGroupSharedEntriesObject$ = this.groupSharedEntriesObject$.pipe(

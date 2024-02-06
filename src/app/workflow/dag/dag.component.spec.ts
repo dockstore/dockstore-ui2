@@ -18,7 +18,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { WorkflowService } from '../../shared/state/workflow.service';
-import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
+import { WorkflowsService } from '../../shared/openapi/api/workflows.service';
 import { DagStubService, WorkflowsStubService, WorkflowStubService } from '../../test/service-stubs';
 import { CwlViewerComponent } from './cwl-viewer/cwl-viewer.component';
 import { DagComponent } from './dag.component';
@@ -62,6 +62,7 @@ describe('DagComponent', () => {
 
   it('dagQuery should return determine whether the dagResults are missing tools', () => {
     expect(dagQuery.isMissingTool(null)).toBeTruthy();
+    expect(dagQuery.isMissingTool({})).toBeTruthy();
     expect(dagQuery.isMissingTool({ edges: [], nodes: [] })).toBeTruthy();
     expect(dagQuery.isMissingTool({ edges: [1], nodes: [1] })).toBeFalsy();
   });

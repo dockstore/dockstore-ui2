@@ -8,7 +8,6 @@
   </div>
 </div>
 <div class="container">
-  <div *ngIf="Dockstore.FEATURES.enableNotebooks" class="mt-5"><app-preview-warning featureName="Notebooks"></app-preview-warning></div>
   <div fxLayout="row wrap" fxLayout.lt-md="column" fxLayoutAlign="space-between start" class="mt-5">
     <div>
       <h3 class="documentation">Tools and Workflows</h3>
@@ -23,9 +22,8 @@
           <a [routerLink]="['/services']">Services</a>
           <div class="bubble preview-bubble">PREVIEW</div>
         </li>
-        <li *ngIf="Dockstore.FEATURES.enableNotebooks">
+        <li>
           <a [routerLink]="['/notebooks']">Notebooks</a>
-          <div class="bubble preview-bubble">PREVIEW</div>
         </li>
         <li>
           <a [routerLink]="['/apptools']">App Tools</a>

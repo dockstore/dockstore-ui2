@@ -4,12 +4,11 @@ import { ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Base } from '../base';
-import { VersionVerifiedPlatform } from '../openapi';
+import { VersionVerifiedPlatform, Tag, WorkflowVersion } from '../openapi';
 import { ToolTesterLog } from '../openapi/model/toolTesterLog';
 import { AvailableLogsQuery } from '../state/available-logs.query';
 import { AvailableLogsService } from '../state/available-logs.service';
 import { CheckerWorkflowQuery } from '../state/checker-workflow.query';
-import { Tag, WorkflowVersion } from '../swagger';
 
 interface VersionVerifiedInformation {
   version: WorkflowVersion | Tag;

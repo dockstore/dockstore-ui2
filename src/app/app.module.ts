@@ -51,6 +51,8 @@ import { AccountSidebarModule } from './loginComponents/accounts/account-sidebar
 import { AccountsComponent } from './loginComponents/accounts/accounts.component';
 import { ControlsComponent } from './loginComponents/accounts/controls/controls.component';
 import { DeleteAccountDialogComponent } from './loginComponents/accounts/controls/delete-account-dialog/delete-account-dialog.component';
+import { DeleteEntryDialogComponent } from './entry/delete/dialog/delete-entry-dialog.component';
+import { ArchiveEntryDialogComponent } from './entry/archive/dialog/archive-entry-dialog.component';
 import { RevokeTokenDialogComponent } from './loginComponents/accounts/external/revoke-token-dialog/revoke-token-dialog.component';
 import { AccountsExternalComponent } from './loginComponents/accounts/external/accounts.component';
 import { AccountsService } from './loginComponents/accounts/external/accounts.service';
@@ -98,11 +100,9 @@ import { PagenumberService } from './shared/pagenumber.service';
 import { PipeModule } from './shared/pipe/pipe.module';
 import { ProviderService } from './shared/provider.service';
 import { RefreshService } from './shared/refresh.service';
-import { ApiModule } from './shared/swagger/api.module';
-import { GA4GHService } from './shared/swagger/api/gA4GH.service';
-import { Configuration } from './shared/swagger/configuration';
+import { ApiModule } from './shared/openapi/api.module';
+import { Configuration } from './shared/openapi/configuration';
 import { TrackLoginService } from './shared/track-login.service';
-import { TwitterService } from './shared/twitter.service';
 import { UrlResolverService } from './shared/url-resolver.service';
 import { VerifiedByService } from './shared/verified-by.service';
 import { SitemapComponent } from './sitemap/sitemap.component';
@@ -117,6 +117,7 @@ import { ViewService } from './workflow/view/view.service';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { PreviewWarningModule } from './shared/modules/preview-warning.module';
 import { MyOrganizationsDialogComponent } from './home-page/widget/organization-box/my-organizations-dialog.component/my-organizations-dialog.component';
+import { LaunchToCodespaceDialogComponent } from './workflow/launch-third-party/dialog/launch-to-codespace-dialog.component';
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   showDelay: 500,
@@ -142,6 +143,8 @@ export function initializerFactory(
     AppComponent,
     ControlsComponent,
     DeleteAccountDialogComponent,
+    DeleteEntryDialogComponent,
+    ArchiveEntryDialogComponent,
     NavbarComponent,
     FooterComponent,
     SitewideNotificationsComponent,
@@ -174,6 +177,7 @@ export function initializerFactory(
     ChangeUsernameBannerComponent,
     RevokeTokenDialogComponent,
     MyOrganizationsDialogComponent,
+    LaunchToCodespaceDialogComponent,
   ],
   imports: [
     environment.production ? [] : AkitaNgDevtools.forRoot(),
@@ -229,8 +233,6 @@ export function initializerFactory(
     RegisterCheckerWorkflowService,
     RefreshService,
     PagenumberService,
-    TwitterService,
-    GA4GHService,
     GA4GHV20Service,
     DescriptorLanguageService,
     UrlResolverService,

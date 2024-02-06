@@ -8,7 +8,7 @@ import { EntryType } from 'app/shared/enum/entry-type';
 import { CustomMaterialModule } from 'app/shared/modules/material.module';
 import { ExtendedWorkflowQuery } from 'app/shared/state/extended-workflow.query';
 import { WorkflowService } from 'app/shared/state/workflow.service';
-import { WorkflowsService } from 'app/shared/swagger';
+import { WorkflowsService } from 'app/shared/openapi';
 import { WorkflowsStubService, WorkflowStubService } from 'app/test/service-stubs';
 import { sampleWorkflow3 } from '../../test/mocked-objects';
 import { InfoTabService } from './info-tab.service';
@@ -58,5 +58,15 @@ describe('ValueService', () => {
     expect(service.getTRSId(sampleWorkflow3, EntryType.AppTool)).toBe(fullWorkflowPath);
     expect(service.getTRSId(sampleWorkflow3, EntryType.Service)).toBe(`#service/${fullWorkflowPath}`);
     expect(service.getTRSId(null, EntryType.BioWorkflow)).toBe('');
+  });
+
+  it(`getTRSPlainType should work for various descriptor types`, () => {
+    service = TestBed.inject(InfoTabService);
+    expect(service.getTRSPlainType('CWL')).toBe('PLAIN_CWL');
+    expect(service.getTRSPlainType('WDL')).toBe('PLAIN_WDL');
+    expect(service.getTRSPlainType('NFL')).toBe('PLAIN_NFL');
+    expect(service.getTRSPlainType('gxformat2')).toBe('PLAIN_GALAXY');
+    expect(service.getTRSPlainType('jupyter')).toBe('PLAIN_JUPYTER');
+    expect(service.getTRSPlainType('bogus')).toBe('PLAIN_BOGUS');
   });
 });

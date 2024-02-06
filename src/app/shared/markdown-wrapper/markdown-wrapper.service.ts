@@ -87,7 +87,9 @@ export class MarkdownWrapperService {
    */
   customCompile(data, baseUrl): string {
     const parseOptions = { markedOptions: { baseUrl: baseUrl } };
-    return this.markdownService.parse(data, parseOptions);
+    const markdownData = this.removeTabsFromTableHeaders(data);
+    const html = this.markdownService.parse(markdownData, parseOptions);
+    return this.makeGitHubImagesRaw(html);
   }
 
   customSanitize(html): string {
@@ -95,6 +97,31 @@ export class MarkdownWrapperService {
     return DOMPurify.sanitize(html, {
       FORBID_TAGS: this.forbidTags,
       FORBID_ATTR: this.forbidAttr,
+    });
+  }
+
+  /**
+   * Removes tab characters from markdown table headers or they won't display properly
+   * Markdown uses pipes with three or more hyphens in between to create columns and headers, and colons to align text
+   * E.g., |---|---|---| or | :--- | ---: | where there can be spaces between pipes and hyphens but not tabs
+   * @param {string} data A string containing the markdown data
+   * @returns {string} The modified string where all tabs in lines beginning with '|' are replaced with four spaces
+   */
+  removeTabsFromTableHeaders(data: string): string {
+    return data.replace(/(^ {0,3}\|.*)/gm, (match) => match.replace(/\t/g, '    '));
+  }
+
+  /**
+   * Add the query 'raw=true' to all img tag src urls that refer to github, causing github to redirect to the raw image.
+   */
+  makeGitHubImagesRaw(html: string): string {
+    return html.replace(/(<img[^>]*? src=")([^"]*?)("[^>]*?>)/gm, (all, before, url, after) => {
+      if (url.startsWith('https://github.com/')) {
+        const separator = url.includes('?') ? '&' : '?';
+        return `${before}${url}${separator}raw=true${after}`;
+      } else {
+        return all;
+      }
     });
   }
 }

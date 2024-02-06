@@ -17,8 +17,8 @@ import { Component, Input, OnChanges } from '@angular/core';
 
 import { Files } from '../../shared/files';
 import { GA4GHFilesService } from '../../shared/ga4gh-files/ga4gh-files.service';
-import { SourceFile } from '../../shared/swagger';
-import { Tag } from '../../shared/swagger/model/tag';
+import { SourceFile } from '../../shared/openapi';
+import { Tag } from '../../shared/openapi/model/tag';
 
 @Component({
   selector: 'app-files-container',

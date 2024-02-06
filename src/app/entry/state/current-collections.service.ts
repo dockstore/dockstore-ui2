@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ID, transaction } from '@datorama/akita';
-import { CollectionOrganization, EntriesService } from '../../shared/swagger';
+import { CollectionOrganization, EntriesService } from '../../shared/openapi';
 import { CurrentCollectionsStore } from './current-collections.store';
 
 @Injectable({ providedIn: 'root' })

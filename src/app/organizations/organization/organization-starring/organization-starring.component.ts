@@ -21,7 +21,7 @@ import { AlertService } from '../../../shared/alert/state/alert.service';
 import { Base } from '../../../shared/base';
 import { StarOrganizationService } from '../../../shared/star-organization.service';
 import { isStarredByUser } from '../../../shared/starring';
-import { Organization, User } from '../../../shared/swagger';
+import { Organization, User } from '../../../shared/openapi';
 import { TrackLoginService } from '../../../shared/track-login.service';
 import { UserQuery } from '../../../shared/user/user.query';
 import { OrganizationStarringService } from './organization-starring.service';

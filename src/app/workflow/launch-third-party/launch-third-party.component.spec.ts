@@ -8,7 +8,7 @@ import { GA4GHFilesService } from '../../shared/ga4gh-files/ga4gh-files.service'
 import { GA4GHFilesStore } from '../../shared/ga4gh-files/ga4gh-files.store';
 import { CustomMaterialModule } from '../../shared/modules/material.module';
 import { CloudInstancesService, GA4GHV20Service, UsersService } from '../../shared/openapi';
-import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
+import { WorkflowsService } from '../../shared/openapi/api/workflows.service';
 import { sampleWdlWorkflow2, sampleWorkflowVersion } from '../../test/mocked-objects';
 import { CloudInstancesStubService, UsersStubService, WorkflowsStubService } from '../../test/service-stubs';
 import { LaunchThirdPartyComponent } from './launch-third-party.component';

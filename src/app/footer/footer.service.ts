@@ -17,7 +17,6 @@ export class FooterService {
     domain: string | null,
     webServiceVersion: string | null,
     uiVersion: string | null,
-    composeSetupVersion: string | null,
     deployVersion: string | null,
     cwlParsingLambdaVersion: string | null,
     wdlParsingLambdaVersion: string | null,
@@ -30,10 +29,6 @@ export class FooterService {
 [Webservice](${this.gitHubUrl('dockstore', webServiceVersion)}) - ${webServiceVersion}
 
 [UI](${this.gitHubUrl('dockstore-ui2', uiVersion)}) - ${uiVersion}`;
-    if (composeSetupVersion) {
-      baseBuildInfo =
-        baseBuildInfo + `\n\n[Compose Setup](${this.gitHubUrl('compose_setup', composeSetupVersion)}) - ${composeSetupVersion}`;
-    }
     if (deployVersion) {
       baseBuildInfo = baseBuildInfo + `\n\n[Deploy](${this.gitHubUrl('dockstore-deploy', deployVersion)}) - ${deployVersion}`;
     }

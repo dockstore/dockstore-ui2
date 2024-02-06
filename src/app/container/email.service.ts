@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DockstoreTool } from '../shared/swagger/model/dockstoreTool';
+import { DockstoreTool } from '../shared/openapi/model/dockstoreTool';
 import { DockstoreService } from './../shared/dockstore.service';
 import { ExtendedDockstoreTool } from './../shared/models/ExtendedDockstoreTool';
 
@@ -76,7 +76,10 @@ export class EmailService {
    * @param tool The tool to contact author for
    */
   public composeContactAuthorEmail(tool: DockstoreTool): string {
-    const email = EmailService.getInquiryEmailMailTo(tool.email);
+    let email: string = null;
+    if (tool.authors && tool.authors.length) {
+      email = EmailService.getInquiryEmailMailTo(tool.authors[0].email);
+    }
     const subject = EmailService.getInquiryEmailSubject(tool.tool_path);
     const body = EmailService.getInquiryEmailBody();
     return EmailService.composeEmail(email, subject, body);

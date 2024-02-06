@@ -21,7 +21,7 @@ import { DockstoreService } from '../dockstore.service';
 import { ImageProviderService } from '../image-provider.service';
 import { ExtendedDockstoreTool } from '../models/ExtendedDockstoreTool';
 import { ProviderService } from '../provider.service';
-import { DockstoreTool } from '../swagger';
+import { DockstoreTool } from '../openapi';
 import { ExtendedDockstoreToolStore } from './extended-dockstoreTool.store';
 
 @Injectable({
@@ -62,7 +62,9 @@ export class ExtendedDockstoreToolService {
       extendedTool.buildModeTooltip = this.getBuildModeTooltip(extendedTool.mode);
       extendedTool = this.imageProviderService.setUpImageProvider(extendedTool);
       extendedTool.agoMessage = this.dateService.getAgoMessage(new Date(extendedTool.lastBuild).getTime());
-      extendedTool.email = this.dockstoreService.stripMailTo(extendedTool.email);
+      if (extendedTool.authors && extendedTool.authors.length) {
+        extendedTool.email = this.dockstoreService.stripMailTo(extendedTool.authors[0].email);
+      }
       extendedTool.lastBuildDate = this.dateService.getDateTimeMessage(new Date(extendedTool.lastBuild).getTime());
       extendedTool.lastUpdatedDate = this.dateService.getDateTimeMessage(new Date(extendedTool.lastUpdated).getTime());
       extendedTool.versionVerified = this.dockstoreService.getVersionVerified(extendedTool.workflowVersions);

@@ -28,10 +28,11 @@ import {
   faSortNumericDown,
   faSortNumericUp,
 } from '@fortawesome/free-solid-svg-icons';
+import { Dockstore } from 'app/shared/dockstore.model';
 import { ExtendedGA4GHService } from 'app/shared/openapi';
 import { SearchResponse } from 'elasticsearch';
-import { forkJoin, Observable, Subject } from 'rxjs';
-import { distinctUntilChanged, takeUntil } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { distinctUntilChanged, finalize, takeUntil } from 'rxjs/operators';
 import { AlertService } from '../shared/alert/state/alert.service';
 import { AdvancedSearchObject, initialAdvancedSearchObject } from '../shared/models/AdvancedSearchObject';
 import { CategorySort } from '../shared/models/CategorySort';
@@ -40,7 +41,6 @@ import { AdvancedSearchQuery } from './advancedsearch/state/advanced-search.quer
 import { QueryBuilderService } from './query-builder.service';
 import { SearchQuery } from './state/search.query';
 import { Hit, SearchService } from './state/search.service';
-import { Dockstore } from 'app/shared/dockstore.model';
 
 /**
  *
@@ -131,12 +131,14 @@ export class SearchComponent implements OnInit, OnDestroy {
   public friendlyNames: Map<string, string>;
   public toolTips: Map<string, string>;
   private entryOrder: Map<string, SubBucket>;
-  private expandedPanels: Map<string, boolean>;
+  public expandedPanels: Map<string, boolean>;
+  private exclusiveFilters: Array<string>;
   public basicSearchText$: Observable<string>;
   private advancedSearchOptions = ['ANDSplitFilter', 'ANDNoSplitFilter', 'ORFilter', 'NOTFilter', 'searchMode'];
   public filterKeys$: Observable<Array<string>>;
   public suggestTerm$: Observable<string>;
   public values$: Observable<string>;
+  public isLoading = false;
 
   // For search within facets
   public facetAutocompleteTerms$: Observable<Array<string>>;
@@ -161,14 +163,22 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.filterKeys$ = this.searchQuery.filterKeys$;
     this.suggestTerm$ = this.searchQuery.suggestTerm$;
     this.selectedIndex$ = this.searchQuery.savedTabIndex$;
-    // Initialize mappings
-    this.bucketStubs = this.searchService.initializeCommonBucketStubs();
-    this.friendlyNames = this.searchService.initializeFriendlyNames();
-    this.entryOrder = this.searchService.initializeEntryOrder();
-    this.toolTips = this.searchService.initializeToolTips();
-    this.expandedPanels = this.searchService.initializeExpandedPanels();
-
+    this.initializeMappings(0);
     this.clearFacetSearches();
+  }
+
+  private tabIndex: number | null = null;
+
+  initializeMappings(newTabIndex: number) {
+    if (newTabIndex !== this.tabIndex) {
+      this.tabIndex = newTabIndex;
+      this.bucketStubs = this.searchService.initializeCommonBucketStubs(newTabIndex);
+      this.friendlyNames = this.searchService.initializeFriendlyNames(newTabIndex);
+      this.entryOrder = this.searchService.initializeEntryOrder(newTabIndex);
+      this.toolTips = this.searchService.initializeToolTips(newTabIndex);
+      this.expandedPanels = this.searchService.initializeExpandedPanels(newTabIndex);
+      this.exclusiveFilters = this.searchService.initializeExclusiveFilters(newTabIndex);
+    }
   }
 
   getKeys(bucketMap: Map<any, any>): Array<string> {
@@ -256,6 +266,12 @@ export class SearchComponent implements OnInit, OnDestroy {
       this.searchService.setSearchText('');
       this.unsubmittedSearchText = '';
     }
+    if (paramMap.has('entryType')) {
+      const value = paramMap.getAll('entryType');
+      const tabIndex = SearchService.convertEntryTypeToTabIndex(value[0]);
+      this.searchService.saveCurrentTab(tabIndex);
+      this.initializeMappings(tabIndex);
+    }
     paramMap.keys.forEach((key) => {
       const value = paramMap.getAll(key);
       if (this.friendlyNames.get(key)) {
@@ -263,8 +279,6 @@ export class SearchComponent implements OnInit, OnDestroy {
           categoryValue = decodeURIComponent(categoryValue);
           newFilters = this.searchService.updateFiltersFromParameter(key, categoryValue, newFilters);
         });
-      } else if (key === 'entryType') {
-        this.searchService.saveCurrentTab(SearchService.convertEntryTypeToTabIndex(value[0]));
       } else if (key === 'search') {
         this.searchTerm = true;
         this.searchService.setSearchText(value[0]);
@@ -390,7 +404,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       value.forEach((innerValue: boolean, innerKey: string) => {
         if (innerValue && this.orderedBuckets.get(key)) {
           if (!this.orderedBuckets.get(key).SelectedItems.get(innerKey)) {
-            this.orderedBuckets.get(key).SelectedItems.set(innerKey, '0');
+            this.orderedBuckets.get(key).SelectedItems.set(innerKey, 0);
           }
         }
       });
@@ -430,10 +444,10 @@ export class SearchComponent implements OnInit, OnDestroy {
    *                Update Functions
    * ===============================================
    */
-
   // Called from one place which is only when the URL has parsed and query non-result state has been set
   updateQuery() {
-    const tabIndex = SearchService.convertTabIndexToEntryType(this.searchQuery.getValue().currentTabIndex);
+    const tabIndex = this.searchQuery.getValue().currentTabIndex;
+    const entryType = SearchService.convertTabIndexToEntryType(tabIndex);
     // Separating into 2 queries otherwise the queries interfere with each other (filter applied before aggregation)
     // The first query handles the aggregation and is used to update the sidebar buckets
     // The second query updates the result table
@@ -445,8 +459,9 @@ export class SearchComponent implements OnInit, OnDestroy {
       this.searchTerm,
       this.bucketStubs,
       this.filters,
+      this.exclusiveFilters,
       this.sortModeMap,
-      tabIndex
+      entryType
     );
     const tableQuery = this.queryBuilderService.getResultQuery(
       this.query_size,
@@ -454,7 +469,8 @@ export class SearchComponent implements OnInit, OnDestroy {
       advancedSearchObject,
       this.searchTerm,
       this.filters,
-      tabIndex
+      this.exclusiveFilters,
+      entryType
     );
     this.resetEntryOrder();
     this.resetPageIndex();
@@ -484,45 +500,28 @@ export class SearchComponent implements OnInit, OnDestroy {
    */
   updateResultsTable(value: string) {
     this.alertService.start('Performing search request');
-    this.extendedGA4GHService.toolsIndexSearch(value).subscribe(
-      (hits: any) => {
-        this.hits = hits.hits.hits;
-        const filteredHits: [Array<Hit>, Array<Hit>] = this.searchService.filterEntry(this.hits, this.query_size);
-        const searchText = this.searchQuery.getValue().searchText;
-        this.searchService.setHits(filteredHits[0], filteredHits[1]);
-        if (searchText.length > 0 && hits) {
-          this.searchTerm = true;
+    this.isLoading = true;
+    this.extendedGA4GHService
+      .toolsIndexSearch(value)
+      .pipe(finalize(() => (this.isLoading = false)))
+      .subscribe(
+        (hits: any) => {
+          this.hits = hits.hits.hits;
+          const filteredHits: [Array<Hit>, Array<Hit>, Array<Hit>] = this.searchService.filterEntry(this.hits, this.query_size);
+          const searchText = this.searchQuery.getValue().searchText;
+          this.searchService.setHits(filteredHits[0], filteredHits[1], filteredHits[2]);
+          if (searchText.length > 0 && hits) {
+            this.searchTerm = true;
+          }
+          if (this.searchTerm && this.hits.length === 0) {
+            this.searchService.suggestSearchTerm(searchText);
+          }
+          this.alertService.simpleSuccess();
+        },
+        (error: HttpErrorResponse) => {
+          this.alertService.detailedError(error);
         }
-        if (this.searchTerm && this.hits.length === 0) {
-          this.searchService.suggestSearchTerm(searchText);
-        }
-        this.alertService.simpleSuccess();
-      },
-      (error: HttpErrorResponse) => {
-        this.alertService.detailedError(error);
-      }
-    );
-  }
-
-  /**
-   * Updates the results table when there is no search term
-   * We need to send one request per index
-   * When each index returns its results, join the results into a single array and filter into table
-   *
-   * @param {string} toolsQuery the elastic search query for tools index
-   * @param {string} workflowsQuery the elastic search query for workflows index
-   * @memberof SearchComponent
-   */
-  updateResultsTableSeparately(toolsQuery: string, workflowsQuery: string) {
-    const toolsObservable: Observable<any> = this.extendedGA4GHService.toolsIndexSearch(toolsQuery);
-    const workflowsObservable: Observable<any> = this.extendedGA4GHService.toolsIndexSearch(workflowsQuery);
-    forkJoin([toolsObservable, workflowsObservable]).subscribe((results: Array<any>) => {
-      const toolHits = results[0].hits.hits;
-      const workflowHits = results[1].hits.hits;
-      this.hits = toolHits.concat(workflowHits);
-      const filteredHits: [Array<Hit>, Array<Hit>] = this.searchService.filterEntry(this.hits, this.query_size);
-      this.searchService.setHits(filteredHits[0], filteredHits[1]);
-    });
+      );
   }
 
   /**===============================================
@@ -538,7 +537,7 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   resetEntryOrder() {
     this.entryOrder.clear();
-    this.entryOrder = this.searchService.initializeEntryOrder();
+    this.entryOrder = this.searchService.initializeEntryOrder(this.tabIndex);
     this.orderedBuckets.clear();
   }
 
@@ -548,7 +547,7 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   resetExpansionPanels() {
     this.clearExpandedPanelsState();
-    this.expandedPanels = this.searchService.initializeExpandedPanels();
+    this.expandedPanels = this.searchService.initializeExpandedPanels(this.tabIndex);
   }
 
   /**===============================================

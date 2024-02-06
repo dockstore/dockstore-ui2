@@ -22,7 +22,7 @@ import { CustomMaterialModule } from 'app/shared/modules/material.module';
 import { MyEntriesModule } from 'app/shared/modules/my-entries.module';
 import { UrlResolverService } from 'app/shared/url-resolver.service';
 import { ContainerStubService, WorkflowsStubService } from 'app/test/service-stubs';
-import { DockstoreTool, Workflow, WorkflowsService } from '../shared/swagger';
+import { DockstoreTool, Workflow, WorkflowsService } from '../shared/openapi';
 import { OrgToolObject } from './my-tool/my-tool.component';
 import { MytoolsService } from './mytools.service';
 import { DateService } from '../shared/date.service';
@@ -135,6 +135,7 @@ describe('MytoolsService', () => {
   };
 
   const gitHubAppTool1: Workflow = {
+    type: '',
     defaultTestParameterFilePath: '',
     descriptorType: null,
     gitUrl: '',
@@ -146,9 +147,10 @@ describe('MytoolsService', () => {
     path: 'github.com/cc/aa',
     full_workflow_path: 'github.com/cc/aa',
     source_control_provider: 'GITHUB',
-    descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NOTAPPLICABLE,
+    descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NA,
   };
   const gitHubAppTool2: Workflow = {
+    type: '',
     defaultTestParameterFilePath: '',
     descriptorType: null,
     gitUrl: '',
@@ -160,10 +162,11 @@ describe('MytoolsService', () => {
     path: 'github.com/cc/bb',
     full_workflow_path: 'github.com/cc/bb',
     source_control_provider: 'GITHUB',
-    descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NOTAPPLICABLE,
+    descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NA,
   };
 
   const gitHubAppTool3: Workflow = {
+    type: '',
     defaultTestParameterFilePath: '',
     descriptorType: null,
     gitUrl: '',
@@ -175,9 +178,10 @@ describe('MytoolsService', () => {
     path: 'github.com/bb/cc',
     full_workflow_path: 'github.com/bb/cc',
     source_control_provider: 'GITHUB',
-    descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NOTAPPLICABLE,
+    descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NA,
   };
   const gitHubAppTool4: Workflow = {
+    type: '',
     defaultTestParameterFilePath: '',
     descriptorType: null,
     gitUrl: '',
@@ -189,9 +193,10 @@ describe('MytoolsService', () => {
     path: 'github.com/bb/dd',
     full_workflow_path: 'github.com/bb/dd',
     source_control_provider: 'GITHUB',
-    descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NOTAPPLICABLE,
+    descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NA,
   };
   const gitHubAppTool5: Workflow = {
+    type: '',
     defaultTestParameterFilePath: '',
     descriptorType: null,
     gitUrl: '',
@@ -203,9 +208,10 @@ describe('MytoolsService', () => {
     path: 'github.com/aa/ee',
     full_workflow_path: 'github.com/aa/ee',
     source_control_provider: 'GITHUB',
-    descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NOTAPPLICABLE,
+    descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NA,
   };
   const gitHubAppTool6: Workflow = {
+    type: '',
     defaultTestParameterFilePath: '',
     descriptorType: null,
     gitUrl: '',
@@ -217,7 +223,7 @@ describe('MytoolsService', () => {
     path: 'github.com/aa/ee',
     full_workflow_path: 'github.com/aa/ee',
     source_control_provider: 'GITHUB',
-    descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NOTAPPLICABLE,
+    descriptorTypeSubclass: Workflow.DescriptorTypeSubclassEnum.NA,
   };
 
   const tools: DockstoreTool[] = [tool1, tool2, tool4, tool3, tool5, tool6];
@@ -255,6 +261,7 @@ describe('MytoolsService', () => {
     namespace: 'aa',
     registry: 'quay.io',
     published: [],
+    archived: [],
   };
   const expectedResult2: OrgToolObject<DockstoreTool> = {
     unpublished: [tool3, tool4],
@@ -262,6 +269,7 @@ describe('MytoolsService', () => {
     namespace: 'bb',
     registry: 'quay.io',
     published: [],
+    archived: [],
   };
   const expectedResult3: OrgToolObject<DockstoreTool> = {
     unpublished: [tool1, tool2],
@@ -269,6 +277,7 @@ describe('MytoolsService', () => {
     registry: 'quay.io',
     namespace: 'cc',
     published: [],
+    archived: [],
   };
   const expectedResult: OrgToolObject<DockstoreTool>[] = [expectedResult1, expectedResult2, expectedResult3];
   beforeEach(() => {

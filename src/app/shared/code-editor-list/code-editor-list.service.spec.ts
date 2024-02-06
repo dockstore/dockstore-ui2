@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { SourceFile, ToolDescriptor } from '../swagger';
+import { SourceFile, ToolDescriptor } from '../openapi';
 import { CodeEditorListService } from './code-editor-list.service';
 import { DescriptorLanguageService } from '../entry/descriptor-language.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';

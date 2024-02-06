@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { finalize } from 'rxjs/operators';
-import { Event, OrganizationsService } from '../../shared/swagger';
+import { Event, OrganizationsService } from '../../shared/openapi';
 import { EventsStore } from './events.store';
 
 @Injectable({ providedIn: 'root' })

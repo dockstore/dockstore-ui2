@@ -21,7 +21,7 @@
 // import { switchMap } from 'rxjs/internal/operators';
 // import { GA4GHFilesQuery } from '../../../../shared/ga4gh-files/ga4gh-files.query';
 // import { ExtendedWorkflow } from '../../../../shared/models/ExtendedWorkflow';
-// import { ToolDescriptor, ToolFile, WorkflowsService, WorkflowVersion } from '../../../../shared/swagger';
+// import { ToolDescriptor, ToolFile, WorkflowsService, WorkflowVersion } from '../../../../shared/openapi';
 // import { WdlViewerPipelineResponse } from './wdl-viewer.model';
 // import { WdlViewerStore } from './wdl-viewer.store';
 //

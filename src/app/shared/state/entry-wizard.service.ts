@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { finalize } from 'rxjs/operators';
 import { AlertService } from '../alert/state/alert.service';
 import { BioWorkflow, UsersService, Workflow, WorkflowsService } from '../openapi';
-import { BioWorkflow as SwaggerBioWorkflow } from '../swagger';
 import { Repository } from '../openapi/model/repository';
 import { EntryWizardQuery } from './entry-wizard.query';
 import { EntryWizardStore } from './entry-wizard.store';
@@ -99,7 +98,7 @@ export class EntryWizardService {
       .subscribe(
         (workflow: BioWorkflow) => {
           this.alertService.detailedSuccess('Workflow ' + repository.gitRegistry + '/' + repository.path + ' has been added');
-          this.workflowService.setWorkflow(<SwaggerBioWorkflow>workflow);
+          this.workflowService.setWorkflow(<BioWorkflow>workflow);
           this.router.navigateByUrl('/my-workflows/' + workflow.full_workflow_path);
         },
         (error: HttpErrorResponse) => {
@@ -118,7 +117,7 @@ export class EntryWizardService {
     this.entryWizardStore.setLoading(true);
     const registryEnum = this.convertSourceControlStringToEnum(repository.gitRegistry);
     this.workflowsService
-      .deleteWorkflow(registryEnum, repository.organization, repository.repositoryName)
+      .deleteWorkflow(registryEnum as 'github.com' | 'bitbucket.org' | 'gitlab.com', repository.organization, repository.repositoryName)
       .pipe(finalize(() => this.entryWizardStore.setLoading(false)))
       .subscribe(
         (workflow: BioWorkflow) => {

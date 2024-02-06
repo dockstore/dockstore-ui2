@@ -18,6 +18,7 @@ import { StarEntry } from 'app/starring/StarEntry';
 import { takeUntil } from 'rxjs/operators';
 import { Base } from '../shared/base';
 import { altAvatarImg } from '../shared/constants';
+import { User } from '../shared/openapi';
 import { StarentryService } from '../shared/starentry.service';
 import { UserService } from '../shared/user/user.service';
 import { StarringService } from '../starring/starring.service';
@@ -28,7 +29,7 @@ import { StarringService } from '../starring/starring.service';
   styleUrls: ['./stargazers.component.css'],
 })
 export class StargazersComponent extends Base implements OnInit {
-  starGazers: any;
+  starGazers: User[];
   public altAvatarImg = altAvatarImg;
 
   constructor(private starringService: StarringService, private userService: UserService, private starentryService: StarentryService) {

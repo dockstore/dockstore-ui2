@@ -6,7 +6,7 @@ import { GravatarService } from '../../gravatar/gravatar.service';
 import { AlertService } from '../alert/state/alert.service';
 import { TokenService } from '../state/token.service';
 import { WorkflowService } from '../state/workflow.service';
-import { Configuration, ExtendedUserData, User, UsersService, Workflow } from '../swagger';
+import { Configuration, ExtendedUserData, User, UsersService, Workflow } from '../openapi';
 import { TrackLoginService } from '../track-login.service';
 import { UserStore } from './user.store';
 

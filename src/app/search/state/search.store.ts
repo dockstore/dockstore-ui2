@@ -21,8 +21,10 @@ export interface SearchState {
   shortUrl: string;
   workflowhit: any;
   toolhit: any;
+  notebookhit: any;
   showToolTagCloud: boolean;
   showWorkflowTagCloud: boolean;
+  showNotebookTagCloud: boolean;
   searchText: string;
   filterKeys: Array<string>;
   autocompleteTerms: Array<string>;
@@ -39,8 +41,10 @@ export function createInitialState(): SearchState {
     shortUrl: null,
     workflowhit: null,
     toolhit: null,
+    notebookhit: null,
     showToolTagCloud: false,
     showWorkflowTagCloud: false,
+    showNotebookTagCloud: false,
     searchText: '',
     filterKeys: [],
     autocompleteTerms: [],

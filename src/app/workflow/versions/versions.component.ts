@@ -22,13 +22,12 @@ import { AlertService } from '../../shared/alert/state/alert.service';
 import { DateService } from '../../shared/date.service';
 import { Dockstore } from '../../shared/dockstore.model';
 import { DockstoreService } from '../../shared/dockstore.service';
-import { EntryType } from '../../shared/openapi';
+import { EntryType, VersionVerifiedPlatform } from '../../shared/openapi';
 import { ExtendedWorkflow } from '../../shared/models/ExtendedWorkflow';
-import { VersionVerifiedPlatform } from '../../shared/openapi';
 import { SessionQuery } from '../../shared/session/session.query';
 import { ExtendedWorkflowQuery } from '../../shared/state/extended-workflow.query';
-import { Workflow } from '../../shared/swagger/model/workflow';
-import { WorkflowVersion } from '../../shared/swagger/model/workflowVersion';
+import { Workflow } from '../../shared/openapi/model/workflow';
+import { WorkflowVersion } from '../../shared/openapi/model/workflowVersion';
 import { Versions } from '../../shared/versions';
 
 @Component({
@@ -71,22 +70,33 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
     this.sortColumn = 'last_modified';
   }
 
+  /**
+   * Sets the display columns; the order of the array determines the order in which columns are
+   * displayed -- it's not the HTML template that determines the display order.
+   * @param publicPage
+   */
   setDisplayColumns(publicPage: boolean) {
-    if (publicPage) {
-      this.displayedColumns = ['name', 'last_modified', 'descriptorTypeVersions', 'valid', 'verified', 'open', 'snapshot', 'actions'];
-    } else {
-      this.displayedColumns = [
-        'name',
-        'last_modified',
-        'descriptorTypeVersions',
-        'valid',
-        'hidden',
-        'open',
-        'verified',
-        'snapshot',
-        'actions',
-      ];
-    }
+    const hiddenColumn = 'hidden';
+    const metricsColumn = 'metrics';
+    const verifiedColumn = 'verified';
+    const allColumns = [
+      'name',
+      'last_modified',
+      'descriptorTypeVersions',
+      'valid',
+      hiddenColumn,
+      verifiedColumn,
+      'open',
+      metricsColumn,
+      'snapshot',
+      'actions',
+    ];
+    this.displayedColumns = allColumns.filter((column) => {
+      if (publicPage && column === hiddenColumn) {
+        return false;
+      }
+      return true;
+    });
   }
 
   ngAfterViewInit(): void {

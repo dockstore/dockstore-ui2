@@ -4,7 +4,7 @@ import { IOauth2Options } from 'ng2-ui-auth/lib/config-interfaces';
 import { AuthConfig } from './shared/auth.model';
 import { Dockstore } from './shared/dockstore.model';
 import { FeatureService } from './shared/feature.service';
-import { Config, MetadataService } from './shared/swagger';
+import { Config, MetadataService } from './shared/openapi';
 
 @Injectable({
   providedIn: 'root',
@@ -45,6 +45,9 @@ export class ConfigurationService {
     Dockstore.BD_CATALYST_SEVEN_BRIDGES_IMPORT_URL = config.bdCatalystSevenBridgesImportUrl;
     Dockstore.BD_CATALYST_TERRA_IMPORT_URL = config.bdCatalystTerraImportUrl;
     Dockstore.ELWAZI_IMPORT_URL = config.elwaziImportUrl;
+    Dockstore.COLAB_IMPORT_URL = config.colabImportUrl;
+    Dockstore.MYBINDER_IMPORT_URL = config.mybinderImportUrl;
+    Dockstore.GITHUB_CODESPACES_IMPORT_URL = config.gitHubCodespacesImportUrl;
 
     Dockstore.GITHUB_CLIENT_ID = config.githubClientId;
     Dockstore.GITHUB_AUTH_URL = config.gitHubAuthUrl;
@@ -88,8 +91,6 @@ export class ConfigurationService {
     Dockstore.FEATURED_NEWS_URL = config.featuredNewsUrl;
 
     Dockstore.DEPLOY_VERSION = config.deployVersion;
-
-    Dockstore.COMPOSE_SETUP_VERSION = config.composeSetupVersion;
 
     Dockstore.WEBSERVICE_COMMIT_ID = config.gitCommitId;
     Dockstore.CWL_PARSING_LAMBDA_VERSION = config.cwlParsingLambdaVersion;

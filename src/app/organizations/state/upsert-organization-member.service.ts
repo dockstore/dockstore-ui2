@@ -6,7 +6,7 @@ import { NgFormsManager } from '@ngneat/forms-manager';
 import { finalize } from 'rxjs/operators';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
-import { OrganizationsService, OrganizationUser } from '../../shared/swagger';
+import { OrganizationsService, OrganizationUser } from '../../shared/openapi';
 import { OrganizationMembersService } from './organization-members.service';
 import { OrganizationQuery } from './organization.query';
 import { UpsertOrganizationMemberStore } from './upsert-organization-member.store';

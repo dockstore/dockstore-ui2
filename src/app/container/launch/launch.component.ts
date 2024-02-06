@@ -17,12 +17,12 @@ import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/cor
 import { Base } from 'app/shared/base';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
-import { SourceFile, ToolDescriptor } from '../../shared/swagger';
-import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
-import { Workflow } from '../../shared/swagger/model/workflow';
+import { SourceFile, ToolDescriptor } from '../../shared/openapi';
+import { DockstoreTool } from '../../shared/openapi/model/dockstoreTool';
+import { Workflow } from '../../shared/openapi/model/workflow';
 import { ToolQuery } from '../../shared/tool/tool.query';
 import { DescriptorLanguageService } from './../../shared/entry/descriptor-language.service';
-import { Tag } from './../../shared/swagger/model/tag';
+import { Tag } from './../../shared/openapi/model/tag';
 import { ToolLaunchService } from './tool-launch.service';
 import DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
 

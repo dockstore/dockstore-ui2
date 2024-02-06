@@ -3,7 +3,7 @@ import { Query } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { ExtendedUserData, User } from '../swagger';
+import { ExtendedUserData, User } from '../openapi';
 import { UserState, UserStore } from './user.store';
 
 @Injectable({ providedIn: 'root' })
@@ -18,6 +18,7 @@ export class UserQuery extends Query<UserState> {
   canChangeUsername$: Observable<boolean> = this.select((state) =>
     state.extendedUserData ? state.extendedUserData.canChangeUsername : false
   );
+  isUsernameChangeRequired$: Observable<boolean> = this.select((state) => (state.user ? state.user.usernameChangeRequired : null));
   username$: Observable<string> = this.select((state) => (state.user ? state.user.username : null));
   constructor(protected store: UserStore) {
     super(store);

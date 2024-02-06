@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
 
-import { OrganizationUser } from '../../shared/swagger';
+import { OrganizationUser } from '../../shared/openapi';
 
 export interface OrganizationMembersState extends EntityState<OrganizationUser> {}
 

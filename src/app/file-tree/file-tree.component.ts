@@ -2,8 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { SourceFile } from 'app/shared/swagger';
-import { ToolDescriptor } from '../shared/openapi';
+import { EntryType, SourceFile, ToolDescriptor } from 'app/shared/openapi';
 
 /** File node data with possible child nodes. */
 export interface FileNode {
@@ -56,6 +55,7 @@ export class FileTreeComponent {
       versionName: string;
       descriptorType: ToolDescriptor.TypeEnum;
       versionPath: string;
+      entryType: EntryType;
     }
   ) {
     this.treeFlattener = new MatTreeFlattener(this.transformer, this.getLevel, this.isExpandable, this.getChildren);
@@ -143,6 +143,6 @@ export class FileTreeComponent {
   }
 
   isPrimaryDescriptor(path: string): boolean {
-    return path === this.data.versionPath;
+    return path === this.data.versionPath && this.data.entryType !== EntryType.NOTEBOOK;
   }
 }

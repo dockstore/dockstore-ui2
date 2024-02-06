@@ -22,7 +22,7 @@ import { ImageProviderService } from '../../shared/image-provider.service';
 import { ProviderService } from '../../shared/provider.service';
 import { PaginatorQuery } from '../../shared/state/paginator.query';
 import { PaginatorService } from '../../shared/state/paginator.service';
-import { ContainersService, DockstoreTool } from '../../shared/swagger';
+import { ContainersService, DockstoreTool } from '../../shared/openapi';
 import { ToolLister } from '../../shared/tool-lister';
 import { PublishedToolsDataSource } from './published-tools.datasource';
 
@@ -31,7 +31,7 @@ import { PublishedToolsDataSource } from './published-tools.datasource';
   templateUrl: './list.component.html',
   styleUrls: ['../../shared/styles/entry-table.scss', './list.component.scss'],
 })
-export class ListContainersComponent extends ToolLister implements OnInit {
+export class ListContainersComponent extends ToolLister<PublishedToolsDataSource> implements OnInit {
   @Input() previewMode: boolean;
 
   public displayedColumns = ['name', 'verified', 'author', 'format', 'projectLinks', 'stars'];

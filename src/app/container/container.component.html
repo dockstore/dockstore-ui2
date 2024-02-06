@@ -13,17 +13,13 @@
   ~    See the License for the specific language governing permissions and
   ~    limitations under the License.
   -->
-<div *ngIf="tool; else workflow">
-  <div class="row m-1" *ngIf="error || missingWarning">
-    <div class="col-md-12" *ngIf="!isToolPublic">
-      <mat-card class="alert alert-warning mat-elevation-z" ng-class="!editMode ? 'push-top' : ''" role="alert" *ngIf="missingWarning">
-        <button type="button" class="close" data-dismiss="alert" ng-click="missingWarning = false">&times;</button>
-        <mat-icon class="alert-warning-icon">warning</mat-icon>
-        {{ missingContent.length === 1 ? 'Field that is missing from file: ' : 'Fields that are missing from file: ' }} {{ missingContent }}
-      </mat-card>
-    </div>
+<app-workflow *ngIf="displayAppTool" [isWorkflowPublic]="isToolPublic"></app-workflow>
+<div *ngIf="tool && !displayAppTool">
+  <div class="row m-1 mt-3 mb-0" *ngIf="tool?.archived">
+    <mat-card class="alert alert-warning mat-elevation-z m-0">
+      This {{ tool.entryTypeMetadata.term }} was archived on {{ tool.dbUpdateDate | date: 'yyyy-MM-dd' }}. It is now read-only.
+    </mat-card>
   </div>
-
   <div
     class="row m-1"
     *ngIf="
@@ -41,7 +37,6 @@
       <mat-icon>warning</mat-icon> Your manually added tool does not have any tags. Go to the versions tab to add one.
     </mat-card>
   </div>
-
   <div class="row m-1" fxLayout.lt-sm="column" fxLayout.gt-sm="row">
     <app-json-ld [json]="schema"></app-json-ld>
     <div fxFlex="80">
@@ -131,6 +126,7 @@
             mat-button
             class="private-btn small-btn-structure"
             (click)="toggleLabelsEditMode()"
+            [disabled]="tool.archived"
           >
             <img src="../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit labels" />
             Manage labels
@@ -279,6 +275,7 @@
                     [default]="defaultVersion"
                     [selectedVersion]="selectedVersion"
                     [publicPage]="publicPage"
+                    [canWrite]="!tool.archived"
                   >
                   </app-tool-file-editor>
                 </div>
@@ -342,7 +339,7 @@
                 [ngClass]="{ 'btn-copy': toolCopyBtn === 'docker_pull_command' }"
                 type="button"
                 [cdkCopyToClipboard]="dockerPullCmd"
-                (cbOnSuccess)="toolCopyBtnClick('docker_pull_command')"
+                (cdkCopyToClipboardCopied)="toolCopyBtnClick('docker_pull_command')"
                 appSnackbar
               >
                 <mat-icon color="accent">file_copy</mat-icon>
@@ -399,7 +396,7 @@
                 </a>
                 <div *ngIf="(extendedTool$ | async).imgProvider === 'Quay.io'">
                   <a [href]="(extendedTool$ | async)?.imgProviderUrl" target="_blank" rel="noopener">
-                    <img src="{{ (extendedTool$ | async).imgProviderUrl }}/status" />
+                    <img src="{{ (extendedTool$ | async).imgProviderUrl }}/status" alt="{{ (extendedTool$ | async).imgProvider }} Status" />
                   </a>
                 </div>
               </span>
@@ -452,7 +449,4 @@
       </span>
     </mat-card>
   </div>
-</ng-template>
-<ng-template #workflow>
-  <app-workflow [isWorkflowPublic]="isToolPublic"></app-workflow>
 </ng-template>

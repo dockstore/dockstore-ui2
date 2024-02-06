@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Store, StoreConfig } from '@datorama/akita';
-import { Collection, OrganizationUser } from '../../../shared/swagger';
+import { Collection, OrganizationUser } from '../../../shared/openapi';
 
 export interface AddEntryState {
   memberships: Array<OrganizationUser>;

@@ -16,27 +16,23 @@
 import { Directive, Input, OnDestroy } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { AlertQuery } from './alert/state/alert.query';
+import { Base } from './base';
 import { DateService } from './date.service';
-import { Tag, WorkflowVersion } from './swagger';
+import { Tag, WorkflowVersion } from './openapi';
 
 @Directive()
 // eslint-disable-next-line @angular-eslint/directive-class-suffix
-export abstract class View implements OnDestroy {
-  @Input() version: WorkflowVersion | Tag;
+export abstract class View<V = WorkflowVersion | Tag> extends Base {
+  @Input() version: V;
   @Input() defaultVersion: string;
   public isRefreshing$: Observable<boolean>;
-  protected ngUnsubscribe: Subject<{}> = new Subject();
 
   constructor(private dateService: DateService, private alertQuery: AlertQuery) {
+    super();
     this.isRefreshing$ = this.alertQuery.showInfo$;
   }
 
   getDateTimeMessage(timestamp: number) {
     return this.dateService.getDateTimeMessage(timestamp);
-  }
-
-  ngOnDestroy() {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
   }
 }

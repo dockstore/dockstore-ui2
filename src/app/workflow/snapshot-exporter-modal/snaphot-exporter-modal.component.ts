@@ -8,7 +8,7 @@ import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { Base } from '../../shared/base';
 import { Dockstore } from '../../shared/dockstore.model';
 import { TokenQuery } from '../../shared/state/token.query';
-import { BioWorkflow, WorkflowVersion } from '../../shared/swagger';
+import { BioWorkflow, WorkflowVersion } from '../../shared/openapi';
 import { SnapshotExporterModalService } from './snapshot-exporter-modal.service';
 
 export enum SnapshotExporterAction {
@@ -48,6 +48,7 @@ export class SnaphotExporterModalComponent extends Base {
   public isAjaxing$ = this.alertQuery.showInfo$;
   public isSnapshot: boolean = this.dialogData.version.frozen;
   public workflow: BioWorkflow;
+  public workflowTerm: string;
   public version: WorkflowVersion;
   public Dockstore = Dockstore;
   public StepState = StepState;
@@ -69,6 +70,7 @@ export class SnaphotExporterModalComponent extends Base {
   ) {
     super();
     this.workflow = dialogData.workflow;
+    this.workflowTerm = this.workflow.entryTypeMetadata.term;
     this.version = dialogData.version;
     this.action = dialogData.action;
     this.userId = dialogData.userId;

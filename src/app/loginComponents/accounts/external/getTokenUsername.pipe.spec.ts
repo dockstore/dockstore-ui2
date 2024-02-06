@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars, @typescript-eslint/no-unused-vars */
 import { bitbucketToken, gitHubToken, gitLabToken, quayToken } from '../../../../app/test/mocked-objects';
-import { TokenUser } from '../../../shared/swagger';
+import { TokenUser } from '../../../shared/openapi';
 import { GetTokenUsernamePipe } from './getTokenUsername.pipe';
 
 describe('Pipe: GetTokenUsername', () => {

@@ -13,7 +13,15 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import { resetDB, setTokenUserViewPort, verifyGithubLinkDashboard } from '../../support/commands';
+import {
+  insertNotebooks,
+  resetDB,
+  setTokenUserViewPort,
+  verifyGithubLinkDashboard,
+  checkFeaturedContent,
+  checkNewsAndUpdates,
+  checkMastodonFeedOrTwitterFeed,
+} from '../../support/commands';
 
 describe('Dockstore dashboard', () => {
   resetDB();
@@ -33,20 +41,47 @@ describe('Dockstore dashboard', () => {
     cy.get('[data-cy=all-entries-btn]').contains('All Tools').should('have.attr', 'href').and('include', '/my-tools');
   });
 
-  it('no services display correctly', () => {
+  it('no notebooks display correctly', () => {
     cy.visit('/dashboard');
-    cy.contains('Services');
-    cy.contains('You have not registered any services.');
-    cy.get('[data-cy=no-entry-register-modal]').contains('service');
-    cy.get('[data-cy=help-link')
-      .contains('Learn more about services')
+    cy.contains('Notebooks');
+    cy.contains('You have not registered any notebooks.');
+    cy.get('[data-cy=no-entry-register-modal]').contains('notebook');
+    cy.get('[data-cy=help-link]')
+      .contains('Learn more about notebooks')
       .should('have.attr', 'href')
-      .and('include', 'getting-started-with-services');
+      .and('include', 'getting-started/getting-started-with-notebooks');
   });
+
   it('Registering new tool through Github redirects correctly', () => {
     verifyGithubLinkDashboard('Tool');
   });
   it('Registering new workflow through Github redirects correctly', () => {
     verifyGithubLinkDashboard('Workflow');
+  });
+
+  it('have featured content visible from dashboard', () => {
+    cy.visit('/dashboard');
+    checkFeaturedContent();
+  });
+
+  it('have news and updates visible from dashboard', () => {
+    cy.visit('/dashboard');
+    checkNewsAndUpdates();
+  });
+
+  it('mastodon feed should be visible', () => {
+    cy.visit('/dashboard');
+    checkMastodonFeedOrTwitterFeed();
+  });
+});
+
+describe('should display added notebook correctly', () => {
+  setTokenUserViewPort();
+  insertNotebooks();
+  it('notebooks display correctly', () => {
+    cy.visit('/dashboard');
+    cy.contains('Notebooks');
+    cy.get('[data-cy=dashboard-notebook-count-bubble]').contains(1);
+    cy.get('[data-cy=dashboard-entry-links]').contains('simple-notebook');
   });
 });

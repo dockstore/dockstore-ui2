@@ -1,7 +1,7 @@
 import { HttpEvent, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { WorkflowsService } from './../shared/swagger/api/workflows.service';
+import { WorkflowsService } from './../shared/openapi/api/workflows.service';
 
 /**
  * This is an extension of the generated swagger code. The reason it exists is that for zip download to work,

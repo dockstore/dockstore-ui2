@@ -24,7 +24,7 @@ describe('SnapshotDoiOrcidComponent', () => {
         {
           provide: MAT_DIALOG_DATA,
           useValue: {
-            workflow: {},
+            workflow: { entryTypeMetadata: { term: 'workflow' } }, // simulation of a Workflow
             version: {
               frozen: false,
               versionMetadata: {

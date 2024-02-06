@@ -1,5 +1,5 @@
-import { LambdaEvent } from '../../../src/app/shared/swagger';
-import { goToTab, insertAppTools, isActiveTab, resetDB, setTokenUserViewPort } from '../../support/commands';
+import { LambdaEvent } from '../../../src/app/shared/openapi';
+import { goToTab, insertAppTools, isActiveTab, resetDB, setTokenUserViewPort, typeInInput } from '../../support/commands';
 
 describe('GitHub App Tools', () => {
   resetDB();
@@ -37,6 +37,52 @@ describe('GitHub App Tools', () => {
     cy.get('#workflow-path').contains(tool);
   }
 
+  describe('User Page', () => {
+    it('Admins should see user GitHub app logs', () => {
+      cy.visit('/users/user_A');
+      const mockEvent: LambdaEvent[] = [
+        {
+          deliveryId: '1',
+          entryName: 'entry1',
+          eventDate: 1582165220000,
+          githubUsername: 'testUser',
+          id: 1,
+          ignored: false,
+          message: 'HTTP 400 ',
+          organization: 'C',
+          reference: 'refs/head/main',
+          repository: 'test-github-app-tools',
+          success: false,
+          type: 'PUSH',
+        },
+        {
+          deliveryId: '2',
+          entryName: 'entry2',
+          eventDate: 1582165220000,
+          githubUsername: 'testUser',
+          id: 1,
+          ignored: false,
+          message: 'HTTP 400 ',
+          organization: 'C',
+          reference: 'refs/head/main',
+          repository: 'test-github-app-tools',
+          success: false,
+          type: 'PUSH',
+        },
+      ];
+      cy.intercept('GET', '/api/lambdaEvents/user/**', {
+        body: mockEvent,
+        headers: {
+          'X-total-count': '2',
+        },
+      }).as('lambdaEvents');
+      cy.get('[data-cy=user-app-logs-button]').should('be.visible').click();
+      cy.contains('refs/head/main');
+      cy.contains('1 – 2 of 2');
+      cy.contains('Close').click();
+    });
+  });
+
   describe('My Tools', () => {
     it('Side Bar', () => {
       cy.visit('/my-tools');
@@ -45,15 +91,16 @@ describe('GitHub App Tools', () => {
       cy.get('#register_tool_button').click();
       cy.contains('Register using GitHub Apps');
       cy.get('#GitHubApps-register-workflow-option').click();
+
       cy.contains('Install our GitHub App in');
       cy.get('.modal-footer').contains('Next').first().click();
-      cy.contains('Navigate to GitHub to install our GitHub app');
+      cy.get('[data-cy=install-dockstore-app]');
       cy.contains('Tool storage type').click();
       cy.contains('Close').click();
 
       // GitHub App Logs
       cy.contains('Apps Logs').click();
-      cy.contains('There were problems retrieving GitHub App logs for this organization.');
+      cy.contains('There were problems retrieving the GitHub App logs for this organization.');
       cy.contains('Close').click();
       cy.intercept('GET', '/api/lambdaEvents/**', {
         body: [],
@@ -64,9 +111,12 @@ describe('GitHub App Tools', () => {
 
       const realResponse: LambdaEvent[] = [
         {
+          deliveryId: '1',
+          entryName: 'entry1',
           eventDate: 1582165220000,
           githubUsername: 'testUser',
           id: 1,
+          ignored: false,
           message: 'HTTP 418 ',
           organization: 'C',
           reference: 'refs/head/main',
@@ -77,8 +127,26 @@ describe('GitHub App Tools', () => {
       ];
       cy.intercept('GET', '/api/lambdaEvents/**', {
         body: realResponse,
+        headers: {
+          'X-total-count': '1',
+        },
       }).as('lambdaEvents');
       cy.contains('Apps Logs').click();
+
+      // Check that app logs contain the correct columns
+      const appLogColumns = [
+        'Date',
+        'GitHub Username',
+        'Entry Name',
+        'Delivery ID',
+        'Organization',
+        'Repository',
+        'Reference',
+        'Success',
+        'Type',
+      ];
+      appLogColumns.forEach((column) => cy.contains(column));
+
       cy.contains('1 – 1 of 1');
       cy.contains('Close').click();
 
@@ -102,7 +170,7 @@ describe('GitHub App Tools', () => {
       cy.contains('button', 'Refresh Version').should('be.disabled');
 
       // Fix hiding a version. You have to refresh the page to see that it was hidden in the table
-      cy.contains('Edit').click();
+      cy.contains('Edit Info').click();
       cy.contains('Edit Tool');
       cy.contains('Tool Path');
       cy.get('[type="checkbox"]').check();
@@ -110,7 +178,7 @@ describe('GitHub App Tools', () => {
       cy.get('[data-cy=valid').should('exist');
       cy.get('[data-cy=hidden').should('exist');
       cy.contains('button', 'Actions').should('be.visible').click();
-      cy.contains('Edit').click();
+      cy.contains('Edit Info').click();
       cy.get('[type="checkbox"]').uncheck();
       cy.get('[data-cy=save-version]').click();
       cy.get('[data-cy=hidden').should('not.exist');
@@ -165,6 +233,15 @@ describe('GitHub App Tools', () => {
       cy.get('#starCountButton').should('contain', '1');
       goToTab('Info');
       cy.get('[data-cy=trs-link]').contains('TRS: github.com/C/test-github-app-tools/md5sum');
+
+      // Confirm that an ignored event is displayed correctly.
+      realResponse[0].ignored = true;
+      cy.intercept('GET', '/api/lambdaEvents/**', {
+        body: realResponse,
+      }).as('lambdaEvents');
+      cy.visit('/my-tools');
+      cy.contains('Apps Logs').click();
+      cy.contains('Ignored');
     });
 
     it('Table view', () => {

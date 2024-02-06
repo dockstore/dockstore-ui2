@@ -326,6 +326,70 @@
           "defaultVersion": null,
           "all_authors": [{"name": null, "email": null, "role": null, "affiliation": null}]
         }
+      },
+      {
+        "_index": "notebooks",
+        "_type": "_doc",
+        "_id": "61",
+        "_score": 1.0,
+        "_source": {
+          "aliases": {},
+          "is_published": true,
+          "last_modified_date": null,
+          "isChecker": false,
+          "checker_id": null,
+          "repository": "n",
+          "source_control_provider": "GITHUB",
+          "descriptorType": "jupyter",
+          "descriptorTypeSubclass": "Python",
+          "full_workflow_path": "github.com/A/n",
+          "mode": "FULL",
+          "lastUpdated": 1520374057688,
+          "path": "github.com/A/n",
+          "starredUsers": [
+            {
+              "id": 5
+            }
+          ],
+          "workflowVersions": [
+            {
+              "doiURL": null,
+              "verifiedSource": null,
+              "versionEditor": null,
+              "verified": false,
+              "referenceType": "UNSET",
+              "commitID": null,
+              "id": 63,
+              "doiStatus": "NOT_REQUESTED"
+            },
+            {
+              "doiURL": null,
+              "verifiedSource": null,
+              "versionEditor": null,
+              "verified": false,
+              "referenceType": "UNSET",
+              "commitID": null,
+              "id": 64,
+              "doiStatus": "NOT_REQUESTED"
+            }
+          ],
+          "sourceControl": "github.com",
+          "has_checker": false,
+          "id": 11,
+          "last_modified": null,
+          "email": null,
+          "dbUpdateDate": null,
+          "author": null,
+          "defaultTestParameterFilePath": null,
+          "workflowName": null,
+          "workflow_path": "/notebook.ipynb",
+          "dbCreateDate": null,
+          "parent_id": null,
+          "organization": "A",
+          "gitUrl": "git@github.com:A/n.git",
+          "defaultVersion": null,
+          "all_authors": [{"name": null, "email": null, "role": null, "affiliation": null}]
+        }
       }
     ]
   }

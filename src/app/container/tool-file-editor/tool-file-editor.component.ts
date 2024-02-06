@@ -16,11 +16,10 @@
 import { Component, Input } from '@angular/core';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { FileEditing } from '../../shared/file-editing';
-import { ContainertagsService, SourceFile } from '../../shared/openapi';
-import { DockstoreTool, ToolDescriptor } from '../../shared/swagger';
+import { ContainertagsService, SourceFile, DockstoreTool, ToolDescriptor } from '../../shared/openapi';
 import { ContainerService } from './../../shared/container.service';
-import { HostedService } from './../../shared/swagger/api/hosted.service';
-import { Tag } from './../../shared/swagger/model/tag';
+import { HostedService } from './../../shared/openapi/api/hosted.service';
+import { Tag } from './../../shared/openapi/model/tag';
 
 @Component({
   selector: 'app-tool-file-editor',
@@ -47,6 +46,7 @@ export class ToolFileEditorComponent extends FileEditing {
       this.loadVersionSourcefiles();
     }
   }
+  @Input() canWrite: boolean;
 
   constructor(
     private hostedService: HostedService,

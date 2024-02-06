@@ -10,26 +10,64 @@
   >
     View public page
   </a>
-  <div [matTooltip]="pubUnpubMessage">
+  <ng-container *ngIf="!workflow?.archived">
+    <div [matTooltip]="pubUnpubMessage">
+      <button
+        mat-raised-button
+        class="accent-1-dark-btn mat-elevation-z"
+        id="publishButton"
+        (click)="publishToggle()"
+        [disabled]="(isRefreshing$ | async) || publishDisabled"
+      >
+        {{ workflow?.is_published ? 'Unpublish' : 'Publish' }}
+      </button>
+    </div>
     <button
       mat-raised-button
       class="accent-1-dark-btn mat-elevation-z"
-      id="publishButton"
-      (click)="publishToggle()"
-      [disabled]="(isRefreshing$ | async) || publishDisabled"
+      (click)="refresh()"
+      [disabled]="isRefreshing$ | async"
+      *ngIf="!isHosted && canWrite && workflow?.mode !== WorkflowModel.ModeEnum.DOCKSTOREYML"
+      matTooltip="Sync the {{ entryType }} with the source control repository"
+      data-cy="refreshButton"
     >
-      {{ workflow?.is_published ? 'Unpublish' : 'Publish' }}
+      {{ 'Refresh' }}
     </button>
-  </div>
-  <button
-    mat-raised-button
-    class="accent-1-dark-btn mat-elevation-z"
-    (click)="refresh()"
-    [disabled]="isRefreshing$ | async"
-    *ngIf="!isHosted && canWrite && workflow?.mode !== WorkflowModel.ModeEnum.DOCKSTOREYML"
-    matTooltip="Sync the {{ entryType }} with the source control repository"
-    data-cy="refreshButton"
-  >
-    {{ 'Refresh' }}
-  </button>
+    <ng-container *ngIf="workflow?.deletable">
+      <button
+        mat-raised-button
+        class="accent-1-dark-btn mat-elevation-z"
+        (click)="delete()"
+        [disabled]="isRefreshing$ | async"
+        matTooltip="Delete this {{ entryType }}"
+        data-cy="deleteButton"
+      >
+        Delete
+      </button>
+    </ng-container>
+    <ng-container *ngIf="!workflow?.deletable">
+      <button
+        mat-raised-button
+        class="accent-1-dark-btn mat-elevation-z"
+        (click)="archive()"
+        [disabled]="isRefreshing$ | async"
+        matTooltip="Archive this {{ entryType }}"
+        data-cy="archiveButton"
+      >
+        Archive
+      </button>
+    </ng-container>
+  </ng-container>
+  <ng-container *ngIf="workflow?.archived">
+    <button
+      mat-raised-button
+      class="accent-1-dark-btn mat-elevation-z"
+      (click)="unarchive()"
+      [disabled]="isRefreshing$ | async"
+      matTooltip="Unarchive this {{ entryType }}"
+      data-cy="unarchiveButton"
+    >
+      Unarchive
+    </button>
+  </ng-container>
 </div>

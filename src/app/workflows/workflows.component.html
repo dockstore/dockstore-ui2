@@ -19,14 +19,13 @@
     <img src="../../assets/svg/search.svg" class="site-icons-small mr-3" alt="search icon" />
     <div fxLayout fxLayoutGap="1rem">
       <a
-        *ngIf="(entryType$ | async) === EntryType.BioWorkflow; else serviceOrNotebook"
+        *ngIf="(entryType$ | async) === EntryType.BioWorkflow || (entryType$ | async) === EntryType.Notebook; else service"
         [routerLink]="['/search']"
-        [queryParams]="{ entryType: 'workflows' }"
+        [queryParams]="{ entryType: (entryTypeMetadata$ | async).searchEntryType }"
         class="white-space-no-wrap"
-        >Explore Workflows</a
+        >Explore {{ (entryTypeMetadata$ | async).termPlural | titlecase }}</a
       >
-      <!-- To Do: When there is a notebooks tab on the search page, re-route to there instead similar to workflows above -->
-      <ng-template #serviceOrNotebook>
+      <ng-template #service>
         <a [routerLink]="['/', entryPageTitle$ | async]">Explore {{ entryPageTitle$ | async | titlecase }}</a>
       </ng-template>
       <span fxHide.lt-sm>/</span>
@@ -34,16 +33,14 @@
     </div>
   </div>
   <ng-template #search>
-    <img [src]="'../assets/svg/sub-nav/' + getEntryTerm(entryType$ | async) + '.svg'" [alt]="getEntryTerm(entryType$ | async) + 'icon'" />
+    <img
+      [src]="'../assets/svg/sub-nav/' + (entryTypeMetadata$ | async).term + '.svg'"
+      [alt]="(entryTypeMetadata$ | async).term + ' icon'"
+    />
     <span class="mx-1">{{ entryPageTitle$ | async | titlecase }}</span>
-    <div *ngIf="(entryType$ | async) === EntryType.Service || (entryType$ | async) === EntryType.Notebook" class="bubble preview-bubble">
-      PREVIEW
-    </div>
+    <div *ngIf="(entryType$ | async) === EntryType.Service" class="bubble preview-bubble">PREVIEW</div>
   </ng-template>
 </app-header>
 <div class="container">
-  <div *ngIf="(entryType$ | async) === EntryType.Notebook" class="mt-4">
-    <app-preview-warning featureName="Notebooks"></app-preview-warning>
-  </div>
   <router-outlet></router-outlet>
 </div>

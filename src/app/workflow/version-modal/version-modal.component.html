@@ -24,14 +24,14 @@
             <label class="col-sm-3 col-md-3 col-lg-3 control-label"> Git Reference: </label>
             <div class="col-sm-9 col-md-9 col-lg-9">
               <input
-                *ngIf="(isService$ | async) === false"
+                *ngIf="(isService$ | async) === false && (isNotebook$ | async) === false"
                 type="text"
                 class="form-control"
                 name="reference"
                 ngModel="{{ version.reference ? version.reference : 'n/a' }}"
                 disabled
               />
-              <div *ngIf="isService$ | async" class="label-value">
+              <div *ngIf="(isService$ | async) || (isNotebook$ | async)" class="label-value">
                 {{ version.reference ? version.reference : 'n/a' }}
               </div>
             </div>
@@ -42,7 +42,7 @@
             </label>
             <div class="col-sm-9 col-md-9 col-lg-9">
               <input
-                *ngIf="(isService$ | async) === false"
+                *ngIf="(isService$ | async) === false && (isNotebook$ | async) === false"
                 type="text"
                 class="form-control"
                 name="workflow_path"
@@ -63,7 +63,7 @@
                   version.doiURL
                 "
               />
-              <div *ngIf="isService$ | async" class="label-value">
+              <div *ngIf="(isService$ | async) || (isNotebook$ | async)" class="label-value">
                 {{ version.workflow_path }}
               </div>
               <mat-card
@@ -78,7 +78,9 @@
             class="form-group form-group-sm"
             *ngIf="(isService$ | async) === false && (descriptorType$ | async) !== ToolDescriptor.TypeEnum.NFL"
           >
-            <label class="col-sm-3 col-md-3 col-lg-3 control-label"> Test Parameter File(s): </label>
+            <label class="col-sm-3 col-md-3 col-lg-3 control-label">
+              {{ (isNotebook$ | async) ? 'Test File(s)' : 'Test Parameter File(s)' }}:
+            </label>
             <div
               class="col-sm-9 col-md-9 col-lg-9 form-margin"
               [ngClass]="{ 'col-sm-offset-3': i > 0 }"
@@ -202,6 +204,24 @@
             <div class="col-sm-9 col-md-9 col-lg-9">
               <div class="label-value">
                 {{ version.valid ? 'Yes' : 'No' }}
+              </div>
+            </div>
+          </div>
+          <div class="form-group form-group-sm">
+            <label class="col-sm-3 col-md-3 col-lg-3 control-label"> Verified: </label>
+            <div class="col-sm-9 col-md-9 col-lg-9">
+              <div class="label-value">
+                {{ version.verified ? 'Yes' : 'No' }}
+              </div>
+            </div>
+          </div>
+          <div class="form-group form-group-sm" *ngIf="version.verified">
+            <label class="col-sm-3 col-md-3 col-lg-3 control-label"> Verified Platforms: </label>
+            <div class="col-sm-9 col-md-9 col-lg-9">
+              <div class="label-value">
+                <span matTooltip="{{ getVerifiedSource(version.name) }}">{{
+                  version.id | verifiedPlatforms: verifiedVersionPlatforms
+                }}</span>
               </div>
             </div>
           </div>

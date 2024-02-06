@@ -75,8 +75,8 @@
               <mat-card fxFlex *ngFor="let tool of starredTools; let last = last" class="m-1 pb-3">
                 <ng-container
                   *ngTemplateOutlet="
-                    tool.mode === 'DOCKSTORE_YML' ? workflowSummary : toolSummary;
-                    context: tool.mode === 'DOCKSTORE_YML' ? { workflow: tool, entryType: entryType.AppTool } : { tool: tool }
+                    tool.entryType === OpenApiEntryType.APPTOOL ? workflowSummary : toolSummary;
+                    context: tool.entryType === OpenApiEntryType.APPTOOL ? { workflow: tool, entryType: entryType.AppTool } : { tool: tool }
                   "
                 ></ng-container>
               </mat-card>
@@ -84,14 +84,12 @@
           </div>
         </mat-tab>
 
-        <mat-tab *ngIf="Dockstore.FEATURES.enableNotebooks">
-          <div class="starred-header mb-4"><app-preview-warning featureName="Notebooks"></app-preview-warning></div>
+        <mat-tab>
           <ng-template mat-tab-label>
             <div fxLayoutGap="0.5rem">
               <img class="site-icons-tab" src="../../../assets/svg/sub-nav/notebook.svg" alt="notebook logo" />
               <span>Notebooks</span>
               <span class="tab-display org-background" data-cy="starred-notebooks-count">{{ starredNotebooks?.length }}</span>
-              <span class="bubble preview-bubble">PREVIEW</span>
             </div>
           </ng-template>
           <div>
@@ -113,13 +111,12 @@
           </div>
         </mat-tab>
 
-        <ng-template #workflowSummary let-workflow="workflow" let-type="entryType">
+        <ng-template #workflowSummary let-workflow="workflow">
           <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-between">
-            <a [routerLink]="type | routerLink: workflow" class="no-underline">
+            <a [routerLink]="workflow | routerLink" class="no-underline">
               <mat-card-header class="ml-2">
                 <mat-card-title fxLayoutAlign="space-between" fxLayoutGap="1rem">
                   <img
-                    class="site-icons-small entryType-icons"
                     src="../../../assets/svg/sub-nav/{{ workflow?.entryTypeMetadata.term }}.svg"
                     alt="{{ workflow?.entryTypeMetadata.term }} logo"
                   />
@@ -147,7 +144,7 @@
                 <span>
                   <mat-chip-list>
                     <mat-chip class="bubble workflow-background" *ngFor="let label of workflow?.labels | slice: 0:3">{{
-                      label.value
+                      $any(label).value
                     }}</mat-chip>
                     <mat-chip class="bubble" *ngIf="workflow.versionVerified === true">
                       <span class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">
@@ -168,7 +165,7 @@
                 </span>
               </div>
             </div>
-            <a [routerLink]="type | routerLink: workflow" class="no-underline">
+            <a [routerLink]="workflow | routerLink" class="no-underline">
               <button mat-raised-button class="small-mat-btn-skin small-btn-structure" color="accent">View</button>
             </a>
           </div>
@@ -176,10 +173,10 @@
 
         <ng-template #toolSummary let-tool="tool">
           <div fxLayout="row" fxLayoutAlign="space-between">
-            <a routerLink="/containers/{{ tool.tool_path }}" class="no-underline">
+            <a [routerLink]="tool | routerLink" class="no-underline">
               <mat-card-header class="ml-2">
                 <mat-card-title fxLayoutAlign="flex-start" fxLayoutGap="1rem">
-                  <img class="site-icons-small entryType-icons" src="../../../assets/svg/sub-nav/tool.svg" alt="tool logo" />
+                  <img src="../../../assets/svg/sub-nav/tool.svg" alt="tool logo" />
                   <h4>{{ tool?.namespace + '/' + tool?.name + (tool?.toolname ? '/' + tool?.toolname : '') }}</h4>
                 </mat-card-title>
                 <div *ngIf="tool?.starredUsers.length !== 0" fxLayout="row" fxLayoutAlign="end center"></div>
@@ -193,7 +190,9 @@
               <div fxLayout="row" fxLayoutAlign="flex-start" fxLayoutGap="1rem">
                 <small class="mx-2">Last updated {{ tool?.lastUpdated | date }}</small>
                 <mat-chip-list>
-                  <mat-chip class="bubble tool-background" *ngFor="let label of tool?.labels | slice: 0:3">{{ label.value }}</mat-chip>
+                  <mat-chip class="bubble tool-background" *ngFor="let label of tool?.labels | slice: 0:3">{{
+                    $any(label).value
+                  }}</mat-chip>
                   <mat-chip *ngIf="tool?.versionVerified" matTooltip="Verified" class="bubble">
                     <a class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">
                       <mat-icon class="verified-icon">done</mat-icon>
@@ -205,7 +204,7 @@
                   </mat-chip>
                 </mat-chip-list>
               </div>
-              <a routerLink="/containers/{{ tool.tool_path }}" class="no-underline">
+              <a [routerLink]="tool | routerLink" class="no-underline">
                 <button mat-raised-button class="small-mat-btn-skin small-btn-structure" color="accent">View</button>
               </a>
             </div>

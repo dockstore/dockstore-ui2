@@ -16,11 +16,11 @@ import { RefreshService } from './../../shared/refresh.service';
  */
 
 import { inject, TestBed } from '@angular/core/testing';
-import { ToolDescriptor } from './../../shared/swagger';
-import { ContainersService } from './../../shared/swagger/api/containers.service';
-import { WorkflowsService } from './../../shared/swagger/api/workflows.service';
-import { SourceFile } from './../../shared/swagger/model/sourceFile';
-import { Tag } from './../../shared/swagger/model/tag';
+import { ToolDescriptor } from './../../shared/openapi';
+import { ContainersService } from './../../shared/openapi/api/containers.service';
+import { WorkflowsService } from './../../shared/openapi/api/workflows.service';
+import { SourceFile } from './../../shared/openapi/model/sourceFile';
+import { Tag } from './../../shared/openapi/model/tag';
 import { ContainersStubService, RefreshStubService, WorkflowsStubService } from './../../test/service-stubs';
 import { ParamfilesService } from './paramfiles.service';
 import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
@@ -129,12 +129,12 @@ describe('Service: paramFiles.service.ts', () => {
   it('should ...', inject([ParamfilesService], (service: ParamfilesService) => {
     expect(service).toBeTruthy();
   }));
-  it('should get workflow test parameter files from swagger workflowsService', inject([ParamfilesService], (service: ParamfilesService) => {
+  it('should get workflow test parameter files from openapi workflowsService', inject([ParamfilesService], (service: ParamfilesService) => {
     service.getFiles(1, 'workflows', 'develop', 'CWL').subscribe((files) => {
       expect(files).toEqual([]);
     });
   }));
-  it('should get tool test parameter files from swagger containersService', inject([ParamfilesService], (service: ParamfilesService) => {
+  it('should get tool test parameter files from openapi containersService', inject([ParamfilesService], (service: ParamfilesService) => {
     service.getFiles(1, 'containers', 'develop', 'CWL').subscribe((files) => {
       expect(files).toEqual([]);
     });

@@ -32,14 +32,15 @@ import { AccountsService } from '../../loginComponents/accounts/external/account
 import { OrgWorkflowObject } from '../../myworkflows/my-workflow/my-workflow.component';
 import { MyWorkflowsService } from '../../myworkflows/myworkflows.service';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
+import { bootstrap4largeModalSize } from '../../shared/constants';
 import { ContainerService } from '../../shared/container.service';
 import { MyEntry, OrgEntryObject } from '../../shared/my-entry';
 import { TokenQuery } from '../../shared/state/token.query';
 import { TokenService } from '../../shared/state/token.service';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { WorkflowService } from '../../shared/state/workflow.service';
-import { AppTool, DockstoreTool, Workflow } from '../../shared/swagger';
-import { Configuration } from '../../shared/swagger/configuration';
+import { AppTool, DockstoreTool, Workflow } from '../../shared/openapi';
+import { Configuration } from '../../shared/openapi/configuration';
 import { ToolQuery } from '../../shared/tool/tool.query';
 import { UrlResolverService } from '../../shared/url-resolver.service';
 import { UserQuery } from '../../shared/user/user.query';
@@ -120,9 +121,10 @@ export class MyToolComponent extends MyEntry implements OnInit {
         this.allTools = this.tools.concat(this.apptools);
         this.selectEntry(this.mytoolsService.recomputeWhatEntryToSelect(this.allTools));
       });
+
     this.registerToolService.isModalShown.pipe(takeUntil(this.ngUnsubscribe)).subscribe((isModalShown: boolean) => {
       if (isModalShown) {
-        const dialogRef = this.dialog.open(RegisterToolComponent, { width: '600px' });
+        const dialogRef = this.dialog.open(RegisterToolComponent, { width: bootstrap4largeModalSize });
         dialogRef
           .afterClosed()
           .pipe(takeUntil(this.ngUnsubscribe))
@@ -153,10 +155,12 @@ export class MyToolComponent extends MyEntry implements OnInit {
     combineLatest([this.containerService.tools$, this.workflowService.workflows$])
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(([tools, workflows]) => {
-        this.tools = tools || [];
-        this.apptools = workflows || [];
-        this.allTools = this.tools.concat(this.apptools);
-        this.selectEntry(this.mytoolsService.recomputeWhatEntryToSelect(this.allTools));
+        if (tools && workflows) {
+          this.tools = tools;
+          this.apptools = workflows;
+          this.allTools = this.tools.concat(this.apptools);
+          this.selectEntry(this.mytoolsService.recomputeWhatEntryToSelect(this.allTools));
+        }
       });
 
     this.groupEntriesObject$ = combineLatest([this.containerService.tools$, this.toolQuery.tool$]).pipe(

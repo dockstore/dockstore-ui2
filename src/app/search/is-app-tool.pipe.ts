@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { AppTool, DockstoreTool } from '../shared/swagger';
+import { AppTool, DockstoreTool } from '../shared/openapi';
 
 @Pipe({
   name: 'isAppTool',

@@ -28,7 +28,7 @@ import { ImageProviderService } from '../../shared/image-provider.service';
 import { SubBucket } from '../../shared/models/SubBucket';
 import { ExtendedGA4GHService } from '../../shared/openapi/api/extendedGA4GH.service';
 import { ProviderService } from '../../shared/provider.service';
-import { DockstoreTool, Workflow } from '../../shared/swagger';
+import { DockstoreTool, Workflow } from '../../shared/openapi';
 import { SearchQuery } from './search.query';
 import { SearchStore } from './search.store';
 import { SearchAuthorsHtmlPipe } from '../search-authors-html.pipe';
@@ -83,80 +83,106 @@ export class SearchService {
    * is displayed second, etc.
    * @private
    */
-  private orderedFacetInfos: Array<FacetInfo> = [
-    { friendlyName: 'Category', esName: 'categories.name.keyword', initiallyExpanded: true },
-    { friendlyName: 'Language', esName: 'descriptorType', initiallyExpanded: true },
-    {
-      friendlyName: 'Language Versions',
-      esName: 'descriptor_type_versions.keyword',
-      tooltip: 'Indicates that the tool or workflow contains at least one version that is written with the workflow language version',
-      initiallyExpanded: false,
-    },
-    {
-      friendlyName: 'Engine Versions',
-      esName: 'engine_versions.keyword',
-      tooltip: 'The workflow engine versions required to run a workflow or tool',
-      initiallyExpanded: false,
-    },
-    { friendlyName: 'Author', esName: 'all_authors.name.keyword', initiallyExpanded: true },
-    { friendlyName: 'Registry', esName: 'registry', initiallyExpanded: true },
-    { friendlyName: 'Source Control', esName: 'source_control_provider.keyword', initiallyExpanded: true },
-    { friendlyName: 'Namespace', esName: 'namespace', initiallyExpanded: true },
-    { friendlyName: 'Organization', esName: 'organization', initiallyExpanded: true },
-    { friendlyName: 'Labels', esName: 'labels.value.keyword', initiallyExpanded: false },
-    {
-      friendlyName: 'Private Access',
-      esName: 'private_access',
-      tooltip: "A private tool requires authentication to view on Docker's registry website and to pull the Docker image.",
-      initiallyExpanded: false,
-      exclusive: true,
-    },
-    {
-      friendlyName: 'Verified Source',
-      esName: SearchFields.VERIFIED_SOURCE,
-      tooltip: 'Indicates which party performed the verification process on a tool or workflow.',
-      initiallyExpanded: false,
-    },
-    {
-      friendlyName: 'Verified Platforms',
-      esName: 'verified_platforms.keyword',
-      tooltip: 'Indicates which platform a tool or workflow (at least one version) was successfully run on.',
-      initiallyExpanded: false,
-    },
-    { friendlyName: 'Input File Formats', esName: 'input_file_formats.value.keyword', initiallyExpanded: false },
-    { friendlyName: 'Output File Formats', esName: 'output_file_formats.value.keyword', initiallyExpanded: false },
-    {
-      friendlyName: 'Verified',
-      esName: 'verified',
-      tooltip: 'Indicates that at least one version of a tool or workflow has been successfully run by our team or an outside party.',
-      initiallyExpanded: true,
-      exclusive: true,
-    },
-    {
-      friendlyName: 'Has Checker Workflow',
-      esName: 'has_checker',
-      tooltip:
-        'Checker workflows are additional workflows you can associate with a tool or workflow to ensure ' +
-        'that, when given some inputs, it produces the expected outputs on a different platform other than the one it was developed on.',
-      initiallyExpanded: false,
-      exclusive: true,
-    },
-    {
-      friendlyName: 'Open Data',
-      esName: 'openData',
-      tooltip:
-        'Indicates whether an entry can be run with no additional access permissions, potentially via an included test parameter file referencing open data.',
-      initiallyExpanded: false,
-      exclusive: true,
-    },
-  ];
 
-  /**
-   * These are the terms which use "must" filters
-   * Example: Results returned can be private or public but never both
-   * @memberof SearchService
-   */
-  public exclusiveFilters = this.orderedFacetInfos.filter((facetInfo) => facetInfo.exclusive).map((facetInfo) => facetInfo.esName);
+  private getOrderedFacetInfos(tabIndex: number): Array<FacetInfo> {
+    const facetInfos = [
+      { friendlyName: 'Category', esName: 'categories.name.keyword', initiallyExpanded: true },
+      {
+        friendlyName: tabIndex === SearchService.NOTEBOOKS_TAB_INDEX ? 'Format' : 'Language',
+        esName: 'descriptorType',
+        initiallyExpanded: true,
+      },
+      {
+        friendlyName: 'Language Versions',
+        esName: 'descriptor_type_versions.keyword',
+        tooltip: 'Indicates that the tool or workflow contains at least one version that is written with the workflow language version',
+        initiallyExpanded: false,
+      },
+      ...(tabIndex === SearchService.NOTEBOOKS_TAB_INDEX
+        ? [{ friendlyName: 'Language', esName: 'descriptorTypeSubclass', initiallyExpanded: true }]
+        : []),
+      {
+        friendlyName: 'Engine Versions',
+        esName: 'engine_versions.keyword',
+        tooltip: 'The workflow engine versions required to run a workflow or tool',
+        initiallyExpanded: false,
+      },
+      { friendlyName: 'Author', esName: 'all_authors.name.keyword', initiallyExpanded: true },
+      { friendlyName: 'Registry', esName: 'registry', initiallyExpanded: true },
+      { friendlyName: 'Source Control', esName: 'source_control_provider.keyword', initiallyExpanded: true },
+      { friendlyName: 'Namespace', esName: 'namespace', initiallyExpanded: true },
+      { friendlyName: 'Organization', esName: 'organization', initiallyExpanded: true },
+      { friendlyName: 'Labels', esName: 'labels.value.keyword', initiallyExpanded: false },
+      {
+        friendlyName: 'Private Access',
+        esName: 'private_access',
+        tooltip: "A private tool requires authentication to view on Docker's registry website and to pull the Docker image.",
+        initiallyExpanded: false,
+        exclusive: true,
+      },
+      {
+        friendlyName: 'Verified Source',
+        esName: SearchFields.VERIFIED_SOURCE,
+        tooltip: 'Indicates which party performed the verification process on a tool or workflow.',
+        initiallyExpanded: false,
+      },
+      {
+        friendlyName: 'Verified Platforms',
+        esName: 'verified_platforms.keyword',
+        tooltip: 'Indicates which platform a tool or workflow (at least one version) was successfully run on.',
+        initiallyExpanded: false,
+      },
+      { friendlyName: 'Input File Formats', esName: 'input_file_formats.value.keyword', initiallyExpanded: false },
+      { friendlyName: 'Output File Formats', esName: 'output_file_formats.value.keyword', initiallyExpanded: false },
+      {
+        friendlyName: 'Verified',
+        esName: 'verified',
+        tooltip: 'Indicates that at least one version of a tool or workflow has been successfully run by our team or an outside party.',
+        initiallyExpanded: true,
+        exclusive: true,
+      },
+      ...(tabIndex !== SearchService.NOTEBOOKS_TAB_INDEX
+        ? [
+            {
+              friendlyName: 'Has Checker Workflow',
+              esName: 'has_checker',
+              tooltip:
+                'Checker workflows are additional workflows you can associate with a tool or workflow to ensure ' +
+                'that, when given some inputs, it produces the expected outputs on a different platform other than the one it was developed on.',
+              initiallyExpanded: false,
+              exclusive: true,
+            },
+          ]
+        : []),
+      {
+        friendlyName: 'Open Data',
+        esName: 'openData',
+        tooltip:
+          'Indicates whether an entry can be run with no additional access permissions, potentially via an included test parameter file referencing open data.',
+        initiallyExpanded: false,
+        exclusive: true,
+      },
+      {
+        friendlyName: 'Archived',
+        esName: 'archived',
+        initiallyExpanded: false,
+        exclusive: true,
+      },
+      {
+        friendlyName: 'Execution Metrics',
+        esName: 'execution_partners.keyword',
+        initiallyExpanded: false,
+        tooltip: 'Indicates there are execution metrics from a partner for the entry.',
+      },
+      {
+        friendlyName: 'Validation Metrics',
+        esName: 'validation_partners.keyword',
+        initiallyExpanded: false,
+        tooltip: 'Indicates there are validation metrics from a partner for the entry.',
+      },
+    ];
+    return facetInfos;
+  }
 
   constructor(
     private searchStore: SearchStore,
@@ -212,7 +238,7 @@ export class SearchService {
     // For sorting workflows by name, sort full_workflow_path
     if (entryType === 'tool' && attribute === 'name') {
       attribute = 'tool_path';
-    } else if (entryType === 'workflow' && attribute === 'name') {
+    } else if ((entryType === 'workflow' || entryType == 'notebook') && attribute === 'name') {
       attribute = 'full_workflow_path';
     }
     let aVal = a[attribute];
@@ -296,7 +322,7 @@ export class SearchService {
     this.setSearchText(suggestTerm);
   }
 
-  setShowTagCloud(entryType: 'tool' | 'workflow') {
+  setShowTagCloud(entryType: 'tool' | 'workflow' | 'notebook') {
     if (entryType === 'tool') {
       const showTagCloud: boolean = this.searchQuery.getValue().showToolTagCloud;
       this.searchStore.update((state) => {
@@ -305,12 +331,20 @@ export class SearchService {
           showToolTagCloud: !showTagCloud,
         };
       });
-    } else {
+    } else if (entryType === 'workflow') {
       const showTagCloud: boolean = this.searchQuery.getValue().showWorkflowTagCloud;
       this.searchStore.update((state) => {
         return {
           ...state,
           showWorkflowTagCloud: !showTagCloud,
+        };
+      });
+    } else {
+      const showTagCloud: boolean = this.searchQuery.getValue().showNotebookTagCloud;
+      this.searchStore.update((state) => {
+        return {
+          ...state,
+          showNotebookTagCloud: !showTagCloud,
         };
       });
     }
@@ -323,9 +357,10 @@ export class SearchService {
    * @param {number} query_size
    * @memberof SearchService
    */
-  filterEntry(hits: Array<Hit>, query_size: number): [Array<Hit>, Array<Hit>] {
+  filterEntry(hits: Array<Hit>, query_size: number): [Array<Hit>, Array<Hit>, Array<Hit>] {
     const workflowHits = [];
     const toolHits = [];
+    const notebookHits = [];
     hits.forEach((hit) => {
       hit['_source'] = this.providerService.setUpProvider(hit['_source']);
       if (workflowHits.length + toolHits.length < query_size - 1) {
@@ -334,18 +369,21 @@ export class SearchService {
           toolHits.push(hit);
         } else if (hit['_index'] === 'workflows') {
           workflowHits.push(hit);
+        } else if (hit['_index'] === 'notebooks') {
+          notebookHits.push(hit);
         }
       }
     });
-    return [toolHits, workflowHits];
+    return [toolHits, workflowHits, notebookHits];
   }
 
-  setHits(toolHits: Array<Hit>, workflowHits: Array<Hit>) {
+  setHits(toolHits: Array<Hit>, workflowHits: Array<Hit>, notebookHits: Array<Hit>) {
     this.searchStore.update((state) => {
       return {
         ...state,
         toolhit: toolHits,
         workflowhit: workflowHits,
+        notebookhit: notebookHits,
       };
     });
   }
@@ -600,33 +638,50 @@ export class SearchService {
   }
 
   // Initialization Functions
-  initializeCommonBucketStubs() {
-    return new Map(this.orderedFacetInfos.map((facetInfo) => [facetInfo.friendlyName, facetInfo.esName]));
+  initializeCommonBucketStubs(tabIndex: number) {
+    return new Map(this.getOrderedFacetInfos(tabIndex).map((facetInfo) => [facetInfo.friendlyName, facetInfo.esName]));
   }
 
-  initializeFriendlyNames() {
-    return new Map(this.orderedFacetInfos.map((facetInfo) => [facetInfo.esName, facetInfo.friendlyName]));
+  initializeFriendlyNames(tabIndex: number) {
+    return new Map(this.getOrderedFacetInfos(tabIndex).map((facetInfo) => [facetInfo.esName, facetInfo.friendlyName]));
   }
 
-  initializeToolTips() {
+  initializeToolTips(tabIndex: number) {
     return new Map(
-      this.orderedFacetInfos.filter((facetInfo) => facetInfo.tooltip).map((facetInfo) => [facetInfo.esName, facetInfo.tooltip])
+      this.getOrderedFacetInfos(tabIndex)
+        .filter((facetInfo) => facetInfo.tooltip)
+        .map((facetInfo) => [facetInfo.esName, facetInfo.tooltip])
     );
   }
 
-  initializeEntryOrder() {
-    return new Map(this.orderedFacetInfos.map((facetInfo) => [facetInfo.esName, new SubBucket()]));
+  initializeEntryOrder(tabIndex: number) {
+    return new Map(this.getOrderedFacetInfos(tabIndex).map((facetInfo) => [facetInfo.esName, new SubBucket()]));
   }
 
   /**
    * Initialize expanded panels to default state or restore previous state from local storage
    */
-  initializeExpandedPanels() {
-    if (localStorage.getItem(this.expandedPanelsStorageKey)) {
-      return new Map<string, boolean>(JSON.parse(localStorage.getItem(this.expandedPanelsStorageKey)));
-    } else {
-      return new Map(this.orderedFacetInfos.map((facetInfo) => [facetInfo.esName, facetInfo.initiallyExpanded]));
+  initializeExpandedPanels(tabIndex: number) {
+    // Use the "canned" facet information to determine which panels should be expanded
+    const expandedPanels = new Map(this.getOrderedFacetInfos(tabIndex).map((facetInfo) => [facetInfo.esName, facetInfo.initiallyExpanded]));
+    // Override with any stored values
+    const storedValue = localStorage.getItem(this.expandedPanelsStorageKey);
+    if (storedValue) {
+      const storedMap = new Map<string, boolean>(JSON.parse(storedValue));
+      storedMap.forEach((expanded: boolean, key: string) => expandedPanels.set(key, expanded));
     }
+    return expandedPanels;
+  }
+
+  /**
+   * Generate a list of terms which use "must" filters
+   * Example: Results returned can be private or public but never both
+   * @memberof SearchService
+   */
+  initializeExclusiveFilters(tabIndex: number): Array<string> {
+    return this.getOrderedFacetInfos(tabIndex)
+      .filter((facetInfo) => facetInfo.exclusive)
+      .map((facetInfo) => facetInfo.esName);
   }
 
   // Functions called from HTML
@@ -651,14 +706,14 @@ export class SearchService {
   /**
    * Returns true if basic search has no results
    */
-  noResults(searchTerm: boolean, hits: any) {
+  noResults(searchTerm: boolean, hits: Hit[]) {
     return searchTerm && hits && hits.length === 0;
   }
 
   /**
    * Returns true if basic search has results
    */
-  hasResults(searchTerm: boolean, hits: any) {
+  hasResults(searchTerm: boolean, hits: Hit[]) {
     return searchTerm && hits && hits.length > 0;
   }
 

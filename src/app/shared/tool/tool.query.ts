@@ -18,7 +18,7 @@ import { QueryEntity } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { DockstoreTool } from '../swagger';
+import { DockstoreTool } from '../openapi';
 import { ToolState, ToolStore } from './tool.store';
 
 @Injectable({

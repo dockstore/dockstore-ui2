@@ -36,11 +36,13 @@ import { QueryBuilderService } from './query-builder.service';
 import { SearchResultsComponent } from './search-results/search-results.component';
 import { SearchToolTableComponent } from './search-tool-table/search-tool-table.component';
 import { SearchWorkflowTableComponent } from './search-workflow-table/search-workflow-table.component';
+import { SearchNotebookTableComponent } from './search-notebook-table/search-notebook-table.component';
 import { SearchComponent } from './search.component';
 import { searchRouting } from './search.routing';
 import { SearchService } from './state/search.service';
 import { PreviewWarningModule } from '../shared/modules/preview-warning.module';
 import { SearchAuthorsHtmlPipe } from './search-authors-html.pipe';
+import { JoinWithEllipsesPipe } from './join-with-ellipses.pipe';
 
 @NgModule({
   declarations: [
@@ -49,6 +51,7 @@ import { SearchAuthorsHtmlPipe } from './search-authors-html.pipe';
     SearchResultsComponent,
     SearchToolTableComponent,
     SearchWorkflowTableComponent,
+    SearchNotebookTableComponent,
     BasicSearchComponent,
     IsAppToolPipe,
   ],
@@ -71,7 +74,7 @@ import { SearchAuthorsHtmlPipe } from './search-authors-html.pipe';
     TagCloudComponent,
     PreviewWarningModule,
   ],
-  providers: [SearchService, QueryBuilderService, SearchAuthorsHtmlPipe],
+  providers: [SearchService, QueryBuilderService, SearchAuthorsHtmlPipe, JoinWithEllipsesPipe],
   exports: [SearchComponent, IsAppToolPipe],
 })
 export class SearchModule {}

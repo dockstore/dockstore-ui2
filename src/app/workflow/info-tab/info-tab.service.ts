@@ -25,9 +25,9 @@ import { DescriptorLanguageService } from '../../shared/entry/descriptor-languag
 import { ExtendedWorkflow } from '../../shared/models/ExtendedWorkflow';
 import { ExtendedWorkflowQuery } from '../../shared/state/extended-workflow.query';
 import { WorkflowService } from '../../shared/state/workflow.service';
-import { ToolDescriptor } from '../../shared/swagger';
-import { WorkflowsService } from '../../shared/swagger/api/workflows.service';
-import { Workflow } from '../../shared/swagger/model/workflow';
+import { ToolDescriptor } from '../../shared/openapi';
+import { WorkflowsService } from '../../shared/openapi/api/workflows.service';
+import { Workflow } from '../../shared/openapi/model/workflow';
 
 @Injectable()
 export class InfoTabService {
@@ -111,7 +111,7 @@ export class InfoTabService {
     const partialEntryForUpdate = this.getPartialEntryForUpdate(workflow);
     this.workflowsService.updateWorkflow(workflow.id, partialEntryForUpdate).subscribe((response) => {
       this.alertService.start('Updating ' + message);
-      this.workflowsService.refresh(workflow.id).subscribe(
+      this.workflowsService.refresh1(workflow.id).subscribe(
         (refreshResponse) => {
           this.workflowService.upsertWorkflowToWorkflow(refreshResponse);
           this.workflowService.setWorkflow(refreshResponse);
@@ -218,10 +218,18 @@ export class InfoTabService {
   getTRSLink(path: string, versionName: string, descriptorType: string, descriptorPath: string, entryType: EntryType): string {
     return (
       `${Dockstore.API_URI}${ga4ghPath}/tools/${encodeURIComponent(this.getTRSIDFromPath(path, entryType))}` +
-      `/versions/${encodeURIComponent(versionName)}/PLAIN_` +
-      descriptorType.toUpperCase() +
+      `/versions/${encodeURIComponent(versionName)}/` +
+      this.getTRSPlainType(descriptorType) +
       `/descriptor/` +
       descriptorPath
+    );
+  }
+
+  getTRSPlainType(dockstoreDescriptorType: string): string {
+    const trsDescriptorType = this.descriptorTypeCompatService.stringToDescriptorType(dockstoreDescriptorType);
+    return (
+      this.descriptorTypeCompatService.toolDescriptorTypeEnumToPlainTRS(trsDescriptorType) ??
+      `PLAIN_${dockstoreDescriptorType.toUpperCase()}`
     );
   }
 

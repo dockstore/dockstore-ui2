@@ -1,7 +1,7 @@
 import { Component, Input, Output, EventEmitter, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { AlertQuery } from '../alert/state/alert.query';
 import { RefreshService } from '../refresh.service';
-import { DockstoreTool, Tag } from '../swagger';
+import { DockstoreTool, Tag } from '../openapi';
 import { EntryActionsComponent } from './entry-actions.component';
 import { EntryActionsService } from './entry-actions.service';
 
@@ -48,5 +48,13 @@ export class ToolActionsComponent extends EntryActionsComponent implements OnIni
    */
   refresh() {
     this.refreshService.refreshTool();
+  }
+
+  archive() {
+    this.entryActionsService.archiveEntry(this.tool);
+  }
+
+  unarchive() {
+    this.entryActionsService.unarchiveEntry(this.tool);
   }
 }

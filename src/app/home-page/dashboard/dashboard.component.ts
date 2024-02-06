@@ -5,8 +5,9 @@ import { RegisterToolService } from 'app/container/register-tool/register-tool.s
 import { MatDialog } from '@angular/material/dialog';
 import { RegisterToolComponent } from 'app/container/register-tool/register-tool.component';
 import { AlertService } from 'app/shared/alert/state/alert.service';
-import { TwitterService } from 'app/shared/twitter.service';
 import { Dockstore } from 'app/shared/dockstore.model';
+import { bootstrap4largeModalSize } from '../../shared/constants';
+import { EntryType } from '../../shared/openapi';
 
 @Component({
   selector: 'app-dashboard',
@@ -16,20 +17,14 @@ import { Dockstore } from 'app/shared/dockstore.model';
 export class DashboardComponent extends Base implements OnInit {
   public Dockstore = Dockstore;
   @ViewChild('twitter') twitterElement: ElementRef;
-  constructor(
-    private registerToolService: RegisterToolService,
-    private dialog: MatDialog,
-    private alertService: AlertService,
-    private twitterService: TwitterService
-  ) {
+  constructor(private registerToolService: RegisterToolService, private dialog: MatDialog, private alertService: AlertService) {
     super();
   }
 
   ngOnInit() {
-    this.loadTwitterWidget();
     this.registerToolService.isModalShown.pipe(takeUntil(this.ngUnsubscribe)).subscribe((isModalShown: boolean) => {
       if (isModalShown) {
-        const dialogRef = this.dialog.open(RegisterToolComponent, { width: '500px' });
+        const dialogRef = this.dialog.open(RegisterToolComponent, { width: bootstrap4largeModalSize });
         dialogRef
           .afterClosed()
           .pipe(takeUntil(this.ngUnsubscribe))
@@ -43,15 +38,5 @@ export class DashboardComponent extends Base implements OnInit {
     });
   }
 
-  private loadTwitterWidget() {
-    this.twitterService
-      .loadScript()
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(
-        () => {
-          this.twitterService.createTimeline(this.twitterElement, 2);
-        },
-        (error) => console.error(error)
-      );
-  }
+  protected readonly EntryType = EntryType;
 }

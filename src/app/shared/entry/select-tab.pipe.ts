@@ -18,7 +18,7 @@ import { OrgToolObject } from '../../mytools/my-tool/my-tool.component';
 import { OrgWorkflowObject } from '../../myworkflows/my-workflow/my-workflow.component';
 import { ExtendedDockstoreTool } from '../models/ExtendedDockstoreTool';
 import { ExtendedWorkflow } from '../models/ExtendedWorkflow';
-import { DockstoreTool, Entry, Workflow } from '../swagger';
+import { DockstoreTool, Entry, Workflow } from '../openapi';
 
 @Pipe({
   name: 'selectTab',
@@ -38,14 +38,31 @@ export class SelectTabPipe implements PipeTransform {
   transform(orgEntriesObject: OrgToolObject<DockstoreTool> | OrgWorkflowObject<Workflow>, entryId: number): number {
     const publishedEntries: Array<ExtendedDockstoreTool | ExtendedWorkflow> = orgEntriesObject.published;
     const unpublishedEntries: Array<ExtendedDockstoreTool | ExtendedWorkflow> = orgEntriesObject.unpublished;
+    const archivedEntries: Array<ExtendedDockstoreTool | ExtendedWorkflow> = orgEntriesObject.archived;
     const publishedIndex = 0;
     const unpublishedIndex = 1;
+    const archivedIndex = 2;
 
-    // The selected entry is in the unpublished tab, or there are no published entries
-    if (unpublishedEntries.find((entry: Entry) => entry.id === entryId) || publishedEntries.length === 0) {
+    if (publishedEntries.find((entry: Entry) => entry.id === entryId)) {
+      return publishedIndex;
+    }
+    if (unpublishedEntries.find((entry: Entry) => entry.id === entryId)) {
       return unpublishedIndex;
     }
-    // Entry is in the published tab, or the entry wasn't in the unpublished tab and published entries exist
-    return publishedIndex;
+    if (archivedEntries.find((entry: Entry) => entry.id === entryId)) {
+      return archivedIndex;
+    }
+
+    if (publishedEntries.length) {
+      return publishedIndex;
+    }
+    if (unpublishedEntries.length) {
+      return unpublishedIndex;
+    }
+    if (archivedEntries.length) {
+      return archivedIndex;
+    }
+
+    return unpublishedIndex;
   }
 }

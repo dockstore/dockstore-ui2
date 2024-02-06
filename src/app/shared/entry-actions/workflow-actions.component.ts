@@ -1,4 +1,5 @@
 import { Component, Input, Output, EventEmitter, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { AlertQuery } from '../alert/state/alert.query';
 import { ga4ghServiceIdPrefix, ga4ghWorkflowIdPrefix } from '../constants';
@@ -6,10 +7,12 @@ import { EntryType } from '../enum/entry-type';
 import { RefreshService } from '../refresh.service';
 import { SessionQuery } from '../session/session.query';
 import { TokenQuery } from '../state/token.query';
-import { BioWorkflow, Service, Notebook, WorkflowVersion } from '../swagger';
-import { Workflow } from '../swagger/model/workflow';
+import { BioWorkflow, Service, Notebook, WorkflowVersion } from '../openapi';
+import { Workflow } from '../openapi/model/workflow';
 import { EntryActionsComponent } from './entry-actions.component';
 import { EntryActionsService } from './entry-actions.service';
+import { DeleteEntryDialogComponent } from '../../entry/delete/dialog/delete-entry-dialog.component';
+import { bootstrap4largeModalSize } from '../../shared/constants';
 
 @Component({
   selector: 'app-workflow-actions',
@@ -31,7 +34,8 @@ export class WorkflowActionsComponent extends EntryActionsComponent implements O
     protected alertQuery: AlertQuery,
     private tokenQuery: TokenQuery,
     private refreshService: RefreshService,
-    private sessionQuery: SessionQuery
+    private sessionQuery: SessionQuery,
+    public dialog: MatDialog
   ) {
     super(alertQuery, entryActionsService);
     this.zenodoAccountIsLinked$ = this.tokenQuery.hasZenodoToken$;
@@ -64,5 +68,17 @@ export class WorkflowActionsComponent extends EntryActionsComponent implements O
     const versionName = this.selectedVersion ? this.selectedVersion.name : null;
     const prefix = this.sessionQuery.getValue().entryType === EntryType.Service ? ga4ghServiceIdPrefix : ga4ghWorkflowIdPrefix;
     this.refreshService.refreshWorkflow(prefix + this.workflow.full_workflow_path, versionName);
+  }
+
+  delete() {
+    this.dialog.open(DeleteEntryDialogComponent, { width: bootstrap4largeModalSize, data: this.workflow });
+  }
+
+  archive() {
+    this.entryActionsService.archiveEntry(this.workflow);
+  }
+
+  unarchive() {
+    this.entryActionsService.unarchiveEntry(this.workflow);
   }
 }

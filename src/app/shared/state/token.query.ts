@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { QueryEntity } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { TokenUser } from '../../shared/swagger/model/tokenUser';
+import { TokenUser } from '../../shared/openapi/model/tokenUser';
 import { TokenSource } from '../enum/token-source.enum';
 import { TokenState, TokenStore } from './token.store';
 

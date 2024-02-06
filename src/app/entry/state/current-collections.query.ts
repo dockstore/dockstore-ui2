@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { QueryEntity } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { CollectionOrganization } from '../../shared/swagger';
+import { CollectionOrganization } from '../../shared/openapi';
 import { CurrentCollectionsState, CurrentCollectionsStore } from './current-collections.store';
 
 @Injectable({

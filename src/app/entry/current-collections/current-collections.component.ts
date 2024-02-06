@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { AddEntryComponent } from '../../organizations/collection/add-entry/add-entry.component';
-import { CollectionOrganization } from '../../shared/swagger';
+import { CollectionOrganization, Tag, WorkflowVersion } from '../../shared/openapi';
 import { TrackLoginService } from '../../shared/track-login.service';
 import { CurrentCollectionsQuery } from '../state/current-collections.query';
 import { CurrentCollectionsService } from '../state/current-collections.service';
@@ -17,7 +17,7 @@ import { OrgLogoService } from '../../shared/org-logo.service';
 export class CurrentCollectionsComponent implements OnInit, OnChanges {
   @Input() id: number;
   // This is bad, should not have an input that's only passed down the chain
-  @Input() versions: Version[];
+  @Input() versions: WorkflowVersion[] | Tag[];
   currentCollections$: Observable<CollectionOrganization[]>;
   isLoading$: Observable<boolean>;
   isLoggedIn$: Observable<boolean>;

@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 import { AlertQuery } from '../../../shared/alert/state/alert.query';
 import { AlertService } from '../../../shared/alert/state/alert.service';
 import { TokenSource } from '../../../shared/enum/token-source.enum';
 import { TokenQuery } from '../../../shared/state/token.query';
-import { Profile, User } from '../../../shared/swagger';
-import { UsersService } from '../../../shared/swagger/api/users.service';
+import { Profile, User } from '../../../shared/openapi';
+import { UsersService } from '../../../shared/openapi/api/users.service';
 import { UserQuery } from '../../../shared/user/user.query';
 import { UserService } from '../../../shared/user/user.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -24,6 +25,7 @@ export class AccountSidebarComponent implements OnInit {
   gitHubProfile: Profile;
   hasGitHubToken$: Observable<boolean>;
   hasGoogleToken$: Observable<boolean>;
+  syncing = false;
   public isRefreshing$: Observable<boolean>;
   public syncBadgeGit: boolean = false;
   public syncBadgeGoogle: boolean = false;
@@ -50,21 +52,25 @@ export class AccountSidebarComponent implements OnInit {
    */
   sync(service: TokenSource.GOOGLE | TokenSource.GITHUB) {
     this.alertService.start('Updating user metadata');
-    this.usersService.updateLoggedInUserMetadata(service).subscribe(
-      (user: User) => {
-        this.userService.updateUser(user);
-        this.alertService.simpleSuccess();
-        if (service === TokenSource.GITHUB) {
-          this.syncBadgeGit = true;
+    this.syncing = true;
+    this.usersService
+      .updateLoggedInUserMetadata(service)
+      .pipe(finalize(() => (this.syncing = false)))
+      .subscribe(
+        (user: User) => {
+          this.userService.updateUser(user);
+          this.alertService.simpleSuccess();
+          if (service === TokenSource.GITHUB) {
+            this.syncBadgeGit = true;
+          }
+          if (service === TokenSource.GOOGLE) {
+            this.syncBadgeGoogle = true;
+          }
+        },
+        (error) => {
+          this.alertService.simpleError();
         }
-        if (service === TokenSource.GOOGLE) {
-          this.syncBadgeGoogle = true;
-        }
-      },
-      (error) => {
-        this.alertService.simpleError();
-      }
-    );
+      );
   }
 
   private getUser() {

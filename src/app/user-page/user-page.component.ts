@@ -1,34 +1,45 @@
 import { Component, OnInit } from '@angular/core';
 import { TokenSource } from '../shared/enum/token-source.enum';
-import { Profile } from '../shared/swagger';
-import { UsersService } from '../shared/swagger/api/users.service';
+import { Profile, TokenUser, User } from '../shared/openapi';
+import { UsersService } from '../shared/openapi/api/users.service';
 import { UserService } from '../shared/user/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AlertService } from '../shared/alert/state/alert.service';
+import { GithubAppsLogsComponent } from '../myworkflows/sidebar-accordion/github-apps-logs/github-apps-logs.component';
+import { accountInfo, bootstrap4extraLargeModalSize } from '../shared/constants';
+import { MatDialog } from '@angular/material/dialog';
+import { UserQuery } from '../shared/user/user.query';
+import { Base } from '../shared/base';
+import { AccountInfo } from '../loginComponents/accounts/external/accounts.component';
 
 @Component({
   selector: 'app-user-page',
   templateUrl: './user-page.component.html',
   styleUrls: ['./user-page.component.scss'],
 })
-export class UserPageComponent implements OnInit {
-  public user: any;
-  public username: string;
+export class UserPageComponent extends Base implements OnInit {
+  public user: User;
   public TokenSource = TokenSource;
   public googleProfile: Profile;
   public gitHubProfile: Profile;
-  protected ngUnsubscribe: Subject<{}> = new Subject();
+  public loggedInUserIsAdminOrCurator: boolean;
+  protected otherLinkedAccountsInfo: AccountInfo[] = [];
+  accountsInfo: Array<AccountInfo> = accountInfo;
+  //these type of accounts are visible to everyone on their userpage
+  private publicAccountsSource: TokenSource[] = [TokenSource.GITHUB, TokenSource.GOOGLE, TokenSource.ORCID];
+
   constructor(
+    public dialog: MatDialog,
     private userService: UserService,
     private usersService: UsersService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private userQuery: UserQuery
   ) {
-    this.username = this.activatedRoute.snapshot.paramMap.get('username');
+    super();
   }
 
   getUserInfo(username: string): void {
@@ -51,6 +62,7 @@ export class UserPageComponent implements OnInit {
               this.gitHubProfile.avatarURL = this.userService.gravatarUrl(this.gitHubProfile.avatarURL);
             }
           }
+          this.getOtherLinkedAccounts();
         }
       },
       (error: HttpErrorResponse) => {
@@ -60,7 +72,29 @@ export class UserPageComponent implements OnInit {
     );
   }
 
+  openGitHubAppsLogs(userId: number) {
+    this.dialog.open(GithubAppsLogsComponent, { width: bootstrap4extraLargeModalSize, data: { userId: userId } });
+  }
+
+  getOtherLinkedAccounts() {
+    this.otherLinkedAccountsInfo = [];
+    this.usersService
+      .getUserTokens(this.user.id)
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((tokens: TokenUser[]) => {
+        for (const account of this.accountsInfo) {
+          const found = tokens.find((token) => token.tokenSource === account.source);
+          if (found && !this.publicAccountsSource.includes(account.source)) {
+            this.otherLinkedAccountsInfo.push(Object.assign({ username: found.username }, account));
+          }
+        }
+      });
+  }
+
   ngOnInit(): void {
-    this.getUserInfo(this.username);
+    this.activatedRoute.params.pipe(takeUntil(this.ngUnsubscribe)).subscribe((params) => this.getUserInfo(params['username']));
+    this.userQuery.isAdminOrCurator$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((isAdminOrCurator) => {
+      this.loggedInUserIsAdminOrCurator = isAdminOrCurator;
+    });
   }
 }

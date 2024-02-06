@@ -20,6 +20,11 @@ describe('GravatarService', () => {
     const gravatarUrlForImageUrl = service.gravatarUrlForImageUrl('https://foo.com');
     expect(gravatarUrlForImageUrl.endsWith(encodeURIComponent('https://foo.com'))).toBeTrue();
     expect(gravatarUrlForImageUrl.startsWith(service.gravatarBaseUrl)).toBeTrue();
+
+    const mysteryPersonAvatar = service.gravatarUrlForMysteryPerson();
+    expect(mysteryPersonAvatar).toContain('d=mp');
+    expect(mysteryPersonAvatar.startsWith(service.gravatarBaseUrl)).toBeTrue();
+
     const emailAvatar = service.gravatarUrlForEmail('foo@goo.com', 'https://foo.com');
     // email hashified
     expect(emailAvatar.indexOf('foo@goo.com')).toBe(-1);

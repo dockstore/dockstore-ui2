@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-import { goToTab, insertNotebooks, resetDB, setTokenUserViewPort } from '../../support/commands';
+import { goToTab, insertNotebooks, resetDB, setTokenUserViewPort, snapshot } from '../../support/commands';
 
 describe('Dockstore notebooks', () => {
   resetDB();
@@ -82,19 +82,39 @@ describe('Dockstore notebooks', () => {
     cy.get('[data-cy=versionRow]').contains(/jupyter/i);
     // Click on Info button and check content.
     cy.get('[data-cy=versionRow] button').click();
-    cy.get('input[name=reference]').should('have.value', 'simple-published-v1');
-    cy.get('input[name=workflow_path]').should('have.value', '/notebook.ipynb');
+    cy.get('.label-value').contains('simple-published-v1');
+    cy.get('.label-value').contains('/notebook.ipynb');
   });
 
   it('should have Files tab', () => {
     cy.visit('/notebooks/' + name);
     goToTab('Files');
     // Check for notebook file name and some notebook-specific json content.
-    cy.get('app-source-file-tabs').contains('Primary');
     cy.get('app-source-file-tabs').contains('/notebook.ipynb');
     cy.get('app-source-file-tabs').contains('"nbformat"');
   });
 
+  it('should have my-notebooks page', () => {
+    cy.visit('/my-notebooks/' + name);
+    // Check the labels on the tabs.
+    cy.get('.mat-tab-list').contains('Info');
+    cy.get('.mat-tab-list').contains('Preview');
+    cy.get('.mat-tab-list').contains('Versions');
+    cy.get('.mat-tab-list').contains('Files');
+    // Should initially display the Info tab.
+    // Check for some key information.
+    cy.contains(name);
+    cy.contains(/Notebook/i);
+    cy.contains(/Format/i);
+    cy.contains(/Jupyter/i);
+    cy.contains(/Programming Language/i);
+    cy.contains(/Python/i);
+    cy.contains(/Export as ZIP/i);
+    cy.contains(/Author One/i);
+    cy.contains(/Author Two/i);
+    // Check for view public page button
+    cy.get('[data-cy=viewPublicWorkflowButton]').should('be.visible').click();
+  });
   it('should have Preview tab with formatted TeX equations', () => {
     substituteNotebookContent(['{ "cell_type": "markdown", "source": "$\\\\frac{123}{x}$" }']);
     cy.visit('/notebooks/' + name);
@@ -105,6 +125,12 @@ describe('Dockstore notebooks', () => {
     cy.get('.markdown').contains('\\frac{123}{x}').should('not.exist');
   });
 
+  it('should be able to snapshot', () => {
+    cy.visit('/my-notebooks/' + name);
+    goToTab('Versions');
+    cy.get('td').contains('Actions').click();
+    snapshot();
+  });
   it('should have Preview tab with highlighted syntax', () => {
     substituteNotebookContent(['{ "cell_type": "code", "source": [ "import xyz;" ] }']);
     cy.visit('/notebooks/' + name);

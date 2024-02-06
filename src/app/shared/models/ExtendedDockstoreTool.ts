@@ -1,5 +1,5 @@
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
-import { DockstoreTool } from './../swagger/model/dockstoreTool';
+import { DockstoreTool } from './../openapi/model/dockstoreTool';
 
 export interface ExtendedDockstoreTool extends DockstoreTool {
   agoMessage?: string;

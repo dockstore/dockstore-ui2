@@ -21,8 +21,8 @@ import { Base } from '../../shared/base';
 import { ContainerService } from '../../shared/container.service';
 import { ExtendedDockstoreToolQuery } from '../../shared/extended-dockstoreTool/extended-dockstoreTool.query';
 import { ExtendedDockstoreTool } from '../../shared/models/ExtendedDockstoreTool';
-import { ContainersService } from '../../shared/swagger/api/containers.service';
-import { DockstoreTool } from '../../shared/swagger/model/dockstoreTool';
+import { ContainersService } from '../../shared/openapi/api/containers.service';
+import { DockstoreTool } from '../../shared/openapi/model/dockstoreTool';
 
 @Injectable()
 export class InfoTabService extends Base {

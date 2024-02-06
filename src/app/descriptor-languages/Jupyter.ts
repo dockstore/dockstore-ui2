@@ -1,11 +1,11 @@
 import { ExtendedDescriptorLanguageBean } from 'app/entry/extendedDescriptorLanguage';
-import { SourceFile, ToolDescriptor, Workflow } from 'app/shared/swagger';
+import { SourceFile, ToolDescriptor, Workflow } from 'app/shared/openapi';
 import { Dockstore } from '../shared/dockstore.model';
 
 const JUPYTER_DOCUMENTATION_URL = Dockstore.DOCUMENTATION_URL + '/getting-started/getting-started-with-notebooks.html';
 
 export const extendedJupyter: ExtendedDescriptorLanguageBean = {
-  descriptorLanguageEnum: 'JUPYTER',
+  descriptorLanguageEnum: 'jupyter',
   value: 'jupyter',
   shortFriendlyName: 'Jupyter',
   friendlyName: 'Jupyter notebook',
@@ -15,8 +15,8 @@ export const extendedJupyter: ExtendedDescriptorLanguageBean = {
   toolDescriptorEnum: ToolDescriptor.TypeEnum.JUPYTER,
   workflowDescriptorEnum: Workflow.DescriptorTypeEnum.Jupyter,
   languageDocumentationURL: JUPYTER_DOCUMENTATION_URL,
-  plainTRS: null,
-  descriptorFileTypes: [],
+  plainTRS: 'PLAIN_JUPYTER',
+  descriptorFileTypes: [SourceFile.TypeEnum.DOCKSTOREJUPYTER],
   toolTab: {
     rowIdentifier: 'tool\xa0ID',
     workflowStepHeader: 'Notebook',
@@ -26,15 +26,23 @@ export const extendedJupyter: ExtendedDescriptorLanguageBean = {
   fileTabs: [
     {
       tabName: 'Notebook Files',
-      fileTypes: [SourceFile.TypeEnum.DOCKSTOREJUPYTER, SourceFile.TypeEnum.DOCKSTORENOTEBOOKOTHER],
+      fileTypes: [SourceFile.TypeEnum.DOCKSTOREJUPYTER],
+    },
+    {
+      tabName: 'Configuration Files',
+      fileTypes: [
+        SourceFile.TypeEnum.DOCKSTOREYML,
+        SourceFile.TypeEnum.DOCKSTORENOTEBOOKREES,
+        SourceFile.TypeEnum.DOCKSTORENOTEBOOKDEVCONTAINER,
+      ],
     },
     {
       tabName: 'Test Files',
       fileTypes: [SourceFile.TypeEnum.DOCKSTORENOTEBOOKTESTFILE],
     },
     {
-      tabName: 'Configuration Files',
-      fileTypes: [SourceFile.TypeEnum.DOCKSTORENOTEBOOKREES],
+      tabName: 'Other Files',
+      fileTypes: [SourceFile.TypeEnum.DOCKSTORENOTEBOOKOTHER],
     },
   ],
 };

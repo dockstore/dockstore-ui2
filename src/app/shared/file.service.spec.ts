@@ -32,7 +32,7 @@ import {
 import { ga4ghPath } from './constants';
 import { Dockstore } from './dockstore.model';
 import { FileService } from './file.service';
-import { ToolDescriptor } from './swagger';
+import { ToolDescriptor } from './openapi';
 
 describe('FileService', () => {
   beforeEach(() => {
