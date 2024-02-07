@@ -1,25 +1,19 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { DatePipe } from '@angular/common';
 import { AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
 import { AlertService } from 'app/shared/alert/state/alert.service';
 import { LambdaEvent, LambdaEventsService } from 'app/shared/openapi';
-import { debounceTime, distinctUntilChanged, finalize, takeUntil, tap } from 'rxjs/operators';
-import { MapFriendlyValuesPipe } from '../../../search/map-friendly-values.pipe';
-import { BehaviorSubject, fromEvent, merge, Observable } from 'rxjs';
-import { formInputDebounceTime } from '../../../shared/constants';
-import { HttpResponse } from '@angular/common/http';
-import { PaginatorService } from '../../../shared/state/paginator.service';
-import { PaginatorQuery } from '../../../shared/state/paginator.query';
+import { fromEvent, merge, Observable } from 'rxjs';
+import { debounceTime, distinctUntilChanged, takeUntil, tap } from 'rxjs/operators';
 import { Base } from '../../../shared/base';
+import { formInputDebounceTime } from '../../../shared/constants';
+import { PaginatorService } from '../../../shared/state/paginator.service';
+import { LambdaEventDataSource, ShowContent } from './lambda-events-datasource';
 
 /**
  * Based on https://material.angular.io/components/table/examples example with expandable rows
- * TODO: Add backend pagination
  * @export
  * @class GithubAppsLogsComponent
  * @implements {OnInit}
@@ -38,21 +32,17 @@ import { Base } from '../../../shared/base';
   ],
 })
 export class GithubAppsLogsComponent extends Base implements OnInit, AfterViewInit {
-  datePipe: DatePipe;
   columnsToDisplay: string[];
   displayedColumns: string[];
   lambdaEvents: LambdaEvent[] | null;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild('filter', { static: true }) filter: ElementRef;
-  loading = true;
   public LambdaEvent = LambdaEvent;
-  dataSource: MatTableDataSource<LambdaEvent> = new MatTableDataSource();
   expandedElement: LambdaEvent | null;
-  showContent: 'table' | 'error' | 'empty' | 'noResult' | null;
+  public showContent$: Observable<ShowContent>;
+  public eventsLength$: Observable<number>;
   type: 'workflow' | 'tool' | 'lambdaEvent' = 'lambdaEvent';
-  private eventsSubject$ = new BehaviorSubject<LambdaEvent[]>([]);
-  public eventsLength$ = new BehaviorSubject<number>(0);
 
   public pageSize$: Observable<number>;
   public pageIndex$: Observable<number>;
@@ -61,57 +51,44 @@ export class GithubAppsLogsComponent extends Base implements OnInit, AfterViewIn
   private pageFilter: string;
 
   isExpansionDetailRow = (i: number, row: Object) => row.hasOwnProperty('detailRow');
+  public dataSource: LambdaEventDataSource;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public matDialogData: { userId?: number; organization?: string },
     private paginatorService: PaginatorService,
     private lambdaEventsService: LambdaEventsService,
-    private matSnackBar: MatSnackBar,
-    private mapPipe: MapFriendlyValuesPipe,
-    private paginatorQuery: PaginatorQuery
+    private alertService: AlertService
   ) {
     super();
-    this.datePipe = new DatePipe('en');
-    const defaultPredicate = this.dataSource.filterPredicate;
-    this.dataSource.filterPredicate = (data, filter) => {
-      const formattedDate = this.datePipe.transform(data.eventDate, 'yyyy-MM-ddTHH:mm').toLowerCase();
-      const formattedStatus = this.mapPipe.transform('success', String(data.success)).toLowerCase();
-      return formattedDate.indexOf(filter) >= 0 || formattedStatus.indexOf(filter) >= 0 || defaultPredicate(data, filter);
-    };
   }
 
   ngOnInit() {
+    this.dataSource = new LambdaEventDataSource(this.lambdaEventsService);
+    this.showContent$ = this.dataSource.showContent$;
+    this.eventsLength$ = this.dataSource.eventsLength$;
     this.columnsToDisplay = this.matDialogData.userId
       ? ['organization', 'repository', 'entryName', 'deliveryId', 'reference', 'success', 'type']
       : ['repository', 'entryName', 'deliveryId', 'reference', 'success', 'type'];
     this.displayedColumns = ['eventDate', 'githubUsername', ...this.columnsToDisplay];
-    this.loading = true;
   }
 
   ngAfterViewInit() {
+    this.dataSource.events$
+      .pipe(takeUntil(this.ngUnsubscribe))
+      // Subscribe to errors only here; The MatTable listens to events LambdaEventsDataSource.connect
+      .subscribe({ error: (error) => this.alertService.detailedError(error) });
     this.loadAppsLogs();
   }
 
   loadAppsLogs() {
-    this.dataSource.sort = this.sort;
-    this.pageSize$ = this.paginatorQuery.eventPageSize$;
-    this.pageIndex$ = this.paginatorQuery.eventPageIndex$;
-
-    // Initial load
-    this.loadEvents(this.paginator.pageIndex * this.paginator.pageSize, this.paginator.pageSize, null, null, null);
+    this.loadEvents();
     this.paginatorService.setPaginator(this.type, this.paginator.pageSize, this.paginator.pageIndex);
 
     // Handle paginator changes
     merge(this.paginator.page)
-      .pipe(distinctUntilChanged())
+      .pipe(distinctUntilChanged(), takeUntil(this.ngUnsubscribe))
       .subscribe(() => {
-        this.loadEvents(
-          this.paginator.pageIndex * this.paginator.pageSize, // set offset to the new pageIndex * the page size
-          this.paginator.pageSize,
-          this.pageFilter,
-          this.mapSortOrder(this.sortDirection),
-          this.sortCol
-        );
+        this.loadEvents();
         this.paginatorService.setPaginator(this.type, this.paginator.pageSize, this.paginator.pageIndex);
       });
 
@@ -133,13 +110,7 @@ export class GithubAppsLogsComponent extends Base implements OnInit, AfterViewIn
         takeUntil(this.ngUnsubscribe)
       )
       .subscribe(() => {
-        this.loadEvents(
-          this.paginator.pageIndex,
-          this.paginator.pageSize,
-          this.pageFilter,
-          this.mapSortOrder(this.sortDirection),
-          this.sortCol
-        );
+        this.loadEvents();
       });
 
     // Handle input text field changes
@@ -155,72 +126,20 @@ export class GithubAppsLogsComponent extends Base implements OnInit, AfterViewIn
         takeUntil(this.ngUnsubscribe)
       )
       .subscribe(() => {
-        this.loadEvents(
-          this.paginator.pageIndex,
-          this.paginator.pageSize,
-          this.pageFilter,
-          this.mapSortOrder(this.sortDirection),
-          this.sortCol
-        );
+        this.loadEvents();
       });
   }
 
-  loadEvents(pageIndex: number, pageSize: number, filter: string, sortDirection: string, sortCol: string) {
-    const filtered = filter?.length > 0;
-    let lambdaEvents: Observable<HttpResponse<LambdaEvent[]>>;
-    if (this.matDialogData.userId) {
-      lambdaEvents = this.lambdaEventsService.getUserLambdaEvents(
-        this.matDialogData.userId,
-        pageIndex,
-        pageSize,
-        filter,
-        sortCol,
-        sortDirection,
-        'response'
-      );
-    } else {
-      lambdaEvents = this.lambdaEventsService.getLambdaEventsByOrganization(
-        this.matDialogData.organization,
-        pageIndex,
-        pageSize,
-        filter,
-        sortCol,
-        sortDirection,
-        'response'
-      );
-    }
-    lambdaEvents
-      .pipe(
-        finalize(() => {
-          this.loading = false;
-          this.updateContentToShow(this.lambdaEvents, filtered);
-        })
-      )
-      .subscribe(
-        (lambdaEvents) => {
-          this.eventsSubject$.next((this.lambdaEvents = lambdaEvents.body));
-          this.eventsLength$.next(Number(lambdaEvents.headers.get('X-total-count')));
-        },
-        (error) => {
-          this.lambdaEvents = null;
-          this.dataSource.data = [];
-          const detailedErrorMessage = AlertService.getDetailedErrorMessage(error);
-          this.matSnackBar.open(detailedErrorMessage);
-        }
-      );
-  }
-
-  updateContentToShow(lambdaEvents: LambdaEvent[] | null, filtered: boolean) {
-    this.dataSource.data = lambdaEvents ? lambdaEvents : [];
-    if (!lambdaEvents) {
-      this.showContent = 'error';
-    } else if (lambdaEvents.length === 0 && !filtered) {
-      this.showContent = 'empty';
-    } else if (lambdaEvents.length === 0 && filtered) {
-      this.showContent = 'noResult';
-    } else {
-      this.showContent = 'table';
-    }
+  private loadEvents() {
+    this.dataSource.loadEvents(
+      this.paginator.pageIndex * this.paginator.pageSize,
+      this.paginator.pageSize,
+      this.pageFilter,
+      this.mapSortOrder(this.sortDirection),
+      this.sortCol,
+      this.matDialogData.userId,
+      this.matDialogData.organization
+    );
   }
 
   mapSortOrder(rawSortOrder: string): 'asc' | 'desc' {
@@ -230,12 +149,10 @@ export class GithubAppsLogsComponent extends Base implements OnInit, AfterViewIn
         direction = 'asc';
         break;
       }
-      case 'desc': {
-        direction = 'desc';
-        break;
-      }
+      case 'desc':
       default: {
         direction = 'desc';
+        break;
       }
     }
     return direction;
