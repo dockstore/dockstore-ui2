@@ -166,7 +166,7 @@ describe('Dockstore my workflows', () => {
         },
       });
       cy.get('[data-cy=apps-logs-filter]').type(entry1);
-      // cy.contains('2020-02-20T02:20');
+      cy.contains('2020-02-20T02:20');
       cy.contains('1 – 1 of 1');
       cy.contains('Close').click();
     });
