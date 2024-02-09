@@ -17,7 +17,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { MatIconModule } from '@angular/material/icon';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 import { ContainerService } from '../../../shared/container.service';
 import { StarOrganizationService } from '../../../shared/star-organization.service';
 import { StarentryService } from '../../../shared/starentry.service';

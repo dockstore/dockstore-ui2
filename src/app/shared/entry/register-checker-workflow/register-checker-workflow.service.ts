@@ -15,7 +15,7 @@
  */
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { BehaviorSubject, merge as observableMerge, Observable } from 'rxjs';
 import { filter, first } from 'rxjs/operators';
 import { AlertService } from '../../alert/state/alert.service';

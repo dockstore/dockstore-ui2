@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { Observable } from 'rxjs';
 import { AlertQuery } from '../alert/state/alert.query';
 import { ga4ghServiceIdPrefix, ga4ghWorkflowIdPrefix } from '../constants';

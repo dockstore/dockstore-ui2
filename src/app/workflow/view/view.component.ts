@@ -15,7 +15,7 @@
  */
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { RefreshService } from 'app/shared/refresh.service';
 import { BioWorkflow } from 'app/shared/openapi/model/bioWorkflow';

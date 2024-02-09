@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
 import { Observable } from 'rxjs';
 import { CollectionsService } from '../../state/collections.service';
 import { CollectionsQuery } from '../../state/collections.query';
@@ -25,11 +25,20 @@ import { CollectionsQuery } from '../../state/collections.query';
 })
 export class RemoveCollectionDialogComponent {
   public collectionsQueryLoading$: Observable<boolean>;
-  constructor(@Inject(MAT_DIALOG_DATA) public data: CollectionDialogData, private collectionsService: CollectionsService, private collectionsQuery: CollectionsQuery) {
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: CollectionDialogData,
+    private collectionsService: CollectionsService,
+    private collectionsQuery: CollectionsQuery
+  ) {
     this.collectionsQueryLoading$ = collectionsQuery.selectLoading();
   }
   removeCollection() {
-    this.collectionsService.deleteCollection(this.data.organizationId, this.data.collectionId, this.data.organizationName, this.data.collectionName);
+    this.collectionsService.deleteCollection(
+      this.data.organizationId,
+      this.data.collectionId,
+      this.data.organizationName,
+      this.data.collectionName
+    );
   }
 }
 

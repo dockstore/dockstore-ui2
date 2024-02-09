@@ -15,7 +15,7 @@
  */
 
 import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { AlertQuery } from 'app/shared/alert/state/alert.query';
 import { bootstrap4extraLargeModalSize } from 'app/shared/constants';
 import { EntryType } from 'app/shared/enum/entry-type';

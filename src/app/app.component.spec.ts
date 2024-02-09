@@ -3,7 +3,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { RouterLinkStubDirective, RouterOutletStubComponent } from './test/router-stubs';
 
 import { Component } from '@angular/core';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 import { AppComponent } from './app.component';
 import { TrackLoginService } from './shared/track-login.service';
 import { TosBannerStubService, TrackLoginStubService } from './test/service-stubs';

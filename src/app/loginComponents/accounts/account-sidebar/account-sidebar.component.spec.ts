@@ -4,7 +4,7 @@ import { AccountSidebarComponent } from './account-sidebar.component';
 import { CustomMaterialModule } from 'app/shared/modules/material.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { CommonModule } from '@angular/common';
-import { MatTableModule } from '@angular/material/table';
+import { MatLegacyTableModule as MatTableModule } from '@angular/material/legacy-table';
 import { UsersService } from '../../../shared/openapi/api/users.service';
 import { UserService } from '../../../shared/user/user.service';
 import { UsersStubService, UserStubService } from '../../../test/service-stubs';

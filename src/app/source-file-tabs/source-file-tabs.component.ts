@@ -1,8 +1,8 @@
 import { KeyValue } from '@angular/common';
 import { Component, Input, OnChanges } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { MatSelectChange } from '@angular/material/select';
-import { MatTabChangeEvent } from '@angular/material/tabs';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatLegacySelectChange as MatSelectChange } from '@angular/material/legacy-select';
+import { MatLegacyTabChangeEvent as MatTabChangeEvent } from '@angular/material/legacy-tabs';
 import { FileTreeComponent } from 'app/file-tree/file-tree.component';
 import { bootstrap4largeModalSize } from 'app/shared/constants';
 import { FileService } from 'app/shared/file.service';
