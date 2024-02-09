@@ -406,7 +406,7 @@ export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterVi
             workflowRegex.test(this.resourcePath) ||
             gitHubAppToolRegex.test(this.resourcePath)
           ) {
-            this.router.navigate(['page-not-found']);
+            this.router.navigate(['page-not-found'], { skipLocationChange: true });
           } else {
             this.showRedirect = true;
             // Retrieve the workflow path from the URL
@@ -434,7 +434,7 @@ export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterVi
       const entryPath = workflow.full_workflow_path;
       if (this.entryType === EntryType.BioWorkflow) {
         this.updateUrl(entryPath, myBioWorkflowsURLSegment, 'workflows', this.selectedVersion);
-      } else if (this.entryType === EntryType.Tool) {
+      } else if (this.entryType === EntryType.Tool || this.entryType === EntryType.AppTool) {
         this.updateUrl(entryPath, myToolsURLSegment, 'containers', this.selectedVersion);
       } else if (this.entryType === EntryType.Notebook) {
         this.updateUrl(entryPath, myNotebooksURLSegment, 'notebooks', this.selectedVersion);
@@ -522,11 +522,6 @@ export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterVi
   setEntryTab(tabName: string): void {
     this.currentTab = tabName;
     this.updateWorkflowUrl(this.workflow);
-  }
-
-  getPageIndex(): number {
-    const pageIndex = this.getIndexInURL('/workflows');
-    return pageIndex;
   }
 
   addToLabels(event: MatChipInputEvent): void {
