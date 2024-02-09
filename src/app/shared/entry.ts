@@ -412,11 +412,14 @@ export abstract class Entry<V extends WorkflowVersion | Tag> implements OnDestro
    * Will decode the URL
    * @return {void}
    */
-  decodeURL(type: string): void {
-    const url = decodeURIComponent(window.location.href);
-    const containersIndex = this.getIndexInURL('/' + type);
-    const newPath = url.substring(containersIndex);
-    this.location.replaceState(newPath);
+  decodeURL(): void {
+    let url = decodeURIComponent(window.location.href);
+    // Get decoded path by extracting substring of url, starting from third forward slash '/'
+    // This removes the HTTP/HTTPS domain name (e.g. https://dockstore.org) from the url
+    for (let i = 0; i < 3; i++) {
+      url = i < 2 ? url.substring(url.indexOf('/') + 1) : url.substring(url.indexOf('/'));
+    }
+    this.location.replaceState(url);
   }
 
   /**
@@ -442,11 +445,7 @@ export abstract class Entry<V extends WorkflowVersion | Tag> implements OnDestro
   redirectToCanonicalURL(myPage: string): void {
     if (this.getIndexInURL(myPage) === -1) {
       // Decode the URL
-      this.decodeURL(this._toolType);
-
-      // Get index of /containers or /workflows
-      // TODO: Not sure why getPageIndex() returns anything, but does need to get called to change URL.
-      this.getPageIndex();
+      this.decodeURL();
     }
   }
 
@@ -488,7 +487,6 @@ export abstract class Entry<V extends WorkflowVersion | Tag> implements OnDestro
    * Gets the index of /containers or /workflows from the URL
    * @return {number}
    */
-  abstract getPageIndex(): number;
 
   /**
    * Go to the search page with a query preloaded
