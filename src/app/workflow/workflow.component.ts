@@ -398,9 +398,6 @@ export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterVi
           this.updateWorkflowUrl(this.workflow);
         },
         (error) => {
-          const workflowOrgRegex = /\/workflows\/.+/;
-          const workflowRegex = /\/workflows\/(github.com)|(gitlab.com)|(bitbucket.org)\/.+/;
-          const gitHubAppToolRegex = /\/containers\/(github.com)\/.+/;
           if (!this.workflow) {
             this.router.navigate(['page-not-found'], { skipLocationChange: true });
           } else {
