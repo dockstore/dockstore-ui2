@@ -16,7 +16,7 @@ export class RegisterGithubAppComponent extends Base implements OnInit {
   @Input() public entryType: string;
   private gitHubAppInstallationLink: string;
 
-  constructor(private sessionQuery: SessionQuery, private userQuery: UserQuery, private window: Window) {
+  constructor(private sessionQuery: SessionQuery, private userQuery: UserQuery) {
     super();
   }
 
@@ -27,6 +27,6 @@ export class RegisterGithubAppComponent extends Base implements OnInit {
   }
 
   public openGitHubApp() {
-    this.window.open(this.gitHubAppInstallationLink, '_blank', 'noopener,noreferrer');
+    window.open(this.gitHubAppInstallationLink, '_blank', 'noopener,noreferrer');
   }
 }
