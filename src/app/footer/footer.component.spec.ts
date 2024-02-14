@@ -14,6 +14,7 @@
  *    limitations under the License.
  */
 
+import { ClipboardModule } from '@angular/cdk/clipboard';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatIconModule } from '@angular/material/icon';
 import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
@@ -33,7 +34,7 @@ describe('FooterComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [FooterComponent, GitTagPipe],
-        imports: [RouterTestingModule, MatIconModule, MatSnackBarModule],
+        imports: [RouterTestingModule, MatIconModule, MatSnackBarModule, ClipboardModule],
         providers: [ServiceInfoService, { provide: GA4GHV20Service, useClass: GA4GHV20StubService }],
       }).compileComponents();
     })

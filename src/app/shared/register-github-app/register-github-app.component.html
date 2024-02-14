@@ -29,6 +29,7 @@
     >.
   </p>
   <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="2rem" class="mb-4">
+    <!-- TODO: need to add this back in, but anchors don't have disabled. Change to a button I guess    [disabled]="isUsernameChangeRequired$ | async"-->
     <a
       mat-raised-button
       type="button"
@@ -36,7 +37,6 @@
       [href]="gitHubAppInstallationLink$ | async"
       target="_blank"
       rel="noopener noreferrer"
-      [disabled]="isUsernameChangeRequired$ | async"
       matTooltip="Manage Dockstore installations on GitHub"
       ><mat-icon>add</mat-icon> Manage Dockstore installations on GitHub</a
     >
