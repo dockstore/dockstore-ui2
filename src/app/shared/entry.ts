@@ -413,12 +413,7 @@ export abstract class Entry<V extends WorkflowVersion | Tag> implements OnDestro
    * @return {void}
    */
   decodeURL(): void {
-    let url = decodeURIComponent(window.location.href);
-    // Get decoded path by extracting substring of url, starting from third forward slash '/'
-    // This removes the HTTP/HTTPS domain name (e.g. https://dockstore.org) from the url
-    for (let i = 0; i < 3; i++) {
-      url = i < 2 ? url.substring(url.indexOf('/') + 1) : url.substring(url.indexOf('/'));
-    }
+    const url = decodeURIComponent(window.location.pathname);
     this.location.replaceState(url);
   }
 
