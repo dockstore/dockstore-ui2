@@ -1,4 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
+import { Base } from '../base';
 import { Dockstore } from '../dockstore.model';
 import { SessionQuery } from '../session/session.query';
 import { UserQuery } from '../user/user.query';
@@ -7,11 +9,24 @@ import { UserQuery } from '../user/user.query';
   selector: 'app-register-github-app',
   templateUrl: './register-github-app.component.html',
 })
-export class RegisterGithubAppComponent {
+export class RegisterGithubAppComponent extends Base implements OnInit {
   public Dockstore = Dockstore;
   public gitHubAppInstallationLink$ = this.sessionQuery.gitHubAppInstallationLandingPageLink$;
   public isUsernameChangeRequired$ = this.userQuery.isUsernameChangeRequired$;
   @Input() public entryType: string;
+  private gitHubAppInstallationLink: string;
 
-  constructor(private sessionQuery: SessionQuery, private userQuery: UserQuery) {}
+  constructor(private sessionQuery: SessionQuery, private userQuery: UserQuery, private window: Window) {
+    super();
+  }
+
+  ngOnInit(): void {
+    this.gitHubAppInstallationLink$
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((gitHubAppInstallationLink) => (this.gitHubAppInstallationLink = gitHubAppInstallationLink));
+  }
+
+  public openGitHubApp() {
+    this.window.open(this.gitHubAppInstallationLink, '_blank', 'noopener,noreferrer');
+  }
 }
