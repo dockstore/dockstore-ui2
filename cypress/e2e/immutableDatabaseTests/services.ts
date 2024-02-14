@@ -50,6 +50,7 @@ describe('Dockstore Home', () => {
       cy.visit('/services');
       cy.url().should('contain', 'services');
       cy.get('[data-cy=header]').contains('h3', 'Services');
+      cy.get('mat-header-cell').contains('Format').should('not.exist');
       cy.contains('Search services');
       cy.contains('garyluu/another-test-service');
     });
