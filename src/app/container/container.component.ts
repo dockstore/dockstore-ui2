@@ -261,7 +261,7 @@ export class ContainerComponent extends Entry<Tag> implements AfterViewInit, OnI
         },
         (error) => {
           if (error.status === 404) {
-            this.router.navigate(['page-not-found'], { skipLocationChange: true });
+            this.urlResolverService.showPageNotFound();
           }
         }
       );

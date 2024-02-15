@@ -479,11 +479,6 @@ export abstract class Entry<V extends WorkflowVersion | Tag> implements OnDestro
   }
 
   /**
-   * Gets the index of /containers or /workflows from the URL
-   * @return {number}
-   */
-
-  /**
    * Go to the search page with a query preloaded
    * @param {string} searchValue Value to search for
    * @param {EntryType} entryType Type of entry to search for

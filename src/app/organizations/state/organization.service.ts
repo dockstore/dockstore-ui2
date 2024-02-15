@@ -21,6 +21,7 @@ import { OrganizationMembersService } from './organization-members.service';
 import { OrganizationStore } from './organization.store';
 import { Router } from '@angular/router';
 import { HttpHeaderResponse } from '@angular/common/http';
+import { UrlResolverService } from '../../shared/url-resolver.service';
 
 @Injectable({ providedIn: 'root' })
 export class OrganizationService {
@@ -28,7 +29,8 @@ export class OrganizationService {
     private organizationStore: OrganizationStore,
     private organizationsService: OrganizationsService,
     private organizationMembersService: OrganizationMembersService,
-    private router: Router
+    private router: Router,
+    private urlResolverService: UrlResolverService
   ) {}
 
   clearState(): void {
@@ -84,7 +86,7 @@ export class OrganizationService {
         (error: HttpHeaderResponse) => {
           this.organizationStore.setError(true);
           if (error.status === 404) {
-            this.router.navigate(['page-not-found'], { skipLocationChange: true });
+            this.urlResolverService.showPageNotFound();
           }
         }
       );

@@ -398,8 +398,8 @@ export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterVi
           this.updateWorkflowUrl(this.workflow);
         },
         (error) => {
-          if (!this.workflow) {
-            this.router.navigate(['page-not-found'], { skipLocationChange: true });
+          if (error.status === 404) {
+            this.urlResolverService.showPageNotFound();
           } else {
             this.showRedirect = true;
             // Retrieve the workflow path from the URL

@@ -13,6 +13,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { UserQuery } from '../shared/user/user.query';
 import { Base } from '../shared/base';
 import { AccountInfo } from '../loginComponents/accounts/external/accounts.component';
+import { UrlResolverService } from '../shared/url-resolver.service';
 
 @Component({
   selector: 'app-user-page',
@@ -37,7 +38,8 @@ export class UserPageComponent extends Base implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private alertService: AlertService,
-    private userQuery: UserQuery
+    private userQuery: UserQuery,
+    private urlResolverService: UrlResolverService
   ) {
     super();
   }
@@ -68,7 +70,7 @@ export class UserPageComponent extends Base implements OnInit {
       (error: HttpErrorResponse) => {
         this.alertService.detailedError(error);
         // Redirects to Page Not Found if user doesn't exist or another error occurs
-        this.router.navigate(['page-not-found'], { skipLocationChange: true });
+        this.urlResolverService.showPageNotFound();
       }
     );
   }

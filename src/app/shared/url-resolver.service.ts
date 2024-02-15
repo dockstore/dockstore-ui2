@@ -46,9 +46,6 @@ export class UrlResolverService {
     title = this.decodedString(title.replace(`/containers/`, ''));
     title = this.decodedString(title.replace(`/my-notebooks/`, ''));
     title = this.decodedString(title.replace(`/notebooks/`, ''));
-    title = this.decodedString(title.replace(`/search-workflows/`, ''));
-    title = this.decodedString(title.replace(`/search-containers/`, ''));
-    title = this.decodedString(title.replace(`/apptools/`, ''));
 
     // Remove Query params from title
     const splitTitleByQueryParams = title.split('?');
@@ -75,6 +72,10 @@ export class UrlResolverService {
     } else {
       return null;
     }
+  }
+
+  public showPageNotFound(): void {
+    this.router.navigate(['page-not-found'], { skipLocationChange: true });
   }
 
   private isEncoded(uri: string): boolean {
