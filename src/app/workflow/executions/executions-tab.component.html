@@ -59,7 +59,15 @@
         >
           <ng-container matColumnDef="metric">
             <th mat-header-cell *matHeaderCellDef>Metric</th>
-            <td mat-cell *matCellDef="let executionMetric">{{ executionMetric.metric }}</td>
+            <td mat-cell *matCellDef="let executionMetric">
+              {{ executionMetric.metric }}
+              <mat-icon
+                *ngIf="executionMetric.numberOfExecutionsSkipped"
+                class="mat-icon-sm"
+                matTooltip="{{ executionMetric.numberOfExecutionsSkipped }} executions skipped in aggregation"
+                >warning</mat-icon
+              >
+            </td>
           </ng-container>
 
           <ng-container matColumnDef="minimum">
