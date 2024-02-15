@@ -75,7 +75,7 @@
     "mathjax": "^3.2.2",
     "ng2-ui-auth": "^10.0.1",
     "ngx-markdown": "^15.1.2",
-    "ngx-mat-select-search": "^7.0.0",
+    "ngx-mat-select-search": "^6.0.0",
     "ngx-sharebuttons": "^8.0.5",
     "prismjs": "^1.29.0",
     "rxjs": "^6.6.7",
