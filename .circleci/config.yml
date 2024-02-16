@@ -490,9 +490,8 @@ commands:
               fi
   install_browser_tools:
     steps:
-      - browser-tools/install-chrome:
+      - browser-tools/install-browser-tools:
           chrome-version: 120.0.6099.62 # https://github.com/CircleCI-Public/browser-tools-orb/issues/104
-      - browser-tools/install-chromedriver
   build_ui:
     steps:
       - run:
