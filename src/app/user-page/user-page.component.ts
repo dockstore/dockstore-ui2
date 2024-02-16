@@ -39,7 +39,7 @@ export class UserPageComponent extends Base implements OnInit {
     private router: Router,
     private alertService: AlertService,
     private userQuery: UserQuery,
-    private urlResolverService: UrlResolverService
+    public urlResolverService: UrlResolverService
   ) {
     super();
   }

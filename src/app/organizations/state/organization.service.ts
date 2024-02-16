@@ -30,7 +30,7 @@ export class OrganizationService {
     private organizationsService: OrganizationsService,
     private organizationMembersService: OrganizationMembersService,
     private router: Router,
-    private urlResolverService: UrlResolverService
+    public urlResolverService: UrlResolverService
   ) {}
 
   clearState(): void {

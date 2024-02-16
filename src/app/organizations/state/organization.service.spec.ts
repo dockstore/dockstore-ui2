@@ -21,6 +21,7 @@ import { Routes } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { OrganizationService } from './organization.service';
 import { OrganizationStore } from './organization.store';
+import { UrlResolverService } from '../../shared/url-resolver.service';
 
 @Component({
   template: ` <router-outlet></router-outlet> `,
@@ -34,7 +35,7 @@ describe('OrganizationService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [OrganizationsComponent],
-      providers: [OrganizationService, OrganizationStore],
+      providers: [OrganizationService, OrganizationStore, UrlResolverService],
       imports: [HttpClientTestingModule, MatSnackBarModule, RouterTestingModule.withRoutes(MOCK_ORGANIZATIONS_ROUTES)],
     });
 

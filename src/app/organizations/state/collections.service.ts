@@ -38,7 +38,7 @@ export class CollectionsService {
     private collectionsQuery: CollectionsQuery,
     private matDialog: MatDialog,
     private router: Router,
-    private urlResolverService: UrlResolverService
+    public urlResolverService: UrlResolverService
   ) {}
 
   clearState() {
