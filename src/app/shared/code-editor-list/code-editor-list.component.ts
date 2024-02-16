@@ -7,6 +7,7 @@ import { ToolDescriptor } from './../../shared/openapi/model/toolDescriptor';
 import { WorkflowVersion } from './../../shared/openapi/model/workflowVersion';
 import { CodeEditorListService } from './code-editor-list.service';
 import { FileService } from 'app/shared/file.service';
+import { EntryType } from '../enum/entry-type';
 
 export type FileCategory = 'descriptor' | 'dockerfile' | 'testParam';
 
@@ -20,7 +21,7 @@ export class CodeEditorListComponent {
   @Input() editing: boolean;
   @Input() fileType: FileCategory;
   @Input() descriptorType: ToolDescriptor.TypeEnum;
-  @Input() entryType: 'tool' | 'workflow';
+  @Input() entryType: EntryType;
   @Input() entrypath: string;
   @Input() selectedVersion: WorkflowVersion;
   protected published$: Observable<boolean>;

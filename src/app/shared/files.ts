@@ -16,6 +16,7 @@
 
 import { Directive, Input } from '@angular/core';
 import { EntryTab } from '../shared/entry/entry-tab';
+import { EntryType } from './enum/entry-type';
 
 @Directive()
 // eslint-disable-next-line @angular-eslint/directive-class-suffix
@@ -25,5 +26,6 @@ export class Files extends EntryTab {
   @Input() default: any;
   @Input() entrypath: string;
   @Input() publicPage: boolean;
+  @Input() entryType: EntryType;
   editing = false;
 }

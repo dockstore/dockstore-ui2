@@ -22,7 +22,6 @@ import { AlertService } from 'app/shared/alert/state/alert.service';
 import { includesAuthors, includesValidation, bootstrap4largeModalSize, includesMetrics } from 'app/shared/constants';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { MyEntriesService } from 'app/shared/myentries.service';
-import { SessionQuery } from 'app/shared/session/session.query';
 import { MyEntriesStateService } from 'app/shared/state/my-entries.service';
 import { WorkflowService } from 'app/shared/state/workflow.service';
 import { BioWorkflow, DockstoreTool, SharedWorkflows, UsersService, Workflow, WorkflowsService } from 'app/shared/openapi';
@@ -30,14 +29,13 @@ import { UrlResolverService } from 'app/shared/url-resolver.service';
 import { UserQuery } from 'app/shared/user/user.query';
 import { RegisterWorkflowModalComponent } from 'app/workflow/register-workflow-modal/register-workflow-modal.component';
 import { RegisterGithubAppModalComponent } from 'app/workflow/register-workflow-modal/register-github-app-modal/register-github-app-modal.component';
-import { forkJoin, Observable, of as observableOf } from 'rxjs';
+import { forkJoin, of as observableOf } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 import { OrgWorkflowObject } from './my-workflow/my-workflow.component';
 import { Location } from '@angular/common';
 
 @Injectable()
 export class MyWorkflowsService extends MyEntriesService<Workflow, OrgWorkflowObject<Workflow>> {
-  gitHubAppInstallationLink$: Observable<string>;
   constructor(
     protected userQuery: UserQuery,
     protected alertService: AlertService,
@@ -45,13 +43,11 @@ export class MyWorkflowsService extends MyEntriesService<Workflow, OrgWorkflowOb
     protected workflowService: WorkflowService,
     protected workflowsService: WorkflowsService,
     private myEntriesStateService: MyEntriesStateService,
-    private sessionQuery: SessionQuery,
     private location: Location,
     public matDialog: MatDialog,
     protected urlResolverService: UrlResolverService
   ) {
     super(urlResolverService);
-    this.gitHubAppInstallationLink$ = this.sessionQuery.gitHubAppInstallationLink$;
   }
 
   convertEntriesToOrgEntryObject(

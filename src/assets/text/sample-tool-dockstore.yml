@@ -1,0 +1,9 @@
+version: 1.2
+tools:
+  - subclass: CWL
+    primaryDescriptorPath: <String>
+    testParameterFiles: <String Array>
+    authors:
+      - name: <String>
+        email: <String>
+    topic: <String>

@@ -1,0 +1,14 @@
+version: 1.2
+notebooks:
+  - format: <JUPYTER>
+    language: <PYTHON | R | JAVASCRIPT | SCALA | JULIA | OTHER>
+    path: <String>
+    kernel: <String>
+    otherFiles: <String Array>
+    testParameterFiles: <String Array>
+    readMePath: <String>
+    authors:
+      - name: <String>
+        email: <String>
+    publish: true
+    topic: <String>

@@ -1,5 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { AfterViewInit, Component, EventEmitter, Input, Output } from '@angular/core';
+import { EntryType } from '../enum/entry-type';
+
 import { ace } from './../grammars/custom-grammars.js';
 
 let ACE_EDITOR_INSTANCE = 0;
@@ -16,7 +18,7 @@ export class CodeEditorComponent implements AfterViewInit {
   editorFilepath: string;
   aceId: string;
   readOnly = true;
-  @Input() entryType: 'tool' | 'workflow';
+  @Input() entryType: EntryType;
   @Input() set editing(value: boolean) {
     if (value !== undefined) {
       this.toggleReadOnly(!value);
@@ -91,6 +93,16 @@ export class CodeEditorComponent implements AfterViewInit {
         sampleCodeUrl = '../assets/text/sample.nf';
       } else if (this.editorFilepath === '/nextflow.config') {
         sampleCodeUrl = '../assets/text/nextflow.config';
+      } else if (this.mode === 'yaml') {
+        if (this.entryType === EntryType.BioWorkflow) {
+          sampleCodeUrl = '../assets/text/sample-workflow-dockstore.yml';
+        } else if (this.entryType === EntryType.AppTool || this.entryType === EntryType.Tool) {
+          sampleCodeUrl = '../assets/text/sample-tool-dockstore.yml';
+        } else if (this.entryType === EntryType.Notebook) {
+          sampleCodeUrl = '../assets/text/sample-notebook-dockstore.yml';
+        } else if (this.entryType === EntryType.Service) {
+          sampleCodeUrl = '../assets/text/sample-service-dockstore.yml';
+        }
       }
     }
     if (sampleCodeUrl) {

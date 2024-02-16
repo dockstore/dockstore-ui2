@@ -47,11 +47,8 @@ export class SessionQuery extends Query<SessionState> {
   isService$: Observable<boolean> = this.entryType$.pipe(map((entryType) => entryType === EntryType.Service));
   isNotebook$: Observable<boolean> = this.entryType$.pipe(map((entryType) => entryType === EntryType.Notebook));
   isTool$: Observable<boolean> = this.entryType$.pipe(map((entryType) => entryType === EntryType.Tool));
-  gitHubAppInstallationLink$: Observable<string> = this.entryType$.pipe(
-    map((entryType: EntryType) => (entryType ? this.generateGitHubAppInstallationUrl(this.route.url) : null))
-  );
   gitHubAppInstallationLandingPageLink$: Observable<string> = this.entryType$.pipe(
-    map((entryType: EntryType) => (entryType ? this.generateGitHubAppInstallationUrl('/github-landing-page') : null))
+    map((entryType: EntryType) => (entryType ? this.generateGitHubAppInstallationUrl(entryType) : null))
   );
   loadingDialog$: Observable<boolean> = this.select((session) => session.loadingDialog);
   constructor(protected store: SessionStore, private route: Router, private entryTypeMetadataService: EntryTypeMetadataService) {
@@ -65,11 +62,21 @@ export class SessionQuery extends Query<SessionState> {
    * @returns {string}
    * @memberof WorkflowQuery
    */
+  /*
   generateGitHubAppInstallationUrl(redirectPath: string): string {
     let queryParams = new HttpParams();
     // Can only provide a state query parameter
     // https://docs.github.com/en/apps/sharing-github-apps/sharing-your-github-app
     queryParams = queryParams.set('state', redirectPath);
+    return Dockstore.GITHUB_APP_INSTALLATION_URL + '/installations/new?' + queryParams.toString();
+  }
+  */
+
+  generateGitHubAppInstallationUrl(entryType: EntryType): string {
+    let queryParams = new HttpParams();
+    // Can only provide a state query parameter
+    // https://docs.github.com/en/apps/sharing-github-apps/sharing-your-github-app
+    queryParams = queryParams.set('state', entryType.toString());
     return Dockstore.GITHUB_APP_INSTALLATION_URL + '/installations/new?' + queryParams.toString();
   }
 }
