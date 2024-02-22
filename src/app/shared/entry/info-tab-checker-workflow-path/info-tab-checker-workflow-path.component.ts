@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { Workflow } from 'app/shared/openapi';
 import { Observable } from 'rxjs';
 import { AlertQuery } from '../../alert/state/alert.query';
