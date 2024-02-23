@@ -277,7 +277,7 @@ parameters:
     default: false
   java-tag:
     type: string
-    default: "21.0.2-browsers"
+    default: "17.0.4-browsers"
 
 workflows:
   version: 2
