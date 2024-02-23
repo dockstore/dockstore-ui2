@@ -15,7 +15,7 @@
  */
 import { Component, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
 import { VersionVerifiedPlatform, Tag, VerificationInformation, WorkflowVersion } from '../../openapi';
 
 @Component({

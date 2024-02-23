@@ -1,3 +1,4 @@
+import { ClipboardModule } from '@angular/cdk/clipboard';
 import { TestBed } from '@angular/core/testing';
 
 import { FooterService } from './footer.service';
@@ -6,7 +7,9 @@ describe('FooterService', () => {
   let service: FooterService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      imports: [ClipboardModule],
+    });
     service = TestBed.inject(FooterService);
   });
 

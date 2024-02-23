@@ -16,8 +16,8 @@
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Location } from '@angular/common';
 import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
-import { MatChipInputEvent } from '@angular/material/chips';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyChipInputEvent as MatChipInputEvent } from '@angular/material/legacy-chips';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertService } from 'app/shared/alert/state/alert.service';

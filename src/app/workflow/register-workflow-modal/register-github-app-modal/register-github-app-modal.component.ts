@@ -21,7 +21,7 @@ import { Observable } from 'rxjs';
 import { AlertQuery } from '../../../shared/alert/state/alert.query';
 import { Dockstore } from '../../../shared/dockstore.model';
 import { RegisterWorkflowModalService } from '../register-workflow-modal.service';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
 import { EntryType } from 'app/shared/enum/entry-type';
 
 @Component({

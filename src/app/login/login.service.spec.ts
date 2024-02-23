@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { inject, TestBed } from '@angular/core/testing';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 import { AuthService } from 'ng2-ui-auth';
 
 import { AuthStubService } from '../test/service-stubs';

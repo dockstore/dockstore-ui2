@@ -1,7 +1,10 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatIconModule } from '@angular/material/icon';
+import { MatIconTestingModule } from '@angular/material/icon/testing';
+import { MatLegacyCommonModule } from '@angular/material/legacy-core';
+import { MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
+import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AuthService } from 'ng2-ui-auth';
 import { AccountsService } from '../../loginComponents/accounts/external/accounts.service';
@@ -19,7 +22,7 @@ describe('SnapshotDoiOrcidComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [SnaphotExporterModalComponent],
-      imports: [MatSnackBarModule, HttpClientTestingModule, RouterTestingModule],
+      imports: [MatSnackBarModule, HttpClientTestingModule, RouterTestingModule, MatIconModule],
       providers: [
         {
           provide: MAT_DIALOG_DATA,

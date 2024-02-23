@@ -15,13 +15,13 @@
  */
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { MatButtonModule } from '@angular/material/button';
+import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
-import { MatMenuModule } from '@angular/material/menu';
+import { MatLegacyMenuModule as MatMenuModule } from '@angular/material/legacy-menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 import { RouterTestingModule } from '@angular/router/testing';
 import { RequestsService } from '../loginComponents/state/requests.service';
 import { LogoutService } from '../shared/logout.service';

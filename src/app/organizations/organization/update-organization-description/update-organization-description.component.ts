@@ -15,7 +15,7 @@
  */
 import { Component, Inject, OnInit } from '@angular/core';
 import { AbstractControl, UntypedFormGroup } from '@angular/forms';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
 import { UpdateOrganizationOrCollectionDescriptionService } from '../state/update-organization-description.service';
 
 @Component({

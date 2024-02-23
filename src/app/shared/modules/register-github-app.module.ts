@@ -1,18 +1,18 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FlexModule } from '@angular/flex-layout';
-import { MatButtonModule } from '@angular/material/button';
+import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { RouterLinkWithHref } from '@angular/router';
+import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
+import { RouterLink } from '@angular/router';
 import { RegisterGithubAppComponent } from '../register-github-app/register-github-app.component';
 import { GithubLandingPageComponent } from '../../github-landing-page/github-landing-page.component';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatCardModule } from '@angular/material/card';
+import { MatLegacyAutocompleteModule as MatAutocompleteModule } from '@angular/material/legacy-autocomplete';
+import { MatLegacyCardModule as MatCardModule } from '@angular/material/legacy-card';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatOptionModule } from '@angular/material/core';
+import { MatLegacyFormFieldModule as MatFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
+import { MatLegacyOptionModule as MatOptionModule } from '@angular/material/legacy-core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { EntryModule } from '../entry/entry.module';
 
@@ -25,7 +25,7 @@ import { EntryModule } from '../entry/entry.module';
     MatButtonModule,
     MatIconModule,
     MatTooltipModule,
-    RouterLinkWithHref,
+    RouterLink,
     MatAutocompleteModule,
     MatCardModule,
     MatDividerModule,

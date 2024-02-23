@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MatSlideToggleChange } from '@angular/material/slide-toggle';
+import { MatLegacySlideToggleChange as MatSlideToggleChange } from '@angular/material/legacy-slide-toggle';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Repository } from '../openapi/model/repository';

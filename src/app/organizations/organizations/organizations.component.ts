@@ -15,8 +15,8 @@
  */
 import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
-import { PageEvent } from '@angular/material/paginator';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { LegacyPageEvent as PageEvent } from '@angular/material/legacy-paginator';
 import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
