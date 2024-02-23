@@ -351,11 +351,6 @@ export class ContainerComponent extends Entry<Tag> implements AfterViewInit, OnI
     }
   }
 
-  /**
-   * Will change the /tools in the current URL with /containers
-   * @return {void}
-   */
-
   addToLabels(event: MatChipInputEvent): void {
     const input = event.input;
     const value = event.value;
