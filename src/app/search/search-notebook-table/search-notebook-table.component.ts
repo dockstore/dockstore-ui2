@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { Component, OnInit } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
 import { Observable } from 'rxjs';
 import { DateService } from '../../shared/date.service';
 import { Notebook } from '../../shared/openapi';

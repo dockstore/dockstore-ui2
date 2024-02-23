@@ -1,4 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { HomePageModule } from '../../home-page.module';
 import { NewsBoxComponent } from './news-box.component';
 
 describe('NewsBoxComponent', () => {
@@ -7,6 +10,7 @@ describe('NewsBoxComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [MatLegacyCardModule, MatDividerModule, HomePageModule],
       declarations: [NewsBoxComponent],
     }).compileComponents();
   });

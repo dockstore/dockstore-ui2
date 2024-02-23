@@ -16,7 +16,7 @@
 
 import { Component, OnDestroy } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { takeUntil } from 'rxjs/operators';
 import { UserQuery } from '../../../../shared/user/user.query';
 import { Base } from '../../../../shared/base';

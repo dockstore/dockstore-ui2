@@ -5,7 +5,7 @@ import { ProviderService } from '../shared/provider.service';
 import { DockstoreTool, Entry, Organization, Workflow, EntryType as OpenApiEntryType } from '../shared/openapi';
 import { UserQuery } from '../shared/user/user.query';
 import { UsersService } from './../shared/openapi/api/users.service';
-import { MatTabChangeEvent } from '@angular/material/tabs';
+import { MatLegacyTabChangeEvent as MatTabChangeEvent } from '@angular/material/legacy-tabs';
 import { UntypedFormControl } from '@angular/forms';
 import { ExtendedDockstoreTool } from 'app/shared/models/ExtendedDockstoreTool';
 import { ExtendedWorkflow } from 'app/shared/models/ExtendedWorkflow';

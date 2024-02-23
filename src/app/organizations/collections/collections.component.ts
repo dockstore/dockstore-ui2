@@ -16,7 +16,7 @@
 import { P } from '@angular/cdk/keycodes';
 import { KeyValue } from '@angular/common';
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { HashMap } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';

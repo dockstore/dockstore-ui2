@@ -9,7 +9,7 @@ import { Profile, User } from '../../../shared/openapi';
 import { UsersService } from '../../../shared/openapi/api/users.service';
 import { UserQuery } from '../../../shared/user/user.query';
 import { UserService } from '../../../shared/user/user.service';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ChangeUsernameComponent } from '../../../../app/loginComponents/accounts/internal/change-username/change-username.component';
 import { bootstrap4largeModalSize } from '../../../shared/constants';
 

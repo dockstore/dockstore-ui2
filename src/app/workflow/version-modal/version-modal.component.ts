@@ -15,7 +15,7 @@
  */
 import { AfterViewChecked, Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
 import { Service } from 'app/shared/openapi/model/service';
 import { Notebook } from 'app/shared/openapi/model/notebook';
 import { Observable, Subject } from 'rxjs';

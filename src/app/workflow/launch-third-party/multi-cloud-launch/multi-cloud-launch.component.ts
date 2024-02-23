@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { MatMenuTrigger } from '@angular/material/menu';
+import { MatLegacyMenuTrigger as MatMenuTrigger } from '@angular/material/legacy-menu';
 import { AlertService } from '../../../shared/alert/state/alert.service';
 import { Base } from '../../../shared/base';
 import { CloudInstance, Language, User, UsersService } from '../../../shared/openapi';

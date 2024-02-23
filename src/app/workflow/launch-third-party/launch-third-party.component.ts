@@ -1,6 +1,6 @@
 import { HttpUrlEncodingCodec } from '@angular/common/http';
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 import { combineLatest, Observable } from 'rxjs';
 import { map, shareReplay, takeUntil } from 'rxjs/operators';

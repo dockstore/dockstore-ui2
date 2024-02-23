@@ -37,9 +37,10 @@ export class ListWorkflowsComponent extends ToolLister<PublishedWorkflowsDataSou
 
   public workflowColumns = ['repository', 'verified', 'author', 'descriptorType', 'projectLinks', 'stars'];
   public notebookColumns = ['repository', 'author', 'descriptorType', 'descriptorTypeSubclass', 'projectLinks', 'stars'];
+  public serviceColumns = ['repository', 'verified', 'author', 'projectLinks', 'stars'];
   public typeToDisplayedColumns = {
     workflow: this.workflowColumns,
-    service: this.workflowColumns,
+    service: this.serviceColumns,
     appTool: this.workflowColumns,
     notebook: this.notebookColumns,
   };
