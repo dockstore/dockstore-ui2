@@ -14,7 +14,10 @@
   ~    limitations under the License.
   -->
 
-<h3 class="text-align-center">Please wait while your GitHub repository installation is being processed. This may take a few minutes.</h3>
+<h3 class="text-align-center">
+  Your GitHub repository installation is being processed. It may take a few minutes for your {{ entryTypeMetadata.termPlural }} to be
+  synced.
+</h3>
 <hr />
 <div fxLayout="column" fxLayoutGap="2rem">
   <h3 class="text-align-center">You can close this tab and return to Dockstore on the original tab.</h3>
@@ -35,12 +38,8 @@
           <app-code-editor [entryType]="entryType" [editing]="false"></app-code-editor>
         </div>
         <p>
-          Note: the first line of this file references the version of <code>.dockstore.yml</code> syntax being used, not the version/tag of
-          the {{ entryTypeMetadata.termPlural }} it describes.
-        </p>
-        <p>
           View more <code>.dockstore.yml</code> templates for {{ entryTypeMetadata.termPlural }}
-          <a target="_blank" rel="noopener noreferrer" [href]="templateUrl">here.</a>
+          <a target="_blank" rel="noopener noreferrer" [href]="templateUrl">here</a>.
         </p>
       </mat-card-content>
     </mat-card>
@@ -55,12 +54,12 @@
       <mat-card-content class="pt-3">
         <ul>
           <li>
-            Make sure your file is saved as <code>.dockstore.yml</code>, not <code>dockstore.yml</code> nor <code>.dockstore.yaml</code>
+            Make sure your file is saved as <code>.dockstore.yml</code>, not <code>dockstore.yml</code> nor <code>.dockstore.yaml</code>.
           </li>
-          <li>Put the <code>.dockstore.yml</code> file in the top of your repository or inside the <code>.github/</code> directory</li>
+          <li>Put the <code>.dockstore.yml</code> file in the top of your repository or inside the <code>.github/</code> directory.</li>
           <li>
             <a [routerLink]="['/quick-start']">The Dockstore Yaml Command Line Validator Tool</a> can be used to validate the
-            <code>.dockstore.yml</code>
+            <code>.dockstore.yml</code>.
             <pre>dockstore yaml validate --path directory/of/.dockstore.yml</pre>
           </li>
           <li>

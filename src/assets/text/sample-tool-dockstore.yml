@@ -1,4 +1,4 @@
-version: 1.2
+version: 1.2 # The first line refers to the version 1.2 of the .dockstore.yml schema
 tools:
   - subclass: CWL
     primaryDescriptorPath: <String>
@@ -6,4 +6,5 @@ tools:
     authors:
       - name: <String>
         email: <String>
+      - orcid: <String>
     topic: <String>

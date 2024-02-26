@@ -56,22 +56,17 @@ export class SessionQuery extends Query<SessionState> {
   }
 
   /**
-   * Generate the general GitHub App installation URL
+   * Generates a GitHub App installation URL that has a 'state' query parameter containing an entryType.
    *
-   * @param {string} redirectPath  The page to redirect to after installation is complete
-   * @returns {string}
-   * @memberof WorkflowQuery
+   * The GitHub App installation link allows a 'state' query parameter that preserves the state of the application page
+   * and return users back to that state after they install the GitHub App.
+   * More details here https://docs.github.com/en/apps/sharing-github-apps/sharing-your-github-app.
+   *
+   * The entryType is used as the 'state' so that users are redirected to the GitHub App landing page for the entryType they were registering.
+   *
+   * @param entryType Entry type to use as the 'state' query parameter in the installation URL
+   * @returns
    */
-  /*
-  generateGitHubAppInstallationUrl(redirectPath: string): string {
-    let queryParams = new HttpParams();
-    // Can only provide a state query parameter
-    // https://docs.github.com/en/apps/sharing-github-apps/sharing-your-github-app
-    queryParams = queryParams.set('state', redirectPath);
-    return Dockstore.GITHUB_APP_INSTALLATION_URL + '/installations/new?' + queryParams.toString();
-  }
-  */
-
   generateGitHubAppInstallationUrl(entryType: EntryType): string {
     let queryParams = new HttpParams();
     // Can only provide a state query parameter

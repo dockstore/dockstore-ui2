@@ -1,4 +1,4 @@
-version: 1.2
+version: 1.2 # The .dockstore.yml schema version
   workflows:
     - subclass: <CWL | WDL | NFL | GALAXY>
       primaryDescriptorPath: <String>
@@ -7,3 +7,4 @@ version: 1.2
       authors:
         - name: <String>
           email: <String>
+        - orcid: <String>
