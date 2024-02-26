@@ -195,9 +195,20 @@
               </form>
               <div *ngIf="isPublic">
                 <span><strong matTooltip="Short description of the workflow">Topic</strong>:&nbsp;</span>
-                <span>{{
-                  workflow?.topicSelection === TopicSelectionEnum.AUTOMATIC ? workflow?.topicAutomatic : workflow?.topicManual
-                }}</span>
+                <span *ngIf="workflow?.topicSelection === TopicSelectionEnum.AUTOMATIC">{{ workflow?.topicAutomatic }}</span>
+                <span *ngIf="workflow?.topicSelection === TopicSelectionEnum.MANUAL">{{ workflow?.topicManual }}</span>
+                <span *ngIf="workflow?.topicSelection === TopicSelectionEnum.AI">
+                  {{ workflow?.topicAI }}
+                  <span
+                    class="bubble ai-bubble"
+                    onclick="window.open('https://docs.dockstore.org/en/stable/faq.html', 'blank')"
+                    matTooltip="This topic sentence was AI generated. For more information, please click the bubble to visit our docs"
+                    m
+                  >
+                    <img class="ai-icon" src="/assets/svg/ai-icon.svg" alt="AI generation icon" />
+                    <span>AI</span>
+                  </span>
+                </span>
               </div>
               <div *ngIf="!isPublic">
                 <span
@@ -209,6 +220,15 @@
                   >:&nbsp;</span
                 >
                 <span>{{ workflow?.topicAutomatic }}</span>
+              </div>
+              <div *ngIf="!isPublic">
+                <span
+                  ><strong
+                    matTooltip="Short description of the {{ entryType$ | async }}, from the GitHub repository description generated with AI"
+                    >AI Generated Topic</strong
+                  >:&nbsp;</span
+                >
+                <span>{{ workflow?.topicAI }}</span>
               </div>
               <form *ngIf="!isPublic" #editTopic="ngForm" fxLayout="row" fxLayoutAlign="start center" class="w-100">
                 <span
@@ -290,6 +310,7 @@
                   >
                     <mat-radio-button [value]="TopicSelectionEnum.AUTOMATIC">Automatic</mat-radio-button>
                     <mat-radio-button class="ml-3" [value]="TopicSelectionEnum.MANUAL">Manual</mat-radio-button>
+                    <mat-radio-button class="ml-3" [value]="TopicSelectionEnum.AI">AI Generated</mat-radio-button>
                   </mat-radio-group>
                 </span>
               </div>

@@ -13,8 +13,18 @@
               notebook?.source.repository +
               (notebook?.source.workflowName ? '/' + notebook?.source.workflowName : '')
           }}</a>
-          <div class="truncate-text-2 size-small" *ngIf="notebook.source.topicAutomatic" [matTooltip]="notebook.source.topicAutomatic">
-            {{ notebook.source.topicAutomatic }}
+          <div class="truncate-text-2 size-small" *ngIf="notebook.source.topicSelection" [matTooltip]="notebook.source.topicSelection">
+            {{ notebook.source.topicSelection }}
+            <span *ngIf="notebook?.topicSelection === TopicSelectionEnum.AI">
+              {{ notebook?.topicAI }}
+              <span
+                class="bubble ai-bubble"
+                matTooltip="This topic sentence was AI generated. For more information, please click to visit our docs"
+              >
+                <img class="ai-icon" src="/assets/svg/ai-icon.svg" alt="AI generation icon" />
+                <span>AI</span>
+              </span>
+            </span>
           </div>
         </div>
       </mat-cell>

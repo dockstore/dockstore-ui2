@@ -267,7 +267,19 @@
           <!-- Public Topic -->
           <li *ngIf="isPublic">
             <span><strong matTooltip="Short description of the tool">Topic</strong>:&nbsp;</span>
-            <span>{{ tool?.topicSelection === TopicSelectionEnum.AUTOMATIC ? tool?.topicAutomatic : tool?.topicManual }}</span>
+            <span *ngIf="tool?.topicSelection === TopicSelectionEnum.AUTOMATIC">{{ tool?.topicAutomatic }}</span>
+            <span *ngIf="tool?.topicSelection === TopicSelectionEnum.MANUAL">{{ tool?.topicManual }}</span>
+            <span *ngIf="tool?.topicSelection === TopicSelectionEnum.AI">
+              {{ tool?.topicAI }}
+              <span
+                class="bubble ai-bubble"
+                matTooltip="This topic sentence was AI generated. For more information, please click to visit our docs"
+              >
+                <img class="ai-icon" src="/assets/svg/ai-icon.svg" alt="AI generation icon" />
+                <span>AI</span>
+                <img class="ai-icon" src="/assets/svg/help.svg" alt="help icon" />
+              </span>
+            </span>
           </li>
           <!-- Private topic Topic -->
           <ng-container *ngIf="!isPublic">
@@ -333,6 +345,7 @@
                   >
                     <mat-radio-button [value]="TopicSelectionEnum.AUTOMATIC">Automatic</mat-radio-button>
                     <mat-radio-button class="ml-3" [value]="TopicSelectionEnum.MANUAL">Manual</mat-radio-button>
+                    <mat-radio-button class="ml-3" [value]="TopicSelectionEnum.AI">AI Generated</mat-radio-button>
                   </mat-radio-group>
                 </span>
               </div>

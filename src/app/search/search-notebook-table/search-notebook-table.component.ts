@@ -17,10 +17,11 @@ import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable } from 'rxjs';
 import { DateService } from '../../shared/date.service';
-import { Notebook } from '../../shared/openapi';
+import { Notebook, Workflow } from '../../shared/openapi';
 import { SearchEntryTable } from '../search-entry-table';
 import { SearchQuery, SearchResult } from '../state/search.query';
 import { SearchService } from '../state/search.service';
+import TopicSelectionEnum = Workflow.TopicSelectionEnum;
 
 /**
  * this component refers to search page not notebook listing search
@@ -42,4 +43,6 @@ export class SearchNotebookTableComponent extends SearchEntryTable implements On
   privateNgOnInit(): Observable<Array<SearchResult<Notebook>>> {
     return this.searchQuery.notebooks$;
   }
+
+  protected readonly TopicSelectionEnum = TopicSelectionEnum;
 }

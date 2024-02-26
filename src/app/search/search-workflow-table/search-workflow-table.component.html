@@ -20,11 +20,21 @@
           >
           <div
             class="truncate-text-2 size-small"
-            *ngIf="workflow.source.topicAutomatic"
-            [matTooltip]="workflow.source.topicAutomatic"
+            *ngIf="workflow.source.topicSelection"
+            [matTooltip]="workflow.source.topicSelection"
             matTooltipPosition="left"
           >
-            {{ workflow.source.topicAutomatic }}
+            {{ workflow.source.topicSelection }}
+            <span *ngIf="workflow?.topicSelection === TopicSelectionEnum.AI">
+              {{ workflow?.topicAI }}
+              <span
+                class="bubble ai-bubble"
+                matTooltip="This topic sentence was AI generated. For more information, please click to visit our docs"
+              >
+                <img class="ai-icon" src="/assets/svg/ai-icon.svg" alt="AI generation icon" />
+                <span>AI</span>
+              </span>
+            </span>
           </div>
         </div>
       </mat-cell>

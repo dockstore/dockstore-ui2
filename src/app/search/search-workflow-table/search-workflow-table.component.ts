@@ -21,6 +21,7 @@ import { Workflow } from '../../shared/openapi';
 import { SearchEntryTable } from '../search-entry-table';
 import { SearchQuery, SearchResult } from '../state/search.query';
 import { SearchService } from '../state/search.service';
+import TopicSelectionEnum = Workflow.TopicSelectionEnum;
 
 /**
  * this component refers to search page not workflow listing search
@@ -41,4 +42,5 @@ export class SearchWorkflowTableComponent extends SearchEntryTable implements On
   privateNgOnInit(): Observable<Array<SearchResult<Workflow>>> {
     return this.searchQuery.workflows$;
   }
+  protected readonly TopicSelectionEnum = TopicSelectionEnum;
 }
