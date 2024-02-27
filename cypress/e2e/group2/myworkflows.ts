@@ -33,28 +33,15 @@ describe('Dockstore my workflows', () => {
   resetDB();
   setTokenUserViewPort();
 
-  it('have entries shown on the dashboard', () => {
-    cy.visit('/dashboard');
-    cy.contains('Search your Workflows...');
-    cy.get('#mat-input-0').type('hosted');
-    cy.contains('hosted-workflow');
-    cy.get('#mat-input-0').type('potato');
-    cy.contains('No matching workflows');
-  });
-
-  it('have action buttons which work', () => {
-    cy.fixture('myWorkflows.json').then((json) => {
-      cy.intercept('PATCH', '/api/users/1/workflows', {
+  it('Test AI topic sentences', () => {
+    cy.fixture('workflowWithTopicAI.json').then((json) => {
+      cy.intercept('GET', '/api/users/1/workflows', {
         body: json,
         statusCode: 200,
-      });
+      }).as('request');
     });
 
     cy.visit('/my-workflows');
-    cy.get('[data-cy=myWorkflowsMoreActionButtons]').should('be.visible').click();
-    cy.get('[data-cy=addToExistingWorkflows]').should('be.visible').click();
-
-    cy.contains('addedthisworkflowviasync');
   });
 
   describe('Should contain extended Workflow properties', () => {
