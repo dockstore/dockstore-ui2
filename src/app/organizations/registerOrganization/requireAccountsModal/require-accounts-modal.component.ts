@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TokenQuery } from '../../../shared/state/token.query';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { RegisterOrganizationComponent } from '../register-organization.component';
 import { TagEditorMode } from '../../../shared/enum/tagEditorMode.enum';
 import { map } from 'rxjs/operators';

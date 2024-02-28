@@ -32,7 +32,7 @@ import { SessionQuery } from '../../shared/session/session.query';
 import { takeUntil } from 'rxjs/operators';
 import PartnerEnum = CloudInstance.PartnerEnum;
 import ExecutionStatusEnum = RunExecution.ExecutionStatusEnum;
-import { MatSelectChange } from '@angular/material/select';
+import { MatLegacySelectChange as MatSelectChange } from '@angular/material/legacy-select';
 import { AlertService } from '../../shared/alert/state/alert.service';
 
 interface ExecutionMetricsTableObject {

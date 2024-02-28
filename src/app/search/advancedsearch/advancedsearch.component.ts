@@ -15,7 +15,7 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { takeUntil } from 'rxjs/operators';
 import { Base } from '../../shared/base';
 import { SearchService } from '../state/search.service';

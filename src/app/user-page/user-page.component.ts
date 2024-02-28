@@ -9,7 +9,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { AlertService } from '../shared/alert/state/alert.service';
 import { GithubAppsLogsComponent } from '../myworkflows/sidebar-accordion/github-apps-logs/github-apps-logs.component';
 import { accountInfo, bootstrap4extraLargeModalSize } from '../shared/constants';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { UserQuery } from '../shared/user/user.query';
 import { Base } from '../shared/base';
 import { AccountInfo } from '../loginComponents/accounts/external/accounts.component';

@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges, Version } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { AddEntryComponent } from '../../organizations/collection/add-entry/add-entry.component';
