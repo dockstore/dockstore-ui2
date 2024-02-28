@@ -287,6 +287,25 @@
               <span><strong matTooltip="Short description of the tool">Topic Automatic</strong>:&nbsp;</span>
               <span>{{ tool?.topicAutomatic }}</span>
             </li>
+            <li>
+              <span
+                ><strong matTooltip="Short description of the tool, from the GitHub repository description generated with AI"
+                  >AI Generated Topic</strong
+                >:&nbsp;</span
+              >
+              <span data-cy="topicAI-text">{{ tool?.topicAI }}</span>
+              <span
+                *ngIf="tool?.topicAI !== null"
+                data-cy="ai-bubble"
+                class="bubble ai-bubble"
+                onclick="window.open('https://docs.dockstore.org/en/stable/faq.html', 'blank')"
+                matTooltip="This topic sentence was AI generated. For more information, please click the bubble to visit our docs"
+                m
+              >
+                <img class="ai-icon" src="/assets/svg/ai-icon.svg" alt="AI generation icon" />
+                <span>AI</span>
+              </span>
+            </li>
             <!-- This looks different than the others ones because it's new and doesn't use bootstrap 3 classes -->
             <li>
               <form fxLayout="row" fxLayoutAlign="start center" class="w-100">
