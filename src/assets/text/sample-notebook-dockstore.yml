@@ -7,7 +7,5 @@ notebooks:
     otherFiles: <String Array>
     readMePath: <String>
     authors:
-      - name: <String>
-        email: <String>
       - orcid: <String>
     topic: <String>

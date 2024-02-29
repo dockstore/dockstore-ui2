@@ -6,7 +6,5 @@ tools:
       - <String>
       - <String>
     authors:
-      - name: <String>
-        email: <String>
       - orcid: <String>
     topic: <String>

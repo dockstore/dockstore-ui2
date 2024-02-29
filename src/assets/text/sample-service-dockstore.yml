@@ -3,8 +3,7 @@ service:
   subclass: <DOCKER_COMPOSE | KUBERNETES | HELM | SWARM | NOT_APPLICABLE>
   name: <String>
   authors:
-    - name: <String>
-      email: <String>
+    - orcid: <String>
   topic: <String>
   description: <String>
   publish: <Boolean>

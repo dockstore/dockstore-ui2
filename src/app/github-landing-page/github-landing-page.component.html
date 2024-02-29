@@ -55,18 +55,34 @@
           <li>
             Make sure your file is saved as <code>.dockstore.yml</code>, not <code>dockstore.yml</code> nor <code>.dockstore.yaml</code>.
           </li>
-          <li>Put the <code>.dockstore.yml</code> file in the top of your repository or inside the <code>.github/</code> directory.</li>
+          <li>Put the <code>.dockstore.yml</code> file in the top of your repository.</li>
           <li>
             The <a [routerLink]="['/quick-start']">Dockstore Yaml Command Line Validator Tool</a> can be used to validate the
             <code>.dockstore.yml</code>.
             <pre>dockstore yaml validate --path directory/of/.dockstore.yml</pre>
           </li>
           <li>
-            You can use a single <code>.dockstore.yml</code> file to register multiple tools, workflows, and notebooks, provided they are
-            all in the same repository as the <code>.dockstore.yml</code> file. If you do so, each one needs a unique name and it is
-            recommended to give each one a unique <code>readMePath</code> too.
+            You can use a single <code>.dockstore.yml</code> file to register multiple {{ entryTypeMetadata.termPlural }}, provided they are
+            all in the same repository as the <code>.dockstore.yml</code> file. If you do so, each {{ entryTypeMetadata.term }} needs a
+            unique name.
           </li>
         </ul>
+        <p>
+          View more
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            [href]="Dockstore.DOCUMENTATION_URL + '/assets/templates/template.html#tips-and-tricks'"
+            >Tips And Tricks</a
+          >
+          and
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            [href]="Dockstore.DOCUMENTATION_URL + '/getting-started/github-apps/github-apps-troubleshooting-tips.html'"
+            >FAQs</a
+          >.
+        </p>
       </mat-card-content>
     </mat-card>
   </div>
