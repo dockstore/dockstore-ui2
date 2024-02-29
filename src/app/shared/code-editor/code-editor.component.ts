@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { AfterViewInit, Component, EventEmitter, Input, Output } from '@angular/core';
-import { EntryType } from '../enum/entry-type';
 
 import { ace } from './../grammars/custom-grammars.js';
+import { EntryType } from '../openapi/model/entryType';
 
 let ACE_EDITOR_INSTANCE = 0;
 
@@ -74,7 +74,9 @@ export class CodeEditorComponent implements AfterViewInit {
         this.editor.setValue(this.editorContent, cursorPos);
       }
 
-      this.editor.focus();
+      if (!this.readOnly) {
+        this.editor.focus();
+      }
     };
 
     let sampleCodeUrl = '';
@@ -82,9 +84,9 @@ export class CodeEditorComponent implements AfterViewInit {
     // Load sample code by default when editing empty CWL/WDL/Nextflow files
     if (!this.editorContent) {
       if (this.mode === 'cwl') {
-        if (this.entryType === 'tool') {
+        if (this.entryType === EntryType.TOOL) {
           sampleCodeUrl = '../assets/text/sample-tool.cwl';
-        } else if (this.entryType === 'workflow') {
+        } else if (this.entryType === EntryType.WORKFLOW) {
           sampleCodeUrl = '../assets/text/sample-workflow.cwl';
         }
       } else if (this.mode === 'wdl') {
@@ -94,20 +96,20 @@ export class CodeEditorComponent implements AfterViewInit {
       } else if (this.editorFilepath === '/nextflow.config') {
         sampleCodeUrl = '../assets/text/nextflow.config';
       } else if (this.mode === 'yaml') {
-        if (this.entryType === EntryType.BioWorkflow) {
+        if (this.entryType === EntryType.WORKFLOW) {
           sampleCodeUrl = '../assets/text/sample-workflow-dockstore.yml';
-        } else if (this.entryType === EntryType.AppTool || this.entryType === EntryType.Tool) {
+        } else if (this.entryType === EntryType.APPTOOL) {
           sampleCodeUrl = '../assets/text/sample-tool-dockstore.yml';
-        } else if (this.entryType === EntryType.Notebook) {
+        } else if (this.entryType === EntryType.NOTEBOOK) {
           sampleCodeUrl = '../assets/text/sample-notebook-dockstore.yml';
-        } else if (this.entryType === EntryType.Service) {
+        } else if (this.entryType === EntryType.SERVICE) {
           sampleCodeUrl = '../assets/text/sample-service-dockstore.yml';
         }
       }
     }
     if (sampleCodeUrl) {
       const httpOptions: Object = { responseType: 'text' };
-      this.httpClient.get(sampleCodeUrl, httpOptions).subscribe(setContent);
+      this.httpClient.get(sampleCodeUrl, httpOptions).subscribe((content: string) => setContent(content, this.readOnly ? -1 : 0));
     } else {
       setContent(this.editorContent, -1);
     }

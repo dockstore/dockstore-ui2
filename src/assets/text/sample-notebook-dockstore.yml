@@ -1,4 +1,4 @@
-version: 1.2 # The first line refers to the version 1.2 of the .dockstore.yml schema
+version: 1.2 # The .dockstore.yml schema version
 notebooks:
   - format: <JUPYTER>
     language: <PYTHON | R | JAVASCRIPT | SCALA | JULIA | OTHER>

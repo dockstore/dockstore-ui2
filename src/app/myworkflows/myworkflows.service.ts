@@ -24,7 +24,15 @@ import { EntryType } from 'app/shared/enum/entry-type';
 import { MyEntriesService } from 'app/shared/myentries.service';
 import { MyEntriesStateService } from 'app/shared/state/my-entries.service';
 import { WorkflowService } from 'app/shared/state/workflow.service';
-import { BioWorkflow, DockstoreTool, SharedWorkflows, UsersService, Workflow, WorkflowsService } from 'app/shared/openapi';
+import {
+  BioWorkflow,
+  DockstoreTool,
+  EntryType as OpenApiEntryType,
+  SharedWorkflows,
+  UsersService,
+  Workflow,
+  WorkflowsService,
+} from 'app/shared/openapi';
 import { UrlResolverService } from 'app/shared/url-resolver.service';
 import { UserQuery } from 'app/shared/user/user.query';
 import { RegisterWorkflowModalComponent } from 'app/workflow/register-workflow-modal/register-workflow-modal.component';
@@ -256,7 +264,10 @@ export class MyWorkflowsService extends MyEntriesService<Workflow, OrgWorkflowOb
    * @param entryType
    */
   openRegisterGithubAppModal(entryType: EntryType) {
-    const dialogRef = this.matDialog.open(RegisterGithubAppModalComponent, { width: bootstrap4largeModalSize, data: entryType });
+    const dialogRef = this.matDialog.open(RegisterGithubAppModalComponent, {
+      width: bootstrap4largeModalSize,
+      data: entryType.toUpperCase() as OpenApiEntryType,
+    });
     dialogRef.afterClosed().subscribe((reloadEntries) => {
       if (reloadEntries) {
         const user = this.userQuery.getValue().user;

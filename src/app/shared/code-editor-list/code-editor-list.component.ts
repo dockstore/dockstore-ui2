@@ -2,12 +2,11 @@ import { Component, Input } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { WorkflowQuery } from '../state/workflow.query';
-import { SourceFile } from '../openapi';
+import { EntryType, SourceFile } from '../openapi';
 import { ToolDescriptor } from './../../shared/openapi/model/toolDescriptor';
 import { WorkflowVersion } from './../../shared/openapi/model/workflowVersion';
 import { CodeEditorListService } from './code-editor-list.service';
 import { FileService } from 'app/shared/file.service';
-import { EntryType } from '../enum/entry-type';
 
 export type FileCategory = 'descriptor' | 'dockerfile' | 'testParam';
 

@@ -16,7 +16,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input } from '@angular/core';
 import { includesAuthors } from 'app/shared/constants';
-import { SourceFile, WorkflowsService as OpenApiWorkflowServices, ToolDescriptor, Workflow } from 'app/shared/openapi';
+import { SourceFile, WorkflowsService as OpenApiWorkflowServices, ToolDescriptor, Workflow, EntryType } from 'app/shared/openapi';
 import { Observable } from 'rxjs';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { FileEditing } from '../../shared/file-editing';
@@ -33,6 +33,7 @@ import { WorkflowVersion } from './../../shared/openapi/model/workflowVersion';
   styleUrls: ['./workflow-file-editor.component.scss'],
 })
 export class WorkflowFileEditorComponent extends FileEditing {
+  public EntryType = EntryType;
   descriptorFiles: Array<SourceFile> = [];
   testParameterFiles: Array<SourceFile> = [];
   originalSourceFiles: Array<SourceFile> = [];

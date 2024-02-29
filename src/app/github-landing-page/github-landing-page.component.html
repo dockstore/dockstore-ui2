@@ -15,8 +15,7 @@
   -->
 
 <h3 class="text-align-center">
-  Your GitHub repository installation is being processed. It may take a few minutes for your {{ entryTypeMetadata.termPlural }} to be
-  synced.
+  Your GitHub repository installation is being processed. It may take a few minutes to register your {{ entryTypeMetadata.termPlural }}.
 </h3>
 <hr />
 <div fxLayout="column" fxLayoutGap="2rem">
@@ -58,7 +57,7 @@
           </li>
           <li>Put the <code>.dockstore.yml</code> file in the top of your repository or inside the <code>.github/</code> directory.</li>
           <li>
-            <a [routerLink]="['/quick-start']">The Dockstore Yaml Command Line Validator Tool</a> can be used to validate the
+            The <a [routerLink]="['/quick-start']">Dockstore Yaml Command Line Validator Tool</a> can be used to validate the
             <code>.dockstore.yml</code>.
             <pre>dockstore yaml validate --path directory/of/.dockstore.yml</pre>
           </li>

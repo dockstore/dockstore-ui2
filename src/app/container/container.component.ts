@@ -49,7 +49,6 @@ import { UrlResolverService } from './../shared/url-resolver.service';
 import { AddTagComponent } from './add-tag/add-tag.component';
 import { EmailService } from './email.service';
 import { EntryCategoriesService } from '../categories/state/entry-categories.service';
-import { EntryType } from 'app/shared/enum/entry-type';
 
 @Component({
   selector: 'app-container',
@@ -75,7 +74,6 @@ export class ContainerComponent extends Entry<Tag> implements AfterViewInit, OnI
   public schema: BioschemaTool;
   public extendedTool$: Observable<ExtendedDockstoreTool>;
   public isRefreshing$: Observable<boolean>;
-  public entryType: EntryType;
   @Input() selectedVersion: Tag;
 
   constructor(
@@ -124,8 +122,6 @@ export class ContainerComponent extends Entry<Tag> implements AfterViewInit, OnI
       entryService,
       entryCategoriesService
     );
-    // Entry type is set in the container, workflow, and service routing files.
-    this.entryType = this.sessionQuery.getValue().entryType;
     this.isRefreshing$ = this.alertQuery.showInfo$;
     this.extendedTool$ = this.extendedDockstoreToolQuery.extendedDockstoreTool$;
     this._toolType = 'containers';

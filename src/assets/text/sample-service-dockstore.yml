@@ -1,4 +1,4 @@
-version: 1.2 # The first line refers to the version 1.2 of the .dockstore.yml schema
+version: 1.2 # The .dockstore.yml schema version
 service:
   subclass: <DOCKER_COMPOSE | KUBERNETES | HELM | SWARM | NOT_APPLICABLE>
   name: <String>

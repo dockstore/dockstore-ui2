@@ -3,8 +3,7 @@ import { Dockstore } from '../shared/dockstore.model';
 import { ActivatedRoute, Params } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
 import { Base } from 'app/shared/base';
-import { EntryType } from 'app/shared/enum/entry-type';
-import { EntryType as OpenApiEntryType, EntryTypeMetadata } from 'app/shared/openapi';
+import { EntryType, EntryTypeMetadata } from 'app/shared/openapi';
 import { EntryTypeMetadataService } from 'app/entry/type-metadata/entry-type-metadata.service';
 
 @Component({
@@ -24,9 +23,9 @@ export class GithubLandingPageComponent extends Base implements OnInit {
 
   ngOnInit() {
     this.activatedRoute.queryParams.pipe(takeUntil(this.ngUnsubscribe)).subscribe((params: Params) => {
-      this.entryType = params.entryType ? params.entryType : EntryType.BioWorkflow;
-      this.entryTypeMetadata = this.entryTypeMetadataService.get(this.entryType.toUpperCase() as OpenApiEntryType);
-      this.templateUrl = `${Dockstore.DOCUMENTATION_URL}/assets/templates/${this.entryType}s/${this.entryType}s.html`;
+      this.entryType = params.entryType ? params.entryType : EntryType.WORKFLOW;
+      this.entryTypeMetadata = this.entryTypeMetadataService.get(this.entryType);
+      this.templateUrl = `${Dockstore.DOCUMENTATION_URL}/assets/templates/${this.entryTypeMetadata.termPlural}/${this.entryTypeMetadata.termPlural}.html`;
     });
   }
 }
