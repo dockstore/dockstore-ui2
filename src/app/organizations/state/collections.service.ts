@@ -25,6 +25,7 @@ import { CollectionsQuery } from './collections.query';
 import { CollectionsStore } from './collections.store';
 import { OrganizationQuery } from './organization.query';
 import { OrganizationService } from './organization.service';
+import { UrlResolverService } from '../../shared/url-resolver.service';
 
 @Injectable({ providedIn: 'root' })
 export class CollectionsService {
@@ -36,7 +37,8 @@ export class CollectionsService {
     private organizationStore: OrganizationQuery,
     private collectionsQuery: CollectionsQuery,
     private matDialog: MatDialog,
-    private router: Router
+    private router: Router,
+    public urlResolverService: UrlResolverService
   ) {}
 
   clearState() {
@@ -102,7 +104,7 @@ export class CollectionsService {
         (error: HttpErrorResponse) => {
           this.collectionsStore.setError(true);
           if (error.status === 404) {
-            this.router.navigate(['page-not-found']);
+            this.urlResolverService.showPageNotFound();
           }
         }
       );
