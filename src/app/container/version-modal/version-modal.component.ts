@@ -15,7 +15,7 @@
  */
 import { AfterViewChecked, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { Base } from 'app/shared/base';
 import { forkJoin } from 'rxjs';
 import { debounceTime, finalize, takeUntil } from 'rxjs/operators';

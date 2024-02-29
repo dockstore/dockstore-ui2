@@ -25,12 +25,14 @@ import {
   BioWorkflow,
   Notebook,
   Service,
+  MetricsByStatus,
+  RunExecution,
 } from '../../shared/openapi';
 import { SessionQuery } from '../../shared/session/session.query';
 import { takeUntil } from 'rxjs/operators';
-import { CheckerWorkflowQuery } from '../../shared/state/checker-workflow.query';
 import PartnerEnum = CloudInstance.PartnerEnum;
-import { MatSelectChange } from '@angular/material/select';
+import ExecutionStatusEnum = RunExecution.ExecutionStatusEnum;
+import { MatLegacySelectChange as MatSelectChange } from '@angular/material/legacy-select';
 import { AlertService } from '../../shared/alert/state/alert.service';
 
 interface ExecutionMetricsTableObject {
@@ -58,7 +60,11 @@ export class ExecutionsTabComponent extends EntryTab implements OnChanges {
   successfulExecutions: number;
   failedExecutions: number;
   abortedExecutions: number;
+  successfulExecutionRate: number | null;
   executionMetricsExist: boolean;
+  currentExecutionStatus: string;
+  executionStatusToMetrics: Map<string, MetricsByStatus>;
+  executionStatuses: string[];
   // Fields for validator tool metrics
   validationsColumns: string[] = [
     'validatorToolVersionName',
@@ -103,7 +109,10 @@ export class ExecutionsTabComponent extends EntryTab implements OnChanges {
               this.partners = Array.from(this.metrics.keys());
               this.metricsExist = this.partners.length > 0;
               if (this.metricsExist) {
-                // Display metrics for ALL platforms
+                // Remove the ALL platform if there's only one execution
+                if (this.partners.length === 2 && this.partners.filter((partner) => partner === PartnerEnum.ALL).length === 1) {
+                  this.partners = this.partners.filter((partner) => partner !== PartnerEnum.ALL);
+                }
                 const platform =
                   this.partners.filter((partner) => partner === PartnerEnum.ALL).length === 1
                     ? this.partners.filter((partner) => partner === PartnerEnum.ALL)[0]
@@ -111,7 +120,7 @@ export class ExecutionsTabComponent extends EntryTab implements OnChanges {
                 this.selectPartner(platform);
               }
             }
-            this.alertService.detailedSuccess();
+            this.alertService.simpleSuccess();
           },
           (error) => {
             this.alertService.detailedError(error);
@@ -138,6 +147,8 @@ export class ExecutionsTabComponent extends EntryTab implements OnChanges {
     this.successfulExecutions = null;
     this.failedExecutions = null;
     this.abortedExecutions = null;
+    this.successfulExecutionRate = null;
+    this.currentExecutionStatus = null;
     this.currentPartner = null;
     this.currentValidatorTool = null;
     this.validatorTools = [];
@@ -145,19 +156,38 @@ export class ExecutionsTabComponent extends EntryTab implements OnChanges {
 
   private loadExecutionMetricsData(partner: PartnerEnum) {
     const metrics = this.metrics.get(partner);
-    this.executionMetricsTable = this.createExecutionsTable(metrics);
-    this.executionMetricsExist =
-      metrics?.cpu !== null ||
-      metrics?.memory !== null ||
-      metrics?.executionTime !== null ||
-      metrics?.executionStatusCount !== null ||
-      metrics?.cost !== null;
+    this.executionMetricsExist = metrics?.executionStatusCount !== null;
 
     if (metrics?.executionStatusCount) {
+      this.executionStatusToMetrics = new Map(Object.entries(metrics.executionStatusCount.count));
+
+      // Set the default execution status
+      this.executionStatuses = Array.from(this.executionStatusToMetrics.keys());
+      if (this.executionStatuses) {
+        // Remove the ALL status if there's only one execution
+        if (
+          this.executionStatuses.length === 2 &&
+          this.executionStatuses.filter((status) => status === ExecutionStatusEnum.ALL).length === 1
+        ) {
+          this.executionStatuses = this.executionStatuses.filter((status) => status !== ExecutionStatusEnum.ALL);
+        }
+        // Pick the default execution status to display.
+        let defaultExecutionStatus = this.executionStatuses[0];
+        if (this.executionStatuses.includes(ExecutionStatusEnum.SUCCESSFUL)) {
+          defaultExecutionStatus = this.executionStatuses.find((status) => status === ExecutionStatusEnum.SUCCESSFUL);
+        } else if (this.executionStatuses.includes(ExecutionStatusEnum.ALL)) {
+          defaultExecutionStatus = this.executionStatuses.find((status) => status === ExecutionStatusEnum.ALL);
+        }
+
+        this.onSelectedExecutionStatusChange(defaultExecutionStatus);
+      }
+
       this.successfulExecutions = metrics.executionStatusCount.numberOfSuccessfulExecutions;
       this.failedExecutions = metrics.executionStatusCount.numberOfFailedExecutions;
       this.abortedExecutions = metrics.executionStatusCount.numberOfAbortedExecutions;
       this.totalExecutions = this.successfulExecutions + this.failedExecutions + this.abortedExecutions;
+      const completedExecutions = (this.successfulExecutions || 0) + (this.failedExecutions || 0); // Per schema, values could be undefined, even though in practice they currently aren't
+      this.successfulExecutionRate = completedExecutions > 0 ? (100 * this.successfulExecutions) / completedExecutions : null; // Don't divide by 0
     }
   }
 
@@ -167,16 +197,39 @@ export class ExecutionsTabComponent extends EntryTab implements OnChanges {
    * @param metrics
    * @returns
    */
-  private createExecutionsTable(metrics: Metrics | null): ExecutionMetricsTableObject[] {
+  private createExecutionsTable(metrics: MetricsByStatus | null): ExecutionMetricsTableObject[] {
     let executionsTable: ExecutionMetricsTableObject[] = [];
-    // Only create the table if one of the execution metrics exist
-    if (metrics && (metrics.cpu || metrics.memory || metrics.executionTime || metrics.cost)) {
-      executionsTable.push({ metric: 'CPU', ...metrics?.cpu });
-      executionsTable.push({ metric: 'Memory', ...metrics?.memory });
-      executionsTable.push({ metric: 'Run Time', ...metrics?.executionTime });
-      executionsTable.push({ metric: 'Cost', ...metrics?.cost });
+    // Only add the rows if there are data for that type
+    if (metrics) {
+      if (metrics.cpu) {
+        executionsTable.push({ metric: 'CPU', ...metrics.cpu });
+      }
+      if (metrics.memory) {
+        executionsTable.push({ metric: 'Memory', ...metrics.memory });
+      }
+      if (metrics.executionTime) {
+        executionsTable.push({ metric: 'Run Time', ...metrics.executionTime });
+      }
+      if (metrics.cost) {
+        executionsTable.push({ metric: 'Cost', ...metrics.cost });
+      }
     }
     return executionsTable;
+  }
+
+  /**
+   * Called when the selected execution status is changed
+   * @param {string} executionStatus - New execution status
+   * @return {void}
+   */
+  onSelectedExecutionStatusChange(executionStatus: string): void {
+    if (executionStatus) {
+      this.currentExecutionStatus = executionStatus;
+      this.executionMetricsTable = this.createExecutionsTable(this.executionStatusToMetrics.get(executionStatus));
+    } else {
+      this.currentExecutionStatus = null;
+      this.executionMetricsTable = [];
+    }
   }
 
   private loadValidationsData(partner: PartnerEnum) {

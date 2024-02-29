@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { finalize } from 'rxjs/operators';
 import { Organization, OrganizationsService } from '../../../shared/openapi';
 import { CollectionsService } from '../../state/collections.service';

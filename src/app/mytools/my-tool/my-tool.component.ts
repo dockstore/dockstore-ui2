@@ -14,7 +14,7 @@
  *     limitations under the License.
  */
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ActivatedRoute, NavigationEnd, Router, RouterEvent } from '@angular/router';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { AlertService } from 'app/shared/alert/state/alert.service';

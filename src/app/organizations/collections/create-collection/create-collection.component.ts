@@ -1,7 +1,7 @@
 import { KeyValue } from '@angular/common';
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, UntypedFormGroup } from '@angular/forms';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
 import { HashMap } from '@datorama/akita';
 import { NgFormsManager } from '@ngneat/forms-manager';
 import { Observable } from 'rxjs';

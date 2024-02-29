@@ -82,8 +82,8 @@ describe('Dockstore notebooks', () => {
     cy.get('[data-cy=versionRow]').contains(/jupyter/i);
     // Click on Info button and check content.
     cy.get('[data-cy=versionRow] button').click();
-    cy.get('input[name=reference]').should('have.value', 'simple-published-v1');
-    cy.get('input[name=workflow_path]').should('have.value', '/notebook.ipynb');
+    cy.get('.label-value').contains('simple-published-v1');
+    cy.get('.label-value').contains('/notebook.ipynb');
   });
 
   it('should have Files tab', () => {

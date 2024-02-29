@@ -14,7 +14,7 @@
  *     limitations under the License.
  */
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { Router } from '@angular/router';
 import { AuthService } from 'ng2-ui-auth';
 import { Observable, Subject } from 'rxjs';
@@ -30,7 +30,7 @@ import { TokenUser } from './../../../shared/openapi/model/tokenUser';
 import { AccountsService } from './accounts.service';
 import { LogoutService } from '../../../shared/logout.service';
 import { RevokeTokenDialogComponent } from './revoke-token-dialog/revoke-token-dialog.component';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { accountInfo, bootstrap4largeModalSize } from '../../../shared/constants';
 import { AlertService } from '../../../shared/alert/state/alert.service';
 import { HttpErrorResponse } from '@angular/common/http';

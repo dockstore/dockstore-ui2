@@ -25,6 +25,8 @@ import { DocsComponent } from './docs.component';
 describe('DocsComponent', () => {
   // let component: DocsComponent;
   // let fixture: ComponentFixture<DocsComponent>;
+  let fixture;
+  let component;
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
@@ -34,15 +36,15 @@ describe('DocsComponent', () => {
     })
   );
 
-  // beforeEach(() => {
-  //   fixture = TestBed.createComponent(DocsComponent);
-  //   component = fixture.componentInstance;
-  //   fixture.detectChanges();
-  // });
+  beforeEach(() => {
+    fixture = TestBed.createComponent(DocsComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
 
-  // it('should create', () => {
-  //   expect(component).toBeTruthy();
-  // });
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
 
   // it('should render subject', () => {
   //   const h3 = fixture.debugElement.query(By.css('h3'));

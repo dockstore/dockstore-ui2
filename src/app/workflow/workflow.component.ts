@@ -16,8 +16,8 @@
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Location } from '@angular/common';
 import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
-import { MatChipInputEvent } from '@angular/material/chips';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyChipInputEvent as MatChipInputEvent } from '@angular/material/legacy-chips';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertService } from 'app/shared/alert/state/alert.service';
 import { BioWorkflow } from 'app/shared/openapi/model/bioWorkflow';
@@ -161,16 +161,16 @@ export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterVi
     // Entry type is set in the container, workflow, and service routing files.
     this.entryType = this.sessionQuery.getValue().entryType;
     if (this.entryType === EntryType.BioWorkflow) {
-      this.validTabs = ['info', 'launch', 'versions', 'files', 'tools', 'dag'];
+      this.validTabs = ['info', 'launch', 'versions', 'files', 'tools', 'dag', 'metrics'];
       this.redirectToCanonicalURL('/' + myBioWorkflowsURLSegment);
     } else if (this.entryType === EntryType.Tool) {
-      this.validTabs = ['info', 'launch', 'versions', 'files'];
+      this.validTabs = ['info', 'launch', 'versions', 'files', 'metrics'];
       this.redirectToCanonicalURL('/' + myToolsURLSegment);
     } else if (this.entryType === EntryType.Notebook) {
-      this.validTabs = ['info', 'code', 'versions', 'files'];
+      this.validTabs = ['info', 'code', 'versions', 'files', 'metrics'];
       this.redirectToCanonicalURL('/' + myNotebooksURLSegment);
     } else {
-      this.validTabs = ['info', 'versions', 'files'];
+      this.validTabs = ['info', 'versions', 'files', 'metrics'];
       this.redirectToCanonicalURL('/' + myServicesURLSegment);
     }
     this.resourcePath = this.location.prepareExternalUrl(this.location.path());

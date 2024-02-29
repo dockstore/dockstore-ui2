@@ -16,10 +16,10 @@
 
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { transaction } from '@datorama/akita';
 import { AlertService } from 'app/shared/alert/state/alert.service';
-import { includesAuthors, includesValidation, bootstrap4largeModalSize } from 'app/shared/constants';
+import { includesAuthors, includesValidation, bootstrap4largeModalSize, includesMetrics } from 'app/shared/constants';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { MyEntriesService } from 'app/shared/myentries.service';
 import { SessionQuery } from 'app/shared/session/session.query';
@@ -198,13 +198,16 @@ export class MyWorkflowsService extends MyEntriesService<Workflow, OrgWorkflowOb
   /**
    * Grabs the workflow/service/notebook from the webservice and loads it
    * @param workflow Selected workflow
+   * @param entryType
    */
   selectEntry(workflow: DockstoreTool | Workflow | null, entryType: EntryType | null): void {
     if (workflow && entryType && workflow.id) {
-      this.workflowsService.getWorkflow(workflow.id, includesValidation + ',' + includesAuthors).subscribe((result: Workflow) => {
-        this.location.go('/my-' + entryType + 's/' + result.full_workflow_path);
-        this.workflowService.setWorkflow(result);
-      });
+      this.workflowsService
+        .getWorkflow(workflow.id, [includesValidation, includesAuthors, includesMetrics].join(','))
+        .subscribe((result: Workflow) => {
+          this.location.go('/my-' + entryType + 's/' + result.full_workflow_path);
+          this.workflowService.setWorkflow(result);
+        });
     }
   }
 

@@ -23,3 +23,9 @@ a.underline-none {
   width: 14rem;
   text-align: start;
 }
+
+:host ::ng-deep .mat-tab-label {
+  padding-left: 0.5em !important;
+  padding-right: 0.5em !important;
+  min-width: 0 !important;
+}

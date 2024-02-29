@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
 import { Router } from '@angular/router';
 import { faOrcid } from '@fortawesome/free-brands-svg-icons';
 import { concat, Observable, of as observableOf, throwError } from 'rxjs';
@@ -48,6 +48,7 @@ export class SnaphotExporterModalComponent extends Base {
   public isAjaxing$ = this.alertQuery.showInfo$;
   public isSnapshot: boolean = this.dialogData.version.frozen;
   public workflow: BioWorkflow;
+  public workflowTerm: string;
   public version: WorkflowVersion;
   public Dockstore = Dockstore;
   public StepState = StepState;
@@ -69,6 +70,7 @@ export class SnaphotExporterModalComponent extends Base {
   ) {
     super();
     this.workflow = dialogData.workflow;
+    this.workflowTerm = this.workflow.entryTypeMetadata.term;
     this.version = dialogData.version;
     this.action = dialogData.action;
     this.userId = dialogData.userId;

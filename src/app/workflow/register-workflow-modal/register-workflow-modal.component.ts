@@ -15,8 +15,8 @@
  */
 import { AfterViewChecked, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
-import { MatRadioChange } from '@angular/material/radio';
+import { MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
+import { MatLegacyRadioChange as MatRadioChange } from '@angular/material/legacy-radio';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 import { SessionQuery } from 'app/shared/session/session.query';
 import { UserQuery } from 'app/shared/user/user.query';
