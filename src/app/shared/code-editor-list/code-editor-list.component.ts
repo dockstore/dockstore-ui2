@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { WorkflowQuery } from '../state/workflow.query';
-import { SourceFile } from '../openapi';
+import { EntryType, SourceFile } from '../openapi';
 import { ToolDescriptor } from './../../shared/openapi/model/toolDescriptor';
 import { WorkflowVersion } from './../../shared/openapi/model/workflowVersion';
 import { CodeEditorListService } from './code-editor-list.service';
@@ -20,7 +20,7 @@ export class CodeEditorListComponent {
   @Input() editing: boolean;
   @Input() fileType: FileCategory;
   @Input() descriptorType: ToolDescriptor.TypeEnum;
-  @Input() entryType: 'tool' | 'workflow';
+  @Input() entryType: EntryType;
   @Input() entrypath: string;
   @Input() selectedVersion: WorkflowVersion;
   protected published$: Observable<boolean>;

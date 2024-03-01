@@ -24,6 +24,7 @@ import { formInputDebounceTime } from '../../shared/constants';
 import { formErrors, validationDescriptorPatterns, validationMessages } from '../../shared/validationMessages.model';
 import { RegisterToolService } from './register-tool.service';
 import { Dockstore } from '../../shared/dockstore.model';
+import { EntryType } from 'app/shared/openapi';
 
 interface HostedTool {
   path: string;
@@ -45,6 +46,7 @@ enum OptionChoice {
   styleUrls: ['./register-tool.component.css'],
 })
 export class RegisterToolComponent implements OnInit, AfterViewChecked, OnDestroy {
+  public EntryType = EntryType;
   public toolRegisterError: boolean;
   public tool: any;
   public formErrors = formErrors;
@@ -56,7 +58,6 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked, OnDestro
   public disablePrivateCheckbox = false;
   public loading$: Observable<boolean>;
   public isRefreshing$: Observable<boolean>;
-  public gitHubAppInstallationLink$: Observable<string>;
   public hostedTool: HostedTool = {
     path: '',
     registry: 'quay.io',
@@ -166,7 +167,6 @@ export class RegisterToolComponent implements OnInit, AfterViewChecked, OnDestro
 
   ngOnInit() {
     this.loading$ = this.sessionQuery.loadingDialog$;
-    this.gitHubAppInstallationLink$ = this.sessionQuery.gitHubAppInstallationLandingPageLink$;
     this.registerToolService.toolRegisterError
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((toolRegisterError) => (this.toolRegisterError = toolRegisterError));

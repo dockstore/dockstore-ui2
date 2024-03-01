@@ -14,6 +14,7 @@ import { MatLegacyFormFieldModule as MatFormFieldModule } from '@angular/materia
 import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
 import { MatLegacyOptionModule as MatOptionModule } from '@angular/material/legacy-core';
 import { ReactiveFormsModule } from '@angular/forms';
+import { EntryModule } from '../entry/entry.module';
 
 @NgModule({
   declarations: [RegisterGithubAppComponent, GithubLandingPageComponent],
@@ -32,6 +33,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatInputModule,
     MatOptionModule,
     ReactiveFormsModule,
+    EntryModule,
   ],
 })
 export class RegisterGithubAppModule {}

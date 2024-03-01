@@ -1,0 +1,10 @@
+version: 1.2 # The .dockstore.yml schema version
+tools:
+  - subclass: CWL
+    primaryDescriptorPath: <String>
+    testParameterFiles: # <String Array>
+      - <String>
+      - <String>
+    authors:
+      - orcid: <String>
+    topic: <String>
