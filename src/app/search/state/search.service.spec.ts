@@ -123,7 +123,7 @@ describe('SearchService', () => {
   it('should sort workflows correctly', inject([SearchService], (service: SearchService) => {
     const a: Workflow = {
       type: '',
-      author: 'a',
+      authors: null,
       gitUrl: 'https://giturl',
       mode: Workflow.ModeEnum.FULL,
       organization: '',
@@ -138,17 +138,13 @@ describe('SearchService', () => {
 
     const b: Workflow = {
       ...a,
-      author: 'B',
+      authors: null,
       full_workflow_path: 'Bcd',
       starredUsers: [{ isAdmin: false, curator: false, platformPartner: null, setupComplete: true }],
     };
 
-    const c: Workflow = { ...a, author: null, full_workflow_path: null, descriptorType: Workflow.DescriptorTypeEnum.WDL };
+    const c: Workflow = { ...a, authors: null, full_workflow_path: null, descriptorType: Workflow.DescriptorTypeEnum.WDL };
 
-    expect(searchService.compareAttributes(a, b, 'author', 'asc', 'workflow')).toEqual(-1);
-    expect(searchService.compareAttributes(a, b, 'author', 'desc', 'workflow')).toEqual(1);
-    expect(searchService.compareAttributes(b, c, 'author', 'asc', 'workflow')).toEqual(-1);
-    expect(searchService.compareAttributes(b, c, 'author', 'desc', 'workflow')).toEqual(-1);
     expect(searchService.compareAttributes(a, c, 'descriptorType', 'asc', 'workflow')).toEqual(-1);
     expect(searchService.compareAttributes(a, b, 'descriptorType', 'desc', 'workflow')).toEqual(-0);
     expect(searchService.compareAttributes(a, b, 'starredUsers', 'asc', 'workflow')).toEqual(-1);
