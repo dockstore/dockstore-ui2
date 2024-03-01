@@ -78,6 +78,21 @@ export abstract class LaunchService {
   }
 
   /**
+   * This creates the planemo local launch commands
+   * @param path The GA4GH Tool's path
+   * @param versionName The ToolVersion's name
+   */
+  getPlanemoLocalLaunchString(workflowPath: string, versionName: string) {
+    return (
+      `wget -O foo.zip ${Dockstore.API_URI}${ga4ghPath}/tools/` +
+      encodeURIComponent('#workflow/' + workflowPath) +
+      `/versions/${versionName}/GALAXY/files?format=zip` +
+      '\nunzip foo.zip' +
+      '\nplanemo run Dockstore.gxwf.yml Dockstore.gxwf-test.yml --download_outputs --output_directory . --output_json output.json --engine docker_galaxy'
+    );
+  }
+
+  /**
    * Gets local launch command
    */
   getNextflowLocalLaunchString(): string {

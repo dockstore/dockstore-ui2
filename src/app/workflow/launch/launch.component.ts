@@ -59,6 +59,7 @@ export class LaunchWorkflowComponent extends EntryTab implements OnInit, OnChang
   nextflowNativeLaunchDescription: string;
   nextflowLocalLaunchDescription: string;
   nextflowDownloadFileDescription: string;
+  planemoLocalLaunchString: string;
   descriptors: Array<any>;
   cwlrunnerDescription = this.launchService.cwlrunnerDescription;
   cwlrunnerTooltip = this.launchService.cwlrunnerTooltip;
@@ -66,6 +67,7 @@ export class LaunchWorkflowComponent extends EntryTab implements OnInit, OnChang
   testParameterPath: string;
   descriptorType$: Observable<ToolDescriptor.TypeEnum>;
   isNFL$: Observable<boolean>;
+  isGalaxy$: Observable<boolean>;
   ToolDescriptor = ToolDescriptor;
   EntryType = EntryType;
   protected published$: Observable<boolean>;
@@ -90,6 +92,7 @@ export class LaunchWorkflowComponent extends EntryTab implements OnInit, OnChang
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((descriptorType: ToolDescriptor.TypeEnum) => (this.currentDescriptor = descriptorType));
     this.isNFL$ = this.workflowQuery.isNFL$;
+    this.isGalaxy$ = this.workflowQuery.isGalaxy$;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -115,6 +118,7 @@ export class LaunchWorkflowComponent extends EntryTab implements OnInit, OnChang
     this.nextflowNativeLaunchDescription = this.launchService.getNextflowNativeLaunchString(basePath, versionName);
     this.nextflowLocalLaunchDescription = this.launchService.getNextflowLocalLaunchString();
     this.nextflowDownloadFileDescription = this.launchService.getNextflowDownload(basePath, versionName);
+    this.planemoLocalLaunchString = this.launchService.getPlanemoLocalLaunchString(basePath, versionName);
     this.updateWgetTestJsonString(workflowPath, versionName, descriptorType);
     this.wesLaunchCommand = this.launchService.getWesLaunch(workflowPath, versionName);
     this.wesWrapperJson = this.launchService.getAgcFileWrapper();
