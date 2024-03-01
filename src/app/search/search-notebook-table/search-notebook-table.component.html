@@ -13,10 +13,9 @@
               notebook?.source.repository +
               (notebook?.source.workflowName ? '/' + notebook?.source.workflowName : '')
           }}</a>
-          <div class="truncate-text-2 size-small" *ngIf="notebook.source.topicSelection" [matTooltip]="notebook.source.topicSelection">
-            {{ notebook.source.topicSelection }}
-            <span *ngIf="notebook?.topicSelection === TopicSelectionEnum.AI">
-              {{ notebook?.topicAI }}
+          <div class="truncate-text-2 size-small" [matTooltip]="notebook?.source.topicAutomatic" matTooltipPosition="left">
+            {{ notebook?.source.topicAutomatic }}
+            <span *ngIf="notebook?.source.topicSelection === TopicSelectionEnum.AI">
               <span
                 class="bubble ai-bubble"
                 matTooltip="This topic sentence was AI generated. For more information, please click to visit our docs"

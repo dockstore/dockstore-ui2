@@ -18,15 +18,9 @@
                 (workflow?.source.workflowName ? '/' + workflow?.source.workflowName : '')
             }}</a
           >
-          <div
-            class="truncate-text-2 size-small"
-            *ngIf="workflow.source.topicSelection"
-            [matTooltip]="workflow.source.topicSelection"
-            matTooltipPosition="left"
-          >
-            {{ workflow.source.topicSelection }}
-            <span *ngIf="workflow?.topicSelection === TopicSelectionEnum.AI">
-              {{ workflow?.topicAI }}
+          <div class="truncate-text-2 size-small" [matTooltip]="workflow?.source.topicAutomatic" matTooltipPosition="left">
+            {{ workflow?.source.topicAutomatic }}
+            <span *ngIf="workflow?.source.topicSelection === TopicSelectionEnum.AI">
               <span
                 class="bubble ai-bubble"
                 matTooltip="This topic sentence was AI generated. For more information, please click to visit our docs"
