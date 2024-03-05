@@ -78,17 +78,32 @@ export abstract class LaunchService {
   }
 
   /**
-   * This creates the planemo local launch commands
+   * This creates the planemo local init command
    * @param path The GA4GH Tool's path
    * @param versionName The ToolVersion's name
    */
-  getPlanemoLocalLaunchString(workflowPath: string, versionName: string) {
+  getPlanemoLocalInitString(workflowPath: string, versionName: string, primaryDescriptorPath: string, testParameterPath: string) {
     return (
       `wget -O foo.zip ${Dockstore.API_URI}${ga4ghPath}/tools/` +
       encodeURIComponent('#workflow/' + workflowPath) +
       `/versions/${versionName}/GALAXY/files?format=zip` +
       '\nunzip foo.zip' +
-      '\nplanemo run Dockstore.gxwf.yml Dockstore.gxwf-test.yml --download_outputs --output_directory . --output_json output.json --engine docker_galaxy'
+      `\nplanemo workflow_job_init ${primaryDescriptorPath} -o ${testParameterPath}`
+    );
+  }
+
+  /**
+   * This creates the planemo local launch commands
+   * @param path The GA4GH Tool's path
+   * @param versionName The ToolVersion's name
+   */
+  getPlanemoLocalLaunchString(workflowPath: string, versionName: string, primaryDescriptorPath: string, testParameterPath: string) {
+    return (
+      `wget -O foo.zip ${Dockstore.API_URI}${ga4ghPath}/tools/` +
+      encodeURIComponent('#workflow/' + workflowPath) +
+      `/versions/${versionName}/GALAXY/files?format=zip` +
+      '\nunzip foo.zip' +
+      `\nplanemo run ${primaryDescriptorPath} ${testParameterPath} --download_outputs --output_directory . --output_json output.json --engine docker_galaxy`
     );
   }
 

@@ -47,6 +47,20 @@
             <pre>{{ wgetTestJsonDescription }}</pre>
           </span>
         </mat-card>
+        <mat-card *ngIf="(isGalaxy$ | async) === true" matTooltip="Commands for creating a runtime JSON template">
+          Make a runtime JSON template with Planemo and fill in desired inputs, outputs, and other parameters
+          <button mat-icon-button color="secondary" matTooltip="Copy command" [cdkCopyToClipboard]="planemoLocalInitString" appSnackbar>
+            <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
+          </button>
+          <pre>{{ planemoLocalInitString }}</pre>
+          <span *ngIf="wgetTestJsonDescription">
+            or grab one that the workflow author has provided (if applicable)
+            <button mat-icon-button color="secondary" matTooltip="Copy command" [cdkCopyToClipboard]="wgetTestJsonDescription" appSnackbar>
+              <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
+            </button>
+            <pre>{{ wgetTestJsonDescription }}</pre>
+          </span>
+        </mat-card>
         <mat-card
           *ngIf="(isNFL$ | async) === false && (isGalaxy$ | async) === false"
           matTooltip="Commands for launching tool through Dockstore CLI (Supports file provisioning)"

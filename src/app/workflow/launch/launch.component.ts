@@ -59,11 +59,13 @@ export class LaunchWorkflowComponent extends EntryTab implements OnInit, OnChang
   nextflowNativeLaunchDescription: string;
   nextflowLocalLaunchDescription: string;
   nextflowDownloadFileDescription: string;
+  planemoLocalInitString: string;
   planemoLocalLaunchString: string;
   descriptors: Array<any>;
   cwlrunnerDescription = this.launchService.cwlrunnerDescription;
   cwlrunnerTooltip = this.launchService.cwlrunnerTooltip;
   cwltoolTooltip = this.launchService.cwltoolTooltip;
+  primaryDescriptorPath: string;
   testParameterPath: string;
   descriptorType$: Observable<ToolDescriptor.TypeEnum>;
   isNFL$: Observable<boolean>;
@@ -118,7 +120,7 @@ export class LaunchWorkflowComponent extends EntryTab implements OnInit, OnChang
     this.nextflowNativeLaunchDescription = this.launchService.getNextflowNativeLaunchString(basePath, versionName);
     this.nextflowLocalLaunchDescription = this.launchService.getNextflowLocalLaunchString();
     this.nextflowDownloadFileDescription = this.launchService.getNextflowDownload(basePath, versionName);
-    this.planemoLocalLaunchString = this.launchService.getPlanemoLocalLaunchString(basePath, versionName);
+    this.updateWgetDescriptorString(versionName, descriptorType);
     this.updateWgetTestJsonString(workflowPath, versionName, descriptorType);
     this.wesLaunchCommand = this.launchService.getWesLaunch(workflowPath, versionName);
     this.wesWrapperJson = this.launchService.getAgcFileWrapper();
@@ -142,6 +144,47 @@ export class LaunchWorkflowComponent extends EntryTab implements OnInit, OnChang
         ga4ghWorkflowIdPrefix + workflowPath,
         versionName,
         descriptorType,
+        this.testParameterPath
+      );
+      this.planemoLocalInitString = this.launchService.getPlanemoLocalInitString(
+        this.basePath,
+        versionName,
+        this.primaryDescriptorPath,
+        this.testParameterPath
+      );
+      this.planemoLocalLaunchString = this.launchService.getPlanemoLocalLaunchString(
+        this.basePath,
+        versionName,
+        this.primaryDescriptorPath,
+        this.testParameterPath
+      );
+    });
+  }
+
+  /**
+   * Updates the wget test json string with the first available test parameter file
+   * @param workflowPath
+   * @param versionName
+   */
+  updateWgetDescriptorString(versionName: string, descriptorType: ToolDescriptor.TypeEnum): void {
+    let toolFiles$: Observable<Array<ToolFile>>;
+    toolFiles$ = this.gA4GHFilesQuery.getToolFiles(descriptorType, [ToolFile.FileTypeEnum.PRIMARYDESCRIPTOR]);
+    toolFiles$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((toolFiles: Array<ToolFile>) => {
+      if (toolFiles && toolFiles.length > 0) {
+        this.primaryDescriptorPath = toolFiles[0].path;
+      } else {
+        this.primaryDescriptorPath = null;
+      }
+      this.planemoLocalInitString = this.launchService.getPlanemoLocalInitString(
+        this.basePath,
+        versionName,
+        this.primaryDescriptorPath,
+        this.testParameterPath
+      );
+      this.planemoLocalLaunchString = this.launchService.getPlanemoLocalLaunchString(
+        this.basePath,
+        versionName,
+        this.primaryDescriptorPath,
         this.testParameterPath
       );
     });
