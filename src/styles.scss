@@ -1421,12 +1421,12 @@ div.mat-menu-panel {
   justify-content: space-between;
 }
 
-.ai-icon {
-  width: 16px;
-}
-
 .ai-bubble {
   align-items: center;
   justify-content: center;
   margin: 0 1%;
+}
+
+.ai-bubble:hover {
+  background-color: darkgrey;
 }

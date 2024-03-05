@@ -271,14 +271,17 @@
             <span *ngIf="tool?.topicSelection === TopicSelectionEnum.MANUAL">{{ tool?.topicManual }}</span>
             <span *ngIf="tool?.topicSelection === TopicSelectionEnum.AI">
               {{ tool?.topicAI }}
-              <span
+              <a
+                [href]="Dockstore.DOCUMENTATION_URL + '/faq.html'"
+                target="_blank"
+                rel="noopener noreferrer"
+                data-cy="ai-bubble"
                 class="bubble ai-bubble"
-                matTooltip="This topic sentence was AI generated. For more information, please click the bubble to visit our docs"
+                matTooltip="This topic sentence was AI generated. Non-published workflows will not be sent for AI topic sentences."
               >
-                <img class="ai-icon" src="/assets/svg/ai-icon.svg" alt="AI generation icon" />
-                <span>AI</span>
-                <img class="ai-icon" src="/assets/svg/help.svg" alt="help icon" />
-              </span>
+                <img class="site-icons-small" src="/assets/svg/ai-icon.svg" alt="AI generation icon" />
+                AI
+              </a>
             </span>
           </li>
           <!-- Private topic Topic -->
@@ -294,17 +297,18 @@
                 >:&nbsp;</span
               >
               <span data-cy="topicAI-text">{{ tool?.topicAI }}</span>
-              <span
+              <a
                 *ngIf="tool?.topicAI !== null"
+                [href]="Dockstore.DOCUMENTATION_URL + '/faq.html'"
+                target="_blank"
+                rel="noopener noreferrer"
                 data-cy="ai-bubble"
                 class="bubble ai-bubble"
-                onclick="window.open('https://docs.dockstore.org/en/stable/faq.html', 'blank')"
-                matTooltip="This topic sentence was AI generated. For more information, please click the bubble to visit our docs"
-                m
+                matTooltip="This topic sentence was AI generated. Non-published workflows will not be sent for AI topic sentences."
               >
-                <img class="ai-icon" src="/assets/svg/ai-icon.svg" alt="AI generation icon" />
-                <span>AI</span>
-              </span>
+                <img class="site-icons-small" src="/assets/svg/ai-icon.svg" alt="AI generation icon" />
+                AI
+              </a>
             </li>
             <!-- This looks different than the others ones because it's new and doesn't use bootstrap 3 classes -->
             <li>

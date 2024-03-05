@@ -46,15 +46,18 @@
           </ng-template>
           <div class="truncate-text-2 size-small" [matTooltip]="tool?.source.topicAutomatic" matTooltipPosition="left">
             {{ tool?.source.topicAutomatic }}
-            <span *ngIf="tool?.source.topicSelection === TopicSelectionEnum.AI">
-              <span
-                class="bubble ai-bubble"
-                matTooltip="This topic sentence was AI generated. For more information, please click the bubble to visit our docs"
-              >
-                <img class="ai-icon" src="/assets/svg/ai-icon.svg" alt="AI generation icon" />
-                <span>AI</span>
-              </span>
-            </span>
+            <a
+              *ngIf="tool?.source.topicSelection === TopicSelectionEnum.AI"
+              [href]="Dockstore.DOCUMENTATION_URL + '/faq.html'"
+              target="_blank"
+              rel="noopener noreferrer"
+              data-cy="ai-bubble"
+              class="bubble ai-bubble"
+              matTooltip="This topic sentence was AI generated. Non-published workflows will not be sent for AI topic sentences."
+            >
+              <img class="site-icons-small" src="/assets/svg/ai-icon.svg" alt="AI generation icon" />
+              AI
+            </a>
           </div>
         </div>
       </mat-cell>
