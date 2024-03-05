@@ -1,38 +1,41 @@
 import { setTokenUserViewPort } from '../../support/commands';
 
-describe('Find broken links', () => {
+function formatPaths(paths: string[]) {
+  let formattedPaths = '';
+  paths.forEach((path) => {
+    formattedPaths += '\n- ' + path;
+  });
+  return formattedPaths;
+}
+
+describe('Find broken anchor links', () => {
   setTokenUserViewPort();
 
   function checkUrls(path: string, selector: string) {
+    let brokenUrls = [];
     cy.visit(path);
-    cy.get(selector).within(() => {
-      cy.get('a').each((url) => {
+    cy.get(selector)
+      .find('a')
+      .each((url) => {
         cy.get(url);
         const href = url.prop('href');
         if (href) {
           cy.request({
-            url: url.prop('href'),
+            url: href,
             failOnStatusCode: false,
           }).then((result) => {
             if (result.status != 200) {
+              brokenUrls.push(href);
               cy.log(result.status + ': ' + href);
             }
           });
         }
-      });
-    });
-  }
-
-  function checkImages(path: string, selector: string) {
-    cy.visit(path).wait(500);
-    cy.get(selector).within(() => {
-      cy.get('img').each((image) => {
-        cy.get(image);
-        if (image.prop('naturalWidth') === 0 && image.prop('naturalHeight') === 0) {
-          cy.log('image not visible: ' + image.prop('src'));
+      })
+      .then(() => {
+        if (brokenUrls.length) {
+          throw new Error(`Broken links at "${path}":` + formatPaths(brokenUrls));
         }
       });
-    });
   }
 
   const urlPages = [
@@ -43,6 +46,35 @@ describe('Find broken links', () => {
     ['/docs', 'app-docs'],
     ['/dashboard', 'app-my-sidebar'],
   ];
+
+  urlPages.forEach((urlPage) => {
+    it(`anchor links at "${urlPage[0]}" should work`, () => {
+      checkUrls(urlPage[0], urlPage[1]);
+    });
+  });
+});
+
+describe('Find broken image links', () => {
+  setTokenUserViewPort();
+
+  function checkImages(path: string, selector: string) {
+    let brokenImages = [];
+    cy.visit(path);
+    cy.get(selector)
+      .find('img')
+      .each((image) => {
+        cy.get(image);
+        if (image.prop('naturalWidth') === 0) {
+          brokenImages.push(image.prop('src'));
+          cy.log('image not visible: ' + image.prop('src'));
+        }
+      })
+      .then(() => {
+        if (brokenImages.length) {
+          throw new Error(`Broken images at "${path}":` + formatPaths(brokenImages));
+        }
+      });
+  }
 
   const imagePages = [
     ['/', 'app-root'],
@@ -62,15 +94,9 @@ describe('Find broken links', () => {
     ['/accounts', 'app-accounts-external'],
   ];
 
-  it('should detect broken anchor links', () => {
-    urlPages.forEach((page) => {
-      checkUrls(page[0], page[1]);
-    });
-  });
-
-  it('should detect broken images', () => {
-    imagePages.forEach((page) => {
-      checkImages(page[0], page[1]);
+  imagePages.forEach((imagePage) => {
+    it(`images at "${imagePage[0]}" should work`, () => {
+      checkImages(imagePage[0], imagePage[1]);
     });
   });
 });
