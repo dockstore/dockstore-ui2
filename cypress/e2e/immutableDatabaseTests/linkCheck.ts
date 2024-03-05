@@ -17,19 +17,20 @@ describe('Find broken anchor links', () => {
     cy.get(selector)
       .find('a')
       .each((url) => {
-        cy.get(url);
-        const href = url.prop('href');
-        if (href) {
-          cy.request({
-            url: href,
-            failOnStatusCode: false,
-          }).then((result) => {
-            if (result.status != 200) {
-              brokenUrls.push(href);
-              cy.log(result.status + ': ' + href);
-            }
-          });
-        }
+        cy.get(url).then((url) => {
+          const href = url.prop('href');
+          if (href) {
+            cy.request({
+              url: href,
+              failOnStatusCode: false,
+            }).then((result) => {
+              if (result.status != 200) {
+                brokenUrls.push(href);
+                cy.log(result.status + ': ' + href);
+              }
+            });
+          }
+        });
       })
       .then(() => {
         if (brokenUrls.length) {
@@ -59,15 +60,16 @@ describe('Find broken image links', () => {
 
   function checkImages(path: string, selector: string) {
     let brokenImages = [];
-    cy.visit(path);
+    cy.visit(path).wait(300);
     cy.get(selector)
       .find('img')
       .each((image) => {
-        cy.get(image);
-        if (image.prop('naturalWidth') === 0) {
-          brokenImages.push(image.prop('src'));
-          cy.log('image not visible: ' + image.prop('src'));
-        }
+        cy.get(image).then((image) => {
+          if (image.prop('naturalWidth') === 0) {
+            brokenImages.push(image.prop('src'));
+            cy.log('image not visible: ' + image.prop('src'));
+          }
+        });
       })
       .then(() => {
         if (brokenImages.length) {
