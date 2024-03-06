@@ -12,6 +12,7 @@ export class UserQuery extends Query<UserState> {
   noUser$ = this.user$.pipe(map((user) => !user));
   isCurator$: Observable<boolean> = this.select((state) => (state.user ? state.user.curator : null));
   isAdmin$: Observable<boolean> = this.select((state) => (state.user ? state.user.isAdmin : null));
+  isPlatformPartner$: Observable<boolean> = this.select((state) => (state.user ? (state.user.platformPartner ? true : false) : null));
   isAdminOrCurator$: Observable<boolean> = this.select((state) => (state.user ? state.user.curator || state.user.isAdmin : null));
   extendedUserData$: Observable<ExtendedUserData> = this.select((state) => state.extendedUserData);
   userId$: Observable<number> = this.select((state) => (state.user ? state.user.id : null));

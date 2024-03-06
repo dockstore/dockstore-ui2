@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { EntryTab } from '../../shared/entry/entry-tab';
 import {
   CloudInstance,
@@ -34,6 +34,8 @@ import PartnerEnum = CloudInstance.PartnerEnum;
 import ExecutionStatusEnum = RunExecution.ExecutionStatusEnum;
 import { MatLegacySelectChange as MatSelectChange } from '@angular/material/legacy-select';
 import { AlertService } from '../../shared/alert/state/alert.service';
+import { UserQuery } from 'app/shared/user/user.query';
+import { combineLatest } from 'rxjs';
 
 interface ExecutionMetricsTableObject {
   metric: string; // Name of the execution metric
@@ -47,7 +49,7 @@ interface ExecutionMetricsTableObject {
   selector: 'app-executions-tab',
   templateUrl: './executions-tab.component.html',
 })
-export class ExecutionsTabComponent extends EntryTab implements OnChanges {
+export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChanges {
   metrics: Map<PartnerEnum, Metrics>;
   trsID: string;
   currentPartner: PartnerEnum;
@@ -80,6 +82,7 @@ export class ExecutionsTabComponent extends EntryTab implements OnChanges {
   currentValidatorTool: string;
   validatorTools: string[];
   validatorToolMetricsExist: boolean;
+  isAdminCuratorOrPlatformPartner: boolean;
 
   @Input() entry: BioWorkflow | Service | Notebook;
   @Input() version: WorkflowVersion;
@@ -87,9 +90,18 @@ export class ExecutionsTabComponent extends EntryTab implements OnChanges {
   constructor(
     private extendedGA4GHService: ExtendedGA4GHService,
     private alertService: AlertService,
+    private userQuery: UserQuery,
     protected sessionQuery: SessionQuery
   ) {
     super();
+  }
+
+  ngOnInit(): void {
+    combineLatest([this.userQuery.isAdminOrCurator$, this.userQuery.isPlatformPartner$])
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(([isAdminOrCurator, isPlatformPartner]) => {
+        this.isAdminCuratorOrPlatformPartner = isAdminOrCurator || isPlatformPartner;
+      });
   }
 
   ngOnChanges() {
