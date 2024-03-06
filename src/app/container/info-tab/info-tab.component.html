@@ -271,17 +271,7 @@
             <span *ngIf="tool?.topicSelection === TopicSelectionEnum.MANUAL">{{ tool?.topicManual }}</span>
             <span *ngIf="tool?.topicSelection === TopicSelectionEnum.AI">
               {{ tool?.topicAI }}
-              <a
-                [href]="Dockstore.DOCUMENTATION_URL + '/faq.html'"
-                target="_blank"
-                rel="noopener noreferrer"
-                data-cy="ai-bubble"
-                class="bubble ai-bubble"
-                matTooltip="This topic sentence was AI generated. Non-published workflows will not be sent for AI topic sentences."
-              >
-                <img class="site-icons-small" src="/assets/svg/ai-icon.svg" alt="AI generation icon" />
-                AI
-              </a>
+              <app-ai-bubble [isPublic]="true"></app-ai-bubble>
             </span>
           </li>
           <!-- Private topic Topic -->
@@ -291,24 +281,9 @@
               <span>{{ tool?.topicAutomatic }}</span>
             </li>
             <li>
-              <span
-                ><strong matTooltip="Short description of the tool, from the GitHub repository description generated with AI"
-                  >AI Generated Topic</strong
-                >:&nbsp;</span
-              >
+              <span><strong matTooltip="Short description of the tool generated with AI">AI Generated Topic</strong>:&nbsp;</span>
               <span data-cy="topicAI-text">{{ tool?.topicAI }}</span>
-              <a
-                *ngIf="tool?.topicAI !== null"
-                [href]="Dockstore.DOCUMENTATION_URL + '/faq.html'"
-                target="_blank"
-                rel="noopener noreferrer"
-                data-cy="ai-bubble"
-                class="bubble ai-bubble"
-                matTooltip="This topic sentence was AI generated. Non-published workflows will not be sent for AI topic sentences."
-              >
-                <img class="site-icons-small" src="/assets/svg/ai-icon.svg" alt="AI generation icon" />
-                AI
-              </a>
+              <app-ai-bubble *ngIf="tool?.topicAI" [isPublic]="false"></app-ai-bubble>
             </li>
             <!-- This looks different than the others ones because it's new and doesn't use bootstrap 3 classes -->
             <li>

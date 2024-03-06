@@ -1428,5 +1428,5 @@ div.mat-menu-panel {
 }
 
 .ai-bubble:hover {
-  background-color: darkgrey;
+  background-color: mat.get-color-from-palette($dockstore-app-gray, 6);
 }
