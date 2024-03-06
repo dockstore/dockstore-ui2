@@ -60,7 +60,7 @@ describe('Find broken image links', () => {
 
   function checkImages(path: string, selector: string) {
     let brokenImages = [];
-    cy.visit(path).wait(300);
+    cy.visit(path).wait(500);
     cy.get(selector)
       .find('img')
       .each((image) => {
