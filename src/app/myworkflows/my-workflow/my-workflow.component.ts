@@ -82,7 +82,6 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   public isRefreshing$: Observable<boolean>;
   public showSidebar = true;
   hasSourceControlToken$: Observable<boolean>;
-  public gitHubAppInstallationLink$: Observable<string>;
   public groupEntriesObject$: Observable<Array<OrgWorkflowObject<Workflow>>>;
   public groupSharedEntriesObject$: Observable<Array<OrgWorkflowObject<Workflow>>>;
   public hasGroupSharedEntriesObject$: Observable<boolean>;
@@ -130,7 +129,6 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
 
   ngOnInit() {
     this.myWorkflowsService.clearPartialState();
-    this.gitHubAppInstallationLink$ = this.sessionQuery.gitHubAppInstallationLink$;
     this.tokenService.getGitHubOrganizations();
     this.isRefreshing$ = this.alertQuery.showInfo$;
     /**

@@ -13,13 +13,11 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Query } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Dockstore } from '../dockstore.model';
 import { EntryType } from '../enum/entry-type';
 import { EntryType as OpenApiEntryType, EntryTypeMetadata } from 'app/shared/openapi';
 import { EntryTypeMetadataService } from 'app/entry/type-metadata/entry-type-metadata.service';
@@ -47,29 +45,8 @@ export class SessionQuery extends Query<SessionState> {
   isService$: Observable<boolean> = this.entryType$.pipe(map((entryType) => entryType === EntryType.Service));
   isNotebook$: Observable<boolean> = this.entryType$.pipe(map((entryType) => entryType === EntryType.Notebook));
   isTool$: Observable<boolean> = this.entryType$.pipe(map((entryType) => entryType === EntryType.Tool));
-  gitHubAppInstallationLink$: Observable<string> = this.entryType$.pipe(
-    map((entryType: EntryType) => (entryType ? this.generateGitHubAppInstallationUrl(this.route.url) : null))
-  );
-  gitHubAppInstallationLandingPageLink$: Observable<string> = this.entryType$.pipe(
-    map((entryType: EntryType) => (entryType ? this.generateGitHubAppInstallationUrl('/github-landing-page') : null))
-  );
   loadingDialog$: Observable<boolean> = this.select((session) => session.loadingDialog);
   constructor(protected store: SessionStore, private route: Router, private entryTypeMetadataService: EntryTypeMetadataService) {
     super(store);
-  }
-
-  /**
-   * Generate the general GitHub App installation URL
-   *
-   * @param {string} redirectPath  The page to redirect to after installation is complete
-   * @returns {string}
-   * @memberof WorkflowQuery
-   */
-  generateGitHubAppInstallationUrl(redirectPath: string): string {
-    let queryParams = new HttpParams();
-    // Can only provide a state query parameter
-    // https://docs.github.com/en/apps/sharing-github-apps/sharing-your-github-app
-    queryParams = queryParams.set('state', redirectPath);
-    return Dockstore.GITHUB_APP_INSTALLATION_URL + '/installations/new?' + queryParams.toString();
   }
 }

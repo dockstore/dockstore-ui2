@@ -23,7 +23,7 @@
         [descriptorType]="selectedDescriptorType$ | async"
         [fileType]="'descriptor'"
         [selectedVersion]="_selectedVersion"
-        [entryType]="'workflow'"
+        [entryType]="EntryType.WORKFLOW"
         [entrypath]="entrypath"
       ></app-code-editor-list>
     </ng-template>
@@ -37,7 +37,7 @@
         [descriptorType]="selectedDescriptorType$ | async"
         [fileType]="'testParam'"
         [selectedVersion]="_selectedVersion"
-        [entryType]="'workflow'"
+        [entryType]="EntryType.WORKFLOW"
         [entrypath]="entrypath"
       ></app-code-editor-list>
       <mat-card class="alert alert-info mat-elevation-z" role="alert" *ngIf="isNFL$ | async">

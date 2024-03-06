@@ -74,6 +74,10 @@ export class UrlResolverService {
     }
   }
 
+  public showPageNotFound(): void {
+    this.router.navigate(['page-not-found'], { skipLocationChange: true });
+  }
+
   private isEncoded(uri: string): boolean {
     if (uri) {
       return uri !== decodeURIComponent(uri);

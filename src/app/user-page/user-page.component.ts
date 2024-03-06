@@ -13,6 +13,7 @@ import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { UserQuery } from '../shared/user/user.query';
 import { Base } from '../shared/base';
 import { AccountInfo } from '../loginComponents/accounts/external/accounts.component';
+import { UrlResolverService } from '../shared/url-resolver.service';
 
 @Component({
   selector: 'app-user-page',
@@ -37,7 +38,8 @@ export class UserPageComponent extends Base implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private alertService: AlertService,
-    private userQuery: UserQuery
+    private userQuery: UserQuery,
+    public urlResolverService: UrlResolverService
   ) {
     super();
   }
@@ -67,7 +69,8 @@ export class UserPageComponent extends Base implements OnInit {
       },
       (error: HttpErrorResponse) => {
         this.alertService.detailedError(error);
-        this.router.navigateByUrl('/page-not-found'); //redirects to Page Not Found if user doesn't exist or another error occurs;
+        // Redirects to Page Not Found if user doesn't exist or another error occurs
+        this.urlResolverService.showPageNotFound();
       }
     );
   }

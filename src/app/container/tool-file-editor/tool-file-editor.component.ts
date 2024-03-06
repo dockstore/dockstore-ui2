@@ -16,7 +16,7 @@
 import { Component, Input } from '@angular/core';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { FileEditing } from '../../shared/file-editing';
-import { ContainertagsService, SourceFile, DockstoreTool, ToolDescriptor } from '../../shared/openapi';
+import { ContainertagsService, SourceFile, DockstoreTool, ToolDescriptor, EntryType } from '../../shared/openapi';
 import { ContainerService } from './../../shared/container.service';
 import { HostedService } from './../../shared/openapi/api/hosted.service';
 import { Tag } from './../../shared/openapi/model/tag';
@@ -27,6 +27,7 @@ import { Tag } from './../../shared/openapi/model/tag';
   styleUrls: ['./tool-file-editor.component.scss'],
 })
 export class ToolFileEditorComponent extends FileEditing {
+  public EntryType = EntryType;
   dockerFile: Array<SourceFile> = [];
   descriptorFiles: Array<SourceFile> = [];
   testParameterFiles: Array<SourceFile> = [];

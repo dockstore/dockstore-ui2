@@ -25,7 +25,7 @@ import { debounceTime, takeUntil } from 'rxjs/operators';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { formInputDebounceTime } from '../../shared/constants';
 import { Dockstore } from '../../shared/dockstore.model';
-import { BioWorkflow, Service, ToolDescriptor, Workflow } from '../../shared/openapi';
+import { BioWorkflow, EntryType, Service, ToolDescriptor, Workflow } from '../../shared/openapi';
 import { Tooltip } from '../../shared/tooltip';
 
 import {
@@ -47,6 +47,7 @@ export interface HostedWorkflowObject {
   styleUrls: ['./register-workflow-modal.component.scss'],
 })
 export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked, OnDestroy {
+  public EntryType = EntryType;
   public formErrors = formErrors;
   public validationPatterns = validationDescriptorPatterns;
   public validationMessage = validationMessages;
@@ -60,7 +61,6 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
   public descriptorLanguages$: Observable<Array<Workflow.DescriptorTypeEnum>>;
   public Tooltip = Tooltip;
   public workflowPathPlaceholder: string;
-  public gitHubAppInstallationLink$: Observable<string>;
   public isUsernameChangeRequired$: Observable<boolean>;
   public hostedWorkflow = {
     repository: '',
@@ -122,7 +122,6 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
     this.username$ = this.userQuery.username$;
     this.isUsernameChangeRequired$ = this.userQuery.isUsernameChangeRequired$;
     this.isRefreshing$ = this.alertQuery.showInfo$;
-    this.gitHubAppInstallationLink$ = this.sessionQuery.gitHubAppInstallationLandingPageLink$;
     this.registerWorkflowModalService.workflow.pipe(takeUntil(this.ngUnsubscribe)).subscribe((workflow: Service | BioWorkflow) => {
       this.workflow = workflow;
       this.workflowPathPlaceholder = this.getWorkflowPathPlaceholder(this.workflow.descriptorType);
