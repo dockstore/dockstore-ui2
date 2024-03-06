@@ -145,7 +145,7 @@ export class LaunchWorkflowComponent extends EntryTab implements OnInit, OnChang
           if (toolFiles.length > 0) {
             this.testParameterPath = toolFiles[0].path;
           } else {
-            this.testParameterPath = 'example-parameter-file.yml';
+            this.testParameterPath = undefined;
           }
           this.wgetTestJsonDescription = this.launchService.getTestJsonString(
             ga4ghWorkflowIdPrefix + workflowPath,
@@ -161,13 +161,13 @@ export class LaunchWorkflowComponent extends EntryTab implements OnInit, OnChang
             this.basePath,
             versionName,
             this.primaryDescriptorPath,
-            this.testParameterPath
+            this.testParameterPath === undefined ? 'example-parameter-file.yml' : this.testParameterPath
           );
           this.planemoLocalLaunchString = this.launchService.getPlanemoLocalLaunchString(
             this.basePath,
             versionName,
             this.primaryDescriptorPath,
-            this.testParameterPath
+            this.testParameterPath === undefined ? 'example-parameter-file.yml' : this.testParameterPath
           );
         }
       },
