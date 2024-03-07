@@ -1,5 +1,5 @@
 /*
- *    Copyright 2018 OICR
+ *    Copyright 2023 OICR
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -17,10 +17,10 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Dockstore } from '../dockstore.model';
 
 /**
- * Stick this component into any location you want to potentially display a progress bar or alert.
+ * Component for the AI generated indicator.
  *
  * @export
- * @class AlertComponent
+ * @class AiBubbleComponent
  * @implements {OnInit}
  */
 @Component({

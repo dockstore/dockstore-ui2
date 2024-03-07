@@ -7,7 +7,6 @@ import { SearchEntryTable } from '../search-entry-table';
 import { SearchQuery, SearchResult } from '../state/search.query';
 import { SearchService } from '../state/search.service';
 import TopicSelectionEnum = DockstoreTool.TopicSelectionEnum;
-import { Dockstore } from '../../shared/dockstore.model';
 
 /**
  * this component refers to search page not tool listing search
@@ -29,5 +28,4 @@ export class SearchToolTableComponent extends SearchEntryTable implements OnInit
     return this.searchQuery.tools$;
   }
   protected readonly TopicSelectionEnum = TopicSelectionEnum;
-  protected readonly Dockstore = Dockstore;
 }
