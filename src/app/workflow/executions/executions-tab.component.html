@@ -32,11 +32,11 @@
         >
           <div><strong>Total executions: </strong>{{ totalExecutions | number }}</div>
           <div>
-            <strong>Successful executions: </strong>{{ successfulExecutions | number
+            <strong>Successful: </strong>{{ successfulExecutions | number
             }}<span *ngIf="successfulExecutionRate !== null"> ({{ successfulExecutionRate | number: '1.0-2' }}%)</span>
           </div>
-          <div><strong>Failed executions: </strong>{{ failedExecutions | number }}</div>
-          <div><strong>Aborted executions: </strong>{{ abortedExecutions | number }}</div>
+          <div><strong>Failed: </strong>{{ failedExecutions | number }}</div>
+          <div><strong>Aborted: </strong>{{ abortedExecutions | number }}</div>
         </div>
         <mat-form-field data-cy="metrics-execution-status-dropdown">
           <mat-label>Select an Execution Status</mat-label>
@@ -59,7 +59,17 @@
         >
           <ng-container matColumnDef="metric">
             <th mat-header-cell *matHeaderCellDef>Metric</th>
-            <td mat-cell *matCellDef="let executionMetric">{{ executionMetric.metric }}</td>
+            <td mat-cell *matCellDef="let executionMetric">
+              {{ executionMetric.metric }}
+              <mat-icon
+                *ngIf="isAdminCuratorOrPlatformPartner && executionMetric.numberOfSkippedExecutions"
+                class="mat-icon-sm"
+                matTooltip="{{
+                  executionMetric.numberOfSkippedExecutions
+                }} executions were skipped while aggregating this metric. Executions are skipped if the metric value is invalid."
+                >info_outline</mat-icon
+              >
+            </td>
           </ng-container>
 
           <ng-container matColumnDef="minimum">

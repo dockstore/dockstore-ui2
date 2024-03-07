@@ -261,7 +261,7 @@ export class ContainerComponent extends Entry<Tag> implements AfterViewInit, OnI
         },
         (error) => {
           if (error.status === 404) {
-            this.router.navigate(['page-not-found']);
+            this.urlResolverService.showPageNotFound();
           }
         }
       );
@@ -349,26 +349,6 @@ export class ContainerComponent extends Entry<Tag> implements AfterViewInit, OnI
     if (this.tool != null) {
       this.updateUrl(this.tool.tool_path, 'my-tools', 'containers', this.selectedVersion);
     }
-  }
-
-  /**
-   * Will change the /tools in the current URL with /containers
-   * @return {void}
-   */
-  switchToolsToContainers(): void {
-    const url = window.location.href.replace('/tools', '/containers');
-    const toolsIndex = window.location.href.indexOf('/tools');
-    const newPath = url.substring(toolsIndex);
-    this.location.go(newPath);
-  }
-
-  getPageIndex(): number {
-    let pageIndex = this.getIndexInURL('/containers');
-    if (pageIndex === -1) {
-      pageIndex = this.getIndexInURL('/tools');
-      this.switchToolsToContainers();
-    }
-    return pageIndex;
   }
 
   addToLabels(event: MatChipInputEvent): void {

@@ -57,7 +57,7 @@
         <app-refresh-wizard></app-refresh-wizard>
       </div>
       <div *ngIf="selectedOption?.value === OptionChoice.GitHubApps">
-        <app-register-github-app entryType="tool"></app-register-github-app>
+        <app-register-github-app [entryType]="EntryType.APPTOOL"></app-register-github-app>
       </div>
       <form
         *ngIf="selectedOption?.value === OptionChoice.Remote"

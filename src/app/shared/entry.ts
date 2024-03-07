@@ -412,11 +412,9 @@ export abstract class Entry<V extends WorkflowVersion | Tag> implements OnDestro
    * Will decode the URL
    * @return {void}
    */
-  decodeURL(type: string): void {
-    const url = decodeURIComponent(window.location.href);
-    const containersIndex = this.getIndexInURL('/' + type);
-    const newPath = url.substring(containersIndex);
-    this.location.replaceState(newPath);
+  decodeURL(): void {
+    const url = decodeURIComponent(window.location.pathname);
+    this.location.replaceState(url);
   }
 
   /**
@@ -442,11 +440,7 @@ export abstract class Entry<V extends WorkflowVersion | Tag> implements OnDestro
   redirectToCanonicalURL(myPage: string): void {
     if (this.getIndexInURL(myPage) === -1) {
       // Decode the URL
-      this.decodeURL(this._toolType);
-
-      // Get index of /containers or /workflows
-      // TODO: Not sure why getPageIndex() returns anything, but does need to get called to change URL.
-      this.getPageIndex();
+      this.decodeURL();
     }
   }
 
@@ -483,12 +477,6 @@ export abstract class Entry<V extends WorkflowVersion | Tag> implements OnDestro
       (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(d);
     })();
   }
-
-  /**
-   * Gets the index of /containers or /workflows from the URL
-   * @return {number}
-   */
-  abstract getPageIndex(): number;
 
   /**
    * Go to the search page with a query preloaded

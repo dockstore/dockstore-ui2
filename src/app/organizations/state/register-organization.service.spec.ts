@@ -9,6 +9,7 @@ import { of as observableOf, throwError } from 'rxjs';
 import { UntypedFormBuilder } from '@angular/forms';
 import { OrganizationsService } from '../../shared/openapi';
 import { RegisterOrganizationService } from './register-organization.service';
+import { UrlResolverService } from '../../shared/url-resolver.service';
 
 let organizationsServiceSpy: jasmine.SpyObj<OrganizationsService>;
 let matDialogSpy: jasmine.SpyObj<MatDialog>;
@@ -23,6 +24,7 @@ describe('RegisterOrganizationService', () => {
       providers: [
         RegisterOrganizationService,
         UntypedFormBuilder,
+        UrlResolverService,
         { provide: OrganizationsService, useValue: organizationsServiceStub },
         { provide: MatDialog, useValue: matDialogStub },
       ],
