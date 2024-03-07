@@ -22,7 +22,6 @@ import { SearchEntryTable } from '../search-entry-table';
 import { SearchQuery, SearchResult } from '../state/search.query';
 import { SearchService } from '../state/search.service';
 import TopicSelectionEnum = Workflow.TopicSelectionEnum;
-import { Dockstore } from '../../shared/dockstore.model';
 
 /**
  * this component refers to search page not workflow listing search
@@ -44,5 +43,4 @@ export class SearchWorkflowTableComponent extends SearchEntryTable implements On
     return this.searchQuery.workflows$;
   }
   protected readonly TopicSelectionEnum = TopicSelectionEnum;
-  protected readonly Dockstore = Dockstore;
 }
