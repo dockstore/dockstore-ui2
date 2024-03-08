@@ -19,15 +19,14 @@ import { setTokenUserViewPortPlatformPartner, setPlatformPartnerRole } from '../
 describe('Platform Partner UI', () => {
   setTokenUserViewPortPlatformPartner();
   beforeEach(() => {
+    setPlatformPartnerRole();
     cy.visit('');
-
     // Select dropdown
     cy.get('[data-cy=dropdown-main]:visible').click();
   });
 
   describe('Profile', () => {
     it('Platform Partner status indicated on profile page', () => {
-      setPlatformPartnerRole();
       cy.get('#dropdown-accounts').click();
       cy.get('[data-cy=account-is-platform-partner]').should('exist');
     });
