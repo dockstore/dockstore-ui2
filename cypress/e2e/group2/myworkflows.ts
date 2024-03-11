@@ -221,8 +221,10 @@ describe('Dockstore my workflows', () => {
       cy.contains('goodTopic').should('not.exist');
 
       cy.visit(privateEntryURI);
-      cy.get('mat-radio-button').wait(2000).contains('Manual').should('be.visible').click();
-      cy.wait(2000);
+      cy.get('mat-radio-button').eq(1).should('contain', 'Manual').click();
+      cy.get('mat-radio-button').eq(1).should('have.class', 'mat-radio-checked');
+      cy.get('mat-radio-button').eq(0).should('contain', 'Automatic').and('not.have.class', 'mat-radio-checked');
+
       cy.visit(privateEntryURI);
       cy.get('[data-cy=viewPublicWorkflowButton]').should('be.visible').click();
       cy.contains('goodTopic').should('exist');
