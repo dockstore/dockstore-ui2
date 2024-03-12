@@ -267,6 +267,7 @@ describe('Dockstore my tools', () => {
       cy.get('#register_tool_button').click();
       cy.contains('Create tool with descriptor(s) on remote sites').should('be.visible').click();
       cy.get('.modal-footer').contains('Next').first().click();
+      cy.get('mat-horizontal-stepper').should('be.visible');
 
       cy.get('#sourceCodeRepositoryInput').type('testnamespace/testname').wait(1000);
 
@@ -331,6 +332,7 @@ describe('Dockstore my tools', () => {
       cy.get('#register_tool_button').click();
       cy.contains('Create tool with descriptor(s) on remote sites').should('be.visible').click();
       cy.get('.modal-footer').contains('Next').first().click();
+      cy.get('mat-horizontal-stepper').should('be.visible');
 
       cy.get('#sourceCodeRepositoryInput').type('testnamespace/testname').wait(1000);
 
@@ -437,6 +439,7 @@ describe('Dockstore my tools', () => {
       cy.get('#register_tool_button').click();
       cy.contains('Create tool with descriptor(s) on remote sites').should('be.visible').click();
       cy.get('.modal-footer').contains('Next').first().click();
+      cy.get('mat-horizontal-stepper').should('be.visible');
 
       cy.get('#sourceCodeRepositoryInput').type('testnamespace/testname').wait(1000);
 
