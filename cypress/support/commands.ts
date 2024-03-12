@@ -193,7 +193,6 @@ export function verifyGithubLinkDashboard(entryType: string) {
   cy.get('[data-cy=register-entry-btn]').contains(entryType).should('be.visible').click();
   cy.get('[data-cy=storage-type-choice]').contains('GitHub').click();
   cy.contains('button', 'Next').should('be.visible').click();
-  cy.get('app-register-github-app').should('be.visible');
   cy.contains('button', 'Manage Dockstore installations on GitHub').click();
 }
 
