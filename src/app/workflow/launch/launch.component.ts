@@ -153,6 +153,8 @@ export class LaunchWorkflowComponent extends EntryTab implements OnInit, OnChang
             descriptorType,
             this.testParameterPath
           );
+        } else {
+          this.testParameterPath = undefined;
         }
         if (descriptorFiles?.length > 0) {
           // ... but primary descriptor is mandatory
@@ -169,6 +171,10 @@ export class LaunchWorkflowComponent extends EntryTab implements OnInit, OnChang
             this.primaryDescriptorPath,
             this.testParameterPath === undefined ? 'example-parameter-file.yml' : this.testParameterPath
           );
+        } else {
+          this.primaryDescriptorPath = undefined;
+          this.planemoLocalInitString = undefined;
+          this.planemoLocalLaunchString = undefined;
         }
       },
       (err) => {
