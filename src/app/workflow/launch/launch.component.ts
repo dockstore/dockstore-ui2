@@ -154,17 +154,17 @@ export class LaunchWorkflowComponent extends EntryTab implements OnInit, OnChang
             this.testParameterPath
           );
         }
-        if (descriptorFiles !== undefined && descriptorFiles.length > 0) {
+        if (descriptorFiles?.length > 0) {
           // ... but primary descriptor is mandatory
           this.primaryDescriptorPath = descriptorFiles[0].path;
           this.planemoLocalInitString = this.launchService.getPlanemoLocalInitString(
-            this.basePath,
+            workflowPath,
             versionName,
             this.primaryDescriptorPath,
             this.testParameterPath === undefined ? 'example-parameter-file.yml' : this.testParameterPath
           );
           this.planemoLocalLaunchString = this.launchService.getPlanemoLocalLaunchString(
-            this.basePath,
+            workflowPath,
             versionName,
             this.primaryDescriptorPath,
             this.testParameterPath === undefined ? 'example-parameter-file.yml' : this.testParameterPath
