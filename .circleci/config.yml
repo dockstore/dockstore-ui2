@@ -280,7 +280,7 @@ parameters:
     default: "17.0.4-browsers"
   postgres-tag:
     type: string
-    default: "13.3"
+    default: "13.13"
   python-tag:
     type: string
     default: "3.11"
