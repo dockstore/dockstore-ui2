@@ -39,6 +39,9 @@ export class WorkflowQuery extends QueryEntity<WorkflowState, Service | BioWorkf
   public isWDL$: Observable<boolean> = this.descriptorType$.pipe(
     map((descriptorType: ToolDescriptor.TypeEnum) => descriptorType === ToolDescriptor.TypeEnum.WDL)
   );
+  public isGalaxy$: Observable<boolean> = this.descriptorType$.pipe(
+    map((descriptorType: ToolDescriptor.TypeEnum) => descriptorType === ToolDescriptor.TypeEnum.GALAXY)
+  );
   constructor(
     protected store: WorkflowStore,
     private descriptorTypeCompatService: DescriptorTypeCompatService,
