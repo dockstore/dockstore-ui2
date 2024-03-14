@@ -274,16 +274,16 @@ export class QueryBuilderService {
     const terms = searchString.trim().split(' ').slice(0, 20);
     terms.forEach((term) => {
       body
-        .orQuery('wildcard', 'full_workflow_path', { value: '*' + term + '*', case_insensitive: true, boost: 7 })
-        .orQuery('wildcard', 'tool_path', { value: '*' + term + '*', case_insensitive: true, boost: 7 })
+        .orQuery('wildcard', 'full_workflow_path', { value: '*' + term + '*', case_insensitive: true, boost: 14 })
+        .orQuery('wildcard', 'tool_path', { value: '*' + term + '*', case_insensitive: true, boost: 14 })
         .orQuery('match', 'workflowVersions.sourceFiles.content', { query: term, boost: 0.2 })
         .orQuery('match', 'tags.sourceFiles.content', { query: term, boost: 0.2 })
         .orQuery('match', 'description', { query: term, boost: 2 })
         .orQuery('match', 'labels', { query: term, boost: 2 })
         .orQuery('match', 'all_authors.name', { query: term, boost: 3 })
         .orQuery('match', 'topicAutomatic', { query: term, boost: 4 })
-        .orQuery('match', 'categories.topic', { query: term, boost: 1.5 })
-        .orQuery('match', 'categories.displayName', { query: term, boost: 2 });
+        .orQuery('match', 'categories.topic', { query: term, boost: 2 })
+        .orQuery('match', 'categories.displayName', { query: term, boost: 3 });
     });
     body.queryMinimumShouldMatch(1);
     return body;
