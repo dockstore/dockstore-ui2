@@ -62,7 +62,7 @@
                   Register a {{ entryType | titlecase }}
                 </button>
                 <button
-                  *ngIf="entryType === EntryType.BioWorkflow"
+                  *ngIf="entryType === EntryType.BioWorkflow || entryType === EntryType.Notebook"
                   mat-button
                   class="private-btn small-btn-structure ml-3 mb-3"
                   [matMenuTriggerFor]="myWorkflowsActions"
@@ -81,12 +81,12 @@
                     type="button"
                     (click)="addToExistingWorkflows()"
                     [disabled]="(isRefreshing$ | async) || (user$ | async) === false"
-                    matTooltip="Discover workflows added by others using your linked source control accounts"
+                    matTooltip="Discover {{ entryType$ | async }}s added by others using your linked source control accounts"
                     matTooltipPosition="after"
                     id="addToExistingWorkflows"
                     data-cy="addToExistingWorkflows"
                   >
-                    <span>Discover Existing Dockstore Workflows</span>
+                    <span>Discover Existing Dockstore {{ entryType$ | async | titlecase }}s</span>
                   </button>
                 </mat-menu>
               </div>
