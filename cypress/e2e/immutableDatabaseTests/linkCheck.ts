@@ -1,11 +1,18 @@
 import { setTokenUserViewPort } from '../../support/commands';
 
+// Formats paths to be displayed in an error log
 function formatPaths(paths: string[]) {
   let formattedPaths = '';
   paths.forEach((path) => {
     formattedPaths += '\n- ' + path;
   });
   return formattedPaths;
+}
+
+// Represents a page to visit on the site - organizes urlPages, imagePages
+interface Page {
+  path: string;
+  selector: string;
 }
 
 describe('Find broken anchor links', () => {
@@ -16,9 +23,9 @@ describe('Find broken anchor links', () => {
     cy.visit(path);
     cy.get(selector)
       .find('a')
-      .each((url) => {
-        cy.get(url).then((url) => {
-          const href = url.prop('href');
+      .each((anchor) => {
+        cy.get(anchor).then((anchor) => {
+          const href = anchor.prop('href');
           if (href) {
             cy.request({
               url: href,
@@ -39,18 +46,18 @@ describe('Find broken anchor links', () => {
       });
   }
 
-  const urlPages = [
-    ['/', 'app-root'],
-    ['/sitemap', 'app-sitemap'],
-    ['/about', 'app-about'],
-    ['/funding', 'app-funding'],
-    ['/docs', 'app-docs'],
-    ['/dashboard', 'app-my-sidebar'],
+  const urlPages: Page[] = [
+    { path: '/', selector: 'app-root' },
+    { path: '/sitemap', selector: 'app-sitemap' },
+    { path: '/about', selector: 'app-about' },
+    { path: '/funding', selector: 'app-funding' },
+    { path: '/docs', selector: 'app-docs' },
+    { path: '/dashboard', selector: 'app-my-sidebar' },
   ];
 
   urlPages.forEach((urlPage) => {
-    it(`anchor links at "${urlPage[0]}" should work`, () => {
-      checkUrls(urlPage[0], urlPage[1]);
+    it(`anchor links at "${urlPage.path}" should work`, () => {
+      checkUrls(urlPage.path, urlPage.selector);
     });
   });
 });
@@ -78,27 +85,27 @@ describe('Find broken image links', () => {
       });
   }
 
-  const imagePages = [
-    ['/', 'app-root'],
-    ['/about', 'app-about'],
-    ['/funding', 'app-funding'],
-    ['/docs', 'app-docs'],
-    ['/dashboard', 'app-dashboard'],
-    ['/workflows', 'app-workflows'],
-    ['/notebooks', 'app-workflows'],
-    ['/services', 'app-workflows'],
-    ['/apptools', 'app-workflows'],
-    ['/search-workflows', 'app-workflows'],
-    ['/tools', 'app-containers'],
-    ['/containers', 'app-containers'],
-    ['/search-containers', 'app-containers'],
-    ['/accounts', 'app-account-sidebar'],
-    ['/accounts', 'app-accounts-external'],
+  const imagePages: Page[] = [
+    { path: '/', selector: 'app-root' },
+    { path: '/about', selector: 'app-about' },
+    { path: '/funding', selector: 'app-funding' },
+    { path: '/docs', selector: 'app-docs' },
+    { path: '/dashboard', selector: 'app-dashboard' },
+    { path: '/workflows', selector: 'app-workflows' },
+    { path: '/notebooks', selector: 'app-workflows' },
+    { path: '/services', selector: 'app-workflows' },
+    { path: '/apptools', selector: 'app-workflows' },
+    { path: '/search-workflows', selector: 'app-workflows' },
+    { path: '/tools', selector: 'app-containers' },
+    { path: '/containers', selector: 'app-containers' },
+    { path: '/search-containers', selector: 'app-containers' },
+    { path: '/accounts', selector: 'app-account-sidebar' },
+    { path: '/accounts', selector: 'app-accounts-external' },
   ];
 
   imagePages.forEach((imagePage) => {
-    it(`images at "${imagePage[0]}" should work`, () => {
-      checkImages(imagePage[0], imagePage[1]);
+    it(`images at "${imagePage.path}" should work`, () => {
+      checkImages(imagePage.path, imagePage.selector);
     });
   });
 });
