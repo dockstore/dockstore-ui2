@@ -27,6 +27,7 @@ import { MyEntriesModule } from '../../shared/modules/my-entries.module';
 import { RefreshService } from '../../shared/refresh.service';
 import { TokenQuery } from '../../shared/state/token.query';
 import { WorkflowService } from '../../shared/state/workflow.service';
+import { ContainerService } from '../../shared/container.service';
 import { UsersService } from '../../shared/openapi/api/users.service';
 import { WorkflowsService } from '../../shared/openapi/api/workflows.service';
 import { Configuration } from '../../shared/openapi/configuration';
@@ -46,9 +47,11 @@ import {
   UsersStubService,
   WorkflowsStubService,
   WorkflowStubService,
+  ContainerStubService,
 } from '../../test/service-stubs';
 import { RegisterWorkflowModalService } from '../../workflow/register-workflow-modal/register-workflow-modal.service';
 import { MyWorkflowsService } from '../myworkflows.service';
+import { MytoolsService } from '../../mytools/mytools.service';
 import { MyWorkflowComponent } from './my-workflow.component';
 import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
 import { MetadataService } from '../../shared/openapi';
@@ -71,9 +74,11 @@ describe('MyWorkflowsComponent', () => {
           { provide: UsersService, useClass: UsersStubService },
           { provide: AuthService, useClass: AuthStubService },
           { provide: WorkflowService, useClass: WorkflowStubService },
+          { provide: ContainerService, useClass: ContainerStubService },
           { provide: RefreshService, useClass: RefreshStubService },
           { provide: RegisterWorkflowModalService, useClass: RegisterWorkflowModalStubService },
           MyWorkflowsService,
+          MytoolsService,
           TokenQuery,
           { provide: AccountsService, useClass: AccountsStubService },
           { provide: WorkflowsService, useClass: WorkflowsStubService },
