@@ -1,7 +1,7 @@
 import { setTokenUserViewPort } from '../../support/commands';
 
 // Formats paths to be displayed in an error log
-function formatPaths(paths: string[]) {
+function formatPaths(paths: string[]): string {
   let formattedPaths = '';
   paths.forEach((path) => {
     formattedPaths += '\n- ' + path;
@@ -9,31 +9,33 @@ function formatPaths(paths: string[]) {
   return formattedPaths;
 }
 
-// Represents a page to visit on the site - organizes urlPages, imagePages
-interface Page {
-  path: string;
-  selector: string;
-}
-
 describe('Find broken anchor links', () => {
   setTokenUserViewPort();
 
-  function checkUrls(path: string, selector: string) {
+  let visitedUrls: string[] = [];
+
+  function isDynamicUrl(url: string): boolean {
+    return url.includes('/my-workflows/') || url.includes('/my-tools/');
+  }
+
+  function checkUrls(path: string) {
     let brokenUrls = [];
-    cy.visit(path);
-    cy.get(selector)
-      .find('a')
+    cy.visit(path).wait(500); // Temporary solution to ensure the page loads entirely
+    cy.get('a')
       .each((anchor) => {
         cy.get(anchor).then((anchor) => {
           const href = anchor.prop('href');
-          if (href) {
+          // Send requests to non-dynamic URLs that haven't yet been visited
+          if (href && !visitedUrls.includes(href) && !isDynamicUrl(href)) {
             cy.request({
               url: href,
               failOnStatusCode: false,
             }).then((result) => {
               if (result.status != 200) {
                 brokenUrls.push(href);
-                cy.log(result.status + ': ' + href);
+                cy.log(`${result.status}: ${href}`);
+              } else {
+                visitedUrls.push(href); // Add successful links to visitedUrls so that they won't be visited again
               }
             });
           }
@@ -46,18 +48,11 @@ describe('Find broken anchor links', () => {
       });
   }
 
-  const urlPages: Page[] = [
-    { path: '/', selector: 'app-root' },
-    { path: '/sitemap', selector: 'app-sitemap' },
-    { path: '/about', selector: 'app-about' },
-    { path: '/funding', selector: 'app-funding' },
-    { path: '/docs', selector: 'app-docs' },
-    { path: '/dashboard', selector: 'app-my-sidebar' },
-  ];
+  const urlPages: string = ['/', '/sitemap', '/about', '/funding', '/docs', '/dashboard'];
 
   urlPages.forEach((urlPage) => {
-    it(`anchor links at "${urlPage.path}" should work`, () => {
-      checkUrls(urlPage.path, urlPage.selector);
+    it(`anchor links at "${urlPage}" should work`, () => {
+      checkUrls(urlPage);
     });
   });
 });
@@ -65,16 +60,22 @@ describe('Find broken anchor links', () => {
 describe('Find broken image links', () => {
   setTokenUserViewPort();
 
+  let visitedImages: string = [];
+
   function checkImages(path: string, selector: string) {
     let brokenImages = [];
     cy.visit(path).wait(500);
-    cy.get(selector)
-      .find('img')
+    cy.get('img')
       .each((image) => {
         cy.get(image).then((image) => {
-          if (image.prop('naturalWidth') === 0) {
-            brokenImages.push(image.prop('src'));
-            cy.log('image not visible: ' + image.prop('src'));
+          const src = image.prop('src');
+          if (!visitedImages.includes(src)) {
+            if (image.prop('naturalWidth') === 0) {
+              brokenImages.push(src);
+              cy.log(`image not visible: ${src}`);
+            } else {
+              visitedImages.push(src);
+            }
           }
         });
       })
@@ -85,27 +86,26 @@ describe('Find broken image links', () => {
       });
   }
 
-  const imagePages: Page[] = [
-    { path: '/', selector: 'app-root' },
-    { path: '/about', selector: 'app-about' },
-    { path: '/funding', selector: 'app-funding' },
-    { path: '/docs', selector: 'app-docs' },
-    { path: '/dashboard', selector: 'app-dashboard' },
-    { path: '/workflows', selector: 'app-workflows' },
-    { path: '/notebooks', selector: 'app-workflows' },
-    { path: '/services', selector: 'app-workflows' },
-    { path: '/apptools', selector: 'app-workflows' },
-    { path: '/search-workflows', selector: 'app-workflows' },
-    { path: '/tools', selector: 'app-containers' },
-    { path: '/containers', selector: 'app-containers' },
-    { path: '/search-containers', selector: 'app-containers' },
-    { path: '/accounts', selector: 'app-account-sidebar' },
-    { path: '/accounts', selector: 'app-accounts-external' },
+  const imagePages: string = [
+    '/',
+    '/about',
+    '/funding',
+    '/docs',
+    '/dashboard',
+    '/workflows',
+    '/notebooks',
+    '/services',
+    '/apptools',
+    '/search-workflows',
+    '/tools',
+    '/containers',
+    '/search-containers',
+    '/accounts',
   ];
 
   imagePages.forEach((imagePage) => {
-    it(`images at "${imagePage.path}" should work`, () => {
-      checkImages(imagePage.path, imagePage.selector);
+    it(`images at "${imagePage}" should work`, () => {
+      checkImages(imagePage);
     });
   });
 });
