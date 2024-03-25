@@ -77,6 +77,36 @@ export abstract class LaunchService {
     return `nextflow run https://${workflowPath} -r ${versionName}`;
   }
 
+  getSharedZipString(workflowPath: string, versionName: string) {
+    return `wget -O temp.zip ${Dockstore.API_URI}${ga4ghPath}/tools/${encodeURIComponent(
+      '#workflow/' + workflowPath
+    )}/versions/${encodeURIComponent(versionName)}/GALAXY/files?format=zip
+unzip temp.zip`;
+  }
+
+  /**
+   * This creates the planemo local init command
+   * @param path The GA4GH Tool's path
+   * @param versionName The ToolVersion's name
+   */
+  getPlanemoLocalInitString(workflowPath: string, versionName: string, primaryDescriptorPath: string, testParameterPath: string) {
+    return (
+      this.getSharedZipString(workflowPath, versionName) + `\nplanemo workflow_job_init ${primaryDescriptorPath} -o ${testParameterPath}`
+    );
+  }
+
+  /**
+   * This creates the planemo local launch commands
+   * @param path The GA4GH Tool's path
+   * @param versionName The ToolVersion's name
+   */
+  getPlanemoLocalLaunchString(workflowPath: string, versionName: string, primaryDescriptorPath: string, testParameterPath: string) {
+    return (
+      this.getSharedZipString(workflowPath, versionName) +
+      `\nplanemo run ${primaryDescriptorPath} ${testParameterPath} --download_outputs --output_directory . --output_json output.json --engine docker_galaxy`
+    );
+  }
+
   /**
    * Gets local launch command
    */

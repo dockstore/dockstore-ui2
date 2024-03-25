@@ -14,8 +14,8 @@
  *    limitations under the License.
  */
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { combineLatest, forkJoin, Observable, Subject } from 'rxjs';
+import { take, takeUntil } from 'rxjs/operators';
 
 import { ga4ghWorkflowIdPrefix } from '../../shared/constants';
 import { EntryTab } from '../../shared/entry/entry-tab';
@@ -59,13 +59,17 @@ export class LaunchWorkflowComponent extends EntryTab implements OnInit, OnChang
   nextflowNativeLaunchDescription: string;
   nextflowLocalLaunchDescription: string;
   nextflowDownloadFileDescription: string;
+  planemoLocalInitString: string;
+  planemoLocalLaunchString: string;
   descriptors: Array<any>;
   cwlrunnerDescription = this.launchService.cwlrunnerDescription;
   cwlrunnerTooltip = this.launchService.cwlrunnerTooltip;
   cwltoolTooltip = this.launchService.cwltoolTooltip;
+  primaryDescriptorPath: string;
   testParameterPath: string;
   descriptorType$: Observable<ToolDescriptor.TypeEnum>;
   isNFL$: Observable<boolean>;
+  isGalaxy$: Observable<boolean>;
   ToolDescriptor = ToolDescriptor;
   EntryType = EntryType;
   protected published$: Observable<boolean>;
@@ -86,10 +90,12 @@ export class LaunchWorkflowComponent extends EntryTab implements OnInit, OnChang
   ngOnInit(): void {
     this.published$ = this.workflowQuery.workflowIsPublished$;
     this.descriptorType$ = this.workflowQuery.descriptorType$;
-    this.descriptorType$
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((descriptorType: ToolDescriptor.TypeEnum) => (this.currentDescriptor = descriptorType));
+    this.descriptorType$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((descriptorType: ToolDescriptor.TypeEnum) => {
+      this.currentDescriptor = descriptorType;
+      this.reactToDescriptor();
+    });
     this.isNFL$ = this.workflowQuery.isNFL$;
+    this.isGalaxy$ = this.workflowQuery.isGalaxy$;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -101,6 +107,9 @@ export class LaunchWorkflowComponent extends EntryTab implements OnInit, OnChang
     this.changeMessages(this.basePath, this.path, this._selectedVersion.name, this.currentDescriptor);
   }
   private changeMessages(basePath: string, workflowPath: string, versionName: string, descriptorType: ToolDescriptor.TypeEnum) {
+    if (descriptorType === undefined) {
+      return;
+    }
     this.params = this.launchService.getParamsString(workflowPath, versionName, descriptorType);
     this.cli = this.launchService.getCliString(workflowPath, versionName, descriptorType);
     this.cwl = this.launchService.getCwlString(workflowPath, versionName, encodeURIComponent(this._selectedVersion.workflow_path));
@@ -126,20 +135,51 @@ export class LaunchWorkflowComponent extends EntryTab implements OnInit, OnChang
    * @param versionName
    */
   updateWgetTestJsonString(workflowPath: string, versionName: string, descriptorType: ToolDescriptor.TypeEnum): void {
-    let toolFiles$: Observable<Array<ToolFile>>;
-    toolFiles$ = this.gA4GHFilesQuery.getToolFiles(descriptorType, [ToolFile.FileTypeEnum.TESTFILE]);
-    toolFiles$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((toolFiles: Array<ToolFile>) => {
-      if (toolFiles && toolFiles.length > 0) {
-        this.testParameterPath = toolFiles[0].path;
-      } else {
-        this.testParameterPath = null;
+    combineLatest([
+      this.gA4GHFilesQuery.getToolFiles(descriptorType, [ToolFile.FileTypeEnum.TESTFILE]),
+      this.gA4GHFilesQuery.getToolFiles(descriptorType, [ToolFile.FileTypeEnum.PRIMARYDESCRIPTOR]),
+    ]).subscribe(
+      ([toolFiles, descriptorFiles]) => {
+        // test parameter file is optional ...
+        if (toolFiles !== undefined) {
+          if (toolFiles.length > 0) {
+            this.testParameterPath = toolFiles[0].path;
+          } else {
+            this.testParameterPath = undefined;
+          }
+          this.wgetTestJsonDescription = this.launchService.getTestJsonString(
+            ga4ghWorkflowIdPrefix + workflowPath,
+            versionName,
+            descriptorType,
+            this.testParameterPath
+          );
+        } else {
+          this.testParameterPath = undefined;
+        }
+        if (descriptorFiles?.length > 0) {
+          // ... but primary descriptor is mandatory
+          this.primaryDescriptorPath = descriptorFiles[0].path;
+          this.planemoLocalInitString = this.launchService.getPlanemoLocalInitString(
+            workflowPath,
+            versionName,
+            this.primaryDescriptorPath,
+            this.testParameterPath === undefined ? 'example-parameter-file.yml' : this.testParameterPath
+          );
+          this.planemoLocalLaunchString = this.launchService.getPlanemoLocalLaunchString(
+            workflowPath,
+            versionName,
+            this.primaryDescriptorPath,
+            this.testParameterPath === undefined ? 'example-parameter-file.yml' : this.testParameterPath
+          );
+        } else {
+          this.primaryDescriptorPath = undefined;
+          this.planemoLocalInitString = undefined;
+          this.planemoLocalLaunchString = undefined;
+        }
+      },
+      (err) => {
+        console.log(err);
       }
-      this.wgetTestJsonDescription = this.launchService.getTestJsonString(
-        ga4ghWorkflowIdPrefix + workflowPath,
-        versionName,
-        descriptorType,
-        this.testParameterPath
-      );
-    });
+    );
   }
 }

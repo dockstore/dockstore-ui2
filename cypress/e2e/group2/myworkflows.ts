@@ -611,6 +611,19 @@ describe('Version Dropdown should have search capabilities', () => {
     cy.get('mat-option').should('not.contain', 'master');
     cy.get('mat-option').should('contain', 'test').should('be.visible');
   });
+  it('Test AI topic sentences', () => {
+    cy.fixture('workflowWithTopicAI.json').then((json) => {
+      cy.intercept('GET', '/api/workflows/11*', {
+        body: json,
+        statusCode: 200,
+      }).as('request');
+    });
+
+    cy.visit('/my-workflows');
+    cy.get('[data-cy=topic-ai-selection-button]').should('be.visible');
+    cy.get('[data-cy=topicAI-text]').should('contain.text', 'test AI topic sentence');
+    cy.get('[data-cy=ai-bubble]').should('be.visible');
+  });
 });
 describe('Should handle no workflows correctly', () => {
   resetDB();

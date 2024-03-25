@@ -20,7 +20,7 @@ import {
   verifyGithubLinkDashboard,
   checkFeaturedContent,
   checkNewsAndUpdates,
-  checkMastodonFeedOrTwitterFeed,
+  checkMastodonFeed,
 } from '../../support/commands';
 
 describe('Dockstore dashboard', () => {
@@ -71,7 +71,7 @@ describe('Dockstore dashboard', () => {
 
   it('mastodon feed should be visible', () => {
     cy.visit('/dashboard');
-    checkMastodonFeedOrTwitterFeed();
+    checkMastodonFeed();
   });
 });
 
