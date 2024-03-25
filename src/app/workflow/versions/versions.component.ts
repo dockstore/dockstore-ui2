@@ -89,7 +89,7 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
       'open',
       metricsColumn,
       'snapshot',
-      'overview',
+      'actions',
     ];
     this.displayedColumns = allColumns.filter((column) => {
       if (publicPage && column === hiddenColumn) {
