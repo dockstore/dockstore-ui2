@@ -12,12 +12,15 @@ function formatPaths(paths: string[]): string {
 describe('Find broken anchor links', () => {
   setTokenUserViewPort();
 
-  let visitedUrls: string[] = [
-    'https://twitter.com/DockstoreOrg', // Skip, test only fails because it redirects to login page if not logged in
+  // These links should be intentionally skipped
+  const skippedUrls: string[] = [
+    'https://twitter.com/DockstoreOrg', // Test only fails because it redirects to login page if not logged in
   ];
 
+  let visitedUrls: string[] = [];
+
   function isDynamicUrl(url: string): boolean {
-    return url.includes('/my-workflows/') || url.includes('/my-tools/');
+    return url.includes('/my-workflows/') || url.includes('/my-tools/') || url.includes('/my-notebooks/');
   }
 
   function checkUrls(path: string) {
@@ -27,8 +30,8 @@ describe('Find broken anchor links', () => {
       .each((anchor) => {
         cy.get(anchor).then((anchor) => {
           const href = anchor.prop('href');
-          // Send requests to non-dynamic URLs that haven't yet been visited
-          if (href && !visitedUrls.includes(href) && !isDynamicUrl(href)) {
+          // Send requests to non-dynamic URLs that haven't yet been visited and shouldn't be skipped
+          if (href && !skippedUrls.includes(href) && !visitedUrls.includes(href) && !isDynamicUrl(href)) {
             cy.request({
               url: href,
               failOnStatusCode: false,
@@ -50,7 +53,7 @@ describe('Find broken anchor links', () => {
       });
   }
 
-  const urlPages: string = ['/', '/sitemap', '/about', '/funding', '/docs', '/dashboard'];
+  const urlPages: string = ['/', '/sitemap', '/about', '/funding', '/docs', '/dashboard', '/quick-start'];
 
   urlPages.forEach((urlPage) => {
     it(`anchor links at "${urlPage}" should work`, () => {
@@ -62,9 +65,11 @@ describe('Find broken anchor links', () => {
 describe('Find broken image links', () => {
   setTokenUserViewPort();
 
-  let visitedImages: string = [
-    'http://localhost:4200/', // Quick fix to skip the failing stock avatar image in navbar
+  const skippedImages: string = [
+    'http://localhost:4200/', // Failing stock avatar image in navbar
   ];
+
+  let visitedImages: string = [];
 
   function checkImages(path: string, selector: string) {
     let brokenImages = [];
@@ -74,7 +79,7 @@ describe('Find broken image links', () => {
       .each((image) => {
         cy.get(image).then((image) => {
           const src = image.prop('src');
-          if (!visitedImages.includes(src)) {
+          if (!skippedImages.includes(src) && !visitedImages.includes(src)) {
             if (image.prop('naturalWidth') === 0) {
               brokenImages.push(src);
               cy.log(`image not visible: ${src}`);
