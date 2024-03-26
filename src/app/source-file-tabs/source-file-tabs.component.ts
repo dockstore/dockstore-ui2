@@ -1,5 +1,5 @@
-import { KeyValue } from '@angular/common';
-import { Component, Input, OnChanges } from '@angular/core';
+import { KeyValue, Location } from '@angular/common';
+import { AfterViewInit, Component, Input, OnChanges, OnInit } from '@angular/core';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { MatLegacySelectChange as MatSelectChange } from '@angular/material/legacy-select';
 import { MatLegacyTabChangeEvent as MatTabChangeEvent } from '@angular/material/legacy-tabs';
@@ -7,25 +7,32 @@ import { FileTreeComponent } from 'app/file-tree/file-tree.component';
 import { bootstrap4largeModalSize } from 'app/shared/constants';
 import { FileService } from 'app/shared/file.service';
 import { EntryType, SourceFile, ToolDescriptor, WorkflowVersion, BioWorkflow, Notebook, Service } from 'app/shared/openapi';
-import { Observable } from 'rxjs';
-import { finalize } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { finalize, takeUntil } from 'rxjs/operators';
 import { WorkflowQuery } from '../shared/state/workflow.query';
 import { SourceFileTabsService } from './source-file-tabs.service';
+import { HttpParams } from '@angular/common/http';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 
 @Component({
   selector: 'app-source-file-tabs',
   templateUrl: './source-file-tabs.component.html',
   styleUrls: ['./source-file-tabs.component.scss'],
 })
-export class SourceFileTabsComponent implements OnChanges {
+export class SourceFileTabsComponent implements OnChanges, AfterViewInit {
+  private location: Location;
   constructor(
     private fileService: FileService,
     private sourceFileTabsService: SourceFileTabsService,
     private matDialog: MatDialog,
-    private workflowQuery: WorkflowQuery
+    private workflowQuery: WorkflowQuery,
+    private router: Router,
+    public locationService: Location,
+    public activatedRoute: ActivatedRoute
   ) {
     this.isPublished$ = this.workflowQuery.workflowIsPublished$;
     this.primaryDescriptors = [];
+    this.location = locationService;
   }
   @Input() entry: BioWorkflow | Service | Notebook;
   // Used to generate the TRS file path
@@ -40,16 +47,24 @@ export class SourceFileTabsComponent implements OnChanges {
   relativePath: string;
   downloadFilePath: string;
   fileTabs: Map<string, SourceFile[]>;
+  sourceFiles: SourceFile[];
+  sourceFilePaths: string[];
   primaryDescriptors: SourceFile[] | null;
   primaryDescriptorPath: string;
   isCurrentFilePrimary: boolean | null;
+  queryParams = new HttpParams();
   protected isPublished$: Observable<boolean>;
+  protected ngUnsubscribe: Subject<{}> = new Subject();
   /**
    * To prevent the Angular's keyvalue pipe from sorting by key
    */
   originalOrder = (a: KeyValue<string, SourceFile[]>, b: KeyValue<string, SourceFile[]>): number => {
     return 0;
   };
+
+  ngAfterViewInit() {
+    this.router.navigate([], { queryParams: { tab: 'files' } });
+  }
 
   ngOnChanges() {
     this.setupVersionFileTabs();
@@ -67,6 +82,8 @@ export class SourceFileTabsComponent implements OnChanges {
       )
       .subscribe(
         (sourceFiles: SourceFile[]) => {
+          this.sourceFiles = [];
+          this.sourceFilePaths = [];
           this.fileTabs = this.sourceFileTabsService.convertSourceFilesToFileTabs(
             sourceFiles,
             this.version.workflow_path,
@@ -76,11 +93,14 @@ export class SourceFileTabsComponent implements OnChanges {
             this.changeFileType(this.fileTabs.values().next().value);
           }
           sourceFiles.forEach((sourceFile) => {
+            this.sourceFiles.push(sourceFile);
+            this.sourceFilePaths.push(sourceFile.path);
             if (this.isPrimaryDescriptor(sourceFile.path)) {
               this.primaryDescriptors.push(sourceFile);
               this.primaryDescriptorPath = sourceFile.path;
             }
           });
+          this.updateFileSelection(this.queryParams);
         },
         () => {
           this.displayError = true;
@@ -93,8 +113,12 @@ export class SourceFileTabsComponent implements OnChanges {
    * @param fileType
    */
   changeFileType(files: SourceFile[]) {
-    this.selectFile(files[0]);
-    this.validationMessage = this.sourceFileTabsService.getValidationMessage(files, this.version);
+    if (this.queryParams.toString().includes('file=')) {
+      this.updateFileSelection(this.queryParams);
+    } else {
+      this.selectFile(files[0]);
+      this.validationMessage = this.sourceFileTabsService.getValidationMessage(files, this.version);
+    }
   }
 
   selectFile(file: SourceFile) {
@@ -114,6 +138,18 @@ export class SourceFileTabsComponent implements OnChanges {
     }
     this.currentFile = file;
     this.isCurrentFilePrimary = this.isPrimaryDescriptor(this.currentFile.path);
+    this.queryParams = this.queryParams.set('file', this.currentFile.path);
+    this.location.replaceState(this.router.url + '&' + this.queryParams.toString());
+  }
+
+  updateFileSelection(queryParams: HttpParams) {
+    let selectedFilePath = this.queryParams.toString().split('file=')[1]; // splits the url to get file=
+    console.log(selectedFilePath);
+    const fileIndex = this.sourceFilePaths.indexOf(selectedFilePath);
+    if (fileIndex > -1) {
+      this.selectFile(this.sourceFiles[fileIndex]);
+      console.log(this.currentFile);
+    }
   }
 
   matTabChange(event: MatTabChangeEvent) {
