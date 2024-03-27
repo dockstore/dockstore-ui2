@@ -52,6 +52,12 @@ describe('Dockstore my workflows', () => {
 
     cy.visit('/my-workflows');
     cy.get('[data-cy=myWorkflowsMoreActionButtons]').should('be.visible').click();
+    cy.fixture('myWorkflows.json').then((json) => {
+      cy.intercept('GET', '/api/users/1/workflows', {
+        body: json,
+        statusCode: 200,
+      });
+    });
     cy.get('[data-cy=addToExistingWorkflows]').should('be.visible').click();
 
     cy.contains('addedthisworkflowviasync');
