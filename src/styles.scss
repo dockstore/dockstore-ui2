@@ -1421,12 +1421,10 @@ div.mat-menu-panel {
   justify-content: space-between;
 }
 
-.ai-bubble {
-  align-items: center;
-  justify-content: center;
-  margin: 0 1%;
+app-ai-bubble {
+  margin: 0 0.5rem;
 }
 
 .ai-bubble:hover {
-  background-color: mat.get-color-from-palette($dockstore-app-gray, 6);
+  background-color: mat.get-color-from-palette($dockstore-app-gray, 7);
 }
