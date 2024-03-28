@@ -42,7 +42,7 @@ describe('Dockstore my workflows', () => {
     cy.contains('No matching workflows');
   });
 
-  it('have action buttons which work', () => {
+  it('should have discover existing workflows button', () => {
     cy.fixture('myWorkflows.json').then((json) => {
       cy.intercept('PATCH', '/api/users/1/workflows', {
         body: json,
@@ -56,10 +56,11 @@ describe('Dockstore my workflows', () => {
       cy.intercept('GET', '/api/users/1/workflows', {
         body: json,
         statusCode: 200,
-      });
+      }).as('getWorkflows');
     });
     cy.get('[data-cy=addToExistingWorkflows]').should('be.visible').click();
 
+    cy.wait('@getWorkflows');
     cy.contains('addedthisworkflowviasync');
   });
 
