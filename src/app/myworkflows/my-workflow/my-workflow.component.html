@@ -169,7 +169,7 @@
                       type="button"
                       (click)="addToExistingWorkflows()"
                       [disabled]="(isRefreshing$ | async) || (noUser$ | async)"
-                      matTooltip="Discover workflows added by others using your linked source control accounts"
+                      matTooltip="Discover {{ entryType$ | async }}s added by others using your linked source control accounts"
                     >
                       Discover Existing Dockstore {{ entryType$ | async | titlecase }}s
                     </button>
