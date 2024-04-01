@@ -158,9 +158,10 @@
                     Register a {{ entryType$ | async | titlecase }}
                   </button>
 
-                  <span *ngIf="entryType === EntryType.BioWorkflow">
+                  <span *ngIf="entryType === EntryType.BioWorkflow || entryType === EntryType.Notebook">
                     <li>
-                      If there are already workflows on Dockstore added by other users that you have access to, press the button below.
+                      If there are already {{ entryType$ | async }}s on Dockstore added by other users that you have access to, press the
+                      button below.
                     </li>
                     <button
                       mat-raised-button
@@ -170,7 +171,7 @@
                       [disabled]="(isRefreshing$ | async) || (noUser$ | async)"
                       matTooltip="Discover workflows added by others using your linked source control accounts"
                     >
-                      Discover Existing Dockstore Workflows
+                      Discover Existing Dockstore {{ entryType$ | async | titlecase }}s
                     </button>
                   </span>
                 </ul>
