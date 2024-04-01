@@ -18,7 +18,7 @@ export const extendedGalaxy: ExtendedDescriptorLanguageBean = {
     rowIdentifier: 'tool\xa0ID',
     workflowStepHeader: 'Tool Excerpt',
   },
-  workflowLaunchSupport: false,
+  workflowLaunchSupport: true,
   testParameterFileType: SourceFile.TypeEnum.GXFORMAT2TESTFILE,
   fileTabs: [
     {

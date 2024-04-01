@@ -68,6 +68,7 @@ import { MySidebarModule } from '../modules/my-sidebar.module';
 import { SourceFileTabsService } from '../../source-file-tabs/source-file-tabs.service';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { PreviewWarningModule } from './preview-warning.module';
+import { AiBubbleModule } from '../ai-bubble/ai-bubble.module';
 
 @NgModule({
   declarations: [
@@ -117,6 +118,7 @@ import { PreviewWarningModule } from './preview-warning.module';
     MySidebarModule,
     NgxMatSelectSearchModule,
     PreviewWarningModule,
+    AiBubbleModule,
   ],
   providers: [
     DateService,

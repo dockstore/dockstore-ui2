@@ -60,6 +60,7 @@ import { SelectModule } from './select.module';
 import { SnackbarModule } from './snackbar.module';
 import { CategoryButtonModule } from './../../categories/button/category-button.module';
 import { WorkflowModule } from './workflow.module';
+import { AiBubbleModule } from '../ai-bubble/ai-bubble.module';
 
 @NgModule({
   declarations: [
@@ -99,6 +100,7 @@ import { WorkflowModule } from './workflow.module';
     SnackbarModule,
     CategoryButtonModule,
     WorkflowModule,
+    AiBubbleModule,
   ],
   providers: [
     EmailService,

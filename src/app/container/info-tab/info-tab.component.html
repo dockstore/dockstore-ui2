@@ -267,13 +267,23 @@
           <!-- Public Topic -->
           <li *ngIf="isPublic">
             <span><strong matTooltip="Short description of the tool">Topic</strong>:&nbsp;</span>
-            <span>{{ tool?.topicSelection === TopicSelectionEnum.AUTOMATIC ? tool?.topicAutomatic : tool?.topicManual }}</span>
+            <span *ngIf="tool?.topicSelection === TopicSelectionEnum.AUTOMATIC">{{ tool?.topicAutomatic }}</span>
+            <span *ngIf="tool?.topicSelection === TopicSelectionEnum.MANUAL">{{ tool?.topicManual }}</span>
+            <span *ngIf="tool?.topicSelection === TopicSelectionEnum.AI">
+              {{ tool?.topicAI }}
+              <app-ai-bubble [isPublic]="true"></app-ai-bubble>
+            </span>
           </li>
           <!-- Private topic Topic -->
           <ng-container *ngIf="!isPublic">
             <li>
               <span><strong matTooltip="Short description of the tool">Topic Automatic</strong>:&nbsp;</span>
               <span>{{ tool?.topicAutomatic }}</span>
+            </li>
+            <li>
+              <span><strong matTooltip="Short description of the tool generated with AI">AI Generated Topic</strong>:&nbsp;</span>
+              <span data-cy="topicAI-text">{{ tool?.topicAI }}</span>
+              <app-ai-bubble *ngIf="tool?.topicAI" [isPublic]="false"></app-ai-bubble>
             </li>
             <!-- This looks different than the others ones because it's new and doesn't use bootstrap 3 classes -->
             <li>
@@ -283,7 +293,7 @@
                 <span fxFlex>
                   <input
                     *ngIf="topicEditing"
-                    maxlength="150"
+                    maxlength="250"
                     type="text"
                     name="topic"
                     class="w-100"
@@ -333,6 +343,7 @@
                   >
                     <mat-radio-button [value]="TopicSelectionEnum.AUTOMATIC">Automatic</mat-radio-button>
                     <mat-radio-button class="ml-3" [value]="TopicSelectionEnum.MANUAL">Manual</mat-radio-button>
+                    <mat-radio-button class="ml-3" [value]="TopicSelectionEnum.AI">AI Generated</mat-radio-button>
                   </mat-radio-group>
                 </span>
               </div>

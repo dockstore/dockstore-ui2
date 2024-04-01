@@ -92,6 +92,7 @@ export class QueryBuilderService {
       'toolname',
       'tool_path',
       'topicAutomatic',
+      'topicSelection',
       'verified',
       'workflowName',
     ]);

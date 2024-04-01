@@ -13,7 +13,7 @@ executors:
           password: $DOCKERHUB_PASSWORD
         environment:
           JAVA_TOOL_OPTIONS: -Xmx2g # Java can read cgroup. Sadly the cgroup in CircleCI is wrong. Have to manually set. Using 1/2 memory as heap.
-      - image: cimg/postgres:13.3
+      - image: cimg/postgres:<< pipeline.parameters.postgres-tag >>
         command: postgres -c max_connections=200 -c jit=off
         auth:
           username: dockstoretestuser
@@ -211,7 +211,7 @@ jobs:
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
-      - image: cimg/python:3.11
+      - image: cimg/python:<< pipeline.parameters.python-tag >>
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
@@ -256,7 +256,7 @@ jobs:
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
-      - image: cimg/python:3.11
+      - image: cimg/python:<< pipeline.parameters.python-tag >>
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
@@ -278,6 +278,12 @@ parameters:
   java-tag:
     type: string
     default: "17.0.4-browsers"
+  postgres-tag:
+    type: string
+    default: "13.3"
+  python-tag:
+    type: string
+    default: "3.11"
 
 workflows:
   version: 2

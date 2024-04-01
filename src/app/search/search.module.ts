@@ -43,6 +43,9 @@ import { SearchService } from './state/search.service';
 import { PreviewWarningModule } from '../shared/modules/preview-warning.module';
 import { SearchAuthorsHtmlPipe } from './search-authors-html.pipe';
 import { JoinWithEllipsesPipe } from './join-with-ellipses.pipe';
+import { AiBubbleComponent } from '../shared/ai-bubble/ai-bubble.component';
+import { AppModule } from '../app.module';
+import { AiBubbleModule } from '../shared/ai-bubble/ai-bubble.module';
 
 @NgModule({
   declarations: [
@@ -73,6 +76,7 @@ import { JoinWithEllipsesPipe } from './join-with-ellipses.pipe';
     SnackbarModule,
     TagCloudComponent,
     PreviewWarningModule,
+    AiBubbleModule,
   ],
   providers: [SearchService, QueryBuilderService, SearchAuthorsHtmlPipe, JoinWithEllipsesPipe],
   exports: [SearchComponent, IsAppToolPipe],
