@@ -78,9 +78,9 @@ export abstract class LaunchService {
   }
 
   getSharedZipString(workflowPath: string, versionName: string) {
-    return `wget -O temp.zip ${Dockstore.API_URI}${ga4ghPath}/tools/${encodeURIComponent(
+    return `wget -O temp.zip '${Dockstore.API_URI}${ga4ghPath}/tools/${encodeURIComponent(
       '#workflow/' + workflowPath
-    )}/versions/${encodeURIComponent(versionName)}/GALAXY/files?format=zip
+    )}/versions/${encodeURIComponent(versionName)}/GALAXY/files?format=zip'
 unzip temp.zip`;
   }
 
@@ -91,7 +91,9 @@ unzip temp.zip`;
    */
   getPlanemoLocalInitString(workflowPath: string, versionName: string, primaryDescriptorPath: string, testParameterPath: string) {
     return (
-      this.getSharedZipString(workflowPath, versionName) + `\nplanemo workflow_job_init ${primaryDescriptorPath} -o ${testParameterPath}`
+      this.getSharedZipString(workflowPath, versionName) +
+      '\n# Note that if a parameter file has been provided by the workflow author, this will overwrite it.' +
+      `\nplanemo workflow_job_init --force ${primaryDescriptorPath} -o ${testParameterPath}`
     );
   }
 
