@@ -89,12 +89,8 @@ unzip temp.zip`;
    * @param path The GA4GH Tool's path
    * @param versionName The ToolVersion's name
    */
-  getPlanemoLocalInitString(workflowPath: string, versionName: string, primaryDescriptorPath: string, testParameterPath: string) {
-    return (
-      this.getSharedZipString(workflowPath, versionName) +
-      '\n# Note that if a parameter file has been provided by the workflow author, this will overwrite it.' +
-      `\nplanemo workflow_job_init --force ${primaryDescriptorPath} -o ${testParameterPath}`
-    );
+  getPlanemoLocalInitString(workflowPath: string, versionName: string, primaryDescriptorPath: string) {
+    return this.getSharedZipString(workflowPath, versionName) + `\nplanemo workflow_job_init ${primaryDescriptorPath} -o Dockstore.json`;
   }
 
   /**
@@ -102,10 +98,10 @@ unzip temp.zip`;
    * @param path The GA4GH Tool's path
    * @param versionName The ToolVersion's name
    */
-  getPlanemoLocalLaunchString(workflowPath: string, versionName: string, primaryDescriptorPath: string, testParameterPath: string) {
+  getPlanemoLocalLaunchString(workflowPath: string, versionName: string, primaryDescriptorPath: string) {
     return (
       this.getSharedZipString(workflowPath, versionName) +
-      `\nplanemo run ${primaryDescriptorPath} ${testParameterPath} --download_outputs --output_directory . --output_json output.json --engine docker_galaxy`
+      `\nplanemo run ${primaryDescriptorPath} Dockstore.json --download_outputs --output_directory . --output_json output.json --engine docker_galaxy`
     );
   }
 
@@ -131,7 +127,7 @@ unzip temp.zip`;
    * @param {string} entryPath     The entry path
    * @param {string} versionName   The workflow version
    * @param {ToolDescriptor.TypeEnum} descriptorType  The descriptor type (cwl, wdl, nfl)
-   * @param {string} filePath      Relative file path of the the test parameter file
+   * @param {string} filePath      Relative file path of the test parameter file
    * @returns {string}             The wget command
    * @memberof LaunchService
    */
