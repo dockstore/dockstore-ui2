@@ -28,6 +28,8 @@ export abstract class LaunchService {
   public readonly cwltoolTooltip =
     'Commands for launching tools/workflows through CWLtool: the CWL reference implementation. ' + this.nonStrict;
   public readonly wesTooltip = 'Commands for provisioning files and launching a workflow against AWS AGC infrastructure.';
+  private readonly galaxyParamFileName = 'galaxy_job.yml';
+
   constructor(protected descriptorTypeCompatService: DescriptorTypeCompatService) {}
   abstract getParamsString(path: string, versionName: string, currentDescriptor: string): string;
   abstract getCliString(path: string, versionName: string, currentDescriptor: string): string;
@@ -90,7 +92,10 @@ unzip temp.zip`;
    * @param versionName The ToolVersion's name
    */
   getPlanemoLocalInitString(workflowPath: string, versionName: string, primaryDescriptorPath: string) {
-    return this.getSharedZipString(workflowPath, versionName) + `\nplanemo workflow_job_init ${primaryDescriptorPath} -o Dockstore.json`;
+    return (
+      this.getSharedZipString(workflowPath, versionName) +
+      `\nplanemo workflow_job_init ${primaryDescriptorPath} -o ${this.galaxyParamFileName}`
+    );
   }
 
   /**
@@ -101,7 +106,7 @@ unzip temp.zip`;
   getPlanemoLocalLaunchString(workflowPath: string, versionName: string, primaryDescriptorPath: string) {
     return (
       this.getSharedZipString(workflowPath, versionName) +
-      `\nplanemo run ${primaryDescriptorPath} Dockstore.json --download_outputs --output_directory . --output_json output.json --engine docker_galaxy`
+      `\nplanemo run ${primaryDescriptorPath} ${this.galaxyParamFileName} --download_outputs --output_directory . --output_json output.json --engine docker_galaxy`
     );
   }
 
@@ -155,7 +160,11 @@ unzip temp.zip`;
     }
 
     const prefix = `wget --header='Accept: text/plain`;
-    const outputFile = `-O Dockstore.json`;
+
+    let outputFile = `-O Dockstore.json`;
+    if (descriptorType == ToolDescriptor.TypeEnum.GALAXY) {
+      outputFile = '-O ' + this.galaxyParamFileName;
+    }
     const id = encodeURIComponent(entryPath);
     const versionId = encodeURIComponent(versionName);
 
