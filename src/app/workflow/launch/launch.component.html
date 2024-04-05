@@ -48,7 +48,13 @@
           </span>
         </mat-card>
         <mat-card *ngIf="(isGalaxy$ | async) === true" matTooltip="Commands for creating a runtime JSON template">
-          Make a runtime parameter template with Planemo and fill in desired inputs, outputs, and other parameters
+          Download the workflow and other included files (such as example parameter files)
+          <button mat-icon-button color="secondary" matTooltip="Copy command" [cdkCopyToClipboard]="planemoSharedZipString" appSnackbar>
+            <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
+          </button>
+          <pre>{{ planemoSharedZipString }}</pre>
+
+          Then, create a runtime parameter template with Planemo and fill in desired inputs, outputs, and other parameters
           <button mat-icon-button color="secondary" matTooltip="Copy command" [cdkCopyToClipboard]="planemoLocalInitString" appSnackbar>
             <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
           </button>

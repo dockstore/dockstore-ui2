@@ -59,6 +59,7 @@ export class LaunchWorkflowComponent extends EntryTab implements OnInit, OnChang
   nextflowNativeLaunchDescription: string;
   nextflowLocalLaunchDescription: string;
   nextflowDownloadFileDescription: string;
+  planemoSharedZipString: string;
   planemoLocalInitString: string;
   planemoLocalLaunchString: string;
   descriptors: Array<any>;
@@ -159,6 +160,7 @@ export class LaunchWorkflowComponent extends EntryTab implements OnInit, OnChang
         if (descriptorFiles?.length > 0) {
           // ... but primary descriptor is mandatory
           this.primaryDescriptorPath = descriptorFiles[0].path;
+          this.planemoSharedZipString = this.launchService.getSharedZipString(workflowPath, versionName);
           this.planemoLocalInitString = this.launchService.getPlanemoLocalInitString(workflowPath, versionName, this.primaryDescriptorPath);
           this.planemoLocalLaunchString = this.launchService.getPlanemoLocalLaunchString(
             workflowPath,

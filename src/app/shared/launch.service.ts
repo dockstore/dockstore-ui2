@@ -92,10 +92,7 @@ unzip temp.zip`;
    * @param versionName The ToolVersion's name
    */
   getPlanemoLocalInitString(workflowPath: string, versionName: string, primaryDescriptorPath: string) {
-    return (
-      this.getSharedZipString(workflowPath, versionName) +
-      `\nplanemo workflow_job_init ${primaryDescriptorPath} -o ${this.galaxyParamFileName}`
-    );
+    return `planemo workflow_job_init ${primaryDescriptorPath} -o ${this.galaxyParamFileName}`;
   }
 
   /**
@@ -104,10 +101,7 @@ unzip temp.zip`;
    * @param versionName The ToolVersion's name
    */
   getPlanemoLocalLaunchString(workflowPath: string, versionName: string, primaryDescriptorPath: string) {
-    return (
-      this.getSharedZipString(workflowPath, versionName) +
-      `\nplanemo run ${primaryDescriptorPath} ${this.galaxyParamFileName} --download_outputs --output_directory . --output_json output.json --engine docker_galaxy`
-    );
+    return `planemo run ${primaryDescriptorPath} ${this.galaxyParamFileName} --download_outputs --output_directory . --output_json output.json --engine docker_galaxy`;
   }
 
   /**
@@ -162,7 +156,7 @@ unzip temp.zip`;
     const prefix = `wget --header='Accept: text/plain`;
 
     let outputFile = `-O Dockstore.json`;
-    if (descriptorType == ToolDescriptor.TypeEnum.GALAXY) {
+    if (descriptorType === ToolDescriptor.TypeEnum.GALAXY) {
       outputFile = '-O ' + this.galaxyParamFileName;
     }
     const id = encodeURIComponent(entryPath);
