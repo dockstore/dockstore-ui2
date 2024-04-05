@@ -61,6 +61,8 @@ export class UserService {
     this.usersService.addUserToDockstoreWorkflows(userId).subscribe(
       (workflows: Array<Workflow>) => {
         this.alertService.detailedSuccess();
+        // This endpoint currently only returns the user's BioWorkflows, and not workflows of all types.
+        // For consistency, ignoring the workflows response and re-requesting entries of the desired type.
         if (entryType === EntryType.Tool) {
           this.mytoolsService.getMyEntries(userId, entryType);
         } else {
