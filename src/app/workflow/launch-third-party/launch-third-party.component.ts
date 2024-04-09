@@ -276,11 +276,11 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
             this.descriptorLanguageService.workflowDescriptorTypeEnumToExtendedDescriptorLanguageBean(
               descriptorType
             ).descriptorLanguageEnum;
-          this.workflowsService.primaryDescriptor1(this.workflow.id, this.selectedVersion.name, descriptorType).subscribe((sourceFile) => {
+          this.workflowsService.primaryDescriptor1(this.workflow.id, descriptorType, this.selectedVersion.name).subscribe((sourceFile) => {
             this.descriptorsService.updatePrimaryDescriptor(sourceFile);
             if (fileDescriptors.some((file) => file.file_type === FileTypeEnum.SECONDARYDESCRIPTOR)) {
               this.workflowsService
-                .secondaryDescriptors1(this.workflow.id, this.selectedVersion.name, descriptorLanguageEnum)
+                .secondaryDescriptors1(this.workflow.id, descriptorLanguageEnum, this.selectedVersion.name)
                 .subscribe((sourceFiles: Array<SourceFile>) => {
                   this.descriptorsService.updateSecondaryDescriptors(sourceFiles);
                 });
