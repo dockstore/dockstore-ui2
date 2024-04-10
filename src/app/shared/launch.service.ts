@@ -28,6 +28,8 @@ export abstract class LaunchService {
   public readonly cwltoolTooltip =
     'Commands for launching tools/workflows through CWLtool: the CWL reference implementation. ' + this.nonStrict;
   public readonly wesTooltip = 'Commands for provisioning files and launching a workflow against AWS AGC infrastructure.';
+  private readonly galaxyParamFileName = 'galaxy_job.yml';
+
   constructor(protected descriptorTypeCompatService: DescriptorTypeCompatService) {}
   abstract getParamsString(path: string, versionName: string, currentDescriptor: string): string;
   abstract getCliString(path: string, versionName: string, currentDescriptor: string): string;
@@ -78,9 +80,9 @@ export abstract class LaunchService {
   }
 
   getSharedZipString(workflowPath: string, versionName: string) {
-    return `wget -O temp.zip ${Dockstore.API_URI}${ga4ghPath}/tools/${encodeURIComponent(
+    return `wget -O temp.zip '${Dockstore.API_URI}${ga4ghPath}/tools/${encodeURIComponent(
       '#workflow/' + workflowPath
-    )}/versions/${encodeURIComponent(versionName)}/GALAXY/files?format=zip
+    )}/versions/${encodeURIComponent(versionName)}/GALAXY/files?format=zip'
 unzip temp.zip`;
   }
 
@@ -89,10 +91,8 @@ unzip temp.zip`;
    * @param path The GA4GH Tool's path
    * @param versionName The ToolVersion's name
    */
-  getPlanemoLocalInitString(workflowPath: string, versionName: string, primaryDescriptorPath: string, testParameterPath: string) {
-    return (
-      this.getSharedZipString(workflowPath, versionName) + `\nplanemo workflow_job_init ${primaryDescriptorPath} -o ${testParameterPath}`
-    );
+  getPlanemoLocalInitString(workflowPath: string, versionName: string, primaryDescriptorPath: string) {
+    return `planemo workflow_job_init ${primaryDescriptorPath} -o ${this.galaxyParamFileName}`;
   }
 
   /**
@@ -100,11 +100,8 @@ unzip temp.zip`;
    * @param path The GA4GH Tool's path
    * @param versionName The ToolVersion's name
    */
-  getPlanemoLocalLaunchString(workflowPath: string, versionName: string, primaryDescriptorPath: string, testParameterPath: string) {
-    return (
-      this.getSharedZipString(workflowPath, versionName) +
-      `\nplanemo run ${primaryDescriptorPath} ${testParameterPath} --download_outputs --output_directory . --output_json output.json --engine docker_galaxy`
-    );
+  getPlanemoLocalLaunchString(workflowPath: string, versionName: string, primaryDescriptorPath: string) {
+    return `planemo run ${primaryDescriptorPath} ${this.galaxyParamFileName} --download_outputs --output_directory . --output_json output.json --engine docker_galaxy`;
   }
 
   /**
@@ -129,7 +126,7 @@ unzip temp.zip`;
    * @param {string} entryPath     The entry path
    * @param {string} versionName   The workflow version
    * @param {ToolDescriptor.TypeEnum} descriptorType  The descriptor type (cwl, wdl, nfl)
-   * @param {string} filePath      Relative file path of the the test parameter file
+   * @param {string} filePath      Relative file path of the test parameter file
    * @returns {string}             The wget command
    * @memberof LaunchService
    */
@@ -157,7 +154,11 @@ unzip temp.zip`;
     }
 
     const prefix = `wget --header='Accept: text/plain`;
-    const outputFile = `-O Dockstore.json`;
+
+    let outputFile = `-O Dockstore.json`;
+    if (descriptorType === ToolDescriptor.TypeEnum.GALAXY) {
+      outputFile = '-O ' + this.galaxyParamFileName;
+    }
     const id = encodeURIComponent(entryPath);
     const versionId = encodeURIComponent(versionName);
 
