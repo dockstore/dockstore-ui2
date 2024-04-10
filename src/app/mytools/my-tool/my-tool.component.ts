@@ -222,7 +222,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
 
   addToExistingTools(): void {
     if (this.user) {
-      this.userService.addUserToWorkflows(this.user.id);
+      this.userService.addUserToWorkflows(this.user.id, EntryType.Tool);
     }
   }
 
