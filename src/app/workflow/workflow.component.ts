@@ -42,6 +42,7 @@ import {
 import { DateService } from '../shared/date.service';
 import { DescriptorTypeCompatService } from '../shared/descriptor-type-compat.service';
 import { DockstoreService } from '../shared/dockstore.service';
+import { Dockstore } from '../shared/dockstore.model';
 import { Entry } from '../shared/entry';
 import { EntryType } from '../shared/enum/entry-type';
 import { GA4GHFilesService } from '../shared/ga4gh-files/ga4gh-files.service';
@@ -544,5 +545,9 @@ export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterVi
     if (index >= 0) {
       this.workflowEditData.labels.splice(index, 1);
     }
+  }
+
+  openGitHubApp(): void {
+    window.open(Dockstore.GITHUB_APP_INSTALLATION_URL + '/installations/new', '_blank', 'noopener,noreferrer');
   }
 }

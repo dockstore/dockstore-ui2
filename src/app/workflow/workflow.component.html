@@ -50,8 +50,22 @@
   <div class="row m-1 mt-3 mb-0" *ngIf="!isWorkflowPublic && workflow.mode === 'DOCKSTORE_YML' && gitHubAppInstalled === false">
     <mat-card class="alert alert-warning mat-elevation-z m-0">
       This {{ workflow.entryTypeMetadata.term }} may not be automatically updating because the Dockstore GitHub App was uninstalled from the
-      {{ workflow.entryTypeMetadata.term }}'s repository. TODO some other instructions.
-    </mat-card>
+      {{ workflow.entryTypeMetadata.term }}'s repository. If you are the repository owner, click the button below to reinstall the Dockstore
+      GitHub App.
+      <p>
+        <button
+          mat-raised-button
+          type="button"
+          class="accent-1-dark-btn mat-elevation-z no-underline"
+          (click)="openGitHubApp()"
+          target="_blank"
+          rel="noopener noreferrer"
+          matTooltip="Manage Dockstore installations on GitHub"
+        >
+          <mat-icon>add</mat-icon> Manage Dockstore installations on GitHub
+        </button>
+      </p></mat-card
+    >
   </div>
   <div class="row m-1" *ngIf="!showRedirect" fxLayout.lt-sm="column" fxLayout.gt-sm="row">
     <app-json-ld [json]="schema"></app-json-ld>
