@@ -17,6 +17,7 @@ import { Repository } from '../../../src/app/shared/openapi/model/repository';
 import {
   goToTab,
   insertAuthors,
+  invokeSql,
   isActiveTab,
   resetDB,
   setTokenUserViewPort,
@@ -643,5 +644,23 @@ describe('Should handle no workflows correctly', () => {
   it('My workflows should prompt to register a workflow', () => {
     cy.visit('/my-workflows');
     cy.contains('Register a Workflow');
+  });
+});
+describe('GitHub App installation', () => {
+  resetDB();
+  setTokenUserViewPort();
+  it('Should display a warning when the GitHub app is not installed', () => {
+    invokeSql("update workflow set mode='DOCKSTORE_YML'");
+    cy.visit('/my-workflows/github.com/A/l');
+    cy.intercept('GET', '/api/entries/*/syncStatus', {
+      body: { gitHubAppInstalled: true },
+    });
+    cy.reload();
+    cy.get('mat-card').should('not.contain', 'uninstalled');
+    cy.intercept('GET', '/api/entries/*/syncStatus', {
+      body: { gitHubAppInstalled: false },
+    });
+    cy.reload();
+    cy.get('mat-card').should('contain', 'uninstalled');
   });
 });
