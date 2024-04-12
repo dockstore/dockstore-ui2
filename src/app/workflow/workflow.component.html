@@ -47,6 +47,12 @@
       This {{ workflow.entryTypeMetadata.term }} was archived on {{ workflow.dbUpdateDate | date: 'yyyy-MM-dd' }}. It is now read-only.
     </mat-card>
   </div>
+  <div class="row m-1 mt-3 mb-0" *ngIf="!isWorkflowPublic && workflow.mode === 'DOCKSTORE_YML' && gitHubAppInstalled === false">
+    <mat-card class="alert alert-warning mat-elevation-z m-0">
+      This {{ workflow.entryTypeMetadata.term }} may not be automatically updating because the Dockstore GitHub App was uninstalled from the
+      {{ workflow.entryTypeMetadata.term }}'s repository. TODO some other instructions.
+    </mat-card>
+  </div>
   <div class="row m-1" *ngIf="!showRedirect" fxLayout.lt-sm="column" fxLayout.gt-sm="row">
     <app-json-ld [json]="schema"></app-json-ld>
     <div fxFlex="80">
