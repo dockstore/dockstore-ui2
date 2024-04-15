@@ -294,14 +294,12 @@ describe('Dockstore Organizations', () => {
       cy.contains('This collection has no associated entries');
       cy.visit('/organizations/Potatoe');
       cy.contains('Members').should('be.visible');
-      /*
       approvePotatoOrganization();
       for (const url of ['/organizations', '/organizations/Potatoe', '/organizations/Potatoe/collections/veryFakeCollectionName']) {
         cy.visit(url);
         cy.wait(1000);
         cy.get('img[src*="default-org-logo"]').should('be.visible');
       }
-      */
     });
     it('Should be able to add a service to collection', () => {
       const servicePath = '/services/github.com/garyluu/another-test-service';
