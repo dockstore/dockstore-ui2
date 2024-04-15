@@ -35,6 +35,7 @@ describe('Checker workflow test from my-tools', () => {
   describe('Should be able to register and publish a checker workflow from a tool', () => {
     it('visit a tool and have the correct buttons and be able to register a checker workflow', () => {
       cy.intercept('api/containers/*?include=validations').as('getTool');
+      cy.visit('/my-tools');
       cy.wait('@getTool');
       goToB3();
 
@@ -43,9 +44,9 @@ describe('Checker workflow test from my-tools', () => {
       cy.get('#launchCheckerWorkflow').should('not.exist');
       cy.get('#addCheckerWorkflowButton').should('be.visible').click();
 
-      cy.get('#checkerWorkflowPath').type('/Dockstore.cwl');
+      cy.get('#checkerWorkflowPath').should('be.visible').type('/Dockstore.cwl');
 
-      cy.get('#checkerWorkflowTestParameterFilePath').type('/test.json');
+      cy.get('#checkerWorkflowTestParameterFilePath').should('be.visible').type('/test.json');
 
       cy.get('#submitButton').click();
 
