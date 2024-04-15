@@ -89,12 +89,14 @@ describe('Checker workflow test from my-tools', () => {
     });
     it('visit the tool and have its publish/unpublish reflected in the checker workflow', () => {
       cy.intercept('api/containers/*?include=validations').as('getTool');
+      cy.intercept('api/containers/4/publish').as('unpublishTool');
       cy.wait('@getTool');
       goToB3();
       // In the parent tool right now
       // Didn't change the tool path upon entry or select
       // cy.url().should('eq','/my-tools/quay.io/A2/b3')
       cy.get('#publishToolButton').should('be.visible').should('contain', 'Unpublish').click();
+      cy.wait('@unpublishTool');
 
       goToTab('Versions');
       cy.contains('button', 'Actions').should('be.visible').click();
