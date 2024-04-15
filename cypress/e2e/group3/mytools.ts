@@ -49,10 +49,7 @@ describe('Dockstore my tools', () => {
     });
   });
 
-  // The "discover existing tools" functionality was removed in:
-  // https://github.com/dockstore/dockstore-ui2/pull/1919
-  // TODO Unskip this test when we add it back.
-  it.skip('Should have discover existing tools button', () => {
+  it('Should have discover existing tools button', () => {
     cy.fixture('myWorkflows.json').then((json) => {
       cy.intercept('PATCH', '/api/users/1/workflows', {
         body: json,
@@ -61,8 +58,21 @@ describe('Dockstore my tools', () => {
     });
 
     cy.get('[data-cy=myToolsMoreActionButtons]').should('be.visible').click();
+    cy.fixture('myTools.json').then((json) => {
+      cy.intercept('GET', '/api/users/1/containers', {
+        body: json,
+        statusCode: 200,
+      }).as('getContainers');
+    });
+    cy.intercept('GET', '/api/users/1/appTools', {
+      body: {},
+      statusCode: 200,
+    }).as('getAppTools');
     cy.get('[data-cy=addToExistingTools]').should('be.visible').click();
-    cy.contains('addedthisworkflowviasync');
+
+    cy.wait('@getContainers');
+    cy.wait('@getAppTools');
+    cy.contains('addedthistoolviasync');
   });
 
   describe('Should contain extended DockstoreTool properties', () => {
