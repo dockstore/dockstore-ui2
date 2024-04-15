@@ -394,8 +394,8 @@ describe('search table items per page', () => {
     cy.get('[data-cy=advanced-search]').click();
 
     cy.get('[data-cy=dropdown]').click();
-    cy.get('[data-cy=file_select').should('not.exist');
-    cy.get('[data-cy=desc_select').should('be.visible').click();
+    cy.get('[data-cy=file_select]').should('not.exist');
+    cy.get('[data-cy=desc_select]').should('be.visible').click();
 
     cy.get('[data-cy=NOTFilter]').click().type('garyluu');
     cy.get('[data-cy=confirm-search]').click();
@@ -406,11 +406,11 @@ describe('search table items per page', () => {
     cy.get('[data-cy=advanced-search]').click();
 
     cy.get('[data-cy=dropdown]').click();
-    cy.get('[data-cy=desc_select').should('be.visible').click();
+    cy.get('[data-cy=desc_select]').should('be.visible').click();
 
     cy.get('[data-cy=dropdown]').click();
-    cy.get('[data-cy=desc_select').should('not.exist');
-    cy.get('[data-cy=file_select').should('be.visible').click();
+    cy.get('[data-cy=desc_select]').should('not.exist');
+    cy.get('[data-cy=file_select]').should('be.visible').click();
 
     cy.get('[data-cy=ANDNoSplitFilter]').click().type('gary');
     cy.get('[data-cy=ORFilter]').click().type('A2');
@@ -418,7 +418,7 @@ describe('search table items per page', () => {
     cy.get('[data-cy=confirm-search]').click();
 
     cy.get('[data-cy=advanced-search]').click();
-    cy.get('[data-cy=clear-advanced-search]').click();
+    cy.get('[data-cy=clear-advanced-search]').filter(':visible').click();
   });
 
   it('share button after filtering search', () => {
