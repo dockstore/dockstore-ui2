@@ -46,8 +46,8 @@ describe('Checker workflow test from my-workflows', () => {
       cy.get('#launchCheckerWorkflow').should('not.exist');
       goToTab('Info');
       cy.get('#addCheckerWorkflowButton').should('be.visible').click();
-      cy.get('#checkerWorkflowPath').type('/Dockstore.cwl');
-      cy.get('#checkerWorkflowTestParameterFilePath').type('/test.json');
+      cy.get('#checkerWorkflowPath').should('be.visible').type('/Dockstore.cwl');
+      cy.get('#checkerWorkflowTestParameterFilePath').should('be.visible').type('/test.json');
       cy.fixture('refreshedChecker').then((json) => {
         cy.intercept('GET', '/api/workflows/*/refresh', {
           body: json,
