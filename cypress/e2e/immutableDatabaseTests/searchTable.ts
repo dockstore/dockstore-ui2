@@ -399,9 +399,12 @@ describe('search table items per page', () => {
 
     cy.get('[data-cy=NOTFilter]').click().type('garyluu');
     cy.get('[data-cy=confirm-search]').click();
+    // Check that the advanced search dialog box has been closed
+    cy.get('app-advancedsearch').should('not.exist');
 
     cy.get('[data-cy=advanced-search]').click();
     cy.get('[data-cy=clear-advanced-search]').click();
+    cy.get('app-advancedsearch').should('not.exist');
 
     cy.get('[data-cy=advanced-search]').click();
 
@@ -416,9 +419,10 @@ describe('search table items per page', () => {
     cy.get('[data-cy=ORFilter]').click().type('A2');
     cy.get('[data-cy=NOTFilter]').click().type('b3');
     cy.get('[data-cy=confirm-search]').click();
+    cy.get('app-advancedsearch').should('not.exist');
 
     cy.get('[data-cy=advanced-search]').click();
-    cy.get('[data-cy=clear-advanced-search]').filter(':visible').click();
+    cy.get('[data-cy=clear-advanced-search]').click();
   });
 
   it('share button after filtering search', () => {
