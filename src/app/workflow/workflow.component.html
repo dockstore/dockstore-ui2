@@ -49,9 +49,9 @@
   </div>
   <div class="row m-1 mt-3 mb-0" *ngIf="!isWorkflowPublic && workflow.mode === 'DOCKSTORE_YML' && gitHubAppInstalled === false">
     <mat-card class="alert alert-warning mat-elevation-z m-0">
-      This {{ workflow.entryTypeMetadata.term }} may not be automatically updating because the Dockstore GitHub App was uninstalled from the
-      {{ workflow.entryTypeMetadata.term }}'s repository. If you are the repository owner, click the button below to reinstall the Dockstore
-      GitHub App.
+      <mat-icon class="alert-warning-icon">warning</mat-icon> This {{ workflow.entryTypeMetadata.term }} may not be automatically updating
+      because the Dockstore GitHub App was uninstalled from the {{ workflow.entryTypeMetadata.term }}'s repository. If you are an owner or
+      admin of the repository, click the button below to reinstall the Dockstore GitHub App.
       <p>
         <button
           mat-raised-button
