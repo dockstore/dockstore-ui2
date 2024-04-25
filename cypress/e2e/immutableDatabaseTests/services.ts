@@ -27,20 +27,27 @@ import {
 describe('Dockstore Home', () => {
   describe('GitHub App Callback Routing', () => {
     setTokenUserViewPort();
+    beforeEach(() => {
+      cy.intercept('GET', '/api/metadata/entryTypeMetadataList').as('getMetadata');
+    });
     it('Redirects to my-tools', () => {
       cy.visit('/githubCallback?state=/my-tools/quay.io/A2/b1');
+      cy.wait('@getMetadata');
       cy.url({ decode: true }).should('contain', '/my-tools/quay.io/A2/b1');
     });
     it('Redirects to my-workflows', () => {
       cy.visit('/githubCallback?state=/my-workflows/github.com/A/l');
+      cy.wait('@getMetadata');
       cy.url({ decode: true }).should('contain', '/my-workflows/github.com/A/l');
     });
     it('Redirects to my-services', () => {
       cy.visit('/githubCallback?state=/services/github.com/garyluu/another-test-service');
+      cy.wait('@getMetadata');
       cy.url({ decode: true }).should('contain', '/services/github.com/garyluu/another-test-service');
     });
     it('Redirects to dashboard', () => {
       cy.visit('githubCallback?state=/dashboard');
+      cy.wait('@getMetadata');
       cy.url({ decode: true }).should('contain', '/dashboard');
     });
   });
