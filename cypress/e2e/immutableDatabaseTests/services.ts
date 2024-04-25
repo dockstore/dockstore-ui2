@@ -29,19 +29,19 @@ describe('Dockstore Home', () => {
     setTokenUserViewPort();
     it('Redirects to my-tools', () => {
       cy.visit('/githubCallback?state=/my-tools/quay.io/A2/b1');
-      cy.url().should('contain', '%2Fmy-tools%2Fquay.io%2FA2%2Fb1');
+      cy.url({ decode: true }).should('contain', '/my-tools/quay.io/A2/b1');
     });
     it('Redirects to my-workflows', () => {
       cy.visit('/githubCallback?state=/my-workflows/github.com/A/l');
-      cy.url().should('contain', '%2Fmy-workflows%2Fgithub.com%2FA%2Fl');
+      cy.url({ decode: true }).should('contain', '/my-workflows/github.com/A/l');
     });
     it('Redirects to my-services', () => {
       cy.visit('/githubCallback?state=/services/github.com/garyluu/another-test-service');
-      cy.url().should('contain', '%2Fservices%2Fgithub.com%2Fgaryluu%2Fanother-test-service');
+      cy.url({ decode: true }).should('contain', '/services/github.com/garyluu/another-test-service');
     });
     it('Redirects to dashboard', () => {
       cy.visit('githubCallback?state=/dashboard');
-      cy.url().should('contain', '%2Fdashboard');
+      cy.url({ decode: true }).should('contain', '/dashboard');
     });
   });
 
