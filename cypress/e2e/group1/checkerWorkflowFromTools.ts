@@ -19,6 +19,7 @@ describe('Checker workflow test from my-tools', () => {
   resetDB();
   setTokenUserViewPort();
   beforeEach(() => {
+    cy.intercept('api/containers/*?include=validations').as('getTool');
     // Visit my-tools page
     cy.visit('/my-tools');
   });
@@ -34,8 +35,6 @@ describe('Checker workflow test from my-tools', () => {
 
   describe('Should be able to register and publish a checker workflow from a tool', () => {
     it('visit a tool and have the correct buttons and be able to register a checker workflow', () => {
-      cy.intercept('api/containers/*?include=validations').as('getTool');
-      cy.visit('/my-tools');
       cy.wait('@getTool');
       goToB3();
 
