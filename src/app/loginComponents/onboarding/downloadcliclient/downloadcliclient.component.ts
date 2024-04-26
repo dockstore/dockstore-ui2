@@ -81,7 +81,7 @@ export class DownloadCLIClientComponent extends Base implements OnInit {
 ### Setup Command Line Interface
 ------------------------------
 Set up our Dockstore CLI application in order to test workflows from the command line for [local development](${Dockstore.DOCUMENTATION_URL}/launch-with/launch.html#dockstore-cli), [validate .dockstore.yml files](${Dockstore.DOCUMENTATION_URL}/advanced-topics/dockstore-cli/yaml-command-line-validator-tool.html) for registering tools and workflows,
-run scripts or interact programmatically against Dockstore APIs, and [run workflows via the GA4GH WES standard](${Dockstore.DOCUMENTATION_URL}/advanced-topics/wes/wes-agc-tutorial.html) in platforms such as Amazon Genomics CLI.
+run scripts or interact programmatically against Dockstore APIs, and [run workflows via the GA4GH WES standard](${Dockstore.DOCUMENTATION_URL}/advanced-topics/wes/cli-wes-tutorial.html) in platforms such as Amazon Genomics CLI.
 
 #### Requirements
 1. Linux/Ubuntu (Recommended - Tested on 22.04 LTS) or Mac OS X machine

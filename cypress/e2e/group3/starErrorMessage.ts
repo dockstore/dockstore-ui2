@@ -39,6 +39,7 @@ describe('Tool and workflow starring error messages', () => {
     cy.visit(url);
 
     cy.get('#starringButtonIcon').click();
+    cy.get('#starCountButton').should('contain', 1);
 
     cy.intercept('PUT', routePath, {
       body: 'You cannot unstar the ' + type + ' ' + name + ' because you have not starred it.',

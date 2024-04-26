@@ -144,7 +144,7 @@ describe('Dockstore my tools', () => {
       selectTool('b1');
       cy.contains('Versions').click();
       cy.contains('button', 'Actions').should('be.visible').click();
-      cy.contains('button:visible', 'Edit').should('be.visible').click();
+      cy.get('[data-cy=editTagButton]').should('be.visible').click();
       // For some unknown reason, Cypress likes to type '/test.wdl.json' in the wrong place
       cy.wait(5000);
       cy.get('input[data-cy=addWDLField]').should('be.visible').should('have.value', '').type('/test.wdl.json');
@@ -152,7 +152,7 @@ describe('Dockstore my tools', () => {
       cy.get('#saveVersionModal').click();
       cy.get('#saveVersionModal').should('not.exist');
       cy.contains('button', 'Actions').should('be.visible').click();
-      cy.contains('button:visible', 'Edit').should('be.visible').click();
+      cy.get('[data-cy=editTagButton]').should('be.visible').click();
       cy.get('#removeCWLTestParameterFileButton').click();
       cy.get('#removeWDLTestParameterFileButton').click();
       cy.get('#saveVersionModal').click();
@@ -278,7 +278,7 @@ describe('Dockstore my tools', () => {
       cy.contains('Create tool with descriptor(s) on remote sites').should('be.visible').click();
       cy.get('.modal-footer').contains('Next').first().click();
 
-      cy.get('#sourceCodeRepositoryInput').type('testnamespace/testname').wait(1000);
+      cy.get('#sourceCodeRepositoryInput').scrollIntoView().should('be.visible').click().type('testnamespace/testname');
 
       cy.get('[data-cy=imageRegistryProviderSelect]').click();
       cy.contains('Amazon ECR').click();
@@ -342,7 +342,7 @@ describe('Dockstore my tools', () => {
       cy.contains('Create tool with descriptor(s) on remote sites').should('be.visible').click();
       cy.get('.modal-footer').contains('Next').first().click();
 
-      cy.get('#sourceCodeRepositoryInput').type('testnamespace/testname').wait(1000);
+      cy.get('#sourceCodeRepositoryInput').scrollIntoView().should('be.visible').click().type('testnamespace/testname');
 
       cy.get('[data-cy=imageRegistryProviderSelect]').click();
       cy.contains('Amazon ECR').click();
@@ -448,7 +448,7 @@ describe('Dockstore my tools', () => {
       cy.contains('Create tool with descriptor(s) on remote sites').should('be.visible').click();
       cy.get('.modal-footer').contains('Next').first().click();
 
-      cy.get('#sourceCodeRepositoryInput').type('testnamespace/testname').wait(1000);
+      cy.get('#sourceCodeRepositoryInput').scrollIntoView().should('be.visible').click().type('testnamespace/testname');
 
       cy.get('[data-cy=imageRegistryProviderSelect]').click();
       cy.contains('mat-option', 'Seven Bridges').click();

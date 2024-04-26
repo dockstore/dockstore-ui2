@@ -280,6 +280,7 @@ describe('Dockstore Organizations', () => {
       cy.url().should('include', url);
       cy.get('[data-cy=cancel-remove-entry-from-org]').click();
       cy.url().should('include', url);
+      cy.get('app-collection-entry-confirm-remove').should('not.exist');
       cy.get('#removeEntryButton').click();
       cy.url().should('include', url);
       cy.get('[data-cy=accept-remove-entry-from-org]').click();
@@ -293,7 +294,6 @@ describe('Dockstore Organizations', () => {
       cy.contains('This collection has no associated entries');
       cy.visit('/organizations/Potatoe');
       cy.contains('Members').should('be.visible');
-
       approvePotatoOrganization();
       for (const url of ['/organizations', '/organizations/Potatoe', '/organizations/Potatoe/collections/veryFakeCollectionName']) {
         cy.visit(url);

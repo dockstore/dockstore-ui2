@@ -229,7 +229,7 @@ describe('Dockstore my workflows', () => {
       cy.contains('goodTopic').should('not.exist');
 
       cy.visit(privateEntryURI);
-      cy.get('.mat-radio-label').contains('Manual').click();
+      cy.contains('mat-radio-button', 'Manual').find('input').should('not.be.disabled').click({ force: true });
       cy.visit(privateEntryURI);
       cy.get('[data-cy=viewPublicWorkflowButton]').should('be.visible').click();
       cy.contains('goodTopic').should('exist');
@@ -529,9 +529,9 @@ describe('Dockstore my workflows part 3', () => {
       // Untouched form should not have errors but is disabled
       cy.get('#submitButton').should('be.disabled');
       notHaveAlert();
-      cy.get('#sourceCodeRepositoryInput').clear().type('beef/stew');
+      cy.get('#sourceCodeRepositoryInput').scrollIntoView().should('be.visible').clear().type('beef/stew');
       cy.get('#submitButton').should('be.disabled');
-      cy.get('#sourceCodeRepositoryWorkflowPathInput').clear().type('/Dockstore.cwl');
+      cy.get('#sourceCodeRepositoryWorkflowPathInput').scrollIntoView().should('be.visible').clear().type('/Dockstore.cwl');
       notHaveAlert();
       // Apparently the actual radio button inside Angular material buttons is hidden, so doing it this way
       cy.get('#descriptorTypeRadioButtons').contains(cwlDescriptorType).find('.mat-radio-container').click();
