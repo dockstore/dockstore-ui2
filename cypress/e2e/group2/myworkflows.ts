@@ -17,6 +17,7 @@ import { Repository } from '../../../src/app/shared/openapi/model/repository';
 import {
   goToTab,
   insertAuthors,
+  invokeSql,
   isActiveTab,
   resetDB,
   setTokenUserViewPort,
@@ -228,7 +229,7 @@ describe('Dockstore my workflows', () => {
       cy.contains('goodTopic').should('not.exist');
 
       cy.visit(privateEntryURI);
-      cy.get('.mat-radio-label').contains('Manual').click();
+      cy.contains('mat-radio-button', 'Manual').find('input').should('not.be.disabled').click({ force: true });
       cy.visit(privateEntryURI);
       cy.get('[data-cy=viewPublicWorkflowButton]').should('be.visible').click();
       cy.contains('goodTopic').should('exist');
@@ -528,9 +529,9 @@ describe('Dockstore my workflows part 3', () => {
       // Untouched form should not have errors but is disabled
       cy.get('#submitButton').should('be.disabled');
       notHaveAlert();
-      cy.get('#sourceCodeRepositoryInput').clear().type('beef/stew');
+      cy.get('#sourceCodeRepositoryInput').scrollIntoView().should('be.visible').clear().type('beef/stew');
       cy.get('#submitButton').should('be.disabled');
-      cy.get('#sourceCodeRepositoryWorkflowPathInput').clear().type('/Dockstore.cwl');
+      cy.get('#sourceCodeRepositoryWorkflowPathInput').scrollIntoView().should('be.visible').clear().type('/Dockstore.cwl');
       notHaveAlert();
       // Apparently the actual radio button inside Angular material buttons is hidden, so doing it this way
       cy.get('#descriptorTypeRadioButtons').contains(cwlDescriptorType).find('.mat-radio-container').click();
@@ -643,5 +644,27 @@ describe('Should handle no workflows correctly', () => {
   it('My workflows should prompt to register a workflow', () => {
     cy.visit('/my-workflows');
     cy.contains('Register a Workflow');
+  });
+});
+describe('GitHub App installation', () => {
+  resetDB();
+  setTokenUserViewPort();
+  it('Should display a warning when the GitHub app is not installed', () => {
+    invokeSql("update workflow set mode='DOCKSTORE_YML'");
+    // Warning should not appear on private page if not uninstalled
+    cy.intercept('GET', '/api/entries/*/syncStatus', {
+      body: { gitHubAppInstalled: true },
+    });
+    cy.visit('/my-workflows/github.com/A/l');
+    cy.get('mat-card').should('not.contain', 'uninstalled');
+    // Warning should appear on private page if uninstalled
+    cy.intercept('GET', '/api/entries/*/syncStatus', {
+      body: { gitHubAppInstalled: false },
+    });
+    cy.reload();
+    cy.get('mat-card').should('contain', 'uninstalled');
+    // Warning should not appear on public page
+    cy.visit('/workflows/github.com/A/l');
+    cy.get('mat-card').should('not.contain', 'uninstalled');
   });
 });

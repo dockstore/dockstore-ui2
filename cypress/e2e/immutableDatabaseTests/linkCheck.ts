@@ -25,7 +25,7 @@ describe('Find broken anchor links', () => {
 
   function checkUrls(path: string) {
     let brokenUrls = [];
-    cy.visit(path).wait(500); // Temporary solution to ensure the page loads entirely
+    cy.visit(path).wait(1000); // Temporary solution to ensure the page loads entirely
     cy.get('a')
       .each((anchor) => {
         cy.get(anchor).then((anchor) => {
@@ -73,7 +73,7 @@ describe('Find broken image links', () => {
 
   function checkImages(path: string, selector: string) {
     let brokenImages = [];
-    cy.visit(path).wait(500);
+    cy.visit(path).wait(1000);
     cy.get('app-root').should('be.visible');
     cy.get('img')
       .each((image) => {

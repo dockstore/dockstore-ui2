@@ -42,6 +42,7 @@ import {
 import { DateService } from '../shared/date.service';
 import { DescriptorTypeCompatService } from '../shared/descriptor-type-compat.service';
 import { DockstoreService } from '../shared/dockstore.service';
+import { Dockstore } from '../shared/dockstore.model';
 import { Entry } from '../shared/entry';
 import { EntryType } from '../shared/enum/entry-type';
 import { GA4GHFilesService } from '../shared/ga4gh-files/ga4gh-files.service';
@@ -53,6 +54,7 @@ import { ExtendedWorkflowQuery } from '../shared/state/extended-workflow.query';
 import { WorkflowQuery } from '../shared/state/workflow.query';
 import { WorkflowService } from '../shared/state/workflow.service';
 import { Permission, ToolDescriptor, WorkflowsService, EntriesService, WorkflowSubClass } from '../shared/openapi';
+import { SyncStatus } from '../shared/openapi/model/syncStatus';
 import { Tag } from '../shared/openapi/model/tag';
 import { Workflow } from '../shared/openapi/model/workflow';
 import { WorkflowVersion } from '../shared/openapi/model/workflowVersion';
@@ -77,6 +79,7 @@ export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterVi
   public sortedVersions: Array<WorkflowVersion> = [];
   private resourcePath: string;
   public showRedirect = false;
+  public gitHubAppInstalled: boolean | null;
   public githubPath = 'github.com/';
   public gitlabPath = 'gitlab.com/';
   public bitbucketPath = 'bitbucket.org/';
@@ -296,6 +299,12 @@ export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterVi
                   this.processPermissions(userPermissions);
                 });
             }
+          });
+        this.entryService
+          .syncStatus(this.workflow.id)
+          .pipe(takeUntil(this.ngUnsubscribe))
+          .subscribe((syncStatus: SyncStatus) => {
+            this.gitHubAppInstalled = syncStatus.gitHubAppInstalled;
           });
       }
       this.updateVerifiedPlatforms(this.workflow.id);
@@ -536,5 +545,9 @@ export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterVi
     if (index >= 0) {
       this.workflowEditData.labels.splice(index, 1);
     }
+  }
+
+  openGitHubApp(): void {
+    window.open(Dockstore.GITHUB_APP_INSTALLATION_URL + '/installations/new', '_blank', 'noopener,noreferrer');
   }
 }

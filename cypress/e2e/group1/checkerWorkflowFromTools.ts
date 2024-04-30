@@ -19,6 +19,7 @@ describe('Checker workflow test from my-tools', () => {
   resetDB();
   setTokenUserViewPort();
   beforeEach(() => {
+    cy.intercept('api/containers/*?include=validations').as('getTool');
     // Visit my-tools page
     cy.visit('/my-tools');
   });
@@ -34,7 +35,6 @@ describe('Checker workflow test from my-tools', () => {
 
   describe('Should be able to register and publish a checker workflow from a tool', () => {
     it('visit a tool and have the correct buttons and be able to register a checker workflow', () => {
-      cy.intercept('api/containers/*?include=validations').as('getTool');
       cy.wait('@getTool');
       goToB3();
 
@@ -43,9 +43,9 @@ describe('Checker workflow test from my-tools', () => {
       cy.get('#launchCheckerWorkflow').should('not.exist');
       cy.get('#addCheckerWorkflowButton').should('be.visible').click();
 
-      cy.get('#checkerWorkflowPath').type('/Dockstore.cwl');
+      cy.get('#checkerWorkflowPath').should('be.visible').type('/Dockstore.cwl');
 
-      cy.get('#checkerWorkflowTestParameterFilePath').type('/test.json');
+      cy.get('#checkerWorkflowTestParameterFilePath').should('be.visible').type('/test.json');
 
       cy.get('#submitButton').click();
 
@@ -89,12 +89,14 @@ describe('Checker workflow test from my-tools', () => {
     });
     it('visit the tool and have its publish/unpublish reflected in the checker workflow', () => {
       cy.intercept('api/containers/*?include=validations').as('getTool');
+      cy.intercept('api/containers/4/publish').as('unpublishTool');
       cy.wait('@getTool');
       goToB3();
       // In the parent tool right now
       // Didn't change the tool path upon entry or select
       // cy.url().should('eq','/my-tools/quay.io/A2/b3')
       cy.get('#publishToolButton').should('be.visible').should('contain', 'Unpublish').click();
+      cy.wait('@unpublishTool');
 
       goToTab('Versions');
       cy.contains('button', 'Actions').should('be.visible').click();
