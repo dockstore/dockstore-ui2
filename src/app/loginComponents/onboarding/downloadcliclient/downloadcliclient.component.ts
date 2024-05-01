@@ -78,9 +78,9 @@ export class DownloadCLIClientComponent extends Base implements OnInit {
   }
   generateMarkdown(): void {
     this.textDataRequirements = `
-### Setup Command Line Interface
+### Set Up Command Line Interface
 ------------------------------
-Set up our Dockstore CLI application in order to test workflows from the command line for [local development](${Dockstore.DOCUMENTATION_URL}/launch-with/launch.html#dockstore-cli), [validate .dockstore.yml files](${Dockstore.DOCUMENTATION_URL}/advanced-topics/dockstore-cli/yaml-command-line-validator-tool.html) for registering tools and workflows,
+You can search for workflows or launch them with our cloud partners using the Dockstore website, but we also provide a command-line tool to make developing and launching workflows more convenient. Set up our Dockstore CLI application in order to test workflows from the command line for [local development](${Dockstore.DOCUMENTATION_URL}/launch-with/launch.html#dockstore-cli), [validate .dockstore.yml files](${Dockstore.DOCUMENTATION_URL}/advanced-topics/dockstore-cli/yaml-command-line-validator-tool.html) for registering tools and workflows,
 run scripts or interact programmatically against Dockstore APIs, and [run workflows via the GA4GH WES standard](${Dockstore.DOCUMENTATION_URL}/advanced-topics/wes/cli-wes-tutorial.html) in platforms such as Amazon Genomics CLI.
 
 #### Requirements
@@ -90,14 +90,17 @@ run scripts or interact programmatically against Dockstore APIs, and [run workfl
     `;
 
     this.textDataUbuntuLinux = `
-#### Part 1 - Install dependencies
-1. Install Java 17 (This example installs OpenJDK 17)
+#### Part 1 - Install Java
+Install Java 17 (This example installs OpenJDK 17)
 \`\`\`
 sudo apt-get update -q \
 && sudo apt install -y openjdk-17-jdk
 \`\`\`
-2. Install Docker Engine following the instructions on [Docker's website](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository). You should have at least version 19.03.1 installed. Ensure that you install Docker Engine. Docker Desktop does not run containers natively and the Dockstore CLI is not currently compatible with Docker Desktop's use of a VM.
-3. Ensure that you are able to run Docker without using sudo directly with the
+
+#### Part 2 - Install Docker
+Install Docker Engine following the instructions on [Docker's website](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository). You should have at least version 19.03.1 installed. Ensure that you install Docker Engine. The Ubuntu version of Docker Desktop does not run containers natively, so it is not compatible with the Dockstore CLI.
+
+Ensure that you are able to run Docker without using sudo directly with the
 [post install instructions](https://docs.docker.com/engine/installation/linux/linux-postinstall/#manage-docker-as-a-non-root-user).
 \`\`\`
 sudo usermod -aG docker $USER
@@ -106,15 +109,28 @@ exec newgrp docker
 
 `;
     this.textDataMacOs = `
-#### Part 1a - Install Java dependencies
-We'll cover two ways to install Java 11.
+#### Part 1 - Install Java
+There are two ways to install Java on Mac OS.
 
-1. The first way is to download OpenJDK for Mac OS from [here](https://jdk.java.net/archive/), and execute the following commands.  First, unpack the downloaded tar archive, then move the resulting JDK directory to its standard location. Then check the Java version:
+##### Option A: Install Java manually
+You can OpenJDK 17.0.2 for Mac OS from [here](https://jdk.java.net/archive/). If your Mac uses Apple Silicon, you need to download and unpack the Mac/AArch64 version:
 \`\`\`
-sudo mv jdk-11.0.2.jdk /Library/Java/JavaVirtualMachines/
+tar -xf openjdk-17.0.2_macos-aarch64_bin.tar.gz
+\`\`\`
+If your Mac uses Intel hardware, you need the Mac/x64 version instead:
+\`\`\`
+tar -xf openjdk-17.0.2_macos-x64_bin.tar.gz
+\`\`\`
+Move the resulting JDK directory to its standard location:
+\`\`\`
+sudo mv jdk-17.0.2.jdk /Library/Java/JavaVirtualMachines/
+\`\`\`
+Then check the Java version:
+\`\`\`
 java -version
 \`\`\`
-If the reported version is JDK 11, you've correctly installed Java!  If not, check the list of the JDKs that are installed; you should see version 11:
+Some versions of Mac OS will pop up a window saying that the program cannot be run as it is from an unidentified developer. [See this help page from Apple](https://support.apple.com/guide/mac-help/open-a-mac-app-from-an-unidentified-developer-mh40616/mac) on how to fix this.
+If the reported version is JDK 17, you've correctly installed Java! If not, check the list of the JDKs that are installed; you should see version 17:
 \`\`\`
 /usr/libexec/java_home -V
 \`\`\`
@@ -122,35 +138,37 @@ Next, set the \`JAVA_HOME\` environment variable to the correct JDK system path
 and confirm the Java version:
 \`\`\`
 unset JAVA_HOME
-export JAVA_HOME=\`/usr/libexec/java_home -v 11\`
+export JAVA_HOME=\`/usr/libexec/java_home -v 17\`
 java -version
 \`\`\`
-Add the above export line to your \`.bashrc\` or \`.bash_profile\` to set \`JAVA_HOME\` properly every time you invoke a shell.
+If you are using Bash, add the above export line to your \`.bashrc\` or \`.bash_profile\` to set \`JAVA_HOME\` properly every time you invoke a shell. Newer versions of Mac OS default to using zsh instead of bash, in which case, add this line to \`.zshrc\` instead.
 
-2. Alternatively, to install Java 11 using Homebrew, execute the following commands:
+##### Option B: Install Java with Homebrew
+2. Alternatively, to install Java 17 using Homebrew, execute the following commands:
 \`\`\`
 brew update
-brew install openjdk@11
+brew install openjdk@17
 \`\`\`
 For the system Java wrappers to be able to use this JDK, symlink with the command:
 \`\`\`
-sudo ln -sfn $(brew --prefix)/opt/openjdk@11/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk-11.jdk
+sudo ln -sfn $(brew --prefix)/opt/openjdk@17/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk-17.jdk
 \`\`\`
 Next, set the \`JAVA_HOME\` environment variable to the correct JDK system path, and confirm the
 Java version is correct:
 \`\`\`
 unset JAVA_HOME
-export JAVA_HOME=\`/usr/libexec/java_home -v 11\`
+export JAVA_HOME=\`/usr/libexec/java_home -v 17\`
 java -version
 \`\`\`
+As with option A, you may have to [follow these directions](https://support.apple.com/guide/mac-help/open-a-mac-app-from-an-unidentified-developer-mh40616/mac) if your computer gives you a warning about an unidentified developer.
 
-#### Part 1b - Install Docker dependencies
-Install Docker following the instructions on [Docker's website](https://docs.docker.com/docker-for-mac/install/). You should have at least version 2.0.0.3 installed.
+#### Part 2 - Install Docker
+Install Docker following the instructions on [Docker's website](https://docs.docker.com/docker-for-mac/install/). You should have at least version 4.3.0 installed. Make sure to install the correct version for your hardware.
     `;
 
     this.textDataInstallCLI = `
-#### Part 2 - Install Dockstore CLI
-1. Install the dockstore command-line program and add it to the path.
+#### Part 3 - Install Dockstore CLI
+Install the dockstore command-line program and add it to the path. (If you are using zsh, change the last two lines to use ~/.zshrc instead of ~/.bashrc)
 \`\`\`
 mkdir -p ~/bin
 curl -L -o ~/bin/dockstore ${this.downloadCli}
@@ -158,21 +176,21 @@ chmod +x ~/bin/dockstore
 echo 'export PATH=~/bin:$PATH' >> ~/.bashrc
 source ~/.bashrc
 \`\`\`
-2. Alternatively, click here to download and configure the CLI yourself.
+As an alternative, click here to download and configure the CLI manually.
     `;
 
     this.textDataCLIConfig = `
-#### Part 3 - Setup Dockstore CLI Config
-1. Create the folder \`~/.dockstore\` and create a configuration file \`~/.dockstore/config\`:
+#### Part 4 - Set up Dockstore CLI Config
+Create the folder \`~/.dockstore\` and create a configuration file \`~/.dockstore/config\`:
 \`\`\`
 mkdir -p ~/.dockstore
 printf "token: ${this.dsToken}\\nserver-url: ${this.dsServerURI}\\n" > ~/.dockstore/config
 \`\`\`
-2. Alternatively, copy this content to your config file directly.
+Alternatively, copy this content to your config file directly.
 `;
     this.textDataConfirmInstallation = `
-#### Part 4 - Confirm installation
-1. Run our dependencies to verify that they have been installed properly.
+#### Part 5 - Confirm installation
+Run our dependencies to verify that they have been installed properly. (Note that the precise version of openjdk may vary depending on how you installed it.)
 \`\`\`
 $ java -version
 openjdk 17.0.5 2022-10-18
@@ -185,20 +203,21 @@ Hello from Docker!
 ...
 \`\`\`
 
-#### Part 5 - Install cwltool (Optional)
-Dockstore relies on [cwltool](https://github.com/common-workflow-language/cwltool) -a reference implementation of CWL- for local execution of tools and workflows described with CWL.
+At this point, you now have the Dockstore CLI set up for interacting with the Dockstore website, as well as executing WDL workflows. If you wish to run CWL or Nextflow workflows, you will need two more dependencies.
+
+#### Part 6 - Install cwltool (Optional)
+Dockstore relies on [cwltool](https://github.com/common-workflow-language/cwltool) - a reference implementation of CWL - for local execution of tools and workflows described with CWL.
 You'll need to have Python 3 and [pip3](https://pip.pypa.io/en/latest/installing/) to be installed on your machine.
 
-**Note:** cwltool must be available on your PATH.
+**Note:** cwltool must be available on your PATH for the Dockstore CLI to find it.
 
 You can install the version of cwltool that we've tested for use with Dockstore using the following commands:
-1. Run this to verify that pip has been installed \`pip3 --version\`
-2. Run these commands to install cwltool
+1. Install cwltool
 \`\`\`
 curl -o requirements.txt "${this.dsServerURI}/metadata/runner_dependencies?client_version=${this.dockstoreVersion}&python_version=3"
 pip3 install -r requirements.txt
 \`\`\`
-3. Verify using \`pip3 list\` that the installed pip packages match the ones specified in the downloaded requirements.txt. Confirm cwltool installation by checking the version.
+2. Verify using \`pip3 list\` that the installed pip packages match the ones specified in the downloaded requirements.txt. Confirm cwltool installation by checking the version.
 \`\`\`
 $ cwltool --version
 /usr/local/bin/cwltool ${this.cwltoolVersion}
@@ -206,7 +225,7 @@ $ cwltool --version
 
 Although Dockstore has only been tested with the above cwltool version, if you have issues installing cwltool please try running \`pip3 install cwltool\`. This will install the latest released version from PyPi that is compatible with your Python version.
 
-#### Part 6 - Install Nextflow (Optional)
+#### Part 7 - Install Nextflow (Optional)
 The Dockstore CLI does not run Nextflow workflows. Users can run them directly by using the Nextflow command line tool. For installation instructions, follow [Nextflow's documentation](https://github.com/nextflow-io/nextflow#download-the-package)
 `;
   }
