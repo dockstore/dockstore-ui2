@@ -131,6 +131,12 @@ jobs:
           command: |
             bash -i -c 'npm run circle-ci-license-test-file'
             bash scripts/detect-package-json-changes.sh
+      # Override the webservice version in package.json to instead build against develop webservice
+      - run:
+          when:
+            condition: <<parameters.sanity_check_against_develop>>
+          name: set webservice to develop
+          command: bash -i -c 'npm config set dockstore-ui2:webservice_version develop'
       - build_ui
       - run:
           name: Install codecov
@@ -284,6 +290,9 @@ parameters:
   python-tag:
     type: string
     default: "3.11"
+  sanity_check_against_develop:
+    type: boolean
+    default: false
 
 workflows:
   version: 2
@@ -363,6 +372,9 @@ workflows:
             - dockerhub
             - aws-ui2
       - check_build_develop:
+          when:
+            condition:
+              not: <<parameters.sanity_check_against_develop>>
           requires:
             - upload_to_s3
           filters:
