@@ -134,7 +134,7 @@ jobs:
       # Override the webservice version in package.json to instead build against develop webservice
       - run:
           when:
-            condition: <<parameters.sanity_check_against_develop>>
+            condition: << parameters.sanity_check_against_develop >>
           name: set webservice to develop
           command: bash -i -c 'npm config set dockstore-ui2:webservice_version develop'
       - build_ui
@@ -374,7 +374,7 @@ workflows:
       - check_build_develop:
           when:
             condition:
-              not: <<parameters.sanity_check_against_develop>>
+              not: << parameters.sanity_check_against_develop >>
           requires:
             - upload_to_s3
           filters:
