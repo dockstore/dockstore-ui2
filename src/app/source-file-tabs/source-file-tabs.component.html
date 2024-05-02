@@ -21,7 +21,7 @@
       page.</mat-card
     >
   </div>
-  <mat-tab-group mat-stretch-tabs (selectedTabChange)="matTabChange($event)">
+  <mat-tab-group mat-stretch-tabs (selectedTabChange)="matTabChange($event)" [(selectedIndex)]="selectedTabIndex">
     <mat-tab *ngFor="let fileTab of fileTabs | keyvalue: originalOrder" [label]="fileTab.key">
       <ng-template matTabContent>
         <div class="p-3" *ngIf="fileTab.value.length === 0">

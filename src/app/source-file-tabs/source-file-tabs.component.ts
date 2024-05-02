@@ -1,5 +1,6 @@
-import { KeyValue } from '@angular/common';
+import { KeyValue, Location } from '@angular/common';
 import { Component, Input, OnChanges } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { MatLegacySelectChange as MatSelectChange } from '@angular/material/legacy-select';
 import { MatLegacyTabChangeEvent as MatTabChangeEvent } from '@angular/material/legacy-tabs';
@@ -22,7 +23,10 @@ export class SourceFileTabsComponent implements OnChanges {
     private fileService: FileService,
     private sourceFileTabsService: SourceFileTabsService,
     private matDialog: MatDialog,
-    private workflowQuery: WorkflowQuery
+    private workflowQuery: WorkflowQuery,
+    private route: ActivatedRoute,
+    private router: Router,
+    private location: Location
   ) {
     this.isPublished$ = this.workflowQuery.workflowIsPublished$;
     this.primaryDescriptors = [];
@@ -40,6 +44,7 @@ export class SourceFileTabsComponent implements OnChanges {
   relativePath: string;
   downloadFilePath: string;
   fileTabs: Map<string, SourceFile[]>;
+  selectedTabIndex: number = 0;
   primaryDescriptors: SourceFile[] | null;
   primaryDescriptorPath: string;
   isCurrentFilePrimary: boolean | null;
@@ -53,6 +58,10 @@ export class SourceFileTabsComponent implements OnChanges {
 
   ngOnChanges() {
     this.setupVersionFileTabs();
+  }
+
+  ngOnInit() {
+    // TODO field url changes
   }
 
   setupVersionFileTabs() {
@@ -72,15 +81,13 @@ export class SourceFileTabsComponent implements OnChanges {
             this.version.workflow_path,
             this.descriptorType
           );
-          if (this.fileTabs.size > 0) {
-            this.changeFileType(this.fileTabs.values().next().value);
-          }
           sourceFiles.forEach((sourceFile) => {
             if (this.isPrimaryDescriptor(sourceFile.path)) {
               this.primaryDescriptors.push(sourceFile);
               this.primaryDescriptorPath = sourceFile.path;
             }
           });
+          this.selectTabAndFile();
         },
         () => {
           this.displayError = true;
@@ -88,12 +95,49 @@ export class SourceFileTabsComponent implements OnChanges {
       );
   }
 
+  selectTabAndFile() {
+    console.log(this.fileTabs.size);
+    if (this.fileTabs.size > 0) {
+      // Attempt to set the file as indicated by the 'file' query parameter.
+      const queryFileName = this.route.snapshot.queryParams['file'];
+      console.log('PARAM ' + queryFileName);
+      if (queryFileName) {
+        // console.log("VALUES " + JSON.stringify(this.fileTabs.values()));
+        for (let tabIndex = 0; tabIndex < this.fileTabs.size; tabIndex++) {
+          const sourceFiles = Array.from(this.fileTabs.values())[tabIndex];
+          // console.log("SOURCEFILES " + JSON.stringify(sourceFiles));
+          for (let sourceFile of sourceFiles) {
+            console.log('CMP ' + sourceFile.absolutePath + ' ' + queryFileName);
+            // console.log("SOURCEFILE " + JSON.stringify(sourceFile));
+            if (sourceFile.absolutePath === queryFileName) {
+              this.changeTab(tabIndex);
+              console.log('INDEXOF ' + sourceFiles.indexOf(sourceFile));
+              this.changeFileType(sourceFiles.indexOf(sourceFile), sourceFiles);
+              return;
+            }
+          }
+        }
+      }
+
+      // Otherwise, select the first file in the first tab.
+      console.log('DEFAULT');
+      this.changeTab(0);
+      this.changeFileType(0, this.fileTabs.values().next().value);
+    }
+  }
+
+  changeTab(tabIndex: number) {
+    console.log('CHANGETAB ' + this.selectedTabIndex + ' ' + tabIndex);
+    this.selectedTabIndex = tabIndex;
+  }
+
   /**
    * Sets the validation message and new default selected file
    * @param fileType
    */
-  changeFileType(files: SourceFile[]) {
-    this.selectFile(files[0]);
+  changeFileType(index: number, files: SourceFile[]) {
+    console.log('CHANGEFILETYPE');
+    this.selectFile(files[index]);
     this.validationMessage = this.sourceFileTabsService.getValidationMessage(files, this.version);
   }
 
@@ -113,14 +157,31 @@ export class SourceFileTabsComponent implements OnChanges {
       this.downloadFilePath = null;
     }
     this.currentFile = file;
+    // TODO fix npe
     this.isCurrentFilePrimary = this.isPrimaryDescriptor(this.currentFile.path);
+    // Set "file" query parameter
+    /*
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { tab: 'files', file: file.absolutePath },
+      queryParamsHandling: 'merge',
+      skipLocationChange: true
+    });
+    */
+    console.log('PATH ' + file.absolutePath);
+    const root = this.router.url.split('?')[0];
+    console.log('ROOT ' + root);
+    this.location.replaceState(root, 'tab=files&file=' + file.absolutePath);
+    console.log('URL ' + JSON.stringify(this.router.url));
   }
 
   matTabChange(event: MatTabChangeEvent) {
-    this.changeFileType(this.fileTabs.get(event.tab.textLabel));
+    console.log('MAT TAB CHANGE');
+    this.changeFileType(0, this.fileTabs.get(event.tab.textLabel));
   }
 
   matSelectChange(event: MatSelectChange) {
+    console.log('MAT SELECT CHANGE ' + event.value);
     this.selectFile(event.value);
   }
 
