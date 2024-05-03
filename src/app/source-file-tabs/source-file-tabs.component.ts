@@ -38,6 +38,7 @@ export class SourceFileTabsComponent implements OnChanges {
   @Input() version: WorkflowVersion;
   loading = true;
   displayError = false;
+  notFoundError = false;
   currentFile: SourceFile | null;
   validationMessage: Map<string, string>;
   fileName: string;
@@ -118,6 +119,10 @@ export class SourceFileTabsComponent implements OnChanges {
       const files = this.fileTabs.values().next().value;
       this.selectFile(files[0]);
       this.changeTab(0);
+
+      if (queryFileName) {
+        this.notFoundError = true;
+      }
     }
   }
 
@@ -152,6 +157,7 @@ export class SourceFileTabsComponent implements OnChanges {
     }
     this.currentFile = file;
     this.setUrl(file);
+    this.notFoundError = false;
   }
 
   setUrl(file: SourceFile) {
