@@ -112,7 +112,8 @@ export class SourceFileTabsComponent implements OnChanges {
             if (sourceFile.absolutePath === queryFileName) {
               this.changeTab(tabIndex);
               console.log('INDEXOF ' + sourceFiles.indexOf(sourceFile));
-              this.changeFileType(sourceFiles.indexOf(sourceFile), sourceFiles);
+              this.selectFile(sourceFile);
+              this.changeTab(tabIndex);
               return;
             }
           }
@@ -121,8 +122,9 @@ export class SourceFileTabsComponent implements OnChanges {
 
       // Otherwise, select the first file in the first tab.
       console.log('DEFAULT');
+      const files = this.fileTabs.values().next().value;
+      this.selectFile(files[0]);
       this.changeTab(0);
-      this.changeFileType(0, this.fileTabs.values().next().value);
     }
   }
 
@@ -135,10 +137,12 @@ export class SourceFileTabsComponent implements OnChanges {
    * Sets the validation message and new default selected file
    * @param fileType
    */
-  changeFileType(index: number, files: SourceFile[]) {
+  changeFileType(files: SourceFile[]) {
     console.log('CHANGEFILETYPE');
-    this.selectFile(files[index]);
     this.validationMessage = this.sourceFileTabsService.getValidationMessage(files, this.version);
+    if (files.indexOf(this.currentFile) < 0) {
+      this.selectFile(files[0]);
+    }
   }
 
   selectFile(file: SourceFile) {
@@ -177,7 +181,7 @@ export class SourceFileTabsComponent implements OnChanges {
 
   matTabChange(event: MatTabChangeEvent) {
     console.log('MAT TAB CHANGE');
-    this.changeFileType(0, this.fileTabs.get(event.tab.textLabel));
+    this.changeFileType(this.fileTabs.get(event.tab.textLabel));
   }
 
   matSelectChange(event: MatSelectChange) {
