@@ -62,9 +62,7 @@ export class SourceFileTabsComponent implements OnChanges {
 
   ngOnInit() {
     this.route.queryParams.subscribe((params) => {
-      if (this.fileTabs) {
-        this.selectTabAndFile();
-      }
+      this.selectTabAndFile();
     });
   }
 
@@ -100,22 +98,14 @@ export class SourceFileTabsComponent implements OnChanges {
   }
 
   selectTabAndFile() {
-    console.log(this.fileTabs.size);
-    if (this.fileTabs.size > 0) {
+    if (this.fileTabs?.size > 0) {
       // Attempt to set the file as indicated by the 'file' query parameter.
       const queryFileName = this.route.snapshot.queryParams['file'];
-      console.log('PARAM ' + queryFileName);
       if (queryFileName) {
-        // console.log("VALUES " + JSON.stringify(this.fileTabs.values()));
         for (let tabIndex = 0; tabIndex < this.fileTabs.size; tabIndex++) {
           const sourceFiles = Array.from(this.fileTabs.values())[tabIndex];
-          // console.log("SOURCEFILES " + JSON.stringify(sourceFiles));
           for (let sourceFile of sourceFiles) {
-            console.log('CMP ' + sourceFile.absolutePath + ' ' + queryFileName);
-            // console.log("SOURCEFILE " + JSON.stringify(sourceFile));
             if (sourceFile.absolutePath === queryFileName) {
-              this.changeTab(tabIndex);
-              console.log('INDEXOF ' + sourceFiles.indexOf(sourceFile));
               this.selectFile(sourceFile);
               this.changeTab(tabIndex);
               return;
@@ -125,7 +115,6 @@ export class SourceFileTabsComponent implements OnChanges {
       }
 
       // Otherwise, select the first file in the first tab.
-      console.log('DEFAULT');
       const files = this.fileTabs.values().next().value;
       this.selectFile(files[0]);
       this.changeTab(0);
@@ -133,7 +122,6 @@ export class SourceFileTabsComponent implements OnChanges {
   }
 
   changeTab(tabIndex: number) {
-    console.log('CHANGETAB ' + this.selectedTabIndex + ' ' + tabIndex);
     this.selectedTabIndex = tabIndex;
   }
 
@@ -142,7 +130,6 @@ export class SourceFileTabsComponent implements OnChanges {
    * @param fileType
    */
   changeFileType(files: SourceFile[]) {
-    console.log('CHANGEFILETYPE');
     this.validationMessage = this.sourceFileTabsService.getValidationMessage(files, this.version);
   }
 
@@ -161,6 +148,7 @@ export class SourceFileTabsComponent implements OnChanges {
       this.fileName = null;
       this.relativePath = null;
       this.downloadFilePath = null;
+      this.isCurrentFilePrimary = false;
     }
     this.currentFile = file;
     this.setUrl(file);
@@ -171,12 +159,11 @@ export class SourceFileTabsComponent implements OnChanges {
     if (file) {
       query += `&file=${file.absolutePath}`;
     }
-    const root = this.router.url.split('?')[0];
-    this.location.replaceState(root, query);
+    const url = this.router.url.split('?')[0];
+    this.location.replaceState(url, query);
   }
 
   matTabChange(event: MatTabChangeEvent) {
-    console.log('MAT TAB CHANGE');
     const files = this.fileTabs.get(event.tab.textLabel);
     if (files.indexOf(this.currentFile) < 0) {
       this.selectFile(files[0]);
@@ -185,7 +172,6 @@ export class SourceFileTabsComponent implements OnChanges {
   }
 
   matSelectChange(event: MatSelectChange) {
-    console.log('MAT SELECT CHANGE ' + event.value);
     this.selectFile(event.value);
   }
 
