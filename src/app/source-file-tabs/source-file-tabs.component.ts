@@ -61,7 +61,11 @@ export class SourceFileTabsComponent implements OnChanges {
   }
 
   ngOnInit() {
-    // TODO field url changes
+    this.route.queryParams.subscribe((params) => {
+      if (this.fileTabs) {
+        this.selectTabAndFile();
+      }
+    });
   }
 
   setupVersionFileTabs() {
@@ -152,28 +156,23 @@ export class SourceFileTabsComponent implements OnChanges {
         this.version.name,
         this.relativePath
       );
+      this.isCurrentFilePrimary = this.isPrimaryDescriptor(file.path);
     } else {
       this.fileName = null;
       this.relativePath = null;
       this.downloadFilePath = null;
     }
     this.currentFile = file;
-    // TODO fix npe
-    this.isCurrentFilePrimary = this.isPrimaryDescriptor(this.currentFile.path);
-    // Set "file" query parameter
-    /*
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: { tab: 'files', file: file.absolutePath },
-      queryParamsHandling: 'merge',
-      skipLocationChange: true
-    });
-    */
-    console.log('PATH ' + file.absolutePath);
+    this.setUrl(file);
+  }
+
+  setUrl(file: SourceFile) {
+    let query = 'tab=files';
+    if (file) {
+      query += `&file=${file.absolutePath}`;
+    }
     const root = this.router.url.split('?')[0];
-    console.log('ROOT ' + root);
-    this.location.replaceState(root, 'tab=files&file=' + file.absolutePath);
-    console.log('URL ' + JSON.stringify(this.router.url));
+    this.location.replaceState(root, query);
   }
 
   matTabChange(event: MatTabChangeEvent) {
