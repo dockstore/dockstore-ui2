@@ -140,9 +140,6 @@ export class SourceFileTabsComponent implements OnChanges {
   changeFileType(files: SourceFile[]) {
     console.log('CHANGEFILETYPE');
     this.validationMessage = this.sourceFileTabsService.getValidationMessage(files, this.version);
-    if (files.indexOf(this.currentFile) < 0) {
-      this.selectFile(files[0]);
-    }
   }
 
   selectFile(file: SourceFile) {
@@ -181,7 +178,11 @@ export class SourceFileTabsComponent implements OnChanges {
 
   matTabChange(event: MatTabChangeEvent) {
     console.log('MAT TAB CHANGE');
-    this.changeFileType(this.fileTabs.get(event.tab.textLabel));
+    const files = this.fileTabs.get(event.tab.textLabel);
+    if (files.indexOf(this.currentFile) < 0) {
+      this.selectFile(files[0]);
+    }
+    this.changeFileType(files);
   }
 
   matSelectChange(event: MatSelectChange) {
