@@ -398,7 +398,7 @@ describe('Dockstore my workflows part 2', () => {
 
     cy.contains('/Dockstore.cwl');
     cy.contains('class: Workflow');
-    cy.url().should('contain', 'file=/Dockstore.cwl');
+    cy.url().should('contain', 'file=%2FDockstore.cwl');
 
     cy.get('app-source-file-tabs').within((tabBody) => {
       cy.get('mat-select').click();
@@ -410,7 +410,7 @@ describe('Dockstore my workflows part 2', () => {
     goToTab('Configuration');
     cy.contains('Configuration');
     cy.contains('/.dockstore.yml');
-    cy.url().should('contain', 'file=/.dockstore.yml');
+    cy.url().should('contain', 'file=%2Fdockstore.yml');
   });
 
   it('Should be able to reference a specific source file in a Dockstore URL', () => {
