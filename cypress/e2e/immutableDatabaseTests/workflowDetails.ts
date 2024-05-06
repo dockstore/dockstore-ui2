@@ -27,15 +27,15 @@ describe('Variations of URL', () => {
   });
   it('Should redirect to canonical url (tab)', () => {
     cy.visit('/workflows/github.com/A/l?tab=files');
-    cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=files');
+    cy.url().should('contain', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=files');
   });
   it('Should redirect to canonical url (version + tab)', () => {
     cy.visit('/workflows/github.com/A/l:master?tab=files');
-    cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=files');
+    cy.url().should('contain', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=files');
   });
   it('Should redirect to canonical url (encoding + version + tab)', () => {
     cy.visit('/workflows/github.com%2FA%2Fl:master?tab=files');
-    cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=files');
+    cy.url().should('contain', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=files');
   });
 });
 
@@ -74,7 +74,7 @@ describe('Dockstore Workflow Details', () => {
   describe('Change tab to files', () => {
     beforeEach(() => {
       goToTab('Files');
-      cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=files');
+      cy.url().should('contain', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=files');
     });
 
     it('Should have Descriptor files tab selected', () => {

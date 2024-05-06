@@ -398,6 +398,7 @@ describe('Dockstore my workflows part 2', () => {
 
     cy.contains('/Dockstore.cwl');
     cy.contains('class: Workflow');
+    cy.url().should('contain', 'file=/Dockstore.cwl');
 
     cy.get('app-source-file-tabs').within((tabBody) => {
       cy.get('mat-select').click();
@@ -409,6 +410,18 @@ describe('Dockstore my workflows part 2', () => {
     goToTab('Configuration');
     cy.contains('Configuration');
     cy.contains('/.dockstore.yml');
+    cy.url().should('contain', 'file=/.dockstore.yml');
+  });
+
+  it('Should be able to reference a specific source file in a Dockstore URL', () => {
+    cy.visit('/my-workflows/github.com/B/z?tab=files&file=%2Fnonexistent.txt');
+    cy.contains('Could not find the specified file');
+    cy.visit('/my-workflows/github.com/B/z?tab=files&file=%2FDockstore.cwl');
+    cy.contains('/Dockstore.cwl');
+    cy.contains('cwlVersion:');
+    cy.visit('/my-workflows/github.com/B/z?tab=files&file=%2Fdockstore.yml');
+    cy.contains('/.dockstore.yml');
+    cy.contains('workflows:');
   });
 
   it('Should be able to refresh a workflow version', () => {

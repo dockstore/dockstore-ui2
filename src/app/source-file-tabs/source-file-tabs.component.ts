@@ -157,18 +157,20 @@ export class SourceFileTabsComponent implements OnChanges {
       this.isCurrentFilePrimary = false;
     }
     this.currentFile = file;
-    this.addFilePathToUrl(file);
+    this.setFilePathInLocation(file);
     this.notFoundError = false;
   }
 
-  addFilePathToUrl(file: SourceFile) {
-    let query = 'tab=files';
+  setFilePathInLocation(file: SourceFile) {
+    const url = this.location.path();
+    const root = url.split('?')[0];
+    const params = new URLSearchParams(url.split('?')[1] ?? '');
     if (file) {
-      const encodedPath = new HttpUrlEncodingCodec().encodeValue(file.absolutePath);
-      query += `&file=${encodedPath}`;
+      params.set('file', new HttpUrlEncodingCodec().encodeValue(file.absolutePath));
+    } else {
+      params.delete('file');
     }
-    const url = this.router.url.split('?')[0];
-    this.location.replaceState(url, query);
+    this.location.replaceState(root, params.toString());
   }
 
   matTabChange(event: MatTabChangeEvent) {
