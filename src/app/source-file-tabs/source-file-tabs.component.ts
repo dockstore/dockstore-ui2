@@ -1,7 +1,7 @@
 import { KeyValue, Location } from '@angular/common';
 import { HttpUrlEncodingCodec } from '@angular/common/http';
 import { Component, Input, OnChanges } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { MatLegacySelectChange as MatSelectChange } from '@angular/material/legacy-select';
 import { MatLegacyTabChangeEvent as MatTabChangeEvent } from '@angular/material/legacy-tabs';
@@ -26,7 +26,6 @@ export class SourceFileTabsComponent implements OnChanges {
     private matDialog: MatDialog,
     private workflowQuery: WorkflowQuery,
     private activatedRoute: ActivatedRoute,
-    private router: Router,
     private location: Location
   ) {
     this.isPublished$ = this.workflowQuery.workflowIsPublished$;
