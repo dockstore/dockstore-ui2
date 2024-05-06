@@ -1,4 +1,5 @@
 import { KeyValue, Location } from '@angular/common';
+import { HttpUrlEncodingCodec } from '@angular/common/http';
 import { Component, Input, OnChanges } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
@@ -24,7 +25,7 @@ export class SourceFileTabsComponent implements OnChanges {
     private sourceFileTabsService: SourceFileTabsService,
     private matDialog: MatDialog,
     private workflowQuery: WorkflowQuery,
-    private route: ActivatedRoute,
+    private activatedRoute: ActivatedRoute,
     private router: Router,
     private location: Location
   ) {
@@ -62,8 +63,8 @@ export class SourceFileTabsComponent implements OnChanges {
   }
 
   ngOnInit() {
-    this.route.queryParams.subscribe((params) => {
-      this.selectTabAndFile();
+    this.activatedRoute.queryParams.subscribe((params) => {
+      this.findFile();
     });
   }
 
@@ -90,7 +91,7 @@ export class SourceFileTabsComponent implements OnChanges {
               this.primaryDescriptorPath = sourceFile.path;
             }
           });
-          this.selectTabAndFile();
+          this.findFile();
         },
         () => {
           this.displayError = true;
@@ -98,15 +99,16 @@ export class SourceFileTabsComponent implements OnChanges {
       );
   }
 
-  selectTabAndFile() {
+  findFile() {
+    const queryFilePath = this.activatedRoute.snapshot.queryParams['file'];
     if (this.fileTabs?.size > 0) {
-      // Attempt to set the file as indicated by the 'file' query parameter.
-      const queryFileName = this.route.snapshot.queryParams['file'];
-      if (queryFileName) {
+      // Attempt to find the file that is indicated by the 'file' query parameter.
+      // If we are successful, select the file, change the tab, and return.
+      if (queryFilePath) {
         for (let tabIndex = 0; tabIndex < this.fileTabs.size; tabIndex++) {
           const sourceFiles = Array.from(this.fileTabs.values())[tabIndex];
           for (let sourceFile of sourceFiles) {
-            if (sourceFile.absolutePath === queryFileName) {
+            if (sourceFile.absolutePath === queryFilePath) {
               this.selectFile(sourceFile);
               this.changeTab(tabIndex);
               return;
@@ -114,15 +116,14 @@ export class SourceFileTabsComponent implements OnChanges {
           }
         }
       }
-
       // Otherwise, select the first file in the first tab.
       const files = this.fileTabs.values().next().value;
       this.selectFile(files[0]);
       this.changeTab(0);
-
-      if (queryFileName) {
-        this.notFoundError = true;
-      }
+    }
+    // If there was a 'file' query parameter and we've gotten to this point, we couldn't find a matching file.
+    if (queryFilePath) {
+      this.notFoundError = true;
     }
   }
 
@@ -156,14 +157,15 @@ export class SourceFileTabsComponent implements OnChanges {
       this.isCurrentFilePrimary = false;
     }
     this.currentFile = file;
-    this.setUrl(file);
+    this.addFilePathToUrl(file);
     this.notFoundError = false;
   }
 
-  setUrl(file: SourceFile) {
+  addFilePathToUrl(file: SourceFile) {
     let query = 'tab=files';
     if (file) {
-      query += `&file=${file.absolutePath}`;
+      const encodedPath = new HttpUrlEncodingCodec().encodeValue(file.absolutePath);
+      query += `&file=${encodedPath}`;
     }
     const url = this.router.url.split('?')[0];
     this.location.replaceState(url, query);
@@ -171,6 +173,7 @@ export class SourceFileTabsComponent implements OnChanges {
 
   matTabChange(event: MatTabChangeEvent) {
     const files = this.fileTabs.get(event.tab.textLabel);
+    // If the new tab has files, select the first one.
     if (files.indexOf(this.currentFile) < 0) {
       this.selectFile(files[0]);
     }
