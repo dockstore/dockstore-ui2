@@ -1,5 +1,4 @@
 import { KeyValue, Location } from '@angular/common';
-import { HttpUrlEncodingCodec } from '@angular/common/http';
 import { Component, Input, OnChanges } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
@@ -170,7 +169,7 @@ export class SourceFileTabsComponent implements OnChanges {
     }
     // Add the sourcefile's absolute path as the 'file' query parameter.
     if (file) {
-      params.set('file', new HttpUrlEncodingCodec().encodeValue(file.absolutePath));
+      params.set('file', file.absolutePath);
     } else {
       params.delete('file');
     }
