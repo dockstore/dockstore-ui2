@@ -164,6 +164,11 @@ export class SourceFileTabsComponent implements OnChanges {
     const url = this.location.path();
     const root = url.split('?')[0];
     const params = new URLSearchParams(url.split('?')[1] ?? '');
+    // Don't modify the URL if it's not tracking the current tab.
+    if (!params.has('tab')) {
+      return;
+    }
+    // Add the sourcefile's absolute path as the 'file' query parameter.
     if (file) {
       params.set('file', new HttpUrlEncodingCodec().encodeValue(file.absolutePath));
     } else {
