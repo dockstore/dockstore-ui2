@@ -168,3 +168,26 @@ describe('Test engine versions', () => {
     cy.get('[data-cy=engine-versions]').should('be.visible');
   });
 });
+
+describe('Test sourcefile links', () => {
+  it('Should change the Dockstore URL to include the source file path', () => {
+    cy.visit('/workflows/github.com/A/l?tab=files');
+    cy.url().should('contain', 'file=%2F1st-workflow.cwl');
+    goToTab('Configuration');
+    cy.url().should('not.contain', 'file=');
+  });
+
+  it('Should be able to reference a specific source file in a Dockstore URL', () => {
+    cy.visit('/workflows/github.com/A/l?tab=files&file=%2Fnonexistent.txt');
+    cy.contains('Could not find the specified file');
+    cy.url().should('contain', 'file=%2F1st-workflow.cwl');
+    cy.visit('/workflows/github.com/A/l?tab=files&file=%2F1st-workflow.cwl');
+    cy.contains('1st-workflow.cwl');
+    cy.contains('Workflow');
+    cy.url().should('contain', 'file=%2F1st-workflow.cwl');
+    cy.visit('/workflows/github.com/A/l?tab=files&file=%2Farguments.cwl');
+    cy.contains('arguments.cwl');
+    cy.contains('CommandLineTool');
+    cy.url().should('contain', 'file=%2Farguments.cwl');
+  });
+});
