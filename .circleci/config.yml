@@ -138,6 +138,9 @@ jobs:
           - run:
               name: set webservice to develop
               command: bash -i -c 'npm config set dockstore-ui2:webservice_version develop'
+          - run:
+              name: set use_circle to false (openapi.yaml from github)
+              command: bash -i -c 'npm config set dockstore-ui2:use_circle true'              
       - build_ui
       - run:
           name: Install codecov
@@ -282,6 +285,9 @@ jobs:
             - run:
                 name: set webservice to develop
                 command: bash -i -c 'npm config set dockstore-ui2:webservice_version develop'
+            - run:
+                name: set use_circle to false (openapi.yaml from github)
+                command: bash -i -c 'npm config set dockstore-ui2:use_circle true'                 
             - build_ui
 
 parameters:
