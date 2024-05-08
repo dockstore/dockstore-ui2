@@ -4,7 +4,7 @@
   "license": "Apache License 2.0",
   "config": {
     "webservice_version": "1.16.0-alpha.10",
-    "use_circle": false,
+    "use_circle": true,
     "circle_ci_source": "https://app.circleci.com/pipelines/gh/dockstore/dockstore/11187/workflows/06dcae07-dc91-4fc3-ae1f-2007a49f7535/jobs/43090/artifacts",
     "circle_build_id": "43090"
   },
