@@ -131,6 +131,16 @@ jobs:
           command: |
             bash -i -c 'npm run circle-ci-license-test-file'
             bash scripts/detect-package-json-changes.sh
+      # Override the webservice version in package.json to instead build against develop webservice
+      - when:
+         condition: << pipeline.parameters.sanity-check-against-develop >>
+         steps:
+          - run:
+              name: set webservice to develop
+              command: bash -i -c 'npm config set dockstore-ui2:webservice_version develop'
+          - run:
+              name: set use_circle to false (openapi.yaml from github)
+              command: bash -i -c 'npm config set dockstore-ui2:use_circle false'              
       - build_ui
       - run:
           name: Install codecov
@@ -261,12 +271,24 @@ jobs:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
     steps:
-      - get_workspace
-      # Override the webservice version in package.json to instead build against develop webservice
-      - run:
-          name: set webservice to develop
-          command: bash -i -c 'npm config set dockstore-ui2:webservice_version develop'
-      - build_ui
+      - run: # should not need this, but circle ci does not like it when a condition wipes out a whole job https://discuss.circleci.com/t/pipeline-parameters-in-steps-when-conditions-seems-to-have-no-value-using-dynamic-configuration/50524/2
+          name: Java/Maven/Python versions
+          command: |
+            java -version
+            npm --version
+      - when:
+          condition:
+            not: << pipeline.parameters.sanity-check-against-develop >>      
+          steps:  
+            - get_workspace
+            # Override the webservice version in package.json to instead build against develop webservice
+            - run:
+                name: set webservice to develop
+                command: bash -i -c 'npm config set dockstore-ui2:webservice_version develop'
+            - run:
+                name: set use_circle to false (openapi.yaml from github)
+                command: bash -i -c 'npm config set dockstore-ui2:use_circle false'                 
+            - build_ui
 
 parameters:
   run_nightly_auth:
@@ -284,6 +306,9 @@ parameters:
   python-tag:
     type: string
     default: "3.11"
+  sanity-check-against-develop:
+    type: boolean
+    default: false
 
 workflows:
   version: 2
