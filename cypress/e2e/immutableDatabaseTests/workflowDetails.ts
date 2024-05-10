@@ -27,15 +27,15 @@ describe('Variations of URL', () => {
   });
   it('Should redirect to canonical url (tab)', () => {
     cy.visit('/workflows/github.com/A/l?tab=files');
-    cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=files');
+    cy.url().should('contain', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=files');
   });
   it('Should redirect to canonical url (version + tab)', () => {
     cy.visit('/workflows/github.com/A/l:master?tab=files');
-    cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=files');
+    cy.url().should('contain', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=files');
   });
   it('Should redirect to canonical url (encoding + version + tab)', () => {
     cy.visit('/workflows/github.com%2FA%2Fl:master?tab=files');
-    cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=files');
+    cy.url().should('contain', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=files');
   });
 });
 
@@ -74,7 +74,7 @@ describe('Dockstore Workflow Details', () => {
   describe('Change tab to files', () => {
     beforeEach(() => {
       goToTab('Files');
-      cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=files');
+      cy.url().should('contain', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=files');
     });
 
     it('Should have Descriptor files tab selected', () => {
@@ -166,5 +166,28 @@ describe('Test engine versions', () => {
     });
     cy.visit('/workflows/github.com/A/l');
     cy.get('[data-cy=engine-versions]').should('be.visible');
+  });
+});
+
+describe('Test sourcefile links', () => {
+  it('Should change the Dockstore URL to include the source file path', () => {
+    cy.visit('/workflows/github.com/A/l?tab=files');
+    cy.url().should('contain', 'file=%2F1st-workflow.cwl');
+    goToTab('Configuration');
+    cy.url().should('not.contain', 'file=');
+  });
+
+  it('Should be able to reference a specific source file in a Dockstore URL', () => {
+    cy.visit('/workflows/github.com/A/l?tab=files&file=%2Fnonexistent.txt');
+    cy.contains('Could not find the specified file');
+    cy.url().should('contain', 'file=%2F1st-workflow.cwl');
+    cy.visit('/workflows/github.com/A/l?tab=files&file=%2F1st-workflow.cwl');
+    cy.contains('1st-workflow.cwl');
+    cy.contains('Workflow');
+    cy.url().should('contain', 'file=%2F1st-workflow.cwl');
+    cy.visit('/workflows/github.com/A/l?tab=files&file=%2Farguments.cwl');
+    cy.contains('arguments.cwl');
+    cy.contains('CommandLineTool');
+    cy.url().should('contain', 'file=%2Farguments.cwl');
   });
 });

@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MapFriendlyValuesPipe } from 'app/search/map-friendly-values.pipe';
 import { FileService } from 'app/shared/file.service';
@@ -18,7 +19,7 @@ describe('SourceFileTabsComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [SourceFileTabsComponent, MapFriendlyValuesPipe],
-        imports: [HttpClientTestingModule, MatDialogModule, HttpClientTestingModule],
+        imports: [HttpClientTestingModule, MatDialogModule, RouterTestingModule],
         providers: [
           { provide: SourceFileTabsService, useClass: SourceFileTabsStubService },
           { provide: FileService, useClass: FileStubService },

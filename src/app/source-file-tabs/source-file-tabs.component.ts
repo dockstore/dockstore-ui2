@@ -1,5 +1,6 @@
-import { KeyValue } from '@angular/common';
+import { KeyValue, Location } from '@angular/common';
 import { Component, Input, OnChanges } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { MatLegacySelectChange as MatSelectChange } from '@angular/material/legacy-select';
 import { MatLegacyTabChangeEvent as MatTabChangeEvent } from '@angular/material/legacy-tabs';
@@ -22,7 +23,9 @@ export class SourceFileTabsComponent implements OnChanges {
     private fileService: FileService,
     private sourceFileTabsService: SourceFileTabsService,
     private matDialog: MatDialog,
-    private workflowQuery: WorkflowQuery
+    private workflowQuery: WorkflowQuery,
+    private activatedRoute: ActivatedRoute,
+    private location: Location
   ) {
     this.isPublished$ = this.workflowQuery.workflowIsPublished$;
     this.primaryDescriptors = [];
@@ -34,12 +37,14 @@ export class SourceFileTabsComponent implements OnChanges {
   @Input() version: WorkflowVersion;
   loading = true;
   displayError = false;
+  notFoundError = false;
   currentFile: SourceFile | null;
   validationMessage: Map<string, string>;
   fileName: string;
   relativePath: string;
   downloadFilePath: string;
   fileTabs: Map<string, SourceFile[]>;
+  selectedTabIndex: number = 0;
   primaryDescriptors: SourceFile[] | null;
   primaryDescriptorPath: string;
   isCurrentFilePrimary: boolean | null;
@@ -53,6 +58,12 @@ export class SourceFileTabsComponent implements OnChanges {
 
   ngOnChanges() {
     this.setupVersionFileTabs();
+  }
+
+  ngOnInit() {
+    this.activatedRoute.queryParams.subscribe((params) => {
+      this.findFile();
+    });
   }
 
   setupVersionFileTabs() {
@@ -72,15 +83,13 @@ export class SourceFileTabsComponent implements OnChanges {
             this.version.workflow_path,
             this.descriptorType
           );
-          if (this.fileTabs.size > 0) {
-            this.changeFileType(this.fileTabs.values().next().value);
-          }
           sourceFiles.forEach((sourceFile) => {
             if (this.isPrimaryDescriptor(sourceFile.path)) {
               this.primaryDescriptors.push(sourceFile);
               this.primaryDescriptorPath = sourceFile.path;
             }
           });
+          this.findFile();
         },
         () => {
           this.displayError = true;
@@ -88,12 +97,43 @@ export class SourceFileTabsComponent implements OnChanges {
       );
   }
 
+  findFile() {
+    const queryFilePath = this.activatedRoute.snapshot.queryParams['file'];
+    if (this.fileTabs?.size > 0) {
+      // Attempt to find the file that is indicated by the 'file' query parameter.
+      // If we are successful, select the file, change the tab, and return.
+      if (queryFilePath) {
+        for (let tabIndex = 0; tabIndex < this.fileTabs.size; tabIndex++) {
+          const sourceFiles = Array.from(this.fileTabs.values())[tabIndex];
+          for (let sourceFile of sourceFiles) {
+            if (sourceFile.absolutePath === queryFilePath) {
+              this.selectFile(sourceFile);
+              this.changeTab(tabIndex);
+              return;
+            }
+          }
+        }
+      }
+      // Otherwise, select the first file in the first tab.
+      const files = this.fileTabs.values().next().value;
+      this.selectFile(files[0]);
+      this.changeTab(0);
+    }
+    // If there was a 'file' query parameter and we've gotten to this point, we couldn't find a matching file.
+    if (queryFilePath) {
+      this.notFoundError = true;
+    }
+  }
+
+  changeTab(tabIndex: number) {
+    this.selectedTabIndex = tabIndex;
+  }
+
   /**
    * Sets the validation message and new default selected file
    * @param fileType
    */
   changeFileType(files: SourceFile[]) {
-    this.selectFile(files[0]);
     this.validationMessage = this.sourceFileTabsService.getValidationMessage(files, this.version);
   }
 
@@ -107,17 +147,42 @@ export class SourceFileTabsComponent implements OnChanges {
         this.version.name,
         this.relativePath
       );
+      this.isCurrentFilePrimary = this.isPrimaryDescriptor(file.path);
     } else {
       this.fileName = null;
       this.relativePath = null;
       this.downloadFilePath = null;
+      this.isCurrentFilePrimary = false;
     }
     this.currentFile = file;
-    this.isCurrentFilePrimary = this.isPrimaryDescriptor(this.currentFile.path);
+    this.setFilePathInLocation(file);
+    this.notFoundError = false;
+  }
+
+  setFilePathInLocation(file: SourceFile) {
+    const url = this.location.path();
+    const root = url.split('?')[0];
+    const params = new URLSearchParams(url.split('?')[1] ?? '');
+    // Don't modify the URL if it's not tracking the current tab.
+    if (!params.has('tab')) {
+      return;
+    }
+    // Add the sourcefile's absolute path as the 'file' query parameter.
+    if (file) {
+      params.set('file', file.absolutePath);
+    } else {
+      params.delete('file');
+    }
+    this.location.replaceState(root, params.toString());
   }
 
   matTabChange(event: MatTabChangeEvent) {
-    this.changeFileType(this.fileTabs.get(event.tab.textLabel));
+    const files = this.fileTabs.get(event.tab.textLabel);
+    // If the new tab has files, select the first one.
+    if (files.indexOf(this.currentFile) < 0) {
+      this.selectFile(files[0]);
+    }
+    this.changeFileType(files);
   }
 
   matSelectChange(event: MatSelectChange) {
