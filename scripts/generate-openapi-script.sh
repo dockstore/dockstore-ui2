@@ -14,9 +14,10 @@ BASE_PATH="https://raw.githubusercontent.com/dockstore/dockstore/$npm_package_co
 wget --no-verbose https://repo.maven.apache.org/maven2/org/openapitools/openapi-generator-cli/${GENERATOR_VERSION}/openapi-generator-cli-${GENERATOR_VERSION}.jar -O openapi-generator-cli.jar
 rm -Rf src/app/shared/openapi
 
-if [ "$npm_package_config_use_circle" = true ]
+if [ "$npm_package_config_use_artifactory" = true ]
 then
-        OPENAPI_PATH=$(./scripts/get-circleci-artifact-url.sh "$npm_package_config_circle_build_id" openapi.yaml)
+	mvn dependency:get -DremoteRepositories=http://artifacts.oicr.on.ca/collab-snapshot -Dartifact=io.dockstore:dockstore-webservice:${npm_package_config_webservice_version_prefix}-SNAPSHOT:yaml:dist.openapi -Ddest=openapi.yaml
+        OPENAPI_PATH=openapi.yaml
 else
         OPENAPI_PATH="${BASE_PATH}""/dockstore-webservice/src/main/resources/openapi3/openapi.yaml"
 fi
