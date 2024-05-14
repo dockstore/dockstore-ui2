@@ -16,7 +16,7 @@ rm -Rf src/app/shared/openapi
 
 if [ "$npm_package_config_use_artifactory" = true ]
 then
-	mvn dependency:get -DremoteRepositories=http://artifacts.oicr.on.ca/collab-snapshot -Dartifact=io.dockstore:dockstore-webservice:${npm_package_config_webservice_version_prefix}-SNAPSHOT:yaml:dist.openapi -Ddest=openapi.yaml
+	mvn dependency:get -DremoteRepositories=https://artifacts.oicr.on.ca/collab-snapshot -Dartifact=io.dockstore:dockstore-webservice:${npm_package_config_webservice_version_prefix}-SNAPSHOT:yaml:dist.openapi -Ddest=openapi.yaml
         OPENAPI_PATH=openapi.yaml
 else
         OPENAPI_PATH="${BASE_PATH}""/dockstore-webservice/src/main/resources/openapi3/openapi.yaml"
