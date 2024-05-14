@@ -1,0 +1,30 @@
+<settings>
+  <servers>
+    <server>
+      <id>github-packages</id>
+      <username>DockstoreTestUser</username>
+      <password>${env.GITHUB_TOKEN}</password>
+    </server>
+  </servers>
+
+
+  <activeProfiles>
+    <activeProfile>github-packages</activeProfile>
+  </activeProfiles>
+
+  <profiles>
+    <profile>
+      <id>github-packages</id>
+      <repositories>
+        <repository>
+          <id>github-packages</id>
+          <url>https://maven.pkg.github.com/dockstore/dockstore</url>
+          <snapshots>
+            <enabled>true</enabled>
+          </snapshots>
+        </repository>
+      </repositories>
+    </profile>
+  </profiles>
+
+</settings>

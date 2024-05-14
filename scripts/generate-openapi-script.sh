@@ -16,8 +16,8 @@ rm -Rf src/app/shared/openapi
 
 if [ "$npm_package_config_use_github_packages" = true ]
 then
-        mvn dependency:get -DremoteRepositories=github-packages:https://maven.pkg.github.com/dockstore/dockstore -Dartifact=io.dockstore:dockstore-webservice:${npm_package_config_webservice_version_prefix}-SNAPSHOT:openapi.yaml:dist -Dtransitive=false --batch-mode -ntp
-	      mvn dependency:copy  -Dartifact=io.dockstore:dockstore-webservice:${npm_package_config_webservice_version_prefix}-SNAPSHOT:openapi.yaml:dist -DoutputDirectory=. -Dmdep.useBaseVersion=true -batch-mode -ntp
+        mvn dependency:get -DremoteRepositories=github-packages:https://maven.pkg.github.com/dockstore/dockstore -Dartifact=io.dockstore:dockstore-webservice:${npm_package_config_webservice_version_prefix}-SNAPSHOT:openapi.yaml:dist -Dtransitive=false --batch-mode -ntp -s .github/snapshot-mvn-settings.xml
+	      mvn dependency:copy  -Dartifact=io.dockstore:dockstore-webservice:${npm_package_config_webservice_version_prefix}-SNAPSHOT:openapi.yaml:dist -DoutputDirectory=. -Dmdep.useBaseVersion=true -batch-mode -ntp -s .github/snapshot-mvn-settings.xml
         OPENAPI_PATH=dockstore-webservice-${npm_package_config_webservice_version_prefix}-SNAPSHOT-dist.openapi.yaml
 else
         OPENAPI_PATH="${BASE_PATH}""/dockstore-webservice/src/main/resources/openapi3/openapi.yaml"
