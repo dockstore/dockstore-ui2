@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { UserPageComponent } from './user-page.component';
 import { RecentEventsModule } from '../home-page/recent-events/recent-events.module';
-import { FlexLayoutModule } from '@angular/flex-layout';
+import { FlexLayoutModule } from '@ngbracket/ngx-layout';
 import { CommonModule } from '@angular/common';
 import { CustomMaterialModule } from '../shared/modules/material.module';
 import { HeaderModule } from '../shared/modules/header.module';
