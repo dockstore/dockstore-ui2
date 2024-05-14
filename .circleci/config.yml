@@ -338,6 +338,7 @@ workflows:
             - lint_license_unit_test_coverage
           context:
             - dockerhub
+            - github packages - read
       - integration_test:
           name: integration_test_2
           integration_test_name: group2
@@ -348,6 +349,7 @@ workflows:
             - lint_license_unit_test_coverage
           context:
             - dockerhub
+            - github packages - read
       - integration_test:
           name: integration_test_3
           integration_test_name: group3
@@ -358,6 +360,7 @@ workflows:
             - lint_license_unit_test_coverage
           context:
             - dockerhub
+            - github packages - read
       - integration_test:
           name: integration_test_4
           integration_test_name: immutableDatabaseTests
@@ -368,6 +371,7 @@ workflows:
             - lint_license_unit_test_coverage
           context:
             - dockerhub
+            - github packages - read
       - local_smoke_tests:
           filters:
             tags:
@@ -376,6 +380,7 @@ workflows:
             - lint_license_unit_test_coverage
           context:
             - dockerhub
+            - github packages - read
       # Upload builds for tags and branches to s3.
       - upload_to_s3:
           requires:
@@ -388,6 +393,7 @@ workflows:
           context:
             - dockerhub
             - aws-ui2
+            - github packages - read
       - check_build_develop:
           requires:
             - upload_to_s3
