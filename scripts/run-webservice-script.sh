@@ -8,12 +8,13 @@ then
    # note that -DremoteRepositories=github-packages:https://maven.pkg.github.com/dockstore/dockstore also works with the right credentials, loaded as -s .github/snapshot-mvn-settings.xml
   mvn dependency:get -DremoteRepositories=https://artifacts.oicr.on.ca/artifactory/collab-snapshot -Dartifact=io.dockstore:dockstore-webservice:${npm_package_config_webservice_version_prefix}-SNAPSHOT -Dtransitive=false --batch-mode -ntp
   mvn dependency:copy  -Dartifact=io.dockstore:dockstore-webservice:${npm_package_config_webservice_version_prefix}-SNAPSHOT -DoutputDirectory=. -Dmdep.useBaseVersion=true -batch-mode -ntp
-	JAR_PATH=$dockstore-webservice-"npm_package_config_webservice_version_prefix"-SNAPSHOT.jar
+	JAR_PATH=dockstore-webservice-${npm_package_config_webservice_version_prefix}-SNAPSHOT.jar
+	mv $JAR_PATH dockstore-webservice.jar
 else
 	JAR_PATH="https://artifacts.oicr.on.ca/artifactory/collab-release/io/dockstore/dockstore-webservice/${npm_package_config_webservice_version}/dockstore-webservice-${npm_package_config_webservice_version}.jar"
+	wget -O dockstore-webservice.jar --no-verbose --tries=10 ${JAR_PATH}
 fi
 
-wget -O dockstore-webservice.jar --no-verbose --tries=10 ${JAR_PATH}
 chmod u+x dockstore-webservice.jar
 psql -h localhost -c "create user dockstore with password 'dockstore' createdb;" -U postgres
 psql -h localhost -c "ALTER USER dockstore WITH superuser;" -U postgres
