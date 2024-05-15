@@ -131,13 +131,13 @@ jobs:
           command: |
             bash -i -c 'npm run circle-ci-license-test-file'
             bash scripts/detect-package-json-changes.sh
-      # Override the webservice version in package.json to instead build against develop webservice
+      # Override the use_snapshot in package.json to instead build against develop webservice
       - when:
          condition: << pipeline.parameters.sanity-check-against-develop >>
          steps:
           - run:
-              name: set use_snapshot to false (openapi.yaml from github)
-              command: bash -i -c 'npm config set dockstore-ui2:use_snapshot false'
+              name: set use_snapshot to true (grab snapshot artifacts)
+              command: bash -i -c 'npm config set dockstore-ui2:use_snapshot true'
       - build_ui
       - run:
           name: Install codecov
@@ -279,8 +279,8 @@ jobs:
           steps:
             - get_workspace
             - run:
-                name: set use_snapshot to false (openapi.yaml from github)
-                command: bash -i -c 'npm config set dockstore-ui2:use_snapshot false'
+                name: set use_snapshot to true
+                command: bash -i -c 'npm config set dockstore-ui2:use_snapshot true'
             - build_ui
 
 parameters:
