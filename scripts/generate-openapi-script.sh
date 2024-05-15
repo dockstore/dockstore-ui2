@@ -14,10 +14,11 @@ BASE_PATH="https://raw.githubusercontent.com/dockstore/dockstore/$npm_package_co
 wget --no-verbose https://repo.maven.apache.org/maven2/org/openapitools/openapi-generator-cli/${GENERATOR_VERSION}/openapi-generator-cli-${GENERATOR_VERSION}.jar -O openapi-generator-cli.jar
 rm -Rf src/app/shared/openapi
 
-if [ "$npm_package_config_use_github_packages" = true ]
+if [ "$npm_package_config_use_artifactory" = true ]
 then
-        mvn dependency:get -DremoteRepositories=github-packages:https://maven.pkg.github.com/dockstore/dockstore -Dartifact=io.dockstore:dockstore-webservice:${npm_package_config_webservice_version_prefix}-SNAPSHOT:openapi.yaml:dist -Dtransitive=false --batch-mode -ntp -s .github/snapshot-mvn-settings.xml
-	      mvn dependency:copy  -Dartifact=io.dockstore:dockstore-webservice:${npm_package_config_webservice_version_prefix}-SNAPSHOT:openapi.yaml:dist -DoutputDirectory=. -Dmdep.useBaseVersion=true -batch-mode -ntp -s .github/snapshot-mvn-settings.xml
+        # note that -DremoteRepositories=github-packages:https://maven.pkg.github.com/dockstore/dockstore also works with the right credentials, loaded as -s .github/snapshot-mvn-settings.xml
+        mvn dependency:get -DremoteRepositories=github-packages:https://artifacts.oicr.on.ca/collab-release -Dartifact=io.dockstore:dockstore-webservice:${npm_package_config_webservice_version_prefix}-SNAPSHOT:openapi.yaml:dist -Dtransitive=false --batch-mode -ntp
+	      mvn dependency:copy  -Dartifact=io.dockstore:dockstore-webservice:${npm_package_config_webservice_version_prefix}-SNAPSHOT:openapi.yaml:dist -DoutputDirectory=. -Dmdep.useBaseVersion=true -batch-mode -ntp
         OPENAPI_PATH=dockstore-webservice-${npm_package_config_webservice_version_prefix}-SNAPSHOT-dist.openapi.yaml
 else
         OPENAPI_PATH="${BASE_PATH}""/dockstore-webservice/src/main/resources/openapi3/openapi.yaml"
