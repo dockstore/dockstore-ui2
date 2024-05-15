@@ -6,7 +6,7 @@ set -o xtrace
 if [ "$npm_package_config_use_artifactory" = true ]
 then
    # note that -DremoteRepositories=github-packages:https://maven.pkg.github.com/dockstore/dockstore also works with the right credentials, loaded as -s .github/snapshot-mvn-settings.xml
-  mvn dependency:get -DremoteRepositories=https://artifacts.oicr.on.ca/collab-release -Dartifact=io.dockstore:dockstore-webservice:${npm_package_config_webservice_version_prefix}-SNAPSHOT -Dtransitive=false --batch-mode -ntp
+  mvn dependency:get -DremoteRepositories=https://artifacts.oicr.on.ca/collab-snapshot -Dartifact=io.dockstore:dockstore-webservice:${npm_package_config_webservice_version_prefix}-SNAPSHOT -Dtransitive=false --batch-mode -ntp
   mvn dependency:copy  -Dartifact=io.dockstore:dockstore-webservice:${npm_package_config_webservice_version_prefix}-SNAPSHOT -DoutputDirectory=. -Dmdep.useBaseVersion=true -batch-mode -ntp
 	JAR_PATH=$dockstore-webservice-"npm_package_config_webservice_version_prefix"-SNAPSHOT.jar
 else
