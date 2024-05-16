@@ -139,7 +139,33 @@ Run `ng g component component-name` to generate a new component. You can also us
 
 ## Build
 
+When building against artifactory, the build should use the latest SNAPSHOT. In this scenario, the package.json will look like
+```
+ "config": {
+    "webservice_version_prefix": "1.16.0",
+    "webservice_version": "1.16.0-alpha.10",
+    "use_snapshot": true
+```
+
 Optionally override the webservice version using `npm config set dockstore-ui2:webservice_version ${WEBSERVICE_VERSION}`
+
+For example, to build against a specific branch, edit the package.json with
+```
+  "config": {
+    "webservice_version_prefix": "1.16.0",
+    "webservice_version": "feature/seab-6420/modify-endpoint-description-for-new-health-checks",
+    "use_snapshot": false
+  },
+```
+For example, to build against a specific commit, edit the package.json with
+```
+  "config": {
+    "webservice_version_prefix": "1.16.0",
+    "webservice_version": "1550b549c45b2f4ba7f205e2f64502d523417dcd",
+    "use_snapshot": false
+  },
+```
+
 Run `npm run build` to build the project. The build artifacts will be stored in the `dist/` directory. 
 
 ### Angular Production Build
