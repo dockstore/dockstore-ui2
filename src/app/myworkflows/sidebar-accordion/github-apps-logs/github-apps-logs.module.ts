@@ -18,7 +18,7 @@ import { ClipboardModule } from '@angular/cdk/clipboard';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { FlexLayoutModule } from '@angular/flex-layout';
+import { FlexLayoutModule } from '@ngbracket/ngx-layout';
 import { RefreshAlertModule } from 'app/shared/alert/alert.module';
 import { CustomMaterialModule } from 'app/shared/modules/material.module';
 import { PipeModule } from '../../../shared/pipe/pipe.module';

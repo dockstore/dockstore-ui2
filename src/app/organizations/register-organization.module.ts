@@ -8,7 +8,7 @@ import { CustomMaterialModule } from '../shared/modules/material.module';
 import { RegisterOrganizationComponent } from './registerOrganization/register-organization.component';
 import { RouterModule } from '@angular/router';
 import { RequireAccountsModalComponent } from './registerOrganization/requireAccountsModal/require-accounts-modal.component';
-import { FlexModule } from '@angular/flex-layout';
+import { FlexModule } from '@ngbracket/ngx-layout';
 
 @NgModule({
   imports: [CommonModule, FormsModule, CustomMaterialModule, ReactiveFormsModule, RefreshAlertModule, RouterModule, FlexModule],

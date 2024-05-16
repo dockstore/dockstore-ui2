@@ -15,7 +15,7 @@
  */
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FlexLayoutModule } from '@angular/flex-layout';
+import { FlexLayoutModule } from '@ngbracket/ngx-layout';
 import { CurrentCollectionsModule } from '../../entry/current-collections.module';
 import { RefreshAlertModule } from '../../shared/alert/alert.module';
 import { CustomMaterialModule } from '../../shared/modules/material.module';

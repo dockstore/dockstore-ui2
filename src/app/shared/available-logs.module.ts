@@ -15,7 +15,7 @@
  */
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FlexLayoutModule } from '@angular/flex-layout';
+import { FlexLayoutModule } from '@ngbracket/ngx-layout';
 import { RefreshAlertModule } from './alert/alert.module';
 import { AvailableLogsComponent } from './available-logs/available-logs.component';
 import { RemoveExtensionPipe } from './available-logs/remove-extension.pipe';

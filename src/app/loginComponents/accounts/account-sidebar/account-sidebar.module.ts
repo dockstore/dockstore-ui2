@@ -17,7 +17,7 @@
 import { NgModule } from '@angular/core';
 import { AccountSidebarComponent } from './account-sidebar.component';
 import { CustomMaterialModule } from 'app/shared/modules/material.module';
-import { FlexLayoutModule } from '@angular/flex-layout';
+import { FlexLayoutModule } from '@ngbracket/ngx-layout';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ChangeUsernameModule } from '../internal/change-username/change-username.module';

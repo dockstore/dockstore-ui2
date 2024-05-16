@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FlexModule } from '@angular/flex-layout';
+import { FlexModule } from '@ngbracket/ngx-layout';
 import { MatIconModule } from '@angular/material/icon';
 import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
 import { RouterLink } from '@angular/router';

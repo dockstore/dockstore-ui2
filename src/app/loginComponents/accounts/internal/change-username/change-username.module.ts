@@ -16,7 +16,7 @@
 
 import { NgModule } from '@angular/core';
 import { CustomMaterialModule } from 'app/shared/modules/material.module';
-import { FlexLayoutModule } from '@angular/flex-layout';
+import { FlexLayoutModule } from '@ngbracket/ngx-layout';
 import { CommonModule } from '@angular/common';
 import { ChangeUsernameComponent } from './change-username.component';
 import { ReactiveFormsModule } from '@angular/forms';
