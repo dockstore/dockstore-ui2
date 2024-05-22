@@ -22,7 +22,7 @@ describe('JSON-LD', () => {
     cy.visit('');
     // Two json-lds
     cy.get('[type="application/ld+json"]').should('have.length', 2);
-    cy.get('[type="application/ld+json"]').should('contain.text', '"description": "Dockstore, developed');
+    cy.get('[type="application/ld+json"]').should('contain.text', '"description": "Dockstore is an open platform');
     cy.get('[type="application/ld+json"]').should('contain.text', '"audience": "Bioinformaticians"');
   });
 });
