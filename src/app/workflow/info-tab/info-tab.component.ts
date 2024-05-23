@@ -196,7 +196,6 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   formatConceptDOI() {
     if (this.workflow.conceptDoi.startsWith('doi')) {
       this.formattedConceptDOI = this.workflow.conceptDoi.split('doi/')[1];
-      console.log(this.formattedConceptDOI);
     }
   }
 
