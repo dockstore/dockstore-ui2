@@ -54,6 +54,8 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   publicAccessibleTestParameterFile: boolean | null;
   isValidVersion = false;
   zenodoUrl: string;
+  formattedConceptDOI: string;
+
   @Input() selectedVersion: WorkflowVersion;
 
   public validationPatterns = validationDescriptorPatterns;
@@ -166,6 +168,7 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
       .subscribe((entryType) => (this.displayTextForButton = this.infoTabService.getTRSId(this.workflow, entryType)));
     this.infoTabService.forumUrlEditing$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((editing) => (this.forumUrlEditing = editing));
     this.infoTabService.topicEditing$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((topicEditing) => (this.topicEditing = topicEditing));
+    this.formatConceptDOI();
   }
   /**
    * Handle restubbing a workflow
@@ -188,6 +191,13 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
         const url = window.URL.createObjectURL(blob);
         window.open(url);
       });
+  }
+
+  formatConceptDOI() {
+    if (this.workflow.conceptDoi.startsWith('doi')) {
+      this.formattedConceptDOI = this.workflow.conceptDoi.split('doi/')[1];
+      console.log(this.formattedConceptDOI);
+    }
   }
 
   toggleEditWorkflowPath() {

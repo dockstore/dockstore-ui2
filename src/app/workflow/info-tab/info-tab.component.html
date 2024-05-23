@@ -418,14 +418,14 @@
           <div>
             <strong matTooltip="Digital Object Identifier for all workflow versions">DOI</strong>:
             <a
-              [href]="'https://doi.org/' + workflow.conceptDoi"
+              [href]="'https://doi.org/' + formattedConceptDOI"
               *ngIf="workflow.conceptDoi"
               matTooltip="Click to view the DOI entry information for all versions."
               target="_blank"
               rel="noopener noreferrer"
-              ><img src="{{ zenodoUrl }}/badge/DOI/{{ workflow.conceptDoi }}.svg" alt="{{ workflow.conceptDoi }}"
+              ><img src="{{ zenodoUrl }}/badge/DOI/{{ formattedConceptDOI }}.svg" alt="{{ formattedConceptDOI }}"
             /></a>
-            {{ workflow?.conceptDoi ? '' : 'n/a' }}
+            {{ formattedConceptDOI ? '' : 'n/a' }}
           </div>
         </div>
       </ul>
