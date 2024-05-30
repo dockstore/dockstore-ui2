@@ -69,7 +69,6 @@ jobs:
   # Specify the webpage url (https://dev.dockstore.net or https://staging.dockstore.org or https://dockstore.org)
   # and stack (dev or staging or prod) and the no auth smoke tests will be run against the corresponding webpage.
   auth_smoke_tests:
-    resource_class: large
     parameters:
       stack:
         type: string
