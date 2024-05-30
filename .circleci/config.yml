@@ -78,6 +78,7 @@ jobs:
           auth:
             username: dockstoretestuser
             password: $DOCKERHUB_PASSWORD
+    resource_class: medium+
     steps:
       - setup_nightly_tests
       - run:
