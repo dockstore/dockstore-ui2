@@ -47,13 +47,12 @@ import { GitTagPipe } from './footer/git-tag.pipe';
 import { FundingComponent } from './funding/funding.component';
 import { GithubCallbackComponent } from './github-callback/github-callback.component';
 import { YoutubeComponent } from './home-page/home-logged-out/home.component';
-import { HomePageModule } from './home-page/home-page.module';
 import { InformationDialogComponent } from './information-dialog/information-dialog.component';
 import { CustomHeaderInterceptor } from './interceptors/custom-header.interceptor';
 import { WorkflowVersionsInterceptor } from './interceptors/workflow-versions.interceptor';
 import { LoginComponent } from './login/login.component';
 import { LoginService } from './login/login.service';
-import { AccountSidebarModule } from './loginComponents/accounts/account-sidebar/account-sidebar.module';
+
 import { AccountsComponent } from './loginComponents/accounts/accounts.component';
 import { ControlsComponent } from './loginComponents/accounts/controls/controls.component';
 import { DeleteAccountDialogComponent } from './loginComponents/accounts/controls/delete-account-dialog/delete-account-dialog.component';
@@ -63,12 +62,12 @@ import { RevokeTokenDialogComponent } from './loginComponents/accounts/external/
 import { AccountsExternalComponent } from './loginComponents/accounts/external/accounts.component';
 import { AccountsService } from './loginComponents/accounts/external/accounts.service';
 import { GetTokenUsernamePipe } from './loginComponents/accounts/external/getTokenUsername.pipe';
-import { ChangeUsernameModule } from './loginComponents/accounts/internal/change-username/change-username.module';
+
 import { AuthComponent } from './loginComponents/auth/auth.component';
 import { DownloadCLIClientComponent } from './loginComponents/onboarding/downloadcliclient/downloadcliclient.component';
 import { OnboardingComponent } from './loginComponents/onboarding/onboarding.component';
 import { QuickStartComponent } from './loginComponents/onboarding/quickstart.component';
-import { RequestsModule } from './loginComponents/requests.module';
+
 import { LogoutComponent } from './logout/logout.component';
 import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { ServiceInfoService } from './service-info/service-info.service';
@@ -79,7 +78,7 @@ import { OrganizationStarringModule } from './organizations/organization/organiz
 import { PageNotFoundComponent } from './pagenotfound/pagenotfound.component';
 import { RegisterService } from './register/register.service';
 import { SessionExpiredComponent } from './session-expired/session-expired.component';
-import { RefreshAlertModule } from './shared/alert/alert.module';
+
 import { AuthConfig } from './shared/auth.model';
 import { ContainerService } from './shared/container.service';
 import { DateService } from './shared/date.service';
@@ -90,15 +89,11 @@ import { ExtendedWorkflowsService } from './shared/extended-workflows.service';
 import { ImageProviderService } from './shared/image-provider.service';
 import { ListService } from './shared/list.service';
 import { LogoutService } from './shared/logout.service';
-import { HeaderModule } from './shared/modules/header.module';
-import { ImgFallbackModule } from './shared/modules/img-fallback.module';
+
 import { ListContainersModule } from './shared/modules/list-containers.module';
 import { ListWorkflowsModule } from './shared/modules/list-workflows.module';
 import { MarkdownWrapperModule } from './shared/modules/markdown-wrapper.module';
-import { CustomMaterialModule } from './shared/modules/material.module';
-import { MySidebarModule } from './shared/modules/my-sidebar.module';
-import { OrderByModule } from './shared/modules/orderby.module';
-import { SnackbarModule } from './shared/modules/snackbar.module';
+
 import { ApiModule as ApiModule2 } from './shared/openapi/api.module';
 import { GA4GHV20Service } from './shared/openapi/api/gA4GHV20.service';
 import { OrgLogoService } from './shared/org-logo.service';
@@ -121,7 +116,7 @@ import { ExporterStepComponent } from './workflow/snapshot-exporter-modal/export
 import { SnaphotExporterModalComponent } from './workflow/snapshot-exporter-modal/snaphot-exporter-modal.component';
 import { ViewService } from './workflow/view/view.service';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
-import { PreviewWarningModule } from './shared/modules/preview-warning.module';
+
 import { MyOrganizationsDialogComponent } from './home-page/widget/organization-box/my-organizations-dialog.component/my-organizations-dialog.component';
 import { LaunchToCodespaceDialogComponent } from './workflow/launch-third-party/dialog/launch-to-codespace-dialog.component';
 
@@ -143,128 +138,6 @@ export function initializerFactory(
 ): Function {
   return () => Promise.all([configurationService.load(), entryTypeMetadataService.load()]);
 }
-
-@NgModule({
-  declarations: [AppComponent],
-  imports: [
-    environment.production ? [] : AkitaNgDevtools.forRoot(),
-    FontAwesomeModule,
-    BrowserModule,
-    BrowserAnimationsModule,
-    FormsModule,
-    Ng2UiAuthModule.forRoot(AuthConfig),
-    HeaderModule,
-    ListContainersModule,
-    ListWorkflowsModule,
-    ClipboardModule,
-    OrderByModule,
-    FlexLayoutModule,
-    StarringModule,
-    OrganizationStarringModule,
-    OrganizationStargazersModule,
-    NgxMatSelectSearchModule,
-    routing,
-    StargazersModule,
-    MarkdownModule.forRoot(),
-    MarkdownWrapperModule,
-    ReactiveFormsModule,
-    ApiModule.forRoot(getApiConfig),
-    ApiModule2.forRoot(getApiConfig),
-    CustomMaterialModule,
-    RefreshAlertModule,
-    RequestsModule,
-    HomePageModule,
-    HttpClientModule,
-    SnackbarModule,
-    ImgFallbackModule,
-    PipeModule,
-    MySidebarModule,
-    AccountSidebarModule,
-    ChangeUsernameModule,
-    PreviewWarningModule,
-    ControlsComponent,
-    DeleteAccountDialogComponent,
-    DeleteEntryDialogComponent,
-    ArchiveEntryDialogComponent,
-    NavbarComponent,
-    FooterComponent,
-    SitewideNotificationsComponent,
-    LoginComponent,
-    OnboardingComponent,
-    QuickStartComponent,
-    AccountsComponent,
-    AccountsExternalComponent,
-    AuthComponent,
-    GetTokenUsernamePipe,
-    StarredEntriesComponent,
-    DownloadCLIClientComponent,
-    MaintenanceComponent,
-    FundingComponent,
-    BannerComponent,
-    YoutubeComponent,
-    SitemapComponent,
-    GithubCallbackComponent,
-    ConfirmationDialogComponent,
-    InformationDialogComponent,
-    SessionExpiredComponent,
-    TosBannerComponent,
-    LogoutComponent,
-    GitTagPipe,
-    AboutComponent,
-    PageNotFoundComponent,
-    SnaphotExporterModalComponent,
-    ExporterStepComponent,
-    FileTreeComponent,
-    ChangeUsernameBannerComponent,
-    RevokeTokenDialogComponent,
-    MyOrganizationsDialogComponent,
-    LaunchToCodespaceDialogComponent,
-  ],
-  providers: [
-    AccountsService,
-    AuthService,
-    LoginService,
-    RegisterService,
-    LogoutService,
-    DateService,
-    TrackLoginService,
-    ListService,
-    ProviderService,
-    ContainerService,
-    ImageProviderService,
-    HttpClient,
-    CLIENT_ROUTER_PROVIDERS,
-    RegisterCheckerWorkflowService,
-    RefreshService,
-    PagenumberService,
-    GA4GHV20Service,
-    DescriptorLanguageService,
-    UrlResolverService,
-    ServiceInfoService,
-    ExtendedWorkflowsService,
-    ExtendedToolsService,
-    VerifiedByService,
-    Title,
-    ViewService,
-    TosBannerService,
-    ConfigurationService,
-    EntryTypeMetadataService,
-    OrgLogoService,
-    {
-      provide: APP_INITIALIZER,
-      useFactory: initializerFactory,
-      deps: [ConfigurationService, EntryTypeMetadataService],
-      multi: true,
-    },
-    { provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: myCustomTooltipDefaults },
-    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: myCustomSnackbarDefaults },
-    { provide: HTTP_INTERCEPTORS, useClass: WorkflowVersionsInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: CustomHeaderInterceptor, multi: true },
-    { provide: Window, useValue: window },
-  ],
-  bootstrap: [AppComponent],
-})
-export class AppModule {}
 
 export const apiConfig = new Configuration({
   apiKeys: {},

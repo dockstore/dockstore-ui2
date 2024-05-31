@@ -53,7 +53,7 @@ describe('AppComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [AppComponent, RouterLinkStubDirective, RouterOutletStubComponent],
+        declarations: [RouterLinkStubDirective, RouterOutletStubComponent],
         imports: [
           RouterTestingModule,
           MatSnackBarModule,
@@ -62,6 +62,7 @@ describe('AppComponent', () => {
           BannerStubComponent,
           TosBannerStubComponent,
           NotificationStubComponent,
+          AppComponent,
         ],
         providers: [
           { provide: TrackLoginService, useClass: TrackLoginStubService },

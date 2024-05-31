@@ -20,11 +20,9 @@ import { ListWorkflowsComponent } from '../../workflows/list/list.component';
 import { PublishedWorkflowsDataSource } from '../../workflows/list/published-workflows.datasource';
 import { EntryModule } from '../entry/entry.module';
 import { PipeModule } from '../pipe/pipe.module';
-import { HeaderModule } from './header.module';
-import { CustomMaterialModule } from './material.module';
 
 @NgModule({
-  imports: [CommonModule, RouterModule, HeaderModule, CustomMaterialModule, EntryModule, PipeModule, ListWorkflowsComponent],
+  imports: [CommonModule, RouterModule, EntryModule, PipeModule, ListWorkflowsComponent],
   providers: [PublishedWorkflowsDataSource],
   exports: [ListWorkflowsComponent],
 })

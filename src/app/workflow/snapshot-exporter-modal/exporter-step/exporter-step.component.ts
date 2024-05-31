@@ -1,11 +1,11 @@
 import { Component, Input } from '@angular/core';
 import { IconDefinition } from '@fortawesome/free-brands-svg-icons';
-import { StepState } from '../snaphot-exporter-modal.component';
 import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MatIconModule } from '@angular/material/icon';
 import { NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { StepState } from '../step.state';
 
 @Component({
   selector: 'app-exporter-step',

@@ -23,7 +23,7 @@ import { MarkdownModule } from 'ngx-markdown';
 import { ParamfilesService } from '../../container/paramfiles/paramfiles.service';
 import { CurrentCollectionsModule } from '../../entry/current-collections.module';
 import { AddEntryModule } from '../../organizations/collection/add-entry.module';
-import { OrderByModule } from '../../shared/modules/orderby.module';
+
 import { SourceFileTabsComponent } from '../../source-file-tabs/source-file-tabs.component';
 import { NotebookComponent } from '../../notebook/notebook.component';
 import { NotebookMimeBundleOutputComponent } from '../../notebook/notebook-mime-bundle-output.component';
@@ -42,13 +42,13 @@ import { VersionsWorkflowComponent } from '../../workflow/versions/versions.comp
 import { ViewWorkflowComponent } from '../../workflow/view/view.component';
 import { WorkflowFileEditorComponent } from '../../workflow/workflow-file-editor/workflow-file-editor.component';
 import { WorkflowComponent } from '../../workflow/workflow.component';
-import { RefreshAlertModule } from '../alert/alert.module';
+
 import { DateService } from '../date.service';
 import { WorkflowActionsComponent } from '../entry-actions/workflow-actions.component';
 import { FileService } from '../file.service';
-import { HeaderModule } from '../modules/header.module';
+
 import { ListWorkflowsModule } from '../modules/list-workflows.module';
-import { SelectModule } from '../modules/select.module';
+
 import { PipeModule } from '../pipe/pipe.module';
 import { DagModule } from './../../workflow/dag/dag.module';
 import { InfoTabComponent } from './../../workflow/info-tab/info-tab.component';
@@ -59,28 +59,21 @@ import { VersionModalComponent } from './../../workflow/version-modal/version-mo
 import { VersionModalService } from './../../workflow/version-modal/version-modal.service';
 import { ExecutionsTabComponent } from '../../workflow/executions/executions-tab.component';
 import { EntryModule } from './../entry/entry.module';
-import { CustomMaterialModule } from './../modules/material.module';
+
 import { RefreshService } from './../refresh.service';
 import { MarkdownWrapperModule } from './markdown-wrapper.module';
-import { SnackbarModule } from './snackbar.module';
-import { CategoryButtonModule } from './../../categories/button/category-button.module';
-import { MySidebarModule } from '../modules/my-sidebar.module';
+
 import { SourceFileTabsService } from '../../source-file-tabs/source-file-tabs.service';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
-import { PreviewWarningModule } from './preview-warning.module';
-import { AiBubbleModule } from '../ai-bubble/ai-bubble.module';
 
 @NgModule({
   imports: [
     CommonModule,
     CurrentCollectionsModule,
     FlexLayoutModule,
-    HeaderModule,
     ListWorkflowsModule,
-    SelectModule,
     PipeModule,
     StarringModule,
-    OrderByModule,
     FormsModule,
     DagModule,
     StargazersModule,
@@ -88,14 +81,8 @@ import { AiBubbleModule } from '../ai-bubble/ai-bubble.module';
     EntryModule,
     AddEntryModule,
     MarkdownModule,
-    RefreshAlertModule,
     MarkdownWrapperModule,
-    SnackbarModule,
-    CategoryButtonModule,
-    MySidebarModule,
     NgxMatSelectSearchModule,
-    PreviewWarningModule,
-    AiBubbleModule,
     WorkflowComponent,
     WorkflowFileEditorComponent,
     VersionsWorkflowComponent,
@@ -129,15 +116,6 @@ import { AiBubbleModule } from '../ai-bubble/ai-bubble.module';
     VersionModalService,
     SourceFileTabsService,
   ],
-  exports: [
-    WorkflowComponent,
-    CustomMaterialModule,
-    EntryModule,
-    HeaderModule,
-    CommonModule,
-    WorkflowActionsComponent,
-    FilterCloudInstancesPipe,
-    MySidebarModule,
-  ],
+  exports: [WorkflowComponent, EntryModule, CommonModule, WorkflowActionsComponent, FilterCloudInstancesPipe],
 })
 export class WorkflowModule {}

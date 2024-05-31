@@ -22,16 +22,13 @@ import { RouterModule } from '@angular/router';
 
 import { ShareButtonsModule } from 'ngx-sharebuttons/buttons';
 import { ShareIconsModule } from 'ngx-sharebuttons/icons';
-import { RefreshAlertModule } from '../alert/alert.module';
-import { AvailableLogsModule } from '../available-logs.module';
+
 import { BioschemaService } from '../bioschema.service';
 import { CodeEditorListComponent } from '../code-editor-list/code-editor-list.component';
 import { CodeEditorComponent } from '../code-editor/code-editor.component';
 import { EntryActionsService } from '../entry-actions/entry-actions.service';
 import { PublicFileDownloadPipe } from '../entry/public-file-download.pipe';
-import { JsonLdModule } from '../modules/json-ld.module';
-import { CustomMaterialModule } from '../modules/material.module';
-import { SnackbarModule } from '../modules/snackbar.module';
+
 import { CommitUrlPipe } from './commit-url.pipe';
 import { InfoTabCheckerWorkflowPathComponent } from './info-tab-checker-workflow-path/info-tab-checker-workflow-path.component';
 import { LaunchCheckerWorkflowComponent } from './launch-checker-workflow/launch-checker-workflow.component';
@@ -45,17 +42,12 @@ import { VersionProviderUrlPipe } from './versionProviderUrl.pipe';
 
 @NgModule({
   imports: [
-    AvailableLogsModule,
     CommonModule,
     FormsModule,
-    CustomMaterialModule,
     FlexLayoutModule,
-    JsonLdModule,
     ClipboardModule,
     RouterModule,
     ReactiveFormsModule,
-    RefreshAlertModule,
-    SnackbarModule,
     InfoTabCheckerWorkflowPathComponent,
     RegisterCheckerWorkflowComponent,
     LaunchCheckerWorkflowComponent,
@@ -74,16 +66,12 @@ import { VersionProviderUrlPipe } from './versionProviderUrl.pipe';
     LaunchCheckerWorkflowComponent,
     CodeEditorComponent,
     CodeEditorListComponent,
-    CustomMaterialModule,
     CommitUrlPipe,
     FlexLayoutModule,
     VerifiedByComponent,
-    VerifiedDisplayComponent,
     VerifiedPlatformsPipe,
     VersionProviderUrlPipe,
     PublicFileDownloadPipe,
-    JsonLdModule,
-    RefreshAlertModule,
     ShareButtonsModule,
     ShareIconsModule,
     UrlDeconstructPipe,

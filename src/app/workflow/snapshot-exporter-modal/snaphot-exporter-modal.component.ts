@@ -1,24 +1,25 @@
+import { AsyncPipe, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault, NgTemplateOutlet } from '@angular/common';
 import { Component, Inject } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
 import {
-  MatLegacyDialogRef as MatDialogRef,
   MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
   MatLegacyDialogModule,
+  MatLegacyDialogRef as MatDialogRef,
 } from '@angular/material/legacy-dialog';
 import { Router } from '@angular/router';
 import { faOrcid } from '@fortawesome/free-brands-svg-icons';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { concat, Observable, of as observableOf, throwError } from 'rxjs';
 import { catchError, first, switchMap, tap } from 'rxjs/operators';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { Base } from '../../shared/base';
 import { Dockstore } from '../../shared/dockstore.model';
-import { TokenQuery } from '../../shared/state/token.query';
 import { BioWorkflow, WorkflowVersion } from '../../shared/openapi';
-import { SnapshotExporterModalService } from './snapshot-exporter-modal.service';
-import { MatIconModule } from '@angular/material/icon';
+import { TokenQuery } from '../../shared/state/token.query';
 import { ExporterStepComponent } from './exporter-step/exporter-step.component';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
-import { FlexModule } from '@ngbracket/ngx-layout/flex';
-import { NgSwitch, NgSwitchCase, NgIf, NgTemplateOutlet, NgSwitchDefault, AsyncPipe } from '@angular/common';
+import { SnapshotExporterModalService } from './snapshot-exporter-modal.service';
+import { StepState } from './step.state';
 
 export enum SnapshotExporterAction {
   SNAPSHOT,
@@ -31,13 +32,6 @@ export interface SnapshotExporterDialogData {
   version: WorkflowVersion;
   action: SnapshotExporterAction;
   userId: number;
-}
-
-export enum StepState {
-  INITIAL,
-  EXECUTING,
-  COMPLETED,
-  ERROR,
 }
 
 export interface State {

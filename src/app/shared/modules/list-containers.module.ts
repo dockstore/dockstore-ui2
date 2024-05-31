@@ -22,21 +22,9 @@ import { ListContainersComponent } from '../../containers/list/list.component';
 import { ListContainersService } from '../../containers/list/list.service';
 import { PublishedToolsDataSource } from '../../containers/list/published-tools.datasource';
 import { EntryModule } from '../entry/entry.module';
-import { PrivateIconModule } from '../private-icon/private-icon.module';
-import { HeaderModule } from './header.module';
-import { CustomMaterialModule } from './material.module';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    RouterModule,
-    ClipboardModule,
-    CustomMaterialModule,
-    HeaderModule,
-    PrivateIconModule,
-    EntryModule,
-    ListContainersComponent,
-  ],
+  imports: [CommonModule, RouterModule, ClipboardModule, EntryModule, ListContainersComponent],
   providers: [PublishedToolsDataSource, ListContainersService],
   exports: [ListContainersComponent],
 })

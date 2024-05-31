@@ -17,11 +17,10 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@ngbracket/ngx-layout';
 import { CurrentCollectionsModule } from '../../entry/current-collections.module';
-import { RefreshAlertModule } from '../../shared/alert/alert.module';
-import { CustomMaterialModule } from '../../shared/modules/material.module';
+
 import { AddEntryComponent } from './add-entry/add-entry.component';
 
 @NgModule({
-  imports: [CommonModule, CustomMaterialModule, CurrentCollectionsModule, FlexLayoutModule, RefreshAlertModule, AddEntryComponent],
+  imports: [CommonModule, CurrentCollectionsModule, FlexLayoutModule, AddEntryComponent],
 })
 export class AddEntryModule {}

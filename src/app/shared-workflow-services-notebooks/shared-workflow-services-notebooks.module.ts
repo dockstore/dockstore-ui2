@@ -19,15 +19,13 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { MyWorkflowsService } from 'app/myworkflows/myworkflows.service';
-import { EntryWizardModule } from 'app/shared/entry-wizard.module';
+
 import { MyEntriesModule } from 'app/shared/modules/my-entries.module';
-import { PreviewWarningModule } from 'app/shared/modules/preview-warning.module';
+
 import { RegisterGithubAppModalComponent } from 'app/workflow/register-workflow-modal/register-github-app-modal/register-github-app-modal.component';
 import { MyWorkflowComponent } from '../myworkflows/my-workflow/my-workflow.component';
 import { SidebarAccordionComponent } from '../myworkflows/sidebar-accordion/sidebar-accordion.component';
-import { RefreshAlertModule } from '../shared/alert/alert.module';
-import { HeaderModule } from '../shared/modules/header.module';
-import { CustomMaterialModule } from '../shared/modules/material.module';
+
 import { RegisterGithubAppModule } from '../shared/modules/register-github-app.module';
 import { WorkflowModule } from '../shared/modules/workflow.module';
 import { PipeModule } from '../shared/pipe/pipe.module';
@@ -41,20 +39,7 @@ const DECLARATIONS: any[] = [
   RegisterGithubAppModalComponent,
   SidebarAccordionComponent,
 ];
-const IMPORTS = [
-  FormsModule,
-  WorkflowModule,
-  HeaderModule,
-  CustomMaterialModule,
-  RefreshAlertModule,
-  PipeModule,
-  CommonModule,
-  RouterModule,
-  MyEntriesModule,
-  EntryWizardModule,
-  PreviewWarningModule,
-  RegisterGithubAppModule,
-];
+const IMPORTS = [FormsModule, WorkflowModule, PipeModule, CommonModule, RouterModule, MyEntriesModule, RegisterGithubAppModule];
 
 /**
  * This is a shared module between the My Workflows page, My Services page, and My Notebooks page.
