@@ -9,8 +9,7 @@ import { LoadingComponent } from '../loading/loading.component';
 import { AlertComponent } from './alert.component';
 
 @NgModule({
-  declarations: [AlertComponent, LoadingComponent],
-  imports: [MatProgressBarModule, MatIconModule, CommonModule, FormsModule, CustomMaterialModule],
+  imports: [MatProgressBarModule, MatIconModule, CommonModule, FormsModule, CustomMaterialModule, AlertComponent, LoadingComponent],
   exports: [AlertComponent, LoadingComponent],
 })
 export class RefreshAlertModule {}

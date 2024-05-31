@@ -15,10 +15,13 @@
  */
 
 import { Component } from '@angular/core';
+import { ListContainersComponent } from '../list/list.component';
 
 @Component({
   selector: 'app-search-containers',
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.css'],
+  standalone: true,
+  imports: [ListContainersComponent],
 })
 export class SearchContainersComponent {}

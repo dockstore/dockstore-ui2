@@ -25,11 +25,16 @@ import { TrackLoginService } from '../shared/track-login.service';
 import { UserQuery } from '../shared/user/user.query';
 import { StarEntry } from './StarEntry';
 import { StarringService } from './starring.service';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatIconModule } from '@angular/material/icon';
+import { NgClass, NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-starring',
   templateUrl: './starring.component.html',
   styleUrls: ['./starring.component.scss'],
+  standalone: true,
+  imports: [NgClass, NgIf, MatIconModule, MatLegacyTooltipModule],
 })
 export class StarringComponent implements OnInit, OnDestroy, OnChanges {
   @Input() tool: any;

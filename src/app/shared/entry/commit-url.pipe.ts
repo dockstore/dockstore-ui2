@@ -2,6 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
   name: 'commitUrl',
+  standalone: true,
 })
 export class CommitUrlPipe implements PipeTransform {
   transform(commitId: string, providerUrl: string): string {

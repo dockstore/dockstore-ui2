@@ -15,7 +15,7 @@
  */
 import { HttpErrorResponse } from '@angular/common/http';
 import { AfterViewChecked, Component, OnInit, ViewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { NgForm, FormsModule } from '@angular/forms';
 import { ExtendedDescriptorLanguageBean } from 'app/entry/extendedDescriptorLanguage';
 import { Observable } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
@@ -31,9 +31,33 @@ import { Workflow } from '../../openapi/model/workflow';
 import { formErrors, validationDescriptorPatterns, validationMessages } from '../../validationMessages.model';
 import { DescriptorLanguageService } from '../descriptor-language.service';
 import { RegisterCheckerWorkflowService } from './register-checker-workflow.service';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatLegacyInputModule } from '@angular/material/legacy-input';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { AlertComponent } from '../../alert/alert.component';
+import { MatLegacyDialogModule } from '@angular/material/legacy-dialog';
 
 @Component({
   templateUrl: './register-checker-workflow.component.html',
+  standalone: true,
+  imports: [
+    MatLegacyDialogModule,
+    AlertComponent,
+    FormsModule,
+    MatLegacyFormFieldModule,
+    MatLegacyInputModule,
+    MatLegacyTooltipModule,
+    NgIf,
+    MatLegacySelectModule,
+    NgFor,
+    MatLegacyOptionModule,
+    MatLegacyButtonModule,
+    AsyncPipe,
+  ],
 })
 export class RegisterCheckerWorkflowComponent extends Base implements OnInit, AfterViewChecked {
   constructor(

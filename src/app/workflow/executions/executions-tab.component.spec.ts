@@ -31,9 +31,8 @@ describe('ExecutionsTabComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [ExecutionsTabComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        imports: [HttpClientTestingModule, CustomMaterialModule, PipeModule],
+        imports: [HttpClientTestingModule, CustomMaterialModule, PipeModule, ExecutionsTabComponent],
         providers: [{ provide: DescriptorLanguageService, useClass: DescriptorLanguageStubService }, AlertService],
       }).compileComponents();
     })

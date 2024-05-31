@@ -34,9 +34,15 @@ describe('RegisterCheckerWorkflowComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [RegisterCheckerWorkflowComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        imports: [FormsModule, MatSnackBarModule, MatDialogModule, BrowserAnimationsModule, CustomMaterialModule],
+        imports: [
+          FormsModule,
+          MatSnackBarModule,
+          MatDialogModule,
+          BrowserAnimationsModule,
+          CustomMaterialModule,
+          RegisterCheckerWorkflowComponent,
+        ],
         providers: [
           { provide: RegisterCheckerWorkflowService, useClass: RegisterCheckerWorkflowStubService },
           { provide: CheckerWorkflowService, useClass: CheckerWorkflowStubService },

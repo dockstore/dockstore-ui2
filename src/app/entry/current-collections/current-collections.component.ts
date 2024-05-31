@@ -8,11 +8,38 @@ import { TrackLoginService } from '../../shared/track-login.service';
 import { CurrentCollectionsQuery } from '../state/current-collections.query';
 import { CurrentCollectionsService } from '../state/current-collections.service';
 import { OrgLogoService } from '../../shared/org-logo.service';
+import { GravatarPipe } from '../../gravatar/gravatar.pipe';
+import { RouterLinkActive, RouterLink } from '@angular/router';
+import { ImgFallbackDirective } from '../../shared/img-fallback.directive';
+import { MatDividerModule } from '@angular/material/divider';
+import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { NgIf, NgFor, NgTemplateOutlet, AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-current-collections',
   templateUrl: './current-collections.component.html',
   styleUrls: ['./current-collections.component.scss'],
+  standalone: true,
+  imports: [
+    NgIf,
+    MatLegacyCardModule,
+    FlexModule,
+    MatLegacyButtonModule,
+    MatLegacyTooltipModule,
+    ExtendedModule,
+    MatDividerModule,
+    NgFor,
+    ImgFallbackDirective,
+    NgTemplateOutlet,
+    RouterLinkActive,
+    RouterLink,
+    AsyncPipe,
+    GravatarPipe,
+  ],
 })
 export class CurrentCollectionsComponent implements OnInit, OnChanges {
   @Input() id: number;

@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { ImgFallbackDirective } from '../img-fallback.directive';
 
 @NgModule({
-  declarations: [ImgFallbackDirective],
+  imports: [ImgFallbackDirective],
   exports: [ImgFallbackDirective],
 })
 export class ImgFallbackModule {}

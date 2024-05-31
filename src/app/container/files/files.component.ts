@@ -19,10 +19,19 @@ import { Files } from '../../shared/files';
 import { GA4GHFilesService } from '../../shared/ga4gh-files/ga4gh-files.service';
 import { SourceFile } from '../../shared/openapi';
 import { Tag } from '../../shared/openapi/model/tag';
+import { MatIconModule } from '@angular/material/icon';
+import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { NgIf } from '@angular/common';
+import { ParamfilesComponent } from '../paramfiles/paramfiles.component';
+import { DescriptorsComponent } from '../descriptors/descriptors.component';
+import { DockerfileComponent } from '../dockerfile/dockerfile.component';
+import { MatLegacyTabsModule } from '@angular/material/legacy-tabs';
 
 @Component({
   selector: 'app-files-container',
   templateUrl: './files.component.html',
+  standalone: true,
+  imports: [MatLegacyTabsModule, DockerfileComponent, DescriptorsComponent, ParamfilesComponent, NgIf, MatLegacyCardModule, MatIconModule],
 })
 export class FilesContainerComponent extends Files implements OnChanges {
   @Input() selectedVersion: Tag;

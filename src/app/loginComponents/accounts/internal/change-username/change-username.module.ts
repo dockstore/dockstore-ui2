@@ -22,8 +22,7 @@ import { ChangeUsernameComponent } from './change-username.component';
 import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [ChangeUsernameComponent],
-  imports: [CustomMaterialModule, FlexLayoutModule, CommonModule, ReactiveFormsModule],
+  imports: [CustomMaterialModule, FlexLayoutModule, CommonModule, ReactiveFormsModule, ChangeUsernameComponent],
   providers: [],
   exports: [ChangeUsernameComponent],
 })

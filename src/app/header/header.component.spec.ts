@@ -27,9 +27,8 @@ describe('HeaderComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [RouterTestingModule],
+        imports: [RouterTestingModule, HeaderComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        declarations: [HeaderComponent],
       }).compileComponents();
     })
   );

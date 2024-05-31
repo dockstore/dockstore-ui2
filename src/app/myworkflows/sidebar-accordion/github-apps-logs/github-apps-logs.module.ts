@@ -35,7 +35,7 @@ import { GithubAppsLogsComponent } from './github-apps-logs.component';
     RouterModule,
     ClipboardModule,
     SnackbarModule,
+    GithubAppsLogsComponent,
   ],
-  declarations: [GithubAppsLogsComponent],
 })
 export class GitHubAppsLogsModule {}

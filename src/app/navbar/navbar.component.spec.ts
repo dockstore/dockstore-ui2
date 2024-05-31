@@ -38,7 +38,6 @@ describe('NavbarComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [NavbarComponent],
         imports: [
           RouterTestingModule,
           MatMenuModule,
@@ -48,6 +47,7 @@ describe('NavbarComponent', () => {
           MatDividerModule,
           MatToolbarModule,
           HttpClientTestingModule,
+          NavbarComponent,
         ],
         schemas: [NO_ERRORS_SCHEMA],
         providers: [

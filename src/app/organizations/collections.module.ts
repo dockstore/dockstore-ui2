@@ -34,8 +34,11 @@ import { PreviewWarningModule } from '../shared/modules/preview-warning.module';
     ImgFallbackModule,
     PipeModule,
     PreviewWarningModule,
+    CollectionsComponent,
+    CollectionComponent,
+    CollectionRemoveEntryDialogComponent,
+    RemoveCollectionDialogComponent,
   ],
-  declarations: [CollectionsComponent, CollectionComponent, CollectionRemoveEntryDialogComponent, RemoveCollectionDialogComponent],
   exports: [CollectionsComponent, CollectionComponent],
 })
 export class CollectionsModule {}

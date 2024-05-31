@@ -23,8 +23,7 @@ describe('StarredEntriesComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [RouterTestingModule],
-        declarations: [StarredEntriesComponent],
+        imports: [RouterTestingModule, StarredEntriesComponent],
         schemas: [NO_ERRORS_SCHEMA],
         providers: [
           { provide: StarringService, useClass: StarringStubService },

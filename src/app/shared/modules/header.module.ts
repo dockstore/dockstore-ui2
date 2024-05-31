@@ -19,8 +19,7 @@ import { HeaderComponent } from '../../header/header.component';
 import { RefreshAlertModule } from '../alert/alert.module';
 
 @NgModule({
-  declarations: [HeaderComponent],
-  imports: [RefreshAlertModule],
+  imports: [RefreshAlertModule, HeaderComponent],
   providers: [],
   exports: [HeaderComponent],
 })

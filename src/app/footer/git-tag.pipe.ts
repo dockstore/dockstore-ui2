@@ -10,6 +10,7 @@ import { Pipe, PipeTransform } from '@angular/core';
  */
 @Pipe({
   name: 'gitTag',
+  standalone: true,
 })
 export class GitTagPipe implements PipeTransform {
   /**

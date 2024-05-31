@@ -21,11 +21,30 @@ import { FileService } from '../../shared/file.service';
 import { ContainersService } from '../../shared/openapi';
 import { Tag } from '../../shared/openapi/model/tag';
 import { ToolQuery } from '../../shared/tool/tool.query';
+import { CodeEditorComponent } from '../../shared/code-editor/code-editor.component';
+import { ClipboardModule } from '@angular/cdk/clipboard';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatLegacyProgressBarModule } from '@angular/material/legacy-progress-bar';
+import { MatIconModule } from '@angular/material/icon';
+import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-dockerfile',
   templateUrl: './dockerfile.component.html',
   styleUrls: ['./dockerfile.component.scss'],
+  standalone: true,
+  imports: [
+    NgIf,
+    MatLegacyCardModule,
+    MatIconModule,
+    MatLegacyProgressBarModule,
+    MatToolbarModule,
+    MatLegacyButtonModule,
+    ClipboardModule,
+    CodeEditorComponent,
+  ],
 })
 export class DockerfileComponent {
   @Input() id: number;

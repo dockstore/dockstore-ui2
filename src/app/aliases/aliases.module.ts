@@ -9,8 +9,16 @@ import { AliasesComponent } from './aliases.component';
 import { AliasesRouting } from './aliases.routing';
 
 @NgModule({
-  imports: [CommonModule, HeaderModule, AliasesRouting, CustomMaterialModule, RefreshAlertModule, FlexLayoutModule, PipeModule],
-  declarations: [AliasesComponent],
+  imports: [
+    CommonModule,
+    HeaderModule,
+    AliasesRouting,
+    CustomMaterialModule,
+    RefreshAlertModule,
+    FlexLayoutModule,
+    PipeModule,
+    AliasesComponent,
+  ],
   exports: [AliasesComponent],
 })
 export class AliasesModule {}

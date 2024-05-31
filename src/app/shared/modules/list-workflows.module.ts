@@ -24,8 +24,7 @@ import { HeaderModule } from './header.module';
 import { CustomMaterialModule } from './material.module';
 
 @NgModule({
-  declarations: [ListWorkflowsComponent],
-  imports: [CommonModule, RouterModule, HeaderModule, CustomMaterialModule, EntryModule, PipeModule],
+  imports: [CommonModule, RouterModule, HeaderModule, CustomMaterialModule, EntryModule, PipeModule, ListWorkflowsComponent],
   providers: [PublishedWorkflowsDataSource],
   exports: [ListWorkflowsComponent],
 })

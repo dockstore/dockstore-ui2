@@ -23,9 +23,9 @@ import { UpdateOrganizationOrCollectionDescriptionComponent } from './update-org
     ReactiveFormsModule,
     MarkdownModule,
     MarkdownWrapperModule,
+    UpdateOrganizationOrCollectionDescriptionComponent,
   ],
   providers: [OrganizationStarringService, StarOrganizationService, OrgSchemaService],
-  declarations: [UpdateOrganizationOrCollectionDescriptionComponent],
   exports: [JsonLdModule],
 })
 export class UpdateOrganizationDescriptionModule {}

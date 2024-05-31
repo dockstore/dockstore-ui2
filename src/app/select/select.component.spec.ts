@@ -26,7 +26,7 @@ describe('SelectComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [SelectComponent],
+        imports: [SelectComponent],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
     })

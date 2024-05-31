@@ -15,6 +15,7 @@
  */
 import { Component, Input, OnInit } from '@angular/core';
 import { Dockstore } from '../dockstore.model';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
 
 /**
  * Component for the AI generated indicator.
@@ -26,6 +27,8 @@ import { Dockstore } from '../dockstore.model';
 @Component({
   selector: 'app-ai-bubble',
   templateUrl: './ai-bubble.component.html',
+  standalone: true,
+  imports: [MatLegacyTooltipModule],
 })
 export class AiBubbleComponent implements OnInit {
   constructor() {}

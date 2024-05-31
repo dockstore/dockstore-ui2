@@ -5,6 +5,7 @@ import { EntryType } from '../../shared/enum/entry-type';
 
 @Pipe({
   name: 'recentEvents',
+  standalone: true,
 })
 export class RecentEventsPipe implements PipeTransform {
   private EntryType = EntryType;

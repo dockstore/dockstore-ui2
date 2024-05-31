@@ -13,8 +13,7 @@ describe('VerifiedDisplayComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [VerifiedDisplayComponent],
-        imports: [CustomMaterialModule, BrowserAnimationsModule],
+        imports: [CustomMaterialModule, BrowserAnimationsModule, VerifiedDisplayComponent],
       }).compileComponents();
     })
   );

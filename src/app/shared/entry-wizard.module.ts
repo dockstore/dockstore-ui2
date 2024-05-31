@@ -5,8 +5,7 @@ import { EntryWizardComponent } from './entry-wizard/entry-wizard.component';
 import { CustomMaterialModule } from './modules/material.module';
 
 @NgModule({
-  imports: [CommonModule, CustomMaterialModule, FormsModule],
-  declarations: [EntryWizardComponent],
+  imports: [CommonModule, CustomMaterialModule, FormsModule, EntryWizardComponent],
   exports: [EntryWizardComponent],
 })
 export class EntryWizardModule {}

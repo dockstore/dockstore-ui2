@@ -18,8 +18,7 @@ describe('BasicSearchComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         schemas: [NO_ERRORS_SCHEMA],
-        imports: [MatAutocompleteModule, RouterTestingModule, BrowserAnimationsModule, CustomMaterialModule],
-        declarations: [BasicSearchComponent],
+        imports: [MatAutocompleteModule, RouterTestingModule, BrowserAnimationsModule, CustomMaterialModule, BasicSearchComponent],
         providers: [ProviderService, { provide: SearchService, useClass: SearchStubService }],
       }).compileComponents();
     })

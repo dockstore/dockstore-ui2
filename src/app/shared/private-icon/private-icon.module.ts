@@ -6,8 +6,7 @@ import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/le
 import { PrivateIconComponent } from './private-icon.component';
 
 @NgModule({
-  imports: [CommonModule, MatIconModule, MatTooltipModule],
-  declarations: [PrivateIconComponent],
+  imports: [CommonModule, MatIconModule, MatTooltipModule, PrivateIconComponent],
   exports: [PrivateIconComponent],
 })
 export class PrivateIconModule {}

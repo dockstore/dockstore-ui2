@@ -22,7 +22,6 @@ import { CustomMaterialModule } from '../../shared/modules/material.module';
 import { AddEntryComponent } from './add-entry/add-entry.component';
 
 @NgModule({
-  imports: [CommonModule, CustomMaterialModule, CurrentCollectionsModule, FlexLayoutModule, RefreshAlertModule],
-  declarations: [AddEntryComponent],
+  imports: [CommonModule, CustomMaterialModule, CurrentCollectionsModule, FlexLayoutModule, RefreshAlertModule, AddEntryComponent],
 })
 export class AddEntryModule {}

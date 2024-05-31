@@ -31,9 +31,8 @@ describe('SearchResultsComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [SearchResultsComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        imports: [RouterTestingModule],
+        imports: [RouterTestingModule, SearchResultsComponent],
         providers: [
           { provide: SearchService, useClass: SearchStubService },
           { provide: QueryBuilderService, useClass: QueryBuilderStubService },

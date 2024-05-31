@@ -1,9 +1,9 @@
-import { KeyValue, Location } from '@angular/common';
+import { KeyValue, Location, NgIf, NgFor, AsyncPipe, KeyValuePipe } from '@angular/common';
 import { Component, Input, OnChanges } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
-import { MatLegacySelectChange as MatSelectChange } from '@angular/material/legacy-select';
-import { MatLegacyTabChangeEvent as MatTabChangeEvent } from '@angular/material/legacy-tabs';
+import { MatLegacySelectChange as MatSelectChange, MatLegacySelectModule } from '@angular/material/legacy-select';
+import { MatLegacyTabChangeEvent as MatTabChangeEvent, MatLegacyTabsModule } from '@angular/material/legacy-tabs';
 import { FileTreeComponent } from 'app/file-tree/file-tree.component';
 import { bootstrap4largeModalSize } from 'app/shared/constants';
 import { FileService } from 'app/shared/file.service';
@@ -12,11 +12,42 @@ import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { WorkflowQuery } from '../shared/state/workflow.query';
 import { SourceFileTabsService } from './source-file-tabs.service';
+import { CodeEditorComponent } from '../shared/code-editor/code-editor.component';
+import { ClipboardModule } from '@angular/cdk/clipboard';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatIconModule } from '@angular/material/icon';
+import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { LoadingComponent } from '../shared/loading/loading.component';
 
 @Component({
   selector: 'app-source-file-tabs',
   templateUrl: './source-file-tabs.component.html',
   styleUrls: ['./source-file-tabs.component.scss'],
+  standalone: true,
+  imports: [
+    LoadingComponent,
+    NgIf,
+    MatLegacyCardModule,
+    MatIconModule,
+    NgFor,
+    MatLegacyTabsModule,
+    MatToolbarModule,
+    FlexModule,
+    MatLegacyButtonModule,
+    MatLegacyTooltipModule,
+    MatLegacyFormFieldModule,
+    MatLegacySelectModule,
+    MatLegacyOptionModule,
+    ClipboardModule,
+    CodeEditorComponent,
+    AsyncPipe,
+    KeyValuePipe,
+  ],
 })
 export class SourceFileTabsComponent implements OnChanges {
   constructor(

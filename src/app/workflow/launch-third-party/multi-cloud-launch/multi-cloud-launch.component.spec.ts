@@ -13,8 +13,7 @@ describe('MultiCloudLaunchComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [MultiCloudLaunchComponent, FilterCloudInstancesPipe],
-        imports: [CustomMaterialModule, HttpClientModule],
+        imports: [CustomMaterialModule, HttpClientModule, MultiCloudLaunchComponent, FilterCloudInstancesPipe],
         providers: [{ provider: UsersService, useClass: UserStubService }],
       });
     })

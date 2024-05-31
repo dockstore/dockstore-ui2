@@ -10,8 +10,7 @@ describe('NewsBoxComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MatLegacyCardModule, MatDividerModule, HomePageModule],
-      declarations: [NewsBoxComponent],
+      imports: [MatLegacyCardModule, MatDividerModule, HomePageModule, NewsBoxComponent],
     }).compileComponents();
   });
 

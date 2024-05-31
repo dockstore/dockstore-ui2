@@ -26,7 +26,16 @@ import { containersRouting } from './containers.routing';
 import { SearchContainersComponent } from './search/search.component';
 
 @NgModule({
-  declarations: [ContainersComponent, SearchContainersComponent],
-  imports: [CommonModule, HeaderModule, SelectModule, ListContainersModule, ContainerModule, containersRouting, MarkdownModule],
+  imports: [
+    CommonModule,
+    HeaderModule,
+    SelectModule,
+    ListContainersModule,
+    ContainerModule,
+    containersRouting,
+    MarkdownModule,
+    ContainersComponent,
+    SearchContainersComponent,
+  ],
 })
 export class ContainersModule {}

@@ -24,11 +24,21 @@ import { Dockstore } from './../shared/dockstore.model';
 import { TRSService } from 'app/shared/openapi';
 import { FooterService } from './footer.service';
 import { versions } from './versions';
+import { GitTagPipe } from './git-tag.pipe';
+import { NgFor } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
+import { ClipboardModule } from '@angular/cdk/clipboard';
+import { SnackbarDirective } from '../shared/snackbar.directive';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { RouterLink } from '@angular/router';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
 
 @Component({
   selector: 'app-footer',
   templateUrl: './footer.component.html',
   styleUrls: ['./footer.component.scss'],
+  standalone: true,
+  imports: [FlexModule, RouterLink, MatLegacyButtonModule, SnackbarDirective, ClipboardModule, MatIconModule, NgFor, GitTagPipe],
 })
 export class FooterComponent extends Base implements OnInit {
   domain: string;

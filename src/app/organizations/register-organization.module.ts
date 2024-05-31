@@ -11,8 +11,17 @@ import { RequireAccountsModalComponent } from './registerOrganization/requireAcc
 import { FlexModule } from '@ngbracket/ngx-layout';
 
 @NgModule({
-  imports: [CommonModule, FormsModule, CustomMaterialModule, ReactiveFormsModule, RefreshAlertModule, RouterModule, FlexModule],
-  declarations: [RegisterOrganizationComponent, RequireAccountsModalComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    CustomMaterialModule,
+    ReactiveFormsModule,
+    RefreshAlertModule,
+    RouterModule,
+    FlexModule,
+    RegisterOrganizationComponent,
+    RequireAccountsModalComponent,
+  ],
   providers: [AlertService],
 })
 export class RegisterOrganizationModule {}

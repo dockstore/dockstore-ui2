@@ -25,6 +25,8 @@ import { UrlResolverService } from '../../shared/url-resolver.service';
 
 @Component({
   template: ` <router-outlet></router-outlet> `,
+  standalone: true,
+  imports: [HttpClientTestingModule, MatSnackBarModule],
 })
 export class OrganizationsComponent {}
 
@@ -34,9 +36,13 @@ describe('OrganizationService', () => {
   let organizationService: OrganizationService;
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [OrganizationsComponent],
       providers: [OrganizationService, OrganizationStore, UrlResolverService],
-      imports: [HttpClientTestingModule, MatSnackBarModule, RouterTestingModule.withRoutes(MOCK_ORGANIZATIONS_ROUTES)],
+      imports: [
+        HttpClientTestingModule,
+        MatSnackBarModule,
+        RouterTestingModule.withRoutes(MOCK_ORGANIZATIONS_ROUTES),
+        OrganizationsComponent,
+      ],
     });
 
     organizationService = TestBed.inject(OrganizationService);

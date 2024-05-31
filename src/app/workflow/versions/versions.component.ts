@@ -14,8 +14,8 @@
  *    limitations under the License.
  */
 import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
-import { MatSort } from '@angular/material/sort';
-import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatLegacyTableDataSource as MatTableDataSource, MatLegacyTableModule } from '@angular/material/legacy-table';
 import { faCodeBranch, faTag } from '@fortawesome/free-solid-svg-icons';
 import { takeUntil } from 'rxjs/operators';
 import { AlertService } from '../../shared/alert/state/alert.service';
@@ -29,11 +29,41 @@ import { ExtendedWorkflowQuery } from '../../shared/state/extended-workflow.quer
 import { Workflow } from '../../shared/openapi/model/workflow';
 import { WorkflowVersion } from '../../shared/openapi/model/workflowVersion';
 import { Versions } from '../../shared/versions';
+import { CommitUrlPipe } from '../../shared/entry/commit-url.pipe';
+import { DescriptorLanguagePipe } from '../../shared/entry/descriptor-language.pipe';
+import { DescriptorLanguageVersionsPipe } from '../../shared/entry/descriptor-language-versions.pipe';
+import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
+import { ViewWorkflowComponent } from '../view/view.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MatLegacyChipsModule } from '@angular/material/legacy-chips';
+import { NgIf, NgClass, JsonPipe, DatePipe } from '@angular/common';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { MatIconModule } from '@angular/material/icon';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
 
 @Component({
   selector: 'app-versions-workflow',
   templateUrl: './versions.component.html',
   styleUrls: ['./versions.component.scss'],
+  standalone: true,
+  imports: [
+    MatLegacyTableModule,
+    MatSortModule,
+    MatLegacyTooltipModule,
+    MatIconModule,
+    FlexModule,
+    NgIf,
+    MatLegacyChipsModule,
+    FontAwesomeModule,
+    ViewWorkflowComponent,
+    NgClass,
+    ExtendedModule,
+    JsonPipe,
+    DatePipe,
+    DescriptorLanguageVersionsPipe,
+    DescriptorLanguagePipe,
+    CommitUrlPipe,
+  ],
 })
 export class VersionsWorkflowComponent extends Versions implements OnInit, OnChanges, AfterViewInit {
   faTag = faTag;

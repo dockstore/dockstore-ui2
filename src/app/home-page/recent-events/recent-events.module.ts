@@ -12,7 +12,6 @@ import { PipeModule } from '../../shared/pipe/pipe.module';
 import { ImgFallbackModule } from '../../shared/modules/img-fallback.module';
 
 @NgModule({
-  declarations: [RecentEventsComponent, EntryToDisplayNamePipe],
   providers: [],
   imports: [
     RefreshAlertModule,
@@ -24,6 +23,8 @@ import { ImgFallbackModule } from '../../shared/modules/img-fallback.module';
     RouterModule,
     PipeModule,
     ImgFallbackModule,
+    RecentEventsComponent,
+    EntryToDisplayNamePipe,
   ],
   exports: [RecentEventsComponent],
 })

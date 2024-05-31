@@ -14,8 +14,7 @@ describe('AuthComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [AuthComponent],
-        imports: [RouterTestingModule.withRoutes([{ path: '**', component: AuthComponent }]), MatSnackBarModule],
+        imports: [RouterTestingModule.withRoutes([{ path: '**', component: AuthComponent }]), MatSnackBarModule, AuthComponent],
         providers: [
           { provide: UserService, useClass: UserStubService },
           { provide: TokenService, useClass: TokenStubService },

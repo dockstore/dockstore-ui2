@@ -1,16 +1,34 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
-import { MatLegacyTabChangeEvent as MatTabChangeEvent } from '@angular/material/legacy-tabs';
+import { MatLegacyTabChangeEvent as MatTabChangeEvent, MatLegacyTabsModule } from '@angular/material/legacy-tabs';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Base } from '../../shared/base';
+import { RequestsComponent } from '../requests/requests.component';
+import { ControlsComponent } from './controls/controls.component';
+import { AccountsExternalComponent } from './external/accounts.component';
+import { AccountSidebarComponent } from './account-sidebar/account-sidebar.component';
+import { HeaderComponent } from '../../header/header.component';
+import { MySidebarComponent } from '../../my-sidebar/my-sidebar.component';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
 
 @Component({
   selector: 'app-accounts',
   templateUrl: './accounts.component.html',
   styleUrls: ['./accounts.component.scss'],
+  standalone: true,
+  imports: [
+    FlexModule,
+    MySidebarComponent,
+    HeaderComponent,
+    AccountSidebarComponent,
+    MatLegacyTabsModule,
+    AccountsExternalComponent,
+    ControlsComponent,
+    RequestsComponent,
+  ],
 })
 export class AccountsComponent extends Base implements OnInit {
   public currentTab = 'accounts'; // default to the 'accounts' tab

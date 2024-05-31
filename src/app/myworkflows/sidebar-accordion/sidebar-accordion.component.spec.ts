@@ -19,8 +19,14 @@ describe('SidebarAccordionComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [SidebarAccordionComponent, RefreshWorkflowOrganizationComponent, SelectTabPipe],
-        imports: [HttpClientTestingModule, CustomMaterialModule, RouterTestingModule],
+        imports: [
+          HttpClientTestingModule,
+          CustomMaterialModule,
+          RouterTestingModule,
+          SidebarAccordionComponent,
+          RefreshWorkflowOrganizationComponent,
+          SelectTabPipe,
+        ],
         providers: [
           {
             provide: RegisterWorkflowModalService,

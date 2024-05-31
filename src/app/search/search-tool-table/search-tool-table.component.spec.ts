@@ -19,9 +19,8 @@ describe('SearchToolTableComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [SearchToolTableComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        imports: [CustomMaterialModule, BrowserAnimationsModule, RouterTestingModule],
+        imports: [CustomMaterialModule, BrowserAnimationsModule, RouterTestingModule, SearchToolTableComponent],
         providers: [
           { provide: DockstoreService, useClass: DockstoreStubService },
           DateService,

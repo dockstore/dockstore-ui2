@@ -7,8 +7,7 @@ import { RouterLink } from '@angular/router';
 import { AiBubbleComponent } from './ai-bubble.component';
 
 @NgModule({
-  declarations: [AiBubbleComponent],
   exports: [AiBubbleComponent],
-  imports: [CommonModule, FlexModule, MatIconModule, MatTooltipModule, RouterLink],
+  imports: [CommonModule, FlexModule, MatIconModule, MatTooltipModule, RouterLink, AiBubbleComponent],
 })
 export class AiBubbleModule {}

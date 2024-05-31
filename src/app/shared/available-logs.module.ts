@@ -24,8 +24,16 @@ import { VerifiedDisplayComponent } from './entry/verified-display/verified-disp
 import { CustomMaterialModule } from './modules/material.module';
 
 @NgModule({
-  imports: [CommonModule, CustomMaterialModule, FlexLayoutModule, RefreshAlertModule],
-  declarations: [AvailableLogsComponent, VerifiedDisplayComponent, ToolTesterLogPipe, RemoveExtensionPipe],
+  imports: [
+    CommonModule,
+    CustomMaterialModule,
+    FlexLayoutModule,
+    RefreshAlertModule,
+    AvailableLogsComponent,
+    VerifiedDisplayComponent,
+    ToolTesterLogPipe,
+    RemoveExtensionPipe,
+  ],
   exports: [VerifiedDisplayComponent],
 })
 export class AvailableLogsModule {}

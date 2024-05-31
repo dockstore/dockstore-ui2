@@ -23,8 +23,7 @@ import { RouterModule } from '@angular/router';
 import { ChangeUsernameModule } from '../internal/change-username/change-username.module';
 
 @NgModule({
-  declarations: [AccountSidebarComponent],
-  imports: [CustomMaterialModule, FlexLayoutModule, CommonModule, RouterModule, ChangeUsernameModule],
+  imports: [CustomMaterialModule, FlexLayoutModule, CommonModule, RouterModule, ChangeUsernameModule, AccountSidebarComponent],
   providers: [],
   exports: [AccountSidebarComponent],
 })

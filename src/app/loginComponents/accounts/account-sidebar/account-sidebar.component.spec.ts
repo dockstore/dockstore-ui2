@@ -18,8 +18,15 @@ describe('AccountSidebarComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AccountSidebarComponent],
-      imports: [CustomMaterialModule, FlexLayoutModule, CommonModule, MatTableModule, MatLegacyButtonModule, RouterTestingModule],
+      imports: [
+        CustomMaterialModule,
+        FlexLayoutModule,
+        CommonModule,
+        MatTableModule,
+        MatLegacyButtonModule,
+        RouterTestingModule,
+        AccountSidebarComponent,
+      ],
       providers: [
         { provide: UsersService, useClass: UsersStubService },
         { provide: UserService, useClass: UserStubService },

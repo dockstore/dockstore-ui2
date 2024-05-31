@@ -43,8 +43,7 @@ describe('OrganizationStarringComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [MatIconModule, MatSnackBarModule, MatTooltipModule],
-        declarations: [OrganizationStarringComponent],
+        imports: [MatIconModule, MatSnackBarModule, MatTooltipModule, OrganizationStarringComponent],
         providers: [
           { provide: TrackLoginService, useClass: TrackLoginStubService },
           { provide: OrganizationStarringService, useClass: OrganizationStarringStubService },

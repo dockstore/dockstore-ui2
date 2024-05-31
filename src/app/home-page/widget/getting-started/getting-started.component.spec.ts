@@ -12,8 +12,8 @@ describe('GettingStartedComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [GettingStartedComponent, RouterLinkStubDirective],
-        imports: [MatIconModule, MatButtonModule],
+        declarations: [RouterLinkStubDirective],
+        imports: [MatIconModule, MatButtonModule, GettingStartedComponent],
       }).compileComponents();
     })
   );

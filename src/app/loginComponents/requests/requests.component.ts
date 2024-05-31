@@ -3,6 +3,7 @@ import {
   MatLegacyDialog as MatDialog,
   MatLegacyDialogRef as MatDialogRef,
   MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
+  MatLegacyDialogModule,
 } from '@angular/material/legacy-dialog';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -14,10 +15,20 @@ import { Organization, OrganizationUser } from '../../shared/openapi';
 import { UserQuery } from '../../shared/user/user.query';
 import { RequestsQuery } from '../state/requests.query';
 import { RequestsService } from '../state/requests.service';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { RouterLink } from '@angular/router';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { MatIconModule } from '@angular/material/icon';
+import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { NgIf, NgFor, AsyncPipe, LowerCasePipe, DatePipe } from '@angular/common';
+import { MatLegacyProgressBarModule } from '@angular/material/legacy-progress-bar';
 
 @Component({
   selector: 'app-organization-request-confirm-dialog',
   templateUrl: 'organization-request-confirm-dialog.html',
+  standalone: true,
+  imports: [MatLegacyDialogModule, FlexModule, MatLegacyButtonModule, NgIf],
 })
 export class OrganizationRequestConfirmDialogComponent {
   constructor(
@@ -33,6 +44,8 @@ export class OrganizationRequestConfirmDialogComponent {
 @Component({
   selector: 'app-organization-invite-confirm-dialog',
   templateUrl: 'organization-invite-confirm-dialog.html',
+  standalone: true,
+  imports: [MatLegacyDialogModule, FlexModule, MatLegacyButtonModule, NgIf],
 })
 export class OrganizationInviteConfirmDialogComponent {
   constructor(public dialogRef: MatDialogRef<OrganizationInviteConfirmDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
@@ -52,6 +65,21 @@ export interface DialogData {
   selector: 'app-requests',
   templateUrl: './requests.component.html',
   styleUrls: ['./requests.component.scss'],
+  standalone: true,
+  imports: [
+    MatLegacyProgressBarModule,
+    NgIf,
+    MatLegacyCardModule,
+    MatIconModule,
+    FlexModule,
+    NgFor,
+    RouterLink,
+    MatLegacyTooltipModule,
+    MatLegacyButtonModule,
+    AsyncPipe,
+    LowerCasePipe,
+    DatePipe,
+  ],
 })
 export class RequestsComponent extends Base implements OnInit {
   public allPendingOrganizations$: Observable<Array<Organization>>;

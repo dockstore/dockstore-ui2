@@ -31,9 +31,8 @@ describe('LoginComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [LoginComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        imports: [RouterTestingModule],
+        imports: [RouterTestingModule, LoginComponent],
         providers: [
           { provide: TrackLoginService, useClass: TrackLoginStubService },
           { provide: UserService, useClass: UserStubService },

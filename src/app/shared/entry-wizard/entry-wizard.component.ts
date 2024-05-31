@@ -1,15 +1,35 @@
 import { Component, OnInit } from '@angular/core';
-import { MatLegacySlideToggleChange as MatSlideToggleChange } from '@angular/material/legacy-slide-toggle';
+import { MatLegacySlideToggleChange as MatSlideToggleChange, MatLegacySlideToggleModule } from '@angular/material/legacy-slide-toggle';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Repository } from '../openapi/model/repository';
 import { EntryWizardQuery } from '../state/entry-wizard.query';
 import { EntryWizardService } from '../state/entry-wizard.service';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { FormsModule } from '@angular/forms';
+import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatLegacyProgressBarModule } from '@angular/material/legacy-progress-bar';
+import { NgIf, NgFor, AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-entry-wizard',
   templateUrl: './entry-wizard.component.html',
   styleUrls: ['./entry-wizard.component.scss'],
+  standalone: true,
+  imports: [
+    NgIf,
+    MatLegacyProgressBarModule,
+    MatLegacyFormFieldModule,
+    MatLegacySelectModule,
+    FormsModule,
+    NgFor,
+    MatLegacyOptionModule,
+    MatLegacySlideToggleModule,
+    MatLegacyTooltipModule,
+    AsyncPipe,
+  ],
 })
 export class EntryWizardComponent implements OnInit {
   isLoading$: Observable<boolean>;

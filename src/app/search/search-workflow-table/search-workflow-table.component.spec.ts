@@ -18,9 +18,8 @@ describe('SearchWorkflowTableComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [SearchWorkflowTableComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        imports: [CustomMaterialModule, BrowserAnimationsModule, RouterTestingModule],
+        imports: [CustomMaterialModule, BrowserAnimationsModule, RouterTestingModule, SearchWorkflowTableComponent],
         providers: [
           { provide: DockstoreService, useClass: DockstoreStubService },
           DateService,

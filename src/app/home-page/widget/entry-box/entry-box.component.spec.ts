@@ -34,7 +34,6 @@ describe('EntryBoxComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [EntryBoxComponent],
         schemas: [NO_ERRORS_SCHEMA],
         imports: [
           MatAutocompleteModule,
@@ -44,6 +43,7 @@ describe('EntryBoxComponent', () => {
           MatDialogModule,
           HttpClientTestingModule,
           MatSnackBarModule,
+          EntryBoxComponent,
         ],
         providers: [
           { provide: RegisterToolService, useClass: RegisterToolStubService },

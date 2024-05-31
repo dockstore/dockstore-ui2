@@ -7,6 +7,20 @@ import { ToolDescriptor } from './../../shared/openapi/model/toolDescriptor';
 import { WorkflowVersion } from './../../shared/openapi/model/workflowVersion';
 import { CodeEditorListService } from './code-editor-list.service';
 import { FileService } from 'app/shared/file.service';
+import { PrivateFilePathPipe } from '../entry/private-file-path.pipe';
+import { PublicFileDownloadPipe } from '../entry/public-file-download.pipe';
+import { CodeEditorComponent } from '../code-editor/code-editor.component';
+import { ClipboardModule } from '@angular/cdk/clipboard';
+import { SnackbarDirective } from '../snackbar.directive';
+import { MatIconModule } from '@angular/material/icon';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatLegacyInputModule } from '@angular/material/legacy-input';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { FormsModule } from '@angular/forms';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { NgIf, NgFor, AsyncPipe } from '@angular/common';
 
 export type FileCategory = 'descriptor' | 'dockerfile' | 'testParam';
 
@@ -14,6 +28,25 @@ export type FileCategory = 'descriptor' | 'dockerfile' | 'testParam';
   selector: 'app-code-editor-list',
   templateUrl: './code-editor-list.component.html',
   styleUrls: ['./code-editor-list.component.scss'],
+  standalone: true,
+  imports: [
+    NgIf,
+    MatLegacyCardModule,
+    NgFor,
+    MatToolbarModule,
+    FormsModule,
+    MatLegacyFormFieldModule,
+    MatLegacyInputModule,
+    MatLegacyButtonModule,
+    MatLegacyTooltipModule,
+    MatIconModule,
+    SnackbarDirective,
+    ClipboardModule,
+    CodeEditorComponent,
+    AsyncPipe,
+    PublicFileDownloadPipe,
+    PrivateFilePathPipe,
+  ],
 })
 export class CodeEditorListComponent {
   @Input() sourcefiles: SourceFile[];

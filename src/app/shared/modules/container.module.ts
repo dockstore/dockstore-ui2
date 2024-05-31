@@ -63,22 +63,6 @@ import { WorkflowModule } from './workflow.module';
 import { AiBubbleModule } from '../ai-bubble/ai-bubble.module';
 
 @NgModule({
-  declarations: [
-    ContainerComponent,
-    LaunchComponent,
-    VersionsContainerComponent,
-    ViewContainerComponent,
-    FilesContainerComponent,
-    DockerfileComponent,
-    DescriptorsComponent,
-    ParamfilesComponent,
-    ModalComponent,
-    ToolActionsComponent,
-    AddTagComponent,
-    VersionModalComponent,
-    InfoTabComponent,
-    ToolFileEditorComponent,
-  ],
   imports: [
     CommonModule,
     ClipboardModule,
@@ -101,6 +85,20 @@ import { AiBubbleModule } from '../ai-bubble/ai-bubble.module';
     CategoryButtonModule,
     WorkflowModule,
     AiBubbleModule,
+    ContainerComponent,
+    LaunchComponent,
+    VersionsContainerComponent,
+    ViewContainerComponent,
+    FilesContainerComponent,
+    DockerfileComponent,
+    DescriptorsComponent,
+    ParamfilesComponent,
+    ModalComponent,
+    ToolActionsComponent,
+    AddTagComponent,
+    VersionModalComponent,
+    InfoTabComponent,
+    ToolFileEditorComponent,
   ],
   providers: [
     EmailService,

@@ -18,11 +18,29 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { CheckerWorkflowQuery } from '../../state/checker-workflow.query';
+import { MatIconModule } from '@angular/material/icon';
+import { ClipboardModule } from '@angular/cdk/clipboard';
+import { SnackbarDirective } from '../../snackbar.directive';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { NgIf, AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-launch-checker-workflow',
   templateUrl: './launch-checker-workflow.component.html',
   styleUrls: ['./launch-checker-workflow.component.scss'],
+  standalone: true,
+  imports: [
+    NgIf,
+    MatLegacyCardModule,
+    MatLegacyTooltipModule,
+    MatLegacyButtonModule,
+    SnackbarDirective,
+    ClipboardModule,
+    MatIconModule,
+    AsyncPipe,
+  ],
 })
 export class LaunchCheckerWorkflowComponent {
   @Input() command: string;

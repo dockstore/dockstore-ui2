@@ -48,16 +48,6 @@ import { AppModule } from '../app.module';
 import { AiBubbleModule } from '../shared/ai-bubble/ai-bubble.module';
 
 @NgModule({
-  declarations: [
-    AdvancedSearchComponent,
-    SearchComponent,
-    SearchResultsComponent,
-    SearchToolTableComponent,
-    SearchWorkflowTableComponent,
-    SearchNotebookTableComponent,
-    BasicSearchComponent,
-    IsAppToolPipe,
-  ],
   imports: [
     CommonModule,
     CustomMaterialModule,
@@ -77,6 +67,14 @@ import { AiBubbleModule } from '../shared/ai-bubble/ai-bubble.module';
     TagCloudComponent,
     PreviewWarningModule,
     AiBubbleModule,
+    AdvancedSearchComponent,
+    SearchComponent,
+    SearchResultsComponent,
+    SearchToolTableComponent,
+    SearchWorkflowTableComponent,
+    SearchNotebookTableComponent,
+    BasicSearchComponent,
+    IsAppToolPipe,
   ],
   providers: [SearchService, QueryBuilderService, SearchAuthorsHtmlPipe, JoinWithEllipsesPipe],
   exports: [SearchComponent, IsAppToolPipe],

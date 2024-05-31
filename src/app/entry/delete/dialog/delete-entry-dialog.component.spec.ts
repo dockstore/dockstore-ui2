@@ -14,9 +14,8 @@ describe('DeleteEntryDialogComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [DeleteEntryDialogComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        imports: [CustomMaterialModule],
+        imports: [CustomMaterialModule, DeleteEntryDialogComponent],
         providers: [
           { provide: EntriesService, useClass: EntriesStubService },
           {

@@ -9,8 +9,15 @@ import {
   RequestsComponent,
 } from './requests/requests.component';
 @NgModule({
-  imports: [CommonModule, CustomMaterialModule, RouterModule, FlexLayoutModule],
-  declarations: [RequestsComponent, OrganizationRequestConfirmDialogComponent, OrganizationInviteConfirmDialogComponent],
+  imports: [
+    CommonModule,
+    CustomMaterialModule,
+    RouterModule,
+    FlexLayoutModule,
+    RequestsComponent,
+    OrganizationRequestConfirmDialogComponent,
+    OrganizationInviteConfirmDialogComponent,
+  ],
   exports: [RequestsComponent, OrganizationRequestConfirmDialogComponent, OrganizationInviteConfirmDialogComponent],
 })
 export class RequestsModule {}

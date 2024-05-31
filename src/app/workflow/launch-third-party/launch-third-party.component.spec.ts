@@ -22,8 +22,7 @@ describe('LaunchThirdPartyComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [LaunchThirdPartyComponent],
-        imports: [CustomMaterialModule, HttpClientModule, HttpClientTestingModule],
+        imports: [CustomMaterialModule, HttpClientModule, HttpClientTestingModule, LaunchThirdPartyComponent],
         providers: [
           GA4GHFilesService,
           GA4GHV20Service,

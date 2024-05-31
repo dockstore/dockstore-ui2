@@ -32,13 +32,12 @@ describe('InfoTabCheckerWorkflowPathComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [FormsModule, RouterTestingModule, MatDialogModule, CustomMaterialModule],
+        imports: [FormsModule, RouterTestingModule, MatDialogModule, CustomMaterialModule, InfoTabCheckerWorkflowPathComponent],
         providers: [
           { provide: CheckerWorkflowService, useClass: CheckerWorkflowStubService },
           { provide: RegisterCheckerWorkflowService, useClass: RegisterCheckerWorkflowStubService },
           { provide: EntryTypeMetadataService, useClass: EntryTypeMetadataStubService },
         ],
-        declarations: [InfoTabCheckerWorkflowPathComponent],
         schemas: [CUSTOM_ELEMENTS_SCHEMA],
       }).compileComponents();
     })

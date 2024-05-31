@@ -24,8 +24,7 @@ import { OrganizationStarringService } from '../organization-starring/organizati
 import { OrganizationStargazersComponent } from './organization-stargazers.component';
 
 @NgModule({
-  imports: [CommonModule, FlexLayoutModule, CustomMaterialModule, RouterModule],
-  declarations: [OrganizationStargazersComponent],
+  imports: [CommonModule, FlexLayoutModule, CustomMaterialModule, RouterModule, OrganizationStargazersComponent],
   exports: [OrganizationStargazersComponent],
   providers: [OrganizationStarringService, StarOrganizationService],
 })

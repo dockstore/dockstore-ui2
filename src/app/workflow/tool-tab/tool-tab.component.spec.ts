@@ -31,8 +31,7 @@ describe('ToolTabComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [ToolTabComponent],
-        imports: [FormsModule, CustomMaterialModule, RefreshAlertModule, HttpClientTestingModule],
+        imports: [FormsModule, CustomMaterialModule, RefreshAlertModule, HttpClientTestingModule, ToolTabComponent],
         providers: [
           { provide: WorkflowService, useClass: WorkflowStubService },
           { provide: WorkflowsService, useClass: WorkflowsStubService },

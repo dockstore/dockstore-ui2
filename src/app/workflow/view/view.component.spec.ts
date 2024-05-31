@@ -44,8 +44,7 @@ describe('ViewWorkflowComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [CustomMaterialModule, HttpClientTestingModule],
-        declarations: [ViewWorkflowComponent],
+        imports: [CustomMaterialModule, HttpClientTestingModule, ViewWorkflowComponent],
         providers: [
           { provide: ViewService },
           { provide: AccountsService, useClass: AccountsStubService },

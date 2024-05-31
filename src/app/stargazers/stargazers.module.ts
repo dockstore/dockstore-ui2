@@ -25,8 +25,7 @@ import { CustomMaterialModule } from './../shared/modules/material.module';
 import { StargazersComponent } from './stargazers.component';
 
 @NgModule({
-  imports: [CommonModule, FlexLayoutModule, MatIconModule, CustomMaterialModule, RouterModule],
-  declarations: [StargazersComponent],
+  imports: [CommonModule, FlexLayoutModule, MatIconModule, CustomMaterialModule, RouterModule, StargazersComponent],
   exports: [StargazersComponent],
   providers: [StarringService, StarentryService],
 })

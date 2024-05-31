@@ -36,7 +36,6 @@ import { WorkflowModule } from '../shared/modules/workflow.module';
 import { MySidebarModule } from '../shared/modules/my-sidebar.module';
 
 @NgModule({
-  declarations: [MyToolsComponent, RefreshToolOrganizationComponent, MyToolComponent, SidebarAccordionComponent],
   imports: [
     CommonModule,
     ContainerModule,
@@ -50,6 +49,10 @@ import { MySidebarModule } from '../shared/modules/my-sidebar.module';
     SharedWorkflowServicesNotebooksModule,
     WorkflowModule,
     MySidebarModule,
+    MyToolsComponent,
+    RefreshToolOrganizationComponent,
+    MyToolComponent,
+    SidebarAccordionComponent,
   ],
   providers: [RegisterToolService, AccountsService, MytoolsService, IsAppToolPipe],
 })

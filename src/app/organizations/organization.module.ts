@@ -37,8 +37,8 @@ import { PreviewWarningModule } from '../shared/modules/preview-warning.module';
     MarkdownWrapperModule,
     ImgFallbackModule,
     PreviewWarningModule,
+    OrganizationComponent,
   ],
-  declarations: [OrganizationComponent],
   exports: [OrganizationComponent],
 })
 export class OrganizationModule {}

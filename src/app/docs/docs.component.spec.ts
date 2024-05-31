@@ -30,8 +30,8 @@ describe('DocsComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [DocsComponent, RouterLinkStubDirective, RouterOutletStubComponent],
-        imports: [HeaderModule],
+        declarations: [RouterLinkStubDirective, RouterOutletStubComponent],
+        imports: [HeaderModule, DocsComponent],
       }).compileComponents();
     })
   );

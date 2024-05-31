@@ -1,5 +1,9 @@
 import { Component, Inject } from '@angular/core';
-import { MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
+import {
+  MatLegacyDialogRef as MatDialogRef,
+  MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
+  MatLegacyDialogModule,
+} from '@angular/material/legacy-dialog';
 import { Router } from '@angular/router';
 import { faOrcid } from '@fortawesome/free-brands-svg-icons';
 import { concat, Observable, of as observableOf, throwError } from 'rxjs';
@@ -10,6 +14,11 @@ import { Dockstore } from '../../shared/dockstore.model';
 import { TokenQuery } from '../../shared/state/token.query';
 import { BioWorkflow, WorkflowVersion } from '../../shared/openapi';
 import { SnapshotExporterModalService } from './snapshot-exporter-modal.service';
+import { MatIconModule } from '@angular/material/icon';
+import { ExporterStepComponent } from './exporter-step/exporter-step.component';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { NgSwitch, NgSwitchCase, NgIf, NgTemplateOutlet, NgSwitchDefault, AsyncPipe } from '@angular/common';
 
 export enum SnapshotExporterAction {
   SNAPSHOT,
@@ -41,6 +50,20 @@ export interface State {
 @Component({
   selector: 'app-snapshot-exporter-modal-component',
   templateUrl: './snaphot-exporter-modal.component.html',
+  standalone: true,
+  imports: [
+    MatLegacyDialogModule,
+    NgSwitch,
+    NgSwitchCase,
+    NgIf,
+    NgTemplateOutlet,
+    FlexModule,
+    MatLegacyButtonModule,
+    NgSwitchDefault,
+    ExporterStepComponent,
+    MatIconModule,
+    AsyncPipe,
+  ],
 })
 export class SnaphotExporterModalComponent extends Base {
   public hasZenodoToken$: Observable<boolean> = this.tokenQuery.hasZenodoToken$;

@@ -45,6 +45,8 @@ import { DescriptorLanguageService } from '../../shared/entry/descriptor-languag
 @Component({
   selector: 'app-view-workflow',
   template: '<p>App View Component</p>',
+  standalone: true,
+  imports: [CustomMaterialModule, FormsModule, FontAwesomeModule, HttpClientTestingModule],
 })
 class MockViewWorkflowComponent {
   @Input() versions;
@@ -59,6 +61,8 @@ class MockViewWorkflowComponent {
 @Component({
   selector: 'app-version-modal',
   template: '<p>Version Modal Component</p>',
+  standalone: true,
+  imports: [CustomMaterialModule, FormsModule, FontAwesomeModule, HttpClientTestingModule],
 })
 class MockVersionModalComponent {
   @Input() canRead;
@@ -72,8 +76,12 @@ describe('VersionsWorkflowComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [CustomMaterialModule, FormsModule, FontAwesomeModule, BrowserAnimationsModule, HttpClientTestingModule],
-        declarations: [
+        imports: [
+          CustomMaterialModule,
+          FormsModule,
+          FontAwesomeModule,
+          BrowserAnimationsModule,
+          HttpClientTestingModule,
           VersionsWorkflowComponent,
           OrderBy,
           CommitUrlPipe,

@@ -21,13 +21,12 @@ describe('SnapshotDoiOrcidComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SnaphotExporterModalComponent],
-      imports: [MatSnackBarModule, HttpClientTestingModule, RouterTestingModule, MatIconModule],
+      imports: [MatSnackBarModule, HttpClientTestingModule, RouterTestingModule, MatIconModule, SnaphotExporterModalComponent],
       providers: [
         {
           provide: MAT_DIALOG_DATA,
           useValue: {
-            workflow: { entryTypeMetadata: { term: 'workflow' } }, // simulation of a Workflow
+            workflow: { entryTypeMetadata: { term: 'workflow' } },
             version: {
               frozen: false,
               versionMetadata: {

@@ -19,8 +19,7 @@ import { CustomMaterialModule } from 'app/shared/modules/material.module';
 import { PreviewWarningComponent } from '../../preview-warning/preview-warning.component';
 
 @NgModule({
-  declarations: [PreviewWarningComponent],
-  imports: [CustomMaterialModule],
+  imports: [CustomMaterialModule, PreviewWarningComponent],
   exports: [PreviewWarningComponent],
 })
 export class PreviewWarningModule {}

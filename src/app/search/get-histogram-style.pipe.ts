@@ -2,6 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
   name: 'getHistogramStyle',
+  standalone: true,
 })
 export class GetHistogramStylePipe implements PipeTransform {
   /**

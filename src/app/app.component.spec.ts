@@ -9,36 +9,60 @@ import { TrackLoginService } from './shared/track-login.service';
 import { TosBannerStubService, TrackLoginStubService } from './test/service-stubs';
 import { TosBannerService } from './tosBanner/state/tos-banner.service';
 
-@Component({ selector: 'app-banner', template: '' })
+@Component({
+  selector: 'app-banner',
+  template: '',
+  standalone: true,
+  imports: [RouterTestingModule, MatSnackBarModule],
+})
 class BannerStubComponent {}
 
-@Component({ selector: 'app-navbar', template: '' })
+@Component({
+  selector: 'app-navbar',
+  template: '',
+  standalone: true,
+  imports: [RouterTestingModule, MatSnackBarModule],
+})
 class NavbarStubComponent {}
 
-@Component({ selector: 'app-footer', template: '' })
+@Component({
+  selector: 'app-footer',
+  template: '',
+  standalone: true,
+  imports: [RouterTestingModule, MatSnackBarModule],
+})
 class FooterStubComponent {}
 
-@Component({ selector: 'app-tos-banner', template: '' })
+@Component({
+  selector: 'app-tos-banner',
+  template: '',
+  standalone: true,
+  imports: [RouterTestingModule, MatSnackBarModule],
+})
 class TosBannerStubComponent {}
 
-@Component({ selector: 'app-sitewide-notifications', template: '' })
+@Component({
+  selector: 'app-sitewide-notifications',
+  template: '',
+  standalone: true,
+  imports: [RouterTestingModule, MatSnackBarModule],
+})
 class NotificationStubComponent {}
 
 describe('AppComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [
-          AppComponent,
+        declarations: [AppComponent, RouterLinkStubDirective, RouterOutletStubComponent],
+        imports: [
+          RouterTestingModule,
+          MatSnackBarModule,
           NavbarStubComponent,
           FooterStubComponent,
           BannerStubComponent,
-          RouterLinkStubDirective,
-          RouterOutletStubComponent,
           TosBannerStubComponent,
           NotificationStubComponent,
         ],
-        imports: [RouterTestingModule, MatSnackBarModule],
         providers: [
           { provide: TrackLoginService, useClass: TrackLoginStubService },
           { provide: TosBannerService, useClass: TosBannerStubService },

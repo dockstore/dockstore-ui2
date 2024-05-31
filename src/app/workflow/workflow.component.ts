@@ -14,9 +14,20 @@
  *    limitations under the License.
  */
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { Location } from '@angular/common';
+import {
+  Location,
+  NgIf,
+  NgFor,
+  NgClass,
+  NgSwitch,
+  NgSwitchCase,
+  NgSwitchDefault,
+  NgTemplateOutlet,
+  AsyncPipe,
+  DatePipe,
+} from '@angular/common';
 import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
-import { MatLegacyChipInputEvent as MatChipInputEvent } from '@angular/material/legacy-chips';
+import { MatLegacyChipInputEvent as MatChipInputEvent, MatLegacyChipsModule } from '@angular/material/legacy-chips';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertService } from 'app/shared/alert/state/alert.service';
@@ -63,12 +74,91 @@ import { UrlResolverService } from '../shared/url-resolver.service';
 import { Title } from '@angular/platform-browser';
 import { EntryCategoriesService } from '../categories/state/entry-categories.service';
 import RoleEnum = Permission.RoleEnum;
-import { FormControl } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BaseUrlPipe } from '../shared/entry/base-url.pipe';
+import { ShareButtonsModule } from 'ngx-sharebuttons/buttons';
+import { VerifiedByComponent } from '../shared/entry/verified-by/verified-by.component';
+import { CurrentCollectionsComponent } from '../entry/current-collections/current-collections.component';
+import { MatDividerModule } from '@angular/material/divider';
+import { LaunchThirdPartyComponent } from './launch-third-party/launch-third-party.component';
+import { PermissionsComponent } from './permissions/permissions.component';
+import { ExecutionsTabComponent } from './executions/executions-tab.component';
+import { DagComponent } from './dag/dag.component';
+import { ToolTabComponent } from './tool-tab/tool-tab.component';
+import { WorkflowFileEditorComponent } from './workflow-file-editor/workflow-file-editor.component';
+import { SourceFileTabsComponent } from '../source-file-tabs/source-file-tabs.component';
+import { VersionsWorkflowComponent } from './versions/versions.component';
+import { LaunchWorkflowComponent } from './launch/launch.component';
+import { NotebookComponent } from '../notebook/notebook.component';
+import { InfoTabComponent } from './info-tab/info-tab.component';
+import { MatLegacyTabsModule } from '@angular/material/legacy-tabs';
+import { StargazersComponent } from '../stargazers/stargazers.component';
+import { CategoryButtonComponent } from '../categories/button/category-button.component';
+import { WorkflowActionsComponent } from '../shared/entry-actions/workflow-actions.component';
+import { StarringComponent } from '../starring/starring.component';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
+import { JsonLdComponent } from '../shared/json-ld/json-ld.component';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatLegacyCardModule } from '@angular/material/legacy-card';
 
 @Component({
   selector: 'app-workflow',
   templateUrl: './workflow.component.html',
   styleUrls: ['../shared/styles/workflow-container.component.scss'],
+  standalone: true,
+  imports: [
+    NgIf,
+    MatLegacyCardModule,
+    MatIconModule,
+    MatLegacyButtonModule,
+    MatLegacyTooltipModule,
+    FlexModule,
+    JsonLdComponent,
+    ExtendedModule,
+    MatLegacyChipsModule,
+    MatLegacyFormFieldModule,
+    MatLegacySelectModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatLegacyOptionModule,
+    NgxMatSelectSearchModule,
+    NgFor,
+    StarringComponent,
+    WorkflowActionsComponent,
+    CategoryButtonComponent,
+    StargazersComponent,
+    NgClass,
+    MatLegacyTabsModule,
+    InfoTabComponent,
+    NotebookComponent,
+    LaunchWorkflowComponent,
+    VersionsWorkflowComponent,
+    NgSwitch,
+    NgSwitchCase,
+    NgSwitchDefault,
+    NgTemplateOutlet,
+    SourceFileTabsComponent,
+    WorkflowFileEditorComponent,
+    ToolTabComponent,
+    DagComponent,
+    ExecutionsTabComponent,
+    PermissionsComponent,
+    LaunchThirdPartyComponent,
+    MatDividerModule,
+    CurrentCollectionsComponent,
+    VerifiedByComponent,
+    ShareButtonsModule,
+    AsyncPipe,
+    DatePipe,
+    BaseUrlPipe,
+  ],
 })
 export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterViewInit, OnInit {
   workflowEditData: any;

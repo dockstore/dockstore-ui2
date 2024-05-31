@@ -9,8 +9,16 @@ import { RouterModule } from '@angular/router';
 import { UserPageRouting } from './user-page.routing';
 
 @NgModule({
-  declarations: [UserPageComponent],
-  imports: [RecentEventsModule, FlexLayoutModule, CommonModule, CustomMaterialModule, HeaderModule, RouterModule, UserPageRouting],
+  imports: [
+    RecentEventsModule,
+    FlexLayoutModule,
+    CommonModule,
+    CustomMaterialModule,
+    HeaderModule,
+    RouterModule,
+    UserPageRouting,
+    UserPageComponent,
+  ],
   exports: [UserPageComponent],
 })
 export class UserPageModule {}

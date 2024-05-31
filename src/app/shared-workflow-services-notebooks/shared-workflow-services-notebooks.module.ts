@@ -64,8 +64,7 @@ const IMPORTS = [
  * @class SharedWorkflowServicesNotebooksModule
  */
 @NgModule({
-  declarations: DECLARATIONS,
-  imports: IMPORTS,
+  imports: [...IMPORTS, ...DECLARATIONS],
   providers: [MyWorkflowsService],
   exports: [DECLARATIONS.concat(IMPORTS), SidebarAccordionComponent],
 })

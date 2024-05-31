@@ -21,8 +21,7 @@ import { CustomMaterialModule } from '../../shared/modules/material.module';
 import { CategoryButtonComponent } from './category-button.component';
 
 @NgModule({
-  declarations: [CategoryButtonComponent],
-  imports: [CommonModule, RouterModule, CustomMaterialModule],
+  imports: [CommonModule, RouterModule, CustomMaterialModule, CategoryButtonComponent],
   exports: [CategoryButtonComponent],
 })
 export class CategoryButtonModule {}

@@ -61,8 +61,6 @@ import { SharedWorkflowServicesNotebooksModule } from '../shared-workflow-servic
     PreviewWarningModule,
     RegisterGithubAppModule,
     SharedWorkflowServicesNotebooksModule,
-  ],
-  declarations: [
     HomeComponent,
     FeaturedContentComponent,
     NewsAndUpdatesComponent,

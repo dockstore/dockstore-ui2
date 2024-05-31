@@ -14,9 +14,8 @@ describe('ArchiveEntryDialogComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [ArchiveEntryDialogComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        imports: [CustomMaterialModule],
+        imports: [CustomMaterialModule, ArchiveEntryDialogComponent],
         providers: [
           { provide: EntriesService, useClass: EntriesStubService },
           {

@@ -14,8 +14,7 @@ describe('PermissionsComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [PermissionsComponent],
-        imports: [CustomMaterialModule],
+        imports: [CustomMaterialModule, PermissionsComponent],
         providers: [
           { provide: WorkflowsService, useClass: WorkflowsStubService },
           { provide: TokenService, useClass: TokenStubService },

@@ -16,9 +16,8 @@ describe('DeleteAccountDialogComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [DeleteAccountDialogComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        imports: [CustomMaterialModule, ReactiveFormsModule],
+        imports: [CustomMaterialModule, ReactiveFormsModule, DeleteAccountDialogComponent],
         providers: [
           { provide: LogoutService, useClass: LogoutStubService },
           { provide: UsersService, useClass: UsersStubService },

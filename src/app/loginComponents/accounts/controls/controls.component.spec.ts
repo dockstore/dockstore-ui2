@@ -17,8 +17,7 @@ describe('ControlsComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [ControlsComponent, ChangeUsernameComponent],
-        imports: [CustomMaterialModule, BrowserAnimationsModule, ReactiveFormsModule],
+        imports: [CustomMaterialModule, BrowserAnimationsModule, ReactiveFormsModule, ControlsComponent, ChangeUsernameComponent],
         providers: [
           { provide: UserService, useClass: UserStubService },
           { provide: UsersService, useClass: UsersStubService },

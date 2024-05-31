@@ -21,8 +21,7 @@ import { CustomMaterialModule } from 'app/shared/modules/material.module';
 import { RouterModule } from '@angular/router';
 
 @NgModule({
-  declarations: [MySidebarComponent],
-  imports: [CommonModule, CustomMaterialModule, RouterModule],
+  imports: [CommonModule, CustomMaterialModule, RouterModule, MySidebarComponent],
   providers: [],
   exports: [MySidebarComponent],
 })

@@ -19,9 +19,16 @@ describe('DashboardComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [DashboardComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        imports: [RouterTestingModule, MatButtonModule, MatIconModule, MatDialogModule, HttpClientTestingModule, MatSnackBarModule],
+        imports: [
+          RouterTestingModule,
+          MatButtonModule,
+          MatIconModule,
+          MatDialogModule,
+          HttpClientTestingModule,
+          MatSnackBarModule,
+          DashboardComponent,
+        ],
         providers: [MastodonService, RegisterToolService, { provide: ContainerService, useClass: ContainerStubService }],
       }).compileComponents();
     })

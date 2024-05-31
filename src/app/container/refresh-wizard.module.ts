@@ -7,8 +7,7 @@ import { FlexLayoutModule } from '@ngbracket/ngx-layout';
 import { RefreshWizardComponent } from './refresh-wizard/refresh-wizard.component';
 
 @NgModule({
-  imports: [CommonModule, RefreshAlertModule, CustomMaterialModule, FlexLayoutModule],
-  declarations: [RefreshWizardComponent],
+  imports: [CommonModule, RefreshAlertModule, CustomMaterialModule, FlexLayoutModule, RefreshWizardComponent],
   exports: [RefreshWizardComponent],
 })
 export class RefreshWizardModule {}

@@ -35,18 +35,24 @@ import { SearchService } from './state/search.service';
 @Component({
   selector: 'app-search-results',
   template: '',
+  standalone: true,
+  imports: [CustomMaterialModule, ClipboardModule, FontAwesomeModule, RouterTestingModule, MatSnackBarModule],
 })
 class SearchResultsComponent {}
 
 @Component({
   selector: 'app-basic-search',
   template: '',
+  standalone: true,
+  imports: [CustomMaterialModule, ClipboardModule, FontAwesomeModule, RouterTestingModule, MatSnackBarModule],
 })
 class BasicSearchComponent {}
 
 @Component({
   selector: 'app-header',
   template: '',
+  standalone: true,
+  imports: [CustomMaterialModule, ClipboardModule, FontAwesomeModule, RouterTestingModule, MatSnackBarModule],
 })
 class HeaderComponent {}
 
@@ -59,7 +65,6 @@ describe('SearchComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [SearchComponent, MapFriendlyValuesPipe, HeaderComponent, BasicSearchComponent, SearchResultsComponent],
         imports: [
           BrowserAnimationsModule,
           CustomMaterialModule,
@@ -67,6 +72,11 @@ describe('SearchComponent', () => {
           FontAwesomeModule,
           RouterTestingModule,
           MatSnackBarModule,
+          SearchComponent,
+          MapFriendlyValuesPipe,
+          HeaderComponent,
+          BasicSearchComponent,
+          SearchResultsComponent,
         ],
         providers: [
           { provide: SearchService, useClass: SearchStubService },

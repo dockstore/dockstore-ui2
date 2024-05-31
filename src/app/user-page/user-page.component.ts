@@ -14,11 +14,39 @@ import { UserQuery } from '../shared/user/user.query';
 import { Base } from '../shared/base';
 import { AccountInfo } from '../loginComponents/accounts/external/accounts.component';
 import { UrlResolverService } from '../shared/url-resolver.service';
+import { RecentEventsComponent } from '../home-page/recent-events/recent-events.component';
+import { MatLegacyTabsModule } from '@angular/material/legacy-tabs';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatLineModule } from '@angular/material/core';
+import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { NgIf, NgFor } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
+import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { HeaderComponent } from '../header/header.component';
 
 @Component({
   selector: 'app-user-page',
   templateUrl: './user-page.component.html',
   styleUrls: ['./user-page.component.scss'],
+  standalone: true,
+  imports: [
+    HeaderComponent,
+    FlexModule,
+    ExtendedModule,
+    MatIconModule,
+    NgIf,
+    MatLegacyCardModule,
+    MatLineModule,
+    MatBadgeModule,
+    MatLegacyButtonModule,
+    MatLegacyTooltipModule,
+    MatLegacyTabsModule,
+    RecentEventsComponent,
+    NgFor,
+  ],
 })
 export class UserPageComponent extends Base implements OnInit {
   public user: User;

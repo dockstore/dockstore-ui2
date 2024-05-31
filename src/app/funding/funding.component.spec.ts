@@ -14,8 +14,7 @@ describe('FundingComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [HeaderModule, MatDividerModule, MatLegacyCardModule],
-        declarations: [FundingComponent],
+        imports: [HeaderModule, MatDividerModule, MatLegacyCardModule, FundingComponent],
       }).compileComponents();
     })
   );

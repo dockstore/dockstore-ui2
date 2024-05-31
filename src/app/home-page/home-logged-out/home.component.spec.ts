@@ -30,9 +30,8 @@ describe('HomeComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [HomeComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        imports: [CustomMaterialModule, RouterTestingModule, HttpClientTestingModule, BrowserAnimationsModule],
+        imports: [CustomMaterialModule, RouterTestingModule, HttpClientTestingModule, BrowserAnimationsModule, HomeComponent],
         providers: [MastodonService, DescriptorLanguageService],
       }).compileComponents();
     })

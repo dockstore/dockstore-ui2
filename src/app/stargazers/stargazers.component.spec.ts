@@ -30,8 +30,7 @@ describe('StargazersComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [StargazersComponent],
-        imports: [MatIconModule, MatCardModule],
+        imports: [MatIconModule, MatCardModule, StargazersComponent],
         providers: [
           { provide: UserService, useClass: UserStubService },
           { provide: StarringService, useClass: StarringStubService },

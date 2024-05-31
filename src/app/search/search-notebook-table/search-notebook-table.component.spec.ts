@@ -18,9 +18,8 @@ describe('SearchNotebookTableComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [SearchNotebookTableComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        imports: [CustomMaterialModule, BrowserAnimationsModule, RouterTestingModule],
+        imports: [CustomMaterialModule, BrowserAnimationsModule, RouterTestingModule, SearchNotebookTableComponent],
         providers: [
           { provide: DockstoreService, useClass: DockstoreStubService },
           DateService,

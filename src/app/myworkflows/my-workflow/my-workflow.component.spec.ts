@@ -63,9 +63,16 @@ describe('MyWorkflowsComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [MyWorkflowComponent, RouterLinkStubDirective, RouterOutletStubComponent],
+        declarations: [RouterLinkStubDirective, RouterOutletStubComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        imports: [RouterTestingModule, HttpClientTestingModule, BrowserAnimationsModule, CustomMaterialModule, MyEntriesModule],
+        imports: [
+          RouterTestingModule,
+          HttpClientTestingModule,
+          BrowserAnimationsModule,
+          CustomMaterialModule,
+          MyEntriesModule,
+          MyWorkflowComponent,
+        ],
         providers: [
           { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
           { provide: MetadataService, useClass: MetadataStubService },

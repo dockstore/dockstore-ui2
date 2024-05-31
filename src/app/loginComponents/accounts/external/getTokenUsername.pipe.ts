@@ -4,6 +4,7 @@ import { TokenUser } from './../../../shared/openapi/model/tokenUser';
 
 @Pipe({
   name: 'getTokenUsername',
+  standalone: true,
 })
 export class GetTokenUsernamePipe implements PipeTransform {
   /**

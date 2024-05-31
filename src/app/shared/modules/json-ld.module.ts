@@ -21,7 +21,7 @@ import { NgModule } from '@angular/core';
 import { JsonLdComponent } from '../json-ld/json-ld.component';
 
 @NgModule({
-  declarations: [JsonLdComponent],
+  imports: [JsonLdComponent],
   exports: [JsonLdComponent],
 })
 export class JsonLdModule {}

@@ -20,8 +20,7 @@ import { MarkdownWrapperComponent } from '../markdown-wrapper/markdown-wrapper.c
 import { MarkdownWrapperService } from '../markdown-wrapper/markdown-wrapper.service';
 
 @NgModule({
-  declarations: [MarkdownWrapperComponent],
-  imports: [CommonModule, MarkdownModule],
+  imports: [CommonModule, MarkdownModule, MarkdownWrapperComponent],
   providers: [MarkdownWrapperService],
   exports: [MarkdownWrapperComponent],
 })

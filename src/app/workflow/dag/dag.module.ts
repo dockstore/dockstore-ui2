@@ -37,8 +37,9 @@ import { DagComponent } from './dag.component';
     MatTooltipModule,
     CustomMaterialModule,
     RefreshAlertModule,
+    DagComponent,
+    CwlViewerComponent,
   ],
-  declarations: [DagComponent, CwlViewerComponent],
   exports: [DagComponent],
 })
 export class DagModule {}

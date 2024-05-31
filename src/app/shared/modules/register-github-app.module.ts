@@ -17,7 +17,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { EntryModule } from '../entry/entry.module';
 
 @NgModule({
-  declarations: [RegisterGithubAppComponent, GithubLandingPageComponent],
   exports: [RegisterGithubAppComponent],
   imports: [
     CommonModule,
@@ -34,6 +33,8 @@ import { EntryModule } from '../entry/entry.module';
     MatOptionModule,
     ReactiveFormsModule,
     EntryModule,
+    RegisterGithubAppComponent,
+    GithubLandingPageComponent,
   ],
 })
 export class RegisterGithubAppModule {}

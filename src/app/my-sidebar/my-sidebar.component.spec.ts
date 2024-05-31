@@ -7,7 +7,7 @@ describe('MySidebarComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [MySidebarComponent],
+      imports: [MySidebarComponent],
     }).compileComponents();
   });
 

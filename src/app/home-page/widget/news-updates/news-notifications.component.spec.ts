@@ -10,8 +10,7 @@ describe('NewsNotificationsComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [NewsNotificationsComponent],
-        imports: [MarkdownModule, HttpClientTestingModule],
+        imports: [MarkdownModule, HttpClientTestingModule, NewsNotificationsComponent],
       }).compileComponents();
     })
   );

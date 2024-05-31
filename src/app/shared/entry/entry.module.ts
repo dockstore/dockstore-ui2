@@ -56,8 +56,6 @@ import { VersionProviderUrlPipe } from './versionProviderUrl.pipe';
     ReactiveFormsModule,
     RefreshAlertModule,
     SnackbarModule,
-  ],
-  declarations: [
     InfoTabCheckerWorkflowPathComponent,
     RegisterCheckerWorkflowComponent,
     LaunchCheckerWorkflowComponent,

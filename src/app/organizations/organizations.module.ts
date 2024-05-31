@@ -26,7 +26,7 @@ import { RegisterOrganizationModule } from './register-organization.module';
     UpdateOrganizationDescriptionModule,
     ImgFallbackModule,
     PipeModule,
+    OrganizationsComponent,
   ],
-  declarations: [OrganizationsComponent],
 })
 export class OrganizationsModule {}
