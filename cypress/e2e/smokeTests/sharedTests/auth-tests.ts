@@ -188,138 +188,135 @@ function toggleHiddenWorkflowVersion() {
   cy.contains('button', 'Save Changes').click();
 }
 
-function testTool(registry: string, repo: string, name: string) {
-  describe('Register, publish, unpublish, and delete a tool', () => {
-    registerQuayTool(repo, name);
-    unpublishTool();
-    deleteTool();
-
-    registerRemoteSitesTool(repo, name);
-    unpublishTool();
-    deleteTool();
-
-    registerToolOnDockstore(repo, name);
-    deleteTool();
+describe('add entry to and remove from collection', () => {
+  const repo = toolTuple[1];
+  const name = toolTuple[2];
+  const org = collectionTuple[0];
+  const collection = collectionTuple[1];
+  registerQuayTool(repo, name);
+  it('be able to add an entry to the collection ' + collection, () => {
+    storeToken();
+    // define routes to watch for
+    cy.intercept('post', '**/collections/**').as('postToCollection');
+    cy.visit(`/containers/quay.io/${repo}/${name}:develop?tab=info`);
+    cy.get('#addToolToCollectionButton').should('be.visible').click();
+    cy.get('#addEntryToCollectionButton').should('be.disabled');
+    cy.get('#selectOrganization').should('be.visible').click();
+    cy.get('mat-option').contains(org).should('be.visible').click();
+    cy.get('#addEntryToCollectionButton').should('be.disabled');
+    cy.get('#selectCollection').should('be.visible').click();
+    cy.get('mat-option').contains(collection).click();
+    cy.get('#addEntryToCollectionButton').should('not.be.disabled').click();
+    cy.wait('@postToCollection');
+    cy.get('#addEntryToCollectionButton').should('not.exist');
+    cy.get('mat-progress-bar').should('not.exist');
   });
 
-  describe('Hide and un-hide a tool version', () => {
-    registerQuayTool(repo, name);
-    it('hide a version', () => {
-      storeToken();
-      cy.visit('/my-tools');
-      goToTab('Versions');
-      toggleHiddenToolVersion();
-      cy.get('[data-cy=hiddenCheck]').should('have.length', 1);
-      // un-hide and verify
-      toggleHiddenToolVersion();
-      cy.get('[data-cy=hiddenCheck]').should('not.exist');
-    });
-    it('refresh namespace', () => {
-      storeToken();
-      cy.visit('/my-tools');
-      cy.contains('button', 'Refresh Namespace').first().click();
-      // check that the 'refresh succeeded' message appears
-      cy.contains('succeeded');
-    });
-    unpublishTool();
-    deleteTool();
+  it('be able to remove an entry from a collection ' + collection, () => {
+    storeToken();
+    cy.visit(`/organizations/${org}/collections/${collection}`);
+    cy.contains(`quay.io/${repo}/${name}`);
+    cy.get('#removeEntryButton').should('be.visible').click();
+    cy.get('[data-cy=accept-remove-entry-from-org]').should('be.visible').click();
+    cy.contains('This collection has no associated entries');
+    cy.visit(`/organizations/${org}`);
+    cy.contains('Members').should('be.visible');
+
+    cy.intercept('**/tokens').as('tokens');
+    cy.visit('/my-tools');
+    cy.wait('@tokens');
   });
-}
+  unpublishTool();
+  deleteTool();
+});
+describe('Register, publish, unpublish, and delete a tool', () => {
+  const repo = toolTuple[1];
+  const name = toolTuple[2];
+  registerQuayTool(repo, name);
+  unpublishTool();
+  deleteTool();
 
-function testWorkflow(registry: string, repo: string, name: string) {
-  describe('Refresh, publish, unpublish, and restub a workflow', () => {
-    it('refresh and publish', () => {
-      storeToken();
+  registerRemoteSitesTool(repo, name);
+  unpublishTool();
+  deleteTool();
 
-      // define routes to watch for
-      cy.intercept('**/tokens').as('tokens');
-      cy.intercept('**/workflows/path/workflow/**').as('workflow');
+  registerToolOnDockstore(repo, name);
+  deleteTool();
+});
 
-      cy.visit(`/my-workflows`);
-      cy.wait('@tokens');
-      cy.wait('@workflow');
-
-      //  refresh stubbed workflow to full and publish
-      cy.intercept('**/refresh?hardRefresh=false').as('refresh');
-      cy.get('[data-cy=refreshButton]').click();
-      cy.wait('@refresh');
-      cy.intercept('post', '**/publish').as('publish');
-      cy.contains('button', 'Publish').should('be.enabled').click();
-      cy.wait('@publish');
-
-      // Test some snapshot and versions stuff
-      // WARNING: don't actually snapshot since it can't be undone
-      // define routes to watch for
-
-      goToTab('Versions');
-
-      cy.contains('button', 'Actions').should('be.visible');
-      cy.contains('td', 'Actions').first().click();
-      cy.get('.mat-menu-content').within(() => {
-        cy.contains('button', 'Snapshot');
-        cy.contains('button', 'Edit').click();
-      });
-      cy.contains('button', 'Cancel').click();
-
-      storeToken();
-      cy.get('#publishButton').contains('Unpublish').click({ force: true });
-
-      goToTab('Info');
-      cy.contains('button', 'Restub').click();
-      cy.contains('button', 'Publish').should('be.disabled');
-
-      cy.get('[data-cy=refreshButton]').click();
-      goToTab('Versions');
-      // hide
-      toggleHiddenWorkflowVersion();
-      cy.get('[data-cy=hidden]').should('have.length', 1);
-      // un-hide
-      toggleHiddenWorkflowVersion();
-      cy.get('[data-cy=hidden]').should('not.exist');
-    });
+describe('Hide and un-hide a tool version', () => {
+  const repo = toolTuple[1];
+  const name = toolTuple[2];
+  registerQuayTool(repo, name);
+  it('hide a version', () => {
+    storeToken();
+    cy.visit('/my-tools');
+    goToTab('Versions');
+    toggleHiddenToolVersion();
+    cy.get('[data-cy=hiddenCheck]').should('have.length', 1);
+    // un-hide and verify
+    toggleHiddenToolVersion();
+    cy.get('[data-cy=hiddenCheck]').should('not.exist');
   });
-}
-
-function testCollection(org: string, collection: string, registry: string, repo: string, name: string) {
-  describe('add entry to and remove from collection', () => {
-    registerQuayTool(repo, name);
-    it('be able to add an entry to the collection', () => {
-      storeToken();
-      // define routes to watch for
-      cy.intercept('post', '**/collections/**').as('postToCollection');
-      cy.visit(`/containers/quay.io/${repo}/${name}:develop?tab=info`);
-      cy.get('#addToolToCollectionButton').should('be.visible').click();
-      cy.get('#addEntryToCollectionButton').should('be.disabled');
-      cy.get('#selectOrganization').should('be.visible').click();
-      cy.get('mat-option').contains(org).should('be.visible').click();
-      cy.get('#addEntryToCollectionButton').should('be.disabled');
-      cy.get('#selectCollection').should('be.visible').click();
-      cy.get('mat-option').contains(collection).click();
-      cy.get('#addEntryToCollectionButton').should('not.be.disabled').click();
-      cy.wait('@postToCollection');
-      cy.get('#addEntryToCollectionButton').should('not.exist');
-      cy.get('mat-progress-bar').should('not.exist');
-    });
-
-    it('be able to remove an entry from a collection', () => {
-      storeToken();
-      cy.visit(`/organizations/${org}/collections/${collection}`);
-      cy.contains(`quay.io/${repo}/${name}`);
-      cy.get('#removeEntryButton').should('be.visible').click();
-      cy.get('[data-cy=accept-remove-entry-from-org]').should('be.visible').click();
-      cy.contains('This collection has no associated entries');
-      cy.visit(`/organizations/${org}`);
-      cy.contains('Members').should('be.visible');
-
-      cy.intercept('**/tokens').as('tokens');
-      cy.visit('/my-tools');
-      cy.wait('@tokens');
-    });
-    unpublishTool();
-    deleteTool();
+  it('refresh namespace', () => {
+    storeToken();
+    cy.visit('/my-tools');
+    cy.contains('button', 'Refresh Namespace').first().click();
+    // check that the 'refresh succeeded' message appears
+    cy.contains('succeeded');
   });
-}
+  unpublishTool();
+  deleteTool();
+});
 
-testCollection(collectionTuple[0], collectionTuple[1], toolTuple[0], toolTuple[1], toolTuple[2]);
-testTool(toolTuple[0], toolTuple[1], toolTuple[2]);
-testWorkflow(workflowTuple[0], workflowTuple[1], workflowTuple[2]);
+describe('Refresh, publish, unpublish, and restub a workflow', () => {
+  it('refresh and publish', () => {
+    storeToken();
+
+    // define routes to watch for
+    cy.intercept('**/tokens').as('tokens');
+    cy.intercept('**/workflows/path/workflow/**').as('workflow');
+
+    cy.visit(`/my-workflows`);
+    cy.wait('@tokens');
+    cy.wait('@workflow');
+
+    //  refresh stubbed workflow to full and publish
+    cy.intercept('**/refresh?hardRefresh=false').as('refresh');
+    cy.get('[data-cy=refreshButton]').click();
+    cy.wait('@refresh');
+    cy.intercept('post', '**/publish').as('publish');
+    cy.contains('button', 'Publish').should('be.enabled').click();
+    cy.wait('@publish');
+
+    // Test some snapshot and versions stuff
+    // WARNING: don't actually snapshot since it can't be undone
+    // define routes to watch for
+
+    goToTab('Versions');
+
+    cy.contains('button', 'Actions').should('be.visible');
+    cy.contains('td', 'Actions').first().click();
+    cy.get('.mat-menu-content').within(() => {
+      cy.contains('button', 'Snapshot');
+      cy.contains('button', 'Edit').click();
+    });
+    cy.contains('button', 'Cancel').click();
+
+    storeToken();
+    cy.get('#publishButton').contains('Unpublish').click({ force: true });
+
+    goToTab('Info');
+    cy.contains('button', 'Restub').click();
+    cy.contains('button', 'Publish').should('be.disabled');
+
+    cy.get('[data-cy=refreshButton]').click();
+    goToTab('Versions');
+    // hide
+    toggleHiddenWorkflowVersion();
+    cy.get('[data-cy=hidden]').should('have.length', 1);
+    // un-hide
+    toggleHiddenWorkflowVersion();
+    cy.get('[data-cy=hidden]').should('not.exist');
+  });
+});
