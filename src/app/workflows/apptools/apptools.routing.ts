@@ -16,4 +16,4 @@ const routes: Routes = [
   },
 ];
 
-export const AppToolsRoutes = RouterModule.forChild(routes);
+export const AppToolsRoutes = routes;
