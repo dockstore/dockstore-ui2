@@ -15,6 +15,7 @@
  */
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { MatLegacySnackBarModule } from '@angular/material/legacy-snack-bar';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { RegisterService } from '../register/register.service';
@@ -32,7 +33,7 @@ describe('LoginComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         schemas: [NO_ERRORS_SCHEMA],
-        imports: [RouterTestingModule, LoginComponent],
+        imports: [RouterTestingModule, LoginComponent, MatLegacySnackBarModule],
         providers: [
           { provide: TrackLoginService, useClass: TrackLoginStubService },
           { provide: UserService, useClass: UserStubService },

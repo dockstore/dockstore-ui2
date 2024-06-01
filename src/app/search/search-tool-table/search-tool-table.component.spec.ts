@@ -7,7 +7,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ListContainersService } from '../../containers/list/list.service';
 import { DateService } from '../../shared/date.service';
 import { DockstoreService } from '../../shared/dockstore.service';
-import { CustomMaterialModule } from '../../shared/modules/material.module';
 import { DockstoreStubService, ListContainersStubService, SearchStubService } from '../../test/service-stubs';
 import { SearchService } from '../state/search.service';
 import { SearchToolTableComponent } from './search-tool-table.component';
@@ -20,7 +19,7 @@ describe('SearchToolTableComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         schemas: [NO_ERRORS_SCHEMA],
-        imports: [CustomMaterialModule, BrowserAnimationsModule, RouterTestingModule, SearchToolTableComponent],
+        imports: [BrowserAnimationsModule, RouterTestingModule, SearchToolTableComponent],
         providers: [
           { provide: DockstoreService, useClass: DockstoreStubService },
           DateService,

@@ -1,5 +1,6 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { MatLegacySnackBarModule } from '@angular/material/legacy-snack-bar';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ImageProviderService } from '../shared/image-provider.service';
 import { ProviderService } from './../shared/provider.service';
@@ -23,7 +24,7 @@ describe('StarredEntriesComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [RouterTestingModule, StarredEntriesComponent],
+        imports: [RouterTestingModule, StarredEntriesComponent, MatLegacySnackBarModule],
         schemas: [NO_ERRORS_SCHEMA],
         providers: [
           { provide: StarringService, useClass: StarringStubService },

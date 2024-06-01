@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatLegacyDialog as MatDialog, MatLegacyDialogModule } from '@angular/material/legacy-dialog';
 import { AvailableLogsComponent } from '../../available-logs/available-logs.component';
 import { bootstrap4largeModalSize } from '../../constants';
 import { VersionVerifiedPlatform, Tag, WorkflowVersion } from '../../openapi';
@@ -15,7 +15,7 @@ import { NgIf, NgFor } from '@angular/common';
   templateUrl: './verified-by.component.html',
   styleUrls: ['./verified-by.component.scss'],
   standalone: true,
-  imports: [NgIf, MatLegacyCardModule, FlexModule, MatLegacyButtonModule, MatDividerModule, NgFor],
+  imports: [NgIf, MatLegacyCardModule, FlexModule, MatLegacyButtonModule, MatDividerModule, NgFor, MatLegacyDialogModule],
 })
 export class VerifiedByComponent implements OnChanges {
   @Input() version: WorkflowVersion | Tag;

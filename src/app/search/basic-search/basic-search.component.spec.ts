@@ -2,9 +2,9 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatLegacyAutocompleteModule as MatAutocompleteModule } from '@angular/material/legacy-autocomplete';
+import { MatLegacyDialogModule } from '@angular/material/legacy-dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-import { CustomMaterialModule } from '../../shared/modules/material.module';
 import { ProviderService } from '../../shared/provider.service';
 import { SearchStubService } from '../../test/service-stubs';
 import { SearchService } from '../state/search.service';
@@ -18,7 +18,7 @@ describe('BasicSearchComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         schemas: [NO_ERRORS_SCHEMA],
-        imports: [MatAutocompleteModule, RouterTestingModule, BrowserAnimationsModule, CustomMaterialModule, BasicSearchComponent],
+        imports: [MatAutocompleteModule, MatLegacyDialogModule, RouterTestingModule, BrowserAnimationsModule, BasicSearchComponent],
         providers: [ProviderService, { provide: SearchService, useClass: SearchStubService }],
       }).compileComponents();
     })

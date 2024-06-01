@@ -19,7 +19,6 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
-import { CustomMaterialModule } from 'app/shared/modules/material.module';
 import { HomeComponent } from './home.component';
 import { MastodonService } from '../../shared/mastodon/mastodon.service';
 
@@ -31,7 +30,7 @@ describe('HomeComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         schemas: [NO_ERRORS_SCHEMA],
-        imports: [CustomMaterialModule, RouterTestingModule, HttpClientTestingModule, BrowserAnimationsModule, HomeComponent],
+        imports: [RouterTestingModule, HttpClientTestingModule, BrowserAnimationsModule, HomeComponent],
         providers: [MastodonService, DescriptorLanguageService],
       }).compileComponents();
     })

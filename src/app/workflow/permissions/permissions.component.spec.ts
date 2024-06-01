@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { RefreshService } from '../../shared/refresh.service';
 import { TokenService } from '../../shared/state/token.service';
-import { CustomMaterialModule } from './../../shared/modules/material.module';
 import { WorkflowsService } from './../../shared/openapi/api/workflows.service';
 import { RefreshStubService, TokenStubService, WorkflowsStubService } from './../../test/service-stubs';
 import { PermissionsComponent } from './permissions.component';
@@ -14,7 +13,7 @@ describe('PermissionsComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [CustomMaterialModule, PermissionsComponent],
+        imports: [PermissionsComponent],
         providers: [
           { provide: WorkflowsService, useClass: WorkflowsStubService },
           { provide: TokenService, useClass: TokenStubService },

@@ -4,7 +4,6 @@ import { MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dia
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { LogoutService } from '../../../../shared/logout.service';
-import { CustomMaterialModule } from '../../../../shared/modules/material.module';
 import { UsersService } from '../../../../shared/openapi';
 import { LogoutStubService, UsersStubService } from '../../../../test/service-stubs';
 import { DeleteAccountDialogComponent } from './delete-account-dialog.component';
@@ -17,7 +16,7 @@ describe('DeleteAccountDialogComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         schemas: [NO_ERRORS_SCHEMA],
-        imports: [CustomMaterialModule, ReactiveFormsModule, DeleteAccountDialogComponent],
+        imports: [ReactiveFormsModule, DeleteAccountDialogComponent],
         providers: [
           { provide: LogoutService, useClass: LogoutStubService },
           { provide: UsersService, useClass: UsersStubService },

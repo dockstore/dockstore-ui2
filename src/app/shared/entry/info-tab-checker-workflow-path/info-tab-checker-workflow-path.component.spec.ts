@@ -18,12 +18,11 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { MatLegacyDialogModule as MatDialogModule } from '@angular/material/legacy-dialog';
 import { RouterTestingModule } from '@angular/router/testing';
-import { CheckerWorkflowStubService, RegisterCheckerWorkflowStubService, EntryTypeMetadataStubService } from '../../../test/service-stubs';
-import { CustomMaterialModule } from '../../modules/material.module';
+import { EntryTypeMetadataService } from '../../../entry/type-metadata/entry-type-metadata.service';
+import { CheckerWorkflowStubService, EntryTypeMetadataStubService, RegisterCheckerWorkflowStubService } from '../../../test/service-stubs';
 import { CheckerWorkflowService } from '../../state/checker-workflow.service';
 import { RegisterCheckerWorkflowService } from '../register-checker-workflow/register-checker-workflow.service';
 import { InfoTabCheckerWorkflowPathComponent } from './info-tab-checker-workflow-path.component';
-import { EntryTypeMetadataService } from '../../../entry/type-metadata/entry-type-metadata.service';
 
 describe('InfoTabCheckerWorkflowPathComponent', () => {
   let component: InfoTabCheckerWorkflowPathComponent;
@@ -32,7 +31,7 @@ describe('InfoTabCheckerWorkflowPathComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [FormsModule, RouterTestingModule, MatDialogModule, CustomMaterialModule, InfoTabCheckerWorkflowPathComponent],
+        imports: [FormsModule, RouterTestingModule, MatDialogModule, InfoTabCheckerWorkflowPathComponent],
         providers: [
           { provide: CheckerWorkflowService, useClass: CheckerWorkflowStubService },
           { provide: RegisterCheckerWorkflowService, useClass: RegisterCheckerWorkflowStubService },

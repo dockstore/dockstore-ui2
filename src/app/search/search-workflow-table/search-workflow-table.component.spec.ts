@@ -6,7 +6,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DateService } from '../../shared/date.service';
 import { DockstoreService } from '../../shared/dockstore.service';
-import { CustomMaterialModule } from '../../shared/modules/material.module';
 import { DockstoreStubService, SearchStubService } from '../../test/service-stubs';
 import { SearchService } from '../state/search.service';
 import { SearchWorkflowTableComponent } from './search-workflow-table.component';
@@ -19,7 +18,7 @@ describe('SearchWorkflowTableComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         schemas: [NO_ERRORS_SCHEMA],
-        imports: [CustomMaterialModule, BrowserAnimationsModule, RouterTestingModule, SearchWorkflowTableComponent],
+        imports: [BrowserAnimationsModule, RouterTestingModule, SearchWorkflowTableComponent],
         providers: [
           { provide: DockstoreService, useClass: DockstoreStubService },
           DateService,

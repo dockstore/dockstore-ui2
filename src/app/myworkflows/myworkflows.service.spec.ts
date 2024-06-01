@@ -15,19 +15,19 @@
  */
 
 import { inject, TestBed } from '@angular/core/testing';
+import { MatLegacySnackBarModule } from '@angular/material/legacy-snack-bar';
 import { RouterTestingModule } from '@angular/router/testing';
-import { CustomMaterialModule } from 'app/shared/modules/material.module';
-import { MyEntriesModule } from 'app/shared/modules/my-entries.module';
-import { WorkflowService } from 'app/shared/state/workflow.service';
-import { UsersService, WorkflowsService } from 'app/shared/openapi';
-import { UrlResolverService } from 'app/shared/url-resolver.service';
 import { EntryTypeMetadataService } from 'app/entry/type-metadata/entry-type-metadata.service';
+import { MyEntriesModule } from 'app/shared/modules/my-entries.module';
+import { UsersService, WorkflowsService } from 'app/shared/openapi';
+import { WorkflowService } from 'app/shared/state/workflow.service';
+import { UrlResolverService } from 'app/shared/url-resolver.service';
 import {
+  EntryTypeMetadataStubService,
   UrlResolverStubService,
   UsersStubService,
   WorkflowsStubService,
   WorkflowStubService,
-  EntryTypeMetadataStubService,
 } from 'app/test/service-stubs';
 import { Workflow } from './../shared/openapi/model/workflow';
 import { OrgWorkflowObject } from './my-workflow/my-workflow.component';
@@ -152,7 +152,7 @@ describe('MyWorkflowsService', () => {
   const expectedResult: OrgWorkflowObject<Workflow>[] = [expectedResult1, expectedResult2, expectedResult3];
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CustomMaterialModule, RouterTestingModule, MyEntriesModule],
+      imports: [RouterTestingModule, MyEntriesModule, MatLegacySnackBarModule],
       providers: [
         MyWorkflowsService,
         { provide: UrlResolverService, useClass: UrlResolverStubService },

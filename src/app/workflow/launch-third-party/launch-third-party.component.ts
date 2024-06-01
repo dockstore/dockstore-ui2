@@ -1,6 +1,6 @@
 import { HttpUrlEncodingCodec } from '@angular/common/http';
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatLegacyDialog as MatDialog, MatLegacyDialogModule } from '@angular/material/legacy-dialog';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 import { combineLatest, Observable } from 'rxjs';
 import { map, shareReplay, takeUntil } from 'rxjs/operators';
@@ -112,6 +112,7 @@ import FileTypeEnum = ToolFile.FileTypeEnum;
     MultiCloudLaunchComponent,
     MatLegacyTooltipModule,
     MatLegacyButtonModule,
+    MatLegacyDialogModule,
     AsyncPipe,
   ],
 })

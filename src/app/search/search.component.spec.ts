@@ -16,6 +16,7 @@
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { MatLegacyDialogModule } from '@angular/material/legacy-dialog';
 
 import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -23,7 +24,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ExtendedGA4GHService } from 'app/shared/openapi';
 import { of } from 'rxjs';
-import { CustomMaterialModule } from '../shared/modules/material.module';
+import { DateService } from '../shared/date.service';
 import { ProviderService } from '../shared/provider.service';
 import { ExtendedGA4GHStubService, ProviderStubService, QueryBuilderStubService, SearchStubService } from './../test/service-stubs';
 import { MapFriendlyValuesPipe } from './map-friendly-values.pipe';
@@ -36,7 +37,7 @@ import { SearchService } from './state/search.service';
   selector: 'app-search-results',
   template: '',
   standalone: true,
-  imports: [CustomMaterialModule, ClipboardModule, FontAwesomeModule, RouterTestingModule, MatSnackBarModule],
+  imports: [ClipboardModule, FontAwesomeModule, RouterTestingModule, MatSnackBarModule],
 })
 class SearchResultsComponent {}
 
@@ -44,7 +45,7 @@ class SearchResultsComponent {}
   selector: 'app-basic-search',
   template: '',
   standalone: true,
-  imports: [CustomMaterialModule, ClipboardModule, FontAwesomeModule, RouterTestingModule, MatSnackBarModule],
+  imports: [ClipboardModule, FontAwesomeModule, RouterTestingModule, MatSnackBarModule],
 })
 class BasicSearchComponent {}
 
@@ -52,7 +53,7 @@ class BasicSearchComponent {}
   selector: 'app-header',
   template: '',
   standalone: true,
-  imports: [CustomMaterialModule, ClipboardModule, FontAwesomeModule, RouterTestingModule, MatSnackBarModule],
+  imports: [ClipboardModule, FontAwesomeModule, RouterTestingModule, MatSnackBarModule],
 })
 class HeaderComponent {}
 
@@ -67,11 +68,11 @@ describe('SearchComponent', () => {
       TestBed.configureTestingModule({
         imports: [
           BrowserAnimationsModule,
-          CustomMaterialModule,
           ClipboardModule,
           FontAwesomeModule,
           RouterTestingModule,
           MatSnackBarModule,
+          MatLegacyDialogModule,
           SearchComponent,
           MapFriendlyValuesPipe,
           HeaderComponent,
@@ -84,6 +85,7 @@ describe('SearchComponent', () => {
           { provide: ProviderService, useClass: ProviderStubService },
           { provide: ExtendedGA4GHService, useClass: ExtendedGA4GHStubService },
           { provide: SearchQuery, useValue: jasmine.createSpyObj('SearchQuery', ['select', 'getValue', 'searchText']) },
+          DateService,
         ],
       }).compileComponents();
     })

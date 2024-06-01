@@ -1,3 +1,4 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { RouterLinkStubDirective, RouterOutletStubComponent } from './test/router-stubs';
@@ -57,6 +58,7 @@ describe('AppComponent', () => {
         imports: [
           RouterTestingModule,
           MatSnackBarModule,
+          HttpClientTestingModule,
           NavbarStubComponent,
           FooterStubComponent,
           BannerStubComponent,

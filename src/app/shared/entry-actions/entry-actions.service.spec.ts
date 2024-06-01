@@ -1,18 +1,16 @@
 import { inject, TestBed } from '@angular/core/testing';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import {
   ContainersStubService,
   ContainerStubService,
+  EntriesStubService,
   WorkflowsStubService,
   WorkflowStubService,
-  EntriesStubService,
 } from 'app/test/service-stubs';
 import { exampleEntry } from '../../test/mocked-objects';
 import { ContainerService } from '../container.service';
 import { EntryType } from '../enum/entry-type';
-import { CustomMaterialModule } from '../modules/material.module';
+import { ContainersService, DockstoreTool, EntriesService, Entry, Tag, Workflow, WorkflowsService } from '../openapi';
 import { WorkflowService } from '../state/workflow.service';
-import { ContainersService, DockstoreTool, Entry, Tag, Workflow, WorkflowsService, EntriesService } from '../openapi';
 import { EntryActionsService } from './entry-actions.service';
 
 describe('Service: EntryActionsService', () => {
@@ -41,7 +39,6 @@ describe('Service: EntryActionsService', () => {
           useClass: EntriesStubService,
         },
       ],
-      imports: [CustomMaterialModule],
     });
   });
 

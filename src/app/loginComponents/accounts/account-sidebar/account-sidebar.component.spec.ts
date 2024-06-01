@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatLegacySnackBarModule } from '@angular/material/legacy-snack-bar';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { AccountSidebarComponent } from './account-sidebar.component';
-import { CustomMaterialModule } from 'app/shared/modules/material.module';
 import { FlexLayoutModule } from '@ngbracket/ngx-layout';
 import { CommonModule } from '@angular/common';
 import { MatLegacyTableModule as MatTableModule } from '@angular/material/legacy-table';
@@ -19,11 +19,11 @@ describe('AccountSidebarComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
-        CustomMaterialModule,
         FlexLayoutModule,
         CommonModule,
         MatTableModule,
         MatLegacyButtonModule,
+        MatLegacySnackBarModule,
         RouterTestingModule,
         AccountSidebarComponent,
       ],

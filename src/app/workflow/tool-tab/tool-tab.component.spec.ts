@@ -15,8 +15,6 @@
  */
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { RefreshAlertModule } from '../../shared/alert/alert.module';
-import { CustomMaterialModule } from '../../shared/modules/material.module';
 import { WorkflowService } from '../../shared/state/workflow.service';
 import { WorkflowsService } from '../../shared/openapi';
 import { WorkflowsStubService, WorkflowStubService } from '../../test/service-stubs';
@@ -31,7 +29,7 @@ describe('ToolTabComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [FormsModule, CustomMaterialModule, RefreshAlertModule, HttpClientTestingModule, ToolTabComponent],
+        imports: [FormsModule, HttpClientTestingModule, ToolTabComponent],
         providers: [
           { provide: WorkflowService, useClass: WorkflowStubService },
           { provide: WorkflowsService, useClass: WorkflowsStubService },

@@ -19,7 +19,6 @@ import { FormsModule } from '@angular/forms';
 import { MatLegacyDialogModule as MatDialogModule } from '@angular/material/legacy-dialog';
 import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { CustomMaterialModule } from 'app/shared/modules/material.module';
 import { CheckerWorkflowStubService, DescriptorLanguageStubService, RegisterCheckerWorkflowStubService } from '../../../test/service-stubs';
 import { DescriptorTypeCompatService } from '../../descriptor-type-compat.service';
 import { CheckerWorkflowService } from '../../state/checker-workflow.service';
@@ -35,14 +34,7 @@ describe('RegisterCheckerWorkflowComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         schemas: [NO_ERRORS_SCHEMA],
-        imports: [
-          FormsModule,
-          MatSnackBarModule,
-          MatDialogModule,
-          BrowserAnimationsModule,
-          CustomMaterialModule,
-          RegisterCheckerWorkflowComponent,
-        ],
+        imports: [FormsModule, MatSnackBarModule, MatDialogModule, BrowserAnimationsModule, RegisterCheckerWorkflowComponent],
         providers: [
           { provide: RegisterCheckerWorkflowService, useClass: RegisterCheckerWorkflowStubService },
           { provide: CheckerWorkflowService, useClass: CheckerWorkflowStubService },
