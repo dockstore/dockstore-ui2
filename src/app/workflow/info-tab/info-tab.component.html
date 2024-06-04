@@ -416,7 +416,7 @@
             </div>
           </li>
           <div>
-            <strong matTooltip="Digital Object Identifier for all workflow versions">DOI</strong>:
+            <strong matTooltip="Digital Object Identifier for all workflow versions">Concept DOI</strong>:
             <a
               [href]="'https://doi.org/' + workflow.conceptDoi"
               *ngIf="workflow.conceptDoi"
@@ -513,7 +513,7 @@
         {{ selectedVersion.versionMetadata.engineVersions }}
       </div>
       <div *ngIf="(entryType$ | async) === EntryType.BioWorkflow">
-        <strong matTooltip="Digital Object Identifier">DOI</strong>:
+        <strong matTooltip="Digital Object Identifier">Version DOI</strong>:
         <a
           [href]="'https://doi.org/' + selectedVersion.doiURL"
           *ngIf="selectedVersion.doiURL"
