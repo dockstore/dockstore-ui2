@@ -24,6 +24,7 @@ import { UsersService, WorkflowsService } from 'app/shared/openapi';
 import { WorkflowService } from 'app/shared/state/workflow.service';
 import { UrlResolverService } from 'app/shared/url-resolver.service';
 import {
+  DateStubService,
   EntryTypeMetadataStubService,
   ProviderStubService,
   UrlResolverStubService,
@@ -159,7 +160,7 @@ describe('MyWorkflowsService', () => {
       imports: [RouterTestingModule, MyEntriesModule, MatLegacySnackBarModule, MatLegacyDialogModule],
       providers: [
         MyWorkflowsService,
-        DateService,
+        { provide: DateService, useClass: DateStubService },
         { provide: UrlResolverService, useClass: UrlResolverStubService },
         { provide: WorkflowService, useClass: WorkflowStubService },
         { provide: UsersService, useClass: UsersStubService },

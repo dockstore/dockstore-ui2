@@ -21,7 +21,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ContainerService } from 'app/shared/container.service';
 import { MyEntriesModule } from 'app/shared/modules/my-entries.module';
 import { UrlResolverService } from 'app/shared/url-resolver.service';
-import { ContainerStubService, WorkflowsStubService } from 'app/test/service-stubs';
+import { ContainerStubService, DateStubService, WorkflowsStubService } from 'app/test/service-stubs';
 import { DockstoreTool, Workflow, WorkflowsService } from '../shared/openapi';
 import { OrgToolObject } from './my-tool/my-tool.component';
 import { MytoolsService } from './mytools.service';
@@ -288,8 +288,8 @@ describe('MytoolsService', () => {
         { provide: WorkflowsService, useClass: WorkflowsStubService },
         { provide: ContainerService, useClass: ContainerStubService },
         { provide: UrlResolverService, useclass: UrlResolverService },
+        { provide: DateService, useClass: DateStubService },
         MyWorkflowsService,
-        DateService,
         { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
       ],
       imports: [RouterTestingModule, HttpClientTestingModule, MyEntriesModule, MatLegacySnackBarModule],

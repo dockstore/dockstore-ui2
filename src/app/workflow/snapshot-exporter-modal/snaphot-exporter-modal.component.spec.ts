@@ -10,7 +10,7 @@ import { AuthService } from 'ng2-ui-auth';
 import { AccountsService } from '../../loginComponents/accounts/external/accounts.service';
 import { DateService } from '../../shared/date.service';
 import { ProviderService } from '../../shared/provider.service';
-import { AccountsStubService, AuthStubService } from '../../test/service-stubs';
+import { AccountsStubService, AuthStubService, DateStubService } from '../../test/service-stubs';
 
 import { SnaphotExporterModalComponent, SnapshotExporterAction } from './snaphot-exporter-modal.component';
 import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
@@ -47,7 +47,7 @@ describe('SnapshotDoiOrcidComponent', () => {
         },
         { provide: AuthService, useClass: AuthStubService },
         { provide: AccountsService, useClass: AccountsStubService },
-        DateService,
+        { provide: DateService, useClass: DateStubService },
         ProviderService,
         { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
       ],

@@ -7,7 +7,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { ListContainersService } from '../../containers/list/list.service';
 import { DateService } from '../../shared/date.service';
 import { DockstoreService } from '../../shared/dockstore.service';
-import { DockstoreStubService, ListContainersStubService, SearchStubService } from '../../test/service-stubs';
+import { DateStubService, DockstoreStubService, ListContainersStubService, SearchStubService } from '../../test/service-stubs';
 import { SearchService } from '../state/search.service';
 import { SearchToolTableComponent } from './search-tool-table.component';
 
@@ -22,7 +22,7 @@ describe('SearchToolTableComponent', () => {
         imports: [BrowserAnimationsModule, RouterTestingModule, SearchToolTableComponent],
         providers: [
           { provide: DockstoreService, useClass: DockstoreStubService },
-          DateService,
+          { provide: DateService, useClass: DateStubService },
           { provide: ListContainersService, useClass: ListContainersStubService },
           { provide: SearchService, useClass: SearchStubService },
         ],

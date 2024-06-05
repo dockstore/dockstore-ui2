@@ -6,7 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DateService } from '../../shared/date.service';
 import { DockstoreService } from '../../shared/dockstore.service';
-import { DockstoreStubService, SearchStubService } from '../../test/service-stubs';
+import { DateStubService, DockstoreStubService, SearchStubService } from '../../test/service-stubs';
 import { SearchService } from '../state/search.service';
 import { SearchWorkflowTableComponent } from './search-workflow-table.component';
 
@@ -21,7 +21,7 @@ describe('SearchWorkflowTableComponent', () => {
         imports: [BrowserAnimationsModule, RouterTestingModule, SearchWorkflowTableComponent],
         providers: [
           { provide: DockstoreService, useClass: DockstoreStubService },
-          DateService,
+          { provide: DateService, useClass: DateStubService },
           { provide: SearchService, useClass: SearchStubService },
         ],
       }).compileComponents();

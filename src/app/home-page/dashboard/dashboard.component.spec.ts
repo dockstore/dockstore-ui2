@@ -18,7 +18,7 @@ import { RegisterToolService } from 'app/container/register-tool/register-tool.s
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 import { ContainerService } from '../../shared/container.service';
-import { ContainerStubService, OrgLogoStubService, UrlResolverStubService } from '../../test/service-stubs';
+import { ContainerStubService, DateStubService, OrgLogoStubService, UrlResolverStubService } from '../../test/service-stubs';
 import { MastodonService } from '../../shared/mastodon/mastodon.service';
 
 describe('DashboardComponent', () => {
@@ -43,8 +43,8 @@ describe('DashboardComponent', () => {
           MastodonService,
           RegisterToolService,
           MyWorkflowsService,
-          DateService,
           ProviderService,
+          { provide: DateService, useClass: DateStubService },
           { provide: ContainerService, useClass: ContainerStubService },
           { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
           { provide: UrlResolverService, useClass: UrlResolverStubService },

@@ -15,6 +15,7 @@ import { ImageProviderService } from '../shared/image-provider.service';
 import { Configuration } from '../shared/openapi';
 import { MyEntriesStateService } from '../shared/state/my-entries.service';
 import { MyEntriesStore } from '../shared/state/my-entries.store';
+import { TrackLoginService } from '../shared/track-login.service';
 import { UrlResolverService } from '../shared/url-resolver.service';
 import { ProviderService } from './../shared/provider.service';
 import { StarentryService } from './../shared/starentry.service';
@@ -31,6 +32,9 @@ import {
   DescriptorLanguageStubService,
   UrlResolverStubService,
   ContainerStubService,
+  TrackLoginStubService,
+  ConfigurationStub,
+  DateStubService,
 } from './../test/service-stubs';
 import { StarredEntriesComponent } from './starredentries.component';
 
@@ -53,13 +57,13 @@ describe('StarredEntriesComponent', () => {
         providers: [
           { provide: StarringService, useClass: StarringStubService },
           { provide: ImageProviderService, useClass: ImageProviderStubService },
-          Configuration,
-          DateService,
+          { provide: DateService, useClass: DateStubService },
           MyEntriesStateService,
           MyEntriesStore,
           MytoolsService,
           MyWorkflowsService,
           ProviderService,
+          { provide: Configuration, useClass: ConfigurationStub },
           { provide: AuthService, useClass: AuthStubService },
           { provide: ContainerService, useClass: ContainerStubService },
           { provide: StarentryService, useClass: StarEntryStubService },
@@ -67,6 +71,7 @@ describe('StarredEntriesComponent', () => {
           { provide: OrgLogoService, useClass: OrgLogoStubService },
           { provide: DescriptorLanguageService, useClass: DescriptorLanguageStubService },
           { provide: UrlResolverService, useClass: UrlResolverStubService },
+          { provide: TrackLoginService, useClass: TrackLoginStubService },
         ],
       }).compileComponents();
     })

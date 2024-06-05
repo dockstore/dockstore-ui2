@@ -18,7 +18,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { DateService } from '../../shared/date.service';
-import { ExtendedGA4GHStubService, QueryBuilderStubService, SearchStubService } from './../../test/service-stubs';
+import { DateStubService, ExtendedGA4GHStubService, QueryBuilderStubService, SearchStubService } from './../../test/service-stubs';
 import { QueryBuilderService } from './../query-builder.service';
 
 import { RouterTestingModule } from '@angular/router/testing';
@@ -39,7 +39,7 @@ describe('SearchResultsComponent', () => {
           { provide: SearchService, useClass: SearchStubService },
           { provide: QueryBuilderService, useClass: QueryBuilderStubService },
           { provide: ExtendedGA4GHService, useClass: ExtendedGA4GHStubService },
-          DateService,
+          { provide: DateService, useClass: DateStubService },
         ],
       }).compileComponents();
     })

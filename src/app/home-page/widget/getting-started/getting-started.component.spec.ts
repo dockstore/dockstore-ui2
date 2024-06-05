@@ -1,8 +1,9 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatIconModule } from '@angular/material/icon';
 
-import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
-import { ActivatedRoute, RouterLinkStubDirective } from '../../../test';
+import { MatLegacyButtonModule, MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
+import { RouterTestingModule } from '@angular/router/testing';
+import { ActivatedRoute, ActivatedRouteStub, RouterLinkStubDirective } from '../../../test';
 import { GettingStartedComponent } from './getting-started.component';
 
 describe('GettingStartedComponent', () => {
@@ -13,7 +14,7 @@ describe('GettingStartedComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [RouterLinkStubDirective],
-        imports: [MatIconModule, MatButtonModule, GettingStartedComponent, ActivatedRoute],
+        imports: [RouterTestingModule, MatIconModule, MatLegacyButtonModule, GettingStartedComponent],
       }).compileComponents();
     })
   );

@@ -26,7 +26,13 @@ import { ExtendedGA4GHService } from 'app/shared/openapi';
 import { of } from 'rxjs';
 import { DateService } from '../shared/date.service';
 import { ProviderService } from '../shared/provider.service';
-import { ExtendedGA4GHStubService, ProviderStubService, QueryBuilderStubService, SearchStubService } from './../test/service-stubs';
+import {
+  DateStubService,
+  ExtendedGA4GHStubService,
+  ProviderStubService,
+  QueryBuilderStubService,
+  SearchStubService,
+} from './../test/service-stubs';
 import { MapFriendlyValuesPipe } from './map-friendly-values.pipe';
 import { QueryBuilderService } from './query-builder.service';
 import { SearchComponent } from './search.component';
@@ -85,7 +91,7 @@ describe('SearchComponent', () => {
           { provide: ProviderService, useClass: ProviderStubService },
           { provide: ExtendedGA4GHService, useClass: ExtendedGA4GHStubService },
           { provide: SearchQuery, useValue: jasmine.createSpyObj('SearchQuery', ['select', 'getValue', 'searchText']) },
-          DateService,
+          { provide: DateService, useClass: DateStubService },
         ],
       }).compileComponents();
     })
