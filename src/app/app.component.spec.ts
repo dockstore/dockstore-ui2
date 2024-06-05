@@ -3,7 +3,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component } from '@angular/core';
 import { TestBed, waitForAsync } from '@angular/core/testing';
 import { MatLegacyDialogModule } from '@angular/material/legacy-dialog';
-import { MatLegacySnackBarModule, MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
+import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AuthService } from 'ng2-ui-auth';
 import { AppComponent } from './app.component';
@@ -86,7 +86,7 @@ describe('AppComponent', () => {
         imports: [
           RouterTestingModule,
           MatLegacyDialogModule,
-          MatLegacySnackBarModule,
+          MatSnackBarModule,
           HttpClientTestingModule,
           NavbarStubComponent,
           FooterStubComponent,

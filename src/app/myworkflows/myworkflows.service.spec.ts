@@ -19,7 +19,6 @@ import { MatLegacyDialogModule } from '@angular/material/legacy-dialog';
 import { MatLegacySnackBarModule } from '@angular/material/legacy-snack-bar';
 import { RouterTestingModule } from '@angular/router/testing';
 import { EntryTypeMetadataService } from 'app/entry/type-metadata/entry-type-metadata.service';
-import { MyEntriesModule } from 'app/shared/modules/my-entries.module';
 import { UsersService, WorkflowsService } from 'app/shared/openapi';
 import { WorkflowService } from 'app/shared/state/workflow.service';
 import { UrlResolverService } from 'app/shared/url-resolver.service';
@@ -34,6 +33,8 @@ import {
 } from 'app/test/service-stubs';
 import { DateService } from '../shared/date.service';
 import { ProviderService } from '../shared/provider.service';
+import { MyEntriesStateService } from '../shared/state/my-entries.service';
+import { MyEntriesStore } from '../shared/state/my-entries.store';
 import { Workflow } from './../shared/openapi/model/workflow';
 import { OrgWorkflowObject } from './my-workflow/my-workflow.component';
 import { MyWorkflowsService } from './myworkflows.service';
@@ -157,9 +158,8 @@ describe('MyWorkflowsService', () => {
   const expectedResult: OrgWorkflowObject<Workflow>[] = [expectedResult1, expectedResult2, expectedResult3];
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule, MyEntriesModule, MatLegacySnackBarModule, MatLegacyDialogModule],
+      imports: [RouterTestingModule, MatLegacySnackBarModule, MatLegacyDialogModule],
       providers: [
-        MyWorkflowsService,
         { provide: DateService, useClass: DateStubService },
         { provide: UrlResolverService, useClass: UrlResolverStubService },
         { provide: WorkflowService, useClass: WorkflowStubService },
@@ -167,6 +167,8 @@ describe('MyWorkflowsService', () => {
         { provide: WorkflowsService, useClass: WorkflowsStubService },
         { provide: EntryTypeMetadataService, useClass: EntryTypeMetadataStubService },
         { provide: ProviderService, useClass: ProviderStubService },
+        MyEntriesStateService,
+        MyEntriesStore,
       ],
     });
   });

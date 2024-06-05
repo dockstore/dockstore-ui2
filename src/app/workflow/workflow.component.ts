@@ -34,6 +34,7 @@ import { AlertService } from 'app/shared/alert/state/alert.service';
 import { BioWorkflow } from 'app/shared/openapi/model/bioWorkflow';
 import { Service } from 'app/shared/openapi/model/service';
 import { Notebook } from 'app/shared/openapi/model/notebook';
+import { ShareIconsModule } from 'ngx-sharebuttons/icons';
 import { Observable, ReplaySubject } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
 import { AlertQuery } from '../shared/alert/state/alert.query';
@@ -155,6 +156,7 @@ import { MatLegacyCardModule } from '@angular/material/legacy-card';
     CurrentCollectionsComponent,
     VerifiedByComponent,
     ShareButtonsModule,
+    ShareIconsModule,
     AsyncPipe,
     DatePipe,
     BaseUrlPipe,

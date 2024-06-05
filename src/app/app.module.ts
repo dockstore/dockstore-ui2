@@ -13,112 +13,11 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { ClipboardModule } from '@angular/cdk/clipboard';
-import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
-import { APP_INITIALIZER, NgModule } from '@angular/core';
-import { FlexLayoutModule } from '@ngbracket/ngx-layout';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import {
-  MAT_LEGACY_SNACK_BAR_DEFAULT_OPTIONS as MAT_SNACK_BAR_DEFAULT_OPTIONS,
-  MatLegacySnackBarConfig as MatSnackBarConfig,
-} from '@angular/material/legacy-snack-bar';
-import {
-  MAT_LEGACY_TOOLTIP_DEFAULT_OPTIONS as MAT_TOOLTIP_DEFAULT_OPTIONS,
-  MatLegacyTooltipDefaultOptions as MatTooltipDefaultOptions,
-} from '@angular/material/legacy-tooltip';
-import { BrowserModule, Title } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { AuthService, Ng2UiAuthModule } from 'ng2-ui-auth';
-import { MarkdownModule } from 'ngx-markdown';
-import { environment } from '../environments/environment';
-import { AboutComponent } from './about/about.component';
-import { AppComponent } from './app.component';
-import { CLIENT_ROUTER_PROVIDERS, routing } from './app.routing';
-import { BannerComponent } from './banner/banner.component';
-import { ChangeUsernameBannerComponent } from './changeUsernameBanner/changeUsernameBanner.component';
+import { MatLegacySnackBarConfig as MatSnackBarConfig } from '@angular/material/legacy-snack-bar';
+import { MatLegacyTooltipDefaultOptions as MatTooltipDefaultOptions } from '@angular/material/legacy-tooltip';
 import { ConfigurationService } from './configuration.service';
 import { EntryTypeMetadataService } from './entry/type-metadata/entry-type-metadata.service';
-import { ConfirmationDialogComponent } from './confirmation-dialog/confirmation-dialog.component';
-import { FileTreeComponent } from './file-tree/file-tree.component';
-import { FooterComponent } from './footer/footer.component';
-import { GitTagPipe } from './footer/git-tag.pipe';
-import { FundingComponent } from './funding/funding.component';
-import { GithubCallbackComponent } from './github-callback/github-callback.component';
-import { YoutubeComponent } from './home-page/home-logged-out/home.component';
-import { InformationDialogComponent } from './information-dialog/information-dialog.component';
-import { CustomHeaderInterceptor } from './interceptors/custom-header.interceptor';
-import { WorkflowVersionsInterceptor } from './interceptors/workflow-versions.interceptor';
-import { LoginComponent } from './login/login.component';
-import { LoginService } from './login/login.service';
-
-import { AccountsComponent } from './loginComponents/accounts/accounts.component';
-import { ControlsComponent } from './loginComponents/accounts/controls/controls.component';
-import { DeleteAccountDialogComponent } from './loginComponents/accounts/controls/delete-account-dialog/delete-account-dialog.component';
-import { DeleteEntryDialogComponent } from './entry/delete/dialog/delete-entry-dialog.component';
-import { ArchiveEntryDialogComponent } from './entry/archive/dialog/archive-entry-dialog.component';
-import { RevokeTokenDialogComponent } from './loginComponents/accounts/external/revoke-token-dialog/revoke-token-dialog.component';
-import { AccountsExternalComponent } from './loginComponents/accounts/external/accounts.component';
-import { AccountsService } from './loginComponents/accounts/external/accounts.service';
-import { GetTokenUsernamePipe } from './loginComponents/accounts/external/getTokenUsername.pipe';
-
-import { AuthComponent } from './loginComponents/auth/auth.component';
-import { DownloadCLIClientComponent } from './loginComponents/onboarding/downloadcliclient/downloadcliclient.component';
-import { OnboardingComponent } from './loginComponents/onboarding/onboarding.component';
-import { QuickStartComponent } from './loginComponents/onboarding/quickstart.component';
-
-import { LogoutComponent } from './logout/logout.component';
-import { MaintenanceComponent } from './maintenance/maintenance.component';
-import { ServiceInfoService } from './service-info/service-info.service';
-import { NavbarComponent } from './navbar/navbar.component';
-import { SitewideNotificationsComponent } from './notifications/sitewide-notifications.component';
-import { OrganizationStargazersModule } from './organizations/organization/organization-stargazers/organization-stargazers.module';
-import { OrganizationStarringModule } from './organizations/organization/organization-starring/organization-starring.module';
-import { PageNotFoundComponent } from './pagenotfound/pagenotfound.component';
-import { RegisterService } from './register/register.service';
-import { SessionExpiredComponent } from './session-expired/session-expired.component';
-
-import { AuthConfig } from './shared/auth.model';
-import { ContainerService } from './shared/container.service';
-import { DateService } from './shared/date.service';
-import { DescriptorLanguageService } from './shared/entry/descriptor-language.service';
-import { RegisterCheckerWorkflowService } from './shared/entry/register-checker-workflow/register-checker-workflow.service';
-import { ExtendedToolsService } from './shared/extended-tools.service';
-import { ExtendedWorkflowsService } from './shared/extended-workflows.service';
-import { ImageProviderService } from './shared/image-provider.service';
-import { ListService } from './shared/list.service';
-import { LogoutService } from './shared/logout.service';
-
-import { ListContainersModule } from './shared/modules/list-containers.module';
-import { ListWorkflowsModule } from './shared/modules/list-workflows.module';
-import { MarkdownWrapperModule } from './shared/modules/markdown-wrapper.module';
-
-import { ApiModule as ApiModule2 } from './shared/openapi/api.module';
-import { GA4GHV20Service } from './shared/openapi/api/gA4GHV20.service';
-import { OrgLogoService } from './shared/org-logo.service';
-import { PagenumberService } from './shared/pagenumber.service';
-import { PipeModule } from './shared/pipe/pipe.module';
-import { ProviderService } from './shared/provider.service';
-import { RefreshService } from './shared/refresh.service';
-import { ApiModule } from './shared/openapi/api.module';
 import { Configuration } from './shared/openapi/configuration';
-import { TrackLoginService } from './shared/track-login.service';
-import { UrlResolverService } from './shared/url-resolver.service';
-import { VerifiedByService } from './shared/verified-by.service';
-import { SitemapComponent } from './sitemap/sitemap.component';
-import { StargazersModule } from './stargazers/stargazers.module';
-import { StarredEntriesComponent } from './starredentries/starredentries.component';
-import { StarringModule } from './starring/starring.module';
-import { TosBannerService } from './tosBanner/state/tos-banner.service';
-import { TosBannerComponent } from './tosBanner/tos-banner.component';
-import { ExporterStepComponent } from './workflow/snapshot-exporter-modal/exporter-step/exporter-step.component';
-import { SnaphotExporterModalComponent } from './workflow/snapshot-exporter-modal/snaphot-exporter-modal.component';
-import { ViewService } from './workflow/view/view.service';
-import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
-
-import { MyOrganizationsDialogComponent } from './home-page/widget/organization-box/my-organizations-dialog.component/my-organizations-dialog.component';
-import { LaunchToCodespaceDialogComponent } from './workflow/launch-third-party/dialog/launch-to-codespace-dialog.component';
 
 export const myCustomTooltipDefaults: MatTooltipDefaultOptions = {
   showDelay: 500,

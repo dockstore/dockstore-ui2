@@ -37,6 +37,9 @@ import { WorkflowsService } from '../../shared/openapi/api/workflows.service';
 import { Configuration } from '../../shared/openapi/configuration';
 import { ProviderService } from '../../shared/provider.service';
 import { RefreshService } from '../../shared/refresh.service';
+import { MyEntriesQuery } from '../../shared/state/my-entries.query';
+import { MyEntriesStateService } from '../../shared/state/my-entries.service';
+import { MyEntriesStore } from '../../shared/state/my-entries.store';
 import { TokenQuery } from '../../shared/state/token.query';
 import { WorkflowService } from '../../shared/state/workflow.service';
 import { UrlResolverService } from '../../shared/url-resolver.service';
@@ -78,7 +81,6 @@ describe('MyWorkflowsComponent', () => {
           BrowserAnimationsModule,
           MatLegacySnackBarModule,
           MatLegacyDialogModule,
-          MyEntriesModule,
           MyWorkflowComponent,
         ],
         providers: [
@@ -96,6 +98,9 @@ describe('MyWorkflowsComponent', () => {
           BioschemaService,
           ExtendedToolsService,
           ExtendedWorkflowsService,
+          MyEntriesQuery,
+          MyEntriesStateService,
+          MyEntriesStore,
           MyWorkflowsService,
           MytoolsService,
           TokenQuery,

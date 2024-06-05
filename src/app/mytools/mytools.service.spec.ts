@@ -19,16 +19,17 @@ import { inject, TestBed } from '@angular/core/testing';
 import { MatLegacySnackBarModule } from '@angular/material/legacy-snack-bar';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ContainerService } from 'app/shared/container.service';
-import { MyEntriesModule } from 'app/shared/modules/my-entries.module';
 import { UrlResolverService } from 'app/shared/url-resolver.service';
 import { ContainerStubService, DateStubService, WorkflowsStubService } from 'app/test/service-stubs';
+import { MyWorkflowsService } from '../myworkflows/myworkflows.service';
+import { DateService } from '../shared/date.service';
+import { DescriptorLanguageService } from '../shared/entry/descriptor-language.service';
 import { DockstoreTool, Workflow, WorkflowsService } from '../shared/openapi';
+import { ProviderService } from '../shared/provider.service';
+import { MyEntriesStateService } from '../shared/state/my-entries.service';
+import { MyEntriesStore } from '../shared/state/my-entries.store';
 import { OrgToolObject } from './my-tool/my-tool.component';
 import { MytoolsService } from './mytools.service';
-import { DateService } from '../shared/date.service';
-import { MyWorkflowsService } from '../myworkflows/myworkflows.service';
-import { ProviderService } from '../shared/provider.service';
-import { DescriptorLanguageService } from '../shared/entry/descriptor-language.service';
 
 describe('MytoolsService', () => {
   const tool1: DockstoreTool = {
@@ -289,10 +290,12 @@ describe('MytoolsService', () => {
         { provide: ContainerService, useClass: ContainerStubService },
         { provide: UrlResolverService, useclass: UrlResolverService },
         { provide: DateService, useClass: DateStubService },
-        MyWorkflowsService,
         { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
+        MyWorkflowsService,
+        MyEntriesStateService,
+        MyEntriesStore,
       ],
-      imports: [RouterTestingModule, HttpClientTestingModule, MyEntriesModule, MatLegacySnackBarModule],
+      imports: [RouterTestingModule, HttpClientTestingModule, MatLegacySnackBarModule],
     });
   });
   it('should ...', inject([MytoolsService], (service: MytoolsService) => {
