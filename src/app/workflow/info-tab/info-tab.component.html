@@ -416,7 +416,14 @@
             </div>
           </li>
           <div>
-            <strong matTooltip="Digital Object Identifier for all workflow versions">Concept DOI</strong>:
+            <strong matTooltip="Digital Object Identifier for all workflow versions">Concept DOI</strong>
+            <img
+              matTooltip="This DOI represents all versions, and will always resolve to the latest one"
+              src="../../../../assets/svg/help.svg"
+              alt="help"
+              class="doi-help-icon"
+            />
+            :
             <a
               [href]="'https://doi.org/' + workflow.conceptDoi"
               *ngIf="workflow.conceptDoi"
