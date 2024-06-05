@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatLegacyDialogModule } from '@angular/material/legacy-dialog';
 import { MatLegacySnackBarModule } from '@angular/material/legacy-snack-bar';
 import { RouterTestingModule } from '@angular/router/testing';
 
@@ -24,6 +25,7 @@ describe('AccountSidebarComponent', () => {
         MatTableModule,
         MatLegacyButtonModule,
         MatLegacySnackBarModule,
+        MatLegacyDialogModule,
         RouterTestingModule,
         AccountSidebarComponent,
       ],

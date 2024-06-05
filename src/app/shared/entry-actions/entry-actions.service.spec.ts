@@ -1,4 +1,6 @@
 import { inject, TestBed } from '@angular/core/testing';
+import { MatLegacyDialogModule } from '@angular/material/legacy-dialog';
+import { MatLegacySnackBarModule } from '@angular/material/legacy-snack-bar';
 import {
   ContainersStubService,
   ContainerStubService,
@@ -39,6 +41,7 @@ describe('Service: EntryActionsService', () => {
           useClass: EntriesStubService,
         },
       ],
+      imports: [MatLegacySnackBarModule, MatLegacyDialogModule],
     });
   });
 

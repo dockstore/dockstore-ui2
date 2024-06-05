@@ -15,6 +15,7 @@
  */
 
 import { inject, TestBed } from '@angular/core/testing';
+import { MatLegacyDialogModule } from '@angular/material/legacy-dialog';
 import { MatLegacySnackBarModule } from '@angular/material/legacy-snack-bar';
 import { RouterTestingModule } from '@angular/router/testing';
 import { EntryTypeMetadataService } from 'app/entry/type-metadata/entry-type-metadata.service';
@@ -24,11 +25,14 @@ import { WorkflowService } from 'app/shared/state/workflow.service';
 import { UrlResolverService } from 'app/shared/url-resolver.service';
 import {
   EntryTypeMetadataStubService,
+  ProviderStubService,
   UrlResolverStubService,
   UsersStubService,
   WorkflowsStubService,
   WorkflowStubService,
 } from 'app/test/service-stubs';
+import { DateService } from '../shared/date.service';
+import { ProviderService } from '../shared/provider.service';
 import { Workflow } from './../shared/openapi/model/workflow';
 import { OrgWorkflowObject } from './my-workflow/my-workflow.component';
 import { MyWorkflowsService } from './myworkflows.service';
@@ -152,14 +156,16 @@ describe('MyWorkflowsService', () => {
   const expectedResult: OrgWorkflowObject<Workflow>[] = [expectedResult1, expectedResult2, expectedResult3];
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule, MyEntriesModule, MatLegacySnackBarModule],
+      imports: [RouterTestingModule, MyEntriesModule, MatLegacySnackBarModule, MatLegacyDialogModule],
       providers: [
         MyWorkflowsService,
+        DateService,
         { provide: UrlResolverService, useClass: UrlResolverStubService },
         { provide: WorkflowService, useClass: WorkflowStubService },
         { provide: UsersService, useClass: UsersStubService },
         { provide: WorkflowsService, useClass: WorkflowsStubService },
         { provide: EntryTypeMetadataService, useClass: EntryTypeMetadataStubService },
+        { provide: ProviderService, useClass: ProviderStubService },
       ],
     });
   });

@@ -16,6 +16,8 @@
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { DateService } from '../../shared/date.service';
 import { ExtendedGA4GHStubService, QueryBuilderStubService, SearchStubService } from './../../test/service-stubs';
 import { QueryBuilderService } from './../query-builder.service';
 
@@ -32,11 +34,12 @@ describe('SearchResultsComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         schemas: [NO_ERRORS_SCHEMA],
-        imports: [RouterTestingModule, SearchResultsComponent],
+        imports: [RouterTestingModule, SearchResultsComponent, NoopAnimationsModule],
         providers: [
           { provide: SearchService, useClass: SearchStubService },
           { provide: QueryBuilderService, useClass: QueryBuilderStubService },
           { provide: ExtendedGA4GHService, useClass: ExtendedGA4GHStubService },
+          DateService,
         ],
       }).compileComponents();
     })

@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { MatLegacySnackBarModule } from '@angular/material/legacy-snack-bar';
 
 import { RefreshService } from '../../shared/refresh.service';
 import { TokenService } from '../../shared/state/token.service';
@@ -13,7 +14,7 @@ describe('PermissionsComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [PermissionsComponent],
+        imports: [PermissionsComponent, MatLegacySnackBarModule],
         providers: [
           { provide: WorkflowsService, useClass: WorkflowsStubService },
           { provide: TokenService, useClass: TokenStubService },

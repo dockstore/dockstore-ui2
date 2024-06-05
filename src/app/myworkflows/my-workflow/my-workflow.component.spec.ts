@@ -24,13 +24,18 @@ import { TrackLoginService } from 'app/shared/track-login.service';
 import { AuthService } from 'ng2-ui-auth';
 import { AccountsService } from '../../loginComponents/accounts/external/accounts.service';
 import { MytoolsService } from '../../mytools/mytools.service';
+import { BioschemaService } from '../../shared/bioschema.service';
 import { ContainerService } from '../../shared/container.service';
+import { DateService } from '../../shared/date.service';
 import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
+import { ExtendedToolsService } from '../../shared/extended-tools.service';
+import { ExtendedWorkflowsService } from '../../shared/extended-workflows.service';
 import { MyEntriesModule } from '../../shared/modules/my-entries.module';
 import { MetadataService } from '../../shared/openapi';
 import { UsersService } from '../../shared/openapi/api/users.service';
 import { WorkflowsService } from '../../shared/openapi/api/workflows.service';
 import { Configuration } from '../../shared/openapi/configuration';
+import { ProviderService } from '../../shared/provider.service';
 import { RefreshService } from '../../shared/refresh.service';
 import { TokenQuery } from '../../shared/state/token.query';
 import { WorkflowService } from '../../shared/state/workflow.service';
@@ -44,6 +49,7 @@ import {
   ConfigurationStub,
   ContainerStubService,
   MetadataStubService,
+  ProviderStubService,
   RefreshStubService,
   RegisterWorkflowModalStubService,
   TrackLoginStubService,
@@ -85,10 +91,15 @@ describe('MyWorkflowsComponent', () => {
           { provide: ContainerService, useClass: ContainerStubService },
           { provide: RefreshService, useClass: RefreshStubService },
           { provide: RegisterWorkflowModalService, useClass: RegisterWorkflowModalStubService },
+          BioschemaService,
+          DateService,
+          ExtendedToolsService,
+          ExtendedWorkflowsService,
           MyWorkflowsService,
           MytoolsService,
           TokenQuery,
           { provide: AccountsService, useClass: AccountsStubService },
+          { provide: ProviderService, useClass: ProviderStubService },
           { provide: WorkflowsService, useClass: WorkflowsStubService },
           { provide: UrlResolverService, useClass: UrlResolverStubService },
           { provide: TrackLoginService, useClass: TrackLoginStubService },

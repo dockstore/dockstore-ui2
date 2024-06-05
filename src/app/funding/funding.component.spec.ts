@@ -2,6 +2,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { MatLegacySnackBarModule } from '@angular/material/legacy-snack-bar';
 
 import { FundingComponent } from './funding.component';
 
@@ -12,7 +13,7 @@ describe('FundingComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [MatDividerModule, MatLegacyCardModule, FundingComponent],
+        imports: [MatDividerModule, MatLegacyCardModule, FundingComponent, MatLegacySnackBarModule],
       }).compileComponents();
     })
   );

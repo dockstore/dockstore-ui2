@@ -1,13 +1,18 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { AuthService } from 'ng2-ui-auth';
+import { ServiceInfoService } from './service-info/service-info.service';
+import { LogoutService } from './shared/logout.service';
+import { Configuration } from './shared/openapi';
+import { PagenumberService } from './shared/pagenumber.service';
 import { RouterLinkStubDirective, RouterOutletStubComponent } from './test/router-stubs';
 
 import { Component } from '@angular/core';
 import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 import { AppComponent } from './app.component';
 import { TrackLoginService } from './shared/track-login.service';
-import { TosBannerStubService, TrackLoginStubService } from './test/service-stubs';
+import { AuthStubService, ConfigurationStub, TosBannerStubService, TrackLoginStubService } from './test/service-stubs';
 import { TosBannerService } from './tosBanner/state/tos-banner.service';
 
 @Component({
@@ -69,6 +74,11 @@ describe('AppComponent', () => {
         providers: [
           { provide: TrackLoginService, useClass: TrackLoginStubService },
           { provide: TosBannerService, useClass: TosBannerStubService },
+          { provide: AuthService, useClass: AuthStubService },
+          { provide: Configuration, useClass: ConfigurationStub },
+          LogoutService,
+          ServiceInfoService,
+          PagenumberService,
         ],
       }).compileComponents();
     })
