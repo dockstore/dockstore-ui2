@@ -30,7 +30,6 @@ import { DateService } from '../../shared/date.service';
 import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
 import { ExtendedToolsService } from '../../shared/extended-tools.service';
 import { ExtendedWorkflowsService } from '../../shared/extended-workflows.service';
-import { MyEntriesModule } from '../../shared/modules/my-entries.module';
 import { MetadataService } from '../../shared/openapi';
 import { UsersService } from '../../shared/openapi/api/users.service';
 import { WorkflowsService } from '../../shared/openapi/api/workflows.service';

@@ -47,7 +47,6 @@ import { ExtendedWorkflowsService } from './app/shared/extended-workflows.servic
 import { ImageProviderService } from './app/shared/image-provider.service';
 import { ListService } from './app/shared/list.service';
 import { LogoutService } from './app/shared/logout.service';
-import { MarkdownWrapperModule } from './app/shared/modules/markdown-wrapper.module';
 import { ApiModule, ApiModule as ApiModule2 } from './app/shared/openapi/api.module';
 import { GA4GHV20Service } from './app/shared/openapi/api/gA4GHV20.service';
 import { OrgLogoService } from './app/shared/org-logo.service';
@@ -95,7 +94,6 @@ bootstrapApplication(AppComponent, {
       routing,
       StargazersModule,
       MarkdownModule.forRoot(),
-      MarkdownWrapperModule,
       ReactiveFormsModule,
       ApiModule.forRoot(getApiConfig),
       ApiModule2.forRoot(getApiConfig),
