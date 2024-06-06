@@ -22,7 +22,11 @@ import { AppComponent } from './app/app.component';
 import { getApiConfig, initializerFactory, myCustomSnackbarDefaults, myCustomTooltipDefaults } from './app/app.module';
 import { CLIENT_ROUTER_PROVIDERS, routing } from './app/app.routing';
 import { ConfigurationService } from './app/configuration.service';
+import { EmailService } from './app/container/email.service';
+import { ToolLaunchService } from './app/container/launch/tool-launch.service';
 import { RegisterToolService } from './app/container/register-tool/register-tool.service';
+import { InfoTabService as ContainerInfoTabService } from './app/container/info-tab/info-tab.service';
+import { VersionModalService as ContainerVersionModalService } from './app/container/version-modal/version-modal.service';
 import { ListContainersService } from './app/containers/list/list.service';
 import { EntryTypeMetadataService } from './app/entry/type-metadata/entry-type-metadata.service';
 import { CustomHeaderInterceptor } from './app/interceptors/custom-header.interceptor';
@@ -106,7 +110,12 @@ bootstrapApplication(AppComponent, {
     LogoutService,
     DateService,
     TrackLoginService,
+    EmailService,
+    ContainerInfoTabService,
+    ContainerVersionModalService,
+    InfoTabService,
     ListService,
+    ToolLaunchService,
     ProviderService,
     ContainerService,
     ImageProviderService,
