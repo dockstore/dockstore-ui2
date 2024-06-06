@@ -41,7 +41,7 @@ export class Dockstore {
   static BD_CATALYST_SEVEN_BRIDGES_IMPORT_URL = 'https://sb.biodatacatalyst.nhlbi.nih.gov/integration/trs/import';
   static BD_CATALYST_TERRA_IMPORT_URL = 'https://terra.biodatacatalyst.nhlbi.nih.gov/#import-tool/dockstore';
   static CAVATICA_IMPORT_URL = 'https://cavatica.sbgenomics.com/integration/trs/import';
-  static NEXTFLOW_TOWER_IMPORT_URL = 'https://tower.nf/launch';
+  static SEQERA_IMPORT_URL = 'https://cloud.seqera.io/quicklaunch?pipeline=';
   static ELWAZI_IMPORT_URL = 'https://elwazi.terra.bio/#import-tool/dockstore';
   static COLAB_IMPORT_URL = 'https://colab.research.google.com/github/';
   static MYBINDER_IMPORT_URL = 'https://mybinder.org/v2/gh/';
