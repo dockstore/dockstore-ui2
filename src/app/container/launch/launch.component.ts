@@ -36,7 +36,7 @@ import { NgIf, NgFor, AsyncPipe } from '@angular/common';
 import DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
 
 @Component({
-  selector: 'app-launch',
+  selector: 'app-container-launch',
   templateUrl: './launch.component.html',
   styleUrls: ['./launch.component.css'],
   standalone: true,
