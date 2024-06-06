@@ -18,6 +18,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatLegacyDialog as MatDialog, MatLegacyDialogModule } from '@angular/material/legacy-dialog';
 import { takeUntil } from 'rxjs/operators';
 import { Base } from '../../shared/base';
+import { SearchAuthorsHtmlPipe } from '../search-authors-html.pipe';
 import { SearchService } from '../state/search.service';
 import { AdvancedSearchObject } from './../../shared/models/AdvancedSearchObject';
 import { AdvancedSearchQuery } from './state/advanced-search.query';
@@ -41,6 +42,7 @@ import { NgIf } from '@angular/common';
     MatLegacyOptionModule,
     FormsModule,
     MatLegacyTooltipModule,
+    SearchAuthorsHtmlPipe,
   ],
 })
 export class AdvancedSearchComponent extends Base implements OnInit {

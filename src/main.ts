@@ -38,6 +38,8 @@ import { MyWorkflowsService } from './app/myworkflows/myworkflows.service';
 import { OrganizationStargazersModule } from './app/organizations/organization/organization-stargazers/organization-stargazers.module';
 import { OrganizationStarringModule } from './app/organizations/organization/organization-starring/organization-starring.module';
 import { RegisterService } from './app/register/register.service';
+import { SearchAuthorsHtmlPipe } from './app/search/search-authors-html.pipe';
+import { SearchService } from './app/search/state/search.service';
 import { ServiceInfoService } from './app/service-info/service-info.service';
 import { AuthConfig } from './app/shared/auth.model';
 import { BioschemaService } from './app/shared/bioschema.service';
@@ -117,6 +119,8 @@ bootstrapApplication(AppComponent, {
     ListService,
     ToolLaunchService,
     ProviderService,
+    SearchAuthorsHtmlPipe,
+    SearchService,
     ContainerService,
     ImageProviderService,
     HttpClient,
