@@ -13,6 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { LambdaEvent, TokenUser } from '../../../src/app/shared/openapi';
 import { Repository } from '../../../src/app/shared/openapi/model/repository';
 import {
   goToTab,
@@ -23,7 +24,7 @@ import {
   setTokenUserViewPortCurator,
   snapshot,
 } from '../../support/commands';
-import { LambdaEvent } from '../../../src/app/shared/openapi';
+import TokenSourceEnum = TokenUser.TokenSourceEnum;
 
 const cwlDescriptorType = 'CWL';
 const wdlDescriptorType = 'WDL';
@@ -298,6 +299,21 @@ describe('Dockstore my workflows part 2', () => {
       cy.get('[data-cy=export-button').should('be.disabled');
       cy.get('[data-cy=link-orcid]').click();
       cy.url().should('eq', Cypress.config().baseUrl + '/accounts?tab=accounts');
+    });
+
+    it('Request to DOI should not require ORCID linked account', () => {
+      cy.fixture('tokens.json').then((json) => {
+        // Remove the ORCID token
+        const tokens = (json as Array<TokenUser>).filter((token) => token.tokenSource !== TokenSourceEnum.OrcidOrg);
+        cy.intercept('GET', '/api/users/1/tokens', {
+          body: tokens,
+          statusCode: 200,
+        });
+        gotoVersionsAndClickActions();
+        // Request DOI
+        cy.get('[data-cy=dockstore-request-doi-button]').click();
+        cy.get('[data-cy=orcid-not-linked]').should('not.exist'); // dockstore/dockstore#5796
+      });
     });
 
     it('Should be able to request DOI and then export to ORCID', () => {

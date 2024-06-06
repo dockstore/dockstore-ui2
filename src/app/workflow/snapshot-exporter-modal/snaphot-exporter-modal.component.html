@@ -49,7 +49,7 @@
       <ng-container *ngIf="action === SnapshotExporterAction.DOI && (hasZenodoToken$ | async) === false && !version.doiURL">
         <ng-template *ngTemplateOutlet="warning; context: { innerTemplate: zenodoNotLinked }"></ng-template>
       </ng-container>
-      <div *ngIf="(hasOrcidToken$ | async) === false">
+      <div *ngIf="action === SnapshotExporterAction.ORCID && (hasOrcidToken$ | async) === false">
         <ng-template *ngTemplateOutlet="warning; context: { innerTemplate: orcidNotLinked }"></ng-template>
       </div>
 
