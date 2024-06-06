@@ -51,7 +51,7 @@ import { NgIf, NgClass } from '@angular/common';
 import DescriptorTypeEnum = ToolVersion.DescriptorTypeEnum;
 
 @Component({
-  selector: 'app-info-tab',
+  selector: 'app-info-tab-container',
   templateUrl: './info-tab.component.html',
   styleUrls: ['./info-tab.component.css'],
   standalone: true,

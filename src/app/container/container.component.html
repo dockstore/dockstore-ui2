@@ -200,12 +200,12 @@
           mat-stretch-tabs
         >
           <mat-tab id="infoTab" label="Info">
-            <app-info-tab
+            <app-info-tab-container
               [selectedVersion]="selectedVersion"
               [privateOnlyRegistry]="privateOnlyRegistry"
               [extendedDockstoreTool]="extendedTool$ | async"
               [validVersions]="validVersions"
-            ></app-info-tab>
+            ></app-info-tab-container>
           </mat-tab>
           <mat-tab id="launchTab" label="Launch">
             <app-container-launch
