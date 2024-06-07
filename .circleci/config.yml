@@ -187,6 +187,7 @@ jobs:
         type: string
     executor: integration_test_exec
     working_directory: ~/repo
+    resource_class: medium+
     steps:
       - setup_integration_test
       - run:
