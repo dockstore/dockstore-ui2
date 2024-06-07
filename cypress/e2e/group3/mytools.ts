@@ -453,7 +453,7 @@ describe('Dockstore my tools', () => {
       cy.get('.modal-footer').contains('Next').first().click();
 
       cy.get('#sourceCodeRepositoryInput').scrollIntoView().should('be.visible');
-      cy.get('#sourceCodeRepositoryInput').click().type('testnamespace/testname');
+      cy.get('#sourceCodeRepositoryInput').click();
       cy.get('#sourceCodeRepositoryInput').type('testnamespace/testname');
 
       cy.get('[data-cy=imageRegistryProviderSelect]').click();
@@ -464,6 +464,7 @@ describe('Dockstore my tools', () => {
 
       cy.get('#imageRegistryInput').type('testnamespace/testname');
 
+      cy.get('#submitButton').scrollIntoView().should('be.enabled');
       cy.get('#submitButton').click();
 
       // TODO: This is temporarily disabled
