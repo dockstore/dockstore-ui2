@@ -179,7 +179,8 @@ function toggleHiddenToolVersion() {
 }
 
 function toggleHiddenWorkflowVersion() {
-  cy.get('[data-cy=versionRow]').last().scrollIntoView().contains('button', 'Actions').should('be.visible').click();
+  cy.get('[data-cy=versionRow]').last().scrollIntoView().contains('button', 'Actions').should('be.visible');
+  cy.get('[data-cy=versionRow]').last().click();
   cy.contains('button', 'Edit').click();
   // TODO: Use [data-cy=hiddenCheck] -- do after 1.14 deployed
   cy.contains('div', 'Hidden:').within(() => {
