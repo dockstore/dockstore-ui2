@@ -11,7 +11,7 @@ describe('BannerComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [BannerComponent],
+        imports: [BannerComponent],
         providers: [ServiceInfoService, { provide: GA4GHV20Service, useClass: GA4GHV20StubService }],
       }).compileComponents();
     })

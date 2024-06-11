@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { AfterViewChecked, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { NgForm, FormsModule } from '@angular/forms';
 import { SessionQuery } from 'app/shared/session/session.query';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
@@ -25,6 +25,23 @@ import { formErrors, validationDescriptorPatterns, validationMessages } from '..
 import { RegisterToolService } from './register-tool.service';
 import { Dockstore } from '../../shared/dockstore.model';
 import { EntryType } from 'app/shared/openapi';
+import { MatLegacyCheckboxModule } from '@angular/material/legacy-checkbox';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatLegacyInputModule } from '@angular/material/legacy-input';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { RegisterGithubAppComponent } from '../../shared/register-github-app/register-github-app.component';
+import { RefreshWizardComponent } from '../refresh-wizard/refresh-wizard.component';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatLegacyRadioModule } from '@angular/material/legacy-radio';
+import { MatIconModule } from '@angular/material/icon';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatLegacyProgressBarModule } from '@angular/material/legacy-progress-bar';
+import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { AlertComponent } from '../../shared/alert/alert.component';
+import { MatLegacyDialogModule } from '@angular/material/legacy-dialog';
 
 interface HostedTool {
   path: string;
@@ -44,6 +61,29 @@ enum OptionChoice {
   selector: 'app-register-tool',
   templateUrl: './register-tool.component.html',
   styleUrls: ['./register-tool.component.css'],
+  standalone: true,
+  imports: [
+    MatLegacyDialogModule,
+    AlertComponent,
+    NgIf,
+    MatLegacyProgressBarModule,
+    MatStepperModule,
+    MatIconModule,
+    MatLegacyRadioModule,
+    FormsModule,
+    NgFor,
+    MatLegacyButtonModule,
+    RefreshWizardComponent,
+    RegisterGithubAppComponent,
+    FlexModule,
+    MatLegacyFormFieldModule,
+    MatLegacySelectModule,
+    MatLegacyOptionModule,
+    MatLegacyInputModule,
+    MatLegacyTooltipModule,
+    MatLegacyCheckboxModule,
+    AsyncPipe,
+  ],
 })
 export class RegisterToolComponent implements OnInit, AfterViewChecked, OnDestroy {
   public EntryType = EntryType;

@@ -39,8 +39,7 @@ describe('StarringComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [StarringComponent],
-        imports: [MatIconModule, MatSnackBarModule, MatLegacyTooltipModule],
+        imports: [MatIconModule, MatSnackBarModule, MatLegacyTooltipModule, StarringComponent],
         providers: [
           { provide: StarringService, useClass: StarringStubService },
           { provide: TrackLoginService, useClass: TrackLoginStubService },

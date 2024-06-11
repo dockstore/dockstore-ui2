@@ -15,14 +15,18 @@
  */
 
 import { RouterModule, Routes } from '@angular/router';
+import { QueryBuilderService } from './query-builder.service';
+import { SearchAuthorsHtmlPipe } from './search-authors-html.pipe';
 import { SearchComponent } from './search.component';
+import { SearchService } from './state/search.service';
 
 const CONTAINERS_ROUTES: Routes = [
   {
+    providers: [QueryBuilderService, SearchService, SearchAuthorsHtmlPipe],
     path: '**',
     component: SearchComponent,
     data: { title: 'Dockstore | Search' },
   },
 ];
 
-export const searchRouting = RouterModule.forChild(CONTAINERS_ROUTES);
+export const searchRouting = CONTAINERS_ROUTES;

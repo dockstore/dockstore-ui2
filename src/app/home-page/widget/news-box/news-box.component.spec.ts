@@ -1,7 +1,8 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatLegacyCardModule } from '@angular/material/legacy-card';
-import { HomePageModule } from '../../home-page.module';
+import { MatLegacySnackBarModule } from '@angular/material/legacy-snack-bar';
 import { NewsBoxComponent } from './news-box.component';
 
 describe('NewsBoxComponent', () => {
@@ -10,8 +11,7 @@ describe('NewsBoxComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MatLegacyCardModule, MatDividerModule, HomePageModule],
-      declarations: [NewsBoxComponent],
+      imports: [MatLegacyCardModule, MatDividerModule, NewsBoxComponent, HttpClientTestingModule, MatLegacySnackBarModule],
     }).compileComponents();
   });
 

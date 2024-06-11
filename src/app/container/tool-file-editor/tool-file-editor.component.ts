@@ -20,11 +20,28 @@ import { ContainertagsService, SourceFile, DockstoreTool, ToolDescriptor, EntryT
 import { ContainerService } from './../../shared/container.service';
 import { HostedService } from './../../shared/openapi/api/hosted.service';
 import { Tag } from './../../shared/openapi/model/tag';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { NgIf } from '@angular/common';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { CodeEditorListComponent } from '../../shared/code-editor-list/code-editor-list.component';
+import { MatLegacyTabsModule } from '@angular/material/legacy-tabs';
 
 @Component({
   selector: 'app-tool-file-editor',
   templateUrl: './tool-file-editor.component.html',
   styleUrls: ['./tool-file-editor.component.scss'],
+  standalone: true,
+  imports: [
+    MatLegacyTabsModule,
+    CodeEditorListComponent,
+    MatLegacyFormFieldModule,
+    MatLegacySelectModule,
+    MatLegacyOptionModule,
+    NgIf,
+    MatLegacyButtonModule,
+  ],
 })
 export class ToolFileEditorComponent extends FileEditing {
   public EntryType = EntryType;

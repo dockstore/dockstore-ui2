@@ -23,8 +23,7 @@ import { StarringComponent } from './starring.component';
 import { StarringService } from './starring.service';
 
 @NgModule({
-  imports: [CommonModule, MatIconModule, MatTooltipModule],
-  declarations: [StarringComponent],
+  imports: [CommonModule, MatIconModule, MatTooltipModule, StarringComponent],
   exports: [StarringComponent],
   providers: [StarringService, StarentryService],
 })

@@ -3,6 +3,7 @@ import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack
 
 @Directive({
   selector: '[appSnackbar]',
+  standalone: true,
 })
 export class SnackbarDirective {
   constructor(private matSnackBar: MatSnackBar) {}

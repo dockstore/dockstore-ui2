@@ -18,6 +18,10 @@ import { Observable } from 'rxjs';
 
 import { AlertQuery } from './state/alert.query';
 import { AlertService } from './state/alert.service';
+import { MatLegacyProgressBarModule } from '@angular/material/legacy-progress-bar';
+import { MatIconModule } from '@angular/material/icon';
+import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { NgIf, AsyncPipe } from '@angular/common';
 
 /**
  * Stick this component into any location you want to potentially display a progress bar or alert.
@@ -30,6 +34,8 @@ import { AlertService } from './state/alert.service';
   selector: 'app-alert',
   templateUrl: './alert.component.html',
   styleUrls: ['./alert.component.css'],
+  standalone: true,
+  imports: [NgIf, MatLegacyCardModule, MatIconModule, MatLegacyProgressBarModule, AsyncPipe],
 })
 export class AlertComponent implements OnInit {
   public showError$: Observable<boolean>;

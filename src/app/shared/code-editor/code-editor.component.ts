@@ -10,6 +10,7 @@ let ACE_EDITOR_INSTANCE = 0;
   selector: 'app-code-editor',
   templateUrl: './code-editor.component.html',
   styleUrls: ['./code-editor.component.scss'],
+  standalone: true,
 })
 export class CodeEditorComponent implements AfterViewInit {
   editorContent: string;

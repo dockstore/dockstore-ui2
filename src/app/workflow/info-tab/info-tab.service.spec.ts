@@ -1,14 +1,14 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
+import { MatLegacySnackBarModule } from '@angular/material/legacy-snack-bar';
 import { AlertService } from 'app/shared/alert/state/alert.service';
 import { ga4ghPath } from 'app/shared/constants';
 import { DescriptorTypeCompatService } from 'app/shared/descriptor-type-compat.service';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 import { EntryType } from 'app/shared/enum/entry-type';
-import { CustomMaterialModule } from 'app/shared/modules/material.module';
+import { WorkflowsService } from 'app/shared/openapi';
 import { ExtendedWorkflowQuery } from 'app/shared/state/extended-workflow.query';
 import { WorkflowService } from 'app/shared/state/workflow.service';
-import { WorkflowsService } from 'app/shared/openapi';
 import { WorkflowsStubService, WorkflowStubService } from 'app/test/service-stubs';
 import { sampleWorkflow3 } from '../../test/mocked-objects';
 import { InfoTabService } from './info-tab.service';
@@ -32,7 +32,7 @@ describe('ValueService', () => {
         DescriptorTypeCompatService,
         DescriptorLanguageService,
       ],
-      imports: [CustomMaterialModule, HttpClientTestingModule],
+      imports: [HttpClientTestingModule, MatLegacySnackBarModule],
     });
   });
 

@@ -25,7 +25,6 @@ describe('FileTreeComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [FileTreeComponent],
         imports: [
           MatButtonModule,
           MatIconModule,
@@ -34,6 +33,7 @@ describe('FileTreeComponent', () => {
           HttpClientTestingModule,
           MatLegacyInputModule,
           BrowserAnimationsModule,
+          FileTreeComponent,
         ],
         providers: [
           { provide: MatDialogRef, useValue: {} },

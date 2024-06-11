@@ -2,6 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
   name: 'descriptorLanguageVersions',
+  standalone: true,
 })
 export class DescriptorLanguageVersionsPipe implements PipeTransform {
   /**

@@ -72,7 +72,7 @@ describe('JsonLdComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [JsonLdComponent],
+        imports: [JsonLdComponent],
       }).compileComponents();
     })
   );

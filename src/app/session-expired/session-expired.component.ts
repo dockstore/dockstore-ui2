@@ -14,9 +14,13 @@
  *    limitations under the License.
  */
 import { Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { HeaderComponent } from '../header/header.component';
 
 @Component({
   selector: 'app-policy-update',
   templateUrl: './session-expired.component.html',
+  standalone: true,
+  imports: [HeaderComponent, RouterLink],
 })
 export class SessionExpiredComponent {}

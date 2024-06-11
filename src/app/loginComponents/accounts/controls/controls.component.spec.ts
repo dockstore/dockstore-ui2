@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { CustomMaterialModule } from '../../../shared/modules/material.module';
 import { RefreshService } from '../../../shared/refresh.service';
 import { UsersService } from '../../../shared/openapi';
 import { UserService } from '../../../shared/user/user.service';
@@ -17,8 +16,7 @@ describe('ControlsComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [ControlsComponent, ChangeUsernameComponent],
-        imports: [CustomMaterialModule, BrowserAnimationsModule, ReactiveFormsModule],
+        imports: [BrowserAnimationsModule, ReactiveFormsModule, ControlsComponent, ChangeUsernameComponent],
         providers: [
           { provide: UserService, useClass: UserStubService },
           { provide: UsersService, useClass: UsersStubService },

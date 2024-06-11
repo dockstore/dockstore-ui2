@@ -26,11 +26,39 @@ import { ToolQuery } from '../../shared/tool/tool.query';
 import { FilesQuery } from '../../workflow/files/state/files.query';
 import { FilesService } from '../../workflow/files/state/files.service';
 import { ParamfilesService } from './paramfiles.service';
+import { CodeEditorComponent } from '../../shared/code-editor/code-editor.component';
+import { ClipboardModule } from '@angular/cdk/clipboard';
+import { SnackbarDirective } from '../../shared/snackbar.directive';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { SelectComponent } from '../../select/select.component';
+import { MatLegacyProgressBarModule } from '@angular/material/legacy-progress-bar';
+import { MatIconModule } from '@angular/material/icon';
+import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { NgIf, NgFor, AsyncPipe, KeyValuePipe } from '@angular/common';
 
 @Component({
   selector: 'app-paramfiles-container',
   templateUrl: './paramfiles.component.html',
   styleUrls: ['./paramfiles.component.scss'],
+  standalone: true,
+  imports: [
+    NgIf,
+    MatLegacyCardModule,
+    MatIconModule,
+    NgFor,
+    MatLegacyProgressBarModule,
+    SelectComponent,
+    MatToolbarModule,
+    FlexModule,
+    MatLegacyButtonModule,
+    SnackbarDirective,
+    ClipboardModule,
+    CodeEditorComponent,
+    AsyncPipe,
+    KeyValuePipe,
+  ],
 })
 export class ParamfilesComponent extends EntryFileSelector implements OnChanges {
   @Input() id: number;

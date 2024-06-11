@@ -16,10 +16,11 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { MatLegacyDialogModule } from '@angular/material/legacy-dialog';
+import { MatLegacySnackBarModule } from '@angular/material/legacy-snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
-import { CustomMaterialModule } from 'app/shared/modules/material.module';
 import { HomeComponent } from './home.component';
 import { MastodonService } from '../../shared/mastodon/mastodon.service';
 
@@ -30,9 +31,15 @@ describe('HomeComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [HomeComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        imports: [CustomMaterialModule, RouterTestingModule, HttpClientTestingModule, BrowserAnimationsModule],
+        imports: [
+          RouterTestingModule,
+          HttpClientTestingModule,
+          BrowserAnimationsModule,
+          HomeComponent,
+          MatLegacyDialogModule,
+          MatLegacySnackBarModule,
+        ],
         providers: [MastodonService, DescriptorLanguageService],
       }).compileComponents();
     })

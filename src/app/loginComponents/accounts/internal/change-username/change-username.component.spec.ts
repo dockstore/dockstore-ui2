@@ -22,7 +22,6 @@ describe('ChangeUsernameComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [ChangeUsernameComponent],
         imports: [
           ReactiveFormsModule,
           MatIconModule,
@@ -33,6 +32,7 @@ describe('ChangeUsernameComponent', () => {
           MatFormFieldModule,
           MatCardModule,
           BrowserAnimationsModule,
+          ChangeUsernameComponent,
         ],
         providers: [
           { provide: UserService, useClass: UserStubService },

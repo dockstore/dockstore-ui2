@@ -46,8 +46,15 @@ describe('RefreshWorkflowOrganizationComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [RefreshWorkflowOrganizationComponent],
-        imports: [MatToolbarModule, MatIconModule, MatButtonModule, MatTooltipModule, MatSnackBarModule, HttpClientTestingModule],
+        imports: [
+          MatToolbarModule,
+          MatIconModule,
+          MatButtonModule,
+          MatTooltipModule,
+          MatSnackBarModule,
+          HttpClientTestingModule,
+          RefreshWorkflowOrganizationComponent,
+        ],
         providers: [
           { provide: UsersService, useClass: UsersStubService },
           { provide: WorkflowService, useClass: WorkflowStubService },

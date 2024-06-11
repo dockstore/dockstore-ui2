@@ -1,8 +1,8 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
-import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
-import { MatLegacyPaginator as MatPaginator } from '@angular/material/legacy-paginator';
-import { MatSort } from '@angular/material/sort';
+import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogModule } from '@angular/material/legacy-dialog';
+import { MatLegacyPaginator as MatPaginator, MatLegacyPaginatorModule } from '@angular/material/legacy-paginator';
+import { MatSort, MatSortModule } from '@angular/material/sort';
 import { AlertService } from 'app/shared/alert/state/alert.service';
 import { LambdaEvent, LambdaEventsService } from 'app/shared/openapi';
 import { fromEvent, merge, Observable } from 'rxjs';
@@ -11,6 +11,20 @@ import { Base } from '../../../shared/base';
 import { formInputDebounceTime } from '../../../shared/constants';
 import { PaginatorService } from '../../../shared/state/paginator.service';
 import { LambdaEventDataSource, ShowContent } from './lambda-events-datasource';
+import { MapFriendlyValuesPipe } from '../../../search/map-friendly-values.pipe';
+import { ClipboardModule } from '@angular/cdk/clipboard';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { SnackbarDirective } from '../../../shared/snackbar.directive';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { MatLegacyTableModule } from '@angular/material/legacy-table';
+import { MatLegacyInputModule } from '@angular/material/legacy-input';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { RouterLink } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
+import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { NgIf, NgFor, NgSwitch, NgSwitchCase, NgSwitchDefault, AsyncPipe, TitleCasePipe, DatePipe } from '@angular/common';
+import { LoadingComponent } from '../../../shared/loading/loading.component';
 
 /**
  * Based on https://material.angular.io/components/table/examples example with expandable rows
@@ -29,6 +43,33 @@ import { LambdaEventDataSource, ShowContent } from './lambda-events-datasource';
       transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
       transition('expanded <=> void', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
     ]),
+  ],
+  standalone: true,
+  imports: [
+    MatLegacyDialogModule,
+    LoadingComponent,
+    NgIf,
+    MatLegacyCardModule,
+    MatIconModule,
+    RouterLink,
+    MatLegacyFormFieldModule,
+    MatLegacyInputModule,
+    MatLegacyTableModule,
+    MatSortModule,
+    NgFor,
+    NgSwitch,
+    NgSwitchCase,
+    FlexModule,
+    MatLegacyButtonModule,
+    SnackbarDirective,
+    MatLegacyTooltipModule,
+    ClipboardModule,
+    NgSwitchDefault,
+    MatLegacyPaginatorModule,
+    AsyncPipe,
+    TitleCasePipe,
+    DatePipe,
+    MapFriendlyValuesPipe,
   ],
 })
 export class GithubAppsLogsComponent extends Base implements OnInit, AfterViewInit {

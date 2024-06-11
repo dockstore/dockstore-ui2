@@ -1,7 +1,7 @@
-import { KeyValue } from '@angular/common';
+import { KeyValue, NgIf, AsyncPipe } from '@angular/common';
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { AbstractControl, UntypedFormGroup } from '@angular/forms';
-import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
+import { AbstractControl, UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogModule } from '@angular/material/legacy-dialog';
 import { HashMap } from '@datorama/akita';
 import { NgFormsManager } from '@ngneat/forms-manager';
 import { Observable } from 'rxjs';
@@ -10,6 +10,12 @@ import { Collection } from '../../../shared/openapi';
 
 import { CreateCollectionQuery } from '../state/create-collection.query';
 import { CreateCollectionService, FormsState } from '../state/create-collection.service';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatLegacyInputModule } from '@angular/material/legacy-input';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { AlertComponent } from '../../../shared/alert/alert.component';
 
 /**
  * This is actually both create and update collection dialog
@@ -21,6 +27,20 @@ import { CreateCollectionService, FormsState } from '../state/create-collection.
  */
 @Component({
   templateUrl: './create-collection.component.html',
+  standalone: true,
+  imports: [
+    NgIf,
+    MatLegacyDialogModule,
+    AlertComponent,
+    FormsModule,
+    FlexModule,
+    ReactiveFormsModule,
+    MatLegacyFormFieldModule,
+    MatLegacyInputModule,
+    MatLegacyButtonModule,
+    MatLegacyTooltipModule,
+    AsyncPipe,
+  ],
 })
 export class CreateCollectionComponent implements OnInit, OnDestroy {
   createCollectionForm: UntypedFormGroup;

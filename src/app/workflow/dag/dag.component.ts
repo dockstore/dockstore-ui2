@@ -27,6 +27,16 @@ import { WorkflowVersion } from './../../shared/openapi/model/workflowVersion';
 import { DagQuery } from './state/dag.query';
 import { DagService } from './state/dag.service';
 import { DagStore } from './state/dag.store';
+import { CwlViewerComponent } from './cwl-viewer/cwl-viewer.component';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { FormsModule } from '@angular/forms';
+import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
+import { MatIconModule } from '@angular/material/icon';
+import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { NgIf, NgClass, AsyncPipe } from '@angular/common';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { LoadingComponent } from '../../shared/loading/loading.component';
 
 /**
  * This is the DAG tab
@@ -45,6 +55,21 @@ import { DagStore } from './state/dag.store';
   templateUrl: './dag.component.html',
   styleUrls: ['./dag.component.scss'],
   providers: [DagStore, DagQuery, DagService],
+  standalone: true,
+  imports: [
+    LoadingComponent,
+    FlexModule,
+    NgIf,
+    MatLegacyCardModule,
+    MatIconModule,
+    NgClass,
+    ExtendedModule,
+    FormsModule,
+    MatLegacyButtonModule,
+    MatLegacyTooltipModule,
+    CwlViewerComponent,
+    AsyncPipe,
+  ],
 })
 export class DagComponent extends EntryTab implements OnInit, OnChanges, AfterViewInit {
   @Input() id: number;

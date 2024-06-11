@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { UntypedFormControl } from '@angular/forms';
+import { UntypedFormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, shareReplay, takeUntil } from 'rxjs/operators';
@@ -8,11 +8,36 @@ import { bootstrap4largeModalSize, formInputDebounceTime } from '../../shared/co
 import { AdvancedSearchComponent } from '../advancedsearch/advancedsearch.component';
 import { SearchQuery } from '../state/search.query';
 import { SearchService } from '../state/search.service';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { MatIconModule } from '@angular/material/icon';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatLegacyAutocompleteModule } from '@angular/material/legacy-autocomplete';
+import { MatLegacyInputModule } from '@angular/material/legacy-input';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 @Component({
   selector: 'app-basic-search',
   templateUrl: './basic-search.component.html',
   styleUrls: ['./basic-search.component.scss'],
+  standalone: true,
+  imports: [
+    MatExpansionModule,
+    MatLegacyFormFieldModule,
+    MatLegacyInputModule,
+    MatLegacyAutocompleteModule,
+    FormsModule,
+    MatLegacyTooltipModule,
+    ReactiveFormsModule,
+    NgIf,
+    MatLegacyButtonModule,
+    MatIconModule,
+    NgFor,
+    MatLegacyOptionModule,
+    AsyncPipe,
+  ],
 })
 export class BasicSearchComponent extends Base implements OnInit {
   constructor(private searchService: SearchService, private searchQuery: SearchQuery, private matDialog: MatDialog) {

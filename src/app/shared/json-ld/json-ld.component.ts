@@ -56,6 +56,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
   selector: 'app-json-ld',
   template: '',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
 })
 export class JsonLdComponent {
   @Input()

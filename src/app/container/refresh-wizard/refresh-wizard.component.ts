@@ -6,12 +6,41 @@ import { Observable } from 'rxjs';
 import { RefreshWizardQuery } from '../state/refresh-wizard.query';
 import { RefreshWizardService } from '../state/refresh-wizard.service';
 import { RefreshWizardStore } from '../state/refresh-wizard.store';
+import { MatLegacyDialogModule } from '@angular/material/legacy-dialog';
+import { MatStepperModule } from '@angular/material/stepper';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { LoadingComponent } from '../../shared/loading/loading.component';
 
 @Component({
   selector: 'app-refresh-wizard',
   templateUrl: './refresh-wizard.component.html',
   styleUrls: ['./refresh-wizard.component.scss'],
   providers: [RefreshWizardQuery, RefreshWizardStore, RefreshWizardService],
+  standalone: true,
+  imports: [
+    LoadingComponent,
+    NgIf,
+    MatLegacyCardModule,
+    MatIconModule,
+    MatLegacyFormFieldModule,
+    MatLegacySelectModule,
+    NgFor,
+    MatLegacyOptionModule,
+    MatLegacyButtonModule,
+    MatLegacyTooltipModule,
+    FlexModule,
+    MatStepperModule,
+    MatLegacyDialogModule,
+    AsyncPipe,
+  ],
 })
 export class RefreshWizardComponent implements OnInit {
   loading$: Observable<boolean>;

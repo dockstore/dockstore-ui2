@@ -42,7 +42,9 @@ import { catchError, finalize } from 'rxjs/operators';
 import { OrgWorkflowObject } from './my-workflow/my-workflow.component';
 import { Location } from '@angular/common';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class MyWorkflowsService extends MyEntriesService<Workflow, OrgWorkflowObject<Workflow>> {
   constructor(
     protected userQuery: UserQuery,
