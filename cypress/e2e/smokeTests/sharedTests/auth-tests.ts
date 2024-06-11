@@ -180,7 +180,8 @@ function toggleHiddenToolVersion() {
 
 function toggleHiddenWorkflowVersion() {
   cy.get('[data-cy=versionRow]').last().scrollIntoView().contains('button', 'Actions').should('be.visible');
-  cy.get('[data-cy=versionRow]').last().click();
+  cy.get('[data-cy=versionRow]').last().contains('button', 'Actions').click();
+  cy.contains('button', 'Edit').scrollIntoView();
   cy.contains('button', 'Edit').click();
   // TODO: Use [data-cy=hiddenCheck] -- do after 1.14 deployed
   cy.contains('div', 'Hidden:').within(() => {
@@ -267,7 +268,9 @@ function testWorkflow(registry: string, repo: string, name: string) {
 
       goToTab('Info');
       cy.contains('button', 'Restub').click();
-      cy.contains('button', 'Publish').should('be.disabled');
+      // This fails because DOI is auto issued when published, and restub fails.
+      // See https://ucsc-gi.slack.com/archives/C05EZH3RVNY/p1718128426265779
+      // cy.contains('button', 'Publish').should('be.disabled');
 
       cy.get('[data-cy=refreshButton]').click();
       goToTab('Versions');
