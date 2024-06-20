@@ -14,7 +14,7 @@ import { enableAkitaProdMode } from '@datorama/akita';
 import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FlexLayoutModule } from '@ngbracket/ngx-layout';
-import { AuthService, Ng2UiAuthModule } from 'ng2-ui-auth';
+import { provideOAuthClient } from 'angular-oauth2-oidc';
 import { MarkdownModule } from 'ngx-markdown';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { AppComponent } from './app/app.component';
@@ -23,10 +23,10 @@ import { getApiConfig, initializerFactory, myCustomSnackbarDefaults, myCustomToo
 import { CLIENT_ROUTER_PROVIDERS, routing } from './app/app.routing';
 import { ConfigurationService } from './app/configuration.service';
 import { EmailService } from './app/container/email.service';
+import { InfoTabService as ContainerInfoTabService } from './app/container/info-tab/info-tab.service';
 import { ToolLaunchService } from './app/container/launch/tool-launch.service';
 import { ParamfilesService } from './app/container/paramfiles/paramfiles.service';
 import { RegisterToolService } from './app/container/register-tool/register-tool.service';
-import { InfoTabService as ContainerInfoTabService } from './app/container/info-tab/info-tab.service';
 import { VersionModalService as ContainerVersionModalService } from './app/container/version-modal/version-modal.service';
 import { ListContainersService } from './app/containers/list/list.service';
 import { EntryTypeMetadataService } from './app/entry/type-metadata/entry-type-metadata.service';
@@ -42,7 +42,6 @@ import { RegisterService } from './app/register/register.service';
 import { SearchAuthorsHtmlPipe } from './app/search/search-authors-html.pipe';
 import { SearchService } from './app/search/state/search.service';
 import { ServiceInfoService } from './app/service-info/service-info.service';
-import { AuthConfig } from './app/shared/auth.model';
 import { BioschemaService } from './app/shared/bioschema.service';
 import { ContainerService } from './app/shared/container.service';
 import { DateService } from './app/shared/date.service';
@@ -91,7 +90,6 @@ bootstrapApplication(AppComponent, {
       FormsModule,
       MatLegacyDialogModule,
       MatLegacySnackBarModule,
-      Ng2UiAuthModule.forRoot(AuthConfig),
       ClipboardModule,
       FlexLayoutModule,
       StarringModule,
@@ -106,8 +104,9 @@ bootstrapApplication(AppComponent, {
       ApiModule2.forRoot(getApiConfig),
       PipeModule
     ),
+    provideHttpClient(),
+    provideOAuthClient(),
     AccountsService,
-    AuthService,
     BioschemaService,
     CLIENT_ROUTER_PROVIDERS,
     ConfigurationService,
