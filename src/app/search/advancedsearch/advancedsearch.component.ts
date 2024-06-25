@@ -15,17 +15,35 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatLegacyDialog as MatDialog, MatLegacyDialogModule } from '@angular/material/legacy-dialog';
 import { takeUntil } from 'rxjs/operators';
 import { Base } from '../../shared/base';
+import { SearchAuthorsHtmlPipe } from '../search-authors-html.pipe';
 import { SearchService } from '../state/search.service';
 import { AdvancedSearchObject } from './../../shared/models/AdvancedSearchObject';
 import { AdvancedSearchQuery } from './state/advanced-search.query';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { FormsModule } from '@angular/forms';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-advancedsearch',
   templateUrl: './advancedsearch.component.html',
   styleUrls: ['./advancedsearch.component.scss'],
+  standalone: true,
+  imports: [
+    MatLegacyDialogModule,
+    NgIf,
+    MatLegacyFormFieldModule,
+    MatLegacySelectModule,
+    MatLegacyOptionModule,
+    FormsModule,
+    MatLegacyTooltipModule,
+    SearchAuthorsHtmlPipe,
+  ],
 })
 export class AdvancedSearchComponent extends Base implements OnInit {
   NOTFilter: string;

@@ -13,6 +13,7 @@ import { TokenService } from '../../shared/state/token.service';
 @Component({
   selector: 'app-auth',
   templateUrl: './auth.component.html',
+  standalone: true,
 })
 export class AuthComponent extends Base implements OnInit {
   Dockstore = Dockstore;

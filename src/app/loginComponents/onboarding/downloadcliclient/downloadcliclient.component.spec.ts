@@ -22,7 +22,7 @@ describe('DownloadCLIClientComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [DownloadCLIClientComponent, RouterLinkStubDirective, RouterOutletStubComponent],
+        declarations: [RouterLinkStubDirective, RouterOutletStubComponent],
         imports: [
           ClipboardModule,
           MarkdownModule.forRoot(),
@@ -32,6 +32,7 @@ describe('DownloadCLIClientComponent', () => {
           MatSnackBarModule,
           MatTabsModule,
           NoopAnimationsModule,
+          DownloadCLIClientComponent,
         ],
         providers: [
           { provide: AuthService, useClass: AuthStubService },

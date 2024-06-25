@@ -1,5 +1,7 @@
+import { HttpClient } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed, inject } from '@angular/core/testing';
+import { MatLegacySnackBarModule } from '@angular/material/legacy-snack-bar';
 import { NotificationsService } from './notifications.service';
 import { NotificationsStore } from './notifications.store';
 import { expiredMockNotification, mockedNotification } from '../../test/mocked-objects';

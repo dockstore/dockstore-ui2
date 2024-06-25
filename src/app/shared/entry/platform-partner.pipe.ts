@@ -4,6 +4,7 @@ import PartnerEnum = CloudInstance.PartnerEnum;
 
 @Pipe({
   name: 'platformPartner',
+  standalone: true,
 })
 export class PlatformPartnerPipe implements PipeTransform {
   /**

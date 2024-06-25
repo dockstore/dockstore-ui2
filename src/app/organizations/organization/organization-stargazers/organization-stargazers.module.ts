@@ -16,7 +16,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@ngbracket/ngx-layout';
-import { CustomMaterialModule } from '../../../shared/modules/material.module';
+
 import { RouterModule } from '@angular/router';
 
 import { StarOrganizationService } from '../../../shared/star-organization.service';
@@ -24,8 +24,7 @@ import { OrganizationStarringService } from '../organization-starring/organizati
 import { OrganizationStargazersComponent } from './organization-stargazers.component';
 
 @NgModule({
-  imports: [CommonModule, FlexLayoutModule, CustomMaterialModule, RouterModule],
-  declarations: [OrganizationStargazersComponent],
+  imports: [CommonModule, FlexLayoutModule, RouterModule, OrganizationStargazersComponent],
   exports: [OrganizationStargazersComponent],
   providers: [OrganizationStarringService, StarOrganizationService],
 })

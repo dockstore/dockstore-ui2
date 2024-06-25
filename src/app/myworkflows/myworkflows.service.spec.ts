@@ -15,20 +15,26 @@
  */
 
 import { inject, TestBed } from '@angular/core/testing';
+import { MatLegacyDialogModule } from '@angular/material/legacy-dialog';
+import { MatLegacySnackBarModule } from '@angular/material/legacy-snack-bar';
 import { RouterTestingModule } from '@angular/router/testing';
-import { CustomMaterialModule } from 'app/shared/modules/material.module';
-import { MyEntriesModule } from 'app/shared/modules/my-entries.module';
-import { WorkflowService } from 'app/shared/state/workflow.service';
-import { UsersService, WorkflowsService } from 'app/shared/openapi';
-import { UrlResolverService } from 'app/shared/url-resolver.service';
 import { EntryTypeMetadataService } from 'app/entry/type-metadata/entry-type-metadata.service';
+import { UsersService, WorkflowsService } from 'app/shared/openapi';
+import { WorkflowService } from 'app/shared/state/workflow.service';
+import { UrlResolverService } from 'app/shared/url-resolver.service';
 import {
+  DateStubService,
+  EntryTypeMetadataStubService,
+  ProviderStubService,
   UrlResolverStubService,
   UsersStubService,
   WorkflowsStubService,
   WorkflowStubService,
-  EntryTypeMetadataStubService,
 } from 'app/test/service-stubs';
+import { DateService } from '../shared/date.service';
+import { ProviderService } from '../shared/provider.service';
+import { MyEntriesStateService } from '../shared/state/my-entries.service';
+import { MyEntriesStore } from '../shared/state/my-entries.store';
 import { Workflow } from './../shared/openapi/model/workflow';
 import { OrgWorkflowObject } from './my-workflow/my-workflow.component';
 import { MyWorkflowsService } from './myworkflows.service';
@@ -152,14 +158,17 @@ describe('MyWorkflowsService', () => {
   const expectedResult: OrgWorkflowObject<Workflow>[] = [expectedResult1, expectedResult2, expectedResult3];
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CustomMaterialModule, RouterTestingModule, MyEntriesModule],
+      imports: [RouterTestingModule, MatLegacySnackBarModule, MatLegacyDialogModule],
       providers: [
-        MyWorkflowsService,
+        { provide: DateService, useClass: DateStubService },
         { provide: UrlResolverService, useClass: UrlResolverStubService },
         { provide: WorkflowService, useClass: WorkflowStubService },
         { provide: UsersService, useClass: UsersStubService },
         { provide: WorkflowsService, useClass: WorkflowsStubService },
         { provide: EntryTypeMetadataService, useClass: EntryTypeMetadataStubService },
+        { provide: ProviderService, useClass: ProviderStubService },
+        MyEntriesStateService,
+        MyEntriesStore,
       ],
     });
   });

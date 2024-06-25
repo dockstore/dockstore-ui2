@@ -15,11 +15,17 @@
  */
 import { Component, OnChanges, Input } from '@angular/core';
 import { Category, CategorySummary } from '../../shared/openapi';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { NgClass } from '@angular/common';
+import { RouterLink } from '@angular/router';
+import { MatLegacyChipsModule } from '@angular/material/legacy-chips';
 
 @Component({
   selector: 'app-category-button',
   templateUrl: './category-button.component.html',
   styleUrls: ['./category-button.component.scss'],
+  standalone: true,
+  imports: [MatLegacyChipsModule, RouterLink, NgClass, MatLegacyTooltipModule],
 })
 export class CategoryButtonComponent implements OnChanges {
   @Input() category: Category | CategorySummary;

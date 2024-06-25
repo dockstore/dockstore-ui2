@@ -23,7 +23,6 @@ describe('SidebarAccordionComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [SidebarAccordionComponent, RefreshToolOrganizationComponent, SelectTabPipe],
         imports: [
           MatTabsModule,
           MatToolbarModule,
@@ -34,6 +33,9 @@ describe('SidebarAccordionComponent', () => {
           MatTooltipModule,
           RouterTestingModule,
           HttpClientTestingModule,
+          SidebarAccordionComponent,
+          RefreshToolOrganizationComponent,
+          SelectTabPipe,
         ],
         providers: [
           { provide: RegisterToolService, useClass: RegisterToolStubService },

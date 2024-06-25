@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { CustomMaterialModule } from '../../modules/material.module';
 import { VerifiedByComponent } from './verified-by.component';
 
 describe('VerifiedByComponent', () => {
@@ -9,8 +8,7 @@ describe('VerifiedByComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [CustomMaterialModule],
-        declarations: [VerifiedByComponent],
+        imports: [VerifiedByComponent],
       }).compileComponents();
     })
   );

@@ -14,13 +14,26 @@
  *    limitations under the License.
  */
 import { Component, OnInit } from '@angular/core';
-import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
+import { MatLegacyTableDataSource as MatTableDataSource, MatLegacyTableModule } from '@angular/material/legacy-table';
 import { Observable } from 'rxjs';
 import { DateService } from '../../shared/date.service';
 import { Notebook, Workflow } from '../../shared/openapi';
 import { SearchEntryTable } from '../search-entry-table';
 import { SearchQuery, SearchResult } from '../state/search.query';
 import { SearchService } from '../state/search.service';
+import { JoinWithEllipsesPipe } from 'app/search/join-with-ellipses.pipe';
+import { SearchAuthorsHtmlPipe } from 'app/search/search-authors-html.pipe';
+import { DescriptorLanguagePipe } from '../../shared/entry/descriptor-language.pipe';
+import { MatLegacyPaginatorModule } from '@angular/material/legacy-paginator';
+import { MatIconModule } from '@angular/material/icon';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
+import { AiBubbleComponent } from '../../shared/ai-bubble/ai-bubble.component';
+import { RouterLink } from '@angular/router';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatSortModule } from '@angular/material/sort';
+import { MatLegacyProgressBarModule } from '@angular/material/legacy-progress-bar';
+import { NgIf, NgFor, KeyValuePipe } from '@angular/common';
 import TopicSelectionEnum = Workflow.TopicSelectionEnum;
 
 /**
@@ -31,6 +44,25 @@ import TopicSelectionEnum = Workflow.TopicSelectionEnum;
   selector: 'app-search-notebook-table',
   templateUrl: './search-notebook-table.component.html',
   styleUrls: ['../../shared/styles/entry-table.scss', './search-notebook-table.component.scss'],
+  standalone: true,
+  imports: [
+    NgIf,
+    MatLegacyProgressBarModule,
+    MatLegacyTableModule,
+    MatSortModule,
+    MatLegacyTooltipModule,
+    RouterLink,
+    AiBubbleComponent,
+    ExtendedModule,
+    FontAwesomeModule,
+    MatIconModule,
+    NgFor,
+    MatLegacyPaginatorModule,
+    KeyValuePipe,
+    DescriptorLanguagePipe,
+    SearchAuthorsHtmlPipe,
+    JoinWithEllipsesPipe,
+  ],
 })
 export class SearchNotebookTableComponent extends SearchEntryTable implements OnInit {
   public readonly displayedColumns = ['name', 'all_authors', 'descriptorType', 'descriptorTypeSubclass', 'projectLinks', 'starredUsers'];

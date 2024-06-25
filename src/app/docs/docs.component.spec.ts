@@ -15,7 +15,7 @@
  */
 
 import { TestBed, waitForAsync } from '@angular/core/testing';
-import { HeaderModule } from './../shared/modules/header.module';
+import { MatLegacySnackBarModule } from '@angular/material/legacy-snack-bar';
 import { RouterLinkStubDirective, RouterOutletStubComponent } from './../test/router-stubs';
 import { DocsComponent } from './docs.component';
 
@@ -30,8 +30,8 @@ describe('DocsComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [DocsComponent, RouterLinkStubDirective, RouterOutletStubComponent],
-        imports: [HeaderModule],
+        declarations: [RouterLinkStubDirective, RouterOutletStubComponent],
+        imports: [DocsComponent, MatLegacySnackBarModule],
       }).compileComponents();
     })
   );

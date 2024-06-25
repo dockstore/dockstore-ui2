@@ -278,7 +278,9 @@ describe('Dockstore my tools', () => {
       cy.contains('Create tool with descriptor(s) on remote sites').should('be.visible').click();
       cy.get('.modal-footer').contains('Next').first().click();
 
-      cy.get('#sourceCodeRepositoryInput').scrollIntoView().should('be.visible').click().type('testnamespace/testname');
+      cy.get('#sourceCodeRepositoryInput').scrollIntoView().should('be.visible');
+      cy.get('#sourceCodeRepositoryInput').click();
+      cy.get('#sourceCodeRepositoryInput').type('testnamespace/testname');
 
       cy.get('[data-cy=imageRegistryProviderSelect]').click();
       cy.contains('Amazon ECR').click();
@@ -342,7 +344,9 @@ describe('Dockstore my tools', () => {
       cy.contains('Create tool with descriptor(s) on remote sites').should('be.visible').click();
       cy.get('.modal-footer').contains('Next').first().click();
 
-      cy.get('#sourceCodeRepositoryInput').scrollIntoView().should('be.visible').click().type('testnamespace/testname');
+      cy.get('#sourceCodeRepositoryInput').scrollIntoView().should('be.visible');
+      cy.get('#sourceCodeRepositoryInput').click();
+      cy.get('#sourceCodeRepositoryInput').type('testnamespace/testname');
 
       cy.get('[data-cy=imageRegistryProviderSelect]').click();
       cy.contains('Amazon ECR').click();
@@ -448,7 +452,9 @@ describe('Dockstore my tools', () => {
       cy.contains('Create tool with descriptor(s) on remote sites').should('be.visible').click();
       cy.get('.modal-footer').contains('Next').first().click();
 
-      cy.get('#sourceCodeRepositoryInput').scrollIntoView().should('be.visible').click().type('testnamespace/testname');
+      cy.get('#sourceCodeRepositoryInput').scrollIntoView().should('be.visible');
+      cy.get('#sourceCodeRepositoryInput').click();
+      cy.get('#sourceCodeRepositoryInput').type('testnamespace/testname');
 
       cy.get('[data-cy=imageRegistryProviderSelect]').click();
       cy.contains('mat-option', 'Seven Bridges').click();
@@ -458,6 +464,7 @@ describe('Dockstore my tools', () => {
 
       cy.get('#imageRegistryInput').type('testnamespace/testname');
 
+      cy.get('#submitButton').scrollIntoView().should('be.enabled');
       cy.get('#submitButton').click();
 
       // TODO: This is temporarily disabled
@@ -532,7 +539,8 @@ describe('Dockstore my tools', () => {
       cy.visit('/containers/quay.io/A2/a');
       goToTab('Versions');
       cy.get('[data-cy=actionsButton]').should('be.visible').first().click();
-      cy.get('[data-cy=ok-dialog-close-button]').scrollIntoView().should('be.visible').click();
+      cy.get('[data-cy=ok-dialog-close-button]').scrollIntoView().should('be.visible');
+      cy.get('[data-cy=ok-dialog-close-button]').click();
     });
   });
 });

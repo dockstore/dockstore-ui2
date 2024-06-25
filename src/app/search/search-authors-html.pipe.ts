@@ -3,6 +3,7 @@ import { Author, OrcidAuthorInformation } from 'app/shared/openapi';
 
 @Pipe({
   name: 'getSearchAuthorsHtml',
+  standalone: true,
 })
 /**
  * This pipe filters results in the facet according to the facet search text

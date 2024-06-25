@@ -12,11 +12,19 @@ import { UserService } from '../../../shared/user/user.service';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ChangeUsernameComponent } from '../../../../app/loginComponents/accounts/internal/change-username/change-username.component';
 import { bootstrap4largeModalSize } from '../../../shared/constants';
+import { RouterLink } from '@angular/router';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatIconModule } from '@angular/material/icon';
+import { NgIf } from '@angular/common';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
 
 @Component({
   selector: 'app-account-sidebar',
   templateUrl: './account-sidebar.component.html',
   styleUrls: ['./account-sidebar.component.scss'],
+  standalone: true,
+  imports: [FlexModule, NgIf, MatIconModule, MatLegacyTooltipModule, MatLegacyButtonModule, RouterLink],
 })
 export class AccountSidebarComponent implements OnInit {
   user: User;

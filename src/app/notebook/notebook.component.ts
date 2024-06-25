@@ -3,6 +3,11 @@ import { finalize } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { SourceFile, Workflow, WorkflowVersion, WorkflowsService } from 'app/shared/openapi';
 import { Cell } from './notebook-types';
+import { NotebookMimeBundleOutputComponent } from './notebook-mime-bundle-output.component';
+import { NotebookStreamOutputComponent } from './notebook-stream-output.component';
+import { NotebookSourceComponent } from './notebook-source.component';
+import { NotebookMarkdownComponent } from './notebook-markdown.component';
+import { NgIf, NgFor } from '@angular/common';
 
 /**
  * Convert the specified notebook to user-friendly preview that represents it.
@@ -14,6 +19,15 @@ import { Cell } from './notebook-types';
 @Component({
   selector: 'app-notebook',
   templateUrl: './notebook.component.html',
+  standalone: true,
+  imports: [
+    NgIf,
+    NgFor,
+    NotebookMarkdownComponent,
+    NotebookSourceComponent,
+    NotebookStreamOutputComponent,
+    NotebookMimeBundleOutputComponent,
+  ],
 })
 export class NotebookComponent implements OnChanges {
   constructor(private workflowsService: WorkflowsService) {}

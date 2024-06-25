@@ -33,8 +33,7 @@ describe('DagComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [DagComponent, CwlViewerComponent],
-        imports: [HttpClientTestingModule, FormsModule],
+        imports: [HttpClientTestingModule, FormsModule, DagComponent, CwlViewerComponent],
         schemas: [NO_ERRORS_SCHEMA],
         providers: [
           DagStore,

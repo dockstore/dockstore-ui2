@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { Component, Input, OnInit } from '@angular/core';
-import { UntypedFormControl, Validators } from '@angular/forms';
+import { UntypedFormControl, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, finalize, takeUntil } from 'rxjs/operators';
 import { formInputDebounceTime } from '../../../../shared/constants';
@@ -23,11 +23,33 @@ import { User } from '../../../../shared/openapi/model/user';
 import { UserQuery } from '../../../../shared/user/user.query';
 import { UserService } from '../../../../shared/user/user.service';
 import { UsersService } from './../../../../shared/openapi/api/users.service';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatLegacyInputModule } from '@angular/material/legacy-input';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { MatLegacyDialogModule } from '@angular/material/legacy-dialog';
+import { NgIf, AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-change-username',
   templateUrl: './change-username.component.html',
   styleUrls: ['./change-username.component.scss'],
+  standalone: true,
+  imports: [
+    NgIf,
+    MatLegacyDialogModule,
+    MatLegacyCardModule,
+    FlexModule,
+    MatIconModule,
+    MatLegacyFormFieldModule,
+    MatLegacyInputModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatLegacyButtonModule,
+    AsyncPipe,
+  ],
 })
 export class ChangeUsernameComponent implements OnInit {
   @Input() noDialog: boolean;

@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-import { RouterModule, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 
 import { DocsComponent } from './docs.component';
 
@@ -25,4 +25,4 @@ const DOC_ROUTES: Routes = [
   },
 ];
 
-export const docsRouting = RouterModule.forChild(DOC_ROUTES);
+export const docsRouting = DOC_ROUTES;

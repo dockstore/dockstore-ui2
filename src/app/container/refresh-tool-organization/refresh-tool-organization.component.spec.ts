@@ -41,8 +41,7 @@ describe('RefreshToolOrganizationComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [RefreshToolOrganizationComponent],
-        imports: [MatSnackBarModule, MatIconModule, MatButtonModule, MatTooltipModule],
+        imports: [MatSnackBarModule, MatIconModule, MatButtonModule, MatTooltipModule, RefreshToolOrganizationComponent],
         providers: [
           { provide: UsersService, useClass: UsersStubService },
           { provide: RefreshService, useClass: RefreshStubService },

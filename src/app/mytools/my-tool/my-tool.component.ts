@@ -47,11 +47,44 @@ import { UserQuery } from '../../shared/user/user.query';
 import { MytoolsService } from '../mytools.service';
 import { EntryType } from '../../shared/enum/entry-type';
 import { UserService } from 'app/shared/user/user.service';
+import { ContainerComponent } from '../../container/container.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { MatLegacyMenuModule } from '@angular/material/legacy-menu';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { NgIf, AsyncPipe, TitleCasePipe } from '@angular/common';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatIconModule } from '@angular/material/icon';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { HeaderComponent } from '../../header/header.component';
+import { MySidebarComponent } from '../../my-sidebar/my-sidebar.component';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { SidebarAccordionComponent } from '../sidebar-accordion/sidebar-accordion.component';
+import { SidebarAccordionComponent as WorkflowSidebarAccordionComponent } from '../../myworkflows/sidebar-accordion/sidebar-accordion.component';
 
 @Component({
   selector: 'app-my-tool',
   templateUrl: './my-tool.component.html',
   styleUrls: ['../../shared/styles/my-entry.component.scss'],
+  standalone: true,
+  imports: [
+    FlexModule,
+    MySidebarComponent,
+    HeaderComponent,
+    MatLegacyButtonModule,
+    MatIconModule,
+    MatSidenavModule,
+    NgIf,
+    MatLegacyTooltipModule,
+    MatLegacyMenuModule,
+    SidebarAccordionComponent,
+    WorkflowSidebarAccordionComponent,
+    MatLegacyCardModule,
+    FontAwesomeModule,
+    ContainerComponent,
+    AsyncPipe,
+    TitleCasePipe,
+  ],
 })
 export class MyToolComponent extends MyEntry implements OnInit {
   faGithub = faGithub;

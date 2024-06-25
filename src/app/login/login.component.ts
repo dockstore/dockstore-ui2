@@ -23,11 +23,32 @@ import { RegisterService } from '../register/register.service';
 import { TrackLoginService } from '../shared/track-login.service';
 import { UserService } from '../shared/user/user.service';
 import { LoginService } from './login.service';
+import { NgTemplateOutlet } from '@angular/common';
+import { MatLegacyCheckboxModule } from '@angular/material/legacy-checkbox';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatLegacyTabsModule } from '@angular/material/legacy-tabs';
+import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { AlertComponent } from '../shared/alert/alert.component';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
+  standalone: true,
+  imports: [
+    AlertComponent,
+    FlexModule,
+    MatLegacyCardModule,
+    MatLegacyTabsModule,
+    MatLegacyButtonModule,
+    MatLegacyTooltipModule,
+    FontAwesomeModule,
+    MatLegacyCheckboxModule,
+    NgTemplateOutlet,
+  ],
 })
 export class LoginComponent {
   faGithub = faGithub;

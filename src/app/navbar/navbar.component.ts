@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { Component, OnInit } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
+import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { Observable, Subject, combineLatest } from 'rxjs';
 import { filter, map, takeUntil } from 'rxjs/operators';
 import { Logout } from '../loginComponents/logout';
@@ -30,11 +30,35 @@ import { TrackLoginService } from './../shared/track-login.service';
 import { Organization, OrganizationUser } from '../shared/openapi';
 import { RequestsQuery } from '../loginComponents/state/requests.query';
 import { RequestsService } from '../loginComponents/state/requests.service';
+import { MatLegacyMenuModule } from '@angular/material/legacy-menu';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatIconModule } from '@angular/material/icon';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
+import { NgClass, NgIf, NgTemplateOutlet, AsyncPipe } from '@angular/common';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
+  standalone: true,
+  imports: [
+    MatToolbarModule,
+    NgClass,
+    ExtendedModule,
+    RouterLink,
+    MatLegacyButtonModule,
+    RouterLinkActive,
+    NgIf,
+    FlexModule,
+    MatIconModule,
+    MatBadgeModule,
+    NgTemplateOutlet,
+    MatLegacyMenuModule,
+    AsyncPipe,
+  ],
 })
 export class NavbarComponent extends Logout implements OnInit {
   public user: User;

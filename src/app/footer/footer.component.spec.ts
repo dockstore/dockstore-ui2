@@ -33,8 +33,7 @@ describe('FooterComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [FooterComponent, GitTagPipe],
-        imports: [RouterTestingModule, MatIconModule, MatSnackBarModule, ClipboardModule],
+        imports: [RouterTestingModule, MatIconModule, MatSnackBarModule, ClipboardModule, FooterComponent, GitTagPipe],
         providers: [ServiceInfoService, { provide: GA4GHV20Service, useClass: GA4GHV20StubService }],
       }).compileComponents();
     })

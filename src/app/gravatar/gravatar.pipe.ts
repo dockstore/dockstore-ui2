@@ -6,6 +6,7 @@ import { GravatarService } from './gravatar.service';
  */
 @Pipe({
   name: 'gravatar',
+  standalone: true,
 })
 export class GravatarPipe implements PipeTransform {
   constructor(private gravatarService: GravatarService) {}

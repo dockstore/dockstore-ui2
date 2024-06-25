@@ -34,13 +34,6 @@ describe('WorkflowFileEditorComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [
-          WorkflowFileEditorComponent,
-          CodeEditorListComponent,
-          CodeEditorComponent,
-          PublicFileDownloadPipe,
-          PrivateFilePathPipe,
-        ],
         imports: [
           MatButtonModule,
           MatTabsModule,
@@ -55,6 +48,11 @@ describe('WorkflowFileEditorComponent', () => {
           BrowserAnimationsModule,
           HttpClientModule,
           HttpClientTestingModule,
+          WorkflowFileEditorComponent,
+          CodeEditorListComponent,
+          CodeEditorComponent,
+          PublicFileDownloadPipe,
+          PrivateFilePathPipe,
         ],
         providers: [
           { provide: HostedService, useClass: HostedStubService },

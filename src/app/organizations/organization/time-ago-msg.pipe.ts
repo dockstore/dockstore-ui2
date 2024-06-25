@@ -18,6 +18,7 @@ import { DateService } from '../../shared/date.service';
 
 @Pipe({
   name: 'timeAgoMessage',
+  standalone: true,
 })
 export class TimeAgoMsgPipe implements PipeTransform {
   constructor(private dateService: DateService) {}

@@ -27,7 +27,6 @@ describe('CodeEditorListComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [CodeEditorListComponent, CodeEditorComponent, PublicFileDownloadPipe, PrivateFilePathPipe],
         imports: [
           MatButtonModule,
           MatTabsModule,
@@ -39,6 +38,10 @@ describe('CodeEditorListComponent', () => {
           MatCardModule,
           ClipboardModule,
           HttpClientTestingModule,
+          CodeEditorListComponent,
+          CodeEditorComponent,
+          PublicFileDownloadPipe,
+          PrivateFilePathPipe,
         ],
         providers: [
           { provide: WorkflowService, useClass: WorkflowStubService },

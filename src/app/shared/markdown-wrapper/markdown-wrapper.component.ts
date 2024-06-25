@@ -5,6 +5,7 @@ import { MarkdownWrapperService } from './markdown-wrapper.service';
   selector: 'app-markdown-wrapper',
   templateUrl: './markdown-wrapper.component.html',
   styleUrls: ['./markdown-wrapper.component.scss'],
+  standalone: true,
 })
 export class MarkdownWrapperComponent implements OnChanges {
   @Input() data: string;

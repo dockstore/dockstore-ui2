@@ -15,7 +15,7 @@
  */
 import { HttpResponse } from '@angular/common/http';
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { MatLegacyRadioChange as MatRadioChange } from '@angular/material/legacy-radio';
+import { MatLegacyRadioChange as MatRadioChange, MatLegacyRadioModule } from '@angular/material/legacy-radio';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { FileService } from 'app/shared/file.service';
@@ -36,11 +36,58 @@ import { WorkflowVersion } from '../../shared/openapi/model/workflowVersion';
 import { Tooltip } from '../../shared/tooltip';
 import { validationDescriptorPatterns } from '../../shared/validationMessages.model';
 import { InfoTabService } from './info-tab.service';
+import { VersionProviderUrlPipe } from '../../shared/entry/versionProviderUrl.pipe';
+import { BaseUrlPipe } from '../../shared/entry/base-url.pipe';
+import { MapFriendlyValuesPipe } from '../../search/map-friendly-values.pipe';
+import { MarkdownWrapperComponent } from '../../shared/markdown-wrapper/markdown-wrapper.component';
+import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
+import { MatLegacyTableModule } from '@angular/material/legacy-table';
+import { InfoTabCheckerWorkflowPathComponent } from '../../shared/entry/info-tab-checker-workflow-path/info-tab-checker-workflow-path.component';
+import { AiBubbleComponent } from '../../shared/ai-bubble/ai-bubble.component';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { FormsModule } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
+import { ClipboardModule } from '@angular/cdk/clipboard';
+import { SnackbarDirective } from '../../shared/snackbar.directive';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { NgIf, NgFor, NgClass, NgSwitch, NgSwitchCase, NgSwitchDefault, AsyncPipe, TitleCasePipe } from '@angular/common';
 
 @Component({
   selector: 'app-info-tab',
   templateUrl: './info-tab.component.html',
   styleUrls: ['./info-tab.component.css'],
+  standalone: true,
+  imports: [
+    NgIf,
+    MatLegacyCardModule,
+    MatDividerModule,
+    MatLegacyTooltipModule,
+    MatLegacyButtonModule,
+    SnackbarDirective,
+    ClipboardModule,
+    MatIconModule,
+    FormsModule,
+    FlexModule,
+    AiBubbleComponent,
+    MatLegacyRadioModule,
+    InfoTabCheckerWorkflowPathComponent,
+    NgFor,
+    MatLegacyTableModule,
+    ExtendedModule,
+    NgClass,
+    MarkdownWrapperComponent,
+    NgSwitch,
+    NgSwitchCase,
+    NgSwitchDefault,
+    AsyncPipe,
+    TitleCasePipe,
+    MapFriendlyValuesPipe,
+    BaseUrlPipe,
+    VersionProviderUrlPipe,
+  ],
 })
 export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   @Input() validVersions;

@@ -23,8 +23,7 @@ import { OrganizationStarringComponent } from './organization-starring.component
 import { OrganizationStarringService } from './organization-starring.service';
 
 @NgModule({
-  imports: [CommonModule, MatIconModule, MatTooltipModule],
-  declarations: [OrganizationStarringComponent],
+  imports: [CommonModule, MatIconModule, MatTooltipModule, OrganizationStarringComponent],
   exports: [OrganizationStarringComponent],
   providers: [OrganizationStarringService, StarOrganizationService],
 })

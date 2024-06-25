@@ -41,11 +41,17 @@ import { SnaphotExporterModalComponent, SnapshotExporterAction } from '../snapsh
 import { VersionModalComponent } from '../version-modal/version-modal.component';
 import { VersionModalService } from '../version-modal/version-modal.service';
 import { ViewService } from './view.service';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatLegacyMenuModule } from '@angular/material/legacy-menu';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { NgIf, AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-view-workflow',
   templateUrl: './view.component.html',
   styleUrls: ['./view.component.css'],
+  standalone: true,
+  imports: [NgIf, MatLegacyButtonModule, MatLegacyMenuModule, MatLegacyTooltipModule, AsyncPipe],
 })
 export class ViewWorkflowComponent extends View<WorkflowVersion> implements OnInit {
   @Input() workflowId: number;

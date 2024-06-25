@@ -6,6 +6,7 @@ import { Dockstore } from '../../../shared/dockstore.model';
 @Component({
   selector: 'app-featured-content',
   template: ` <div [innerHTML]="myExternalHTML"></div> `,
+  standalone: true,
 })
 export class FeaturedContentComponent implements OnInit {
   public myExternalHTML = '';

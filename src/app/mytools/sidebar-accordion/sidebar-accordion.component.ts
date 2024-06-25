@@ -3,9 +3,17 @@ import { DockstoreTool } from 'app/shared/openapi';
 import { Observable } from 'rxjs';
 import { ToolQuery } from '../../shared/tool/tool.query';
 import { OrgToolObject } from '../my-tool/my-tool.component';
-import { KeyValue } from '@angular/common';
+import { KeyValue, NgFor, NgIf, NgTemplateOutlet, NgClass, AsyncPipe, KeyValuePipe } from '@angular/common';
 import { MetadataService } from '../../shared/openapi/api/metadata.service';
 import { WorkflowQuery } from 'app/shared/state/workflow.query';
+import { SelectTabPipe } from '../../shared/entry/select-tab.pipe';
+import { RefreshToolOrganizationComponent } from '../../container/refresh-tool-organization/refresh-tool-organization.component';
+import { RouterLink } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
+import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
+import { MatLegacyListModule } from '@angular/material/legacy-list';
+import { MatLegacyTabsModule } from '@angular/material/legacy-tabs';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 interface GroupEntriesByRegistry {
   groupEntryInfo: OrgToolObject<DockstoreTool>[];
@@ -16,6 +24,23 @@ interface GroupEntriesByRegistry {
   selector: 'app-sidebar-accordion',
   templateUrl: './sidebar-accordion.component.html',
   styleUrls: ['./sidebar-accordion.component.scss', '../../shared/styles/my-entry-sidebar.scss'],
+  standalone: true,
+  imports: [
+    NgFor,
+    NgIf,
+    MatExpansionModule,
+    MatLegacyTabsModule,
+    NgTemplateOutlet,
+    MatLegacyListModule,
+    NgClass,
+    ExtendedModule,
+    MatIconModule,
+    RouterLink,
+    RefreshToolOrganizationComponent,
+    AsyncPipe,
+    KeyValuePipe,
+    SelectTabPipe,
+  ],
 })
 export class SidebarAccordionComponent implements OnInit, OnChanges {
   @Input() openOneAtATime;

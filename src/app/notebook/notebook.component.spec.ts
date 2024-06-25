@@ -20,14 +20,14 @@ describe('NotebookComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [
+        imports: [
+          HttpClientTestingModule,
           NotebookComponent,
           NotebookMarkdownComponent,
           NotebookSourceComponent,
           NotebookStreamOutputComponent,
           NotebookMimeBundleOutputComponent,
         ],
-        imports: [HttpClientTestingModule],
         providers: [
           {
             provide: WorkflowsService,

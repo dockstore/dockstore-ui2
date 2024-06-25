@@ -16,10 +16,13 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { toExtendSite } from '../shared/helpers';
+import { AlertComponent } from '../shared/alert/alert.component';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
+  standalone: true,
+  imports: [AlertComponent],
 })
 export class HeaderComponent {
   isExtended = false;
