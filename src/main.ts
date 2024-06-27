@@ -108,12 +108,9 @@ bootstrapApplication(AppComponent, {
       PipeModule,
       Ng2UiAuthModule.forRoot(AuthConfig)
     ),
-    provideHttpClient(),
-    provideOAuthClient(),
     AccountsService,
     BioschemaService,
     CLIENT_ROUTER_PROVIDERS,
-    ConfigService,
     ConfigurationService,
     ContainerInfoTabService,
     ContainerService,
