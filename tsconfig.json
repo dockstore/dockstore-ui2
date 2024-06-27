@@ -1,3 +1,4 @@
+// @ts-nocheck
 {
   "compileOnSave": false,
   "compilerOptions": {
@@ -7,6 +8,7 @@
     "sourceMap": true,
     "declaration": false,
     "moduleResolution": "node",
+    "noUnusedLocals": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "target": "ES2020",
