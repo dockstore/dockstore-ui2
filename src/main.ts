@@ -14,7 +14,6 @@ import { enableAkitaProdMode } from '@datorama/akita';
 import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FlexLayoutModule } from '@ngbracket/ngx-layout';
-import { AuthService, Ng2UiAuthModule } from 'ng2-ui-auth';
 import { MarkdownModule } from 'ngx-markdown';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { AppComponent } from './app/app.component';
