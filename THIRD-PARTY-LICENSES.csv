@@ -83,7 +83,6 @@
 "agent-base@4.3.0","MIT","https://github.com/TooTallNate/node-agent-base"
 "agentkeepalive@3.5.2","MIT","https://github.com/node-modules/agentkeepalive"
 "ajv@6.12.3","MIT","https://github.com/ajv-validator/ajv"
-"angular-oauth2-oidc@15.0.1","MIT","https://github.com/manfredsteyer/angular-oauth2-oidc"
 "angular-tag-cloud-module@14.0.0","MIT*","https://github.com/d-koppenhagen/angular-tag-cloud-module"
 "aproba@1.2.0","ISC","https://github.com/iarna/aproba"
 "balanced-match@1.0.2","MIT","https://github.com/juliangruber/balanced-match"
