@@ -24,12 +24,35 @@ import { ToolQuery } from '../../shared/tool/tool.query';
 import { DescriptorLanguageService } from './../../shared/entry/descriptor-language.service';
 import { Tag } from './../../shared/openapi/model/tag';
 import { ToolLaunchService } from './tool-launch.service';
+import { LaunchCheckerWorkflowComponent } from '../../shared/entry/launch-checker-workflow/launch-checker-workflow.component';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { NgIf, NgFor, AsyncPipe } from '@angular/common';
 import DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
 
 @Component({
-  selector: 'app-launch',
+  selector: 'app-container-launch',
   templateUrl: './launch.component.html',
   styleUrls: ['./launch.component.css'],
+  standalone: true,
+  imports: [
+    NgIf,
+    MatLegacyCardModule,
+    MatIconModule,
+    MatLegacyFormFieldModule,
+    MatLegacySelectModule,
+    NgFor,
+    MatLegacyOptionModule,
+    FlexModule,
+    MatLegacyTooltipModule,
+    LaunchCheckerWorkflowComponent,
+    AsyncPipe,
+  ],
 })
 export class LaunchComponent extends Base implements OnInit, OnChanges {
   @Input() basePath: string;

@@ -24,6 +24,23 @@ import { User } from '../../shared/openapi/model/user';
 import { UserQuery } from '../../shared/user/user.query';
 import { Category } from '../../shared/openapi';
 import { AllCategoriesService } from '../../categories/state/all-categories.service';
+import { MastodonComponent } from '../../shared/mastodon/mastodon.component';
+import { MatDividerModule } from '@angular/material/divider';
+import { NewsAndUpdatesComponent } from '../widget/featured-content/news-and-updates.component';
+import { FeaturedContentComponent } from '../widget/featured-content/featured-content.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
+import { MatLegacyTabsModule } from '@angular/material/legacy-tabs';
+import { CategoryButtonComponent } from '../../categories/button/category-button.component';
+import { MatLegacyChipsModule } from '@angular/material/legacy-chips';
+import { NgIf, NgFor, AsyncPipe, SlicePipe } from '@angular/common';
+import { MatLegacyInputModule } from '@angular/material/legacy-input';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { RouterLink } from '@angular/router';
+import { JsonLdComponent } from '../../shared/json-ld/json-ld.component';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
 
 /**
  * Simple youtube iframe component, too simple to have its own file
@@ -33,6 +50,7 @@ import { AllCategoriesService } from '../../categories/state/all-categories.serv
  */
 @Component({
   template: '<iframe id="youtubeModal" width="560" height="315" src="https://www.youtube.com/embed/RYHUX9jGx24" frameborder="0"></iframe>',
+  standalone: true,
 })
 export class YoutubeComponent {
   constructor(public dialogRef: MatDialogRef<YoutubeComponent>) {}
@@ -42,6 +60,29 @@ export class YoutubeComponent {
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
+  standalone: true,
+  imports: [
+    FlexModule,
+    JsonLdComponent,
+    RouterLink,
+    MatLegacyButtonModule,
+    MatIconModule,
+    MatLegacyFormFieldModule,
+    MatLegacyInputModule,
+    NgIf,
+    MatLegacyChipsModule,
+    NgFor,
+    CategoryButtonComponent,
+    MatLegacyTabsModule,
+    ExtendedModule,
+    FontAwesomeModule,
+    FeaturedContentComponent,
+    NewsAndUpdatesComponent,
+    MatDividerModule,
+    MastodonComponent,
+    AsyncPipe,
+    SlicePipe,
+  ],
 })
 export class HomeComponent extends Base implements OnInit {
   faGithub = faGithub;

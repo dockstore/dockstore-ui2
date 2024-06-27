@@ -4,6 +4,7 @@ import ExecutionStatusEnum = RunExecution.ExecutionStatusEnum;
 
 @Pipe({
   name: 'executionStatus',
+  standalone: true,
 })
 export class ExecutionStatusPipe implements PipeTransform {
   /**

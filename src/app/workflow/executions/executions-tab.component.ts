@@ -32,10 +32,23 @@ import { SessionQuery } from '../../shared/session/session.query';
 import { takeUntil } from 'rxjs/operators';
 import PartnerEnum = CloudInstance.PartnerEnum;
 import ExecutionStatusEnum = RunExecution.ExecutionStatusEnum;
-import { MatLegacySelectChange as MatSelectChange } from '@angular/material/legacy-select';
+import { MatLegacySelectChange as MatSelectChange, MatLegacySelectModule } from '@angular/material/legacy-select';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { UserQuery } from 'app/shared/user/user.query';
 import { combineLatest } from 'rxjs';
+import { ExecutionStatusPipe } from '../../shared/entry/execution-status.pipe';
+import { SecondsToHoursMinutesSecondsPipe } from 'app/workflow/executions/seconds-to-hours-minutes-seconds.pipe';
+import { PlatformPartnerPipe } from '../../shared/entry/platform-partner.pipe';
+import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatLegacyTableModule } from '@angular/material/legacy-table';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { MatIconModule } from '@angular/material/icon';
+import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { NgIf, NgFor, NgClass, NgTemplateOutlet, DecimalPipe, DatePipe } from '@angular/common';
 
 interface ExecutionMetricsTableObject {
   metric: string; // Name of the execution metric
@@ -48,6 +61,28 @@ interface ExecutionMetricsTableObject {
 @Component({
   selector: 'app-executions-tab',
   templateUrl: './executions-tab.component.html',
+  standalone: true,
+  imports: [
+    NgIf,
+    MatLegacyCardModule,
+    MatIconModule,
+    FlexModule,
+    MatLegacyFormFieldModule,
+    MatLegacySelectModule,
+    NgFor,
+    MatLegacyOptionModule,
+    MatDividerModule,
+    MatLegacyTableModule,
+    MatLegacyTooltipModule,
+    NgClass,
+    ExtendedModule,
+    NgTemplateOutlet,
+    DecimalPipe,
+    DatePipe,
+    PlatformPartnerPipe,
+    SecondsToHoursMinutesSecondsPipe,
+    ExecutionStatusPipe,
+  ],
 })
 export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChanges {
   metrics: Map<PartnerEnum, Metrics>;

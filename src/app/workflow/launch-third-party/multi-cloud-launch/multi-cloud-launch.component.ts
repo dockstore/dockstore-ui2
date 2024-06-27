@@ -1,14 +1,38 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { MatLegacyMenuTrigger as MatMenuTrigger } from '@angular/material/legacy-menu';
+import { MatLegacyMenuTrigger as MatMenuTrigger, MatLegacyMenuModule } from '@angular/material/legacy-menu';
 import { AlertService } from '../../../shared/alert/state/alert.service';
 import { Base } from '../../../shared/base';
 import { CloudInstance, Language, User, UsersService } from '../../../shared/openapi';
+import { FilterCloudInstancesPipe } from '../filterCloudInstances.pipe';
+import { MatLegacyInputModule } from '@angular/material/legacy-input';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { NgFor } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { MatLegacyRadioModule } from '@angular/material/legacy-radio';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { MatIconModule } from '@angular/material/icon';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
 
 @Component({
   selector: 'app-multi-cloud-launch',
   templateUrl: './multi-cloud-launch.component.html',
   styleUrls: ['./multi-cloud-launch.component.scss', '../launch-third-party.component.scss'],
+  standalone: true,
+  imports: [
+    MatLegacyTooltipModule,
+    MatLegacyButtonModule,
+    MatLegacyMenuModule,
+    MatIconModule,
+    FlexModule,
+    MatLegacyRadioModule,
+    FormsModule,
+    NgFor,
+    MatLegacyFormFieldModule,
+    MatLegacyInputModule,
+    FilterCloudInstancesPipe,
+  ],
 })
 export class MultiCloudLaunchComponent extends Base implements OnInit {
   @ViewChild(MatMenuTrigger) trigger: MatMenuTrigger;

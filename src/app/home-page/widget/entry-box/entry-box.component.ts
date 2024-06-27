@@ -25,12 +25,43 @@ import { Dockstore } from 'app/shared/dockstore.model';
 import { AlertService } from 'app/shared/alert/state/alert.service';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { SessionService } from '../../../shared/session/session.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { MatIconModule } from '@angular/material/icon';
+import { MatLegacyAutocompleteModule } from '@angular/material/legacy-autocomplete';
+import { FormsModule } from '@angular/forms';
+import { MatLegacyInputModule } from '@angular/material/legacy-input';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { NgIf, NgFor, TitleCasePipe, DatePipe } from '@angular/common';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { MatLegacyCardModule } from '@angular/material/legacy-card';
 
 @Component({
   selector: 'app-entry-box',
   templateUrl: './entry-box.component.html',
   styleUrls: ['../../../shared/styles/dashboard-boxes.scss'],
+  standalone: true,
+  imports: [
+    MatLegacyCardModule,
+    FlexModule,
+    NgIf,
+    MatLegacyButtonModule,
+    MatLegacyTooltipModule,
+    MatDividerModule,
+    MatLegacyFormFieldModule,
+    MatLegacyInputModule,
+    FormsModule,
+    MatLegacyAutocompleteModule,
+    MatIconModule,
+    NgFor,
+    MatLegacyOptionModule,
+    RouterLink,
+    TitleCasePipe,
+    DatePipe,
+  ],
 })
 export class EntryBoxComponent extends Base implements OnInit {
   Dockstore = Dockstore;

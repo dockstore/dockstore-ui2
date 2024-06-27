@@ -2,6 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
   name: 'urlDeconstruct',
+  standalone: true,
 })
 export class UrlDeconstructPipe implements PipeTransform {
   /**

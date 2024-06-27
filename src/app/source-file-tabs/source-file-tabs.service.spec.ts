@@ -8,12 +8,11 @@ import { DescriptorTypeCompatStubService, FileStubService, ProviderStubService, 
 import { ProviderService } from '../shared/provider.service';
 import { SourceFileTabsService } from './source-file-tabs.service';
 import { DescriptorLanguageService } from '../shared/entry/descriptor-language.service';
-import { WorkflowModule } from '../shared/modules/workflow.module';
 
 describe('SourceFileTabsService', () => {
   beforeEach(() =>
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, WorkflowModule],
+      imports: [HttpClientTestingModule],
       providers: [
         { provide: FileService, useClass: FileStubService },
         { provide: WorkflowsService, useClass: WorkflowsStubService },

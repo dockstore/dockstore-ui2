@@ -17,8 +17,7 @@ describe('cwl-viewerComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [CwlViewerComponent],
-        imports: [HttpClientTestingModule, FormsModule, HttpClientTestingModule],
+        imports: [HttpClientTestingModule, FormsModule, HttpClientTestingModule, CwlViewerComponent],
         schemas: [NO_ERRORS_SCHEMA],
         providers: [DockstoreService, DateService, ProviderService, WorkflowService, DescriptorLanguageService],
       }).compileComponents();

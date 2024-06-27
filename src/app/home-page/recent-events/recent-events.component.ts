@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { ID } from '@datorama/akita';
 import { Dockstore } from 'app/shared/dockstore.model';
 import { Event, User, UsersService, EventsService } from 'app/shared/openapi';
@@ -13,6 +13,14 @@ import { Base } from 'app/shared/base';
 import { Observable } from 'rxjs';
 import { OrgLogoService } from '../../shared/org-logo.service';
 import { GravatarService } from '../../gravatar/gravatar.service';
+import { RecentEventsPipe } from '../../shared/entry/recent-events.pipe';
+import { GravatarPipe } from '../../gravatar/gravatar.pipe';
+import { MatIconModule } from '@angular/material/icon';
+import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { ImgFallbackDirective } from '../../shared/img-fallback.directive';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { NgIf, NgFor, NgSwitch, NgSwitchCase, AsyncPipe, LowerCasePipe, SlicePipe, DatePipe } from '@angular/common';
+import { LoadingComponent } from '../../shared/loading/loading.component';
 
 /**
  * Shows recent events related to starred organization and entries or user organization events
@@ -25,6 +33,25 @@ import { GravatarService } from '../../gravatar/gravatar.service';
   selector: 'app-recent-events',
   templateUrl: './recent-events.component.html',
   styleUrls: ['../../shared/styles/dashboard-boxes.scss'],
+  standalone: true,
+  imports: [
+    LoadingComponent,
+    NgIf,
+    NgFor,
+    FlexModule,
+    RouterLink,
+    NgSwitch,
+    NgSwitchCase,
+    ImgFallbackDirective,
+    MatLegacyCardModule,
+    MatIconModule,
+    AsyncPipe,
+    LowerCasePipe,
+    SlicePipe,
+    DatePipe,
+    GravatarPipe,
+    RecentEventsPipe,
+  ],
 })
 export class RecentEventsComponent extends Base implements OnInit {
   @Input() eventType: 'SELF_ORGANIZATIONS' | 'ALL_STARRED';

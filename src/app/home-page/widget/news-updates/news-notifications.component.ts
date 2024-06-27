@@ -2,11 +2,19 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { NotificationsService } from '../../../notifications/state/notifications.service';
 import { Notification } from '../../../shared/openapi';
+import { MatIconModule } from '@angular/material/icon';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MarkdownWrapperComponent } from '../../../shared/markdown-wrapper/markdown-wrapper.component';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { NgFor, AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-news-notifications',
   templateUrl: './news-notifications.component.html',
   styleUrls: ['./news-notifications.component.scss'],
+  standalone: true,
+  imports: [NgFor, MatLegacyCardModule, FlexModule, MarkdownWrapperComponent, MatLegacyButtonModule, MatIconModule, AsyncPipe],
 })
 export class NewsNotificationsComponent implements OnInit {
   public activeNotifications$: Observable<Array<Notification>>;

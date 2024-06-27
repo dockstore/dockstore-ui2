@@ -6,12 +6,34 @@ import { map } from 'rxjs/operators';
 import { Funder, FundingComponent } from '../funding/funding.component';
 import { Dockstore } from '../shared/dockstore.model';
 import { Sponsor } from '../sponsors/sponsor.model';
+import { RouterLink } from '@angular/router';
+import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { MatLegacyTabsModule } from '@angular/material/legacy-tabs';
+import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
+import { NgStyle, NgFor, AsyncPipe, SlicePipe } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
 
 @Component({
   selector: 'app-about',
   templateUrl: './about.component.html',
   styleUrls: ['./about.component.scss'],
   providers: [FundingComponent],
+  standalone: true,
+  imports: [
+    FlexModule,
+    MatLegacyButtonModule,
+    MatIconModule,
+    NgStyle,
+    ExtendedModule,
+    MatLegacyTabsModule,
+    MatLegacyCardModule,
+    RouterLink,
+    NgFor,
+    AsyncPipe,
+    SlicePipe,
+  ],
 })
 export class AboutComponent implements OnInit {
   Dockstore = Dockstore;

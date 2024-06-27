@@ -8,11 +8,31 @@ import { AlertService } from './../../../shared/alert/state/alert.service';
 import { forkJoin } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
 import { Base } from 'app/shared/base';
+import { ClipboardModule } from '@angular/cdk/clipboard';
+import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
+import { SnackbarDirective } from '../../../shared/snackbar.directive';
+import { MatIconModule } from '@angular/material/icon';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { NgIf, NgClass } from '@angular/common';
+import { MatLegacyTabsModule } from '@angular/material/legacy-tabs';
+import { MarkdownModule } from 'ngx-markdown';
 
 @Component({
   selector: 'app-downloadcliclient',
   templateUrl: './downloadcliclient.component.html',
   styleUrls: ['./downloadcliclient.component.scss'],
+  standalone: true,
+  imports: [
+    MarkdownModule,
+    MatLegacyTabsModule,
+    NgIf,
+    MatLegacyButtonModule,
+    MatIconModule,
+    SnackbarDirective,
+    NgClass,
+    ExtendedModule,
+    ClipboardModule,
+  ],
 })
 export class DownloadCLIClientComponent extends Base implements OnInit {
   public downloadCli = 'dummy-start-value';

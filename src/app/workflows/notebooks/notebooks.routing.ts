@@ -1,4 +1,4 @@
-import { RouterModule, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { WorkflowComponent } from 'app/workflow/workflow.component';
 import { SearchWorkflowsComponent } from '../search/search.component';
@@ -16,4 +16,4 @@ const routes: Routes = [
   },
 ];
 
-export const NotebooksRoutes = RouterModule.forChild(routes);
+export const NotebooksRoutes = routes;

@@ -6,6 +6,7 @@ import { ToolDescriptor } from '../openapi';
 
 @Pipe({
   name: 'publicFileDownload',
+  standalone: true,
 })
 export class PublicFileDownloadPipe implements PipeTransform {
   constructor(protected fileService: FileService) {}

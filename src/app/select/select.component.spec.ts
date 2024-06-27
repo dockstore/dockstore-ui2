@@ -16,6 +16,7 @@
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { SelectComponent } from './select.component';
 
@@ -26,7 +27,7 @@ describe('SelectComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [SelectComponent],
+        imports: [SelectComponent, NoopAnimationsModule],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
     })

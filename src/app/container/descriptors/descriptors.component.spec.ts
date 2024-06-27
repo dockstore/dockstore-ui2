@@ -41,8 +41,7 @@ describe('DescriptorsComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [DescriptorsComponent],
-        imports: [HttpClientModule, MatSnackBarModule, HttpClientTestingModule],
+        imports: [HttpClientModule, MatSnackBarModule, HttpClientTestingModule, DescriptorsComponent],
         schemas: [NO_ERRORS_SCHEMA],
         providers: [
           DescriptorService,

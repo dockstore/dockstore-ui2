@@ -13,6 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { LambdaEvent, TokenUser } from '../../../src/app/shared/openapi';
 import { Repository } from '../../../src/app/shared/openapi/model/repository';
 import {
   goToTab,
@@ -24,7 +25,7 @@ import {
   setTokenUserViewPortCurator,
   snapshot,
 } from '../../support/commands';
-import { LambdaEvent } from '../../../src/app/shared/openapi';
+import TokenSourceEnum = TokenUser.TokenSourceEnum;
 
 const cwlDescriptorType = 'CWL';
 const wdlDescriptorType = 'WDL';
@@ -333,6 +334,21 @@ describe('Dockstore my workflows part 2', () => {
       cy.url().should('eq', Cypress.config().baseUrl + '/accounts?tab=accounts');
     });
 
+    it('Request to DOI should not require ORCID linked account', () => {
+      cy.fixture('tokens.json').then((json) => {
+        // Remove the ORCID token
+        const tokens = (json as Array<TokenUser>).filter((token) => token.tokenSource !== TokenSourceEnum.OrcidOrg);
+        cy.intercept('GET', '/api/users/1/tokens', {
+          body: tokens,
+          statusCode: 200,
+        });
+        gotoVersionsAndClickActions();
+        // Request DOI
+        cy.get('[data-cy=dockstore-request-doi-button]').click();
+        cy.get('[data-cy=orcid-not-linked]').should('not.exist'); // dockstore/dockstore#5796
+      });
+    });
+
     it('Should be able to request DOI and then export to ORCID', () => {
       // tokens.json indicates a Zenodo token and an ORCID token
       cy.fixture('tokens.json').then((json) => {
@@ -529,9 +545,13 @@ describe('Dockstore my workflows part 3', () => {
       // Untouched form should not have errors but is disabled
       cy.get('#submitButton').should('be.disabled');
       notHaveAlert();
-      cy.get('#sourceCodeRepositoryInput').scrollIntoView().should('be.visible').clear().type('beef/stew');
+      cy.get('#sourceCodeRepositoryInput').scrollIntoView().should('be.visible');
+      cy.get('#sourceCodeRepositoryInput').clear();
+      cy.get('#sourceCodeRepositoryInput').type('beef/stew');
       cy.get('#submitButton').should('be.disabled');
-      cy.get('#sourceCodeRepositoryWorkflowPathInput').scrollIntoView().should('be.visible').clear().type('/Dockstore.cwl');
+      cy.get('#sourceCodeRepositoryWorkflowPathInput').scrollIntoView().should('be.visible');
+      cy.get('#sourceCodeRepositoryWorkflowPathInput').clear();
+      cy.get('#sourceCodeRepositoryWorkflowPathInput').type('/Dockstore.cwl');
       notHaveAlert();
       // Apparently the actual radio button inside Angular material buttons is hidden, so doing it this way
       cy.get('#descriptorTypeRadioButtons').contains(cwlDescriptorType).find('.mat-radio-container').click();

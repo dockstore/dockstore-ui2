@@ -14,9 +14,9 @@
  *    limitations under the License.
  */
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
-import { LegacyPageEvent as PageEvent } from '@angular/material/legacy-paginator';
+import { LegacyPageEvent as PageEvent, MatLegacyPaginatorModule } from '@angular/material/legacy-paginator';
 import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
@@ -28,11 +28,49 @@ import { OrganizationsQuery } from '../state/organizations.query';
 import { OrganizationsStateService } from '../state/organizations.service';
 import { RequireAccountsModalComponent } from '../registerOrganization/requireAccountsModal/require-accounts-modal.component';
 import { OrgLogoService } from '../../shared/org-logo.service';
+import { GravatarPipe } from '../../gravatar/gravatar.pipe';
+import { ImgFallbackDirective } from '../../shared/img-fallback.directive';
+import { RouterLink } from '@angular/router';
+import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatLegacyInputModule } from '@angular/material/legacy-input';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
+import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { HeaderComponent } from '../../header/header.component';
 
 @Component({
   selector: 'app-organizations',
   templateUrl: './organizations.component.html',
   styleUrls: ['./organizations.component.scss'],
+  standalone: true,
+  imports: [
+    HeaderComponent,
+    FlexModule,
+    NgIf,
+    ExtendedModule,
+    MatLegacyButtonModule,
+    MatLegacyTooltipModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatLegacyFormFieldModule,
+    MatLegacySelectModule,
+    MatLegacyOptionModule,
+    MatLegacyInputModule,
+    MatIconModule,
+    NgFor,
+    MatLegacyCardModule,
+    RouterLink,
+    ImgFallbackDirective,
+    MatLegacyPaginatorModule,
+    AsyncPipe,
+    GravatarPipe,
+  ],
 })
 export class OrganizationsComponent extends Base implements OnInit {
   public orgLength$: Observable<number>;

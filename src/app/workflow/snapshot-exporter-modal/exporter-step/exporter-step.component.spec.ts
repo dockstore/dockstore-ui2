@@ -8,7 +8,7 @@ describe('ExporterStepComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ExporterStepComponent],
+      imports: [ExporterStepComponent],
     }).compileComponents();
   });
 

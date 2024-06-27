@@ -15,17 +15,23 @@
  */
 
 import { Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { SessionQuery } from 'app/shared/session/session.query';
 import { SessionService } from 'app/shared/session/session.service';
 import { Observable } from 'rxjs';
 import { EntryType } from '../shared/enum/entry-type';
 import { EntryTypeMetadata } from 'app/shared/openapi';
 import { UrlResolverService } from '../shared/url-resolver.service';
+import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { NgIf, AsyncPipe, TitleCasePipe } from '@angular/common';
+import { HeaderComponent } from '../header/header.component';
 
 @Component({
   selector: 'app-workflows',
   templateUrl: './workflows.component.html',
+  standalone: true,
+  imports: [HeaderComponent, NgIf, FlexModule, RouterLink, ExtendedModule, RouterOutlet, AsyncPipe, TitleCasePipe],
 })
 export class WorkflowsComponent {
   public entryName: string;

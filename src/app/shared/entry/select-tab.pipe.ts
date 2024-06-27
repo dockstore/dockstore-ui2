@@ -22,6 +22,7 @@ import { DockstoreTool, Entry, Workflow } from '../openapi';
 
 @Pipe({
   name: 'selectTab',
+  standalone: true,
 })
 export class SelectTabPipe implements PipeTransform {
   /**

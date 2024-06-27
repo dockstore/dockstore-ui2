@@ -26,11 +26,19 @@ import { WorkflowService } from '../../shared/state/workflow.service';
 import { HostedService } from './../../shared/openapi/api/hosted.service';
 import { WorkflowsService } from './../../shared/openapi/api/workflows.service';
 import { WorkflowVersion } from './../../shared/openapi/model/workflowVersion';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { NgIf, AsyncPipe } from '@angular/common';
+import { CodeEditorListComponent } from '../../shared/code-editor-list/code-editor-list.component';
+import { MatLegacyTabsModule } from '@angular/material/legacy-tabs';
 
 @Component({
   selector: 'app-workflow-file-editor',
   templateUrl: './workflow-file-editor.component.html',
   styleUrls: ['./workflow-file-editor.component.scss'],
+  standalone: true,
+  imports: [MatLegacyTabsModule, CodeEditorListComponent, NgIf, MatLegacyCardModule, MatIconModule, MatLegacyButtonModule, AsyncPipe],
 })
 export class WorkflowFileEditorComponent extends FileEditing {
   public EntryType = EntryType;

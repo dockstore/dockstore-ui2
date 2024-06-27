@@ -4,6 +4,7 @@ import { Workflow } from '../../shared/openapi';
 
 @Pipe({
   name: 'descriptorLanguage',
+  standalone: true,
 })
 export class DescriptorLanguagePipe implements PipeTransform {
   /**

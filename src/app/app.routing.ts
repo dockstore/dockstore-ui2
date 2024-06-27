@@ -17,6 +17,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { AboutComponent } from './about/about.component';
 import { FundingComponent } from './funding/funding.component';
 import { GithubCallbackComponent } from './github-callback/github-callback.component';
+import { GithubLandingPageComponent } from './github-landing-page/github-landing-page.component';
+import { DashboardComponent } from './home-page/dashboard/dashboard.component';
 import { HomeComponent } from './home-page/home-logged-out/home.component';
 import { LoginComponent } from './login/login.component';
 import { AccountsComponent } from './loginComponents/accounts/accounts.component';
@@ -25,13 +27,11 @@ import { OnboardingComponent } from './loginComponents/onboarding/onboarding.com
 import { QuickStartComponent } from './loginComponents/onboarding/quickstart.component';
 import { LogoutComponent } from './logout/logout.component';
 import { MaintenanceComponent } from './maintenance/maintenance.component';
-import { DashboardComponent } from './home-page/dashboard/dashboard.component';
+import { PageNotFoundComponent } from './pagenotfound/pagenotfound.component';
 import { SessionExpiredComponent } from './session-expired/session-expired.component';
 import { AuthGuard } from './shared/auth.guard';
 import { SitemapComponent } from './sitemap/sitemap.component';
 import { StarredEntriesComponent } from './starredentries/starredentries.component';
-import { PageNotFoundComponent } from './pagenotfound/pagenotfound.component';
-import { GithubLandingPageComponent } from './github-landing-page/github-landing-page.component';
 
 export const CLIENT_ROUTER_PROVIDERS = [AuthGuard];
 
@@ -45,78 +45,78 @@ const APP_ROUTES: Routes = [
   },
   {
     path: 'docs',
-    loadChildren: () => import('app/docs/docs.module').then((m) => m.DocsModule),
+    loadChildren: () => import('app/docs/docs.routing').then((m) => m.docsRouting),
     data: { title: 'Dockstore | Documentation' },
   },
   {
     path: 'search-containers',
-    loadChildren: () => import('app/containers/containers.module').then((m) => m.ContainersModule),
+    loadChildren: () => import('app/containers/containers.routing').then((m) => m.containersRouting),
     data: { title: 'Dockstore | Tools' },
   },
   {
     path: 'containers',
-    loadChildren: () => import('app/containers/containers.module').then((m) => m.ContainersModule),
+    loadChildren: () => import('app/containers/containers.routing').then((m) => m.containersRouting),
     data: { title: 'Dockstore | Tools' },
   },
   {
     path: 'tools',
-    loadChildren: () => import('app/containers/containers.module').then((m) => m.ContainersModule),
+    loadChildren: () => import('app/containers/containers.routing').then((m) => m.containersRouting),
     data: { title: 'Dockstore | Tools' },
   },
   {
     path: 'workflows',
-    loadChildren: () => import('app/workflows/workflows.module').then((m) => m.WorkflowsModule),
+    loadChildren: () => import('app/workflows/workflows.routing').then((m) => m.workflowsRouting),
     data: { title: 'Dockstore | Workflows' },
   },
   {
     path: 'services',
-    loadChildren: () => import('app/workflows/services/services.module').then((m) => m.ServicesModule),
+    loadChildren: () => import('app/workflows/services/services.routing').then((m) => m.ServicesRoutes),
     data: { title: 'Dockstore | Services' },
   },
   {
     path: 'apptools',
-    loadChildren: () => import('app/workflows/apptools/apptools.module').then((m) => m.AppToolsModule),
+    loadChildren: () => import('app/workflows/apptools/apptools.routing').then((m) => m.AppToolsRoutes),
     data: { title: 'Dockstore | App Tools' },
   },
   {
     path: 'notebooks',
-    loadChildren: () => import('app/workflows/notebooks/notebooks.module').then((m) => m.NotebooksModule),
+    loadChildren: () => import('app/workflows/notebooks/notebooks.routing').then((m) => m.NotebooksRoutes),
     data: { title: 'Dockstore | Notebooks' },
   },
   {
     path: 'search-workflows',
-    loadChildren: () => import('app/workflows/workflows.module').then((m) => m.WorkflowsModule),
+    loadChildren: () => import('app/workflows/workflows.routing').then((m) => m.workflowsRouting),
     data: { title: 'Dockstore | Workflows' },
   },
-  { path: 'organizations', loadChildren: () => import('app/organizations/organizations.module').then((m) => m.OrganizationsModule) },
+  { path: 'organizations', loadChildren: () => import('app/organizations/organizations.routing').then((m) => m.OrganizationsRouting) },
   {
     path: 'my-tools',
-    loadChildren: () => import('app/mytools/mytools.module').then((m) => m.MyToolsModule),
+    loadChildren: () => import('app/mytools/mytools.routing').then((m) => m.mytoolsRouting),
     canActivate: [AuthGuard],
     data: { title: 'Dockstore | My Tools' },
   },
   {
     path: 'my-workflows',
-    loadChildren: () => import('app/myworkflows/myworkflows.module').then((m) => m.MyWorkflowsModule),
+    loadChildren: () => import('app/myworkflows/myworkflows.routing').then((m) => m.myworkflowRouting),
     canActivate: [AuthGuard],
     data: { title: 'Dockstore | My Workflows' },
   },
   {
     path: 'my-services',
-    loadChildren: () => import('app/my-services/my-services.module').then((m) => m.MyServicesModule),
+    loadChildren: () => import('app/my-services/my-services.routing').then((m) => m.MyServicesRoutes),
     canActivate: [AuthGuard],
     data: { title: 'Dockstore | My Services' },
   },
   {
     path: 'my-notebooks',
-    loadChildren: () => import('app/my-notebooks/my-notebooks.module').then((m) => m.MyNotebooksModule),
+    loadChildren: () => import('app/my-notebooks/my-notebooks.routing').then((m) => m.MyNotebooksRoutes),
     canActivate: [AuthGuard],
     data: { title: 'Dockstore | My Notebooks' },
   },
   { path: 'githubCallback', component: GithubCallbackComponent },
   {
     path: 'aliases',
-    loadChildren: () => import('app/aliases/aliases.module').then((m) => m.AliasesModule),
+    loadChildren: () => import('app/aliases/aliases.routing').then((m) => m.AliasesRouting),
     data: { title: 'Dockstore | Aliases' },
   },
   {
@@ -126,7 +126,7 @@ const APP_ROUTES: Routes = [
   },
   {
     path: 'search',
-    loadChildren: () => import('app/search/search.module').then((m) => m.SearchModule),
+    loadChildren: () => import('app/search/search.routing').then((m) => m.searchRouting),
     data: { title: 'Dockstore | Search' },
   },
   { path: 'register', component: LoginComponent, data: { title: 'Dockstore | Register' } },
@@ -147,7 +147,7 @@ const APP_ROUTES: Routes = [
   { path: 'funding', component: FundingComponent, data: { title: 'Dockstore | Funding' } },
   { path: 'sitemap', component: SitemapComponent, data: { title: 'Dockstore | Sitemap' } },
   { path: 'github-landing-page', component: GithubLandingPageComponent, data: { title: 'Dockstore | GitHub Apps Landing Page' } },
-  { path: 'users', loadChildren: () => import('app/user-page/user-page.module').then((m) => m.UserPageModule) },
+  { path: 'users', loadChildren: () => import('app/user-page/user-page.routing').then((m) => m.UserPageRouting) },
   {
     path: '**',
     component: PageNotFoundComponent,

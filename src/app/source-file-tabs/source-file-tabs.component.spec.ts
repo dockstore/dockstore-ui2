@@ -18,8 +18,7 @@ describe('SourceFileTabsComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [SourceFileTabsComponent, MapFriendlyValuesPipe],
-        imports: [HttpClientTestingModule, MatDialogModule, RouterTestingModule],
+        imports: [HttpClientTestingModule, MatDialogModule, RouterTestingModule, SourceFileTabsComponent, MapFriendlyValuesPipe],
         providers: [
           { provide: SourceFileTabsService, useClass: SourceFileTabsStubService },
           { provide: FileService, useClass: FileStubService },

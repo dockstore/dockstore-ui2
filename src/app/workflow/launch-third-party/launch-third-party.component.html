@@ -240,13 +240,13 @@
           <a
             mat-button
             class="launch-with-button private-btn"
-            [matTooltip]="(hasContent$ | async) ? 'Export this workflow to Nextflow Tower' : 'The Nextflow workflow has no content.'"
+            [matTooltip]="(hasContent$ | async) ? 'Export this workflow to Seqera' : 'The Nextflow workflow has no content.'"
             matTooltipPosition="left"
             target="_blank"
             rel="noopener"
             [attr.href]="
-              config.NEXTFLOW_TOWER_IMPORT_URL +
-              '?pipeline=https://' +
+              config.SEQERA_IMPORT_URL +
+              'https://' +
               workflow.sourceControl +
               '/' +
               workflow.organization +
@@ -258,7 +258,7 @@
             [disabled]="(hasContent$ | async) === false"
             data-cy="nextflowtowerLaunchWith"
           >
-            <img class="partner-icon mr-2" src="../assets/images/thirdparty/nextflow-icon.png" alt="Nextflow icon" /> Nextflow Tower
+            <img class="partner-launch mr-2" src="../assets/images/thirdparty/seqera_logo_color.svg" alt="Seqera icon" />
           </a>
         </div>
       </div>

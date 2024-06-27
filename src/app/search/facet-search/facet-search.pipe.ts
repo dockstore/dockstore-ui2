@@ -2,6 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
   name: 'getFacetSearchResults',
+  standalone: true,
 })
 /**
  * This pipe filters results in the facet according to the facet search text

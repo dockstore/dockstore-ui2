@@ -42,6 +42,19 @@ import { UserQuery } from '../../shared/user/user.query';
 import { RegisterWorkflowModalService } from '../../workflow/register-workflow-modal/register-workflow-modal.service';
 import { MyWorkflowsService } from '../myworkflows.service';
 import { Dockstore } from '../../shared/dockstore.model';
+import { WorkflowComponent } from '../../workflow/workflow.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { SidebarAccordionComponent } from '../sidebar-accordion/sidebar-accordion.component';
+import { MatLegacyMenuModule } from '@angular/material/legacy-menu';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { NgIf, AsyncPipe, TitleCasePipe } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { HeaderComponent } from '../../header/header.component';
+import { MySidebarComponent } from '../../my-sidebar/my-sidebar.component';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
 
 /**
  * How the workflow selection works:
@@ -63,6 +76,24 @@ import { Dockstore } from '../../shared/dockstore.model';
   selector: 'app-my-workflow',
   templateUrl: './my-workflow.component.html',
   styleUrls: ['../../shared/styles/my-entry.component.scss'],
+  standalone: true,
+  imports: [
+    FlexModule,
+    MySidebarComponent,
+    HeaderComponent,
+    MatLegacyButtonModule,
+    MatIconModule,
+    NgIf,
+    MatSidenavModule,
+    MatLegacyTooltipModule,
+    MatLegacyMenuModule,
+    SidebarAccordionComponent,
+    MatLegacyCardModule,
+    FontAwesomeModule,
+    WorkflowComponent,
+    AsyncPipe,
+    TitleCasePipe,
+  ],
 })
 export class MyWorkflowComponent extends MyEntry implements OnInit {
   Dockstore = Dockstore;

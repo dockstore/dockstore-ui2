@@ -14,8 +14,7 @@ describe('RegisterGithubAppComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [RegisterGithubAppComponent],
-      imports: [HttpClientTestingModule, MatIconModule],
+      imports: [HttpClientTestingModule, MatIconModule, RegisterGithubAppComponent],
       providers: [
         {
           provide: MatDialogRef,

@@ -1,6 +1,6 @@
 import { HttpUrlEncodingCodec } from '@angular/common/http';
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatLegacyDialog as MatDialog, MatLegacyDialogModule } from '@angular/material/legacy-dialog';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 import { combineLatest, Observable } from 'rxjs';
 import { map, shareReplay, takeUntil } from 'rxjs/operators';
@@ -17,6 +17,13 @@ import { DescriptorsStore } from './state/descriptors-store';
 import { DescriptorsService } from './state/descriptors.service';
 import { LaunchToCodespaceDialogComponent } from './dialog/launch-to-codespace-dialog.component';
 import { bootstrap4largeModalSize } from '../../shared/constants';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MultiCloudLaunchComponent } from './multi-cloud-launch/multi-cloud-launch.component';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { NgIf, AsyncPipe } from '@angular/common';
 import FileTypeEnum = ToolFile.FileTypeEnum;
 
 /* eslint-disable max-len */
@@ -96,6 +103,18 @@ import FileTypeEnum = ToolFile.FileTypeEnum;
   templateUrl: './launch-third-party.component.html',
   styleUrls: ['./launch-third-party.component.scss'],
   providers: [DescriptorsService, DescriptorsQuery, DescriptorsStore],
+  standalone: true,
+  imports: [
+    NgIf,
+    MatLegacyCardModule,
+    MatDividerModule,
+    FlexModule,
+    MultiCloudLaunchComponent,
+    MatLegacyTooltipModule,
+    MatLegacyButtonModule,
+    MatLegacyDialogModule,
+    AsyncPipe,
+  ],
 })
 export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit {
   /**

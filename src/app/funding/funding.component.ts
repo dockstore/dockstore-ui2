@@ -1,4 +1,10 @@
 import { Component, Injectable } from '@angular/core';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { MatDividerModule } from '@angular/material/divider';
+import { NgFor } from '@angular/common';
+import { HeaderComponent } from '../header/header.component';
 
 export interface Funder {
   title: string;
@@ -17,6 +23,8 @@ export interface FundingSections {
   selector: 'app-funding',
   templateUrl: './funding.component.html',
   styleUrls: ['./funding.component.scss'],
+  standalone: true,
+  imports: [HeaderComponent, NgFor, MatDividerModule, FlexModule, MatLegacyCardModule, MatLegacyButtonModule],
 })
 @Injectable()
 export class FundingComponent {

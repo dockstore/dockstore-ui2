@@ -32,8 +32,7 @@ describe('VersionModalComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         schemas: [NO_ERRORS_SCHEMA],
-        declarations: [VersionModalComponent],
-        imports: [FormsModule, ClipboardModule, MatSnackBarModule, MatDialogModule],
+        imports: [FormsModule, ClipboardModule, MatSnackBarModule, MatDialogModule, VersionModalComponent],
         providers: [
           { provide: ParamfilesService, useClass: ParamFilesStubService },
           { provide: VersionModalService, useClass: VersionModalStubService },

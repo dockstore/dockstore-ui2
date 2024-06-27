@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-import { RouterModule, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { ContainerComponent } from '../container/container.component';
 import { ContainersComponent } from './containers.component';
@@ -32,4 +32,4 @@ const CONTAINERS_ROUTES: Routes = [
   },
 ];
 
-export const containersRouting = RouterModule.forChild(CONTAINERS_ROUTES);
+export const containersRouting = CONTAINERS_ROUTES;

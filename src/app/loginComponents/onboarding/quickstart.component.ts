@@ -15,10 +15,16 @@
  */
 import { Component, OnInit } from '@angular/core';
 import { Dockstore } from '../../shared/dockstore.model';
+import { DownloadCLIClientComponent } from './downloadcliclient/downloadcliclient.component';
+import { NgIf } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
+import { HeaderComponent } from '../../header/header.component';
 
 @Component({
   selector: 'app-onboarding',
   templateUrl: './quickstart.component.html',
+  standalone: true,
+  imports: [HeaderComponent, MatIconModule, NgIf, DownloadCLIClientComponent],
 })
 export class QuickStartComponent implements OnInit {
   public curStep = 1;

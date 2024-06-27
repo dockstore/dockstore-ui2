@@ -14,14 +14,16 @@
  *     limitations under the License.
  */
 import { Component, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
-import { MatSort } from '@angular/material/sort';
-import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatLegacyTableDataSource as MatTableDataSource, MatLegacyTableModule } from '@angular/material/legacy-table';
 import { VersionVerifiedPlatform, Tag, VerificationInformation, WorkflowVersion } from '../../openapi';
 
 @Component({
   selector: 'app-verified-display',
   templateUrl: './verified-display.component.html',
   styleUrls: ['./verified-display.component.scss'],
+  standalone: true,
+  imports: [MatLegacyTableModule, MatSortModule],
 })
 export class VerifiedDisplayComponent implements OnInit, OnChanges {
   @Input() verifiedByPlatform: Array<VersionVerifiedPlatform>;

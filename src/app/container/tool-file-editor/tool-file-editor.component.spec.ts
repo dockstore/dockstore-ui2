@@ -35,7 +35,6 @@ describe('ToolFileEditorComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [ToolFileEditorComponent, CodeEditorListComponent, CodeEditorComponent, PublicFileDownloadPipe, PrivateFilePathPipe],
         imports: [
           MatButtonModule,
           MatTabsModule,
@@ -51,6 +50,11 @@ describe('ToolFileEditorComponent', () => {
           ClipboardModule,
           HttpClientModule,
           HttpClientTestingModule,
+          ToolFileEditorComponent,
+          CodeEditorListComponent,
+          CodeEditorComponent,
+          PublicFileDownloadPipe,
+          PrivateFilePathPipe,
         ],
         providers: [
           { provide: HostedService, useClass: HostedStubService },

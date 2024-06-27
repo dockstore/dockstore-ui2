@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { P } from '@angular/cdk/keycodes';
-import { KeyValue } from '@angular/common';
+import { KeyValue, NgIf, NgFor, AsyncPipe, JsonPipe, KeyValuePipe } from '@angular/common';
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { HashMap } from '@datorama/akita';
@@ -26,11 +26,33 @@ import { CollectionsService } from '../state/collections.service';
 import { OrganizationQuery } from '../state/organization.query';
 import { CreateCollectionComponent } from './create-collection/create-collection.component';
 import { Dockstore } from '../../shared/dockstore.model';
+import { RouterLink } from '@angular/router';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { LoadingComponent } from '../../shared/loading/loading.component';
+import { MatIconModule } from '@angular/material/icon';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
 
 @Component({
   selector: 'app-collections',
   templateUrl: './collections.component.html',
   styleUrls: ['./collections.component.scss'],
+  standalone: true,
+  imports: [
+    NgIf,
+    MatLegacyButtonModule,
+    MatLegacyTooltipModule,
+    MatIconModule,
+    LoadingComponent,
+    MatLegacyCardModule,
+    FlexModule,
+    NgFor,
+    RouterLink,
+    AsyncPipe,
+    JsonPipe,
+    KeyValuePipe,
+  ],
 })
 export class CollectionsComponent implements OnInit, OnChanges {
   public Dockstore = Dockstore;

@@ -4,11 +4,19 @@ import { RefreshService } from '../refresh.service';
 import { DockstoreTool, Tag } from '../openapi';
 import { EntryActionsComponent } from './entry-actions.component';
 import { EntryActionsService } from './entry-actions.service';
+import { ModalComponent } from '../../container/deregister-modal/deregister-modal.component';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { RouterLink } from '@angular/router';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { NgIf, AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-tool-actions',
   templateUrl: './tool-actions.component.html',
   styleUrls: ['./entry-actions.component.scss'],
+  standalone: true,
+  imports: [NgIf, FlexModule, MatLegacyButtonModule, RouterLink, MatLegacyTooltipModule, ModalComponent, AsyncPipe],
 })
 export class ToolActionsComponent extends EntryActionsComponent implements OnInit, OnChanges {
   @Input() tool: DockstoreTool;

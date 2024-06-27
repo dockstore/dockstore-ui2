@@ -22,8 +22,7 @@ import { docsRouting } from './docs.routing';
 import { DocsComponent } from './docs.component';
 
 @NgModule({
-  declarations: [DocsComponent],
-  imports: [CommonModule, docsRouting, HeaderModule],
+  imports: [CommonModule, docsRouting, HeaderModule, DocsComponent],
   providers: [],
 })
 export class DocsModule {}

@@ -2,11 +2,20 @@ import { Component, OnInit } from '@angular/core';
 import { Base } from 'app/shared/base';
 import { Dockstore } from 'app/shared/dockstore.model';
 import { UsersService } from 'app/shared/openapi';
+import { RecentEventsComponent } from '../../recent-events/recent-events.component';
+import { MatDividerModule } from '@angular/material/divider';
+import { NgIf } from '@angular/common';
+import { RouterLink } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { MatLegacyCardModule } from '@angular/material/legacy-card';
 
 @Component({
   selector: 'app-starred-box',
   templateUrl: './starred-box.component.html',
   styleUrls: ['./starred-box.component.scss', '../../../shared/styles/dashboard-boxes.scss'],
+  standalone: true,
+  imports: [MatLegacyCardModule, FlexModule, MatIconModule, RouterLink, NgIf, MatDividerModule, RecentEventsComponent],
 })
 export class StarredBoxComponent extends Base implements OnInit {
   public Dockstore = Dockstore;

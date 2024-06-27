@@ -10,8 +10,7 @@ describe('CodeEditorComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [CodeEditorComponent],
-        imports: [HttpClientTestingModule],
+        imports: [HttpClientTestingModule, CodeEditorComponent],
       }).compileComponents();
     })
   );
