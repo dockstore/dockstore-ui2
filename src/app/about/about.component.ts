@@ -58,7 +58,7 @@ export class AboutComponent implements OnInit {
     new Sponsor('ucsc.png', new URL('https://ucscgenomics.soe.ucsc.edu/')),
     new Sponsor('broad.svg', new URL('https://www.broadinstitute.org/')),
     new Sponsor('ga4gh.svg', new URL('https://genomicsandhealth.org/')),
-    new Sponsor('pcawg.png', new URL('https://dcc.icgc.org/pcawg')),
+    new Sponsor('pcawg.png', new URL('https://docs.icgc-argo.org/docs/data-access/icgc-25k-data')),
     new Sponsor('precision.png', new URL('https://precision.fda.gov/')),
     new Sponsor('nf-core.png', new URL('https://nf-co.re/')),
   ];
