@@ -1,7 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { inject, TestBed } from '@angular/core/testing';
-import { ConfigService } from 'ng2-ui-auth';
 import { ConfigurationService } from './configuration.service';
+import { ConfigService } from './ng2-ui-auth/public_api';
 
 describe('ConfigurationService', () => {
   beforeEach(() =>

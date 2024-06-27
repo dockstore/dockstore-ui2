@@ -36,12 +36,15 @@ import { LoginService } from './app/login/login.service';
 import { AccountsService } from './app/loginComponents/accounts/external/accounts.service';
 import { MytoolsService } from './app/mytools/mytools.service';
 import { MyWorkflowsService } from './app/myworkflows/myworkflows.service';
+import { CONFIG_OPTIONS, ConfigService } from './app/ng2-ui-auth/lib/config.service';
+import { Ng2UiAuthModule } from './app/ng2-ui-auth/public_api';
 import { OrganizationStargazersModule } from './app/organizations/organization/organization-stargazers/organization-stargazers.module';
 import { OrganizationStarringModule } from './app/organizations/organization/organization-starring/organization-starring.module';
 import { RegisterService } from './app/register/register.service';
 import { SearchAuthorsHtmlPipe } from './app/search/search-authors-html.pipe';
 import { SearchService } from './app/search/state/search.service';
 import { ServiceInfoService } from './app/service-info/service-info.service';
+import { AuthConfig } from './app/shared/auth.model';
 import { BioschemaService } from './app/shared/bioschema.service';
 import { ContainerService } from './app/shared/container.service';
 import { DateService } from './app/shared/date.service';
@@ -102,13 +105,15 @@ bootstrapApplication(AppComponent, {
       ReactiveFormsModule,
       ApiModule.forRoot(getApiConfig),
       ApiModule2.forRoot(getApiConfig),
-      PipeModule
+      PipeModule,
+      Ng2UiAuthModule.forRoot(AuthConfig)
     ),
     provideHttpClient(),
     provideOAuthClient(),
     AccountsService,
     BioschemaService,
     CLIENT_ROUTER_PROVIDERS,
+    ConfigService,
     ConfigurationService,
     ContainerInfoTabService,
     ContainerService,
