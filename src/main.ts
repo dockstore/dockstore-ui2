@@ -44,6 +44,7 @@ import { RegisterService } from './app/register/register.service';
 import { SearchAuthorsHtmlPipe } from './app/search/search-authors-html.pipe';
 import { SearchService } from './app/search/state/search.service';
 import { ServiceInfoService } from './app/service-info/service-info.service';
+import { AuthConfig } from './app/shared/auth.model';
 import { BioschemaService } from './app/shared/bioschema.service';
 import { ContainerService } from './app/shared/container.service';
 import { DateService } from './app/shared/date.service';
@@ -113,6 +114,7 @@ bootstrapApplication(AppComponent, {
     AccountsService,
     BioschemaService,
     CLIENT_ROUTER_PROVIDERS,
+    ConfigService,
     ConfigurationService,
     ContainerInfoTabService,
     ContainerService,
