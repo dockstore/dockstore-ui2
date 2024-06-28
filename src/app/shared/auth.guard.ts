@@ -16,9 +16,9 @@
 
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
-import { AuthService } from 'ng2-ui-auth';
 import { of } from 'rxjs/internal/observable/of';
 import { catchError, map } from 'rxjs/operators';
+import { AuthService } from '../ng2-ui-auth/public_api';
 import { LogoutService } from './logout.service';
 import { UsersService } from './openapi';
 

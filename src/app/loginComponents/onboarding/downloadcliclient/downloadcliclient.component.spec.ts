@@ -1,6 +1,5 @@
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { AuthService } from 'ng2-ui-auth';
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
@@ -8,6 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-tabs';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MarkdownModule } from 'ngx-markdown';
+import { AuthService } from '../../../ng2-ui-auth/public_api';
 import { MetadataService, GA4GHV20Service } from '../../../shared/openapi';
 import { ServiceInfoService } from '../../../service-info/service-info.service';
 import { RouterLinkStubDirective, RouterOutletStubComponent } from './../../../test/router-stubs';

@@ -15,10 +15,10 @@
  */
 import { Injectable, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { AuthService } from 'ng2-ui-auth';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AccountsService } from '../loginComponents/accounts/external/accounts.service';
+import { AuthService } from '../ng2-ui-auth/public_api';
 import { Base } from './base';
 import { TokenSource } from './enum/token-source.enum';
 import { ExtendedDockstoreTool } from './models/ExtendedDockstoreTool';

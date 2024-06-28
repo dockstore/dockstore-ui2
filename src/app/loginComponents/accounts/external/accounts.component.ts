@@ -16,9 +16,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { Router, RouterLink } from '@angular/router';
-import { AuthService } from 'ng2-ui-auth';
 import { Observable, Subject } from 'rxjs';
 import { first, map, takeUntil } from 'rxjs/operators';
+import { AuthService } from '../../../ng2-ui-auth/public_api';
 import { Dockstore } from '../../../shared/dockstore.model';
 import { TokenSource } from '../../../shared/enum/token-source.enum';
 import { TokenQuery } from '../../../shared/state/token.query';
