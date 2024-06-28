@@ -534,7 +534,7 @@ describe('Dockstore my workflows part 3', () => {
     });
   });
 
-  describe.only('Test register workflow form validation', () => {
+  describe('Test register workflow form validation', () => {
     it('It should have 3 separate descriptor path validation patterns', () => {
       cy.visit('/my-workflows');
       cy.get('[data-cy=register-workflow-button]').should('be.visible').should('be.enabled').click();
