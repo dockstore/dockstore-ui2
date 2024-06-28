@@ -94,6 +94,7 @@
               required
               matTooltip="Git Repository path"
               placeholder="e.g. CancerCollaboratory/dockstore-tool-liftover"
+              data-cy="toolSourceRepoInput"
             />
             <mat-error *ngIf="formErrors.gitPath">{{ formErrors.gitPath }}</mat-error>
           </mat-form-field>

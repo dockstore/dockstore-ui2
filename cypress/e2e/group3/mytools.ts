@@ -229,11 +229,9 @@ describe('Dockstore my tools', () => {
     it('register tool', () => {
       const toolObject: DockstoreTool = {
         id: 40000,
-        author: undefined,
         description: undefined,
         labels: [],
         users: [{ id: 1, username: 'user_A', isAdmin: false, name: 'user_A' }],
-        email: undefined,
         defaultVersion: undefined,
         lastUpdated: 1482334377743,
         gitUrl: 'git@github.com:testnamespace/testname.git',
@@ -295,11 +293,9 @@ describe('Dockstore my tools', () => {
     it('register tool', () => {
       const toolObject: DockstoreTool = {
         id: 40000,
-        author: undefined,
         description: undefined,
         labels: [],
         users: [{ id: 1, username: 'user_A', isAdmin: false, name: 'user_A' }],
-        email: undefined,
         defaultVersion: undefined,
         lastUpdated: 1482334377743,
         gitUrl: 'git@github.com:testnamespace/testname.git',
@@ -343,10 +339,11 @@ describe('Dockstore my tools', () => {
       cy.get('#register_tool_button').click();
       cy.contains('Create tool with descriptor(s) on remote sites').should('be.visible').click();
       cy.get('.modal-footer').contains('Next').first().click();
+      cy.get('[data-cy=imageRegistryProviderSelect]').click();
 
-      cy.get('#sourceCodeRepositoryInput').scrollIntoView().should('be.visible');
-      cy.get('#sourceCodeRepositoryInput').click();
-      cy.get('#sourceCodeRepositoryInput').type('testnamespace/testname');
+      cy.get('[data-cy=toolSourceRepoInput]').scrollTo('0%', '5%').should('be.visible');
+      cy.get('[data-cy=toolSourceRepoInput]').click();
+      cy.get('[data-cy=toolSourceRepoInput]').type('testnamespace/testname');
 
       cy.get('[data-cy=imageRegistryProviderSelect]').click();
       cy.contains('Amazon ECR').click();
