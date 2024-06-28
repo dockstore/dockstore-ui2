@@ -342,7 +342,6 @@ describe('Dockstore my tools', () => {
       cy.get('[data-cy=imageRegistryProviderSelect]').click();
       cy.wait(2000); // Give animation a chance to kick in.
 
-      cy.get('#sourceCodeRepositoryInput').scrollIntoView().should('be.visible');
       cy.get('#sourceCodeRepositoryInput').click();
       cy.get('#sourceCodeRepositoryInput').type('testnamespace/testname');
 
