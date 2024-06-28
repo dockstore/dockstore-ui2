@@ -340,10 +340,11 @@ describe('Dockstore my tools', () => {
       cy.contains('Create tool with descriptor(s) on remote sites').should('be.visible').click();
       cy.get('.modal-footer').contains('Next').first().click();
       cy.get('[data-cy=imageRegistryProviderSelect]').click();
+      cy.wait(2000); // Give animation a chance to kick in.
 
-      cy.get('[data-cy=toolSourceRepoInput]').scrollTo('0%', '5%').should('be.visible');
-      cy.get('[data-cy=toolSourceRepoInput]').click();
-      cy.get('[data-cy=toolSourceRepoInput]').type('testnamespace/testname');
+      cy.get('#sourceCodeRepositoryInput').scrollIntoView().should('be.visible');
+      cy.get('#sourceCodeRepositoryInput').click();
+      cy.get('#sourceCodeRepositoryInput').type('testnamespace/testname');
 
       cy.get('[data-cy=imageRegistryProviderSelect]').click();
       cy.contains('Amazon ECR').click();
