@@ -40,6 +40,7 @@ import { Ng2UiAuthModule } from './app/ng2-ui-auth/public_api';
 import { OrganizationStargazersModule } from './app/organizations/organization/organization-stargazers/organization-stargazers.module';
 import { OrganizationStarringModule } from './app/organizations/organization/organization-starring/organization-starring.module';
 import { RegisterService } from './app/register/register.service';
+import { QueryBuilderService } from './app/search/query-builder.service';
 import { SearchAuthorsHtmlPipe } from './app/search/search-authors-html.pipe';
 import { SearchService } from './app/search/state/search.service';
 import { ServiceInfoService } from './app/service-info/service-info.service';
@@ -141,6 +142,7 @@ bootstrapApplication(AppComponent, {
     PagenumberService,
     ParamfilesService,
     ProviderService,
+    QueryBuilderService,
     RefreshService,
     RegisterCheckerWorkflowService,
     RegisterService,
