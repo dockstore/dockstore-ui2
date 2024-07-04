@@ -68,11 +68,7 @@
             <div [innerHTML]="data.postContent"></div>
           </div>
           <div class="toot-media" *ngIf="data.mediaContent.length > 0">
-            <img
-              *ngFor="let picid of data.mediaContent"
-              src="{{ data.mediaContent[picid].preview_url }}"
-              alt="{{ data.mediaContent[picid].description }}"
-            />
+            <img *ngFor="let picid of data.mediaContent" src="{{ picid.preview_url }}" alt="{{ picid.description }}" />
           </div>
           <a *ngIf="data.previewLink" [href]="data.previewLink['url']" class="toot-preview-link" target="_blank" rel="noopener noreferrer">
             <div *ngIf="!data.previewLink['image']" class="toot-preview-noImage">📄</div>
