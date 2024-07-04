@@ -4,7 +4,7 @@
     <span *ngIf="entry?.topicSelection === TopicSelectionEnum.AUTOMATIC">
       <span>{{ entry?.topicAutomatic || 'n/a' }}</span>
       <span
-        *ngIf="!(isPublic$ | async)"
+        *ngIf="(isPublic$ | async) === false"
         class="bubble ml-2"
         matTooltip="Short description of the {{ entryTypeMetadata.term }}, retrieved automatically from the GitHub repository description"
       >
@@ -14,7 +14,7 @@
     <span *ngIf="entry?.topicSelection === TopicSelectionEnum.MANUAL">
       <span>{{ entry?.topicManual || 'n/a' }}</span>
       <span
-        *ngIf="!(isPublic$ | async)"
+        *ngIf="(isPublic$ | async) === false"
         class="bubble ml-2"
         matTooltip="Short description of the {{ entryTypeMetadata.term }}, entered manually in the {{
           isGitHubAppEntry ? '.dockstore.yml' : 'UI'
@@ -28,7 +28,7 @@
     </span>
   </div>
   <button
-    *ngIf="!(isPublic$ | async)"
+    *ngIf="(isPublic$ | async) === false"
     [disabled]="disableEditing"
     type="button"
     mat-raised-button
