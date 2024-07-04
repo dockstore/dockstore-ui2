@@ -16,7 +16,7 @@ import { FlexModule } from '@ngbracket/ngx-layout';
 @Component({
   selector: 'app-display-topic',
   templateUrl: './display-topic.component.html',
-  styleUrls: ['./display-topic.component.scss'],
+  styleUrls: ['../../../styles/info-tab.component.scss'],
   standalone: true,
   imports: [NgIf, MatLegacyTooltipModule, MatLegacyButtonModule, MatIconModule, AsyncPipe, AiBubbleComponent, FlexModule],
 })

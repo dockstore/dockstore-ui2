@@ -54,7 +54,7 @@ import { DisplayTopicComponent } from 'app/shared/entry/info-tab-topic/display-t
 @Component({
   selector: 'app-info-tab-container',
   templateUrl: './info-tab.component.html',
-  styleUrls: ['./info-tab.component.css'],
+  styleUrls: ['../../shared/styles/info-tab.component.scss'],
   standalone: true,
   imports: [
     NgIf,
