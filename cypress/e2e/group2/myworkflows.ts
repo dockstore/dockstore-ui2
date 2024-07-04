@@ -215,22 +215,30 @@ describe('Dockstore my workflows', () => {
       // Topic Editing
       const privateEntryURI = '/my-workflows/github.com/A/l';
       cy.visit(privateEntryURI);
+      // Modify the manual topic, but don't save it
       cy.get('[data-cy=topicEditButton]').click();
       cy.get('[data-cy=topicInput]').clear().type('badTopic');
       cy.get('[data-cy=topicCancelButton]').click();
       cy.contains('badTopic').should('not.exist');
+      // Modify the manual topic and save it
       cy.get('[data-cy=topicEditButton]').click();
       cy.get('[data-cy=topicInput]').clear().type('goodTopic');
       cy.get('[data-cy=topicSaveButton]').click();
+      // Check that the manual topic is saved
+      cy.get('[data-cy=topicEditButton]').click();
       cy.contains('goodTopic').should('exist');
+      cy.get('[data-cy=topicCancelButton]').click();
 
-      // Check public view
+      // Check public view. Manual topic should not be displayed because it's not the selected topic
       cy.visit(privateEntryURI);
       cy.get('[data-cy=viewPublicWorkflowButton]').should('be.visible').click();
       cy.contains('goodTopic').should('not.exist');
 
+      // Select the manual topic and verify that it's displayed publicly
       cy.visit(privateEntryURI);
+      cy.get('[data-cy=topicEditButton]').click();
       cy.contains('mat-radio-button', 'Manual').find('input').should('not.be.disabled').click({ force: true });
+      cy.get('[data-cy=topicSaveButton]').click();
       cy.visit(privateEntryURI);
       cy.get('[data-cy=viewPublicWorkflowButton]').should('be.visible').click();
       cy.contains('goodTopic').should('exist');

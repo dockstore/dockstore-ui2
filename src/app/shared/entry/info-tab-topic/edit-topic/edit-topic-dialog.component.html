@@ -40,6 +40,7 @@
               [(ngModel)]="editedTopicManual"
               [disabled]="isGitHubAppEntry"
               placeholder="Short description of the {{ entryTypeMetadata.term }}"
+              data-cy="topicInput"
             />
           </mat-form-field>
         </mat-radio-button>
@@ -70,6 +71,8 @@
   </div>
 </mat-dialog-content>
 <div mat-dialog-actions class="pull-right">
-  <button mat-button mat-dialog-close class="secondary-1" cdkFocusInitial>Cancel</button>
-  <button mat-raised-button mat-dialog-close (click)="saveTopic()" class="accent-1-dark-btn mat-elevation-z">Save</button>
+  <button mat-button mat-dialog-close class="secondary-1" data-cy="topicCancelButton" cdkFocusInitial>Cancel</button>
+  <button mat-raised-button mat-dialog-close (click)="saveTopic()" data-cy="topicSaveButton" class="accent-1-dark-btn mat-elevation-z">
+    Save
+  </button>
 </div>
