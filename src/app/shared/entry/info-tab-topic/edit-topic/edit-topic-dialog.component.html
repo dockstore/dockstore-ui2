@@ -46,14 +46,14 @@
         </mat-radio-button>
       </mat-card>
       <mat-card *ngIf="!isHostedEntry">
-        <mat-radio-button [value]="TopicSelectionEnum.AUTOMATIC" class="w-100" [disabled]="!entry.topicAutomatic">
+        <mat-radio-button [value]="TopicSelectionEnum.AUTOMATIC" class="w-100">
           <div>
             <span class="bubble mr-2"><mat-icon class="mat-icon-sm">sync</mat-icon></span>
             <strong>Automatic</strong>
           </div>
           <div class="size-small gray-caption">Retrieved automatically from the GitHub repository description.</div>
           <div [class]="entry.topicAutomatic ? '' : 'gray-caption'">
-            {{ entry.topicAutomatic }}
+            {{ entry.topicAutomatic || 'Not Available' }}
           </div>
         </mat-radio-button>
       </mat-card>

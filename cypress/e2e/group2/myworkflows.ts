@@ -180,6 +180,7 @@ describe('Dockstore my workflows', () => {
       cy.contains('Close').click();
     });
     it('Should contain the extended properties and be able to edit the info tab', () => {
+      cy.intercept('PUT', 'api/workflows/*').as('updateWorkflow');
       // The seemingly unnecessary visits are due to a detached-from-dom error even using cy.get().click();
       cy.visit('/my-workflows/github.com/A/l');
       cy.contains('github.com');
@@ -191,6 +192,7 @@ describe('Dockstore my workflows', () => {
       const workflowPathInput = '[data-cy=workflowPathInput]';
       cy.get(workflowPathInput).clear().type('/Dockstore2.cwl');
       cy.contains('button', ' Save ').click();
+      cy.wait('@updateWorkflow');
       cy.visit('/my-workflows/github.com/A/g');
       cy.contains('/Dockstore2.cwl');
       // Change the file path back
@@ -198,6 +200,7 @@ describe('Dockstore my workflows', () => {
       const dockstoreCwlPath = '/Dockstore.cwl';
       cy.get(workflowPathInput).clear().type(dockstoreCwlPath);
       cy.contains('button', ' Save ').click();
+      cy.wait('@updateWorkflow');
       cy.visit('/my-workflows/github.com/A/g');
       const workflowPathSpan = '[data-cy=workflowPathSpan]';
       cy.get(workflowPathSpan).contains(dockstoreCwlPath);
@@ -224,22 +227,22 @@ describe('Dockstore my workflows', () => {
       cy.get('[data-cy=topicEditButton]').click();
       cy.get('[data-cy=topicInput]').clear().type('goodTopic');
       cy.get('[data-cy=topicSaveButton]').click();
+      cy.wait('@updateWorkflow');
       // Check that the manual topic is saved
       cy.get('[data-cy=topicEditButton]').click();
-      cy.contains('goodTopic').should('exist');
+      cy.get('[data-cy=topicInput]').should('have.value', 'goodTopic');
       cy.get('[data-cy=topicCancelButton]').click();
 
       // Check public view. Manual topic should not be displayed because it's not the selected topic
-      cy.visit(privateEntryURI);
       cy.get('[data-cy=viewPublicWorkflowButton]').should('be.visible').click();
       cy.contains('goodTopic').should('not.exist');
 
       // Select the manual topic and verify that it's displayed publicly
       cy.visit(privateEntryURI);
       cy.get('[data-cy=topicEditButton]').click();
-      cy.contains('mat-radio-button', 'Manual').find('input').should('not.be.disabled').click({ force: true });
+      cy.get('.mat-radio-label').contains('Manual').click();
       cy.get('[data-cy=topicSaveButton]').click();
-      cy.visit(privateEntryURI);
+      cy.wait('@updateWorkflow');
       cy.get('[data-cy=viewPublicWorkflowButton]').should('be.visible').click();
       cy.contains('goodTopic').should('exist');
     });
