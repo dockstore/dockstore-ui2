@@ -53,6 +53,7 @@ import { MatLegacyButtonModule } from '@angular/material/legacy-button';
 import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { NgIf, NgFor, NgClass, NgSwitch, NgSwitchCase, NgSwitchDefault, AsyncPipe, TitleCasePipe } from '@angular/common';
 import { DisplayTopicComponent } from 'app/shared/entry/info-tab-topic/display-topic/display-topic.component';
 
 @Component({
