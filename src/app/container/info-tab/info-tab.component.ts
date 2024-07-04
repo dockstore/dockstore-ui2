@@ -49,6 +49,7 @@ import { MatLegacyCardModule } from '@angular/material/legacy-card';
 import { NgIf, NgClass } from '@angular/common';
 
 import DescriptorTypeEnum = ToolVersion.DescriptorTypeEnum;
+import { DisplayTopicComponent } from 'app/shared/entry/info-tab-topic/display-topic/display-topic.component';
 
 @Component({
   selector: 'app-info-tab-container',
@@ -77,6 +78,7 @@ import DescriptorTypeEnum = ToolVersion.DescriptorTypeEnum;
     UrlDeconstructPipe,
     MapFriendlyValuesPipe,
     BaseUrlPipe,
+    DisplayTopicComponent,
   ],
 })
 export class InfoTabComponent extends Base implements OnInit, OnChanges {
@@ -91,7 +93,6 @@ export class InfoTabComponent extends Base implements OnInit, OnChanges {
   public DockstoreToolType = DockstoreTool;
   public tool: ExtendedDockstoreTool;
   public canWrite: boolean;
-  public topicEditing: boolean;
   public TopicSelectionEnum = DockstoreTool.TopicSelectionEnum;
   public authors: Array<Author> = [];
   public displayedColumns: string[] = ['name', 'role', 'affiliation', 'email'];
@@ -156,7 +157,6 @@ export class InfoTabComponent extends Base implements OnInit, OnChanges {
     this.infoTabService.wdlPathEditing$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((editing) => (this.wdlPathEditing = editing));
     this.infoTabService.cwlTestPathEditing$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((editing) => (this.cwlTestPathEditing = editing));
     this.infoTabService.wdlTestPathEditing$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((editing) => (this.wdlTestPathEditing = editing));
-    this.infoTabService.topicEditing$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((topicEditing) => (this.topicEditing = topicEditing));
     this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((publicPage) => (this.isPublic = publicPage));
   }
 
@@ -166,25 +166,6 @@ export class InfoTabComponent extends Base implements OnInit, OnChanges {
       const url = window.URL.createObjectURL(blob);
       window.open(url);
     });
-  }
-
-  toggleEditTopic() {
-    if (this.topicEditing) {
-      this.infoTabService.saveTopic(this.tool, this.revertTopic.bind(this));
-    }
-    this.infoTabService.setTopicEditing(!this.topicEditing);
-  }
-
-  revertTopic() {
-    this.tool.topicManual = this.extendedDockstoreTool.topicManual;
-  }
-
-  revertTopicSelection() {
-    this.tool.topicSelection = this.extendedDockstoreTool.topicSelection;
-  }
-
-  topicSelectionChange() {
-    this.infoTabService.saveTopicSelection(this.tool, this.revertTopicSelection.bind(this));
   }
 
   toggleEditDockerFile() {
@@ -222,14 +203,7 @@ export class InfoTabComponent extends Base implements OnInit, OnChanges {
   }
 
   somethingIsBeingEdited(): boolean {
-    return (
-      this.dockerFileEditing ||
-      this.cwlPathEditing ||
-      this.wdlPathEditing ||
-      this.cwlTestPathEditing ||
-      this.wdlTestPathEditing ||
-      this.topicEditing
-    );
+    return this.dockerFileEditing || this.cwlPathEditing || this.wdlPathEditing || this.cwlTestPathEditing || this.wdlTestPathEditing;
   }
 
   /**
@@ -239,7 +213,6 @@ export class InfoTabComponent extends Base implements OnInit, OnChanges {
    */
   cancelEditing(): void {
     this.infoTabService.cancelEditing();
-    this.revertTopic();
   }
 
   /**

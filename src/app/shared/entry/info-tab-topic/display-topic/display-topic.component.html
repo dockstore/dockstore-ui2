@@ -1,0 +1,42 @@
+<div fxLayout="row" fxLayoutAlign="space-between">
+  <div>
+    <strong matTooltip="Short description of the {{ entryTypeMetadata.term }}">Topic: </strong>
+    <span *ngIf="entry?.topicSelection === TopicSelectionEnum.AUTOMATIC">
+      <span>{{ entry?.topicAutomatic || 'n/a' }}</span>
+      <span
+        *ngIf="!(isPublic$ | async)"
+        class="bubble ml-2"
+        matTooltip="Short description of the {{ entryTypeMetadata.term }}, retrieved automatically from the GitHub repository description"
+      >
+        <mat-icon class="mat-icon-sm">sync</mat-icon>Automatic
+      </span>
+    </span>
+    <span *ngIf="entry?.topicSelection === TopicSelectionEnum.MANUAL">
+      <span>{{ entry?.topicManual || 'n/a' }}</span>
+      <span
+        *ngIf="!(isPublic$ | async)"
+        class="bubble ml-2"
+        matTooltip="Short description of the {{ entryTypeMetadata.term }}, entered manually in the {{
+          isGitHubAppEntry ? '.dockstore.yml' : 'UI'
+        }}"
+        ><mat-icon class="mat-icon-sm">edit</mat-icon>Manual</span
+      >
+    </span>
+    <span *ngIf="entry?.topicSelection === TopicSelectionEnum.AI" data-cy="topic-selected-ai-text">
+      <span>{{ entry?.topicAI || 'n/a' }}</span>
+      <app-ai-bubble [isPublic]="isPublic$ | async"></app-ai-bubble>
+    </span>
+  </div>
+  <button
+    *ngIf="!(isPublic$ | async)"
+    [disabled]="disableEditing"
+    type="button"
+    mat-raised-button
+    class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+    (click)="editTopic()"
+    matTooltip="Edit topic"
+  >
+    <img src="../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit Topic" />
+    Edit
+  </button>
+</div>
