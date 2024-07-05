@@ -112,12 +112,14 @@ describe('Dockstore my tools', () => {
       cy.visit(privateEntryURI);
       // Modify the manual topic, but don't save it
       cy.get('[data-cy=topicEditButton]').click();
-      cy.get('[data-cy=topicInput]').clear().type('badTopic');
+      cy.get('[data-cy=topicInput]').clear(); // Unsafe to chain commands after clear()
+      cy.get('[data-cy=topicInput]').type('badTopic');
       cy.get('[data-cy=topicCancelButton]').click();
       cy.get('[data-cy=selected-topic]').should('not.contain.text', 'badTopic');
       // Modify the manual topic and save it
       cy.get('[data-cy=topicEditButton]').click();
-      cy.get('[data-cy=topicInput]').clear().type('goodTopic');
+      cy.get('[data-cy=topicInput]').clear(); // Unsafe to chain commands after clear()
+      cy.get('[data-cy=topicInput]').type('goodTopic');
       cy.get('[data-cy=topicSaveButton]').click();
       cy.wait('@updateTool');
       // Check that the manual topic is saved

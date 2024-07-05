@@ -218,14 +218,18 @@ describe('Dockstore my workflows', () => {
       // Topic Editing
       const privateEntryURI = '/my-workflows/github.com/A/l';
       cy.visit(privateEntryURI);
+      // Add an AI topic for testing
+      invokeSql("update workflow set topicai = 'test AI topic sentence' where id = 11");
       // Modify the manual topic, but don't save it
       cy.get('[data-cy=topicEditButton]').click();
-      cy.get('[data-cy=topicInput]').clear().type('badTopic');
+      cy.get('[data-cy=topicInput]').clear(); // Unsafe to chain clear()
+      cy.get('[data-cy=topicInput]').type('badTopic');
       cy.get('[data-cy=topicCancelButton]').click();
       cy.get('[data-cy=selected-topic]').should('not.contain.text', 'badTopic');
       // Modify the manual topic and save it
       cy.get('[data-cy=topicEditButton]').click();
-      cy.get('[data-cy=topicInput]').clear().type('goodTopic');
+      cy.get('[data-cy=topicInput]').clear(); // Unsafe to chain clear()
+      cy.get('[data-cy=topicInput]').type('goodTopic');
       cy.get('[data-cy=topicSaveButton]').click();
       cy.wait('@updateWorkflow');
       // Check that the manual topic is saved
@@ -243,8 +247,26 @@ describe('Dockstore my workflows', () => {
       cy.get('.mat-radio-label').contains('Manual').click();
       cy.get('[data-cy=topicSaveButton]').click();
       cy.wait('@updateWorkflow');
+      cy.get('[data-cy=selected-topic]').should('contain.text', 'goodTopic');
+      // Topic selection bubble should be visible on private page
+      cy.get('[data-cy=topic-selection-bubble]').should('be.visible');
+      // Topic selection bubble should not exist on public page
       cy.get('[data-cy=viewPublicWorkflowButton]').should('be.visible').click();
       cy.get('[data-cy=selected-topic]').should('contain.text', 'goodTopic');
+      cy.get('[data-cy=topic-selection-bubble]').should('not.exist');
+
+      // Select the AI topic and verify that it's displayed publicly with an AI bubble
+      cy.visit(privateEntryURI);
+      cy.get('[data-cy=topicEditButton]').click();
+      cy.get('.mat-radio-label').contains('AI').click();
+      cy.get('[data-cy=topicSaveButton]').click();
+      cy.wait('@updateWorkflow');
+      cy.get('[data-cy=selected-topic]').should('contain.text', 'test AI topic sentence');
+      cy.get('[data-cy=ai-bubble]').should('be.visible');
+      // AI bubble should be displayed on public page too
+      cy.get('[data-cy=viewPublicWorkflowButton]').should('be.visible').click();
+      cy.get('[data-cy=selected-topic]').should('contain.text', 'test AI topic sentence');
+      cy.get('[data-cy=ai-bubble]').should('be.visible');
     });
     it('should have mode tooltip', () => {
       cy.visit('/my-workflows/github.com/A/g');
@@ -649,20 +671,6 @@ describe('Version Dropdown should have search capabilities', () => {
     cy.get('[data-cy=version-dropdown-search-field]').should('be.visible').type('test');
     cy.get('mat-option').should('not.contain', 'master');
     cy.get('mat-option').should('contain', 'test').should('be.visible');
-  });
-  it('Test AI topic sentences', () => {
-    cy.fixture('workflowWithTopicAI.json').then((json) => {
-      cy.intercept('GET', '/api/workflows/11*', {
-        body: json,
-        statusCode: 200,
-      }).as('request');
-    });
-
-    cy.visit('/my-workflows');
-    cy.get('[data-cy=selected-topic]').should('contain.text', 'test AI topic sentence');
-    cy.get('[data-cy=ai-bubble]').should('be.visible');
-    cy.get('[data-cy=viewPublicWorkflowButton]').should('be.visible').click(); // AI bubble should be displayed on public page too
-    cy.get('[data-cy=ai-bubble]').should('be.visible');
   });
 });
 describe('Should handle no workflows correctly', () => {

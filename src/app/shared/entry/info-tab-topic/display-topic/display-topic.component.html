@@ -15,6 +15,7 @@
           ? 'entered manually by the user'
           : 'retrieved automatically from the GitHub repository description'
       }}"
+      data-cy="topic-selection-bubble"
     >
       <mat-icon class="mat-icon-sm">{{ entry.topicSelection === TopicSelectionEnum.MANUAL ? 'edit' : 'sync' }}</mat-icon>
       <span>{{ entry.topicSelection | titlecase }}</span>
