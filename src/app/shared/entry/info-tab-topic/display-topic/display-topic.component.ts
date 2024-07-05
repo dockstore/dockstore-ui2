@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe, NgIf, TitleCasePipe } from '@angular/common';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatLegacyButtonModule } from '@angular/material/legacy-button';
@@ -18,13 +18,14 @@ import { FlexModule } from '@ngbracket/ngx-layout';
   templateUrl: './display-topic.component.html',
   styleUrls: ['../../../styles/info-tab.component.scss'],
   standalone: true,
-  imports: [NgIf, MatLegacyTooltipModule, MatLegacyButtonModule, MatIconModule, AsyncPipe, AiBubbleComponent, FlexModule],
+  imports: [NgIf, MatLegacyTooltipModule, MatLegacyButtonModule, MatIconModule, AsyncPipe, AiBubbleComponent, FlexModule, TitleCasePipe],
 })
 export class DisplayTopicComponent extends Base implements OnInit, OnDestroy {
   TopicSelectionEnum = Entry.TopicSelectionEnum;
   isPublic$: Observable<boolean>;
   isGitHubAppEntry: boolean;
   entryTypeMetadata: EntryTypeMetadata;
+  selectedTopic: string;
   @Input() entry: DockstoreTool | Workflow;
   @Input() disableEditing: boolean;
   constructor(private sessionQuery: SessionQuery, private dialog: MatLegacyDialog) {
@@ -37,7 +38,24 @@ export class DisplayTopicComponent extends Base implements OnInit, OnDestroy {
     this.isGitHubAppEntry = (this.entry as Workflow | DockstoreTool).mode === Workflow.ModeEnum.DOCKSTOREYML; // The workflow and tool enums are confirmed to be equal in a test.
   }
 
+  ngOnChanges(): void {
+    this.selectedTopic = this.getSelectedTopic();
+  }
+
   editTopic() {
     this.dialog.open(EditTopicDialogComponent, { width: bootstrap4largeModalSize, data: { entry: this.entry } });
+  }
+
+  private getSelectedTopic(): string | null {
+    switch (this.entry.topicSelection) {
+      case this.TopicSelectionEnum.MANUAL:
+        return this.entry.topicManual;
+      case this.TopicSelectionEnum.AUTOMATIC:
+        return this.entry.topicAutomatic;
+      case this.TopicSelectionEnum.AI:
+        return this.entry.topicAI;
+      default:
+        return null;
+    }
   }
 }

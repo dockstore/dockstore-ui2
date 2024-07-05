@@ -659,8 +659,7 @@ describe('Version Dropdown should have search capabilities', () => {
     });
 
     cy.visit('/my-workflows');
-    cy.get('[data-cy=topic-ai-selection-button]').should('be.visible');
-    cy.get('[data-cy=topicAI-text]').should('contain.text', 'test AI topic sentence');
+    cy.get('[data-cy=selected-topic]').should('contain.text', 'test AI topic sentence');
     cy.get('[data-cy=ai-bubble]').should('be.visible');
   });
 });

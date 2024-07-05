@@ -12,6 +12,16 @@
   "description": null,
   "descriptorTypeSubclass": "NOT_APPLICABLE",
   "email": null,
+  "entryTypeMetadata": {
+    "searchEntryType": "workflows",
+    "searchSupported": true,
+    "sitePath": "workflows",
+    "term": "workflow",
+    "termPlural": "workflows",
+    "trsPrefix": "#workflow/",
+    "trsSupported": true,
+    "type": "WORKFLOW"
+  },
   "full_workflow_path": "github.com/A/l",
   "gitUrl": "git@github.com:A/l.git",
   "has_checker": false,
