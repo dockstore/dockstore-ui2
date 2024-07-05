@@ -114,7 +114,7 @@ describe('Dockstore my tools', () => {
       cy.get('[data-cy=topicEditButton]').click();
       cy.get('[data-cy=topicInput]').clear().type('badTopic');
       cy.get('[data-cy=topicCancelButton]').click();
-      cy.contains('badTopic').should('not.exist');
+      cy.get('[data-cy=selected-topic]').should('not.contain.text', 'badTopic');
       // Modify the manual topic and save it
       cy.get('[data-cy=topicEditButton]').click();
       cy.get('[data-cy=topicInput]').clear().type('goodTopic');
@@ -127,7 +127,7 @@ describe('Dockstore my tools', () => {
 
       // Check public view. Manual topic should not be displayed because it's not the selected topic
       cy.get('[data-cy=viewPublicToolButton]').should('be.visible').click();
-      cy.contains('goodTopic').should('not.exist');
+      cy.get('[data-cy=selected-topic]').should('not.contain.text', 'goodTopic');
 
       // Select the manual topic and verify that it's displayed publicly
       cy.visit(privateEntryURI);
@@ -136,7 +136,7 @@ describe('Dockstore my tools', () => {
       cy.get('[data-cy=topicSaveButton]').click();
       cy.wait('@updateTool');
       cy.get('[data-cy=viewPublicToolButton]').should('be.visible').click();
-      cy.contains('goodTopic').should('exist');
+      cy.get('[data-cy=selected-topic]').should('contain.text', 'goodTopic');
     });
     it('should be able to add labels', () => {
       cy.contains('quay.io/A2/a:latest');

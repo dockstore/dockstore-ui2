@@ -2,21 +2,22 @@
   <div>
     <strong matTooltip="Short description of the {{ entryTypeMetadata.term }}">Topic: </strong>
     <span data-cy="selected-topic">{{ selectedTopic || 'n/a' }}</span>
-    <!-- Display a bubble indicating the topic selection -->
-    <span *ngIf="(isPublic$ | async) === false">
-      <span
-        *ngIf="entry.topicSelection === TopicSelectionEnum.MANUAL || entry.topicSelection === TopicSelectionEnum.AUTOMATIC"
-        class="bubble ml-2"
-        matTooltip="Short description of the {{ entryTypeMetadata.term }}, {{
-          entry.topicSelection === TopicSelectionEnum.MANUAL
-            ? 'entered manually by the user'
-            : 'retrieved automatically from the GitHub repository description'
-        }}"
-      >
-        <mat-icon class="mat-icon-sm">{{ entry.topicSelection === TopicSelectionEnum.MANUAL ? 'edit' : 'sync' }}</mat-icon>
-        <span>{{ entry.topicSelection | titlecase }}</span>
-      </span>
-      <app-ai-bubble *ngIf="entry.topicSelection === TopicSelectionEnum.AI" [isPublic]="isPublic$ | async"></app-ai-bubble>
+    <!-- Display a bubble indicating the topic selection. AI bubble is always displayed with an AI topic. Bubbles for other topic types are only displayed for the non-public view -->
+    <app-ai-bubble *ngIf="entry.topicSelection === TopicSelectionEnum.AI" [isPublic]="isPublic$ | async"></app-ai-bubble>
+    <span
+      *ngIf="
+        (entry.topicSelection === TopicSelectionEnum.MANUAL || entry.topicSelection === TopicSelectionEnum.AUTOMATIC) &&
+        (isPublic$ | async) === false
+      "
+      class="bubble ml-2"
+      matTooltip="Short description of the {{ entryTypeMetadata.term }}, {{
+        entry.topicSelection === TopicSelectionEnum.MANUAL
+          ? 'entered manually by the user'
+          : 'retrieved automatically from the GitHub repository description'
+      }}"
+    >
+      <mat-icon class="mat-icon-sm">{{ entry.topicSelection === TopicSelectionEnum.MANUAL ? 'edit' : 'sync' }}</mat-icon>
+      <span>{{ entry.topicSelection | titlecase }}</span>
     </span>
   </div>
   <button

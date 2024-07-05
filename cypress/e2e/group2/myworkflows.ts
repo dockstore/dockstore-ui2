@@ -222,7 +222,7 @@ describe('Dockstore my workflows', () => {
       cy.get('[data-cy=topicEditButton]').click();
       cy.get('[data-cy=topicInput]').clear().type('badTopic');
       cy.get('[data-cy=topicCancelButton]').click();
-      cy.contains('badTopic').should('not.exist');
+      cy.get('[data-cy=selected-topic]').should('not.contain.text', 'badTopic');
       // Modify the manual topic and save it
       cy.get('[data-cy=topicEditButton]').click();
       cy.get('[data-cy=topicInput]').clear().type('goodTopic');
@@ -235,7 +235,7 @@ describe('Dockstore my workflows', () => {
 
       // Check public view. Manual topic should not be displayed because it's not the selected topic
       cy.get('[data-cy=viewPublicWorkflowButton]').should('be.visible').click();
-      cy.contains('goodTopic').should('not.exist');
+      cy.get('[data-cy=selected-topic]').should('not.contain.text', 'goodTopic');
 
       // Select the manual topic and verify that it's displayed publicly
       cy.visit(privateEntryURI);
@@ -244,7 +244,7 @@ describe('Dockstore my workflows', () => {
       cy.get('[data-cy=topicSaveButton]').click();
       cy.wait('@updateWorkflow');
       cy.get('[data-cy=viewPublicWorkflowButton]').should('be.visible').click();
-      cy.contains('goodTopic').should('exist');
+      cy.get('[data-cy=selected-topic]').should('contain.text', 'goodTopic');
     });
     it('should have mode tooltip', () => {
       cy.visit('/my-workflows/github.com/A/g');
@@ -660,6 +660,8 @@ describe('Version Dropdown should have search capabilities', () => {
 
     cy.visit('/my-workflows');
     cy.get('[data-cy=selected-topic]').should('contain.text', 'test AI topic sentence');
+    cy.get('[data-cy=ai-bubble]').should('be.visible');
+    cy.get('[data-cy=viewPublicWorkflowButton]').should('be.visible').click(); // AI bubble should be displayed on public page too
     cy.get('[data-cy=ai-bubble]').should('be.visible');
   });
 });
