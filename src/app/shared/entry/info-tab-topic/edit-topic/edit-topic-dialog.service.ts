@@ -19,7 +19,6 @@ export class EditTopicDialogService {
     const newEntryForUpdate = { ...entry, topicManual: topicManual, topicSelection: topicSelection };
 
     if (entry.entryType === EntryType.TOOL) {
-      //const partialEntryForUpdate = this.getPartialToolForUpdate(entry);
       this.containersService.updateContainer(entry.id, newEntryForUpdate as DockstoreTool).subscribe(
         (response) => {
           this.alertService.detailedSuccess();
@@ -45,6 +44,5 @@ export class EditTopicDialogService {
         }
       );
     }
-    //const partialEntryForUpdate = this.getPartialEntryForUpdate(newWorkflow);
   }
 }
