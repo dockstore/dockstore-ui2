@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { IPartialConfigOptions } from 'ng2-ui-auth/lib/config-interfaces';
+import { IPartialConfigOptions } from 'ng2-ui-auth';
 import { Dockstore } from '../shared/dockstore.model';
 
 export const AuthConfig: IPartialConfigOptions = {

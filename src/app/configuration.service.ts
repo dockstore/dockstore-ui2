@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ConfigService } from 'ng2-ui-auth';
-import { IOauth2Options } from 'ng2-ui-auth/lib/config-interfaces';
+import { ConfigService, IOauth2Options } from 'ng2-ui-auth';
 import { AuthConfig } from './shared/auth.model';
 import { Dockstore } from './shared/dockstore.model';
 import { FeatureService } from './shared/feature.service';
