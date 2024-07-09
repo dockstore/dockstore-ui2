@@ -25,6 +25,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatLegacyCardModule } from '@angular/material/legacy-card';
 import { NgIf, NgFor, NgSwitch, NgSwitchCase, NgSwitchDefault, AsyncPipe, TitleCasePipe, DatePipe } from '@angular/common';
 import { LoadingComponent } from '../../../shared/loading/loading.component';
+import { Dockstore } from 'app/shared/dockstore.model';
 
 /**
  * Based on https://material.angular.io/components/table/examples example with expandable rows
@@ -73,6 +74,7 @@ import { LoadingComponent } from '../../../shared/loading/loading.component';
   ],
 })
 export class GithubAppsLogsComponent extends Base implements OnInit, AfterViewInit {
+  Dockstore = Dockstore;
   columnsToDisplay: string[];
   displayedColumns: string[];
   lambdaEvents: LambdaEvent[] | null;
