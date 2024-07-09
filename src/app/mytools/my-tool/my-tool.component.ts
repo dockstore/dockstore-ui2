@@ -61,6 +61,7 @@ import { MySidebarComponent } from '../../my-sidebar/my-sidebar.component';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { SidebarAccordionComponent } from '../sidebar-accordion/sidebar-accordion.component';
 import { SidebarAccordionComponent as WorkflowSidebarAccordionComponent } from '../../myworkflows/sidebar-accordion/sidebar-accordion.component';
+import { Dockstore } from 'app/shared/dockstore.model';
 
 @Component({
   selector: 'app-my-tool',
@@ -102,6 +103,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
   public groupEntriesObject$: Observable<Array<OrgToolObject<DockstoreTool>>>;
   public groupAppToolEntryObjects$: Observable<Array<OrgWorkflowObject<Workflow>>>;
   EntryType = EntryType;
+  Dockstore = Dockstore;
   constructor(
     private mytoolsService: MytoolsService,
     protected configuration: Configuration,
