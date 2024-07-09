@@ -72,7 +72,7 @@
     "jquery": "^3.6.0",
     "material-design-icons-iconfont": "^6.1.0",
     "mathjax": "^3.2.2",
-    "ng2-ui-auth": "dockstore/ng2-ui-auth#fba842f0a464ad9fce3c923b5a807c61be92f7d8",
+    "ng2-ui-auth": "dockstore/ng2-ui-auth#fba842f",
     "ngx-markdown": "^15.1.2",
     "ngx-mat-select-search": "^6.0.0",
     "ngx-sharebuttons": "^8.0.5",
