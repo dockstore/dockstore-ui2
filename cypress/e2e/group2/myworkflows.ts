@@ -545,11 +545,9 @@ describe('Dockstore my workflows part 3', () => {
       // Untouched form should not have errors but is disabled
       cy.get('#submitButton').should('be.disabled');
       notHaveAlert();
-      cy.get('#sourceCodeRepositoryInput').scrollIntoView().should('be.visible');
       cy.get('#sourceCodeRepositoryInput').clear();
       cy.get('#sourceCodeRepositoryInput').type('beef/stew');
       cy.get('#submitButton').should('be.disabled');
-      cy.get('#sourceCodeRepositoryWorkflowPathInput').scrollIntoView().should('be.visible');
       cy.get('#sourceCodeRepositoryWorkflowPathInput').clear();
       cy.get('#sourceCodeRepositoryWorkflowPathInput').type('/Dockstore.cwl');
       notHaveAlert();

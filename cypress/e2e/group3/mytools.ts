@@ -278,7 +278,6 @@ describe('Dockstore my tools', () => {
       cy.contains('Create tool with descriptor(s) on remote sites').should('be.visible').click();
       cy.get('.modal-footer').contains('Next').first().click();
 
-      cy.get('#sourceCodeRepositoryInput').scrollIntoView().should('be.visible');
       cy.get('#sourceCodeRepositoryInput').click();
       cy.get('#sourceCodeRepositoryInput').type('testnamespace/testname');
 
@@ -344,7 +343,6 @@ describe('Dockstore my tools', () => {
       cy.contains('Create tool with descriptor(s) on remote sites').should('be.visible').click();
       cy.get('.modal-footer').contains('Next').first().click();
 
-      cy.get('#sourceCodeRepositoryInput').scrollIntoView().should('be.visible');
       cy.get('#sourceCodeRepositoryInput').click();
       cy.get('#sourceCodeRepositoryInput').type('testnamespace/testname');
 
@@ -452,7 +450,6 @@ describe('Dockstore my tools', () => {
       cy.contains('Create tool with descriptor(s) on remote sites').should('be.visible').click();
       cy.get('.modal-footer').contains('Next').first().click();
 
-      cy.get('#sourceCodeRepositoryInput').scrollIntoView().should('be.visible');
       cy.get('#sourceCodeRepositoryInput').click();
       cy.get('#sourceCodeRepositoryInput').type('testnamespace/testname');
 
@@ -464,7 +461,6 @@ describe('Dockstore my tools', () => {
 
       cy.get('#imageRegistryInput').type('testnamespace/testname');
 
-      cy.get('#submitButton').scrollIntoView().should('be.enabled');
       cy.get('#submitButton').click();
 
       // TODO: This is temporarily disabled
