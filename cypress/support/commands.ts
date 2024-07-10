@@ -262,7 +262,7 @@ export function checkFeaturedContent() {
   cy.get('app-featured-content').should('exist');
   cy.get('.feat-content-container').within(() => {
     cy.get('.feat-content-card').its('length').should('be.gt', 0);
-    cy.get('.feat-content-card').first().contains('a').should('have.attr', 'href');
+    cy.get('.feat-content-card').first().get('a').should('have.attr', 'href');
     cy.get('.small-btn-structure').first().contains('View');
   });
 }
@@ -272,7 +272,7 @@ export function checkNewsAndUpdates() {
   cy.get('app-news-and-updates').should('exist');
   cy.get('.news-and-updates-box').within(() => {
     cy.get('.news-entry').its('length').should('be.gt', 0);
-    cy.get('.news-entry').first().contains('a').should('have.attr', 'href');
+    cy.get('.news-entry').first().get('a').should('have.attr', 'href');
   });
 }
 
