@@ -76,6 +76,7 @@ import { RegisterWorkflowModalService } from './app/workflow/register-workflow-m
 import { VersionModalService } from './app/workflow/version-modal/version-modal.service';
 import { ViewService } from './app/workflow/view/view.service';
 import { environment } from './environments/environment';
+import { EditTopicDialogService } from 'app/shared/entry/info-tab-topic/edit-topic/edit-topic-dialog.service';
 
 if (environment.production) {
   enableProdMode();
@@ -116,6 +117,7 @@ bootstrapApplication(AppComponent, {
     ContainerVersionModalService,
     DateService,
     DescriptorLanguageService,
+    EditTopicDialogService,
     EmailService,
     EntryActionsService,
     EntryTypeMetadataService,

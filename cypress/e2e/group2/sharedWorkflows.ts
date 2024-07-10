@@ -21,7 +21,7 @@ import {
   resetDB,
   setTokenUserViewPort,
 } from '../../support/commands';
-
+import { workflowEntryTypeMetadata } from '../../../src/app/test/mocked-objects';
 import { BioWorkflow } from '../../../src/app/shared/openapi/model/bioWorkflow';
 describe('Shared with me workflow test from my-workflows', () => {
   resetDB();
@@ -82,6 +82,7 @@ describe('Shared with me workflow test from my-workflows', () => {
       description: undefined,
       descriptorType: 'WDL',
       email: undefined,
+      entryTypeMetadata: workflowEntryTypeMetadata,
       full_workflow_path: 'dockstore.org/user_B/' + name,
       gitUrl: '',
       has_checker: false,
