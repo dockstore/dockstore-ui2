@@ -31,6 +31,7 @@ import { MatLegacyRadioModule } from '@angular/material/legacy-radio';
 import { MatIconModule } from '@angular/material/icon';
 import { MatLegacyCardModule } from '@angular/material/legacy-card';
 import { EditTopicDialogService } from './edit-topic-dialog.service';
+import { EntryActionsService } from 'app/shared/entry-actions/entry-actions.service';
 
 export interface EditTopicDialogData {
   entry: DockstoreTool | Workflow;
@@ -72,13 +73,14 @@ export class EditTopicDialogComponent {
   constructor(
     public dialogRef: MatLegacyDialogRef<EditTopicDialogComponent>,
     public editTopicDialogService: EditTopicDialogService,
+    public entryActionsService: EntryActionsService,
     @Inject(MAT_LEGACY_DIALOG_DATA) public data: EditTopicDialogData
   ) {
     this.entry = data.entry;
     this.entryType = data.entry.entryType;
     this.entryTypeMetadata = data.entry.entryTypeMetadata;
-    this.isGitHubAppEntry = (data.entry as Workflow | DockstoreTool).mode === Workflow.ModeEnum.DOCKSTOREYML; // The workflow and tool enums are confirmed to be equal in a test.
-    this.isHostedEntry = (data.entry as Workflow | DockstoreTool).mode === Workflow.ModeEnum.HOSTED;
+    this.isGitHubAppEntry = (data.entry as Workflow).mode === Workflow.ModeEnum.DOCKSTOREYML; // Only Workflow has DOCKSTOREYML ModeEnum
+    this.isHostedEntry = this.entryActionsService.isEntryHosted(data.entry);
     this.selectedOption = data.entry.topicSelection;
     this.editedTopicManual = data.entry.topicManual;
   }

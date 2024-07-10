@@ -15,7 +15,7 @@
  */
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { EditTopicDialogStubService, EntryTypeMetadataStubService } from 'app/test/service-stubs';
+import { EditTopicDialogStubService, EntryActionsStubService, EntryTypeMetadataStubService } from 'app/test/service-stubs';
 import { MAT_LEGACY_DIALOG_DATA, MatLegacyDialogModule, MatLegacyDialogRef } from '@angular/material/legacy-dialog';
 import { EntryTypeMetadataService } from 'app/entry/type-metadata/entry-type-metadata.service';
 import { sampleWorkflow1 } from 'app/test/mocked-objects';
@@ -23,6 +23,7 @@ import { EditTopicDialogComponent } from './edit-topic-dialog.component';
 import { EditTopicDialogService } from './edit-topic-dialog.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { EntryActionsService } from 'app/shared/entry-actions/entry-actions.service';
 
 describe('EditTopicDialogComponent', () => {
   let component: EditTopicDialogComponent;
@@ -35,6 +36,7 @@ describe('EditTopicDialogComponent', () => {
         providers: [
           { provide: EntryTypeMetadataService, useClass: EntryTypeMetadataStubService },
           { provide: EditTopicDialogService, useClass: EditTopicDialogStubService },
+          { provide: EntryActionsService, useClass: EntryActionsStubService },
           {
             provide: MatLegacyDialogRef,
             useValue: {

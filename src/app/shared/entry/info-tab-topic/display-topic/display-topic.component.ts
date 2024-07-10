@@ -35,7 +35,7 @@ export class DisplayTopicComponent extends Base implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.isPublic$ = this.sessionQuery.isPublic$;
     this.entryTypeMetadata = this.entry.entryTypeMetadata;
-    this.isGitHubAppEntry = (this.entry as Workflow | DockstoreTool).mode === Workflow.ModeEnum.DOCKSTOREYML; // The workflow and tool enums are confirmed to be equal in a test.
+    this.isGitHubAppEntry = (this.entry as Workflow).mode === Workflow.ModeEnum.DOCKSTOREYML; // Only Workflow has DOCKSTOREYML ModeEnum
   }
 
   ngOnChanges(): void {

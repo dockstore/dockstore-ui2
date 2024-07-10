@@ -978,6 +978,7 @@ export class MarkdownWrapperStubService {
 
 export class EntryActionsStubService {
   updateBackingEntry(entry) {}
+  isEntryHosted(entry) {}
 }
 
 export class EditTopicDialogStubService {
