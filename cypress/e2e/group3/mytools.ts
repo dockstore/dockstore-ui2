@@ -278,6 +278,8 @@ describe('Dockstore my tools', () => {
       cy.contains('Create tool with descriptor(s) on remote sites').should('be.visible').click();
       cy.get('.modal-footer').contains('Next').first().click();
 
+      // Untouched form should not have errors but is disabled
+      cy.get('#submitButton').should('be.disabled');
       cy.get('#sourceCodeRepositoryInput').clear();
       cy.get('#sourceCodeRepositoryInput').type('testnamespace/testname');
 
@@ -343,6 +345,8 @@ describe('Dockstore my tools', () => {
       cy.contains('Create tool with descriptor(s) on remote sites').should('be.visible').click();
       cy.get('.modal-footer').contains('Next').first().click();
 
+      // Untouched form should not have errors but is disabled
+      cy.get('#submitButton').should('be.disabled');
       cy.get('#sourceCodeRepositoryInput').clear();
       cy.get('#sourceCodeRepositoryInput').type('testnamespace/testname');
 
@@ -450,6 +454,8 @@ describe('Dockstore my tools', () => {
       cy.contains('Create tool with descriptor(s) on remote sites').should('be.visible').click();
       cy.get('.modal-footer').contains('Next').first().click();
 
+      // Untouched form should not have errors but is disabled
+      cy.get('#submitButton').should('be.disabled');
       cy.get('#sourceCodeRepositoryInput').clear();
       cy.get('#sourceCodeRepositoryInput').type('testnamespace/testname');
 
