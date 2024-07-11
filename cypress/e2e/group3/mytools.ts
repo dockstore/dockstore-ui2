@@ -278,7 +278,8 @@ describe('Dockstore my tools', () => {
       cy.contains('Create tool with descriptor(s) on remote sites').should('be.visible').click();
       cy.get('.modal-footer').contains('Next').first().click();
 
-      cy.get('#sourceCodeRepositoryInput').should('be.visible').type('testnamespace/testname');
+      cy.get('#sourceCodeRepositoryInput').clear();
+      cy.get('#sourceCodeRepositoryInput').type('testnamespace/testname');
 
       cy.get('[data-cy=imageRegistryProviderSelect]').click();
       cy.contains('Amazon ECR').click();
@@ -342,7 +343,8 @@ describe('Dockstore my tools', () => {
       cy.contains('Create tool with descriptor(s) on remote sites').should('be.visible').click();
       cy.get('.modal-footer').contains('Next').first().click();
 
-      cy.get('#sourceCodeRepositoryInput').should('be.visible').type('testnamespace/testname');
+      cy.get('#sourceCodeRepositoryInput').clear();
+      cy.get('#sourceCodeRepositoryInput').type('testnamespace/testname');
 
       cy.get('[data-cy=imageRegistryProviderSelect]').click();
       cy.contains('Amazon ECR').click();
@@ -448,7 +450,8 @@ describe('Dockstore my tools', () => {
       cy.contains('Create tool with descriptor(s) on remote sites').should('be.visible').click();
       cy.get('.modal-footer').contains('Next').first().click();
 
-      cy.get('#sourceCodeRepositoryInput').should('be.visible').type('testnamespace/testname');
+      cy.get('#sourceCodeRepositoryInput').clear();
+      cy.get('#sourceCodeRepositoryInput').type('testnamespace/testname');
 
       cy.get('[data-cy=imageRegistryProviderSelect]').click();
       cy.contains('mat-option', 'Seven Bridges').click();
