@@ -1,6 +1,6 @@
 <ng-container *ngIf="!loading">
   <ng-container *ngIf="error">
-    <div>The notebook could not be displayed.</div>
+    <div>{{ error }}</div>
   </ng-container>
 
   <ng-container *ngIf="!error">

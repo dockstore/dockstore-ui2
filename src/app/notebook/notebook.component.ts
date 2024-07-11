@@ -35,7 +35,7 @@ export class NotebookComponent implements OnChanges {
   @Input() version: WorkflowVersion;
   @Input() baseUrl: string;
   loading: boolean = true;
-  error: boolean = false;
+  error: string = null;
   cells: Cell[] = [];
   private currentSubscription: Subscription = null;
 
@@ -45,7 +45,7 @@ export class NotebookComponent implements OnChanges {
 
   retrieveAndFormatNotebook() {
     this.loading = true;
-    this.error = false;
+    this.error = null;
     this.cells = [];
     // The next line cancels any previous request that is still in progress,
     // because if we're here, the @Inputs have changed, and we're about to
@@ -73,32 +73,48 @@ export class NotebookComponent implements OnChanges {
         (sourceFiles: SourceFile[]) => {
           for (const sourceFile of sourceFiles) {
             if (this.isPrimaryDescriptor(sourceFile.path)) {
-              try {
-                // Parse the JSON content of the notebook file.
-                const json = JSON.parse(sourceFile.content);
-                // Find the cells and, if necessary, convert them to a representation that approximates nbformat 4.
-                const cells = json?.nbformat < 4 ? this.cellsToNbformat4(json?.worksheets[0]?.cells) : json?.cells;
-                // If the `cells` property is an array, filter spam and "pass" the cells to the template.
-                if (this.isArray(cells)) {
-                  this.cells = this.filterSpam(cells);
-                  this.error = false;
-                  return;
-                }
-              } catch (e) {
-                console.log('Exception formatting notebook:');
-                console.log(e.message);
+              if (sourceFile.form === 'COMPLETE') {
+                this.formatNotebook(sourceFile.content);
+              } else {
+                this.error = this.incompleteSourceFileErrorMessage(sourceFile);
               }
-              this.error = true;
               return;
             }
           }
-          this.error = true;
+          this.error = 'Could not find the notebook file';
         },
         // Failure.
         () => {
-          this.error = true;
+          this.error = 'Could not retrieve the notebook file';
         }
       );
+  }
+
+  formatNotebook(content: string): void {
+    try {
+      // Parse the JSON content of the notebook file.
+      const json = JSON.parse(content);
+      // Find the cells and, if necessary, convert them to a representation that approximates nbformat 4.
+      const cells = json?.nbformat < 4 ? this.cellsToNbformat4(json?.worksheets[0]?.cells) : json?.cells;
+      // If the `cells` property is an array, filter spam, "pass" the cells to the template, and return.
+      if (this.isArray(cells)) {
+        this.cells = this.filterSpam(cells);
+        this.error = null;
+        return;
+      }
+    } catch (e) {
+      console.log('Exception formatting notebook:');
+      console.log(e.message);
+    }
+    this.error = 'The notebook could not be displayed';
+  }
+
+  incompleteSourceFileErrorMessage(file: SourceFile): string {
+    var message = 'The notebook file is not complete';
+    if (file.form === 'ERROR') {
+      message = message + ': ' + file.content;
+    }
+    return message;
   }
 
   isPrimaryDescriptor(path: string): boolean {
