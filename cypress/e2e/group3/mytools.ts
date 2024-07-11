@@ -280,6 +280,7 @@ describe('Dockstore my tools', () => {
 
       // Untouched form should not have errors but is disabled
       cy.get('#submitButton').should('be.disabled');
+      cy.get('.mat-error').should('not.exist');
       cy.get('#sourceCodeRepositoryInput').clear();
       cy.get('#sourceCodeRepositoryInput').type('testnamespace/testname');
 
@@ -347,6 +348,7 @@ describe('Dockstore my tools', () => {
 
       // Untouched form should not have errors but is disabled
       cy.get('#submitButton').should('be.disabled');
+      cy.get('.mat-error').should('not.exist');
       cy.get('#sourceCodeRepositoryInput').clear();
       cy.get('#sourceCodeRepositoryInput').type('testnamespace/testname');
 
@@ -456,6 +458,7 @@ describe('Dockstore my tools', () => {
 
       // Untouched form should not have errors but is disabled
       cy.get('#submitButton').should('be.disabled');
+      cy.get('.mat-error').should('not.exist');
       cy.get('#sourceCodeRepositoryInput').clear();
       cy.get('#sourceCodeRepositoryInput').type('testnamespace/testname');
 
