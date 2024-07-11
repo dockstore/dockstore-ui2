@@ -191,7 +191,7 @@ jobs:
       - setup_integration_test
       - run:
           name: Test
-          command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/e2e/<< parameters.integration_test_name >>/**/*'
+          command: bash -i -c 'npx cypress run --browser chrome --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/e2e/<< parameters.integration_test_name >>/**/*'
           no_output_timeout: 30m
           environment:
             MOCHA_FILE: integration-tests/test-results/junit/test-results-[hash].xml
