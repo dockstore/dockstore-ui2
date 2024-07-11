@@ -275,8 +275,10 @@ describe('Dockstore my tools', () => {
       // Make sure page is loaded first
       cy.get('#tool-path').should('be.visible');
       cy.get('#register_tool_button').click();
+      // TODO: Fix this.  When 'Next' is clicked too fast, the next step is empty
+      cy.wait(1000);
       cy.contains('Create tool with descriptor(s) on remote sites').should('be.visible').click();
-      cy.get('.modal-footer').contains('Next').first().click();
+      cy.contains('button', 'Next').click();
 
       // Untouched form should not have errors but is disabled
       cy.get('#submitButton').should('be.disabled');
@@ -343,8 +345,10 @@ describe('Dockstore my tools', () => {
       // Make sure page is loaded first
       cy.get('#tool-path').should('be.visible');
       cy.get('#register_tool_button').click();
+      // TODO: Fix this.  When 'Next' is clicked too fast, the next step is empty
+      cy.wait(1000);
       cy.contains('Create tool with descriptor(s) on remote sites').should('be.visible').click();
-      cy.get('.modal-footer').contains('Next').first().click();
+      cy.contains('button', 'Next').click();
 
       // Untouched form should not have errors but is disabled
       cy.get('#submitButton').should('be.disabled');
@@ -453,8 +457,10 @@ describe('Dockstore my tools', () => {
       });
       cy.get('#tool-path').should('be.visible');
       cy.get('#register_tool_button').click();
+      // TODO: Fix this.  When 'Next' is clicked too fast, the next step is empty
+      cy.wait(1000);
       cy.contains('Create tool with descriptor(s) on remote sites').should('be.visible').click();
-      cy.get('.modal-footer').contains('Next').first().click();
+      cy.contains('button', 'Next').click();
 
       // Untouched form should not have errors but is disabled
       cy.get('#submitButton').should('be.disabled');
