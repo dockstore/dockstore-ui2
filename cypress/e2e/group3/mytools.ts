@@ -241,11 +241,9 @@ describe('Dockstore my tools', () => {
     it('register tool', () => {
       const toolObject: DockstoreTool = {
         id: 40000,
-        author: undefined,
         description: undefined,
         labels: [],
         users: [{ id: 1, username: 'user_A', isAdmin: false, name: 'user_A' }],
-        email: undefined,
         defaultVersion: undefined,
         lastUpdated: 1482334377743,
         gitUrl: 'git@github.com:testnamespace/testname.git',
@@ -287,6 +285,7 @@ describe('Dockstore my tools', () => {
       // Make sure page is loaded first
       cy.get('#tool-path').should('be.visible');
       cy.get('#register_tool_button').click();
+      cy.wait(2000); // Give animation a chance to kick in.
       cy.contains('Create tool with descriptor(s) on remote sites').should('be.visible').click();
       cy.get('.modal-footer').contains('Next').first().click();
 
@@ -307,11 +306,9 @@ describe('Dockstore my tools', () => {
     it('register tool', () => {
       const toolObject: DockstoreTool = {
         id: 40000,
-        author: undefined,
         description: undefined,
         labels: [],
         users: [{ id: 1, username: 'user_A', isAdmin: false, name: 'user_A' }],
-        email: undefined,
         defaultVersion: undefined,
         lastUpdated: 1482334377743,
         gitUrl: 'git@github.com:testnamespace/testname.git',
@@ -354,9 +351,9 @@ describe('Dockstore my tools', () => {
       cy.get('#tool-path').should('be.visible');
       cy.get('#register_tool_button').click();
       cy.contains('Create tool with descriptor(s) on remote sites').should('be.visible').click();
+      cy.wait(2000); // Give animation a chance to kick in.
       cy.get('.modal-footer').contains('Next').first().click();
 
-      cy.get('#sourceCodeRepositoryInput').scrollIntoView().should('be.visible');
       cy.get('#sourceCodeRepositoryInput').click();
       cy.get('#sourceCodeRepositoryInput').type('testnamespace/testname');
 
@@ -462,9 +459,9 @@ describe('Dockstore my tools', () => {
       cy.get('#tool-path').should('be.visible');
       cy.get('#register_tool_button').click();
       cy.contains('Create tool with descriptor(s) on remote sites').should('be.visible').click();
+      cy.wait(2000); // Give animation a chance to kick in.
       cy.get('.modal-footer').contains('Next').first().click();
 
-      cy.get('#sourceCodeRepositoryInput').scrollIntoView().should('be.visible');
       cy.get('#sourceCodeRepositoryInput').click();
       cy.get('#sourceCodeRepositoryInput').type('testnamespace/testname');
 

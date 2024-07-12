@@ -575,6 +575,7 @@ describe('Dockstore my workflows part 3', () => {
       cy.wait(1000);
       cy.get('#2-register-workflow-option').click();
       cy.contains('button', 'Next').click();
+      cy.wait(2000); // Give animation a chance to kick in.
       // Untouched form should not have errors but is disabled
       cy.get('#submitButton').should('be.disabled');
       notHaveAlert();
