@@ -27,19 +27,3 @@
 .mat-column-orcid_id {
   width: 20rem;
 }
-
-/* Bootstrap adds a 5px bottom margin, this counteracts it. Remove once Bootstrap is removed */
-::ng-deep label {
-  margin-bottom: 0px;
-}
-
-/* Better alignment for "save" icon instead of vertical-align: middle */
-.mat-icon-sm {
-  vertical-align: text-bottom;
-}
-
-/* Disabled state for "edit" buttons */
-.mat-raised-button.mat-button-disabled.mat-button-disabled {
-  background-color: white;
-  filter: opacity(0.3);
-}

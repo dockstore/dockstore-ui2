@@ -115,10 +115,6 @@ h3 {
   border-radius: 1rem;
 }
 
-.primary-3 {
-  color: mat.get-color-from-palette($dockstore-app-primary, 3);
-}
-
 .warn-1 {
   color: mat.get-color-from-palette($dockstore-app-error, darker);
 }

@@ -180,6 +180,7 @@ describe('Dockstore my workflows', () => {
       cy.contains('Close').click();
     });
     it('Should contain the extended properties and be able to edit the info tab', () => {
+      cy.intercept('PUT', 'api/workflows/*').as('updateWorkflow');
       // The seemingly unnecessary visits are due to a detached-from-dom error even using cy.get().click();
       cy.visit('/my-workflows/github.com/A/l');
       cy.contains('github.com');
@@ -191,6 +192,7 @@ describe('Dockstore my workflows', () => {
       const workflowPathInput = '[data-cy=workflowPathInput]';
       cy.get(workflowPathInput).clear().type('/Dockstore2.cwl');
       cy.contains('button', ' Save ').click();
+      cy.wait('@updateWorkflow');
       cy.visit('/my-workflows/github.com/A/g');
       cy.contains('/Dockstore2.cwl');
       // Change the file path back
@@ -198,6 +200,7 @@ describe('Dockstore my workflows', () => {
       const dockstoreCwlPath = '/Dockstore.cwl';
       cy.get(workflowPathInput).clear().type(dockstoreCwlPath);
       cy.contains('button', ' Save ').click();
+      cy.wait('@updateWorkflow');
       cy.visit('/my-workflows/github.com/A/g');
       const workflowPathSpan = '[data-cy=workflowPathSpan]';
       cy.get(workflowPathSpan).contains(dockstoreCwlPath);
@@ -215,25 +218,55 @@ describe('Dockstore my workflows', () => {
       // Topic Editing
       const privateEntryURI = '/my-workflows/github.com/A/l';
       cy.visit(privateEntryURI);
+      // Add an AI topic for testing
+      invokeSql("update workflow set topicai = 'test AI topic sentence' where id = 11");
+      // Modify the manual topic, but don't save it
       cy.get('[data-cy=topicEditButton]').click();
-      cy.get('[data-cy=topicInput]').clear().type('badTopic');
+      cy.get('[data-cy=topicInput]').clear(); // Unsafe to chain clear()
+      cy.get('[data-cy=topicInput]').type('badTopic');
       cy.get('[data-cy=topicCancelButton]').click();
-      cy.contains('badTopic').should('not.exist');
+      cy.get('[data-cy=selected-topic]').should('not.contain.text', 'badTopic');
+      // Modify the manual topic and save it
       cy.get('[data-cy=topicEditButton]').click();
-      cy.get('[data-cy=topicInput]').clear().type('goodTopic');
+      cy.get('[data-cy=topicInput]').clear(); // Unsafe to chain clear()
+      cy.get('[data-cy=topicInput]').type('goodTopic');
       cy.get('[data-cy=topicSaveButton]').click();
-      cy.contains('goodTopic').should('exist');
+      cy.wait('@updateWorkflow');
+      // Check that the manual topic is saved
+      cy.get('[data-cy=topicEditButton]').click();
+      cy.get('[data-cy=topicInput]').should('have.value', 'goodTopic');
+      cy.get('[data-cy=topicCancelButton]').click();
 
-      // Check public view
-      cy.visit(privateEntryURI);
+      // Check public view. Manual topic should not be displayed because it's not the selected topic
       cy.get('[data-cy=viewPublicWorkflowButton]').should('be.visible').click();
-      cy.contains('goodTopic').should('not.exist');
+      cy.get('[data-cy=selected-topic]').should('not.contain.text', 'goodTopic');
 
+      // Select the manual topic and verify that it's displayed publicly
       cy.visit(privateEntryURI);
-      cy.contains('mat-radio-button', 'Manual').find('input').should('not.be.disabled').click({ force: true });
-      cy.visit(privateEntryURI);
+      cy.get('[data-cy=topicEditButton]').click();
+      cy.get('.mat-radio-label').contains('Manual').click();
+      cy.get('[data-cy=topicSaveButton]').click();
+      cy.wait('@updateWorkflow');
+      cy.get('[data-cy=selected-topic]').should('contain.text', 'goodTopic');
+      // Topic selection bubble should be visible on private page
+      cy.get('[data-cy=topic-selection-bubble]').should('be.visible');
+      // Topic selection bubble should not exist on public page
       cy.get('[data-cy=viewPublicWorkflowButton]').should('be.visible').click();
-      cy.contains('goodTopic').should('exist');
+      cy.get('[data-cy=selected-topic]').should('contain.text', 'goodTopic');
+      cy.get('[data-cy=topic-selection-bubble]').should('not.exist');
+
+      // Select the AI topic and verify that it's displayed publicly with an AI bubble
+      cy.visit(privateEntryURI);
+      cy.get('[data-cy=topicEditButton]').click();
+      cy.get('.mat-radio-label').contains('AI').click();
+      cy.get('[data-cy=topicSaveButton]').click();
+      cy.wait('@updateWorkflow');
+      cy.get('[data-cy=selected-topic]').should('contain.text', 'test AI topic sentence');
+      cy.get('[data-cy=ai-bubble]').should('be.visible');
+      // AI bubble should be displayed on public page too
+      cy.get('[data-cy=viewPublicWorkflowButton]').should('be.visible').click();
+      cy.get('[data-cy=selected-topic]').should('contain.text', 'test AI topic sentence');
+      cy.get('[data-cy=ai-bubble]').should('be.visible');
     });
     it('should have mode tooltip', () => {
       cy.visit('/my-workflows/github.com/A/g');
@@ -542,6 +575,7 @@ describe('Dockstore my workflows part 3', () => {
       cy.wait(1000);
       cy.get('#2-register-workflow-option').click();
       cy.contains('button', 'Next').click();
+      cy.wait(2000); // Give animation a chance to kick in.
       // Untouched form should not have errors but is disabled
       cy.get('#submitButton').should('be.disabled');
       notHaveAlert();
@@ -636,19 +670,6 @@ describe('Version Dropdown should have search capabilities', () => {
     cy.get('[data-cy=version-dropdown-search-field]').should('be.visible').type('test');
     cy.get('mat-option').should('not.contain', 'master');
     cy.get('mat-option').should('contain', 'test').should('be.visible');
-  });
-  it('Test AI topic sentences', () => {
-    cy.fixture('workflowWithTopicAI.json').then((json) => {
-      cy.intercept('GET', '/api/workflows/11*', {
-        body: json,
-        statusCode: 200,
-      }).as('request');
-    });
-
-    cy.visit('/my-workflows');
-    cy.get('[data-cy=topic-ai-selection-button]').should('be.visible');
-    cy.get('[data-cy=topicAI-text]').should('contain.text', 'test AI topic sentence');
-    cy.get('[data-cy=ai-bubble]').should('be.visible');
   });
 });
 describe('Should handle no workflows correctly', () => {
