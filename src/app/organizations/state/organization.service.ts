@@ -19,7 +19,6 @@ import { finalize } from 'rxjs/operators';
 import { Organization, OrganizationsService } from '../../shared/openapi';
 import { OrganizationMembersService } from './organization-members.service';
 import { OrganizationStore } from './organization.store';
-import { Router } from '@angular/router';
 import { HttpHeaderResponse } from '@angular/common/http';
 import { UrlResolverService } from '../../shared/url-resolver.service';
 
@@ -29,7 +28,6 @@ export class OrganizationService {
     private organizationStore: OrganizationStore,
     private organizationsService: OrganizationsService,
     private organizationMembersService: OrganizationMembersService,
-    private router: Router,
     public urlResolverService: UrlResolverService
   ) {}
 

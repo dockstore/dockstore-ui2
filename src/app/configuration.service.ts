@@ -10,12 +10,7 @@ import { Config, MetadataService } from './shared/openapi';
   providedIn: 'root',
 })
 export class ConfigurationService {
-  constructor(
-    private metadataService: MetadataService,
-    private configService: ConfigService,
-    private window: Window,
-    private featureService: FeatureService
-  ) {}
+  constructor(private metadataService: MetadataService, private configService: ConfigService, private featureService: FeatureService) {}
 
   load(): Promise<void> {
     return this.metadataService

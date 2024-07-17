@@ -15,7 +15,6 @@
  */
 import { Injectable } from '@angular/core';
 import * as FileSaver from 'file-saver';
-import { DomSanitizer } from '@angular/platform-browser';
 import { ga4ghPath, ga4ghWorkflowIdPrefix } from './constants';
 import { DescriptorTypeCompatService } from './descriptor-type-compat.service';
 import { Dockstore } from './dockstore.model';
@@ -26,7 +25,7 @@ const cwlImportHttpRegEx: RegExp = new RegExp(/^[^#]+((run)|(\$((import)|(includ
 
 @Injectable({ providedIn: 'root' })
 export class FileService {
-  constructor(private sanitizer: DomSanitizer, private descriptorTypeCompatService: DescriptorTypeCompatService) {}
+  constructor(private descriptorTypeCompatService: DescriptorTypeCompatService) {}
 
   /**
    * Get the download path of a descriptor

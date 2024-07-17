@@ -5,7 +5,6 @@ import { AuthService } from 'ng2-ui-auth';
 import { GravatarService } from '../../gravatar/gravatar.service';
 import { AlertService } from '../alert/state/alert.service';
 import { TokenService } from '../state/token.service';
-import { WorkflowService } from '../state/workflow.service';
 import { MyWorkflowsService } from '../../myworkflows/myworkflows.service';
 import { MytoolsService } from '../../mytools/mytools.service';
 import { EntryType } from '../enum/entry-type';
@@ -23,7 +22,6 @@ export class UserService {
     private configuration: Configuration,
     private tokenService: TokenService,
     private alertService: AlertService,
-    private workflowService: WorkflowService,
     private myWorkflowsService: MyWorkflowsService,
     private mytoolsService: MytoolsService,
     private trackLoginService: TrackLoginService,

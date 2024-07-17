@@ -25,4 +25,9 @@ else
 fi
 
 java -jar openapi-generator-cli.jar generate -i "${OPENAPI_PATH}" -g typescript-angular -o src/app/shared/openapi -c swagger-config.json --skip-validate-spec
+
+for file in src/app/shared/openapi/*.ts src/app/shared/openapi/**/*.ts; do
+ sed -i '1i//@ts-nocheck' $file
+done
+
 rm openapi-generator-cli.jar

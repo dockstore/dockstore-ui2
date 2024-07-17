@@ -18,7 +18,6 @@ import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/ro
 import { Observable, Subject, combineLatest } from 'rxjs';
 import { filter, map, takeUntil } from 'rxjs/operators';
 import { Logout } from '../loginComponents/logout';
-import { currentPrivacyPolicyVersion, currentTOSVersion } from '../shared/constants';
 import { Dockstore } from '../shared/dockstore.model';
 import { toExtendSite } from '../shared/helpers';
 import { UserQuery } from '../shared/user/user.query';
@@ -66,8 +65,6 @@ export class NavbarComponent extends Logout implements OnInit {
   isExtended = false;
   Dockstore = Dockstore;
   protected ngUnsubscribe: Subject<{}> = new Subject();
-  private readonly currentTOSVersion: User.TosversionEnum = currentTOSVersion;
-  private readonly currentPrivacyPolicyVersion: User.PrivacyPolicyVersionEnum = currentPrivacyPolicyVersion;
   public myOrganizationInvites$: Observable<Array<OrganizationUser>>;
   public myRejectedOrganizationRequests$: Observable<Array<OrganizationUser>>;
   public allPendingOrganizations$: Observable<Array<Organization>>;
