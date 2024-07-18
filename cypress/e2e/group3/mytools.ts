@@ -241,11 +241,9 @@ describe('Dockstore my tools', () => {
     it('register tool', () => {
       const toolObject: DockstoreTool = {
         id: 40000,
-        author: undefined,
         description: undefined,
         labels: [],
         users: [{ id: 1, username: 'user_A', isAdmin: false, name: 'user_A' }],
-        email: undefined,
         defaultVersion: undefined,
         lastUpdated: 1482334377743,
         gitUrl: 'git@github.com:testnamespace/testname.git',
@@ -287,11 +285,15 @@ describe('Dockstore my tools', () => {
       // Make sure page is loaded first
       cy.get('#tool-path').should('be.visible');
       cy.get('#register_tool_button').click();
+      // TODO: Fix this.  When 'Next' is clicked too fast, the next step is empty
+      cy.wait(1000);
       cy.contains('Create tool with descriptor(s) on remote sites').should('be.visible').click();
-      cy.get('.modal-footer').contains('Next').first().click();
+      cy.contains('button', 'Next').click();
 
-      cy.get('#sourceCodeRepositoryInput').scrollIntoView().should('be.visible');
-      cy.get('#sourceCodeRepositoryInput').click();
+      // Untouched form should not have errors but is disabled
+      cy.get('#submitButton').should('be.disabled');
+      cy.get('.mat-error').should('not.exist');
+      cy.get('#sourceCodeRepositoryInput').clear();
       cy.get('#sourceCodeRepositoryInput').type('testnamespace/testname');
 
       cy.get('[data-cy=imageRegistryProviderSelect]').click();
@@ -307,11 +309,9 @@ describe('Dockstore my tools', () => {
     it('register tool', () => {
       const toolObject: DockstoreTool = {
         id: 40000,
-        author: undefined,
         description: undefined,
         labels: [],
         users: [{ id: 1, username: 'user_A', isAdmin: false, name: 'user_A' }],
-        email: undefined,
         defaultVersion: undefined,
         lastUpdated: 1482334377743,
         gitUrl: 'git@github.com:testnamespace/testname.git',
@@ -353,11 +353,15 @@ describe('Dockstore my tools', () => {
       // Make sure page is loaded first
       cy.get('#tool-path').should('be.visible');
       cy.get('#register_tool_button').click();
+      // TODO: Fix this.  When 'Next' is clicked too fast, the next step is empty
+      cy.wait(1000);
       cy.contains('Create tool with descriptor(s) on remote sites').should('be.visible').click();
-      cy.get('.modal-footer').contains('Next').first().click();
+      cy.contains('button', 'Next').click();
 
-      cy.get('#sourceCodeRepositoryInput').scrollIntoView().should('be.visible');
-      cy.get('#sourceCodeRepositoryInput').click();
+      // Untouched form should not have errors but is disabled
+      cy.get('#submitButton').should('be.disabled');
+      cy.get('.mat-error').should('not.exist');
+      cy.get('#sourceCodeRepositoryInput').clear();
       cy.get('#sourceCodeRepositoryInput').type('testnamespace/testname');
 
       cy.get('[data-cy=imageRegistryProviderSelect]').click();
@@ -461,11 +465,15 @@ describe('Dockstore my tools', () => {
       });
       cy.get('#tool-path').should('be.visible');
       cy.get('#register_tool_button').click();
+      // TODO: Fix this.  When 'Next' is clicked too fast, the next step is empty
+      cy.wait(1000);
       cy.contains('Create tool with descriptor(s) on remote sites').should('be.visible').click();
-      cy.get('.modal-footer').contains('Next').first().click();
+      cy.contains('button', 'Next').click();
 
-      cy.get('#sourceCodeRepositoryInput').scrollIntoView().should('be.visible');
-      cy.get('#sourceCodeRepositoryInput').click();
+      // Untouched form should not have errors but is disabled
+      cy.get('#submitButton').should('be.disabled');
+      cy.get('.mat-error').should('not.exist');
+      cy.get('#sourceCodeRepositoryInput').clear();
       cy.get('#sourceCodeRepositoryInput').type('testnamespace/testname');
 
       cy.get('[data-cy=imageRegistryProviderSelect]').click();
@@ -476,7 +484,6 @@ describe('Dockstore my tools', () => {
 
       cy.get('#imageRegistryInput').type('testnamespace/testname');
 
-      cy.get('#submitButton').scrollIntoView().should('be.enabled');
       cy.get('#submitButton').click();
 
       // TODO: This is temporarily disabled

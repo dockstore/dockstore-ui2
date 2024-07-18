@@ -6,7 +6,10 @@
       Often, if you cannot view the logs for your GitHub user account, you must unlink and relink it in<br />
       your <a mat-dialog-close routerLink="/accounts">Dockstore profile</a>.<br />
       Otherwise, your GitHub user or the Dockstore app may not have access to the GitHub organization.<br />
-      <a href="https://github.com/settings/connections/applications/7ad54aa857c6503013ea" target="_blank" rel="noopener noreferrer"
+      <a
+        href="https://github.com/settings/connections/applications/{{ Dockstore.GITHUB_CLIENT_ID }}"
+        target="_blank"
+        rel="noopener noreferrer"
         >Click here to confirm that the Dockstore app is authorized</a
       >.
     </mat-card>

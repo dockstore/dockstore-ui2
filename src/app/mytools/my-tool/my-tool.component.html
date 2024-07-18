@@ -98,6 +98,17 @@
                 [groupEntriesObject]="groupEntriesObject$ | async"
                 [refreshMessage]="isRefreshing$ | async"
               ></app-sidebar-accordion>
+              <br />
+              <small
+                >Don't see an organization?
+                <a
+                  href="https://github.com/settings/connections/applications/{{ Dockstore.GITHUB_CLIENT_ID }}"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Configure</a
+                >
+                your authorized organizations.</small
+              >
             </div>
           </div>
         </mat-sidenav>

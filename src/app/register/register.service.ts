@@ -16,8 +16,8 @@
 
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { AuthService } from 'ng2-ui-auth';
 import { Observable } from 'rxjs';
+import { AuthService } from '../ng2-ui-auth/public_api';
 import { AlertService } from '../shared/alert/state/alert.service';
 
 @Injectable()
