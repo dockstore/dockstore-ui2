@@ -178,14 +178,7 @@
               matTooltip="This DOI was created by you"
               >account_circle</mat-icon
             >
-            <a
-              [href]="'https://doi.org/' + selectedVersionDoi.name"
-              data-cy="info-tab-DOI-badge"
-              matTooltip="Click to view this version's DOI entry information."
-              target="_blank"
-              rel="noopener noreferrer"
-              ><img src="{{ zenodoUrl }}/badge/DOI/{{ selectedVersionDoi.name }}.svg" alt="{{ selectedVersionDoi.name }}"
-            /></a>
+            <app-doi-badge [doi]="selectedVersionDoi"></app-doi-badge>
           </span>
           <span *ngIf="!selectedVersionDoi">n/a</span>
         </span>
@@ -212,13 +205,7 @@
               matTooltip="This DOI was created by you"
               >account_circle</mat-icon
             >
-            <a
-              [href]="'https://doi.org/' + selectedConceptDoi.name"
-              matTooltip="Click to view the DOI entry information for all versions."
-              target="_blank"
-              rel="noopener noreferrer"
-              ><img src="{{ zenodoUrl }}/badge/DOI/{{ selectedConceptDoi.name }}.svg" alt="{{ selectedConceptDoi.name }}"
-            /></a>
+            <app-doi-badge [doi]="selectedConceptDoi"></app-doi-badge>
           </span>
           <span *ngIf="!selectedConceptDoi">n/a</span>
         </span>
@@ -537,31 +524,15 @@
         <mat-card-content>
           <p *ngIf="selectedVersion.dois[workflow.doiSelection]" class="pt-2">
             Cite version <strong>{{ selectedVersion?.name }}</strong> using DOI
-            <a
-              [href]="'https://doi.org/' + selectedVersion.dois[workflow.doiSelection].name"
-              data-cy="info-tab-DOI-badge"
-              matTooltip="Click to view this version's DOI entry information."
-              target="_blank"
-              rel="noopener noreferrer"
-              ><img
-                src="{{ zenodoUrl }}/badge/DOI/{{ selectedVersion.dois[workflow.doiSelection].name }}.svg"
-                alt="{{ selectedVersion.dois[workflow.doiSelection].name }}" /></a
-            >.
+            <app-doi-badge [doi]="selectedVersion.dois[workflow.doiSelection]"></app-doi-badge>.
           </p>
           <p *ngIf="!selectedVersion.dois[workflow.doiSelection]" class="pt-2">
             Version <strong>{{ selectedVersion?.name }}</strong> has no DOI.
           </p>
           <p>
             Cite all versions using the DOI
-            <a
-              [href]="'https://doi.org/' + workflow.conceptDois[workflow.doiSelection].name"
-              matTooltip="Click to view the DOI entry information for all versions."
-              target="_blank"
-              rel="noopener noreferrer"
-              ><img
-                src="{{ zenodoUrl }}/badge/DOI/{{ workflow.conceptDois[workflow.doiSelection].name }}.svg"
-                alt="{{ workflow.conceptDois[workflow.doiSelection].name }}" /></a
-            >. This DOI represents all versions, and will always resolve to the latest one.
+            <app-doi-badge [doi]="workflow.conceptDois[workflow.doiSelection]"></app-doi-badge>. This DOI represents all versions, and will
+            always resolve to the latest one.
           </p>
         </mat-card-content>
       </mat-card>

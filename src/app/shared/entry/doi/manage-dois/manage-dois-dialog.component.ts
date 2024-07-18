@@ -6,10 +6,10 @@ import { MatLegacyCardModule } from '@angular/material/legacy-card';
 import { MAT_LEGACY_DIALOG_DATA, MatLegacyDialogModule, MatLegacyDialogRef } from '@angular/material/legacy-dialog';
 import { MatLegacyRadioModule } from '@angular/material/legacy-radio';
 import { FlexModule } from '@ngbracket/ngx-layout';
-import { Dockstore } from 'app/shared/dockstore.model';
 import { Doi, EntryTypeMetadata, Workflow, WorkflowVersion } from 'app/shared/openapi';
 import { ManageDoisDialogService } from './manage-dois-dialog.service';
 import { MatIconModule } from '@angular/material/icon';
+import { DoiBadgeComponent } from '../doi-badge/doi-badge.component';
 
 export interface ManageDoisDialogData {
   entry: Workflow;
@@ -39,6 +39,7 @@ export interface DoiInfo {
     NgFor,
     KeyValuePipe,
     TitleCasePipe,
+    DoiBadgeComponent,
   ],
 })
 export class ManageDoisDialog {
@@ -49,7 +50,6 @@ export class ManageDoisDialog {
   conceptDois: Map<string, Doi>;
   versionDois: Map<string, Doi>;
   doiSelection: Doi.InitiatorEnum;
-  zenodoUrl: string;
   selectedOption: Doi.InitiatorEnum;
   doiInfoMap: Map<Doi.InitiatorEnum, DoiInfo> = new Map();
 
@@ -64,7 +64,6 @@ export class ManageDoisDialog {
     this.conceptDois = new Map(Object.entries(data.entry.conceptDois));
     this.versionDois = new Map(Object.entries(data.version.dois));
     this.doiSelection = data.entry.doiSelection;
-    this.zenodoUrl = Dockstore.ZENODO_AUTH_URL ? Dockstore.ZENODO_AUTH_URL.replace('oauth/authorize', '') : '';
     this.selectedOption = this.doiSelection;
     this.conceptDois.forEach((conceptDoi, initiator) => {
       let initiatorEnum = Object.keys(Doi.InitiatorEnum).find((i) => Doi.InitiatorEnum[i] === initiator);

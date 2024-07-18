@@ -47,27 +47,12 @@
           </div>
           <span class="mr-4">
             <span>Version DOI: </span>
-            <a
-              *ngIf="doiInfo.value.versionDoi"
-              [href]="'https://doi.org/' + doiInfo.value.versionDoi.name"
-              data-cy="info-tab-DOI-badge"
-              matTooltip="Click to view this version's DOI entry information."
-              target="_blank"
-              rel="noopener noreferrer"
-              ><img src="{{ zenodoUrl }}/badge/DOI/{{ doiInfo.value.versionDoi.name }}.svg" alt="{{ doiInfo.value.versionDoi.name }}"
-            /></a>
+            <app-doi-badge *ngIf="doiInfo.value.versionDoi" [doi]="doiInfo.value.versionDoi"></app-doi-badge>
             <span *ngIf="!doiInfo.value.versionDoi">n/a</span>
           </span>
           <span>
             <span>Concept DOI: </span>
-            <a
-              [href]="'https://doi.org/' + doiInfo.value.conceptDoi.name"
-              data-cy="info-tab-DOI-badge"
-              matTooltip="Click to view this version's DOI entry information."
-              target="_blank"
-              rel="noopener noreferrer"
-              ><img src="{{ zenodoUrl }}/badge/DOI/{{ doiInfo.value.conceptDoi.name }}.svg" alt="{{ doiInfo.value.conceptDoi.name }}"
-            /></a>
+            <app-doi-badge *ngIf="doiInfo.value.conceptDoi" [doi]="doiInfo.value.conceptDoi"></app-doi-badge>
           </span>
         </mat-radio-button>
       </mat-card>

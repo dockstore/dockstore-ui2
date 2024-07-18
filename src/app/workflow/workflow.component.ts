@@ -109,9 +109,8 @@ import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
 import { MatLegacyButtonModule } from '@angular/material/legacy-button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatLegacyCardModule } from '@angular/material/legacy-card';
-import { MatExpansionModule } from '@angular/material/expansion';
-import { MatBadgeModule } from '@angular/material/badge';
-import { ManageDoisDialog } from 'app/shared/entry/manage-dois/manage-dois-dialog.component';
+import { ManageDoisDialog } from 'app/shared/entry/doi/manage-dois/manage-dois-dialog.component';
+import { DoiBadgeComponent } from 'app/shared/entry/doi/doi-badge/doi-badge.component';
 
 @Component({
   selector: 'app-workflow',
@@ -164,8 +163,7 @@ import { ManageDoisDialog } from 'app/shared/entry/manage-dois/manage-dois-dialo
     AsyncPipe,
     DatePipe,
     BaseUrlPipe,
-    MatExpansionModule,
-    MatBadgeModule,
+    DoiBadgeComponent,
   ],
 })
 export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterViewInit, OnInit {
@@ -207,7 +205,6 @@ export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterVi
   public workflowVersionsCtrl: FormControl<Tag | WorkflowVersion> = new FormControl<Tag | WorkflowVersion>(null); //control for the selected version
   public versionFilterCtrl: FormControl<string> = new FormControl<string>(''); // control for the MatSelect filter keyword
   public filteredVersions: ReplaySubject<Array<Tag | WorkflowVersion>> = new ReplaySubject<Array<Tag | WorkflowVersion>>(1);
-  public zenodoUrl: string;
   public numberOfDoiInitiators;
   public selectedVersionDoi: Doi | undefined;
   public selectedConceptDoi: Doi | undefined;
@@ -288,7 +285,6 @@ export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterVi
 
   ngOnInit() {
     this.init();
-    this.zenodoUrl = Dockstore.ZENODO_AUTH_URL ? Dockstore.ZENODO_AUTH_URL.replace('oauth/authorize', '') : '';
     //watch for changes in search
     this.versionFilterCtrl.valueChanges.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
       this.filterVersions();

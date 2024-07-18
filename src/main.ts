@@ -78,7 +78,7 @@ import { VersionModalService } from './app/workflow/version-modal/version-modal.
 import { ViewService } from './app/workflow/view/view.service';
 import { environment } from './environments/environment';
 import { EditTopicDialogService } from 'app/shared/entry/info-tab-topic/edit-topic/edit-topic-dialog.service';
-import { ManageDoisDialogService } from 'app/shared/entry/manage-dois/manage-dois-dialog.service';
+import { ManageDoisDialogService } from 'app/shared/entry/doi/manage-dois/manage-dois-dialog.service';
 
 if (environment.production) {
   enableProdMode();

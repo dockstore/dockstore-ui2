@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { AlertService } from '../../alert/state/alert.service';
-import { Doi, Workflow, WorkflowsService } from '../../openapi';
-import { WorkflowService } from '../../state/workflow.service';
+import { AlertService } from '../../../alert/state/alert.service';
+import { Doi, Workflow, WorkflowsService } from '../../../openapi';
+import { WorkflowService } from '../../../state/workflow.service';
 
 @Injectable()
 export class ManageDoisDialogService {

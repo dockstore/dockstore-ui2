@@ -1,0 +1,11 @@
+<a
+  [href]="'https://doi.org/' + doi.name"
+  data-cy="info-tab-DOI-badge"
+  matTooltip="Click to view {{
+    doi.type === DoiType.VERSION ? 'the version DOI.' : 'the concept DOI which represents all versions and resolves to the latest one.'
+  }}"
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  <img src="{{ zenodoUrl }}/badge/DOI/{{ doi.name }}.svg" alt="{{ doi.name }}" />
+</a>

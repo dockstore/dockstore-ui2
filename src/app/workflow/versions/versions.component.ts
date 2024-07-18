@@ -73,7 +73,6 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
   @Input() versions: Array<WorkflowVersion>;
   @Input() workflowId: number;
   @Input() verifiedVersionPlatforms: Array<VersionVerifiedPlatform>;
-  zenodoUrl: string;
   _selectedVersion: WorkflowVersion;
   Dockstore = Dockstore;
   @Input() set selectedVersion(value: WorkflowVersion) {
@@ -142,7 +141,6 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
   }
 
   ngOnInit() {
-    this.zenodoUrl = Dockstore.ZENODO_AUTH_URL ? Dockstore.ZENODO_AUTH_URL.replace('oauth/authorize', '') : '';
     this.publicPageSubscription();
     this.extendedWorkflowQuery.extendedWorkflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((workflow) => {
       this.workflow = workflow;
