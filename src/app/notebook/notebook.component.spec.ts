@@ -64,7 +64,7 @@ describe('NotebookComponent', () => {
   }
 
   function makeSourceFile(content: string, path: string, type: SourceFile.TypeEnum = SourceFile.TypeEnum.DOCKSTOREJUPYTER): SourceFile {
-    return { content: content, path: path, type: type } as SourceFile;
+    return { content: content, path: path, type: type, state: SourceFile.StateEnum.COMPLETE } as SourceFile;
   }
 
   function makeWorkflow(language: string): Workflow {

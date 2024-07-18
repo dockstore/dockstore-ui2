@@ -60,8 +60,8 @@ describe('FileTreeComponent', () => {
     let expectedNodes = [];
     expect(component.convertSourceFilesToTree(sourcefiles)).toEqual(expectedNodes);
     sourcefiles = [
-      { absolutePath: '/folder1/file1', path: 'file1', type: SourceFile.TypeEnum.DOCKSTOREWDL },
-      { absolutePath: '/folder1/file2', path: 'file2', type: SourceFile.TypeEnum.DOCKSTOREWDL },
+      { absolutePath: '/folder1/file1', path: 'file1', type: SourceFile.TypeEnum.DOCKSTOREWDL, state: SourceFile.StateEnum.COMPLETE },
+      { absolutePath: '/folder1/file2', path: 'file2', type: SourceFile.TypeEnum.DOCKSTOREWDL, state: SourceFile.StateEnum.COMPLETE },
     ];
     expectedNodes = [
       Object({
