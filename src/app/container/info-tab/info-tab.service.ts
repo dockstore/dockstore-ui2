@@ -31,7 +31,6 @@ export class InfoTabService extends Base {
   public wdlPathEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public cwlTestPathEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public wdlTestPathEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  public topicEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   /**
    * The original tool that should be in sync with the database
@@ -84,46 +83,6 @@ export class InfoTabService extends Base {
 
   setWDLTestPathEditing(editing: boolean) {
     this.wdlTestPathEditing$.next(editing);
-  }
-
-  setTopicEditing(editing: boolean) {
-    this.topicEditing$.next(editing);
-  }
-
-  saveTopic(tool: DockstoreTool, errorCallback: () => void) {
-    this.alertService.start('Updating topic');
-    const partialTool = this.getPartialToolForUpdate(tool);
-    this.containersService.updateContainer(this.tool.id, partialTool).subscribe(
-      (response) => {
-        this.alertService.detailedSuccess();
-        const newTopic = response.topicManual;
-        this.containerService.updateActiveTopic(newTopic);
-      },
-      (error) => {
-        this.alertService.detailedError(error);
-        errorCallback();
-      }
-    );
-  }
-
-  /**
-   * Warning, this could potentially update a few other properties
-   * @param entry
-   */
-  saveTopicSelection(entry: DockstoreTool, errorCallback: () => void) {
-    this.alertService.start('Updating topic selection');
-    const partialEntryForUpdate = this.getPartialToolForUpdate(entry);
-    this.containersService.updateContainer(this.originalTool.id, partialEntryForUpdate).subscribe(
-      (response) => {
-        this.alertService.detailedSuccess();
-        const newTopicSelection = response.topicSelection;
-        this.containerService.updateActiveTopicSelection(newTopicSelection);
-      },
-      (error) => {
-        this.alertService.detailedError(error);
-        errorCallback();
-      }
-    );
   }
 
   updateAndRefresh(tool: ExtendedDockstoreTool) {
@@ -198,7 +157,6 @@ export class InfoTabService extends Base {
     this.wdlPathEditing$.next(false);
     this.wdlTestPathEditing$.next(false);
     this.cwlTestPathEditing$.next(false);
-    this.topicEditing$.next(false);
     this.restoreTool();
   }
 

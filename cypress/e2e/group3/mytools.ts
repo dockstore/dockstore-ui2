@@ -79,6 +79,7 @@ describe('Dockstore my tools', () => {
     it('visit another page then come back', () => {
       // The seemingly unnecessary visits are due to a detached-from-dom error even using cy.get().click();
       cy.intercept('api/containers/*?include=validations').as('getTool');
+      cy.intercept('PUT', 'api/containers/*').as('updateTool');
       cy.visit('/my-tools');
       cy.wait('@getTool');
       selectUnpublishedTab('A2');
@@ -96,6 +97,7 @@ describe('Dockstore my tools', () => {
       cy.contains('button', ' Edit ').click();
       cy.get('input').first().should('be.visible').clear().type('/thing/Dockerfile');
       cy.contains('button', ' Save ').click();
+      cy.wait('@updateTool');
       cy.visit('/my-tools/quay.io/A2/b1');
       cy.contains('/thing/Dockerfile');
       // Change the dockerfile path back
@@ -105,28 +107,38 @@ describe('Dockstore my tools', () => {
       cy.visit('/my-tools/quay.io/A2/b1');
       cy.contains('/Dockerfile');
 
-      // // Topic Editing
+      // Topic Editing
       let privateEntryURI = '/my-tools/github.com/A2/a';
       cy.visit(privateEntryURI);
+      // Modify the manual topic, but don't save it
       cy.get('[data-cy=topicEditButton]').click();
-      cy.get('[data-cy=topicInput]').clear().type('badTopic');
+      cy.get('[data-cy=topicInput]').clear(); // Unsafe to chain commands after clear()
+      cy.get('[data-cy=topicInput]').type('badTopic');
       cy.get('[data-cy=topicCancelButton]').click();
-      cy.contains('badTopic').should('not.exist');
+      cy.get('[data-cy=selected-topic]').should('not.contain.text', 'badTopic');
+      // Modify the manual topic and save it
       cy.get('[data-cy=topicEditButton]').click();
-      cy.get('[data-cy=topicInput]').clear().type('goodTopic');
+      cy.get('[data-cy=topicInput]').clear(); // Unsafe to chain commands after clear()
+      cy.get('[data-cy=topicInput]').type('goodTopic');
+      cy.get('[data-cy=topicSaveButton]').click();
+      cy.wait('@updateTool');
+      // Check that the manual topic is saved
       cy.get('[data-cy=topicEditButton]').click();
-      cy.contains('goodTopic').should('exist');
+      cy.get('[data-cy=topicInput]').should('have.value', 'goodTopic');
+      cy.get('[data-cy=topicCancelButton]').click();
 
-      // Check public view
-      cy.visit(privateEntryURI);
+      // Check public view. Manual topic should not be displayed because it's not the selected topic
       cy.get('[data-cy=viewPublicToolButton]').should('be.visible').click();
-      cy.contains('goodTopic').should('not.exist');
+      cy.get('[data-cy=selected-topic]').should('not.contain.text', 'goodTopic');
 
+      // Select the manual topic and verify that it's displayed publicly
       cy.visit(privateEntryURI);
+      cy.get('[data-cy=topicEditButton]').click();
       cy.get('.mat-radio-label').contains('Manual').click();
-      cy.visit(privateEntryURI);
+      cy.get('[data-cy=topicSaveButton]').click();
+      cy.wait('@updateTool');
       cy.get('[data-cy=viewPublicToolButton]').should('be.visible').click();
-      cy.contains('goodTopic').should('exist');
+      cy.get('[data-cy=selected-topic]').should('contain.text', 'goodTopic');
     });
     it('should be able to add labels', () => {
       cy.contains('quay.io/A2/a:latest');
@@ -229,11 +241,9 @@ describe('Dockstore my tools', () => {
     it('register tool', () => {
       const toolObject: DockstoreTool = {
         id: 40000,
-        author: undefined,
         description: undefined,
         labels: [],
         users: [{ id: 1, username: 'user_A', isAdmin: false, name: 'user_A' }],
-        email: undefined,
         defaultVersion: undefined,
         lastUpdated: 1482334377743,
         gitUrl: 'git@github.com:testnamespace/testname.git',
@@ -275,11 +285,15 @@ describe('Dockstore my tools', () => {
       // Make sure page is loaded first
       cy.get('#tool-path').should('be.visible');
       cy.get('#register_tool_button').click();
+      // TODO: Fix this.  When 'Next' is clicked too fast, the next step is empty
+      cy.wait(1000);
       cy.contains('Create tool with descriptor(s) on remote sites').should('be.visible').click();
-      cy.get('.modal-footer').contains('Next').first().click();
+      cy.contains('button', 'Next').click();
 
-      cy.get('#sourceCodeRepositoryInput').scrollIntoView().should('be.visible');
-      cy.get('#sourceCodeRepositoryInput').click();
+      // Untouched form should not have errors but is disabled
+      cy.get('#submitButton').should('be.disabled');
+      cy.get('.mat-error').should('not.exist');
+      cy.get('#sourceCodeRepositoryInput').clear();
       cy.get('#sourceCodeRepositoryInput').type('testnamespace/testname');
 
       cy.get('[data-cy=imageRegistryProviderSelect]').click();
@@ -295,11 +309,9 @@ describe('Dockstore my tools', () => {
     it('register tool', () => {
       const toolObject: DockstoreTool = {
         id: 40000,
-        author: undefined,
         description: undefined,
         labels: [],
         users: [{ id: 1, username: 'user_A', isAdmin: false, name: 'user_A' }],
-        email: undefined,
         defaultVersion: undefined,
         lastUpdated: 1482334377743,
         gitUrl: 'git@github.com:testnamespace/testname.git',
@@ -341,11 +353,15 @@ describe('Dockstore my tools', () => {
       // Make sure page is loaded first
       cy.get('#tool-path').should('be.visible');
       cy.get('#register_tool_button').click();
+      // TODO: Fix this.  When 'Next' is clicked too fast, the next step is empty
+      cy.wait(1000);
       cy.contains('Create tool with descriptor(s) on remote sites').should('be.visible').click();
-      cy.get('.modal-footer').contains('Next').first().click();
+      cy.contains('button', 'Next').click();
 
-      cy.get('#sourceCodeRepositoryInput').scrollIntoView().should('be.visible');
-      cy.get('#sourceCodeRepositoryInput').click();
+      // Untouched form should not have errors but is disabled
+      cy.get('#submitButton').should('be.disabled');
+      cy.get('.mat-error').should('not.exist');
+      cy.get('#sourceCodeRepositoryInput').clear();
       cy.get('#sourceCodeRepositoryInput').type('testnamespace/testname');
 
       cy.get('[data-cy=imageRegistryProviderSelect]').click();
@@ -449,11 +465,15 @@ describe('Dockstore my tools', () => {
       });
       cy.get('#tool-path').should('be.visible');
       cy.get('#register_tool_button').click();
+      // TODO: Fix this.  When 'Next' is clicked too fast, the next step is empty
+      cy.wait(1000);
       cy.contains('Create tool with descriptor(s) on remote sites').should('be.visible').click();
-      cy.get('.modal-footer').contains('Next').first().click();
+      cy.contains('button', 'Next').click();
 
-      cy.get('#sourceCodeRepositoryInput').scrollIntoView().should('be.visible');
-      cy.get('#sourceCodeRepositoryInput').click();
+      // Untouched form should not have errors but is disabled
+      cy.get('#submitButton').should('be.disabled');
+      cy.get('.mat-error').should('not.exist');
+      cy.get('#sourceCodeRepositoryInput').clear();
       cy.get('#sourceCodeRepositoryInput').type('testnamespace/testname');
 
       cy.get('[data-cy=imageRegistryProviderSelect]').click();
@@ -464,7 +484,6 @@ describe('Dockstore my tools', () => {
 
       cy.get('#imageRegistryInput').type('testnamespace/testname');
 
-      cy.get('#submitButton').scrollIntoView().should('be.enabled');
       cy.get('#submitButton').click();
 
       // TODO: This is temporarily disabled

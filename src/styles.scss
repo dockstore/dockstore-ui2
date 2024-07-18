@@ -1428,3 +1428,11 @@ app-ai-bubble {
 .ai-bubble:hover {
   background-color: mat.get-color-from-palette($dockstore-app-gray, 7);
 }
+
+.primary-3 {
+  color: mat.get-color-from-palette($dockstore-app-primary, 3);
+}
+
+.gray-caption {
+  color: mat.get-color-from-palette($kim-gray, 2);
+}

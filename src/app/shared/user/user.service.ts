@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { transaction } from '@datorama/akita';
-import { AuthService } from 'ng2-ui-auth';
 import { GravatarService } from '../../gravatar/gravatar.service';
+import { AuthService } from '../../ng2-ui-auth/public_api';
 import { AlertService } from '../alert/state/alert.service';
 import { TokenService } from '../state/token.service';
 import { MyWorkflowsService } from '../../myworkflows/myworkflows.service';

@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from 'ng2-ui-auth';
+import { AuthService } from '../../../ng2-ui-auth/public_api';
 import { Dockstore } from '../../../shared/dockstore.model';
 import { MetadataService, TRSService } from '../../../shared/openapi';
 import { ServiceInfoService } from '../../../service-info/service-info.service';

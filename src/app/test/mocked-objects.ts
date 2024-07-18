@@ -18,7 +18,7 @@ import { OrgToolObject } from '../mytools/my-tool/my-tool.component';
 import { Hit } from '../search/state/search.service';
 import { ExtendedDockstoreTool } from '../shared/models/ExtendedDockstoreTool';
 import { ExtendedWorkflow } from '../shared/models/ExtendedWorkflow';
-import { VersionVerifiedPlatform, Tag, WorkflowVersion, Author } from '../shared/openapi';
+import { VersionVerifiedPlatform, Tag, WorkflowVersion, Author, EntryTypeMetadata } from '../shared/openapi';
 import { Notification } from '../shared/openapi/model/notification';
 import { DockstoreTool } from './../shared/openapi/model/dockstoreTool';
 import { SourceFile } from './../shared/openapi/model/sourceFile';
@@ -26,6 +26,61 @@ import { TokenUser } from './../shared/openapi/model/tokenUser';
 import { Workflow } from './../shared/openapi/model/workflow';
 
 const DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
+
+export const toolEntryTypeMetadata: EntryTypeMetadata = {
+  searchEntryType: 'tools',
+  searchSupported: true,
+  sitePath: 'containers',
+  term: 'tool',
+  termPlural: 'tools',
+  trsPrefix: '',
+  trsSupported: true,
+  type: 'TOOL',
+};
+
+export const workflowEntryTypeMetadata: EntryTypeMetadata = {
+  searchEntryType: 'workflows',
+  searchSupported: true,
+  sitePath: 'workflows',
+  term: 'workflow',
+  termPlural: 'workflows',
+  trsPrefix: '#workflow/',
+  trsSupported: true,
+  type: 'WORKFLOW',
+};
+
+export const serviceEntryTypeMetadata: EntryTypeMetadata = {
+  searchEntryType: '',
+  searchSupported: false,
+  sitePath: 'services',
+  term: 'service',
+  termPlural: 'services',
+  trsPrefix: '#service/',
+  trsSupported: true,
+  type: 'SERVICE',
+};
+
+export const appToolEntryTypeMetadata: EntryTypeMetadata = {
+  searchEntryType: 'tools',
+  searchSupported: true,
+  sitePath: 'containers',
+  term: 'tool',
+  termPlural: 'tools',
+  trsPrefix: '',
+  trsSupported: true,
+  type: 'APPTOOL',
+};
+
+export const notebookEntryTypeMetadata: EntryTypeMetadata = {
+  searchEntryType: '',
+  searchSupported: false,
+  sitePath: 'notebooks',
+  term: 'notebook',
+  termPlural: 'notebooks',
+  trsPrefix: '#notebook/',
+  trsSupported: true,
+  type: 'NOTEBOOK',
+};
 
 export const updatedWorkflow: Workflow = {
   type: '',
@@ -40,6 +95,7 @@ export const updatedWorkflow: Workflow = {
   sourceControl: 'github.com',
   source_control_provider: 'GITHUB',
   descriptorTypeSubclass: 'n/a',
+  entryTypeMetadata: workflowEntryTypeMetadata,
 };
 
 export const sampleWorkflow1: Workflow = {
@@ -56,6 +112,7 @@ export const sampleWorkflow1: Workflow = {
   sourceControl: 'github.com',
   source_control_provider: 'GITHUB',
   descriptorTypeSubclass: 'n/a',
+  entryTypeMetadata: workflowEntryTypeMetadata,
 };
 
 export const sampleWorkflow2: Workflow = {
@@ -72,6 +129,7 @@ export const sampleWorkflow2: Workflow = {
   sourceControl: 'github.com',
   source_control_provider: 'GITHUB',
   descriptorTypeSubclass: 'n/a',
+  entryTypeMetadata: workflowEntryTypeMetadata,
 };
 
 export const sampleWorkflow3: Workflow = {
@@ -89,6 +147,7 @@ export const sampleWorkflow3: Workflow = {
   source_control_provider: 'GITHUB',
   full_workflow_path: 'github.com/sampleWorkflowPath',
   descriptorTypeSubclass: 'n/a',
+  entryTypeMetadata: workflowEntryTypeMetadata,
 };
 
 export const sampleWdlWorkflow1: Workflow = {
@@ -106,6 +165,7 @@ export const sampleWdlWorkflow1: Workflow = {
   source_control_provider: 'GITHUB',
   full_workflow_path: 'github.com/DataBiosphere/topmed-workflows/Functional_Equivalence',
   descriptorTypeSubclass: 'n/a',
+  entryTypeMetadata: workflowEntryTypeMetadata,
 };
 
 export const sampleCwlExtendedWorkflow: ExtendedWorkflow = {
@@ -123,6 +183,7 @@ export const sampleCwlExtendedWorkflow: ExtendedWorkflow = {
   source_control_provider: 'GITHUB',
   full_workflow_path: 'github.com/dockstore-testing/md5sum-checker',
   descriptorTypeSubclass: 'n/a',
+  entryTypeMetadata: workflowEntryTypeMetadata,
 };
 
 export const sampleWdlWorkflow2: Workflow = {
@@ -140,6 +201,7 @@ export const sampleWdlWorkflow2: Workflow = {
   source_control_provider: 'GITHUB',
   full_workflow_path: 'github.com/DataBiosphere/topmed-workflows/UM_aligner_wdl',
   descriptorTypeSubclass: 'n/a',
+  entryTypeMetadata: workflowEntryTypeMetadata,
 };
 
 export const sampleWorkflowVersion: WorkflowVersion = {
@@ -179,6 +241,7 @@ export const sampleTool1: DockstoreTool = {
   defaultCWLTestParameterFile: 'sampleDefaultCWLTestParameterFile',
   defaultWDLTestParameterFile: 'sampleDefaultWDLTestParameterFile',
   tool_path: '',
+  entryTypeMetadata: toolEntryTypeMetadata,
 };
 
 export const sampleTool2: DockstoreTool = {
@@ -196,6 +259,7 @@ export const sampleTool2: DockstoreTool = {
   toolname: 'sampleToolname',
   defaultCWLTestParameterFile: 'sampleDefaultCWLTestParameterFile',
   defaultWDLTestParameterFile: 'sampleDefaultWDLTestParameterFile',
+  entryTypeMetadata: toolEntryTypeMetadata,
 };
 
 export const sampleTool3: DockstoreTool = {
@@ -213,6 +277,7 @@ export const sampleTool3: DockstoreTool = {
   toolname: 'sampleToolname',
   defaultCWLTestParameterFile: 'sampleDefaultCWLTestParameterFile',
   defaultWDLTestParameterFile: 'sampleDefaultWDLTestParameterFile',
+  entryTypeMetadata: toolEntryTypeMetadata,
 };
 
 // Case 1: sampleTool1 in published entries, unpublished doesn't matter

@@ -21,7 +21,7 @@ import { MatLegacyChipInputEvent as MatChipInputEvent } from '@angular/material/
 import { MatLegacyTabChangeEvent as MatTabChangeEvent, MatLegacyTabGroup as MatTabGroup } from '@angular/material/legacy-tabs';
 import { ActivatedRoute, NavigationEnd, Params, Router, RouterEvent } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
+import { filter, map, takeUntil } from 'rxjs/operators';
 import { EntryCategoriesService } from '../categories/state/entry-categories.service';
 import { Dockstore } from '../shared/dockstore.model';
 import { Category, EntriesService, VersionVerifiedPlatform, SourceFile } from '../shared/openapi';
@@ -98,6 +98,7 @@ export abstract class Entry<V extends WorkflowVersion | Tag> implements OnDestro
     this.router.events
       .pipe(
         filter((event) => event instanceof NavigationEnd),
+        map((event) => event as NavigationEnd),
         takeUntil(this.ngUnsubscribe)
       )
       .subscribe((event: RouterEvent) => {
