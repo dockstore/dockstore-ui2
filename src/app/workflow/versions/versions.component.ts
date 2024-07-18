@@ -40,7 +40,6 @@ import { NgIf, NgClass, NgFor, JsonPipe, DatePipe, KeyValuePipe, KeyValue } from
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { MatIconModule } from '@angular/material/icon';
 import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
-import { HasUserDoiPipe } from 'app/shared/entry/has-user-doi.pipe';
 
 @Component({
   selector: 'app-versions-workflow',
@@ -66,7 +65,6 @@ import { HasUserDoiPipe } from 'app/shared/entry/has-user-doi.pipe';
     DescriptorLanguagePipe,
     CommitUrlPipe,
     KeyValuePipe,
-    HasUserDoiPipe,
   ],
 })
 export class VersionsWorkflowComponent extends Versions implements OnInit, OnChanges, AfterViewInit {
