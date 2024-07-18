@@ -17,8 +17,6 @@
  *
  */
 
-import { HttpHeaders, HttpParams } from '@angular/common/http';
-
 /**
  * Created by Ron on 17/12/2015.
  */

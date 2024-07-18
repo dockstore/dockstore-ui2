@@ -15,7 +15,7 @@
  */
 import { HttpResponse } from '@angular/common/http';
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { MatLegacyRadioChange as MatRadioChange, MatLegacyRadioModule } from '@angular/material/legacy-radio';
+import { MatLegacyRadioModule } from '@angular/material/legacy-radio';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { FileService } from 'app/shared/file.service';
