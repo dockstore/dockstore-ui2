@@ -239,7 +239,7 @@ export class SnaphotExporterModalComponent extends Base {
   private calculateState(): State {
     return {
       snapshot: this.isSnapshot ? StepState.COMPLETED : StepState.INITIAL,
-      doi: this.version.dois[this.DoiInitiatorEnum.USER] ? StepState.COMPLETED : StepState.INITIAL,
+      doi: this.version.dois[Doi.InitiatorEnum.USER] ? StepState.COMPLETED : StepState.INITIAL,
       orcid: this.version.versionMetadata.userIdToOrcidPutCode[this.userId] ? StepState.COMPLETED : StepState.INITIAL,
       overall: StepState.INITIAL,
     };
