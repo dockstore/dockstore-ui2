@@ -150,6 +150,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
     this.router.events
       .pipe(
         filter((event) => event instanceof NavigationEnd),
+        map((event) => event as NavigationEnd),
         takeUntil(this.ngUnsubscribe)
       )
       .subscribe((event: RouterEvent) => {

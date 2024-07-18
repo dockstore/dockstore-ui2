@@ -80,7 +80,7 @@
                     color="primary"
                     type="button"
                     (click)="addToExistingWorkflows()"
-                    [disabled]="(isRefreshing$ | async) || (user$ | async) === false"
+                    [disabled]="(isRefreshing$ | async) || (user$ | async) === null"
                     matTooltip="Discover {{ entryType$ | async }}s added by others using your linked source control accounts"
                     matTooltipPosition="after"
                     id="addToExistingWorkflows"
