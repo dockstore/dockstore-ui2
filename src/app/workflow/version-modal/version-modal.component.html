@@ -181,7 +181,7 @@
                 <label>
                   <input
                     data-cy="hiddenCheck"
-                    [disabled]="version.doiURL"
+                    [disabled]="version.dois[DoiInitiatorEnum.USER] === undefined"
                     type="checkbox"
                     name="checkbox"
                     [(ngModel)]="version.hidden"

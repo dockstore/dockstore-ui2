@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ID, transaction } from '@datorama/akita';
 import { BehaviorSubject } from 'rxjs';
-import { AppTool, Workflow, WorkflowVersion } from '../openapi';
+import { AppTool, Doi, Workflow, WorkflowVersion } from '../openapi';
 import { BioWorkflow } from '../openapi/model/bioWorkflow';
 import { Service } from '../openapi/model/service';
 import { Notebook } from '../openapi/model/notebook';
@@ -55,6 +55,12 @@ export class WorkflowService {
 
   updateActiveTopicManualAndTopicSelection(topicManual: string, topicSelection: Workflow.TopicSelectionEnum) {
     const newWorkflow = { ...this.workflowQuery.getActive(), topicManual: topicManual, topicSelection: topicSelection };
+    this.workflowStore.upsert(newWorkflow.id, newWorkflow);
+    this.extendedWorkflowService.update(newWorkflow);
+  }
+
+  updateDoiSelection(doiSelection: Doi.InitiatorEnum) {
+    const newWorkflow = { ...this.workflowQuery.getActive(), doiSelection: doiSelection };
     this.workflowStore.upsert(newWorkflow.id, newWorkflow);
     this.extendedWorkflowService.update(newWorkflow);
   }

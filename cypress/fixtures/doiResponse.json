@@ -9,6 +9,13 @@
     "dirtyBit": false,
     "doiStatus": "CREATED",
     "doiURL": "10.5072/zenodo.841014",
+    "dois": {
+      "USER": {
+        "type": "VERSION",
+        "name": "10.5072/zenodo.841014",
+        "initiator": "USER"
+      }
+    },
     "email": null,
     "frozen": true,
     "hidden": false,

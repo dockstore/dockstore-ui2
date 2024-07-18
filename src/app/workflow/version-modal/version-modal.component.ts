@@ -25,7 +25,7 @@ import { formInputDebounceTime } from '../../shared/constants';
 import { DateService } from '../../shared/date.service';
 import { SessionQuery } from '../../shared/session/session.query';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
-import { AppTool, BioWorkflow, ToolDescriptor, VersionVerifiedPlatform } from '../../shared/openapi';
+import { AppTool, BioWorkflow, Doi, ToolDescriptor, VersionVerifiedPlatform } from '../../shared/openapi';
 import { SourceFile } from '../../shared/openapi/model/sourceFile';
 import { Workflow } from '../../shared/openapi/model/workflow';
 import { WorkflowVersion } from '../../shared/openapi/model/workflowVersion';
@@ -86,6 +86,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
   public testParameterFilePaths: string[];
   originalTestParameterFilePaths: string[];
   ToolDescriptor = ToolDescriptor;
+  DoiInitiatorEnum = Doi.InitiatorEnum;
   public testParameterFilePath = '';
   formErrors = formErrors;
   validationMessages = validationMessages;

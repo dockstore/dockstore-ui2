@@ -22,7 +22,7 @@ import { AlertService } from '../../shared/alert/state/alert.service';
 import { DateService } from '../../shared/date.service';
 import { Dockstore } from '../../shared/dockstore.model';
 import { DockstoreService } from '../../shared/dockstore.service';
-import { EntryType, VersionVerifiedPlatform } from '../../shared/openapi';
+import { Doi, EntryType, VersionVerifiedPlatform } from '../../shared/openapi';
 import { ExtendedWorkflow } from '../../shared/models/ExtendedWorkflow';
 import { SessionQuery } from '../../shared/session/session.query';
 import { ExtendedWorkflowQuery } from '../../shared/state/extended-workflow.query';
@@ -36,10 +36,11 @@ import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
 import { ViewWorkflowComponent } from '../view/view.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MatLegacyChipsModule } from '@angular/material/legacy-chips';
-import { NgIf, NgClass, JsonPipe, DatePipe } from '@angular/common';
+import { NgIf, NgClass, NgFor, JsonPipe, DatePipe, KeyValuePipe, KeyValue } from '@angular/common';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { MatIconModule } from '@angular/material/icon';
 import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { HasUserDoiPipe } from 'app/shared/entry/has-user-doi.pipe';
 
 @Component({
   selector: 'app-versions-workflow',
@@ -53,6 +54,7 @@ import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
     MatIconModule,
     FlexModule,
     NgIf,
+    NgFor,
     MatLegacyChipsModule,
     FontAwesomeModule,
     ViewWorkflowComponent,
@@ -63,6 +65,8 @@ import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
     DescriptorLanguageVersionsPipe,
     DescriptorLanguagePipe,
     CommitUrlPipe,
+    KeyValuePipe,
+    HasUserDoiPipe,
   ],
 })
 export class VersionsWorkflowComponent extends Versions implements OnInit, OnChanges, AfterViewInit {
@@ -85,6 +89,7 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
   public WorkflowType = Workflow;
   workflow: ExtendedWorkflow;
   entryType = EntryType;
+  DoiInitiatorEnum = Doi.InitiatorEnum;
   setNoOrderCols(): Array<number> {
     return [4, 5];
   }
@@ -119,6 +124,7 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
       'open',
       metricsColumn,
       'snapshot',
+      'doi',
       'actions',
     ];
     this.displayedColumns = allColumns.filter((column) => {
@@ -157,6 +163,13 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
       };
     });
   }
+
+  /**
+   * To prevent the Angular's keyvalue pipe from sorting by key
+   */
+  originalOrder = (a: KeyValue<string, Doi>, b: KeyValue<string, Doi>): number => {
+    return 0;
+  };
 
   /**
    * Updates the version and emits an event for the parent component

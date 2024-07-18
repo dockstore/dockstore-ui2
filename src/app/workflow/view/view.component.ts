@@ -29,7 +29,7 @@ import { AlertService } from '../../shared/alert/state/alert.service';
 import { bootstrap4largeModalSize, ga4ghServiceIdPrefix, ga4ghWorkflowIdPrefix } from '../../shared/constants';
 import { DateService } from '../../shared/date.service';
 import { Dockstore } from '../../shared/dockstore.model';
-import { Entry, Tag, VersionVerifiedPlatform, WorkflowVersion } from '../../shared/openapi';
+import { Doi, Entry, Tag, VersionVerifiedPlatform, WorkflowVersion } from '../../shared/openapi';
 import { SessionQuery } from '../../shared/session/session.query';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { WorkflowService } from '../../shared/state/workflow.service';
@@ -65,6 +65,7 @@ export class ViewWorkflowComponent extends View<WorkflowVersion> implements OnIn
   isPublic: boolean;
   userId: number;
   EntryType = EntryType;
+  DoiInitiatorEnum = Doi.InitiatorEnum;
   public entryType$: Observable<EntryType>;
   public workflow: BioWorkflow | Service | Notebook;
   public WorkflowType = Workflow;
