@@ -437,7 +437,7 @@ describe('Dockstore my workflows part 2', () => {
 
     // Should not be able to refresh a dockstore.yml workflow version
     goToTab('Versions');
-    cy.contains('button', 'Actions').should('be.visible').click();
+    cy.contains('button', 'Actions').click();
     cy.contains('button', 'Refresh Version').should('be.disabled');
 
     cy.get('body').type('{esc}');
@@ -464,7 +464,7 @@ describe('Dockstore my workflows part 2', () => {
     cy.visit('/my-workflows/github.com/A/l');
     cy.url().should('eq', Cypress.config().baseUrl + '/my-workflows/github.com/A/l');
     goToTab('Versions');
-    cy.contains('button', 'Actions').should('be.visible').click();
+    cy.contains('button', 'Actions').click();
     cy.contains('button', 'Refresh Version').should('not.be.disabled');
   });
 
@@ -612,7 +612,7 @@ describe('Dockstore my workflows part 3', () => {
       cy.get('#publishButton').should('contain', 'Publish').should('be.visible');
 
       goToTab('Versions');
-      cy.contains('button', 'Actions').should('be.visible').click();
+      cy.contains('button', 'Actions').click();
       cy.get('[data-cy=set-default-version-button]').should('be.visible').click();
       cy.wait(1000);
       cy.get('#publishButton').should('contain', 'Publish').should('be.visible').click();

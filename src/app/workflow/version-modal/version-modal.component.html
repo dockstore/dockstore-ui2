@@ -60,7 +60,7 @@
                   workflow?.mode === WorkflowType.ModeEnum.HOSTED ||
                   workflow?.mode === WorkflowType.ModeEnum.DOCKSTOREYML ||
                   version.frozen ||
-                  version.doiURL
+                  version.dois[DoiInitiatorEnum.USER]
                 "
               />
               <div *ngIf="(isService$ | async) || (isNotebook$ | async)" class="label-value">

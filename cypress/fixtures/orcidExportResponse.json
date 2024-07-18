@@ -110,6 +110,7 @@
             "dirtyBit": false,
             "doiStatus": "NOT_REQUESTED",
             "doiURL": null,
+            "dois": {},
             "email": null,
             "frozen": false,
             "hidden": true,

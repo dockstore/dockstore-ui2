@@ -99,7 +99,7 @@ describe('Checker workflow test from my-tools', () => {
       cy.wait('@unpublishTool');
 
       goToTab('Versions');
-      cy.contains('button', 'Actions').should('be.visible').click();
+      cy.contains('button', 'Actions').click(); // Clicking it should scroll it into view
       cy.get('[data-cy=set-default-version-button]').should('be.visible').click();
       goToTab('Info');
 
