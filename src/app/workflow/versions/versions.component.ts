@@ -36,7 +36,7 @@ import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
 import { ViewWorkflowComponent } from '../view/view.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MatLegacyChipsModule } from '@angular/material/legacy-chips';
-import { NgIf, NgClass, NgFor, JsonPipe, DatePipe, KeyValuePipe, KeyValue } from '@angular/common';
+import { NgIf, NgClass, NgFor, JsonPipe, DatePipe } from '@angular/common';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { MatIconModule } from '@angular/material/icon';
 import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
@@ -64,7 +64,6 @@ import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
     DescriptorLanguageVersionsPipe,
     DescriptorLanguagePipe,
     CommitUrlPipe,
-    KeyValuePipe,
   ],
 })
 export class VersionsWorkflowComponent extends Versions implements OnInit, OnChanges, AfterViewInit {
@@ -159,13 +158,6 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
       };
     });
   }
-
-  /**
-   * To prevent the Angular's keyvalue pipe from sorting by key
-   */
-  originalOrder = (a: KeyValue<string, Doi>, b: KeyValue<string, Doi>): number => {
-    return 0;
-  };
 
   /**
    * Updates the version and emits an event for the parent component
