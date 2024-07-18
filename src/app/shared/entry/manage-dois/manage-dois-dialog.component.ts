@@ -1,7 +1,6 @@
 import { KeyValuePipe, NgFor, NgIf, TitleCasePipe } from '@angular/common';
 import { Component, Inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MatDividerModule } from '@angular/material/divider';
 import { MatLegacyButtonModule } from '@angular/material/legacy-button';
 import { MatLegacyCardModule } from '@angular/material/legacy-card';
 import { MAT_LEGACY_DIALOG_DATA, MatLegacyDialogModule, MatLegacyDialogRef } from '@angular/material/legacy-dialog';
@@ -34,7 +33,6 @@ export interface DoiInfo {
     MatLegacyCardModule,
     MatLegacyRadioModule,
     MatIconModule,
-    MatDividerModule,
     FlexModule,
     FormsModule,
     NgIf,
@@ -51,8 +49,6 @@ export class ManageDoisDialog {
   conceptDois: Map<string, Doi>;
   versionDois: Map<string, Doi>;
   doiSelection: Doi.InitiatorEnum;
-  selectedVersionDoi: Doi | undefined;
-  selectedConceptDoi: Doi | undefined;
   zenodoUrl: string;
   selectedOption: Doi.InitiatorEnum;
   doiInfoMap: Map<Doi.InitiatorEnum, DoiInfo> = new Map();
@@ -68,11 +64,8 @@ export class ManageDoisDialog {
     this.conceptDois = new Map(Object.entries(data.entry.conceptDois));
     this.versionDois = new Map(Object.entries(data.version.dois));
     this.doiSelection = data.entry.doiSelection;
-    this.selectedVersionDoi = this.versionDois.get(this.doiSelection);
-    this.selectedConceptDoi = this.conceptDois.get(this.doiSelection);
     this.zenodoUrl = Dockstore.ZENODO_AUTH_URL ? Dockstore.ZENODO_AUTH_URL.replace('oauth/authorize', '') : '';
     this.selectedOption = this.doiSelection;
-    console.log(this.conceptDois);
     this.conceptDois.forEach((conceptDoi, initiator) => {
       let initiatorEnum = Object.keys(Doi.InitiatorEnum).find((i) => Doi.InitiatorEnum[i] === initiator);
       let versionDoi = this.versionDois.get(initiator);
