@@ -37,7 +37,7 @@ export class NotebookComponent implements OnChanges {
   @Input() version: WorkflowVersion;
   @Input() baseUrl: string;
   loading: boolean = true;
-  error: string = null;
+  error: string | null = null;
   cells: Cell[] = [];
   private currentSubscription: Subscription = null;
 
