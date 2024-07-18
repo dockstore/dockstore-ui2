@@ -97,14 +97,14 @@ describe('NotebookComponent', () => {
 
   function confirmSuccess() {
     const element: HTMLElement = fixture.nativeElement;
-    expect(notebookComponent.error).toBeFalse();
+    expect(notebookComponent.error).toBeNull();
     expect(element.querySelectorAll('.notebook').length).toBe(1);
     expect(element.textContent).not.toContain('The notebook could not be displayed.');
   }
 
   function confirmError() {
     const element: HTMLElement = fixture.nativeElement;
-    expect(notebookComponent.error).toBeTrue();
+    expect(notebookComponent.error).not.toEqual(null);
     expect(element.querySelectorAll('.notebook').length).toBe(0);
     expect(element.textContent).toContain('The notebook could not be displayed.');
   }

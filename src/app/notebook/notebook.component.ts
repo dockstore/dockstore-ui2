@@ -16,6 +16,8 @@ import { NgIf, NgFor } from '@angular/common';
  * https://nbformat.readthedocs.io/en/latest/
  */
 
+const ERROR_MESSAGE = 'The notebook could not be displayed.';
+
 @Component({
   selector: 'app-notebook',
   templateUrl: './notebook.component.html',
@@ -81,11 +83,11 @@ export class NotebookComponent implements OnChanges {
               return;
             }
           }
-          this.error = 'Could not find the notebook file';
+          this.error = ERROR_MESSAGE;
         },
         // Failure.
         () => {
-          this.error = 'Could not retrieve the notebook file';
+          this.error = ERROR_MESSAGE;
         }
       );
   }
@@ -106,13 +108,13 @@ export class NotebookComponent implements OnChanges {
       console.log('Exception formatting notebook:');
       console.log(e.message);
     }
-    this.error = 'The notebook could not be displayed';
+    this.error = ERROR_MESSAGE;
   }
 
   incompleteSourceFileErrorMessage(file: SourceFile): string {
-    var message = 'The notebook file is not complete';
+    var message = ERROR_MESSAGE;
     if (file.state === 'NOT_STORED') {
-      message = message + ': ' + file.content;
+      message = message + ' ' + file.content;
     }
     return message;
   }
