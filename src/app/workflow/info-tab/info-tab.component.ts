@@ -54,11 +54,12 @@ import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatLegacyCardModule } from '@angular/material/legacy-card';
 import { NgIf, NgFor, NgClass, NgSwitch, NgSwitchCase, NgSwitchDefault, AsyncPipe, TitleCasePipe } from '@angular/common';
+import { DisplayTopicComponent } from 'app/shared/entry/info-tab-topic/display-topic/display-topic.component';
 
 @Component({
   selector: 'app-info-tab',
   templateUrl: './info-tab.component.html',
-  styleUrls: ['./info-tab.component.css'],
+  styleUrls: ['../../shared/styles/info-tab.component.scss', './info-tab.component.css'],
   standalone: true,
   imports: [
     NgIf,
@@ -87,6 +88,7 @@ import { NgIf, NgFor, NgClass, NgSwitch, NgSwitchCase, NgSwitchDefault, AsyncPip
     MapFriendlyValuesPipe,
     BaseUrlPipe,
     VersionProviderUrlPipe,
+    DisplayTopicComponent,
   ],
 })
 export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
@@ -212,7 +214,6 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((entryType) => (this.displayTextForButton = this.infoTabService.getTRSId(this.workflow, entryType)));
     this.infoTabService.forumUrlEditing$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((editing) => (this.forumUrlEditing = editing));
-    this.infoTabService.topicEditing$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((topicEditing) => (this.topicEditing = topicEditing));
   }
   /**
    * Handle restubbing a workflow
@@ -244,13 +245,6 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
     this.infoTabService.setWorkflowPathEditing(!this.workflowPathEditing);
   }
 
-  toggleEditTopic() {
-    if (this.topicEditing) {
-      this.infoTabService.saveTopic(this.workflow, this.revertTopic.bind(this));
-    }
-    this.infoTabService.setTopicEditing(!this.topicEditing);
-  }
-
   toggleEditDefaultTestFilePath() {
     if (this.defaultTestFilePathEditing) {
       this.save();
@@ -263,18 +257,6 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
       this.save();
     }
     this.infoTabService.setForumUrlEditing(!this.forumUrlEditing);
-  }
-
-  revertTopic() {
-    this.workflow.topicManual = this.extendedWorkflow.topicManual;
-  }
-
-  revertTopicSelection() {
-    this.workflow.topicSelection = this.extendedWorkflow.topicSelection;
-  }
-
-  radioChange(event: MatRadioChange) {
-    this.infoTabService.saveTopicSelection(this.workflow, this.revertTopicSelection.bind(this));
   }
 
   save() {

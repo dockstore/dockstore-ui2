@@ -22,7 +22,6 @@ import { SessionQuery } from 'app/shared/session/session.query';
 import { SessionService } from 'app/shared/session/session.service';
 import { MyEntriesQuery } from 'app/shared/state/my-entries.query';
 import { MyEntriesStateService } from 'app/shared/state/my-entries.service';
-import { AuthService } from 'ng2-ui-auth';
 import { combineLatest, Observable } from 'rxjs';
 import { filter, map, takeUntil } from 'rxjs/operators';
 import { RegisterToolComponent } from '../../container/register-tool/register-tool.component';
@@ -31,6 +30,7 @@ import { Tool } from '../../container/register-tool/tool';
 import { AccountsService } from '../../loginComponents/accounts/external/accounts.service';
 import { OrgWorkflowObject } from '../../myworkflows/my-workflow/my-workflow.component';
 import { MyWorkflowsService } from '../../myworkflows/myworkflows.service';
+import { AuthService } from '../../ng2-ui-auth/public_api';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { bootstrap4largeModalSize } from '../../shared/constants';
 import { ContainerService } from '../../shared/container.service';
@@ -61,6 +61,7 @@ import { MySidebarComponent } from '../../my-sidebar/my-sidebar.component';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { SidebarAccordionComponent } from '../sidebar-accordion/sidebar-accordion.component';
 import { SidebarAccordionComponent as WorkflowSidebarAccordionComponent } from '../../myworkflows/sidebar-accordion/sidebar-accordion.component';
+import { Dockstore } from 'app/shared/dockstore.model';
 
 @Component({
   selector: 'app-my-tool',
@@ -102,6 +103,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
   public groupEntriesObject$: Observable<Array<OrgToolObject<DockstoreTool>>>;
   public groupAppToolEntryObjects$: Observable<Array<OrgWorkflowObject<Workflow>>>;
   EntryType = EntryType;
+  Dockstore = Dockstore;
   constructor(
     private mytoolsService: MytoolsService,
     protected configuration: Configuration,
@@ -148,6 +150,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
     this.router.events
       .pipe(
         filter((event) => event instanceof NavigationEnd),
+        map((event) => event as NavigationEnd),
         takeUntil(this.ngUnsubscribe)
       )
       .subscribe((event: RouterEvent) => {

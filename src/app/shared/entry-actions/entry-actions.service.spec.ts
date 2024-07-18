@@ -49,6 +49,7 @@ describe('Service: EntryActionsService', () => {
     expect(service).toBeTruthy();
   }));
   it('should know if entry is hosted', inject([EntryActionsService], (service: EntryActionsService) => {
+    expect(DockstoreTool.ModeEnum.HOSTED).toBe(Workflow.ModeEnum.HOSTED); // Both values should be the same
     expect(service.isEntryHosted(null)).toBeTruthy();
     const dockstoreTool = <DockstoreTool>{};
     dockstoreTool.mode = DockstoreTool.ModeEnum.HOSTED;
