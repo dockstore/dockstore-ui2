@@ -73,7 +73,7 @@ export class NotebookComponent implements OnChanges {
         (sourceFiles: SourceFile[]) => {
           for (const sourceFile of sourceFiles) {
             if (this.isPrimaryDescriptor(sourceFile.path)) {
-              if (sourceFile.form === 'COMPLETE') {
+              if (sourceFile.state === 'COMPLETE') {
                 this.formatNotebook(sourceFile.content);
               } else {
                 this.error = this.incompleteSourceFileErrorMessage(sourceFile);
@@ -111,7 +111,7 @@ export class NotebookComponent implements OnChanges {
 
   incompleteSourceFileErrorMessage(file: SourceFile): string {
     var message = 'The notebook file is not complete';
-    if (file.form === 'ERROR') {
+    if (file.state === 'NOT_STORED') {
       message = message + ': ' + file.content;
     }
     return message;
