@@ -192,4 +192,12 @@ describe('NotebookComponent', () => {
     expect(element.querySelector('.source').textContent).toContain('some input');
     expect(element.querySelector('.output').textContent).toContain('some html');
   });
+
+  it('should display the message from a NOT_STORED notebook', () => {
+    const sourceFile = makeSourceFile('could not store', '/main.ipynb');
+    sourceFile.state = SourceFile.StateEnum.NOTSTORED;
+    formatEntities([sourceFile], makeWorkflow('Python'), makeVersion('/main.ipynb'), '');
+    confirmError();
+    expect(element.textContent).toContain('could not store');
+  });
 });
