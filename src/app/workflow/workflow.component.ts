@@ -111,6 +111,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatLegacyCardModule } from '@angular/material/legacy-card';
 import { ManageDoisDialog } from 'app/shared/entry/doi/manage-dois/manage-dois-dialog.component';
 import { DoiBadgeComponent } from 'app/shared/entry/doi/doi-badge/doi-badge.component';
+import { MatBadgeModule } from '@angular/material/badge';
 
 @Component({
   selector: 'app-workflow',
@@ -164,6 +165,7 @@ import { DoiBadgeComponent } from 'app/shared/entry/doi/doi-badge/doi-badge.comp
     DatePipe,
     BaseUrlPipe,
     DoiBadgeComponent,
+    MatBadgeModule,
   ],
 })
 export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterViewInit, OnInit {

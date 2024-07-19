@@ -157,65 +157,27 @@
       <div *ngIf="!isWorkflowPublic" class="mt-1 mb-1 size-small">
         <span *ngIf="selectedVersion" class="mr-4">
           <span>Version DOI: </span>
-          <span *ngIf="selectedVersionDoi">
-            <img
-              *ngIf="workflow.doiSelection === DoiInitiatorEnum.DOCKSTORE"
-              class="site-icons-small-height pr-2"
-              src="../../../assets/images/dockstore/logo.png"
-              alt="small Dockstore logo"
-              matTooltip="This DOI was automatically created by Dockstore"
-            />
-            <img
-              *ngIf="workflow.doiSelection === DoiInitiatorEnum.GITHUB"
-              class="pr-2"
-              src="../../../assets/images/registries/GITHUB.svg"
-              alt="small GitHub logo"
-              matTooltip="This DOI was created via Zenodo's integration with GitHub"
-            />
-            <mat-icon
-              *ngIf="workflow.doiSelection === DoiInitiatorEnum.USER"
-              class="pr-2 primary-3"
-              matTooltip="This DOI was created by you"
-              >account_circle</mat-icon
-            >
-            <app-doi-badge [doi]="selectedVersionDoi"></app-doi-badge>
-          </span>
+          <app-doi-badge *ngIf="selectedVersionDoi" [doi]="selectedVersionDoi"></app-doi-badge>
           <span *ngIf="!selectedVersionDoi">n/a</span>
         </span>
         <span>
           <span>Concept DOI: </span>
-          <span *ngIf="selectedConceptDoi">
-            <img
-              *ngIf="workflow.doiSelection === DoiInitiatorEnum.DOCKSTORE"
-              class="site-icons-small-height pr-2"
-              src="../../../assets/images/dockstore/logo.png"
-              alt="small Dockstore logo"
-              matTooltip="This DOI was automatically created by Dockstore"
-            />
-            <img
-              *ngIf="workflow.doiSelection === DoiInitiatorEnum.GITHUB"
-              class="pr-2"
-              src="../../../assets/images/registries/GITHUB.svg"
-              alt="small GitHub logo"
-              matTooltip="This DOI was created via Zenodo's integration with GitHub"
-            />
-            <mat-icon
-              *ngIf="workflow.doiSelection === DoiInitiatorEnum.USER"
-              class="pr-2 primary-3"
-              matTooltip="This DOI was created by you"
-              >account_circle</mat-icon
-            >
-            <app-doi-badge [doi]="selectedConceptDoi"></app-doi-badge>
-          </span>
+          <app-doi-badge *ngIf="selectedConceptDoi" [doi]="selectedConceptDoi"></app-doi-badge>
           <span *ngIf="!selectedConceptDoi">n/a</span>
         </span>
         <button
           type="button"
           mat-button
           class="private-btn small-btn-structure ml-2"
-          matTooltip="Manage DOIs"
+          matTooltip="Manage DOIs. There {{ numberOfDoiInitiators === 1 ? 'is' : 'are' }} {{ numberOfDoiInitiators }} DOI{{
+            numberOfDoiInitiators === 1 ? '' : 's'
+          }} available."
           (click)="manageDois()"
           [disabled]="!canWrite"
+          [matBadge]="numberOfDoiInitiators"
+          matBadgeSize="small"
+          matBadgeColor="primary"
+          [matBadgeHidden]="!numberOfDoiInitiators"
         >
           <img src="../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit DOI" />
           Manage DOIs
@@ -524,15 +486,15 @@
         <mat-card-content>
           <p *ngIf="selectedVersion.dois[workflow.doiSelection]" class="pt-2">
             Cite version <strong>{{ selectedVersion?.name }}</strong> using DOI
-            <app-doi-badge [doi]="selectedVersion.dois[workflow.doiSelection]"></app-doi-badge>.
+            <app-doi-badge [doi]="selectedVersion.dois[workflow.doiSelection]" [displayInitiator]="false"></app-doi-badge>.
           </p>
           <p *ngIf="!selectedVersion.dois[workflow.doiSelection]" class="pt-2">
             Version <strong>{{ selectedVersion?.name }}</strong> has no DOI.
           </p>
           <p>
             Cite all versions using the DOI
-            <app-doi-badge [doi]="workflow.conceptDois[workflow.doiSelection]"></app-doi-badge>. This DOI represents all versions, and will
-            always resolve to the latest one.
+            <app-doi-badge [doi]="workflow.conceptDois[workflow.doiSelection]" [displayInitiator]="false"></app-doi-badge>. This DOI
+            represents all versions, and will always resolve to the latest one.
           </p>
         </mat-card-content>
       </mat-card>

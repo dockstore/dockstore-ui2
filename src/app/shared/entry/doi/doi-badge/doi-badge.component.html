@@ -1,4 +1,23 @@
+<span *ngIf="displayInitiator" [class]="displayDoi ? 'mr-2' : ''">
+  <img
+    *ngIf="doi.initiator === DoiInitiator.DOCKSTORE"
+    class="site-icons-small-height"
+    src="../../../../../assets/images/dockstore/logo.png"
+    alt="small Dockstore logo"
+    matTooltip="This DOI was automatically created by Dockstore"
+  />
+  <img
+    *ngIf="doi.initiator === DoiInitiator.GITHUB"
+    src="../../../../../assets/images/registries/GITHUB.svg"
+    alt="small GitHub logo"
+    matTooltip="This DOI was created via Zenodo's integration with GitHub"
+  />
+  <mat-icon *ngIf="doi.initiator === DoiInitiator.USER" class="primary-3" matTooltip="This DOI was created by you in the Dockstore UI"
+    >account_circle</mat-icon
+  >
+</span>
 <a
+  *ngIf="displayDoi"
   [href]="'https://doi.org/' + doi.name"
   data-cy="info-tab-DOI-badge"
   matTooltip="Click to view {{
