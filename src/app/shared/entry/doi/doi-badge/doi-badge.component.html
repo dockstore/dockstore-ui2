@@ -12,7 +12,10 @@
     alt="small GitHub logo"
     matTooltip="This DOI was created via Zenodo's integration with GitHub"
   />
-  <mat-icon *ngIf="doi.initiator === DoiInitiator.USER" class="primary-3" matTooltip="This DOI was created by you in the Dockstore UI"
+  <mat-icon
+    *ngIf="doi.initiator === DoiInitiator.USER"
+    class="primary-3"
+    matTooltip="This DOI was manually created by a user in the Dockstore UI"
     >account_circle</mat-icon
   >
 </span>

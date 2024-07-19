@@ -1,4 +1,4 @@
-import { KeyValuePipe, NgFor, NgIf, TitleCasePipe } from '@angular/common';
+import { KeyValue, KeyValuePipe, NgFor, NgIf, TitleCasePipe } from '@angular/common';
 import { Component, Inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatLegacyButtonModule } from '@angular/material/legacy-button';
@@ -79,4 +79,11 @@ export class ManageDoisDialog {
   saveDoiSelection() {
     this.manageDoisDialogService.saveDoiSelection(this.entry, this.selectedOption);
   }
+
+  /**
+   * To prevent the Angular's keyvalue pipe from sorting by key
+   */
+  originalOrder = (a: KeyValue<string, DoiInfo>, b: KeyValue<string, DoiInfo>): number => {
+    return 0;
+  };
 }

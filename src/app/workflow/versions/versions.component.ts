@@ -36,10 +36,11 @@ import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
 import { ViewWorkflowComponent } from '../view/view.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MatLegacyChipsModule } from '@angular/material/legacy-chips';
-import { NgIf, NgClass, NgFor, JsonPipe, DatePipe } from '@angular/common';
+import { NgIf, NgClass, NgFor, JsonPipe, DatePipe, KeyValuePipe, KeyValue } from '@angular/common';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { MatIconModule } from '@angular/material/icon';
 import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { DoiBadgeComponent } from 'app/shared/entry/doi/doi-badge/doi-badge.component';
 
 @Component({
   selector: 'app-versions-workflow',
@@ -64,6 +65,8 @@ import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
     DescriptorLanguageVersionsPipe,
     DescriptorLanguagePipe,
     CommitUrlPipe,
+    KeyValuePipe,
+    DoiBadgeComponent,
   ],
 })
 export class VersionsWorkflowComponent extends Versions implements OnInit, OnChanges, AfterViewInit {
@@ -170,4 +173,11 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
     this.alertService.detailedSuccess();
     this.selectedVersionChange.emit(this._selectedVersion);
   }
+
+  /**
+   * To prevent the Angular's keyvalue pipe from sorting by key
+   */
+  originalOrder = (a: KeyValue<string, Doi>, b: KeyValue<string, Doi>): number => {
+    return 0;
+  };
 }
