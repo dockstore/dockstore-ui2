@@ -84,6 +84,7 @@ describe('WorkflowFileEditorComponent', () => {
       path: 'foo.cwl',
       type: 'DOCKSTORE_CWL',
       content: content,
+      state: 'COMPLETE',
     };
     component.originalSourceFiles = [sourceFile];
     component.resetFiles();

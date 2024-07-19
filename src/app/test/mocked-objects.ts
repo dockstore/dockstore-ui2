@@ -359,6 +359,7 @@ export const wdlSourceFile: SourceFile = {
   path: '',
   absolutePath: '',
   type: 'DOCKSTORE_WDL',
+  state: SourceFile.StateEnum.COMPLETE,
 };
 
 export const emptyWdlSourceFile: SourceFile = {
@@ -367,6 +368,7 @@ export const emptyWdlSourceFile: SourceFile = {
   path: '/foo.wdl',
   absolutePath: '',
   type: 'DOCKSTORE_WDL',
+  state: SourceFile.StateEnum.COMPLETE,
 };
 
 export const wdlSourceFileWithHttpImport: SourceFile = {
@@ -375,6 +377,7 @@ export const wdlSourceFileWithHttpImport: SourceFile = {
   path: '/goo.wdl',
   absolutePath: '',
   type: 'DOCKSTORE_WDL',
+  state: SourceFile.StateEnum.COMPLETE,
 };
 
 export const wdlSourceFileWithCommentedHttpImport: SourceFile = {
@@ -383,6 +386,7 @@ export const wdlSourceFileWithCommentedHttpImport: SourceFile = {
   path: '/goo.wdl',
   absolutePath: '',
   type: 'DOCKSTORE_WDL',
+  state: SourceFile.StateEnum.COMPLETE,
 };
 
 const cwlWithNoImport = `#!/usr/bin/env cwl-runner
@@ -492,6 +496,7 @@ export const cwlSourceFileWithNoImport: SourceFile = {
   path: '/fubar.cwl',
   absolutePath: '',
   type: 'DOCKSTORE_CWL',
+  state: SourceFile.StateEnum.COMPLETE,
 };
 
 export const cwlSourceFileWithHttpsImport: SourceFile = {
@@ -500,6 +505,7 @@ export const cwlSourceFileWithHttpsImport: SourceFile = {
   path: '/fubar.cwl',
   absolutePath: '',
   type: 'DOCKSTORE_CWL',
+  state: SourceFile.StateEnum.COMPLETE,
 };
 
 export const cwlSourceFileWithMixinImport: SourceFile = {
@@ -508,6 +514,7 @@ export const cwlSourceFileWithMixinImport: SourceFile = {
   path: '/fubar.cwl',
   absolutePath: '',
   type: 'DOCKSTORE_CWL',
+  state: SourceFile.StateEnum.COMPLETE,
 };
 
 export const cwlSourceFileWithCommentedMixinImport: SourceFile = {
@@ -516,6 +523,7 @@ export const cwlSourceFileWithCommentedMixinImport: SourceFile = {
   path: '/fubar.cwl',
   absolutePath: '',
   type: 'DOCKSTORE_CWL',
+  state: SourceFile.StateEnum.COMPLETE,
 };
 
 export const cwlSourceFileWithIncludeImport: SourceFile = {
@@ -524,6 +532,7 @@ export const cwlSourceFileWithIncludeImport: SourceFile = {
   path: '/fubar.cwl',
   absolutePath: '',
   type: 'DOCKSTORE_CWL',
+  state: SourceFile.StateEnum.COMPLETE,
 };
 
 export const cwlSourceFileWithSomeHttpLinks: SourceFile = {
@@ -532,6 +541,7 @@ export const cwlSourceFileWithSomeHttpLinks: SourceFile = {
   path: '/fubar.cwl',
   absolutePath: '',
   type: 'DOCKSTORE_CWL',
+  state: SourceFile.StateEnum.COMPLETE,
 };
 
 export const cwlSourceFileWithHttpRun: SourceFile = {
@@ -540,6 +550,7 @@ export const cwlSourceFileWithHttpRun: SourceFile = {
   path: '/checker.cwl',
   absolutePath: '',
   type: 'DOCKSTORE_CWL',
+  state: SourceFile.StateEnum.COMPLETE,
 };
 
 export const sampleSourceFile: SourceFile = {
@@ -548,6 +559,7 @@ export const sampleSourceFile: SourceFile = {
   path: '/cwl.json',
   absolutePath: '',
   type: SourceFile.TypeEnum.CWLTESTJSON,
+  state: SourceFile.StateEnum.COMPLETE,
 };
 
 export const versionVerifiedPlatform: Array<VersionVerifiedPlatform> = [
@@ -576,6 +588,7 @@ export const testSourceFiles: Array<SourceFile> = [
     path: '/Dockerfile',
     absolutePath: '',
     type: SourceFile.TypeEnum.DOCKERFILE,
+    state: SourceFile.StateEnum.COMPLETE,
     verifiedBySource: {},
   },
   {
@@ -584,6 +597,7 @@ export const testSourceFiles: Array<SourceFile> = [
     path: '/Dockstore-BTCA-SG.json',
     absolutePath: '',
     type: SourceFile.TypeEnum.CWLTESTJSON,
+    state: SourceFile.StateEnum.COMPLETE,
     verifiedBySource: {
       'Dockstore CLI': {
         metadata: 'Docktesters group',
@@ -598,6 +612,7 @@ export const testSourceFiles: Array<SourceFile> = [
     path: '/Dockstore.cwl',
     absolutePath: '',
     type: SourceFile.TypeEnum.DOCKSTORECWL,
+    state: SourceFile.StateEnum.COMPLETE,
     verifiedBySource: {},
   },
   {
@@ -606,6 +621,7 @@ export const testSourceFiles: Array<SourceFile> = [
     path: '/Dockstore.json',
     absolutePath: '',
     type: SourceFile.TypeEnum.CWLTESTJSON,
+    state: SourceFile.StateEnum.COMPLETE,
     verifiedBySource: {
       'Dockstore CLI': {
         metadata: 'Docktesters group',
