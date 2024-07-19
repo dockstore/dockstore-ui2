@@ -190,6 +190,7 @@ describe('Dockstore notebooks', () => {
       {
         path: '/notebook.ipynb',
         content: '{ "nbformat_major": 4, "nbformat_minor": 0, "cells": [' + cells.join(',') + '] }',
+        state: 'COMPLETE',
       },
     ]);
   }

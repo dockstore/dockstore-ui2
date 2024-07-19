@@ -86,6 +86,7 @@ describe('ToolFileEditorComponent', () => {
       path: 'foo.cwl',
       type: 'DOCKSTORE_CWL',
       content: content,
+      state: SourceFile.StateEnum.COMPLETE,
     };
     component.originalSourceFiles = [sourceFile];
     component.resetFiles();
