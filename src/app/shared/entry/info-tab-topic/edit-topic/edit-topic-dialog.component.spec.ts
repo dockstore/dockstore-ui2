@@ -16,7 +16,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { EditTopicDialogStubService, EntryActionsStubService, EntryTypeMetadataStubService } from 'app/test/service-stubs';
-import { MAT_LEGACY_DIALOG_DATA, MatLegacyDialogModule, MatLegacyDialogRef } from '@angular/material/legacy-dialog';
+import { MAT_LEGACY_DIALOG_DATA, MatLegacyDialogRef } from '@angular/material/legacy-dialog';
 import { EntryTypeMetadataService } from 'app/entry/type-metadata/entry-type-metadata.service';
 import { sampleWorkflow1 } from 'app/test/mocked-objects';
 import { EditTopicDialogComponent } from './edit-topic-dialog.component';
