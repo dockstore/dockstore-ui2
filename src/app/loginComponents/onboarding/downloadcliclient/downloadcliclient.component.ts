@@ -105,7 +105,7 @@ run scripts or interact programmatically against Dockstore APIs, and [run workfl
 
 #### Requirements
 1. Linux/Ubuntu (Recommended - Tested on 22.04 LTS) or Mac OS X machine
-2. Java 17 (Tested with OpenJDK 17, Oracle JDK may work but is untested)
+2. Java 17 (Tested with OpenJDK 17 and Eclipse Temurin JDK 17; Oracle JDK may work but is untested)
 3. Python3 and pip3 (Required if working with CWL, optional otherwise)
     `;
 
@@ -130,57 +130,19 @@ exec newgrp docker
 `;
     this.textDataMacOs = `
 #### Part 1 - Install Java
-There are two ways to install Java on Mac OS.
+There are several ways to install Java on Mac OS. Here are some examples:
 
-##### Option A: Install Java manually
-You can OpenJDK 17.0.2 for Mac OS from [here](https://jdk.java.net/archive/). If your Mac uses Apple Silicon, you need to download and unpack the Mac/AArch64 version:
-\`\`\`
-tar -xf openjdk-17.0.2_macos-aarch64_bin.tar.gz
-\`\`\`
-If your Mac uses Intel hardware, you need the Mac/x64 version instead:
-\`\`\`
-tar -xf openjdk-17.0.2_macos-x64_bin.tar.gz
-\`\`\`
-Move the resulting JDK directory to its standard location:
-\`\`\`
-sudo mv jdk-17.0.2.jdk /Library/Java/JavaVirtualMachines/
-\`\`\`
-Then check the Java version:
-\`\`\`
-java -version
-\`\`\`
-Some versions of Mac OS will pop up a window saying that the program cannot be run as it is from an unidentified developer. [See this help page from Apple](https://support.apple.com/guide/mac-help/open-a-mac-app-from-an-unidentified-developer-mh40616/mac) on how to fix this.
-If the reported version is JDK 17, you've correctly installed Java! If not, check the list of the JDKs that are installed; you should see version 17:
-\`\`\`
-/usr/libexec/java_home -V
-\`\`\`
-Next, set the \`JAVA_HOME\` environment variable to the correct JDK system path
-and confirm the Java version:
-\`\`\`
-unset JAVA_HOME
-export JAVA_HOME=\`/usr/libexec/java_home -v 17\`
-java -version
-\`\`\`
-If you are using Bash, add the above export line to your \`.bashrc\` or \`.bash_profile\` to set \`JAVA_HOME\` properly every time you invoke a shell. Newer versions of Mac OS default to using zsh instead of bash, in which case, add this line to \`.zshrc\` instead.
+* Using a package manager
+  * [Homebrew](https://brew.sh/)
+  * [SDKMAN!](https://sdkman.io/)
+* Using a GUI installer with a .pkg file
+  * [Temurin](https://adoptium.net/temurin/)
+  * [Corretto](https://docs.aws.amazon.com/corretto/)
+* Downloading an archive directly
+  * [OpenJDK](https://openjdk.org/install/)
 
-##### Option B: Install Java with Homebrew
-2. Alternatively, to install Java 17 using Homebrew, execute the following commands:
-\`\`\`
-brew update
-brew install openjdk@17
-\`\`\`
-For the system Java wrappers to be able to use this JDK, symlink with the command:
-\`\`\`
-sudo ln -sfn $(brew --prefix)/opt/openjdk@17/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk-17.jdk
-\`\`\`
-Next, set the \`JAVA_HOME\` environment variable to the correct JDK system path, and confirm the
-Java version is correct:
-\`\`\`
-unset JAVA_HOME
-export JAVA_HOME=\`/usr/libexec/java_home -v 17\`
-java -version
-\`\`\`
-As with option A, you may have to [follow these directions](https://support.apple.com/guide/mac-help/open-a-mac-app-from-an-unidentified-developer-mh40616/mac) if your computer gives you a warning about an unidentified developer.
+After you've installed Java, make sure the version is correct by running \`java -version\` in the terminal, and verifying the major version is 17 or greater.
+
 
 #### Part 2 - Install Docker
 Install Docker following the instructions on [Docker's website](https://docs.docker.com/docker-for-mac/install/). You should have at least version 4.3.0 installed. Make sure to install the correct version for your hardware.
