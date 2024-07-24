@@ -249,6 +249,8 @@ export class ContainerComponent extends Entry<Tag> implements AfterViewInit, OnI
     } else if (url.includes('containers') || url.includes('tools')) {
       // Only get published tool if the URI is for a specific tool (/containers/quay.io%2FA2%2Fb3)
       // as opposed to just /tools or /docs etc.
+      this.containerService.setTool(null);
+      this.displayAppTool = false;
       this.containersService.getPublishedContainerByToolPath(this.title, includesValidation).subscribe(
         (tool) => {
           this.containerService.setTool(tool);
