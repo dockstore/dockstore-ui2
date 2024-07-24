@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { Query } from '@datorama/akita';
 import { combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -60,7 +59,7 @@ export class SearchQuery extends Query<SearchState> {
     })
   );
 
-  constructor(protected store: SearchStore, private route: ActivatedRoute) {
+  constructor(protected store: SearchStore) {
     super(store);
   }
 

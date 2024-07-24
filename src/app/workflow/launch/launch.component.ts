@@ -14,8 +14,8 @@
  *    limitations under the License.
  */
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { combineLatest, forkJoin, Observable, Subject } from 'rxjs';
-import { take, takeUntil } from 'rxjs/operators';
+import { combineLatest, Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { ga4ghWorkflowIdPrefix } from '../../shared/constants';
 import { EntryTab } from '../../shared/entry/entry-tab';

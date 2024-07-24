@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Base } from '../shared/base';
 import { ImageProviderService } from '../shared/image-provider.service';
 import { ProviderService } from '../shared/provider.service';
-import { DockstoreTool, Entry, Organization, Workflow, EntryType as OpenApiEntryType } from '../shared/openapi';
+import { Entry, Organization, Workflow, EntryType as OpenApiEntryType } from '../shared/openapi';
 import { UserQuery } from '../shared/user/user.query';
 import { UsersService } from './../shared/openapi/api/users.service';
 import { MatLegacyTabChangeEvent as MatTabChangeEvent, MatLegacyTabsModule } from '@angular/material/legacy-tabs';

@@ -27,7 +27,7 @@ export class BrowserStorageService extends StorageService {
   private store: { [key: string]: string } = {};
   private storageType = StorageType.MEMORY;
 
-  constructor(private config: ConfigService) {
+  constructor(config: ConfigService) {
     super();
     if (!this.updateStorageType(config.options.storageType)) {
       console.warn(config.options.storageType + ' is not available.');
