@@ -32,6 +32,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatLegacyCardModule } from '@angular/material/legacy-card';
 import { EditTopicDialogService } from './edit-topic-dialog.service';
 import { EntryActionsService } from 'app/shared/entry-actions/entry-actions.service';
+import { MatRadioChange } from '@angular/material/radio';
 
 export interface EditTopicDialogData {
   entry: DockstoreTool | Workflow;
@@ -69,6 +70,7 @@ export class EditTopicDialogComponent {
   topicEditing: boolean;
   selectedOption: Entry.TopicSelectionEnum;
   editedTopicManual: string;
+  promptToConfirmAISelection: boolean = false;
 
   constructor(
     public dialogRef: MatLegacyDialogRef<EditTopicDialogComponent>,
@@ -85,7 +87,24 @@ export class EditTopicDialogComponent {
     this.editedTopicManual = data.entry.topicManual;
   }
 
+  /**
+   * This is triggered when a Topic Selection radio button is changed
+   *
+   * @param {MatRadioChange} event
+   * @memberof RegisterWorkflowModalComponent
+   */
+  radioButtonChange(event: MatRadioChange): void {
+    if (event.value !== this.TopicSelectionEnum.AI) {
+      this.promptToConfirmAISelection = false;
+    }
+  }
+
   saveTopic() {
-    this.editTopicDialogService.saveTopicChanges(this.entry, this.editedTopicManual, this.selectedOption);
+    if (this.selectedOption === this.TopicSelectionEnum.AI && !this.entry.approvedAITopic && !this.promptToConfirmAISelection) {
+      this.promptToConfirmAISelection = true;
+    } else {
+      this.editTopicDialogService.saveTopicChanges(this.entry, this.editedTopicManual, this.selectedOption);
+      this.dialogRef.close();
+    }
   }
 }

@@ -3,6 +3,8 @@ import { AlertService } from '../../../alert/state/alert.service';
 import { ContainersService, DockstoreTool, EntryType, Workflow, WorkflowsService } from '../../../openapi';
 import { WorkflowService } from '../../../state/workflow.service';
 import { ContainerService } from '../../../container.service';
+import { WorkflowQuery } from 'app/shared/state/workflow.query';
+import { ToolQuery } from 'app/shared/tool/tool.query';
 
 @Injectable()
 export class EditTopicDialogService {
@@ -11,7 +13,9 @@ export class EditTopicDialogService {
     private workflowsService: WorkflowsService,
     private workflowService: WorkflowService,
     private containersService: ContainersService,
-    private containerService: ContainerService
+    private containerService: ContainerService,
+    private workflowQuery: WorkflowQuery,
+    private toolQuery: ToolQuery
   ) {}
 
   saveTopicChanges(entry: Workflow | DockstoreTool, topicManual: string, topicSelection: Workflow.TopicSelectionEnum) {
@@ -22,10 +26,12 @@ export class EditTopicDialogService {
       this.containersService.updateContainer(entry.id, newEntryForUpdate as DockstoreTool).subscribe(
         (response) => {
           this.alertService.detailedSuccess();
-          const newTopicSelection = response.topicSelection;
-          this.containerService.updateActiveTopicSelection(newTopicSelection);
-          const newTopic = response.topicManual;
-          this.containerService.updateActiveTopic(newTopic);
+          this.containerService.setTool({
+            ...this.toolQuery.getActive(),
+            topicManual: response.topicManual,
+            topicSelection: response.topicSelection,
+            approvedAITopic: response.approvedAITopic,
+          });
         },
         (error) => {
           this.alertService.detailedError(error);
@@ -35,9 +41,12 @@ export class EditTopicDialogService {
       this.workflowsService.updateWorkflow(entry.id, newEntryForUpdate as Workflow).subscribe(
         (response) => {
           this.alertService.detailedSuccess();
-          const newTopicSelection = response.topicSelection;
-          const newTopic = response.topicManual;
-          this.workflowService.updateActiveTopicManualAndTopicSelection(newTopic, newTopicSelection);
+          this.workflowService.setWorkflow({
+            ...this.workflowQuery.getActive(),
+            topicManual: response.topicManual,
+            topicSelection: response.topicSelection,
+            approvedAITopic: response.approvedAITopic,
+          });
         },
         (error) => {
           this.alertService.detailedError(error);
