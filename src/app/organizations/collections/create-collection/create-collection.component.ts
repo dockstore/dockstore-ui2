@@ -2,7 +2,6 @@ import { KeyValue, NgIf, AsyncPipe } from '@angular/common';
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogModule } from '@angular/material/legacy-dialog';
-import { HashMap } from '@datorama/akita';
 import { NgFormsManager } from '@ngneat/forms-manager';
 import { Observable } from 'rxjs';
 import { TagEditorMode } from '../../../shared/enum/tagEditorMode.enum';

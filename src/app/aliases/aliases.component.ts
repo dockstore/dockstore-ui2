@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { Base } from '../shared/base';
 import { Collection, DockstoreTool, Entry, Organization, Workflow, WorkflowVersionPathInfo } from '../shared/openapi';
 import { ActivatedRoute, Router } from '../test';

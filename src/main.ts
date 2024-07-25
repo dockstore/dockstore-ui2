@@ -35,7 +35,6 @@ import { LoginService } from './app/login/login.service';
 import { AccountsService } from './app/loginComponents/accounts/external/accounts.service';
 import { MytoolsService } from './app/mytools/mytools.service';
 import { MyWorkflowsService } from './app/myworkflows/myworkflows.service';
-import { CONFIG_OPTIONS, ConfigService } from './app/ng2-ui-auth/lib/config.service';
 import { Ng2UiAuthModule } from './app/ng2-ui-auth/public_api';
 import { OrganizationStargazersModule } from './app/organizations/organization/organization-stargazers/organization-stargazers.module';
 import { OrganizationStarringModule } from './app/organizations/organization/organization-starring/organization-starring.module';

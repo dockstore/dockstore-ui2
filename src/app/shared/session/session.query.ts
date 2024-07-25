@@ -14,7 +14,6 @@
  *    limitations under the License.
  */
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { Query } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -46,7 +45,7 @@ export class SessionQuery extends Query<SessionState> {
   isNotebook$: Observable<boolean> = this.entryType$.pipe(map((entryType) => entryType === EntryType.Notebook));
   isTool$: Observable<boolean> = this.entryType$.pipe(map((entryType) => entryType === EntryType.Tool));
   loadingDialog$: Observable<boolean> = this.select((session) => session.loadingDialog);
-  constructor(protected store: SessionStore, private route: Router, private entryTypeMetadataService: EntryTypeMetadataService) {
+  constructor(protected store: SessionStore, private entryTypeMetadataService: EntryTypeMetadataService) {
     super(store);
   }
 }

@@ -40,13 +40,6 @@ describe('CodeEditorListService', () => {
       type: SourceFile.TypeEnum.DOCKSTORESMK,
       state: SourceFile.StateEnum.COMPLETE,
     };
-    const secondarySMKFile = {
-      content: '',
-      absolutePath: '/.smk',
-      path: '/.smk',
-      type: SourceFile.TypeEnum.DOCKSTORESMK,
-      state: SourceFile.StateEnum.COMPLETE,
-    };
     const primaryCWLFile: SourceFile = {
       content: '',
       absolutePath: '/Dockstore.cwl',

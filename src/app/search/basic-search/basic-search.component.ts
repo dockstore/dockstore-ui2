@@ -7,7 +7,6 @@ import { Base } from '../../shared/base';
 import { bootstrap4largeModalSize, formInputDebounceTime } from '../../shared/constants';
 import { AdvancedSearchComponent } from '../advancedsearch/advancedsearch.component';
 import { SearchQuery } from '../state/search.query';
-import { SearchService } from '../state/search.service';
 import { MatLegacyOptionModule } from '@angular/material/legacy-core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatLegacyButtonModule } from '@angular/material/legacy-button';
@@ -40,7 +39,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
   ],
 })
 export class BasicSearchComponent extends Base implements OnInit {
-  constructor(private searchService: SearchService, private searchQuery: SearchQuery, private matDialog: MatDialog) {
+  constructor(private searchQuery: SearchQuery, private matDialog: MatDialog) {
     super();
   }
   public searchFormControl = new UntypedFormControl();

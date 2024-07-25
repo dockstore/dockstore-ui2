@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-import { RouterModule, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 import { QueryBuilderService } from './query-builder.service';
 import { SearchAuthorsHtmlPipe } from './search-authors-html.pipe';
 import { SearchComponent } from './search.component';
