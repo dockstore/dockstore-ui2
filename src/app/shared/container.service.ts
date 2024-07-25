@@ -15,11 +15,8 @@
  */
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { ExtendedDockstoreToolService } from './extended-dockstoreTool/extended-dockstoreTool.service';
 import { DockstoreTool } from './openapi/model/dockstoreTool';
-import { ToolQuery } from './tool/tool.query';
 import { ToolService } from './tool/tool.service';
-import { ToolStore } from './tool/tool.store';
 
 /**
  * This is mostly deprecated in favor of ToolService for the selected tool
