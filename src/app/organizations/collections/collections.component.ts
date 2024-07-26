@@ -13,7 +13,6 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { P } from '@angular/cdk/keycodes';
 import { KeyValue, NgIf, NgFor, AsyncPipe, JsonPipe, KeyValuePipe } from '@angular/common';
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';

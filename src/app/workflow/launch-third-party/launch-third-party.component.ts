@@ -8,7 +8,7 @@ import { Base } from '../../shared/base';
 import { DescriptorTypeCompatService } from '../../shared/descriptor-type-compat.service';
 import { Dockstore } from '../../shared/dockstore.model';
 import { GA4GHFilesQuery } from '../../shared/ga4gh-files/ga4gh-files.query';
-import { CloudInstance, CloudInstancesService, User, UsersService, ToolFile, Workflow, WorkflowVersion } from '../../shared/openapi';
+import { CloudInstance, CloudInstancesService, User, ToolFile, Workflow, WorkflowVersion } from '../../shared/openapi';
 import { WorkflowsService } from '../../shared/openapi/api/workflows.service';
 import { SourceFile } from '../../shared/openapi/model/sourceFile';
 import { UserQuery } from '../../shared/user/user.query';
@@ -261,7 +261,6 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
     private descriptorsQuery: DescriptorsQuery,
     private descriptorsService: DescriptorsService,
     private cloudInstanceService: CloudInstancesService,
-    private usersService: UsersService,
     private userQuery: UserQuery,
     private descriptorLanguageService: DescriptorLanguageService,
     private dialog: MatDialog

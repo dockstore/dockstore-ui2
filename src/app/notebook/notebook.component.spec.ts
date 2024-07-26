@@ -64,7 +64,7 @@ describe('NotebookComponent', () => {
   }
 
   function makeSourceFile(content: string, path: string, type: SourceFile.TypeEnum = SourceFile.TypeEnum.DOCKSTOREJUPYTER): SourceFile {
-    return { content: content, path: path, type: type } as SourceFile;
+    return { content: content, path: path, type: type, state: SourceFile.StateEnum.COMPLETE } as SourceFile;
   }
 
   function makeWorkflow(language: string): Workflow {
@@ -97,14 +97,14 @@ describe('NotebookComponent', () => {
 
   function confirmSuccess() {
     const element: HTMLElement = fixture.nativeElement;
-    expect(notebookComponent.error).toBeFalse();
+    expect(notebookComponent.error).toBeNull();
     expect(element.querySelectorAll('.notebook').length).toBe(1);
     expect(element.textContent).not.toContain('The notebook could not be displayed.');
   }
 
   function confirmError() {
     const element: HTMLElement = fixture.nativeElement;
-    expect(notebookComponent.error).toBeTrue();
+    expect(notebookComponent.error).not.toEqual(null);
     expect(element.querySelectorAll('.notebook').length).toBe(0);
     expect(element.textContent).toContain('The notebook could not be displayed.');
   }
@@ -191,5 +191,13 @@ describe('NotebookComponent', () => {
     format(notebook);
     expect(element.querySelector('.source').textContent).toContain('some input');
     expect(element.querySelector('.output').textContent).toContain('some html');
+  });
+
+  it('should display the message from a NOT_STORED notebook', () => {
+    const sourceFile = makeSourceFile('could not store', '/main.ipynb');
+    sourceFile.state = SourceFile.StateEnum.NOTSTORED;
+    formatEntities([sourceFile], makeWorkflow('Python'), makeVersion('/main.ipynb'), '');
+    confirmError();
+    expect(element.textContent).toContain('could not store');
   });
 });

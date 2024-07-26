@@ -31,22 +31,6 @@ describe('Logged in Dockstore Home', () => {
     cy.scrollTo('bottom');
     cy.get('[data-cy=mt-toot]').should('be.visible');
   });
-
-  function starColumn(url: string, type: string) {
-    if (type === 'workflow') {
-      cy.get('[data-cy=workflows-tab]').click();
-    }
-    cy.get('.mat-icon.star-icon').should('not.exist');
-    cy.visit(url);
-    cy.get('#starringButton').click();
-    cy.visit('');
-    if (type === 'workflow') {
-      cy.get('[data-cy=workflows-tab]').click();
-    }
-    cy.get('.mat-icon.star-icon').should('exist');
-    cy.visit(url);
-    cy.get('#starringButton').click();
-  }
 });
 
 describe('Logged out Dockstore Home', () => {

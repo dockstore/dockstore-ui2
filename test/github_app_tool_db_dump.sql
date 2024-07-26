@@ -1,4 +1,4 @@
-INSERT INTO public.sourcefile (id, content, type, path, dbcreatedate, dbupdatedate, absolutepath, frozen) VALUES (50, '#!/usr/bin/env cwl-runner
+INSERT INTO public.sourcefile (id, content, type, state, path, dbcreatedate, dbupdatedate, absolutepath, frozen) VALUES (50, '#!/usr/bin/env cwl-runner
 
 class: Workflow
 id: Md5sum
@@ -43,9 +43,9 @@ outputs:
       glob: md5sum.txt
     doc: A text file that contains a single line that is the md5sum of the input file.
 baseCommand: [/bin/my_md5sum]
-', 'DOCKSTORE_CWL', '/tools/Dockstore.cwl', '2022-01-14 10:04:44.460000', '2022-01-14 10:04:44.460000', '/tools/Dockstore.cwl', false);
+', 'DOCKSTORE_CWL', 'COMPLETE', '/tools/Dockstore.cwl', '2022-01-14 10:04:44.460000', '2022-01-14 10:04:44.460000', '/tools/Dockstore.cwl', false);
 
-INSERT INTO public.sourcefile (id, content, type, path, dbcreatedate, dbupdatedate, absolutepath, frozen) VALUES (51, 'version: 1.2
+INSERT INTO public.sourcefile (id, content, type, state, path, dbcreatedate, dbupdatedate, absolutepath, frozen) VALUES (51, 'version: 1.2
 tools:
    - subclass: cwl
      primaryDescriptorPath: /tools/Dockstore.cwl
@@ -53,10 +53,10 @@ tools:
 workflows:
    - subclass: cwl
      primaryDescriptorPath: /workflows/HelloWorld.cwl
-', 'DOCKSTORE_YML', '/.dockstore.yml', '2022-01-14 10:04:44.458000', '2022-01-14 10:04:44.458000', '/.dockstore.yml', false);
+', 'DOCKSTORE_YML', 'COMPLETE', '/.dockstore.yml', '2022-01-14 10:04:44.458000', '2022-01-14 10:04:44.458000', '/.dockstore.yml', false);
 
 
-INSERT INTO public.sourcefile (id, content, type, path, dbcreatedate, dbupdatedate, absolutepath, frozen) VALUES (54, '#!/usr/bin/env cwl-runner
+INSERT INTO public.sourcefile (id, content, type, state, path, dbcreatedate, dbupdatedate, absolutepath, frozen) VALUES (54, '#!/usr/bin/env cwl-runner
 
 class: CommandLineTool
 id: Md5sum
@@ -101,9 +101,9 @@ outputs:
       glob: md5sum.txt
     doc: A text file that contains a single line that is the md5sum of the input file.
 baseCommand: [/bin/my_md5sum]
-', 'DOCKSTORE_CWL', '/tools/Dockstore.cwl', '2022-01-14 09:13:37.403000', '2022-01-14 09:13:37.403000', '/tools/Dockstore.cwl', false);
+', 'DOCKSTORE_CWL', 'COMPLETE', '/tools/Dockstore.cwl', '2022-01-14 09:13:37.403000', '2022-01-14 09:13:37.403000', '/tools/Dockstore.cwl', false);
 
-INSERT INTO public.sourcefile (id, content, type, path, dbcreatedate, dbupdatedate, absolutepath, frozen) VALUES (55, 'version: 1.2
+INSERT INTO public.sourcefile (id, content, type, state, path, dbcreatedate, dbupdatedate, absolutepath, frozen) VALUES (55, 'version: 1.2
 tools:
    - subclass: cwl
      primaryDescriptorPath: /tools/Dockstore.cwl
@@ -111,9 +111,9 @@ tools:
 workflows:
    - subclass: cwl
      primaryDescriptorPath: /workflows/HelloWorld.cwl
-', 'DOCKSTORE_YML', '/.dockstore.yml', '2022-01-14 10:04:44.458000', '2022-01-14 10:04:44.458000', '/.dockstore.yml', false);
+', 'DOCKSTORE_YML', 'COMPLETE', '/.dockstore.yml', '2022-01-14 10:04:44.458000', '2022-01-14 10:04:44.458000', '/.dockstore.yml', false);
 
-INSERT INTO public.sourcefile (id, content, type, path, dbcreatedate, dbupdatedate, absolutepath, frozen) VALUES (56, '#!/usr/bin/env cwl-runner
+INSERT INTO public.sourcefile (id, content, type, state, path, dbcreatedate, dbupdatedate, absolutepath, frozen) VALUES (56, '#!/usr/bin/env cwl-runner
 
 class: CommandLineTool
 id: Md5sum
@@ -158,9 +158,9 @@ outputs:
       glob: md5sum.txt
     doc: A text file that contains a single line that is the md5sum of the input file.
 baseCommand: [/bin/my_md5sum]
-', 'DOCKSTORE_CWL', '/tools/Dockstore.cwl', '2022-01-14 09:13:37.403000', '2022-01-14 09:13:37.403000', '/tools/Dockstore.cwl', false);
+', 'DOCKSTORE_CWL', 'COMPLETE', '/tools/Dockstore.cwl', '2022-01-14 09:13:37.403000', '2022-01-14 09:13:37.403000', '/tools/Dockstore.cwl', false);
 
-INSERT INTO public.sourcefile (id, content, type, path, dbcreatedate, dbupdatedate, absolutepath, frozen) VALUES (57, 'version: 1.2
+INSERT INTO public.sourcefile (id, content, type, state, path, dbcreatedate, dbupdatedate, absolutepath, frozen) VALUES (57, 'version: 1.2
 tools:
    - subclass: cwl
      primaryDescriptorPath: /tools/Dockstore.cwl
@@ -168,7 +168,7 @@ tools:
 workflows:
    - subclass: cwl
      primaryDescriptorPath: /workflows/HelloWorld.cwl
-', 'DOCKSTORE_YML', '/.dockstore.yml', '2022-01-14 10:04:44.458000', '2022-01-14 10:04:44.458000', '/.dockstore.yml', false);
+', 'DOCKSTORE_YML', 'COMPLETE', '/.dockstore.yml', '2022-01-14 10:04:44.458000', '2022-01-14 10:04:44.458000', '/.dockstore.yml', false);
 
 INSERT INTO public.apptool (id, conceptdoi, dbcreatedate, dbupdatedate, description, giturl, ispublished, lastmodified, lastupdated, licensename, topicid, checkerid, descriptortype, descriptortypesubclass, forumurl, mode, organization, repository, sourcecontrol, workflowname, actualdefaultversion, topicautomatic, topicmanual, topicselection, waseverpublic) VALUES (50, null, '2022-01-12 14:51:23.656000', '2022-01-12 14:51:23.689000', null, 'git@github.com:C/github-app-tools.git', true, '2022-01-12 14:48:20.000000', '2022-01-12 14:51:22.707000', null, null, null, 'cwl', 'n/a', null, 'DOCKSTORE_YML', 'C', 'test-github-app-tools', 'github.com', 'testing', null, null, null, 'AUTOMATIC', true);
 INSERT INTO public.apptool (id, conceptdoi, dbcreatedate, dbupdatedate, description, giturl, ispublished, lastmodified, lastupdated, licensename, topicid, checkerid, descriptortype, descriptortypesubclass, forumurl, mode, organization, repository, sourcecontrol, workflowname, actualdefaultversion, topicautomatic, topicmanual, topicselection, waseverpublic) VALUES (51, null, '2022-01-12 14:45:55.370000', '2022-01-14 10:05:15.491000', 'test description...', 'git@github.com:C/github-app-tools.git', false, '2022-01-14 09:13:50.000000', '2022-01-12 14:45:54.113000', null, null, null, 'cwl', 'n/a', null, 'DOCKSTORE_YML', 'C', 'test-github-app-tools', 'github.com', 'md5sum', null, null, null, 'AUTOMATIC', true);

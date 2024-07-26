@@ -56,8 +56,6 @@ export class SearchResultsComponent extends Base implements OnInit {
   public showWorkflowTagCloud$: Observable<boolean>;
   public showToolTagCloud$: Observable<boolean>;
   public showNotebookTagCloud$: Observable<boolean>;
-  public selectedIndex$: Observable<any>;
-  public selectedTab: number;
   toolTagCloudData: Array<CloudData>;
   workflowTagCloudData: Array<CloudData>;
   notebookTagCloudData: Array<CloudData>;

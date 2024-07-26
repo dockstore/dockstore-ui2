@@ -1,5 +1,4 @@
 import { RecentEventsPipe } from './recent-events.pipe';
-import { Workflow } from 'app/shared/openapi';
 
 describe('Pipe: recentEvents', () => {
   const entryFields = ['tool', 'workflow', 'apptool', 'service', 'notebook'];

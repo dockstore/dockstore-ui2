@@ -1,6 +1,5 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
 import {
   MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
@@ -60,8 +59,8 @@ describe('FileTreeComponent', () => {
     let expectedNodes = [];
     expect(component.convertSourceFilesToTree(sourcefiles)).toEqual(expectedNodes);
     sourcefiles = [
-      { absolutePath: '/folder1/file1', path: 'file1', type: SourceFile.TypeEnum.DOCKSTOREWDL },
-      { absolutePath: '/folder1/file2', path: 'file2', type: SourceFile.TypeEnum.DOCKSTOREWDL },
+      { absolutePath: '/folder1/file1', path: 'file1', type: SourceFile.TypeEnum.DOCKSTOREWDL, state: SourceFile.StateEnum.COMPLETE },
+      { absolutePath: '/folder1/file2', path: 'file2', type: SourceFile.TypeEnum.DOCKSTOREWDL, state: SourceFile.StateEnum.COMPLETE },
     ];
     expectedNodes = [
       Object({

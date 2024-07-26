@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { Component, Inject, OnInit } from '@angular/core';
-import { AbstractControl, UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogModule } from '@angular/material/legacy-dialog';
 import { UpdateOrganizationOrCollectionDescriptionService } from '../state/update-organization-description.service';
 import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';

@@ -85,7 +85,6 @@ function isStagingOrProd() {
   return baseUrl === 'https://staging.dockstore.org' || baseUrl === 'https://dockstore.org';
 }
 
-const organizations = [['Broad Institute']];
 describe('Check organizations page', () => {
   it('has multiple organizations and org with content', () => {
     cy.visit('/');

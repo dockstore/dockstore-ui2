@@ -37,7 +37,7 @@ export class RemoveCollectionDialogComponent {
     private collectionsService: CollectionsService,
     private collectionsQuery: CollectionsQuery
   ) {
-    this.collectionsQueryLoading$ = collectionsQuery.selectLoading();
+    this.collectionsQueryLoading$ = this.collectionsQuery.selectLoading();
   }
   removeCollection() {
     this.collectionsService.deleteCollection(

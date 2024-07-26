@@ -8,7 +8,6 @@ import {
   Entry,
   Organization,
   OrganizationsService,
-  WorkflowsService,
   WorkflowVersionPathInfo,
 } from '../../shared/openapi';
 import { AliasesStore } from './aliases.store';
@@ -19,7 +18,6 @@ export class AliasesService {
     private aliasesStore: AliasesStore,
     private organizationsService: OrganizationsService,
     private entriesService: EntriesService,
-    private workflowsService: WorkflowsService,
     private workflowVersionsService: WorkflowVersionsAliasService
   ) {}
 
