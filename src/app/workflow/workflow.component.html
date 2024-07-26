@@ -481,7 +481,7 @@
     <div fxLayout="column" fxLayoutGap="1rem" class="p-0 col-sm-12 col-md-3 col-lg-3 ng-scope" *ngIf="isWorkflowPublic && workflow">
       <app-launch-third-party [workflow]="workflow" [selectedVersion]="selectedVersion"></app-launch-third-party>
       <mat-card *ngIf="workflow.conceptDois[workflow.doiSelection]">
-        <div class="h5">Cite this workflow</div>
+        <div class="h5">Cite this {{ workflow.entryTypeMetadata.term }}</div>
         <mat-divider></mat-divider>
         <mat-card-content>
           <p *ngIf="selectedVersion.dois[workflow.doiSelection]" class="pt-2">

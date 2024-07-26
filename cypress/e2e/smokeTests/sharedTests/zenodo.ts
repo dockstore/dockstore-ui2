@@ -186,12 +186,8 @@ describe('Create Zenodo DOI for workflow version', () => {
     cy.get('[data-cy=confirm-dialog-button]').click();
     cy.get('[data-cy=confirm-dialog-button]', { timeout: 20000 }).should('not.exist');
 
-    cy.get('[data-cy=workflow-version-DOI-badge]').should('be.visible');
-
-    goToTab('Info');
-    cy.get('[class=mat-card-header]').should('contain', 'Workflow Version Information');
-
-    // Check that the DOI appears on the Info page for the new version
-    cy.get('[data-cy=info-tab-DOI-badge]').should('be.visible');
+    // Check that the DOI appears for the new version
+    cy.get('[data-cy=user-DOI-icon]').should('be.visible');
+    cy.get('[data-cy=version-DOI-badge]').should('be.visible');
   });
 });

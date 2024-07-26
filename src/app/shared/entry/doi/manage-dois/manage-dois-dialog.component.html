@@ -8,7 +8,7 @@
     <li><strong>Version DOI:</strong> represents a specific version.</li>
     <li><strong>Concept DOI:</strong> represents all versions and resolves to the latest one.</li>
   </ul>
-  <mat-card *ngIf="!doiInfoMap.size" class="alert alert-info mat-elevation-z mt-3" role="alert" data-cy="no-metrics-banner">
+  <mat-card *ngIf="!doiInfoMap.size" class="alert alert-info mat-elevation-z mt-3" role="alert">
     <mat-icon class="alert-info-icon">info</mat-icon> This {{ entryTypeMetadata.term }} has no DOIs.
   </mat-card>
   <p *ngIf="doiInfoMap.size">Select which DOI to display publicly:</p>

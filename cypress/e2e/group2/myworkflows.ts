@@ -405,13 +405,14 @@ describe('Dockstore my workflows part 2', () => {
         });
       });
 
-      cy.get('[data-cy=workflow-version-DOI-badge]').should('not.exist'); // Make sure there are no existing Zenodo badges
+      cy.get('[data-cy=version-DOI-badge]').should('not.exist'); // Make sure there are no existing Zenodo badges
       gotoVersionsAndClickActions();
       // Request DOI
       cy.get('[data-cy=dockstore-request-doi-button]').click();
       cy.get('[data-cy=export-button').should('be.enabled');
       cy.get('[data-cy=export-button').click();
-      cy.get('[data-cy=workflow-version-DOI-badge]').its('length').should('be.gt', 0); // Should have a DOI badge now
+      cy.get('[data-cy=user-DOI-icon]').should('be.visible');
+      cy.get('[data-cy=version-DOI-badge]').should('be.visible'); // Should have a DOI badge now
       cy.get('td').contains('Actions').click();
       cy.get('[data-cy=dockstore-request-doi-button').should('not.exist'); // Should not be able to request another DOI
 
