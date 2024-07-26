@@ -390,12 +390,13 @@ describe('Dockstore my workflows part 2', () => {
           statusCode: 200,
         });
       });
-      // doiResponse.json has a workflow version with a DOI
-      cy.fixture('doiResponse.json').then((json) => {
-        cy.intercept('PUT', '/api/**/requestDOI/*', {
+      // getWorkflowWithDoi.json has a workflow version with a DOI.
+      // This endpoint is called after a DOI is requested.
+      cy.fixture('getWorkflowWithDoi.json').then((json) => {
+        cy.intercept('GET', '/api/workflows/11?include=versions', {
           body: json,
           statusCode: 200,
-        });
+        }).as('getWorkflowAfterRequestDoi');
       });
       // orcidExportResponse.json has a workflow version with an ORCID put code
       cy.fixture('orcidExportResponse.json').then((json) => {
@@ -405,14 +406,18 @@ describe('Dockstore my workflows part 2', () => {
         });
       });
 
-      cy.get('[data-cy=version-DOI-badge]').should('not.exist'); // Make sure there are no existing Zenodo badges
+      // Make sure there are no existing Zenodo badges
+      cy.get('[data-cy=concept-DOI-badge]').should('not.exist');
+      cy.get('[data-cy=version-DOI-badge]').should('not.exist');
       gotoVersionsAndClickActions();
       // Request DOI
       cy.get('[data-cy=dockstore-request-doi-button]').click();
       cy.get('[data-cy=export-button').should('be.enabled');
       cy.get('[data-cy=export-button').click();
       cy.get('[data-cy=user-DOI-icon]').should('be.visible');
-      cy.get('[data-cy=version-DOI-badge]').should('be.visible'); // Should have a DOI badge now
+      // Should have DOI badges now
+      cy.get('[data-cy=concept-DOI-badge]').should('be.visible');
+      cy.get('[data-cy=version-DOI-badge]').should('be.visible');
       cy.get('td').contains('Actions').click();
       cy.get('[data-cy=dockstore-request-doi-button').should('not.exist'); // Should not be able to request another DOI
 
