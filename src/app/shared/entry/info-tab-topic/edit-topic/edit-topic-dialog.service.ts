@@ -20,7 +20,13 @@ export class EditTopicDialogService {
 
   saveTopicChanges(entry: Workflow | DockstoreTool, topicManual: string, topicSelection: Workflow.TopicSelectionEnum) {
     this.alertService.start('Saving topic changes');
-    const newEntryForUpdate = { ...entry, topicManual: topicManual, topicSelection: topicSelection };
+    let newEntryForUpdate;
+    if (topicSelection === Workflow.TopicSelectionEnum.AI) {
+      // If the user selects the AI topic, they have reviewed and approved it
+      newEntryForUpdate = { ...entry, topicManual: topicManual, topicSelection: topicSelection, approvedAITopic: true };
+    } else {
+      newEntryForUpdate = { ...entry, topicManual: topicManual, topicSelection: topicSelection };
+    }
 
     if (entry.entryType === EntryType.TOOL) {
       this.containersService.updateContainer(entry.id, newEntryForUpdate as DockstoreTool).subscribe(
