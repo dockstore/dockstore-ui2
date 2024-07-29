@@ -390,6 +390,10 @@ describe('Dockstore my workflows part 2', () => {
           statusCode: 200,
         });
       });
+      // Return a 200 for requestDOI. The response is not used.
+      cy.intercept('PUT', '/api/**/requestDOI/*', {
+        statusCode: 200,
+      });
       // getWorkflowWithDoi.json has a workflow version with a DOI.
       // This endpoint is called after a DOI is requested.
       cy.fixture('getWorkflowWithDoi.json').then((json) => {
@@ -414,8 +418,8 @@ describe('Dockstore my workflows part 2', () => {
       cy.get('[data-cy=dockstore-request-doi-button]').click();
       cy.get('[data-cy=export-button').should('be.enabled');
       cy.get('[data-cy=export-button').click();
-      cy.get('[data-cy=user-DOI-icon]').should('be.visible');
       // Should have DOI badges now
+      cy.get('[data-cy=user-DOI-icon]').should('be.visible');
       cy.get('[data-cy=concept-DOI-badge]').should('be.visible');
       cy.get('[data-cy=version-DOI-badge]').should('be.visible');
       cy.get('td').contains('Actions').click();
