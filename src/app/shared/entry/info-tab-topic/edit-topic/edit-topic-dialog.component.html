@@ -2,7 +2,8 @@
 <mat-dialog-content>
   <p>
     A topic is a short description of your {{ entryTypeMetadata.term }}. There {{ topicOptions.length === 1 ? 'is' : 'are' }}
-    {{ topicOptions.length }} type{{ topicOptions.length === 1 ? '' : 's' }} of topics that you can choose from:
+    {{ topicOptions.length }} type{{ topicOptions.length === 1 ? '' : 's' }} of topic{{ topicOptions.length === 1 ? '' : 's' }} that you can
+    choose from:
   </p>
   <div fxLayout="column">
     <mat-radio-group
@@ -32,7 +33,7 @@
             <span
               *ngIf="topicOption.type === TopicSelectionEnum.AI && entry.approvedAITopic"
               class="bubble approved"
-              matTooltip="This AI topic was reviewed and selected by the {{ entryTypeMetadata.term }} owner"
+              matTooltip="This AI topic was reviewed and selected by a {{ entryTypeMetadata.term }} owner"
               ><mat-icon class="mat-icon-sm">checkmark</mat-icon> Approved</span
             >
           </div>
@@ -43,8 +44,8 @@
             *ngIf="topicOption.type === TopicSelectionEnum.AI && !entry.approvedAITopic && entry.topicSelection === TopicSelectionEnum.AI"
             class="alert-info mat-elevation-z size-small py-1 my-3"
           >
-            <mat-icon class="mat-icon-sm">info</mat-icon> This topic has not been reviewed by the {{ entryTypeMetadata.term }} owner. Click
-            <strong>Save</strong> to confirm that you have reviewed and approved the topic. Otherwise, select another topic.
+            <mat-icon class="mat-icon-sm">info</mat-icon> You have not approved this topic. Click <strong>Save</strong> to confirm that you
+            have reviewed and approved the topic. Otherwise, select another topic.
           </mat-card>
 
           <div
@@ -76,7 +77,8 @@
 <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end">
   <div *ngIf="promptToConfirmAISelection" fxLayout="row" fxLayoutAlign="end" class="mb-3">
     <mat-card class="alert-warning mat-elevation-z size-small weight-bold py-1" fxFlex="50"
-      >By selecting the AI topic, you are confirming that you have reviewed and approved it. Are you sure you want to select the AI
+      >By selecting the AI topic, you are confirming that you have reviewed and approved it. There will be no
+      <app-ai-bubble [isPublic]="true"></app-ai-bubble> icon when the topic is displayed publicly. Are you sure you want to select the AI
       topic?</mat-card
     >
   </div>

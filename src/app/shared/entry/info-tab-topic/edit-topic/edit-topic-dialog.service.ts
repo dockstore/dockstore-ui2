@@ -5,6 +5,8 @@ import { WorkflowService } from '../../../state/workflow.service';
 import { ContainerService } from '../../../container.service';
 import { WorkflowQuery } from 'app/shared/state/workflow.query';
 import { ToolQuery } from 'app/shared/tool/tool.query';
+import { InfoTabService as WorkflowInfoTabService } from 'app/workflow/info-tab/info-tab.service';
+import { InfoTabService as ContainerInfoTabService } from 'app/container/info-tab/info-tab.service';
 
 @Injectable()
 export class EditTopicDialogService {
@@ -14,6 +16,8 @@ export class EditTopicDialogService {
     private workflowService: WorkflowService,
     private containersService: ContainersService,
     private containerService: ContainerService,
+    private workflowInfoTabService: WorkflowInfoTabService,
+    private containerInfoTabService: ContainerInfoTabService,
     private workflowQuery: WorkflowQuery,
     private toolQuery: ToolQuery
   ) {}
@@ -29,35 +33,39 @@ export class EditTopicDialogService {
     }
 
     if (entry.entryType === EntryType.TOOL) {
-      this.containersService.updateContainer(entry.id, newEntryForUpdate as DockstoreTool).subscribe(
-        (response) => {
-          this.alertService.detailedSuccess();
-          this.containerService.setTool({
-            ...this.toolQuery.getActive(),
-            topicManual: response.topicManual,
-            topicSelection: response.topicSelection,
-            approvedAITopic: response.approvedAITopic,
-          });
-        },
-        (error) => {
-          this.alertService.detailedError(error);
-        }
-      );
+      this.containersService
+        .updateContainer(entry.id, this.containerInfoTabService.getPartialToolForUpdate(newEntryForUpdate as DockstoreTool))
+        .subscribe(
+          (response) => {
+            this.alertService.detailedSuccess();
+            this.containerService.setTool({
+              ...this.toolQuery.getActive(),
+              topicManual: response.topicManual,
+              topicSelection: response.topicSelection,
+              approvedAITopic: response.approvedAITopic,
+            });
+          },
+          (error) => {
+            this.alertService.detailedError(error);
+          }
+        );
     } else {
-      this.workflowsService.updateWorkflow(entry.id, newEntryForUpdate as Workflow).subscribe(
-        (response) => {
-          this.alertService.detailedSuccess();
-          this.workflowService.setWorkflow({
-            ...this.workflowQuery.getActive(),
-            topicManual: response.topicManual,
-            topicSelection: response.topicSelection,
-            approvedAITopic: response.approvedAITopic,
-          });
-        },
-        (error) => {
-          this.alertService.detailedError(error);
-        }
-      );
+      this.workflowsService
+        .updateWorkflow(entry.id, this.workflowInfoTabService.getPartialEntryForUpdate(newEntryForUpdate as Workflow))
+        .subscribe(
+          (response) => {
+            this.alertService.detailedSuccess();
+            this.workflowService.setWorkflow({
+              ...this.workflowQuery.getActive(),
+              topicManual: response.topicManual,
+              topicSelection: response.topicSelection,
+              approvedAITopic: response.approvedAITopic,
+            });
+          },
+          (error) => {
+            this.alertService.detailedError(error);
+          }
+        );
     }
   }
 }
