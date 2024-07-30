@@ -111,7 +111,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatLegacyCardModule } from '@angular/material/legacy-card';
 import { ManageDoisDialog } from 'app/shared/entry/doi/manage-dois/manage-dois-dialog.component';
 import { DoiBadgeComponent } from 'app/shared/entry/doi/doi-badge/doi-badge.component';
-import { MatBadgeModule } from '@angular/material/badge';
 
 @Component({
   selector: 'app-workflow',
@@ -165,7 +164,6 @@ import { MatBadgeModule } from '@angular/material/badge';
     DatePipe,
     BaseUrlPipe,
     DoiBadgeComponent,
-    MatBadgeModule,
   ],
 })
 export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterViewInit, OnInit {
@@ -207,7 +205,6 @@ export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterVi
   public workflowVersionsCtrl: FormControl<Tag | WorkflowVersion> = new FormControl<Tag | WorkflowVersion>(null); //control for the selected version
   public versionFilterCtrl: FormControl<string> = new FormControl<string>(''); // control for the MatSelect filter keyword
   public filteredVersions: ReplaySubject<Array<Tag | WorkflowVersion>> = new ReplaySubject<Array<Tag | WorkflowVersion>>(1);
-  public numberOfDoiInitiators;
   public selectedVersionDoi: Doi | undefined;
   public selectedConceptDoi: Doi | undefined;
 
@@ -357,8 +354,6 @@ export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterVi
     if (this.selectedVersion) {
       this.schema = this.bioschemaService.getWorkflowSchema(this.workflow, this.selectedVersion);
       this.versionAgoMessage = this.dateService.getAgoMessage((this.selectedVersion as WorkflowVersion).last_modified);
-      this.selectedVersionDoi = this.selectedVersion.dois[this.workflow.doiSelection];
-      this.selectedConceptDoi = this.workflow.conceptDois[this.workflow.doiSelection];
     }
   }
 
@@ -377,7 +372,6 @@ export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterVi
       }
       this.canRead = this.canWrite = this.isOwner = false;
       this.readers = this.writers = this.owners = [];
-      this.numberOfDoiInitiators = Object.keys(this.workflow.conceptDois).length;
       if (!this.isPublic()) {
         const subclass: WorkflowSubClass = this.getWorkflowSubclass(this.entryType);
         this.showWorkflowActions = false;
@@ -423,6 +417,7 @@ export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterVi
       if (workflow) {
         this.published = this.workflow.is_published;
         this.selectedVersion = this.selectWorkflowVersion(this.workflow.workflowVersions, this.urlVersion, this.workflow.defaultVersion);
+        this.selectedConceptDoi = this.workflow.conceptDois[this.workflow.doiSelection];
         if (this.selectedVersion) {
           this.workflowService.setWorkflowVersion(this.selectedVersion);
           this.updateVersionsFileTypes(this.workflow.id, this.selectedVersion.id);
@@ -433,6 +428,7 @@ export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterVi
           } else {
             this.gA4GHFilesService.updateFiles(trsID, this.selectedVersion.name, [this.workflow.descriptorType]);
           }
+          this.selectedVersionDoi = this.selectedVersion.dois[this.workflow.doiSelection];
         }
         this.workflowVersionAlphabetical = this.workflow.workflowVersions.slice().sort((a, b) => {
           return a.name.localeCompare(b.name);

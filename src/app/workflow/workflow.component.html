@@ -169,17 +169,11 @@
           type="button"
           mat-button
           class="private-btn small-btn-structure ml-2"
-          matTooltip="Manage DOIs. There {{ numberOfDoiInitiators === 1 ? 'is' : 'are' }} {{ numberOfDoiInitiators }} DOI{{
-            numberOfDoiInitiators === 1 ? '' : 's'
-          }} available."
+          matTooltip="Manage DOIs"
           (click)="manageDois()"
           [disabled]="!canWrite"
-          [matBadge]="numberOfDoiInitiators"
-          matBadgeSize="small"
-          matBadgeColor="primary"
-          [matBadgeHidden]="!numberOfDoiInitiators"
         >
-          <img src="../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit DOI" />
+          <img src="../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Manage DOIs" />
           Manage DOIs
         </button>
       </div>
@@ -480,21 +474,21 @@
     </div>
     <div fxLayout="column" fxLayoutGap="1rem" class="p-0 col-sm-12 col-md-3 col-lg-3 ng-scope" *ngIf="isWorkflowPublic && workflow">
       <app-launch-third-party [workflow]="workflow" [selectedVersion]="selectedVersion"></app-launch-third-party>
-      <mat-card *ngIf="workflow.conceptDois[workflow.doiSelection]">
+      <mat-card *ngIf="selectedConceptDoi">
         <div class="h5">Cite this {{ workflow.entryTypeMetadata.term }}</div>
         <mat-divider></mat-divider>
         <mat-card-content>
-          <p *ngIf="selectedVersion.dois[workflow.doiSelection]" class="pt-2">
+          <p *ngIf="selectedVersionDoi" class="pt-2">
             Cite version <strong>{{ selectedVersion?.name }}</strong> using DOI
-            <app-doi-badge [doi]="selectedVersion.dois[workflow.doiSelection]" [displayInitiator]="false"></app-doi-badge>.
+            <app-doi-badge [doi]="selectedVersionDoi" [displayInitiator]="false"></app-doi-badge>.
           </p>
-          <p *ngIf="!selectedVersion.dois[workflow.doiSelection]" class="pt-2">
+          <p *ngIf="!selectedVersionDoi" class="pt-2">
             Version <strong>{{ selectedVersion?.name }}</strong> has no DOI.
           </p>
           <p>
             Cite all versions using the DOI
-            <app-doi-badge [doi]="workflow.conceptDois[workflow.doiSelection]" [displayInitiator]="false"></app-doi-badge>. This DOI
-            represents all versions, and will always resolve to the latest one.
+            <app-doi-badge [doi]="selectedConceptDoi" [displayInitiator]="false"></app-doi-badge>. This DOI represents all versions, and
+            will always resolve to the latest one.
           </p>
         </mat-card-content>
       </mat-card>
