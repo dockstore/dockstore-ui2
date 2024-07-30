@@ -87,7 +87,7 @@
   <button
     mat-raised-button
     (click)="saveTopic()"
-    [attr.data-cy]="'topic' + promptToConfirmAISelection ? 'Confirm' : 'Save' + 'Button'"
+    [attr.data-cy]="'topic' + (promptToConfirmAISelection ? 'Confirm' : 'Save') + 'Button'"
     class="accent-1-dark-btn mat-elevation-z"
   >
     {{ promptToConfirmAISelection ? 'Confirm' : 'Save' }}
