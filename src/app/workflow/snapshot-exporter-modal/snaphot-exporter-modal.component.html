@@ -61,15 +61,9 @@
       </div>
 
       <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end">
-        <div
-          *ngIf="promptToConfirmSnapshot && state.overall === StepState.INITIAL"
-          fxLayout="row"
-          fxLayoutAlign="end"
-          fxFlex="50"
-          fxFlexOffset="50"
-        >
-          <span class="alert-warning pb-2 mb-2"
-            >Are you sure you want to snapshot this version, making it uneditable? This cannot be undone.</span
+        <div *ngIf="promptToConfirmSnapshot && state.overall === StepState.INITIAL" fxLayout="row" fxLayoutAlign="end" class="mb-3 w-100">
+          <mat-card fxFlex="50" class="alert-warning mat-elevation-z size-small weight-bold py-1"
+            >Are you sure you want to snapshot this version, making it uneditable? This cannot be undone.</mat-card
           >
         </div>
         <div fxLayoutAlign="end" fxLayout="row" fxFlex="50">

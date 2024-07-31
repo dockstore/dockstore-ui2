@@ -78,6 +78,7 @@ export class QueryBuilderService {
   private sourceOptions(body: Bodybuilder) {
     return body.rawOption('_source', [
       'all_authors',
+      'approvedAITopic',
       'descriptorType',
       'descriptorTypeSubclass',
       'full_workflow_path',
