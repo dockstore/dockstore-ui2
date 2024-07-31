@@ -45,11 +45,7 @@ export interface DoiInfo {
 export class ManageDoisDialog {
   DoiInitiatorEnum = Doi.InitiatorEnum;
   entry: Workflow;
-  version: WorkflowVersion;
   entryTypeMetadata: EntryTypeMetadata;
-  conceptDois: Map<string, Doi>;
-  versionDois: Map<string, Doi>;
-  doiSelection: Doi.InitiatorEnum;
   selectedOption: Doi.InitiatorEnum;
   doiInfoMap: Map<Doi.InitiatorEnum, DoiInfo> = new Map();
 
@@ -59,15 +55,11 @@ export class ManageDoisDialog {
     @Inject(MAT_LEGACY_DIALOG_DATA) public data: ManageDoisDialogData
   ) {
     this.entry = data.entry;
-    this.version = data.version;
     this.entryTypeMetadata = data.entry.entryTypeMetadata;
-    this.conceptDois = new Map(Object.entries(data.entry.conceptDois));
-    this.versionDois = new Map(Object.entries(data.version.dois));
-    this.doiSelection = data.entry.doiSelection;
-    this.selectedOption = this.doiSelection;
-    this.conceptDois.forEach((conceptDoi, initiator) => {
+    this.selectedOption = data.entry.doiSelection;
+    Object.entries(data.entry.conceptDois).forEach(([initiator, conceptDoi]) => {
       let initiatorEnum = Object.keys(Doi.InitiatorEnum).find((i) => Doi.InitiatorEnum[i] === initiator);
-      let versionDoi = this.versionDois.get(initiator);
+      let versionDoi = data.version?.dois[initiator];
       this.doiInfoMap.set(Doi.InitiatorEnum[initiatorEnum], {
         initiator: Doi.InitiatorEnum[initiatorEnum],
         conceptDoi: conceptDoi,
