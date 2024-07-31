@@ -218,8 +218,6 @@ describe('Dockstore my workflows', () => {
       // Topic Editing
       const privateEntryURI = '/my-workflows/github.com/A/l';
       cy.visit(privateEntryURI);
-      // Add an AI topic for testing
-      invokeSql("update workflow set topicai = 'test AI topic sentence' where id = 11");
       // Modify the manual topic, but don't save it
       cy.get('[data-cy=topicEditButton]').click();
       cy.get('[data-cy=topicInput]').clear(); // Unsafe to chain clear()
@@ -255,18 +253,31 @@ describe('Dockstore my workflows', () => {
       cy.get('[data-cy=selected-topic]').should('contain.text', 'goodTopic');
       cy.get('[data-cy=topic-selection-bubble]').should('not.exist');
 
-      // Select the AI topic and verify that it's displayed publicly with an AI bubble
+      // Add an AI topic for testing and set topic selection to AI. The user has not approved of this topic.
+      invokeSql("update workflow set topicai = 'test AI topic sentence' where id = 11");
+      invokeSql("update workflow set topicselection = 'AI' where id = 11");
+      cy.visit(privateEntryURI);
+      cy.get('[data-cy=topicEditButton]').click();
+      cy.get('[data-cy=unapprovedAITopicCard]').should('be.visible');
+      cy.get('[data-cy=topicCancelButton]').click();
+      // AI topic on public page should have an AI bubble because it wasn't approved by the user
+      cy.get('[data-cy=viewPublicWorkflowButton]').should('be.visible').click();
+      cy.get('[data-cy=ai-bubble]').should('be.visible');
+
+      // Select the AI topic and verify that it's displayed publicly without an AI bubble
       cy.visit(privateEntryURI);
       cy.get('[data-cy=topicEditButton]').click();
       cy.get('.mat-radio-label').contains('AI').click();
       cy.get('[data-cy=topicSaveButton]').click();
+      cy.get('[data-cy=confirmAISelectionPrompt').should('be.visible');
+      cy.get('[data-cy=topicConfirmButton]').click();
       cy.wait('@updateWorkflow');
       cy.get('[data-cy=selected-topic]').should('contain.text', 'test AI topic sentence');
-      cy.get('[data-cy=ai-bubble]').should('be.visible');
-      // AI bubble should be displayed on public page too
+      cy.get('[data-cy=ai-bubble]').should('be.visible'); // AI bubble is displayed privately to indicate the topic selection
+      // AI bubble should not be displayed on public page because the user selected it and thus approves of it
       cy.get('[data-cy=viewPublicWorkflowButton]').should('be.visible').click();
       cy.get('[data-cy=selected-topic]').should('contain.text', 'test AI topic sentence');
-      cy.get('[data-cy=ai-bubble]').should('be.visible');
+      cy.get('[data-cy=ai-bubble]').should('not.exist');
     });
     it('should have mode tooltip', () => {
       cy.visit('/my-workflows/github.com/A/g');

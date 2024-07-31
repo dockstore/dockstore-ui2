@@ -20,6 +20,7 @@ import { TokenQuery } from '../../shared/state/token.query';
 import { ExporterStepComponent } from './exporter-step/exporter-step.component';
 import { SnapshotExporterModalService } from './snapshot-exporter-modal.service';
 import { StepState } from './step.state';
+import { MatLegacyCardModule } from '@angular/material/legacy-card';
 
 export enum SnapshotExporterAction {
   SNAPSHOT,
@@ -57,6 +58,7 @@ export interface State {
     ExporterStepComponent,
     MatIconModule,
     AsyncPipe,
+    MatLegacyCardModule,
   ],
 })
 export class SnaphotExporterModalComponent extends Base {

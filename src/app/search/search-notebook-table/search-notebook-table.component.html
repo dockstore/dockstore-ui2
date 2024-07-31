@@ -14,7 +14,10 @@
               (notebook?.source.workflowName ? '/' + notebook?.source.workflowName : '')
           }}</a>
           <div class="truncate-text-2">
-            <app-ai-bubble *ngIf="notebook?.source.topicSelection === TopicSelectionEnum.AI" [isPublic]="true"></app-ai-bubble>
+            <app-ai-bubble
+              *ngIf="notebook?.source.topicSelection === TopicSelectionEnum.AI && !notebook?.source.approvedAITopic"
+              [isPublic]="true"
+            ></app-ai-bubble>
             <span class="size-small" [matTooltip]="notebook?.source.topicAutomatic" matTooltipPosition="left">{{
               notebook?.source.topicAutomatic
             }}</span>

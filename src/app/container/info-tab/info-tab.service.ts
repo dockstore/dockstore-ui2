@@ -116,7 +116,7 @@ export class InfoTabService extends Base {
    * Sending back only the ones relevant.
    * Additionally, the webservice does not appear to understand starredUsers which causes an error.
    */
-  private getPartialToolForUpdate(tool: ExtendedDockstoreTool): DockstoreTool {
+  getPartialToolForUpdate(tool: ExtendedDockstoreTool): DockstoreTool {
     const partialTool: DockstoreTool = {
       gitUrl: tool.gitUrl,
       mode: tool.mode,

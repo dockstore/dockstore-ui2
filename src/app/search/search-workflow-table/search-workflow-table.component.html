@@ -19,7 +19,10 @@
             }}</a
           >
           <div class="truncate-text-2">
-            <app-ai-bubble *ngIf="workflow?.source.topicSelection === TopicSelectionEnum.AI" [isPublic]="true"></app-ai-bubble>
+            <app-ai-bubble
+              *ngIf="workflow?.source.topicSelection === TopicSelectionEnum.AI && !workflow?.source.approvedAITopic"
+              [isPublic]="true"
+            ></app-ai-bubble>
             <span class="size-small" [matTooltip]="workflow?.source.topicAutomatic" matTooltipPosition="left">{{
               workflow?.source.topicAutomatic
             }}</span>
