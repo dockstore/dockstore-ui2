@@ -42,7 +42,7 @@ export interface DoiInfo {
     DoiBadgeComponent,
   ],
 })
-export class ManageDoisDialog {
+export class ManageDoisDialogComponent {
   DoiInitiatorEnum = Doi.InitiatorEnum;
   entry: Workflow;
   entryTypeMetadata: EntryTypeMetadata;
@@ -50,7 +50,7 @@ export class ManageDoisDialog {
   doiInfoMap: Map<Doi.InitiatorEnum, DoiInfo> = new Map();
 
   constructor(
-    public dialogRef: MatLegacyDialogRef<ManageDoisDialog>,
+    public dialogRef: MatLegacyDialogRef<ManageDoisDialogComponent>,
     public manageDoisDialogService: ManageDoisDialogService,
     @Inject(MAT_LEGACY_DIALOG_DATA) public data: ManageDoisDialogData
   ) {

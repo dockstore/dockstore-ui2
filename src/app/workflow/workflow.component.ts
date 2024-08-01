@@ -109,7 +109,7 @@ import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
 import { MatLegacyButtonModule } from '@angular/material/legacy-button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatLegacyCardModule } from '@angular/material/legacy-card';
-import { ManageDoisDialog } from 'app/shared/entry/doi/manage-dois/manage-dois-dialog.component';
+import { ManageDoisDialogComponent } from 'app/shared/entry/doi/manage-dois/manage-dois-dialog.component';
 import { DoiBadgeComponent } from 'app/shared/entry/doi/doi-badge/doi-badge.component';
 
 @Component({
@@ -654,6 +654,9 @@ export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterVi
   }
 
   manageDois() {
-    this.dialog.open(ManageDoisDialog, { width: bootstrap4largeModalSize, data: { entry: this.workflow, version: this.selectedVersion } });
+    this.dialog.open(ManageDoisDialogComponent, {
+      width: bootstrap4largeModalSize,
+      data: { entry: this.workflow, version: this.selectedVersion },
+    });
   }
 }
