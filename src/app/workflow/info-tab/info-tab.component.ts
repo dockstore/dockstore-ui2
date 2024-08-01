@@ -102,7 +102,6 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   downloadZipLink: string;
   publicAccessibleTestParameterFile: boolean | null;
   isValidVersion = false;
-  zenodoUrl: string;
   @Input() selectedVersion: WorkflowVersion;
 
   public validationPatterns = validationDescriptorPatterns;
@@ -198,7 +197,6 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    this.zenodoUrl = Dockstore.ZENODO_AUTH_URL ? Dockstore.ZENODO_AUTH_URL.replace('oauth/authorize', '') : '';
     this.descriptorLanguages$ = this.descriptorLanguageService.filteredDescriptorLanguages$;
     this.descriptorType$ = this.workflowQuery.descriptorType$;
     this.isNFL$ = this.workflowQuery.isNFL$;

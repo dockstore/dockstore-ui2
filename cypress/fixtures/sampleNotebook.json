@@ -5,6 +5,7 @@
     "author": null,
     "checker_id": null,
     "conceptDoi": null,
+    "conceptDois": {},
     "dbCreateDate": 1678804799542,
     "dbUpdateDate": 1678804799613,
     "defaultTestParameterFilePath": "/test.json",

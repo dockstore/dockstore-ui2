@@ -401,12 +401,17 @@ describe('Dockstore my workflows part 2', () => {
           statusCode: 200,
         });
       });
-      // doiResponse.json has a workflow version with a DOI
-      cy.fixture('doiResponse.json').then((json) => {
-        cy.intercept('PUT', '/api/**/requestDOI/*', {
+      // Return a 200 for requestDOI. The response is not used.
+      cy.intercept('PUT', '/api/**/requestDOI/*', {
+        statusCode: 200,
+      });
+      // getWorkflowWithDoi.json has a workflow version with a DOI.
+      // This endpoint is called after a DOI is requested.
+      cy.fixture('getWorkflowWithDoi.json').then((json) => {
+        cy.intercept('GET', '/api/workflows/11?include=versions', {
           body: json,
           statusCode: 200,
-        });
+        }).as('getWorkflowAfterRequestDoi');
       });
       // orcidExportResponse.json has a workflow version with an ORCID put code
       cy.fixture('orcidExportResponse.json').then((json) => {
@@ -416,13 +421,18 @@ describe('Dockstore my workflows part 2', () => {
         });
       });
 
-      cy.get('[data-cy=workflow-version-DOI-badge]').should('not.exist'); // Make sure there are no existing Zenodo badges
+      // Make sure there are no existing Zenodo badges
+      cy.get('[data-cy=concept-DOI-badge]').should('not.exist');
+      cy.get('[data-cy=version-DOI-badge]').should('not.exist');
       gotoVersionsAndClickActions();
       // Request DOI
       cy.get('[data-cy=dockstore-request-doi-button]').click();
       cy.get('[data-cy=export-button').should('be.enabled');
       cy.get('[data-cy=export-button').click();
-      cy.get('[data-cy=workflow-version-DOI-badge]').its('length').should('be.gt', 0); // Should have a DOI badge now
+      // Should have DOI badges now
+      cy.get('[data-cy=user-DOI-icon]').should('be.visible');
+      cy.get('[data-cy=concept-DOI-badge]').should('be.visible');
+      cy.get('[data-cy=version-DOI-badge]').should('be.visible');
       cy.get('td').contains('Actions').click();
       cy.get('[data-cy=dockstore-request-doi-button').should('not.exist'); // Should not be able to request another DOI
 
@@ -448,7 +458,7 @@ describe('Dockstore my workflows part 2', () => {
 
     // Should not be able to refresh a dockstore.yml workflow version
     goToTab('Versions');
-    cy.contains('button', 'Actions').should('be.visible').click();
+    cy.contains('button', 'Actions').click();
     cy.contains('button', 'Refresh Version').should('be.disabled');
 
     cy.get('body').type('{esc}');
@@ -475,7 +485,7 @@ describe('Dockstore my workflows part 2', () => {
     cy.visit('/my-workflows/github.com/A/l');
     cy.url().should('eq', Cypress.config().baseUrl + '/my-workflows/github.com/A/l');
     goToTab('Versions');
-    cy.contains('button', 'Actions').should('be.visible').click();
+    cy.contains('button', 'Actions').click();
     cy.contains('button', 'Refresh Version').should('not.be.disabled');
   });
 
@@ -623,7 +633,7 @@ describe('Dockstore my workflows part 3', () => {
       cy.get('#publishButton').should('contain', 'Publish').should('be.visible');
 
       goToTab('Versions');
-      cy.contains('button', 'Actions').should('be.visible').click();
+      cy.contains('button', 'Actions').click();
       cy.get('[data-cy=set-default-version-button]').should('be.visible').click();
       cy.wait(1000);
       cy.get('#publishButton').should('contain', 'Publish').should('be.visible').click();

@@ -46,7 +46,9 @@
         ></app-exporter-step>
       </div>
 
-      <ng-container *ngIf="action === SnapshotExporterAction.DOI && (hasZenodoToken$ | async) === false && !version.doiURL">
+      <ng-container
+        *ngIf="action === SnapshotExporterAction.DOI && (hasZenodoToken$ | async) === false && !version.dois[DoiInitiatorEnum.USER]"
+      >
         <ng-template *ngTemplateOutlet="warning; context: { innerTemplate: zenodoNotLinked }"></ng-template>
       </ng-container>
       <div *ngIf="action === SnapshotExporterAction.ORCID && (hasOrcidToken$ | async) === false">
@@ -70,7 +72,7 @@
           <button mat-flat-button mat-dialog-close class="secondary-1">Cancel</button>
           <button
             [disabled]="
-              ((hasZenodoToken$ | async) === false && !version.doiURL) ||
+              ((hasZenodoToken$ | async) === false && !version.dois[DoiInitiatorEnum.USER]) ||
               (action === SnapshotExporterAction.ORCID && (hasOrcidToken$ | async) === false) ||
               state.overall !== StepState.INITIAL
             "

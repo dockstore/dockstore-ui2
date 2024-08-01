@@ -307,25 +307,6 @@
               {{ 'descriptor_type' | mapFriendlyValue: workflow?.descriptorType }}
             </div>
           </li>
-          <div>
-            <strong matTooltip="Digital Object Identifier for all workflow versions">Concept DOI</strong>
-            <img
-              matTooltip="You can cite all versions using this DOI. This DOI represents all versions, and will always resolve to the latest one"
-              src="../../../../assets/svg/help.svg"
-              alt="help"
-              class="pl-2"
-            />
-            :
-            <a
-              [href]="'https://doi.org/' + workflow.conceptDoi"
-              *ngIf="workflow.conceptDoi"
-              matTooltip="Click to view the DOI entry information for all versions."
-              target="_blank"
-              rel="noopener noreferrer"
-              ><img src="{{ zenodoUrl }}/badge/DOI/{{ workflow.conceptDoi }}.svg" alt="{{ workflow.conceptDoi }}"
-            /></a>
-            {{ workflow?.conceptDoi ? '' : 'n/a' }}
-          </div>
         </div>
       </ul>
     </mat-card-content>
@@ -357,7 +338,7 @@
           </a>
         </span>
       </div>
-      <mat-divider [inset]="true" class="mt-3"></mat-divider>
+      <mat-divider class="mt-3"></mat-divider>
       <div *ngIf="selectedVersion?.frozen && hasHttpImports" class="pt-3">
         <mat-card class="alert alert-warning mat-elevation-z" role="alert">
           <mat-icon class="alert-warning-icon">warning</mat-icon> This version is snapshotted but contains HTTP imports. HTTP imports may
@@ -410,19 +391,6 @@
       <div *ngIf="selectedVersion?.versionMetadata.engineVersions?.length">
         <strong matTooltip="Required engine versions" data-cy="engine-versions">Engine Versions</strong>:
         {{ selectedVersion.versionMetadata.engineVersions }}
-      </div>
-      <div *ngIf="(entryType$ | async) === EntryType.BioWorkflow">
-        <strong matTooltip="Digital Object Identifier">Version DOI</strong>:
-        <a
-          [href]="'https://doi.org/' + selectedVersion.doiURL"
-          *ngIf="selectedVersion.doiURL"
-          data-cy="info-tab-DOI-badge"
-          matTooltip="Click to view this version's DOI entry information."
-          target="_blank"
-          rel="noopener noreferrer"
-          ><img src="{{ zenodoUrl }}/badge/DOI/{{ selectedVersion.doiURL }}.svg" alt="{{ selectedVersion.doiURL }}"
-        /></a>
-        {{ selectedVersion?.doiURL ? '' : 'n/a' }}
       </div>
       <div *ngIf="publicAccessibleTestParameterFile !== null && publicAccessibleTestParameterFile !== undefined">
         <strong matTooltip="Version either has a test parameter file where all URLs are publicly accessible or does not require test data"

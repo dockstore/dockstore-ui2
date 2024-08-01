@@ -27,6 +27,7 @@ describe('SnapshotDoiOrcidComponent', () => {
             workflow: { entryTypeMetadata: { term: 'workflow' } },
             version: {
               frozen: false,
+              dois: {},
               versionMetadata: {
                 userIdToOrcidPutCode: {},
               },

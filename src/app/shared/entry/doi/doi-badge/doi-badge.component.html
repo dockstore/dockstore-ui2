@@ -1,0 +1,32 @@
+<span *ngIf="displayInitiator" [class]="displayDoi ? 'mr-2' : ''" [attr.data-cy]="doi.initiator.toLowerCase() + '-DOI-icon'">
+  <img
+    *ngIf="doi.initiator === DoiInitiator.DOCKSTORE"
+    src="../../../../../assets/images/registries/DOCKSTORE.svg"
+    alt="small Dockstore logo"
+    matTooltip="This DOI was automatically created by Dockstore"
+  />
+  <img
+    *ngIf="doi.initiator === DoiInitiator.GITHUB"
+    src="../../../../../assets/images/registries/GITHUB.svg"
+    alt="small GitHub logo"
+    matTooltip="This DOI was created via Zenodo's integration with GitHub"
+  />
+  <mat-icon
+    *ngIf="doi.initiator === DoiInitiator.USER"
+    class="primary-3"
+    matTooltip="This DOI was manually created by a user in the Dockstore UI"
+    >account_circle</mat-icon
+  >
+</span>
+<a
+  *ngIf="displayDoi"
+  [href]="'https://doi.org/' + doi.name"
+  [attr.data-cy]="doi.type.toLowerCase() + '-DOI-badge'"
+  matTooltip="Click to view {{
+    doi.type === DoiType.VERSION ? 'the version DOI.' : 'the concept DOI which represents all versions and resolves to the latest one.'
+  }}"
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  <img src="{{ zenodoUrl }}/badge/DOI/{{ doi.name }}.svg" alt="{{ doi.name }}" />
+</a>

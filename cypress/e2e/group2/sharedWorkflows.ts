@@ -74,6 +74,7 @@ describe('Shared with me workflow test from my-workflows', () => {
     return {
       aliases: undefined,
       authors: [],
+      conceptDois: {},
       checker_id: undefined,
       dbCreateDate: 1530729459942,
       dbUpdateDate: 1530729459942,
@@ -124,6 +125,7 @@ describe('Shared with me workflow test from my-workflows', () => {
           dirtyBit: false,
           doiStatus: 'NOT_REQUESTED',
           doiURL: undefined,
+          dois: {},
           hidden: false,
           id: 1,
           input_file_formats: [],
@@ -164,6 +166,7 @@ describe('Shared with me workflow test from my-workflows', () => {
           dirtyBit: false,
           doiStatus: 'NOT_REQUESTED',
           doiURL: undefined,
+          dois: {},
           hidden: false,
           id: 2,
           input_file_formats: [],

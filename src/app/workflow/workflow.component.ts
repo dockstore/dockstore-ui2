@@ -40,6 +40,7 @@ import { finalize, takeUntil } from 'rxjs/operators';
 import { AlertQuery } from '../shared/alert/state/alert.query';
 import { BioschemaService } from '../shared/bioschema.service';
 import {
+  bootstrap4largeModalSize,
   ga4ghNotebookIdPrefix,
   ga4ghServiceIdPrefix,
   ga4ghWorkflowIdPrefix,
@@ -65,7 +66,7 @@ import { SessionService } from '../shared/session/session.service';
 import { ExtendedWorkflowQuery } from '../shared/state/extended-workflow.query';
 import { WorkflowQuery } from '../shared/state/workflow.query';
 import { WorkflowService } from '../shared/state/workflow.service';
-import { Permission, ToolDescriptor, WorkflowsService, EntriesService, WorkflowSubClass } from '../shared/openapi';
+import { Permission, ToolDescriptor, WorkflowsService, EntriesService, WorkflowSubClass, Doi } from '../shared/openapi';
 import { SyncStatus } from '../shared/openapi/model/syncStatus';
 import { Tag } from '../shared/openapi/model/tag';
 import { Workflow } from '../shared/openapi/model/workflow';
@@ -108,6 +109,8 @@ import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
 import { MatLegacyButtonModule } from '@angular/material/legacy-button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { ManageDoisDialogComponent } from 'app/shared/entry/doi/manage-dois/manage-dois-dialog.component';
+import { DoiBadgeComponent } from 'app/shared/entry/doi/doi-badge/doi-badge.component';
 
 @Component({
   selector: 'app-workflow',
@@ -160,9 +163,11 @@ import { MatLegacyCardModule } from '@angular/material/legacy-card';
     AsyncPipe,
     DatePipe,
     BaseUrlPipe,
+    DoiBadgeComponent,
   ],
 })
 export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterViewInit, OnInit {
+  DoiInitiatorEnum = Doi.InitiatorEnum;
   workflowEditData: any;
   public isRefreshing$: Observable<boolean>;
   public workflow: BioWorkflow | Service | Notebook;
@@ -200,6 +205,8 @@ export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterVi
   public workflowVersionsCtrl: FormControl<Tag | WorkflowVersion> = new FormControl<Tag | WorkflowVersion>(null); //control for the selected version
   public versionFilterCtrl: FormControl<string> = new FormControl<string>(''); // control for the MatSelect filter keyword
   public filteredVersions: ReplaySubject<Array<Tag | WorkflowVersion>> = new ReplaySubject<Array<Tag | WorkflowVersion>>(1);
+  public selectedVersionDoi: Doi | undefined;
+  public selectedConceptDoi: Doi | undefined;
 
   @Input() user;
   @Input() selectedVersion: WorkflowVersion;
@@ -410,6 +417,7 @@ export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterVi
       if (workflow) {
         this.published = this.workflow.is_published;
         this.selectedVersion = this.selectWorkflowVersion(this.workflow.workflowVersions, this.urlVersion, this.workflow.defaultVersion);
+        this.selectedConceptDoi = this.workflow.conceptDois[this.workflow.doiSelection];
         if (this.selectedVersion) {
           this.workflowService.setWorkflowVersion(this.selectedVersion);
           this.updateVersionsFileTypes(this.workflow.id, this.selectedVersion.id);
@@ -420,6 +428,7 @@ export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterVi
           } else {
             this.gA4GHFilesService.updateFiles(trsID, this.selectedVersion.name, [this.workflow.descriptorType]);
           }
+          this.selectedVersionDoi = this.selectedVersion.dois[this.workflow.doiSelection];
         }
         this.workflowVersionAlphabetical = this.workflow.workflowVersions.slice().sort((a, b) => {
           return a.name.localeCompare(b.name);
@@ -607,6 +616,7 @@ export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterVi
       ]);
       this.updateVersionsFileTypes(this.workflow.id, this.selectedVersion.id);
       this.versionAgoMessage = this.dateService.getAgoMessage((this.selectedVersion as WorkflowVersion).last_modified);
+      this.selectedVersionDoi = this.selectedVersion.dois[this.workflow.doiSelection];
     }
     this.workflowService.setWorkflowVersion(version);
     this.updateWorkflowUrl(this.workflow);
@@ -641,5 +651,12 @@ export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterVi
 
   openGitHubApp(): void {
     window.open(Dockstore.GITHUB_APP_INSTALLATION_URL + '/installations/new', '_blank', 'noopener,noreferrer');
+  }
+
+  manageDois() {
+    this.dialog.open(ManageDoisDialogComponent, {
+      width: bootstrap4largeModalSize,
+      data: { entry: this.workflow, version: this.selectedVersion },
+    });
   }
 }

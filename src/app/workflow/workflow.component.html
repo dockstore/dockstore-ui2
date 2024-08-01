@@ -154,6 +154,29 @@
   </div>
   <div class="row m-1" *ngIf="!showRedirect">
     <div *ngIf="workflow">
+      <div *ngIf="!isWorkflowPublic" class="mt-1 mb-1 size-small">
+        <span class="mr-4">
+          <span>Version DOI: </span>
+          <app-doi-badge *ngIf="selectedVersionDoi" [doi]="selectedVersionDoi"></app-doi-badge>
+          <span *ngIf="!selectedVersionDoi">n/a</span>
+        </span>
+        <span>
+          <span>Concept DOI: </span>
+          <app-doi-badge *ngIf="selectedConceptDoi" [doi]="selectedConceptDoi"></app-doi-badge>
+          <span *ngIf="!selectedConceptDoi">n/a</span>
+        </span>
+        <button
+          type="button"
+          mat-button
+          class="private-btn small-btn-structure ml-2"
+          matTooltip="Manage DOIs"
+          (click)="manageDois()"
+          [disabled]="!canWrite"
+        >
+          <img src="../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Manage DOIs" />
+          Manage DOIs
+        </button>
+      </div>
       <span *ngIf="(categories$ | async)?.length > 0" class="inline-block mr-5 mt-1 mb-1">
         <span class="size-small mr-2">Categories</span>
         <mat-chip-list class="bubble-list">
@@ -165,7 +188,9 @@
         </mat-chip-list>
       </span>
       <span *ngIf="!labelsEditMode && !starGazersClicked" class="inline-block mt-1 mb-1">
-        <span *ngIf="workflowEditData?.labels.length > 0" class="size-small mr-2">Labels</span>
+        <span *ngIf="workflowEditData?.labels.length > 0 || !isWorkflowPublic" class="size-small mr-2">
+          <span>Labels:{{ workflowEditData?.labels.length === 0 ? ' n/a' : '' }}</span>
+        </span>
         <mat-chip-list class="bubble-list">
           <mat-chip
             class="bubble workflow-background pointer"
@@ -449,6 +474,24 @@
     </div>
     <div fxLayout="column" fxLayoutGap="1rem" class="p-0 col-sm-12 col-md-3 col-lg-3 ng-scope" *ngIf="isWorkflowPublic && workflow">
       <app-launch-third-party [workflow]="workflow" [selectedVersion]="selectedVersion"></app-launch-third-party>
+      <mat-card *ngIf="selectedVersion && selectedConceptDoi">
+        <div class="h5">Cite this {{ workflow.entryTypeMetadata.term }}</div>
+        <mat-divider></mat-divider>
+        <mat-card-content>
+          <p *ngIf="selectedVersionDoi" class="pt-2">
+            Cite version <strong>{{ selectedVersion.name }}</strong> using DOI
+            <app-doi-badge [doi]="selectedVersionDoi" [displayInitiator]="false"></app-doi-badge>.
+          </p>
+          <p *ngIf="!selectedVersionDoi" class="pt-2">
+            Version <strong>{{ selectedVersion.name }}</strong> has no DOI.
+          </p>
+          <p>
+            Cite all versions using the DOI
+            <app-doi-badge [doi]="selectedConceptDoi" [displayInitiator]="false"></app-doi-badge>. This DOI represents all versions, and
+            will always resolve to the latest one.
+          </p>
+        </mat-card-content>
+      </mat-card>
       <mat-card>
         <div class="h5">Recent Versions</div>
         <mat-divider></mat-divider>

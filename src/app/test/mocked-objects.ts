@@ -656,6 +656,7 @@ export const elasticSearchResponse: Hit[] = [
       workflowVersions: [
         {
           doiURL: null,
+          dois: {},
           dbUpdateDate: null,
           versionEditor: null,
           verifiedSource: null,
@@ -675,6 +676,7 @@ export const elasticSearchResponse: Hit[] = [
         },
         {
           doiURL: null,
+          dois: {},
           dbUpdateDate: null,
           versionEditor: null,
           verifiedSource: null,
@@ -736,6 +738,7 @@ export const elasticSearchResponse: Hit[] = [
       workflowVersions: [
         {
           doiURL: null,
+          dois: {},
           dbUpdateDate: null,
           subClass: null,
           versionEditor: null,
@@ -774,6 +777,7 @@ export const exampleEntry: Version = {
   dirtyBit: true,
   doiStatus: 'NOT_REQUESTED',
   doiURL: null,
+  dois: {},
   frozen: false,
   hidden: false,
   id: 25247,
