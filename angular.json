@@ -51,6 +51,16 @@
               "node_modules/ace-builds/src-min-noconflict/theme-idle_fingers.js",
               "node_modules/ace-builds/src-min-noconflict/ext-searchbox.js",
               "node_modules/bootstrap/dist/js/bootstrap.js"
+            ],
+            "allowedCommonJsDependencies": [
+              "ts-md5/dist/md5",
+              "bodybuilder",
+              "rxjs/internal/observable/of",
+              "file-saver",
+              "dompurify",
+              "cytoscape",
+              "cytoscape-dagre",
+              "cytoscape-popper"
             ]
           },
           "configurations": {
