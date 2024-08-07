@@ -89,7 +89,6 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
   workflow: ExtendedWorkflow;
   entryType = EntryType;
   DoiInitiatorEnum = Doi.InitiatorEnum;
-  engineVersionsList: string[] = ['Nextflow !>=22.10.1', 'Nextflow !>=23.04.0'];
   setNoOrderCols(): Array<number> {
     return [4, 5];
   }
