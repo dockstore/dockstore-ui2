@@ -53,9 +53,8 @@
               "node_modules/bootstrap/dist/js/bootstrap.js"
             ],
             "allowedCommonJsDependencies": [
-              "ts-md5/dist/md5",
+              "ts-md5",
               "bodybuilder",
-              "rxjs/internal/observable/of",
               "file-saver",
               "dompurify",
               "cytoscape",
