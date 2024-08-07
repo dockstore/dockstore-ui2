@@ -15,7 +15,7 @@
       >
         <mat-icon class="mat-icon-sm">visibility</mat-icon> View
       </a>
-      <span *ngIf="(isPublic$ | async) === false">
+      <span *ngIf="(isPublic$ | async) === false && (isRefreshing$ | async) === false">
         <button
           id="addCheckerWorkflowButton"
           #addCheckerWorkflowButton
