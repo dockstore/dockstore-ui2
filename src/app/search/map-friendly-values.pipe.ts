@@ -121,6 +121,7 @@ export class MapFriendlyValuesPipe implements PipeTransform {
         ['INSTALL', 'Install'],
         ['UNINSTALL', 'Uninstall'],
         ['PUBLISH', 'Publish'],
+        ['RELEASE', 'Release'],
       ]),
     ],
     [
