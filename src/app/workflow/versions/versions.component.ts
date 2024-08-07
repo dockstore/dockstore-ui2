@@ -89,6 +89,7 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
   workflow: ExtendedWorkflow;
   entryType = EntryType;
   DoiInitiatorEnum = Doi.InitiatorEnum;
+  engineVersionsList: string[] = ['Nextflow !>=22.10.1', 'Nextflow !>=23.04.0'];
   setNoOrderCols(): Array<number> {
     return [4, 5];
   }
@@ -116,7 +117,7 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
     const allColumns = [
       'name',
       'last_modified',
-      'descriptorTypeVersions',
+      this.workflow?.descriptorType === Workflow.DescriptorTypeEnum.NFL ? 'engineVersions' : 'descriptorTypeVersions',
       'valid',
       hiddenColumn,
       verifiedColumn,
@@ -143,7 +144,6 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
   }
 
   ngOnInit() {
-    this.publicPageSubscription();
     this.extendedWorkflowQuery.extendedWorkflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((workflow) => {
       this.workflow = workflow;
       if (workflow) {
@@ -160,6 +160,7 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
         ],
       };
     });
+    this.publicPageSubscription();
   }
 
   /**
