@@ -6,6 +6,7 @@ orbs:
   browser-tools: circleci/browser-tools@1.4.7
 executors:
   integration_test_exec: # declares a reusable executor
+    resource_class: medium+
     docker:
       - image: cimg/openjdk:<< pipeline.parameters.java-tag >>
         auth:
@@ -292,7 +293,7 @@ parameters:
     default: false
   java-tag:
     type: string
-    default: "17.0.4-browsers"
+    default: "21.0.2-browsers"
   postgres-tag:
     type: string
     default: "16.1"
@@ -547,7 +548,7 @@ commands:
           background: true
       - run:
           name: Run webservice
-          command: java -jar dockstore-webservice.jar server test/web.yml 1>/dev/null
+          command: java -jar dockstore-webservice.jar server test/web.yml # 1>/dev/null
           background: true
       - run:
           name: Wait for services
