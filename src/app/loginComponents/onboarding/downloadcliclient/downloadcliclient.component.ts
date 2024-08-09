@@ -176,7 +176,8 @@ You can install the version of cwltool that we've tested for use with Dockstore 
 1. Install cwltool
 \`\`\`
 curl -o requirements.txt "${this.dsServerURI}/metadata/runner_dependencies?client_version=${this.dockstoreVersion}&python_version=3"
-pipx install -r requirements.txt
+pipx install cwltool==${this.cwltoolVersion}
+pipx inject cwltool -r requirements.txt --force
 \`\`\`
 2. Verify using \`pipx list\` that the installed pip packages match the ones specified in the downloaded requirements.txt. Confirm cwltool installation by checking the version.
 \`\`\`
