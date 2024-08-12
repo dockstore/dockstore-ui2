@@ -4,7 +4,7 @@ import { combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AppTool, DockstoreTool, Workflow, Notebook } from '../../shared/openapi';
 import { SearchState, SearchStore } from './search.store';
-import { QueryParserService } from '../query-parser.service';
+import { TermParserService } from '../term-parser.service';
 
 export interface SearchResult<T = AppTool | DockstoreTool | Workflow | Notebook> {
   source: T;
@@ -34,7 +34,7 @@ export class SearchQuery extends Query<SearchState> {
   );
   public searchText$: Observable<string> = this.select((state) => state.searchText);
   public basicSearchText$: Observable<string> = this.searchText$.pipe(
-    map((searchText) => this.joinComma(this.queryParserService.parse(searchText)))
+    map((searchText) => this.joinComma(this.termParserService.parse(searchText)))
   );
   public showToolTagCloud$: Observable<boolean> = this.select((state) => state.showToolTagCloud);
   public showWorkflowTagCloud$: Observable<boolean> = this.select((state) => state.showWorkflowTagCloud);
@@ -62,7 +62,7 @@ export class SearchQuery extends Query<SearchState> {
     })
   );
 
-  constructor(protected store: SearchStore, protected queryParserService: QueryParserService) {
+  constructor(protected store: SearchStore, protected termParserService: TermParserService) {
     super(store);
   }
 

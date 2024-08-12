@@ -40,7 +40,7 @@ import { OrganizationStargazersModule } from './app/organizations/organization/o
 import { OrganizationStarringModule } from './app/organizations/organization/organization-starring/organization-starring.module';
 import { RegisterService } from './app/register/register.service';
 import { QueryBuilderService } from './app/search/query-builder.service';
-import { QueryParserService } from './app/search/query-parser.service';
+import { TermParserService } from './app/search/term-parser.service';
 import { SearchAuthorsHtmlPipe } from './app/search/search-authors-html.pipe';
 import { SearchService } from './app/search/state/search.service';
 import { ServiceInfoService } from './app/service-info/service-info.service';
@@ -145,7 +145,6 @@ bootstrapApplication(AppComponent, {
     ParamfilesService,
     ProviderService,
     QueryBuilderService,
-    QueryParserService,
     RefreshService,
     RegisterCheckerWorkflowService,
     RegisterService,
@@ -154,6 +153,7 @@ bootstrapApplication(AppComponent, {
     SearchAuthorsHtmlPipe,
     SearchService,
     ServiceInfoService,
+    TermParserService,
     Title,
     ToolLaunchService,
     TosBannerService,

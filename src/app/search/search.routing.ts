@@ -16,14 +16,14 @@
 
 import { Routes } from '@angular/router';
 import { QueryBuilderService } from './query-builder.service';
-import { QueryParserService } from './query-parser.service';
+import { TermParserService } from './term-parser.service';
 import { SearchAuthorsHtmlPipe } from './search-authors-html.pipe';
 import { SearchComponent } from './search.component';
 import { SearchService } from './state/search.service';
 
 const CONTAINERS_ROUTES: Routes = [
   {
-    providers: [QueryBuilderService, QueryParserService, SearchService, SearchAuthorsHtmlPipe],
+    providers: [QueryBuilderService, TermParserService, SearchService, SearchAuthorsHtmlPipe],
     path: '**',
     component: SearchComponent,
     data: { title: 'Dockstore | Search' },
