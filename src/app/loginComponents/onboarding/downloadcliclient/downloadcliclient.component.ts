@@ -179,7 +179,7 @@ curl -o requirements.txt "${this.dsServerURI}/metadata/runner_dependencies?clien
 pipx install cwltool==${this.cwltoolVersion}
 pipx inject cwltool -r requirements.txt --force
 \`\`\`
-2. Verify using \`pipx list\` that the installed pip packages match the ones specified in the downloaded requirements.txt. Confirm cwltool installation by checking the version.
+2. Confirm cwltool installation by checking the version.
 \`\`\`
 $ cwltool --version
 /usr/local/bin/cwltool ${this.cwltoolVersion}
