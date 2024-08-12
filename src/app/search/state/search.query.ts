@@ -32,7 +32,7 @@ export class SearchQuery extends Query<SearchState> {
     map((notebooks: Array<SearchResult<Notebook>>) => this.haveNoHits(notebooks))
   );
   public searchText$: Observable<string> = this.select((state) => state.searchText);
-  public basicSearchText$: Observable<string> = this.searchText$.pipe(map((searchText) => this.joinComma(searchText)));
+  public basicSearchText$: Observable<string> = this.searchText$.pipe(map((searchText) => this.joinComma(this.parseTerms(searchText))));
   public showToolTagCloud$: Observable<boolean> = this.select((state) => state.showToolTagCloud);
   public showWorkflowTagCloud$: Observable<boolean> = this.select((state) => state.showWorkflowTagCloud);
   public showNotebookTagCloud$: Observable<boolean> = this.select((state) => state.showNotebookTagCloud);
@@ -67,8 +67,12 @@ export class SearchQuery extends Query<SearchState> {
     return !object || object.length === 0;
   }
 
-  joinComma(searchTerm: string): string {
-    return searchTerm.trim().split(' ').join(', ');
+  joinComma(strings: string[]): string {
+    return strings.join(', ');
+  }
+
+  parseTerms(searchText: string): string[] {
+    return searchText.trim().split(':');
   }
 
   /**
