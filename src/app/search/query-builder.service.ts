@@ -21,6 +21,7 @@ import { CategorySort } from '../shared/models/CategorySort';
 import { tagCloudCommonTerms } from './../shared/constants';
 import { AdvancedSearchObject } from './../shared/models/AdvancedSearchObject';
 import { SearchService } from './state/search.service';
+import { QueryParserService } from './query-parser.service';
 
 type Index = 'workflows' | 'tools' | 'notebooks';
 
@@ -34,7 +35,7 @@ type Index = 'workflows' | 'tools' | 'notebooks';
 export class QueryBuilderService {
   // TODO: Comment on why shard_size is 10,000
   private shard_size = 10000;
-  constructor(private searchService: SearchService) {}
+  constructor(private searchService: SearchService, protected queryParserService: QueryParserService) {}
 
   getTagCloudQuery(type: string): string {
     const tagCloudSize = 20;
@@ -273,7 +274,7 @@ export class QueryBuilderService {
    */
   private searchEverything(body: bodybuilder.Bodybuilder, searchString: string): bodybuilder.Bodybuilder {
     // Extract each search term from the search string, limiting to a maximum of 20 terms to prevent a DOS attack
-    const terms = this.parseTerms(searchString).slice(0, 20);
+    const terms = this.queryParserService.parse(searchString).slice(0, 20);
     terms.forEach((term) => {
       const matchOp = term.includes(' ') ? 'match_phrase' : 'match';
       body
@@ -290,13 +291,6 @@ export class QueryBuilderService {
     });
     body.queryMinimumShouldMatch(1);
     return body;
-  }
-
-  /**
-   * Converts a search string into an array of search terms
-   */
-  parseTerms(searchString: string): string[] {
-    return searchString.trim().split(':');
   }
 
   /**===============================================
