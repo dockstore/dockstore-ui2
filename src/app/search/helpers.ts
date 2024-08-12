@@ -1,5 +1,5 @@
 /*
- *    Copyright 2017 OICR
+ *    Copyright 2024 OICR, UCSC
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -13,20 +13,9 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
-import { Routes } from '@angular/router';
-import { QueryBuilderService } from './query-builder.service';
-import { SearchAuthorsHtmlPipe } from './search-authors-html.pipe';
-import { SearchComponent } from './search.component';
-import { SearchService } from './state/search.service';
-
-const CONTAINERS_ROUTES: Routes = [
-  {
-    providers: [QueryBuilderService, SearchService, SearchAuthorsHtmlPipe],
-    path: '**',
-    component: SearchComponent,
-    data: { title: 'Dockstore | Search' },
-  },
-];
-
-export const searchRouting = CONTAINERS_ROUTES;
+export function parseTerms(searchText: string): string[] {
+  // Split the terms, conserving double-quoted strings.
+  const terms = searchText.match(/(?:[^\s"]+|"[^"]*")+/g) ?? [];
+  // Strip the double quotes from each term.
+  return terms.map((term) => term.replace(/"/g, ''));
+}
