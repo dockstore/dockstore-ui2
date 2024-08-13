@@ -1,4 +1,4 @@
-<li *ngIf="((checkerId$ | async) || (canAdd$ | async)) && (isRefreshing$ | async) === false">
+<li *ngIf="(checkerId$ | async) || (canAdd$ | async)">
   <form #editCheckerWorkflowPathForm="ngForm" class="form-inline">
     <div class="form-group" fxFlex="noshrink" fxLayout fxLayoutAlign=" center">
       <strong matTooltip="Checker workflow of this tool/workflow that tests it">Checker Workflow</strong>:
@@ -15,7 +15,7 @@
       >
         <mat-icon class="mat-icon-sm">visibility</mat-icon> View
       </a>
-      <span *ngIf="(isPublic$ | async) === false">
+      <span *ngIf="(isPublic$ | async) === false && (isRefreshing$ | async) === false">
         <button
           id="addCheckerWorkflowButton"
           #addCheckerWorkflowButton
