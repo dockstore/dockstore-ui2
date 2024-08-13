@@ -2,7 +2,7 @@
   <div>
     <strong matTooltip="Short description of the {{ entryTypeMetadata.term }}">Topic: </strong>
     <span data-cy="selected-topic">{{ selectedTopic || 'n/a' }}</span>
-    <!-- Display a bubble indicating the topic selection. AI bubble is always displayed privately. Publicly, AI bubble is only displayed if the topic is not user-approved.
+    <!-- Display a bubble indicating the topic selection. AI bubble is always displayed privately. Publicly, AI bubble is only displayed if the topic is not user-approved. 
      Bubbles for other topic types are only displayed for the non-public view -->
     <app-ai-bubble
       *ngIf="entry.topicSelection === TopicSelectionEnum.AI && (!entry.approvedAITopic || (isPublic$ | async) === false)"
