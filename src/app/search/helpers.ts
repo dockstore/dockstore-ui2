@@ -13,9 +13,8 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import * as split from 'split-string';
+
 export function parseTerms(searchText: string): string[] {
-  // Split the terms, conserving double-quoted strings.
-  const terms = searchText.match(/(?:[^\s"]+|"[^"]*")+/g) ?? [];
-  // Strip the double quotes from each term.
-  return terms.map((term) => term.replace(/"/g, ''));
+  return split(searchText, { sep: ' ' }).filter((term) => term.length > 0);
 }

@@ -23,7 +23,7 @@ describe('helpers', () => {
     expect(parseTerms('a b c')).toEqual(['a', 'b', 'c']);
     expect(parseTerms('abc')).toEqual(['abc']);
 
-    expect(parseTerms('""')).toEqual(['']);
+    expect(parseTerms('""')).toEqual([]);
     expect(parseTerms('"a"')).toEqual(['a']);
     expect(parseTerms('"a b"')).toEqual(['a b']);
     expect(parseTerms('"a b c"')).toEqual(['a b c']);
@@ -37,5 +37,9 @@ describe('helpers', () => {
     expect(parseTerms('a ')).toEqual(['a']);
     expect(parseTerms(' a')).toEqual(['a']);
     expect(parseTerms(' a ')).toEqual(['a']);
+
+    // should not crash
+    parseTerms('"a');
+    parseTerms('"a b c');
   });
 });
