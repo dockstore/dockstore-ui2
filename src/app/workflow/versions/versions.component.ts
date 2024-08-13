@@ -158,8 +158,8 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
           },
         ],
       };
+      this.publicPageSubscription();
     });
-    this.publicPageSubscription();
   }
 
   /**

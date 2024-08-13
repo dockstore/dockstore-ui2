@@ -130,9 +130,9 @@
         Engine Versions
       </th>
       <td mat-cell *matCellDef="let version">
-        <div *ngFor="let engineVersion of version.versionMetadata?.engineVersions">
-          <div class="no-wrap">{{ engineVersion }}</div>
-        </div>
+        <span>{{
+          workflow.descriptorType | descriptorLanguage | descriptorLanguageVersions: version.versionMetadata?.engineVersions:false
+        }}</span>
       </td>
     </ng-container>
 
