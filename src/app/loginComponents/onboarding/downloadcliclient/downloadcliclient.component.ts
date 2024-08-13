@@ -177,10 +177,14 @@ You can install the version of cwltool that we've tested for use with Dockstore 
 \`\`\`
 curl -o requirements.txt "${this.dsServerURI}/metadata/runner_dependencies?client_version=${this.dockstoreVersion}&python_version=3"
 pipx install cwltool==${this.cwltoolVersion}
-pipx inject cwltool -r requirements.txt --force
+pipx runpip cwltool install -r requirements.txt
 \`\`\`
-2. Confirm cwltool installation by checking the version.
+
+**Note:** If you receive a warning saying \`'/YOUR_HOME_DIR/.local/bin' is not on your PATH environment variable.\`, use \`pipx ensurepath\` to add it to your shell's config. Then open a new shell or run \`source ~/.bashrc\`.
+
+2. Verify using that the installed python packages match the ones specified in the downloaded requirements.txt. Confirm cwltool installation by checking the version.
 \`\`\`
+$ pipx runpip cwltool list
 $ cwltool --version
 /usr/local/bin/cwltool ${this.cwltoolVersion}
 \`\`\`
