@@ -33,7 +33,7 @@
                   alt="AI generation icon"
                 />
               </span>
-              <strong>{{ topicOption.type === TopicSelectionEnum.AUTOMATIC ? 'GitHub' : topicOption.label }}</strong>
+              <strong>{{ topicOption.label }}</strong>
             </div>
             <span
               *ngIf="topicOption.type === TopicSelectionEnum.AI && entry.approvedAITopic"
