@@ -21,8 +21,14 @@
       }}"
       data-cy="topic-selection-bubble"
     >
-      <mat-icon class="mat-icon-sm">{{ entry.topicSelection === TopicSelectionEnum.MANUAL ? 'edit' : 'sync' }}</mat-icon>
-      <span>{{ entry.topicSelection | titlecase }}</span>
+      <mat-icon *ngIf="entry.topicSelection === TopicSelectionEnum.MANUAL" class="mat-icon-sm">edit</mat-icon>
+      <img
+        *ngIf="entry.topicSelection === TopicSelectionEnum.AUTOMATIC"
+        class="site-icons-small mr-2"
+        src="../assets/images/thirdparty/github.svg"
+        alt="GitHub icon"
+      />
+      <span>{{ entry.topicSelection === TopicSelectionEnum.MANUAL ? 'Manual' : 'GitHub' }}</span>
     </span>
   </div>
   <button

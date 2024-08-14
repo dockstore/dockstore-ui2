@@ -102,7 +102,7 @@ export class EditTopicDialogComponent {
     };
     const automaticTopicOption: TopicOption = {
       type: this.TopicSelectionEnum.AUTOMATIC,
-      label: 'Automatic',
+      label: 'GitHub',
       description: 'Retrieved automatically from the GitHub repository description.',
       value: this.entry.topicAutomatic,
     };

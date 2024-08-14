@@ -20,7 +20,12 @@
             <div>
               <span class="bubble mr-2">
                 <mat-icon *ngIf="topicOption.type === TopicSelectionEnum.MANUAL" class="mat-icon-sm">edit</mat-icon>
-                <mat-icon *ngIf="topicOption.type === TopicSelectionEnum.AUTOMATIC" class="mat-icon-sm">sync</mat-icon>
+                <img
+                  *ngIf="topicOption.type === TopicSelectionEnum.AUTOMATIC"
+                  class="site-icons-small"
+                  src="../assets/images/thirdparty/github.svg"
+                  alt="GitHub icon"
+                />
                 <img
                   *ngIf="topicOption.type === TopicSelectionEnum.AI"
                   class="site-icons-small"
