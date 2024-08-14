@@ -188,10 +188,11 @@ jobs:
     executor: integration_test_exec
     working_directory: ~/repo
     steps:
+      # https://github.com/ClouDesire/docusaurus/commit/ee11951336be3f64f5c6a25a8047bfeecc29fb43
       - run:
           name: Install node@v8.11.3
           command: |
-            ./load-nvm.sh
+            ./scripts/load-nvm.sh
             nvm install v16.16.0
             nvm alias default v16.16.0
       - run: |
