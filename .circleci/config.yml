@@ -292,7 +292,7 @@ parameters:
     default: false
   java-tag:
     type: string
-    default: "21.0.2-browsers"
+    default: "18.0.2-browsers"
   postgres-tag:
     type: string
     default: "16.1"
@@ -539,7 +539,7 @@ commands:
           name: Install nginx
           command: sudo apt install -y nginx || true
       - run:
-          name: Prepapre nginx config
+          name: Prepare nginx config
           command: sed "s%REPLACEME%`pwd`%" .circleci/nginx.conf.tmpl > .circleci/nginx.conf
       - run:
           name: Run nginx
@@ -547,7 +547,7 @@ commands:
           background: true
       - run:
           name: Run webservice
-          command: java -jar dockstore-webservice.jar server test/web.yml # 1>/dev/null
+          command: java -jar dockstore-webservice.jar server test/web.yml 1>/dev/null
           background: true
       - run:
           name: Wait for services
