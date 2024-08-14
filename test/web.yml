@@ -40,11 +40,6 @@ esconfiguration:
   port: 9200
   hostname: localhost
 
-logging:
-
-  # The default level of all loggers. Can be OFF, ERROR, WARN, INFO, DEBUG, TRACE, or ALL.
-  level: DEBUG
-
 authenticationCachePolicy: maximumSize=10000, expireAfterAccess=10s
 
 database:
