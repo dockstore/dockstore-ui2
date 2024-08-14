@@ -118,6 +118,24 @@
       </td>
     </ng-container>
 
+    <ng-container matColumnDef="engineVersions">
+      <th
+        scope="col"
+        mat-header-cell
+        *matHeaderCellDef
+        mat-sort-header
+        matTooltip="The minimum required {{ workflow.descriptorType | descriptorLanguage }} engine version."
+        matTooltipPosition="above"
+      >
+        Engine Versions
+      </th>
+      <td mat-cell *matCellDef="let version">
+        <span>{{
+          workflow.descriptorType | descriptorLanguage | descriptorLanguageVersions: version.versionMetadata?.engineVersions:false
+        }}</span>
+      </td>
+    </ng-container>
+
     <ng-container matColumnDef="valid">
       <th
         scope="col"
