@@ -192,7 +192,7 @@ jobs:
       - run:
           name: Install node@v8.11.3
           command: |
-            ./scripts/load-nvm.sh
+            bash scripts/load-nvm.sh
             nvm install v16.16.0
             nvm alias default v16.16.0
       - run: |
