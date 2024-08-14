@@ -21,6 +21,7 @@ import { CategorySort } from '../shared/models/CategorySort';
 import { tagCloudCommonTerms } from './../shared/constants';
 import { AdvancedSearchObject } from './../shared/models/AdvancedSearchObject';
 import { SearchService } from './state/search.service';
+import { parseTerms } from './helpers';
 
 type Index = 'workflows' | 'tools' | 'notebooks';
 
@@ -273,19 +274,20 @@ export class QueryBuilderService {
    */
   private searchEverything(body: bodybuilder.Bodybuilder, searchString: string): bodybuilder.Bodybuilder {
     // Extract each search term from the search string, limiting to a maximum of 20 terms to prevent a DOS attack
-    const terms = searchString.trim().split(' ').slice(0, 20);
+    const terms = parseTerms(searchString).slice(0, 20);
     terms.forEach((term) => {
+      const matchOp = term.includes(' ') ? 'match_phrase' : 'match';
       body
         .orQuery('wildcard', 'full_workflow_path', { value: '*' + term + '*', case_insensitive: true, boost: 14 })
         .orQuery('wildcard', 'tool_path', { value: '*' + term + '*', case_insensitive: true, boost: 14 })
-        .orQuery('match', 'workflowVersions.sourceFiles.content', { query: term, boost: 0.2 })
-        .orQuery('match', 'tags.sourceFiles.content', { query: term, boost: 0.2 })
-        .orQuery('match', 'description', { query: term, boost: 2 })
-        .orQuery('match', 'labels', { query: term, boost: 2 })
-        .orQuery('match', 'all_authors.name', { query: term, boost: 3 })
-        .orQuery('match', 'topicAutomatic', { query: term, boost: 4 })
-        .orQuery('match', 'categories.topic', { query: term, boost: 2 })
-        .orQuery('match', 'categories.displayName', { query: term, boost: 3 });
+        .orQuery(matchOp, 'workflowVersions.sourceFiles.content', { query: term, boost: 0.2 })
+        .orQuery(matchOp, 'tags.sourceFiles.content', { query: term, boost: 0.2 })
+        .orQuery(matchOp, 'description', { query: term, boost: 2 })
+        .orQuery(matchOp, 'labels', { query: term, boost: 2 })
+        .orQuery(matchOp, 'all_authors.name', { query: term, boost: 3 })
+        .orQuery(matchOp, 'topicAutomatic', { query: term, boost: 4 })
+        .orQuery(matchOp, 'categories.topic', { query: term, boost: 2 })
+        .orQuery(matchOp, 'categories.displayName', { query: term, boost: 3 });
     });
     body.queryMinimumShouldMatch(1);
     return body;

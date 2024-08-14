@@ -77,6 +77,7 @@
     "ngx-sharebuttons": "^8.0.5",
     "prismjs": "^1.29.0",
     "rxjs": "^6.6.7",
+    "split-string": "^3.1.0",
     "ts-md5": "^1.2.8",
     "tslib": "^2.3.0",
     "uuid": "^8.3.2",
