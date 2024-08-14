@@ -3,7 +3,7 @@ orbs:
   aws-s3: circleci/aws-s3@3.0.0
   aws-cli: circleci/aws-cli@3.1.1
   slack: circleci/slack@4.4.4
-  browser-tools: circleci/browser-tools@1.4.7
+  browser-tools: circleci/browser-tools@1.4.8
 executors:
   integration_test_exec: # declares a reusable executor
     docker:
@@ -292,7 +292,7 @@ parameters:
     default: false
   java-tag:
     type: string
-    default: "20.0.2-browsers"
+    default: "19.0.2-browsers"
   postgres-tag:
     type: string
     default: "16.1"
