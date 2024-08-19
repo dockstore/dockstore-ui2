@@ -108,6 +108,7 @@
                         {{ entry.entryPath + (entry.versionName ? ':' + entry.versionName : '') }}
                       </h5>
                     </div>
+                    <span>{{ entry.topic }}</span>
                     <div *ngIf="canEdit$ | async" fxLayout="row" fxLayoutAlign="end center">
                       <span>
                         <button
