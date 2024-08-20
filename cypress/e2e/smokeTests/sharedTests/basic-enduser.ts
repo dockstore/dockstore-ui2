@@ -10,18 +10,6 @@ describe('run stochastic smoke test', () => {
 });
 function testEntry(tab: string) {
   function goToRandomEntry() {
-    // Notebooks search is not functional in staging or prod in 1.14.
-    // TODO after 1.15 release: remove the following code path
-    if (tab === 'Notebooks' && isStagingOrProd()) {
-      cy.visit('/notebooks');
-      cy.get('[data-cy=entry-link]')
-        .eq(0)
-        .then((el) => {
-          cy.log(el.prop('href')); // log the href in case a test fails
-          cy.visit(el.prop('href'));
-        });
-      return;
-    }
     cy.visit('/search');
     cy.get('[data-cy=workflowColumn] a');
     goToTab(tab);
