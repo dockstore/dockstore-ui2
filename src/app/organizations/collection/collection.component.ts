@@ -9,9 +9,9 @@ import { bootstrap4mediumModalSize } from '../../shared/constants';
 import { Dockstore } from '../../shared/dockstore.model';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
 import { OrgLogoService } from '../../shared/org-logo.service';
-import { Collection, Organization, OrganizationsService } from '../../shared/openapi';
+import { Collection, Organization, OrganizationsService, Workflow } from '../../shared/openapi';
+import TopicSelectionEnum = Workflow.TopicSelectionEnum;
 import { ToolDescriptor } from '../../shared/openapi/model/toolDescriptor';
-import { Workflow } from '../../shared/openapi/model/workflow';
 import { UserQuery } from '../../shared/user/user.query';
 import { ActivatedRoute } from '../../test';
 import { CreateCollectionComponent } from '../collections/create-collection/create-collection.component';
@@ -42,6 +42,7 @@ import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
 import { RouterLink } from '@angular/router';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { HeaderComponent } from '../../header/header.component';
+import { AiBubbleComponent } from '../../shared/ai-bubble/ai-bubble.component';
 
 @Component({
   selector: 'app-collection-entry-confirm-remove',
@@ -98,6 +99,7 @@ export interface EntryDialogData {
     MapFriendlyValuesPipe,
     GravatarPipe,
     RouterLinkPipe,
+    AiBubbleComponent,
   ],
 })
 export class CollectionComponent implements OnInit {
@@ -214,4 +216,5 @@ export class CollectionComponent implements OnInit {
   }
 
   protected readonly Dockstore = Dockstore;
+  protected readonly TopicSelectionEnum = TopicSelectionEnum;
 }
