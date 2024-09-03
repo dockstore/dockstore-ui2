@@ -33,6 +33,7 @@ import { MatLegacyCardModule } from '@angular/material/legacy-card';
 import { EditTopicDialogService } from './edit-topic-dialog.service';
 import { EntryActionsService } from 'app/shared/entry-actions/entry-actions.service';
 import { MatRadioChange } from '@angular/material/radio';
+import { Dockstore } from 'app/shared/dockstore.model';
 
 export interface EditTopicDialogData {
   entry: DockstoreTool | Workflow;
@@ -69,6 +70,7 @@ export interface TopicOption {
   ],
 })
 export class EditTopicDialogComponent {
+  Dockstore = Dockstore;
   TopicSelectionEnum = Entry.TopicSelectionEnum;
   entry: Workflow | DockstoreTool;
   entryType: EntryType;
