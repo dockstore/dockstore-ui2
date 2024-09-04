@@ -34,6 +34,8 @@ import { EditTopicDialogService } from './edit-topic-dialog.service';
 import { EntryActionsService } from 'app/shared/entry-actions/entry-actions.service';
 import { MatRadioChange } from '@angular/material/radio';
 import { Dockstore } from 'app/shared/dockstore.model';
+import { ClipboardModule } from '@angular/cdk/clipboard';
+import { SnackbarDirective } from 'app/shared/snackbar.directive';
 
 export interface EditTopicDialogData {
   entry: DockstoreTool | Workflow;
@@ -67,6 +69,8 @@ export interface TopicOption {
     MatIconModule,
     MatLegacyCardModule,
     NgFor,
+    ClipboardModule,
+    SnackbarDirective,
   ],
 })
 export class EditTopicDialogComponent {

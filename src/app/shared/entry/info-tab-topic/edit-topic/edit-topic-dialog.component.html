@@ -13,7 +13,7 @@
     fxLayoutAlign="start stretch"
     fxLayoutGap="1rem"
   >
-    <mat-card *ngFor="let topicOption of topicOptions">
+    <mat-card *ngFor="let topicOption of topicOptions" [class]="topicOption.type === selectedOption ? 'selected-card' : ''">
       <mat-radio-button [value]="topicOption.type" class="w-100">
         <div fxLayoutAlign="space-between">
           <div>
@@ -41,6 +41,8 @@
             ><mat-icon class="mat-icon-sm">checkmark</mat-icon> Approved</span
           >
         </div>
+      </mat-radio-button>
+      <div class="ml-5">
         <div class="size-small gray-caption">
           {{ topicOption.description }}
           <a
@@ -51,6 +53,7 @@
             }}.html#full-template-with-explanation-of-all-available-fields"
             target="_blank"
             rel="noopener noreferrer"
+            matTooltip="View more information about the topic field"
             ><mat-icon>info</mat-icon></a
           >
         </div>
@@ -70,12 +73,21 @@
           [class]="topicOption.value ? '' : 'gray-caption'"
         >
           {{ topicOption.value || 'Not Available' }}
+          <button
+            mat-icon-button
+            *ngIf="topicOption.type === TopicSelectionEnum.AI"
+            [cdkCopyToClipboard]="topicOption.value"
+            matTooltip="Copy AI topic"
+            appSnackbar
+          >
+            <mat-icon>file_copy</mat-icon>
+          </button>
         </div>
         <ng-template #editableManualField>
           <mat-form-field
             color="accent"
             appearance="outline"
-            class="w-100"
+            class="w-100 pb-0"
             matTooltip="Edit the manual topic for this {{ entryTypeMetadata.term }}"
           >
             <input
@@ -86,7 +98,7 @@
             />
           </mat-form-field>
         </ng-template>
-      </mat-radio-button>
+      </div>
     </mat-card>
   </mat-radio-group>
 </mat-dialog-content>

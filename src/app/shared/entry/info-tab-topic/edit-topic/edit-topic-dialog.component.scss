@@ -16,3 +16,13 @@
   color: white !important;
   background-color: $accent-3-dark;
 }
+
+.selected-card {
+  border-width: 0.25rem;
+  border-color: mat.get-color-from-palette($kim-secondary, 2);
+}
+
+:host ::ng-deep .mat-form-field-wrapper {
+  // Removing the padding because we don't need hint
+  padding-bottom: 0;
+}
