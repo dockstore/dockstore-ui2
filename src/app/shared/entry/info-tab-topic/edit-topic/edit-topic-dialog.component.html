@@ -75,7 +75,7 @@
           {{ topicOption.value || 'Not Available' }}
           <button
             mat-icon-button
-            *ngIf="topicOption.type === TopicSelectionEnum.AI"
+            *ngIf="topicOption.type === TopicSelectionEnum.AI && topicOption.value"
             [cdkCopyToClipboard]="topicOption.value"
             matTooltip="Copy AI topic"
             appSnackbar
