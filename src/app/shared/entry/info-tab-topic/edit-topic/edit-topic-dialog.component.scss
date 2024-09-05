@@ -2,27 +2,7 @@
 
 @import 'materialColorScheme.scss';
 
-// This style ensures that the mat radio content text fills up the whole mat-card
-:host ::ng-deep .mat-radio-label-content {
-  width: 100%;
-}
-
-// Wraps the text because by default, mat-radio-label doesn't wrap
-:host ::ng-deep .mat-radio-label {
-  white-space: normal;
-}
-
 .approved {
   color: white !important;
   background-color: $accent-3-dark;
-}
-
-.selected-card {
-  border-width: 0.15rem;
-  border-color: mat.get-color-from-palette($kim-secondary, 2);
-}
-
-:host ::ng-deep .mat-form-field-wrapper {
-  // Removing the padding because we don't need hint
-  padding-bottom: 0;
 }
