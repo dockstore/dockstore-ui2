@@ -90,12 +90,14 @@
             class="w-100 pb-0"
             matTooltip="Edit the manual topic for this {{ entryTypeMetadata.term }}"
           >
-            <input
+            <textarea
               matInput
               [(ngModel)]="editedTopicManual"
               placeholder="Short description of the {{ entryTypeMetadata.term }}"
               data-cy="topicInput"
-            />
+              cdkTextareaAutosize
+            >
+            </textarea>
           </mat-form-field>
         </ng-template>
       </div>
