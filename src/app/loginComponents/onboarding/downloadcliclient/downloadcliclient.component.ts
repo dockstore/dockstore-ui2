@@ -189,7 +189,7 @@ At this point, you now have the Dockstore CLI set up for interacting with the Do
 
 #### Part 6 - Install cwltool (Optional)
 Dockstore relies on [cwltool](https://github.com/common-workflow-language/cwltool) - a reference implementation of CWL - for local execution of tools and workflows described with CWL.
-You'll need to have Python 3 and [pipx](https://pipx.pypa.io/latest/installation/) to be installed on your machine.
+You'll need to have Python 3.10+ and [pipx](https://pipx.pypa.io/latest/installation/) to be installed on your machine.
 
 **Note:** cwltool must be available on your PATH for the Dockstore CLI to find it.
 
