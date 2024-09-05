@@ -103,9 +103,9 @@ export class EditTopicDialogComponent {
     const manualTopicOption: TopicOption = {
       type: this.TopicSelectionEnum.MANUAL,
       label: 'Manual',
-      description: `Entered manually by the user.${
-        this.isGitHubAppEntry ? ` Edit the topic field in the .dockstore.yml file on GitHub.` : ''
-      }`,
+      description: this.isGitHubAppEntry
+        ? 'Specified in the .dockstore.yml file on GitHub. Edit the topic field in the .dockstore.yml to change the topic.'
+        : 'Entered manually by the user.',
       value: this.entry.topicManual,
     };
     const automaticTopicOption: TopicOption = {
