@@ -142,7 +142,7 @@ describe('GitHub App Tools', () => {
         'Organization',
         'Repository',
         'Reference',
-        'Success',
+        'Status',
         'Type',
       ];
       appLogColumns.forEach((column) => cy.contains(column));
