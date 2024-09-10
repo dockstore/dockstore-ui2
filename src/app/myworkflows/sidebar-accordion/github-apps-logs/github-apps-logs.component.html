@@ -62,7 +62,7 @@
             </td>
           </div>
           <div *ngSwitchCase="'success'">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Success</th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
             <td mat-cell *matCellDef="let element">
               {{
                 element.ignored ? 'Ignored' : element.success && element.message ? 'Warnings' : (column | mapFriendlyValue: element[column])
