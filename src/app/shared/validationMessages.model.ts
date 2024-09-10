@@ -67,16 +67,16 @@ export const exampleDescriptorPatterns = {
 };
 
 export const validationDescriptorPatterns = {
-  gitPath: '^([a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*)/([a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*)$',
-  smkPath: '^\\/([^\\/?:*\\|<>]++\\/)*(Snakefile|[^./?:*\\|<>]++.smk))$',
-  cwlPath: '^\\/([^\\/?:*\\|<>]+\\/)*[^/?:*\\|<>]+.(cwl|yaml|yml)',
-  wdlPath: '^\\/([^\\/?:*\\|<>]+\\/)*[^/?:*\\|<>]+.wdl$',
-  nflPath: '^\\/([^\\/?:*\\|<>]+\\/)*[^/?:*\\|<>]+.(config)',
+  gitPath: '^([a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*)\\/([a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*)$',
+  smkPath: '^\\/([^\\/?:*\\|<>]++\\/)*(Snakefile|[^.\\/?:*\\|<>]++.smk))$',
+  cwlPath: '^\\/([^\\/?:*\\|<>]+\\/)*[^\\/?:*\\|<>]+.(cwl|yaml|yml)',
+  wdlPath: '^\\/([^\\/?:*\\|<>]+\\/)*[^\\/?:*\\|<>]+.wdl$',
+  nflPath: '^\\/([^\\/?:*\\|<>]+\\/)*[^\\/?:*\\|<>]+.(config)',
   dockerfilePath: '^\\/([^\\/?:*\\|<>]+\\/)*(([a-zA-Z]+[.])?Dockerfile|Dockerfile([.][a-zA-Z]+)?)$',
   testFilePath: '^\\/([^\\/?:*\\|<>]+\\/)*[^\\/?:*\\|<>]+.(json|yml|yaml)$',
-  imagePath: '^(([a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*)|_)/([a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*)$',
-  repoNameWithSlashesImagePath: '^(([a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*)|_)/([a-zA-Z0-9]+([-_./][a-zA-Z0-9]+)*)$',
-  privateAmazonImagePath: '^_/([a-zA-Z0-9]+([-_./][a-zA-Z0-9]+)*)$', // Has an empty namespace. Allows for slashes in repo name
+  imagePath: '^(([a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*)|_)\\/([a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*)$',
+  repoNameWithSlashesImagePath: '^(([a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*)|_)\\/([a-zA-Z0-9]+([-_./][a-zA-Z0-9]+)*)$',
+  privateAmazonImagePath: '^_\\/([a-zA-Z0-9]+([-_./][a-zA-Z0-9]+)*)$', // Has an empty namespace. Allows for slashes in repo name
   toolName: '^[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*$',
   label: '^(| *([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*)( *, *([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*))* *)$',
   versionTag: '^[a-zA-Z0-9]+([-_.]*[a-zA-Z0-9]+)*$',
@@ -85,7 +85,7 @@ export const validationDescriptorPatterns = {
   workflowName: '[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*',
   cwlTestParameterFilePath: '^\\/([^\\/?:*\\|<>]+\\/)*[^\\/?:*\\|<>]+.(json|yml|yaml)$',
   wdlTestParameterFilePath: '^\\/([^\\/?:*\\|<>]+\\/)*[^\\/?:*\\|<>]+.(json|yml|yaml)$',
-  testParameterFilePath: '^\\/([^\\/?:*\\|<>]+\\/)*[^/?:*\\|<>]+.(json|yml|yaml)$',
+  testParameterFilePath: '^\\/([^\\/?:*\\|<>]+\\/)*[^\\/?:*\\|<>]+.(json|yml|yaml)$',
   // This should be used for all validation patterns that are alphanumeric with internal underscores, hyphens, and periods.
   alphanumericInternalUHP: '^[a-zA-Z0-9]+([-_.]*[a-zA-Z0-9]+)*$',
   amazonDockerRegistryPath: '(^[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*.dkr.ecr.[a-zA-Z0-9]+([-_][a-zA-Z0-9]+)*.amazonaws.com)|(public.ecr.aws)', // public and private path
