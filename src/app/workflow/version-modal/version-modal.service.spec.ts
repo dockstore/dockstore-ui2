@@ -80,7 +80,7 @@ describe('Service: version-modal.service.ts', () => {
       alertQuery.message$.subscribe((refreshMessage) => expect(refreshMessage).toEqual(''));
     }
   ));
-  it('regex should still be correct', inject([VersionModalService], (service: VersionModalService) => {
+  it('regex should still be correct', inject([], () => {
     const regexp: RegExp = new RegExp(validationDescriptorPatterns.cwlPath);
     expect(regexp.test('/Dockstore.cwl')).toBeTruthy();
     expect(regexp.test('/Dockstore.yaml')).toBeTruthy();
