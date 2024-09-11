@@ -74,8 +74,8 @@ export const validationDescriptorPatterns = {
   nflPath: '^\\/([^\\/?:*\\|<>]+\\/)*[^\\/?:*\\|<>]+.(config)',
   dockerfilePath: '^\\/([^\\/?:*\\|<>]+\\/)*(([a-zA-Z]+[.])?Dockerfile\\|Dockerfile([.][a-zA-Z]+)?)$',
   testFilePath: '^\\/([^\\/?:*\\|<>]+\\/)*[^\\/?:*\\|<>]+.(json|yml|yaml)$',
-  imagePath: '^(([a-zA-Z0-9]+([\\-_.][a-zA-Z0-9]+)*)\\|\\_)\\/([a-zA-Z0-9]+([\\-_.][a-zA-Z0-9]+)*)$',
-  repoNameWithSlashesImagePath: '^(([a-zA-Z0-9]+([\\-_.][a-zA-Z0-9]+)*)\\|\\_)\\/([a-zA-Z0-9]+([\\-_.\\/][a-zA-Z0-9]+)*)$',
+  imagePath: '^(([a-zA-Z0-9]+([\\-_.][a-zA-Z0-9]+)*)|_)\\/([a-zA-Z0-9]+([\\-_.][a-zA-Z0-9]+)*)$',
+  repoNameWithSlashesImagePath: '^(([a-zA-Z0-9]+([\\-_.][a-zA-Z0-9]+)*)|_)\\/([a-zA-Z0-9]+([\\-_.\\/][a-zA-Z0-9]+)*)$',
   privateAmazonImagePath: '^_\\/([a-zA-Z0-9]+([\\-_.\\/][a-zA-Z0-9]+)*)$', // Has an empty namespace. Allows for slashes in repo name
   toolName: '^[a-zA-Z0-9]+([\\-_][a-zA-Z0-9]+)*$',
   label: '^(\\|*([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*)( *, *([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*))* *)$',
