@@ -72,7 +72,7 @@ export const validationDescriptorPatterns = {
   cwlPath: '^\\/([^\\/?:*\\|<>]+\\/)*[^\\/?:*\\|<>]+.(cwl|yaml|yml)',
   wdlPath: '^\\/([^\\/?:*\\|<>]+\\/)*[^\\/?:*\\|<>]+.wdl$',
   nflPath: '^\\/([^\\/?:*\\|<>]+\\/)*[^\\/?:*\\|<>]+.(config)',
-  dockerfilePath: '^\\/([^\\/?:*\\|<>]+\\/)*(([a-zA-Z]+[.])?Dockerfile\\|Dockerfile([.][a-zA-Z]+)?)$',
+  dockerfilePath: '^\\/([^\\/?:*\\|<>]+\\/)*(([a-zA-Z]+[.])?Dockerfile|Dockerfile([.][a-zA-Z]+)?)$',
   testFilePath: '^\\/([^\\/?:*\\|<>]+\\/)*[^\\/?:*\\|<>]+.(json|yml|yaml)$',
   imagePath: '^(([a-zA-Z0-9]+([\\-_.][a-zA-Z0-9]+)*)|_)\\/([a-zA-Z0-9]+([\\-_.][a-zA-Z0-9]+)*)$',
   repoNameWithSlashesImagePath: '^(([a-zA-Z0-9]+([\\-_.][a-zA-Z0-9]+)*)|_)\\/([a-zA-Z0-9]+([\\-_.\\/][a-zA-Z0-9]+)*)$',
