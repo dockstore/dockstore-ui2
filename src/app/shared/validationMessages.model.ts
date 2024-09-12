@@ -78,7 +78,7 @@ export const validationDescriptorPatterns = {
   repoNameWithSlashesImagePath: '^(([a-zA-Z0-9]+([\\-_.][a-zA-Z0-9]+)*)|_)\\/([a-zA-Z0-9]+([\\-_.\\/][a-zA-Z0-9]+)*)$',
   privateAmazonImagePath: '^_\\/([a-zA-Z0-9]+([\\-_.\\/][a-zA-Z0-9]+)*)$', // Has an empty namespace. Allows for slashes in repo name
   toolName: '^[a-zA-Z0-9]+([\\-_][a-zA-Z0-9]+)*$',
-  label: '^(\\|*([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*)( *, *([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*))* *)$',
+  label: '^(\\| *([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*)( *, *([a-zA-Z0-9]+(-[a-zA-Z0-9]+)*))* *)$',
   versionTag: '^[a-zA-Z0-9]+([\\-_.]*[a-zA-Z0-9]+)*$',
   reference: '[\\w\\-]+((\\/|.)[\\w\\-]+)*',
   workflowDescriptorPath: '^\\/([^\\/?:*\\|<>]+\\/)*(Snakefile|[^\\/?:*\\|<>]+.(smk|cwl|wdl|yaml|yml|config|ga))',
