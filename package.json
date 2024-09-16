@@ -66,7 +66,7 @@
     "cytoscape": "^3.19.0",
     "cytoscape-dagre": "^2.3.2",
     "cytoscape-popper": "^2.0.0",
-    "dompurify": "^2.2.9",
+    "dompurify": "^2.5.4",
     "file-saver": "^2.0.5",
     "ini": "^4.1.1",
     "jquery": "^3.6.0",
