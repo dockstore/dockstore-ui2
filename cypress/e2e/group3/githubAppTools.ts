@@ -106,6 +106,7 @@ describe('GitHub App Tools', () => {
         body: [],
       }).as('lambdaEvents');
       cy.contains('Apps Logs').click();
+      cy.wait('@lambdaEvents');
       cy.contains('There are no GitHub App logs for this organization.');
       cy.contains('Close').click();
 
