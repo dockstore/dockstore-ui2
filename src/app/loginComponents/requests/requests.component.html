@@ -12,7 +12,7 @@
     </mat-card>
 
     <div fxLayout="column" fxLayoutGap="32px">
-      <mat-card *ngFor="let org of allPendingOrganizations$ | async; let i = index" [id]="'pending-org-card-' + i">
+      <mat-card *ngFor="let org of allPendingOrganizations$ | async; let i = index; trackBy: trackById" [id]="'pending-org-card-' + i">
         <mat-card-header>
           <mat-card-title>
             <a [routerLink]="'/organizations/' + org.name" [matTooltip]="org?.name">{{ org.displayName }}</a>
