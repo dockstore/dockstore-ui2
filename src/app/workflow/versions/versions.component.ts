@@ -180,4 +180,8 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
   originalOrder = (a: KeyValue<string, Doi>, b: KeyValue<string, Doi>): number => {
     return 0;
   };
+
+  trackBy(index: number, item: WorkflowVersion) {
+    return item.id;
+  }
 }
