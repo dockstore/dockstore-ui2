@@ -175,7 +175,7 @@ export class RequestsComponent extends Base implements OnInit {
         }
       });
   }
-  trackById(index: number, item: Organization) {
+  trackById(index: number, item: Organization | OrganizationUser) {
     return item.id;
   }
 }
