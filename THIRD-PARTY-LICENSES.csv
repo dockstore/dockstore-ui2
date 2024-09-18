@@ -143,6 +143,7 @@
 "delaunator@5.0.0","ISC","https://github.com/mapbox/delaunator"
 "delegate@3.2.0","MIT","https://github.com/zenorocha/delegate"
 "dompurify@2.4.1","(MPL-2.0 OR Apache-2.0)","https://github.com/cure53/DOMPurify"
+"dompurify@2.5.4","(MPL-2.0 OR Apache-2.0)","https://github.com/cure53/DOMPurify"
 "duplexify@3.7.1","MIT","https://github.com/mafintosh/duplexify"
 "emoji-toolkit@7.0.1","MIT","https://github.com/joypixels/emoji-toolkit"
 "encoding@0.1.13","MIT","https://github.com/andris9/encoding"
