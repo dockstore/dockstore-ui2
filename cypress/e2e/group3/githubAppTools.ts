@@ -98,15 +98,17 @@ describe('GitHub App Tools', () => {
       cy.contains('Tool storage type').click();
       cy.contains('Close').click();
 
+      cy.intercept('GET', '/api/lambdaEvents/**').as('lambdaEvents1');
       // GitHub App Logs
       cy.contains('Apps Logs').click();
+      cy.wait('@lambdaEvents1');
       cy.contains('There were problems retrieving the GitHub App logs for this organization.');
       cy.contains('Close').click();
       cy.intercept('GET', '/api/lambdaEvents/**', {
         body: [],
-      }).as('lambdaEvents');
+      }).as('lambdaEvents2');
       cy.contains('Apps Logs').click();
-      cy.wait('@lambdaEvents');
+      cy.wait('@lambdaEvents2');
       cy.contains('There are no GitHub App logs for this organization.');
       cy.contains('Close').click();
 
