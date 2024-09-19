@@ -81,6 +81,10 @@ jobs:
     steps:
       - setup_nightly_tests
       - run:
+          name: Reset dockstoretestuser4's resources
+          # Reset user dockstoretestuser4's resources such that it has no registered tools and published workflows
+          command: bash scripts/reset-dockstoretestuser4-resources.sh << parameters.stack >>
+      - run:
           name: Run remote verification test against << parameters.stack >> (with auth)
           command: bash -i -c 'npm run test-<< parameters.stack >>-auth'
           environment:
@@ -89,7 +93,7 @@ jobs:
           name: Reset dockstoretestuser4's resources
           # Reset user dockstoretestuser4's resources such that it has no registered tools and published workflows
           command: bash scripts/reset-dockstoretestuser4-resources.sh << parameters.stack >>
-          # Need to reset even if the tests failed
+          # Reset even if the tests failed
           when: always
       - upload_nightly_artifacts
       - slack/notify:
