@@ -8,7 +8,7 @@ export default defineConfig({
   requestTimeout: 30000,
   experimentalMemoryManagement: true,
   retries: {
-    runMode: 0,
+    runMode: 3,
     openMode: 0,
   },
   userAgent: 'Dockstore/Testing',
