@@ -175,4 +175,10 @@ export class RequestsComponent extends Base implements OnInit {
         }
       });
   }
+  trackByOrg(index: number, item: Organization) {
+    return item.id;
+  }
+  trackByOrgUser(index: number, item: OrganizationUser) {
+    return item.id;
+  }
 }

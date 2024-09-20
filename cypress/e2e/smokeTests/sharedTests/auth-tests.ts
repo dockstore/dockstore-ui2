@@ -18,7 +18,6 @@ const username = 'dockstoretestuser4';
 // tuples of registry, repo namespace (username), and entry-name (repo name)
 const toolName = 'dockstore-tool-md5sum';
 const toolTuple = ['github.com', username, toolName];
-const workflowTuple = ['github.com', username, 'hello-dockstore-workflow'];
 // tuple of organization name, collection name
 const collectionTuple = ['DockstoreAuthTestOrg', 'SimpleCollection'];
 const hardcodedWaitTime = 4000;
@@ -228,7 +227,7 @@ function testTool(registry: string, repo: string, name: string) {
   });
 }
 
-function testWorkflow(registry: string, repo: string, name: string) {
+function testWorkflow() {
   describe('Refresh, publish, unpublish, and restub a workflow', () => {
     it('refresh and publish', () => {
       storeToken();
@@ -332,4 +331,4 @@ function testCollection(org: string, collection: string, registry: string, repo:
 
 testCollection(collectionTuple[0], collectionTuple[1], toolTuple[0], toolTuple[1], toolTuple[2]);
 testTool(toolTuple[0], toolTuple[1], toolTuple[2]);
-testWorkflow(workflowTuple[0], workflowTuple[1], workflowTuple[2]);
+testWorkflow();
