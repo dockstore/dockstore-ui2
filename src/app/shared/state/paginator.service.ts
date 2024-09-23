@@ -5,7 +5,7 @@ import { PaginatorInfo, PaginatorStore } from './paginator.store';
 export class PaginatorService {
   constructor(private paginatorStore: PaginatorStore) {}
 
-  setPaginator(type: 'tool' | 'workflow' | 'lambdaEvent', pageSize: number, pageNumber: number): void {
+  setPaginator(type: 'tool' | 'workflow' | 'lambdaEvent' | 'version', pageSize: number, pageNumber: number): void {
     const paginatorInfo: PaginatorInfo = {
       pageSize: pageSize,
       pageIndex: pageNumber,
@@ -14,8 +14,10 @@ export class PaginatorService {
       this.setToolPaginatorSize(paginatorInfo);
     } else if (type === 'workflow') {
       this.setWorkflowPaginatorSize(paginatorInfo);
-    } else {
+    } else if (type === 'lambdaEvent') {
       this.setLambdaEventPaginatorSize(paginatorInfo);
+    } else {
+      this.setVersionPaginatorSize(paginatorInfo);
     }
   }
 
@@ -37,6 +39,14 @@ export class PaginatorService {
     });
   }
   setLambdaEventPaginatorSize(paginatorInfo: PaginatorInfo) {
+    this.paginatorStore.update((state) => {
+      return {
+        ...state,
+        lambdaEvent: paginatorInfo,
+      };
+    });
+  }
+  setVersionPaginatorSize(paginatorInfo: PaginatorInfo) {
     this.paginatorStore.update((state) => {
       return {
         ...state,
