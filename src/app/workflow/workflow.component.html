@@ -334,7 +334,6 @@
           <mat-tab id="versionsTab" label="Versions">
             <div *ngIf="(extendedWorkflow$ | async)?.workflowVersions.length > 0; else noVersionsVersionTab">
               <app-versions-workflow
-                [versions]="(extendedWorkflow$ | async)?.workflowVersions"
                 (selectedVersionChange)="onSelectedVersionChange($event)"
                 [verifiedSource]="(extendedWorkflow$ | async)?.verifiedSources"
                 [verifiedVersionPlatforms]="versionsWithVerifiedPlatforms"

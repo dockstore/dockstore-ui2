@@ -291,5 +291,12 @@
       *matRowDef="let row; columns: displayedColumns; let version"
       data-cy="versionRow"
     ></tr>
+    <mat-paginator
+      [pageSizeOptions]="[10, 20, 50]"
+      [length]="versionsLength"
+      [pageSize]="pageSize$ | async"
+      [pageIndex]="pageIndex$ | async"
+      showFirstLastButtons
+    ></mat-paginator>
   </table>
 </div>

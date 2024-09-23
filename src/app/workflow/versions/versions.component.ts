@@ -22,7 +22,7 @@ import { AlertService } from '../../shared/alert/state/alert.service';
 import { DateService } from '../../shared/date.service';
 import { Dockstore } from '../../shared/dockstore.model';
 import { DockstoreService } from '../../shared/dockstore.service';
-import { Doi, EntryType, VersionVerifiedPlatform } from '../../shared/openapi';
+import { Doi, EntryType, VersionVerifiedPlatform, WorkflowsService } from '../../shared/openapi';
 import { ExtendedWorkflow } from '../../shared/models/ExtendedWorkflow';
 import { SessionQuery } from '../../shared/session/session.query';
 import { ExtendedWorkflowQuery } from '../../shared/state/extended-workflow.query';
@@ -36,11 +36,14 @@ import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
 import { ViewWorkflowComponent } from '../view/view.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MatLegacyChipsModule } from '@angular/material/legacy-chips';
-import { NgIf, NgClass, NgFor, JsonPipe, DatePipe, KeyValuePipe, KeyValue } from '@angular/common';
+import { NgIf, NgClass, NgFor, JsonPipe, DatePipe, KeyValuePipe, KeyValue, AsyncPipe } from '@angular/common';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { MatIconModule } from '@angular/material/icon';
 import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
 import { DoiBadgeComponent } from 'app/shared/entry/doi/doi-badge/doi-badge.component';
+import { PaginatorService } from '../../shared/state/paginator.service';
+import { Observable } from 'rxjs';
+import { MatLegacyPaginator as MatPaginator, MatLegacyPaginatorModule } from '@angular/material/legacy-paginator';
 
 @Component({
   selector: 'app-versions-workflow',
@@ -67,12 +70,14 @@ import { DoiBadgeComponent } from 'app/shared/entry/doi/doi-badge/doi-badge.comp
     CommitUrlPipe,
     KeyValuePipe,
     DoiBadgeComponent,
+    AsyncPipe,
+    MatLegacyPaginatorModule,
   ],
 })
 export class VersionsWorkflowComponent extends Versions implements OnInit, OnChanges, AfterViewInit {
   faTag = faTag;
   faCodeBranch = faCodeBranch;
-  @Input() versions: Array<WorkflowVersion>;
+  versions: Array<WorkflowVersion>;
   @Input() workflowId: number;
   @Input() verifiedVersionPlatforms: Array<VersionVerifiedPlatform>;
   _selectedVersion: WorkflowVersion;
@@ -85,10 +90,15 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
   dataSource = new MatTableDataSource(this.versions);
   @Output() selectedVersionChange = new EventEmitter<WorkflowVersion>();
   @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator, { static: true }) protected paginator: MatPaginator;
   public WorkflowType = Workflow;
   workflow: ExtendedWorkflow;
   entryType = EntryType;
   DoiInitiatorEnum = Doi.InitiatorEnum;
+  type: 'workflow' | 'tool' | 'lambdaEvent' | 'version' = 'version';
+  public pageSize$: Observable<number>;
+  public pageIndex$: Observable<number>;
+  versionsLength: number;
   setNoOrderCols(): Array<number> {
     return [4, 5];
   }
@@ -97,6 +107,8 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
     dockstoreService: DockstoreService,
     dateService: DateService,
     private alertService: AlertService,
+    private paginatorService: PaginatorService,
+    private workflowsService: WorkflowsService,
     private extendedWorkflowQuery: ExtendedWorkflowQuery,
     protected sessionQuery: SessionQuery
   ) {
@@ -140,24 +152,24 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
 
   ngOnChanges() {
     this.dataSource.data = this.versions;
+    console.log(this.dataSource.data);
   }
 
   ngOnInit() {
+    this.workflowsService
+      .getWorkflowVersions(this.workflowId, this.paginator.pageSize, this.paginator.pageIndex)
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((versions) => {
+        this.versions = versions;
+        console.log(versions);
+      });
+    this.paginatorService.setPaginator(this.type, this.paginator.pageSize, this.paginator.pageIndex);
     this.extendedWorkflowQuery.extendedWorkflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((workflow) => {
       this.workflow = workflow;
+      this.versionsLength = this.workflow.workflowVersions.length;
       if (workflow) {
         this.defaultVersion = workflow.defaultVersion;
       }
-      this.dtOptions = {
-        bFilter: false,
-        bPaginate: false,
-        columnDefs: [
-          {
-            orderable: false,
-            targets: this.setNoOrderCols(),
-          },
-        ],
-      };
       this.publicPageSubscription();
     });
   }
