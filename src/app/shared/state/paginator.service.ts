@@ -50,7 +50,7 @@ export class PaginatorService {
     this.paginatorStore.update((state) => {
       return {
         ...state,
-        lambdaEvent: paginatorInfo,
+        version: paginatorInfo,
       };
     });
   }
