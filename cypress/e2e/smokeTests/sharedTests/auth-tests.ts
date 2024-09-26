@@ -40,6 +40,11 @@ function storeToken() {
   }
 }
 
+function hasSandboxZenodo() {
+  const baseUrl = Cypress.config('baseUrl');
+  return baseUrl === 'https://qa.dockstore.org' || baseUrl === 'https://staging.dockstore.org' || baseUrl === 'https://dev.dockstore.net';
+}
+
 function unpublishTool() {
   it('unpublish the tool', () => {
     storeToken();
@@ -266,16 +271,22 @@ function testWorkflow() {
       cy.get('#publishButton').contains('Unpublish').click({ force: true });
 
       goToTab('Info');
-      cy.intercept('**/restub').as('restub');
-      cy.contains('button', 'Restub').click();
-      // Wait for the restub request to complete, so that it does not overlap
-      // with the subsequent refresh and occasionally trigger a db error on
-      // the webservice.
-      // See https://ucsc-cgl.atlassian.net/browse/SEAB-6535
-      cy.wait('@restub');
-      // This fails because DOI is auto issued when published, and restub fails.
-      // See https://ucsc-gi.slack.com/archives/C05EZH3RVNY/p1718128426265779
-      // cy.contains('button', 'Publish').should('be.disabled');
+
+      // For now, only restub the workflow in environments that use the sandbox zenodo,
+      // to avoid the subsequent creation of new versions and auto-generation of real
+      // zenodo DOIs, which will accumulate over time because they are effectively
+      // undeletable.
+      // See https://ucsc-cgl.atlassian.net/browse/SEAB-6508
+      if (hasSandboxZenodo()) {
+        cy.intercept('**/restub').as('restub');
+        cy.contains('button', 'Restub').click();
+        // Wait for the restub request to complete, so that it does not overlap
+        // with the subsequent refresh and occasionally trigger a db error on
+        // the webservice.
+        // See https://ucsc-cgl.atlassian.net/browse/SEAB-6535
+        cy.wait('@restub');
+        cy.contains('button', 'Publish').should('be.disabled');
+      }
 
       cy.get('[data-cy=refreshButton]').click();
       goToTab('Versions');
