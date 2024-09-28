@@ -34,8 +34,6 @@ export class DescriptorLanguageService {
   readonly knownServiceValue = 'service';
 
   public descriptorLanguages$: Observable<Array<Workflow.DescriptorTypeEnum>>;
-  public descriptorLanguagesInnerHTML$: Observable<string>;
-  public noService$: Observable<DescriptorLanguageBean[]>;
   private descriptorLanguagesBean$ = new BehaviorSubject<DescriptorLanguageBean[]>([]);
   public filteredDescriptorLanguages$: Observable<Array<Workflow.DescriptorTypeEnum>>;
   constructor(private metadataService: MetadataService, private sessionQuery: SessionQuery) {
@@ -46,10 +44,6 @@ export class DescriptorLanguageService {
           return descriptorLanguageMap.map((descriptorLanguage) => <Workflow.DescriptorTypeEnum>descriptorLanguage.value.toString());
         }
       })
-    );
-    this.noService$ = this.descriptorLanguagesBean$.pipe(map((beans) => this.filterService(beans)));
-    this.descriptorLanguagesInnerHTML$ = this.noService$.pipe(
-      map((descriptorLanguageBeans: DescriptorLanguageBean[]) => this.getDescriptorLanguagesInnerHTML(descriptorLanguageBeans))
     );
     const combined$ = combineLatest([this.descriptorLanguages$, this.sessionQuery.entryType$]);
     this.filteredDescriptorLanguages$ = combined$.pipe(map((combined) => this.filterLanguages(combined[0], combined[1])));
