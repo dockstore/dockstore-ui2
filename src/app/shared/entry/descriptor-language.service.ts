@@ -254,7 +254,12 @@ export class DescriptorLanguageService {
    */
   filterLanguages(descriptorTypes: Workflow.DescriptorTypeEnum[], entryType: EntryType): Workflow.DescriptorTypeEnum[] {
     if (entryType === EntryType.BioWorkflow || entryType === EntryType.Tool || !entryType) {
-      return descriptorTypes.filter((descriptorType) => descriptorType !== Workflow.DescriptorTypeEnum.Service);
+      return descriptorTypes.filter(
+        (descriptorType) => descriptorType !== Workflow.DescriptorTypeEnum.Service && descriptorType !== Workflow.DescriptorTypeEnum.Jupyter
+      );
+    }
+    if (entryType === EntryType.Notebook) {
+      return [Workflow.DescriptorTypeEnum.Jupyter];
     } else {
       return [Workflow.DescriptorTypeEnum.Service];
     }
