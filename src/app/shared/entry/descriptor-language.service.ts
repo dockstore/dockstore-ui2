@@ -251,8 +251,7 @@ export class DescriptorLanguageService {
       return descriptorTypes.filter(
         (descriptorType) => descriptorType !== Workflow.DescriptorTypeEnum.Service && descriptorType !== Workflow.DescriptorTypeEnum.Jupyter
       );
-    }
-    if (entryType === EntryType.Notebook) {
+    } else if (entryType === EntryType.Notebook) {
       return [Workflow.DescriptorTypeEnum.Jupyter];
     } else {
       return [Workflow.DescriptorTypeEnum.Service];
