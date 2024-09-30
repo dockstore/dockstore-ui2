@@ -228,17 +228,6 @@ export class DescriptorLanguageService {
   }
 
   /**
-   * Certain pages ignore the 'service' descriptor language completely, this filters it out of the known languages
-   *
-   * @param {DescriptorLanguageBean[]} beans  Descriptor language bean returned from the metadata endpoint
-   * @returns {DescriptorLanguageBean[]}   Filtered list of languages that do not have 'service' in it
-   * @memberof DescriptorLanguageService
-   */
-  filterService(beans: DescriptorLanguageBean[]): DescriptorLanguageBean[] {
-    return beans.filter((bean) => bean.value !== this.knownServiceValue);
-  }
-
-  /**
    * Some entries are not meant to show all descriptor types
    *
    * @param {ToolDescriptor.TypeEnum[]} descriptorTypes
