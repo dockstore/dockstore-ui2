@@ -34,8 +34,6 @@ export class DescriptorLanguageService {
   readonly knownServiceValue = 'service';
 
   public descriptorLanguages$: Observable<Array<Workflow.DescriptorTypeEnum>>;
-  public descriptorLanguagesInnerHTML$: Observable<string>;
-  public noService$: Observable<DescriptorLanguageBean[]>;
   private descriptorLanguagesBean$ = new BehaviorSubject<DescriptorLanguageBean[]>([]);
   public filteredDescriptorLanguages$: Observable<Array<Workflow.DescriptorTypeEnum>>;
   constructor(private metadataService: MetadataService, private sessionQuery: SessionQuery) {
@@ -46,10 +44,6 @@ export class DescriptorLanguageService {
           return descriptorLanguageMap.map((descriptorLanguage) => <Workflow.DescriptorTypeEnum>descriptorLanguage.value.toString());
         }
       })
-    );
-    this.noService$ = this.descriptorLanguagesBean$.pipe(map((beans) => this.filterService(beans)));
-    this.descriptorLanguagesInnerHTML$ = this.noService$.pipe(
-      map((descriptorLanguageBeans: DescriptorLanguageBean[]) => this.getDescriptorLanguagesInnerHTML(descriptorLanguageBeans))
     );
     const combined$ = combineLatest([this.descriptorLanguages$, this.sessionQuery.entryType$]);
     this.filteredDescriptorLanguages$ = combined$.pipe(map((combined) => this.filterLanguages(combined[0], combined[1])));
@@ -234,17 +228,6 @@ export class DescriptorLanguageService {
   }
 
   /**
-   * Certain pages ignore the 'service' descriptor language completely, this filters it out of the known languages
-   *
-   * @param {DescriptorLanguageBean[]} beans  Descriptor language bean returned from the metadata endpoint
-   * @returns {DescriptorLanguageBean[]}   Filtered list of languages that do not have 'service' in it
-   * @memberof DescriptorLanguageService
-   */
-  filterService(beans: DescriptorLanguageBean[]): DescriptorLanguageBean[] {
-    return beans.filter((bean) => bean.value !== this.knownServiceValue);
-  }
-
-  /**
    * Some entries are not meant to show all descriptor types
    *
    * @param {ToolDescriptor.TypeEnum[]} descriptorTypes
@@ -254,7 +237,11 @@ export class DescriptorLanguageService {
    */
   filterLanguages(descriptorTypes: Workflow.DescriptorTypeEnum[], entryType: EntryType): Workflow.DescriptorTypeEnum[] {
     if (entryType === EntryType.BioWorkflow || entryType === EntryType.Tool || !entryType) {
-      return descriptorTypes.filter((descriptorType) => descriptorType !== Workflow.DescriptorTypeEnum.Service);
+      return descriptorTypes.filter(
+        (descriptorType) => descriptorType !== Workflow.DescriptorTypeEnum.Service && descriptorType !== Workflow.DescriptorTypeEnum.Jupyter
+      );
+    } else if (entryType === EntryType.Notebook) {
+      return [Workflow.DescriptorTypeEnum.Jupyter];
     } else {
       return [Workflow.DescriptorTypeEnum.Service];
     }
