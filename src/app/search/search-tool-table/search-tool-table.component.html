@@ -49,9 +49,7 @@
               *ngIf="tool?.source.topicSelection === TopicSelectionEnum.AI && !tool?.source.approvedAITopic"
               [isPublic]="true"
             ></app-ai-bubble>
-            <span class="size-small" [matTooltip]="tool?.source.topicAutomatic" matTooltipPosition="left">{{
-              tool?.source.topicAutomatic
-            }}</span>
+            <span [matTooltip]="tool?.source.topicAutomatic" matTooltipPosition="left">{{ tool?.source.topicAutomatic }}</span>
           </div>
         </div>
       </mat-cell>
