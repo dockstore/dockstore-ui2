@@ -23,9 +23,7 @@
               *ngIf="workflow?.source.topicSelection === TopicSelectionEnum.AI && !workflow?.source.approvedAITopic"
               [isPublic]="true"
             ></app-ai-bubble>
-            <span class="size-small" [matTooltip]="workflow?.source.topicAutomatic" matTooltipPosition="left">{{
-              workflow?.source.topicAutomatic
-            }}</span>
+            <span [matTooltip]="workflow?.source.topicAutomatic" matTooltipPosition="left">{{ workflow?.source.topicAutomatic }}</span>
           </div>
         </div>
       </mat-cell>
