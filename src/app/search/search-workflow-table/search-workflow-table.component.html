@@ -31,7 +31,7 @@
     <ng-container matColumnDef="all_authors">
       <mat-header-cell fxShow fxHide.lt-sm *matHeaderCellDef mat-sort-header>Author</mat-header-cell>
       <mat-cell fxShow fxHide.lt-sm *matCellDef="let workflow" [matTooltip]="workflow?.source?.all_authors | getSearchAuthorsHtml: false">
-        <div class="truncate-text-3">
+        <div class="truncate-text-3 size-small">
           <span [innerHTML]="workflow?.source?.all_authors | getSearchAuthorsHtml"></span>
         </div>
       </mat-cell>
