@@ -18,7 +18,7 @@
                 (workflow?.source.workflowName ? '/' + workflow?.source.workflowName : '')
             }}</a
           >
-          <div class="truncate-text-2">
+          <div class="truncate-text-3">
             <app-ai-bubble
               *ngIf="workflow?.source.topicSelection === TopicSelectionEnum.AI && !workflow?.source.approvedAITopic"
               [isPublic]="true"
