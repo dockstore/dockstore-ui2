@@ -52,14 +52,6 @@
         </div>
       </mat-cell>
     </ng-container>
-    <ng-container matColumnDef="projectLinks">
-      <mat-header-cell fxShow fxHide.lt-md *matHeaderCellDef>Links</mat-header-cell>
-      <mat-cell fxShow fxHide.lt-md *matCellDef="let entry">
-        <a [href]="entry?.source.providerUrl" *ngIf="entry?.source.providerUrl">
-          <fa-icon class="fa-lg" [icon]="entry.source.providerIcon" [matTooltip]="entry?.source.provider"></fa-icon>
-        </a>
-      </mat-cell>
-    </ng-container>
     <ng-container matColumnDef="starredUsers">
       <mat-header-cell *matHeaderCellDef mat-sort-header start="desc">Stars</mat-header-cell>
       <mat-cell class="description-cell" *matCellDef="let notebook"

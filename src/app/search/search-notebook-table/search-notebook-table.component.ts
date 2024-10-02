@@ -65,7 +65,7 @@ import TopicSelectionEnum = Workflow.TopicSelectionEnum;
   ],
 })
 export class SearchNotebookTableComponent extends SearchEntryTable implements OnInit {
-  public readonly displayedColumns = ['name', 'all_authors', 'descriptorType', 'descriptorTypeSubclass', 'projectLinks', 'starredUsers'];
+  public readonly displayedColumns = ['name', 'all_authors', 'descriptorType', 'descriptorTypeSubclass', 'starredUsers'];
   readonly entryType = 'notebook';
   public dataSource: MatTableDataSource<SearchResult<Notebook>>;
   constructor(dateService: DateService, searchQuery: SearchQuery, searchService: SearchService) {
