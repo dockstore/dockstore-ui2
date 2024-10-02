@@ -28,14 +28,6 @@
         </div>
       </mat-cell>
     </ng-container>
-    <ng-container matColumnDef="verified">
-      <mat-header-cell fxShow fxHide.lt-md *matHeaderCellDef>Verified</mat-header-cell>
-      <mat-cell data-cy="verificationStatus" fxShow fxHide.lt-md *matCellDef="let workflow">
-        <a *ngIf="workflow.source.verified" [href]="verifiedLink">
-          <mat-icon matTooltip="Verified">done</mat-icon>
-        </a>
-      </mat-cell>
-    </ng-container>
     <ng-container matColumnDef="all_authors">
       <mat-header-cell fxShow fxHide.lt-sm *matHeaderCellDef mat-sort-header>Author</mat-header-cell>
       <mat-cell
