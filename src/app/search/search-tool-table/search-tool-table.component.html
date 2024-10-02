@@ -54,24 +54,13 @@
         </div>
       </mat-cell>
     </ng-container>
-    <ng-container matColumnDef="verified">
-      <mat-header-cell fxShow fxHide.lt-md *matHeaderCellDef>Verified</mat-header-cell>
-      <mat-cell fxShow fxHide.lt-md *matCellDef="let tool">
-        <a *ngIf="tool.source.verified" [href]="verifiedLink">
-          <mat-icon matTooltip="Verified">check</mat-icon>
-        </a>
-      </mat-cell>
-    </ng-container>
     <ng-container matColumnDef="all_authors">
       <mat-header-cell fxShow fxHide.lt-sm *matHeaderCellDef mat-sort-header>Author</mat-header-cell>
-      <mat-cell
-        fxShow
-        fxHide.lt-sm
-        class="duration-cell truncate-text-2"
-        *matCellDef="let tool"
-        [matTooltip]="tool?.source.all_authors | getSearchAuthorsHtml: false"
-        [innerHTML]="tool?.source.all_authors | getSearchAuthorsHtml"
-      ></mat-cell>
+      <mat-cell fxShow fxHide.lt-sm *matCellDef="let tool" [matTooltip]="tool?.source.all_authors | getSearchAuthorsHtml: false">
+        <div class="truncate-text-3 size-small">
+          <span [innerHTML]="tool?.source.all_authors | getSearchAuthorsHtml"></span>
+        </div>
+      </mat-cell>
     </ng-container>
     <ng-container matColumnDef="descriptorType" style="width: fit-content">
       <mat-header-cell fxShow fxHide.lt-sm *matHeaderCellDef mat-sort-header fxFlex="15%">Format</mat-header-cell>
@@ -88,18 +77,6 @@
             </span>
           </div>
         </ng-template>
-      </mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="projectLinks">
-      <mat-header-cell fxShow fxHide.lt-md *matHeaderCellDef>Links</mat-header-cell>
-      <mat-cell fxShow fxHide.lt-md *matCellDef="let tool">
-        <a [href]="tool?.source.providerUrl" *ngIf="tool?.source.providerUrl">
-          <fa-icon class="fa-lg" [icon]="tool.source.providerIcon" [matTooltip]="tool?.source.provider"></fa-icon>
-        </a>
-        &nbsp; &nbsp;
-        <a [href]="tool?.source.imgProviderUrl" *ngIf="tool?.source.imgProviderUrl">
-          <fa-icon class="fa-lg" [icon]="tool.source.imgProviderIcon" [matTooltip]="tool?.source.imgProvider"></fa-icon>
-        </a>
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="starredUsers">
