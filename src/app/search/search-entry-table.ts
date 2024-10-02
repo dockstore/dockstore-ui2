@@ -32,7 +32,7 @@ export abstract class SearchEntryTable extends Base implements OnInit {
   protected verifiedLink: string;
   protected ngUnsubscribe: Subject<{}> = new Subject();
 
-  public readonly displayedColumns = ['name', 'all_authors', 'descriptorType', 'projectLinks', 'starredUsers'];
+  public readonly displayedColumns = ['name', 'all_authors', 'descriptorType', 'starredUsers'];
   public readonly columnsToDisplayWithExpand = [...this.displayedColumns, 'expand'];
   public readonly searchEverythingFriendlyNames = new Map([
     ['full_workflow_path', 'Path'],
