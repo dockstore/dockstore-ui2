@@ -7,6 +7,7 @@
       <mat-header-cell *matHeaderCellDef mat-sort-header>Name and Description</mat-header-cell>
       <mat-cell data-cy="workflowColumn" *matCellDef="let workflow">
         <div>
+          <img src="../../../../assets/svg/workflow-circle.svg" class="mr-2" width="16" height="16" />
           <a
             [matTooltip]="workflow?.source.full_workflow_path"
             matTooltipPosition="left"
