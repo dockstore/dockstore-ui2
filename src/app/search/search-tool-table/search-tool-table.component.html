@@ -27,7 +27,7 @@
           <span *ngIf="tool?.source.private_access">
             <app-private-icon></app-private-icon>
           </span>
-          <div *ngIf="tool.source | isAppTool; else docktoreToolName">
+          <span *ngIf="tool.source | isAppTool; else docktoreToolName">
             <a
               [matTooltip]="tool?.source.full_workflow_path"
               matTooltipPosition="left"
@@ -39,7 +39,7 @@
                   (tool?.source.workflowName ? '/' + tool?.source.workflowName : '')
               }}</a
             >
-          </div>
+          </span>
           <ng-template #docktoreToolName>
             <a [matTooltip]="tool?.source.tool_path" matTooltipPosition="left" [routerLink]="'/containers/' + tool.source.tool_path">{{
               tool?.source.namespace + '/' + tool?.source.name + (tool?.source.toolname ? '/' + tool?.source.toolname : '')
