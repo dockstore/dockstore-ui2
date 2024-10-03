@@ -14,7 +14,7 @@
               notebook?.source.repository +
               (notebook?.source.workflowName ? '/' + notebook?.source.workflowName : '')
           }}</a>
-          <div class="truncate-text-2">
+          <div class="truncate-text-3">
             <app-ai-bubble
               *ngIf="notebook?.source.topicSelection === TopicSelectionEnum.AI && !notebook?.source.approvedAITopic"
               [isPublic]="true"
