@@ -292,4 +292,11 @@
       data-cy="versionRow"
     ></tr>
   </table>
+  <mat-paginator
+    [pageSizeOptions]="[10, 20, 50]"
+    [length]="versionsLength"
+    [pageSize]="pageSize$ | async"
+    [pageIndex]="pageIndex$ | async"
+    showFirstLastButtons
+  ></mat-paginator>
 </div>
