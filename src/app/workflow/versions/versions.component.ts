@@ -147,16 +147,28 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
   }
 
   ngAfterViewInit(): void {
-    this.dataSource.sort = this.sort;
+    this.loadVersions();
   }
 
-  ngOnChanges() {}
+  ngOnChanges() {
+    this.loadVersions();
+  }
 
   ngOnInit() {
     this.dataSource = new MatTableDataSource();
+    this.loadVersions();
+  }
+
+  loadVersions() {
+    this.extendedWorkflowQuery.extendedWorkflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((workflow) => {
+      this.workflow = workflow;
+      if (workflow) {
+        this.defaultVersion = workflow.defaultVersion;
+      }
+      this.publicPageSubscription();
+    });
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
-
     this.workflowsService
       .getWorkflowVersions(this.workflowId, this.paginator.pageSize, this.paginator.pageIndex, 'response')
       .pipe(takeUntil(this.ngUnsubscribe))
@@ -166,15 +178,7 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
         this.versionsLength = Number(versions.headers.get('X-total-count'));
       });
     this.paginatorService.setPaginator(this.type, this.paginator.pageSize, this.paginator.pageIndex);
-    this.extendedWorkflowQuery.extendedWorkflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((workflow) => {
-      this.workflow = workflow;
-      if (workflow) {
-        this.defaultVersion = workflow.defaultVersion;
-      }
-      this.publicPageSubscription();
-    });
   }
-
   /**
    * Updates the version and emits an event for the parent component
    * @param {WorkflowVersion} version - version to make the selected version
