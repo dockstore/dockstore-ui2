@@ -106,13 +106,13 @@ describe('Service: DescriptorLanguage', () => {
     metadataServiceSpy.getDescriptorLanguages.and.returnValue(observableOf(descriptorLanguageBeans));
     const descriptorLanguageService = new DescriptorLanguageService(metadataServiceSpy, workflowQuerySpy);
     let placeholder = descriptorLanguageService.getDescriptorPattern(ToolDescriptor.TypeEnum.SMK);
-    expect(placeholder).toEqual('^/([^/?:*|<>]++/)*(Snakefile|[^./?:*|<>]++.smk))$');
+    expect(placeholder).toEqual('^\\/([^\\/?:*\\|<>]+\\/)*(Snakefile|[^.\\/?:*\\|<>]+.smk)$');
     placeholder = descriptorLanguageService.getDescriptorPattern(ToolDescriptor.TypeEnum.CWL);
-    expect(placeholder).toEqual('^/([^/?:*|<>]+/)*[^/?:*|<>]+.(cwl|yaml|yml)');
+    expect(placeholder).toEqual('^\\/([^\\/?:*\\|<>]+\\/)*[^\\/?:*\\|<>]+.(cwl|yaml|yml)');
     placeholder = descriptorLanguageService.getDescriptorPattern(ToolDescriptor.TypeEnum.WDL);
-    expect(placeholder).toEqual('^/([^/?:*|<>]+/)*[^/?:*|<>]+.wdl$');
+    expect(placeholder).toEqual('^\\/([^\\/?:*\\|<>]+\\/)*[^\\/?:*\\|<>]+.wdl$');
     placeholder = descriptorLanguageService.getDescriptorPattern(ToolDescriptor.TypeEnum.NFL);
-    expect(placeholder).toEqual('^/([^/?:*|<>]+/)*[^/?:*|<>]+.(config)');
+    expect(placeholder).toEqual('^\\/([^\\/?:*\\|<>]+\\/)*[^\\/?:*\\|<>]+.(config)');
     placeholder = descriptorLanguageService.getDescriptorPattern(ToolDescriptor.TypeEnum.SERVICE);
     expect(placeholder).toEqual('.*');
     placeholder = descriptorLanguageService.getDescriptorPattern(<ToolDescriptor.TypeEnum>'UnrecognizedType');
