@@ -7,7 +7,7 @@ export const extendedCWL: ExtendedDescriptorLanguageBean = {
   shortFriendlyName: 'CWL',
   friendlyName: 'Common Workflow Language',
   defaultDescriptorPath: '/Dockstore.cwl',
-  descriptorPathPattern: '^/([^/?:*|<>]+/)*[^/?:*|<>]+.(cwl|yaml|yml)',
+  descriptorPathPattern: '^\\/([^\\/?:*\\|<>]+\\/)*[^\\/?:*\\|<>]+.(cwl|yaml|yml)',
   descriptorPathPlaceholder: 'e.g. /Dockstore.cwl',
   toolDescriptorEnum: ToolDescriptor.TypeEnum.CWL,
   workflowDescriptorEnum: Workflow.DescriptorTypeEnum.CWL,
