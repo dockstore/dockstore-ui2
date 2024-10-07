@@ -23,7 +23,7 @@
       <!-- the wrap causes slightly odd behavior with the mat-icon but is needed for the topic -->
       <mat-cell data-cy="toolNames" *matCellDef="let tool">
         <div>
-          <img src="../../../../assets/svg/tool-circle.svg" class="mr-2_5 site-icons-small" />
+          <img src="../../../../assets/svg/tool-circle.svg" class="mr-2_5 site-icons-small" alt="tool icon" />
           <span *ngIf="tool?.source.private_access">
             <app-private-icon></app-private-icon>
           </span>
