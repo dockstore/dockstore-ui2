@@ -5,15 +5,15 @@
 .mat-column-starredUsers,
 .mat-column-stars {
   max-width: 6rem;
-  justify-content: flex-end;
   color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
 }
 
 .mat-column-all_authors {
-  max-width: 20rem;
+  max-width: 16rem;
 }
 
 .mat-column-descriptorType,
+.mat-column-descriptorTypeSubclass,
 .mat-column-format {
   min-width: min-content;
   max-width: 14rem;
