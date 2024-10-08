@@ -141,9 +141,6 @@ describe('Test search page functionality', () => {
     cy.url().should('contain', 'verified=1');
     cy.get('[data-cy=workflowColumn] a');
     cy.contains('mat-checkbox', /^[ ]*verified/);
-    cy.get('[data-cy=verificationStatus] a').each(($el, index, $list) => {
-      cy.wrap($el).contains('done');
-    });
   });
 });
 

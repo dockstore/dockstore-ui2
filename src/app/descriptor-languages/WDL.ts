@@ -7,7 +7,7 @@ export const extendedWDL: ExtendedDescriptorLanguageBean = {
   shortFriendlyName: 'WDL',
   friendlyName: 'Workflow Description Language',
   defaultDescriptorPath: '/Dockstore.wdl',
-  descriptorPathPattern: '^/([^/?:*|<>]+/)*[^/?:*|<>]+.wdl$',
+  descriptorPathPattern: '^\\/([^\\/?:*\\|<>]+\\/)*[^\\/?:*\\|<>]+.wdl$',
   descriptorPathPlaceholder: 'e.g. /Dockstore.wdl',
   toolDescriptorEnum: ToolDescriptor.TypeEnum.WDL,
   workflowDescriptorEnum: Workflow.DescriptorTypeEnum.WDL,
