@@ -180,19 +180,18 @@ export class QueryBuilderService {
         values.forEach((value) => {
           body = body.notFilter('term', 'some garbage term that hopefully never gets matched', value);
         });
-      } else if (values.size > 1) {
-        // Add a filter that matches one or more of multiple values
+      } else if (values.size == 1) {
+        // Add a filter that matches a single value
+        const [value] = values;
+        const convertedValue = isExclusiveFilter ? this.convertIntStringToBoolString(value) : value;
+        body = body.filter('term', key, convertedValue);
+      } else {
+        // Add a filter that matches at least one of multiple values
         body = body.filter('bool', (b) => {
           for (const value of values) {
             b = b.orFilter('term', key, value);
           }
           return b;
-        });
-      } else {
-        // Add a filter that matches a single value
-        values.forEach((value) => {
-          const esValue = isExclusiveFilter ? this.convertIntStringToBoolString(value) : value;
-          body = body.filter('term', key, esValue);
         });
       }
     });
