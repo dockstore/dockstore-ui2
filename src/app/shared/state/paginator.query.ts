@@ -25,9 +25,11 @@ export class PaginatorQuery extends Query<PaginatorState> {
   toolPageSize$: Observable<number> = this.select((state) => (this.router.url === '/' ? 10 : state.tool.pageSize));
   workflowPageSize$: Observable<number> = this.select((state) => (this.router.url === '/' ? 10 : state.workflow.pageSize));
   eventPageSize$: Observable<number> = this.select((state) => (this.router.url === '/' ? 10 : state.lambdaEvent.pageSize));
+  versionPageSize$: Observable<number> = this.select((state) => (this.router.url === '/' ? 10 : state.version.pageSize));
   toolPageIndex$: Observable<number> = this.select((state) => (this.router.url === '/' ? 0 : state.tool.pageIndex));
   workflowPageIndex$: Observable<number> = this.select((state) => (this.router.url === '/' ? 0 : state.workflow.pageIndex));
   eventPageIndex$: Observable<number> = this.select((state) => (this.router.url === '/' ? 0 : state.lambdaEvent.pageIndex));
+  versionPageIndex$: Observable<number> = this.select((state) => (this.router.url === '/' ? 0 : state.version.pageIndex));
   constructor(protected store: PaginatorStore, private router: Router) {
     super(store);
   }
