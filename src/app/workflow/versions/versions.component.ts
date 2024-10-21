@@ -80,6 +80,7 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
   versions: Array<WorkflowVersion>;
   @Input() workflowId: number;
   @Input() verifiedVersionPlatforms: Array<VersionVerifiedPlatform>;
+  @Input() publicPage: boolean;
   _selectedVersion: WorkflowVersion;
   Dockstore = Dockstore;
   @Input() set selectedVersion(value: WorkflowVersion) {
@@ -147,19 +148,19 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
   }
 
   ngAfterViewInit(): void {
-    this.loadVersions();
+    this.loadVersions(this.publicPage);
   }
 
   ngOnChanges() {
-    this.loadVersions();
+    this.loadVersions(this.publicPage);
   }
 
   ngOnInit() {
     this.dataSource = new MatTableDataSource();
-    this.loadVersions();
+    this.loadVersions(this.publicPage);
   }
 
-  loadVersions() {
+  loadVersions(publicPage: boolean) {
     this.extendedWorkflowQuery.extendedWorkflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((workflow) => {
       this.workflow = workflow;
       if (workflow) {
@@ -169,15 +170,26 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
     });
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
-    this.workflowsService
-      .getWorkflowVersions(this.workflowId, this.paginator.pageSize, this.paginator.pageIndex, 'response')
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((versions) => {
-        this.versions = versions.body;
-        this.dataSource.data = this.versions;
-        this.versionsLength = Number(versions.headers.get('X-total-count'));
-      });
-    this.paginatorService.setPaginator(this.type, this.paginator.pageSize, this.paginator.pageIndex);
+    if (publicPage) {
+      this.workflowsService
+        .getPublicWorkflowVersions(this.workflowId, this.paginator.pageSize, this.paginator.pageIndex, 'response')
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe((versions) => {
+          this.versions = versions.body;
+          this.dataSource.data = this.versions;
+          this.versionsLength = Number(versions.headers.get('X-total-count'));
+        });
+    } else {
+      this.workflowsService
+        .getWorkflowVersions(this.workflowId, this.paginator.pageSize, this.paginator.pageIndex, 'response')
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe((versions) => {
+          this.versions = versions.body;
+          this.dataSource.data = this.versions;
+          this.versionsLength = Number(versions.headers.get('X-total-count'));
+        });
+      this.paginatorService.setPaginator(this.type, this.paginator.pageSize, this.paginator.pageIndex);
+    }
   }
   /**
    * Updates the version and emits an event for the parent component
