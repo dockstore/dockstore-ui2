@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatLegacyTableDataSource as MatTableDataSource, MatLegacyTableModule } from '@angular/material/legacy-table';
 import { faCodeBranch, faTag } from '@fortawesome/free-solid-svg-icons';
@@ -74,7 +74,7 @@ import { MatLegacyPaginator as MatPaginator, MatLegacyPaginatorModule } from '@a
     MatLegacyPaginatorModule,
   ],
 })
-export class VersionsWorkflowComponent extends Versions implements OnInit, OnChanges, AfterViewInit {
+export class VersionsWorkflowComponent extends Versions implements OnInit, AfterViewInit {
   faTag = faTag;
   faCodeBranch = faCodeBranch;
   versions: Array<WorkflowVersion>;
@@ -151,13 +151,8 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
     this.loadVersions(this.publicPage);
   }
 
-  ngOnChanges() {
-    this.loadVersions(this.publicPage);
-  }
-
   ngOnInit() {
     this.dataSource = new MatTableDataSource();
-    this.loadVersions(this.publicPage);
   }
 
   loadVersions(publicPage: boolean) {
@@ -179,6 +174,7 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
           this.dataSource.data = this.versions;
           this.versionsLength = Number(versions.headers.get('X-total-count'));
         });
+      this.paginatorService.setPaginator(this.type, this.paginator.pageSize, this.paginator.pageIndex);
     } else {
       this.workflowsService
         .getWorkflowVersions(this.workflowId, this.paginator.pageSize, this.paginator.pageIndex, 'response')
