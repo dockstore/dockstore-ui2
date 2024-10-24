@@ -189,7 +189,7 @@ export class InfoTabService {
 
   getTRSId(workflow: Workflow | undefined): string {
     if (workflow) {
-      return workflow.entryTypeMetadata.trsPrefix + workflow.full_workflow_path;
+      return workflow.entryTypeMetadata.trsId;
     } else {
       return '';
     }
