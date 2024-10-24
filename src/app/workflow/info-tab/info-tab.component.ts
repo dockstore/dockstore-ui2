@@ -194,6 +194,7 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
       this.authors = null;
       this.description = null;
     }
+    this.displayTextForButton = this.infoTabService.getTRSId(this.workflow);
   }
 
   ngOnInit() {
@@ -208,9 +209,6 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
     this.infoTabService.defaultTestFilePathEditing$
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((editing) => (this.defaultTestFilePathEditing = editing));
-    this.entryType$
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((entryType) => (this.displayTextForButton = this.infoTabService.getTRSId(this.workflow, entryType)));
     this.infoTabService.forumUrlEditing$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((editing) => (this.forumUrlEditing = editing));
   }
   /**

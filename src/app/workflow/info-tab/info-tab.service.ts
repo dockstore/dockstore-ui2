@@ -187,11 +187,12 @@ export class InfoTabService {
     );
   }
 
-  getTRSId(workflow: Workflow | undefined, entryType: EntryType): string {
-    if (!workflow) {
+  getTRSId(workflow: Workflow | undefined): string {
+    if (workflow) {
+      return workflow.entryTypeMetadata.trsPrefix + workflow.full_workflow_path;
+    } else {
       return '';
     }
-    return this.getTRSIDFromPath(workflow.full_workflow_path, entryType);
   }
 
   private getTRSIDFromPath(fullWorkflowPath: string, entryType: EntryType): string {
