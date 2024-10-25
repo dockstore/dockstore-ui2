@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatLegacyTableDataSource as MatTableDataSource, MatLegacyTableModule } from '@angular/material/legacy-table';
 import { faCodeBranch, faTag } from '@fortawesome/free-solid-svg-icons';
@@ -74,7 +74,7 @@ import { MatLegacyPaginator as MatPaginator, MatLegacyPaginatorModule } from '@a
     MatLegacyPaginatorModule,
   ],
 })
-export class VersionsWorkflowComponent extends Versions implements OnInit, AfterViewInit {
+export class VersionsWorkflowComponent extends Versions implements OnInit, OnChanges, AfterViewInit {
   faTag = faTag;
   faCodeBranch = faCodeBranch;
   versions: Array<WorkflowVersion>;
@@ -147,15 +147,11 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, After
     });
   }
 
-  ngAfterViewInit(): void {
-    this.loadVersions(this.publicPage);
-  }
+  ngAfterViewInit(): void {}
+
+  ngOnChanges() {}
 
   ngOnInit() {
-    this.dataSource = new MatTableDataSource();
-  }
-
-  loadVersions(publicPage: boolean) {
     this.extendedWorkflowQuery.extendedWorkflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((workflow) => {
       this.workflow = workflow;
       if (workflow) {
@@ -163,29 +159,31 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, After
       }
       this.publicPageSubscription();
     });
+    this.dataSource = new MatTableDataSource();
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
+    this.loadVersions(this.publicPage);
+  }
+
+  loadVersions(publicPage: boolean) {
     if (publicPage) {
       this.workflowsService
         .getPublicWorkflowVersions(this.workflowId, this.paginator.pageSize, this.paginator.pageIndex, 'response')
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((versions) => {
-          this.versions = versions.body;
-          this.dataSource.data = this.versions;
+          this.dataSource.data = versions.body;
           this.versionsLength = Number(versions.headers.get('X-total-count'));
         });
-      this.paginatorService.setPaginator(this.type, this.paginator.pageSize, this.paginator.pageIndex);
     } else {
       this.workflowsService
         .getWorkflowVersions(this.workflowId, this.paginator.pageSize, this.paginator.pageIndex, 'response')
         .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((versions) => {
-          this.versions = versions.body;
-          this.dataSource.data = this.versions;
+          this.dataSource.data = versions.body;
           this.versionsLength = Number(versions.headers.get('X-total-count'));
         });
-      this.paginatorService.setPaginator(this.type, this.paginator.pageSize, this.paginator.pageIndex);
     }
+    this.paginatorService.setPaginator(this.type, this.paginator.pageSize, this.paginator.pageIndex);
   }
   /**
    * Updates the version and emits an event for the parent component
