@@ -14,12 +14,12 @@
               notebook?.source.repository +
               (notebook?.source.workflowName ? '/' + notebook?.source.workflowName : '')
           }}</a>
-          <div class="truncate-text-3">
+          <div>
+            <span>{{ notebook?.source.topicAutomatic }}</span>
             <app-ai-bubble
               *ngIf="notebook?.source.topicSelection === TopicSelectionEnum.AI && !notebook?.source.approvedAITopic"
               [isPublic]="true"
             ></app-ai-bubble>
-            <span>{{ notebook?.source.topicAutomatic }}</span>
           </div>
         </div>
       </mat-cell>
