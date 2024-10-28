@@ -19,12 +19,12 @@
                 (workflow?.source.workflowName ? '/' + workflow?.source.workflowName : '')
             }}</a
           >
-          <div class="truncate-text-3">
+          <div>
+            <span>{{ workflow?.source.topicAutomatic }}</span>
             <app-ai-bubble
               *ngIf="workflow?.source.topicSelection === TopicSelectionEnum.AI && !workflow?.source.approvedAITopic"
               [isPublic]="true"
             ></app-ai-bubble>
-            <span>{{ workflow?.source.topicAutomatic }}</span>
           </div>
         </div>
       </mat-cell>
