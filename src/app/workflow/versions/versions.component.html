@@ -294,7 +294,7 @@
   </table>
   <mat-paginator
     [pageSizeOptions]="[10, 20, 50]"
-    [length]="versionsLength"
+    [length]="versionsLength$ | async"
     [pageSize]="pageSize$ | async"
     [pageIndex]="pageIndex$ | async"
     showFirstLastButtons

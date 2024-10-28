@@ -15,9 +15,9 @@
  */
 import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
 import { MatSort, MatSortModule } from '@angular/material/sort';
-import { MatLegacyTableDataSource as MatTableDataSource, MatLegacyTableModule } from '@angular/material/legacy-table';
+import { MatLegacyTableModule } from '@angular/material/legacy-table';
 import { faCodeBranch, faTag } from '@fortawesome/free-solid-svg-icons';
-import { takeUntil } from 'rxjs/operators';
+import { distinctUntilChanged, takeUntil, tap } from 'rxjs/operators';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { DateService } from '../../shared/date.service';
 import { Dockstore } from '../../shared/dockstore.model';
@@ -42,8 +42,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
 import { DoiBadgeComponent } from 'app/shared/entry/doi/doi-badge/doi-badge.component';
 import { PaginatorService } from '../../shared/state/paginator.service';
-import { Observable } from 'rxjs';
+import { merge, Observable } from 'rxjs';
 import { MatLegacyPaginator as MatPaginator, MatLegacyPaginatorModule } from '@angular/material/legacy-paginator';
+import { VersionsDataSource } from './versions-datasource';
 
 @Component({
   selector: 'app-versions-workflow',
@@ -88,7 +89,7 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
       this._selectedVersion = value;
     }
   }
-  dataSource: MatTableDataSource<WorkflowVersion>;
+  dataSource: VersionsDataSource;
   @Output() selectedVersionChange = new EventEmitter<WorkflowVersion>();
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) protected paginator: MatPaginator;
@@ -99,7 +100,7 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
   type: 'workflow' | 'tool' | 'lambdaEvent' | 'version' = 'version';
   public pageSize$: Observable<number>;
   public pageIndex$: Observable<number>;
-  versionsLength: number;
+  public versionsLength$: Observable<number>;
   setNoOrderCols(): Array<number> {
     return [4, 5];
   }
@@ -147,9 +148,36 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
     });
   }
 
-  ngAfterViewInit(): void {}
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      // Initial load
+      this.loadVersions(this.publicPage);
 
-  ngOnChanges() {}
+      // Handle paginator changes
+      merge(this.paginator.page)
+        .pipe(
+          distinctUntilChanged(),
+          tap(() => this.loadVersions(this.publicPage)),
+          takeUntil(this.ngUnsubscribe)
+        )
+        .subscribe(() => this.paginatorService.setPaginator(this.type, this.paginator.pageSize, this.paginator.pageIndex));
+
+      // Handle sort changes
+      this.sort.sortChange
+        .pipe(
+          tap(() => {
+            this.paginator.pageIndex = 0;
+            this.loadVersions(this.publicPage);
+          }),
+          takeUntil(this.ngUnsubscribe)
+        )
+        .subscribe();
+    });
+  }
+
+  ngOnChanges() {
+    this.loadVersions(this.publicPage);
+  }
 
   ngOnInit() {
     this.extendedWorkflowQuery.extendedWorkflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((workflow) => {
@@ -159,31 +187,38 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
       }
       this.publicPageSubscription();
     });
-    this.dataSource = new MatTableDataSource();
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
-    this.loadVersions(this.publicPage);
+    this.dataSource = new VersionsDataSource(this.workflowsService);
+    this.versionsLength$ = this.dataSource.versionsLengthSubject$;
   }
 
   loadVersions(publicPage: boolean) {
-    if (publicPage) {
-      this.workflowsService
-        .getPublicWorkflowVersions(this.workflowId, this.paginator.pageSize, this.paginator.pageIndex, 'response')
-        .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe((versions) => {
-          this.dataSource.data = versions.body;
-          this.versionsLength = Number(versions.headers.get('X-total-count'));
-        });
-    } else {
-      this.workflowsService
-        .getWorkflowVersions(this.workflowId, this.paginator.pageSize, this.paginator.pageIndex, 'response')
-        .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe((versions) => {
-          this.dataSource.data = versions.body;
-          this.versionsLength = Number(versions.headers.get('X-total-count'));
-        });
+    let direction: 'asc' | 'desc';
+    switch (this.sort.direction) {
+      case 'asc': {
+        direction = 'asc';
+        break;
+      }
+      case 'desc': {
+        direction = 'desc';
+        break;
+      }
+      default: {
+        direction = 'desc';
+      }
     }
-    this.paginatorService.setPaginator(this.type, this.paginator.pageSize, this.paginator.pageIndex);
+    this.dataSource.loadVersions(
+      publicPage,
+      this.workflowId,
+      direction,
+      this.paginator.pageIndex * this.paginator.pageSize,
+      this.paginator.pageSize,
+      this.sort.active
+    );
+  }
+
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
   /**
    * Updates the version and emits an event for the parent component
