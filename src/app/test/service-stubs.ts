@@ -889,6 +889,12 @@ export class WorkflowsStubService {
   updateWorkflowDefaultVersion(workflowId: number, tag: string) {
     return observableOf([]);
   }
+  primaryDescriptor1(workflowId, descriptorType, versionName) {
+    return observableOf({});
+  }
+  secondaryDescriptors1(workflowId, descriptorType, versionName) {
+    return observableOf([]);
+  }
 }
 
 export class ContainersStubService {
