@@ -252,7 +252,11 @@
         DOI
       </th>
       <td mat-cell *matCellDef="let version">
-        <mat-icon *ngIf="this.publicPage && version.dois[workflow.doiSelection]">check</mat-icon>
+        <app-doi-badge
+          *ngIf="this.publicPage && version.dois[workflow.doiSelection]"
+          [doi]="version.dois[workflow.doiSelection]"
+          [displayDoi]="false"
+        ></app-doi-badge>
         <span *ngIf="!this.publicPage" fxLayout="row" fxLayoutGap="0.5rem">
           <span *ngFor="let doiEntry of version.dois | keyvalue: originalOrder">
             <app-doi-badge [doi]="doiEntry.value" [displayDoi]="false"></app-doi-badge>
