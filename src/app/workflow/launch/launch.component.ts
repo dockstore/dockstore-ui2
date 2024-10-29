@@ -164,7 +164,7 @@ export class LaunchWorkflowComponent extends EntryTab implements OnInit, OnChang
     ]).subscribe(
       ([toolFiles, descriptorFiles]) => {
         // test parameter file is optional ...
-        if (toolFiles !== undefined) {
+        if (toolFiles != undefined) {
           if (toolFiles.length > 0) {
             this.testParameterPath = toolFiles[0].path;
           } else {

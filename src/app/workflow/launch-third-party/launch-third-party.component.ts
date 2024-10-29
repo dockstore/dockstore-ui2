@@ -2,13 +2,11 @@ import { HttpUrlEncodingCodec } from '@angular/common/http';
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { MatLegacyDialog as MatDialog, MatLegacyDialogModule } from '@angular/material/legacy-dialog';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
-import { combineLatest, Observable } from 'rxjs';
-import { map, shareReplay, takeUntil } from 'rxjs/operators';
+import { combineLatest, Observable, Subscription } from 'rxjs';
+import { map, shareReplay } from 'rxjs/operators';
 import { Base } from '../../shared/base';
-import { DescriptorTypeCompatService } from '../../shared/descriptor-type-compat.service';
 import { Dockstore } from '../../shared/dockstore.model';
-import { GA4GHFilesQuery } from '../../shared/ga4gh-files/ga4gh-files.query';
-import { CloudInstance, CloudInstancesService, User, ToolFile, Workflow, WorkflowVersion } from '../../shared/openapi';
+import { CloudInstance, CloudInstancesService, User, Workflow, WorkflowVersion } from '../../shared/openapi';
 import { WorkflowsService } from '../../shared/openapi/api/workflows.service';
 import { SourceFile } from '../../shared/openapi/model/sourceFile';
 import { UserQuery } from '../../shared/user/user.query';
@@ -24,7 +22,6 @@ import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatLegacyCardModule } from '@angular/material/legacy-card';
 import { NgIf, AsyncPipe } from '@angular/common';
-import FileTypeEnum = ToolFile.FileTypeEnum;
 
 /* eslint-disable max-len */
 /**
@@ -254,10 +251,11 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
     map(([hasContent]) => (hasContent ? 'Run this notebook at mybinder.org' : 'The notebook has no content.'))
   );
 
+  private primaryDescriptorSubscription: Subscription | null = null;
+  private secondaryDescriptorsSubscription: Subscription | null = null;
+
   constructor(
     private workflowsService: WorkflowsService,
-    private descriptorTypeCompatService: DescriptorTypeCompatService,
-    private gA4GHFilesQuery: GA4GHFilesQuery,
     private descriptorsQuery: DescriptorsQuery,
     private descriptorsService: DescriptorsService,
     private cloudInstanceService: CloudInstancesService,
@@ -279,37 +277,12 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
     //     this.usersCloudInstances = cloudInstances;
     //   });
     // }
-
-    this.gA4GHFilesQuery
-      .getToolFiles(this.descriptorTypeCompatService.stringToDescriptorType(this.workflow.descriptorType), [
-        FileTypeEnum.PRIMARYDESCRIPTOR,
-        FileTypeEnum.SECONDARYDESCRIPTOR,
-      ])
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((fileDescriptors) => {
-        if (fileDescriptors && fileDescriptors.length) {
-          // No idea if this.workflow.descriptorType is the one that's required or if it's some other enum
-          const descriptorType = this.workflow.descriptorType;
-          const descriptorLanguageEnum =
-            this.descriptorLanguageService.workflowDescriptorTypeEnumToExtendedDescriptorLanguageBean(
-              descriptorType
-            ).descriptorLanguageEnum;
-          this.workflowsService.primaryDescriptor1(this.workflow.id, descriptorType, this.selectedVersion.name).subscribe((sourceFile) => {
-            this.descriptorsService.updatePrimaryDescriptor(sourceFile);
-            if (fileDescriptors.some((file) => file.file_type === FileTypeEnum.SECONDARYDESCRIPTOR)) {
-              this.workflowsService
-                .secondaryDescriptors1(this.workflow.id, descriptorLanguageEnum, this.selectedVersion.name)
-                .subscribe((sourceFiles: Array<SourceFile>) => {
-                  this.descriptorsService.updateSecondaryDescriptors(sourceFiles);
-                });
-            }
-          });
-        }
-      });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     this.descriptorsQuery.clear();
+    this.primaryDescriptorSubscription?.unsubscribe();
+    this.secondaryDescriptorsSubscription?.unsubscribe();
     this.trsUrl = this.trsUrlAsQueryValue = this.workflowPathAsQueryValue = null;
     if (this.workflow && this.selectedVersion) {
       this.trsUrl = this.descriptorsService.trsUrl(this.workflow.full_workflow_path, this.selectedVersion.name);
@@ -319,6 +292,19 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
       this.workflowRepositoryAsQueryValue = this.encode(this.workflow.repository);
       this.selectedVersionNameAsQueryValue = this.encode(this.selectedVersion.name);
       this.selectedVersionWorkflowPathAsQueryValue = this.encode(this.prependIfNotPrefix('/', this.selectedVersion.workflow_path));
+      const descriptorType = this.workflow.descriptorType;
+      const descriptorLanguageEnum =
+        this.descriptorLanguageService.workflowDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorType).descriptorLanguageEnum;
+      this.primaryDescriptorSubscription = this.workflowsService
+        .primaryDescriptor1(this.workflow.id, descriptorType, this.selectedVersion.name)
+        .subscribe((sourceFile) => {
+          this.descriptorsService.updatePrimaryDescriptor(sourceFile);
+        });
+      this.secondaryDescriptorsSubscription = this.workflowsService
+        .secondaryDescriptors1(this.workflow.id, descriptorLanguageEnum, this.selectedVersion.name)
+        .subscribe((sourceFiles: Array<SourceFile>) => {
+          this.descriptorsService.updateSecondaryDescriptors(sourceFiles);
+        });
       this.devcontainers = undefined;
       if (this.workflow.descriptorType === Workflow.DescriptorTypeEnum.Jupyter) {
         const workflowId = this.workflow.id;
