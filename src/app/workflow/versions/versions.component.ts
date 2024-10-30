@@ -168,8 +168,6 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
             this.paginator.pageIndex = 0; // go back to first page after changing sort
             if (this.sort.active === 'last_modified') {
               this.sortCol = 'lastModified';
-            } else if (this.sort.active === 'metrics') {
-              this.sortCol = 'metricsByPlatform';
             } else {
               this.sortCol = this.sort.active;
             }
