@@ -3,7 +3,7 @@ import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/cor
 import { MatLegacyDialog as MatDialog, MatLegacyDialogModule } from '@angular/material/legacy-dialog';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 import { combineLatest, Observable, Subscription } from 'rxjs';
-import { map, shareReplay } from 'rxjs/operators';
+import { map, shareReplay, takeUntil } from 'rxjs/operators';
 import { Base } from '../../shared/base';
 import { Dockstore } from '../../shared/dockstore.model';
 import { CloudInstance, CloudInstancesService, User, Workflow, WorkflowVersion } from '../../shared/openapi';
@@ -297,11 +297,13 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
         this.descriptorLanguageService.workflowDescriptorTypeEnumToExtendedDescriptorLanguageBean(descriptorType).descriptorLanguageEnum;
       this.primaryDescriptorSubscription = this.workflowsService
         .primaryDescriptor1(this.workflow.id, descriptorType, this.selectedVersion.name)
+        .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((sourceFile) => {
           this.descriptorsService.updatePrimaryDescriptor(sourceFile);
         });
       this.secondaryDescriptorsSubscription = this.workflowsService
         .secondaryDescriptors1(this.workflow.id, descriptorLanguageEnum, this.selectedVersion.name)
+        .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe((sourceFiles: Array<SourceFile>) => {
           this.descriptorsService.updateSecondaryDescriptors(sourceFiles);
         });
