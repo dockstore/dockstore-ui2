@@ -91,7 +91,7 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
   }
   dataSource: VersionsDataSource;
   @Output() selectedVersionChange = new EventEmitter<WorkflowVersion>();
-  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) protected paginator: MatPaginator;
   public WorkflowType = Workflow;
   workflow: ExtendedWorkflow;
@@ -101,6 +101,8 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
   public pageSize$: Observable<number>;
   public pageIndex$: Observable<number>;
   public versionsLength$: Observable<number>;
+  private sortCol: string;
+
   setNoOrderCols(): Array<number> {
     return [4, 5];
   }
@@ -150,9 +152,6 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
 
   ngAfterViewInit(): void {
     setTimeout(() => {
-      // Initial load
-      this.loadVersions(this.publicPage);
-
       // Handle paginator changes
       merge(this.paginator.page)
         .pipe(
@@ -166,7 +165,17 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
       this.sort.sortChange
         .pipe(
           tap(() => {
-            this.paginator.pageIndex = 0;
+            this.paginator.pageIndex = 0; // go back to first page after changing sort
+            if (this.sort.active === 'last_modified') {
+              this.sortCol = 'lastModified';
+            } else if (this.sort.active === 'metrics') {
+              this.sortCol = 'metricsByPlatform';
+            } else {
+              this.sortCol = this.sort.active;
+            }
+            if (this.sort.direction === '') {
+              this.sortCol = null;
+            }
             this.loadVersions(this.publicPage);
           }),
           takeUntil(this.ngUnsubscribe)
@@ -212,7 +221,7 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
       direction,
       this.paginator.pageIndex * this.paginator.pageSize,
       this.paginator.pageSize,
-      this.sort.active
+      this.sortCol
     );
   }
 
