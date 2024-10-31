@@ -62,6 +62,7 @@ export abstract class Entry<V extends WorkflowVersion | Tag> implements OnDestro
   location: Location;
   @Input() isWorkflowPublic = true;
   @Input() isToolPublic = true;
+  @Input() shouldClear = true;
   public publicPage: boolean;
   public versionsFileTypes: Array<SourceFile.TypeEnum> = [];
   public versionsWithVerifiedPlatforms: Array<VersionVerifiedPlatform> = [];
@@ -92,8 +93,9 @@ export abstract class Entry<V extends WorkflowVersion | Tag> implements OnDestro
   }
 
   init() {
-    // Getting rid of this line makes the linking work again and I didn't notice any weird behaviour, but I'm not sure.. Needs more testing
-    // this.clearState();
+    if (this.shouldClear) {
+      this.clearState();
+    }
     this.subscriptions();
     this.router.events
       .pipe(

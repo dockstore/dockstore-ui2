@@ -13,7 +13,7 @@
   ~    See the License for the specific language governing permissions and
   ~    limitations under the License.
   -->
-<app-workflow *ngIf="displayAppTool" [isWorkflowPublic]="isToolPublic"></app-workflow>
+<app-workflow *ngIf="displayAppTool" [isWorkflowPublic]="isToolPublic" [shouldClear]="false"></app-workflow>
 <div *ngIf="tool && !displayAppTool">
   <div class="row m-1 mt-3 mb-0" *ngIf="tool?.archived">
     <mat-card class="alert alert-warning mat-elevation-z m-0">
