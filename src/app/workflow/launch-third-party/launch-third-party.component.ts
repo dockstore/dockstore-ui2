@@ -267,7 +267,6 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
   }
 
   ngOnInit(): void {
-    console.log(`INIT WORKFLOW ${this.workflow?.id} VERSION ${this.selectedVersion?.name}`);
     this.user$ = this.userQuery.user$;
     this.cloudInstanceService.getCloudInstances().subscribe((cloudInstances: Array<CloudInstance>) => {
       this.cloudInstances = cloudInstances;
@@ -281,7 +280,6 @@ export class LaunchThirdPartyComponent extends Base implements OnChanges, OnInit
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(`CHANGES WORKFLOW ${this.workflow?.id} VERSION ${this.selectedVersion?.name}`);
     this.descriptorsQuery.clear();
     this.primaryDescriptorSubscription?.unsubscribe();
     this.secondaryDescriptorsSubscription?.unsubscribe();
