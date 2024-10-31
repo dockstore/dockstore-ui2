@@ -45,12 +45,12 @@
               tool?.source.namespace + '/' + tool?.source.name + (tool?.source.toolname ? '/' + tool?.source.toolname : '')
             }}</a>
           </ng-template>
-          <div class="truncate-text-3">
+          <div>
+            <span>{{ tool?.source.topicAutomatic }}</span>
             <app-ai-bubble
               *ngIf="tool?.source.topicSelection === TopicSelectionEnum.AI && !tool?.source.approvedAITopic"
               [isPublic]="true"
             ></app-ai-bubble>
-            <span [matTooltip]="tool?.source.topicAutomatic" matTooltipPosition="left">{{ tool?.source.topicAutomatic }}</span>
           </div>
         </div>
       </mat-cell>
