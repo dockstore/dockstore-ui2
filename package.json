@@ -4,7 +4,7 @@
   "license": "Apache License 2.0",
   "config": {
     "webservice_version_prefix": "1.16.0",
-    "webservice_version": "1.16.0-beta.7",
+    "webservice_version": "1.16.0",
     "use_snapshot": false
   },
   "scripts": {
