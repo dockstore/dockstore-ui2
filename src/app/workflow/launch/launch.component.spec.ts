@@ -40,9 +40,8 @@ describe('LaunchWorkflowComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [LaunchWorkflowComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        imports: [HttpClientTestingModule],
+        imports: [HttpClientTestingModule, LaunchWorkflowComponent],
         providers: [
           WorkflowLaunchService,
           { provide: ContainerService, useClass: ContainerStubService },

@@ -1,0 +1,22 @@
+version: 1.2 # The .dockstore.yml schema version
+service:
+  subclass: <DOCKER_COMPOSE | KUBERNETES | HELM | SWARM | NOT_APPLICABLE>
+  name: <String>
+  authors:
+    - orcid: <String>
+  topic: <String>
+  description: <String>
+  publish: <Boolean>
+  files: <String, do not use wildcards>
+  scripts:
+    start: <String>
+  environment:
+    <String-name-of-environment-variable>:
+      default: <String>
+      description: <String>
+  data:
+    <String-name-of-dataset>:
+      targetDirectory: <String, relative path>
+      files:
+        <String-name-of-file>:
+          description: <String>

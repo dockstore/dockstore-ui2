@@ -16,6 +16,7 @@
 
 import { Component, OnInit } from '@angular/core';
 import { Dockstore } from '../shared/dockstore.model';
+import { HeaderComponent } from '../header/header.component';
 
 interface DocObject {
   existingPath: string;
@@ -25,6 +26,8 @@ interface DocObject {
 @Component({
   selector: 'app-docs',
   templateUrl: './docs.component.html',
+  standalone: true,
+  imports: [HeaderComponent],
 })
 export class DocsComponent implements OnInit {
   // Array of doc objects, where existingPath is the path on Dockstore, and newPath is the new path on the docs page

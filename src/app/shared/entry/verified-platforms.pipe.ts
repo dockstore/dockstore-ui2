@@ -3,6 +3,7 @@ import { VersionVerifiedPlatform } from '../openapi';
 
 @Pipe({
   name: 'verifiedPlatforms',
+  standalone: true,
 })
 export class VerifiedPlatformsPipe implements PipeTransform {
   transform(versionid: number, versionVerifiedPlatform: Array<VersionVerifiedPlatform>): string {

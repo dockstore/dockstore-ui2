@@ -41,8 +41,7 @@ const DECLARATIONS: any[] = [
   ExecutionStatusPipe,
 ];
 @NgModule({
-  imports: [CommonModule],
-  declarations: DECLARATIONS,
+  imports: [CommonModule, ...DECLARATIONS],
   exports: DECLARATIONS,
   providers: [EntryToDisplayNamePipe, PlatformPartnerPipe, MapFriendlyValuesPipe],
 })

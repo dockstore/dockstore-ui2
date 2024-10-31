@@ -14,10 +14,10 @@
  *    limitations under the License.
  */
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { Location } from '@angular/common';
+import { Location, NgIf, NgFor, NgClass, AsyncPipe, DatePipe } from '@angular/common';
 import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
-import { MatChipInputEvent } from '@angular/material/chips';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyChipInputEvent as MatChipInputEvent, MatLegacyChipsModule } from '@angular/material/legacy-chips';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertService } from 'app/shared/alert/state/alert.service';
@@ -49,11 +49,79 @@ import { UrlResolverService } from './../shared/url-resolver.service';
 import { AddTagComponent } from './add-tag/add-tag.component';
 import { EmailService } from './email.service';
 import { EntryCategoriesService } from '../categories/state/entry-categories.service';
+import { ShareButtonsModule } from 'ngx-sharebuttons/buttons';
+import { VerifiedByComponent } from '../shared/entry/verified-by/verified-by.component';
+import { CurrentCollectionsComponent } from '../entry/current-collections/current-collections.component';
+import { ClipboardModule } from '@angular/cdk/clipboard';
+import { SnackbarDirective } from '../shared/snackbar.directive';
+import { MatDividerModule } from '@angular/material/divider';
+import { ToolFileEditorComponent } from './tool-file-editor/tool-file-editor.component';
+import { FilesContainerComponent } from './files/files.component';
+import { VersionsContainerComponent } from './versions/versions.component';
+import { LaunchComponent } from './launch/launch.component';
+import { InfoTabComponent } from './info-tab/info-tab.component';
+import { MatLegacyTabsModule } from '@angular/material/legacy-tabs';
+import { StargazersComponent } from '../stargazers/stargazers.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CategoryButtonComponent } from '../categories/button/category-button.component';
+import { ToolActionsComponent } from '../shared/entry-actions/tool-actions.component';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { StarringComponent } from '../starring/starring.component';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
+import { PrivateIconComponent } from '../shared/private-icon/private-icon.component';
+import { JsonLdComponent } from '../shared/json-ld/json-ld.component';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { MatIconModule } from '@angular/material/icon';
+import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { WorkflowComponent } from '../workflow/workflow.component';
 
 @Component({
   selector: 'app-container',
   templateUrl: './container.component.html',
   styleUrls: ['../shared/styles/workflow-container.component.scss'],
+  standalone: true,
+  imports: [
+    NgIf,
+    WorkflowComponent,
+    MatLegacyCardModule,
+    MatIconModule,
+    FlexModule,
+    JsonLdComponent,
+    PrivateIconComponent,
+    ExtendedModule,
+    MatLegacyChipsModule,
+    MatLegacyTooltipModule,
+    MatLegacyFormFieldModule,
+    MatLegacySelectModule,
+    NgFor,
+    MatLegacyOptionModule,
+    StarringComponent,
+    MatLegacyButtonModule,
+    ToolActionsComponent,
+    CategoryButtonComponent,
+    FormsModule,
+    ReactiveFormsModule,
+    StargazersComponent,
+    NgClass,
+    MatLegacyTabsModule,
+    InfoTabComponent,
+    LaunchComponent,
+    VersionsContainerComponent,
+    FilesContainerComponent,
+    ToolFileEditorComponent,
+    MatDividerModule,
+    SnackbarDirective,
+    ClipboardModule,
+    CurrentCollectionsComponent,
+    VerifiedByComponent,
+    ShareButtonsModule,
+    AsyncPipe,
+    DatePipe,
+  ],
 })
 export class ContainerComponent extends Entry<Tag> implements AfterViewInit, OnInit {
   dockerPullCmd: string;
@@ -263,7 +331,7 @@ export class ContainerComponent extends Entry<Tag> implements AfterViewInit, OnI
         },
         (error) => {
           if (error.status === 404) {
-            this.router.navigate(['page-not-found']);
+            this.urlResolverService.showPageNotFound();
           }
         }
       );
@@ -351,26 +419,6 @@ export class ContainerComponent extends Entry<Tag> implements AfterViewInit, OnI
     if (this.tool != null) {
       this.updateUrl(this.tool.tool_path, 'my-tools', 'containers', this.selectedVersion);
     }
-  }
-
-  /**
-   * Will change the /tools in the current URL with /containers
-   * @return {void}
-   */
-  switchToolsToContainers(): void {
-    const url = window.location.href.replace('/tools', '/containers');
-    const toolsIndex = window.location.href.indexOf('/tools');
-    const newPath = url.substring(toolsIndex);
-    this.location.go(newPath);
-  }
-
-  getPageIndex(): number {
-    let pageIndex = this.getIndexInURL('/containers');
-    if (pageIndex === -1) {
-      pageIndex = this.getIndexInURL('/tools');
-      this.switchToolsToContainers();
-    }
-    return pageIndex;
   }
 
   addToLabels(event: MatChipInputEvent): void {

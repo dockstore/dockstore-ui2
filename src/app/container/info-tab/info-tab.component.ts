@@ -27,13 +27,59 @@ import { DockstoreTool } from '../../shared/openapi/model/dockstoreTool';
 import { Tag } from '../../shared/openapi/model/tag';
 import { exampleDescriptorPatterns, validationDescriptorPatterns } from '../../shared/validationMessages.model';
 import { InfoTabService } from './info-tab.service';
+import { BaseUrlPipe } from '../../shared/entry/base-url.pipe';
+import { MapFriendlyValuesPipe } from '../../search/map-friendly-values.pipe';
+import { UrlDeconstructPipe } from '../../shared/entry/url-deconstruct.pipe';
+import { VersionProviderUrlPipe } from '../../shared/entry/versionProviderUrl.pipe';
+import { MarkdownWrapperComponent } from '../../shared/markdown-wrapper/markdown-wrapper.component';
+import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
+import { MatLegacyTableModule } from '@angular/material/legacy-table';
+import { InfoTabCheckerWorkflowPathComponent } from '../../shared/entry/info-tab-checker-workflow-path/info-tab-checker-workflow-path.component';
+import { MatLegacyRadioModule } from '@angular/material/legacy-radio';
+import { AiBubbleComponent } from '../../shared/ai-bubble/ai-bubble.component';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { FormsModule } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
+import { ClipboardModule } from '@angular/cdk/clipboard';
+import { SnackbarDirective } from '../../shared/snackbar.directive';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { NgIf, NgClass } from '@angular/common';
 
 import DescriptorTypeEnum = ToolVersion.DescriptorTypeEnum;
+import { DisplayTopicComponent } from 'app/shared/entry/info-tab-topic/display-topic/display-topic.component';
 
 @Component({
-  selector: 'app-info-tab',
+  selector: 'app-info-tab-container',
   templateUrl: './info-tab.component.html',
-  styleUrls: ['./info-tab.component.css'],
+  styleUrls: ['../../shared/styles/info-tab.component.scss'],
+  standalone: true,
+  imports: [
+    NgIf,
+    MatLegacyCardModule,
+    MatDividerModule,
+    MatLegacyTooltipModule,
+    MatLegacyButtonModule,
+    SnackbarDirective,
+    ClipboardModule,
+    MatIconModule,
+    FormsModule,
+    FlexModule,
+    AiBubbleComponent,
+    MatLegacyRadioModule,
+    InfoTabCheckerWorkflowPathComponent,
+    MatLegacyTableModule,
+    ExtendedModule,
+    NgClass,
+    MarkdownWrapperComponent,
+    VersionProviderUrlPipe,
+    UrlDeconstructPipe,
+    MapFriendlyValuesPipe,
+    BaseUrlPipe,
+    DisplayTopicComponent,
+  ],
 })
 export class InfoTabComponent extends Base implements OnInit, OnChanges {
   currentVersion: Tag;
@@ -47,7 +93,6 @@ export class InfoTabComponent extends Base implements OnInit, OnChanges {
   public DockstoreToolType = DockstoreTool;
   public tool: ExtendedDockstoreTool;
   public canWrite: boolean;
-  public topicEditing: boolean;
   public TopicSelectionEnum = DockstoreTool.TopicSelectionEnum;
   public authors: Array<Author> = [];
   public displayedColumns: string[] = ['name', 'role', 'affiliation', 'email'];
@@ -112,7 +157,6 @@ export class InfoTabComponent extends Base implements OnInit, OnChanges {
     this.infoTabService.wdlPathEditing$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((editing) => (this.wdlPathEditing = editing));
     this.infoTabService.cwlTestPathEditing$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((editing) => (this.cwlTestPathEditing = editing));
     this.infoTabService.wdlTestPathEditing$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((editing) => (this.wdlTestPathEditing = editing));
-    this.infoTabService.topicEditing$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((topicEditing) => (this.topicEditing = topicEditing));
     this.sessionQuery.isPublic$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((publicPage) => (this.isPublic = publicPage));
   }
 
@@ -122,25 +166,6 @@ export class InfoTabComponent extends Base implements OnInit, OnChanges {
       const url = window.URL.createObjectURL(blob);
       window.open(url);
     });
-  }
-
-  toggleEditTopic() {
-    if (this.topicEditing) {
-      this.infoTabService.saveTopic(this.tool, this.revertTopic.bind(this));
-    }
-    this.infoTabService.setTopicEditing(!this.topicEditing);
-  }
-
-  revertTopic() {
-    this.tool.topicManual = this.extendedDockstoreTool.topicManual;
-  }
-
-  revertTopicSelection() {
-    this.tool.topicSelection = this.extendedDockstoreTool.topicSelection;
-  }
-
-  topicSelectionChange() {
-    this.infoTabService.saveTopicSelection(this.tool, this.revertTopicSelection.bind(this));
   }
 
   toggleEditDockerFile() {
@@ -178,14 +203,7 @@ export class InfoTabComponent extends Base implements OnInit, OnChanges {
   }
 
   somethingIsBeingEdited(): boolean {
-    return (
-      this.dockerFileEditing ||
-      this.cwlPathEditing ||
-      this.wdlPathEditing ||
-      this.cwlTestPathEditing ||
-      this.wdlTestPathEditing ||
-      this.topicEditing
-    );
+    return this.dockerFileEditing || this.cwlPathEditing || this.wdlPathEditing || this.cwlTestPathEditing || this.wdlTestPathEditing;
   }
 
   /**
@@ -195,7 +213,6 @@ export class InfoTabComponent extends Base implements OnInit, OnChanges {
    */
   cancelEditing(): void {
     this.infoTabService.cancelEditing();
-    this.revertTopic();
   }
 
   /**

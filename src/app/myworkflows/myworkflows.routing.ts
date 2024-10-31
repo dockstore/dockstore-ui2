@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { RouterModule, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 import { EntryType } from '../shared/enum/entry-type';
 import { MyWorkflowComponent } from './my-workflow/my-workflow.component';
 
@@ -24,4 +24,4 @@ const routes: Routes = [
     data: { title: 'Dockstore | My Workflows', entryType: EntryType.BioWorkflow },
   },
 ];
-export const myworkflowRouting = RouterModule.forChild(routes);
+export const myworkflowRouting = routes;

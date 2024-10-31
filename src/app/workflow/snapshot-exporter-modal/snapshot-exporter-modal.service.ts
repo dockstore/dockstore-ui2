@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, concatMap, map } from 'rxjs/operators';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { EntriesService, Workflow, WorkflowsService, WorkflowVersion } from '../../shared/openapi';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { WorkflowService } from '../../shared/state/workflow.service';
+import { includesVersions } from 'app/shared/constants';
 
 @Injectable({
   providedIn: 'root',
@@ -47,14 +48,13 @@ export class SnapshotExporterModalService {
     this.alertService.start(`A Digital Object Identifier (DOI) is being requested for workflow
                                        "${workflowName}" version "${version.name}"!`);
     return this.workflowsService.requestDOIForWorkflowVersion(workflow.id, version.id).pipe(
-      map((versions) => {
-        const selectedWorkflow = { ...this.workflowQuery.getActive() };
-        if (selectedWorkflow.id === workflow.id) {
-          this.workflowService.setWorkflow({ ...selectedWorkflow, workflowVersions: versions });
-        }
-        this.alertService.detailedSuccess(`A Digital Object Identifier (DOI) was created for workflow
-                                       "${workflowName}" version "${version.name}"!`);
-      }),
+      concatMap(() =>
+        this.workflowsService.getWorkflow(workflow.id, includesVersions).pipe(
+          map((workflow) => {
+            this.workflowService.setWorkflow(workflow);
+          })
+        )
+      ),
       catchError((error) => {
         if (error) {
           this.alertService.detailedError(error);

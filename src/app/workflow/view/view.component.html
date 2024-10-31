@@ -62,7 +62,7 @@
       (click)="requestDOIForWorkflowVersion()"
       [disabled]="(isRefreshing$ | async) || !canWrite"
       data-cy="dockstore-request-doi-button"
-      *ngIf="version.referenceType !== 'BRANCH' && !version.doiURL && workflow?.is_published"
+      *ngIf="version.referenceType !== 'BRANCH' && !version.dois[DoiInitiatorEnum.USER] && workflow?.is_published"
       matTooltip="Request a Digital Object Identifier (DOI) for this version."
       matTooltipPosition="left"
     >

@@ -15,18 +15,37 @@
  */
 import { Component, OnInit } from '@angular/core';
 import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
-import { CloudData, CloudOptions } from 'angular-tag-cloud-module';
+import { CloudData, CloudOptions, TagCloudComponent } from 'angular-tag-cloud-module';
 import { ExtendedGA4GHService } from 'app/shared/openapi';
 import { Observable } from 'rxjs';
 import { Base } from '../../shared/base';
 import { QueryBuilderService } from '../query-builder.service';
 import { SearchQuery } from '../state/search.query';
 import { SearchService } from '../state/search.service';
+import { SearchNotebookTableComponent } from '../search-notebook-table/search-notebook-table.component';
+import { SearchToolTableComponent } from '../search-tool-table/search-tool-table.component';
+import { SearchWorkflowTableComponent } from '../search-workflow-table/search-workflow-table.component';
+import { MatDividerModule } from '@angular/material/divider';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { NgIf, AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-search-results',
   templateUrl: './search-results.component.html',
   styleUrls: ['./search-results.component.scss'],
+  standalone: true,
+  imports: [
+    NgIf,
+    FlexModule,
+    FontAwesomeModule,
+    TagCloudComponent,
+    MatDividerModule,
+    SearchWorkflowTableComponent,
+    SearchToolTableComponent,
+    SearchNotebookTableComponent,
+    AsyncPipe,
+  ],
 })
 export class SearchResultsComponent extends Base implements OnInit {
   faPlus = faPlus;
@@ -37,8 +56,6 @@ export class SearchResultsComponent extends Base implements OnInit {
   public showWorkflowTagCloud$: Observable<boolean>;
   public showToolTagCloud$: Observable<boolean>;
   public showNotebookTagCloud$: Observable<boolean>;
-  public selectedIndex$: Observable<any>;
-  public selectedTab: number;
   toolTagCloudData: Array<CloudData>;
   workflowTagCloudData: Array<CloudData>;
   notebookTagCloudData: Array<CloudData>;

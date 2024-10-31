@@ -38,7 +38,20 @@ import { TokenUser } from './../shared/openapi/model/tokenUser';
 import { User } from './../shared/openapi/model/user';
 import { Workflow } from './../shared/openapi/model/workflow';
 import { WorkflowVersion } from './../shared/openapi/model/workflowVersion';
-import { bitbucketToken, gitHubToken, gitLabToken, quayToken, sampleTag, sampleWorkflow1, updatedWorkflow } from './mocked-objects';
+import {
+  appToolEntryTypeMetadata,
+  bitbucketToken,
+  gitHubToken,
+  gitLabToken,
+  notebookEntryTypeMetadata,
+  quayToken,
+  sampleTag,
+  sampleWorkflow1,
+  serviceEntryTypeMetadata,
+  toolEntryTypeMetadata,
+  updatedWorkflow,
+  workflowEntryTypeMetadata,
+} from './mocked-objects';
 import RoleEnum = Permission.RoleEnum;
 import DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
 
@@ -876,6 +889,12 @@ export class WorkflowsStubService {
   updateWorkflowDefaultVersion(workflowId: number, tag: string) {
     return observableOf([]);
   }
+  primaryDescriptor1(workflowId, descriptorType, versionName) {
+    return observableOf({});
+  }
+  secondaryDescriptors1(workflowId, descriptorType, versionName) {
+    return observableOf([]);
+  }
 }
 
 export class ContainersStubService {
@@ -935,64 +954,19 @@ export class EntryTypeMetadataStubService {
   get(type: newEntryType): EntryTypeMetadata {
     switch (type) {
       case newEntryType.WORKFLOW: {
-        return {
-          searchEntryType: 'workflows',
-          searchSupported: true,
-          sitePath: 'workflows',
-          term: 'workflow',
-          termPlural: 'workflows',
-          trsPrefix: '#workflow/',
-          trsSupported: true,
-          type: 'WORKFLOW',
-        };
+        return workflowEntryTypeMetadata;
       }
       case newEntryType.TOOL: {
-        return {
-          searchEntryType: 'tools',
-          searchSupported: true,
-          sitePath: 'containers',
-          term: 'tool',
-          termPlural: 'tools',
-          trsPrefix: '',
-          trsSupported: true,
-          type: 'TOOL',
-        };
+        return toolEntryTypeMetadata;
       }
       case newEntryType.SERVICE: {
-        return {
-          searchEntryType: '',
-          searchSupported: false,
-          sitePath: 'services',
-          term: 'service',
-          termPlural: 'services',
-          trsPrefix: '#service/',
-          trsSupported: true,
-          type: 'SERVICE',
-        };
+        return serviceEntryTypeMetadata;
       }
       case newEntryType.APPTOOL: {
-        return {
-          searchEntryType: 'tools',
-          searchSupported: true,
-          sitePath: 'containers',
-          term: 'tool',
-          termPlural: 'tools',
-          trsPrefix: '',
-          trsSupported: true,
-          type: 'APPTOOL',
-        };
+        return appToolEntryTypeMetadata;
       }
       case newEntryType.NOTEBOOK: {
-        return {
-          searchEntryType: '',
-          searchSupported: false,
-          sitePath: 'notebooks',
-          term: 'notebook',
-          termPlural: 'notebooks',
-          trsPrefix: '#notebook/',
-          trsSupported: true,
-          type: 'NOTEBOOK',
-        };
+        return notebookEntryTypeMetadata;
       }
     }
     return null;
@@ -1010,4 +984,9 @@ export class MarkdownWrapperStubService {
 
 export class EntryActionsStubService {
   updateBackingEntry(entry) {}
+  isEntryHosted(entry) {}
+}
+
+export class EditTopicDialogStubService {
+  saveTopicChanges(entry: Workflow | DockstoreTool, topicManual: string, topicSelection: Workflow.TopicSelectionEnum) {}
 }

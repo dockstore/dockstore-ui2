@@ -14,82 +14,85 @@
   ~    limitations under the License.
   -->
 
-<div class="overflow-hidden">
-  <div class="mb-5 w-100 landing-page-container">
-    <div class="header-container w-100">
-      <h3>Please wait while your GitHub repository installation is being processed. This may take a few minutes.</h3>
-    </div>
-    <hr />
-    <h3 class="text-align-center">You can close this tab and return to Dockstore on the original tab.</h3>
+<h3 class="text-align-center">
+  Your GitHub repository installation is being processed. It may take a few minutes to register your {{ entryTypeMetadata.termPlural }}.
+</h3>
+<hr />
+<div fxLayout="column" fxLayoutGap="2rem">
+  <h3 class="text-align-center">You can close this tab and return to Dockstore on the original tab.</h3>
 
-    <div class="w-100 cards-container" fxLayoutAlign.lt-lg="center" fxLayout="row wrap" fxLayoutAlign="space-evenly stretch">
-      <mat-card class="landing-page-card" fxFlex.lt-lg="80%" fxFlex="45%">
-        <mat-card-header>
-          <mat-card-title>Do you have a .dockstore.yml file in your repository?</mat-card-title>
-        </mat-card-header>
-        <mat-divider></mat-divider>
-        <mat-card-content class="h-100 landing-page-card-content">
-          <div>
-            If you haven’t already, please create a <code>.dockstore.yml</code> file in your repository. This way, your workflows will be
-            kept up-to-date automatically. <br />
+  <div fxLayout="row" fxLayoutAlign="center" fxLayoutGap="2rem" fxLayout.lt-lg="column" class="px-4">
+    <mat-card fxFlex="30%" fxFlex.lt-xl="45%" fxFlex.lt-lg="80%">
+      <mat-card-header>
+        <mat-card-title>Do you have a .dockstore.yml file in your repository?</mat-card-title>
+      </mat-card-header>
+      <mat-divider></mat-divider>
+      <mat-card-content class="pt-3">
+        <p>
+          If you haven’t already, please create a <code>.dockstore.yml</code> file in your repository. This way, your
+          {{ entryTypeMetadata.termPlural }} will be kept up-to-date automatically.
+        </p>
+        <p>Here is a <code>.dockstore.yml</code> template:</p>
+        <div class="py-2">
+          <app-code-editor [entryType]="entryType" [editing]="false"></app-code-editor>
+        </div>
+        <p>
+          View more <code>.dockstore.yml</code> templates for {{ entryTypeMetadata.termPlural }}
+          <a target="_blank" rel="noopener noreferrer" [href]="templateUrl">here</a>.
+        </p>
+      </mat-card-content>
+    </mat-card>
 
-            Here is the <code>.dockstore.yml</code> template:
-          </div>
+    <mat-card fxFlex="30%" fxFlex.lt-xl="45%" fxFlex.lt-lg="80%">
+      <mat-card-header>
+        <mat-card-title>Tips and Tricks</mat-card-title>
+      </mat-card-header>
 
-          <pre>
-version: 1.2
-workflows:
-  - subclass: &lt;CWL | WDL | NFL | GALAXY&gt;
-    primaryDescriptorPath: &lt;String&gt;  # absolute path
-    testParameterFiles: &lt;String Array&gt;  # absolute path
-    readMePath: &lt;String&gt; # absolute path
-    authors:
-      - name: &lt;String&gt;
-        email: &lt;String&gt;
-          </pre>
+      <mat-divider></mat-divider>
 
-          <div>
-            Note: the first line of this file references the version of <code>.dockstore.yml</code> syntax being used, not the version/tag
-            of the workflow/tool/service/notebook it describes
-          </div>
-        </mat-card-content>
-      </mat-card>
-
-      <mat-card class="landing-page-card" fxFlex.lt-lg="80%" fxFlex="45%">
-        <mat-card-header>
-          <mat-card-title class="ml-2">Tips and Tricks</mat-card-title>
-        </mat-card-header>
-
-        <mat-divider></mat-divider>
-
-        <mat-card-content class="h-100 landing-page-card-content">
-          <ul>
-            <li>
-              Make sure your file is saved as <code>.dockstore.yml</code>, not <code>dockstore.yml</code> nor <code>.dockstore.yaml</code>
-            </li>
-            <li>Put the <code>.dockstore.yml</code> file in the top of your repository or inside the <code>.github/</code> directory</li>
-            <li>
-              <a [routerLink]="['/quick-start']">The Dockstore Yaml Command Line Validator Tool</a> can be used with the following command
-              in the Dockstore CLI,
-              <pre>dockstore yaml validate --path directory/of/.dockstore.yml</pre>
-            </li>
-            <li>
-              You can use a single <code>.dockstore.yml</code> file to register multiple tools, workflows, and notebooks, provided they are
-              all in the same repository as the <code>.dockstore.yml</code> file. If you do so, each one needs a unique name, it is
-              recommended to give each one a unique <code>readMePath</code> too.
-            </li>
-          </ul>
-        </mat-card-content>
-      </mat-card>
-    </div>
-    <p class="w-100 docs-link-text">
-      For more information on registering, please visit our
-      <a
-        target="_blank"
-        rel="noopener noreferrer"
-        [href]="Dockstore.DOCUMENTATION_URL + '/getting-started/github-apps/github-apps-landing-page.html'"
-        >docs.</a
-      >
-    </p>
+      <mat-card-content class="pt-3">
+        <ul>
+          <li>
+            Make sure your file is saved as <code>.dockstore.yml</code>, not <code>dockstore.yml</code> nor <code>.dockstore.yaml</code>.
+          </li>
+          <li>Put the <code>.dockstore.yml</code> file in the top of your repository.</li>
+          <li>
+            The <a [routerLink]="['/quick-start']">Dockstore Yaml Command Line Validator Tool</a> can be used to validate the
+            <code>.dockstore.yml</code>.
+            <pre>dockstore yaml validate --path directory/of/.dockstore.yml</pre>
+          </li>
+          <li>
+            You can use a single <code>.dockstore.yml</code> file to register multiple {{ entryTypeMetadata.termPlural }}, provided they are
+            all in the same repository as the <code>.dockstore.yml</code> file. If you do so, each {{ entryTypeMetadata.term }} needs a
+            unique name.
+          </li>
+        </ul>
+        <p>
+          View more
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            [href]="Dockstore.DOCUMENTATION_URL + '/assets/templates/template.html#tips-and-tricks'"
+            >Tips And Tricks</a
+          >
+          and
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            [href]="Dockstore.DOCUMENTATION_URL + '/getting-started/github-apps/github-apps-troubleshooting-tips.html'"
+            >FAQs</a
+          >.
+        </p>
+      </mat-card-content>
+    </mat-card>
   </div>
+  <p class="w-100 docs-link-text">
+    For more information on registering, please visit our
+    <a
+      target="_blank"
+      rel="noopener noreferrer"
+      [href]="Dockstore.DOCUMENTATION_URL + '/getting-started/github-apps/github-apps-landing-page.html'"
+      >docs.</a
+    >
+  </p>
 </div>

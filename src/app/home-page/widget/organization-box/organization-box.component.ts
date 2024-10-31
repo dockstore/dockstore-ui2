@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { RequestsQuery } from 'app/loginComponents/state/requests.query';
 import { RequireAccountsModalComponent } from 'app/organizations/registerOrganization/requireAccountsModal/require-accounts-modal.component';
 import { Base } from 'app/shared/base';
@@ -9,12 +9,33 @@ import { bootstrap4mediumModalSize, bootstrap4largeModalSize } from 'app/shared/
 import { Observable } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
 import { MyOrganizationsDialogComponent } from './my-organizations-dialog.component/my-organizations-dialog.component';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { RecentEventsComponent } from '../../recent-events/recent-events.component';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { NgIf, AsyncPipe } from '@angular/common';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatIconModule } from '@angular/material/icon';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { MatLegacyCardModule } from '@angular/material/legacy-card';
 
 @Component({
   selector: 'app-organization-box',
   templateUrl: './organization-box.component.html',
   styleUrls: ['./organization-box.component.scss', '../../../shared/styles/dashboard-boxes.scss'],
+  standalone: true,
+  imports: [
+    MatLegacyCardModule,
+    FlexModule,
+    MatIconModule,
+    RouterLink,
+    MatLegacyTooltipModule,
+    NgIf,
+    MatLegacyButtonModule,
+    MatDividerModule,
+    RecentEventsComponent,
+    AsyncPipe,
+  ],
 })
 export class OrganizationBoxComponent extends Base implements OnInit {
   Dockstore = Dockstore;

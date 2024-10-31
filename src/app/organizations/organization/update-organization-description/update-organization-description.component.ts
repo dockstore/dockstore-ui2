@@ -14,12 +14,34 @@
  *    limitations under the License.
  */
 import { Component, Inject, OnInit } from '@angular/core';
-import { AbstractControl, UntypedFormGroup } from '@angular/forms';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogModule } from '@angular/material/legacy-dialog';
 import { UpdateOrganizationOrCollectionDescriptionService } from '../state/update-organization-description.service';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MarkdownWrapperComponent } from '../../../shared/markdown-wrapper/markdown-wrapper.component';
+import { MatLegacyInputModule } from '@angular/material/legacy-input';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { MatLegacyTabsModule } from '@angular/material/legacy-tabs';
+import { AlertComponent } from '../../../shared/alert/alert.component';
 
 @Component({
   templateUrl: './update-organization-description.component.html',
+  standalone: true,
+  imports: [
+    MatLegacyDialogModule,
+    AlertComponent,
+    MatLegacyTabsModule,
+    FormsModule,
+    FlexModule,
+    ReactiveFormsModule,
+    MatLegacyFormFieldModule,
+    MatLegacyInputModule,
+    MarkdownWrapperComponent,
+    MatLegacyButtonModule,
+    MatLegacyTooltipModule,
+  ],
 })
 export class UpdateOrganizationOrCollectionDescriptionComponent implements OnInit {
   updateOrganizationOrCollectionDescriptionForm: UntypedFormGroup;

@@ -15,7 +15,7 @@
  */
 
 import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { AlertQuery } from 'app/shared/alert/state/alert.query';
 import { bootstrap4extraLargeModalSize } from 'app/shared/constants';
 import { EntryType } from 'app/shared/enum/entry-type';
@@ -25,8 +25,18 @@ import { Observable } from 'rxjs';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { OrgWorkflowObject } from '../my-workflow/my-workflow.component';
 import { GithubAppsLogsComponent } from './github-apps-logs/github-apps-logs.component';
-import { KeyValue } from '@angular/common';
+import { KeyValue, NgFor, NgIf, NgClass, NgTemplateOutlet, AsyncPipe, KeyValuePipe } from '@angular/common';
 import { MetadataService } from '../../shared/openapi/api/metadata.service';
+import { SelectTabPipe } from '../../shared/entry/select-tab.pipe';
+import { RefreshWorkflowOrganizationComponent } from '../../workflow/refresh-workflow-organization/refresh-workflow-organization.component';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { RouterLink } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
+import { MatLegacyListModule } from '@angular/material/legacy-list';
+import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
+import { MatLegacyTabsModule } from '@angular/material/legacy-tabs';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 interface GroupEntriesBySource {
   groupEntryInfo: OrgWorkflowObject<Workflow>[];
@@ -40,6 +50,25 @@ interface GroupEntriesBySource {
     './sidebar-accordion.component.scss',
     '../../mytools/sidebar-accordion/sidebar-accordion.component.scss',
     '../../shared/styles/my-entry-sidebar.scss',
+  ],
+  standalone: true,
+  imports: [
+    NgFor,
+    NgIf,
+    MatExpansionModule,
+    MatLegacyTabsModule,
+    ExtendedModule,
+    NgClass,
+    NgTemplateOutlet,
+    MatLegacyListModule,
+    MatIconModule,
+    RouterLink,
+    FlexModule,
+    MatLegacyButtonModule,
+    RefreshWorkflowOrganizationComponent,
+    AsyncPipe,
+    KeyValuePipe,
+    SelectTabPipe,
   ],
 })
 export class SidebarAccordionComponent implements OnInit, OnChanges {

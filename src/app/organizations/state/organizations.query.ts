@@ -75,7 +75,7 @@ export class OrganizationsQuery extends Query<OrganizationsState> {
       let newOrganizations = this.filterOrganizations(organizations, searchName);
       const arrayForSort = [...newOrganizations];
       if (sortBy === 'name') {
-        arrayForSort.sort((a, b) => (a.displayName < b.displayName ? -1 : 1));
+        arrayForSort.sort((a, b) => (a.displayName.toLowerCase() < b.displayName.toLowerCase() ? -1 : 1));
         newOrganizations = arrayForSort;
       } else if (sortBy === 'starred') {
         arrayForSort.sort((a, b) => (a.starredUsers.length < b.starredUsers.length ? 1 : -1));

@@ -1,10 +1,10 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { MatLegacySnackBarModule } from '@angular/material/legacy-snack-bar';
 import { LogoutService } from '../../../../shared/logout.service';
-import { CustomMaterialModule } from '../../../../shared/modules/material.module';
 import { UsersService } from '../../../../shared/openapi';
 import { LogoutStubService, UsersStubService } from '../../../../test/service-stubs';
 import { DeleteAccountDialogComponent } from './delete-account-dialog.component';
@@ -16,9 +16,8 @@ describe('DeleteAccountDialogComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [DeleteAccountDialogComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        imports: [CustomMaterialModule, ReactiveFormsModule],
+        imports: [ReactiveFormsModule, DeleteAccountDialogComponent, MatLegacySnackBarModule],
         providers: [
           { provide: LogoutService, useClass: LogoutStubService },
           { provide: UsersService, useClass: UsersStubService },

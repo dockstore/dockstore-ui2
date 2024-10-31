@@ -1,17 +1,20 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { transaction } from '@datorama/akita';
-import { AuthService } from 'ng2-ui-auth';
 import { GravatarService } from '../../gravatar/gravatar.service';
+import { AuthService } from '../../ng2-ui-auth/public_api';
 import { AlertService } from '../alert/state/alert.service';
 import { TokenService } from '../state/token.service';
-import { WorkflowService } from '../state/workflow.service';
+import { MyWorkflowsService } from '../../myworkflows/myworkflows.service';
+import { MytoolsService } from '../../mytools/mytools.service';
+import { EntryType } from '../enum/entry-type';
 import { Configuration, ExtendedUserData, User, UsersService, Workflow } from '../openapi';
 import { TrackLoginService } from '../track-login.service';
 import { UserStore } from './user.store';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
+  EntryType = EntryType;
   constructor(
     private userStore: UserStore,
     private authService: AuthService,
@@ -19,7 +22,8 @@ export class UserService {
     private configuration: Configuration,
     private tokenService: TokenService,
     private alertService: AlertService,
-    private workflowService: WorkflowService,
+    private myWorkflowsService: MyWorkflowsService,
+    private mytoolsService: MytoolsService,
     private trackLoginService: TrackLoginService,
     private router: Router,
     private gravatarService: GravatarService
@@ -50,12 +54,18 @@ export class UserService {
    *
    * @param userId
    */
-  addUserToWorkflows(userId: number): void {
+  addUserToWorkflows(userId: number, entryType: EntryType): void {
     this.alertService.start('Adding user to existing workflows and tools on Dockstore');
     this.usersService.addUserToDockstoreWorkflows(userId).subscribe(
       (workflows: Array<Workflow>) => {
         this.alertService.detailedSuccess();
-        this.workflowService.setWorkflows(workflows);
+        // This endpoint currently only returns the user's BioWorkflows, and not workflows of all types.
+        // For consistency, ignoring the workflows response and re-requesting entries of the desired type.
+        if (entryType === EntryType.Tool) {
+          this.mytoolsService.getMyEntries(userId, entryType);
+        } else {
+          this.myWorkflowsService.getMyEntries(userId, entryType);
+        }
       },
       (error) => this.alertService.detailedError(error)
     );

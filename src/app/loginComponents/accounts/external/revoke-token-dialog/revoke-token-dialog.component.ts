@@ -15,16 +15,45 @@
  */
 
 import { Component, OnDestroy } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ValidatorFn,
+  Validators,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import { MatLegacyDialogRef as MatDialogRef, MatLegacyDialogModule } from '@angular/material/legacy-dialog';
 import { takeUntil } from 'rxjs/operators';
 import { UserQuery } from '../../../../shared/user/user.query';
 import { Base } from '../../../../shared/base';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { MatLegacyInputModule } from '@angular/material/legacy-input';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { NgIf } from '@angular/common';
+import { MatDividerModule } from '@angular/material/divider';
+import { AlertComponent } from '../../../../shared/alert/alert.component';
 
 @Component({
   selector: 'app-revoke-token-dialog',
   templateUrl: './revoke-token-dialog.component.html',
   styleUrls: ['./revoke-token-dialog.component.scss'],
+  standalone: true,
+  imports: [
+    MatLegacyDialogModule,
+    AlertComponent,
+    MatDividerModule,
+    NgIf,
+    FormsModule,
+    ReactiveFormsModule,
+    MatLegacyFormFieldModule,
+    MatLegacyInputModule,
+    FlexModule,
+    MatLegacyButtonModule,
+  ],
 })
 export class RevokeTokenDialogComponent extends Base implements OnDestroy {
   username = '';

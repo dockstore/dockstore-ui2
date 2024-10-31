@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { EntryType } from 'app/shared/enum/entry-type';
@@ -26,10 +26,10 @@ import { TokenService } from 'app/shared/state/token.service';
 import { BioWorkflow } from 'app/shared/openapi/model/bioWorkflow';
 import { Service } from 'app/shared/openapi/model/service';
 import { UserService } from 'app/shared/user/user.service';
-import { AuthService } from 'ng2-ui-auth';
 import { combineLatest, Observable } from 'rxjs';
 import { filter, map, shareReplay, takeUntil } from 'rxjs/operators';
 import { AccountsService } from '../../loginComponents/accounts/external/accounts.service';
+import { AuthService } from '../../ng2-ui-auth/public_api';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { MyEntry, OrgEntryObject } from '../../shared/my-entry';
 import { TokenQuery } from '../../shared/state/token.query';
@@ -42,6 +42,19 @@ import { UserQuery } from '../../shared/user/user.query';
 import { RegisterWorkflowModalService } from '../../workflow/register-workflow-modal/register-workflow-modal.service';
 import { MyWorkflowsService } from '../myworkflows.service';
 import { Dockstore } from '../../shared/dockstore.model';
+import { WorkflowComponent } from '../../workflow/workflow.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { SidebarAccordionComponent } from '../sidebar-accordion/sidebar-accordion.component';
+import { MatLegacyMenuModule } from '@angular/material/legacy-menu';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { NgIf, AsyncPipe, TitleCasePipe } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { HeaderComponent } from '../../header/header.component';
+import { MySidebarComponent } from '../../my-sidebar/my-sidebar.component';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
 
 /**
  * How the workflow selection works:
@@ -63,6 +76,24 @@ import { Dockstore } from '../../shared/dockstore.model';
   selector: 'app-my-workflow',
   templateUrl: './my-workflow.component.html',
   styleUrls: ['../../shared/styles/my-entry.component.scss'],
+  standalone: true,
+  imports: [
+    FlexModule,
+    MySidebarComponent,
+    HeaderComponent,
+    MatLegacyButtonModule,
+    MatIconModule,
+    NgIf,
+    MatSidenavModule,
+    MatLegacyTooltipModule,
+    MatLegacyMenuModule,
+    SidebarAccordionComponent,
+    MatLegacyCardModule,
+    FontAwesomeModule,
+    WorkflowComponent,
+    AsyncPipe,
+    TitleCasePipe,
+  ],
 })
 export class MyWorkflowComponent extends MyEntry implements OnInit {
   Dockstore = Dockstore;
@@ -82,7 +113,6 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
   public isRefreshing$: Observable<boolean>;
   public showSidebar = true;
   hasSourceControlToken$: Observable<boolean>;
-  public gitHubAppInstallationLink$: Observable<string>;
   public groupEntriesObject$: Observable<Array<OrgWorkflowObject<Workflow>>>;
   public groupSharedEntriesObject$: Observable<Array<OrgWorkflowObject<Workflow>>>;
   public hasGroupSharedEntriesObject$: Observable<boolean>;
@@ -130,7 +160,6 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
 
   ngOnInit() {
     this.myWorkflowsService.clearPartialState();
-    this.gitHubAppInstallationLink$ = this.sessionQuery.gitHubAppInstallationLink$;
     this.tokenService.getGitHubOrganizations();
     this.isRefreshing$ = this.alertQuery.showInfo$;
     /**
@@ -229,7 +258,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
 
   addToExistingWorkflows(): void {
     if (this.user) {
-      this.userService.addUserToWorkflows(this.user.id);
+      this.userService.addUserToWorkflows(this.user.id, this.entryType);
     }
   }
 

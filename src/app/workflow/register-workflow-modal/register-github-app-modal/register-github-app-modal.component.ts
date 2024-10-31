@@ -15,33 +15,35 @@
  */
 
 import { Component, Inject, OnInit } from '@angular/core';
-import { SessionQuery } from 'app/shared/session/session.query';
 import { UserQuery } from 'app/shared/user/user.query';
 import { Observable } from 'rxjs';
 import { AlertQuery } from '../../../shared/alert/state/alert.query';
 import { Dockstore } from '../../../shared/dockstore.model';
 import { RegisterWorkflowModalService } from '../register-workflow-modal.service';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { EntryType } from 'app/shared/enum/entry-type';
+import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogModule } from '@angular/material/legacy-dialog';
+import { EntryType } from 'app/shared/openapi';
+import { TitleCasePipe } from '@angular/common';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { RegisterGithubAppComponent } from '../../../shared/register-github-app/register-github-app.component';
 
 @Component({
   selector: 'app-register-github-app-modal',
   templateUrl: './register-github-app-modal.component.html',
   styleUrls: ['../register-workflow-modal.component.scss'],
+  standalone: true,
+  imports: [MatLegacyDialogModule, RegisterGithubAppComponent, MatLegacyButtonModule, TitleCasePipe],
 })
 export class RegisterGithubAppModalComponent implements OnInit {
   public EntryType = EntryType;
   public isRefreshing$: Observable<boolean>;
-  public gitHubAppInstallationLink$: Observable<string>;
   public isUsernameChangeRequired$: Observable<boolean>;
   public username$: Observable<string>;
   Dockstore = Dockstore;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public entryType: string,
+    @Inject(MAT_DIALOG_DATA) public entryType: EntryType,
     private registerWorkflowModalService: RegisterWorkflowModalService,
     private alertQuery: AlertQuery,
-    protected sessionQuery: SessionQuery,
     private userQuery: UserQuery
   ) {}
 
@@ -49,7 +51,6 @@ export class RegisterGithubAppModalComponent implements OnInit {
     this.username$ = this.userQuery.username$;
     this.isUsernameChangeRequired$ = this.userQuery.isUsernameChangeRequired$;
     this.isRefreshing$ = this.alertQuery.showInfo$;
-    this.gitHubAppInstallationLink$ = this.sessionQuery.gitHubAppInstallationLandingPageLink$;
   }
 
   clearWorkflowRegisterError(): void {

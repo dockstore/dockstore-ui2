@@ -10,7 +10,7 @@ export const extendedJupyter: ExtendedDescriptorLanguageBean = {
   shortFriendlyName: 'Jupyter',
   friendlyName: 'Jupyter notebook',
   defaultDescriptorPath: '/notebook.ipynb',
-  descriptorPathPattern: '^/([^/?:*|<>]+/)*[^/?:*|<>]+.ipynb$',
+  descriptorPathPattern: '^^\\/([^\\/?:*\\|<>]+\\/)*[^\\/?:*\\|<>]+.ipynb$',
   descriptorPathPlaceholder: 'e.g. /notebook.ipynb',
   toolDescriptorEnum: ToolDescriptor.TypeEnum.JUPYTER,
   workflowDescriptorEnum: Workflow.DescriptorTypeEnum.Jupyter,

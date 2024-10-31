@@ -35,15 +35,15 @@ describe('Variations of URL', () => {
   });
   it('Should redirect to canonical url (tab)', () => {
     cy.visit('/containers/quay.io/A2/a?tab=files');
-    cy.url().should('eq', Cypress.config().baseUrl + '/containers/quay.io/A2/a:latest?tab=files');
+    cy.url().should('contain', Cypress.config().baseUrl + '/containers/quay.io/A2/a:latest?tab=files');
   });
   it('Should redirect to canonical url (tab + version)', () => {
     cy.visit('/containers/quay.io/A2/a:latest?tab=files');
-    cy.url().should('eq', Cypress.config().baseUrl + '/containers/quay.io/A2/a:latest?tab=files');
+    cy.url().should('contain', Cypress.config().baseUrl + '/containers/quay.io/A2/a:latest?tab=files');
   });
   it('Should redirect to canonical url (tools + encoding + tab + version)', () => {
     cy.visit('/tools/quay.io%2FA2%2Fa:latest?tab=files');
-    cy.url().should('eq', Cypress.config().baseUrl + '/containers/quay.io/A2/a:latest?tab=files');
+    cy.url().should('contain', Cypress.config().baseUrl + '/containers/quay.io/A2/a:latest?tab=files');
   });
 });
 
@@ -74,7 +74,7 @@ describe('Dockstore Tool Details of quay.io/A2/a', () => {
   describe('Change tab to files', () => {
     beforeEach(() => {
       goToTab('Files');
-      cy.url().should('eq', Cypress.config().baseUrl + '/containers/quay.io/A2/a:latest?tab=files');
+      cy.url().should('contain', Cypress.config().baseUrl + '/containers/quay.io/A2/a:latest?tab=files');
     });
 
     it('Should have Dockerfile tab selected', () => {

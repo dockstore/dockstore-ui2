@@ -14,20 +14,33 @@
  *    limitations under the License.
  */
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { Location } from '@angular/common';
+import {
+  Location,
+  NgIf,
+  NgFor,
+  NgClass,
+  NgSwitch,
+  NgSwitchCase,
+  NgSwitchDefault,
+  NgTemplateOutlet,
+  AsyncPipe,
+  DatePipe,
+} from '@angular/common';
 import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
-import { MatChipInputEvent } from '@angular/material/chips';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyChipInputEvent as MatChipInputEvent, MatLegacyChipsModule } from '@angular/material/legacy-chips';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertService } from 'app/shared/alert/state/alert.service';
 import { BioWorkflow } from 'app/shared/openapi/model/bioWorkflow';
 import { Service } from 'app/shared/openapi/model/service';
 import { Notebook } from 'app/shared/openapi/model/notebook';
+import { ShareIconsModule } from 'ngx-sharebuttons/icons';
 import { Observable, ReplaySubject } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
 import { AlertQuery } from '../shared/alert/state/alert.query';
 import { BioschemaService } from '../shared/bioschema.service';
 import {
+  bootstrap4largeModalSize,
   ga4ghNotebookIdPrefix,
   ga4ghServiceIdPrefix,
   ga4ghWorkflowIdPrefix,
@@ -42,6 +55,7 @@ import {
 import { DateService } from '../shared/date.service';
 import { DescriptorTypeCompatService } from '../shared/descriptor-type-compat.service';
 import { DockstoreService } from '../shared/dockstore.service';
+import { Dockstore } from '../shared/dockstore.model';
 import { Entry } from '../shared/entry';
 import { EntryType } from '../shared/enum/entry-type';
 import { GA4GHFilesService } from '../shared/ga4gh-files/ga4gh-files.service';
@@ -52,7 +66,8 @@ import { SessionService } from '../shared/session/session.service';
 import { ExtendedWorkflowQuery } from '../shared/state/extended-workflow.query';
 import { WorkflowQuery } from '../shared/state/workflow.query';
 import { WorkflowService } from '../shared/state/workflow.service';
-import { Permission, ToolDescriptor, WorkflowsService, EntriesService, WorkflowSubClass } from '../shared/openapi';
+import { Permission, ToolDescriptor, WorkflowsService, EntriesService, WorkflowSubClass, Doi } from '../shared/openapi';
+import { SyncStatus } from '../shared/openapi/model/syncStatus';
 import { Tag } from '../shared/openapi/model/tag';
 import { Workflow } from '../shared/openapi/model/workflow';
 import { WorkflowVersion } from '../shared/openapi/model/workflowVersion';
@@ -61,14 +76,98 @@ import { UrlResolverService } from '../shared/url-resolver.service';
 import { Title } from '@angular/platform-browser';
 import { EntryCategoriesService } from '../categories/state/entry-categories.service';
 import RoleEnum = Permission.RoleEnum;
-import { FormControl } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BaseUrlPipe } from '../shared/entry/base-url.pipe';
+import { ShareButtonsModule } from 'ngx-sharebuttons/buttons';
+import { VerifiedByComponent } from '../shared/entry/verified-by/verified-by.component';
+import { CurrentCollectionsComponent } from '../entry/current-collections/current-collections.component';
+import { MatDividerModule } from '@angular/material/divider';
+import { LaunchThirdPartyComponent } from './launch-third-party/launch-third-party.component';
+import { PermissionsComponent } from './permissions/permissions.component';
+import { ExecutionsTabComponent } from './executions/executions-tab.component';
+import { DagComponent } from './dag/dag.component';
+import { ToolTabComponent } from './tool-tab/tool-tab.component';
+import { WorkflowFileEditorComponent } from './workflow-file-editor/workflow-file-editor.component';
+import { SourceFileTabsComponent } from '../source-file-tabs/source-file-tabs.component';
+import { VersionsWorkflowComponent } from './versions/versions.component';
+import { LaunchWorkflowComponent } from './launch/launch.component';
+import { NotebookComponent } from '../notebook/notebook.component';
+import { InfoTabComponent } from './info-tab/info-tab.component';
+import { MatLegacyTabsModule } from '@angular/material/legacy-tabs';
+import { StargazersComponent } from '../stargazers/stargazers.component';
+import { CategoryButtonComponent } from '../categories/button/category-button.component';
+import { WorkflowActionsComponent } from '../shared/entry-actions/workflow-actions.component';
+import { StarringComponent } from '../starring/starring.component';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
+import { JsonLdComponent } from '../shared/json-ld/json-ld.component';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { ManageDoisDialogComponent } from 'app/shared/entry/doi/manage-dois/manage-dois-dialog.component';
+import { DoiBadgeComponent } from 'app/shared/entry/doi/doi-badge/doi-badge.component';
 
 @Component({
   selector: 'app-workflow',
   templateUrl: './workflow.component.html',
   styleUrls: ['../shared/styles/workflow-container.component.scss'],
+  standalone: true,
+  imports: [
+    NgIf,
+    MatLegacyCardModule,
+    MatIconModule,
+    MatLegacyButtonModule,
+    MatLegacyTooltipModule,
+    FlexModule,
+    JsonLdComponent,
+    ExtendedModule,
+    MatLegacyChipsModule,
+    MatLegacyFormFieldModule,
+    MatLegacySelectModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatLegacyOptionModule,
+    NgxMatSelectSearchModule,
+    NgFor,
+    StarringComponent,
+    WorkflowActionsComponent,
+    CategoryButtonComponent,
+    StargazersComponent,
+    NgClass,
+    MatLegacyTabsModule,
+    InfoTabComponent,
+    NotebookComponent,
+    LaunchWorkflowComponent,
+    VersionsWorkflowComponent,
+    NgSwitch,
+    NgSwitchCase,
+    NgSwitchDefault,
+    NgTemplateOutlet,
+    SourceFileTabsComponent,
+    WorkflowFileEditorComponent,
+    ToolTabComponent,
+    DagComponent,
+    ExecutionsTabComponent,
+    PermissionsComponent,
+    LaunchThirdPartyComponent,
+    MatDividerModule,
+    CurrentCollectionsComponent,
+    VerifiedByComponent,
+    ShareButtonsModule,
+    ShareIconsModule,
+    AsyncPipe,
+    DatePipe,
+    BaseUrlPipe,
+    DoiBadgeComponent,
+  ],
 })
 export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterViewInit, OnInit {
+  DoiInitiatorEnum = Doi.InitiatorEnum;
   workflowEditData: any;
   public isRefreshing$: Observable<boolean>;
   public workflow: BioWorkflow | Service | Notebook;
@@ -77,6 +176,7 @@ export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterVi
   public sortedVersions: Array<WorkflowVersion> = [];
   private resourcePath: string;
   public showRedirect = false;
+  public gitHubAppInstalled: boolean | null;
   public githubPath = 'github.com/';
   public gitlabPath = 'gitlab.com/';
   public bitbucketPath = 'bitbucket.org/';
@@ -105,6 +205,8 @@ export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterVi
   public workflowVersionsCtrl: FormControl<Tag | WorkflowVersion> = new FormControl<Tag | WorkflowVersion>(null); //control for the selected version
   public versionFilterCtrl: FormControl<string> = new FormControl<string>(''); // control for the MatSelect filter keyword
   public filteredVersions: ReplaySubject<Array<Tag | WorkflowVersion>> = new ReplaySubject<Array<Tag | WorkflowVersion>>(1);
+  public selectedVersionDoi: Doi | undefined;
+  public selectedConceptDoi: Doi | undefined;
 
   @Input() user;
   @Input() selectedVersion: WorkflowVersion;
@@ -297,6 +399,12 @@ export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterVi
                 });
             }
           });
+        this.entryService
+          .syncStatus(this.workflow.id)
+          .pipe(takeUntil(this.ngUnsubscribe))
+          .subscribe((syncStatus: SyncStatus) => {
+            this.gitHubAppInstalled = syncStatus.gitHubAppInstalled;
+          });
       }
       this.updateVerifiedPlatforms(this.workflow.id);
       this.updateCategories(this.workflow.id, this.workflow.is_published);
@@ -309,6 +417,7 @@ export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterVi
       if (workflow) {
         this.published = this.workflow.is_published;
         this.selectedVersion = this.selectWorkflowVersion(this.workflow.workflowVersions, this.urlVersion, this.workflow.defaultVersion);
+        this.selectedConceptDoi = this.workflow.conceptDois[this.workflow.doiSelection];
         if (this.selectedVersion) {
           this.workflowService.setWorkflowVersion(this.selectedVersion);
           this.updateVersionsFileTypes(this.workflow.id, this.selectedVersion.id);
@@ -319,6 +428,7 @@ export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterVi
           } else {
             this.gA4GHFilesService.updateFiles(trsID, this.selectedVersion.name, [this.workflow.descriptorType]);
           }
+          this.selectedVersionDoi = this.selectedVersion.dois[this.workflow.doiSelection];
         }
         this.workflowVersionAlphabetical = this.workflow.workflowVersions.slice().sort((a, b) => {
           return a.name.localeCompare(b.name);
@@ -398,15 +508,8 @@ export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterVi
           this.updateWorkflowUrl(this.workflow);
         },
         (error) => {
-          const workflowOrgRegex = /\/workflows\/.+/;
-          const workflowRegex = /\/workflows\/(github.com)|(gitlab.com)|(bitbucket.org)\/.+/;
-          const gitHubAppToolRegex = /\/containers\/(github.com)\/.+/;
-          if (
-            workflowOrgRegex.test(this.resourcePath) ||
-            workflowRegex.test(this.resourcePath) ||
-            gitHubAppToolRegex.test(this.resourcePath)
-          ) {
-            this.router.navigate(['page-not-found']);
+          if (!this.workflow) {
+            this.urlResolverService.showPageNotFound();
           } else {
             this.showRedirect = true;
             // Retrieve the workflow path from the URL
@@ -434,7 +537,7 @@ export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterVi
       const entryPath = workflow.full_workflow_path;
       if (this.entryType === EntryType.BioWorkflow) {
         this.updateUrl(entryPath, myBioWorkflowsURLSegment, 'workflows', this.selectedVersion);
-      } else if (this.entryType === EntryType.Tool) {
+      } else if (this.entryType === EntryType.Tool || this.entryType === EntryType.AppTool) {
         this.updateUrl(entryPath, myToolsURLSegment, 'containers', this.selectedVersion);
       } else if (this.entryType === EntryType.Notebook) {
         this.updateUrl(entryPath, myNotebooksURLSegment, 'notebooks', this.selectedVersion);
@@ -513,6 +616,7 @@ export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterVi
       ]);
       this.updateVersionsFileTypes(this.workflow.id, this.selectedVersion.id);
       this.versionAgoMessage = this.dateService.getAgoMessage((this.selectedVersion as WorkflowVersion).last_modified);
+      this.selectedVersionDoi = this.selectedVersion.dois[this.workflow.doiSelection];
     }
     this.workflowService.setWorkflowVersion(version);
     this.updateWorkflowUrl(this.workflow);
@@ -522,11 +626,6 @@ export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterVi
   setEntryTab(tabName: string): void {
     this.currentTab = tabName;
     this.updateWorkflowUrl(this.workflow);
-  }
-
-  getPageIndex(): number {
-    const pageIndex = this.getIndexInURL('/workflows');
-    return pageIndex;
   }
 
   addToLabels(event: MatChipInputEvent): void {
@@ -548,5 +647,16 @@ export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterVi
     if (index >= 0) {
       this.workflowEditData.labels.splice(index, 1);
     }
+  }
+
+  openGitHubApp(): void {
+    window.open(Dockstore.GITHUB_APP_INSTALLATION_URL + '/installations/new', '_blank', 'noopener,noreferrer');
+  }
+
+  manageDois() {
+    this.dialog.open(ManageDoisDialogComponent, {
+      width: bootstrap4largeModalSize,
+      data: { entry: this.workflow, version: this.selectedVersion },
+    });
   }
 }

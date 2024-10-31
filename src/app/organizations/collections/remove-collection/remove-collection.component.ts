@@ -14,22 +14,38 @@
  * limitations under the License.
  */
 import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogModule } from '@angular/material/legacy-dialog';
 import { Observable } from 'rxjs';
 import { CollectionsService } from '../../state/collections.service';
 import { CollectionsQuery } from '../../state/collections.query';
+import { AsyncPipe } from '@angular/common';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { AlertComponent } from '../../../shared/alert/alert.component';
 
 @Component({
   selector: 'app-collection-confirm-remove',
   templateUrl: './remove-collection.component.html',
+  standalone: true,
+  imports: [MatLegacyDialogModule, AlertComponent, FlexModule, MatLegacyButtonModule, MatLegacyTooltipModule, AsyncPipe],
 })
 export class RemoveCollectionDialogComponent {
   public collectionsQueryLoading$: Observable<boolean>;
-  constructor(@Inject(MAT_DIALOG_DATA) public data: CollectionDialogData, private collectionsService: CollectionsService, private collectionsQuery: CollectionsQuery) {
-    this.collectionsQueryLoading$ = collectionsQuery.selectLoading();
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: CollectionDialogData,
+    private collectionsService: CollectionsService,
+    private collectionsQuery: CollectionsQuery
+  ) {
+    this.collectionsQueryLoading$ = this.collectionsQuery.selectLoading();
   }
   removeCollection() {
-    this.collectionsService.deleteCollection(this.data.organizationId, this.data.collectionId, this.data.organizationName, this.data.collectionName);
+    this.collectionsService.deleteCollection(
+      this.data.organizationId,
+      this.data.collectionId,
+      this.data.organizationName,
+      this.data.collectionName
+    );
   }
 }
 

@@ -3,6 +3,7 @@
   "author": "",
   "checker_id": null,
   "conceptDoi": null,
+  "conceptDois": {},
   "custom_docker_registry_path": "quay.io",
   "dbCreateDate": 1540931203177,
   "dbUpdateDate": 1540931206733,

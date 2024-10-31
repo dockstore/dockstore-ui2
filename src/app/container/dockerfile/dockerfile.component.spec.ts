@@ -29,7 +29,7 @@ describe('DockerfileComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [DockerfileComponent],
+        imports: [DockerfileComponent],
         schemas: [NO_ERRORS_SCHEMA],
         providers: [
           { provide: FileService, useClass: FileStubService },

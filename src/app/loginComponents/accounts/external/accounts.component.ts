@@ -14,11 +14,11 @@
  *     limitations under the License.
  */
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
-import { AuthService } from 'ng2-ui-auth';
+import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
+import { Router, RouterLink } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 import { first, map, takeUntil } from 'rxjs/operators';
+import { AuthService } from '../../../ng2-ui-auth/public_api';
 import { Dockstore } from '../../../shared/dockstore.model';
 import { TokenSource } from '../../../shared/enum/token-source.enum';
 import { TokenQuery } from '../../../shared/state/token.query';
@@ -30,10 +30,23 @@ import { TokenUser } from './../../../shared/openapi/model/tokenUser';
 import { AccountsService } from './accounts.service';
 import { LogoutService } from '../../../shared/logout.service';
 import { RevokeTokenDialogComponent } from './revoke-token-dialog/revoke-token-dialog.component';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { accountInfo, bootstrap4largeModalSize } from '../../../shared/constants';
 import { AlertService } from '../../../shared/alert/state/alert.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { GetTokenUsernamePipe } from './getTokenUsername.pipe';
+import { MatIconModule } from '@angular/material/icon';
+import { ClipboardModule } from '@angular/cdk/clipboard';
+import { SnackbarDirective } from '../../../shared/snackbar.directive';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatLegacyInputModule } from '@angular/material/legacy-input';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatLegacyChipsModule } from '@angular/material/legacy-chips';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
 
 export interface AccountInfo {
   name: string;
@@ -53,6 +66,25 @@ export interface AccountInfo {
   selector: 'app-accounts-external',
   templateUrl: './accounts.component.html',
   styleUrls: ['./accounts.component.scss'],
+  standalone: true,
+  imports: [
+    FlexModule,
+    NgIf,
+    MatLegacyCardModule,
+    MatBadgeModule,
+    MatLegacyChipsModule,
+    RouterLink,
+    MatLegacyFormFieldModule,
+    MatLegacyInputModule,
+    MatLegacyButtonModule,
+    MatLegacyTooltipModule,
+    SnackbarDirective,
+    ClipboardModule,
+    MatIconModule,
+    NgFor,
+    AsyncPipe,
+    GetTokenUsernamePipe,
+  ],
 })
 export class AccountsExternalComponent implements OnInit, OnDestroy {
   public dsServerURI: any;

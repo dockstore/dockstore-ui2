@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ID } from '@datorama/akita';
 import { ConfirmationDialogService } from 'app/confirmation-dialog/confirmation-dialog.service';
 import { Base } from 'app/shared/base';
@@ -30,11 +30,36 @@ import { OrganizationMembersService } from '../state/organization-members.servic
 import { OrganizationQuery } from '../state/organization.query';
 import { UpsertOrganizationMemberComponent } from '../upsert-organization-member/upsert-organization-member.component';
 import { GravatarService } from '../../gravatar/gravatar.service';
+import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
+import { RouterLink } from '@angular/router';
+import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { LoadingComponent } from '../../shared/loading/loading.component';
+import { MatIconModule } from '@angular/material/icon';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { NgIf, NgFor, NgClass, AsyncPipe, TitleCasePipe } from '@angular/common';
 
 @Component({
   selector: 'app-organization-members',
   templateUrl: './organization-members.component.html',
   styleUrls: ['./organization-members.component.scss'],
+  standalone: true,
+  imports: [
+    NgIf,
+    FlexModule,
+    MatLegacyButtonModule,
+    MatLegacyTooltipModule,
+    MatIconModule,
+    LoadingComponent,
+    NgFor,
+    MatLegacyCardModule,
+    RouterLink,
+    NgClass,
+    ExtendedModule,
+    AsyncPipe,
+    TitleCasePipe,
+  ],
 })
 export class OrganizationMembersComponent extends Base implements OnInit {
   OrganizationUser = OrganizationUser;

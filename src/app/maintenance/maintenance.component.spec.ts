@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars, @typescript-eslint/no-unused-vars */
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { MatCardModule } from '@angular/material/card';
+import { MatLegacyCardModule as MatCardModule } from '@angular/material/legacy-card';
 import { MatIconModule } from '@angular/material/icon';
 import { MaintenanceComponent } from './maintenance.component';
 
@@ -11,8 +11,7 @@ describe('MaintenanceComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [MaintenanceComponent],
-        imports: [MatCardModule, MatIconModule],
+        imports: [MatCardModule, MatIconModule, MaintenanceComponent],
       }).compileComponents();
     })
   );

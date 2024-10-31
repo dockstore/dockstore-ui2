@@ -16,17 +16,35 @@
 import { Component, Input } from '@angular/core';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { FileEditing } from '../../shared/file-editing';
-import { ContainertagsService, SourceFile, DockstoreTool, ToolDescriptor } from '../../shared/openapi';
+import { ContainertagsService, SourceFile, DockstoreTool, ToolDescriptor, EntryType } from '../../shared/openapi';
 import { ContainerService } from './../../shared/container.service';
 import { HostedService } from './../../shared/openapi/api/hosted.service';
 import { Tag } from './../../shared/openapi/model/tag';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { NgIf } from '@angular/common';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { CodeEditorListComponent } from '../../shared/code-editor-list/code-editor-list.component';
+import { MatLegacyTabsModule } from '@angular/material/legacy-tabs';
 
 @Component({
   selector: 'app-tool-file-editor',
   templateUrl: './tool-file-editor.component.html',
   styleUrls: ['./tool-file-editor.component.scss'],
+  standalone: true,
+  imports: [
+    MatLegacyTabsModule,
+    CodeEditorListComponent,
+    MatLegacyFormFieldModule,
+    MatLegacySelectModule,
+    MatLegacyOptionModule,
+    NgIf,
+    MatLegacyButtonModule,
+  ],
 })
 export class ToolFileEditorComponent extends FileEditing {
+  public EntryType = EntryType;
   dockerFile: Array<SourceFile> = [];
   descriptorFiles: Array<SourceFile> = [];
   testParameterFiles: Array<SourceFile> = [];

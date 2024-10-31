@@ -14,8 +14,8 @@
  *    limitations under the License.
  */
 import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatLegacyTableDataSource as MatTableDataSource, MatLegacyTableModule } from '@angular/material/legacy-table';
 import { faCodeBranch, faTag } from '@fortawesome/free-solid-svg-icons';
 import { takeUntil } from 'rxjs/operators';
 import { AlertService } from '../../shared/alert/state/alert.service';
@@ -28,11 +28,40 @@ import { VersionVerifiedPlatform, Tag } from '../../shared/openapi';
 import { SessionQuery } from '../../shared/session/session.query';
 import { DockstoreTool } from '../../shared/openapi/model/dockstoreTool';
 import { Versions } from '../../shared/versions';
+import { DescriptorLanguageVersionsPipe } from '../../shared/entry/descriptor-language-versions.pipe';
+import { VerifiedPlatformsPipe } from '../../shared/entry/verified-platforms.pipe';
+import { CommitUrlPipe } from '../../shared/entry/commit-url.pipe';
+import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
+import { ViewContainerComponent } from '../view/view.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MatLegacyChipsModule } from '@angular/material/legacy-chips';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { MatIconModule } from '@angular/material/icon';
+import { NgIf, NgClass, DatePipe } from '@angular/common';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
 
 @Component({
   selector: 'app-versions-container',
   templateUrl: './versions.component.html',
   styleUrls: ['./../../workflow/versions/versions.component.scss'],
+  standalone: true,
+  imports: [
+    MatLegacyTableModule,
+    MatSortModule,
+    MatLegacyTooltipModule,
+    NgIf,
+    MatIconModule,
+    FlexModule,
+    MatLegacyChipsModule,
+    FontAwesomeModule,
+    ViewContainerComponent,
+    NgClass,
+    ExtendedModule,
+    DatePipe,
+    CommitUrlPipe,
+    VerifiedPlatformsPipe,
+    DescriptorLanguageVersionsPipe,
+  ],
 })
 export class VersionsContainerComponent extends Versions implements OnInit, OnChanges, AfterViewInit {
   faTag = faTag;

@@ -2,6 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
   name: 'getFacetSearchUpdate',
+  standalone: true,
 })
 /**
  * This pipe updates the number of hidden items in the facet when a search is completed

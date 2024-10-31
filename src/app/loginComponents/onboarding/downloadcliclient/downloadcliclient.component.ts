@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
-import { Component, EventEmitter, OnInit } from '@angular/core';
-import { AuthService } from 'ng2-ui-auth';
+import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../../../ng2-ui-auth/public_api';
 import { Dockstore } from '../../../shared/dockstore.model';
 import { MetadataService, TRSService } from '../../../shared/openapi';
 import { ServiceInfoService } from '../../../service-info/service-info.service';
@@ -8,11 +8,31 @@ import { AlertService } from './../../../shared/alert/state/alert.service';
 import { forkJoin } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
 import { Base } from 'app/shared/base';
+import { ClipboardModule } from '@angular/cdk/clipboard';
+import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
+import { SnackbarDirective } from '../../../shared/snackbar.directive';
+import { MatIconModule } from '@angular/material/icon';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { NgIf, NgClass } from '@angular/common';
+import { MatLegacyTabsModule } from '@angular/material/legacy-tabs';
+import { MarkdownModule } from 'ngx-markdown';
 
 @Component({
   selector: 'app-downloadcliclient',
   templateUrl: './downloadcliclient.component.html',
   styleUrls: ['./downloadcliclient.component.scss'],
+  standalone: true,
+  imports: [
+    MarkdownModule,
+    MatLegacyTabsModule,
+    NgIf,
+    MatLegacyButtonModule,
+    MatIconModule,
+    SnackbarDirective,
+    NgClass,
+    ExtendedModule,
+    ClipboardModule,
+  ],
 })
 export class DownloadCLIClientComponent extends Base implements OnInit {
   public downloadCli = 'dummy-start-value';
@@ -123,6 +143,7 @@ There are several ways to install Java on Mac OS. Here are some examples:
 
 After you've installed Java, make sure the version is correct by running \`java -version\` in the terminal, and verifying the major version is 17 or greater.
 
+
 #### Part 2 - Install Docker
 Install Docker following the instructions on [Docker's website](https://docs.docker.com/docker-for-mac/install/). You should have at least version 4.3.0 installed. Make sure to install the correct version for your hardware.
     `;
@@ -168,7 +189,7 @@ At this point, you now have the Dockstore CLI set up for interacting with the Do
 
 #### Part 6 - Install cwltool (Optional)
 Dockstore relies on [cwltool](https://github.com/common-workflow-language/cwltool) - a reference implementation of CWL - for local execution of tools and workflows described with CWL.
-You'll need to have Python 3 and [pipx](https://pipx.pypa.io/latest/installation/) to be installed on your machine.
+You'll need to have Python 3.10+ and [pipx](https://pipx.pypa.io/latest/installation/) to be installed on your machine.
 
 **Note:** cwltool must be available on your PATH for the Dockstore CLI to find it.
 

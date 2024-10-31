@@ -5,6 +5,8 @@ import { ImgFallbackDirective } from './img-fallback.directive';
 
 @Component({
   template: '<img src="original.jpg" appFallback="fallback.jpg">',
+  imports: [ImgFallbackDirective],
+  standalone: true,
 })
 class TestComponent {}
 
@@ -12,9 +14,7 @@ describe('ImgFallbackDirective', () => {
   let img: any;
 
   beforeEach(() => {
-    const component = TestBed.configureTestingModule({ declarations: [ImgFallbackDirective, TestComponent] }).createComponent(
-      TestComponent
-    );
+    const component = TestBed.configureTestingModule({ imports: [TestComponent] }).createComponent(TestComponent);
     img = component.debugElement.query(By.css('img')).nativeElement;
   });
 

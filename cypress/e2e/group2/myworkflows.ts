@@ -18,6 +18,7 @@ import { Repository } from '../../../src/app/shared/openapi/model/repository';
 import {
   goToTab,
   insertAuthors,
+  invokeSql,
   isActiveTab,
   resetDB,
   setTokenUserViewPort,
@@ -43,7 +44,7 @@ describe('Dockstore my workflows', () => {
     cy.contains('No matching workflows');
   });
 
-  it('have action buttons which work', () => {
+  it('should have discover existing workflows button', () => {
     cy.fixture('myWorkflows.json').then((json) => {
       cy.intercept('PATCH', '/api/users/1/workflows', {
         body: json,
@@ -53,14 +54,21 @@ describe('Dockstore my workflows', () => {
 
     cy.visit('/my-workflows');
     cy.get('[data-cy=myWorkflowsMoreActionButtons]').should('be.visible').click();
+    cy.fixture('myWorkflows.json').then((json) => {
+      cy.intercept('GET', '/api/users/1/workflows', {
+        body: json,
+        statusCode: 200,
+      }).as('getWorkflows');
+    });
     cy.get('[data-cy=addToExistingWorkflows]').should('be.visible').click();
 
+    cy.wait('@getWorkflows');
     cy.contains('addedthisworkflowviasync');
   });
 
   describe('Should contain extended Workflow properties', () => {
     // Flaky test, see https://github.com/dockstore/dockstore/issues/5696
-    it('visit another page then come back', () => {
+    it('Should show GitHub App logs', () => {
       cy.visit('/my-workflows');
       cy.contains('github.com/A/l');
 
@@ -69,14 +77,16 @@ describe('Dockstore my workflows', () => {
       cy.contains('Close').click();
       cy.intercept('GET', '/api/lambdaEvents/**', {
         body: [],
-      }).as('refreshWorkflow');
+      }).as('No lambda events');
       cy.contains('Apps Logs').click();
       cy.contains('There are no GitHub App logs for this organization.');
       cy.contains('Close').click();
+      const entry1 = 'entry1';
+      const entry2 = 'entry2';
       const realResponse = [
         {
           deliveryId: '1',
-          entryName: 'entry1',
+          entryName: entry1,
           eventDate: 1582165220000,
           githubUsername: 'boil',
           id: 1,
@@ -89,7 +99,7 @@ describe('Dockstore my workflows', () => {
         },
         {
           deliveryId: '2',
-          entryName: 'entry2',
+          entryName: entry2,
           eventDate: 1591368041850,
           githubUsername: 'em',
           id: 2,
@@ -101,15 +111,29 @@ describe('Dockstore my workflows', () => {
           type: 'PUSH',
         },
       ];
-      cy.intercept('GET', '/api/lambdaEvents/**', {
+      const sortedAsc = [...realResponse].sort((a, b) => a.entryName.toLowerCase().localeCompare(b.entryName.toLowerCase()));
+      const sortedDesc = [...realResponse].sort((a, b) => b.entryName.toLowerCase().localeCompare(a.entryName.toLowerCase()));
+      cy.intercept('GET', '/api/lambdaEvents/**sortCol=entryName&sortOrder=asc', {
+        body: sortedAsc,
+        headers: {
+          'X-total-count': '2',
+        },
+      }).as('Sorted by entryName asc');
+      cy.intercept('GET', '/api/lambdaEvents/**sortCol=entryName&sortOrder=desc', {
+        body: sortedDesc,
+        headers: {
+          'X-total-count': '2',
+        },
+      }).as('Sorted by entryName desc');
+      cy.intercept('GET', '/api/lambdaEvents/A?offset=0&limit=10&sortOrder=desc', {
         body: realResponse,
         headers: {
           'X-total-count': '2',
         },
-      }).as('refreshWorkflow');
+      }).as('Default sort');
       cy.contains('Apps Logs').click();
       // Check that app logs contain the correct columns
-      const appLogColumns = ['Date', 'GitHub Username', 'Entry Name', 'Delivery ID', 'Repository', 'Reference', 'Success', 'Type'];
+      const appLogColumns = ['Date', 'GitHub Username', 'Entry Name', 'Delivery ID', 'Repository', 'Reference', 'Status', 'Type'];
       appLogColumns.forEach((column) => cy.contains(column));
       // These next 2 values work on Circle CI (UTC?) I would have thought East Coast time, but there's an 8 hour diff with West Coast time. Confused
       cy.contains('2020-02-20T02:20');
@@ -117,13 +141,22 @@ describe('Dockstore my workflows', () => {
       // These next 2 values only work on the West Coast
       // cy.contains('2020-02-19T18:20');
       // cy.contains('2020-06-05T07:40');
+
+      // Sort by entry name ascending, entry1 should be first row
+      cy.contains('th', 'Entry Name').click();
+      cy.get('[data-cy=entry-name').first().should('have.text', entry1);
+
+      // Sort by entry name descending, entry2 should be first row
+      cy.contains('th', 'Entry Name').click();
+      cy.get('[data-cy=entry-name').first().should('have.text', entry2);
+
       cy.contains('1 – 2 of 2');
 
       //Filtering
       const filteredResponse: LambdaEvent[] = [
         {
           deliveryId: '1',
-          entryName: 'entry1',
+          entryName: entry1,
           eventDate: 1582165220000,
           githubUsername: 'boil',
           id: 1,
@@ -141,12 +174,13 @@ describe('Dockstore my workflows', () => {
           'X-total-count': '1',
         },
       });
-      cy.get('[data-cy=apps-logs-filter]').type('entry1');
+      cy.get('[data-cy=apps-logs-filter]').type(entry1);
       cy.contains('2020-02-20T02:20');
       cy.contains('1 – 1 of 1');
       cy.contains('Close').click();
     });
     it('Should contain the extended properties and be able to edit the info tab', () => {
+      cy.intercept('PUT', 'api/workflows/*').as('updateWorkflow');
       // The seemingly unnecessary visits are due to a detached-from-dom error even using cy.get().click();
       cy.visit('/my-workflows/github.com/A/l');
       cy.contains('github.com');
@@ -158,6 +192,7 @@ describe('Dockstore my workflows', () => {
       const workflowPathInput = '[data-cy=workflowPathInput]';
       cy.get(workflowPathInput).clear().type('/Dockstore2.cwl');
       cy.contains('button', ' Save ').click();
+      cy.wait('@updateWorkflow');
       cy.visit('/my-workflows/github.com/A/g');
       cy.contains('/Dockstore2.cwl');
       // Change the file path back
@@ -165,6 +200,7 @@ describe('Dockstore my workflows', () => {
       const dockstoreCwlPath = '/Dockstore.cwl';
       cy.get(workflowPathInput).clear().type(dockstoreCwlPath);
       cy.contains('button', ' Save ').click();
+      cy.wait('@updateWorkflow');
       cy.visit('/my-workflows/github.com/A/g');
       const workflowPathSpan = '[data-cy=workflowPathSpan]';
       cy.get(workflowPathSpan).contains(dockstoreCwlPath);
@@ -182,25 +218,66 @@ describe('Dockstore my workflows', () => {
       // Topic Editing
       const privateEntryURI = '/my-workflows/github.com/A/l';
       cy.visit(privateEntryURI);
+      // Modify the manual topic, but don't save it
       cy.get('[data-cy=topicEditButton]').click();
-      cy.get('[data-cy=topicInput]').clear().type('badTopic');
+      cy.get('[data-cy=topicInput]').clear(); // Unsafe to chain clear()
+      cy.get('[data-cy=topicInput]').type('badTopic');
       cy.get('[data-cy=topicCancelButton]').click();
-      cy.contains('badTopic').should('not.exist');
+      cy.get('[data-cy=selected-topic]').should('not.contain.text', 'badTopic');
+      // Modify the manual topic and save it
       cy.get('[data-cy=topicEditButton]').click();
-      cy.get('[data-cy=topicInput]').clear().type('goodTopic');
+      cy.get('[data-cy=topicInput]').clear(); // Unsafe to chain clear()
+      cy.get('[data-cy=topicInput]').type('goodTopic');
       cy.get('[data-cy=topicSaveButton]').click();
-      cy.contains('goodTopic').should('exist');
+      cy.wait('@updateWorkflow');
+      // Check that the manual topic is saved
+      cy.get('[data-cy=topicEditButton]').click();
+      cy.get('[data-cy=topicInput]').should('have.value', 'goodTopic');
+      cy.get('[data-cy=topicCancelButton]').click();
 
-      // Check public view
-      cy.visit(privateEntryURI);
+      // Check public view. Manual topic should not be displayed because it's not the selected topic
       cy.get('[data-cy=viewPublicWorkflowButton]').should('be.visible').click();
-      cy.contains('goodTopic').should('not.exist');
+      cy.get('[data-cy=selected-topic]').should('not.contain.text', 'goodTopic');
 
+      // Select the manual topic and verify that it's displayed publicly
       cy.visit(privateEntryURI);
+      cy.get('[data-cy=topicEditButton]').click();
       cy.get('.mat-radio-label').contains('Manual').click();
-      cy.visit(privateEntryURI);
+      cy.get('[data-cy=topicSaveButton]').click();
+      cy.wait('@updateWorkflow');
+      cy.get('[data-cy=selected-topic]').should('contain.text', 'goodTopic');
+      // Topic selection bubble should be visible on private page
+      cy.get('[data-cy=topic-selection-bubble]').should('be.visible');
+      // Topic selection bubble should not exist on public page
       cy.get('[data-cy=viewPublicWorkflowButton]').should('be.visible').click();
-      cy.contains('goodTopic').should('exist');
+      cy.get('[data-cy=selected-topic]').should('contain.text', 'goodTopic');
+      cy.get('[data-cy=topic-selection-bubble]').should('not.exist');
+
+      // Add an AI topic for testing and set topic selection to AI. The user has not approved of this topic.
+      invokeSql("update workflow set topicai = 'test AI topic sentence' where id = 11");
+      invokeSql("update workflow set topicselection = 'AI' where id = 11");
+      cy.visit(privateEntryURI);
+      cy.get('[data-cy=topicEditButton]').click();
+      cy.get('[data-cy=unapprovedAITopicCard]').should('be.visible');
+      cy.get('[data-cy=topicCancelButton]').click();
+      // AI topic on public page should have an AI bubble because it wasn't approved by the user
+      cy.get('[data-cy=viewPublicWorkflowButton]').should('be.visible').click();
+      cy.get('[data-cy=ai-bubble]').should('be.visible');
+
+      // Select the AI topic and verify that it's displayed publicly without an AI bubble
+      cy.visit(privateEntryURI);
+      cy.get('[data-cy=topicEditButton]').click();
+      cy.get('.mat-radio-label').contains('AI').click();
+      cy.get('[data-cy=topicSaveButton]').click();
+      cy.get('[data-cy=confirmAISelectionPrompt').should('be.visible');
+      cy.get('[data-cy=topicConfirmButton]').click();
+      cy.wait('@updateWorkflow');
+      cy.get('[data-cy=selected-topic]').should('contain.text', 'test AI topic sentence');
+      cy.get('[data-cy=ai-bubble]').should('be.visible'); // AI bubble is displayed privately to indicate the topic selection
+      // AI bubble should not be displayed on public page because the user selected it and thus approves of it
+      cy.get('[data-cy=viewPublicWorkflowButton]').should('be.visible').click();
+      cy.get('[data-cy=selected-topic]').should('contain.text', 'test AI topic sentence');
+      cy.get('[data-cy=ai-bubble]').should('not.exist');
     });
     it('should have mode tooltip', () => {
       cy.visit('/my-workflows/github.com/A/g');
@@ -324,12 +401,17 @@ describe('Dockstore my workflows part 2', () => {
           statusCode: 200,
         });
       });
-      // doiResponse.json has a workflow version with a DOI
-      cy.fixture('doiResponse.json').then((json) => {
-        cy.intercept('PUT', '/api/**/requestDOI/*', {
+      // Return a 200 for requestDOI. The response is not used.
+      cy.intercept('PUT', '/api/**/requestDOI/*', {
+        statusCode: 200,
+      });
+      // getWorkflowWithDoi.json has a workflow version with a DOI.
+      // This endpoint is called after a DOI is requested.
+      cy.fixture('getWorkflowWithDoi.json').then((json) => {
+        cy.intercept('GET', '/api/workflows/11?include=versions', {
           body: json,
           statusCode: 200,
-        });
+        }).as('getWorkflowAfterRequestDoi');
       });
       // orcidExportResponse.json has a workflow version with an ORCID put code
       cy.fixture('orcidExportResponse.json').then((json) => {
@@ -339,13 +421,18 @@ describe('Dockstore my workflows part 2', () => {
         });
       });
 
-      cy.get('[data-cy=workflow-version-DOI-badge]').should('not.exist'); // Make sure there are no existing Zenodo badges
+      // Make sure there are no existing Zenodo badges
+      cy.get('[data-cy=concept-DOI-badge]').should('not.exist');
+      cy.get('[data-cy=version-DOI-badge]').should('not.exist');
       gotoVersionsAndClickActions();
       // Request DOI
       cy.get('[data-cy=dockstore-request-doi-button]').click();
       cy.get('[data-cy=export-button').should('be.enabled');
       cy.get('[data-cy=export-button').click();
-      cy.get('[data-cy=workflow-version-DOI-badge]').its('length').should('be.gt', 0); // Should have a DOI badge now
+      // Should have DOI badges now
+      cy.get('[data-cy=user-DOI-icon]').should('be.visible');
+      cy.get('[data-cy=concept-DOI-badge]').should('be.visible');
+      cy.get('[data-cy=version-DOI-badge]').should('be.visible');
       cy.get('td').contains('Actions').click();
       cy.get('[data-cy=dockstore-request-doi-button').should('not.exist'); // Should not be able to request another DOI
 
@@ -371,7 +458,7 @@ describe('Dockstore my workflows part 2', () => {
 
     // Should not be able to refresh a dockstore.yml workflow version
     goToTab('Versions');
-    cy.contains('button', 'Actions').should('be.visible').click();
+    cy.contains('button', 'Actions').click();
     cy.contains('button', 'Refresh Version').should('be.disabled');
 
     cy.get('body').type('{esc}');
@@ -398,7 +485,7 @@ describe('Dockstore my workflows part 2', () => {
     cy.visit('/my-workflows/github.com/A/l');
     cy.url().should('eq', Cypress.config().baseUrl + '/my-workflows/github.com/A/l');
     goToTab('Versions');
-    cy.contains('button', 'Actions').should('be.visible').click();
+    cy.contains('button', 'Actions').click();
     cy.contains('button', 'Refresh Version').should('not.be.disabled');
   });
 
@@ -546,7 +633,7 @@ describe('Dockstore my workflows part 3', () => {
       cy.get('#publishButton').should('contain', 'Publish').should('be.visible');
 
       goToTab('Versions');
-      cy.contains('button', 'Actions').should('be.visible').click();
+      cy.contains('button', 'Actions').click();
       cy.get('[data-cy=set-default-version-button]').should('be.visible').click();
       cy.wait(1000);
       cy.get('#publishButton').should('contain', 'Publish').should('be.visible').click();
@@ -616,5 +703,27 @@ describe('Should handle no workflows correctly', () => {
   it('My workflows should prompt to register a workflow', () => {
     cy.visit('/my-workflows');
     cy.contains('Register a Workflow');
+  });
+});
+describe('GitHub App installation', () => {
+  resetDB();
+  setTokenUserViewPort();
+  it('Should display a warning when the GitHub app is not installed', () => {
+    invokeSql("update workflow set mode='DOCKSTORE_YML'");
+    // Warning should not appear on private page if not uninstalled
+    cy.intercept('GET', '/api/entries/*/syncStatus', {
+      body: { gitHubAppInstalled: true },
+    });
+    cy.visit('/my-workflows/github.com/A/l');
+    cy.get('mat-card').should('not.contain', 'uninstalled');
+    // Warning should appear on private page if uninstalled
+    cy.intercept('GET', '/api/entries/*/syncStatus', {
+      body: { gitHubAppInstalled: false },
+    });
+    cy.reload();
+    cy.get('mat-card').should('contain', 'uninstalled');
+    // Warning should not appear on public page
+    cy.visit('/workflows/github.com/A/l');
+    cy.get('mat-card').should('not.contain', 'uninstalled');
   });
 });

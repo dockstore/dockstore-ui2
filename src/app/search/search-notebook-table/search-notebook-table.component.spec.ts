@@ -6,8 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DateService } from '../../shared/date.service';
 import { DockstoreService } from '../../shared/dockstore.service';
-import { CustomMaterialModule } from '../../shared/modules/material.module';
-import { DockstoreStubService, SearchStubService } from '../../test/service-stubs';
+import { DateStubService, DockstoreStubService, SearchStubService } from '../../test/service-stubs';
 import { SearchService } from '../state/search.service';
 import { SearchNotebookTableComponent } from './search-notebook-table.component';
 
@@ -18,12 +17,11 @@ describe('SearchNotebookTableComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [SearchNotebookTableComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        imports: [CustomMaterialModule, BrowserAnimationsModule, RouterTestingModule],
+        imports: [BrowserAnimationsModule, RouterTestingModule, SearchNotebookTableComponent],
         providers: [
           { provide: DockstoreService, useClass: DockstoreStubService },
-          DateService,
+          { provide: DateService, useClass: DateStubService },
           { provide: SearchService, useClass: SearchStubService },
         ],
       }).compileComponents();

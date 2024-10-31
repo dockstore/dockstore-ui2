@@ -1,8 +1,9 @@
 import { Directive, HostListener } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 
 @Directive({
   selector: '[appSnackbar]',
+  standalone: true,
 })
 export class SnackbarDirective {
   constructor(private matSnackBar: MatSnackBar) {}

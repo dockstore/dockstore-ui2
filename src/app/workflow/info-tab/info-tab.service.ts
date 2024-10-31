@@ -34,7 +34,6 @@ export class InfoTabService {
   public workflowPathEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public defaultTestFilePathEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public forumUrlEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  public topicEditing$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public descriptorLanguageMap = [];
 
   constructor(
@@ -54,56 +53,12 @@ export class InfoTabService {
     this.workflowPathEditing$.next(editing);
   }
 
-  setTopicEditing(editing: boolean) {
-    this.topicEditing$.next(editing);
-  }
-
   setDefaultTestFilePathEditing(editing: boolean) {
     this.defaultTestFilePathEditing$.next(editing);
   }
 
   setForumUrlEditing(editing: boolean) {
     this.forumUrlEditing$.next(editing);
-  }
-
-  /**
-   * Warning, this could potentially update a few other properties
-   * @param workflow
-   */
-  saveTopic(workflow: Workflow, errorCallback: () => void) {
-    this.alertService.start('Updating topic');
-    const partialEntryForUpdate = this.getPartialEntryForUpdate(workflow);
-    this.workflowsService.updateWorkflow(workflow.id, partialEntryForUpdate).subscribe(
-      (response) => {
-        this.alertService.detailedSuccess();
-        const newTopic = response.topicManual;
-        this.workflowService.updateActiveTopic(newTopic);
-      },
-      (error) => {
-        this.alertService.detailedError(error);
-        errorCallback();
-      }
-    );
-  }
-
-  /**
-   * Warning, this could potentially update a few other properties
-   * @param workflow
-   */
-  saveTopicSelection(workflow: Workflow, errorCallback: () => void) {
-    this.alertService.start('Updating topic selection');
-    const partialEntryForUpdate = this.getPartialEntryForUpdate(workflow);
-    this.workflowsService.updateWorkflow(workflow.id, partialEntryForUpdate).subscribe(
-      (response) => {
-        this.alertService.detailedSuccess();
-        const newTopicSelection = response.topicSelection;
-        this.workflowService.updateActiveTopicSelection(newTopicSelection);
-      },
-      (error) => {
-        this.alertService.detailedError(error);
-        errorCallback();
-      }
-    );
   }
 
   updateAndRefresh(workflow: Workflow) {
@@ -130,7 +85,7 @@ export class InfoTabService {
    * Additionally, the webservice does not appear to understand starredUsers which causes an error.
    * Ideally this implementation should be similar to the tool counterpart
    */
-  private getPartialEntryForUpdate(entry: Workflow): Workflow {
+  getPartialEntryForUpdate(entry: Workflow): Workflow {
     entry.workflowVersions = [];
     entry.starredUsers = [];
     entry.users = [];
@@ -201,7 +156,6 @@ export class InfoTabService {
     this.workflowPathEditing$.next(false);
     this.defaultTestFilePathEditing$.next(false);
     this.forumUrlEditing$.next(false);
-    this.topicEditing$.next(false);
   }
 
   /**
@@ -233,11 +187,12 @@ export class InfoTabService {
     );
   }
 
-  getTRSId(workflow: Workflow | undefined, entryType: EntryType): string {
-    if (!workflow) {
+  getTRSId(workflow: Workflow | undefined): string {
+    if (workflow) {
+      return workflow.entryTypeMetadata.trsPrefix + workflow.full_workflow_path;
+    } else {
       return '';
     }
-    return this.getTRSIDFromPath(workflow.full_workflow_path, entryType);
   }
 
   private getTRSIDFromPath(fullWorkflowPath: string, entryType: EntryType): string {

@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-import { RouterModule, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 import { AliasesComponent } from './aliases.component';
 
 const ALIASES_ROUTES: Routes = [
@@ -25,4 +25,4 @@ const ALIASES_ROUTES: Routes = [
   },
 ];
 
-export const AliasesRouting = RouterModule.forChild(ALIASES_ROUTES);
+export const AliasesRouting = ALIASES_ROUTES;

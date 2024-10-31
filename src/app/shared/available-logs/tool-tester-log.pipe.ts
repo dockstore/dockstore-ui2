@@ -3,6 +3,7 @@ import { Router, UrlTree } from '@angular/router';
 import { Dockstore } from '../dockstore.model';
 @Pipe({
   name: 'toolTesterLog',
+  standalone: true,
 })
 export class ToolTesterLogPipe implements PipeTransform {
   constructor(private router: Router) {}

@@ -14,9 +14,9 @@
  *    limitations under the License.
  */
 import { AfterViewChecked, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
-import { MatRadioChange } from '@angular/material/radio';
+import { NgForm, FormsModule } from '@angular/forms';
+import { MatLegacyDialogRef as MatDialogRef, MatLegacyDialogModule } from '@angular/material/legacy-dialog';
+import { MatLegacyRadioChange as MatRadioChange, MatLegacyRadioModule } from '@angular/material/legacy-radio';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 import { SessionQuery } from 'app/shared/session/session.query';
 import { UserQuery } from 'app/shared/user/user.query';
@@ -25,7 +25,7 @@ import { debounceTime, takeUntil } from 'rxjs/operators';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { formInputDebounceTime } from '../../shared/constants';
 import { Dockstore } from '../../shared/dockstore.model';
-import { BioWorkflow, Service, ToolDescriptor, Workflow } from '../../shared/openapi';
+import { BioWorkflow, EntryType, Service, ToolDescriptor, Workflow } from '../../shared/openapi';
 import { Tooltip } from '../../shared/tooltip';
 
 import {
@@ -35,6 +35,20 @@ import {
   validationMessages,
 } from '../../shared/validationMessages.model';
 import { RegisterWorkflowModalService } from './register-workflow-modal.service';
+import { MapFriendlyValuesPipe } from '../../search/map-friendly-values.pipe';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatLegacyInputModule } from '@angular/material/legacy-input';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { EntryWizardComponent } from '../../shared/entry-wizard/entry-wizard.component';
+import { RegisterGithubAppComponent } from '../../shared/register-github-app/register-github-app.component';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { NgFor, NgIf, AsyncPipe } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
+import { MatStepperModule } from '@angular/material/stepper';
+import { AlertComponent } from '../../shared/alert/alert.component';
 
 export interface HostedWorkflowObject {
   name: string;
@@ -45,8 +59,31 @@ export interface HostedWorkflowObject {
   selector: 'app-register-workflow-modal',
   templateUrl: './register-workflow-modal.component.html',
   styleUrls: ['./register-workflow-modal.component.scss'],
+  standalone: true,
+  imports: [
+    MatLegacyDialogModule,
+    AlertComponent,
+    MatStepperModule,
+    MatIconModule,
+    MatLegacyRadioModule,
+    FormsModule,
+    NgFor,
+    NgIf,
+    MatLegacyButtonModule,
+    RegisterGithubAppComponent,
+    EntryWizardComponent,
+    FlexModule,
+    MatLegacyFormFieldModule,
+    MatLegacySelectModule,
+    MatLegacyOptionModule,
+    MatLegacyInputModule,
+    MatLegacyTooltipModule,
+    AsyncPipe,
+    MapFriendlyValuesPipe,
+  ],
 })
 export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked, OnDestroy {
+  public EntryType = EntryType;
   public formErrors = formErrors;
   public validationPatterns = validationDescriptorPatterns;
   public validationMessage = validationMessages;
@@ -60,7 +97,6 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
   public descriptorLanguages$: Observable<Array<Workflow.DescriptorTypeEnum>>;
   public Tooltip = Tooltip;
   public workflowPathPlaceholder: string;
-  public gitHubAppInstallationLink$: Observable<string>;
   public isUsernameChangeRequired$: Observable<boolean>;
   public hostedWorkflow = {
     repository: '',
@@ -122,7 +158,6 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
     this.username$ = this.userQuery.username$;
     this.isUsernameChangeRequired$ = this.userQuery.isUsernameChangeRequired$;
     this.isRefreshing$ = this.alertQuery.showInfo$;
-    this.gitHubAppInstallationLink$ = this.sessionQuery.gitHubAppInstallationLandingPageLink$;
     this.registerWorkflowModalService.workflow.pipe(takeUntil(this.ngUnsubscribe)).subscribe((workflow: Service | BioWorkflow) => {
       this.workflow = workflow;
       this.workflowPathPlaceholder = this.getWorkflowPathPlaceholder(this.workflow.descriptorType);

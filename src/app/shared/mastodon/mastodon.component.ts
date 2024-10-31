@@ -6,6 +6,10 @@
 
 import { Component } from '@angular/core';
 import { MastodonService } from './mastodon.service'; // Import the service
+import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
+import { NgFor, NgIf, NgStyle } from '@angular/common';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatLegacyCardModule } from '@angular/material/legacy-card';
 
 export interface MastodonTimelineData {
   postUrl: string;
@@ -25,6 +29,8 @@ export interface MastodonTimelineData {
   selector: 'app-mastodon-timeline',
   templateUrl: './mastodon.component.html',
   styleUrls: ['./mastodon.component.scss'],
+  standalone: true,
+  imports: [MatLegacyCardModule, MatDividerModule, NgFor, NgIf, NgStyle, ExtendedModule],
 })
 export class MastodonComponent {
   fetchedData: Map<string, (string | number | boolean)[]>;

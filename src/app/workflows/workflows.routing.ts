@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-import { RouterModule, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { WorkflowComponent } from '../workflow/workflow.component';
 import { SearchWorkflowsComponent } from './search/search.component';
@@ -32,4 +32,4 @@ const WORKFLOWS_ROUTES: Routes = [
   },
 ];
 
-export const workflowsRouting = RouterModule.forChild(WORKFLOWS_ROUTES);
+export const workflowsRouting = WORKFLOWS_ROUTES;

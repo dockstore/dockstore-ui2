@@ -25,12 +25,16 @@ import { AlertService } from '../../shared/alert/state/alert.service';
 import { RefreshOrganizationComponent } from '../../shared/refresh-organization/refresh-organization.component';
 import { DockstoreTool } from '../../shared/openapi/model/dockstoreTool';
 import { UserQuery } from '../../shared/user/user.query';
+import { AsyncPipe } from '@angular/common';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
 
 @Component({
   selector: 'app-refresh-tool-organization',
   // Note that the template and style is actually from the shared one (used by both my-workflows and my-tools)
   templateUrl: './../../shared/refresh-organization/refresh-organization.component.html',
   styleUrls: ['./../../shared/refresh-organization/refresh-organization.component.css'],
+  standalone: true,
+  imports: [MatLegacyButtonModule, AsyncPipe],
 })
 export class RefreshToolOrganizationComponent extends RefreshOrganizationComponent implements OnInit {
   @Input() protected orgToolObject: OrgToolObject<DockstoreTool>;

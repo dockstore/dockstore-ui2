@@ -17,11 +17,11 @@ import { Location } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Directive, Injectable, Input, OnDestroy, ViewChild } from '@angular/core';
 import { UntypedFormControl, Validators } from '@angular/forms';
-import { MatChipInputEvent } from '@angular/material/chips';
-import { MatTabChangeEvent, MatTabGroup } from '@angular/material/tabs';
+import { MatLegacyChipInputEvent as MatChipInputEvent } from '@angular/material/legacy-chips';
+import { MatLegacyTabChangeEvent as MatTabChangeEvent, MatLegacyTabGroup as MatTabGroup } from '@angular/material/legacy-tabs';
 import { ActivatedRoute, NavigationEnd, Params, Router, RouterEvent } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
+import { filter, map, takeUntil } from 'rxjs/operators';
 import { EntryCategoriesService } from '../categories/state/entry-categories.service';
 import { Dockstore } from '../shared/dockstore.model';
 import { Category, EntriesService, VersionVerifiedPlatform, SourceFile } from '../shared/openapi';
@@ -98,6 +98,7 @@ export abstract class Entry<V extends WorkflowVersion | Tag> implements OnDestro
     this.router.events
       .pipe(
         filter((event) => event instanceof NavigationEnd),
+        map((event) => event as NavigationEnd),
         takeUntil(this.ngUnsubscribe)
       )
       .subscribe((event: RouterEvent) => {
@@ -412,11 +413,9 @@ export abstract class Entry<V extends WorkflowVersion | Tag> implements OnDestro
    * Will decode the URL
    * @return {void}
    */
-  decodeURL(type: string): void {
-    const url = decodeURIComponent(window.location.href);
-    const containersIndex = this.getIndexInURL('/' + type);
-    const newPath = url.substring(containersIndex);
-    this.location.replaceState(newPath);
+  decodeURL(): void {
+    const url = decodeURIComponent(window.location.pathname);
+    this.location.replaceState(url);
   }
 
   /**
@@ -442,11 +441,7 @@ export abstract class Entry<V extends WorkflowVersion | Tag> implements OnDestro
   redirectToCanonicalURL(myPage: string): void {
     if (this.getIndexInURL(myPage) === -1) {
       // Decode the URL
-      this.decodeURL(this._toolType);
-
-      // Get index of /containers or /workflows
-      // TODO: Not sure why getPageIndex() returns anything, but does need to get called to change URL.
-      this.getPageIndex();
+      this.decodeURL();
     }
   }
 
@@ -483,12 +478,6 @@ export abstract class Entry<V extends WorkflowVersion | Tag> implements OnDestro
       (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(d);
     })();
   }
-
-  /**
-   * Gets the index of /containers or /workflows from the URL
-   * @return {number}
-   */
-  abstract getPageIndex(): number;
 
   /**
    * Go to the search page with a query preloaded

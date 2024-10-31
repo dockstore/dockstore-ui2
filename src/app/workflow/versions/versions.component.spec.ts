@@ -16,9 +16,9 @@
 import { Component, Input } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
+import { MatLegacySnackBarModule } from '@angular/material/legacy-snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { CustomMaterialModule } from 'app/shared/modules/material.module';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { DateService } from '../../shared/date.service';
 import { DockstoreService } from '../../shared/dockstore.service';
@@ -45,6 +45,8 @@ import { DescriptorLanguageService } from '../../shared/entry/descriptor-languag
 @Component({
   selector: 'app-view-workflow',
   template: '<p>App View Component</p>',
+  standalone: true,
+  imports: [FormsModule, FontAwesomeModule, HttpClientTestingModule],
 })
 class MockViewWorkflowComponent {
   @Input() versions;
@@ -59,6 +61,8 @@ class MockViewWorkflowComponent {
 @Component({
   selector: 'app-version-modal',
   template: '<p>Version Modal Component</p>',
+  standalone: true,
+  imports: [FormsModule, FontAwesomeModule, HttpClientTestingModule],
 })
 class MockVersionModalComponent {
   @Input() canRead;
@@ -72,9 +76,13 @@ describe('VersionsWorkflowComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [CustomMaterialModule, FormsModule, FontAwesomeModule, BrowserAnimationsModule, HttpClientTestingModule],
-        declarations: [
+        imports: [
+          FormsModule,
+          FontAwesomeModule,
+          BrowserAnimationsModule,
+          HttpClientTestingModule,
           VersionsWorkflowComponent,
+          MatLegacySnackBarModule,
           OrderBy,
           CommitUrlPipe,
           VerifiedPlatformsPipe,

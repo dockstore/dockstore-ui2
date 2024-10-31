@@ -16,13 +16,12 @@
 import { FullscreenOverlayContainer, OverlayContainer } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FlexLayoutModule } from '@angular/flex-layout';
+import { FlexLayoutModule } from '@ngbracket/ngx-layout';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { RefreshAlertModule } from 'app/shared/alert/alert.module';
-import { CustomMaterialModule } from './../../shared/modules/material.module';
+import { MatLegacyProgressBarModule as MatProgressBarModule } from '@angular/material/legacy-progress-bar';
+import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
+
 import { CwlViewerComponent } from './cwl-viewer/cwl-viewer.component';
 import { DagComponent } from './dag.component';
 
@@ -35,10 +34,9 @@ import { DagComponent } from './dag.component';
     MatIconModule,
     MatProgressBarModule,
     MatTooltipModule,
-    CustomMaterialModule,
-    RefreshAlertModule,
+    DagComponent,
+    CwlViewerComponent,
   ],
-  declarations: [DagComponent, CwlViewerComponent],
   exports: [DagComponent],
 })
 export class DagModule {}

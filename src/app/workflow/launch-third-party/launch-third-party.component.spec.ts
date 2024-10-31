@@ -1,19 +1,17 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
 import { HttpClientModule } from '@angular/common/http';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, SimpleChange } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ga4ghPath } from '../../shared/constants';
 import { Dockstore } from '../../shared/dockstore.model';
+import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
 import { GA4GHFilesService } from '../../shared/ga4gh-files/ga4gh-files.service';
 import { GA4GHFilesStore } from '../../shared/ga4gh-files/ga4gh-files.store';
-import { CustomMaterialModule } from '../../shared/modules/material.module';
 import { CloudInstancesService, GA4GHV20Service, UsersService } from '../../shared/openapi';
 import { WorkflowsService } from '../../shared/openapi/api/workflows.service';
 import { sampleWdlWorkflow2, sampleWorkflowVersion } from '../../test/mocked-objects';
 import { CloudInstancesStubService, UsersStubService, WorkflowsStubService } from '../../test/service-stubs';
 import { LaunchThirdPartyComponent } from './launch-third-party.component';
-import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('LaunchThirdPartyComponent', () => {
   let component: LaunchThirdPartyComponent;
@@ -22,8 +20,7 @@ describe('LaunchThirdPartyComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [LaunchThirdPartyComponent],
-        imports: [CustomMaterialModule, HttpClientModule, HttpClientTestingModule],
+        imports: [HttpClientModule, HttpClientTestingModule, LaunchThirdPartyComponent],
         providers: [
           GA4GHFilesService,
           GA4GHV20Service,

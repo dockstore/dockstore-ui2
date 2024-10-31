@@ -26,20 +26,56 @@ import { PaginatorService } from '../../shared/state/paginator.service';
 import { Workflow, WorkflowsService } from '../../shared/openapi';
 import { ToolLister } from '../../shared/tool-lister';
 import { PublishedWorkflowsDataSource } from './published-workflows.datasource';
+import { DescriptorLanguagePipe } from '../../shared/entry/descriptor-language.pipe';
+import { RouterLinkPipe } from '../../entry/router-link.pipe';
+import { MatLegacyPaginatorModule } from '@angular/material/legacy-paginator';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatIconModule } from '@angular/material/icon';
+import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
+import { RouterLink } from '@angular/router';
+import { MatSortModule } from '@angular/material/sort';
+import { MatLegacyTableModule } from '@angular/material/legacy-table';
+import { MatLegacyInputModule } from '@angular/material/legacy-input';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatLegacyProgressBarModule } from '@angular/material/legacy-progress-bar';
+import { NgIf, AsyncPipe, TitleCasePipe } from '@angular/common';
 
 @Component({
   selector: 'app-list-workflows',
   templateUrl: './list.component.html',
   styleUrls: ['../../shared/styles/entry-table.scss', './list.component.scss'],
+  standalone: true,
+  imports: [
+    NgIf,
+    MatLegacyProgressBarModule,
+    MatLegacyFormFieldModule,
+    MatLegacyInputModule,
+    MatLegacyTableModule,
+    MatSortModule,
+    RouterLink,
+    ExtendedModule,
+    MatIconModule,
+    MatLegacyTooltipModule,
+    FontAwesomeModule,
+    MatLegacyButtonModule,
+    MatLegacyPaginatorModule,
+    AsyncPipe,
+    TitleCasePipe,
+    RouterLinkPipe,
+    DescriptorLanguagePipe,
+  ],
 })
 export class ListWorkflowsComponent extends ToolLister<PublishedWorkflowsDataSource> implements OnInit {
   @Input() previewMode: boolean;
 
   public workflowColumns = ['repository', 'verified', 'author', 'descriptorType', 'projectLinks', 'stars'];
   public notebookColumns = ['repository', 'author', 'descriptorType', 'descriptorTypeSubclass', 'projectLinks', 'stars'];
+  public serviceColumns = ['repository', 'verified', 'author', 'projectLinks', 'stars'];
   public typeToDisplayedColumns = {
     workflow: this.workflowColumns,
-    service: this.workflowColumns,
+    service: this.serviceColumns,
     appTool: this.workflowColumns,
     notebook: this.notebookColumns,
   };

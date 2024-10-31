@@ -1,5 +1,8 @@
 /* eslint-disable no-unused-vars, @typescript-eslint/no-unused-vars */
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { MatLegacySnackBarModule } from '@angular/material/legacy-snack-bar';
 
 import { FundingComponent } from './funding.component';
 
@@ -10,7 +13,7 @@ describe('FundingComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [FundingComponent],
+        imports: [MatDividerModule, MatLegacyCardModule, FundingComponent, MatLegacySnackBarModule],
       }).compileComponents();
     })
   );

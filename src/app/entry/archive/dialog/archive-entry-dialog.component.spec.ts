@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { CustomMaterialModule } from '../../../shared/modules/material.module';
+import { MatLegacySnackBarModule } from '@angular/material/legacy-snack-bar';
 import { EntriesService } from '../../../shared/openapi';
 import { EntriesStubService } from '../../../test/service-stubs';
 import { ArchiveEntryDialogComponent } from './archive-entry-dialog.component';
@@ -14,9 +14,8 @@ describe('ArchiveEntryDialogComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [ArchiveEntryDialogComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        imports: [CustomMaterialModule],
+        imports: [ArchiveEntryDialogComponent, MatLegacySnackBarModule],
         providers: [
           { provide: EntriesService, useClass: EntriesStubService },
           {

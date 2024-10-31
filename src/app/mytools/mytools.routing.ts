@@ -13,8 +13,12 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { RouterModule, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 import { EntryType } from 'app/shared/enum/entry-type';
+import { EmailService } from '../container/email.service';
+import { InfoTabService } from '../container/info-tab/info-tab.service';
+import { ToolLaunchService } from '../container/launch/tool-launch.service';
+import { VersionModalService } from '../container/version-modal/version-modal.service';
 import { MyToolComponent } from './my-tool/my-tool.component';
 import { MyToolsComponent } from './mytools.component';
 
@@ -23,7 +27,14 @@ const MYTOOLS_ROUTES: Routes = [
     path: '',
     component: MyToolsComponent,
     data: { title: 'Dockstore | My Tools' },
-    children: [{ path: '**', component: MyToolComponent, data: { title: 'Dockstore | My Tools', entryType: EntryType.Tool } }],
+    children: [
+      {
+        path: '**',
+        component: MyToolComponent,
+        data: { title: 'Dockstore | My Tools', entryType: EntryType.Tool },
+        providers: [EmailService, InfoTabService, ToolLaunchService, VersionModalService],
+      },
+    ],
   },
 ];
-export const mytoolsRouting = RouterModule.forChild(MYTOOLS_ROUTES);
+export const mytoolsRouting = MYTOOLS_ROUTES;

@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogModule } from '@angular/material/legacy-dialog';
 import { ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -9,6 +9,15 @@ import { ToolTesterLog } from '../openapi/model/toolTesterLog';
 import { AvailableLogsQuery } from '../state/available-logs.query';
 import { AvailableLogsService } from '../state/available-logs.service';
 import { CheckerWorkflowQuery } from '../state/checker-workflow.query';
+import { RemoveExtensionPipe } from './remove-extension.pipe';
+import { ToolTesterLogPipe } from './tool-tester-log.pipe';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatLegacyTableModule } from '@angular/material/legacy-table';
+import { VerifiedDisplayComponent } from '../entry/verified-display/verified-display.component';
+import { NgIf, AsyncPipe, DatePipe } from '@angular/common';
+import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { LoadingComponent } from '../loading/loading.component';
 
 interface VersionVerifiedInformation {
   version: WorkflowVersion | Tag;
@@ -19,6 +28,21 @@ interface VersionVerifiedInformation {
   selector: 'app-available-logs',
   templateUrl: './available-logs.component.html',
   styleUrls: ['./available-logs.component.scss'],
+  standalone: true,
+  imports: [
+    MatLegacyDialogModule,
+    LoadingComponent,
+    MatLegacyCardModule,
+    NgIf,
+    VerifiedDisplayComponent,
+    MatLegacyTableModule,
+    MatLegacyButtonModule,
+    FlexModule,
+    AsyncPipe,
+    DatePipe,
+    ToolTesterLogPipe,
+    RemoveExtensionPipe,
+  ],
 })
 export class AvailableLogsComponent extends Base implements OnInit {
   version: Tag | WorkflowVersion | null;

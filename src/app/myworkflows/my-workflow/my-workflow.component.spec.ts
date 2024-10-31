@@ -16,20 +16,31 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatLegacyDialogModule, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
+import { MatLegacySnackBarModule } from '@angular/material/legacy-snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TrackLoginService } from 'app/shared/track-login.service';
-import { AuthService } from 'ng2-ui-auth';
 import { AccountsService } from '../../loginComponents/accounts/external/accounts.service';
-import { CustomMaterialModule } from '../../shared/modules/material.module';
-import { MyEntriesModule } from '../../shared/modules/my-entries.module';
-import { RefreshService } from '../../shared/refresh.service';
-import { TokenQuery } from '../../shared/state/token.query';
-import { WorkflowService } from '../../shared/state/workflow.service';
+import { MytoolsService } from '../../mytools/mytools.service';
+import { AuthService } from '../../ng2-ui-auth/public_api';
+import { BioschemaService } from '../../shared/bioschema.service';
+import { ContainerService } from '../../shared/container.service';
+import { DateService } from '../../shared/date.service';
+import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
+import { ExtendedToolsService } from '../../shared/extended-tools.service';
+import { ExtendedWorkflowsService } from '../../shared/extended-workflows.service';
+import { MetadataService } from '../../shared/openapi';
 import { UsersService } from '../../shared/openapi/api/users.service';
 import { WorkflowsService } from '../../shared/openapi/api/workflows.service';
 import { Configuration } from '../../shared/openapi/configuration';
+import { ProviderService } from '../../shared/provider.service';
+import { RefreshService } from '../../shared/refresh.service';
+import { MyEntriesQuery } from '../../shared/state/my-entries.query';
+import { MyEntriesStateService } from '../../shared/state/my-entries.service';
+import { MyEntriesStore } from '../../shared/state/my-entries.store';
+import { TokenQuery } from '../../shared/state/token.query';
+import { WorkflowService } from '../../shared/state/workflow.service';
 import { UrlResolverService } from '../../shared/url-resolver.service';
 import { UserQuery } from '../../shared/user/user.query';
 import { RouterLinkStubDirective } from '../../test';
@@ -38,7 +49,10 @@ import {
   AccountsStubService,
   AuthStubService,
   ConfigurationStub,
+  ContainerStubService,
+  DateStubService,
   MetadataStubService,
+  ProviderStubService,
   RefreshStubService,
   RegisterWorkflowModalStubService,
   TrackLoginStubService,
@@ -50,8 +64,6 @@ import {
 import { RegisterWorkflowModalService } from '../../workflow/register-workflow-modal/register-workflow-modal.service';
 import { MyWorkflowsService } from '../myworkflows.service';
 import { MyWorkflowComponent } from './my-workflow.component';
-import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
-import { MetadataService } from '../../shared/openapi';
 
 describe('MyWorkflowsComponent', () => {
   let component: MyWorkflowComponent;
@@ -60,9 +72,16 @@ describe('MyWorkflowsComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [MyWorkflowComponent, RouterLinkStubDirective, RouterOutletStubComponent],
+        declarations: [RouterLinkStubDirective, RouterOutletStubComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        imports: [RouterTestingModule, HttpClientTestingModule, BrowserAnimationsModule, CustomMaterialModule, MyEntriesModule],
+        imports: [
+          RouterTestingModule,
+          HttpClientTestingModule,
+          BrowserAnimationsModule,
+          MatLegacySnackBarModule,
+          MatLegacyDialogModule,
+          MyWorkflowComponent,
+        ],
         providers: [
           { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
           { provide: MetadataService, useClass: MetadataStubService },
@@ -71,11 +90,21 @@ describe('MyWorkflowsComponent', () => {
           { provide: UsersService, useClass: UsersStubService },
           { provide: AuthService, useClass: AuthStubService },
           { provide: WorkflowService, useClass: WorkflowStubService },
+          { provide: ContainerService, useClass: ContainerStubService },
           { provide: RefreshService, useClass: RefreshStubService },
           { provide: RegisterWorkflowModalService, useClass: RegisterWorkflowModalStubService },
+          { provide: DateService, useClass: DateStubService },
+          BioschemaService,
+          ExtendedToolsService,
+          ExtendedWorkflowsService,
+          MyEntriesQuery,
+          MyEntriesStateService,
+          MyEntriesStore,
           MyWorkflowsService,
+          MytoolsService,
           TokenQuery,
           { provide: AccountsService, useClass: AccountsStubService },
+          { provide: ProviderService, useClass: ProviderStubService },
           { provide: WorkflowsService, useClass: WorkflowsStubService },
           { provide: UrlResolverService, useClass: UrlResolverStubService },
           { provide: TrackLoginService, useClass: TrackLoginStubService },

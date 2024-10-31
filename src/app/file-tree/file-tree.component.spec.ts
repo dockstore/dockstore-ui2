@@ -1,9 +1,15 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { MatButtonModule } from '@angular/material/button';
-import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
+import {
+  MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
+  MatLegacyDialogModule as MatDialogModule,
+  MatLegacyDialogRef as MatDialogRef,
+} from '@angular/material/legacy-dialog';
 import { MatIconModule } from '@angular/material/icon';
+import { MatLegacyInputModule } from '@angular/material/legacy-input';
 import { MatTreeModule } from '@angular/material/tree';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SourceFile } from 'app/shared/openapi';
 import { DescriptorLanguageService } from '../shared/entry/descriptor-language.service';
 import { SourceFileTabsService } from '../source-file-tabs/source-file-tabs.service';
@@ -18,8 +24,16 @@ describe('FileTreeComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [FileTreeComponent],
-        imports: [MatButtonModule, MatIconModule, MatTreeModule, MatDialogModule, HttpClientTestingModule],
+        imports: [
+          MatButtonModule,
+          MatIconModule,
+          MatTreeModule,
+          MatDialogModule,
+          HttpClientTestingModule,
+          MatLegacyInputModule,
+          BrowserAnimationsModule,
+          FileTreeComponent,
+        ],
         providers: [
           { provide: MatDialogRef, useValue: {} },
           { provide: MAT_DIALOG_DATA, useValue: [] },
@@ -45,8 +59,8 @@ describe('FileTreeComponent', () => {
     let expectedNodes = [];
     expect(component.convertSourceFilesToTree(sourcefiles)).toEqual(expectedNodes);
     sourcefiles = [
-      { absolutePath: '/folder1/file1', path: 'file1', type: SourceFile.TypeEnum.DOCKSTOREWDL },
-      { absolutePath: '/folder1/file2', path: 'file2', type: SourceFile.TypeEnum.DOCKSTOREWDL },
+      { absolutePath: '/folder1/file1', path: 'file1', type: SourceFile.TypeEnum.DOCKSTOREWDL, state: SourceFile.StateEnum.COMPLETE },
+      { absolutePath: '/folder1/file2', path: 'file2', type: SourceFile.TypeEnum.DOCKSTOREWDL, state: SourceFile.StateEnum.COMPLETE },
     ];
     expectedNodes = [
       Object({

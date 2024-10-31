@@ -1,13 +1,17 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import {
+  MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
+  MatLegacyDialog as MatDialog,
+  MatLegacyDialogModule,
+} from '@angular/material/legacy-dialog';
 import { Observable } from 'rxjs';
 import { bootstrap4mediumModalSize } from '../../shared/constants';
 import { Dockstore } from '../../shared/dockstore.model';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
 import { OrgLogoService } from '../../shared/org-logo.service';
-import { Collection, Organization, OrganizationsService } from '../../shared/openapi';
+import { Collection, Organization, OrganizationsService, Workflow } from '../../shared/openapi';
+import TopicSelectionEnum = Workflow.TopicSelectionEnum;
 import { ToolDescriptor } from '../../shared/openapi/model/toolDescriptor';
-import { Workflow } from '../../shared/openapi/model/workflow';
 import { UserQuery } from '../../shared/user/user.query';
 import { ActivatedRoute } from '../../test';
 import { CreateCollectionComponent } from '../collections/create-collection/create-collection.component';
@@ -20,10 +24,31 @@ import { OrganizationQuery } from '../state/organization.query';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AlertService } from '../../shared/alert/state/alert.service';
+import { AlertComponent } from '../../shared/alert/alert.component';
+import { RouterLinkPipe } from '../../entry/router-link.pipe';
+import { GravatarPipe } from '../../gravatar/gravatar.pipe';
+import { MapFriendlyValuesPipe } from '../../search/map-friendly-values.pipe';
+import { MarkdownWrapperComponent } from '../../shared/markdown-wrapper/markdown-wrapper.component';
+import { CategoryButtonComponent } from '../../categories/button/category-button.component';
+import { MatLegacyChipsModule } from '@angular/material/legacy-chips';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { ImgFallbackDirective } from '../../shared/img-fallback.directive';
+import { MatIconModule } from '@angular/material/icon';
+import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { NgIf, NgFor, NgClass, AsyncPipe, DatePipe } from '@angular/common';
+import { LoadingComponent } from '../../shared/loading/loading.component';
+import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
+import { RouterLink } from '@angular/router';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { HeaderComponent } from '../../header/header.component';
+import { AiBubbleComponent } from '../../shared/ai-bubble/ai-bubble.component';
 
 @Component({
   selector: 'app-collection-entry-confirm-remove',
   templateUrl: 'collection-entry-confirm-remove.html',
+  standalone: true,
+  imports: [MatLegacyDialogModule, AlertComponent, FlexModule, MatLegacyButtonModule],
 })
 export class CollectionRemoveEntryDialogComponent {
   constructor(@Inject(MAT_DIALOG_DATA) public data: EntryDialogData, private collectionsService: CollectionsService) {}
@@ -51,6 +76,31 @@ export interface EntryDialogData {
   selector: 'app-collection',
   templateUrl: './collection.component.html',
   styleUrls: ['./collection.component.scss', '../organization/organization.component.scss'],
+  standalone: true,
+  imports: [
+    HeaderComponent,
+    FlexModule,
+    RouterLink,
+    ExtendedModule,
+    LoadingComponent,
+    NgIf,
+    MatLegacyCardModule,
+    MatIconModule,
+    ImgFallbackDirective,
+    MatLegacyTooltipModule,
+    MatLegacyButtonModule,
+    NgFor,
+    MatLegacyChipsModule,
+    CategoryButtonComponent,
+    NgClass,
+    MarkdownWrapperComponent,
+    AsyncPipe,
+    DatePipe,
+    MapFriendlyValuesPipe,
+    GravatarPipe,
+    RouterLinkPipe,
+    AiBubbleComponent,
+  ],
 })
 export class CollectionComponent implements OnInit {
   entryType = EntryType;
@@ -166,4 +216,5 @@ export class CollectionComponent implements OnInit {
   }
 
   protected readonly Dockstore = Dockstore;
+  protected readonly TopicSelectionEnum = TopicSelectionEnum;
 }

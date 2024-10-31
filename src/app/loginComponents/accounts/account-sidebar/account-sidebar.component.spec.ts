@@ -1,10 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatLegacyDialogModule } from '@angular/material/legacy-dialog';
+import { MatLegacySnackBarModule } from '@angular/material/legacy-snack-bar';
+import { RouterTestingModule } from '@angular/router/testing';
 
 import { AccountSidebarComponent } from './account-sidebar.component';
-import { CustomMaterialModule } from 'app/shared/modules/material.module';
-import { FlexLayoutModule } from '@angular/flex-layout';
+import { FlexLayoutModule } from '@ngbracket/ngx-layout';
 import { CommonModule } from '@angular/common';
-import { MatTableModule } from '@angular/material/table';
+import { MatLegacyTableModule as MatTableModule } from '@angular/material/legacy-table';
 import { UsersService } from '../../../shared/openapi/api/users.service';
 import { UserService } from '../../../shared/user/user.service';
 import { UsersStubService, UserStubService } from '../../../test/service-stubs';
@@ -16,8 +19,16 @@ describe('AccountSidebarComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AccountSidebarComponent],
-      imports: [CustomMaterialModule, FlexLayoutModule, CommonModule, MatTableModule],
+      imports: [
+        FlexLayoutModule,
+        CommonModule,
+        MatTableModule,
+        MatLegacyButtonModule,
+        MatLegacySnackBarModule,
+        MatLegacyDialogModule,
+        RouterTestingModule,
+        AccountSidebarComponent,
+      ],
       providers: [
         { provide: UsersService, useClass: UsersStubService },
         { provide: UserService, useClass: UserStubService },

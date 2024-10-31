@@ -33,7 +33,7 @@
   </div>
 </app-header>
 <app-loading [loading]="loading$ | async">
-  <div class="container" *ngIf="(organization$ | async) === false">Organization not found</div>
+  <div class="container" *ngIf="(organization$ | async) === null">Organization not found</div>
   <!-- Organization header -->
   <div class="container mb-5" *ngIf="organization$ | async as org" fxLayout="column" fxLayoutGap="10px">
     <app-json-ld [json]="schema$ | async" class="m-0"></app-json-ld>

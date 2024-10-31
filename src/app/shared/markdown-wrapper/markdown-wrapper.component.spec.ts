@@ -11,8 +11,7 @@ describe('MarkdownWrapperComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [MarkdownModule],
-        declarations: [MarkdownWrapperComponent],
+        imports: [MarkdownModule, MarkdownWrapperComponent],
         providers: [MarkdownService, { provide: SECURITY_CONTEXT, useValue: SecurityContext.HTML }],
       }).compileComponents();
     })

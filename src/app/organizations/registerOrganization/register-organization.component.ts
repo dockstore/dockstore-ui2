@@ -14,13 +14,20 @@
  *    limitations under the License.
  */
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
-import { AbstractControl, UntypedFormGroup } from '@angular/forms';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { AbstractControl, UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogModule } from '@angular/material/legacy-dialog';
 import { NgFormsManager } from '@ngneat/forms-manager';
 import { Organization } from 'app/shared/openapi';
 
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
 import { FormsState, RegisterOrganizationService } from '../state/register-organization.service';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { MatLegacyInputModule } from '@angular/material/legacy-input';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { AlertComponent } from '../../shared/alert/alert.component';
+import { NgIf } from '@angular/common';
 
 /**
  * This is actually create and update organization dialog
@@ -34,6 +41,19 @@ import { FormsState, RegisterOrganizationService } from '../state/register-organ
   selector: 'app-register-organization',
   templateUrl: './register-organization.component.html',
   styleUrls: ['./register-organization.component.scss'],
+  standalone: true,
+  imports: [
+    MatLegacyDialogModule,
+    NgIf,
+    AlertComponent,
+    FormsModule,
+    ReactiveFormsModule,
+    MatLegacyFormFieldModule,
+    MatLegacyTooltipModule,
+    MatLegacyInputModule,
+    FlexModule,
+    MatLegacyButtonModule,
+  ],
 })
 export class RegisterOrganizationComponent implements OnInit, OnDestroy {
   registerOrganizationForm: UntypedFormGroup;

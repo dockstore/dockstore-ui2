@@ -1,4 +1,6 @@
 import { Component, Input } from '@angular/core';
+import { MatLegacyProgressBarModule } from '@angular/material/legacy-progress-bar';
+import { NgIf } from '@angular/common';
 
 /**
  * To use this component, wrap your original component with this component's <app-loading> tags
@@ -13,6 +15,8 @@ import { Component, Input } from '@angular/core';
   selector: 'app-loading',
   templateUrl: './loading.component.html',
   styleUrls: ['./loading.component.scss'],
+  standalone: true,
+  imports: [NgIf, MatLegacyProgressBarModule],
 })
 export class LoadingComponent {
   @Input() loading = true;

@@ -25,11 +25,45 @@ import { PaginatorService } from '../../shared/state/paginator.service';
 import { ContainersService, DockstoreTool } from '../../shared/openapi';
 import { ToolLister } from '../../shared/tool-lister';
 import { PublishedToolsDataSource } from './published-tools.datasource';
+import { MatLegacyPaginatorModule } from '@angular/material/legacy-paginator';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatIconModule } from '@angular/material/icon';
+import { RouterLink } from '@angular/router';
+import { PrivateIconComponent } from '../../shared/private-icon/private-icon.component';
+import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
+import { MatSortModule } from '@angular/material/sort';
+import { MatLegacyTableModule } from '@angular/material/legacy-table';
+import { MatLegacyInputModule } from '@angular/material/legacy-input';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatLegacyProgressBarModule } from '@angular/material/legacy-progress-bar';
+import { NgIf, NgFor, AsyncPipe, UpperCasePipe } from '@angular/common';
 
 @Component({
   selector: 'app-list-containers',
   templateUrl: './list.component.html',
   styleUrls: ['../../shared/styles/entry-table.scss', './list.component.scss'],
+  standalone: true,
+  imports: [
+    NgIf,
+    MatLegacyProgressBarModule,
+    MatLegacyFormFieldModule,
+    MatLegacyInputModule,
+    MatLegacyTableModule,
+    MatSortModule,
+    ExtendedModule,
+    PrivateIconComponent,
+    RouterLink,
+    MatIconModule,
+    MatLegacyTooltipModule,
+    NgFor,
+    FontAwesomeModule,
+    MatLegacyButtonModule,
+    MatLegacyPaginatorModule,
+    AsyncPipe,
+    UpperCasePipe,
+  ],
 })
 export class ListContainersComponent extends ToolLister<PublishedToolsDataSource> implements OnInit {
   @Input() previewMode: boolean;

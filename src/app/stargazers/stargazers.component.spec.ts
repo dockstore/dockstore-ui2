@@ -15,7 +15,7 @@
  */
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { MatCardModule } from '@angular/material/card';
+import { MatLegacyCardModule as MatCardModule } from '@angular/material/legacy-card';
 import { MatIconModule } from '@angular/material/icon';
 import { StarentryService } from '../shared/starentry.service';
 import { UserService } from '../shared/user/user.service';
@@ -30,8 +30,7 @@ describe('StargazersComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [StargazersComponent],
-        imports: [MatIconModule, MatCardModule],
+        imports: [MatIconModule, MatCardModule, StargazersComponent],
         providers: [
           { provide: UserService, useClass: UserStubService },
           { provide: StarringService, useClass: StarringStubService },

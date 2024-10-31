@@ -14,8 +14,8 @@
  *    limitations under the License.
  */
 import { AfterViewChecked, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
+import { NgForm, FormsModule } from '@angular/forms';
+import { MatLegacyDialog as MatDialog, MatLegacyDialogModule } from '@angular/material/legacy-dialog';
 import { Base } from 'app/shared/base';
 import { forkJoin } from 'rxjs';
 import { debounceTime, finalize, takeUntil } from 'rxjs/operators';
@@ -35,11 +35,36 @@ import { ToolQuery } from '../../shared/tool/tool.query';
 import { formErrors, validationDescriptorPatterns, validationMessages } from '../../shared/validationMessages.model';
 import { ParamfilesService } from '../paramfiles/paramfiles.service';
 import { VersionModalService } from './version-modal.service';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { ClipboardModule } from '@angular/cdk/clipboard';
+import { SnackbarDirective } from '../../shared/snackbar.directive';
+import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { MatIconModule } from '@angular/material/icon';
+import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
+import { NgIf, NgFor, NgClass } from '@angular/common';
+import { LoadingComponent } from '../../shared/loading/loading.component';
+import { AlertComponent } from '../../shared/alert/alert.component';
 
 @Component({
   selector: 'app-version-modal',
   templateUrl: './version-modal.component.html',
   styleUrls: ['./version-modal.component.css'],
+  standalone: true,
+  imports: [
+    MatLegacyDialogModule,
+    AlertComponent,
+    LoadingComponent,
+    NgIf,
+    FormsModule,
+    NgFor,
+    NgClass,
+    ExtendedModule,
+    MatIconModule,
+    MatLegacyCardModule,
+    SnackbarDirective,
+    ClipboardModule,
+    MatLegacyButtonModule,
+  ],
 })
 export class VersionModalComponent extends Base implements OnInit, AfterViewChecked, OnDestroy {
   public TagEditorMode = TagEditorMode;

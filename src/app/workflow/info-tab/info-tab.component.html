@@ -193,106 +193,12 @@
                   </button>
                 </span>
               </form>
-              <div *ngIf="isPublic">
-                <span><strong matTooltip="Short description of the workflow">Topic</strong>:&nbsp;</span>
-                <span>{{
-                  workflow?.topicSelection === TopicSelectionEnum.AUTOMATIC ? workflow?.topicAutomatic : workflow?.topicManual
-                }}</span>
-              </div>
-              <div *ngIf="!isPublic">
-                <span
-                  ><strong
-                    matTooltip="Short description of the {{
-                      entryType$ | async
-                    }}, retrieved automatically from the GitHub repository description"
-                    >Topic Automatic</strong
-                  >:&nbsp;</span
-                >
-                <span>{{ workflow?.topicAutomatic }}</span>
-              </div>
-              <form *ngIf="!isPublic" #editTopic="ngForm" fxLayout="row" fxLayoutAlign="start center" class="w-100">
-                <span
-                  ><strong
-                    matTooltip="Short description of the {{ entryType$ | async }}, entered manually in the {{
-                      workflow?.mode === WorkflowType.ModeEnum.DOCKSTOREYML ? '.dockstore.yml' : 'UI'
-                    }}"
-                    >Topic Manual</strong
-                  >:&nbsp;</span
-                >
-                <span *ngIf="!topicEditing"> {{ workflow?.topicManual }} </span>
-                <span fxFlex>
-                  <input
-                    *ngIf="topicEditing"
-                    maxlength="150"
-                    type="text"
-                    class="w-100"
-                    name="topicEditing"
-                    [(ngModel)]="workflow.topicManual"
-                    data-cy="topicInput"
-                    placeholder="Short description of the workflow"
-                /></span>
-                <ng-container>
-                  <button
-                    data-cy="topicCancelButton"
-                    *ngIf="topicEditing"
-                    type="button"
-                    mat-raised-button
-                    class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
-                    (click)="cancelEditing()"
-                  >
-                    <img src="../assets/svg/icons-reject-small.svg" alt="Cancel" class="pr-2 pb-1" />Cancel
-                  </button>
-                  <button
-                    [disabled]="
-                      forumUrlEditing ||
-                      workflowPathEditing ||
-                      defaultTestFilePathEditing ||
-                      (isRefreshing$ | async) ||
-                      !canWrite ||
-                      workflow?.mode === WorkflowType.ModeEnum.DOCKSTOREYML
-                    "
-                    type="button"
-                    mat-raised-button
-                    class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
-                    (click)="toggleEditTopic()"
-                    [attr.data-cy]="topicEditing ? 'topicSaveButton' : 'topicEditButton'"
-                    [matTooltip]="
-                      workflow?.mode === WorkflowType.ModeEnum.DOCKSTOREYML
-                        ? 'Edit the manual topic for this ' +
-                          (entryType$ | async) +
-                          ' in the .dockstore.yml file on GitHub. Editing the topic in the UI is deprecated for GitHub App ' +
-                          (entryType$ | async) +
-                          's.'
-                        : 'Edit the manual topic for this ' + (entryType$ | async)
-                    "
-                  >
-                    <mat-icon *ngIf="topicEditing" class="mat-icon-sm">save</mat-icon>
-                    <img *ngIf="!topicEditing" src="../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit Topic Manual" />
-                    {{ topicEditing ? 'Save' : 'Edit' }}
-                  </button>
-                </ng-container>
-              </form>
-            </li>
-            <li *ngIf="!isPublic">
-              <div fxLayout="row" fxLayoutAlign="start center">
-                <span><strong matTooltip="Select which topic to display to the public">Topic Selection</strong>:&nbsp;</span>
-                <span>
-                  <mat-radio-group
-                    [(ngModel)]="workflow.topicSelection"
-                    aria-label="Select an option"
-                    (change)="radioChange($event)"
-                    [disabled]="workflow?.mode === WorkflowType.ModeEnum.HOSTED || !canWrite"
-                    [matTooltip]="
-                      workflow?.mode === WorkflowType.ModeEnum.HOSTED
-                        ? 'Hosted workflow topics are always manually entered'
-                        : 'Select whether the automatically harvested topic from source control is used or a manually input one'
-                    "
-                  >
-                    <mat-radio-button [value]="TopicSelectionEnum.AUTOMATIC">Automatic</mat-radio-button>
-                    <mat-radio-button class="ml-3" [value]="TopicSelectionEnum.MANUAL">Manual</mat-radio-button>
-                  </mat-radio-group>
-                </span>
-              </div>
+              <app-display-topic
+                [entry]="workflow"
+                [disableEditing]="
+                  forumUrlEditing || workflowPathEditing || defaultTestFilePathEditing || (isRefreshing$ | async) || !canWrite
+                "
+              ></app-display-topic>
             </li>
             <li>
               <form
@@ -401,18 +307,6 @@
               {{ 'descriptor_type' | mapFriendlyValue: workflow?.descriptorType }}
             </div>
           </li>
-          <div>
-            <strong matTooltip="Digital Object Identifier for all workflow versions">DOI</strong>:
-            <a
-              [href]="'https://doi.org/' + workflow.conceptDoi"
-              *ngIf="workflow.conceptDoi"
-              matTooltip="Click to view the DOI entry information for all versions."
-              target="_blank"
-              rel="noopener noreferrer"
-              ><img src="{{ zenodoUrl }}/badge/DOI/{{ workflow.conceptDoi }}.svg" alt="{{ workflow.conceptDoi }}"
-            /></a>
-            {{ workflow?.conceptDoi ? '' : 'n/a' }}
-          </div>
         </div>
       </ul>
     </mat-card-content>
@@ -444,7 +338,7 @@
           </a>
         </span>
       </div>
-      <mat-divider [inset]="true" class="mt-3"></mat-divider>
+      <mat-divider class="mt-3"></mat-divider>
       <div *ngIf="selectedVersion?.frozen && hasHttpImports" class="pt-3">
         <mat-card class="alert alert-warning mat-elevation-z" role="alert">
           <mat-icon class="alert-warning-icon">warning</mat-icon> This version is snapshotted but contains HTTP imports. HTTP imports may
@@ -497,19 +391,6 @@
       <div *ngIf="selectedVersion?.versionMetadata.engineVersions?.length">
         <strong matTooltip="Required engine versions" data-cy="engine-versions">Engine Versions</strong>:
         {{ selectedVersion.versionMetadata.engineVersions }}
-      </div>
-      <div *ngIf="(entryType$ | async) === EntryType.BioWorkflow">
-        <strong matTooltip="Digital Object Identifier">DOI</strong>:
-        <a
-          [href]="'https://doi.org/' + selectedVersion.doiURL"
-          *ngIf="selectedVersion.doiURL"
-          data-cy="info-tab-DOI-badge"
-          matTooltip="Click to view this version's DOI entry information."
-          target="_blank"
-          rel="noopener noreferrer"
-          ><img src="{{ zenodoUrl }}/badge/DOI/{{ selectedVersion.doiURL }}.svg" alt="{{ selectedVersion.doiURL }}"
-        /></a>
-        {{ selectedVersion?.doiURL ? '' : 'n/a' }}
       </div>
       <div *ngIf="publicAccessibleTestParameterFile !== null && publicAccessibleTestParameterFile !== undefined">
         <strong matTooltip="Version either has a test parameter file where all URLs are publicly accessible or does not require test data"

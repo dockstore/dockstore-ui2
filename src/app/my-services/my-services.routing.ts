@@ -1,4 +1,4 @@
-import { RouterModule, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 import { MyWorkflowComponent } from '../myworkflows/my-workflow/my-workflow.component';
 import { EntryType } from '../shared/enum/entry-type';
 
@@ -10,4 +10,4 @@ const routes: Routes = [
   },
 ];
 
-export const MyServicesRoutes = RouterModule.forChild(routes);
+export const MyServicesRoutes = routes;

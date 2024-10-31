@@ -3,6 +3,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
   name: 'secondsToHoursMinutesSeconds',
+  standalone: true,
 })
 export class SecondsToHoursMinutesSecondsPipe implements PipeTransform {
   transform(totalSeconds: number): string {

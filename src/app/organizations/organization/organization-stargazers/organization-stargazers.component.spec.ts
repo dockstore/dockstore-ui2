@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { MatCardModule } from '@angular/material/card';
+import { MatLegacyCardModule as MatCardModule } from '@angular/material/legacy-card';
 import { MatIconModule } from '@angular/material/icon';
 import { StarOrganizationService } from '../../../shared/star-organization.service';
 import { UserService } from '../../../shared/user/user.service';
@@ -29,8 +29,7 @@ describe('OrganizationStargazersComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [OrganizationStargazersComponent],
-        imports: [MatIconModule, MatCardModule],
+        imports: [MatIconModule, MatCardModule, OrganizationStargazersComponent],
         providers: [
           { provide: UserService, useClass: UserStubService },
           { provide: OrganizationStarringService, useClass: OrganizationStarringStubService },

@@ -131,6 +131,29 @@ describe('Dockstore notebooks', () => {
     cy.get('td').contains('Actions').click();
     snapshot();
   });
+
+  it('should have discover existing notebooks button', () => {
+    cy.fixture('myWorkflows.json').then((json) => {
+      cy.intercept('PATCH', '/api/users/1/workflows', {
+        body: json,
+        statusCode: 200,
+      });
+    });
+
+    cy.visit('/my-notebooks');
+    cy.get('[data-cy=myWorkflowsMoreActionButtons]').should('be.visible').click();
+    cy.fixture('myNotebooks.json').then((json) => {
+      cy.intercept('GET', '/api/users/1/notebooks', {
+        body: json,
+        statusCode: 200,
+      }).as('getNotebooks');
+    });
+    cy.get('[data-cy=addToExistingWorkflows]').should('be.visible').click();
+
+    cy.wait('@getNotebooks');
+    cy.contains('addedthisnotebookviasync');
+  });
+
   it('should have Preview tab with highlighted syntax', () => {
     substituteNotebookContent(['{ "cell_type": "code", "source": [ "import xyz;" ] }']);
     cy.visit('/notebooks/' + name);
@@ -167,6 +190,7 @@ describe('Dockstore notebooks', () => {
       {
         path: '/notebook.ipynb',
         content: '{ "nbformat_major": 4, "nbformat_minor": 0, "cells": [' + cells.join(',') + '] }',
+        state: 'COMPLETE',
       },
     ]);
   }
