@@ -173,26 +173,27 @@ export class QueryBuilderService {
    * @memberof SearchComponent
    */
   appendFilter(body: any, aggKey: string | null, filters: Map<string, Set<string>>, exclusiveFilters: Array<string>): Bodybuilder {
-    filters.forEach((value: Set<string>, key: string) => {
-      value.forEach((insideFilter) => {
-        const isExclusiveFilter = exclusiveFilters.includes(key);
-        if (aggKey === key && !isExclusiveFilter) {
-          // Return some garbage filter because we've decided to append a filter, there's no turning back
-          // return body;  // <--- this does not work
-          body = body.notFilter('term', 'some garbage term that hopefully never gets matched', insideFilter);
-        } else {
-          // value refers to the buckets selected
-          if (value.size > 1) {
-            body = body.orFilter('term', key, insideFilter);
-          } else {
-            if (isExclusiveFilter) {
-              body = body.filter('term', key, this.convertIntStringToBoolString(insideFilter));
-            } else {
-              body = body.filter('term', key, insideFilter);
-            }
+    filters.forEach((values: Set<string>, key: string) => {
+      const isExclusiveFilter = exclusiveFilters.includes(key);
+      if (aggKey === key && !isExclusiveFilter) {
+        // Return some garbage filter because we've decided to append a filter, there's no turning back
+        values.forEach((value) => {
+          body = body.notFilter('term', 'some garbage term that hopefully never gets matched', value);
+        });
+      } else if (values.size == 1) {
+        // Add a filter that matches a single value
+        const [value] = values;
+        const convertedValue = isExclusiveFilter ? this.convertIntStringToBoolString(value) : value;
+        body = body.filter('term', key, convertedValue);
+      } else {
+        // Add a filter that matches at least one of multiple values
+        body = body.filter('bool', (b) => {
+          for (const value of values) {
+            b = b.orFilter('term', key, value);
           }
-        }
-      });
+          return b;
+        });
+      }
     });
     return body;
   }

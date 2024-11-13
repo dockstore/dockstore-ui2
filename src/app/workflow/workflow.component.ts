@@ -210,6 +210,7 @@ export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterVi
 
   @Input() user;
   @Input() selectedVersion: WorkflowVersion;
+  @Input() shouldClearState: boolean = true;
 
   constructor(
     private dockstoreService: DockstoreService,
@@ -283,7 +284,7 @@ export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterVi
   }
 
   ngOnInit() {
-    this.init();
+    this.init(this.shouldClearState);
     //watch for changes in search
     this.versionFilterCtrl.valueChanges.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
       this.filterVersions();

@@ -4,8 +4,8 @@
   "license": "Apache License 2.0",
   "config": {
     "webservice_version_prefix": "1.16.0",
-    "webservice_version": "1.16.0-alpha.10",
-    "use_snapshot": true
+    "webservice_version": "1.16.0",
+    "use_snapshot": false
   },
   "scripts": {
     "ng": "npx ng",
