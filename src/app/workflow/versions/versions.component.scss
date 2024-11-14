@@ -49,3 +49,14 @@ tr.mat-row.highlight {
 tr.highlight > .mat-cell:first-of-type > span {
   padding-left: 5px;
 }
+
+.mat-cell:not(:first-of-type),
+.mat-header-cell:not(:first-of-type) {
+  padding-left: 1rem;
+}
+
+.mat-cell:not(:last-of-type),
+.mat-header-cell:not(:last-of-type),
+table th {
+  padding-right: 1rem;
+}
