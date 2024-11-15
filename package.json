@@ -3,8 +3,8 @@
   "version": "2.13.0",
   "license": "Apache License 2.0",
   "config": {
-    "webservice_version_prefix": "1.16.0",
-    "webservice_version": "1.16.0",
+    "webservice_version_prefix": "1.17.0",
+    "webservice_version": "1.17.0",
     "use_snapshot": true
   },
   "scripts": {
