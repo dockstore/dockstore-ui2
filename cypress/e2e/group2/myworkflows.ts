@@ -337,6 +337,9 @@ describe('Dockstore my workflows part 2', () => {
     cy.visit('/my-workflows/github.com/A/l');
     cy.url().should('eq', Cypress.config().baseUrl + '/my-workflows/github.com/A/l');
     goToTab('Versions');
+    cy.get('[data-cy=date-modified-header]').should('be.visible').click();
+    cy.wait(1000);
+
     cy.get('td').contains('Actions').click();
   }
 
