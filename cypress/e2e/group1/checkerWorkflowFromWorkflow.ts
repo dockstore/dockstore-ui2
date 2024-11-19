@@ -123,6 +123,9 @@ describe('Checker workflow test from my-workflows', () => {
       cy.url().should('eq', Cypress.config().baseUrl + '/my-workflows/github.com/A/l');
 
       goToTab('Versions');
+      cy.get('[data-cy=version-name-header]').should('be.visible').click();
+      cy.wait(1000);
+
       cy.contains('button', 'Actions').click();
       cy.get('[data-cy=set-default-version-button]').should('be.visible').click();
       goToTab('Info');
