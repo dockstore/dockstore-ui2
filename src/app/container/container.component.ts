@@ -197,7 +197,7 @@ export class ContainerComponent extends Entry<Tag> implements AfterViewInit, OnI
   }
 
   ngOnInit() {
-    this.init();
+    this.init(false);
   }
 
   ngAfterViewInit() {

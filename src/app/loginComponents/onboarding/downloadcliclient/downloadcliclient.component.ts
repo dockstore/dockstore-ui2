@@ -106,7 +106,7 @@ run scripts or interact programmatically against Dockstore APIs, and [run workfl
 #### Requirements
 1. Linux/Ubuntu (Recommended - Tested on 22.04 LTS) or Mac OS X machine
 2. Java 17 (Tested with OpenJDK 17 and Eclipse Temurin JDK 17; Oracle JDK may work but is untested)
-3. Python3 and pip3 (Required if working with CWL, optional otherwise)
+3. Python3 and pipx (Required if working with CWL, optional otherwise)
     `;
 
     this.textDataUbuntuLinux = `
@@ -189,7 +189,7 @@ At this point, you now have the Dockstore CLI set up for interacting with the Do
 
 #### Part 6 - Install cwltool (Optional)
 Dockstore relies on [cwltool](https://github.com/common-workflow-language/cwltool) - a reference implementation of CWL - for local execution of tools and workflows described with CWL.
-You'll need to have Python 3 and [pip3](https://pip.pypa.io/en/latest/installing/) to be installed on your machine.
+You'll need to have Python 3.10+ and [pipx](https://pipx.pypa.io/latest/installation/) to be installed on your machine.
 
 **Note:** cwltool must be available on your PATH for the Dockstore CLI to find it.
 
@@ -197,15 +197,20 @@ You can install the version of cwltool that we've tested for use with Dockstore 
 1. Install cwltool
 \`\`\`
 curl -o requirements.txt "${this.dsServerURI}/metadata/runner_dependencies?client_version=${this.dockstoreVersion}&python_version=3"
-pip3 install -r requirements.txt
+pipx install cwltool==${this.cwltoolVersion}
+pipx runpip cwltool install -r requirements.txt # this ensures that your version of cwltool and its dependencies matches what we test with
 \`\`\`
-2. Verify using \`pip3 list\` that the installed pip packages match the ones specified in the downloaded requirements.txt. Confirm cwltool installation by checking the version.
+
+**Note:** If you receive a warning saying \`'/YOUR_HOME_DIR/.local/bin' is not on your PATH environment variable.\`, use \`pipx ensurepath\` to add it to your shell's config. Then open a new shell or run \`source ~/.bashrc\`.
+
+2. Verify using that the installed python packages match the ones specified in the downloaded requirements.txt. Confirm cwltool installation by checking the version.
 \`\`\`
+$ pipx runpip cwltool list
 $ cwltool --version
 /usr/local/bin/cwltool ${this.cwltoolVersion}
 \`\`\`
 
-Although Dockstore has only been tested with the above cwltool version, if you have issues installing cwltool please try running \`pip3 install cwltool\`. This will install the latest released version from PyPi that is compatible with your Python version.
+Although Dockstore has only been tested with the above cwltool version, if you have issues installing cwltool please try running \`pipx install cwltool\`. This will install the latest released version from PyPi that is compatible with your Python version.
 
 #### Part 7 - Install Nextflow (Optional)
 The Dockstore CLI does not run Nextflow workflows. Users can run them directly by using the Nextflow command line tool. For installation instructions, follow [Nextflow's documentation](https://github.com/nextflow-io/nextflow#download-the-package)

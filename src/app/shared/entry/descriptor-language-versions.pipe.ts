@@ -6,15 +6,26 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class DescriptorLanguageVersionsPipe implements PipeTransform {
   /**
-   * Creates a string containing the descriptor language and descriptor language versions
+   * Creates a string containing the descriptor language or engine versions, and the descriptor language if specified by showDescriptorLanguage
    * @param descriptorLanguage
-   * @param descriptorLanguageVersions
+   * @param descriptorLanguageOrEngineVersions
+   * @param showDescriptorLanguage whether or not the descriptor language should be included in the resulting string
    * @returns
    */
-  transform(descriptorLanguage: string, descriptorLanguageVersions: Array<string>): string {
-    if (descriptorLanguageVersions && descriptorLanguageVersions.length > 0) {
-      const languageVersions = [...descriptorLanguageVersions];
-      return descriptorLanguage + ' ' + languageVersions.sort().join(', ');
+  transform(descriptorLanguage: string, descriptorLanguageOrEngineVersions: Array<string>, showDescriptorLanguage: boolean = true): string {
+    if (descriptorLanguageOrEngineVersions && descriptorLanguageOrEngineVersions.length > 0) {
+      const versions = [...descriptorLanguageOrEngineVersions];
+      if (showDescriptorLanguage) {
+        return descriptorLanguage + ' ' + versions.sort().join(', ');
+      } else {
+        // Remove the descriptor language from the version if it exists. Ex: 'Nextflow !>=23.04.0' -> '!>=23.04.0'
+        return versions
+          .map((version) => {
+            return version.replace(descriptorLanguage + ' ', '');
+          })
+          .sort()
+          .join(', ');
+      }
     }
     return '';
   }

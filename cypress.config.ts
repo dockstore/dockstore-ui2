@@ -2,8 +2,8 @@ import { defineConfig } from 'cypress'
 
 export default defineConfig({
   projectId: '1ya4vj',
-  viewportHeight: 900,
-  viewportWidth: 1440,
+  viewportHeight: 1080,
+  viewportWidth: 1920,
   defaultCommandTimeout: 30000,
   requestTimeout: 30000,
   experimentalMemoryManagement: true,

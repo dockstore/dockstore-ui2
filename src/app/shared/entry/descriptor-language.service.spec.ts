@@ -28,23 +28,24 @@ describe('Service: DescriptorLanguage', () => {
   it('should return the descriptor languages in an string array', () => {
     const stubValue: Array<DescriptorLanguageBean> = [{ value: 'cwl' }, { value: 'wdl' }, { value: 'nextflow' }];
     metadataServiceSpy.getDescriptorLanguages.and.returnValue(observableOf(stubValue));
+    workflowQuerySpy.entryType$ = observableOf('workflow');
     const descriptorLanguageService = new DescriptorLanguageService(metadataServiceSpy, workflowQuerySpy);
     descriptorLanguageService.filteredDescriptorLanguages$.pipe(first()).subscribe((languages: Array<string>) => {
       expect(languages).toEqual(['cwl', 'wdl', 'nextflow'], 'service returned stub value');
     });
   });
-  it('should be able to filter service out', () => {
+  it('should be able to filter service and notebook out', () => {
     const descriptorLanguageBeans: DescriptorLanguageBean[] = [];
     descriptorLanguageBeans.push({ friendlyName: 'potato', value: 'potato' });
     descriptorLanguageBeans.push({ friendlyName: 'beef', value: 'beef' });
     descriptorLanguageBeans.push({ friendlyName: 'stew', value: 'stew' });
     descriptorLanguageBeans.push({ friendlyName: 'generic placeholder for services', value: 'service' });
+    descriptorLanguageBeans.push({ friendlyName: 'generic placeholder for notebooks', value: 'jupyter' });
     metadataServiceSpy.getDescriptorLanguages.and.returnValue(observableOf(descriptorLanguageBeans));
+    workflowQuerySpy.entryType$ = observableOf('workflow');
     const descriptorLanguageService = new DescriptorLanguageService(metadataServiceSpy, workflowQuerySpy);
-    const filteredDescriptorLanguageBeans = descriptorLanguageService.filterService(descriptorLanguageBeans);
-    expect(filteredDescriptorLanguageBeans.length).toEqual(3);
-    filteredDescriptorLanguageBeans.forEach((descriptorLanguageBean) => {
-      expect(descriptorLanguageBean.value).not.toEqual(descriptorLanguageService.knownServiceValue);
+    descriptorLanguageService.filteredDescriptorLanguages$.pipe(first()).subscribe((languages: Array<string>) => {
+      expect(languages).toEqual(['potato', 'beef', 'stew'], 'service returned stub value');
     });
   });
   it('should be able to get home page inner HTML', () => {
@@ -105,13 +106,13 @@ describe('Service: DescriptorLanguage', () => {
     metadataServiceSpy.getDescriptorLanguages.and.returnValue(observableOf(descriptorLanguageBeans));
     const descriptorLanguageService = new DescriptorLanguageService(metadataServiceSpy, workflowQuerySpy);
     let placeholder = descriptorLanguageService.getDescriptorPattern(ToolDescriptor.TypeEnum.SMK);
-    expect(placeholder).toEqual('^/([^/?:*|<>]++/)*(Snakefile|[^./?:*|<>]++.smk))$');
+    expect(placeholder).toEqual('^\\/([^\\/?:*\\|<>]+\\/)*(Snakefile|[^.\\/?:*\\|<>]+.smk)$');
     placeholder = descriptorLanguageService.getDescriptorPattern(ToolDescriptor.TypeEnum.CWL);
-    expect(placeholder).toEqual('^/([^/?:*|<>]+/)*[^/?:*|<>]+.(cwl|yaml|yml)');
+    expect(placeholder).toEqual('^\\/([^\\/?:*\\|<>]+\\/)*[^\\/?:*\\|<>]+.(cwl|yaml|yml)$');
     placeholder = descriptorLanguageService.getDescriptorPattern(ToolDescriptor.TypeEnum.WDL);
-    expect(placeholder).toEqual('^/([^/?:*|<>]+/)*[^/?:*|<>]+.wdl$');
+    expect(placeholder).toEqual('^\\/([^\\/?:*\\|<>]+\\/)*[^\\/?:*\\|<>]+.wdl$');
     placeholder = descriptorLanguageService.getDescriptorPattern(ToolDescriptor.TypeEnum.NFL);
-    expect(placeholder).toEqual('^/([^/?:*|<>]+/)*[^/?:*|<>]+.(config)');
+    expect(placeholder).toEqual('^\\/([^\\/?:*\\|<>]+\\/)*[^\\/?:*\\|<>]+.(config)$');
     placeholder = descriptorLanguageService.getDescriptorPattern(ToolDescriptor.TypeEnum.SERVICE);
     expect(placeholder).toEqual('.*');
     placeholder = descriptorLanguageService.getDescriptorPattern(<ToolDescriptor.TypeEnum>'UnrecognizedType');

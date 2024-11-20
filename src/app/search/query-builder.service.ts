@@ -21,6 +21,7 @@ import { CategorySort } from '../shared/models/CategorySort';
 import { tagCloudCommonTerms } from './../shared/constants';
 import { AdvancedSearchObject } from './../shared/models/AdvancedSearchObject';
 import { SearchService } from './state/search.service';
+import { parseTerms } from './helpers';
 
 type Index = 'workflows' | 'tools' | 'notebooks';
 
@@ -172,26 +173,27 @@ export class QueryBuilderService {
    * @memberof SearchComponent
    */
   appendFilter(body: any, aggKey: string | null, filters: Map<string, Set<string>>, exclusiveFilters: Array<string>): Bodybuilder {
-    filters.forEach((value: Set<string>, key: string) => {
-      value.forEach((insideFilter) => {
-        const isExclusiveFilter = exclusiveFilters.includes(key);
-        if (aggKey === key && !isExclusiveFilter) {
-          // Return some garbage filter because we've decided to append a filter, there's no turning back
-          // return body;  // <--- this does not work
-          body = body.notFilter('term', 'some garbage term that hopefully never gets matched', insideFilter);
-        } else {
-          // value refers to the buckets selected
-          if (value.size > 1) {
-            body = body.orFilter('term', key, insideFilter);
-          } else {
-            if (isExclusiveFilter) {
-              body = body.filter('term', key, this.convertIntStringToBoolString(insideFilter));
-            } else {
-              body = body.filter('term', key, insideFilter);
-            }
+    filters.forEach((values: Set<string>, key: string) => {
+      const isExclusiveFilter = exclusiveFilters.includes(key);
+      if (aggKey === key && !isExclusiveFilter) {
+        // Return some garbage filter because we've decided to append a filter, there's no turning back
+        values.forEach((value) => {
+          body = body.notFilter('term', 'some garbage term that hopefully never gets matched', value);
+        });
+      } else if (values.size == 1) {
+        // Add a filter that matches a single value
+        const [value] = values;
+        const convertedValue = isExclusiveFilter ? this.convertIntStringToBoolString(value) : value;
+        body = body.filter('term', key, convertedValue);
+      } else {
+        // Add a filter that matches at least one of multiple values
+        body = body.filter('bool', (b) => {
+          for (const value of values) {
+            b = b.orFilter('term', key, value);
           }
-        }
-      });
+          return b;
+        });
+      }
     });
     return body;
   }
@@ -273,19 +275,20 @@ export class QueryBuilderService {
    */
   private searchEverything(body: bodybuilder.Bodybuilder, searchString: string): bodybuilder.Bodybuilder {
     // Extract each search term from the search string, limiting to a maximum of 20 terms to prevent a DOS attack
-    const terms = searchString.trim().split(' ').slice(0, 20);
+    const terms = parseTerms(searchString).slice(0, 20);
     terms.forEach((term) => {
+      const matchOp = term.includes(' ') ? 'match_phrase' : 'match';
       body
         .orQuery('wildcard', 'full_workflow_path', { value: '*' + term + '*', case_insensitive: true, boost: 14 })
         .orQuery('wildcard', 'tool_path', { value: '*' + term + '*', case_insensitive: true, boost: 14 })
-        .orQuery('match', 'workflowVersions.sourceFiles.content', { query: term, boost: 0.2 })
-        .orQuery('match', 'tags.sourceFiles.content', { query: term, boost: 0.2 })
-        .orQuery('match', 'description', { query: term, boost: 2 })
-        .orQuery('match', 'labels', { query: term, boost: 2 })
-        .orQuery('match', 'all_authors.name', { query: term, boost: 3 })
-        .orQuery('match', 'topicAutomatic', { query: term, boost: 4 })
-        .orQuery('match', 'categories.topic', { query: term, boost: 2 })
-        .orQuery('match', 'categories.displayName', { query: term, boost: 3 });
+        .orQuery(matchOp, 'workflowVersions.sourceFiles.content', { query: term, boost: 0.2 })
+        .orQuery(matchOp, 'tags.sourceFiles.content', { query: term, boost: 0.2 })
+        .orQuery(matchOp, 'description', { query: term, boost: 2 })
+        .orQuery(matchOp, 'labels', { query: term, boost: 2 })
+        .orQuery(matchOp, 'all_authors.name', { query: term, boost: 3 })
+        .orQuery(matchOp, 'topicAutomatic', { query: term, boost: 4 })
+        .orQuery(matchOp, 'categories.topic', { query: term, boost: 2 })
+        .orQuery(matchOp, 'categories.displayName', { query: term, boost: 3 });
     });
     body.queryMinimumShouldMatch(1);
     return body;

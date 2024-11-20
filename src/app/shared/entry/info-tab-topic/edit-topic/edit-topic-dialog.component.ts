@@ -33,6 +33,9 @@ import { MatLegacyCardModule } from '@angular/material/legacy-card';
 import { EditTopicDialogService } from './edit-topic-dialog.service';
 import { EntryActionsService } from 'app/shared/entry-actions/entry-actions.service';
 import { MatRadioChange } from '@angular/material/radio';
+import { Dockstore } from 'app/shared/dockstore.model';
+import { ClipboardModule } from '@angular/cdk/clipboard';
+import { SnackbarDirective } from 'app/shared/snackbar.directive';
 
 export interface EditTopicDialogData {
   entry: DockstoreTool | Workflow;
@@ -48,7 +51,7 @@ export interface TopicOption {
 @Component({
   selector: 'app-edit-topic-dialog',
   templateUrl: './edit-topic-dialog.component.html',
-  styleUrls: ['./edit-topic-dialog.component.scss'],
+  styleUrls: ['./edit-topic-dialog.component.scss', '../../../styles/radio-button-cards.scss'],
   standalone: true,
   imports: [
     MatLegacyDialogModule,
@@ -66,9 +69,12 @@ export interface TopicOption {
     MatIconModule,
     MatLegacyCardModule,
     NgFor,
+    ClipboardModule,
+    SnackbarDirective,
   ],
 })
 export class EditTopicDialogComponent {
+  Dockstore = Dockstore;
   TopicSelectionEnum = Entry.TopicSelectionEnum;
   entry: Workflow | DockstoreTool;
   entryType: EntryType;
@@ -97,12 +103,14 @@ export class EditTopicDialogComponent {
     const manualTopicOption: TopicOption = {
       type: this.TopicSelectionEnum.MANUAL,
       label: 'Manual',
-      description: `Entered manually by the user${this.isGitHubAppEntry ? 'in the .dockstore.yml.' : '.'}`,
+      description: this.isGitHubAppEntry
+        ? 'Specified in the .dockstore.yml file on GitHub. Edit the topic field in the .dockstore.yml to change the topic.'
+        : 'Entered manually by the user.',
       value: this.entry.topicManual,
     };
     const automaticTopicOption: TopicOption = {
       type: this.TopicSelectionEnum.AUTOMATIC,
-      label: 'Automatic',
+      label: 'GitHub',
       description: 'Retrieved automatically from the GitHub repository description.',
       value: this.entry.topicAutomatic,
     };

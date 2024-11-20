@@ -116,7 +116,7 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
     const allColumns = [
       'name',
       'last_modified',
-      'descriptorTypeVersions',
+      this.workflow?.descriptorType === Workflow.DescriptorTypeEnum.NFL ? 'engineVersions' : 'descriptorTypeVersions',
       'valid',
       hiddenColumn,
       verifiedColumn,
@@ -143,7 +143,6 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
   }
 
   ngOnInit() {
-    this.publicPageSubscription();
     this.extendedWorkflowQuery.extendedWorkflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((workflow) => {
       this.workflow = workflow;
       if (workflow) {
@@ -159,6 +158,7 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
           },
         ],
       };
+      this.publicPageSubscription();
     });
   }
 
@@ -180,4 +180,8 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
   originalOrder = (a: KeyValue<string, Doi>, b: KeyValue<string, Doi>): number => {
     return 0;
   };
+
+  trackBy(index: number, item: WorkflowVersion) {
+    return item.id;
+  }
 }

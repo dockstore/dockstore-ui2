@@ -12,7 +12,7 @@
     </mat-card>
 
     <div fxLayout="column" fxLayoutGap="32px">
-      <mat-card *ngFor="let org of allPendingOrganizations$ | async; let i = index" [id]="'pending-org-card-' + i">
+      <mat-card *ngFor="let org of allPendingOrganizations$ | async; let i = index; trackBy: trackByOrg" [id]="'pending-org-card-' + i">
         <mat-card-header>
           <mat-card-title>
             <a [routerLink]="'/organizations/' + org.name" [matTooltip]="org?.name">{{ org.displayName }}</a>
@@ -74,7 +74,10 @@
     </mat-card>
 
     <div fxLayout="column" fxLayoutGap="32px">
-      <mat-card *ngFor="let membership of myPendingOrganizationRequests$ | async; let i = index" [id]="'my-pending-org-card-' + i">
+      <mat-card
+        *ngFor="let membership of myPendingOrganizationRequests$ | async; let i = index; trackBy: trackByOrgUser"
+        [id]="'my-pending-org-card-' + i"
+      >
         <mat-card-header>
           <mat-card-title>
             <a [routerLink]="'/organizations/' + membership.organization?.name" [matTooltip]="membership.organization?.name">{{
@@ -106,7 +109,10 @@
       <mat-icon>info</mat-icon> You have no rejected organizations.
     </mat-card>
     <div fxLayout="column" fxLayoutGap="32px">
-      <mat-card *ngFor="let membership of myRejectedOrganizationRequests$ | async; let i = index" [id]="'my-rejected-org-card-' + i">
+      <mat-card
+        *ngFor="let membership of myRejectedOrganizationRequests$ | async; let i = index; trackBy: trackByOrgUser"
+        [id]="'my-rejected-org-card-' + i"
+      >
         <mat-card-header>
           <mat-card-title>
             <mat-icon color="primary" matTooltip="This organization has been rejected">warning</mat-icon>
@@ -155,7 +161,10 @@
     </mat-card>
 
     <div fxLayout="column" fxLayoutGap="32px">
-      <mat-card *ngFor="let membership of myOrganizationInvites$ | async; let i = index" [id]="'my-org-invites-card-' + i">
+      <mat-card
+        *ngFor="let membership of myOrganizationInvites$ | async; let i = index; trackBy: trackByOrgUser"
+        [id]="'my-org-invites-card-' + i"
+      >
         <mat-card-header>
           <mat-card-title>
             <a [routerLink]="'/organizations/' + membership.organization?.name" [matTooltip]="membership.organization?.name">{{

@@ -133,7 +133,7 @@ describe('Dockstore my workflows', () => {
       }).as('Default sort');
       cy.contains('Apps Logs').click();
       // Check that app logs contain the correct columns
-      const appLogColumns = ['Date', 'GitHub Username', 'Entry Name', 'Delivery ID', 'Repository', 'Reference', 'Success', 'Type'];
+      const appLogColumns = ['Date', 'GitHub Username', 'Entry Name', 'Delivery ID', 'Repository', 'Reference', 'Status', 'Type'];
       appLogColumns.forEach((column) => cy.contains(column));
       // These next 2 values work on Circle CI (UTC?) I would have thought East Coast time, but there's an 8 hour diff with West Coast time. Confused
       cy.contains('2020-02-20T02:20');

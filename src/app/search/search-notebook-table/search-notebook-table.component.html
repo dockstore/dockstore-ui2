@@ -4,37 +4,33 @@
   </div>
   <mat-table [hidden]="!dataSource" [dataSource]="dataSource" matSort data-cy="search-notebook-results-table" multiTemplateDataRows>
     <ng-container matColumnDef="name">
-      <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
+      <mat-header-cell *matHeaderCellDef mat-sort-header>Name and Description</mat-header-cell>
       <mat-cell data-cy="notebookColumn" *matCellDef="let notebook">
         <div>
+          <img src="../../../../assets/svg/notebook-circle.svg" class="mr-2_5 site-icons-small" alt="notebook icon" />
           <a [matTooltip]="notebook?.source.full_workflow_path" [routerLink]="'/notebooks/' + notebook?.source.full_workflow_path">{{
             notebook?.source.organization +
               '/' +
               notebook?.source.repository +
               (notebook?.source.workflowName ? '/' + notebook?.source.workflowName : '')
           }}</a>
-          <div class="truncate-text-2">
+          <div>
+            <span>{{ notebook?.source.topicAutomatic }}</span>
             <app-ai-bubble
               *ngIf="notebook?.source.topicSelection === TopicSelectionEnum.AI && !notebook?.source.approvedAITopic"
               [isPublic]="true"
             ></app-ai-bubble>
-            <span class="size-small" [matTooltip]="notebook?.source.topicAutomatic" matTooltipPosition="left">{{
-              notebook?.source.topicAutomatic
-            }}</span>
           </div>
         </div>
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="all_authors">
       <mat-header-cell fxShow fxHide.lt-sm *matHeaderCellDef mat-sort-header>Author</mat-header-cell>
-      <mat-cell
-        fxShow
-        fxHide.lt-sm
-        class="duration-cell truncate-text-2"
-        *matCellDef="let notebook"
-        [matTooltip]="notebook?.source.all_authors | getSearchAuthorsHtml: false"
-        [innerHTML]="notebook?.source.all_authors | getSearchAuthorsHtml"
-      ></mat-cell>
+      <mat-cell fxShow fxHide.lt-sm *matCellDef="let notebook" [matTooltip]="notebook?.source.all_authors | getSearchAuthorsHtml: false">
+        <div class="truncate-text-3 size-small">
+          <span [innerHTML]="notebook?.source?.all_authors | getSearchAuthorsHtml"></span>
+        </div>
+      </mat-cell>
     </ng-container>
     <ng-container matColumnDef="descriptorType">
       <mat-header-cell fxShow fxHide.lt-sm data-cy="descriptorTypeHeader" *matHeaderCellDef mat-sort-header>Format</mat-header-cell>
@@ -54,19 +50,11 @@
         </div>
       </mat-cell>
     </ng-container>
-    <ng-container matColumnDef="projectLinks">
-      <mat-header-cell fxShow fxHide.lt-md *matHeaderCellDef>Links</mat-header-cell>
-      <mat-cell fxShow fxHide.lt-md *matCellDef="let entry">
-        <a [href]="entry?.source.providerUrl" *ngIf="entry?.source.providerUrl">
-          <fa-icon class="fa-lg" [icon]="entry.source.providerIcon" [matTooltip]="entry?.source.provider"></fa-icon>
-        </a>
-      </mat-cell>
-    </ng-container>
     <ng-container matColumnDef="starredUsers">
       <mat-header-cell *matHeaderCellDef mat-sort-header start="desc">Stars</mat-header-cell>
-      <mat-cell class="description-cell" *matCellDef="let notebook"
-        >{{ !notebook?.source.starredUsers || notebook?.source.starredUsers.length === 0 ? '' : notebook?.source.starredUsers?.length }}
-        <mat-icon class="star-icon" *ngIf="notebook?.source.starredUsers?.length > 0">star_rate</mat-icon>
+      <mat-cell class="starred-cell weight-bold" *matCellDef="let notebook"
+        ><mat-icon class="star-icon" *ngIf="notebook?.source.starredUsers?.length > 0">star_rate</mat-icon>
+        {{ !notebook?.source.starredUsers || notebook?.source.starredUsers.length === 0 ? '' : notebook?.source.starredUsers.length }}
       </mat-cell>
     </ng-container>
     <!-- Search highlighting column - this row is made up of this one column that spans across all columns -->

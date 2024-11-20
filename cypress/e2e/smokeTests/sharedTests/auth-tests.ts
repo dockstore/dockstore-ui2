@@ -18,7 +18,6 @@ const username = 'dockstoretestuser4';
 // tuples of registry, repo namespace (username), and entry-name (repo name)
 const toolName = 'dockstore-tool-md5sum';
 const toolTuple = ['github.com', username, toolName];
-const workflowTuple = ['github.com', username, 'hello-dockstore-workflow'];
 // tuple of organization name, collection name
 const collectionTuple = ['DockstoreAuthTestOrg', 'SimpleCollection'];
 const hardcodedWaitTime = 4000;
@@ -39,6 +38,11 @@ function storeToken() {
   } else {
     window.localStorage.setItem('ng2-ui-auth_token', Cypress.env('LOCAL_TOKEN'));
   }
+}
+
+function hasSandboxZenodo() {
+  const baseUrl = Cypress.config('baseUrl');
+  return baseUrl === 'https://qa.dockstore.org' || baseUrl === 'https://staging.dockstore.org' || baseUrl === 'https://dev.dockstore.net';
 }
 
 function unpublishTool() {
@@ -228,7 +232,7 @@ function testTool(registry: string, repo: string, name: string) {
   });
 }
 
-function testWorkflow(registry: string, repo: string, name: string) {
+function testWorkflow() {
   describe('Refresh, publish, unpublish, and restub a workflow', () => {
     it('refresh and publish', () => {
       storeToken();
@@ -267,10 +271,22 @@ function testWorkflow(registry: string, repo: string, name: string) {
       cy.get('#publishButton').contains('Unpublish').click({ force: true });
 
       goToTab('Info');
-      cy.contains('button', 'Restub').click();
-      // This fails because DOI is auto issued when published, and restub fails.
-      // See https://ucsc-gi.slack.com/archives/C05EZH3RVNY/p1718128426265779
-      // cy.contains('button', 'Publish').should('be.disabled');
+
+      // For now, only restub the workflow in environments that use the sandbox zenodo,
+      // to avoid the subsequent creation of new versions and auto-generation of real
+      // zenodo DOIs, which will accumulate over time because they are effectively
+      // undeletable.
+      // See https://ucsc-cgl.atlassian.net/browse/SEAB-6508
+      if (hasSandboxZenodo()) {
+        cy.intercept('**/restub').as('restub');
+        cy.contains('button', 'Restub').click();
+        // Wait for the restub request to complete, so that it does not overlap
+        // with the subsequent refresh and occasionally trigger a db error on
+        // the webservice.
+        // See https://ucsc-cgl.atlassian.net/browse/SEAB-6535
+        cy.wait('@restub');
+        cy.contains('button', 'Publish').should('be.disabled');
+      }
 
       cy.get('[data-cy=refreshButton]').click();
       goToTab('Versions');
@@ -326,4 +342,4 @@ function testCollection(org: string, collection: string, registry: string, repo:
 
 testCollection(collectionTuple[0], collectionTuple[1], toolTuple[0], toolTuple[1], toolTuple[2]);
 testTool(toolTuple[0], toolTuple[1], toolTuple[2]);
-testWorkflow(workflowTuple[0], workflowTuple[1], workflowTuple[2]);
+testWorkflow();

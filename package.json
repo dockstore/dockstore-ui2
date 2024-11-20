@@ -4,8 +4,8 @@
   "license": "Apache License 2.0",
   "config": {
     "webservice_version_prefix": "1.16.0",
-    "webservice_version": "1.16.0-alpha.10",
-    "use_snapshot": true
+    "webservice_version": "1.16.0",
+    "use_snapshot": false
   },
   "scripts": {
     "ng": "npx ng",
@@ -66,7 +66,7 @@
     "cytoscape": "^3.19.0",
     "cytoscape-dagre": "^2.3.2",
     "cytoscape-popper": "^2.0.0",
-    "dompurify": "^2.2.9",
+    "dompurify": "^2.5.4",
     "file-saver": "^2.0.5",
     "ini": "^4.1.1",
     "jquery": "^3.6.0",
@@ -77,13 +77,14 @@
     "ngx-sharebuttons": "^8.0.5",
     "prismjs": "^1.29.0",
     "rxjs": "^6.6.7",
+    "split-string": "^3.1.0",
     "ts-md5": "^1.2.8",
     "tslib": "^2.3.0",
     "uuid": "^8.3.2",
     "zone.js": "~0.13.3"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^16.2.14",
+    "@angular-devkit/build-angular": "^16.2.16",
     "@angular-eslint/builder": "^16.3.1",
     "@angular-eslint/eslint-plugin": "^16.3.1",
     "@angular-eslint/eslint-plugin-template": "^16.3.1",

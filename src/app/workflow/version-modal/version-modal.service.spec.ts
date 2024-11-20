@@ -27,6 +27,7 @@ import { RefreshStubService, WorkflowsStubService, WorkflowStubService } from '.
 import { VersionModalService } from './version-modal.service';
 import { BioWorkflow, Workflow } from '../../shared/openapi';
 import DescriptorTypeSubclassEnum = Workflow.DescriptorTypeSubclassEnum;
+import { validationDescriptorPatterns } from '../../shared/validationMessages.model';
 
 describe('Service: version-modal.service.ts', () => {
   let workflowQuery: jasmine.SpyObj<WorkflowQuery>;
@@ -79,4 +80,16 @@ describe('Service: version-modal.service.ts', () => {
       alertQuery.message$.subscribe((refreshMessage) => expect(refreshMessage).toEqual(''));
     }
   ));
+  it('regex should still be correct', () => {
+    const regexp: RegExp = new RegExp(validationDescriptorPatterns.cwlPath);
+    expect(regexp.test('/Dockstore.cwl')).toBeTruthy();
+    expect(regexp.test('/Dockstore.yaml')).toBeTruthy();
+    expect(regexp.test('/Dockstore.cw')).toBeFalsy();
+  });
+
+  it('regex should still be valid in v mode', () => {
+    for (const [, pattern] of Object.entries(validationDescriptorPatterns)) {
+      expect(new RegExp(pattern, 'v')).toBeTruthy();
+    }
+  });
 });
