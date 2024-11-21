@@ -456,7 +456,7 @@ describe('Dockstore my workflows part 2', () => {
         cy.intercept('GET', '/api/workflows/11/workflowVersions?limit=10&offset=0&sortCol=lastModified&sortOrder=asc', {
           body: json,
           statusCode: 200,
-        }).as('getVersionWithDoi');
+        }).as('getVersionAfterOrcidExport');
       });
       goToTab('Versions');
       cy.get('td').contains('Actions').click();
