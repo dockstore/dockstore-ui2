@@ -16,7 +16,7 @@
 
 <div fxLayout="row wrap">
   <div class="p-3" fxFlex="50" fxFlex.lt-md="100">
-    <mat-card class="mb-2 h-100" *ngIf="dockstoreToken">
+    <mat-card appearance="outlined" class="mb-2 h-100" *ngIf="dockstoreToken">
       <div class="h-100" fxLayout="column" fxLayoutAlign="space-between stretch">
         <div fxLayoutAlign="space-between">
           <mat-card-header>
@@ -28,9 +28,9 @@
               <strong>Username: {{ username$ | async }} </strong>
             </mat-card-subtitle>
           </mat-card-header>
-          <mat-chip-list>
-            <mat-chip class="bubble"> Main Account </mat-chip>
-          </mat-chip-list>
+          <mat-chip-listbox>
+            <mat-chip-option class="bubble"> Main Account </mat-chip-option>
+          </mat-chip-listbox>
         </div>
         <mat-card-content>
           <div>
@@ -87,7 +87,7 @@
   </div>
 
   <div *ngFor="let row of accountsInfo" class="p-3" fxFlex="50" fxFlex.lt-md="100">
-    <mat-card class="mb-2 h-100">
+    <mat-card appearance="outlined" class="mb-2 h-100">
       <div class="h-100" fxLayout="column" fxLayoutAlign="space-between stretch">
         <div>
           <div fxLayoutAlign="space-between">
@@ -106,30 +106,32 @@
               </mat-card-subtitle>
               <ng-template #placeholder><br /></ng-template>
             </mat-card-header>
-            <mat-chip-list>
-              <mat-chip
+            <mat-chip-listbox>
+              <mat-chip-option
                 class="bubble"
                 *ngIf="row.control"
                 matTooltip="Pull your workflows from cloud source control to make them available on Dockstore"
               >
                 Source Control
-              </mat-chip>
-              <mat-chip class="bubble" *ngIf="row.bold" matTooltip="A method of logging into Dockstore"> Login Method </mat-chip>
-              <mat-chip
+              </mat-chip-option>
+              <mat-chip-option class="bubble" *ngIf="row.bold" matTooltip="A method of logging into Dockstore">
+                Login Method
+              </mat-chip-option>
+              <mat-chip-option
                 class="bubble"
                 *ngIf="row.docker"
                 matTooltip="Link Docker repository accounts to help Dockstore find information on your Docker containers"
               >
                 Docker Repository
-              </mat-chip>
-              <mat-chip
+              </mat-chip-option>
+              <mat-chip-option
                 class="bubble"
                 *ngIf="row.research"
                 matTooltip="Services popular among scientific researchers to aid with publications and citation"
               >
                 Research
-              </mat-chip>
-            </mat-chip-list>
+              </mat-chip-option>
+            </mat-chip-listbox>
           </div>
           <mat-card-content>
             <p>

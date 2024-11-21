@@ -13,7 +13,11 @@
     fxLayoutAlign="start stretch"
     fxLayoutGap="1rem"
   >
-    <mat-card *ngFor="let topicOption of topicOptions" [class]="topicOption.type === selectedOption ? 'selected-card' : ''">
+    <mat-card
+      appearance="outlined"
+      *ngFor="let topicOption of topicOptions"
+      [class]="topicOption.type === selectedOption ? 'selected-card' : ''"
+    >
       <mat-radio-button [value]="topicOption.type" class="w-100">
         <div fxLayoutAlign="space-between">
           <div>
@@ -60,6 +64,7 @@
 
         <!-- Display an info card if the AI topic was automatically set as the topic selection but it hasn't been approved by the user -->
         <mat-card
+          appearance="outlined"
           *ngIf="topicOption.type === TopicSelectionEnum.AI && !entry.approvedAITopic && entry.topicSelection === TopicSelectionEnum.AI"
           class="alert-info mat-elevation-z size-small py-1 my-3"
           data-cy="unapprovedAITopicCard"
@@ -106,7 +111,11 @@
 </mat-dialog-content>
 <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end">
   <div *ngIf="promptToConfirmAISelection" fxLayout="row" fxLayoutAlign="end" class="mb-3">
-    <mat-card data-cy="confirmAISelectionPrompt" class="alert-warning mat-elevation-z size-small weight-bold py-1" fxFlex="50"
+    <mat-card
+      appearance="outlined"
+      data-cy="confirmAISelectionPrompt"
+      class="alert-warning mat-elevation-z size-small weight-bold py-1"
+      fxFlex="50"
       >By selecting the AI topic, you are confirming that you have reviewed and approved it. There will be no
       <app-ai-bubble [isPublic]="true"></app-ai-bubble> icon when the topic is displayed publicly. Are you sure you want to select the AI
       topic?</mat-card

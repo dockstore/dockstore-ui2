@@ -11,8 +11,8 @@ import { RefreshToolOrganizationComponent } from '../../container/refresh-tool-o
 import { RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
-import { MatLegacyListModule } from '@angular/material/legacy-list';
-import { MatLegacyTabsModule } from '@angular/material/legacy-tabs';
+import { MatListModule } from '@angular/material/list';
+import { MatTabsModule } from '@angular/material/tabs';
 import { MatExpansionModule } from '@angular/material/expansion';
 
 interface GroupEntriesByRegistry {
@@ -29,9 +29,9 @@ interface GroupEntriesByRegistry {
     NgFor,
     NgIf,
     MatExpansionModule,
-    MatLegacyTabsModule,
+    MatTabsModule,
     NgTemplateOutlet,
-    MatLegacyListModule,
+    MatListModule,
     NgClass,
     ExtendedModule,
     MatIconModule,

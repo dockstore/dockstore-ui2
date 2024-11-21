@@ -335,7 +335,7 @@ h3.available-containers {
 // Globally allow any material tooltip to break the word if it's too long
 // Long sentences should still break on spaces if needed
 // Long continuous words (without spaces and hyphens) will break at different points depending on browser
-.mat-tooltip {
+.mat-mdc-tooltip {
   overflow-wrap: break-word;
 }
 
@@ -464,7 +464,7 @@ div.button a {
   margin-top: 8px;
 }
 
-.mat-raised-button.mat-accent:hover {
+.mat-mdc-raised-button.mat-accent:hover {
   background-color: mat.get-color-from-palette($dockstore-app-accent, darker);
 }
 
@@ -828,7 +828,7 @@ body {
 
 // Set font weight to bold
 .weight-bold,
-.mat-menu-item.weight-bold {
+.mat-mdc-menu-item.weight-bold {
   font-weight: 500;
 }
 
@@ -838,8 +838,8 @@ app-sidebar-accordion
   > .mat-expansion-panel
   > .mat-expansion-panel-content
   > .mat-expansion-panel-body
-  > .mat-tab-group
-  > .mat-tab-header
+  > .mat-mdc-tab-group
+  > .mat-mdc-tab-header
   > .mat-tab-label-container
   > .mat-tab-list
   > .mat-tab-labels
@@ -877,6 +877,8 @@ app-workflow-sidebar-accordion
 }
 
 // Automatically used by Angular Material
+/*TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.
+ */
 .mat-tab-label:hover {
   color: black;
   opacity: 0.7;
@@ -1006,7 +1008,13 @@ mat-icon.star-icon {
   white-space: normal;
 }
 
+/*TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.
+ */
+/*TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.
+ */
 mat-tab-group.no-pagination {
+  /*TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.
+ */
   .mat-tab-header-pagination {
     display: none;
   }
@@ -1100,21 +1108,23 @@ a.accent-1-dark-btn {
   color: white;
 }
 
-.mat-flat-button.secondary-1 {
+.mat-mdc-unelevated-button.secondary-1 {
   color: mat.get-color-from-palette($dockstore-app-accent);
   font-weight: bold;
 }
-.mat-flat-button.accent-1-dark {
+.mat-mdc-unelevated-button.accent-1-dark {
   color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
 }
 
 // Automatically used by Angular Material
+/*TODO(mdc-migration): The following rule targets internal classes of radio that may no longer apply for the MDC version.
+ */
 .mat-radio-label-content {
   font-weight: normal;
 }
 
 // Used for smaller than usual forms
-.mat-form-field.small-text {
+.mat-mdc-form-field.small-text {
   font-size: 12px;
 }
 
@@ -1139,7 +1149,7 @@ mat-icon.mat-icon-sm {
 }
 
 // Purple outline and text for mat-form-field
-.mat-form-field-appearance-outline.mat-focused:not(.mat-form-field-invalid) .mat-form-field-outline,
+.mat-mdc-form-field-appearance-outline.mat-focused:not(.mat-form-field-invalid) .mat-form-field-outline,
 .mat-form-field.mat-focused:not(.mat-form-field-invalid) .mat-form-field-label,
 .mat-form-field.mat-focused:not(.mat-form-field-invalid) .mat-form-field-label .mat-form-field-required-marker,
 .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float
@@ -1148,23 +1158,33 @@ mat-icon.mat-icon-sm {
 }
 
 // Keep the outer circle in a radio button gray even when selected
-.mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
+/*TODO(mdc-migration): The following rule targets internal classes of radio that may no longer apply for the MDC version.
+ */
+.mat-mdc-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
   border-color: mat.get-color-from-palette($dockstore-app-gray, 2) !important;
 }
 
 // Remove some padding from mat form fields that are part of a radio group
-.mat-radio-label-content > .mat-form-field > .mat-form-field-wrapper > .mat-form-field-flex > .mat-form-field-infix {
+/*TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.
+ */
+.mat-radio-label-content > .mat-mdc-form-field > .mat-form-field-wrapper > .mat-form-field-flex > .mat-form-field-infix {
   padding: 0.5em 0 0.5em 0;
 }
 // Align the radio button with the form field (only applies to form fields that are part of a radio group and is due to the style directly above)
-.mat-radio-label-content > .mat-form-field > .mat-form-field-wrapper {
+/*TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.
+ */
+.mat-radio-label-content > .mat-mdc-form-field > .mat-form-field-wrapper {
   padding: 0;
 }
 // Center align the place holder text in a mat form if it's part of a radio group. Gets out of alignment because of styles above.
+/*TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.
+ */
 .mat-radio-button .mat-form-field-appearance-outline .mat-form-field-label {
   top: 1.4em;
 }
 // Align the floating text in a mat form if it's part of a radio group. Gets out of alignment because of styles above.
+/*TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.
+ */
 .mat-radio-button .mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
   top: 1.8em;
 }
@@ -1190,7 +1210,9 @@ mat-icon.mat-icon-sm {
 }
 
 // The material checkbox overflows text by default so this style wraps the text instead.
-.mat-checkbox.text-wrap > label.mat-checkbox-layout {
+/*TODO(mdc-migration): The following rule targets internal classes of checkbox that may no longer apply for the MDC version.
+ */
+.mat-mdc-checkbox.text-wrap > label.mat-checkbox-layout {
   white-space: normal;
 }
 
@@ -1211,26 +1233,26 @@ $truncate-text-values: 1, 2, 3;
 
 // The following styles are for mat-tables.
 // The redesigned tables have no borders, bolded headers, no left-padding on the first elements and no right-padding on the last elements.
-.mat-table,
+.mat-mdc-table,
 table {
   border: none;
 }
 
-.mat-header-cell,
+.mat-mdc-header-cell,
 table th {
   font-weight: 500 !important;
   color: $header-color !important;
 }
 
-.mat-header-cell:first-of-type,
-.mat-cell:first-of-type,
-.mat-footer-cell:first-of-type {
+.mat-mdc-header-cell:first-of-type,
+.mat-mdc-cell:first-of-type,
+.mat-mdc-footer-cell:first-of-type {
   padding-left: 0 !important;
 }
 
-.mat-cell:last-of-type,
-.mat-header-cell:last-of-type,
-.mat-footer-cell:last-of-type {
+.mat-mdc-cell:last-of-type,
+.mat-mdc-header-cell:last-of-type,
+.mat-mdc-footer-cell:last-of-type {
   padding-right: 0 !important;
 }
 
@@ -1240,25 +1262,25 @@ table th {
 }
 
 /* Don't have multi-line headers */
-.mat-header-row,
+.mat-mdc-header-row,
 .white-space-no-wrap {
   white-space: nowrap;
 }
 
 /* Material says it should have 16dp to the left and right, sadly Angular Material does not */
-.mat-cell:not(:first-of-type),
-.mat-header-cell:not(:first-of-type) {
+.mat-mdc-cell:not(:first-of-type),
+.mat-mdc-header-cell:not(:first-of-type) {
   padding-left: 1.6rem;
 }
 
 /* Material says it should have 16dp to the left and right, sadly Angular Material does not */
-.mat-cell:not(:last-of-type),
-.mat-header-cell:not(:last-of-type),
+.mat-mdc-cell:not(:last-of-type),
+.mat-mdc-header-cell:not(:last-of-type),
 table th {
   padding-right: 1.6rem;
 }
 
-.mat-cell,
+.mat-mdc-cell,
 table td {
   color: mat.get-color-from-palette($kim-gray, 1);
 }
@@ -1278,7 +1300,7 @@ a.private-btn {
 
 // Updated mat-raised-button style to match new redesigned buttons. This style can be used alone for the LARGER dockstore buttons
 // 14px font and 36px height
-button.mat-raised-button,
+button.mat-mdc-raised-button,
 a.mat-raised-button {
   font-weight: bold;
   line-height: 36px;
@@ -1321,10 +1343,12 @@ button.inline-text-btn {
 }
 
 // Updated mat-card style matching Zeplin redesign
-.mat-card:not([class*='mat-elevation-z']) {
+.mat-mdc-card:not([class*='mat-elevation-z']) {
   border: solid 1px mat.get-color-from-palette($dockstore-app-gray, 7);
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1), 0 2px 3px 0 rgba(0, 0, 0, 0.08) !important;
   // Override mat-card-header margin
+  /*TODO(mdc-migration): The following rule targets internal classes of card that may no longer apply for the MDC version.
+ */
   .mat-card-header-text {
     margin-left: 0rem;
   }
@@ -1395,7 +1419,7 @@ button.inline-text-btn {
 }
 
 // Override min-height: 64px for mat-menu-panel dropdowns
-div.mat-menu-panel {
+div.mat-mdc-menu-panel {
   min-height: min-content;
 }
 

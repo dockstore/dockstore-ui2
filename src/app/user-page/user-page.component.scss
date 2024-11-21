@@ -16,7 +16,7 @@ img[alt='Google avatar'] {
   border: solid 1px mat.get-color-from-palette($dockstore-app-gray, 4);
 }
 
-.mat-card-header .mat-card-title {
+.mat-mdc-card-header .mat-mdc-card-title {
   font-size: 1.6rem;
 }
 
@@ -30,12 +30,14 @@ img[alt='Google avatar'] {
 }
 
 // Grey out tab labels
+/* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
 :host ::ng-deep .mat-tab-label img {
   width: 2rem;
   filter: brightness(0) saturate(100%) invert(50%) sepia(42%) saturate(0%) hue-rotate(238deg) brightness(88%) contrast(90%);
 }
 
 // Active tab labels
+/* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
 :host ::ng-deep .mat-tab-label.mat-tab-label-active {
   opacity: 1;
 

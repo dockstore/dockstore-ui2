@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { Notification } from '../shared/openapi/model/notification';
 import { NotificationsService } from './state/notifications.service';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatButtonModule } from '@angular/material/button';
 import { MarkdownWrapperComponent } from '../shared/markdown-wrapper/markdown-wrapper.component';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { NgFor, AsyncPipe } from '@angular/common';
@@ -13,7 +13,7 @@ import { NgFor, AsyncPipe } from '@angular/common';
   templateUrl: './sitewide-notifications.component.html',
   styleUrls: ['./sitewide-notifications.component.scss'],
   standalone: true,
-  imports: [NgFor, FlexModule, MarkdownWrapperComponent, MatLegacyButtonModule, MatIconModule, AsyncPipe],
+  imports: [NgFor, FlexModule, MarkdownWrapperComponent, MatButtonModule, MatIconModule, AsyncPipe],
 })
 export class SitewideNotificationsComponent implements OnInit {
   public activeNotifications$: Observable<Array<Notification>>;

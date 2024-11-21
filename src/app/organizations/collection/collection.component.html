@@ -31,7 +31,7 @@
 <app-loading [loading]="(loadingCollection$ | async) || (loadingOrganization$ | async)">
   <div *ngIf="organization$ | async as organization">
     <div class="container mb-5" *ngIf="collection$ | async as collection" fxLayout="column">
-      <mat-card fxFlex class="my-3 alert alert-info mat-elevation-z" *ngIf="organization?.status === pendingEnum">
+      <mat-card appearance="outlined" fxFlex class="my-3 alert alert-info mat-elevation-z" *ngIf="organization?.status === pendingEnum">
         <mat-icon>info</mat-icon> This collection is part of an organization that is pending approval by a Dockstore curator.
         <span *ngIf="(isAdmin$ | async) || (isCurator$ | async); else notAdminOrCurator">
           You can approve/reject this pending organization request on the requests tab of the
@@ -43,7 +43,7 @@
         </ng-template>
       </mat-card>
 
-      <mat-card fxFlex class="my-3 alert alert-info mat-elevation-z" *ngIf="organization?.status === 'REJECTED'">
+      <mat-card appearance="outlined" fxFlex class="my-3 alert alert-info mat-elevation-z" *ngIf="organization?.status === 'REJECTED'">
         <mat-icon>info</mat-icon> This collection is part of an organization that has been rejected by a curator. Members can re-request
         approval on the <a [routerLink]="'/accounts'" style="text-decoration: underline">accounts page</a>.
       </mat-card>
@@ -90,7 +90,7 @@
           </button>
         </mat-card-actions>
       </div>
-      <mat-card class="alert alert-info mat-elevation-z" *ngIf="collection?.entries?.length === 0">
+      <mat-card appearance="outlined" class="alert alert-info mat-elevation-z" *ngIf="collection?.entries?.length === 0">
         <mat-icon>info</mat-icon> This collection has no associated entries. To add an entry, navigate to the public page of the tool or
         workflow you want to add and select `Add to collection`
       </mat-card>
@@ -99,7 +99,7 @@
           <div fxLayout="column" fxLayoutGap="15px">
             <h3>Workflows, Notebooks, Services, and Tools</h3>
             <div data-cy="collectionEntry" *ngFor="let entry of collection?.entries">
-              <mat-card class="pb-3">
+              <mat-card appearance="outlined" class="pb-3">
                 <a [routerLink]="entry | routerLink" class="no-underline">
                   <div fxLayout="row" fxLayoutAlign="space-between center">
                     <div fxLayout="row" fxLayoutAlign="flex-start" fxLayoutGap="1rem">
@@ -143,13 +143,13 @@
                   <div fxLayout="row" fxLayoutAlign="space-between center">
                     <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="1rem">
                       <span class="update-time"> Last updated {{ entry.dbUpdateDate | date }} </span>
-                      <mat-chip-list class="bubble-list">
+                      <mat-chip-listbox class="bubble-list">
                         <app-category-button
                           *ngFor="let category of entry.categories"
                           [category]="category"
                           [entryType]="entry.entryType"
                         ></app-category-button>
-                        <mat-chip
+                        <mat-chip-option
                           [ngClass]="entry.entryType === 'workflow' ? 'workflow-background bubble' : 'tool-background bubble'"
                           *ngIf="entry.verified"
                         >
@@ -157,11 +157,11 @@
                             <mat-icon class="verified-icon">done</mat-icon>
                             <span>Verified</span>
                           </span>
-                        </mat-chip>
+                        </mat-chip-option>
                         <span class="bubble" *ngFor="let descriptorType of entry.descriptorTypes">{{
                           'descriptor_type' | mapFriendlyValue: descriptorType
                         }}</span>
-                      </mat-chip-list>
+                      </mat-chip-listbox>
                     </div>
                     <button mat-raised-button class="small-mat-btn-skin small-btn-structure" color="accent">View</button>
                   </div>

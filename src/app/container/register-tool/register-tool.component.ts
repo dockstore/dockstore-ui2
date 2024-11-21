@@ -25,23 +25,23 @@ import { formErrors, validationDescriptorPatterns, validationMessages } from '..
 import { RegisterToolService } from './register-tool.service';
 import { Dockstore } from '../../shared/dockstore.model';
 import { EntryType } from 'app/shared/openapi';
-import { MatLegacyCheckboxModule } from '@angular/material/legacy-checkbox';
-import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
-import { MatLegacyInputModule } from '@angular/material/legacy-input';
-import { MatLegacyOptionModule } from '@angular/material/legacy-core';
-import { MatLegacySelectModule } from '@angular/material/legacy-select';
-import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatInputModule } from '@angular/material/input';
+import { MatOptionModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { RegisterGithubAppComponent } from '../../shared/register-github-app/register-github-app.component';
 import { RefreshWizardComponent } from '../refresh-wizard/refresh-wizard.component';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
-import { MatLegacyRadioModule } from '@angular/material/legacy-radio';
+import { MatButtonModule } from '@angular/material/button';
+import { MatRadioModule } from '@angular/material/radio';
 import { MatIconModule } from '@angular/material/icon';
 import { MatStepperModule } from '@angular/material/stepper';
-import { MatLegacyProgressBarModule } from '@angular/material/legacy-progress-bar';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NgIf, NgFor, AsyncPipe } from '@angular/common';
 import { AlertComponent } from '../../shared/alert/alert.component';
-import { MatLegacyDialogModule } from '@angular/material/legacy-dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 
 interface HostedTool {
   path: string;
@@ -63,25 +63,25 @@ enum OptionChoice {
   styleUrls: ['./register-tool.component.css'],
   standalone: true,
   imports: [
-    MatLegacyDialogModule,
+    MatDialogModule,
     AlertComponent,
     NgIf,
-    MatLegacyProgressBarModule,
+    MatProgressBarModule,
     MatStepperModule,
     MatIconModule,
-    MatLegacyRadioModule,
+    MatRadioModule,
     FormsModule,
     NgFor,
-    MatLegacyButtonModule,
+    MatButtonModule,
     RefreshWizardComponent,
     RegisterGithubAppComponent,
     FlexModule,
-    MatLegacyFormFieldModule,
-    MatLegacySelectModule,
-    MatLegacyOptionModule,
-    MatLegacyInputModule,
-    MatLegacyTooltipModule,
-    MatLegacyCheckboxModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatOptionModule,
+    MatInputModule,
+    MatTooltipModule,
+    MatCheckboxModule,
     AsyncPipe,
   ],
 })

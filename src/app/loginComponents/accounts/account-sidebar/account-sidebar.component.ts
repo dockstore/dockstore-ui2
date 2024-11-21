@@ -9,12 +9,12 @@ import { Profile, User } from '../../../shared/openapi';
 import { UsersService } from '../../../shared/openapi/api/users.service';
 import { UserQuery } from '../../../shared/user/user.query';
 import { UserService } from '../../../shared/user/user.service';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { ChangeUsernameComponent } from '../../../../app/loginComponents/accounts/internal/change-username/change-username.component';
 import { bootstrap4largeModalSize } from '../../../shared/constants';
 import { RouterLink } from '@angular/router';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
-import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
 import { NgIf } from '@angular/common';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
@@ -24,7 +24,7 @@ import { FlexModule } from '@ngbracket/ngx-layout/flex';
   templateUrl: './account-sidebar.component.html',
   styleUrls: ['./account-sidebar.component.scss'],
   standalone: true,
-  imports: [FlexModule, NgIf, MatIconModule, MatLegacyTooltipModule, MatLegacyButtonModule, RouterLink],
+  imports: [FlexModule, NgIf, MatIconModule, MatTooltipModule, MatButtonModule, RouterLink],
 })
 export class AccountSidebarComponent implements OnInit {
   user: User;

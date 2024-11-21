@@ -67,6 +67,7 @@
                 {{ version.workflow_path }}
               </div>
               <mat-card
+                appearance="outlined"
                 *ngIf="formErrors.workflow_path && (isService$ | async) === false && (isNotebook$ | async) === false"
                 class="alert alert-danger mat-elevation-z"
               >
@@ -165,7 +166,7 @@
               <div *ngIf="formErrors.testParameterFilePath" class="form-error-messages alert alert-danger">
                 {{ formErrors.testParameterFilePath }}
               </div>
-              <mat-card *ngIf="hasDuplicateTestJson()" class="alert alert-danger mat-elevation-z">
+              <mat-card appearance="outlined" *ngIf="hasDuplicateTestJson()" class="alert alert-danger mat-elevation-z">
                 Duplicate test json files are not allowed.
               </mat-card>
             </div>

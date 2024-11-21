@@ -1,10 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import {
-  MatLegacyDialog as MatDialog,
-  MatLegacyDialogRef as MatDialogRef,
-  MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
-  MatLegacyDialogModule,
-} from '@angular/material/legacy-dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ConfirmationDialogData } from '../../confirmation-dialog/confirmation-dialog.component';
@@ -15,20 +10,20 @@ import { Organization, OrganizationUser } from '../../shared/openapi';
 import { UserQuery } from '../../shared/user/user.query';
 import { RequestsQuery } from '../state/requests.query';
 import { RequestsService } from '../state/requests.service';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
-import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { MatCardModule } from '@angular/material/card';
 import { NgIf, NgFor, AsyncPipe, LowerCasePipe, DatePipe } from '@angular/common';
-import { MatLegacyProgressBarModule } from '@angular/material/legacy-progress-bar';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @Component({
   selector: 'app-organization-request-confirm-dialog',
   templateUrl: 'organization-request-confirm-dialog.html',
   standalone: true,
-  imports: [MatLegacyDialogModule, FlexModule, MatLegacyButtonModule, NgIf],
+  imports: [MatDialogModule, FlexModule, MatButtonModule, NgIf],
 })
 export class OrganizationRequestConfirmDialogComponent {
   constructor(
@@ -45,7 +40,7 @@ export class OrganizationRequestConfirmDialogComponent {
   selector: 'app-organization-invite-confirm-dialog',
   templateUrl: 'organization-invite-confirm-dialog.html',
   standalone: true,
-  imports: [MatLegacyDialogModule, FlexModule, MatLegacyButtonModule, NgIf],
+  imports: [MatDialogModule, FlexModule, MatButtonModule, NgIf],
 })
 export class OrganizationInviteConfirmDialogComponent {
   constructor(public dialogRef: MatDialogRef<OrganizationInviteConfirmDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
@@ -67,15 +62,15 @@ export interface DialogData {
   styleUrls: ['./requests.component.scss'],
   standalone: true,
   imports: [
-    MatLegacyProgressBarModule,
+    MatProgressBarModule,
     NgIf,
-    MatLegacyCardModule,
+    MatCardModule,
     MatIconModule,
     FlexModule,
     NgFor,
     RouterLink,
-    MatLegacyTooltipModule,
-    MatLegacyButtonModule,
+    MatTooltipModule,
+    MatButtonModule,
     AsyncPipe,
     LowerCasePipe,
     DatePipe,

@@ -7,12 +7,21 @@
   <div *ngIf="(isAdmin$ | async) || (isCurator$ | async)" class="p-3">
     <h3>Curator Requests</h3>
     <p>As a curator/admin, you can approve and reject organization requests.</p>
-    <mat-card class="alert alert-info mat-elevation-z" role="alert" *ngIf="(allPendingOrganizations$ | async)?.length === 0">
+    <mat-card
+      appearance="outlined"
+      class="alert alert-info mat-elevation-z"
+      role="alert"
+      *ngIf="(allPendingOrganizations$ | async)?.length === 0"
+    >
       <mat-icon>info</mat-icon> There are no organizations waiting for approval.
     </mat-card>
 
     <div fxLayout="column" fxLayoutGap="32px">
-      <mat-card *ngFor="let org of allPendingOrganizations$ | async; let i = index; trackBy: trackByOrg" [id]="'pending-org-card-' + i">
+      <mat-card
+        appearance="outlined"
+        *ngFor="let org of allPendingOrganizations$ | async; let i = index; trackBy: trackByOrg"
+        [id]="'pending-org-card-' + i"
+      >
         <mat-card-header>
           <mat-card-title>
             <a [routerLink]="'/organizations/' + org.name" [matTooltip]="org?.name">{{ org.displayName }}</a>
@@ -69,12 +78,18 @@
   <div class="p-3">
     <h3>My Requests</h3>
     <p>The following organizations that you have created are pending approval.</p>
-    <mat-card class="alert alert-info mat-elevation-z" role="alert" *ngIf="(myPendingOrganizationRequests$ | async)?.length === 0">
+    <mat-card
+      appearance="outlined"
+      class="alert alert-info mat-elevation-z"
+      role="alert"
+      *ngIf="(myPendingOrganizationRequests$ | async)?.length === 0"
+    >
       <mat-icon>info</mat-icon> You have no organizations pending approval.
     </mat-card>
 
     <div fxLayout="column" fxLayoutGap="32px">
       <mat-card
+        appearance="outlined"
         *ngFor="let membership of myPendingOrganizationRequests$ | async; let i = index; trackBy: trackByOrgUser"
         [id]="'my-pending-org-card-' + i"
       >
@@ -105,11 +120,17 @@
     </div>
 
     <p class="pt-2">The following organizations that you have created are rejected.</p>
-    <mat-card class="alert alert-info mat-elevation-z" role="alert" *ngIf="(myRejectedOrganizationRequests$ | async)?.length === 0">
+    <mat-card
+      appearance="outlined"
+      class="alert alert-info mat-elevation-z"
+      role="alert"
+      *ngIf="(myRejectedOrganizationRequests$ | async)?.length === 0"
+    >
       <mat-icon>info</mat-icon> You have no rejected organizations.
     </mat-card>
     <div fxLayout="column" fxLayoutGap="32px">
       <mat-card
+        appearance="outlined"
         *ngFor="let membership of myRejectedOrganizationRequests$ | async; let i = index; trackBy: trackByOrgUser"
         [id]="'my-rejected-org-card-' + i"
       >
@@ -156,12 +177,18 @@
   <div class="p-3">
     <h3>Organization Invites</h3>
     <p>Accept and decline invitations to join organizations.</p>
-    <mat-card class="alert alert-info mat-elevation-z" role="alert" *ngIf="(myOrganizationInvites$ | async)?.length === 0">
+    <mat-card
+      appearance="outlined"
+      class="alert alert-info mat-elevation-z"
+      role="alert"
+      *ngIf="(myOrganizationInvites$ | async)?.length === 0"
+    >
       <mat-icon>info</mat-icon> You have no pending organization invites.
     </mat-card>
 
     <div fxLayout="column" fxLayoutGap="32px">
       <mat-card
+        appearance="outlined"
         *ngFor="let membership of myOrganizationInvites$ | async; let i = index; trackBy: trackByOrgUser"
         [id]="'my-org-invites-card-' + i"
       >

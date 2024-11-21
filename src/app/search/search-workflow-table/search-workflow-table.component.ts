@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { Component, OnInit } from '@angular/core';
-import { MatLegacyTableDataSource as MatTableDataSource, MatLegacyTableModule } from '@angular/material/legacy-table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Observable } from 'rxjs';
 import { DateService } from '../../shared/date.service';
 import { Workflow } from '../../shared/openapi';
@@ -24,15 +24,15 @@ import { SearchService } from '../state/search.service';
 import { JoinWithEllipsesPipe } from 'app/search/join-with-ellipses.pipe';
 import { SearchAuthorsHtmlPipe } from 'app/search/search-authors-html.pipe';
 import { DescriptorLanguagePipe } from '../../shared/entry/descriptor-language.pipe';
-import { MatLegacyPaginatorModule } from '@angular/material/legacy-paginator';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MatIconModule } from '@angular/material/icon';
 import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
 import { AiBubbleComponent } from '../../shared/ai-bubble/ai-bubble.component';
 import { RouterLink } from '@angular/router';
-import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSortModule } from '@angular/material/sort';
-import { MatLegacyProgressBarModule } from '@angular/material/legacy-progress-bar';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NgIf, NgFor, KeyValuePipe } from '@angular/common';
 import TopicSelectionEnum = Workflow.TopicSelectionEnum;
 
@@ -47,17 +47,17 @@ import TopicSelectionEnum = Workflow.TopicSelectionEnum;
   standalone: true,
   imports: [
     NgIf,
-    MatLegacyProgressBarModule,
-    MatLegacyTableModule,
+    MatProgressBarModule,
+    MatTableModule,
     MatSortModule,
-    MatLegacyTooltipModule,
+    MatTooltipModule,
     RouterLink,
     AiBubbleComponent,
     ExtendedModule,
     MatIconModule,
     FontAwesomeModule,
     NgFor,
-    MatLegacyPaginatorModule,
+    MatPaginatorModule,
     KeyValuePipe,
     DescriptorLanguagePipe,
     SearchAuthorsHtmlPipe,

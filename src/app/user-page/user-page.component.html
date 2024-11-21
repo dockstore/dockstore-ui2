@@ -9,7 +9,7 @@
 
 <div class="container">
   <div fxLayout fxLayout.lt-md="column" fxLayoutAlign="center" fxLayoutGap="1rem" class="my-5">
-    <mat-card *ngIf="user" fxFlex.gt-md="25" fxFlex.lt-md="100" fxLayout="column" fxLayoutAlign="center">
+    <mat-card appearance="outlined" *ngIf="user" fxFlex.gt-md="25" fxFlex.lt-md="100" fxLayout="column" fxLayoutAlign="center">
       <img mat-card-image [src]="user?.avatarUrl" class="mt-0 mx-auto mb-3" alt="Dockstore avatar" />
       <mat-card-content fxLayout="column" fxLayoutAlign="center center">
         <h4 matLine class="accent-1-dark mt-2 mb-0">{{ user?.username }}</h4>
@@ -26,7 +26,7 @@
 
     <div fxLayout="column" fxLayoutGap="1rem" fxFlex>
       <!-- GitHub -->
-      <mat-card *ngIf="gitHubProfile" fxLayout="column" fxLayoutAlign="space-between" class="h-100">
+      <mat-card appearance="outlined" *ngIf="gitHubProfile" fxLayout="column" fxLayoutAlign="space-between" class="h-100">
         <div fxLayout fxLayoutAlign="space-between">
           <mat-card-header>
             <div mat-card-avatar matBadge="✓" class="mr-4">
@@ -73,7 +73,7 @@
         </div>
       </mat-card>
       <!-- ORCID -->
-      <mat-card *ngIf="user?.orcid" class="h-100">
+      <mat-card appearance="outlined" *ngIf="user?.orcid" class="h-100">
         <mat-card-header>
           <div mat-card-avatar matBadge="✓" class="mr-4">
             <img src="../../assets/images/account-logos/orcid.svg" alt="ORCID logo" class="w-100" />
@@ -87,7 +87,7 @@
         </mat-card-header>
       </mat-card>
       <!-- Google -->
-      <mat-card *ngIf="googleProfile" fxLayout="column" fxLayoutAlign="space-between" class="h-100">
+      <mat-card appearance="outlined" *ngIf="googleProfile" fxLayout="column" fxLayoutAlign="space-between" class="h-100">
         <div fxLayout fxLayoutAlign="space-between">
           <mat-card-header>
             <div mat-card-avatar matBadge="✓" class="mr-4">
@@ -129,12 +129,17 @@
       </ng-template>
       <div class="w-100">
         <div *ngIf="otherLinkedAccountsInfo.length === 0">
-          <mat-card class="alert alert-info mat-elevation-z starred-header" role="alert" data-cy="no-other-linked-accounts-banner">
+          <mat-card
+            appearance="outlined"
+            class="alert alert-info mat-elevation-z starred-header"
+            role="alert"
+            data-cy="no-other-linked-accounts-banner"
+          >
             This user has no other linked accounts.
           </mat-card>
         </div>
         <div *ngFor="let row of otherLinkedAccountsInfo" class="p-3" fxFlex.lt-md="100">
-          <mat-card [attr.data-cy]="'other-linked-accounts-' + row.name">
+          <mat-card appearance="outlined" [attr.data-cy]="'other-linked-accounts-' + row.name">
             <mat-card-header>
               <div mat-card-avatar matBadge="✓" class="mr-4">
                 <img src="../../assets/images/account-logos/{{ row.logo }}" alt="{{ row.name }} logo" class="w-100" />

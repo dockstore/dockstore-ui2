@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { RequestsQuery } from 'app/loginComponents/state/requests.query';
 import { RequireAccountsModalComponent } from 'app/organizations/registerOrganization/requireAccountsModal/require-accounts-modal.component';
 import { Base } from 'app/shared/base';
@@ -12,12 +12,12 @@ import { MyOrganizationsDialogComponent } from './my-organizations-dialog.compon
 import { Router, RouterLink } from '@angular/router';
 import { RecentEventsComponent } from '../../recent-events/recent-events.component';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatButtonModule } from '@angular/material/button';
 import { NgIf, AsyncPipe } from '@angular/common';
-import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
-import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-organization-box',
@@ -25,13 +25,13 @@ import { MatLegacyCardModule } from '@angular/material/legacy-card';
   styleUrls: ['./organization-box.component.scss', '../../../shared/styles/dashboard-boxes.scss'],
   standalone: true,
   imports: [
-    MatLegacyCardModule,
+    MatCardModule,
     FlexModule,
     MatIconModule,
     RouterLink,
-    MatLegacyTooltipModule,
+    MatTooltipModule,
     NgIf,
-    MatLegacyButtonModule,
+    MatButtonModule,
     MatDividerModule,
     RecentEventsComponent,
     AsyncPipe,

@@ -12,9 +12,9 @@ import { ClipboardModule } from '@angular/cdk/clipboard';
 import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
 import { SnackbarDirective } from '../../../shared/snackbar.directive';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatButtonModule } from '@angular/material/button';
 import { NgIf, NgClass } from '@angular/common';
-import { MatLegacyTabsModule } from '@angular/material/legacy-tabs';
+import { MatTabsModule } from '@angular/material/tabs';
 import { MarkdownModule } from 'ngx-markdown';
 
 @Component({
@@ -24,9 +24,9 @@ import { MarkdownModule } from 'ngx-markdown';
   standalone: true,
   imports: [
     MarkdownModule,
-    MatLegacyTabsModule,
+    MatTabsModule,
     NgIf,
-    MatLegacyButtonModule,
+    MatButtonModule,
     MatIconModule,
     SnackbarDirective,
     NgClass,

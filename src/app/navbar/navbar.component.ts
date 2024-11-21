@@ -29,11 +29,11 @@ import { TrackLoginService } from './../shared/track-login.service';
 import { Organization, OrganizationUser } from '../shared/openapi';
 import { RequestsQuery } from '../loginComponents/state/requests.query';
 import { RequestsService } from '../loginComponents/state/requests.service';
-import { MatLegacyMenuModule } from '@angular/material/legacy-menu';
+import { MatMenuModule } from '@angular/material/menu';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatIconModule } from '@angular/material/icon';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatButtonModule } from '@angular/material/button';
 import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
 import { NgClass, NgIf, NgTemplateOutlet, AsyncPipe } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -48,14 +48,14 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     NgClass,
     ExtendedModule,
     RouterLink,
-    MatLegacyButtonModule,
+    MatButtonModule,
     RouterLinkActive,
     NgIf,
     FlexModule,
     MatIconModule,
     MatBadgeModule,
     NgTemplateOutlet,
-    MatLegacyMenuModule,
+    MatMenuModule,
     AsyncPipe,
   ],
 })

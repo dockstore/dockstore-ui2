@@ -32,11 +32,11 @@ import { EntryType } from '../../shared/enum/entry-type';
 import { LaunchCheckerWorkflowComponent } from '../../shared/entry/launch-checker-workflow/launch-checker-workflow.component';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { SnackbarDirective } from '../../shared/snackbar.directive';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
-import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { MatCardModule } from '@angular/material/card';
 import { NgIf, AsyncPipe } from '@angular/common';
 
 @Component({
@@ -46,11 +46,11 @@ import { NgIf, AsyncPipe } from '@angular/common';
   standalone: true,
   imports: [
     NgIf,
-    MatLegacyCardModule,
+    MatCardModule,
     MatIconModule,
     FlexModule,
-    MatLegacyTooltipModule,
-    MatLegacyButtonModule,
+    MatTooltipModule,
+    MatButtonModule,
     SnackbarDirective,
     ClipboardModule,
     LaunchCheckerWorkflowComponent,

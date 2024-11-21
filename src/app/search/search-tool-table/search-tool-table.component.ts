@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MatLegacyTableDataSource as MatTableDataSource, MatLegacyTableModule } from '@angular/material/legacy-table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Observable } from 'rxjs';
 import { DateService } from '../../shared/date.service';
 import { AppTool, DockstoreTool } from '../../shared/openapi';
@@ -9,17 +9,17 @@ import { SearchService } from '../state/search.service';
 import { IsAppToolPipe } from '../is-app-tool.pipe';
 import { JoinWithEllipsesPipe } from 'app/search/join-with-ellipses.pipe';
 import { SearchAuthorsHtmlPipe } from 'app/search/search-authors-html.pipe';
-import { MatLegacyPaginatorModule } from '@angular/material/legacy-paginator';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { MatIconModule } from '@angular/material/icon';
 import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
 import { AiBubbleComponent } from '../../shared/ai-bubble/ai-bubble.component';
 import { RouterLink } from '@angular/router';
-import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { PrivateIconComponent } from '../../shared/private-icon/private-icon.component';
 import { MatSortModule } from '@angular/material/sort';
-import { MatLegacyProgressBarModule } from '@angular/material/legacy-progress-bar';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NgIf, NgFor, UpperCasePipe, KeyValuePipe } from '@angular/common';
 import TopicSelectionEnum = DockstoreTool.TopicSelectionEnum;
 
@@ -34,11 +34,11 @@ import TopicSelectionEnum = DockstoreTool.TopicSelectionEnum;
   standalone: true,
   imports: [
     NgIf,
-    MatLegacyProgressBarModule,
-    MatLegacyTableModule,
+    MatProgressBarModule,
+    MatTableModule,
     MatSortModule,
     PrivateIconComponent,
-    MatLegacyTooltipModule,
+    MatTooltipModule,
     RouterLink,
     AiBubbleComponent,
     ExtendedModule,
@@ -46,7 +46,7 @@ import TopicSelectionEnum = DockstoreTool.TopicSelectionEnum;
     FlexModule,
     NgFor,
     FontAwesomeModule,
-    MatLegacyPaginatorModule,
+    MatPaginatorModule,
     UpperCasePipe,
     KeyValuePipe,
     SearchAuthorsHtmlPipe,

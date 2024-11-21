@@ -2,8 +2,8 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 import { Component } from '@angular/core';
 import { TestBed, waitForAsync } from '@angular/core/testing';
-import { MatLegacyDialogModule } from '@angular/material/legacy-dialog';
-import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 import { MytoolsService } from './mytools/mytools.service';
@@ -85,7 +85,7 @@ describe('AppComponent', () => {
         declarations: [RouterLinkStubDirective, RouterOutletStubComponent],
         imports: [
           RouterTestingModule,
-          MatLegacyDialogModule,
+          MatDialogModule,
           MatSnackBarModule,
           HttpClientTestingModule,
           NavbarStubComponent,

@@ -15,7 +15,7 @@
  */
 
 /* Drop-down menu restyling to match new design: bolded text & smaller height */
-.mat-menu-item {
+.mat-mdc-menu-item {
   font-size: 13px;
   font-weight: bold;
   height: 40px;

@@ -15,21 +15,21 @@
  */
 
 import { Component, Inject } from '@angular/core';
-import { MatLegacyDialogRef, MatLegacyDialogModule, MAT_LEGACY_DIALOG_DATA } from '@angular/material/legacy-dialog';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatDialogRef, MatDialogModule, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
-import { MatLegacyInputModule } from '@angular/material/legacy-input';
-import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { NgFor, NgIf } from '@angular/common';
 import { MatDividerModule } from '@angular/material/divider';
 import { AlertComponent } from 'app/shared/alert/alert.component';
 import { DockstoreTool, Entry, EntryType, EntryTypeMetadata, Workflow } from 'app/shared/openapi';
-import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { AiBubbleComponent } from 'app/shared/ai-bubble/ai-bubble.component';
 import { FormsModule } from '@angular/forms';
-import { MatLegacyRadioModule } from '@angular/material/legacy-radio';
+import { MatRadioModule } from '@angular/material/radio';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { MatCardModule } from '@angular/material/card';
 import { EditTopicDialogService } from './edit-topic-dialog.service';
 import { EntryActionsService } from 'app/shared/entry-actions/entry-actions.service';
 import { MatRadioChange } from '@angular/material/radio';
@@ -54,20 +54,20 @@ export interface TopicOption {
   styleUrls: ['./edit-topic-dialog.component.scss', '../../../styles/radio-button-cards.scss'],
   standalone: true,
   imports: [
-    MatLegacyDialogModule,
+    MatDialogModule,
     AlertComponent,
     MatDividerModule,
     NgIf,
-    MatLegacyFormFieldModule,
-    MatLegacyInputModule,
+    MatFormFieldModule,
+    MatInputModule,
     FlexModule,
-    MatLegacyButtonModule,
-    MatLegacyTooltipModule,
+    MatButtonModule,
+    MatTooltipModule,
     AiBubbleComponent,
     FormsModule,
-    MatLegacyRadioModule,
+    MatRadioModule,
     MatIconModule,
-    MatLegacyCardModule,
+    MatCardModule,
     NgFor,
     ClipboardModule,
     SnackbarDirective,
@@ -88,10 +88,10 @@ export class EditTopicDialogComponent {
   topicOptions: TopicOption[];
 
   constructor(
-    public dialogRef: MatLegacyDialogRef<EditTopicDialogComponent>,
+    public dialogRef: MatDialogRef<EditTopicDialogComponent>,
     public editTopicDialogService: EditTopicDialogService,
     public entryActionsService: EntryActionsService,
-    @Inject(MAT_LEGACY_DIALOG_DATA) public data: EditTopicDialogData
+    @Inject(MAT_DIALOG_DATA) public data: EditTopicDialogData
   ) {
     this.entry = data.entry;
     this.entryType = data.entry.entryType;

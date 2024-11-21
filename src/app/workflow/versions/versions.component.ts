@@ -15,7 +15,7 @@
  */
 import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
 import { MatSort, MatSortModule } from '@angular/material/sort';
-import { MatLegacyTableModule } from '@angular/material/legacy-table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { faCodeBranch, faTag } from '@fortawesome/free-solid-svg-icons';
 import { distinctUntilChanged, takeUntil, tap } from 'rxjs/operators';
 import { AlertService } from '../../shared/alert/state/alert.service';
@@ -35,11 +35,11 @@ import { DescriptorLanguageVersionsPipe } from '../../shared/entry/descriptor-la
 import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
 import { ViewWorkflowComponent } from '../view/view.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { MatLegacyChipsModule } from '@angular/material/legacy-chips';
-import { NgIf, NgClass, NgFor, JsonPipe, DatePipe, KeyValuePipe, KeyValue, AsyncPipe } from '@angular/common';
+import { MatChipsModule } from '@angular/material/chips';
+import { NgIf, NgClass, NgFor, JsonPipe, DatePipe, KeyValuePipe, KeyValue } from '@angular/common';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { DoiBadgeComponent } from 'app/shared/entry/doi/doi-badge/doi-badge.component';
 import { PaginatorService } from '../../shared/state/paginator.service';
 import { merge, Observable } from 'rxjs';
@@ -52,14 +52,14 @@ import { VersionsDataSource } from './versions-datasource';
   styleUrls: ['./versions.component.scss'],
   standalone: true,
   imports: [
-    MatLegacyTableModule,
+    MatTableModule,
     MatSortModule,
-    MatLegacyTooltipModule,
+    MatTooltipModule,
     MatIconModule,
     FlexModule,
     NgIf,
     NgFor,
-    MatLegacyChipsModule,
+    MatChipsModule,
     FontAwesomeModule,
     ViewWorkflowComponent,
     NgClass,

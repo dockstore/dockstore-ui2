@@ -25,19 +25,19 @@ import { PaginatorService } from '../../shared/state/paginator.service';
 import { ContainersService, DockstoreTool } from '../../shared/openapi';
 import { ToolLister } from '../../shared/tool-lister';
 import { PublishedToolsDataSource } from './published-tools.datasource';
-import { MatLegacyPaginatorModule } from '@angular/material/legacy-paginator';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatButtonModule } from '@angular/material/button';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { PrivateIconComponent } from '../../shared/private-icon/private-icon.component';
 import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
 import { MatSortModule } from '@angular/material/sort';
-import { MatLegacyTableModule } from '@angular/material/legacy-table';
-import { MatLegacyInputModule } from '@angular/material/legacy-input';
-import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
-import { MatLegacyProgressBarModule } from '@angular/material/legacy-progress-bar';
+import { MatTableModule } from '@angular/material/table';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NgIf, NgFor, AsyncPipe, UpperCasePipe } from '@angular/common';
 
 @Component({
@@ -47,20 +47,20 @@ import { NgIf, NgFor, AsyncPipe, UpperCasePipe } from '@angular/common';
   standalone: true,
   imports: [
     NgIf,
-    MatLegacyProgressBarModule,
-    MatLegacyFormFieldModule,
-    MatLegacyInputModule,
-    MatLegacyTableModule,
+    MatProgressBarModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatTableModule,
     MatSortModule,
     ExtendedModule,
     PrivateIconComponent,
     RouterLink,
     MatIconModule,
-    MatLegacyTooltipModule,
+    MatTooltipModule,
     NgFor,
     FontAwesomeModule,
-    MatLegacyButtonModule,
-    MatLegacyPaginatorModule,
+    MatButtonModule,
+    MatPaginatorModule,
     AsyncPipe,
     UpperCasePipe,
   ],

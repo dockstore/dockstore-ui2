@@ -2,12 +2,9 @@ import { ClipboardModule } from '@angular/cdk/clipboard';
 import { HTTP_INTERCEPTORS, HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { APP_INITIALIZER, enableProdMode, importProvidersFrom } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatLegacyDialogModule } from '@angular/material/legacy-dialog';
-import {
-  MAT_LEGACY_SNACK_BAR_DEFAULT_OPTIONS as MAT_SNACK_BAR_DEFAULT_OPTIONS,
-  MatLegacySnackBarModule,
-} from '@angular/material/legacy-snack-bar';
-import { MAT_LEGACY_TOOLTIP_DEFAULT_OPTIONS as MAT_TOOLTIP_DEFAULT_OPTIONS } from '@angular/material/legacy-tooltip';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MAT_TOOLTIP_DEFAULT_OPTIONS } from '@angular/material/tooltip';
 import { bootstrapApplication, BrowserModule, Title } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { enableAkitaProdMode } from '@datorama/akita';
@@ -92,8 +89,8 @@ bootstrapApplication(AppComponent, {
       FontAwesomeModule,
       BrowserModule,
       FormsModule,
-      MatLegacyDialogModule,
-      MatLegacySnackBarModule,
+      MatDialogModule,
+      MatSnackBarModule,
       ClipboardModule,
       FlexLayoutModule,
       StarringModule,

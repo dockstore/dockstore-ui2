@@ -26,18 +26,18 @@ import { AlertService } from 'app/shared/alert/state/alert.service';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { SessionService } from '../../../shared/session/session.service';
 import { Router, RouterLink } from '@angular/router';
-import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { MatOptionModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyAutocompleteModule } from '@angular/material/legacy-autocomplete';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { FormsModule } from '@angular/forms';
-import { MatLegacyInputModule } from '@angular/material/legacy-input';
-import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatButtonModule } from '@angular/material/button';
 import { NgIf, NgFor, TitleCasePipe, DatePipe } from '@angular/common';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
-import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-entry-box',
@@ -45,19 +45,19 @@ import { MatLegacyCardModule } from '@angular/material/legacy-card';
   styleUrls: ['../../../shared/styles/dashboard-boxes.scss'],
   standalone: true,
   imports: [
-    MatLegacyCardModule,
+    MatCardModule,
     FlexModule,
     NgIf,
-    MatLegacyButtonModule,
-    MatLegacyTooltipModule,
+    MatButtonModule,
+    MatTooltipModule,
     MatDividerModule,
-    MatLegacyFormFieldModule,
-    MatLegacyInputModule,
+    MatFormFieldModule,
+    MatInputModule,
     FormsModule,
-    MatLegacyAutocompleteModule,
+    MatAutocompleteModule,
     MatIconModule,
     NgFor,
-    MatLegacyOptionModule,
+    MatOptionModule,
     RouterLink,
     TitleCasePipe,
     DatePipe,

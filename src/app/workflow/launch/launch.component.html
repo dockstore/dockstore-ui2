@@ -15,22 +15,23 @@
   -->
 
 <div class="p-3">
-  <mat-card *ngIf="!_selectedVersion" class="alert alert-warning mat-elevation-z" role="alert">
+  <mat-card appearance="outlined" *ngIf="!_selectedVersion" class="alert alert-warning mat-elevation-z" role="alert">
     <mat-icon class="alert-warning-icon">warning</mat-icon> To see launch with, please refresh the workflow.
   </mat-card>
   <div *ngIf="_selectedVersion">
     <div *ngIf="!_selectedVersion.valid">
-      <mat-card class="alert alert-warning mat-elevation-z" role="alert">
+      <mat-card appearance="outlined" class="alert alert-warning mat-elevation-z" role="alert">
         <mat-icon class="alert-warning-icon">warning</mat-icon> This section is only available for valid versions. A valid version requires
         a valid descriptor file.
       </mat-card>
     </div>
     <div *ngIf="_selectedVersion.valid" fxLayout="column" fxLayoutGap="1rem">
       <div fxLayout="column" fxLayoutGap="1rem">
-        <mat-card *ngIf="entryType === EntryType.Tool" class="alert alert-info mat-elevation-z" role="alert">
+        <mat-card appearance="outlined" *ngIf="entryType === EntryType.Tool" class="alert alert-info mat-elevation-z" role="alert">
           <mat-icon>info</mat-icon> GitHub App Tools are launched in workflow mode with the Dockstore CLI
         </mat-card>
         <mat-card
+          appearance="outlined"
           *ngIf="(isNFL$ | async) === false && (isGalaxy$ | async) === false"
           matTooltip="Commands for creating a runtime JSON template"
         >
@@ -47,7 +48,7 @@
             <pre>{{ wgetTestJsonDescription }}</pre>
           </span>
         </mat-card>
-        <mat-card *ngIf="(isGalaxy$ | async) === true" matTooltip="Commands for creating a runtime JSON template">
+        <mat-card appearance="outlined" *ngIf="(isGalaxy$ | async) === true" matTooltip="Commands for creating a runtime JSON template">
           Download the workflow and other included files (such as example parameter files)
           <button mat-icon-button color="secondary" matTooltip="Copy command" [cdkCopyToClipboard]="planemoSharedZipString" appSnackbar>
             <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
@@ -68,6 +69,7 @@
           </span>
         </mat-card>
         <mat-card
+          appearance="outlined"
           *ngIf="(isNFL$ | async) === false && (isGalaxy$ | async) === false"
           matTooltip="Commands for launching tool through Dockstore CLI (Supports file provisioning)"
         >
@@ -77,7 +79,10 @@
           </button>
           <pre>{{ cli }}</pre>
         </mat-card>
-        <mat-card *ngIf="(isNFL$ | async) && DockstoreToolType.ModeEnum.HOSTED !== mode && WorkflowType.ModeEnum.HOSTED !== mode">
+        <mat-card
+          appearance="outlined"
+          *ngIf="(isNFL$ | async) && DockstoreToolType.ModeEnum.HOSTED !== mode && WorkflowType.ModeEnum.HOSTED !== mode"
+        >
           <div matTooltip="Nextflow can conveniently run a workflow off of source control">
             Run with nextflow
             <button
@@ -94,7 +99,10 @@
           </div>
         </mat-card>
 
-        <mat-card *ngIf="(isGalaxy$ | async) && DockstoreToolType.ModeEnum.HOSTED !== mode && WorkflowType.ModeEnum.HOSTED !== mode">
+        <mat-card
+          appearance="outlined"
+          *ngIf="(isGalaxy$ | async) && DockstoreToolType.ModeEnum.HOSTED !== mode && WorkflowType.ModeEnum.HOSTED !== mode"
+        >
           <div matTooltip="Planemo can run a workflow locally">
             Run with Planemo
             <button mat-icon-button color="secondary" matTooltip="Copy command" [cdkCopyToClipboard]="planemoLocalLaunchString" appSnackbar>
@@ -104,7 +112,10 @@
           </div>
         </mat-card>
 
-        <mat-card *ngIf="(isNFL$ | async) && (DockstoreToolType.ModeEnum.HOSTED === mode || WorkflowType.ModeEnum.HOSTED === mode)">
+        <mat-card
+          appearance="outlined"
+          *ngIf="(isNFL$ | async) && (DockstoreToolType.ModeEnum.HOSTED === mode || WorkflowType.ModeEnum.HOSTED === mode)"
+        >
           <div matTooltip="Nextflow can also run a local workflow">
             Download the workflow files
             <button
@@ -132,7 +143,7 @@
           </div>
         </mat-card>
 
-        <mat-card *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL && (published$ | async)">
+        <mat-card appearance="outlined" *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL && (published$ | async)">
           <div [matTooltip]="cwlrunnerTooltip">
             {{ cwlrunnerDescription }}
             <button mat-icon-button color="secondary" matTooltip="Copy command" [cdkCopyToClipboard]="cwl" appSnackbar>
@@ -141,7 +152,7 @@
             <pre>{{ cwl }}</pre>
           </div>
         </mat-card>
-        <mat-card *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL && (published$ | async)">
+        <mat-card appearance="outlined" *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL && (published$ | async)">
           <div [matTooltip]="cwltoolTooltip">
             Alternatively, <a href="https://github.com/common-workflow-language/cwltool">cwltool</a> can conveniently run a workflow off of
             dockstore.org and other
@@ -173,7 +184,7 @@
         <app-launch-checker-workflow [versionName]="_selectedVersion?.name" [command]="checkEntryCommand"></app-launch-checker-workflow>
       </div>
 
-      <mat-card *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.WDL && (published$ | async)">
+      <mat-card appearance="outlined" *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.WDL && (published$ | async)">
         <div [matTooltip]="wesTooltip">
           <p>Launch this workflow on Amazon Web Services' (AWS) Amazon Genomics CLI (AGC) cloud infrastructure.</p>
 
