@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogModule } from '@angular/material/legacy-dialog';
+import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -12,11 +12,11 @@ import { CheckerWorkflowQuery } from '../state/checker-workflow.query';
 import { RemoveExtensionPipe } from './remove-extension.pipe';
 import { ToolTesterLogPipe } from './tool-tester-log.pipe';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
-import { MatLegacyTableModule } from '@angular/material/legacy-table';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTableModule } from '@angular/material/table';
 import { VerifiedDisplayComponent } from '../entry/verified-display/verified-display.component';
 import { NgIf, AsyncPipe, DatePipe } from '@angular/common';
-import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { MatCardModule } from '@angular/material/card';
 import { LoadingComponent } from '../loading/loading.component';
 
 interface VersionVerifiedInformation {
@@ -30,13 +30,13 @@ interface VersionVerifiedInformation {
   styleUrls: ['./available-logs.component.scss'],
   standalone: true,
   imports: [
-    MatLegacyDialogModule,
+    MatDialogModule,
     LoadingComponent,
-    MatLegacyCardModule,
+    MatCardModule,
     NgIf,
     VerifiedDisplayComponent,
-    MatLegacyTableModule,
-    MatLegacyButtonModule,
+    MatTableModule,
+    MatButtonModule,
     FlexModule,
     AsyncPipe,
     DatePipe,

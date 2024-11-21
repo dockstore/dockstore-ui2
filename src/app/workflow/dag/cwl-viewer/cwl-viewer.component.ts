@@ -21,9 +21,9 @@ import { ExtendedWorkflow } from '../../../shared/models/ExtendedWorkflow';
 import { ExtendedWorkflowQuery } from '../../../shared/state/extended-workflow.query';
 import { WorkflowVersion } from '../../../shared/openapi/model/workflowVersion';
 import { CwlViewerDescriptor, CwlViewerService } from './cwl-viewer.service';
-import { MatLegacyProgressBarModule } from '@angular/material/legacy-progress-bar';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { MatCardModule } from '@angular/material/card';
 import { NgIf } from '@angular/common';
 
 @Component({
@@ -32,7 +32,7 @@ import { NgIf } from '@angular/common';
   providers: [CwlViewerService],
   styleUrls: ['./cwl-viewer.scss'],
   standalone: true,
-  imports: [NgIf, MatLegacyCardModule, MatIconModule, MatLegacyProgressBarModule],
+  imports: [NgIf, MatCardModule, MatIconModule, MatProgressBarModule],
 })
 export class CwlViewerComponent implements OnInit, OnChanges, OnDestroy {
   @Input() selectedVersion: WorkflowVersion;

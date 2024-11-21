@@ -16,8 +16,8 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { MatLegacyDialogModule } from '@angular/material/legacy-dialog';
-import { MatLegacySnackBarModule } from '@angular/material/legacy-snack-bar';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
@@ -32,14 +32,7 @@ describe('HomeComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         schemas: [NO_ERRORS_SCHEMA],
-        imports: [
-          RouterTestingModule,
-          HttpClientTestingModule,
-          BrowserAnimationsModule,
-          HomeComponent,
-          MatLegacyDialogModule,
-          MatLegacySnackBarModule,
-        ],
+        imports: [RouterTestingModule, HttpClientTestingModule, BrowserAnimationsModule, HomeComponent, MatDialogModule, MatSnackBarModule],
         providers: [MastodonService, DescriptorLanguageService],
       }).compileComponents();
     })

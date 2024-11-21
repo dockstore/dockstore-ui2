@@ -124,6 +124,8 @@ h3 {
   max-width: 600px;
   background: white;
   color: black;
+  /*TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.
+ */
   .mat-form-field-wrapper {
     // Removing the padding because we don't need hint
     padding-bottom: 0;
@@ -131,7 +133,8 @@ h3 {
     // However, we have none because of the accent border surrounding the form field
     margin: 0;
   }
-
+  /*TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.
+ */
   .mat-form-field-infix {
     // Overriding the default `padding: 1em 0 1em 0;` and making it smaller to align with mocks
     padding: 0.5em 0;

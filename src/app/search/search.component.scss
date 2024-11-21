@@ -16,10 +16,14 @@
 @use '@angular/material' as mat;
 @import '/src/materialColorScheme.scss';
 
+/*TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.
+ */
 mat-tab-group.homeComponent {
   margin: 0.5rem 5rem;
 }
 
+/*TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.
+ */
 ::ng-deep .mat-tab-list .mat-tab-labels .mat-tab-label-active {
   color: $header-color;
 }
@@ -174,7 +178,7 @@ mat-form-field {
   width: 100%;
 }
 
-input.mat-input-element:not(:focus) {
+input.mat-mdc-input-element:not(:focus) {
   height: 1rem;
 }
 
@@ -197,6 +201,8 @@ mat-expansion-panel mat-expansion-panel-header[aria-expanded='false'] {
 }
 
 // Form field box
+/*TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.
+ */
 :host .mat-expansion-panel ::ng-deep .mat-form-field-wrapper {
   margin: 0 0.75rem;
   padding-bottom: 0.8rem;
@@ -204,6 +210,8 @@ mat-expansion-panel mat-expansion-panel-header[aria-expanded='false'] {
 }
 
 // Form field label
+/*TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.
+ */
 :host
   .mat-expansion-panel
   ::ng-deep
@@ -216,12 +224,16 @@ mat-expansion-panel mat-expansion-panel-header[aria-expanded='false'] {
 }
 
 // Form field inner
+/*TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.
+ */
 :host .mat-expansion-panel ::ng-deep .mat-form-field-wrapper .mat-form-field-infix {
   border: 0rem;
   padding: 0rem;
 }
 
 // Form field text animation re-implementation
+/*TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.
+ */
 :host ::ng-deep .mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
   transform: translateY(-1.1em) scale(0.75);
   width: 133.33333%;

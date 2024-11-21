@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { MatLegacyDialog as MatDialog, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { faGithub, faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { HomePageService } from 'app/home-page/home-page.service';
 import { Base } from 'app/shared/base';
@@ -30,14 +30,14 @@ import { NewsAndUpdatesComponent } from '../widget/featured-content/news-and-upd
 import { FeaturedContentComponent } from '../widget/featured-content/featured-content.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
-import { MatLegacyTabsModule } from '@angular/material/legacy-tabs';
+import { MatTabsModule } from '@angular/material/tabs';
 import { CategoryButtonComponent } from '../../categories/button/category-button.component';
-import { MatLegacyChipsModule } from '@angular/material/legacy-chips';
+import { MatChipsModule } from '@angular/material/chips';
 import { NgIf, NgFor, AsyncPipe, SlicePipe } from '@angular/common';
-import { MatLegacyInputModule } from '@angular/material/legacy-input';
-import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatButtonModule } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
 import { JsonLdComponent } from '../../shared/json-ld/json-ld.component';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
@@ -65,15 +65,15 @@ export class YoutubeComponent {
     FlexModule,
     JsonLdComponent,
     RouterLink,
-    MatLegacyButtonModule,
+    MatButtonModule,
     MatIconModule,
-    MatLegacyFormFieldModule,
-    MatLegacyInputModule,
+    MatFormFieldModule,
+    MatInputModule,
     NgIf,
-    MatLegacyChipsModule,
+    MatChipsModule,
     NgFor,
     CategoryButtonComponent,
-    MatLegacyTabsModule,
+    MatTabsModule,
     ExtendedModule,
     FontAwesomeModule,
     FeaturedContentComponent,

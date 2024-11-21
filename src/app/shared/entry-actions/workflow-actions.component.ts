@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { AlertQuery } from '../alert/state/alert.query';
 import { ga4ghServiceIdPrefix, ga4ghWorkflowIdPrefix } from '../constants';
@@ -13,9 +13,9 @@ import { EntryActionsComponent } from './entry-actions.component';
 import { EntryActionsService } from './entry-actions.service';
 import { DeleteEntryDialogComponent } from '../../entry/delete/dialog/delete-entry-dialog.component';
 import { bootstrap4largeModalSize } from '../../shared/constants';
-import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatButtonModule } from '@angular/material/button';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { NgIf, AsyncPipe } from '@angular/common';
 
@@ -24,7 +24,7 @@ import { NgIf, AsyncPipe } from '@angular/common';
   templateUrl: './workflow-actions.component.html',
   styleUrls: ['./entry-actions.component.scss'],
   standalone: true,
-  imports: [NgIf, FlexModule, MatLegacyButtonModule, RouterLink, MatLegacyTooltipModule, AsyncPipe],
+  imports: [NgIf, FlexModule, MatButtonModule, RouterLink, MatTooltipModule, AsyncPipe],
 })
 export class WorkflowActionsComponent extends EntryActionsComponent implements OnInit, OnChanges {
   @Input() workflow: BioWorkflow | Service | Notebook;

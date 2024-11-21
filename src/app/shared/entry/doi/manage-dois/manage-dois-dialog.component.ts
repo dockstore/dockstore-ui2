@@ -1,10 +1,10 @@
 import { KeyValue, KeyValuePipe, NgFor, NgIf, TitleCasePipe } from '@angular/common';
 import { Component, Inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
-import { MatLegacyCardModule } from '@angular/material/legacy-card';
-import { MAT_LEGACY_DIALOG_DATA, MatLegacyDialogModule, MatLegacyDialogRef } from '@angular/material/legacy-dialog';
-import { MatLegacyRadioModule } from '@angular/material/legacy-radio';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatRadioModule } from '@angular/material/radio';
 import { FlexModule } from '@ngbracket/ngx-layout';
 import { Doi, EntryTypeMetadata, Workflow, WorkflowVersion } from 'app/shared/openapi';
 import { ManageDoisDialogService } from './manage-dois-dialog.service';
@@ -28,10 +28,10 @@ export interface DoiInfo {
   styleUrls: ['../../../styles/radio-button-cards.scss'],
   standalone: true,
   imports: [
-    MatLegacyDialogModule,
-    MatLegacyButtonModule,
-    MatLegacyCardModule,
-    MatLegacyRadioModule,
+    MatDialogModule,
+    MatButtonModule,
+    MatCardModule,
+    MatRadioModule,
     MatIconModule,
     FlexModule,
     FormsModule,
@@ -50,9 +50,9 @@ export class ManageDoisDialogComponent {
   doiInfoMap: Map<Doi.InitiatorEnum, DoiInfo> = new Map();
 
   constructor(
-    public dialogRef: MatLegacyDialogRef<ManageDoisDialogComponent>,
+    public dialogRef: MatDialogRef<ManageDoisDialogComponent>,
     public manageDoisDialogService: ManageDoisDialogService,
-    @Inject(MAT_LEGACY_DIALOG_DATA) public data: ManageDoisDialogData
+    @Inject(MAT_DIALOG_DATA) public data: ManageDoisDialogData
   ) {
     this.entry = data.entry;
     this.entryTypeMetadata = data.entry.entryTypeMetadata;

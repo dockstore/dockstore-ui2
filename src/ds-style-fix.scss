@@ -248,12 +248,16 @@ div.panel-container-label {
 
 // Bootstrap applies bold font-weight and material checkbox automatically sets a line height and default overflow
 // behaviour that needs to be overridden.
+/*TODO(mdc-migration): The following rule targets internal classes of checkbox that may no longer apply for the MDC version.
+ */
 .search-facet-checkboxes .mat-checkbox-layout .mat-checkbox-label {
   font-weight: normal !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
 }
 
+/*TODO(mdc-migration): The following rule targets internal classes of checkbox that may no longer apply for the MDC version.
+ */
 label.mat-checkbox-layout {
   margin-bottom: 0 !important;
 }
@@ -654,15 +658,19 @@ div.modal form {
   word-break: break-word;
 }
 
-.mat-standard-chip {
+.mat-mdc-standard-chip {
   padding: 5px 8px !important;
 }
 
-.mat-chip-list-wrapper .mat-standard-chip,
+/*TODO(mdc-migration): The following rule targets internal classes of chips that may no longer apply for the MDC version.
+ */
+.mat-chip-list-wrapper .mat-mdc-standard-chip,
 .mat-chip-list-wrapper input.mat-input-element {
   margin: 2px !important;
 }
 
+/*TODO(mdc-migration): The following rule targets internal classes of chips that may no longer apply for the MDC version.
+ */
 .mat-chip-list-wrapper {
   display: inline-flex !important;
   margin: auto !important;

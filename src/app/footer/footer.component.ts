@@ -29,7 +29,7 @@ import { NgFor } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { SnackbarDirective } from '../shared/snackbar.directive';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatButtonModule } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 
@@ -38,7 +38,7 @@ import { FlexModule } from '@ngbracket/ngx-layout/flex';
   templateUrl: './footer.component.html',
   styleUrls: ['./footer.component.scss'],
   standalone: true,
-  imports: [FlexModule, RouterLink, MatLegacyButtonModule, SnackbarDirective, ClipboardModule, MatIconModule, NgFor, GitTagPipe],
+  imports: [FlexModule, RouterLink, MatButtonModule, SnackbarDirective, ClipboardModule, MatIconModule, NgFor, GitTagPipe],
 })
 export class FooterComponent extends Base implements OnInit {
   domain: string;

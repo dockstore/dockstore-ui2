@@ -36,6 +36,9 @@ mat-expansion-panel mat-expansion-panel-header[aria-expanded='false'] {
 }
 
 //Form field box
+/*
+ TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.
+ */
 :host .mat-expansion-panel ::ng-deep .mat-form-field-wrapper {
   margin: 0rem;
   padding-bottom: 0.8rem;
@@ -43,6 +46,9 @@ mat-expansion-panel mat-expansion-panel-header[aria-expanded='false'] {
 }
 
 // Form field label
+/*
+ TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.
+ */
 :host
   .mat-expansion-panel
   ::ng-deep
@@ -55,12 +61,18 @@ mat-expansion-panel mat-expansion-panel-header[aria-expanded='false'] {
 }
 
 // Form field inner
+/*
+ TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.
+ */
 :host .mat-expansion-panel ::ng-deep .mat-form-field-wrapper .mat-form-field-infix {
   border: 0rem;
   padding: 0rem;
 }
 
 // Form field text animation re-implementation
+/*
+ TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.
+ */
 :host ::ng-deep .mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
   transform: translateY(-1.1em) scale(0.75);
   width: 133.33333%;

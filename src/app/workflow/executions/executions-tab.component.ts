@@ -32,7 +32,7 @@ import { SessionQuery } from '../../shared/session/session.query';
 import { takeUntil } from 'rxjs/operators';
 import PartnerEnum = CloudInstance.PartnerEnum;
 import ExecutionStatusEnum = RunExecution.ExecutionStatusEnum;
-import { MatLegacySelectChange as MatSelectChange, MatLegacySelectModule } from '@angular/material/legacy-select';
+import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { UserQuery } from 'app/shared/user/user.query';
 import { combineLatest } from 'rxjs';
@@ -40,14 +40,14 @@ import { ExecutionStatusPipe } from '../../shared/entry/execution-status.pipe';
 import { SecondsToHoursMinutesSecondsPipe } from 'app/workflow/executions/seconds-to-hours-minutes-seconds.pipe';
 import { PlatformPartnerPipe } from '../../shared/entry/platform-partner.pipe';
 import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
-import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
-import { MatLegacyTableModule } from '@angular/material/legacy-table';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatTableModule } from '@angular/material/table';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatLegacyOptionModule } from '@angular/material/legacy-core';
-import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatOptionModule } from '@angular/material/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { MatCardModule } from '@angular/material/card';
 import { NgIf, NgFor, NgClass, NgTemplateOutlet, DecimalPipe, DatePipe } from '@angular/common';
 
 interface ExecutionMetricsTableObject {
@@ -64,16 +64,16 @@ interface ExecutionMetricsTableObject {
   standalone: true,
   imports: [
     NgIf,
-    MatLegacyCardModule,
+    MatCardModule,
     MatIconModule,
     FlexModule,
-    MatLegacyFormFieldModule,
-    MatLegacySelectModule,
+    MatFormFieldModule,
+    MatSelectModule,
     NgFor,
-    MatLegacyOptionModule,
+    MatOptionModule,
     MatDividerModule,
-    MatLegacyTableModule,
-    MatLegacyTooltipModule,
+    MatTableModule,
+    MatTooltipModule,
     NgClass,
     ExtendedModule,
     NgTemplateOutlet,

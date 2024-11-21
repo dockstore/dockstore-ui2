@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { MatLegacySnackBarModule } from '@angular/material/legacy-snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { LogoutComponent } from './logout.component';
 
@@ -18,7 +18,7 @@ describe('LogoutComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [LogoutComponent, HeaderComponent, MatLegacySnackBarModule],
+        imports: [LogoutComponent, HeaderComponent, MatSnackBarModule],
       }).compileComponents();
     })
   );
