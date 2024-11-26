@@ -124,7 +124,7 @@ describe('Checker workflow test from my-workflows', () => {
 
       goToTab('Versions');
       cy.get('[data-cy=date-modified-header]').should('be.visible').click();
-      cy.wait(1000);
+      cy.wait(1000); //waits for the sorting to finish to ensure Actions button is clicked for the right version (was encountering flakiness)
 
       cy.contains('button', 'Actions').click();
       cy.get('[data-cy=set-default-version-button]').should('be.visible').click();

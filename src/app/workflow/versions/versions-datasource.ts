@@ -31,7 +31,8 @@ export class VersionsDataSource implements DataSource<WorkflowVersion> {
 
   /**
    * Updates the datasource from the endpoint
-   * @param {string} filter  A string to filter path by ("cgpmap")
+   * @param {boolean} publicPage Boolean for if we are loading versions for the public page
+   * @param {workflowId} workflowId Id of  parent workflow
    * @param {string} sortDirection  "asc" or "desc"
    * @param {number} pageIndex  The entry number to start listing from (page size * page number)
    * @param {number} pageSize  The page size (number of tools to return)
