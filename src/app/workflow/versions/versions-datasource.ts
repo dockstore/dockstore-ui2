@@ -1,5 +1,5 @@
 /*
- *     Copyright 2018 OICR
+ *     Copyright 2024 OICR, UCSC
  *
  *     Licensed under the Apache License, Version 2.0 (the "License")
  *     you may not use this file except in compliance with the License
@@ -18,6 +18,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { WorkflowsService, WorkflowVersion } from '../../shared/openapi';
+import { HttpResponse } from '@angular/common/http';
 
 @Injectable()
 export class VersionsDataSource implements DataSource<WorkflowVersion> {
@@ -46,23 +47,25 @@ export class VersionsDataSource implements DataSource<WorkflowVersion> {
     sortCol: string
   ) {
     this.loadingSubject$.next(true);
+    let workflowVersions: Observable<HttpResponse<WorkflowVersion[]>>;
+
     if (publicPage) {
-      this.workflowsService
-        .getPublicWorkflowVersions(workflowId, pageSize, pageIndex, sortCol, sortDirection, 'response')
-        .pipe(finalize(() => this.loadingSubject$.next(false)))
-        .subscribe((versions) => {
-          this.versionsSubject$.next(versions.body);
-          this.versionsLengthSubject$.next(Number(versions.headers.get('X-total-count')));
-        });
+      workflowVersions = this.workflowsService.getPublicWorkflowVersions(
+        workflowId,
+        pageSize,
+        pageIndex,
+        sortCol,
+        sortDirection,
+        'response'
+      );
     } else {
-      this.workflowsService
-        .getWorkflowVersions(workflowId, pageSize, pageIndex, sortCol, sortDirection, 'response')
-        .pipe(finalize(() => this.loadingSubject$.next(false)))
-        .subscribe((versions) => {
-          this.versionsSubject$.next(versions.body);
-          this.versionsLengthSubject$.next(Number(versions.headers.get('X-total-count')));
-        });
+      workflowVersions = this.workflowsService.getWorkflowVersions(workflowId, pageSize, pageIndex, sortCol, sortDirection, 'response');
     }
+
+    workflowVersions.pipe(finalize(() => this.loadingSubject$.next(false))).subscribe((versions) => {
+      this.versionsSubject$.next(versions.body);
+      this.versionsLengthSubject$.next(Number(versions.headers.get('X-total-count')));
+    });
   }
 
   connect(collectionViewer: CollectionViewer): Observable<WorkflowVersion[]> {

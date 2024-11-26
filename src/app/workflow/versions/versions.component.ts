@@ -223,10 +223,6 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
     );
   }
 
-  ngOnDestroy() {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
-  }
   /**
    * Updates the version and emits an event for the parent component
    * @param {WorkflowVersion} version - version to make the selected version
