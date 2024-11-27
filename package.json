@@ -3,9 +3,9 @@
   "version": "2.13.0",
   "license": "Apache License 2.0",
   "config": {
-    "webservice_version_prefix": "1.16.0",
+    "webservice_version_prefix": "1.17.0-feature-seab-6771-reusable-deploy-image",
     "webservice_version": "1.16.0",
-    "use_snapshot": false
+    "use_snapshot": true
   },
   "scripts": {
     "ng": "npx ng",
