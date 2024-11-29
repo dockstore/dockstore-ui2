@@ -298,7 +298,7 @@ parameters:
     default: false
   java-tag:
     type: string
-    default: "19.0.2-browsers"
+    default: "21.0.5-browsers"
   postgres-tag:
     type: string
     default: "16.1"
