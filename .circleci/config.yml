@@ -513,6 +513,20 @@ commands:
     steps:
       - restore_dep_cache
       - run:
+          name: Swap node versions
+          command: |
+            #  https://support.circleci.com/hc/en-us/articles/360051656632-Swap-Node-Version-on-CircleCI-Convenience-Image
+            set +e
+            wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.1/install.sh | bash
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+            nvm install v16
+            nvm alias default 16.16.0
+      
+            echo 'export NVM_DIR="$HOME/.nvm"' >> $BASH_ENV
+            echo '[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"' >> $BASH_ENV
+      - run:
           name: Install dependencies
           #Only run 'npm ci' if node_modules was not restored from cache
           command: |
