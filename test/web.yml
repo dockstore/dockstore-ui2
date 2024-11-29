@@ -42,6 +42,8 @@ esconfiguration:
 
 authenticationCachePolicy: maximumSize=10000, expireAfterAccess=10s
 
+localCloudWatchMetrics: true
+
 logging:
   level: INFO
   appenders:
