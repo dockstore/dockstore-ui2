@@ -465,11 +465,11 @@ commands:
             sudo apt-get -o Acquire::Retries=3 install libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb -yq
       # https://github.com/ClouDesire/docusaurus/commit/ee11951336be3f64f5c6a25a8047bfeecc29fb43
       - run:
-          name: Install node@v8.11.3
+          name: Install node@v18.12.1
           command: |
             bash scripts/load-nvm.sh
-            nvm install v16.16.0
-            nvm alias default v16.16.0
+            nvm install v18.12.1
+            nvm alias default v18.12.1
       - run: |
           npm version
   setup_integration_test:
