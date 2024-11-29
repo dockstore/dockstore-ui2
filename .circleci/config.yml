@@ -519,7 +519,7 @@ commands:
               if [ ! -d "./node_modules" ]
               then
                 bash -i -c 'npm ci'
-              fi          
+              fi
   install_browser_tools:
     steps:
       - browser-tools/install-chrome
