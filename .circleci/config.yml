@@ -519,16 +519,7 @@ commands:
               if [ ! -d "./node_modules" ]
               then
                 bash -i -c 'npm ci'
-              fi
-      # https://github.com/ClouDesire/docusaurus/commit/ee11951336be3f64f5c6a25a8047bfeecc29fb43
-      - run:
-          name: Install node@v18.12.1
-          command: |
-            bash scripts/load-nvm.sh
-            nvm install v18.12.1
-            nvm alias default v18.12.1
-      - run: |
-          npm version              
+              fi          
   install_browser_tools:
     steps:
       - browser-tools/install-chrome
