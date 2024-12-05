@@ -15,14 +15,14 @@
  */
 import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
 import { MatSort, MatSortModule } from '@angular/material/sort';
-import { MatLegacyTableDataSource as MatTableDataSource, MatLegacyTableModule } from '@angular/material/legacy-table';
+import { MatLegacyTableModule } from '@angular/material/legacy-table';
 import { faCodeBranch, faTag } from '@fortawesome/free-solid-svg-icons';
-import { takeUntil } from 'rxjs/operators';
+import { distinctUntilChanged, takeUntil, tap } from 'rxjs/operators';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { DateService } from '../../shared/date.service';
 import { Dockstore } from '../../shared/dockstore.model';
 import { DockstoreService } from '../../shared/dockstore.service';
-import { Doi, EntryType, VersionVerifiedPlatform } from '../../shared/openapi';
+import { Doi, EntryType, VersionVerifiedPlatform, WorkflowsService } from '../../shared/openapi';
 import { ExtendedWorkflow } from '../../shared/models/ExtendedWorkflow';
 import { SessionQuery } from '../../shared/session/session.query';
 import { ExtendedWorkflowQuery } from '../../shared/state/extended-workflow.query';
@@ -36,11 +36,15 @@ import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
 import { ViewWorkflowComponent } from '../view/view.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MatLegacyChipsModule } from '@angular/material/legacy-chips';
-import { NgIf, NgClass, NgFor, JsonPipe, DatePipe, KeyValuePipe, KeyValue } from '@angular/common';
+import { NgIf, NgClass, NgFor, JsonPipe, DatePipe, KeyValuePipe, KeyValue, AsyncPipe } from '@angular/common';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { MatIconModule } from '@angular/material/icon';
 import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
 import { DoiBadgeComponent } from 'app/shared/entry/doi/doi-badge/doi-badge.component';
+import { PaginatorService } from '../../shared/state/paginator.service';
+import { merge, Observable } from 'rxjs';
+import { MatLegacyPaginator as MatPaginator, MatLegacyPaginatorModule } from '@angular/material/legacy-paginator';
+import { VersionsDataSource } from './versions-datasource';
 
 @Component({
   selector: 'app-versions-workflow',
@@ -67,14 +71,17 @@ import { DoiBadgeComponent } from 'app/shared/entry/doi/doi-badge/doi-badge.comp
     CommitUrlPipe,
     KeyValuePipe,
     DoiBadgeComponent,
+    AsyncPipe,
+    MatLegacyPaginatorModule,
   ],
 })
 export class VersionsWorkflowComponent extends Versions implements OnInit, OnChanges, AfterViewInit {
   faTag = faTag;
   faCodeBranch = faCodeBranch;
-  @Input() versions: Array<WorkflowVersion>;
+  versions: Array<WorkflowVersion>;
   @Input() workflowId: number;
   @Input() verifiedVersionPlatforms: Array<VersionVerifiedPlatform>;
+  @Input() publicPage: boolean;
   @Input() hasExecutionMetrics!: boolean;
   @Input() hasValidationMetrics!: boolean;
 
@@ -85,13 +92,20 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
       this._selectedVersion = value;
     }
   }
-  dataSource = new MatTableDataSource(this.versions);
+  dataSource: VersionsDataSource;
   @Output() selectedVersionChange = new EventEmitter<WorkflowVersion>();
-  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
+  @ViewChild(MatPaginator, { static: true }) protected paginator: MatPaginator;
   public WorkflowType = Workflow;
   workflow: ExtendedWorkflow;
   entryType = EntryType;
   DoiInitiatorEnum = Doi.InitiatorEnum;
+  type: 'workflow' | 'tool' | 'lambdaEvent' | 'version' = 'version';
+  public pageSize$: Observable<number>;
+  public pageIndex$: Observable<number>;
+  public versionsLength$: Observable<number>;
+  private sortCol: string;
+
   setNoOrderCols(): Array<number> {
     return [4, 5];
   }
@@ -100,6 +114,8 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
     dockstoreService: DockstoreService,
     dateService: DateService,
     private alertService: AlertService,
+    private paginatorService: PaginatorService,
+    private workflowsService: WorkflowsService,
     private extendedWorkflowQuery: ExtendedWorkflowQuery,
     protected sessionQuery: SessionQuery
   ) {
@@ -138,11 +154,39 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
   }
 
   ngAfterViewInit(): void {
-    this.dataSource.sort = this.sort;
+    setTimeout(() => {
+      // Handle paginator changes
+      merge(this.paginator.page)
+        .pipe(
+          distinctUntilChanged(),
+          tap(() => this.loadVersions(this.publicPage)),
+          takeUntil(this.ngUnsubscribe)
+        )
+        .subscribe(() => this.paginatorService.setPaginator(this.type, this.paginator.pageSize, this.paginator.pageIndex));
+
+      // Handle sort changes
+      this.sort.sortChange
+        .pipe(
+          tap(() => {
+            this.paginator.pageIndex = 0; // go back to first page after changing sort
+            if (this.sort.active === 'last_modified') {
+              this.sortCol = 'lastModified';
+            } else {
+              this.sortCol = this.sort.active;
+            }
+            if (this.sort.direction === '') {
+              this.sortCol = null;
+            }
+            this.loadVersions(this.publicPage);
+          }),
+          takeUntil(this.ngUnsubscribe)
+        )
+        .subscribe();
+    });
   }
 
   ngOnChanges() {
-    this.dataSource.data = this.versions;
+    this.loadVersions(this.publicPage);
   }
 
   ngOnInit() {
@@ -151,18 +195,35 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
       if (workflow) {
         this.defaultVersion = workflow.defaultVersion;
       }
-      this.dtOptions = {
-        bFilter: false,
-        bPaginate: false,
-        columnDefs: [
-          {
-            orderable: false,
-            targets: this.setNoOrderCols(),
-          },
-        ],
-      };
       this.publicPageSubscription();
     });
+    this.dataSource = new VersionsDataSource(this.workflowsService);
+    this.versionsLength$ = this.dataSource.versionsLengthSubject$;
+  }
+
+  loadVersions(publicPage: boolean) {
+    let direction: 'asc' | 'desc';
+    switch (this.sort.direction) {
+      case 'asc': {
+        direction = 'asc';
+        break;
+      }
+      case 'desc': {
+        direction = 'desc';
+        break;
+      }
+      default: {
+        direction = 'desc';
+      }
+    }
+    this.dataSource.loadVersions(
+      publicPage,
+      this.workflowId,
+      direction,
+      this.paginator.pageIndex * this.paginator.pageSize,
+      this.paginator.pageSize,
+      this.sortCol
+    );
   }
 
   /**
