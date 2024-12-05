@@ -343,6 +343,8 @@
                 [canRead]="canRead"
                 [canWrite]="canWrite"
                 [isOwner]="isOwner"
+                [hasExecutionMetrics]="hasExecutionMetrics"
+                [hasValidationMetrics]="hasValidationMetrics"
               >
               </app-versions-workflow>
             </div>
@@ -456,7 +458,12 @@
             </mat-tab>
           </div>
           <mat-tab id="metricsTab" label="Metrics">
-            <app-executions-tab [entry]="workflow" [version]="selectedVersion"></app-executions-tab>
+            <app-executions-tab
+              [entry]="workflow"
+              [version]="selectedVersion"
+              (showExecutionIcon)="showExecutionMetricsIcon($event)"
+              (showValidationIcon)="showValidationMetricsIcon($event)"
+            ></app-executions-tab>
           </mat-tab>
           <mat-tab *ngIf="!isPublic() && isHosted() && isOwner" id="permissionsTab" label="Permissions">
             <app-permissions [workflow]="workflow"></app-permissions>
@@ -514,6 +521,18 @@
                       </a>
                     </mat-chip>
                   </span>
+                  <img
+                    *ngIf="hasExecutionMetrics"
+                    src="assets/svg/manufacturing.svg"
+                    alt="Execution Metrics Icon"
+                    matTooltip="This version contains execution metrics."
+                  />
+                  <img
+                    *ngIf="hasValidationMetrics"
+                    src="assets/svg/data_check.svg"
+                    alt="Validation Metrics Icon"
+                    matTooltip="This version contains validation metrics."
+                  />
                 </div>
                 <small>{{ sortedVersion.last_modified | date }}</small>
               </div>

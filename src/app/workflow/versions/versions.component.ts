@@ -75,6 +75,9 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
   @Input() versions: Array<WorkflowVersion>;
   @Input() workflowId: number;
   @Input() verifiedVersionPlatforms: Array<VersionVerifiedPlatform>;
+  @Input() hasExecutionMetrics!: boolean;
+  @Input() hasValidationMetrics!: boolean;
+
   _selectedVersion: WorkflowVersion;
   Dockstore = Dockstore;
   @Input() set selectedVersion(value: WorkflowVersion) {

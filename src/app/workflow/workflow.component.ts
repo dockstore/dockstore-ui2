@@ -208,6 +208,9 @@ export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterVi
   public selectedVersionDoi: Doi | undefined;
   public selectedConceptDoi: Doi | undefined;
 
+  public hasExecutionMetrics: boolean = false;
+  public hasValidationMetrics: boolean = false;
+
   @Input() user;
   @Input() selectedVersion: WorkflowVersion;
   @Input() shouldClearState: boolean = true;
@@ -556,6 +559,14 @@ export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterVi
     this.workflowsService.restub(this.workflow.id).subscribe((response) => {
       this.workflowService.setWorkflow(response);
     });
+  }
+
+  showExecutionMetricsIcon(showExecutionMetricsIcon: boolean) {
+    this.hasExecutionMetrics = showExecutionMetricsIcon;
+  }
+
+  showValidationMetricsIcon(showValidationMetricsIcon: boolean) {
+    this.hasValidationMetrics = showValidationMetricsIcon;
   }
 
   resetWorkflowEditData() {
