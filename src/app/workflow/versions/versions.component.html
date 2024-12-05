@@ -217,7 +217,18 @@
         >
       </th>
       <td mat-cell *matCellDef="let version">
-        <mat-icon data-cy="metrics" *ngIf="version.metricsByPlatform && (version.metricsByPlatform | json) !== '{}'">check</mat-icon>
+        <img
+          *ngIf="hasExecutionMetrics"
+          src="assets/svg/manufacturing.svg"
+          alt="Execution Metrics Icon"
+          matTooltip="This version contains execution metrics."
+        />
+        <img
+          *ngIf="hasValidationMetrics"
+          src="assets/svg/data_check.svg"
+          alt="Validation Metrics Icon"
+          matTooltip="This version contains validation metrics."
+        />
       </td>
     </ng-container>
 
