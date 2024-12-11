@@ -21,9 +21,7 @@
     [dataSource]="dataSource"
     class="w-100"
     matSort
-    matSortActive="last_modified"
-    matSortDisableClear
-    matSortDirection="desc"
+    matSortStart="asc"
     [trackBy]="trackBy"
   >
     <ng-container matColumnDef="name">
@@ -85,7 +83,7 @@
         mat-header-cell
         *matHeaderCellDef
         mat-sort-header
-        disableClear
+        start="desc"
         matTooltip="Date of last update to Git reference"
         matTooltipPosition="above"
         data-cy="date-modified-header"
