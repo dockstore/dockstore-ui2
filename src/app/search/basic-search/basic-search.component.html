@@ -16,7 +16,7 @@
       data-cy="basic-search"
     />
     <!-- <mat-hint align="end">Press &lt;Enter&gt; to search</mat-hint> -->
-    <button mat-button *ngIf="search.value" matSuffix mat-icon-button (click)="clearSearch()">
+    <button *ngIf="search.value" matSuffix mat-icon-button (click)="clearSearch()">
       <mat-icon>close</mat-icon>
     </button>
   </mat-form-field>
