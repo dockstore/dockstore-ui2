@@ -267,57 +267,58 @@
 
         <div *ngIf="searchService.hasSearchText(advancedSearchObject, searchTerm, hits) || searchService.hasFilters(filters)">
           <mat-card appearance="outlined" class="alert alert-info mat-elevation-z text-break">
-            <button
-              data-cy="share_button"
-              mat-raised-button
-              type="button"
-              type="button"
-              [cdkCopyToClipboard]="shortUrl$ | async"
-              appSnackbar
-              class="mr-2 accent-1-dark-btn"
-            >
-              <fa-icon [icon]="faCopy" aria-hidden="true"></fa-icon>
-              Copy search link
-            </button>
+            <div>
+              <button
+                data-cy="share_button"
+                mat-raised-button
+                type="button"
+                [cdkCopyToClipboard]="shortUrl$ | async"
+                appSnackbar
+                class="mr-2 accent-1-dark-btn"
+              >
+                <fa-icon [icon]="faCopy" aria-hidden="true"></fa-icon>
+                Copy search link
+              </button>
 
-            <span *ngIf="searchService.hasResults(searchTerm, hits)">
-              <strong>Search: </strong> contains one of <strong>"{{ basicSearchText$ | async }}"</strong>
-            </span>
-
-            <span *ngIf="hasAdvancedSearchText$ | async">
-              <strong>Search: </strong>
-              <span *ngIf="advancedSearchObject.ANDSplitFilter"
-                >contains all of <strong>"{{ aNDSplitFilterText$ | async }}"</strong
-                ><span *ngIf="advancedSearchObject.ANDNoSplitFilter || advancedSearchObject.ORFilter || advancedSearchObject.NOTFilter">
-                  AND
-                </span></span
-              >
-              <span *ngIf="advancedSearchObject.ANDNoSplitFilter"
-                >contains exactly <strong>"{{ aNDNoSplitFilterText$ | async }}"</strong
-                ><span *ngIf="advancedSearchObject.ORFilter || advancedSearchObject.NOTFilter"> AND </span></span
-              >
-              <span *ngIf="advancedSearchObject.ORFilter"
-                >contains one of <strong>"{{ oRFilterText$ | async }}"</strong
-                ><span *ngIf="advancedSearchObject.NOTFilter"> AND </span></span
-              >
-              <span *ngIf="advancedSearchObject.NOTFilter"
-                >does not contain <strong>"{{ nOTFilterText$ | async }}"</strong></span
-              >
-            </span>
-            <span *ngIf="searchService.hasSearchText(advancedSearchObject, searchTerm, hits) && searchService.hasFilters(filters)"
-              >&nbsp;AND
-            </span>
-            <strong *ngIf="!searchService.hasSearchText(advancedSearchObject, searchTerm, hits) && searchService.hasFilters(filters)"
-              >Search:
-            </strong>
-            <span *ngFor="let key of filterKeys$ | async; let i = index">
-              the <strong>{{ friendlyNames.get(key) }}</strong> is
-              <span *ngFor="let subBucket of filters.get(key); let j = index">
-                <strong>{{ key | mapFriendlyValue: subBucket }}</strong>
-                <span *ngIf="j < filters.get(key).size - 1"> OR </span>
+              <span *ngIf="searchService.hasResults(searchTerm, hits)">
+                <strong>Search: </strong> contains one of <strong>"{{ basicSearchText$ | async }}"</strong>
               </span>
-              <span *ngIf="i < filters.size - 1"> AND </span>
-            </span>
+
+              <span *ngIf="hasAdvancedSearchText$ | async">
+                <strong>Search: </strong>
+                <span *ngIf="advancedSearchObject.ANDSplitFilter"
+                  >contains all of <strong>"{{ aNDSplitFilterText$ | async }}"</strong
+                  ><span *ngIf="advancedSearchObject.ANDNoSplitFilter || advancedSearchObject.ORFilter || advancedSearchObject.NOTFilter">
+                    AND
+                  </span></span
+                >
+                <span *ngIf="advancedSearchObject.ANDNoSplitFilter"
+                  >contains exactly <strong>"{{ aNDNoSplitFilterText$ | async }}"</strong
+                  ><span *ngIf="advancedSearchObject.ORFilter || advancedSearchObject.NOTFilter"> AND </span></span
+                >
+                <span *ngIf="advancedSearchObject.ORFilter"
+                  >contains one of <strong>"{{ oRFilterText$ | async }}"</strong
+                  ><span *ngIf="advancedSearchObject.NOTFilter"> AND </span></span
+                >
+                <span *ngIf="advancedSearchObject.NOTFilter"
+                  >does not contain <strong>"{{ nOTFilterText$ | async }}"</strong></span
+                >
+              </span>
+              <span *ngIf="searchService.hasSearchText(advancedSearchObject, searchTerm, hits) && searchService.hasFilters(filters)"
+                >&nbsp;AND
+              </span>
+              <strong *ngIf="!searchService.hasSearchText(advancedSearchObject, searchTerm, hits) && searchService.hasFilters(filters)"
+                >Search:
+              </strong>
+              <span *ngFor="let key of filterKeys$ | async; let i = index">
+                the <strong>{{ friendlyNames.get(key) }}</strong> is
+                <span *ngFor="let subBucket of filters.get(key); let j = index">
+                  <strong>{{ key | mapFriendlyValue: subBucket }}</strong>
+                  <span *ngIf="j < filters.get(key).size - 1"> OR </span>
+                </span>
+                <span *ngIf="i < filters.size - 1"> AND </span>
+              </span>
+            </div>
           </mat-card>
         </div>
         <mat-card

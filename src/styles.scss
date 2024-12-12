@@ -1102,7 +1102,7 @@ hr {
   color: mat.get-color-from-palette($dockstore-app-accent-1, darker) !important;
 }
 
-button.accent-1-dark-btn,
+button.accent-1-dark-btn.mdc-button,
 a.accent-1-dark-btn {
   background-color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
   color: white;

@@ -24,7 +24,7 @@ mat-tab-group.homeComponent {
 
 /*TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.
  */
-::ng-deep .mat-tab-list .mat-tab-labels .mat-tab-label-active {
+:host ::ng-deep .mat-tab-list .mat-tab-labels .mat-tab-label-active {
   color: $header-color;
 }
 
