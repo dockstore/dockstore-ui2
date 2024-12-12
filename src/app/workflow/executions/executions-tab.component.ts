@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { EntryTab } from '../../shared/entry/entry-tab';
 import {
   CloudInstance,
@@ -122,6 +122,9 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
   @Input() entry: BioWorkflow | Service | Notebook;
   @Input() version: WorkflowVersion;
 
+  @Output() showExecutionIcon = new EventEmitter<boolean>();
+  @Output() showValidationIcon = new EventEmitter<boolean>();
+
   constructor(
     private extendedGA4GHService: ExtendedGA4GHService,
     private alertService: AlertService,
@@ -205,6 +208,10 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
     const metrics = this.metrics.get(partner);
     this.executionMetricsExist = metrics?.executionStatusCount !== null;
 
+    if (this.executionMetricsExist) {
+      this.showExecutionIcon.emit(true);
+    }
+
     if (metrics?.executionStatusCount) {
       this.executionStatusToMetrics = new Map(Object.entries(metrics.executionStatusCount.count));
 
@@ -284,6 +291,7 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
     if (this.validatorToolMetricsExist) {
       this.validatorToolToValidatorInfo = new Map(Object.entries(this.metrics.get(partner).validationStatus.validatorTools));
       this.validatorTools = Array.from(this.validatorToolToValidatorInfo.keys());
+      this.showValidationIcon.emit(true);
 
       if (this.validatorTools.length > 0) {
         this.onSelectedValidatorToolChange(this.validatorTools[0]);

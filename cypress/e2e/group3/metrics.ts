@@ -22,6 +22,10 @@ describe('Dockstore Metrics', () => {
       }).as('getMetrics');
     });
     cy.visit('/workflows/github.com/A/l:master');
+    goToTab('Versions');
+    cy.get('[data-cy=execution-metrics-icon]').should('be.visible');
+    cy.get('[data-cy=validation-metrics-icon]').should('be.visible');
+
     cy.wait('@getMetrics');
     goToTab('Metrics');
 
