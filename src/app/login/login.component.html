@@ -29,76 +29,78 @@
   <div class="row">
     <div fxLayout="row" fxLayoutAlign="center center" class="mt-5">
       <mat-card appearance="outlined">
-        <mat-tab-group layout-fill color="primary" mat-stretch-tabs fxFlex="400px" selectedIndex="{{ tabindex }}">
-          <ng-template #PrivacyAndTOSDisclaimer>
-            <a href="../assets/docs/Dockstore_Terms_of_Service.pdf" target="_blank" rel="noopener noreferrer">Terms of Service</a> and
-            <a href="../assets/docs/Dockstore_Privacy Policy_v2.5.pdf" target="_blank" rel="noopener noreferrer">Privacy Policy</a>.
-          </ng-template>
-          <mat-tab isActive="true" label="Login">
-            <div class="p-4">
-              <p>Login to your existing Dockstore account with any third party application that has been previously linked.</p>
-              <button
-                class="w-100 my-1"
-                color="accent"
-                mat-raised-button
-                matTooltip="Log in with GitHub account"
-                (click)="loginWith('github')"
-                data-cy="login-with-github"
-              >
-                <fa-icon [icon]="faGithub"></fa-icon> Login with GitHub
-              </button>
-              <br />
-              <button
-                class="w-100 my-1"
-                button
-                color="accent"
-                mat-raised-button
-                matTooltip="Log in with Google account"
-                (click)="loginWith('google')"
-                data-cy="login-with-google"
-              >
-                <fa-icon [icon]="faGoogle"></fa-icon> Login with Google
-              </button>
-            </div>
-          </mat-tab>
-          <mat-tab label="Register">
-            <div class="p-4">
-              <p>Register a new Dockstore account with any third party application.</p>
-              <button
-                class="w-100 my-1"
-                color="accent"
-                mat-raised-button
-                matTooltip="Register with GitHub account"
-                (click)="registerWith('github')"
-                [disabled]="registrationDisabled"
-                data-cy="register-with-github"
-              >
-                <fa-icon [icon]="faGithub"></fa-icon> Register with GitHub
-              </button>
-              <br />
-              <button
-                class="w-100 my-1"
-                button
-                color="accent"
-                mat-raised-button
-                matTooltip="Register with Google account"
-                (click)="registerWith('google')"
-                [disabled]="registrationDisabled"
-                data-cy="register-with-google"
-              >
-                <fa-icon [icon]="faGoogle"></fa-icon> Register with Google
-              </button>
-              <mat-checkbox class="text-wrap" (change)="registrationDisabled = !registrationDisabled"
-                >I agree to Dockstore's <template [ngTemplateOutlet]="PrivacyAndTOSDisclaimer"></template
-              ></mat-checkbox>
-              <!-- Attempt at using  -->
-              <!-- <mat-icon svgIcon="google"></mat-icon> -->
-              <!-- <a class="btn btn-block btn-social btn-real-google" matTooltip="Register with Google account" (click)="registerWith('google')">
-                  <span class="google-logo "></span>Register with Google
-              </a> -->
-            </div>
-          </mat-tab>
-        </mat-tab-group>
+        <div>
+          <mat-tab-group layout-fill color="primary" mat-stretch-tabs fxFlex="400px" selectedIndex="{{ tabindex }}">
+            <ng-template #PrivacyAndTOSDisclaimer>
+              <a href="../assets/docs/Dockstore_Terms_of_Service.pdf" target="_blank" rel="noopener noreferrer">Terms of Service</a> and
+              <a href="../assets/docs/Dockstore_Privacy Policy_v2.5.pdf" target="_blank" rel="noopener noreferrer">Privacy Policy</a>.
+            </ng-template>
+            <mat-tab isActive="true" label="Login">
+              <div class="p-4">
+                <p>Login to your existing Dockstore account with any third party application that has been previously linked.</p>
+                <button
+                  class="w-100 my-1"
+                  color="accent"
+                  mat-raised-button
+                  matTooltip="Log in with GitHub account"
+                  (click)="loginWith('github')"
+                  data-cy="login-with-github"
+                >
+                  <fa-icon [icon]="faGithub"></fa-icon> Login with GitHub
+                </button>
+                <br />
+                <button
+                  class="w-100 my-1"
+                  button
+                  color="accent"
+                  mat-raised-button
+                  matTooltip="Log in with Google account"
+                  (click)="loginWith('google')"
+                  data-cy="login-with-google"
+                >
+                  <fa-icon [icon]="faGoogle"></fa-icon> Login with Google
+                </button>
+              </div>
+            </mat-tab>
+            <mat-tab label="Register">
+              <div class="p-4">
+                <p>Register a new Dockstore account with any third party application.</p>
+                <button
+                  class="w-100 my-1"
+                  color="accent"
+                  mat-raised-button
+                  matTooltip="Register with GitHub account"
+                  (click)="registerWith('github')"
+                  [disabled]="registrationDisabled"
+                  data-cy="register-with-github"
+                >
+                  <fa-icon [icon]="faGithub"></fa-icon> Register with GitHub
+                </button>
+                <br />
+                <button
+                  class="w-100 my-1"
+                  button
+                  color="accent"
+                  mat-raised-button
+                  matTooltip="Register with Google account"
+                  (click)="registerWith('google')"
+                  [disabled]="registrationDisabled"
+                  data-cy="register-with-google"
+                >
+                  <fa-icon [icon]="faGoogle"></fa-icon> Register with Google
+                </button>
+                <mat-checkbox class="text-wrap" (change)="registrationDisabled = !registrationDisabled"
+                  >I agree to Dockstore's <template [ngTemplateOutlet]="PrivacyAndTOSDisclaimer"></template
+                ></mat-checkbox>
+                <!-- Attempt at using  -->
+                <!-- <mat-icon svgIcon="google"></mat-icon> -->
+                <!-- <a class="btn btn-block btn-social btn-real-google" matTooltip="Register with Google account" (click)="registerWith('google')">
+                    <span class="google-logo "></span>Register with Google
+                </a> -->
+              </div>
+            </mat-tab>
+          </mat-tab-group>
+        </div>
       </mat-card>
     </div>
   </div>
