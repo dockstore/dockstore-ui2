@@ -218,14 +218,14 @@
       </th>
       <td mat-cell *matCellDef="let version">
         <img
-          *ngIf="hasExecutionMetrics"
-          src="assets/svg/manufacturing.svg"
+          *ngIf="showExecutionMetricsIcon(version)"
+          src="../assets/svg/execution-icon.svg"
           alt="Execution Metrics Icon"
           matTooltip="This version contains execution metrics."
         />
         <img
-          *ngIf="hasValidationMetrics"
-          src="assets/svg/data_check.svg"
+          *ngIf="showValidationMetricsIcon(version)"
+          src="../assets/svg/validation-icon.svg"
           alt="Validation Metrics Icon"
           matTooltip="This version contains validation metrics."
         />

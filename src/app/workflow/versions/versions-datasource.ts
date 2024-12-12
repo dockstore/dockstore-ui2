@@ -57,10 +57,19 @@ export class VersionsDataSource implements DataSource<WorkflowVersion> {
         pageIndex,
         sortCol,
         sortDirection,
+        'metrics',
         'response'
       );
     } else {
-      workflowVersions = this.workflowsService.getWorkflowVersions(workflowId, pageSize, pageIndex, sortCol, sortDirection, 'response');
+      workflowVersions = this.workflowsService.getWorkflowVersions(
+        workflowId,
+        pageSize,
+        pageIndex,
+        sortCol,
+        sortDirection,
+        'metrics',
+        'response'
+      );
     }
 
     workflowVersions.pipe(finalize(() => this.loadingSubject$.next(false))).subscribe((versions) => {
