@@ -259,7 +259,6 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
   showValidationMetricsIcon(version: WorkflowVersion) {
     if (version.metricsByPlatform !== null) {
       const metrics = version.metricsByPlatform[PartnerEnum.ALL];
-      console.log(metrics?.validationStatus);
       return metrics?.validationStatus != null;
     }
     return false;
