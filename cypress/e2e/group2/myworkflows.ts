@@ -337,7 +337,6 @@ describe('Dockstore my workflows part 2', () => {
     cy.visit('/my-workflows/github.com/A/l');
     cy.url().should('eq', Cypress.config().baseUrl + '/my-workflows/github.com/A/l');
     goToTab('Versions');
-    cy.get('[data-cy=date-modified-header]').should('be.visible').click();
     cy.wait(1000);
 
     cy.get('td').contains('Actions').click();
@@ -504,7 +503,6 @@ describe('Dockstore my workflows part 2', () => {
     cy.visit('/my-workflows/github.com/A/l');
     cy.url().should('eq', Cypress.config().baseUrl + '/my-workflows/github.com/A/l');
     goToTab('Versions');
-    cy.get('[data-cy=date-modified-header]').should('be.visible').click();
     cy.wait(1000);
     cy.contains('button', 'Actions').click();
     cy.contains('button', 'Refresh Version').should('not.be.disabled');
@@ -661,7 +659,6 @@ describe('Dockstore my workflows part 3', () => {
       cy.get('#publishButton').should('contain', 'Publish').should('be.visible');
 
       goToTab('Versions');
-      cy.get('[data-cy=date-modified-header]').should('be.visible').click();
       cy.wait(1000);
       cy.contains('button', 'Actions').click();
       cy.get('[data-cy=set-default-version-button]').should('be.visible').click();
