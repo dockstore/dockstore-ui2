@@ -19,6 +19,7 @@
     "doiURL": null,
     "dois": {
       "USER": {
+        "id": 1234,
         "type": "VERSION",
         "name": "10.5072/zenodo.841014",
         "initiator": "USER"
@@ -53,6 +54,7 @@
       "descriptorTypeVersions": [],
       "dois": {
         "USER": {
+          "id": 1234,
           "type": "VERSION",
           "name": "10.5072/zenodo.841014",
           "initiator": "USER"
