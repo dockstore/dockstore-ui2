@@ -431,7 +431,6 @@ describe('Dockstore my workflows part 2', () => {
       cy.get('[data-cy=dockstore-request-doi-button]').click();
       cy.get('[data-cy=export-button').should('be.enabled');
       cy.get('[data-cy=export-button').click();
-
       cy.fixture('versionWithDoi.json').then((json) => {
         cy.intercept('GET', '/api/workflows/11/workflowVersions?limit=10&offset=0&sortOrder=desc', {
           body: json,
@@ -457,8 +456,7 @@ describe('Dockstore my workflows part 2', () => {
           statusCode: 200,
         }).as('getVersionAfterOrcidExport');
       });
-      goToTab('Versions');
-      cy.get('td').contains('Actions').click();
+      gotoVersionsAndClickActions();
       cy.get('[data-cy=dockstore-export-orcid-button]').should('not.exist'); // Should not be able to export to ORCID again
     });
   });
