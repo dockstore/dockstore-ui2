@@ -428,15 +428,15 @@ describe('Dockstore my workflows part 2', () => {
       cy.get('[data-cy=version-DOI-badge]').should('not.exist');
       gotoVersionsAndClickActions();
       // Request DOI
-      cy.get('[data-cy=dockstore-request-doi-button]').click();
-      cy.get('[data-cy=export-button').should('be.enabled');
-      cy.get('[data-cy=export-button').click();
       cy.fixture('versionWithDoi.json').then((json) => {
         cy.intercept('GET', '/api/workflows/11/workflowVersions?limit=10&offset=0&sortOrder=desc', {
           body: json,
           statusCode: 200,
         }).as('getVersionWithDoi');
       });
+      cy.get('[data-cy=dockstore-request-doi-button]').click();
+      cy.get('[data-cy=export-button').should('be.enabled');
+      cy.get('[data-cy=export-button').click();
 
       // Should have DOI badges now
       cy.get('[data-cy=user-DOI-icon]').should('be.visible');
@@ -447,15 +447,15 @@ describe('Dockstore my workflows part 2', () => {
       cy.get('[data-cy=dockstore-request-doi-button').should('not.exist'); // Should not be able to request another DOI
 
       // Export to ORCID
-      cy.get('[data-cy=dockstore-export-orcid-button]').click();
-      cy.get('[data-cy=export-button').should('be.enabled');
-      cy.get('[data-cy=export-button').click();
       cy.fixture('versionAfterOrcidExport.json').then((json) => {
         cy.intercept('GET', '/api/workflows/11/workflowVersions?limit=10&offset=0&sortOrder=desc', {
           body: json,
           statusCode: 200,
         }).as('getVersionAfterOrcidExport');
       });
+      cy.get('[data-cy=dockstore-export-orcid-button]').click();
+      cy.get('[data-cy=export-button').should('be.enabled');
+      cy.get('[data-cy=export-button').click();
       gotoVersionsAndClickActions();
       cy.get('[data-cy=dockstore-export-orcid-button]').should('not.exist'); // Should not be able to export to ORCID again
     });
