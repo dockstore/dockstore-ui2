@@ -51,7 +51,13 @@
     "versionEditor": null,
     "versionMetadata": {
       "descriptorTypeVersions": [],
-      "dois": {},
+      "dois": {
+        "USER": {
+          "type": "VERSION",
+          "name": "10.5072/zenodo.841014",
+          "initiator": "USER"
+        }
+      },
       "engineVersions": [],
       "id": 13,
       "parsedInformationSet": [],
