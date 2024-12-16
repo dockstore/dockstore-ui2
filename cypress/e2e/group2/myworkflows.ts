@@ -444,7 +444,6 @@ describe('Dockstore my workflows part 2', () => {
       cy.get('[data-cy=concept-DOI-badge]').should('be.visible');
       cy.get('[data-cy=version-DOI-badge]').should('be.visible');
       goToTab('Versions');
-      cy.wait(1000);
       cy.get('td').contains('Actions').click();
       cy.get('[data-cy=dockstore-request-doi-button').should('not.exist'); // Should not be able to request another DOI
 
