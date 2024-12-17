@@ -202,6 +202,7 @@ describe('GitHub App Tools', () => {
       cy.contains('/.dockstore.yml');
 
       selectUnpublishedGitHubAppTab('C');
+      cy.wait(1000);
       selectGitHubAppTool('test-github-app-tools/md5sum');
       cy.get('#publishButton').should('not.be.disabled');
       cy.get('[data-cy=viewPublicWorkflowButton]').should('not.exist');
