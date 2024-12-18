@@ -37,6 +37,11 @@ mat-tab-group.homeComponent {
   text-overflow: ellipsis;
 }
 
+// Makes facets the right height
+:host ::ng-deep mat-checkbox div.mdc-form-field {
+  height: 1.25rem;
+}
+
 .hits {
   line-height: 1.8;
 }
