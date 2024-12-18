@@ -40,11 +40,11 @@ describe('Find broken anchor links', () => {
               // Is the response a cloudflare challenge?
               // https://developers.cloudflare.com/waf/reference/cloudflare-challenges/
               const isChallenge = result.status === 403 && result.headers['cf-mitigated'] === 'challenge';
-              if (!isOk && !isChallenge) {
+              if (isOk || isChallenge) {
+                visitedUrls.push(href); // Add successful links to visitedUrls so that they won't be visited again
+              } else {
                 brokenUrls.push(href);
                 cy.log(`${result.status}: ${href}`);
-              } else {
-                visitedUrls.push(href); // Add successful links to visitedUrls so that they won't be visited again
               }
             });
           }
