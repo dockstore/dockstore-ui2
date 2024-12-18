@@ -1320,7 +1320,7 @@ a.small-mat-btn-skin {
 
 // This style is for the SMALLER dockstore buttons with 26px height
 // Use this most likely with the small-mat-btn-skin
-button.small-btn-structure,
+button.small-btn-structure.mdc-button,
 a.small-btn-structure {
   line-height: 26px;
   height: 26px;
