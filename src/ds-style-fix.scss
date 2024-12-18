@@ -246,16 +246,6 @@ div.panel-container-label {
   }
 }
 
-// Bootstrap applies bold font-weight and material checkbox automatically sets a line height and default overflow
-// behaviour that needs to be overridden.
-/*TODO(mdc-migration): The following rule targets internal classes of checkbox that may no longer apply for the MDC version.
- */
-.search-facet-checkboxes .mat-checkbox-layout .mat-checkbox-label {
-  font-weight: normal !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-}
-
 /*TODO(mdc-migration): The following rule targets internal classes of checkbox that may no longer apply for the MDC version.
  */
 label.mat-checkbox-layout {

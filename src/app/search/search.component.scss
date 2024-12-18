@@ -28,6 +28,15 @@ mat-tab-group.homeComponent {
   color: $header-color;
 }
 
+// Bootstrap applies bold font-weight and material checkbox automatically sets a line height and default overflow
+// behaviour that needs to be overridden.
+:host::ng-deep .mat-mdc-checkbox.search-facet-checkboxes .mdc-label {
+  font-weight: normal;
+  overflow: hidden;
+  // This doesn't actually work, but doesn't work in prod either, as ellipsis requires a fixed width
+  text-overflow: ellipsis;
+}
+
 .hits {
   line-height: 1.8;
 }
