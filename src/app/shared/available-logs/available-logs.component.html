@@ -59,6 +59,7 @@
             <td mat-cell *matCellDef="let element">
               <a
                 mat-button
+                data-cy="fulllog"
                 [href]="toolId$ | async | toolTesterLog: version.name:element.testFilename:element.runner:element.filename"
                 rel="noopener noreferrer"
                 target="_blank"
