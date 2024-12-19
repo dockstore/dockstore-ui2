@@ -13,37 +13,37 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { AsyncPipe, DatePipe, JsonPipe, KeyValue, KeyValuePipe, NgClass, NgFor, NgIf } from '@angular/common';
 import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatIconModule } from '@angular/material/icon';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatTableModule } from '@angular/material/table';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faCodeBranch, faTag } from '@fortawesome/free-solid-svg-icons';
+import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { DoiBadgeComponent } from 'app/shared/entry/doi/doi-badge/doi-badge.component';
+import { merge, Observable } from 'rxjs';
 import { distinctUntilChanged, takeUntil, tap } from 'rxjs/operators';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { DateService } from '../../shared/date.service';
 import { Dockstore } from '../../shared/dockstore.model';
 import { DockstoreService } from '../../shared/dockstore.service';
-import { Doi, EntryType, VersionVerifiedPlatform, WorkflowsService } from '../../shared/openapi';
+import { CommitUrlPipe } from '../../shared/entry/commit-url.pipe';
+import { DescriptorLanguageVersionsPipe } from '../../shared/entry/descriptor-language-versions.pipe';
+import { DescriptorLanguagePipe } from '../../shared/entry/descriptor-language.pipe';
 import { ExtendedWorkflow } from '../../shared/models/ExtendedWorkflow';
-import { SessionQuery } from '../../shared/session/session.query';
-import { ExtendedWorkflowQuery } from '../../shared/state/extended-workflow.query';
+import { Doi, EntryType, VersionVerifiedPlatform, WorkflowsService } from '../../shared/openapi';
 import { Workflow } from '../../shared/openapi/model/workflow';
 import { WorkflowVersion } from '../../shared/openapi/model/workflowVersion';
-import { Versions } from '../../shared/versions';
-import { CommitUrlPipe } from '../../shared/entry/commit-url.pipe';
-import { DescriptorLanguagePipe } from '../../shared/entry/descriptor-language.pipe';
-import { DescriptorLanguageVersionsPipe } from '../../shared/entry/descriptor-language-versions.pipe';
-import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
-import { ViewWorkflowComponent } from '../view/view.component';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { MatChipsModule } from '@angular/material/chips';
-import { NgIf, NgClass, NgFor, JsonPipe, DatePipe, KeyValuePipe, KeyValue } from '@angular/common';
-import { FlexModule } from '@ngbracket/ngx-layout/flex';
-import { MatIconModule } from '@angular/material/icon';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { DoiBadgeComponent } from 'app/shared/entry/doi/doi-badge/doi-badge.component';
+import { SessionQuery } from '../../shared/session/session.query';
+import { ExtendedWorkflowQuery } from '../../shared/state/extended-workflow.query';
 import { PaginatorService } from '../../shared/state/paginator.service';
-import { merge, Observable } from 'rxjs';
-import { MatLegacyPaginator as MatPaginator, MatLegacyPaginatorModule } from '@angular/material/legacy-paginator';
+import { Versions } from '../../shared/versions';
+import { ViewWorkflowComponent } from '../view/view.component';
 import { VersionsDataSource } from './versions-datasource';
 
 @Component({
@@ -72,7 +72,7 @@ import { VersionsDataSource } from './versions-datasource';
     KeyValuePipe,
     DoiBadgeComponent,
     AsyncPipe,
-    MatLegacyPaginatorModule,
+    MatPaginatorModule,
   ],
 })
 export class VersionsWorkflowComponent extends Versions implements OnInit, OnChanges, AfterViewInit {
