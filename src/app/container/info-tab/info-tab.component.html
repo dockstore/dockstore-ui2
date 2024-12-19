@@ -21,7 +21,7 @@
         <mat-card-title>Tool Information</mat-card-title>
       </mat-card-header>
       <mat-divider></mat-divider>
-      <mat-card-content class="p-1 pt-3">
+      <mat-card-content>
         <ul class="list-unstyled container-info">
           <li *ngIf="tool?.providerUrl && tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">
             <strong matTooltip="Source code repository for the associated tool descriptors and Dockerfile">Source Code</strong>:
@@ -295,7 +295,7 @@
         <mat-card-title>Tool Version Information</mat-card-title>
       </mat-card-header>
       <mat-divider></mat-divider>
-      <mat-card-content class="p-1 pt-3">
+      <mat-card-content>
         <div fxLayout fxLayoutAlign="start center" fxLayoutGap="2rem">
           <span class="bubble">
             {{ selectedVersion?.name }}

@@ -297,9 +297,9 @@
 
     <div fxLayout="column" fxLayoutGap="1rem" class="p-0 col-sm-12 col-md-3 col-lg-3 ng-scope" *ngIf="isToolPublic && tool">
       <mat-card appearance="outlined">
-        <div class="h5">Recent Versions</div>
-        <mat-divider></mat-divider>
         <mat-card-content>
+          <div class="h5">Recent Versions</div>
+          <mat-divider></mat-divider>
           <div class="pt-2">
             <span *ngFor="let sortedVersion of sortedVersions">
               <div
@@ -328,9 +328,9 @@
         </mat-card-content>
       </mat-card>
       <mat-card appearance="outlined" *ngIf="tool">
-        <div class="h5">Docker Pull Command</div>
-        <mat-divider></mat-divider>
         <mat-card-content>
+          <div class="h5">Docker Pull Command</div>
+          <mat-divider></mat-divider>
           <div class="input-group pt-3">
             <input type="text" class="form-control selected-item" [(ngModel)]="dockerPullCmd" value="{{ dockerPullCmd }}" readonly />
             <span class="input-group-btn">
@@ -349,9 +349,9 @@
         </mat-card-content>
       </mat-card>
       <mat-card appearance="outlined" *ngIf="extendedTool$ | async">
-        <div class="h5">Source Repositories</div>
-        <mat-divider></mat-divider>
         <mat-card-content>
+          <div class="h5">Source Repositories</div>
+          <mat-divider></mat-divider>
           <div fxLayout="row wrap" class="container-source-repos pt-3">
             <div fxFlex="40" class="mb-2 pt-2 pr-2">Git Repository</div>
             <div class="mb-2">
@@ -411,9 +411,9 @@
         [verifiedByPlatform]="versionsWithVerifiedPlatforms"
       ></app-verified-by>
       <mat-card appearance="outlined" class="mb-1" *ngIf="tool">
-        <div class="h5">Share on</div>
-        <mat-divider></mat-divider>
         <mat-card-content>
+          <div class="h5">Share on</div>
+          <mat-divider></mat-divider>
           <div class="container-sharing pt-3">
             <share-buttons
               [include]="['facebook', 'twitter', 'linkedin', 'reddit']"
