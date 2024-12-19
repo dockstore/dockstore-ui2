@@ -8,12 +8,16 @@
     <li><strong>Version DOI:</strong> represents a specific version.</li>
     <li><strong>Concept DOI:</strong> represents all versions and resolves to the latest one.</li>
   </ul>
-  <mat-card *ngIf="!doiInfoMap.size" class="alert alert-info mat-elevation-z mt-3" role="alert">
+  <mat-card appearance="outlined" *ngIf="!doiInfoMap.size" class="alert alert-info mat-elevation-z mt-3" role="alert">
     <mat-icon class="alert-info-icon">info</mat-icon> This {{ entryTypeMetadata.term }} has no DOIs.
   </mat-card>
   <p *ngIf="doiInfoMap.size">Select which DOI to display publicly:</p>
   <mat-radio-group [(ngModel)]="selectedOption" aria-label="Select an option" fxLayout="column" fxLayoutGap="1rem">
-    <mat-card *ngFor="let doiInfo of doiInfoMap | keyvalue: originalOrder" [class]="doiInfo.key === selectedOption ? 'selected-card' : ''">
+    <mat-card
+      appearance="outlined"
+      *ngFor="let doiInfo of doiInfoMap | keyvalue: originalOrder"
+      [class]="doiInfo.key === selectedOption ? 'selected-card' : ''"
+    >
       <mat-radio-button [value]="doiInfo.key" class="w-100">
         <div>
           <app-doi-badge [doi]="doiInfo.value.conceptDoi" [displayDoi]="false" class="mr-2"></app-doi-badge>

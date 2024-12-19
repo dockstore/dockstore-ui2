@@ -33,19 +33,19 @@ import { UrlDeconstructPipe } from '../../shared/entry/url-deconstruct.pipe';
 import { VersionProviderUrlPipe } from '../../shared/entry/versionProviderUrl.pipe';
 import { MarkdownWrapperComponent } from '../../shared/markdown-wrapper/markdown-wrapper.component';
 import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
-import { MatLegacyTableModule } from '@angular/material/legacy-table';
+import { MatTableModule } from '@angular/material/table';
 import { InfoTabCheckerWorkflowPathComponent } from '../../shared/entry/info-tab-checker-workflow-path/info-tab-checker-workflow-path.component';
-import { MatLegacyRadioModule } from '@angular/material/legacy-radio';
+import { MatRadioModule } from '@angular/material/radio';
 import { AiBubbleComponent } from '../../shared/ai-bubble/ai-bubble.component';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { SnackbarDirective } from '../../shared/snackbar.directive';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
-import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { MatCardModule } from '@angular/material/card';
 import { NgIf, NgClass } from '@angular/common';
 
 import DescriptorTypeEnum = ToolVersion.DescriptorTypeEnum;
@@ -58,19 +58,19 @@ import { DisplayTopicComponent } from 'app/shared/entry/info-tab-topic/display-t
   standalone: true,
   imports: [
     NgIf,
-    MatLegacyCardModule,
+    MatCardModule,
     MatDividerModule,
-    MatLegacyTooltipModule,
-    MatLegacyButtonModule,
+    MatTooltipModule,
+    MatButtonModule,
     SnackbarDirective,
     ClipboardModule,
     MatIconModule,
     FormsModule,
     FlexModule,
     AiBubbleComponent,
-    MatLegacyRadioModule,
+    MatRadioModule,
     InfoTabCheckerWorkflowPathComponent,
-    MatLegacyTableModule,
+    MatTableModule,
     ExtendedModule,
     NgClass,
     MarkdownWrapperComponent,

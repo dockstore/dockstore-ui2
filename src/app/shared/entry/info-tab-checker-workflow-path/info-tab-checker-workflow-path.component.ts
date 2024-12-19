@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { Workflow } from 'app/shared/openapi';
 import { Observable } from 'rxjs';
 import { AlertQuery } from '../../alert/state/alert.query';
@@ -26,8 +26,8 @@ import { RegisterCheckerWorkflowComponent } from '../register-checker-workflow/r
 import { RegisterCheckerWorkflowService } from '../register-checker-workflow/register-checker-workflow.service';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
-import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { FormsModule } from '@angular/forms';
 import { NgIf, AsyncPipe } from '@angular/common';
@@ -37,7 +37,7 @@ import { NgIf, AsyncPipe } from '@angular/common';
   templateUrl: './info-tab-checker-workflow-path.component.html',
   styleUrls: ['./info-tab-checker-workflow-path.component.scss'],
   standalone: true,
-  imports: [NgIf, FormsModule, FlexModule, MatLegacyTooltipModule, MatLegacyButtonModule, RouterLink, MatIconModule, AsyncPipe],
+  imports: [NgIf, FormsModule, FlexModule, MatTooltipModule, MatButtonModule, RouterLink, MatIconModule, AsyncPipe],
 })
 export class InfoTabCheckerWorkflowPathComponent extends Base implements OnInit, OnDestroy {
   isPublic$: Observable<boolean>;

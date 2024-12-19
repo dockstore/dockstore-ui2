@@ -1,9 +1,9 @@
 import { KeyValue, Location, NgIf, NgFor, AsyncPipe, KeyValuePipe } from '@angular/common';
 import { Component, Input, OnChanges } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
-import { MatLegacySelectChange as MatSelectChange, MatLegacySelectModule } from '@angular/material/legacy-select';
-import { MatLegacyTabChangeEvent as MatTabChangeEvent, MatLegacyTabsModule } from '@angular/material/legacy-tabs';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSelectChange, MatSelectModule } from '@angular/material/select';
+import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { FileTreeComponent } from 'app/file-tree/file-tree.component';
 import { bootstrap4largeModalSize } from 'app/shared/constants';
 import { FileService } from 'app/shared/file.service';
@@ -14,14 +14,14 @@ import { WorkflowQuery } from '../shared/state/workflow.query';
 import { SourceFileTabsService } from './source-file-tabs.service';
 import { CodeEditorComponent } from '../shared/code-editor/code-editor.component';
 import { ClipboardModule } from '@angular/cdk/clipboard';
-import { MatLegacyOptionModule } from '@angular/material/legacy-core';
-import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
-import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatOptionModule } from '@angular/material/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatButtonModule } from '@angular/material/button';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { MatCardModule } from '@angular/material/card';
 import { LoadingComponent } from '../shared/loading/loading.component';
 
 @Component({
@@ -32,17 +32,17 @@ import { LoadingComponent } from '../shared/loading/loading.component';
   imports: [
     LoadingComponent,
     NgIf,
-    MatLegacyCardModule,
+    MatCardModule,
     MatIconModule,
     NgFor,
-    MatLegacyTabsModule,
+    MatTabsModule,
     MatToolbarModule,
     FlexModule,
-    MatLegacyButtonModule,
-    MatLegacyTooltipModule,
-    MatLegacyFormFieldModule,
-    MatLegacySelectModule,
-    MatLegacyOptionModule,
+    MatButtonModule,
+    MatTooltipModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatOptionModule,
     ClipboardModule,
     CodeEditorComponent,
     AsyncPipe,

@@ -3,10 +3,10 @@ import { Observable } from 'rxjs';
 import { NotificationsService } from '../../../notifications/state/notifications.service';
 import { Notification } from '../../../shared/openapi';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatButtonModule } from '@angular/material/button';
 import { MarkdownWrapperComponent } from '../../../shared/markdown-wrapper/markdown-wrapper.component';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
-import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { MatCardModule } from '@angular/material/card';
 import { NgFor, AsyncPipe } from '@angular/common';
 
 @Component({
@@ -14,7 +14,7 @@ import { NgFor, AsyncPipe } from '@angular/common';
   templateUrl: './news-notifications.component.html',
   styleUrls: ['./news-notifications.component.scss'],
   standalone: true,
-  imports: [NgFor, MatLegacyCardModule, FlexModule, MarkdownWrapperComponent, MatLegacyButtonModule, MatIconModule, AsyncPipe],
+  imports: [NgFor, MatCardModule, FlexModule, MarkdownWrapperComponent, MatButtonModule, MatIconModule, AsyncPipe],
 })
 export class NewsNotificationsComponent implements OnInit {
   public activeNotifications$: Observable<Array<Notification>>;

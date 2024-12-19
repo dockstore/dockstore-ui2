@@ -10,7 +10,7 @@ import { RouterLink } from '@angular/router';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { DownloadCLIClientComponent } from './downloadcliclient/downloadcliclient.component';
 import { AccountsExternalComponent } from '../accounts/external/accounts.component';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatButtonModule } from '@angular/material/button';
 import { ChangeUsernameComponent } from '../accounts/internal/change-username/change-username.component';
 import { MatStepperModule } from '@angular/material/stepper';
 import { NgIf } from '@angular/common';
@@ -28,7 +28,7 @@ import { HeaderComponent } from '../../header/header.component';
     NgIf,
     MatStepperModule,
     ChangeUsernameComponent,
-    MatLegacyButtonModule,
+    MatButtonModule,
     AccountsExternalComponent,
     DownloadCLIClientComponent,
     FlexModule,

@@ -14,7 +14,14 @@
 </p>
 
 <!-- Alert -->
-<mat-card *ngIf="showEmailWarning" class="alert alert-danger mat-elevation-z p-2" role="alert" fxLayout fxLayoutGap="1rem">
+<mat-card
+  appearance="outlined"
+  *ngIf="showEmailWarning"
+  class="alert alert-danger mat-elevation-z p-2"
+  role="alert"
+  fxLayout
+  fxLayoutGap="1rem"
+>
   <mat-icon class="alert-danger-icon">warning</mat-icon>
   <div>
     <strong>Caution:</strong> Your username seems to be an email address. We recommend changing your username to something else so that your
@@ -25,6 +32,7 @@
 
 <!-- Warnings -->
 <mat-card
+  appearance="outlined"
   *ngIf="(canChangeUsername$ | async) === true && !noDialog"
   class="alert alert-warning mat-elevation-z p-2"
   role="alert"
@@ -38,6 +46,7 @@
   </div>
 </mat-card>
 <mat-card
+  appearance="outlined"
   *ngIf="isUsernameChangeRequired$ | async"
   class="alert alert-warning mat-elevation-z p-2"
   role="alert"

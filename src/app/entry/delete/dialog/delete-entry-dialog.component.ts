@@ -15,16 +15,12 @@
  */
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Inject } from '@angular/core';
-import {
-  MatLegacyDialogRef as MatDialogRef,
-  MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
-  MatLegacyDialogModule,
-} from '@angular/material/legacy-dialog';
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Entry, EntryType, EntriesService, DockstoreTool, Workflow } from '../../../shared/openapi';
 import { AlertService } from '../../../shared/alert/state/alert.service';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatButtonModule } from '@angular/material/button';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { NgIf, TitleCasePipe } from '@angular/common';
 import { AlertComponent } from '../../../shared/alert/alert.component';
@@ -34,7 +30,7 @@ import { AlertComponent } from '../../../shared/alert/alert.component';
   templateUrl: './delete-entry-dialog.component.html',
   styleUrls: ['./delete-entry-dialog.component.scss'],
   standalone: true,
-  imports: [MatLegacyDialogModule, AlertComponent, NgIf, FlexModule, MatLegacyButtonModule, TitleCasePipe],
+  imports: [MatDialogModule, AlertComponent, NgIf, FlexModule, MatButtonModule, TitleCasePipe],
 })
 export class DeleteEntryDialogComponent {
   clicked: boolean;
