@@ -14,8 +14,8 @@
  *    limitations under the License.
  */
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { MatLegacyDialogModule } from '@angular/material/legacy-dialog';
-import { MatLegacySnackBarModule } from '@angular/material/legacy-snack-bar';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AccountsService } from 'app/loginComponents/accounts/external/accounts.service';
 import { RefreshService } from 'app/shared/refresh.service';
 import { DateService } from '../../shared/date.service';
@@ -45,7 +45,7 @@ describe('ViewWorkflowComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule, ViewWorkflowComponent, MatLegacySnackBarModule, MatLegacyDialogModule],
+        imports: [HttpClientTestingModule, ViewWorkflowComponent, MatSnackBarModule, MatDialogModule],
         providers: [
           { provide: ViewService },
           { provide: AccountsService, useClass: AccountsStubService },

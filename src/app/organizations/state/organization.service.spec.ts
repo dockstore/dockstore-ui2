@@ -16,7 +16,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { Routes } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { OrganizationService } from './organization.service';

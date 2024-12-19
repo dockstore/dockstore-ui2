@@ -16,7 +16,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { AfterViewChecked, Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm, FormsModule } from '@angular/forms';
-import { MatLegacyDialog as MatDialog, MatLegacyDialogModule } from '@angular/material/legacy-dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { forkJoin, Observable } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { AlertService } from '../../shared/alert/state/alert.service';
@@ -29,13 +29,13 @@ import { Tag } from '../../shared/openapi/model/tag';
 import { ToolDescriptor } from '../../shared/openapi/model/toolDescriptor';
 import { ToolQuery } from '../../shared/tool/tool.query';
 import { formErrors, validationDescriptorPatterns, validationMessages } from '../../shared/validationMessages.model';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
-import { MatLegacyCheckboxModule } from '@angular/material/legacy-checkbox';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
 import { NgIf, NgFor, NgClass } from '@angular/common';
-import { MatLegacyInputModule } from '@angular/material/legacy-input';
-import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { AlertComponent } from '../../shared/alert/alert.component';
 
 @Component({
@@ -44,18 +44,18 @@ import { AlertComponent } from '../../shared/alert/alert.component';
   styleUrls: ['./add-tag.component.css'],
   standalone: true,
   imports: [
-    MatLegacyDialogModule,
+    MatDialogModule,
     AlertComponent,
     FormsModule,
-    MatLegacyFormFieldModule,
-    MatLegacyInputModule,
+    MatFormFieldModule,
+    MatInputModule,
     NgIf,
     NgFor,
     NgClass,
     ExtendedModule,
     MatIconModule,
-    MatLegacyCheckboxModule,
-    MatLegacyButtonModule,
+    MatCheckboxModule,
+    MatButtonModule,
   ],
 })
 export class AddTagComponent extends Base implements OnInit, AfterViewChecked {

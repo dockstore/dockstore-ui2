@@ -1,4 +1,4 @@
-.mat-cell {
+.mat-mdc-cell {
   /* Angular Material doesn't seem to have any padding.  Don't need left padding because left aligned */
   padding-right: 10px;
   /* Angular Material also doesn't seem to have a min-width.  The date column is too short otherwise */
@@ -6,6 +6,6 @@
 }
 
 /* When the table overflows (has a horizontal scrollbar), also make the card grow with it */
-.mat-card {
+.mat-mdc-card {
   overflow-x: auto;
 }

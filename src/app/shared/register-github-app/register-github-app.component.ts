@@ -6,8 +6,8 @@ import { HttpParams } from '@angular/common/http';
 import { EntryType, EntryTypeMetadata } from '../openapi';
 import { EntryTypeMetadataService } from 'app/entry/type-metadata/entry-type-metadata.service';
 import { AsyncPipe, TitleCasePipe } from '@angular/common';
-import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatButtonModule } from '@angular/material/button';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { MatIconModule } from '@angular/material/icon';
 
@@ -15,7 +15,7 @@ import { MatIconModule } from '@angular/material/icon';
   selector: 'app-register-github-app',
   templateUrl: './register-github-app.component.html',
   standalone: true,
-  imports: [MatIconModule, FlexModule, MatLegacyButtonModule, MatLegacyTooltipModule, AsyncPipe, TitleCasePipe],
+  imports: [MatIconModule, FlexModule, MatButtonModule, MatTooltipModule, AsyncPipe, TitleCasePipe],
 })
 export class RegisterGithubAppComponent extends Base implements OnInit {
   public Dockstore = Dockstore;

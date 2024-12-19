@@ -7,7 +7,7 @@ import { EntryType, EntryTypeMetadata } from 'app/shared/openapi';
 import { EntryTypeMetadataService } from 'app/entry/type-metadata/entry-type-metadata.service';
 import { CodeEditorComponent } from '../shared/code-editor/code-editor.component';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { MatCardModule } from '@angular/material/card';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 
 @Component({
@@ -15,7 +15,7 @@ import { FlexModule } from '@ngbracket/ngx-layout/flex';
   templateUrl: './github-landing-page.component.html',
   styleUrls: ['./github-landing-page.component.scss'],
   standalone: true,
-  imports: [FlexModule, MatLegacyCardModule, MatDividerModule, CodeEditorComponent, RouterLink],
+  imports: [FlexModule, MatCardModule, MatDividerModule, CodeEditorComponent, RouterLink],
 })
 export class GithubLandingPageComponent extends Base implements OnInit {
   Dockstore = Dockstore;

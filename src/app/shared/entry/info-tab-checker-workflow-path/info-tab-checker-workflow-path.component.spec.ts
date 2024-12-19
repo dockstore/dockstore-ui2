@@ -16,7 +16,7 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { MatLegacyDialogModule as MatDialogModule } from '@angular/material/legacy-dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 import { RouterTestingModule } from '@angular/router/testing';
 import { EntryTypeMetadataService } from '../../../entry/type-metadata/entry-type-metadata.service';
 import { CheckerWorkflowStubService, EntryTypeMetadataStubService, RegisterCheckerWorkflowStubService } from '../../../test/service-stubs';

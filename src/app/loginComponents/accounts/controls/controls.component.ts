@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { UsersService } from '../../../shared/openapi';
 import { UserQuery } from '../../../shared/user/user.query';
 import { UserService } from '../../../shared/user/user.service';
 import { DeleteAccountDialogComponent } from './delete-account-dialog/delete-account-dialog.component';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { MatCardModule } from '@angular/material/card';
 import { NgIf, AsyncPipe } from '@angular/common';
 
 @Component({
@@ -15,7 +15,7 @@ import { NgIf, AsyncPipe } from '@angular/common';
   templateUrl: './controls.component.html',
   styleUrls: ['./controls.component.scss'],
   standalone: true,
-  imports: [NgIf, MatLegacyCardModule, MatIconModule, MatLegacyButtonModule, AsyncPipe],
+  imports: [NgIf, MatCardModule, MatIconModule, MatButtonModule, AsyncPipe],
 })
 export class ControlsComponent implements OnInit {
   public canChangeUsername$: Observable<boolean>;

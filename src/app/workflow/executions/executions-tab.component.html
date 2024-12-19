@@ -1,5 +1,5 @@
 <div *ngIf="!metricsExist" class="w-100">
-  <mat-card class="alert alert-info mat-elevation-z mt-3" role="alert" data-cy="no-metrics-banner">
+  <mat-card appearance="outlined" class="alert alert-info mat-elevation-z mt-3" role="alert" data-cy="no-metrics-banner">
     <mat-icon class="alert-info-icon">info</mat-icon> No metrics data exist for this version.
   </mat-card>
 </div>
@@ -15,7 +15,7 @@
       </mat-select>
     </mat-form-field>
   </div>
-  <mat-card>
+  <mat-card appearance="outlined">
     <mat-card-header>
       <mat-card-title>Execution Metrics</mat-card-title>
     </mat-card-header>
@@ -115,7 +115,7 @@
     </mat-card-content>
   </mat-card>
   <div class="mt-5">
-    <mat-card>
+    <mat-card appearance="outlined">
       <mat-card-header>
         <mat-card-title>Validator Tool Metrics</mat-card-title>
       </mat-card-header>

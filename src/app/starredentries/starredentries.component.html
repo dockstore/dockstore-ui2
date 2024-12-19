@@ -47,11 +47,16 @@
               <span class="tab-display workflow-background">{{ starredWorkflows?.length }}</span>
             </div>
           </ng-template>
-          <mat-card class="alert alert-info mat-elevation-z starred-header" role="alert" *ngIf="starredWorkflows?.length === 0">
+          <mat-card
+            appearance="outlined"
+            class="alert alert-info mat-elevation-z starred-header"
+            role="alert"
+            *ngIf="starredWorkflows?.length === 0"
+          >
             You have no starred workflows.
           </mat-card>
           <div fxLayout="column" fxLayoutGap="1rem" class="mb-2 mx-1">
-            <mat-card fxFlex *ngFor="let workflow of starredWorkflows; let last = last" class="pb-3">
+            <mat-card appearance="outlined" fxFlex *ngFor="let workflow of starredWorkflows; let last = last" class="pb-3">
               <ng-container
                 *ngTemplateOutlet="workflowSummary; context: { workflow: workflow, entryType: entryType.BioWorkflow }"
               ></ng-container>
@@ -68,11 +73,16 @@
             </div>
           </ng-template>
           <div>
-            <mat-card class="alert alert-info mat-elevation-z starred-header" role="alert" *ngIf="starredTools?.length === 0">
+            <mat-card
+              appearance="outlined"
+              class="alert alert-info mat-elevation-z starred-header"
+              role="alert"
+              *ngIf="starredTools?.length === 0"
+            >
               You have no starred tools.
             </mat-card>
             <div fxLayout="column" fxLayoutGap="1rem" class="mb-2 mx-1">
-              <mat-card fxFlex *ngFor="let tool of starredTools; let last = last" class="m-1 pb-3">
+              <mat-card appearance="outlined" fxFlex *ngFor="let tool of starredTools; let last = last" class="m-1 pb-3">
                 <ng-container
                   *ngTemplateOutlet="
                     tool.entryType === OpenApiEntryType.APPTOOL ? workflowSummary : toolSummary;
@@ -94,6 +104,7 @@
           </ng-template>
           <div>
             <mat-card
+              appearance="outlined"
               class="alert alert-info mat-elevation-z starred-header"
               data-cy="no-notebooks-banner"
               role="alert"
@@ -102,7 +113,7 @@
               You have no starred notebooks.
             </mat-card>
             <div fxLayout="column" fxLayoutGap="1rem" class="mb-2 mx-1">
-              <mat-card fxFlex *ngFor="let notebook of starredNotebooks; let last = last" class="m-1 pb-3">
+              <mat-card appearance="outlined" fxFlex *ngFor="let notebook of starredNotebooks; let last = last" class="m-1 pb-3">
                 <ng-container
                   *ngTemplateOutlet="workflowSummary; context: { workflow: notebook, entryType: entryType.Notebook }"
                 ></ng-container>
@@ -142,26 +153,26 @@
               <small class="mx-2">Last updated {{ workflow?.lastUpdated | date }}</small>
               <div fxLayout="row wrap" fxLayoutGap="1rem">
                 <span>
-                  <mat-chip-list>
-                    <mat-chip class="bubble workflow-background" *ngFor="let label of workflow?.labels | slice: 0:3">{{
+                  <mat-chip-listbox>
+                    <mat-chip-option class="bubble workflow-background" *ngFor="let label of workflow?.labels | slice: 0:3">{{
                       $any(label).value
-                    }}</mat-chip>
-                    <mat-chip class="bubble" *ngIf="workflow.versionVerified === true">
+                    }}</mat-chip-option>
+                    <mat-chip-option class="bubble" *ngIf="workflow.versionVerified === true">
                       <span class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">
                         <mat-icon class="verified-icon">done</mat-icon>
                         <span>Verified</span>
                       </span>
-                    </mat-chip>
-                    <mat-chip class="bubble">
+                    </mat-chip-option>
+                    <mat-chip-option class="bubble">
                       {{ workflow?.descriptorType | descriptorLanguage }}
-                    </mat-chip>
-                    <mat-chip class="bubble" *ngIf="workflow.versionVerified === true">
+                    </mat-chip-option>
+                    <mat-chip-option class="bubble" *ngIf="workflow.versionVerified === true">
                       <span class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">
                         <mat-icon class="verified-icon">done</mat-icon>
                         <span>Verified</span>
                       </span>
-                    </mat-chip>
-                  </mat-chip-list>
+                    </mat-chip-option>
+                  </mat-chip-listbox>
                 </span>
               </div>
             </div>
@@ -189,20 +200,20 @@
             <div fxLayout="row" fxLayoutAlign="space-between stretch">
               <div fxLayout="row" fxLayoutAlign="flex-start" fxLayoutGap="1rem">
                 <small class="mx-2">Last updated {{ tool?.lastUpdated | date }}</small>
-                <mat-chip-list>
-                  <mat-chip class="bubble tool-background" *ngFor="let label of tool?.labels | slice: 0:3">{{
+                <mat-chip-listbox>
+                  <mat-chip-option class="bubble tool-background" *ngFor="let label of tool?.labels | slice: 0:3">{{
                     $any(label).value
-                  }}</mat-chip>
-                  <mat-chip *ngIf="tool?.versionVerified" matTooltip="Verified" class="bubble">
+                  }}</mat-chip-option>
+                  <mat-chip-option *ngIf="tool?.versionVerified" matTooltip="Verified" class="bubble">
                     <a class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">
                       <mat-icon class="verified-icon">done</mat-icon>
                       <span>Verified</span>
                     </a>
-                  </mat-chip>
-                  <mat-chip class="bubble" *ngFor="let descriptortype of tool?.descriptorType">
+                  </mat-chip-option>
+                  <mat-chip-option class="bubble" *ngFor="let descriptortype of tool?.descriptorType">
                     {{ descriptortype }}
-                  </mat-chip>
-                </mat-chip-list>
+                  </mat-chip-option>
+                </mat-chip-listbox>
               </div>
               <a [routerLink]="tool | routerLink" class="no-underline">
                 <button mat-raised-button class="small-mat-btn-skin small-btn-structure" color="accent">View</button>
@@ -221,7 +232,9 @@
               <span class="tab-display service-background">0</span>
             </div>
           </ng-template>
-          <mat-card class="alert alert-info mat-elevation-z starred-header" role="alert"> You have no starred services. </mat-card>
+          <mat-card appearance="outlined" class="alert alert-info mat-elevation-z starred-header" role="alert">
+            You have no starred services.
+          </mat-card>
         </mat-tab>
 
         <mat-tab>
@@ -232,13 +245,18 @@
               <span class="tab-display org-background">{{ starredOrganizations?.length }}</span>
             </div>
           </ng-template>
-          <mat-card class="alert alert-info mat-elevation-z starred-header" role="alert" *ngIf="starredOrganizations?.length === 0">
+          <mat-card
+            appearance="outlined"
+            class="alert alert-info mat-elevation-z starred-header"
+            role="alert"
+            *ngIf="starredOrganizations?.length === 0"
+          >
             You have no starred organizations.
           </mat-card>
           <div *ngIf="starredOrganizations?.length > 0">
             <div fxLayoutAlign="start" fxLayout="row wrap" fxLayoutGap="1rem grid" class="mb-2 mx-1">
               <div *ngFor="let org of starredOrganizations; let last = last" fxFlex="33.3" fxFlex.lt-lg="500" fxFlex.lt-md="100">
-                <mat-card class="org-style pb-3">
+                <mat-card appearance="outlined" class="org-style pb-3">
                   <div class="h-100" fxLayout="column" fxLayoutAlign="space-between stretch">
                     <div fxLayout="column" fxLayoutGap="1rem">
                       <div fxLayout="row wrap" fxLayoutAlign="space-between start">
