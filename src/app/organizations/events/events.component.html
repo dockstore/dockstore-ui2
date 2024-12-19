@@ -9,14 +9,10 @@
               <span *ngIf="event?.type === EventType.CREATEORG"> &nbsp;created&nbsp;the&nbsp;organization </span>
               <span *ngIf="event?.type === EventType.APPROVEORGINVITE"> &nbsp;joined&nbsp;the&nbsp;organization </span>
               <span *ngIf="event?.type === EventType.MODIFYORG"> &nbsp;updated&nbsp;the&nbsp;organization </span>
-              <span *ngIf="event?.type === EventType.CREATECOLLECTION">
-                &nbsp;created&nbsp;the&nbsp;collection&nbsp;
-                <mat-chip-option>{{ event.collection.name }}</mat-chip-option>
-              </span>
-              <span *ngIf="event?.type === EventType.DELETECOLLECTION">
-                &nbsp;removed&nbsp;the&nbsp;collection&nbsp;
-                <mat-chip-option>{{ event.collection.name }}</mat-chip-option>
-              </span>
+              <span *ngIf="event?.type === EventType.CREATECOLLECTION"> &nbsp;created&nbsp;the&nbsp;collection&nbsp; </span>
+              <mat-chip-option *ngIf="event?.type === EventType.CREATECOLLECTION">{{ event.collection.name }}</mat-chip-option>
+              <span *ngIf="event?.type === EventType.DELETECOLLECTION"> &nbsp;removed&nbsp;the&nbsp;collection&nbsp; </span>
+              <mat-chip-option *ngIf="event?.type === EventType.DELETECOLLECTION">{{ event.collection.name }}</mat-chip-option>
               <span
                 *ngIf="
                   event?.type === EventType.MODIFYCOLLECTION ||
@@ -25,8 +21,15 @@
                 "
               >
                 &nbsp;updated&nbsp;the&nbsp;collection&nbsp;
-                <mat-chip-option>{{ event.collection.name }}</mat-chip-option>
               </span>
+              <mat-chip-option
+                *ngIf="
+                  event?.type === EventType.MODIFYCOLLECTION ||
+                  event?.type === EventType.ADDTOCOLLECTION ||
+                  event?.type === EventType.REMOVEFROMCOLLECTION
+                "
+                >{{ event.collection.name }}</mat-chip-option
+              >
             </mat-chip-listbox>
           </div>
         </span>
