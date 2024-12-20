@@ -17,7 +17,9 @@
 <div *ngIf="tool && !displayAppTool">
   <div class="row m-1 mt-3 mb-0" *ngIf="tool?.archived">
     <mat-card appearance="outlined" class="alert alert-warning mat-elevation-z m-0">
-      This {{ tool.entryTypeMetadata.term }} was archived on {{ tool.dbUpdateDate | date: 'yyyy-MM-dd' }}. It is now read-only.
+      <mat-card-content>
+        This {{ tool.entryTypeMetadata.term }} was archived on {{ tool.dbUpdateDate | date: 'yyyy-MM-dd' }}. It is now read-only.
+      </mat-card-content>
     </mat-card>
   </div>
   <div
@@ -27,14 +29,18 @@
     "
   >
     <mat-card appearance="outlined" class="alert alert-info mat-elevation-z" role="alert">
-      <mat-icon>warning</mat-icon> This Quay.io tool does not have an associated Git repository. Please view the Quay.io repository and add
-      a build trigger for a valid Git repository. Once the build has been added, refresh the tool.
+      <mat-card-content>
+        <mat-icon>warning</mat-icon> This Quay.io tool does not have an associated Git repository. Please view the Quay.io repository and
+        add a build trigger for a valid Git repository. Once the build has been added, refresh the tool.
+      </mat-card-content>
     </mat-card>
   </div>
 
   <div class="row m-1" *ngIf="tool?.mode === ModeEnum.HOSTED && tool?.workflowVersions?.length === 0">
     <mat-card appearance="outlined" class="alert alert-info mat-elevation-z" role="alert">
-      <mat-icon>warning</mat-icon> Your manually added tool does not have any tags. Go to the versions tab to add one.
+      <mat-card-content>
+        <mat-icon>warning</mat-icon> Your manually added tool does not have any tags. Go to the versions tab to add one.
+      </mat-card-content>
     </mat-card>
   </div>
   <div class="row m-1" fxLayout.lt-sm="column" fxLayout.gt-sm="row">
@@ -220,7 +226,7 @@
             <ng-template #noTags>
               <div class="p-3">
                 <mat-card appearance="outlined" class="alert alert-warning mat-elevation-z" role="alert">
-                  <mat-icon class="alert-warning-icon">warning</mat-icon> No tags exist for this
+                  <mat-card-content> <mat-icon class="alert-warning-icon">warning</mat-icon> No tags exist for this </mat-card-content>
                 </mat-card>
               </div>
             </ng-template>
@@ -289,7 +295,9 @@
         <div *ngIf="tool?.topicId !== null; else noTopicId" id="discourse-comments"></div>
         <ng-template #noTopicId>
           <mat-card appearance="outlined" class="alert alert-warning mat-elevation-z" role="alert">
-            <mat-icon class="alert-warning-icon">info</mat-icon> No Discourse topic exists for this tool.
+            <mat-card-content>
+              <mat-icon class="alert-warning-icon">info</mat-icon> No Discourse topic exists for this tool.
+            </mat-card-content>
           </mat-card>
         </ng-template>
       </div>

@@ -16,12 +16,16 @@
 <div class="p-3">
   <app-loading [loading]="loading">
     <mat-card appearance="outlined" *ngIf="nullContent" class="alert alert-warning mat-elevation-z" role="alert">
-      <mat-icon class="alert-warning-icon">warning</mat-icon>
-      No Records Found
+      <mat-card-content>
+        <mat-icon class="alert-warning-icon">warning</mat-icon>
+        No Records Found
+      </mat-card-content>
     </mat-card>
     <mat-card appearance="outlined" *ngIf="noContent" class="alert alert-warning mat-elevation-z" role="alert">
-      <mat-icon class="alert-warning-icon">warning</mat-icon>
-      Some tools associated with this workflow are missing from Git repo.
+      <mat-card-content>
+        <mat-icon class="alert-warning-icon">warning</mat-icon>
+        Some tools associated with this workflow are missing from Git repo.
+      </mat-card-content>
     </mat-card>
     <!-- TODO: Remove $any; toolContent is stringified JSON, so it works-->
     <table *ngIf="hasContent" mat-table [dataSource]="$any(toolContent)" class="w-100">

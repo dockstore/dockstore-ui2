@@ -9,7 +9,7 @@
     <li><strong>Concept DOI:</strong> represents all versions and resolves to the latest one.</li>
   </ul>
   <mat-card appearance="outlined" *ngIf="!doiInfoMap.size" class="alert alert-info mat-elevation-z mt-3" role="alert">
-    <mat-icon class="alert-info-icon">info</mat-icon> This {{ entryTypeMetadata.term }} has no DOIs.
+    <mat-card-content> <mat-icon class="alert-info-icon">info</mat-icon> This {{ entryTypeMetadata.term }} has no DOIs. </mat-card-content>
   </mat-card>
   <p *ngIf="doiInfoMap.size">Select which DOI to display publicly:</p>
   <mat-radio-group [(ngModel)]="selectedOption" aria-label="Select an option" fxLayout="column" fxLayoutGap="1rem">
@@ -18,30 +18,32 @@
       *ngFor="let doiInfo of doiInfoMap | keyvalue: originalOrder"
       [class]="doiInfo.key === selectedOption ? 'selected-card' : ''"
     >
-      <mat-radio-button [value]="doiInfo.key" class="w-100">
-        <div>
-          <app-doi-badge [doi]="doiInfo.value.conceptDoi" [displayDoi]="false" class="mr-2"></app-doi-badge>
-          <strong>{{ doiInfo.key | titlecase }}</strong>
-        </div>
-      </mat-radio-button>
-      <div class="ml-5">
-        <div class="size-small gray-caption">
-          <span *ngIf="doiInfo.key === DoiInitiatorEnum.USER"> Manually created by a user in the Dockstore UI. </span>
-          <span *ngIf="doiInfo.key === DoiInitiatorEnum.DOCKSTORE">
-            Automatically created by Dockstore for valid tags belonging to published {{ entryTypeMetadata.termPlural }}.
+      <mat-card-content>
+        <mat-radio-button [value]="doiInfo.key" class="w-100">
+          <div>
+            <app-doi-badge [doi]="doiInfo.value.conceptDoi" [displayDoi]="false" class="mr-2"></app-doi-badge>
+            <strong>{{ doiInfo.key | titlecase }}</strong>
+          </div>
+        </mat-radio-button>
+        <div class="ml-5">
+          <div class="size-small gray-caption">
+            <span *ngIf="doiInfo.key === DoiInitiatorEnum.USER"> Manually created by a user in the Dockstore UI. </span>
+            <span *ngIf="doiInfo.key === DoiInitiatorEnum.DOCKSTORE">
+              Automatically created by Dockstore for valid tags belonging to published {{ entryTypeMetadata.termPlural }}.
+            </span>
+            <span *ngIf="doiInfo.key === DoiInitiatorEnum.GITHUB"> Created by Zenodo's integration with GitHub. </span>
+          </div>
+          <span class="mr-4">
+            <span>Version DOI: </span>
+            <app-doi-badge *ngIf="doiInfo.value.versionDoi" [doi]="doiInfo.value.versionDoi" [displayInitiator]="false"></app-doi-badge>
+            <span *ngIf="!doiInfo.value.versionDoi">n/a</span>
           </span>
-          <span *ngIf="doiInfo.key === DoiInitiatorEnum.GITHUB"> Created by Zenodo's integration with GitHub. </span>
+          <span>
+            <span>Concept DOI: </span>
+            <app-doi-badge *ngIf="doiInfo.value.conceptDoi" [doi]="doiInfo.value.conceptDoi" [displayInitiator]="false"></app-doi-badge>
+          </span>
         </div>
-        <span class="mr-4">
-          <span>Version DOI: </span>
-          <app-doi-badge *ngIf="doiInfo.value.versionDoi" [doi]="doiInfo.value.versionDoi" [displayInitiator]="false"></app-doi-badge>
-          <span *ngIf="!doiInfo.value.versionDoi">n/a</span>
-        </span>
-        <span>
-          <span>Concept DOI: </span>
-          <app-doi-badge *ngIf="doiInfo.value.conceptDoi" [doi]="doiInfo.value.conceptDoi" [displayInitiator]="false"></app-doi-badge>
-        </span>
-      </div>
+      </mat-card-content>
     </mat-card>
   </mat-radio-group>
 </mat-dialog-content>

@@ -23,8 +23,10 @@
         role="alert"
         *ngIf="missingWarning"
       >
-        <button type="button" class="close" data-dismiss="alert" ng-click="missingWarning = false">&times;</button>
-        <mat-icon class="alert-warning-icon">warning</mat-icon>
+        <mat-card-content>
+          <button type="button" class="close" data-dismiss="alert" ng-click="missingWarning = false">&times;</button>
+          <mat-icon class="alert-warning-icon">warning</mat-icon>
+        </mat-card-content>
       </mat-card>
     </div>
   </div>
@@ -50,28 +52,32 @@
   </div>
   <div class="row m-1 mt-3 mb-0" *ngIf="workflow.archived">
     <mat-card appearance="outlined" class="alert alert-warning mat-elevation-z m-0">
-      This {{ workflow.entryTypeMetadata.term }} was archived on {{ workflow.dbUpdateDate | date: 'yyyy-MM-dd' }}. It is now read-only.
+      <mat-card-content>
+        This {{ workflow.entryTypeMetadata.term }} was archived on {{ workflow.dbUpdateDate | date: 'yyyy-MM-dd' }}. It is now read-only.
+      </mat-card-content>
     </mat-card>
   </div>
   <div class="row m-1 mt-3 mb-0" *ngIf="!isWorkflowPublic && workflow.mode === 'DOCKSTORE_YML' && gitHubAppInstalled === false">
     <mat-card appearance="outlined" class="alert alert-warning mat-elevation-z m-0">
-      <mat-icon class="alert-warning-icon">warning</mat-icon> This {{ workflow.entryTypeMetadata.term }} may not be automatically updating
-      because the Dockstore GitHub App was uninstalled from the {{ workflow.entryTypeMetadata.term }}'s repository. If you are an owner or
-      admin of the repository, click the button below to reinstall the Dockstore GitHub App.
-      <p>
-        <button
-          mat-raised-button
-          type="button"
-          class="accent-1-dark-btn mat-elevation-z no-underline"
-          (click)="openGitHubApp()"
-          target="_blank"
-          rel="noopener noreferrer"
-          matTooltip="Manage Dockstore installations on GitHub"
-        >
-          <mat-icon>add</mat-icon> Manage Dockstore installations on GitHub
-        </button>
-      </p></mat-card
-    >
+      <mat-card-content>
+        <mat-icon class="alert-warning-icon">warning</mat-icon> This {{ workflow.entryTypeMetadata.term }} may not be automatically updating
+        because the Dockstore GitHub App was uninstalled from the {{ workflow.entryTypeMetadata.term }}'s repository. If you are an owner or
+        admin of the repository, click the button below to reinstall the Dockstore GitHub App.
+        <p>
+          <button
+            mat-raised-button
+            type="button"
+            class="accent-1-dark-btn mat-elevation-z no-underline"
+            (click)="openGitHubApp()"
+            target="_blank"
+            rel="noopener noreferrer"
+            matTooltip="Manage Dockstore installations on GitHub"
+          >
+            <mat-icon>add</mat-icon> Manage Dockstore installations on GitHub
+          </button>
+        </p>
+      </mat-card-content>
+    </mat-card>
   </div>
   <div class="row m-1" *ngIf="!showRedirect" fxLayout.lt-sm="column" fxLayout.gt-sm="row">
     <app-json-ld [json]="schema"></app-json-ld>
@@ -310,8 +316,10 @@
               <div *ngIf="(launchSupport$ | async) === false; else launchSupported">
                 <div class="p-3">
                   <mat-card appearance="outlined" class="alert alert-warning mat-elevation-z" role="alert">
-                    <mat-icon class="alert-warning-icon">warning</mat-icon> Dockstore does not yet have customized launch-with instructions
-                    for this language.
+                    <mat-card-content>
+                      <mat-icon class="alert-warning-icon">warning</mat-icon> Dockstore does not yet have customized launch-with
+                      instructions for this language.
+                    </mat-card-content>
                   </mat-card>
                 </div>
               </div>
@@ -331,7 +339,9 @@
               <ng-template #noVersions>
                 <div class="p-3">
                   <mat-card appearance="outlined" class="alert alert-warning mat-elevation-z" role="alert">
-                    <mat-icon class="alert-warning-icon">warning</mat-icon> No versions exist for this workflow.
+                    <mat-card-content>
+                      <mat-icon class="alert-warning-icon">warning</mat-icon> No versions exist for this workflow.
+                    </mat-card-content>
                   </mat-card>
                 </div>
               </ng-template>
@@ -360,7 +370,9 @@
                   class="alert alert-info mat-elevation-z"
                   role="alert"
                 >
-                  <mat-icon>info</mat-icon> To see versions, please add a new version in the Files tab.
+                  <mat-card-content>
+                    <mat-icon>info</mat-icon> To see versions, please add a new version in the Files tab.
+                  </mat-card-content>
                 </mat-card>
                 <mat-card
                   appearance="outlined"
@@ -368,7 +380,7 @@
                   class="alert alert-info mat-elevation-z"
                   role="alert"
                 >
-                  <mat-icon>info</mat-icon> To see versions, please refresh the workflow.
+                  <mat-card-content> <mat-icon>info</mat-icon> To see versions, please refresh the workflow. </mat-card-content>
                 </mat-card>
                 <mat-card
                   appearance="outlined"
@@ -376,13 +388,15 @@
                   class="alert alert-info mat-elevation-z"
                   role="alert"
                 >
-                  <mat-icon>info</mat-icon> This {{ entryType }} does not have any versions because there are no GitHub branches or
-                  releases/tags with a .dockstore.yml that references this {{ entryType }}. Create a valid .dockstore.yml on GitHub that
-                  references this {{ entryType }} to add a new version.
+                  <mat-card-content>
+                    <mat-icon>info</mat-icon> This {{ entryType }} does not have any versions because there are no GitHub branches or
+                    releases/tags with a .dockstore.yml that references this {{ entryType }}. Create a valid .dockstore.yml on GitHub that
+                    references this {{ entryType }} to add a new version.
+                  </mat-card-content>
                 </mat-card>
                 <!-- This also handles FULL -->
                 <mat-card appearance="outlined" *ngSwitchDefault class="alert alert-info mat-elevation-z" role="alert">
-                  <mat-icon>info</mat-icon> This {{ entryType }} does not have any versions.
+                  <mat-card-content> <mat-icon>info</mat-icon> This {{ entryType }} does not have any versions. </mat-card-content>
                 </mat-card>
               </div>
             </ng-template>
@@ -404,7 +418,7 @@
                     class="alert alert-info mat-elevation-z"
                     role="alert"
                   >
-                    <mat-icon>info</mat-icon> To see files, please refresh the {{ entryType }}.
+                    <mat-card-content> <mat-icon>info</mat-icon> To see files, please refresh the {{ entryType }}. </mat-card-content>
                   </mat-card>
                   <div *ngSwitchCase="WorkflowModel.ModeEnum.HOSTED">
                     <ng-container *ngTemplateOutlet="hostedComponent"></ng-container>
@@ -415,13 +429,15 @@
                     class="alert alert-info mat-elevation-z"
                     role="alert"
                   >
-                    <mat-icon>info</mat-icon> This {{ entryType }} does not have any versions because there are no GitHub branches or
-                    releases/tags with a .dockstore.yml that references this {{ entryType }}. Create a valid .dockstore.yml on GitHub that
-                    references this {{ entryType }} to add a new version.
+                    <mat-card-content>
+                      <mat-icon>info</mat-icon> This {{ entryType }} does not have any versions because there are no GitHub branches or
+                      releases/tags with a .dockstore.yml that references this {{ entryType }}. Create a valid .dockstore.yml on GitHub that
+                      references this {{ entryType }} to add a new version.
+                    </mat-card-content>
                   </mat-card>
                   <!-- This also handles FULL -->
                   <mat-card appearance="outlined" *ngSwitchDefault class="alert alert-info mat-elevation-z" role="alert">
-                    <mat-icon>info</mat-icon> This {{ entryType }} does not have any versions.
+                    <mat-card-content> <mat-icon>info</mat-icon> This {{ entryType }} does not have any versions. </mat-card-content>
                   </mat-card>
                 </div>
               </ng-template>
@@ -458,7 +474,9 @@
               </div>
               <div *ngIf="isStub()" class="p-3">
                 <mat-card appearance="outlined" class="alert alert-warning mat-elevation-z" role="alert">
-                  <mat-icon class="alert-warning-icon">warning</mat-icon> To see tools, please refresh the workflow.
+                  <mat-card-content>
+                    <mat-icon class="alert-warning-icon">warning</mat-icon> To see tools, please refresh the workflow.
+                  </mat-card-content>
                 </mat-card>
               </div>
             </mat-tab>
@@ -475,12 +493,14 @@
                 </app-dag>
                 <div *ngIf="!selectedVersion">
                   <mat-card appearance="outlined" class="alert alert-warning mat-elevation-z p-3" role="alert">
-                    <mat-icon class="alert-warning-icon">warning</mat-icon> No version selected.
+                    <mat-card-content> <mat-icon class="alert-warning-icon">warning</mat-icon> No version selected. </mat-card-content>
                   </mat-card>
                 </div>
                 <div *ngIf="isStub()" class="p-3">
                   <mat-card appearance="outlined" class="alert alert-warning mat-elevation-z" role="alert">
-                    <mat-icon class="alert-warning-icon">warning</mat-icon> To see the DAG, please refresh the workflow.
+                    <mat-card-content>
+                      <mat-icon class="alert-warning-icon">warning</mat-icon> To see the DAG, please refresh the workflow.
+                    </mat-card-content>
                   </mat-card>
                 </div>
               </ng-template>
@@ -498,7 +518,9 @@
         <div *ngIf="workflow?.topicId !== null; else noTopicId" id="discourse-comments"></div>
         <ng-template #noTopicId>
           <mat-card appearance="outlined" class="alert alert-warning mat-elevation-z" role="alert">
-            <mat-icon class="alert-warning-icon">info</mat-icon> No Discourse topic exists for this {{ entryType }}.
+            <mat-card-content>
+              <mat-icon class="alert-warning-icon">info</mat-icon> No Discourse topic exists for this {{ entryType }}.
+            </mat-card-content>
           </mat-card>
         </ng-template>
       </div>
@@ -582,18 +604,20 @@
       <app-verified-by *ngIf="selectedVersion" [version]="selectedVersion" [verifiedByPlatform]="versionsWithVerifiedPlatforms">
       </app-verified-by>
       <mat-card appearance="outlined" *ngIf="workflow">
-        <div class="h5">Share on</div>
-        <mat-divider></mat-divider>
-        <div>
-          <div class="container-sharing pt-3">
-            <share-buttons
-              [include]="['facebook', 'twitter', 'linkedin', 'reddit']"
-              [show]="5"
-              [url]="shareURL"
-              [autoSetMeta]="false"
-            ></share-buttons>
+        <mat-card-content>
+          <div class="h5">Share on</div>
+          <mat-divider></mat-divider>
+          <div>
+            <div class="container-sharing pt-3">
+              <share-buttons
+                [include]="['facebook', 'twitter', 'linkedin', 'reddit']"
+                [show]="5"
+                [url]="shareURL"
+                [autoSetMeta]="false"
+              ></share-buttons>
+            </div>
           </div>
-        </div>
+        </mat-card-content>
       </mat-card>
       <!-- Re-enable the below and change to material once ga4gh/dockstore#442 is complete -->
       <!-- <div class="panel panel-default mb-3">

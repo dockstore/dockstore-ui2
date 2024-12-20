@@ -23,15 +23,17 @@
       (workflow?.mode === WorkflowType.ModeEnum.FULL || workflow?.mode === WorkflowType.ModeEnum.STUB)
     "
   >
-    Keep your workflow automatically in sync with GitHub with our new registration process. Click
-    <a
-      [href]="Dockstore.DOCUMENTATION_URL + '/getting-started/github-apps/github-apps.html#why-have-a-dockstore-github-app'"
-      target="_blank"
-      rel="noopener noreferrer"
-      class="link-with-underline"
-      >here</a
-    >
-    to learn more.
+    <mat-card-content>
+      Keep your workflow automatically in sync with GitHub with our new registration process. Click
+      <a
+        [href]="Dockstore.DOCUMENTATION_URL + '/getting-started/github-apps/github-apps.html#why-have-a-dockstore-github-app'"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="link-with-underline"
+        >here</a
+      >
+      to learn more.
+    </mat-card-content>
   </mat-card>
   <mat-card appearance="outlined">
     <mat-card-header>
@@ -342,8 +344,10 @@
       <mat-divider class="mt-3"></mat-divider>
       <div *ngIf="selectedVersion?.frozen && hasHttpImports" class="pt-3">
         <mat-card appearance="outlined" class="alert alert-warning mat-elevation-z" role="alert">
-          <mat-icon class="alert-warning-icon">warning</mat-icon> This version is snapshotted but contains HTTP imports. HTTP imports may
-          change and execution results may vary.
+          <mat-card-content>
+            <mat-icon class="alert-warning-icon">warning</mat-icon> This version is snapshotted but contains HTTP imports. HTTP imports may
+            change and execution results may vary.
+          </mat-card-content>
         </mat-card>
       </div>
       <table mat-table [dataSource]="this.authors" class="w-100 mb-5" aria-describedby="Authors">

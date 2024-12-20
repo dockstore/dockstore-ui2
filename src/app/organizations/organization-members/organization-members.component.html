@@ -33,85 +33,87 @@
       *ngFor="let organizationUser of organizationMembers$ | async; let index = index"
     >
       <mat-card appearance="outlined" class="h-100" [id]="'organization-member-' + index">
-        <div fxLayout fxLayoutGap="1rem" fxLayoutAlign="space-between stretch">
-          <img
-            *ngIf="organizationUser.user?.avatarUrl; else noAvatar"
-            mat-card-avatar
-            class="header-image"
-            [src]="organizationUser.user?.avatarUrl"
-            alt="User avatar"
-          />
-          <ng-template #noAvatar>
-            <img mat-card-avatar class="header-image" [src]="gravatarService.gravatarUrlForMysteryPerson()" alt="User avatar" />
-          </ng-template>
-          <div class="w-100" fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="0.5rem">
-            <div fxLayout fxLayoutAlign="space-between center">
-              <div>
-                <a class="no-underline" routerLink="/users/{{ organizationUser.user?.username }}">
-                  <h5 class="weight-bold truncate-text-1 mt-0 mb-0" [matTooltip]="organizationUser.user?.username">
-                    {{ organizationUser.user?.username }}
-                  </h5>
-                </a>
-              </div>
-              <div class="bubble" [ngClass]="{ 'pending-bubble': organizationUser.status !== OrganizationUser.StatusEnum.ACCEPTED }">
-                {{
-                  organizationUser.status === OrganizationUser.StatusEnum.ACCEPTED
-                    ? (organizationUser.role | titlecase)
-                    : (organizationUser.status | titlecase) + ' Invitation'
-                }}
-              </div>
-            </div>
-            <div fxLayout fxLayoutAlign="space-between">
-              <span class="orcid white-space-no-wrap" *ngIf="organizationUser.user?.orcid" fxLayout fxLayoutAlign="start">
+        <mat-card-content>
+          <div fxLayout fxLayoutGap="1rem" fxLayoutAlign="space-between stretch">
+            <img
+              *ngIf="organizationUser.user?.avatarUrl; else noAvatar"
+              mat-card-avatar
+              class="header-image"
+              [src]="organizationUser.user?.avatarUrl"
+              alt="User avatar"
+            />
+            <ng-template #noAvatar>
+              <img mat-card-avatar class="header-image" [src]="gravatarService.gravatarUrlForMysteryPerson()" alt="User avatar" />
+            </ng-template>
+            <div class="w-100" fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="0.5rem">
+              <div fxLayout fxLayoutAlign="space-between center">
                 <div>
-                  ORCID
-                  <img
-                    src="../../../assets/images/account-logos/orcid.svg"
-                    alt="ORCID iD logo"
-                    class="orcid-id-logo site-icons-small mr-3"
-                  />
+                  <a class="no-underline" routerLink="/users/{{ organizationUser.user?.username }}">
+                    <h5 class="weight-bold truncate-text-1 mt-0 mb-0" [matTooltip]="organizationUser.user?.username">
+                      {{ organizationUser.user?.username }}
+                    </h5>
+                  </a>
                 </div>
-                <a href="https://orcid.org/{{ organizationUser.user?.orcid }}">{{ organizationUser.user?.orcid }}</a>
-              </span>
-              <div
-                fxLayout
-                fxLayoutAlign="end"
-                *ngIf="(canEditMembership$ | async) && organizationUser.user.id !== (userId$ | async)"
-                fxFlex="noshrink"
-              >
-                <button
-                  mat-button
-                  class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
-                  [matTooltip]="
-                    organizationUser.status === OrganizationUser.StatusEnum.REJECTED
-                      ? 'Reinvite a user'
-                      : 'Edit member\'s role in organization'
-                  "
-                  [id]="'edit-user-role-' + index"
-                  (click)="editUser(organizationUser)"
-                >
-                  <mat-icon class="info-icon accent-1-dark">{{
-                    organizationUser.status === OrganizationUser.StatusEnum.REJECTED ? 'sync' : 'edit'
-                  }}</mat-icon>
-                  {{ organizationUser.status === OrganizationUser.StatusEnum.REJECTED ? 'Resend Invite' : 'Edit' }}
-                </button>
-                <button
-                  mat-button
-                  class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
-                  [matTooltip]="
+                <div class="bubble" [ngClass]="{ 'pending-bubble': organizationUser.status !== OrganizationUser.StatusEnum.ACCEPTED }">
+                  {{
                     organizationUser.status === OrganizationUser.StatusEnum.ACCEPTED
-                      ? 'Remove member from organization'
-                      : 'Delete Invitation'
-                  "
-                  [id]="'remove-user-' + index"
-                  (click)="removeUserDialog(organizationUser)"
+                      ? (organizationUser.role | titlecase)
+                      : (organizationUser.status | titlecase) + ' Invitation'
+                  }}
+                </div>
+              </div>
+              <div fxLayout fxLayoutAlign="space-between">
+                <span class="orcid white-space-no-wrap" *ngIf="organizationUser.user?.orcid" fxLayout fxLayoutAlign="start">
+                  <div>
+                    ORCID
+                    <img
+                      src="../../../assets/images/account-logos/orcid.svg"
+                      alt="ORCID iD logo"
+                      class="orcid-id-logo site-icons-small mr-3"
+                    />
+                  </div>
+                  <a href="https://orcid.org/{{ organizationUser.user?.orcid }}">{{ organizationUser.user?.orcid }}</a>
+                </span>
+                <div
+                  fxLayout
+                  fxLayoutAlign="end"
+                  *ngIf="(canEditMembership$ | async) && organizationUser.user.id !== (userId$ | async)"
+                  fxFlex="noshrink"
                 >
-                  <img src="../assets/svg/icons-actions-trash.svg" class="pr-2" alt="Remove member" />
-                </button>
+                  <button
+                    mat-button
+                    class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+                    [matTooltip]="
+                      organizationUser.status === OrganizationUser.StatusEnum.REJECTED
+                        ? 'Reinvite a user'
+                        : 'Edit member\'s role in organization'
+                    "
+                    [id]="'edit-user-role-' + index"
+                    (click)="editUser(organizationUser)"
+                  >
+                    <mat-icon class="info-icon accent-1-dark"
+                      >{{ organizationUser.status === OrganizationUser.StatusEnum.REJECTED ? 'sync' : 'edit' }}
+                    </mat-icon>
+                    {{ organizationUser.status === OrganizationUser.StatusEnum.REJECTED ? 'Resend Invite' : 'Edit' }}
+                  </button>
+                  <button
+                    mat-button
+                    class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+                    [matTooltip]="
+                      organizationUser.status === OrganizationUser.StatusEnum.ACCEPTED
+                        ? 'Remove member from organization'
+                        : 'Delete Invitation'
+                    "
+                    [id]="'remove-user-' + index"
+                    (click)="removeUserDialog(organizationUser)"
+                  >
+                    <img src="../assets/svg/icons-actions-trash.svg" class="pr-2" alt="Remove member" />
+                  </button>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        </mat-card-content>
       </mat-card>
     </div>
   </div>

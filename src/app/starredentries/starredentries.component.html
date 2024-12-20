@@ -53,13 +53,15 @@
             role="alert"
             *ngIf="starredWorkflows?.length === 0"
           >
-            You have no starred workflows.
+            <mat-card-content> You have no starred workflows. </mat-card-content>
           </mat-card>
           <div fxLayout="column" fxLayoutGap="1rem" class="mb-2 mx-1">
             <mat-card appearance="outlined" fxFlex *ngFor="let workflow of starredWorkflows; let last = last" class="pb-3">
-              <ng-container
-                *ngTemplateOutlet="workflowSummary; context: { workflow: workflow, entryType: entryType.BioWorkflow }"
-              ></ng-container>
+              <mat-card-content>
+                <ng-container
+                  *ngTemplateOutlet="workflowSummary; context: { workflow: workflow, entryType: entryType.BioWorkflow }"
+                ></ng-container>
+              </mat-card-content>
             </mat-card>
           </div>
         </mat-tab>
@@ -79,16 +81,20 @@
               role="alert"
               *ngIf="starredTools?.length === 0"
             >
-              You have no starred tools.
+              <mat-card-content> You have no starred tools. </mat-card-content>
             </mat-card>
             <div fxLayout="column" fxLayoutGap="1rem" class="mb-2 mx-1">
               <mat-card appearance="outlined" fxFlex *ngFor="let tool of starredTools; let last = last" class="m-1 pb-3">
-                <ng-container
-                  *ngTemplateOutlet="
-                    tool.entryType === OpenApiEntryType.APPTOOL ? workflowSummary : toolSummary;
-                    context: tool.entryType === OpenApiEntryType.APPTOOL ? { workflow: tool, entryType: entryType.AppTool } : { tool: tool }
-                  "
-                ></ng-container>
+                <mat-card-content>
+                  <ng-container
+                    *ngTemplateOutlet="
+                      tool.entryType === OpenApiEntryType.APPTOOL ? workflowSummary : toolSummary;
+                      context: tool.entryType === OpenApiEntryType.APPTOOL
+                        ? { workflow: tool, entryType: entryType.AppTool }
+                        : { tool: tool }
+                    "
+                  ></ng-container>
+                </mat-card-content>
               </mat-card>
             </div>
           </div>
@@ -110,13 +116,15 @@
               role="alert"
               *ngIf="starredNotebooks?.length === 0"
             >
-              You have no starred notebooks.
+              <mat-card-content> You have no starred notebooks. </mat-card-content>
             </mat-card>
             <div fxLayout="column" fxLayoutGap="1rem" class="mb-2 mx-1">
               <mat-card appearance="outlined" fxFlex *ngFor="let notebook of starredNotebooks; let last = last" class="m-1 pb-3">
-                <ng-container
-                  *ngTemplateOutlet="workflowSummary; context: { workflow: notebook, entryType: entryType.Notebook }"
-                ></ng-container>
+                <mat-card-content>
+                  <ng-container
+                    *ngTemplateOutlet="workflowSummary; context: { workflow: notebook, entryType: entryType.Notebook }"
+                  ></ng-container>
+                </mat-card-content>
               </mat-card>
             </div>
           </div>
@@ -233,7 +241,7 @@
             </div>
           </ng-template>
           <mat-card appearance="outlined" class="alert alert-info mat-elevation-z starred-header" role="alert">
-            You have no starred services.
+            <mat-card-content> You have no starred services. </mat-card-content>
           </mat-card>
         </mat-tab>
 
@@ -251,71 +259,73 @@
             role="alert"
             *ngIf="starredOrganizations?.length === 0"
           >
-            You have no starred organizations.
+            <mat-card-content> You have no starred organizations. </mat-card-content>
           </mat-card>
           <div *ngIf="starredOrganizations?.length > 0">
             <div fxLayoutAlign="start" fxLayout="row wrap" fxLayoutGap="1rem grid" class="mb-2 mx-1">
               <div *ngFor="let org of starredOrganizations; let last = last" fxFlex="33.3" fxFlex.lt-lg="500" fxFlex.lt-md="100">
                 <mat-card appearance="outlined" class="org-style pb-3">
-                  <div class="h-100" fxLayout="column" fxLayoutAlign="space-between stretch">
-                    <div fxLayout="column" fxLayoutGap="1rem">
-                      <div fxLayout="row wrap" fxLayoutAlign="space-between start">
-                        <a routerLink="/organizations/{{ org.name }}" class="no-underline">
-                          <img
-                            *ngIf="org.avatarUrl; else placeholder"
-                            class="small-org-logo"
-                            [src]="org.avatarUrl | gravatar"
-                            alt="org logo"
-                            [appFallback]="orgLogoService.DEFAULT_URL"
-                          />
-                          <ng-template #placeholder><span class="logo-height"></span></ng-template>
-                        </a>
-                        <app-organization-starring
-                          [organization]="org"
-                          (stargazersChange)="organizationStarGazersChange()"
-                        ></app-organization-starring>
-                      </div>
-                      <div data-cy="orgName">
-                        <a routerLink="/organizations/{{ org.name }}" class="no-underline">
-                          <h5 class="text-break">{{ org.displayName }}</h5>
-                          <span class="truncate-text-3">{{ org.topic }}</span>
-                        </a>
+                  <mat-card-content>
+                    <div class="h-100" fxLayout="column" fxLayoutAlign="space-between stretch">
+                      <div fxLayout="column" fxLayoutGap="1rem">
+                        <div fxLayout="row wrap" fxLayoutAlign="space-between start">
+                          <a routerLink="/organizations/{{ org.name }}" class="no-underline">
+                            <img
+                              *ngIf="org.avatarUrl; else placeholder"
+                              class="small-org-logo"
+                              [src]="org.avatarUrl | gravatar"
+                              alt="org logo"
+                              [appFallback]="orgLogoService.DEFAULT_URL"
+                            />
+                            <ng-template #placeholder><span class="logo-height"></span></ng-template>
+                          </a>
+                          <app-organization-starring
+                            [organization]="org"
+                            (stargazersChange)="organizationStarGazersChange()"
+                          ></app-organization-starring>
+                        </div>
+                        <div data-cy="orgName">
+                          <a routerLink="/organizations/{{ org.name }}" class="no-underline">
+                            <h5 class="text-break">{{ org.displayName }}</h5>
+                            <span class="truncate-text-3">{{ org.topic }}</span>
+                          </a>
+                        </div>
+                        <div>
+                          <div fxLayout="column" fxLayoutAlign="space-between start" class="info">
+                            <span fxLayout="row" *ngIf="org?.link">
+                              <mat-icon class="info-icon">link</mat-icon>
+                              <span class="truncate-text-1"
+                                ><a [href]="org.link" target="_blank" rel="noopener noreferrer">{{ org.link }}</a></span
+                              >
+                            </span>
+                            <span fxLayout="row" *ngIf="org?.location">
+                              <mat-icon class="info-icon">location_on</mat-icon>
+                              <span class="truncate-text-1">{{ org.location }}</span>
+                            </span>
+                            <span fxLayout="row" *ngIf="org?.email">
+                              <mat-icon class="info-icon">email</mat-icon>
+                              <span class="truncate-text-1"
+                                ><a [href]="'mailto:' + org.email" target="_top">{{ org.email }}</a></span
+                              >
+                            </span>
+                          </div>
+                        </div>
                       </div>
                       <div>
-                        <div fxLayout="column" fxLayoutAlign="space-between start" class="info">
-                          <span fxLayout="row" *ngIf="org?.link">
-                            <mat-icon class="info-icon">link</mat-icon>
-                            <span class="truncate-text-1"
-                              ><a [href]="org.link" target="_blank" rel="noopener noreferrer">{{ org.link }}</a></span
-                            >
-                          </span>
-                          <span fxLayout="row" *ngIf="org?.location">
-                            <mat-icon class="info-icon">location_on</mat-icon>
-                            <span class="truncate-text-1">{{ org.location }}</span>
-                          </span>
-                          <span fxLayout="row" *ngIf="org?.email">
-                            <mat-icon class="info-icon">email</mat-icon>
-                            <span class="truncate-text-1"
-                              ><a [href]="'mailto:' + org.email" target="_top">{{ org.email }}</a></span
-                            >
-                          </span>
-                        </div>
+                        <hr class="mb-4" />
+                        <a routerLink="/organizations/{{ org.name }}" class="no-underline">
+                          <div fxLayout="row" fxLayoutAlign="space-between center">
+                            <span class="bubble">
+                              {{ org.collectionsLength }}
+                              <span *ngIf="org.collectionsLength !== 1; else oneCollection"> Collections</span>
+                              <ng-template #oneCollection> Collection</ng-template>
+                            </span>
+                            <button mat-raised-button color="accent">View</button>
+                          </div>
+                        </a>
                       </div>
                     </div>
-                    <div>
-                      <hr class="mb-4" />
-                      <a routerLink="/organizations/{{ org.name }}" class="no-underline">
-                        <div fxLayout="row" fxLayoutAlign="space-between center">
-                          <span class="bubble">
-                            {{ org.collectionsLength }}
-                            <span *ngIf="org.collectionsLength !== 1; else oneCollection"> Collections</span>
-                            <ng-template #oneCollection> Collection</ng-template>
-                          </span>
-                          <button mat-raised-button color="accent">View</button>
-                        </div>
-                      </a>
-                    </div>
-                  </div>
+                  </mat-card-content>
                 </mat-card>
               </div>
             </div>

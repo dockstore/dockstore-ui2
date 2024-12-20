@@ -1,8 +1,10 @@
 <app-header> Redirecting </app-header>
 <div class="container">
   <mat-card appearance="outlined" class="alert alert-warning mat-elevation-z" role="alert" *ngIf="!validType">
-    <mat-icon class="alert-warning-icon">warning</mat-icon>
-    &nbsp;<strong>{{ type }}</strong> is not a valid type
+    <mat-card-content>
+      <mat-icon class="alert-warning-icon">warning</mat-icon>
+      &nbsp;<strong>{{ type }}</strong> is not a valid type
+    </mat-card-content>
   </mat-card>
   <div *ngIf="loading$ | async; else doneLoading">
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
@@ -10,8 +12,10 @@
   <ng-template #doneLoading>
     <div *ngIf="validType && found">Redirecting...</div>
     <mat-card appearance="outlined" class="alert alert-warning mat-elevation-z" role="alert" *ngIf="validType && !found">
-      <mat-icon class="alert-warning-icon">warning</mat-icon>
-      &nbsp;No <strong>{{ type }}</strong> with the alias <strong>{{ alias }}</strong> found
+      <mat-card-content>
+        <mat-icon class="alert-warning-icon">warning</mat-icon>
+        &nbsp;No <strong>{{ type }}</strong> with the alias <strong>{{ alias }}</strong> found
+      </mat-card-content>
     </mat-card>
   </ng-template>
 </div>

@@ -13,7 +13,7 @@
       role="alert"
       *ngIf="(allPendingOrganizations$ | async)?.length === 0"
     >
-      <mat-icon>info</mat-icon> There are no organizations waiting for approval.
+      <mat-card-content> <mat-icon>info</mat-icon> There are no organizations waiting for approval. </mat-card-content>
     </mat-card>
 
     <div fxLayout="column" fxLayoutGap="32px">

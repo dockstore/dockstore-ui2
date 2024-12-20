@@ -18,94 +18,98 @@
       *ngFor="let topicOption of topicOptions"
       [class]="topicOption.type === selectedOption ? 'selected-card' : ''"
     >
-      <mat-radio-button [value]="topicOption.type" class="w-100">
-        <div fxLayoutAlign="space-between">
-          <div>
-            <span class="bubble mr-2">
-              <mat-icon *ngIf="topicOption.type === TopicSelectionEnum.MANUAL" class="mat-icon-sm">edit</mat-icon>
-              <img
-                *ngIf="topicOption.type === TopicSelectionEnum.AUTOMATIC"
-                class="site-icons-small"
-                src="../assets/images/thirdparty/github.svg"
-                alt="GitHub icon"
-              />
-              <img
-                *ngIf="topicOption.type === TopicSelectionEnum.AI"
-                class="site-icons-small"
-                src="../../../assets/svg/ai-icon.svg"
-                alt="AI generation icon"
-              />
-            </span>
-            <strong>{{ topicOption.label }}</strong>
-          </div>
-          <span
-            *ngIf="topicOption.type === TopicSelectionEnum.AI && entry.approvedAITopic"
-            class="bubble approved"
-            matTooltip="This AI topic was reviewed and selected by a {{ entryTypeMetadata.term }} owner"
-            ><mat-icon class="mat-icon-sm">checkmark</mat-icon> Approved</span
-          >
-        </div>
-      </mat-radio-button>
-      <div class="ml-5">
-        <div class="size-small gray-caption">
-          {{ topicOption.description }}
-          <a
-            *ngIf="topicOption.type === TopicSelectionEnum.MANUAL && isGitHubAppEntry"
-            class="ds-green"
-            href="{{ Dockstore.DOCUMENTATION_URL }}/assets/templates/{{ entryTypeMetadata.termPlural }}/{{
-              entryTypeMetadata.termPlural
-            }}.html#full-template-with-explanation-of-all-available-fields"
-            target="_blank"
-            rel="noopener noreferrer"
-            matTooltip="View more information about the topic field"
-            ><mat-icon>info</mat-icon></a
-          >
-        </div>
-
-        <!-- Display an info card if the AI topic was automatically set as the topic selection but it hasn't been approved by the user -->
-        <mat-card
-          appearance="outlined"
-          *ngIf="topicOption.type === TopicSelectionEnum.AI && !entry.approvedAITopic && entry.topicSelection === TopicSelectionEnum.AI"
-          class="alert-info mat-elevation-z size-small py-1 my-3"
-          data-cy="unapprovedAITopicCard"
-        >
-          <mat-icon class="mat-icon-sm">info</mat-icon> You have not approved this topic. Click <strong>Save</strong> to confirm that you
-          have reviewed and approved the topic. Otherwise, select another topic.
-        </mat-card>
-
-        <div
-          *ngIf="topicOption.type !== TopicSelectionEnum.MANUAL || isGitHubAppEntry; else editableManualField"
-          [class]="topicOption.value ? '' : 'gray-caption'"
-        >
-          {{ topicOption.value || 'Not Available' }}
-          <button
-            mat-icon-button
-            *ngIf="topicOption.type === TopicSelectionEnum.AI && topicOption.value"
-            [cdkCopyToClipboard]="topicOption.value"
-            matTooltip="Copy AI topic"
-            appSnackbar
-          >
-            <mat-icon>file_copy</mat-icon>
-          </button>
-        </div>
-        <ng-template #editableManualField>
-          <mat-form-field
-            color="accent"
-            appearance="outline"
-            class="w-100"
-            matTooltip="Edit the manual topic for this {{ entryTypeMetadata.term }}"
-          >
-            <textarea
-              matInput
-              [(ngModel)]="editedTopicManual"
-              placeholder="Short description of the {{ entryTypeMetadata.term }}"
-              data-cy="topicInput"
-              cdkTextareaAutosize
+      <mat-card-content>
+        <mat-radio-button [value]="topicOption.type" class="w-100">
+          <div fxLayoutAlign="space-between">
+            <div>
+              <span class="bubble mr-2">
+                <mat-icon *ngIf="topicOption.type === TopicSelectionEnum.MANUAL" class="mat-icon-sm">edit</mat-icon>
+                <img
+                  *ngIf="topicOption.type === TopicSelectionEnum.AUTOMATIC"
+                  class="site-icons-small"
+                  src="../assets/images/thirdparty/github.svg"
+                  alt="GitHub icon"
+                />
+                <img
+                  *ngIf="topicOption.type === TopicSelectionEnum.AI"
+                  class="site-icons-small"
+                  src="../../../assets/svg/ai-icon.svg"
+                  alt="AI generation icon"
+                />
+              </span>
+              <strong>{{ topicOption.label }}</strong>
+            </div>
+            <span
+              *ngIf="topicOption.type === TopicSelectionEnum.AI && entry.approvedAITopic"
+              class="bubble approved"
+              matTooltip="This AI topic was reviewed and selected by a {{ entryTypeMetadata.term }} owner"
+              ><mat-icon class="mat-icon-sm">checkmark</mat-icon> Approved</span
             >
-            </textarea>
-          </mat-form-field>
-        </ng-template>
-      </div>
+          </div>
+        </mat-radio-button>
+        <div class="ml-5">
+          <div class="size-small gray-caption">
+            {{ topicOption.description }}
+            <a
+              *ngIf="topicOption.type === TopicSelectionEnum.MANUAL && isGitHubAppEntry"
+              class="ds-green"
+              href="{{ Dockstore.DOCUMENTATION_URL }}/assets/templates/{{ entryTypeMetadata.termPlural }}/{{
+                entryTypeMetadata.termPlural
+              }}.html#full-template-with-explanation-of-all-available-fields"
+              target="_blank"
+              rel="noopener noreferrer"
+              matTooltip="View more information about the topic field"
+              ><mat-icon>info</mat-icon></a
+            >
+          </div>
+
+          <!-- Display an info card if the AI topic was automatically set as the topic selection but it hasn't been approved by the user -->
+          <mat-card
+            appearance="outlined"
+            *ngIf="topicOption.type === TopicSelectionEnum.AI && !entry.approvedAITopic && entry.topicSelection === TopicSelectionEnum.AI"
+            class="alert-info mat-elevation-z size-small py-1 my-3"
+            data-cy="unapprovedAITopicCard"
+          >
+            <mat-card-content>
+              <mat-icon class="mat-icon-sm">info</mat-icon> You have not approved this topic. Click <strong>Save</strong> to confirm that
+              you have reviewed and approved the topic. Otherwise, select another topic.
+            </mat-card-content>
+          </mat-card>
+
+          <div
+            *ngIf="topicOption.type !== TopicSelectionEnum.MANUAL || isGitHubAppEntry; else editableManualField"
+            [class]="topicOption.value ? '' : 'gray-caption'"
+          >
+            {{ topicOption.value || 'Not Available' }}
+            <button
+              mat-icon-button
+              *ngIf="topicOption.type === TopicSelectionEnum.AI && topicOption.value"
+              [cdkCopyToClipboard]="topicOption.value"
+              matTooltip="Copy AI topic"
+              appSnackbar
+            >
+              <mat-icon>file_copy</mat-icon>
+            </button>
+          </div>
+          <ng-template #editableManualField>
+            <mat-form-field
+              color="accent"
+              appearance="outline"
+              class="w-100"
+              matTooltip="Edit the manual topic for this {{ entryTypeMetadata.term }}"
+            >
+              <textarea
+                matInput
+                [(ngModel)]="editedTopicManual"
+                placeholder="Short description of the {{ entryTypeMetadata.term }}"
+                data-cy="topicInput"
+                cdkTextareaAutosize
+              >
+              </textarea>
+            </mat-form-field>
+          </ng-template>
+        </div>
+      </mat-card-content>
     </mat-card>
   </mat-radio-group>
 </mat-dialog-content>

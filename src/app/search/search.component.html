@@ -253,73 +253,77 @@
     <div class="col-md-9 containers-rsb" *ngIf="advancedSearchObject$ | async as advancedSearchObject">
       <div class="hits">
         <mat-card appearance="outlined" *ngIf="!isLoading && hits?.length === 0" class="alert alert-warning mat-elevation-z text-break">
-          <div *ngIf="searchTerm" data-cy="no-searchTerm-results">
-            Sorry, no matches found for <strong>{{ basicSearchText$ | async }}</strong
-            >.
-            <span *ngIf="suggestTerm$ | async"
-              >Do you mean: <strong class="suggestTerm" (click)="searchSuggestTerm()">{{ suggestTerm$ | async }}</strong
-              >?</span
-            >
-          </div>
-          <div *ngIf="!searchTerm" data-cy="no-results">
-            <p>Your search has returned no results. Click the Reset button to restart your search.</p>
-          </div>
+          <mat-card-content>
+            <div *ngIf="searchTerm" data-cy="no-searchTerm-results">
+              Sorry, no matches found for <strong>{{ basicSearchText$ | async }}</strong
+              >.
+              <span *ngIf="suggestTerm$ | async"
+                >Do you mean: <strong class="suggestTerm" (click)="searchSuggestTerm()">{{ suggestTerm$ | async }}</strong
+                >?</span
+              >
+            </div>
+            <div *ngIf="!searchTerm" data-cy="no-results">
+              <p>Your search has returned no results. Click the Reset button to restart your search.</p>
+            </div>
+          </mat-card-content>
         </mat-card>
 
         <div *ngIf="searchService.hasSearchText(advancedSearchObject, searchTerm, hits) || searchService.hasFilters(filters)">
           <mat-card appearance="outlined" class="alert alert-info mat-elevation-z text-break">
-            <div>
-              <button
-                data-cy="share_button"
-                mat-raised-button
-                type="button"
-                [cdkCopyToClipboard]="shortUrl$ | async"
-                appSnackbar
-                class="mr-2 accent-1-dark-btn"
-              >
-                <fa-icon [icon]="faCopy" aria-hidden="true"></fa-icon>
-                Copy search link
-              </button>
+            <mat-card-content>
+              <div>
+                <button
+                  data-cy="share_button"
+                  mat-raised-button
+                  type="button"
+                  [cdkCopyToClipboard]="shortUrl$ | async"
+                  appSnackbar
+                  class="mr-2 accent-1-dark-btn"
+                >
+                  <fa-icon [icon]="faCopy" aria-hidden="true"></fa-icon>
+                  Copy search link
+                </button>
 
-              <span *ngIf="searchService.hasResults(searchTerm, hits)">
-                <strong>Search: </strong> contains one of <strong>"{{ basicSearchText$ | async }}"</strong>
-              </span>
-
-              <span *ngIf="hasAdvancedSearchText$ | async">
-                <strong>Search: </strong>
-                <span *ngIf="advancedSearchObject.ANDSplitFilter"
-                  >contains all of <strong>"{{ aNDSplitFilterText$ | async }}"</strong
-                  ><span *ngIf="advancedSearchObject.ANDNoSplitFilter || advancedSearchObject.ORFilter || advancedSearchObject.NOTFilter">
-                    AND
-                  </span></span
-                >
-                <span *ngIf="advancedSearchObject.ANDNoSplitFilter"
-                  >contains exactly <strong>"{{ aNDNoSplitFilterText$ | async }}"</strong
-                  ><span *ngIf="advancedSearchObject.ORFilter || advancedSearchObject.NOTFilter"> AND </span></span
-                >
-                <span *ngIf="advancedSearchObject.ORFilter"
-                  >contains one of <strong>"{{ oRFilterText$ | async }}"</strong
-                  ><span *ngIf="advancedSearchObject.NOTFilter"> AND </span></span
-                >
-                <span *ngIf="advancedSearchObject.NOTFilter"
-                  >does not contain <strong>"{{ nOTFilterText$ | async }}"</strong></span
-                >
-              </span>
-              <span *ngIf="searchService.hasSearchText(advancedSearchObject, searchTerm, hits) && searchService.hasFilters(filters)"
-                >&nbsp;AND
-              </span>
-              <strong *ngIf="!searchService.hasSearchText(advancedSearchObject, searchTerm, hits) && searchService.hasFilters(filters)"
-                >Search:
-              </strong>
-              <span *ngFor="let key of filterKeys$ | async; let i = index">
-                the <strong>{{ friendlyNames.get(key) }}</strong> is
-                <span *ngFor="let subBucket of filters.get(key); let j = index">
-                  <strong>{{ key | mapFriendlyValue: subBucket }}</strong>
-                  <span *ngIf="j < filters.get(key).size - 1"> OR </span>
+                <span *ngIf="searchService.hasResults(searchTerm, hits)">
+                  <strong>Search: </strong> contains one of <strong>"{{ basicSearchText$ | async }}"</strong>
                 </span>
-                <span *ngIf="i < filters.size - 1"> AND </span>
-              </span>
-            </div>
+
+                <span *ngIf="hasAdvancedSearchText$ | async">
+                  <strong>Search: </strong>
+                  <span *ngIf="advancedSearchObject.ANDSplitFilter"
+                    >contains all of <strong>"{{ aNDSplitFilterText$ | async }}"</strong
+                    ><span *ngIf="advancedSearchObject.ANDNoSplitFilter || advancedSearchObject.ORFilter || advancedSearchObject.NOTFilter">
+                      AND
+                    </span></span
+                  >
+                  <span *ngIf="advancedSearchObject.ANDNoSplitFilter"
+                    >contains exactly <strong>"{{ aNDNoSplitFilterText$ | async }}"</strong
+                    ><span *ngIf="advancedSearchObject.ORFilter || advancedSearchObject.NOTFilter"> AND </span></span
+                  >
+                  <span *ngIf="advancedSearchObject.ORFilter"
+                    >contains one of <strong>"{{ oRFilterText$ | async }}"</strong
+                    ><span *ngIf="advancedSearchObject.NOTFilter"> AND </span></span
+                  >
+                  <span *ngIf="advancedSearchObject.NOTFilter"
+                    >does not contain <strong>"{{ nOTFilterText$ | async }}"</strong></span
+                  >
+                </span>
+                <span *ngIf="searchService.hasSearchText(advancedSearchObject, searchTerm, hits) && searchService.hasFilters(filters)"
+                  >&nbsp;AND
+                </span>
+                <strong *ngIf="!searchService.hasSearchText(advancedSearchObject, searchTerm, hits) && searchService.hasFilters(filters)"
+                  >Search:
+                </strong>
+                <span *ngFor="let key of filterKeys$ | async; let i = index">
+                  the <strong>{{ friendlyNames.get(key) }}</strong> is
+                  <span *ngFor="let subBucket of filters.get(key); let j = index">
+                    <strong>{{ key | mapFriendlyValue: subBucket }}</strong>
+                    <span *ngIf="j < filters.get(key).size - 1"> OR </span>
+                  </span>
+                  <span *ngIf="i < filters.size - 1"> AND </span>
+                </span>
+              </div>
+            </mat-card-content>
           </mat-card>
         </div>
         <mat-card
@@ -327,10 +331,12 @@
           class="alert alert-info mat-elevation-z"
           *ngIf="hits?.length > query_size - 1 && searchService.hasNarrowedSearch(advancedSearchObject, searchTerm, hits, filters)"
         >
-          <p>
-            <strong>Notice: </strong>Your search has returned greater than {{ query_size - 1 }} results, however only
-            {{ query_size - 1 }} results are shown. We recommend that you narrow your search to find more relevant results.
-          </p>
+          <mat-card-content>
+            <p>
+              <strong>Notice: </strong>Your search has returned greater than {{ query_size - 1 }} results, however only
+              {{ query_size - 1 }} results are shown. We recommend that you narrow your search to find more relevant results.
+            </p>
+          </mat-card-content>
         </mat-card>
         <app-search-results></app-search-results>
       </div>

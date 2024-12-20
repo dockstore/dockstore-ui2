@@ -132,54 +132,56 @@
           >
             <div fxFlex>
               <mat-card appearance="outlined" class="alert alert-info mat-elevation-z" role="alert">
-                <p>
-                  <mat-icon>info</mat-icon>
-                  There are currently no {{ entryType$ | async }}s registered under this account. To add your first {{ entryType$ | async
-                  }}<span *ngIf="entryType === EntryType.BioWorkflow">, do one of the following</span>:
-                </p>
-                <ul>
-                  <li>
-                    Press the 'Register a {{ entryType$ | async | titlecase }}' button
-                    <span *ngIf="entryType === EntryType.BioWorkflow; else githubAppsRegistration"
-                      >to manually add a {{ entryType$ | async }} using the registration wizard.</span
-                    >
-                    <ng-template #githubAppsRegistration
-                      >and follow the GitHub apps web interface to create {{ entryType$ | async }}s from your GitHub
-                      repositories.</ng-template
-                    >
-                  </li>
-                  <button
-                    mat-raised-button
-                    class="accent-1-dark-btn"
-                    type="button"
-                    (click)="showRegisterEntryModal()"
-                    [disabled]="isRefreshing$ | async"
-                  >
-                    Register a {{ entryType$ | async | titlecase }}
-                  </button>
-
-                  <span *ngIf="entryType === EntryType.BioWorkflow || entryType === EntryType.Notebook">
+                <mat-card-content>
+                  <p>
+                    <mat-icon>info</mat-icon>
+                    There are currently no {{ entryType$ | async }}s registered under this account. To add your first {{ entryType$ | async
+                    }}<span *ngIf="entryType === EntryType.BioWorkflow">, do one of the following</span>:
+                  </p>
+                  <ul>
                     <li>
-                      If there are already {{ entryType$ | async }}s on Dockstore added by other users that you have access to, press the
-                      button below.
+                      Press the 'Register a {{ entryType$ | async | titlecase }}' button
+                      <span *ngIf="entryType === EntryType.BioWorkflow; else githubAppsRegistration"
+                        >to manually add a {{ entryType$ | async }} using the registration wizard.</span
+                      >
+                      <ng-template #githubAppsRegistration
+                        >and follow the GitHub apps web interface to create {{ entryType$ | async }}s from your GitHub
+                        repositories.</ng-template
+                      >
                     </li>
                     <button
                       mat-raised-button
                       class="accent-1-dark-btn"
                       type="button"
-                      (click)="addToExistingWorkflows()"
-                      [disabled]="(isRefreshing$ | async) || (noUser$ | async)"
-                      matTooltip="Discover {{ entryType$ | async }}s added by others using your linked source control accounts"
+                      (click)="showRegisterEntryModal()"
+                      [disabled]="isRefreshing$ | async"
                     >
-                      Discover Existing Dockstore {{ entryType$ | async | titlecase }}s
+                      Register a {{ entryType$ | async | titlecase }}
                     </button>
-                  </span>
-                </ul>
-                <div *ngIf="!hasGitHubToken" class="mt-3">
-                  <button mat-raised-button (click)="link()">
-                    <fa-icon [icon]="faGithub"></fa-icon> You do not have a linked GitHub token, click here to link a GitHub token
-                  </button>
-                </div>
+
+                    <span *ngIf="entryType === EntryType.BioWorkflow || entryType === EntryType.Notebook">
+                      <li>
+                        If there are already {{ entryType$ | async }}s on Dockstore added by other users that you have access to, press the
+                        button below.
+                      </li>
+                      <button
+                        mat-raised-button
+                        class="accent-1-dark-btn"
+                        type="button"
+                        (click)="addToExistingWorkflows()"
+                        [disabled]="(isRefreshing$ | async) || (noUser$ | async)"
+                        matTooltip="Discover {{ entryType$ | async }}s added by others using your linked source control accounts"
+                      >
+                        Discover Existing Dockstore {{ entryType$ | async | titlecase }}s
+                      </button>
+                    </span>
+                  </ul>
+                  <div *ngIf="!hasGitHubToken" class="mt-3">
+                    <button mat-raised-button (click)="link()">
+                      <fa-icon [icon]="faGithub"></fa-icon> You do not have a linked GitHub token, click here to link a GitHub token
+                    </button>
+                  </div>
+                </mat-card-content>
               </mat-card>
             </div>
           </div>

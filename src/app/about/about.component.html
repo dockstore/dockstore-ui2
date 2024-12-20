@@ -176,32 +176,34 @@
           <mat-tab-group mat-align-tabs="center" class="workflow-tab-group">
             <mat-tab label="COVID-19">
               <mat-card appearance="outlined" class="about-card">
-                <div fxLayout="row" fxLayoutAlign="space-around start">
-                  <div fxLayout="column" fxLayoutAlign="space-between start">
-                    <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="2rem">
-                      <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="1rem" fxLayout.lt-sm="row">
-                        <img src="../../assets/images/sponsors/coloured/broad.svg" alt="Broad Image" />
-                        <span class="workflowlength">{{ workflowsLength$ | async }} workflows</span>
+                <mat-card-content>
+                  <div fxLayout="row" fxLayoutAlign="space-around start">
+                    <div fxLayout="column" fxLayoutAlign="space-between start">
+                      <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="2rem">
+                        <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="1rem" fxLayout.lt-sm="row">
+                          <img src="../../assets/images/sponsors/coloured/broad.svg" alt="Broad Image" />
+                          <span class="workflowlength">{{ workflowsLength$ | async }} workflows</span>
+                        </div>
+                        <span>
+                          The <strong>Broad Viral Genomics & Data Sciences Platform</strong> hit the ground running, producing a collection
+                          of <strong>viral NGS workflows for analyzing COVID-19</strong>. Learn how to use them with your own data in linked
+                          Terra workspaces.
+                        </span>
                       </div>
-                      <span>
-                        The <strong>Broad Viral Genomics & Data Sciences Platform</strong> hit the ground running, producing a collection of
-                        <strong>viral NGS workflows for analyzing COVID-19</strong>. Learn how to use them with your own data in linked
-                        Terra workspaces.
-                      </span>
+                      <span><strong>Workflows functions include:</strong></span>
+                      <ul>
+                        <li>Performing assembly, QC, kraken metagenomics and aggregating statistics.</li>
+                        <li>Going from raw reads (uBAM) through to producing a phylogenetic tree.</li>
+                        <li>Working with your own data and/or public data, such as from NCBI SRA and GenBank.</li>
+                        <li>Pulling data from SRA (via SRA accession #).</li>
+                        <li>Prepare your data files for bulk upload to GenBank.</li>
+                      </ul>
+                      <a [routerLink]="['/organizations/BroadInstitute/collections/pgs']">
+                        <button mat-raised-button color="accent">View the Collection</button>
+                      </a>
                     </div>
-                    <span><strong>Workflows functions include:</strong></span>
-                    <ul>
-                      <li>Performing assembly, QC, kraken metagenomics and aggregating statistics.</li>
-                      <li>Going from raw reads (uBAM) through to producing a phylogenetic tree.</li>
-                      <li>Working with your own data and/or public data, such as from NCBI SRA and GenBank.</li>
-                      <li>Pulling data from SRA (via SRA accession #).</li>
-                      <li>Prepare your data files for bulk upload to GenBank.</li>
-                    </ul>
-                    <a [routerLink]="['/organizations/BroadInstitute/collections/pgs']">
-                      <button mat-raised-button color="accent">View the Collection</button>
-                    </a>
                   </div>
-                </div>
+                </mat-card-content>
               </mat-card>
             </mat-tab>
             <!-- reserved when the paper is published -->

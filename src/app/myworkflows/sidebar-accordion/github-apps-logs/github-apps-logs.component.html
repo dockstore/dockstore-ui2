@@ -2,24 +2,26 @@
 <div mat-dialog-content>
   <app-loading [loading]="dataSource?.loading$ | async">
     <mat-card appearance="outlined" *ngIf="(showContent$ | async) === 'error'" class="alert alert-warning mat-elevation-z" role="alert">
-      <mat-icon class="alert-warning-icon">warning</mat-icon> There were problems retrieving the GitHub App logs for this organization.<br />
-      Often, if you cannot view the logs for your GitHub user account, you must unlink and relink it in<br />
-      your <a mat-dialog-close routerLink="/accounts">Dockstore profile</a>.<br />
-      Otherwise, your GitHub user or the Dockstore app may not have access to the GitHub organization.<br />
-      <a
-        href="https://github.com/settings/connections/applications/{{ Dockstore.GITHUB_CLIENT_ID }}"
-        target="_blank"
-        rel="noopener noreferrer"
-        >Click here to confirm that the Dockstore app is authorized</a
-      >.
+      <mat-card-content>
+        <mat-icon class="alert-warning-icon">warning</mat-icon> There were problems retrieving the GitHub App logs for this organization.<br />
+        Often, if you cannot view the logs for your GitHub user account, you must unlink and relink it in<br />
+        your <a mat-dialog-close routerLink="/accounts">Dockstore profile</a>.<br />
+        Otherwise, your GitHub user or the Dockstore app may not have access to the GitHub organization.<br />
+        <a
+          href="https://github.com/settings/connections/applications/{{ Dockstore.GITHUB_CLIENT_ID }}"
+          target="_blank"
+          rel="noopener noreferrer"
+          >Click here to confirm that the Dockstore app is authorized</a
+        >.
+      </mat-card-content>
     </mat-card>
     <mat-card appearance="outlined" *ngIf="(showContent$ | async) === 'empty'" class="alert alert-info mat-elevation-z" role="alert">
-      <mat-icon>warning</mat-icon> There are no GitHub App logs for this organization.
+      <mat-card-content> <mat-icon>warning</mat-icon> There are no GitHub App logs for this organization. </mat-card-content>
     </mat-card>
     <!-- *ngIf doesn't work with the sorting implementation, using hidden for now -->
     <div [hidden]="(showContent$ | async) !== 'table' && (showContent$ | async) !== 'noResult'">
       <mat-card appearance="outlined" *ngIf="(showContent$ | async) === 'noResult'" class="alert alert-info mat-elevation-z" role="alert">
-        <mat-icon>warning</mat-icon> No results.
+        <mat-card-content> <mat-icon>warning</mat-icon> No results. </mat-card-content>
       </mat-card>
       <mat-form-field>
         <mat-label>Filter</mat-label>
