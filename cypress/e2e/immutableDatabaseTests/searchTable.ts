@@ -386,7 +386,7 @@ describe('search table items per page', () => {
     cy.get('#mat-option-1 ').click();
     cy.contains('A/l').click();
     cy.get('.flex-toolbar ').contains(' Search ').click();
-    cy.get('.mat-select-value-text ').contains('20');
+    cy.get('.mat-mdc-select-value-text ').contains('20');
   });
 
   it('tool items per page after advanced search', () => {
@@ -450,16 +450,16 @@ describe('check search table and tabs for notebooks', () => {
   it('should contain notebooks-related information', () => {
     cy.visit('/search');
     // Check that Notebooks tab exists
-    cy.get('.mat-tab-label').contains('Notebooks');
+    cy.get('.mat-mdc-tab').contains('Notebooks');
     // Select notebooks tab
     goToTab('Notebooks');
     cy.url().should('contain', 'notebooks');
     // Check that the notebooks variations are in the table header
-    cy.get('.mat-header-cell').contains('Language');
-    cy.get('.mat-header-cell').contains('Format');
+    cy.get('mat-header-cell').contains('Language');
+    cy.get('mat-header-cell').contains('Format');
     // Check that the notebooks variations are in the table body
-    cy.get('.mat-cell').contains('jupyter', { matchCase: false });
-    cy.get('.mat-cell').contains('python', { matchCase: false });
+    cy.get('mat-cell').contains('jupyter', { matchCase: false });
+    cy.get('mat-cell').contains('python', { matchCase: false });
   });
 });
 
