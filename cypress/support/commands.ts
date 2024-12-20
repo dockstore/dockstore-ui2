@@ -95,7 +95,7 @@ export function insertAuthors() {
 }
 
 export function typeInInput(fieldName: string, text: string) {
-  cy.contains('span', fieldName).parentsUntil('.mat-form-field-wrapper').find('input').first().should('be.visible').clear().type(text);
+  cy.get(`input[placeholder="${fieldName}"]`).should('be.visible').clear().type(text);
 }
 
 // Sets it to the user where id = 1. Is an admin and curator.
