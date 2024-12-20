@@ -44,7 +44,7 @@ describe('Dockstore Workflow Details', () => {
   beforeEach(() => {
     cy.visit('/workflows/github.com/A/l');
     // Info, Launch, Version, Files, Tools, DAG, Metrics
-    cy.get('.mat-tab-label').should('have.length', 7);
+    cy.get('.mat-mdc-tab').should('have.length', 7);
     cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=info');
   });
 
@@ -137,7 +137,7 @@ describe('Find workflow by alias', () => {
   });
 });
 
-describe('Test primary descriptor bubble', () => {
+describe('Test bble', () => {
   it('go to a workflow with multiple files', () => {
     cy.visit('/workflows/github.com/A/l');
     goToTab('Files');
