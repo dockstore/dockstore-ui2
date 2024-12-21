@@ -26,8 +26,6 @@ describe('Public Version Modal', () => {
     goToTab('Versions');
     cy.contains('button', 'Info').should('be.visible').click();
     cy.get('form');
-    cy.get('[data-cy=docker-pull-command]')
-      .should('be.visible')
-      .should('have.value', 'docker pull quay.io/garyluu/dockstore-cgpmap:3.0.0-rc8');
+    cy.get('#dockerPullCommand').should('be.visible').should('have.value', 'docker pull quay.io/garyluu/dockstore-cgpmap:3.0.0-rc8');
   });
 });
