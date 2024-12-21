@@ -16,9 +16,17 @@
 <div *ngIf="workflow">
   <div class="row m-1" *ngIf="error || missingWarning">
     <div class="col-md-12" *ngIf="!isWorkflowPublic">
-      <mat-card class="alert alert-warning mat-elevation-z" ng-class="!editMode ? 'push-top' : ''" role="alert" *ngIf="missingWarning">
-        <button type="button" class="close" data-dismiss="alert" ng-click="missingWarning = false">&times;</button>
-        <mat-icon class="alert-warning-icon">warning</mat-icon>
+      <mat-card
+        appearance="outlined"
+        class="alert alert-warning mat-elevation-z"
+        ng-class="!editMode ? 'push-top' : ''"
+        role="alert"
+        *ngIf="missingWarning"
+      >
+        <mat-card-content>
+          <button type="button" class="close" data-dismiss="alert" ng-click="missingWarning = false">&times;</button>
+          <mat-icon class="alert-warning-icon">warning</mat-icon>
+        </mat-card-content>
       </mat-card>
     </div>
   </div>
@@ -43,29 +51,33 @@
     </div>
   </div>
   <div class="row m-1 mt-3 mb-0" *ngIf="workflow.archived">
-    <mat-card class="alert alert-warning mat-elevation-z m-0">
-      This {{ workflow.entryTypeMetadata.term }} was archived on {{ workflow.dbUpdateDate | date: 'yyyy-MM-dd' }}. It is now read-only.
+    <mat-card appearance="outlined" class="alert alert-warning mat-elevation-z m-0">
+      <mat-card-content>
+        This {{ workflow.entryTypeMetadata.term }} was archived on {{ workflow.dbUpdateDate | date: 'yyyy-MM-dd' }}. It is now read-only.
+      </mat-card-content>
     </mat-card>
   </div>
   <div class="row m-1 mt-3 mb-0" *ngIf="!isWorkflowPublic && workflow.mode === 'DOCKSTORE_YML' && gitHubAppInstalled === false">
-    <mat-card class="alert alert-warning mat-elevation-z m-0">
-      <mat-icon class="alert-warning-icon">warning</mat-icon> This {{ workflow.entryTypeMetadata.term }} may not be automatically updating
-      because the Dockstore GitHub App was uninstalled from the {{ workflow.entryTypeMetadata.term }}'s repository. If you are an owner or
-      admin of the repository, click the button below to reinstall the Dockstore GitHub App.
-      <p>
-        <button
-          mat-raised-button
-          type="button"
-          class="accent-1-dark-btn mat-elevation-z no-underline"
-          (click)="openGitHubApp()"
-          target="_blank"
-          rel="noopener noreferrer"
-          matTooltip="Manage Dockstore installations on GitHub"
-        >
-          <mat-icon>add</mat-icon> Manage Dockstore installations on GitHub
-        </button>
-      </p></mat-card
-    >
+    <mat-card appearance="outlined" class="alert alert-warning mat-elevation-z m-0">
+      <mat-card-content>
+        <mat-icon class="alert-warning-icon">warning</mat-icon> This {{ workflow.entryTypeMetadata.term }} may not be automatically updating
+        because the Dockstore GitHub App was uninstalled from the {{ workflow.entryTypeMetadata.term }}'s repository. If you are an owner or
+        admin of the repository, click the button below to reinstall the Dockstore GitHub App.
+        <p>
+          <button
+            mat-raised-button
+            type="button"
+            class="accent-1-dark-btn mat-elevation-z no-underline"
+            (click)="openGitHubApp()"
+            target="_blank"
+            rel="noopener noreferrer"
+            matTooltip="Manage Dockstore installations on GitHub"
+          >
+            <mat-icon>add</mat-icon> Manage Dockstore installations on GitHub
+          </button>
+        </p>
+      </mat-card-content>
+    </mat-card>
   </div>
   <div class="row m-1" *ngIf="!showRedirect" fxLayout.lt-sm="column" fxLayout.gt-sm="row">
     <app-json-ld [json]="schema"></app-json-ld>
@@ -81,12 +93,12 @@
           >
         </span>
         <span id="verifiedIcon" *ngIf="(extendedWorkflow$ | async)?.versionVerified" fxHide.lt-sm>
-          <mat-chip matTooltip="Verified" class="bubble workflow-background ml-3">
+          <mat-chip-option matTooltip="Verified" class="bubble workflow-background ml-3">
             <a [href]="verifiedLink" class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">
               <mat-icon class="verified-icon">done</mat-icon>
               <span>Verified</span>
             </a>
-          </mat-chip>
+          </mat-chip-option>
         </span>
       </h3>
       <div *ngIf="!publicPage && workflow.workflowVersions && workflow.workflowVersions.length > 0" class="input-group">
@@ -179,24 +191,24 @@
       </div>
       <span *ngIf="(categories$ | async)?.length > 0" class="inline-block mr-5 mt-1 mb-1">
         <span class="size-small mr-2">Categories</span>
-        <mat-chip-list class="bubble-list">
+        <mat-chip-listbox class="bubble-list">
           <app-category-button
             *ngFor="let category of categories$ | async"
             [category]="category"
             entryType="workflow"
           ></app-category-button>
-        </mat-chip-list>
+        </mat-chip-listbox>
       </span>
       <span *ngIf="!labelsEditMode && !starGazersClicked" class="inline-block mt-1 mb-1">
         <span *ngIf="workflowEditData?.labels.length > 0 || !isWorkflowPublic" class="size-small mr-2">
           <span>Labels:{{ workflowEditData?.labels.length === 0 ? ' n/a' : '' }}</span>
         </span>
-        <mat-chip-list class="bubble-list">
-          <mat-chip
+        <mat-chip-listbox class="bubble-list">
+          <mat-chip-option
             class="bubble workflow-background pointer"
             *ngFor="let label of workflowEditData?.labels"
             (click)="goToSearch(label, entryType)"
-            >{{ label }}</mat-chip
+            >{{ label }}</mat-chip-option
           >
           <button
             type="button"
@@ -209,15 +221,15 @@
             <img src="../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit labels" />
             Manage labels
           </button>
-        </mat-chip-list>
+        </mat-chip-listbox>
       </span>
       <span *ngIf="labelsEditMode && !isWorkflowPublic">
         <mat-form-field class="mt-3" style="width: 100%">
-          <mat-chip-list #chipList>
-            <mat-chip *ngFor="let label of workflowEditData?.labels" [removable]="true" (removed)="removeLabel(label)">
+          <mat-chip-grid #chipList>
+            <mat-chip-row *ngFor="let label of workflowEditData?.labels" [removable]="true" (removed)="removeLabel(label)">
               {{ label }}
               <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
-            </mat-chip>
+            </mat-chip-row>
             <input
               data-cy="workflowLabelInput"
               placeholder="New label..."
@@ -230,7 +242,7 @@
             <mat-error *ngIf="labelFormControl.hasError('pattern')"
               >Only comma-separated labels with alphanumeric characters and internal dashes allowed</mat-error
             >
-          </mat-chip-list>
+          </mat-chip-grid>
         </mat-form-field>
         <button
           type="button"
@@ -303,9 +315,11 @@
             <mat-tab id="launchTab" label="Launch">
               <div *ngIf="(launchSupport$ | async) === false; else launchSupported">
                 <div class="p-3">
-                  <mat-card class="alert alert-warning mat-elevation-z" role="alert">
-                    <mat-icon class="alert-warning-icon">warning</mat-icon> Dockstore does not yet have customized launch-with instructions
-                    for this language.
+                  <mat-card appearance="outlined" class="alert alert-warning mat-elevation-z" role="alert">
+                    <mat-card-content>
+                      <mat-icon class="alert-warning-icon">warning</mat-icon> Dockstore does not yet have customized launch-with
+                      instructions for this language.
+                    </mat-card-content>
                   </mat-card>
                 </div>
               </div>
@@ -324,8 +338,10 @@
               </ng-template>
               <ng-template #noVersions>
                 <div class="p-3">
-                  <mat-card class="alert alert-warning mat-elevation-z" role="alert">
-                    <mat-icon class="alert-warning-icon">warning</mat-icon> No versions exist for this workflow.
+                  <mat-card appearance="outlined" class="alert alert-warning mat-elevation-z" role="alert">
+                    <mat-card-content>
+                      <mat-icon class="alert-warning-icon">warning</mat-icon> No versions exist for this workflow.
+                    </mat-card-content>
                   </mat-card>
                 </div>
               </ng-template>
@@ -348,20 +364,39 @@
             </div>
             <ng-template #noVersionsVersionTab>
               <div [ngSwitch]="workflow.mode" class="p-3">
-                <mat-card *ngSwitchCase="WorkflowModel.ModeEnum.HOSTED" class="alert alert-info mat-elevation-z" role="alert">
-                  <mat-icon>info</mat-icon> To see versions, please add a new version in the Files tab.
+                <mat-card
+                  appearance="outlined"
+                  *ngSwitchCase="WorkflowModel.ModeEnum.HOSTED"
+                  class="alert alert-info mat-elevation-z"
+                  role="alert"
+                >
+                  <mat-card-content>
+                    <mat-icon>info</mat-icon> To see versions, please add a new version in the Files tab.
+                  </mat-card-content>
                 </mat-card>
-                <mat-card *ngSwitchCase="WorkflowModel.ModeEnum.STUB" class="alert alert-info mat-elevation-z" role="alert">
-                  <mat-icon>info</mat-icon> To see versions, please refresh the workflow.
+                <mat-card
+                  appearance="outlined"
+                  *ngSwitchCase="WorkflowModel.ModeEnum.STUB"
+                  class="alert alert-info mat-elevation-z"
+                  role="alert"
+                >
+                  <mat-card-content> <mat-icon>info</mat-icon> To see versions, please refresh the workflow. </mat-card-content>
                 </mat-card>
-                <mat-card *ngSwitchCase="WorkflowModel.ModeEnum.DOCKSTOREYML" class="alert alert-info mat-elevation-z" role="alert">
-                  <mat-icon>info</mat-icon> This {{ entryType }} does not have any versions because there are no GitHub branches or
-                  releases/tags with a .dockstore.yml that references this {{ entryType }}. Create a valid .dockstore.yml on GitHub that
-                  references this {{ entryType }} to add a new version.
+                <mat-card
+                  appearance="outlined"
+                  *ngSwitchCase="WorkflowModel.ModeEnum.DOCKSTOREYML"
+                  class="alert alert-info mat-elevation-z"
+                  role="alert"
+                >
+                  <mat-card-content>
+                    <mat-icon>info</mat-icon> This {{ entryType }} does not have any versions because there are no GitHub branches or
+                    releases/tags with a .dockstore.yml that references this {{ entryType }}. Create a valid .dockstore.yml on GitHub that
+                    references this {{ entryType }} to add a new version.
+                  </mat-card-content>
                 </mat-card>
                 <!-- This also handles FULL -->
-                <mat-card *ngSwitchDefault class="alert alert-info mat-elevation-z" role="alert">
-                  <mat-icon>info</mat-icon> This {{ entryType }} does not have any versions.
+                <mat-card appearance="outlined" *ngSwitchDefault class="alert alert-info mat-elevation-z" role="alert">
+                  <mat-card-content> <mat-icon>info</mat-icon> This {{ entryType }} does not have any versions. </mat-card-content>
                 </mat-card>
               </div>
             </ng-template>
@@ -377,20 +412,32 @@
               </div>
               <ng-template #noVersionsFilesTab>
                 <div [ngSwitch]="workflow.mode" class="p-3">
-                  <mat-card *ngSwitchCase="WorkflowModel.ModeEnum.STUB" class="alert alert-info mat-elevation-z" role="alert">
-                    <mat-icon>info</mat-icon> To see files, please refresh the {{ entryType }}.
+                  <mat-card
+                    appearance="outlined"
+                    *ngSwitchCase="WorkflowModel.ModeEnum.STUB"
+                    class="alert alert-info mat-elevation-z"
+                    role="alert"
+                  >
+                    <mat-card-content> <mat-icon>info</mat-icon> To see files, please refresh the {{ entryType }}. </mat-card-content>
                   </mat-card>
                   <div *ngSwitchCase="WorkflowModel.ModeEnum.HOSTED">
                     <ng-container *ngTemplateOutlet="hostedComponent"></ng-container>
                   </div>
-                  <mat-card *ngSwitchCase="WorkflowModel.ModeEnum.DOCKSTOREYML" class="alert alert-info mat-elevation-z" role="alert">
-                    <mat-icon>info</mat-icon> This {{ entryType }} does not have any versions because there are no GitHub branches or
-                    releases/tags with a .dockstore.yml that references this {{ entryType }}. Create a valid .dockstore.yml on GitHub that
-                    references this {{ entryType }} to add a new version.
+                  <mat-card
+                    appearance="outlined"
+                    *ngSwitchCase="WorkflowModel.ModeEnum.DOCKSTOREYML"
+                    class="alert alert-info mat-elevation-z"
+                    role="alert"
+                  >
+                    <mat-card-content>
+                      <mat-icon>info</mat-icon> This {{ entryType }} does not have any versions because there are no GitHub branches or
+                      releases/tags with a .dockstore.yml that references this {{ entryType }}. Create a valid .dockstore.yml on GitHub that
+                      references this {{ entryType }} to add a new version.
+                    </mat-card-content>
                   </mat-card>
                   <!-- This also handles FULL -->
-                  <mat-card *ngSwitchDefault class="alert alert-info mat-elevation-z" role="alert">
-                    <mat-icon>info</mat-icon> This {{ entryType }} does not have any versions.
+                  <mat-card appearance="outlined" *ngSwitchDefault class="alert alert-info mat-elevation-z" role="alert">
+                    <mat-card-content> <mat-icon>info</mat-icon> This {{ entryType }} does not have any versions. </mat-card-content>
                   </mat-card>
                 </div>
               </ng-template>
@@ -426,8 +473,10 @@
                 </app-tool-tab>
               </div>
               <div *ngIf="isStub()" class="p-3">
-                <mat-card class="alert alert-warning mat-elevation-z" role="alert">
-                  <mat-icon class="alert-warning-icon">warning</mat-icon> To see tools, please refresh the workflow.
+                <mat-card appearance="outlined" class="alert alert-warning mat-elevation-z" role="alert">
+                  <mat-card-content>
+                    <mat-icon class="alert-warning-icon">warning</mat-icon> To see tools, please refresh the workflow.
+                  </mat-card-content>
                 </mat-card>
               </div>
             </mat-tab>
@@ -443,13 +492,15 @@
                 >
                 </app-dag>
                 <div *ngIf="!selectedVersion">
-                  <mat-card class="alert alert-warning mat-elevation-z p-3" role="alert">
-                    <mat-icon class="alert-warning-icon">warning</mat-icon> No version selected.
+                  <mat-card appearance="outlined" class="alert alert-warning mat-elevation-z p-3" role="alert">
+                    <mat-card-content> <mat-icon class="alert-warning-icon">warning</mat-icon> No version selected. </mat-card-content>
                   </mat-card>
                 </div>
                 <div *ngIf="isStub()" class="p-3">
-                  <mat-card class="alert alert-warning mat-elevation-z" role="alert">
-                    <mat-icon class="alert-warning-icon">warning</mat-icon> To see the DAG, please refresh the workflow.
+                  <mat-card appearance="outlined" class="alert alert-warning mat-elevation-z" role="alert">
+                    <mat-card-content>
+                      <mat-icon class="alert-warning-icon">warning</mat-icon> To see the DAG, please refresh the workflow.
+                    </mat-card-content>
                   </mat-card>
                 </div>
               </ng-template>
@@ -466,15 +517,17 @@
       <div *ngIf="publicPage" class="mt-2 mr-3">
         <div *ngIf="workflow?.topicId !== null; else noTopicId" id="discourse-comments"></div>
         <ng-template #noTopicId>
-          <mat-card class="alert alert-warning mat-elevation-z" role="alert">
-            <mat-icon class="alert-warning-icon">info</mat-icon> No Discourse topic exists for this {{ entryType }}.
+          <mat-card appearance="outlined" class="alert alert-warning mat-elevation-z" role="alert">
+            <mat-card-content>
+              <mat-icon class="alert-warning-icon">info</mat-icon> No Discourse topic exists for this {{ entryType }}.
+            </mat-card-content>
           </mat-card>
         </ng-template>
       </div>
     </div>
     <div fxLayout="column" fxLayoutGap="1rem" class="p-0 col-sm-12 col-md-3 col-lg-3 ng-scope" *ngIf="isWorkflowPublic && workflow">
       <app-launch-third-party [workflow]="workflow" [selectedVersion]="selectedVersion"></app-launch-third-party>
-      <mat-card *ngIf="selectedVersion && selectedConceptDoi">
+      <mat-card appearance="outlined" *ngIf="selectedVersion && selectedConceptDoi">
         <div class="h5">Cite this {{ workflow.entryTypeMetadata.term }}</div>
         <mat-divider></mat-divider>
         <mat-card-content>
@@ -492,7 +545,7 @@
           </p>
         </mat-card-content>
       </mat-card>
-      <mat-card>
+      <mat-card appearance="outlined">
         <div class="h5">Recent Versions</div>
         <mat-divider></mat-divider>
         <mat-card-content>
@@ -508,11 +561,11 @@
                   <a (click)="onSelectedVersionChange(sortedVersion)" class="pointer panel-body-anchor">{{ sortedVersion.name }}</a
                   >&nbsp;
                   <span *ngIf="sortedVersion?.verified">
-                    <mat-chip matTooltip="Verified" class="bubble">
+                    <mat-chip-option matTooltip="Verified" class="bubble">
                       <a [href]="verifiedLink" class="verified-check">
                         <mat-icon class="verified-icon">done</mat-icon>
                       </a>
-                    </mat-chip>
+                    </mat-chip-option>
                   </span>
                 </div>
                 <small>{{ sortedVersion.last_modified | date }}</small>
@@ -523,7 +576,7 @@
           </div>
         </mat-card-content>
       </mat-card>
-      <mat-card *ngIf="!isStub() && !isHosted()">
+      <mat-card appearance="outlined" *ngIf="!isStub() && !isHosted()">
         <div class="h5">Source Repositories</div>
         <mat-divider></mat-divider>
         <mat-card-content>
@@ -550,19 +603,21 @@
       <app-current-collections [id]="workflow.id" [versions]="workflow.workflowVersions"></app-current-collections>
       <app-verified-by *ngIf="selectedVersion" [version]="selectedVersion" [verifiedByPlatform]="versionsWithVerifiedPlatforms">
       </app-verified-by>
-      <mat-card *ngIf="workflow">
-        <div class="h5">Share on</div>
-        <mat-divider></mat-divider>
-        <div>
-          <div class="container-sharing pt-3">
-            <share-buttons
-              [include]="['facebook', 'twitter', 'linkedin', 'reddit']"
-              [show]="5"
-              [url]="shareURL"
-              [autoSetMeta]="false"
-            ></share-buttons>
+      <mat-card appearance="outlined" *ngIf="workflow">
+        <mat-card-content>
+          <div class="h5">Share on</div>
+          <mat-divider></mat-divider>
+          <div>
+            <div class="container-sharing pt-3">
+              <share-buttons
+                [include]="['facebook', 'twitter', 'linkedin', 'reddit']"
+                [show]="5"
+                [url]="shareURL"
+                [autoSetMeta]="false"
+              ></share-buttons>
+            </div>
           </div>
-        </div>
+        </mat-card-content>
       </mat-card>
       <!-- Re-enable the below and change to material once ga4gh/dockstore#442 is complete -->
       <!-- <div class="panel panel-default mb-3">

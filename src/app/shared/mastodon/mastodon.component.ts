@@ -9,7 +9,7 @@ import { MastodonService } from './mastodon.service'; // Import the service
 import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
 import { NgFor, NgIf, NgStyle } from '@angular/common';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { MatCardModule } from '@angular/material/card';
 
 export interface MastodonTimelineData {
   postUrl: string;
@@ -30,7 +30,7 @@ export interface MastodonTimelineData {
   templateUrl: './mastodon.component.html',
   styleUrls: ['./mastodon.component.scss'],
   standalone: true,
-  imports: [MatLegacyCardModule, MatDividerModule, NgFor, NgIf, NgStyle, ExtendedModule],
+  imports: [MatCardModule, MatDividerModule, NgFor, NgIf, NgStyle, ExtendedModule],
 })
 export class MastodonComponent {
   fetchedData: Map<string, (string | number | boolean)[]>;

@@ -15,17 +15,17 @@
  */
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogModule } from '@angular/material/legacy-dialog';
+import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { NgFormsManager } from '@ngneat/forms-manager';
 import { Organization } from 'app/shared/openapi';
 
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
 import { FormsState, RegisterOrganizationService } from '../state/register-organization.service';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatButtonModule } from '@angular/material/button';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
-import { MatLegacyInputModule } from '@angular/material/legacy-input';
-import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
-import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { AlertComponent } from '../../shared/alert/alert.component';
 import { NgIf } from '@angular/common';
 
@@ -43,16 +43,16 @@ import { NgIf } from '@angular/common';
   styleUrls: ['./register-organization.component.scss'],
   standalone: true,
   imports: [
-    MatLegacyDialogModule,
+    MatDialogModule,
     NgIf,
     AlertComponent,
     FormsModule,
     ReactiveFormsModule,
-    MatLegacyFormFieldModule,
-    MatLegacyTooltipModule,
-    MatLegacyInputModule,
+    MatFormFieldModule,
+    MatTooltipModule,
+    MatInputModule,
     FlexModule,
-    MatLegacyButtonModule,
+    MatButtonModule,
   ],
 })
 export class RegisterOrganizationComponent implements OnInit, OnDestroy {

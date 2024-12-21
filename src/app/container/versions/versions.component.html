@@ -46,7 +46,7 @@
       </th>
       <td mat-cell *matCellDef="let version">
         <span fxLayout="row wrap" fxLayoutGap="0.5rem" fxLayoutAlign="start center">
-          <mat-chip *ngIf="defaultVersion === version.name" class="bubble tool-background">
+          <mat-chip-option *ngIf="defaultVersion === version.name" class="bubble tool-background">
             <a
               target="_blank"
               rel="noopener noreferrer"
@@ -55,7 +55,7 @@
             >
               <span style="word-break: normal">Default</span>
             </a>
-          </mat-chip>
+          </mat-chip-option>
           <!-- The href is so that the cursor changes to pointer on hover while not actually going anymore when clicked -->
           <a
             href="javascript:undefined"

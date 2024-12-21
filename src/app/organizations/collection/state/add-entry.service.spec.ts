@@ -1,6 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { MatLegacySnackBarModule } from '@angular/material/legacy-snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AddEntryService } from './add-entry.service';
 import { AddEntryStore } from './add-entry.store';
 
@@ -10,7 +10,7 @@ describe('AddEntryService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [AddEntryService, AddEntryStore],
-      imports: [HttpClientTestingModule, MatLegacySnackBarModule],
+      imports: [HttpClientTestingModule, MatSnackBarModule],
     });
 
     addEntryService = TestBed.inject(AddEntryService);

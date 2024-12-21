@@ -15,7 +15,7 @@
  */
 import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
 import { MatSort, MatSortModule } from '@angular/material/sort';
-import { MatLegacyTableDataSource as MatTableDataSource, MatLegacyTableModule } from '@angular/material/legacy-table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { faCodeBranch, faTag } from '@fortawesome/free-solid-svg-icons';
 import { takeUntil } from 'rxjs/operators';
 import { AlertService } from '../../shared/alert/state/alert.service';
@@ -34,11 +34,11 @@ import { CommitUrlPipe } from '../../shared/entry/commit-url.pipe';
 import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
 import { ViewContainerComponent } from '../view/view.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { MatLegacyChipsModule } from '@angular/material/legacy-chips';
+import { MatChipsModule } from '@angular/material/chips';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { MatIconModule } from '@angular/material/icon';
 import { NgIf, NgClass, DatePipe } from '@angular/common';
-import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-versions-container',
@@ -46,13 +46,13 @@ import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
   styleUrls: ['./../../workflow/versions/versions.component.scss'],
   standalone: true,
   imports: [
-    MatLegacyTableModule,
+    MatTableModule,
     MatSortModule,
-    MatLegacyTooltipModule,
+    MatTooltipModule,
     NgIf,
     MatIconModule,
     FlexModule,
-    MatLegacyChipsModule,
+    MatChipsModule,
     FontAwesomeModule,
     ViewContainerComponent,
     NgClass,

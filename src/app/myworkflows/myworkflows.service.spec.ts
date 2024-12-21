@@ -15,8 +15,8 @@
  */
 
 import { inject, TestBed } from '@angular/core/testing';
-import { MatLegacyDialogModule } from '@angular/material/legacy-dialog';
-import { MatLegacySnackBarModule } from '@angular/material/legacy-snack-bar';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterTestingModule } from '@angular/router/testing';
 import { EntryTypeMetadataService } from 'app/entry/type-metadata/entry-type-metadata.service';
 import { UsersService, WorkflowsService } from 'app/shared/openapi';
@@ -158,7 +158,7 @@ describe('MyWorkflowsService', () => {
   const expectedResult: OrgWorkflowObject<Workflow>[] = [expectedResult1, expectedResult2, expectedResult3];
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule, MatLegacySnackBarModule, MatLegacyDialogModule],
+      imports: [RouterTestingModule, MatSnackBarModule, MatDialogModule],
       providers: [
         { provide: DateService, useClass: DateStubService },
         { provide: UrlResolverService, useClass: UrlResolverStubService },

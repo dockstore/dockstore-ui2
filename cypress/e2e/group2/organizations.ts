@@ -34,15 +34,15 @@ describe('Dockstore Organizations', () => {
   setTokenUserViewPort();
 
   function typeInInput(fieldName: string, text: string) {
-    cy.contains('span', fieldName).parentsUntil('.mat-form-field-wrapper').find('input').first().should('be.visible').clear().type(text);
+    cy.get(`input[placeholder="${fieldName}"]`).should('be.visible').clear().type(text);
   }
 
   function clearInput(fieldName: string) {
-    cy.contains('span', fieldName).parentsUntil('.mat-form-field-wrapper').find('input').clear();
+    cy.get(`input[placeholder="${fieldName}"]`).clear();
   }
 
   function typeInTextArea(fieldName: string, text: string) {
-    cy.contains('span', fieldName).parentsUntil('.mat-form-field-wrapper').find('textarea').clear().type(text);
+    cy.get(`textarea[placeholder="${fieldName}"]`).clear().type(text);
   }
 
   describe('Should need to link two external accounts', () => {
@@ -78,12 +78,12 @@ describe('Dockstore Organizations', () => {
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('be.disabled');
       typeInInput('Topic', "Boil 'em, mash 'em, stick 'em in a stew");
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('be.disabled');
-      typeInInput('Email', 'fake@potato.com');
+      typeInInput('Contact Email Address', 'fake@potato.com');
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('not.be.disabled');
       typeInInput('Organization website', 'www.google.ca');
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('be.disabled');
       typeInInput('Location', 'Basement');
-      cy.get('.mat-error').should('be.visible');
+      cy.get('mat-error').should('be.visible');
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('be.disabled');
       typeInInput('Organization website', 'https://www.google.ca');
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('not.be.disabled');
@@ -92,7 +92,7 @@ describe('Dockstore Organizations', () => {
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('be.disabled');
 
       typeInInput('Contact Email Address', 'asdf@asdf.ca');
-      cy.get('.mat-error').should('be.visible');
+      cy.get('mat-error').should('be.visible');
       cy.get('[data-cy=image-url-input').clear();
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('not.be.disabled').click();
       cy.url().should('eq', Cypress.config().baseUrl + '/organizations/Potato');
@@ -371,7 +371,7 @@ describe('Dockstore Organizations', () => {
 
     it('be able to Update organization user', () => {
       cy.get('#edit-user-role-1').should('not.be.disabled').click();
-      cy.get('.mat-dialog-title').should('contain', 'Edit Member');
+      cy.get('.mat-mdc-dialog-title').should('contain', 'Edit Member');
       cy.get('mat-select').click();
       cy.get('mat-option').contains('Maintainer').click();
       cy.get('.mat-select-panel').should('not.exist');
@@ -382,7 +382,7 @@ describe('Dockstore Organizations', () => {
 
     it('be able to Delete organization user', () => {
       cy.get('#remove-user-1').should('not.be.disabled').click();
-      cy.get('.mat-dialog-title').should('contain', 'Remove Member from Organization');
+      cy.get('.mat-mdc-dialog-title').should('contain', 'Remove Member from Organization');
       cy.get('[data-cy=confirm-dialog-button]').should('not.be.disabled').click();
       cy.get('app-organization-members').contains('potato').should('not.exist');
     });
@@ -401,7 +401,7 @@ describe('Dockstore Organizations', () => {
 
     it('Resend invitation to organization user who rejected previous invite', () => {
       cy.get('#edit-user-role-1').should('exist').should('be.enabled').click();
-      cy.get('.mat-dialog-title').should('contain', 'Resend Invitation');
+      cy.get('.mat-mdc-dialog-title').should('contain', 'Resend Invitation');
       cy.get('#upsertUserDialogButton').should('be.visible').should('not.be.disabled').click();
       cy.get('#upsertUserDialogButton').should('not.exist');
       cy.get('app-organization-members').should('contain', 'potato').should('contain', 'Pending Invitation');
@@ -415,7 +415,7 @@ describe('Dockstore Organizations', () => {
 
     it('Delete rejected invitation', () => {
       cy.get('#remove-user-1').should('exist').should('be.enabled').click();
-      cy.get('.mat-dialog-title').should('contain', 'Delete Invitation');
+      cy.get('.mat-mdc-dialog-title').should('contain', 'Delete Invitation');
       cy.get('[data-cy=confirm-dialog-button]').should('not.be.disabled').click();
       cy.get('app-organization-members').contains('potato').should('not.exist');
     });
