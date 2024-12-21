@@ -99,7 +99,7 @@ describe('Dockstore Workflow Details', () => {
   describe('Change tab to Executions', () => {
     it('Should see No Metrics banner', () => {
       cy.visit('/workflows/github.com/A/l');
-      cy.get('.mat-tab-label').should('have.length', 7);
+      cy.get('.mat-mdc-tab').should('have.length', 7);
       goToTab('Metrics');
       cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=metrics');
       cy.get('[data-cy=no-metrics-banner]').should('be.visible');
@@ -143,7 +143,7 @@ describe('Test bble', () => {
     goToTab('Files');
     cy.get('[data-cy=primary-descriptor-bubble]').should('be.visible');
     cy.get('mat-form-field').click();
-    cy.contains('.mat-option-text', 'arguments.cwl').click();
+    cy.contains('mat-option', 'arguments.cwl').click();
     cy.get('[data-cy=primary-descriptor-bubble]').should('not.exist');
     cy.get('[data-cy=go-to-primary-icon]').should('be.visible').click();
     cy.get('[data-cy=primary-descriptor-bubble]').should('be.visible');

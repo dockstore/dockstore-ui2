@@ -25,7 +25,7 @@ export function goToTab(tabName: string): void {
 }
 
 export function assertVisibleTab(tabName: string): void {
-  cy.get('.mat-tab-labels').should('be.visible').contains('div', tabName).should('be.visible');
+  cy.get('.mdc-tab').should('be.visible').contains('div', tabName).should('be.visible');
 }
 
 /**
@@ -49,7 +49,7 @@ export function clickFirstActionsButtonPrivate(): void {
 }
 
 export function isActiveTab(tabName: string): void {
-  cy.contains('.mat-tab-label', tabName).should('have.class', 'mat-tab-label-active');
+  cy.contains('.mat-mdc-tab', tabName).should('have.class', 'mat-mdc-focus-indicator');
 }
 
 export function assertNoTab(tabName: string): any {

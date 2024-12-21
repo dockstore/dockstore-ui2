@@ -340,14 +340,7 @@
           <div class="h5">Docker Pull Command</div>
           <mat-divider></mat-divider>
           <div class="input-group pt-3">
-            <input
-              data-cy="docker-pull-command"
-              type="text"
-              class="form-control selected-item"
-              [(ngModel)]="dockerPullCmd"
-              value="{{ dockerPullCmd }}"
-              readonly
-            />
+            <input type="text" class="form-control selected-item" [(ngModel)]="dockerPullCmd" value="{{ dockerPullCmd }}" readonly />
             <span class="input-group-btn">
               <button
                 class="btn btn-default form-sm-button-material"
