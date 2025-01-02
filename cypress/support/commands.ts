@@ -204,7 +204,7 @@ export function testNoGithubEntriesText(entryType: string, repository: string) {
       .contains(repository)
       .parentsUntil('mat-accordion')
       .should('be.visible')
-      .contains('.mat-tab-label-content', 'Published')
+      .contains('.mat-mdc-tab', 'Published')
       .click();
     if (entryType === 'tool') {
       cy.get('[data-cy=no-published-appTool-message]').should('contain', 'No published ' + entryType + 's');
@@ -219,7 +219,7 @@ export function testNoGithubEntriesText(entryType: string, repository: string) {
       .contains(repository)
       .parentsUntil('mat-accordion')
       .should('be.visible')
-      .contains('.mat-tab-label-content', 'Unpublished')
+      .contains('.mat-mdc-tab', 'Unpublished')
       .click();
     if (entryType === 'tool') {
       cy.get('[data-cy=no-unpublished-appTool-message]').should('contain', 'No unpublished ' + entryType + 's');
