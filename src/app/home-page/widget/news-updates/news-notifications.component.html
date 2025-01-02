@@ -7,7 +7,7 @@
   <mat-card-content>
     <div fxLayout fxLayoutAlign="space-between center" class="pl-3" data-cy="news-notifications-item">
       <app-markdown-wrapper [data]="notification.message"></app-markdown-wrapper>
-      <button mat-button mat-icon-button data-dismiss="alert" (click)="dismissNotification(notification)" data-cy="dismiss-notification">
+      <button mat-icon-button data-dismiss="alert" (click)="dismissNotification(notification)" data-cy="dismiss-notification">
         <mat-icon>cancel</mat-icon>
       </button>
     </div>
