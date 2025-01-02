@@ -20,7 +20,7 @@ describe('Tool, Workflow, and Organization starring', () => {
   setTokenUserViewPort();
 
   function typeInInput(fieldName: string, text: string) {
-    cy.contains(fieldName).parentsUntil('.mat-form-field-wrapper').find('input').first().should('be.visible').clear().type(text);
+    cy.get(`input[placeholder="${fieldName}"]`).should('be.visible').clear().type(text);
   }
   function beUnstarred() {
     cy.get('#starringButtonIcon').should('be.visible');
@@ -60,12 +60,13 @@ describe('Tool, Workflow, and Organization starring', () => {
 
   function starredPage(entity: string) {
     cy.visit('/starred');
+    const mdcTabClass = '.mdc-tab';
     if (entity === 'tool') {
-      cy.contains('.mat-tab-label-content', 'Tools').click();
+      cy.contains(mdcTabClass, 'Tools').click();
     } else if (entity === 'workflow') {
-      cy.contains('.mat-tab-label-content', 'Workflows').click();
+      cy.contains(mdcTabClass, 'Workflows').click();
     } else {
-      cy.contains('.mat-tab-label-content', 'Organizations').click();
+      cy.contains(mdcTabClass, 'Organizations').click();
     }
     cy.get('#starringButton').should('exist');
     cy.get('#starCountButton').should('exist');
@@ -97,7 +98,7 @@ describe('Tool, Workflow, and Organization starring', () => {
       typeInInput('Name', 'Potato');
       typeInInput('Display Name', 'Potato');
       typeInInput('Topic', "Boil 'em, mash 'em, stick 'em in a stew");
-      typeInInput('Email', 'yukon@potato.com');
+      typeInInput('Contact Email Address', 'yukon@potato.com');
       cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('not.be.disabled').click();
       cy.url().should('eq', Cypress.config().baseUrl + '/organizations/Potato');
 
