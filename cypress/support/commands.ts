@@ -53,7 +53,7 @@ export function isActiveTab(tabName: string): void {
 }
 
 export function assertNoTab(tabName: string): any {
-  return cy.get('.mat-tab-labels').should('be.visible').contains('div', tabName).should('not.exist');
+  return cy.get('.mat-mdc-tab').should('be.visible').contains('div', tabName).should('not.exist');
 }
 
 export function resetDB() {
