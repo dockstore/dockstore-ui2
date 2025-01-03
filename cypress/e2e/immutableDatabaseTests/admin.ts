@@ -40,7 +40,7 @@ describe('Admin UI', () => {
       cy.get('[data-cy=dropdown-main]:visible').click();
       cy.get('[data-cy=dropdown-logout-button]').click();
       cy.visit('/users/user_A');
-      cy.get('.mat-tab-label').contains('Other Linked Accounts').should('not.exist');
+      cy.get('.mat-mdc-tab').contains('Other Linked Accounts').should('not.exist');
     });
   });
 });

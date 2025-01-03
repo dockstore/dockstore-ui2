@@ -528,9 +528,9 @@
     <div fxLayout="column" fxLayoutGap="1rem" class="p-0 col-sm-12 col-md-3 col-lg-3 ng-scope" *ngIf="isWorkflowPublic && workflow">
       <app-launch-third-party [workflow]="workflow" [selectedVersion]="selectedVersion"></app-launch-third-party>
       <mat-card appearance="outlined" *ngIf="selectedVersion && selectedConceptDoi">
-        <div class="h5">Cite this {{ workflow.entryTypeMetadata.term }}</div>
-        <mat-divider></mat-divider>
         <mat-card-content>
+          <div class="h5">Cite this {{ workflow.entryTypeMetadata.term }}</div>
+          <mat-divider></mat-divider>
           <p *ngIf="selectedVersionDoi" class="pt-2">
             Cite version <strong>{{ selectedVersion.name }}</strong> using DOI
             <app-doi-badge [doi]="selectedVersionDoi" [displayInitiator]="false"></app-doi-badge>.
@@ -546,9 +546,9 @@
         </mat-card-content>
       </mat-card>
       <mat-card appearance="outlined">
-        <div class="h5">Recent Versions</div>
-        <mat-divider></mat-divider>
         <mat-card-content>
+          <div class="h5">Recent Versions</div>
+          <mat-divider></mat-divider>
           <div class="pt-2">
             <div *ngFor="let sortedVersion of sortedVersions">
               <div
@@ -577,9 +577,9 @@
         </mat-card-content>
       </mat-card>
       <mat-card appearance="outlined" *ngIf="!isStub() && !isHosted()">
-        <div class="h5">Source Repositories</div>
-        <mat-divider></mat-divider>
         <mat-card-content>
+          <div class="h5">Source Repositories</div>
+          <mat-divider></mat-divider>
           <div class="container-source-repos pt-3">
             <p>
               <span *ngIf="(extendedWorkflow$ | async).provider">
