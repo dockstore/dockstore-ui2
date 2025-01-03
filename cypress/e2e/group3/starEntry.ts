@@ -106,7 +106,7 @@ describe('Tool, Workflow, and Organization starring', () => {
 
       // Approve org
       cy.visit('/accounts');
-      cy.get('.mat-tab-label-content').should('exist').contains('Requests').click();
+      cy.get('.mat-mdc-tab').should('exist').contains('Requests').click();
       cy.get('#approve-pending-org-0').should('exist').click();
       cy.get('#approve-pending-org-dialog').contains('Approve').should('exist').click().wait(500);
 
