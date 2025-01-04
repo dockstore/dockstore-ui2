@@ -26,10 +26,10 @@ describe('Dockstore notebooks', () => {
   it('should have /notebooks/<name> page for single notebook', () => {
     cy.visit('/notebooks/' + name);
     // Check the labels on the tabs.
-    cy.get('.mat-mdc-tab-list').contains('Info');
-    cy.get('.mat-mdc-tab-list').contains('Preview');
-    cy.get('.mat-mdc-tab-list').contains('Versions');
-    cy.get('.mat-mdc-tab-list').contains('Files');
+    cy.get('.mat-mdc-tab').contains('Info');
+    cy.get('.mat-mdc-tab').contains('Preview');
+    cy.get('.mat-mdc-tab').contains('Versions');
+    cy.get('.mat-mdc-tab').contains('Files');
     // Should initially display the Info tab.
     // Check for some key information.
     cy.contains(name);
@@ -97,10 +97,10 @@ describe('Dockstore notebooks', () => {
   it('should have my-notebooks page', () => {
     cy.visit('/my-notebooks/' + name);
     // Check the labels on the tabs.
-    cy.get('.mat-tab-list').contains('Info');
-    cy.get('.mat-tab-list').contains('Preview');
-    cy.get('.mat-tab-list').contains('Versions');
-    cy.get('.mat-tab-list').contains('Files');
+    cy.get('.mat-mdc-tab').contains('Info');
+    cy.get('.mat-mdc-tab').contains('Preview');
+    cy.get('.mat-mdc-tab').contains('Versions');
+    cy.get('.mat-mdc-tab').contains('Files');
     // Should initially display the Info tab.
     // Check for some key information.
     cy.contains(name);
