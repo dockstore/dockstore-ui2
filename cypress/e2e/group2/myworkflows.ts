@@ -521,7 +521,7 @@ describe('Dockstore my workflows part 2', () => {
     goToTab('Versions');
     cy.get('table>tbody>tr').should('have.length', 2); // 2 Versions and no warning line
     cy.get('[data-cy=refreshOrganization]:visible').should('be.visible').click();
-    cy.get('[data-cy=confirm-dialog-button] > .mat-button-wrapper').contains('Refresh').click();
+    cy.get('[data-cy=confirm-dialog-button]').contains('Refresh').click();
     cy.wait('@refreshWorkflow');
 
     cy.fixture('sampleWorkflowVersion').then((json) => {
@@ -548,11 +548,11 @@ describe('Dockstore my workflows part 3', () => {
   setTokenUserViewPort();
 
   function haveAlert() {
-    cy.get('.mat-error').should('be.visible');
+    cy.get('mat-error').should('be.visible');
   }
 
   function notHaveAlert() {
-    cy.get('.mat-error').should('not.exist');
+    cy.get('mat-error').should('not.exist');
   }
 
   describe('Test workflow wizard form', () => {
@@ -606,12 +606,15 @@ describe('Dockstore my workflows part 3', () => {
         cy.get('mat-select').eq(1).click().type('{enter}', { force: true });
 
         // foobar/canDeleteMe should be on and not disabled
-        cy.get('mat-slide-toggle').eq(0).should('not.have.class', 'mat-disabled').should('have.class', 'mat-checked');
+        const matMdcSlideToggleChecked = 'mat-mdc-slide-toggle-checked';
+        cy.get('mat-slide-toggle').eq(0).should('have.class', matMdcSlideToggleChecked);
         // foobar/cannotDeleteMe should be on and disabled
-        cy.get('mat-slide-toggle').eq(1).should('have.class', 'mat-disabled').should('have.class', 'mat-checked');
+        cy.get('mat-slide-toggle').eq(1).should('have.class', matMdcSlideToggleChecked);
+        cy.get('mat-slide-toggle').eq(1).find('button').should('be.disabled');
 
         // foobar/doesNotExist should be off and not disabled
-        cy.get('mat-slide-toggle').eq(2).should('not.have.class', 'mat-disabled').should('not.have.class', 'mat-checked');
+        cy.get('mat-slide-toggle').eq(2).should('not.have.class', matMdcSlideToggleChecked);
+        cy.get('mat-slide-toggle').eq(2).find('button').should('not.be.disabled');
       });
     });
   });
@@ -634,16 +637,17 @@ describe('Dockstore my workflows part 3', () => {
       cy.get('#sourceCodeRepositoryWorkflowPathInput').type('/Dockstore.cwl');
       notHaveAlert();
       // Apparently the actual radio button inside Angular material buttons is hidden, so doing it this way
-      cy.get('#descriptorTypeRadioButtons').contains(cwlDescriptorType).find('.mat-radio-container').click();
-      cy.get('#descriptorTypeRadioButtons').contains(wdlDescriptorType).find('.mat-radio-container').click();
+      const matMdcRadioButton = '.mat-mdc-radio-button';
+      cy.get('#descriptorTypeRadioButtons').contains(cwlDescriptorType).click();
+      cy.get('#descriptorTypeRadioButtons').contains(wdlDescriptorType).click();
       haveAlert();
       cy.get('#sourceCodeRepositoryWorkflowPathInput').clear().type('/Dockstore.wdl');
       notHaveAlert();
-      cy.get('#descriptorTypeRadioButtons').contains(nextflowDescriptorType).find('.mat-radio-container').click();
+      cy.get('#descriptorTypeRadioButtons').contains(nextflowDescriptorType).click();
       haveAlert();
       cy.get('#sourceCodeRepositoryWorkflowPathInput').clear().type('/Dockstore.config');
       notHaveAlert();
-      cy.get('#descriptorTypeRadioButtons').contains(cwlDescriptorType).find('.mat-radio-container').click();
+      cy.get('#descriptorTypeRadioButtons').contains(cwlDescriptorType).click();
       haveAlert();
       cy.get('#sourceCodeRepositoryWorkflowPathInput').clear().type('/Dockstore.cwl');
       notHaveAlert();
@@ -702,7 +706,7 @@ describe('Dockstore my workflows part 3', () => {
       ).trigger('mouseenter');
       cy.get('[data-cy=refreshOrganization]:visible').should('be.visible').click();
       cy.contains('button', 'Cancel').should('be.visible');
-      cy.get('[data-cy=confirm-dialog-button] > .mat-button-wrapper').contains('Refresh').click();
+      cy.get('[data-cy=confirm-dialog-button]').contains('Refresh').click();
       cy.get('.error-output').should('be.visible');
       cy.get('[data-cy=refreshOrganization]:visible').should('be.visible').click();
       cy.contains('button', 'Cancel').should('be.visible').click();
