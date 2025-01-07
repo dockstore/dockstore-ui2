@@ -21,9 +21,7 @@
     [dataSource]="dataSource"
     class="w-100"
     matSort
-    matSortActive="last_modified"
-    matSortDisableClear
-    matSortDirection="desc"
+    matSortStart="asc"
     [trackBy]="trackBy"
   >
     <ng-container matColumnDef="name">
@@ -85,7 +83,7 @@
         mat-header-cell
         *matHeaderCellDef
         mat-sort-header
-        disableClear
+        start="desc"
         matTooltip="Date of last update to Git reference"
         matTooltipPosition="above"
         data-cy="date-modified-header"
@@ -105,7 +103,6 @@
         scope="col"
         mat-header-cell
         *matHeaderCellDef
-        mat-sort-header
         matTooltip="The {{
           workflow.entryType === entryType.NOTEBOOK ? 'format' : 'language versions'
         }} used by the version's descriptor file(s)."
@@ -125,7 +122,6 @@
         scope="col"
         mat-header-cell
         *matHeaderCellDef
-        mat-sort-header
         matTooltip="The minimum required {{ workflow.descriptorType | descriptorLanguage }} engine version."
         matTooltipPosition="above"
       >
@@ -143,7 +139,6 @@
         scope="col"
         mat-header-cell
         *matHeaderCellDef
-        mat-sort-header
         matTooltip="A version is valid if the descriptor file(s) have been successfully validated."
         matTooltipPosition="above"
       >
@@ -159,7 +154,6 @@
         scope="col"
         mat-header-cell
         *matHeaderCellDef
-        mat-sort-header
         matTooltip="A hidden version is only visible here and not publicly."
         matTooltipPosition="above"
       >
@@ -175,7 +169,6 @@
         scope="col"
         mat-header-cell
         *matHeaderCellDef
-        mat-sort-header
         matTooltip="The version has a test parameter file with open data or requires no input files."
         matTooltipPosition="above"
       >
