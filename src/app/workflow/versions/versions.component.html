@@ -221,12 +221,14 @@
           *ngIf="showExecutionMetricsIcon(version)"
           src="../assets/svg/execution-icon.svg"
           alt="Execution Metrics Icon"
+          data-cy="execution-metrics-icon"
           matTooltip="This version contains execution metrics."
         />
         <img
           *ngIf="showValidationMetricsIcon(version)"
           src="../assets/svg/validation-icon.svg"
           alt="Validation Metrics Icon"
+          data-cy="validation-metrics-icon"
           matTooltip="This version contains validation metrics."
         />
       </td>
