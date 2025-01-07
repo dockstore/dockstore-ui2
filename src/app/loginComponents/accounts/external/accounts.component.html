@@ -38,50 +38,50 @@
             <a [href]="dsServerURI + '/static/swagger-ui/index.html#'" target="_blank">REST web service interface</a> to work with and
             launch tools and workflows. See the <a routerLink="/onboarding">Onboarding</a> page for more details on using the CLI.
           </div>
-        </mat-card-content>
-        <div>
-          <mat-form-field appearance="outline" class="w-75">
-            <mat-label class="accent-1-dark">
-              <strong>Token</strong>
-            </mat-label>
-            <input matInput readonly [type]="show ? 'text' : 'password'" value="{{ dockstoreToken }}" />
+          <div>
+            <mat-form-field appearance="outline" class="w-75">
+              <mat-label class="accent-1-dark">
+                <strong>Token</strong>
+              </mat-label>
+              <input matInput readonly [type]="show ? 'text' : 'password'" value="{{ dockstoreToken }}" />
+              <button
+                mat-icon-button
+                matSuffix
+                class="accent-1-dark"
+                [cdkCopyToClipboard]="dockstoreToken"
+                matTooltip="Copy Token"
+                appSnackbar
+              >
+                <mat-icon>file_copy</mat-icon>
+              </button>
+            </mat-form-field>
             <button
-              mat-icon-button
-              matSuffix
-              class="accent-1-dark"
-              [cdkCopyToClipboard]="dockstoreToken"
-              matTooltip="Copy Token"
-              appSnackbar
-            >
-              <mat-icon>file_copy</mat-icon>
-            </button>
-          </mat-form-field>
-          <button
-            [matTooltip]="show ? 'Hide token' : 'Show token'"
-            mat-button
-            color="secondary"
-            class="accent-1-dark small-mat-btn-skin small-btn-structure mat-elevation-z"
-            (click)="show = !show"
-          >
-            <mat-icon class="mat-icon-sm">{{ show ? 'visibility_off' : 'visibility' }}</mat-icon>
-            <span> Show </span>
-          </button>
-        </div>
-        <div>
-          <hr />
-          <span class="pull-right" fxLayoutAlign="end end">
-            <button
+              [matTooltip]="show ? 'Hide token' : 'Show token'"
               mat-button
-              class="accent-1-dark-btn small-mat-btn-skin small-btn-structure mt-2"
-              matTooltip="Revoke Dockstore token"
-              data-cy="revoke-token-button"
-              (click)="revokeToken()"
+              color="secondary"
+              class="accent-1-dark small-mat-btn-skin small-btn-structure mat-elevation-z"
+              (click)="show = !show"
             >
-              <mat-icon class="mat-icon-sm">link_off</mat-icon>
-              <span> Revoke Token </span>
+              <mat-icon class="mat-icon-sm">{{ show ? 'visibility_off' : 'visibility' }}</mat-icon>
+              <span> Show </span>
             </button>
-          </span>
-        </div>
+          </div>
+          <div>
+            <hr />
+            <span class="pull-right" fxLayoutAlign="end end">
+              <button
+                mat-button
+                class="accent-1-dark-btn small-mat-btn-skin small-btn-structure mt-2"
+                matTooltip="Revoke Dockstore token"
+                data-cy="revoke-token-button"
+                (click)="revokeToken()"
+              >
+                <mat-icon class="mat-icon-sm">link_off</mat-icon>
+                <span> Revoke Token </span>
+              </button>
+            </span>
+          </div>
+        </mat-card-content>
       </div>
     </mat-card>
   </div>
@@ -145,38 +145,40 @@
             </div>
           </mat-card-content>
         </div>
-        <div>
-          <hr />
-          <span class="pull-right" fxLayoutAlign="end end">
-            <!-- This button needs to be vertically centered -->
-            <button
-              *ngIf="row.isLinked === false; else linked"
-              mat-button
-              class="accent-1-dark private-btn small-btn-structure mt-2"
-              [attr.id]="'link-' + row.name"
-              (click)="link(row.source)"
-              matTooltip="Link the account"
-            >
-              <mat-icon class="mat-icon-sm" *ngIf="row.name !== 'ORCID'; else orcid">link</mat-icon>
-              <span> Link Account</span>
-            </button>
-          </span>
-          <ng-template #linked>
-            <button
-              mat-raised-button
-              class="accent-1-dark-btn small-mat-btn-skin small-btn-structure mt-2"
-              [attr.id]="'unlink-' + row.name"
-              (click)="unlink(row.source)"
-              matTooltip="Unlink the account"
-            >
-              <mat-icon class="mat-icon-sm" *ngIf="row.name !== 'ORCID'; else orcid">link_off</mat-icon>
-              <span> Unlink Account</span>
-            </button>
-          </ng-template>
-          <ng-template #orcid>
-            <img src="../../assets/images/account-logos/{{ row.logo }}" alt="ORCID iD logo" class="orcid-id-logo site-icons-small" />
-          </ng-template>
-        </div>
+        <mat-card-content>
+          <div>
+            <hr />
+            <span class="pull-right" fxLayoutAlign="end end">
+              <!-- This button needs to be vertically centered -->
+              <button
+                *ngIf="row.isLinked === false; else linked"
+                mat-button
+                class="accent-1-dark private-btn small-btn-structure mt-2"
+                [attr.id]="'link-' + row.name"
+                (click)="link(row.source)"
+                matTooltip="Link the account"
+              >
+                <mat-icon class="mat-icon-sm" *ngIf="row.name !== 'ORCID'; else orcid">link</mat-icon>
+                <span> Link Account</span>
+              </button>
+            </span>
+            <ng-template #linked>
+              <button
+                mat-raised-button
+                class="accent-1-dark-btn small-mat-btn-skin small-btn-structure mt-2"
+                [attr.id]="'unlink-' + row.name"
+                (click)="unlink(row.source)"
+                matTooltip="Unlink the account"
+              >
+                <mat-icon class="mat-icon-sm" *ngIf="row.name !== 'ORCID'; else orcid">link_off </mat-icon>
+                <span> Unlink Account</span>
+              </button>
+            </ng-template>
+            <ng-template #orcid>
+              <img src="../../assets/images/account-logos/{{ row.logo }}" alt="ORCID iD logo" class="orcid-id-logo site-icons-small" />
+            </ng-template>
+          </div>
+        </mat-card-content>
       </div>
     </mat-card>
   </div>
