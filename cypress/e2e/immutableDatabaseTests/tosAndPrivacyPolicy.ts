@@ -80,7 +80,7 @@ describe('TOS Banner', () => {
       cy.get('[data-cy=register-with-google]').should('be.disabled');
       cy.get('[data-cy=register-with-github]').should('be.disabled');
 
-      cy.get('.mat-checkbox-inner-container').click();
+      cy.get('.mdc-checkbox').click();
       cy.get('[data-cy=register-with-google]').should('not.be.disabled');
       cy.get('[data-cy=register-with-github]').should('not.be.disabled');
     });

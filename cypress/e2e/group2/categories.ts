@@ -28,7 +28,7 @@ describe('Dockstore Categories', () => {
   setTokenUserViewPort();
 
   function typeInInput(fieldName: string, text: string) {
-    cy.contains('span', fieldName).parentsUntil('.mat-form-field-wrapper').find('input').first().should('be.visible').clear().type(text);
+    cy.get(`input[placeholder="${fieldName}"]`).should('be.visible').clear().type(text);
   }
 
   describe('Should be able to create a category', () => {

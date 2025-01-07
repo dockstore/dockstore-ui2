@@ -21,11 +21,11 @@ const psqlInvocation: string = 'PASSWORD=dockstore psql';
 export function goToTab(tabName: string): void {
   // cypress tests run asynchronously, so if the DOM changes and an element-of-interest becomes detached while we're manipulating it, the test will fail.
   // our current (admittedly primitive) go-to solution is to wait (sleep) for long enough that the DOM "settles", thus avoiding the "detached element" bug.
-  cy.contains('.mat-tab-label', tabName).should('be.visible').click();
+  cy.contains('.mdc-tab', tabName).should('be.visible').click();
 }
 
 export function assertVisibleTab(tabName: string): void {
-  cy.get('.mat-tab-labels').should('be.visible').contains('div', tabName).should('be.visible');
+  cy.get('.mdc-tab').should('be.visible').contains('div', tabName).should('be.visible');
 }
 
 /**
@@ -49,11 +49,11 @@ export function clickFirstActionsButtonPrivate(): void {
 }
 
 export function isActiveTab(tabName: string): void {
-  cy.contains('.mat-tab-label', tabName).should('have.class', 'mat-tab-label-active');
+  cy.contains('.mat-mdc-tab', tabName).should('have.class', 'mat-mdc-focus-indicator');
 }
 
 export function assertNoTab(tabName: string): any {
-  return cy.get('.mat-tab-labels').should('be.visible').contains('div', tabName).should('not.exist');
+  return cy.get('.mat-mdc-tab').should('be.visible').contains('div', tabName).should('not.exist');
 }
 
 export function resetDB() {
@@ -95,7 +95,7 @@ export function insertAuthors() {
 }
 
 export function typeInInput(fieldName: string, text: string) {
-  cy.contains('span', fieldName).parentsUntil('.mat-form-field-wrapper').find('input').first().should('be.visible').clear().type(text);
+  cy.get(`input[placeholder="${fieldName}"]`).should('be.visible').clear().type(text);
 }
 
 // Sets it to the user where id = 1. Is an admin and curator.
@@ -204,7 +204,7 @@ export function testNoGithubEntriesText(entryType: string, repository: string) {
       .contains(repository)
       .parentsUntil('mat-accordion')
       .should('be.visible')
-      .contains('.mat-tab-label-content', 'Published')
+      .contains('.mat-mdc-tab', 'Published')
       .click();
     if (entryType === 'tool') {
       cy.get('[data-cy=no-published-appTool-message]').should('contain', 'No published ' + entryType + 's');
@@ -219,7 +219,7 @@ export function testNoGithubEntriesText(entryType: string, repository: string) {
       .contains(repository)
       .parentsUntil('mat-accordion')
       .should('be.visible')
-      .contains('.mat-tab-label-content', 'Unpublished')
+      .contains('.mat-mdc-tab', 'Unpublished')
       .click();
     if (entryType === 'tool') {
       cy.get('[data-cy=no-unpublished-appTool-message]').should('contain', 'No unpublished ' + entryType + 's');

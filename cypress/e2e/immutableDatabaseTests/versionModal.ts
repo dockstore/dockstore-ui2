@@ -19,7 +19,7 @@ describe('Public Version Modal', () => {
   setTokenUserViewPort();
   beforeEach(() => {
     cy.visit('/containers/quay.io/garyluu/dockstore-cgpmap/cgpmap-cramOut');
-    cy.get('.mat-tab-label').should('have.length', 4);
+    cy.get('.mdc-tab').should('have.length', 4);
   });
 
   it('Change tab to versions', () => {

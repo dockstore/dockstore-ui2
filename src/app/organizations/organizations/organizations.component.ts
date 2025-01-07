@@ -15,8 +15,8 @@
  */
 import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
-import { LegacyPageEvent as PageEvent, MatLegacyPaginatorModule } from '@angular/material/legacy-paginator';
+import { MatDialog } from '@angular/material/dialog';
+import { PageEvent, MatPaginatorModule } from '@angular/material/paginator';
 import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs/operators';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
@@ -31,14 +31,14 @@ import { OrgLogoService } from '../../shared/org-logo.service';
 import { GravatarPipe } from '../../gravatar/gravatar.pipe';
 import { ImgFallbackDirective } from '../../shared/img-fallback.directive';
 import { RouterLink } from '@angular/router';
-import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyInputModule } from '@angular/material/legacy-input';
-import { MatLegacyOptionModule } from '@angular/material/legacy-core';
-import { MatLegacySelectModule } from '@angular/material/legacy-select';
-import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
-import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatInputModule } from '@angular/material/input';
+import { MatOptionModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatButtonModule } from '@angular/material/button';
 import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
 import { NgIf, NgFor, AsyncPipe } from '@angular/common';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
@@ -54,20 +54,20 @@ import { HeaderComponent } from '../../header/header.component';
     FlexModule,
     NgIf,
     ExtendedModule,
-    MatLegacyButtonModule,
-    MatLegacyTooltipModule,
+    MatButtonModule,
+    MatTooltipModule,
     FormsModule,
     ReactiveFormsModule,
-    MatLegacyFormFieldModule,
-    MatLegacySelectModule,
-    MatLegacyOptionModule,
-    MatLegacyInputModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatOptionModule,
+    MatInputModule,
     MatIconModule,
     NgFor,
-    MatLegacyCardModule,
+    MatCardModule,
     RouterLink,
     ImgFallbackDirective,
-    MatLegacyPaginatorModule,
+    MatPaginatorModule,
     AsyncPipe,
     GravatarPipe,
   ],

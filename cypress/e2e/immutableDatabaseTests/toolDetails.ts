@@ -52,7 +52,7 @@ describe('Dockstore Tool Details of quay.io/A2/a', () => {
   beforeEach(() => {
     cy.visit('/containers/quay.io/A2/a');
     // 4 tabs: Info, Launch, Versions, Files.  The files ones are hidden.;
-    cy.get('.mat-tab-label').should('have.length', 4);
+    cy.get('.mat-mdc-tab').should('have.length', 4);
     cy.url().should('eq', Cypress.config().baseUrl + '/containers/quay.io/A2/a:latest?tab=info');
   });
   it('should have sharebuttons', () => {
@@ -114,7 +114,7 @@ describe('Dockstore Tool Details of quay.io/garyluu/dockstore-cgpmap/cgpmap-cram
   setTokenUserViewPort();
   beforeEach(() => {
     cy.visit('/containers/quay.io/garyluu/dockstore-cgpmap/cgpmap-cramOut');
-    cy.get('.mat-tab-label').should('have.length', 4);
+    cy.get('.mat-mdc-tab').should('have.length', 4);
   });
 
   describe('Change tab to files', () => {
@@ -156,7 +156,7 @@ describe('Dockstore Tool Details of quay.io/A2/b3', () => {
   setTokenUserViewPort();
   beforeEach(() => {
     cy.visit('/containers/quay.io/A2/b3');
-    cy.get('.mat-tab-label').should('have.length', 4);
+    cy.get('.mat-mdc-tab').should('have.length', 4);
   });
 
   it('Change tab to versions, should only have one visible', () => {

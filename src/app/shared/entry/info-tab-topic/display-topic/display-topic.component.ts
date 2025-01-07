@@ -1,9 +1,9 @@
 import { AsyncPipe, NgIf, TitleCasePipe } from '@angular/common';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
-import { MatLegacyDialog } from '@angular/material/legacy-dialog';
-import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialog } from '@angular/material/dialog';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { Base } from 'app/shared/base';
 import { DockstoreTool, Entry, EntryTypeMetadata, Workflow } from 'app/shared/openapi';
 import { SessionQuery } from 'app/shared/session/session.query';
@@ -18,7 +18,7 @@ import { FlexModule } from '@ngbracket/ngx-layout';
   templateUrl: './display-topic.component.html',
   styleUrls: ['../../../styles/info-tab.component.scss'],
   standalone: true,
-  imports: [NgIf, MatLegacyTooltipModule, MatLegacyButtonModule, MatIconModule, AsyncPipe, AiBubbleComponent, FlexModule, TitleCasePipe],
+  imports: [NgIf, MatTooltipModule, MatButtonModule, MatIconModule, AsyncPipe, AiBubbleComponent, FlexModule, TitleCasePipe],
 })
 export class DisplayTopicComponent extends Base implements OnInit, OnDestroy {
   TopicSelectionEnum = Entry.TopicSelectionEnum;
@@ -28,7 +28,7 @@ export class DisplayTopicComponent extends Base implements OnInit, OnDestroy {
   selectedTopic: string;
   @Input() entry: DockstoreTool | Workflow;
   @Input() disableEditing: boolean;
-  constructor(private sessionQuery: SessionQuery, private dialog: MatLegacyDialog) {
+  constructor(private sessionQuery: SessionQuery, private dialog: MatDialog) {
     super();
   }
 

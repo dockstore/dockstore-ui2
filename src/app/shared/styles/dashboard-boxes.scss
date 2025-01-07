@@ -19,13 +19,13 @@ button[mat-icon-button] {
   color: mat.get-color-from-palette($dockstore-app-gray, 3);
 }
 
-.mat-option {
+.mat-mdc-option {
   font-size: 1.4rem;
   height: 3.5rem;
   line-height: normal;
 }
 
-.mat-option:not([disabled]) {
+.mat-mdc-option:not([disabled]) {
   border-bottom: 0.1rem solid mat.get-color-from-palette($dockstore-app-gray, 3);
 }
 

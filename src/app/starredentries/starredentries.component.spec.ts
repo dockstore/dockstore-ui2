@@ -1,8 +1,8 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { MatLegacyDialogModule } from '@angular/material/legacy-dialog';
-import { MatLegacySnackBarModule } from '@angular/material/legacy-snack-bar';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MytoolsService } from '../mytools/mytools.service';
@@ -48,10 +48,10 @@ describe('StarredEntriesComponent', () => {
         imports: [
           RouterTestingModule,
           StarredEntriesComponent,
-          MatLegacySnackBarModule,
+          MatSnackBarModule,
           NoopAnimationsModule,
           HttpClientTestingModule,
-          MatLegacyDialogModule,
+          MatDialogModule,
         ],
         schemas: [NO_ERRORS_SCHEMA],
         providers: [

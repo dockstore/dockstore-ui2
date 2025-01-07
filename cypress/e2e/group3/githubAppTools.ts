@@ -12,7 +12,7 @@ describe('GitHub App Tools', () => {
       .contains(org)
       .parentsUntil('mat-accordion')
       .should('be.visible')
-      .contains('.mat-tab-label-content', 'Unpublished')
+      .contains('.mat-mdc-tab', 'Unpublished')
       .should('be.visible')
       .click();
   }
@@ -23,7 +23,7 @@ describe('GitHub App Tools', () => {
       .contains(org)
       .parentsUntil('mat-accordion')
       .should('be.visible')
-      .contains('.mat-tab-label-content', 'Unpublished')
+      .contains('.mat-mdc-tab', 'Unpublished')
       .click();
   }
 
@@ -253,7 +253,7 @@ describe('GitHub App Tools', () => {
     it('Table view', () => {
       cy.visit('/apptools');
       cy.url().should('contain', 'apptools');
-      cy.contains('Search app tools');
+      cy.get('input[placeholder="Search app tools"]');
       cy.get('[data-cy=entry-link]').should('contain', 'test-github-app-tools');
     });
   });

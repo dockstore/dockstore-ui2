@@ -172,7 +172,25 @@ $dockstore-app-accent-4: mat.define-palette($kim-accent-4, 2, 4, 1);
 $dockstore-app-gray: mat.define-palette($kim-gray, 2, 4, 1);
 
 // Create the theme object (a Sass map containing all of the palettes).
-$dockstore-app-theme: mat.define-light-theme($dockstore-app-primary, $dockstore-app-accent, $dockstore-app-error);
+$dockstore-app-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $dockstore-app-primary,
+      accent: $dockstore-app-accent,
+      warn: $dockstore-app-error,
+    ),
+    typography:
+      mat.define-typography-config(
+        $button:
+          mat.define-typography-level(
+            $font-size: 14px,
+            $font-weight: 700,
+            $letter-spacing: normal,
+          ),
+      ),
+    density: 0,
+  )
+);
 
 // Include the grayscale palette in the theme object
 // Example of getting the palette: map-get($dockstore-app-theme, grayscale)

@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable, EventEmitter } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { AlertService } from '../alert/state/alert.service';
 import { includesAuthors, includesVersions } from '../constants';
 import { ContainerService } from '../container.service';

@@ -15,7 +15,7 @@
  */
 import { Component, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
 import { MatSort, MatSortModule } from '@angular/material/sort';
-import { MatLegacyTableDataSource as MatTableDataSource, MatLegacyTableModule } from '@angular/material/legacy-table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { VersionVerifiedPlatform, Tag, VerificationInformation, WorkflowVersion } from '../../openapi';
 
 @Component({
@@ -23,7 +23,7 @@ import { VersionVerifiedPlatform, Tag, VerificationInformation, WorkflowVersion 
   templateUrl: './verified-display.component.html',
   styleUrls: ['./verified-display.component.scss'],
   standalone: true,
-  imports: [MatLegacyTableModule, MatSortModule],
+  imports: [MatTableModule, MatSortModule],
 })
 export class VerifiedDisplayComponent implements OnInit, OnChanges {
   @Input() verifiedByPlatform: Array<VersionVerifiedPlatform>;

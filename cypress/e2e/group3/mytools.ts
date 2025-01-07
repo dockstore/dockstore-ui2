@@ -30,7 +30,7 @@ describe('Dockstore my tools', () => {
       .contains(org)
       .parentsUntil('mat-accordion')
       .should('be.visible')
-      .contains('.mat-tab-label', 'Unpublished')
+      .contains('.mdc-tab', 'Unpublished')
       .should('be.visible')
       .click();
   }
@@ -134,7 +134,7 @@ describe('Dockstore my tools', () => {
       // Select the manual topic and verify that it's displayed publicly
       cy.visit(privateEntryURI);
       cy.get('[data-cy=topicEditButton]').click();
-      cy.get('.mat-radio-label').contains('Manual').click();
+      cy.get('.mat-mdc-radio-button').contains('Manual').click();
       cy.get('[data-cy=topicSaveButton]').click();
       cy.wait('@updateTool');
       cy.get('[data-cy=viewPublicToolButton]').should('be.visible').click();
@@ -230,8 +230,8 @@ describe('Dockstore my tools', () => {
       cy.visit('/my-tools/amazon.dkr.ecr.test.amazonaws.com/A/a');
       cy.contains('Versions').click();
       cy.get('#addTagButton').click();
-      typeInInput('Docker Image Tag Name', 'fakeTag');
-      typeInInput('Git Branch or Tag Name', 'fakeGitReference');
+      typeInInput('20.04', 'fakeTag');
+      typeInInput('develop', 'fakeGitReference');
       cy.get('#addVersionTagButton').click();
       cy.wait('@putTestParameterFile');
     });
