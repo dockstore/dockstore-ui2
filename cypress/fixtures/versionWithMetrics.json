@@ -1,0 +1,541 @@
+[
+  {
+    "aiTopicProcessed": false,
+    "aliases": null,
+    "author": "Muhammed Lee",
+    "authors": [
+      {
+        "affiliation": null,
+        "email": "Muhammad.Lee@oicr.on.ca",
+        "name": "Muhammed Lee",
+        "role": null
+      }
+    ],
+    "commitID": null,
+    "dbUpdateDate": 1722026014356,
+    "descriptionSource": null,
+    "dirtyBit": false,
+    "doiStatus": "NOT_REQUESTED",
+    "doiURL": null,
+    "dois": {
+      "USER": {
+        "id": 1234,
+        "type": "VERSION",
+        "name": "10.5072/zenodo.841014",
+        "initiator": "USER"
+      }
+    },
+    "email": "Muhammad.Lee@oicr.on.ca",
+    "frozen": true,
+    "hidden": false,
+    "id": 13,
+    "images": null,
+    "input_file_formats": [],
+    "kernelImagePath": null,
+    "last_modified": 1480345317003,
+    "legacyVersion": true,
+    "metricsByPlatform": {
+      "GALAXY": {
+        "executionStatusCount": null,
+        "id": 124,
+        "validationStatus": {
+          "id": 134,
+          "validatorTools": {
+            "MINIWDL": {
+              "id": 26,
+              "mostRecentVersionName": "2.0",
+              "numberOfRuns": 3,
+              "passingRate": 66.66666666666666,
+              "validatorVersions": [
+                {
+                  "dateExecuted": "2023-03-31T15:06:49.888745366Z",
+                  "errorMessage": null,
+                  "id": 38,
+                  "isValid": true,
+                  "name": "1.0",
+                  "numberOfRuns": 1,
+                  "passingRate": 100
+                },
+                {
+                  "dateExecuted": "2023-04-30T15:06:49.888745366Z",
+                  "errorMessage": null,
+                  "id": 39,
+                  "isValid": false,
+                  "name": "2.0",
+                  "numberOfRuns": 1,
+                  "passingRate": 0
+                },
+                {
+                  "dateExecuted": "2023-03-31T15:06:49.888745366Z",
+                  "errorMessage": null,
+                  "id": 40,
+                  "isValid": true,
+                  "name": "v1.1",
+                  "numberOfRuns": 1,
+                  "passingRate": 100
+                }
+              ]
+            },
+            "WOMTOOL": {
+              "id": 27,
+              "mostRecentVersionName": "84",
+              "numberOfRuns": 2,
+              "passingRate": 0,
+              "validatorVersions": [
+                {
+                  "dateExecuted": "2023-04-30T16:06:49.888745366Z",
+                  "errorMessage": "This is a very very very very very very very very very very very very long error message",
+                  "id": 41,
+                  "isValid": false,
+                  "name": "84",
+                  "numberOfRuns": 2,
+                  "passingRate": 0
+                }
+              ]
+            }
+          }
+        }
+      },
+      "TERRA": {
+        "executionStatusCount": {
+          "count": {
+            "ALL": {
+              "executionStatusCount": 3,
+              "cpu": null,
+              "executionTime": null,
+              "memory": null,
+              "cost": null
+            },
+            "SUCCESSFUL": {
+              "executionStatusCount": 2,
+              "cpu": null,
+              "executionTime": null,
+              "memory": null,
+              "cost": null
+            },
+            "FAILED_RUNTIME_INVALID": {
+              "executionStatusCount": 1,
+              "cpu": null,
+              "executionTime": null,
+              "memory": null,
+              "cost": null
+            }
+          },
+          "id": 136,
+          "numberOfFailedExecutions": 1,
+          "numberOfSuccessfulExecutions": 2,
+          "numberOfAbortedExecutions": 0
+        },
+        "id": 126,
+        "validationStatus": null
+
+      },
+      "AGC": {
+        "executionStatusCount": {
+          "count": {
+            "ALL": {
+              "executionStatusCount": 4,
+              "cpu": {
+                "average": 2,
+                "id": 103,
+                "maximum": 2,
+                "minimum": 2,
+                "numberOfDataPointsForAverage": 2,
+                "unit": null
+              },
+              "executionTime": {
+                "average": 20,
+                "maximum": 20,
+                "minimum": 20,
+                "numberOfDataPointsForAverage": 2,
+                "id": 104,
+                "unit": "s"
+              },
+              "memory": {
+                "average": 2,
+                "maximum": 2,
+                "minimum": 2,
+                "numberOfDataPointsForAverage": 2,
+                "id": 105,
+                "unit": "GB"
+              },
+              "cost": {
+                "average": 2.00,
+                "maximum": 2,
+                "minimum": 2,
+                "numberOfDataPointsForAverage": 2,
+                "id": 200,
+                "unit": "USD"
+              }
+            },
+            "SUCCESSFUL": {
+              "executionStatusCount": 2,
+              "cpu": {
+                "average": 2,
+                "id": 103,
+                "maximum": 2,
+                "minimum": 2,
+                "numberOfDataPointsForAverage": 2,
+                "unit": null
+              },
+              "executionTime": {
+                "average": 20,
+                "maximum": 20,
+                "minimum": 20,
+                "numberOfDataPointsForAverage": 20,
+                "id": 104,
+                "unit": "s"
+              },
+              "memory": {
+                "average": 2,
+                "maximum": 2,
+                "minimum": 2,
+                "numberOfDataPointsForAverage": 2,
+                "id": 105,
+                "unit": "GB"
+              },
+              "cost": {
+                "average": 2.00,
+                "maximum": 2,
+                "minimum": 2,
+                "numberOfDataPointsForAverage": 2,
+                "id": 200,
+                "unit": "USD"
+              }
+            },
+            "FAILED_RUNTIME_INVALID": {
+              "executionStatusCount": 2,
+              "cpu": null,
+              "executionTime": null,
+              "memory": null,
+              "cost": null
+            }
+          },
+          "id": 133,
+          "numberOfFailedExecutions": 2,
+          "numberOfSuccessfulExecutions": 2,
+          "numberOfAbortedExecutions": 0
+        },
+        "id": 123,
+        "validationStatus": null
+      },
+      "OTHER": {
+        "executionStatusCount": {
+          "count": {
+            "ALL": {
+              "executionStatusCount": 2,
+              "cpu": {
+                "average": 1.5,
+                "id": 106,
+                "maximum": 2,
+                "minimum": 1,
+                "numberOfDataPointsForAverage": 2,
+                "unit": null
+              },
+              "executionTime": {
+                "average": 45.5,
+                "maximum": 90,
+                "minimum": 1,
+                "numberOfDataPointsForAverage": 2,
+                "id": 107,
+                "unit": "s"
+              },
+              "memory": {
+                "average": 3.5,
+                "maximum": 4,
+                "minimum": 3,
+                "numberOfDataPointsForAverage": 2,
+                "id": 108,
+                "unit": "GB"
+              },
+              "cost": null
+            },
+            "FAILED_RUNTIME_INVALID": {
+              "executionStatusCount": 2,
+              "cpu": {
+                "average": 1.5,
+                "id": 106,
+                "maximum": 2,
+                "minimum": 1,
+                "numberOfDataPointsForAverage": 2,
+                "unit": null
+              },
+              "executionTime": {
+                "average": 45.5,
+                "maximum": 90,
+                "minimum": 1,
+                "numberOfDataPointsForAverage": 2,
+                "id": 107,
+                "unit": "s"
+              },
+              "memory": {
+                "average": 3.5,
+                "maximum": 4,
+                "minimum": 3,
+                "numberOfDataPointsForAverage": 2,
+                "id": 108,
+                "unit": "GB"
+              },
+              "cost": null
+            }
+          },
+          "id": 135,
+          "numberOfFailedExecutions": 2,
+          "numberOfSuccessfulExecutions": 0,
+          "numberOfAbortedExecutions": 0
+        },
+        "id": 125,
+        "cost": null,
+        "validationStatus": null
+      },
+      "ALL": {
+        "executionStatusCount": {
+          "count": {
+            "ALL": {
+              "executionStatusCount": 9,
+              "cpu": {
+                "average": 2,
+                "id": 109,
+                "maximum": 2,
+                "minimum": 2,
+                "numberOfDataPointsForAverage": 6,
+                "unit": null
+              },
+              "executionTime": {
+                "average": 20,
+                "maximum": 20,
+                "minimum": 20,
+                "numberOfDataPointsForAverage": 6,
+                "id": 110,
+                "unit": "s"
+              },
+              "memory": {
+                "average": 2,
+                "maximum": 2,
+                "minimum": 2,
+                "numberOfDataPointsForAverage": 6,
+                "id": 111,
+                "unit": "GB"
+              },
+              "cost": {
+                "average": 2,
+                "maximum": 2,
+                "minimum": 2,
+                "numberOfDataPointsForAverage": 4,
+                "id": 201,
+                "unit": "USD"
+              }
+            },
+            "SUCCESSFUL": {
+              "executionStatusCount": 4,
+              "cpu": {
+                "average": 2,
+                "id": 103,
+                "maximum": 2,
+                "minimum": 2,
+                "numberOfDataPointsForAverage": 2,
+                "unit": null
+              },
+              "executionTime": {
+                "average": 20,
+                "maximum": 20,
+                "minimum": 20,
+                "numberOfDataPointsForAverage": 20,
+                "id": 104,
+                "unit": "s"
+              },
+              "memory": {
+                "average": 2,
+                "maximum": 2,
+                "minimum": 2,
+                "numberOfDataPointsForAverage": 2,
+                "id": 105,
+                "unit": "GB"
+              },
+              "cost": {
+                "average": 2.00,
+                "maximum": 2,
+                "minimum": 2,
+                "numberOfDataPointsForAverage": 2,
+                "id": 200,
+                "unit": "USD"
+              }
+            },
+            "FAILED_RUNTIME_INVALID": {
+              "executionStatusCount": 5,
+              "cpu": {
+                "average": 2,
+                "id": 106,
+                "maximum": 2,
+                "minimum": 2,
+                "numberOfDataPointsForAverage": 2,
+                "unit": null
+              },
+              "executionTime": {
+                "average": 20,
+                "maximum": 20,
+                "minimum": 20,
+                "numberOfDataPointsForAverage": 2,
+                "id": 107,
+                "unit": "s"
+              },
+              "memory": {
+                "average": 2,
+                "maximum": 2,
+                "minimum": 2,
+                "numberOfDataPointsForAverage": 2,
+                "id": 108,
+                "unit": "GB"
+              },
+              "cost": null
+            }
+          },
+          "id": 137,
+          "numberOfFailedExecutions": 5,
+          "numberOfSuccessfulExecutions": 4,
+          "numberOfAbortedExecutions": 0
+        },
+        "id": 127,
+        "validationStatus": {
+          "id": 138,
+          "validatorTools": {
+            "MINIWDL": {
+              "id": 28,
+              "mostRecentVersionName": "2.0",
+              "numberOfRuns": 3,
+              "passingRate": 66.66666666666666,
+              "validatorVersions": [
+                {
+                  "dateExecuted": "2023-03-31T15:06:49.888745366Z",
+                  "errorMessage": null,
+                  "id": 42,
+                  "isValid": true,
+                  "name": "1.0",
+                  "numberOfRuns": 1,
+                  "passingRate": 100
+                },
+                {
+                  "dateExecuted": "2023-04-30T15:06:49.888745366Z",
+                  "errorMessage": null,
+                  "id": 43,
+                  "isValid": false,
+                  "name": "2.0",
+                  "numberOfRuns": 1,
+                  "passingRate": 0
+                },
+                {
+                  "dateExecuted": "2023-03-31T15:06:49.888745366Z",
+                  "errorMessage": null,
+                  "id": 44,
+                  "isValid": true,
+                  "name": "v1.1",
+                  "numberOfRuns": 1,
+                  "passingRate": 100
+                }
+              ]
+            },
+            "WOMTOOL": {
+              "id": 29,
+              "mostRecentVersionName": "84",
+              "numberOfRuns": 2,
+              "passingRate": 0,
+              "validatorVersions": [
+                {
+                  "dateExecuted": "2023-04-30T16:06:49.888745366Z",
+                  "errorMessage": "This is a very very very very very very very very very very very very long error message",
+                  "id": 45,
+                  "isValid": false,
+                  "name": "84",
+                  "numberOfRuns": 2,
+                  "passingRate": 0
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "name": "master",
+    "orcidAuthors": null,
+    "output_file_formats": [],
+    "readMePath": null,
+    "reference": "master",
+    "referenceType": "UNSET",
+    "synced": false,
+    "userFiles": [],
+    "valid": true,
+    "validations": null,
+    "verified": false,
+    "verifiedPlatforms": [],
+    "verifiedSource": null,
+    "verifiedSources": [],
+    "versionEditor": null,
+    "versionMetadata": {
+      "descriptorTypeVersions": [],
+      "dois": {
+        "USER": {
+          "id": 1234,
+          "type": "VERSION",
+          "name": "10.5072/zenodo.841014",
+          "initiator": "USER"
+        }
+      },
+      "engineVersions": [],
+      "id": 13,
+      "parsedInformationSet": [],
+      "publicAccessibleTestParameterFile": null,
+      "userIdToOrcidPutCode": {}
+    },
+    "workflow_path": "/1st-workflow.cwl",
+    "workingDirectory": ""
+  },
+  {
+    "aiTopicProcessed": false,
+    "aliases": null,
+    "author": null,
+    "authors": [],
+    "commitID": null,
+    "dbUpdateDate": 1480345317003,
+    "descriptionSource": null,
+    "dirtyBit": false,
+    "doiStatus": "NOT_REQUESTED",
+    "doiURL": null,
+    "dois": {},
+    "email": null,
+    "frozen": false,
+    "hidden": true,
+    "id": 14,
+    "images": null,
+    "input_file_formats": [],
+    "kernelImagePath": null,
+    "last_modified": 1480345317003,
+    "legacyVersion": true,
+    "metricsByPlatform": null,
+    "name": "test",
+    "orcidAuthors": null,
+    "output_file_formats": [],
+    "readMePath": null,
+    "reference": "test",
+    "referenceType": "UNSET",
+    "synced": true,
+    "userFiles": [],
+    "valid": true,
+    "validations": null,
+    "verified": false,
+    "verifiedPlatforms": [],
+    "verifiedSource": null,
+    "verifiedSources": [],
+    "versionEditor": null,
+    "versionMetadata": {
+      "descriptorTypeVersions": [],
+      "dois": {},
+      "engineVersions": [],
+      "id": 14,
+      "parsedInformationSet": [],
+      "publicAccessibleTestParameterFile": null,
+      "userIdToOrcidPutCode": {}
+    },
+    "workflow_path": "/1st-workflow.cwl",
+    "workingDirectory": ""
+  }
+]
