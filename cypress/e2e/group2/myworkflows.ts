@@ -456,7 +456,10 @@ describe('Dockstore my workflows part 2', () => {
       cy.get('[data-cy=dockstore-export-orcid-button]').click();
       cy.get('[data-cy=export-button').should('be.enabled');
       cy.get('[data-cy=export-button').click();
-      gotoVersionsAndClickActions();
+
+      goToTab('Versions');
+      cy.wait(1000);
+      cy.get('td').contains('Actions').click();
       cy.get('[data-cy=dockstore-export-orcid-button]').should('not.exist'); // Should not be able to export to ORCID again
     });
   });
