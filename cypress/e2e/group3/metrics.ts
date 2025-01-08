@@ -22,6 +22,13 @@ describe('Dockstore Metrics', () => {
       }).as('getMetrics');
     });
     cy.visit('/workflows/github.com/A/l:master');
+    cy.fixture('versionWithMetrics.json').then((json) => {
+      cy.intercept('GET', '/api/workflows/published/11/workflowVersions?limit=10&offset=0&sortOrder=desc&include=metrics', {
+        body: json,
+        statusCode: 200,
+      }).as('getVersionWithMetrics');
+    });
+    cy.wait('@getVersionWithMetrics');
     goToTab('Versions');
     cy.get('[data-cy=execution-metrics-icon]').should('be.visible');
     cy.get('[data-cy=validation-metrics-icon]').should('be.visible');

@@ -429,7 +429,7 @@ describe('Dockstore my workflows part 2', () => {
       gotoVersionsAndClickActions();
       // Request DOI
       cy.fixture('versionWithDoi.json').then((json) => {
-        cy.intercept('GET', '/api/workflows/11/workflowVersions?limit=10&offset=0&sortCol=lastModified&sortOrder=desc&include=metrics', {
+        cy.intercept('GET', '/api/workflows/11/workflowVersions?limit=10&offset=0&sortOrder=desc&include=metrics', {
           body: json,
           statusCode: 200,
         }).as('getVersionWithDoi');
@@ -448,7 +448,7 @@ describe('Dockstore my workflows part 2', () => {
 
       // Export to ORCID
       cy.fixture('versionAfterOrcidExport.json').then((json) => {
-        cy.intercept('GET', '/api/workflows/11/workflowVersions?limit=10&offset=0&sortCol=lastModified&sortOrder=desc&include=metrics', {
+        cy.intercept('GET', '/api/workflows/11/workflowVersions?limit=10&offset=0&sortOrder=desc&include=metrics', {
           body: json,
           statusCode: 200,
         }).as('getVersionAfterOrcidExport');
