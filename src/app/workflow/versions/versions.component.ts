@@ -103,6 +103,7 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
   public pageSize$: Observable<number>;
   public pageIndex$: Observable<number>;
   public versionsLength$: Observable<number>;
+  protected readonly PartnerEnum = PartnerEnum;
   private sortCol: string;
 
   setNoOrderCols(): Array<number> {
@@ -246,21 +247,5 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
 
   trackBy(index: number, item: WorkflowVersion) {
     return item.id;
-  }
-
-  showExecutionMetricsIcon(version: WorkflowVersion) {
-    if (version.metricsByPlatform !== null) {
-      const metrics = version.metricsByPlatform[PartnerEnum.ALL];
-      return metrics?.executionStatusCount != null;
-    }
-    return false;
-  }
-
-  showValidationMetricsIcon(version: WorkflowVersion) {
-    if (version.metricsByPlatform !== null) {
-      const metrics = version.metricsByPlatform[PartnerEnum.ALL];
-      return metrics?.validationStatus != null;
-    }
-    return false;
   }
 }
