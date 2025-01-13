@@ -1,0 +1,94 @@
+[
+  {
+    "aliases": null,
+    "author": null,
+    "authors": [],
+    "commitID": null,
+    "dbUpdateDate": 1622246514895,
+    "description": null,
+    "descriptionSource": null,
+    "dirtyBit": false,
+    "doiStatus": "CREATED",
+    "doiURL": "10.5072/zenodo.841014",
+    "dois": {
+      "USER": {
+        "type": "VERSION",
+        "name": "10.5072/zenodo.841014",
+        "initiator": "USER"
+      }
+    },
+    "email": null,
+    "frozen": true,
+    "hidden": false,
+    "id": 13,
+    "images": null,
+    "input_file_formats": [],
+    "last_modified": 1480374117003,
+    "legacyVersion": true,
+    "name": "master",
+    "orcidAuthors": [],
+    "output_file_formats": [],
+    "reference": "master",
+    "referenceType": "UNSET",
+    "subClass": null,
+    "synced": false,
+    "valid": true,
+    "validations": null,
+    "verified": false,
+    "verifiedSource": null,
+    "verifiedSources": [],
+    "versionEditor": null,
+    "versionMetadata": {
+      "id": 13,
+      "parsedInformationSet": null,
+      "userIdToOrcidPutCode": {
+        "1": {
+          "orcidPutCode":"1234567"
+        }
+      }
+    },
+    "workflow_path": "/1st-workflow.cwl",
+    "workingDirectory": ""
+  },
+  {
+    "aliases": null,
+    "author": null,
+    "authors": [],
+    "commitID": null,
+    "dbUpdateDate": 1480374117003,
+    "description": null,
+    "descriptionSource": null,
+    "dirtyBit": false,
+    "doiStatus": "NOT_REQUESTED",
+    "doiURL": null,
+    "dois": {},
+    "email": null,
+    "frozen": false,
+    "hidden": true,
+    "id": 14,
+    "images": null,
+    "input_file_formats": [],
+    "last_modified": 1480374117003,
+    "legacyVersion": true,
+    "name": "test",
+    "orcidAuthors": [],
+    "output_file_formats": [],
+    "reference": "test",
+    "referenceType": "UNSET",
+    "subClass": null,
+    "synced": false,
+    "valid": true,
+    "validations": null,
+    "verified": false,
+    "verifiedSource": null,
+    "verifiedSources": [],
+    "versionEditor": null,
+    "versionMetadata": {
+      "id": 14,
+      "parsedInformationSet": null,
+      "userIdToOrcidPutCode": {}
+    },
+    "workflow_path": "/1st-workflow.cwl",
+    "workingDirectory": ""
+  }
+]
