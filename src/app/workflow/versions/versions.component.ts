@@ -22,7 +22,7 @@ import { AlertService } from '../../shared/alert/state/alert.service';
 import { DateService } from '../../shared/date.service';
 import { Dockstore } from '../../shared/dockstore.model';
 import { DockstoreService } from '../../shared/dockstore.service';
-import { Doi, EntryType, VersionVerifiedPlatform, WorkflowsService } from '../../shared/openapi';
+import { CloudInstance, Doi, EntryType, VersionVerifiedPlatform, WorkflowsService } from '../../shared/openapi';
 import { ExtendedWorkflow } from '../../shared/models/ExtendedWorkflow';
 import { SessionQuery } from '../../shared/session/session.query';
 import { ExtendedWorkflowQuery } from '../../shared/state/extended-workflow.query';
@@ -45,6 +45,7 @@ import { PaginatorService } from '../../shared/state/paginator.service';
 import { merge, Observable } from 'rxjs';
 import { MatLegacyPaginator as MatPaginator, MatLegacyPaginatorModule } from '@angular/material/legacy-paginator';
 import { VersionsDataSource } from './versions-datasource';
+import PartnerEnum = CloudInstance.PartnerEnum;
 
 @Component({
   selector: 'app-versions-workflow',
@@ -82,6 +83,7 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
   @Input() workflowId: number;
   @Input() verifiedVersionPlatforms: Array<VersionVerifiedPlatform>;
   @Input() publicPage: boolean;
+
   _selectedVersion: WorkflowVersion;
   Dockstore = Dockstore;
   @Input() set selectedVersion(value: WorkflowVersion) {
@@ -101,6 +103,7 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
   public pageSize$: Observable<number>;
   public pageIndex$: Observable<number>;
   public versionsLength$: Observable<number>;
+  protected readonly PartnerEnum = PartnerEnum;
   private sortCol: string;
 
   setNoOrderCols(): Array<number> {
