@@ -14,7 +14,7 @@
   ~    limitations under the License.
   -->
 <div *ngIf="getTabIndex() === 0">
-  <div class="mat-tab-content">
+  <div>
     <div *ngIf="workflowTagCloudData">
       <div fxLayout="row wrap" fxLayoutAlign="space-between center">
         <span fxFlex="65%">
@@ -43,13 +43,13 @@
         </div>
       </div>
     </div>
-    <mat-divider></mat-divider>
-    <app-search-workflow-table></app-search-workflow-table>
+    <mat-divider class="my-2"></mat-divider>
+    <app-search-workflow-table [entryType]="EntryType.WORKFLOW"></app-search-workflow-table>
   </div>
 </div>
 
 <div *ngIf="getTabIndex() === 1">
-  <div class="mat-tab-content">
+  <div>
     <div *ngIf="toolTagCloudData">
       <div fxLayout="row wrap" fxLayoutAlign="space-between center">
         <span fxFlex="65%">
@@ -78,13 +78,13 @@
         </div>
       </div>
     </div>
-    <mat-divider></mat-divider>
-    <app-search-tool-table></app-search-tool-table>
+    <mat-divider class="my-2"></mat-divider>
+    <app-search-workflow-table [entryType]="EntryType.TOOL"></app-search-workflow-table>
   </div>
 </div>
 
 <div *ngIf="getTabIndex() === 2">
-  <div class="mat-tab-content">
+  <div>
     <div *ngIf="notebookTagCloudData">
       <div fxLayout="row wrap" fxLayoutAlign="space-between center">
         <span fxFlex="65%">
@@ -113,6 +113,7 @@
         </div>
       </div>
     </div>
-    <app-search-notebook-table></app-search-notebook-table>
+    <mat-divider class="my-2"></mat-divider>
+    <app-search-workflow-table [entryType]="EntryType.NOTEBOOK"></app-search-workflow-table>
   </div>
 </div>

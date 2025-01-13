@@ -33,8 +33,14 @@ import { RouterLink } from '@angular/router';
 import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
 import { MatSortModule } from '@angular/material/sort';
 import { MatLegacyProgressBarModule } from '@angular/material/legacy-progress-bar';
-import { NgIf, NgFor, KeyValuePipe } from '@angular/common';
+import { NgIf, NgFor, KeyValuePipe, DatePipe } from '@angular/common';
 import TopicSelectionEnum = Workflow.TopicSelectionEnum;
+import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { FlexLayoutModule } from '@ngbracket/ngx-layout';
+import { DoiBadgeComponent } from 'app/shared/entry/doi/doi-badge/doi-badge.component';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { MatLegacySelectModule } from '@angular/material/legacy-select';
 
 /**
  * this component refers to search page not notebook listing search
@@ -62,11 +68,18 @@ import TopicSelectionEnum = Workflow.TopicSelectionEnum;
     DescriptorLanguagePipe,
     SearchAuthorsHtmlPipe,
     JoinWithEllipsesPipe,
+    MatLegacyCardModule,
+    FlexLayoutModule,
+    DatePipe,
+    DoiBadgeComponent,
+    MatLegacyFormFieldModule,
+    MatLegacyOptionModule,
+    MatLegacySelectModule,
   ],
 })
 export class SearchNotebookTableComponent extends SearchEntryTable implements OnInit {
-  public readonly displayedColumns = ['name', 'all_authors', 'descriptorType', 'descriptorTypeSubclass', 'starredUsers'];
-  readonly entryType = 'notebook';
+  public readonly displayedColumns = ['name'];
+  //readonly entryType = 'notebook';
   public dataSource: MatTableDataSource<SearchResult<Notebook>>;
   constructor(dateService: DateService, searchQuery: SearchQuery, searchService: SearchService) {
     super(dateService, searchQuery, searchService);

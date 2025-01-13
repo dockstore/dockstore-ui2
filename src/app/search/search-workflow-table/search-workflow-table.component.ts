@@ -15,7 +15,6 @@
  */
 import { Component, OnInit } from '@angular/core';
 import { MatLegacyTableDataSource as MatTableDataSource, MatLegacyTableModule } from '@angular/material/legacy-table';
-import { Observable } from 'rxjs';
 import { DateService } from '../../shared/date.service';
 import { Workflow } from '../../shared/openapi';
 import { SearchEntryTable } from '../search-entry-table';
@@ -33,8 +32,17 @@ import { RouterLink } from '@angular/router';
 import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
 import { MatSortModule } from '@angular/material/sort';
 import { MatLegacyProgressBarModule } from '@angular/material/legacy-progress-bar';
-import { NgIf, NgFor, KeyValuePipe } from '@angular/common';
+import { NgIf, NgFor, KeyValuePipe, DatePipe } from '@angular/common';
 import TopicSelectionEnum = Workflow.TopicSelectionEnum;
+import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { FlexLayoutModule } from '@ngbracket/ngx-layout';
+import { DoiBadgeComponent } from 'app/shared/entry/doi/doi-badge/doi-badge.component';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { EntryToDisplayNamePipe } from 'app/shared/entry-to-display-name.pipe';
+import { RouterLinkPipe } from 'app/entry/router-link.pipe';
+import { MatDividerModule } from '@angular/material/divider';
 
 /**
  * this component refers to search page not workflow listing search
@@ -62,17 +70,23 @@ import TopicSelectionEnum = Workflow.TopicSelectionEnum;
     DescriptorLanguagePipe,
     SearchAuthorsHtmlPipe,
     JoinWithEllipsesPipe,
+    MatLegacyCardModule,
+    FlexLayoutModule,
+    DatePipe,
+    DoiBadgeComponent,
+    MatLegacyFormFieldModule,
+    MatLegacyOptionModule,
+    MatLegacySelectModule,
+    EntryToDisplayNamePipe,
+    RouterLinkPipe,
+    MatDividerModule,
   ],
 })
 export class SearchWorkflowTableComponent extends SearchEntryTable implements OnInit {
-  readonly entryType = 'workflow';
   public dataSource: MatTableDataSource<SearchResult<Workflow>>;
   constructor(dateService: DateService, searchQuery: SearchQuery, searchService: SearchService) {
     super(dateService, searchQuery, searchService);
   }
 
-  privateNgOnInit(): Observable<Array<SearchResult<Workflow>>> {
-    return this.searchQuery.workflows$;
-  }
   protected readonly TopicSelectionEnum = TopicSelectionEnum;
 }

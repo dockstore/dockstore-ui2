@@ -16,7 +16,7 @@
 import { Component, OnInit } from '@angular/core';
 import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { CloudData, CloudOptions, TagCloudComponent } from 'angular-tag-cloud-module';
-import { ExtendedGA4GHService } from 'app/shared/openapi';
+import { EntryType, ExtendedGA4GHService } from 'app/shared/openapi';
 import { Observable } from 'rxjs';
 import { Base } from '../../shared/base';
 import { QueryBuilderService } from '../query-builder.service';
@@ -50,6 +50,7 @@ import { NgIf, AsyncPipe } from '@angular/common';
 export class SearchResultsComponent extends Base implements OnInit {
   faPlus = faPlus;
   faMinus = faMinus;
+  public EntryType = EntryType;
   public noToolHits$: Observable<boolean>;
   public noWorkflowHits$: Observable<boolean>;
   public noNotebookHits$: Observable<boolean>;

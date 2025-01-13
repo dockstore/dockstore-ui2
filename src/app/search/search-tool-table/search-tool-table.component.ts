@@ -55,7 +55,7 @@ import TopicSelectionEnum = DockstoreTool.TopicSelectionEnum;
   ],
 })
 export class SearchToolTableComponent extends SearchEntryTable implements OnInit {
-  readonly entryType = 'tool';
+  //readonly entryType = 'tool';
   public dataSource: MatTableDataSource<SearchResult<DockstoreTool | AppTool>>;
   constructor(dateService: DateService, searchQuery: SearchQuery, searchService: SearchService) {
     super(dateService, searchQuery, searchService);

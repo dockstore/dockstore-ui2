@@ -7,7 +7,7 @@ import { SearchState, SearchStore } from './search.store';
 import { parseTerms } from '../helpers';
 
 export interface SearchResult<T = AppTool | DockstoreTool | Workflow | Notebook> {
-  source: T;
+  source: any;
   highlight: Map<string, string[]>;
 }
 

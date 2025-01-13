@@ -13,9 +13,9 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-import { Directive, OnInit, ViewChild } from '@angular/core';
+import { Directive, Input, OnInit, ViewChild } from '@angular/core';
 import { MatLegacyPaginator as MatPaginator, LegacyPageEvent as PageEvent } from '@angular/material/legacy-paginator';
-import { MatSort } from '@angular/material/sort';
+import { MatSort, Sort } from '@angular/material/sort';
 import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
 import { combineLatest, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -23,16 +23,25 @@ import { Base } from '../shared/base';
 import { DateService } from '../shared/date.service';
 import { SearchQuery, SearchResult } from './state/search.query';
 import { SearchService } from './state/search.service';
+import { EntryType, EntryTypeMetadata } from 'app/shared/openapi';
+
+export interface SortOption {
+  label: string;
+  sort: Sort;
+}
 
 @Directive()
 // eslint-disable-next-line @angular-eslint/directive-class-suffix
 export abstract class SearchEntryTable extends Base implements OnInit {
+  public EntryType = EntryType;
+  @Input() entryType: EntryType;
   @ViewChild(MatPaginator, { static: true }) protected paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) protected sort: MatSort;
   protected verifiedLink: string;
+  protected entryTypeMetadata: EntryTypeMetadata;
   protected ngUnsubscribe: Subject<{}> = new Subject();
 
-  public readonly displayedColumns = ['name', 'all_authors', 'descriptorType', 'starredUsers'];
+  public readonly displayedColumns = ['name'];
   public readonly columnsToDisplayWithExpand = [...this.displayedColumns, 'expand'];
   public readonly searchEverythingFriendlyNames = new Map([
     ['full_workflow_path', 'Path'],
@@ -46,9 +55,50 @@ export abstract class SearchEntryTable extends Base implements OnInit {
     ['categories.topic', 'Category Topic'],
     ['categories.displayName', 'Category'],
   ]);
-  abstract readonly entryType: 'tool' | 'workflow' | 'notebook';
+  public defaultSortOption: SortOption = {
+    label: 'Most Stars',
+    sort: { active: 'starredUsers', direction: 'desc' },
+  };
+  public sortOptions: SortOption[] = [
+    this.defaultSortOption,
+    {
+      label: 'Least Stars',
+      sort: { active: 'starredUsers', direction: 'asc' },
+    },
+    {
+      label: 'Name, A-Z',
+      sort: { active: 'name', direction: 'asc' },
+    },
+    {
+      label: 'Name, Z-A',
+      sort: { active: 'name', direction: 'desc' },
+    },
+    {
+      label: 'Authors, A-Z',
+      sort: { active: 'all_authors', direction: 'asc' },
+    },
+    {
+      label: 'Authors, Z-A',
+      sort: { active: 'all_authors', direction: 'desc' },
+    },
+  ];
+
+  //abstract readonly entryType: EntryType;
   abstract dataSource: MatTableDataSource<SearchResult>;
-  abstract privateNgOnInit(): Observable<SearchResult[]>;
+  //abstract privateNgOnInit(): Observable<SearchResult[]>;
+
+  privateNgOnInit(): Observable<Array<SearchResult>> {
+    switch (this.entryType) {
+      case EntryType.WORKFLOW:
+        return this.searchQuery.workflows$;
+      case EntryType.TOOL:
+        return this.searchQuery.tools$;
+      case EntryType.NOTEBOOK:
+        return this.searchQuery.notebooks$;
+      default:
+        return null;
+    }
+  }
 
   constructor(protected dateService: DateService, protected searchQuery: SearchQuery, protected searchService: SearchService) {
     super();
@@ -58,6 +108,7 @@ export abstract class SearchEntryTable extends Base implements OnInit {
   ngOnInit(): void {
     this.dataSource = new MatTableDataSource();
     this.dataSource.sort = this.sort;
+    this.setSort(this.defaultSortOption.sort);
     this.dataSource.paginator = this.paginator;
     combineLatest([this.searchQuery.pageSize$, this.searchQuery.pageIndex$, this.privateNgOnInit()])
       .pipe(takeUntil(this.ngUnsubscribe))
@@ -81,5 +132,11 @@ export abstract class SearchEntryTable extends Base implements OnInit {
 
   updatePageSizeAndIndex($event: PageEvent) {
     this.searchService.setPageSizeAndIndex($event.pageSize, $event.pageIndex);
+  }
+
+  setSort(sortValue: Sort) {
+    this.sort.active = sortValue.active;
+    this.sort.direction = sortValue.direction;
+    this.sort.sortChange.emit(sortValue);
   }
 }

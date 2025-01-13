@@ -48,3 +48,7 @@ th {
   white-space: nowrap;
   vertical-align: top;
 }
+
+.mat-cell {
+  overflow: visible; // Needed so the mat-card's box-shadow is displayed
+}
