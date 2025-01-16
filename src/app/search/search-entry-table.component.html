@@ -85,17 +85,23 @@
           </div>
 
           <div fxLayout="row" fxLayoutAlign="space-between">
-            <div fxLayout="row" fxLayoutGap="1rem">
-              <span class="size-small"
+            <div>
+              <span class="size-small mr-2"
                 >Last updated {{ entry?.source.last_modified_date ? (entry?.source.last_modified_date | date) : 'n/a' }}</span
               >
-
-              <span class="nonclick-badge" data-cy="descriptorType">
-                <span *ngIf="entry?.source.entryTypeMetadata.type !== EntryType.TOOL">{{
+              <mat-chip-list *ngIf="entry?.source.categories.length" class="bubble-list">
+                <app-category-button
+                  *ngFor="let category of entry?.source.categories"
+                  [category]="category"
+                  [entryType]="entryType | lowercase"
+                ></app-category-button>
+              </mat-chip-list>
+              <span data-cy="descriptorType">
+                <span *ngIf="entry?.source.entryTypeMetadata.type !== EntryType.TOOL" class="nonclick-badge mr-2">{{
                   entry?.source.descriptorType | descriptorLanguage
                 }}</span>
-                <span *ngIf="entry?.source.entryTypeMetadata.type === EntryType.TOOL" fxLayout="row" fxLayoutGap="1rem">
-                  <span *ngFor="let language of entry?.source.descriptorType">
+                <span *ngIf="entry?.source.entryTypeMetadata.type === EntryType.TOOL">
+                  <span *ngFor="let language of entry?.source.descriptorType" class="nonclick-badge mr-2">
                     {{ language ? language : '' }}
                   </span>
                 </span>

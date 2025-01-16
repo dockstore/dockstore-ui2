@@ -81,6 +81,7 @@ export class QueryBuilderService {
     return body.rawOption('_source', [
       'all_authors',
       'approvedAITopic',
+      'categories',
       'descriptorType',
       'descriptorTypeSubclass',
       'entryTypeMetadata',

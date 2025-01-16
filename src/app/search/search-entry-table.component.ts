@@ -51,6 +51,8 @@ import { CloudData, CloudOptions, TagCloudComponent } from 'angular-tag-cloud-mo
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 import { QueryBuilderService } from './query-builder.service';
 import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { CategoryButtonComponent } from 'app/categories/button/category-button.component';
+import { MatLegacyChipsModule } from '@angular/material/legacy-chips';
 
 export interface SortOption {
   label: string;
@@ -97,6 +99,8 @@ export interface SortOption {
     AsyncPipe,
     MatLegacyButtonModule,
     LowerCasePipe,
+    CategoryButtonComponent,
+    MatLegacyChipsModule,
   ],
 })
 export class SearchEntryTableComponent extends Base implements OnInit {
@@ -241,7 +245,6 @@ export class SearchEntryTableComponent extends Base implements OnInit {
         let weight = 10;
         let count = 0;
         if (hits && hits.aggregations && hits.aggregations.tagcloud) {
-          console.log('createToolTagCloud');
           hits.aggregations.tagcloud.buckets.forEach((tag) => {
             const theTag = {
               text: tag.key,
