@@ -141,7 +141,6 @@ describe('Dockstore notebooks', () => {
     });
 
     cy.visit('/my-notebooks');
-    cy.get('[data-cy=myWorkflowsMoreActionButtons]').should('be.visible').click();
     cy.fixture('myNotebooks.json').then((json) => {
       cy.intercept('GET', '/api/users/1/notebooks', {
         body: json,

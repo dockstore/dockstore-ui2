@@ -56,8 +56,6 @@ describe('Dockstore my tools', () => {
         statusCode: 200,
       });
     });
-
-    cy.get('[data-cy=myToolsMoreActionButtons]').should('be.visible').click();
     cy.fixture('myTools.json').then((json) => {
       cy.intercept('GET', '/api/users/1/containers', {
         body: json,
