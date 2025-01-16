@@ -56,11 +56,9 @@
                 >{{ entry?.source | entryToDisplayName: true }}</a
               >
             </div>
-            <div class="star-color weight-bold" data-cy="starredUsers">
-              <mat-icon class="mat-icon-sm" *ngIf="entry?.source.starredUsers?.length > 0">star_rate</mat-icon>
-              <span>{{
-                !entry?.source.starredUsers || entry?.source.starredUsers.length === 0 ? '' : entry?.source.starredUsers.length
-              }}</span>
+            <div *ngIf="entry?.source.starredUsers?.length" class="star-color weight-bold" data-cy="starredUsers">
+              <mat-icon class="mat-icon-sm">star_rate</mat-icon>
+              <span>{{ entry?.source.starredUsers.length }}</span>
             </div>
           </div>
           <div>
