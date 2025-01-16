@@ -56,7 +56,7 @@
                 >{{ entry?.source | entryToDisplayName: true }}</a
               >
             </div>
-            <div class="star-color weight-bold">
+            <div class="star-color weight-bold" data-cy="starredUsers">
               <mat-icon class="mat-icon-sm" *ngIf="entry?.source.starredUsers?.length > 0">star_rate</mat-icon>
               <span>{{
                 !entry?.source.starredUsers || entry?.source.starredUsers.length === 0 ? '' : entry?.source.starredUsers.length
@@ -87,18 +87,21 @@
           </div>
 
           <div fxLayout="row" fxLayoutAlign="space-between">
-            <div>
-              <span class="size-small mr-2"
+            <div fxLayout="row" fxLayoutGap="1rem">
+              <span class="size-small"
                 >Last updated {{ entry?.source.last_modified_date ? (entry?.source.last_modified_date | date) : 'n/a' }}</span
               >
               <span *ngIf="entry?.source.entryTypeMetadata.type !== EntryType.TOOL" class="nonclick-badge">{{
                 entry?.source.descriptorType | descriptorLanguage
               }}</span>
-              <span *ngIf="entry?.source.entryTypeMetadata.type === EntryType.TOOL">
-                <span *ngFor="let language of entry?.source.descriptorType" class="nonclick-badge m-1">
+              <span *ngIf="entry?.source.entryTypeMetadata.type === EntryType.TOOL" fxLayout="row" fxLayoutGap="1rem">
+                <span *ngFor="let language of entry?.source.descriptorType" class="nonclick-badge">
                   {{ language ? language : '' }}
                 </span>
               </span>
+              <span *ngIf="entry?.source.entryTypeMetadata.type === EntryType.NOTEBOOK" class="nonclick-badge">{{
+                entry?.source.descriptorTypeSubclass
+              }}</span>
             </div>
             <app-doi-badge
               *ngIf="entry?.source?.selected_concept_doi"
