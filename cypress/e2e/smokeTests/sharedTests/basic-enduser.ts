@@ -11,12 +11,11 @@ describe('run stochastic smoke test', () => {
 function testEntry(tab: string) {
   function goToRandomEntry() {
     cy.visit('/search');
-    cy.get('[data-cy=workflowColumn] a');
+    cy.get('[data-cy=entryColumn] a');
     goToTab(tab);
-    const linkName = getLinkName(tab);
     // select a random entry on the first page and navigate to it
     let chosen_index = 0;
-    cy.get('[data-cy=' + linkName + ']')
+    cy.get('[data-cy=entryColumn]')
       .then(($list) => {
         chosen_index = Math.floor(Math.random() * $list.length);
       })
@@ -55,19 +54,6 @@ function testEntry(tab: string) {
   });
 }
 
-function getLinkName(tab: string): string {
-  switch (tab) {
-    case 'Tools':
-      return 'toolNames';
-    case 'Workflows':
-      return 'workflowColumn';
-    case 'Notebooks':
-      return 'notebookColumn';
-    default:
-      throw new Error('unknown tab');
-  }
-}
-
 function isStagingOrProd() {
   const baseUrl = Cypress.config('baseUrl');
   return baseUrl === 'https://staging.dockstore.org' || baseUrl === 'https://dockstore.org';
@@ -104,7 +90,7 @@ describe('Test logged out home page', () => {
 describe('Test search page functionality', () => {
   it('displays tools', () => {
     cy.visit('/search');
-    cy.get('[data-cy=workflowColumn]').should('have.length.of.at.least', 1);
+    cy.get('[data-cy=entryColumn]').should('have.length.of.at.least', 1);
   });
   it('has working tag cloud', () => {
     cy.visit('/search');
@@ -123,7 +109,7 @@ describe('Test search page functionality', () => {
     cy.visit('/search');
     cy.wait(2500); // Wait less than ideal, facets keep getting rerendered is the problem
     cy.contains('mat-checkbox', 'Nextflow').click();
-    cy.get('[data-cy=workflowColumn] a');
+    cy.get('[data-cy=entryColumn] a');
     cy.wait(2500); // Wait less than ideal, facets keep getting rerendered is the problem
     cy.contains('mat-checkbox', 'Nextflow'); // wait for the checkbox to reappear, indicating the filtering is almost complete
     cy.get('[data-cy=descriptorType]').each(($el, index, $list) => {
@@ -139,7 +125,7 @@ describe('Test search page functionality', () => {
     cy.visit('/search');
     cy.contains('mat-checkbox', /^[ ]*verified/).click();
     cy.url().should('contain', 'verified=1');
-    cy.get('[data-cy=workflowColumn] a');
+    cy.get('[data-cy=entryColumn] a');
     cy.contains('mat-checkbox', /^[ ]*verified/);
   });
 });
@@ -148,11 +134,11 @@ describe('Test workflow page functionality', () => {
   it('find a WDL workflow', () => {
     cy.visit('/search');
     cy.contains('.mat-tab-label', 'Workflows');
-    cy.get('[data-cy=workflowColumn]').should('have.length.of.at.least', 1);
+    cy.get('[data-cy=entryColumn]').should('have.length.of.at.least', 1);
 
     // click twice to sort by descriptor type descending so WDL is at the top
     cy.get('[data-cy=descriptorTypeHeader]').click().click();
-    cy.get('[data-cy=workflowColumn] a').first().click();
+    cy.get('[data-cy=entryColumn] a').first().click();
   });
 });
 
