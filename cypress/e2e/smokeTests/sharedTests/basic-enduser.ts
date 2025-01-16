@@ -136,8 +136,8 @@ describe('Test workflow page functionality', () => {
     cy.contains('.mat-tab-label', 'Workflows');
     cy.get('[data-cy=entryColumn]').should('have.length.of.at.least', 1);
 
-    // click twice to sort by descriptor type descending so WDL is at the top
-    cy.get('[data-cy=descriptorTypeHeader]').click().click();
+    // Use facet to find WDL workflow
+    cy.contains('mat-checkbox', 'WDL').click();
     cy.get('[data-cy=entryColumn] a').first().click();
   });
 });

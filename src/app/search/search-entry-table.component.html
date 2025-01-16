@@ -89,17 +89,24 @@
               <span class="size-small"
                 >Last updated {{ entry?.source.last_modified_date ? (entry?.source.last_modified_date | date) : 'n/a' }}</span
               >
-              <span *ngIf="entry?.source.entryTypeMetadata.type !== EntryType.TOOL" class="nonclick-badge">{{
-                entry?.source.descriptorType | descriptorLanguage
-              }}</span>
-              <span *ngIf="entry?.source.entryTypeMetadata.type === EntryType.TOOL" fxLayout="row" fxLayoutGap="1rem">
-                <span *ngFor="let language of entry?.source.descriptorType" class="nonclick-badge">
-                  {{ language ? language : '' }}
+
+              <span class="nonclick-badge" data-cy="descriptorType">
+                <span *ngIf="entry?.source.entryTypeMetadata.type !== EntryType.TOOL">{{
+                  entry?.source.descriptorType | descriptorLanguage
+                }}</span>
+                <span *ngIf="entry?.source.entryTypeMetadata.type === EntryType.TOOL" fxLayout="row" fxLayoutGap="1rem">
+                  <span *ngFor="let language of entry?.source.descriptorType">
+                    {{ language ? language : '' }}
+                  </span>
                 </span>
               </span>
-              <span *ngIf="entry?.source.entryTypeMetadata.type === EntryType.NOTEBOOK" class="nonclick-badge">{{
-                entry?.source.descriptorTypeSubclass
-              }}</span>
+
+              <span
+                *ngIf="entry?.source.entryTypeMetadata.type === EntryType.NOTEBOOK"
+                class="nonclick-badge"
+                data-cy="descriptorTypeSubclass"
+                >{{ entry?.source.descriptorTypeSubclass }}</span
+              >
             </div>
             <app-doi-badge
               *ngIf="entry?.source?.selected_concept_doi"
