@@ -148,6 +148,7 @@ describe('Dockstore notebooks', () => {
       }).as('getNotebooks');
     });
     cy.get('[data-cy=addToExistingWorkflows]').should('be.visible').click();
+    cy.visit('/my-notebooks/' + name);
 
     cy.wait('@getNotebooks');
     cy.contains('addedthisnotebookviasync');
