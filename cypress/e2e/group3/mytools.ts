@@ -50,7 +50,6 @@ describe('Dockstore my tools', () => {
   });
 
   it('Should have discover existing tools button', () => {
-    cy.visit('/my-tools');
     cy.fixture('myWorkflows.json').then((json) => {
       cy.intercept('PATCH', '/api/users/1/workflows', {
         body: json,
@@ -68,8 +67,8 @@ describe('Dockstore my tools', () => {
       statusCode: 200,
     }).as('getAppTools');
     cy.get('[data-cy=addToExistingTools]').should('be.visible').click();
-    cy.visit('/my-tools');
 
+    cy.visit('/my-tools');
     cy.wait('@getContainers');
     cy.wait('@getAppTools');
     cy.contains('addedthistoolviasync');
