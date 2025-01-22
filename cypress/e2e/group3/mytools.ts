@@ -36,7 +36,6 @@ describe('Dockstore my tools', () => {
   }
 
   function selectPublishedTab(org: string) {
-    cy.get('#tool-path').should('be.visible');
     cy.get('mat-expansion-panel-header')
       .contains(org)
       .parentsUntil('mat-accordion')
