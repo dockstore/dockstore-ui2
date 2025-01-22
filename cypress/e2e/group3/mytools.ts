@@ -54,7 +54,7 @@ describe('Dockstore my tools', () => {
       cy.intercept('PATCH', '/api/users/1/workflows', {
         body: json,
         statusCode: 200,
-      });
+      }).as('getWorkflows');
     });
     cy.fixture('myTools.json').then((json) => {
       cy.intercept('GET', '/api/users/1/containers', {
@@ -71,6 +71,7 @@ describe('Dockstore my tools', () => {
 
     cy.wait('@getContainers');
     cy.wait('@getAppTools');
+    cy.wait('@getWorkflows');
     cy.contains('addedthistoolviasync');
   });
 
