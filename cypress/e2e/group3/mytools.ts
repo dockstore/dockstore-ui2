@@ -71,6 +71,7 @@ describe('Dockstore my tools', () => {
     cy.visit('/my-tools');
     cy.wait('@getContainers');
     cy.wait('@getAppTools');
+    selectUnpublishedTab('A2');
     cy.contains('addedthistoolviasync');
   });
 
