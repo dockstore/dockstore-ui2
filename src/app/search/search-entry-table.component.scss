@@ -36,9 +36,22 @@
   color: $header-color;
 }
 
+.mat-icon-sm {
+  vertical-align: text-bottom;
+}
+
 ::ng-deep .sort-by {
   .mat-form-field-wrapper {
     // Removing the padding because we don't need hint
     padding-bottom: 0;
   }
+}
+
+.mat-cell {
+  overflow: visible; // Needed so the mat-card's box-shadow is displayed
+}
+
+.search-highlighting {
+  border-collapse: separate;
+  border-spacing: 1rem;
 }
