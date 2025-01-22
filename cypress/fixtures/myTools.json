@@ -18,6 +18,7 @@
     "descriptorType": ["CWL"],
     "entryType": "TOOL",
     "email": null,
+    "full_workflow_path": "github.com/A2/addedthistoolviasync",
     "gitUrl": "git@github.com:A2/addedthistoolviasync.git",
     "has_checker": false,
     "id": 18,
