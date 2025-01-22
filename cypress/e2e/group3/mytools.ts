@@ -35,16 +35,6 @@ describe('Dockstore my tools', () => {
       .click();
   }
 
-  function selectPublishedTab(org: string) {
-    cy.get('mat-expansion-panel-header')
-      .contains(org)
-      .parentsUntil('mat-accordion')
-      .should('be.visible')
-      .contains('.mat-tab-label', 'Published')
-      .should('be.visible')
-      .click();
-  }
-
   function selectTool(tool: string) {
     cy.get('#tool-path').should('be.visible');
     cy.contains('div .no-wrap', tool).should('be.visible').click();
@@ -81,7 +71,6 @@ describe('Dockstore my tools', () => {
     cy.visit('/my-tools');
     cy.wait('@getContainers');
     cy.wait('@getAppTools');
-    selectPublishedTab('A2');
     cy.contains('addedthistoolviasync');
   });
 
