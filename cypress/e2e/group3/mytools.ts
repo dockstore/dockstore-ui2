@@ -66,6 +66,7 @@ describe('Dockstore my tools', () => {
       body: {},
       statusCode: 200,
     }).as('getAppTools');
+    cy.wait(1000);
     cy.get('[data-cy=addToExistingTools]').should('be.visible').click();
 
     cy.wait('@getContainers');
