@@ -60,7 +60,6 @@ describe('Dockstore my tools', () => {
         statusCode: 200,
       });
     });
-
     cy.fixture('myTools.json').then((json) => {
       cy.intercept('GET', '/api/users/1/containers', {
         body: json,
@@ -73,7 +72,6 @@ describe('Dockstore my tools', () => {
     }).as('getAppTools');
 
     cy.get('[data-cy=addToExistingTools]').should('be.visible').click();
-
     cy.wait('@getContainers');
     cy.wait('@getAppTools');
     cy.contains('addedthistoolviasync');
