@@ -68,7 +68,6 @@ describe('Dockstore my tools', () => {
     }).as('getAppTools');
     cy.get('[data-cy=addToExistingTools]').should('be.visible').click();
 
-    cy.visit('/my-tools');
     cy.wait('@getContainers');
     cy.wait('@getAppTools');
     cy.contains('addedthistoolviasync');
