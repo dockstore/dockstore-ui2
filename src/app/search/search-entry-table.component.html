@@ -97,7 +97,7 @@
               [displayInitiator]="false"
             ></app-doi-badge>
             <span>
-              <mat-chip-list *ngIf="entry?.source.categories.length" class="bubble-list">
+              <mat-chip-list *ngIf="entry?.source.categories?.length" class="bubble-list">
                 <app-category-button
                   *ngFor="let category of entry?.source.categories"
                   [category]="category"
