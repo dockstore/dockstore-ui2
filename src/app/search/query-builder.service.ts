@@ -22,6 +22,7 @@ import { tagCloudCommonTerms } from './../shared/constants';
 import { AdvancedSearchObject } from './../shared/models/AdvancedSearchObject';
 import { SearchService } from './state/search.service';
 import { parseTerms } from './helpers';
+import { EntryType } from 'app/shared/openapi';
 
 type Index = 'workflows' | 'tools' | 'notebooks';
 
@@ -37,9 +38,9 @@ export class QueryBuilderService {
   private shard_size = 10000;
   constructor(private searchService: SearchService) {}
 
-  getTagCloudQuery(type: string): string {
+  getTagCloudQuery(type: EntryType): string {
     const tagCloudSize = 20;
-    const index = type + 's';
+    const index = type.toLowerCase() + 's';
     // Size to 0 here because https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations.html#agg-caches
     let body = bodybuilder().size(0);
     body = this.excludeContent(body);
@@ -80,16 +81,20 @@ export class QueryBuilderService {
     return body.rawOption('_source', [
       'all_authors',
       'approvedAITopic',
+      'categories',
       'descriptorType',
       'descriptorTypeSubclass',
+      'entryTypeMetadata',
       'full_workflow_path',
       'gitUrl',
+      'last_modified_date',
       'name',
       'namespace',
       'organization',
       'private_access',
       'providerUrl',
       'repository',
+      'selected_concept_doi',
       'starredUsers',
       'toolname',
       'tool_path',

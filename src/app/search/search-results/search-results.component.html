@@ -14,105 +14,25 @@
   ~    limitations under the License.
   -->
 <div *ngIf="getTabIndex() === 0">
-  <div class="mat-tab-content">
-    <div *ngIf="workflowTagCloudData">
-      <div fxLayout="row wrap" fxLayoutAlign="space-between center">
-        <span fxFlex="65%">
-          <p>A <b>Workflow</b> can use multiple containers and executes multiple actions or steps, outlined by one or more descriptors</p>
-        </span>
-        <div class="tag-cloud-dropdown">
-          <button fxFlex="21rem" type="button" class="btn btn-info tagCloud-btn workflow" (click)="clickTagCloudBtn('workflow')">
-            <div fxLayout="row" fxLayoutAlign="space-between center">
-              <div>
-                <img class="tag-cloud" src="../assets/images/dockstore/tag-cloud.svg" alt="Popular keywords icon" />
-                <span class="m-2"><b>Popular Keywords</b></span>
-              </div>
-              <fa-icon [icon]="(showWorkflowTagCloud$ | async) ? faMinus : faPlus" aria-hidden="true"></fa-icon>
-            </div>
-          </button>
-          <div class="tagCloud workflow" *ngIf="showWorkflowTagCloud$ | async" data-cy="tagCloud">
-            <angular-tag-cloud
-              [data]="workflowTagCloudData"
-              [width]="options.width"
-              [height]="options.height"
-              [overflow]="options.overflow"
-              (clicked)="tagClicked($event)"
-            >
-            </angular-tag-cloud>
-          </div>
-        </div>
-      </div>
-    </div>
-    <mat-divider></mat-divider>
-    <app-search-workflow-table></app-search-workflow-table>
-  </div>
+  <span>
+    <p>A <b>Workflow</b> can use multiple containers and executes multiple actions or steps, outlined by one or more descriptors.</p>
+  </span>
+  <mat-divider class="my-2"></mat-divider>
+  <app-search-entry-table [entryType]="EntryType.WORKFLOW"></app-search-entry-table>
 </div>
 
 <div *ngIf="getTabIndex() === 1">
-  <div class="mat-tab-content">
-    <div *ngIf="toolTagCloudData">
-      <div fxLayout="row wrap" fxLayoutAlign="space-between center">
-        <span fxFlex="65%">
-          <p>A <b>Tool</b> uses a single container and performs a single action or step that is outlined by a descriptor</p>
-        </span>
-        <div class="tag-cloud-dropdown">
-          <button fxFlex="21rem" type="button" class="btn btn-info tagCloud-btn tool" (click)="clickTagCloudBtn('tool')">
-            <div fxLayout="row" fxLayoutAlign="space-between center">
-              <div>
-                <img class="tag-cloud" src="../assets/images/dockstore/tag-cloud.svg" alt="Popular keywords icon" />
-                <span class="m-2"><b>Popular Keywords</b></span>
-              </div>
-              <fa-icon [icon]="(showToolTagCloud$ | async) ? faMinus : faPlus" aria-hidden="true"></fa-icon>
-            </div>
-          </button>
-          <div class="tagCloud tool" *ngIf="showToolTagCloud$ | async">
-            <angular-tag-cloud
-              [data]="toolTagCloudData"
-              [width]="options.width"
-              [height]="options.height"
-              [overflow]="options.overflow"
-              (clicked)="tagClicked($event)"
-            >
-            </angular-tag-cloud>
-          </div>
-        </div>
-      </div>
-    </div>
-    <mat-divider></mat-divider>
-    <app-search-tool-table></app-search-tool-table>
-  </div>
+  <span>
+    <p>A <b>Tool</b> uses a single container and performs a single action or step that is outlined by a descriptor.</p>
+  </span>
+  <mat-divider class="my-2"></mat-divider>
+  <app-search-entry-table [entryType]="EntryType.TOOL"></app-search-entry-table>
 </div>
 
 <div *ngIf="getTabIndex() === 2">
-  <div class="mat-tab-content">
-    <div *ngIf="notebookTagCloudData">
-      <div fxLayout="row wrap" fxLayoutAlign="space-between center">
-        <span fxFlex="65%">
-          <p>A <b>Notebook</b> is a document containing code and text that can be interactively edited and run</p>
-        </span>
-        <div class="tag-cloud-dropdown">
-          <button fxFlex="21rem" type="button" class="btn btn-info tagCloud-btn notebook" (click)="clickTagCloudBtn('notebook')">
-            <div fxLayout="row" fxLayoutAlign="space-between center">
-              <div>
-                <img class="tag-cloud" src="../assets/images/dockstore/tag-cloud.svg" alt="Popular keywords icon" />
-                <span class="m-2"><b>Popular Keywords</b></span>
-              </div>
-              <fa-icon [icon]="(showNotebookTagCloud$ | async) ? faMinus : faPlus" aria-hidden="true"></fa-icon>
-            </div>
-          </button>
-          <div class="tagCloud notebook" *ngIf="showNotebookTagCloud$ | async">
-            <angular-tag-cloud
-              [data]="notebookTagCloudData"
-              [width]="options.width"
-              [height]="options.height"
-              [overflow]="options.overflow"
-              (clicked)="tagClicked($event)"
-            >
-            </angular-tag-cloud>
-          </div>
-        </div>
-      </div>
-    </div>
-    <app-search-notebook-table></app-search-notebook-table>
-  </div>
+  <span>
+    <p>A <b>Notebook</b> is a document containing code and text that can be interactively edited and run.</p>
+  </span>
+  <mat-divider class="my-2"></mat-divider>
+  <app-search-entry-table [entryType]="EntryType.NOTEBOOK"></app-search-entry-table>
 </div>

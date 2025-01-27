@@ -25,15 +25,15 @@ describe('Admin UI', () => {
       cy.url().should('not.include', 'search=dhockstore');
 
       cy.contains('Items per page');
-      cy.get('[data-cy=search-workflow-table-paginator]').within(() => {
+      cy.get('[data-cy=search-entry-table-paginator]').within(() => {
         cy.get('.mat-paginator-range-label').contains('10 of');
       });
-      cy.get('[data-cy=search-workflow-table-paginator]').contains(10).should('be.visible').click();
+      cy.get('[data-cy=search-entry-table-paginator]').contains(10).should('be.visible').click();
       cy.get('mat-option').contains(20).click();
-      cy.get('[data-cy=search-workflow-table-paginator]').contains(20);
+      cy.get('[data-cy=search-entry-table-paginator]').contains(20);
       cy.get('a').contains('Organizations').click();
       cy.go('back');
-      cy.get('[data-cy=search-workflow-table-paginator]').contains(20);
+      cy.get('[data-cy=search-entry-table-paginator]').contains(20);
 
       cy.get('[data-cy=basic-search]').type('dockstore_{enter}');
       cy.contains('Open Advanced Search').click();
