@@ -13,10 +13,9 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { EntryType } from 'app/shared/openapi';
 import { Observable } from 'rxjs';
-import { Base } from '../../shared/base';
 import { SearchQuery } from '../state/search.query';
 import { SearchService } from '../state/search.service';
 import { MatDividerModule } from '@angular/material/divider';
@@ -32,20 +31,17 @@ import { SearchEntryTableComponent } from '../search-entry-table.component';
   standalone: true,
   imports: [NgIf, FlexModule, FontAwesomeModule, MatDividerModule, SearchEntryTableComponent, AsyncPipe],
 })
-export class SearchResultsComponent extends Base implements OnInit {
+export class SearchResultsComponent {
   public EntryType = EntryType;
   public noToolHits$: Observable<boolean>;
   public noWorkflowHits$: Observable<boolean>;
   public noNotebookHits$: Observable<boolean>;
 
-  constructor(private searchService: SearchService, private searchQuery: SearchQuery) {
-    super();
+  constructor(private readonly searchService: SearchService, private readonly searchQuery: SearchQuery) {
     this.noWorkflowHits$ = this.searchQuery.noWorkflowHits$;
     this.noToolHits$ = this.searchQuery.noToolHits$;
     this.noNotebookHits$ = this.searchQuery.noNotebookHits$;
   }
-
-  ngOnInit() {}
 
   // Tells the search service to tell the search filters to save its data
   saveSearchFilter() {

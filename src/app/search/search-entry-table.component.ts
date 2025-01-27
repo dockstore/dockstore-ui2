@@ -113,7 +113,7 @@ export class SearchEntryTableComponent extends Base implements OnInit {
   @ViewChild(MatSort, { static: true }) protected sort: MatSort;
   protected ngUnsubscribe: Subject<{}> = new Subject();
 
-  public readonly displayedColumns = ['name'];
+  public readonly displayedColumns = ['result'];
   public readonly columnsToDisplayWithExpand = [...this.displayedColumns, 'expand'];
   public readonly searchEverythingFriendlyNames = new Map([
     ['full_workflow_path', 'Path'],
@@ -178,10 +178,10 @@ export class SearchEntryTableComponent extends Base implements OnInit {
   }
 
   constructor(
-    protected searchQuery: SearchQuery,
-    protected searchService: SearchService,
-    private queryBuilderService: QueryBuilderService,
-    private extendedGA4GHService: ExtendedGA4GHService
+    private readonly searchQuery: SearchQuery,
+    private readonly searchService: SearchService,
+    private readonly queryBuilderService: QueryBuilderService,
+    private readonly extendedGA4GHService: ExtendedGA4GHService
   ) {
     super();
   }

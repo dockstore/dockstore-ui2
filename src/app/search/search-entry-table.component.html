@@ -38,7 +38,7 @@
     </div>
   </div>
   <mat-table [hidden]="!dataSource" [dataSource]="dataSource" matSort data-cy="search-entry-results-table" multiTemplateDataRows>
-    <ng-container matColumnDef="name">
+    <ng-container matColumnDef="result">
       <mat-header-cell *matHeaderCellDef></mat-header-cell>
       <mat-cell data-cy="entryColumn" *matCellDef="let entry">
         <mat-card fxLayout="column" fxLayoutGap="0.5rem" class="w-100">
@@ -80,7 +80,6 @@
           </div>
 
           <div fxLayout="row wrap" fxLayoutGap="1rem">
-            <!-- Fix this in the webservice so that it's not possible to have an array with a null value -->
             <span *ngIf="entry?.source?.all_authors">
               <mat-icon color="primary" class="mat-icon-sm mr-1">person</mat-icon
               ><span class="size-small" [innerHTML]="entry?.source?.all_authors | getSearchAuthorsHtml"></span>
