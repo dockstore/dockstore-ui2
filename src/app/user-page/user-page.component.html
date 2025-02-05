@@ -47,7 +47,7 @@
                 <button
                   matTooltip="View the user's GitHub App Logs"
                   mat-button
-                  class="small-mat-btn private-btn small-btn-structure mat-elevation-z"
+                  class="small-mat-btn private-btn small-btn-structure"
                   (click)="openGitHubAppsLogs(user.id)"
                   data-cy="user-app-logs-button"
                 >
@@ -64,7 +64,7 @@
           <hr />
           <span fxLayout fxLayoutAlign="end end">
             <a href="https://github.com/{{ gitHubProfile?.username }}" target="_blank">
-              <button mat-button class="accent-1-dark-btn small-mat-btn-skin small-btn-structure mt-2">
+              <button mat-button class="accent-1-dark-btn small-btn-structure mt-2">
                 <mat-icon class="mat-icon-sm">open_in_new</mat-icon>
                 View
               </button>

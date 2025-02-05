@@ -33,7 +33,7 @@
       </mat-form-field>
     </div>
     <div class="btn-group" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="1rem">
-      <button mat-flat-button mat-dialog-close class="secondary-1">No</button>
+      <button mat-button mat-dialog-close color="accent">No</button>
       <button mat-flat-button (click)="revokeToken()" [disabled]="usernameForm.invalid" data-cy="confirm-revoke-token-button" color="warn">
         Yes, revoke my Dockstore token
       </button>

@@ -179,7 +179,7 @@
         </span>
         <button
           type="button"
-          mat-button
+          mat-raised-button
           class="private-btn small-btn-structure ml-2"
           matTooltip="Manage DOIs"
           (click)="manageDois()"
@@ -213,7 +213,7 @@
           <button
             type="button"
             *ngIf="!labelsEditMode && !isWorkflowPublic"
-            mat-button
+            mat-raised-button
             class="private-btn small-btn-structure"
             (click)="toggleLabelsEditMode()"
             [disabled]="!canWrite"

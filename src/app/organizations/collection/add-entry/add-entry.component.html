@@ -75,13 +75,13 @@
 </div>
 
 <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
-  <button mat-flat-button class="secondary-1" id="closeDialogButton" mat-dialog-close>Close</button>
+  <button mat-button color="accent" id="closeDialogButton" mat-dialog-close>Close</button>
   <button
-    mat-raised-button
+    mat-flat-button
     id="addEntryToCollectionButton"
     data-cy="addEntryToCollectionButton"
     [mat-dialog-close]="selectedCollectionId"
-    class="accent-1-dark-btn mat-elevation-z"
+    class="accent-1-dark-btn"
     [disabled]="!selectedOrganizationId || !selectedCollectionId"
     (click)="addToCollection()"
   >

@@ -59,7 +59,7 @@
               [matTooltip]="show ? 'Hide token' : 'Show token'"
               mat-button
               color="secondary"
-              class="accent-1-dark small-mat-btn-skin small-btn-structure mat-elevation-z"
+              class="accent-1-dark small-btn-structure"
               (click)="show = !show"
             >
               <mat-icon class="mat-icon-sm">{{ show ? 'visibility_off' : 'visibility' }}</mat-icon>
@@ -71,7 +71,7 @@
             <span class="pull-right" fxLayoutAlign="end end">
               <button
                 mat-button
-                class="accent-1-dark-btn small-mat-btn-skin small-btn-structure mt-2"
+                class="accent-1-dark-btn small-btn-structure mt-2"
                 matTooltip="Revoke Dockstore token"
                 data-cy="revoke-token-button"
                 (click)="revokeToken()"
@@ -165,7 +165,7 @@
             <ng-template #linked>
               <button
                 mat-raised-button
-                class="accent-1-dark-btn small-mat-btn-skin small-btn-structure mt-2"
+                class="accent-1-dark-btn small-btn-structure mt-2"
                 [attr.id]="'unlink-' + row.name"
                 (click)="unlink(row.source)"
                 matTooltip="Unlink the account"

@@ -89,8 +89,8 @@
   </mat-form-field>
   <span fxLayout="row wrap" *ngIf="noDialog">
     <button
-      mat-raised-button
-      class="accent-1-dark-btn mat-elevation-z"
+      mat-flat-button
+      class="accent-1-dark-btn"
       id="updateUsername"
       [disabled]="usernameTaken || usernameFormControl.invalid || (canChangeUsername$ | async) === false"
       (click)="updateUsername()"
@@ -100,10 +100,10 @@
   </span>
   <!-- Dialog actions -->
   <span fxLayout="row wrap" fxLayoutAlign="end center" mat-dialog-actions *ngIf="!noDialog">
-    <button mat-flat-button class="secondary-1 mb-3" mat-dialog-close>Close</button>
+    <button mat-button color="accent" class="mb-3" mat-dialog-close>Close</button>
     <button
-      class="accent-1-dark-btn mat-elevation-z mb-3"
-      mat-raised-button
+      class="accent-1-dark-btn mb-3"
+      mat-flat-button
       id="updateUsername"
       [disabled]="usernameTaken || usernameFormControl.invalid || (canChangeUsername$ | async) === false"
       (click)="updateUsername()"

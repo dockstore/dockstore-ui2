@@ -86,8 +86,8 @@
                 <button
                   *ngIf="!isPublic && dockerFileEditing"
                   type="button"
-                  mat-raised-button
-                  class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+                  mat-button
+                  class="accent-1-dark small-btn-structure"
                   (click)="cancelEditing()"
                 >
                   <img src="../assets/svg/icons-reject-small.svg" alt="Cancel" class="pr-2 pb-1" />Cancel
@@ -95,8 +95,8 @@
                 <button
                   *ngIf="!isPublic"
                   type="button"
-                  mat-raised-button
-                  class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+                  mat-button
+                  class="accent-1-dark small-btn-structure"
                   [disabled]="!(!somethingIsBeingEdited() || (dockerFileEditing && editDockerfileForm.valid)) || !canWrite"
                   (click)="toggleEditDockerFile()"
                 >
@@ -131,8 +131,8 @@
                 <button
                   *ngIf="!isPublic && cwlPathEditing"
                   type="button"
-                  mat-raised-button
-                  class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+                  mat-button
+                  class="accent-1-dark small-btn-structure"
                   (click)="cancelEditing()"
                 >
                   <img src="../assets/svg/icons-reject-small.svg" alt="Cancel" class="pr-2 pb-1" />Cancel
@@ -140,8 +140,8 @@
                 <button
                   *ngIf="!isPublic"
                   type="button"
-                  mat-raised-button
-                  class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+                  mat-button
+                  class="accent-1-dark small-btn-structure"
                   [disabled]="!(!somethingIsBeingEdited() || (cwlPathEditing && editCWLPathForm.valid)) || !canWrite"
                   (click)="toggleEditCWLPath()"
                 >
@@ -176,8 +176,8 @@
                 <button
                   *ngIf="!isPublic && wdlPathEditing"
                   type="button"
-                  mat-raised-button
-                  class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+                  mat-button
+                  class="accent-1-dark small-btn-structure"
                   (click)="cancelEditing()"
                 >
                   <img src="../assets/svg/icons-reject-small.svg" alt="Cancel" class="pr-2 pb-1" />Cancel
@@ -185,8 +185,8 @@
                 <button
                   *ngIf="!isPublic"
                   type="button"
-                  mat-raised-button
-                  class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+                  mat-button
+                  class="accent-1-dark small-btn-structure"
                   [disabled]="!(!somethingIsBeingEdited() || (wdlPathEditing && editWDLPathForm.valid)) || !canWrite"
                   (click)="toggleEditWDLPath()"
                 >
@@ -219,8 +219,8 @@
               <button
                 *ngIf="!isPublic && tool?.mode !== DockstoreToolType.ModeEnum.HOSTED"
                 type="button"
-                mat-raised-button
-                class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+                mat-button
+                class="accent-1-dark small-btn-structure"
                 [disabled]="!(!somethingIsBeingEdited() || (cwlTestPathEditing && editCWLTestPathForm.valid)) || !canWrite"
                 (click)="toggleEditCWLTestPath()"
               >
@@ -252,8 +252,8 @@
               <button
                 *ngIf="!isPublic && tool?.mode !== DockstoreToolType.ModeEnum.HOSTED"
                 type="button"
-                mat-raised-button
-                class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+                mat-button
+                class="accent-1-dark small-btn-structure"
                 [disabled]="!(!somethingIsBeingEdited() || (wdlTestPathEditing && editWDLTestPathForm.valid)) || !canWrite"
                 (click)="toggleEditWDLTestPath()"
               >

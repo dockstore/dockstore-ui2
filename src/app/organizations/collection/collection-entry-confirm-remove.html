@@ -7,8 +7,6 @@
   </p>
 </div>
 <div mat-dialog-actions fxLayout fxLayoutAlign="end">
-  <button mat-flat-button class="secondary-1" mat-dialog-close data-cy="cancel-remove-entry-from-org">Cancel</button>
-  <button mat-raised-button class="accent-1-dark-btn mat-elevation-z" data-cy="accept-remove-entry-from-org" (click)="deleteCollection()">
-    Remove
-  </button>
+  <button mat-button color="accent" mat-dialog-close data-cy="cancel-remove-entry-from-org">Cancel</button>
+  <button mat-flat-button class="accent-1-dark-btn" data-cy="accept-remove-entry-from-org" (click)="deleteCollection()">Remove</button>
 </div>

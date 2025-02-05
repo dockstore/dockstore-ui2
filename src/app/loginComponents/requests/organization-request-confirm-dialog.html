@@ -5,11 +5,11 @@
 </div>
 <div mat-dialog-actions>
   <div fxFlex></div>
-  <button mat-flat-button class="secondary-1" (click)="onNoClick()">Cancel</button>
+  <button mat-button color="accent" (click)="onNoClick()">Cancel</button>
   <span *ngIf="data.approve; else rejectBlock">
     <button
-      mat-raised-button
-      class="accent-1-dark-btn mat-elevation-z"
+      mat-flat-button
+      class="accent-1-dark-btn ml-2"
       id="approve-pending-org-dialog"
       data-cy="approve-pending-org-dialog"
       [mat-dialog-close]="{ 'id': data.id, 'approve': data.approve }"
@@ -19,8 +19,8 @@
   </span>
   <ng-template #rejectBlock>
     <button
-      mat-raised-button
-      class="accent-1-dark-btn mat-elevation-z"
+      mat-flat-button
+      class="accent-1-dark-btn"
       id="reject-pending-org-dialog"
       data-cy="reject-pending-org-dialog"
       [mat-dialog-close]="{ 'id': data.id, 'approve': data.approve }"

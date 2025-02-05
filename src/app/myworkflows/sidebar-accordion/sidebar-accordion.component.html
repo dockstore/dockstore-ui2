@@ -87,11 +87,7 @@
       >
         <div fxFlex>
           <span fxLayout fxLayoutAlign="start" *ngIf="orgObj.sourceControl.startsWith('github.com')">
-            <button
-              mat-button
-              class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z mr-1 mt-2 mb-2"
-              (click)="openGitHubAppsLogs(orgObj.organization)"
-            >
+            <button mat-button class="accent-1-dark small-btn-structure mr-1 mt-2 mb-2" (click)="openGitHubAppsLogs(orgObj.organization)">
               <img src="../../../assets/svg/git-hub.svg" alt="GitHub app logs" class="pr-2" />
               Apps Logs
             </button>

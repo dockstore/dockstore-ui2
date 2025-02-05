@@ -129,7 +129,7 @@
           <button
             type="button"
             *ngIf="!labelsEditMode && !isToolPublic"
-            mat-button
+            mat-raised-button
             class="private-btn small-btn-structure"
             (click)="toggleLabelsEditMode()"
             [disabled]="tool.archived"
@@ -187,7 +187,7 @@
   </div>
   <div class="row ml-4 mr-4 mb-4" *ngIf="starGazersClicked">
     <app-stargazers></app-stargazers>
-    <button mat-raised-button class="accent-1-dark-btn mat-elevation-z" id="backButton" type="button" (click)="starGazersClicked = false">
+    <button mat-button class="accent-1-dark-btn" id="backButton" type="button" (click)="starGazersClicked = false">
       <mat-icon>chevron_left</mat-icon>Back to details
     </button>
   </div>
@@ -249,8 +249,8 @@
                 type="button"
                 class="pull-right m-3"
                 *ngIf="!publicPage && (isManualMode$ | async)"
-                mat-raised-button
-                class="accent-1-dark-btn mat-elevation-z"
+                mat-flat-button
+                class="accent-1-dark-btn"
                 (click)="showAddTagModal()"
               >
                 Add Tag

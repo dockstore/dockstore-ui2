@@ -74,8 +74,8 @@
           <div fxFlex></div>
           <button
             *ngIf="canDelete$ | async"
-            mat-raised-button
-            class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+            mat-flat-button
+            class="accent-1-dark small-btn-structure"
             (click)="removeCollection(organization, collection)"
             data-cy="removeCollectionButton"
             matTooltip="Remove the collection"
@@ -84,8 +84,8 @@
           </button>
           <button
             *ngIf="canEdit$ | async"
-            mat-raised-button
-            class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+            mat-flat-button
+            class="accent-1-dark small-btn-structure"
             (click)="editCollection(collection)"
             id="editCollection"
             matTooltip="Edit the collection"
@@ -118,8 +118,8 @@
                       <div *ngIf="canEdit$ | async" fxLayout="row" fxLayoutAlign="end center">
                         <span>
                           <button
-                            mat-raised-button
-                            class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+                            mat-flat-button
+                            class="accent-1-dark small-btn-structure"
                             matTooltip="Remove entry from collection."
                             id="removeEntryButton"
                             (click)="
@@ -170,7 +170,7 @@
                           }}</span>
                         </mat-chip-listbox>
                       </div>
-                      <button mat-raised-button class="small-mat-btn-skin small-btn-structure" color="accent">View</button>
+                      <button mat-raised-button class="small-btn-structure" color="accent">View</button>
                     </div>
                   </a></mat-card-content
                 >
@@ -184,8 +184,8 @@
             <div fxLayout="column" fxLayoutGap="15px">
               <div fxLayout="row" fxLayoutAlign="end center">
                 <button
-                  mat-raised-button
-                  class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+                  mat-flat-button
+                  class="accent-1-dark small-btn-structure"
                   *ngIf="canEdit$ | async"
                   (click)="updateDescription(collection.description, collection.id)"
                   id="editCollectionDescription"

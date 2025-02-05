@@ -6,12 +6,12 @@
 </p>
 <p>You have {{ numLinkedAccounts$ | async | i18nPlural: messageMapping }} linked.</p>
 <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="1rem">
-  <button mat-flat-button class="secondary-1" mat-dialog-close>Cancel</button>
-  <button mat-raised-button mat-dialog-close class="accent-1-dark-btn mat-elevation-z" routerLink="/accounts">Link Accounts</button>
+  <button mat-button color="accent" mat-dialog-close>Cancel</button>
+  <button mat-flat-button mat-dialog-close class="accent-1-dark-btn" routerLink="/accounts">Link Accounts</button>
   <button
-    mat-raised-button
+    mat-flat-button
     mat-dialog-close
-    class="accent-1-dark-btn mat-elevation-z"
+    class="accent-1-dark-btn"
     [disabled]="(numLinkedAccounts$ | async) < 2"
     (click)="createOrganization()"
   >

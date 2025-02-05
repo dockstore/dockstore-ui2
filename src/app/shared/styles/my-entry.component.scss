@@ -17,6 +17,8 @@
 @use '@angular/material' as mat;
 @import 'materialColorScheme.scss';
 
+//@include mat.button-theme($dockstore-small-button-theme);
+
 .sidebar-header {
   border-bottom: 1px solid mat.get-color-from-palette($dockstore-app-gray, 3);
 }

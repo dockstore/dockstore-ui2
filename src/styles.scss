@@ -1108,11 +1108,10 @@ a.accent-1-dark-btn {
   color: white;
 }
 
-.mat-mdc-unelevated-button.secondary-1 {
-  color: mat.get-color-from-palette($dockstore-app-accent);
-  font-weight: bold;
-}
-.mat-mdc-unelevated-button.accent-1-dark {
+// .mat-mdc-unelevated-button.secondary-1.mdc-button {
+//   color: mat.get-color-from-palette($dockstore-app-accent);
+// }
+.mat-mdc-unelevated-button.accent-1-dark.mdc-button {
   color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
 }
 
@@ -1122,6 +1121,16 @@ a.accent-1-dark-btn {
 .mat-radio-label-content {
   font-weight: normal;
 }
+
+.mat-mdc-form-field {
+  @include mat.form-field-density(-5);
+  font-size: 14px !important;
+}
+
+// .mat-mdc-select {
+//   @include mat.select-density(-5);
+//   font-size: 14px;
+// }
 
 // Used for smaller than usual forms
 .mat-mdc-form-field.small-text {
@@ -1285,27 +1294,42 @@ table td {
   color: mat.get-color-from-palette($kim-gray, 1);
 }
 
+// .mat-mdc-unelevated-button > .mat-icon, .mat-mdc-raised-button > .mat-icon, .mat-mdc-outlined-button > .mat-icon {
+//   margin-left: 0px; // Override the -4px margin that Material uses
+// }
+
 // This style should be used for buttons and drop downs in the private "My Dockstore" pages, they do not seem to exist in public dockstore pages
 // These redesigned buttons have purple text and white backgrounds
 // Use with mat-button and small-btn-structure
-button.private-btn,
-a.private-btn {
+button.private-btn.mdc-button,
+a.private-btn.mdc-button {
   font-weight: bold;
   font-size: 12px;
   color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
   background-color: #fff;
-  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.08);
+  //box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.08);
   border: solid 1px #d8d8d8;
 }
 
 // Updated mat-raised-button style to match new redesigned buttons. This style can be used alone for the LARGER dockstore buttons
 // 14px font and 36px height
-button.mat-mdc-raised-button,
-a.mat-raised-button {
-  font-weight: bold;
-  line-height: 36px;
-  height: 36px;
+// button.mat-mdc-raised-button,
+// a.mat-mdc-raised-button {
+//   font-weight: bold;
+//   line-height: 36px;
+//   height: 36px;
+//   padding: 0 15px;
+// }
+
+// Updated mat-raised-button style to match new redesigned buttons. This style can be used alone for the LARGER dockstore buttons
+// 14px font and 36px height
+button.mdc-button,
+a.mdc-button {
   padding: 0 15px;
+}
+
+button.mat-mdc-outlined-button {
+  border: solid 1px #d8d8d8;
 }
 
 // Most cases style should be used accompanied with the mat-raised-button style
@@ -1313,15 +1337,16 @@ a.mat-raised-button {
 // a.small... is included to account for "buttons" that have links ex. "launch"
 button.small-mat-btn-skin,
 a.small-mat-btn-skin {
-  font-size: 12px;
+  //font-size: 12px;
   // For cases when not accompanied by mat-raised-button
-  font-weight: bold;
+  //font-weight: bold;
 }
 
 // This style is for the SMALLER dockstore buttons with 26px height
 // Use this most likely with the small-mat-btn-skin
 button.small-btn-structure.mdc-button,
-a.small-btn-structure {
+a.small-btn-structure.mdc-button {
+  font-size: 12px;
   line-height: 26px;
   height: 26px;
   padding: 0 10px;
@@ -1330,8 +1355,14 @@ a.small-btn-structure {
 }
 
 // Updated box shadows for small mat-raised-buttons (excluding buttons specified to be flat)
-button.small-mat-btn-skin:not([class*='mat-elevation-z']),
-a.small-mat-btn-skin:not([class*='mat-elevation-z']) {
+// button.small-mat-btn-skin.mat-mdc-raised-button:not([class*='mat-elevation-z']),
+// a.small-mat-btn-skin.mat-mdc-raised-button:not([class*='mat-elevation-z']) {
+//   box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.08);
+// }
+
+// Updated box shadows for small mat-raised-buttons (excluding buttons specified to be flat)
+button.mat-mdc-raised-button:not([class*='mat-elevation-z']),
+a.mat-mdc-raised-button:not([class*='mat-elevation-z']) {
   box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.08);
 }
 

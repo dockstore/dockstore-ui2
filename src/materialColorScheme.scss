@@ -171,6 +171,16 @@ $dockstore-app-accent-4: mat.define-palette($kim-accent-4, 2, 4, 1);
 // Main color was chosen arbitrarily to be between darker and lighter.
 $dockstore-app-gray: mat.define-palette($kim-gray, 2, 4, 1);
 
+$small-size: mat.define-typography-level(
+  $font-size: 12px,
+  $letter-spacing: normal,
+);
+
+$normal-size: mat.define-typography-level(
+  $font-size: 14px,
+  $letter-spacing: normal,
+);
+
 // Create the theme object (a Sass map containing all of the palettes).
 $dockstore-app-theme: mat.define-light-theme(
   (
@@ -181,6 +191,20 @@ $dockstore-app-theme: mat.define-light-theme(
     ),
     typography:
       mat.define-typography-config(
+        $font-family: 'Roboto, "Helvetica Neue", sans-serif',
+        /*
+      $headline-1: $small-size,
+      $headline-2: $small-size,
+      $headline-3: $small-size,
+      $headline-4: $small-size,
+      $headline-5: $small-size,
+      $headline-6: $small-size,
+      */
+          $subtitle-1: $small-size,
+        $subtitle-2: $small-size,
+        $body-1: $normal-size,
+        $body-2: $normal-size,
+        $caption: $small-size,
         $button:
           mat.define-typography-level(
             $font-size: 14px,
@@ -191,6 +215,33 @@ $dockstore-app-theme: mat.define-light-theme(
     density: 0,
   )
 );
+/*
+$dockstore-app-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $dockstore-app-primary,
+      accent: $dockstore-app-accent,
+      warn: $dockstore-app-error,
+    ),
+    typography: map_merge(
+      mat.define-typography-config(
+        $button:
+          mat.define-typography-level(
+            $font-size: 14px,
+            $font-weight: 700,
+            $letter-spacing: normal,
+          )
+      ),
+      (
+        "input": $small-size,
+        "form-field": $small-size,
+        "select": $small-size,
+      )
+    ),
+    density: -3,
+  )
+);
+*/
 
 // Include the grayscale palette in the theme object
 // Example of getting the palette: map-get($dockstore-app-theme, grayscale)
@@ -200,6 +251,39 @@ $dockstore-app-theme: map_merge(
     grayscale: $dockstore-app-gray,
   )
 );
+
+// $dockstore-typography: mat.define-typography-config(
+//   $font-size: 12px,
+//   $font-weight: 700,
+//   $letter-spacing: normal
+// );
+
+$dockstore-small-button-theme: map_merge(
+  $dockstore-app-theme,
+  (
+    typography:
+      mat.define-typography-config(
+        $button:
+          mat.define-typography-level(
+            $font-size: 12px,
+            $font-weight: 700,
+            $letter-spacing: normal,
+          ),
+      ),
+    density: -3,
+    text-primary-on-light: mat.get-color-from-palette($dockstore-app-accent-1, darker),
+  )
+);
+
+// $form-field: mat.define-typography-level($font-size: 12px, $font-weight: 700, $letter-spacing: normal);
+// $dockstore-form-field-theme: map_merge(
+//   $dockstore-app-theme,
+//   (
+//     typography:
+//     density: -3,
+//     text-primary-on-light: mat.get-color-from-palette($dockstore-app-accent-1, darker)
+//   )
+// );
 
 // The following are common colors used that are not used in Material paletttes
 // It is not placed in styles.scss to prevent importing styles.scss multiple times

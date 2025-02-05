@@ -10,8 +10,8 @@
         id="viewCheckerWorkflowButton"
         *ngIf="(checkerWorkflowURL$ | async) && (isRefreshing$ | async) === false"
         type="button"
-        mat-raised-button
-        class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+        mat-flat-button
+        class="accent-1-dark small-btn-structure"
       >
         <mat-icon class="mat-icon-sm">visibility</mat-icon> View
       </a>
@@ -21,8 +21,8 @@
           #addCheckerWorkflowButton
           *ngIf="(canAdd$ | async) && canWrite"
           type="button"
-          mat-raised-button
-          class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+          mat-button
+          class="accent-1-dark small-btn-structure"
           (click)="add()"
         >
           <img src="../assets/svg/icons-plus.svg" class="pr-2 pb-1" alt="Plus sign" />Add
@@ -40,13 +40,7 @@
       <div class="form-group"><strong matTooltip="The parent entry of this checker workflow">Parent Entry</strong>:</div>
       <span>
         <div class="btn-group" role="group">
-          <button
-            id="viewParentEntryButton"
-            type="button"
-            mat-raised-button
-            class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
-            (click)="viewParentEntry()"
-          >
+          <button id="viewParentEntryButton" type="button" mat-button class="accent-1-dark small-btn-structure" (click)="viewParentEntry()">
             <mat-icon class="mat-icon-sm">visibility</mat-icon> View
           </button>
         </div>

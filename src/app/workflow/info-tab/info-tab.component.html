@@ -40,7 +40,7 @@
       <mat-card-title>{{ entryType$ | async | titlecase }} Information</mat-card-title>
     </mat-card-header>
     <mat-divider></mat-divider>
-    <mat-card-content class="p-1 pt-3">
+    <mat-card-content class="pt-3">
       <ul class="list-unstyled container-info" *ngIf="workflow">
         <span *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED" class="truncate-text-1">
           <li *ngIf="workflow?.provider && workflow?.providerUrl">
@@ -109,8 +109,8 @@
                     *ngIf="!isPublic && workflowPathEditing"
                     data-cy="cancelWorkflowPathButton"
                     type="button"
-                    mat-raised-button
-                    class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+                    mat-button
+                    class="accent-1-dark small-btn-structure"
                     (click)="cancelEditing()"
                   >
                     <img src="../assets/svg/icons-reject-small.svg" alt="Cancel" class="pr-2 pb-1" />Cancel
@@ -119,8 +119,8 @@
                     *ngIf="!isPublic"
                     data-cy="editWorkflowPathButton"
                     type="button"
-                    mat-raised-button
-                    class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+                    mat-button
+                    class="accent-1-dark small-btn-structure"
                     [disabled]="
                       topicEditing ||
                       defaultTestFilePathEditing ||
@@ -164,8 +164,8 @@
                   <button
                     *ngIf="!isPublic && defaultTestFilePathEditing"
                     type="button"
-                    mat-raised-button
-                    class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+                    mat-button
+                    class="accent-1-dark small-btn-structure"
                     (click)="cancelEditing()"
                   >
                     <img src="../assets/svg/icons-reject-small.svg" alt="Cancel" class="pr-2 pb-1" />Cancel
@@ -173,8 +173,8 @@
                   <button
                     *ngIf="!isPublic"
                     type="button"
-                    mat-raised-button
-                    class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+                    mat-button
+                    class="accent-1-dark small-btn-structure"
                     [disabled]="
                       topicEditing ||
                       workflowPathEditing ||
@@ -228,8 +228,8 @@
                   <button
                     *ngIf="!isPublic && forumUrlEditing"
                     type="button"
-                    mat-raised-button
-                    class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+                    mat-button
+                    class="accent-1-dark small-btn-structure"
                     (click)="cancelEditing()"
                   >
                     <img src="../assets/svg/icons-reject-small.svg" alt="Cancel" class="pr-2 pb-1" />Cancel
@@ -238,8 +238,8 @@
                     *ngIf="!isPublic && !workflow?.forumUrl && !forumUrlEditing"
                     [disabled]="topicEditing || workflowPathEditing || defaultTestFilePathEditing || (isRefreshing$ | async) || !canWrite"
                     type="button"
-                    mat-raised-button
-                    class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+                    mat-button
+                    class="accent-1-dark small-btn-structure"
                     (click)="toggleEditForumUrl()"
                   >
                     <img *ngIf="!forumUrlEditing" src="../assets/svg/icons-plus.svg" class="pr-2 pb-1" alt="Plus sign" />Add
@@ -247,8 +247,8 @@
                   <button
                     *ngIf="!isPublic && (workflow?.forumUrl || forumUrlEditing)"
                     type="button"
-                    mat-raised-button
-                    class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+                    mat-button
+                    class="accent-1-dark small-btn-structure"
                     (click)="toggleEditForumUrl()"
                   >
                     <mat-icon *ngIf="forumUrlEditing" class="mat-icon-sm">save</mat-icon>
@@ -276,8 +276,8 @@
               <strong [matTooltip]="modeTooltipContent">Mode</strong>: {{ 'mode' | mapFriendlyValue: workflow?.mode }}
             </div>
             <button
-              mat-raised-button
-              class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+              mat-button
+              class="accent-1-dark small-btn-structure"
               type="button"
               *ngIf="workflow?.mode === WorkflowType.ModeEnum.FULL && !workflow?.is_published && !workflow?.isChecker"
               (click)="restubWorkflow()"
@@ -319,7 +319,7 @@
       <mat-card-title>{{ entryType$ | async | titlecase }} Version Information</mat-card-title>
     </mat-card-header>
     <mat-divider></mat-divider>
-    <mat-card-content class="p-1 pt-3">
+    <mat-card-content class="pt-3">
       <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="2rem">
         <span class="bubble">
           {{ selectedVersion?.name }}

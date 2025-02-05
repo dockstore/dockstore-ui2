@@ -14,6 +14,10 @@
  *  limitations under the License.
  */
 
+@use '@angular/material' as mat;
+
+//@include mat.select-density(-4);
+
 /* Better alignment for "save" icon instead of vertical-align: middle*/
 mat-icon.mat-icon-sm {
   vertical-align: text-bottom;

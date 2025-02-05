@@ -62,7 +62,7 @@
           </button>
           <button
             mat-raised-button
-            class="accent-1-dark-btn small-mat-btn-skin small-btn-structure"
+            class="accent-1-dark-btn small-btn-structure"
             [id]="'approve-pending-org-' + i"
             (click)="openDialog(org.displayName, org.id, true)"
             matTooltip="Approve an organization request"
@@ -160,7 +160,7 @@
           </button>
           <button
             mat-raised-button
-            class="accent-1-dark-btn small-mat-btn-skin small-btn-structure"
+            class="accent-1-dark-btn small-btn-structure"
             [id]="'request-re-review-' + i"
             (click)="rerequestReview(membership)"
             matTooltip="Request a re-review of a rejected organization"
@@ -217,7 +217,7 @@
           </button>
           <button
             mat-raised-button
-            class="accent-1-dark-btn small-mat-btn-skin small-btn-structure"
+            class="accent-1-dark-btn small-btn-structure"
             [id]="'accept-invite-org-' + i"
             (click)="openInviteDialog(membership.organization.displayName, membership.organization.id, true)"
             matTooltip="Accept an organization invite"

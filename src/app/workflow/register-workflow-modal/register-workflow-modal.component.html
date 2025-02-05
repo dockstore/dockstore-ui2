@@ -41,8 +41,8 @@
         </mat-radio-group>
       </div>
       <div class="modal-footer">
-        <button mat-flat-button class="secondary-1" (click)="hideModal(); clearWorkflowRegisterError()">Close</button>
-        <button mat-raised-button class="accent-1-dark-btn mat-elevation-z" matStepperNext>Next</button>
+        <button mat-button color="accent" (click)="hideModal(); clearWorkflowRegisterError()">Close</button>
+        <button mat-flat-button class="accent-1-dark-btn" matStepperNext>Next</button>
       </div>
     </mat-step>
     <mat-step>
@@ -50,11 +50,11 @@
       <div *ngIf="selectedOption?.value === 0">
         <app-register-github-app [entryType]="EntryType.WORKFLOW"></app-register-github-app>
         <div class="modal-footer">
-          <button mat-flat-button class="secondary-1" matStepperPrevious>Back</button>
+          <button mat-button color="accent" matStepperPrevious>Back</button>
           <button
             type="button"
-            mat-raised-button
-            class="accent-1-dark-btn mat-elevation-z"
+            mat-flat-button
+            class="accent-1-dark-btn"
             [mat-dialog-close]="true"
             (click)="clearWorkflowRegisterError()"
             data-cy="close-modal-btn"
@@ -66,14 +66,8 @@
       <div *ngIf="selectedOption?.value === 1">
         <app-entry-wizard></app-entry-wizard>
         <div class="modal-footer">
-          <button mat-flat-button class="secondary-1" matStepperPrevious>Back</button>
-          <button
-            type="button"
-            mat-raised-button
-            class="accent-1-dark-btn mat-elevation-z"
-            [mat-dialog-close]="true"
-            (click)="clearWorkflowRegisterError()"
-          >
+          <button mat-button color="accent" matStepperPrevious>Back</button>
+          <button type="button" mat-flat-button class="accent-1-dark-btn" [mat-dialog-close]="true" (click)="clearWorkflowRegisterError()">
             Finish
           </button>
         </div>
@@ -175,10 +169,10 @@
         </mat-form-field>
         <div class="modal-footer">
           <button
-            mat-flat-button
+            mat-button
             type="button"
             id="closeRegisterWorkflowModalButton"
-            class="secondary-1"
+            color="accent"
             (click)="hideModal(); clearWorkflowRegisterError()"
           >
             Close
@@ -186,8 +180,8 @@
           <button
             id="submitButton"
             type="submit"
-            mat-raised-button
-            class="accent-1-dark-btn mat-elevation-z"
+            mat-flat-button
+            class="accent-1-dark-btn"
             [disabled]="!registerWorkflowForm.form.valid || (isRefreshing$ | async)"
           >
             Register Workflow
@@ -254,12 +248,12 @@
         </div>
 
         <div class="modal-footer">
-          <button type="button" mat-flat-button class="secondary-1" (click)="hideModal(); clearWorkflowRegisterError()">Close</button>
+          <button type="button" mat-button color="accent" (click)="hideModal(); clearWorkflowRegisterError()">Close</button>
           <button
             id="submitButton"
             type="submit"
-            mat-raised-button
-            class="accent-1-dark-btn mat-elevation-z"
+            mat-flat-button
+            class="accent-1-dark-btn"
             [disabled]="!registerHostedWorkflowForm.form.valid"
           >
             Register Workflow

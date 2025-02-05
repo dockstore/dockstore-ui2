@@ -125,12 +125,12 @@
       topic?</mat-card
     >
   </div>
-  <button mat-button mat-dialog-close class="secondary-1" data-cy="topicCancelButton" cdkFocusInitial>Cancel</button>
+  <button mat-button mat-dialog-close color="accent" data-cy="topicCancelButton" cdkFocusInitial>Cancel</button>
   <button
-    mat-raised-button
+    mat-flat-button
     (click)="saveTopic()"
     [attr.data-cy]="'topic' + (promptToConfirmAISelection ? 'Confirm' : 'Save') + 'Button'"
-    class="accent-1-dark-btn mat-elevation-z"
+    class="accent-1-dark-btn"
   >
     {{ promptToConfirmAISelection ? 'Confirm' : 'Save' }}
   </button>

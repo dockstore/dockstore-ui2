@@ -34,9 +34,8 @@
   <button
     *ngIf="(isPublic$ | async) === false"
     [disabled]="disableEditing"
-    type="button"
-    mat-raised-button
-    class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+    mat-button
+    class="accent-1-dark small-btn-structure"
     (click)="editTopic()"
     data-cy="topicEditButton"
     matTooltip="Edit topic"
