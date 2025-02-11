@@ -15,9 +15,12 @@
  */
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { MatLegacySnackBarModule } from '@angular/material/legacy-snack-bar';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { RegisterService } from '../register/register.service';
+import { ProviderService } from '../shared/provider.service';
 import { TrackLoginService } from '../shared/track-login.service';
 import { UserService } from '../shared/user/user.service';
 import { LoginStubService, TrackLoginStubService, UserStubService } from '../test/service-stubs';
@@ -31,14 +34,14 @@ describe('LoginComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [LoginComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        imports: [RouterTestingModule],
+        imports: [RouterTestingModule, LoginComponent, MatLegacySnackBarModule, NoopAnimationsModule],
         providers: [
           { provide: TrackLoginService, useClass: TrackLoginStubService },
           { provide: UserService, useClass: UserStubService },
           { provide: LoginService, useClass: LoginStubService },
           { provide: RegisterService, useClass: LoginStubService },
+          ProviderService,
         ],
       }).compileComponents();
     })

@@ -10,7 +10,7 @@ export class HomePageService {
     '@context': 'http://schema.org',
     '@type': 'Organization',
     description:
-      'Dockstore, developed by the Cancer Genome Collaboratory, is an open platform used by the GA4GH for sharing ' +
+      'Dockstore is an open platform used by the GA4GH for sharing ' +
       'Docker-based tools described with the Common Workflow Language (CWL), the Workflow Description Language (WDL), or Nextflow (NFL)',
     logo: '../assets/images/dockstore/dockstore.png',
     name: 'Dockstore',

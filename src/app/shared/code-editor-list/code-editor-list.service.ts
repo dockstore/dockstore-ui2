@@ -201,6 +201,7 @@ export class CodeEditorListService {
         content: '',
         path: newFilePath,
         type: type,
+        state: 'COMPLETE',
       };
     } else {
       return null;

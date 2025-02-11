@@ -14,9 +14,9 @@
  *     limitations under the License.
  */
 import { Directive, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatLegacyPaginator as MatPaginator, LegacyPageEvent as PageEvent } from '@angular/material/legacy-paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
 import { combineLatest, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Base } from '../shared/base';
@@ -32,7 +32,7 @@ export abstract class SearchEntryTable extends Base implements OnInit {
   protected verifiedLink: string;
   protected ngUnsubscribe: Subject<{}> = new Subject();
 
-  public readonly displayedColumns = ['name', 'verified', 'all_authors', 'descriptorType', 'projectLinks', 'starredUsers'];
+  public readonly displayedColumns = ['name', 'all_authors', 'descriptorType', 'starredUsers'];
   public readonly columnsToDisplayWithExpand = [...this.displayedColumns, 'expand'];
   public readonly searchEverythingFriendlyNames = new Map([
     ['full_workflow_path', 'Path'],

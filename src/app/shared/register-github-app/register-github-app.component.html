@@ -2,21 +2,21 @@
   <ol>
     <li>
       <span data-cy="install-dockstore-app"
-        >Click the "Manage..." button below to install Dockstore's App on your GitHub repositories that contain {{ entryType }}s. The App
-        notifies Dockstore whenever the repositories change.</span
+        >Click the "Manage..." button below to install Dockstore's App on your GitHub repositories that contain
+        {{ entryTypeMetadata.term }}s. The App notifies Dockstore whenever the repositories change.</span
       >
     </li>
     <li>
-      Describe your {{ entryType }}s by adding a
+      Describe your {{ entryTypeMetadata.term }}s by adding a
       <a href="{{ Dockstore.DOCUMENTATION_URL }}/assets/templates/template.html" target="_blank" rel="noopener noreferrer"
         >.dockstore.yml</a
       >
       to the root directory of the repositories where you installed the App.
     </li>
-    <li>Push your changes and wait two minutes for Dockstore to read your {{ entryType }}s.</li>
+    <li>Push your changes and wait two minutes for Dockstore to read your {{ entryTypeMetadata.term }}s.</li>
     <li>
-      Refresh your Dockstore dashboard to see your {{ entryType }}s. If they don't appear, click the dashboard's "{{
-        entryType | titlecase
+      Refresh your Dockstore dashboard to see your {{ entryTypeMetadata.term }}s. If they don't appear, click the dashboard's "{{
+        entryTypeMetadata.term | titlecase
       }}s" tile and click on the organization's "Apps Logs" button to see what went wrong.
     </li>
   </ol>
@@ -29,16 +29,17 @@
     >.
   </p>
   <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="2rem" class="mb-4">
-    <a
+    <button
       mat-raised-button
       type="button"
       class="accent-1-dark-btn mat-elevation-z no-underline"
-      [href]="gitHubAppInstallationLink$ | async"
+      (click)="openGitHubApp()"
       target="_blank"
       rel="noopener noreferrer"
       [disabled]="isUsernameChangeRequired$ | async"
       matTooltip="Manage Dockstore installations on GitHub"
-      ><mat-icon>add</mat-icon> Manage Dockstore installations on GitHub</a
     >
+      <mat-icon>add</mat-icon> Manage Dockstore installations on GitHub
+    </button>
   </div>
 </div>

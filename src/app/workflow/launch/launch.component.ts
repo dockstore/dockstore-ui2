@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { combineLatest, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { ga4ghWorkflowIdPrefix } from '../../shared/constants';
@@ -29,11 +29,33 @@ import { Workflow } from '../../shared/openapi/model/workflow';
 import { WorkflowVersion } from '../../shared/openapi/model/workflowVersion';
 import { WorkflowLaunchService } from '../launch/workflow-launch.service';
 import { EntryType } from '../../shared/enum/entry-type';
+import { LaunchCheckerWorkflowComponent } from '../../shared/entry/launch-checker-workflow/launch-checker-workflow.component';
+import { ClipboardModule } from '@angular/cdk/clipboard';
+import { SnackbarDirective } from '../../shared/snackbar.directive';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { MatIconModule } from '@angular/material/icon';
+import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { NgIf, AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-launch',
   templateUrl: './launch.component.html',
   styleUrls: ['./launch.component.css'],
+  standalone: true,
+  imports: [
+    NgIf,
+    MatLegacyCardModule,
+    MatIconModule,
+    FlexModule,
+    MatLegacyTooltipModule,
+    MatLegacyButtonModule,
+    SnackbarDirective,
+    ClipboardModule,
+    LaunchCheckerWorkflowComponent,
+    AsyncPipe,
+  ],
 })
 export class LaunchWorkflowComponent extends EntryTab implements OnInit, OnChanges {
   @Input() basePath;
@@ -59,13 +81,18 @@ export class LaunchWorkflowComponent extends EntryTab implements OnInit, OnChang
   nextflowNativeLaunchDescription: string;
   nextflowLocalLaunchDescription: string;
   nextflowDownloadFileDescription: string;
+  planemoSharedZipString: string;
+  planemoLocalInitString: string;
+  planemoLocalLaunchString: string;
   descriptors: Array<any>;
   cwlrunnerDescription = this.launchService.cwlrunnerDescription;
   cwlrunnerTooltip = this.launchService.cwlrunnerTooltip;
   cwltoolTooltip = this.launchService.cwltoolTooltip;
+  primaryDescriptorPath: string;
   testParameterPath: string;
   descriptorType$: Observable<ToolDescriptor.TypeEnum>;
   isNFL$: Observable<boolean>;
+  isGalaxy$: Observable<boolean>;
   ToolDescriptor = ToolDescriptor;
   EntryType = EntryType;
   protected published$: Observable<boolean>;
@@ -86,10 +113,12 @@ export class LaunchWorkflowComponent extends EntryTab implements OnInit, OnChang
   ngOnInit(): void {
     this.published$ = this.workflowQuery.workflowIsPublished$;
     this.descriptorType$ = this.workflowQuery.descriptorType$;
-    this.descriptorType$
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((descriptorType: ToolDescriptor.TypeEnum) => (this.currentDescriptor = descriptorType));
+    this.descriptorType$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((descriptorType: ToolDescriptor.TypeEnum) => {
+      this.currentDescriptor = descriptorType;
+      this.reactToDescriptor();
+    });
     this.isNFL$ = this.workflowQuery.isNFL$;
+    this.isGalaxy$ = this.workflowQuery.isGalaxy$;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -101,6 +130,9 @@ export class LaunchWorkflowComponent extends EntryTab implements OnInit, OnChang
     this.changeMessages(this.basePath, this.path, this._selectedVersion.name, this.currentDescriptor);
   }
   private changeMessages(basePath: string, workflowPath: string, versionName: string, descriptorType: ToolDescriptor.TypeEnum) {
+    if (descriptorType === undefined) {
+      return;
+    }
     this.params = this.launchService.getParamsString(workflowPath, versionName, descriptorType);
     this.cli = this.launchService.getCliString(workflowPath, versionName, descriptorType);
     this.cwl = this.launchService.getCwlString(workflowPath, versionName, encodeURIComponent(this._selectedVersion.workflow_path));
@@ -126,20 +158,46 @@ export class LaunchWorkflowComponent extends EntryTab implements OnInit, OnChang
    * @param versionName
    */
   updateWgetTestJsonString(workflowPath: string, versionName: string, descriptorType: ToolDescriptor.TypeEnum): void {
-    let toolFiles$: Observable<Array<ToolFile>>;
-    toolFiles$ = this.gA4GHFilesQuery.getToolFiles(descriptorType, [ToolFile.FileTypeEnum.TESTFILE]);
-    toolFiles$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((toolFiles: Array<ToolFile>) => {
-      if (toolFiles && toolFiles.length > 0) {
-        this.testParameterPath = toolFiles[0].path;
-      } else {
-        this.testParameterPath = null;
+    combineLatest([
+      this.gA4GHFilesQuery.getToolFiles(descriptorType, [ToolFile.FileTypeEnum.TESTFILE]),
+      this.gA4GHFilesQuery.getToolFiles(descriptorType, [ToolFile.FileTypeEnum.PRIMARYDESCRIPTOR]),
+    ]).subscribe(
+      ([toolFiles, descriptorFiles]) => {
+        // test parameter file is optional ...
+        if (toolFiles) {
+          if (toolFiles.length > 0) {
+            this.testParameterPath = toolFiles[0].path;
+          } else {
+            this.testParameterPath = undefined;
+          }
+          this.wgetTestJsonDescription = this.launchService.getTestJsonString(
+            ga4ghWorkflowIdPrefix + workflowPath,
+            versionName,
+            descriptorType,
+            this.testParameterPath
+          );
+        } else {
+          this.testParameterPath = undefined;
+        }
+        if (descriptorFiles?.length > 0) {
+          // ... but primary descriptor is mandatory
+          this.primaryDescriptorPath = descriptorFiles[0].path;
+          this.planemoSharedZipString = this.launchService.getSharedZipString(workflowPath, versionName);
+          this.planemoLocalInitString = this.launchService.getPlanemoLocalInitString(workflowPath, versionName, this.primaryDescriptorPath);
+          this.planemoLocalLaunchString = this.launchService.getPlanemoLocalLaunchString(
+            workflowPath,
+            versionName,
+            this.primaryDescriptorPath
+          );
+        } else {
+          this.primaryDescriptorPath = undefined;
+          this.planemoLocalInitString = undefined;
+          this.planemoLocalLaunchString = undefined;
+        }
+      },
+      (err) => {
+        console.log(err);
       }
-      this.wgetTestJsonDescription = this.launchService.getTestJsonString(
-        ga4ghWorkflowIdPrefix + workflowPath,
-        versionName,
-        descriptorType,
-        this.testParameterPath
-      );
-    });
+    );
   }
 }

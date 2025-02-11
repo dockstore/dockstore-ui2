@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { EntryTab } from '../../shared/entry/entry-tab';
 import {
   CloudInstance,
@@ -32,8 +32,23 @@ import { SessionQuery } from '../../shared/session/session.query';
 import { takeUntil } from 'rxjs/operators';
 import PartnerEnum = CloudInstance.PartnerEnum;
 import ExecutionStatusEnum = RunExecution.ExecutionStatusEnum;
-import { MatSelectChange } from '@angular/material/select';
+import { MatLegacySelectChange as MatSelectChange, MatLegacySelectModule } from '@angular/material/legacy-select';
 import { AlertService } from '../../shared/alert/state/alert.service';
+import { UserQuery } from 'app/shared/user/user.query';
+import { combineLatest } from 'rxjs';
+import { ExecutionStatusPipe } from '../../shared/entry/execution-status.pipe';
+import { SecondsToHoursMinutesSecondsPipe } from 'app/workflow/executions/seconds-to-hours-minutes-seconds.pipe';
+import { PlatformPartnerPipe } from '../../shared/entry/platform-partner.pipe';
+import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatLegacyTableModule } from '@angular/material/legacy-table';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { MatIconModule } from '@angular/material/icon';
+import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { NgIf, NgFor, NgClass, NgTemplateOutlet, DecimalPipe, DatePipe } from '@angular/common';
 
 interface ExecutionMetricsTableObject {
   metric: string; // Name of the execution metric
@@ -46,8 +61,30 @@ interface ExecutionMetricsTableObject {
 @Component({
   selector: 'app-executions-tab',
   templateUrl: './executions-tab.component.html',
+  standalone: true,
+  imports: [
+    NgIf,
+    MatLegacyCardModule,
+    MatIconModule,
+    FlexModule,
+    MatLegacyFormFieldModule,
+    MatLegacySelectModule,
+    NgFor,
+    MatLegacyOptionModule,
+    MatDividerModule,
+    MatLegacyTableModule,
+    MatLegacyTooltipModule,
+    NgClass,
+    ExtendedModule,
+    NgTemplateOutlet,
+    DecimalPipe,
+    DatePipe,
+    PlatformPartnerPipe,
+    SecondsToHoursMinutesSecondsPipe,
+    ExecutionStatusPipe,
+  ],
 })
-export class ExecutionsTabComponent extends EntryTab implements OnChanges {
+export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChanges {
   metrics: Map<PartnerEnum, Metrics>;
   trsID: string;
   currentPartner: PartnerEnum;
@@ -80,6 +117,7 @@ export class ExecutionsTabComponent extends EntryTab implements OnChanges {
   currentValidatorTool: string;
   validatorTools: string[];
   validatorToolMetricsExist: boolean;
+  isAdminCuratorOrPlatformPartner: boolean;
 
   @Input() entry: BioWorkflow | Service | Notebook;
   @Input() version: WorkflowVersion;
@@ -87,9 +125,18 @@ export class ExecutionsTabComponent extends EntryTab implements OnChanges {
   constructor(
     private extendedGA4GHService: ExtendedGA4GHService,
     private alertService: AlertService,
+    private userQuery: UserQuery,
     protected sessionQuery: SessionQuery
   ) {
     super();
+  }
+
+  ngOnInit(): void {
+    combineLatest([this.userQuery.isAdminOrCurator$, this.userQuery.isPlatformPartner$])
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(([isAdminOrCurator, isPlatformPartner]) => {
+        this.isAdminCuratorOrPlatformPartner = isAdminOrCurator || isPlatformPartner;
+      });
   }
 
   ngOnChanges() {

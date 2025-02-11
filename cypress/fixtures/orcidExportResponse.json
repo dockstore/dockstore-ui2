@@ -5,6 +5,13 @@
     "author": null,
     "checker_id": null,
     "conceptDoi": "10.5072/zenodo.841013",
+    "conceptDois": {
+        "USER": {
+            "type": "CONCEPT",
+            "name": "10.5072/zenodo.841013",
+            "initiator": "USER"
+        }
+    },
     "dbCreateDate": 1465409196000,
     "dbUpdateDate": 1465409196000,
     "defaultTestParameterFilePath": "/test.json",
@@ -52,6 +59,13 @@
             "dirtyBit": false,
             "doiStatus": "CREATED",
             "doiURL": "10.5072/zenodo.841014",
+            "dois": {
+                "USER": {
+                    "type": "VERSION",
+                    "name": "10.5072/zenodo.841014",
+                    "initiator": "USER"
+                }
+            },
             "email": null,
             "frozen": true,
             "hidden": false,
@@ -96,6 +110,7 @@
             "dirtyBit": false,
             "doiStatus": "NOT_REQUESTED",
             "doiURL": null,
+            "dois": {},
             "email": null,
             "frozen": false,
             "hidden": true,

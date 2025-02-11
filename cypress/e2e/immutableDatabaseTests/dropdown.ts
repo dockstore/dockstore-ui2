@@ -294,7 +294,7 @@ describe('Dropdown test', () => {
       // Route all DELETE API calls to organizations respond with with an empty JSON object
       cy.intercept('DELETE', '*/organizations/*', {
         body: [],
-      });
+      }).as('delete');
 
       // Route GET API call to user/membership with the mocked membership JSON object after first deletion
       cy.intercept('GET', '*/users/user/memberships', {
@@ -307,6 +307,7 @@ describe('Dropdown test', () => {
       cy.contains('div', 'Delete Organization').within(() => {
         cy.contains('button', 'Delete').click();
       });
+      cy.wait('@delete');
       cy.get('#my-pending-org-card-0').should('be.visible');
       cy.get('#my-rejected-org-card-0').should('not.exist');
 

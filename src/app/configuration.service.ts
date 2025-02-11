@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { ConfigService } from 'ng2-ui-auth';
-import { IOauth2Options } from 'ng2-ui-auth/lib/config-interfaces';
+import { IOauth2Options } from './ng2-ui-auth/lib/config-interfaces';
+import { ConfigService } from './ng2-ui-auth/lib/config.service';
 import { AuthConfig } from './shared/auth.model';
 import { Dockstore } from './shared/dockstore.model';
 import { FeatureService } from './shared/feature.service';
@@ -10,12 +10,7 @@ import { Config, MetadataService } from './shared/openapi';
   providedIn: 'root',
 })
 export class ConfigurationService {
-  constructor(
-    private metadataService: MetadataService,
-    private configService: ConfigService,
-    private window: Window,
-    private featureService: FeatureService
-  ) {}
+  constructor(private metadataService: MetadataService, private configService: ConfigService, private featureService: FeatureService) {}
 
   load(): Promise<void> {
     return this.metadataService

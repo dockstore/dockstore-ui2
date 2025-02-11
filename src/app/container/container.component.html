@@ -13,7 +13,7 @@
   ~    See the License for the specific language governing permissions and
   ~    limitations under the License.
   -->
-<app-workflow *ngIf="displayAppTool" [isWorkflowPublic]="isToolPublic"></app-workflow>
+<app-workflow *ngIf="displayAppTool" [isWorkflowPublic]="isToolPublic" [shouldClearState]="false"></app-workflow>
 <div *ngIf="tool && !displayAppTool">
   <div class="row m-1 mt-3 mb-0" *ngIf="tool?.archived">
     <mat-card class="alert alert-warning mat-elevation-z m-0">
@@ -200,15 +200,15 @@
           mat-stretch-tabs
         >
           <mat-tab id="infoTab" label="Info">
-            <app-info-tab
+            <app-info-tab-container
               [selectedVersion]="selectedVersion"
               [privateOnlyRegistry]="privateOnlyRegistry"
               [extendedDockstoreTool]="extendedTool$ | async"
               [validVersions]="validVersions"
-            ></app-info-tab>
+            ></app-info-tab-container>
           </mat-tab>
           <mat-tab id="launchTab" label="Launch">
-            <app-launch
+            <app-container-launch
               *ngIf="tool?.workflowVersions.length > 0; else noTags"
               [basePath]="tool?.path"
               [selectedVersion]="selectedVersion"
@@ -216,7 +216,7 @@
               [toolname]="tool?.toolname"
               [mode]="tool?.mode"
               [versionsFileTypes]="versionsFileTypes"
-            ></app-launch>
+            ></app-container-launch>
             <ng-template #noTags>
               <div class="p-3">
                 <mat-card class="alert alert-warning mat-elevation-z" role="alert">

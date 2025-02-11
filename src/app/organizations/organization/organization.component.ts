@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
@@ -33,11 +33,55 @@ import { OrganizationService } from '../state/organization.service';
 // eslint-disable-next-line max-len
 import { UpdateOrganizationOrCollectionDescriptionComponent } from './update-organization-description/update-organization-description.component';
 import { Dockstore } from '../../shared/dockstore.model';
+import { GravatarPipe } from '../../gravatar/gravatar.pipe';
+import { MarkdownWrapperComponent } from '../../shared/markdown-wrapper/markdown-wrapper.component';
+import { EventsComponent } from '../events/events.component';
+import { OrganizationMembersComponent } from '../organization-members/organization-members.component';
+import { CollectionsComponent } from '../collections/collections.component';
+import { MatLegacyTabsModule } from '@angular/material/legacy-tabs';
+import { OrganizationStargazersComponent } from './organization-stargazers/organization-stargazers.component';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { OrganizationStarringComponent } from './organization-starring/organization-starring.component';
+import { ImgFallbackDirective } from '../../shared/img-fallback.directive';
+import { MatIconModule } from '@angular/material/icon';
+import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { JsonLdComponent } from '../../shared/json-ld/json-ld.component';
+import { LoadingComponent } from '../../shared/loading/loading.component';
+import { NgIf, AsyncPipe } from '@angular/common';
+import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
+import { RouterLink } from '@angular/router';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { HeaderComponent } from '../../header/header.component';
 
 @Component({
   selector: 'app-organization',
   templateUrl: './organization.component.html',
   styleUrls: ['./organization.component.scss'],
+  standalone: true,
+  imports: [
+    HeaderComponent,
+    FlexModule,
+    RouterLink,
+    ExtendedModule,
+    NgIf,
+    LoadingComponent,
+    JsonLdComponent,
+    MatLegacyCardModule,
+    MatIconModule,
+    ImgFallbackDirective,
+    OrganizationStarringComponent,
+    MatLegacyButtonModule,
+    MatLegacyTooltipModule,
+    OrganizationStargazersComponent,
+    MatLegacyTabsModule,
+    CollectionsComponent,
+    OrganizationMembersComponent,
+    EventsComponent,
+    MarkdownWrapperComponent,
+    AsyncPipe,
+    GravatarPipe,
+  ],
 })
 export class OrganizationComponent implements OnInit {
   public organizationStarGazersClicked = false;

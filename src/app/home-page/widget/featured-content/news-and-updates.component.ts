@@ -7,6 +7,7 @@ import { Dockstore } from '../../../shared/dockstore.model';
   selector: 'app-news-and-updates',
   template: ` <span [innerHTML]="myExternalHTML"></span> `,
   styleUrls: ['../../../shared/styles/dashboard-boxes.scss'],
+  standalone: true,
 })
 export class NewsAndUpdatesComponent {
   // TODO should parameterize FeaturedContentComponent or something

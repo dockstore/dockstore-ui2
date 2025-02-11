@@ -1420,3 +1420,23 @@ div.mat-menu-panel {
   align-items: center;
   justify-content: space-between;
 }
+
+app-ai-bubble {
+  margin: 0 0.5rem;
+}
+
+.ai-bubble:hover {
+  background-color: mat.get-color-from-palette($dockstore-app-gray, 7);
+}
+
+.primary-3 {
+  color: mat.get-color-from-palette($dockstore-app-primary, 3);
+}
+
+.gray-caption {
+  color: mat.get-color-from-palette($kim-gray, 2);
+}
+
+.mr-2_5 {
+  margin-right: 0.75rem;
+}

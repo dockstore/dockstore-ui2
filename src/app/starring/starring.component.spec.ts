@@ -15,7 +15,8 @@
  */
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatIconModule } from '@angular/material/icon';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
 
 import { ContainerService } from '../shared/container.service';
 import { StarentryService } from '../shared/starentry.service';
@@ -38,8 +39,7 @@ describe('StarringComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [StarringComponent],
-        imports: [MatIconModule, MatSnackBarModule],
+        imports: [MatIconModule, MatSnackBarModule, MatLegacyTooltipModule, StarringComponent],
         providers: [
           { provide: StarringService, useClass: StarringStubService },
           { provide: TrackLoginService, useClass: TrackLoginStubService },

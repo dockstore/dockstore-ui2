@@ -21,6 +21,7 @@ import PartnerEnum = CloudInstance.PartnerEnum;
 
 @Pipe({
   name: 'mapFriendlyValue',
+  standalone: true,
 })
 export class MapFriendlyValuesPipe implements PipeTransform {
   constructor(private descriptorLanguageService: DescriptorLanguageService, private platformPartnerPipe: PlatformPartnerPipe) {}
@@ -118,6 +119,9 @@ export class MapFriendlyValuesPipe implements PipeTransform {
         ['PUSH', 'Push'],
         ['DELETE', 'Delete'],
         ['INSTALL', 'Install'],
+        ['UNINSTALL', 'Uninstall'],
+        ['PUBLISH', 'Publish'],
+        ['RELEASE', 'Release'],
       ]),
     ],
     [

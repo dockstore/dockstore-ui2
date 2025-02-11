@@ -3,6 +3,7 @@ import { FileService } from '../file.service';
 
 @Pipe({
   name: 'privateFilePath',
+  standalone: true,
 })
 export class PrivateFilePathPipe implements PipeTransform {
   constructor(protected fileService: FileService) {}

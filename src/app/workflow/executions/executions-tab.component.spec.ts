@@ -13,16 +13,16 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { MatLegacySnackBarModule } from '@angular/material/legacy-snack-bar';
+import { AlertService } from '../../shared/alert/state/alert.service';
+import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
+import { PipeModule } from '../../shared/pipe/pipe.module';
 
 import { DescriptorLanguageStubService } from '../../test/service-stubs';
 import { ExecutionsTabComponent } from './executions-tab.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { AlertService } from '../../shared/alert/state/alert.service';
-import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
-import { CustomMaterialModule } from '../../shared/modules/material.module';
-import { PipeModule } from '../../shared/pipe/pipe.module';
 
 describe('ExecutionsTabComponent', () => {
   let component: ExecutionsTabComponent;
@@ -31,9 +31,8 @@ describe('ExecutionsTabComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [ExecutionsTabComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        imports: [HttpClientTestingModule, CustomMaterialModule, PipeModule],
+        imports: [HttpClientTestingModule, PipeModule, ExecutionsTabComponent, MatLegacySnackBarModule],
         providers: [{ provide: DescriptorLanguageService, useClass: DescriptorLanguageStubService }, AlertService],
       }).compileComponents();
     })

@@ -1,7 +1,7 @@
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
-import { MatChipInputEvent } from '@angular/material/chips';
+import { MatLegacyChipInputEvent as MatChipInputEvent, MatLegacyChipsModule } from '@angular/material/legacy-chips';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { AlertService } from '../../shared/alert/state/alert.service';
@@ -9,12 +9,18 @@ import { Dockstore } from '../../shared/dockstore.model';
 import { TokenSource } from '../../shared/enum/token-source.enum';
 import { TokenQuery } from '../../shared/state/token.query';
 import { Permission, Workflow, WorkflowsService, WorkflowSubClass } from '../../shared/openapi';
+import { MatIconModule } from '@angular/material/icon';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatLegacyProgressBarModule } from '@angular/material/legacy-progress-bar';
+import { NgIf, NgFor } from '@angular/common';
 import RoleEnum = Permission.RoleEnum;
 
 @Component({
   selector: 'app-permissions',
   templateUrl: './permissions.component.html',
   styleUrls: ['./permissions.component.scss'],
+  standalone: true,
+  imports: [NgIf, MatLegacyProgressBarModule, MatLegacyFormFieldModule, MatLegacyChipsModule, NgFor, MatIconModule],
 })
 export class PermissionsComponent implements OnInit {
   public Role = RoleEnum;

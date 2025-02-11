@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { MatLegacySnackBarModule } from '@angular/material/legacy-snack-bar';
 
 import { LogoutComponent } from './logout.component';
 
 @Component({
   selector: 'app-header',
   template: '',
+  standalone: true,
 })
 class HeaderComponent {}
 
@@ -16,7 +18,7 @@ describe('LogoutComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [LogoutComponent, HeaderComponent],
+        imports: [LogoutComponent, HeaderComponent, MatLegacySnackBarModule],
       }).compileComponents();
     })
   );

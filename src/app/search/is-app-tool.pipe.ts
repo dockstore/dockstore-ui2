@@ -3,6 +3,7 @@ import { AppTool, DockstoreTool } from '../shared/openapi';
 
 @Pipe({
   name: 'isAppTool',
+  standalone: true,
 })
 export class IsAppToolPipe implements PipeTransform {
   transform(tool: DockstoreTool | AppTool): tool is AppTool {

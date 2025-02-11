@@ -1,7 +1,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatLegacyDialog as MatDialog, MatLegacyDialogModule as MatDialogModule } from '@angular/material/legacy-dialog';
+import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of as observableOf, throwError } from 'rxjs';
@@ -9,6 +9,7 @@ import { of as observableOf, throwError } from 'rxjs';
 import { UntypedFormBuilder } from '@angular/forms';
 import { OrganizationsService } from '../../shared/openapi';
 import { RegisterOrganizationService } from './register-organization.service';
+import { UrlResolverService } from '../../shared/url-resolver.service';
 
 let organizationsServiceSpy: jasmine.SpyObj<OrganizationsService>;
 let matDialogSpy: jasmine.SpyObj<MatDialog>;
@@ -23,6 +24,7 @@ describe('RegisterOrganizationService', () => {
       providers: [
         RegisterOrganizationService,
         UntypedFormBuilder,
+        UrlResolverService,
         { provide: OrganizationsService, useValue: organizationsServiceStub },
         { provide: MatDialog, useValue: matDialogStub },
       ],

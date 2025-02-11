@@ -22,11 +22,18 @@ import { User } from '../../../shared/openapi';
 import { UserService } from '../../../shared/user/user.service';
 import { OrganizationStarringService } from '../organization-starring/organization-starring.service';
 import { altAvatarImg } from 'app/shared/constants';
+import { RouterLink } from '@angular/router';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { MatIconModule } from '@angular/material/icon';
+import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { NgIf, NgFor } from '@angular/common';
 
 @Component({
   selector: 'app-organization-stargazers',
   templateUrl: '../../../stargazers/stargazers.component.html',
   styleUrls: ['../../../stargazers/stargazers.component.css'],
+  standalone: true,
+  imports: [NgIf, MatLegacyCardModule, MatIconModule, FlexModule, NgFor, RouterLink],
 })
 export class OrganizationStargazersComponent extends Base implements OnInit {
   starGazers: Array<User>;

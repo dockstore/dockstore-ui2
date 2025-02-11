@@ -15,7 +15,7 @@
  */
 import { HttpResponse } from '@angular/common/http';
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { MatRadioChange } from '@angular/material/radio';
+import { MatLegacyRadioModule } from '@angular/material/legacy-radio';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { FileService } from 'app/shared/file.service';
@@ -36,11 +36,60 @@ import { WorkflowVersion } from '../../shared/openapi/model/workflowVersion';
 import { Tooltip } from '../../shared/tooltip';
 import { validationDescriptorPatterns } from '../../shared/validationMessages.model';
 import { InfoTabService } from './info-tab.service';
+import { VersionProviderUrlPipe } from '../../shared/entry/versionProviderUrl.pipe';
+import { BaseUrlPipe } from '../../shared/entry/base-url.pipe';
+import { MapFriendlyValuesPipe } from '../../search/map-friendly-values.pipe';
+import { MarkdownWrapperComponent } from '../../shared/markdown-wrapper/markdown-wrapper.component';
+import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
+import { MatLegacyTableModule } from '@angular/material/legacy-table';
+import { InfoTabCheckerWorkflowPathComponent } from '../../shared/entry/info-tab-checker-workflow-path/info-tab-checker-workflow-path.component';
+import { AiBubbleComponent } from '../../shared/ai-bubble/ai-bubble.component';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { FormsModule } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
+import { ClipboardModule } from '@angular/cdk/clipboard';
+import { SnackbarDirective } from '../../shared/snackbar.directive';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { NgIf, NgFor, NgClass, NgSwitch, NgSwitchCase, NgSwitchDefault, AsyncPipe, TitleCasePipe } from '@angular/common';
+import { DisplayTopicComponent } from 'app/shared/entry/info-tab-topic/display-topic/display-topic.component';
 
 @Component({
   selector: 'app-info-tab',
   templateUrl: './info-tab.component.html',
-  styleUrls: ['./info-tab.component.css'],
+  styleUrls: ['../../shared/styles/info-tab.component.scss', './info-tab.component.css'],
+  standalone: true,
+  imports: [
+    NgIf,
+    MatLegacyCardModule,
+    MatDividerModule,
+    MatLegacyTooltipModule,
+    MatLegacyButtonModule,
+    SnackbarDirective,
+    ClipboardModule,
+    MatIconModule,
+    FormsModule,
+    FlexModule,
+    AiBubbleComponent,
+    MatLegacyRadioModule,
+    InfoTabCheckerWorkflowPathComponent,
+    NgFor,
+    MatLegacyTableModule,
+    ExtendedModule,
+    NgClass,
+    MarkdownWrapperComponent,
+    NgSwitch,
+    NgSwitchCase,
+    NgSwitchDefault,
+    AsyncPipe,
+    TitleCasePipe,
+    MapFriendlyValuesPipe,
+    BaseUrlPipe,
+    VersionProviderUrlPipe,
+    DisplayTopicComponent,
+  ],
 })
 export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   @Input() validVersions;
@@ -53,7 +102,6 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   downloadZipLink: string;
   publicAccessibleTestParameterFile: boolean | null;
   isValidVersion = false;
-  zenodoUrl: string;
   @Input() selectedVersion: WorkflowVersion;
 
   public validationPatterns = validationDescriptorPatterns;
@@ -146,10 +194,10 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
       this.authors = null;
       this.description = null;
     }
+    this.displayTextForButton = this.infoTabService.getTRSId(this.workflow);
   }
 
   ngOnInit() {
-    this.zenodoUrl = Dockstore.ZENODO_AUTH_URL ? Dockstore.ZENODO_AUTH_URL.replace('oauth/authorize', '') : '';
     this.descriptorLanguages$ = this.descriptorLanguageService.filteredDescriptorLanguages$;
     this.descriptorType$ = this.workflowQuery.descriptorType$;
     this.isNFL$ = this.workflowQuery.isNFL$;
@@ -161,11 +209,7 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
     this.infoTabService.defaultTestFilePathEditing$
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((editing) => (this.defaultTestFilePathEditing = editing));
-    this.entryType$
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((entryType) => (this.displayTextForButton = this.infoTabService.getTRSId(this.workflow, entryType)));
     this.infoTabService.forumUrlEditing$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((editing) => (this.forumUrlEditing = editing));
-    this.infoTabService.topicEditing$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((topicEditing) => (this.topicEditing = topicEditing));
   }
   /**
    * Handle restubbing a workflow
@@ -197,13 +241,6 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
     this.infoTabService.setWorkflowPathEditing(!this.workflowPathEditing);
   }
 
-  toggleEditTopic() {
-    if (this.topicEditing) {
-      this.infoTabService.saveTopic(this.workflow, this.revertTopic.bind(this));
-    }
-    this.infoTabService.setTopicEditing(!this.topicEditing);
-  }
-
   toggleEditDefaultTestFilePath() {
     if (this.defaultTestFilePathEditing) {
       this.save();
@@ -216,18 +253,6 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
       this.save();
     }
     this.infoTabService.setForumUrlEditing(!this.forumUrlEditing);
-  }
-
-  revertTopic() {
-    this.workflow.topicManual = this.extendedWorkflow.topicManual;
-  }
-
-  revertTopicSelection() {
-    this.workflow.topicSelection = this.extendedWorkflow.topicSelection;
-  }
-
-  radioChange(event: MatRadioChange) {
-    this.infoTabService.saveTopicSelection(this.workflow, this.revertTopicSelection.bind(this));
   }
 
   save() {

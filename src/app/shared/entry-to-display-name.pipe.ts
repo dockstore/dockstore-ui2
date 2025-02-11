@@ -7,6 +7,7 @@ import { DockstoreTool, Workflow } from './openapi';
  */
 @Pipe({
   name: 'entryToDisplayName',
+  standalone: true,
 })
 export class EntryToDisplayNamePipe implements PipeTransform {
   transform(entry: DockstoreTool | Workflow): string {

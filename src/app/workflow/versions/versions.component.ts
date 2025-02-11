@@ -14,26 +14,60 @@
  *    limitations under the License.
  */
 import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatLegacyTableDataSource as MatTableDataSource, MatLegacyTableModule } from '@angular/material/legacy-table';
 import { faCodeBranch, faTag } from '@fortawesome/free-solid-svg-icons';
 import { takeUntil } from 'rxjs/operators';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { DateService } from '../../shared/date.service';
 import { Dockstore } from '../../shared/dockstore.model';
 import { DockstoreService } from '../../shared/dockstore.service';
-import { EntryType, VersionVerifiedPlatform } from '../../shared/openapi';
+import { Doi, EntryType, VersionVerifiedPlatform } from '../../shared/openapi';
 import { ExtendedWorkflow } from '../../shared/models/ExtendedWorkflow';
 import { SessionQuery } from '../../shared/session/session.query';
 import { ExtendedWorkflowQuery } from '../../shared/state/extended-workflow.query';
 import { Workflow } from '../../shared/openapi/model/workflow';
 import { WorkflowVersion } from '../../shared/openapi/model/workflowVersion';
 import { Versions } from '../../shared/versions';
+import { CommitUrlPipe } from '../../shared/entry/commit-url.pipe';
+import { DescriptorLanguagePipe } from '../../shared/entry/descriptor-language.pipe';
+import { DescriptorLanguageVersionsPipe } from '../../shared/entry/descriptor-language-versions.pipe';
+import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
+import { ViewWorkflowComponent } from '../view/view.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MatLegacyChipsModule } from '@angular/material/legacy-chips';
+import { NgIf, NgClass, NgFor, JsonPipe, DatePipe, KeyValuePipe, KeyValue } from '@angular/common';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { MatIconModule } from '@angular/material/icon';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { DoiBadgeComponent } from 'app/shared/entry/doi/doi-badge/doi-badge.component';
 
 @Component({
   selector: 'app-versions-workflow',
   templateUrl: './versions.component.html',
   styleUrls: ['./versions.component.scss'],
+  standalone: true,
+  imports: [
+    MatLegacyTableModule,
+    MatSortModule,
+    MatLegacyTooltipModule,
+    MatIconModule,
+    FlexModule,
+    NgIf,
+    NgFor,
+    MatLegacyChipsModule,
+    FontAwesomeModule,
+    ViewWorkflowComponent,
+    NgClass,
+    ExtendedModule,
+    JsonPipe,
+    DatePipe,
+    DescriptorLanguageVersionsPipe,
+    DescriptorLanguagePipe,
+    CommitUrlPipe,
+    KeyValuePipe,
+    DoiBadgeComponent,
+  ],
 })
 export class VersionsWorkflowComponent extends Versions implements OnInit, OnChanges, AfterViewInit {
   faTag = faTag;
@@ -41,7 +75,6 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
   @Input() versions: Array<WorkflowVersion>;
   @Input() workflowId: number;
   @Input() verifiedVersionPlatforms: Array<VersionVerifiedPlatform>;
-  zenodoUrl: string;
   _selectedVersion: WorkflowVersion;
   Dockstore = Dockstore;
   @Input() set selectedVersion(value: WorkflowVersion) {
@@ -55,6 +88,7 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
   public WorkflowType = Workflow;
   workflow: ExtendedWorkflow;
   entryType = EntryType;
+  DoiInitiatorEnum = Doi.InitiatorEnum;
   setNoOrderCols(): Array<number> {
     return [4, 5];
   }
@@ -82,13 +116,14 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
     const allColumns = [
       'name',
       'last_modified',
-      'descriptorTypeVersions',
+      this.workflow?.descriptorType === Workflow.DescriptorTypeEnum.NFL ? 'engineVersions' : 'descriptorTypeVersions',
       'valid',
       hiddenColumn,
       verifiedColumn,
       'open',
       metricsColumn,
       'snapshot',
+      'doi',
       'actions',
     ];
     this.displayedColumns = allColumns.filter((column) => {
@@ -108,8 +143,6 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
   }
 
   ngOnInit() {
-    this.zenodoUrl = Dockstore.ZENODO_AUTH_URL ? Dockstore.ZENODO_AUTH_URL.replace('oauth/authorize', '') : '';
-    this.publicPageSubscription();
     this.extendedWorkflowQuery.extendedWorkflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((workflow) => {
       this.workflow = workflow;
       if (workflow) {
@@ -125,6 +158,7 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
           },
         ],
       };
+      this.publicPageSubscription();
     });
   }
 
@@ -138,5 +172,16 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
     this.alertService.start('Changing version to ' + version.name);
     this.alertService.detailedSuccess();
     this.selectedVersionChange.emit(this._selectedVersion);
+  }
+
+  /**
+   * To prevent the Angular's keyvalue pipe from sorting by key
+   */
+  originalOrder = (a: KeyValue<string, Doi>, b: KeyValue<string, Doi>): number => {
+    return 0;
+  };
+
+  trackBy(index: number, item: WorkflowVersion) {
+    return item.id;
   }
 }

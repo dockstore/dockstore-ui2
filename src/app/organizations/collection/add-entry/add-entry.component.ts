@@ -1,14 +1,42 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {
+  MatLegacyDialogRef as MatDialogRef,
+  MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
+  MatLegacyDialogModule,
+} from '@angular/material/legacy-dialog';
 import { Observable } from 'rxjs';
 import { Collection, OrganizationUser } from '../../../shared/openapi';
 import { AddEntryQuery } from '../state/add-entry.query';
 import { AddEntryService } from '../state/add-entry.service';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { LoadingComponent } from '../../../shared/loading/loading.component';
 
 @Component({
   selector: 'app-add-entry',
   templateUrl: './add-entry.component.html',
   styleUrls: ['./add-entry.component.scss'],
+  standalone: true,
+  imports: [
+    MatLegacyDialogModule,
+    LoadingComponent,
+    FlexModule,
+    NgIf,
+    MatLegacyCardModule,
+    MatIconModule,
+    MatLegacyFormFieldModule,
+    MatLegacySelectModule,
+    NgFor,
+    MatLegacyOptionModule,
+    MatLegacyButtonModule,
+    AsyncPipe,
+  ],
 })
 export class AddEntryComponent implements OnInit {
   public memberships$: Observable<Array<OrganizationUser>>;

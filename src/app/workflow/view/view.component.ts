@@ -15,7 +15,7 @@
  */
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { RefreshService } from 'app/shared/refresh.service';
 import { BioWorkflow } from 'app/shared/openapi/model/bioWorkflow';
@@ -29,7 +29,7 @@ import { AlertService } from '../../shared/alert/state/alert.service';
 import { bootstrap4largeModalSize, ga4ghServiceIdPrefix, ga4ghWorkflowIdPrefix } from '../../shared/constants';
 import { DateService } from '../../shared/date.service';
 import { Dockstore } from '../../shared/dockstore.model';
-import { Entry, Tag, VersionVerifiedPlatform, WorkflowVersion } from '../../shared/openapi';
+import { Doi, Entry, VersionVerifiedPlatform, WorkflowVersion } from '../../shared/openapi';
 import { SessionQuery } from '../../shared/session/session.query';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { WorkflowService } from '../../shared/state/workflow.service';
@@ -41,11 +41,17 @@ import { SnaphotExporterModalComponent, SnapshotExporterAction } from '../snapsh
 import { VersionModalComponent } from '../version-modal/version-modal.component';
 import { VersionModalService } from '../version-modal/version-modal.service';
 import { ViewService } from './view.service';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatLegacyMenuModule } from '@angular/material/legacy-menu';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { NgIf, AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-view-workflow',
   templateUrl: './view.component.html',
   styleUrls: ['./view.component.css'],
+  standalone: true,
+  imports: [NgIf, MatLegacyButtonModule, MatLegacyMenuModule, MatLegacyTooltipModule, AsyncPipe],
 })
 export class ViewWorkflowComponent extends View<WorkflowVersion> implements OnInit {
   @Input() workflowId: number;
@@ -59,6 +65,7 @@ export class ViewWorkflowComponent extends View<WorkflowVersion> implements OnIn
   isPublic: boolean;
   userId: number;
   EntryType = EntryType;
+  DoiInitiatorEnum = Doi.InitiatorEnum;
   public entryType$: Observable<EntryType>;
   public workflow: BioWorkflow | Service | Notebook;
   public WorkflowType = Workflow;

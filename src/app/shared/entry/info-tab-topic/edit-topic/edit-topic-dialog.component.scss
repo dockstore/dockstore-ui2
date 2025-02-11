@@ -1,0 +1,8 @@
+@use '@angular/material' as mat;
+
+@import 'materialColorScheme.scss';
+
+.approved {
+  color: white !important;
+  background-color: $accent-3-dark;
+}

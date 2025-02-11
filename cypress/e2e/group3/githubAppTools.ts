@@ -98,14 +98,17 @@ describe('GitHub App Tools', () => {
       cy.contains('Tool storage type').click();
       cy.contains('Close').click();
 
+      cy.intercept('GET', '/api/lambdaEvents/**').as('lambdaEvents1');
       // GitHub App Logs
       cy.contains('Apps Logs').click();
+      cy.wait('@lambdaEvents1');
       cy.contains('There were problems retrieving the GitHub App logs for this organization.');
       cy.contains('Close').click();
       cy.intercept('GET', '/api/lambdaEvents/**', {
         body: [],
-      }).as('lambdaEvents');
+      }).as('lambdaEvents2');
       cy.contains('Apps Logs').click();
+      cy.wait('@lambdaEvents2');
       cy.contains('There are no GitHub App logs for this organization.');
       cy.contains('Close').click();
 
@@ -142,7 +145,7 @@ describe('GitHub App Tools', () => {
         'Organization',
         'Repository',
         'Reference',
-        'Success',
+        'Status',
         'Type',
       ];
       appLogColumns.forEach((column) => cy.contains(column));
@@ -166,7 +169,7 @@ describe('GitHub App Tools', () => {
       goToTab('Versions');
       isActiveTab('Versions');
       cy.get('table>tbody>tr').should('have.length', 1);
-      cy.contains('button', 'Actions').should('be.visible').click();
+      cy.contains('button', 'Actions').click();
       cy.contains('button', 'Refresh Version').should('be.disabled');
 
       // Fix hiding a version. You have to refresh the page to see that it was hidden in the table
@@ -177,7 +180,7 @@ describe('GitHub App Tools', () => {
       cy.get('[data-cy=save-version]').click();
       cy.get('[data-cy=valid').should('exist');
       cy.get('[data-cy=hidden').should('exist');
-      cy.contains('button', 'Actions').should('be.visible').click();
+      cy.contains('button', 'Actions').click();
       cy.contains('Edit Info').click();
       cy.get('[type="checkbox"]').uncheck();
       cy.get('[data-cy=save-version]').click();
@@ -206,7 +209,7 @@ describe('GitHub App Tools', () => {
       cy.contains('Default Version Required');
       cy.get('[data-cy=close-dialog-button]').click();
       goToTab('Versions');
-      cy.contains('button', 'Actions').should('be.visible').click();
+      cy.contains('button', 'Actions').click();
       cy.contains('button', 'Set as Default Version').should('be.visible').click();
       cy.wait(500);
       cy.get('#publishButton').should('not.be.disabled');

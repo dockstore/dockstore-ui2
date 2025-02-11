@@ -1,15 +1,26 @@
+import { AsyncPipe, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault, NgTemplateOutlet } from '@angular/common';
 import { Component, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import {
+  MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
+  MatLegacyDialogModule,
+  MatLegacyDialogRef as MatDialogRef,
+} from '@angular/material/legacy-dialog';
 import { Router } from '@angular/router';
 import { faOrcid } from '@fortawesome/free-brands-svg-icons';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { concat, Observable, of as observableOf, throwError } from 'rxjs';
 import { catchError, first, switchMap, tap } from 'rxjs/operators';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { Base } from '../../shared/base';
 import { Dockstore } from '../../shared/dockstore.model';
+import { BioWorkflow, Doi, WorkflowVersion } from '../../shared/openapi';
 import { TokenQuery } from '../../shared/state/token.query';
-import { BioWorkflow, WorkflowVersion } from '../../shared/openapi';
+import { ExporterStepComponent } from './exporter-step/exporter-step.component';
 import { SnapshotExporterModalService } from './snapshot-exporter-modal.service';
+import { StepState } from './step.state';
+import { MatLegacyCardModule } from '@angular/material/legacy-card';
 
 export enum SnapshotExporterAction {
   SNAPSHOT,
@@ -24,13 +35,6 @@ export interface SnapshotExporterDialogData {
   userId: number;
 }
 
-export enum StepState {
-  INITIAL,
-  EXECUTING,
-  COMPLETED,
-  ERROR,
-}
-
 export interface State {
   snapshot: StepState;
   doi: StepState;
@@ -41,6 +45,21 @@ export interface State {
 @Component({
   selector: 'app-snapshot-exporter-modal-component',
   templateUrl: './snaphot-exporter-modal.component.html',
+  standalone: true,
+  imports: [
+    MatLegacyDialogModule,
+    NgSwitch,
+    NgSwitchCase,
+    NgIf,
+    NgTemplateOutlet,
+    FlexModule,
+    MatLegacyButtonModule,
+    NgSwitchDefault,
+    ExporterStepComponent,
+    MatIconModule,
+    AsyncPipe,
+    MatLegacyCardModule,
+  ],
 })
 export class SnaphotExporterModalComponent extends Base {
   public hasZenodoToken$: Observable<boolean> = this.tokenQuery.hasZenodoToken$;
@@ -53,6 +72,7 @@ export class SnaphotExporterModalComponent extends Base {
   public Dockstore = Dockstore;
   public StepState = StepState;
   public SnapshotExporterAction = SnapshotExporterAction;
+  public DoiInitiatorEnum = Doi.InitiatorEnum;
   public title: string;
   public action: SnapshotExporterAction;
   public promptToConfirmSnapshot = false;
@@ -123,7 +143,7 @@ export class SnaphotExporterModalComponent extends Base {
     if (!this.isSnapshot) {
       observables.push(this.snapshotStep());
     }
-    if (!this.version.doiURL) {
+    if (!this.version.dois[this.DoiInitiatorEnum.USER]) {
       observables.push(this.requestDOIStep());
     }
     if (this.action === SnapshotExporterAction.ORCID) {
@@ -221,7 +241,7 @@ export class SnaphotExporterModalComponent extends Base {
   private calculateState(): State {
     return {
       snapshot: this.isSnapshot ? StepState.COMPLETED : StepState.INITIAL,
-      doi: this.version.doiURL ? StepState.COMPLETED : StepState.INITIAL,
+      doi: this.version.dois[Doi.InitiatorEnum.USER] ? StepState.COMPLETED : StepState.INITIAL,
       orcid: this.version.versionMetadata.userIdToOrcidPutCode[this.userId] ? StepState.COMPLETED : StepState.INITIAL,
       overall: StepState.INITIAL,
     };

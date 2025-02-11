@@ -15,8 +15,8 @@
  */
 import { HttpErrorResponse } from '@angular/common/http';
 import { AfterViewChecked, Component, OnInit, ViewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
+import { NgForm, FormsModule } from '@angular/forms';
+import { MatLegacyDialog as MatDialog, MatLegacyDialogModule } from '@angular/material/legacy-dialog';
 import { forkJoin, Observable } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
 import { AlertService } from '../../shared/alert/state/alert.service';
@@ -29,11 +29,34 @@ import { Tag } from '../../shared/openapi/model/tag';
 import { ToolDescriptor } from '../../shared/openapi/model/toolDescriptor';
 import { ToolQuery } from '../../shared/tool/tool.query';
 import { formErrors, validationDescriptorPatterns, validationMessages } from '../../shared/validationMessages.model';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatLegacyCheckboxModule } from '@angular/material/legacy-checkbox';
+import { MatIconModule } from '@angular/material/icon';
+import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
+import { NgIf, NgFor, NgClass } from '@angular/common';
+import { MatLegacyInputModule } from '@angular/material/legacy-input';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { AlertComponent } from '../../shared/alert/alert.component';
 
 @Component({
   selector: 'app-add-tag',
   templateUrl: './add-tag.component.html',
   styleUrls: ['./add-tag.component.css'],
+  standalone: true,
+  imports: [
+    MatLegacyDialogModule,
+    AlertComponent,
+    FormsModule,
+    MatLegacyFormFieldModule,
+    MatLegacyInputModule,
+    NgIf,
+    NgFor,
+    NgClass,
+    ExtendedModule,
+    MatIconModule,
+    MatLegacyCheckboxModule,
+    MatLegacyButtonModule,
+  ],
 })
 export class AddTagComponent extends Base implements OnInit, AfterViewChecked {
   addTagForm: NgForm;

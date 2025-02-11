@@ -21,7 +21,12 @@
       page.</mat-card
     >
   </div>
-  <mat-tab-group mat-stretch-tabs (selectedTabChange)="matTabChange($event)">
+  <div *ngIf="notFoundError" class="p-3">
+    <mat-card class="alert alert-warning mat-elevation-z">
+      <mat-icon class="alert-warning-icon">warning</mat-icon>Could not find the specified file.<br />Other files are displayed below.
+    </mat-card>
+  </div>
+  <mat-tab-group mat-stretch-tabs (selectedTabChange)="matTabChange($event)" [(selectedIndex)]="selectedTabIndex">
     <mat-tab *ngFor="let fileTab of fileTabs | keyvalue: originalOrder" [label]="fileTab.key">
       <ng-template matTabContent>
         <div class="p-3" *ngIf="fileTab.value.length === 0">

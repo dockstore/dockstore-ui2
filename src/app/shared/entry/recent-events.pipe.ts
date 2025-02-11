@@ -1,13 +1,12 @@
 import { Inject, Pipe, PipeTransform } from '@angular/core';
 import { Event, DockstoreTool, Workflow } from 'app/shared/openapi';
 import { EntryToDisplayNamePipe } from '../entry-to-display-name.pipe';
-import { EntryType } from '../../shared/enum/entry-type';
 
 @Pipe({
   name: 'recentEvents',
+  standalone: true,
 })
 export class RecentEventsPipe implements PipeTransform {
-  private EntryType = EntryType;
   constructor(@Inject(EntryToDisplayNamePipe) private entryToDisplayNamePipe: EntryToDisplayNamePipe) {}
 
   /**

@@ -14,16 +14,26 @@
  *     limitations under the License.
  */
 import { Component, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import {
+  MatLegacyDialogRef as MatDialogRef,
+  MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
+  MatLegacyDialogModule,
+} from '@angular/material/legacy-dialog';
+import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { Router } from '@angular/router';
 import { Dockstore } from '../../../shared/dockstore.model';
 import { DockstoreTool, Entry, Workflow } from '../../../shared/openapi';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { NgIf, TitleCasePipe } from '@angular/common';
+import { AlertComponent } from '../../../shared/alert/alert.component';
 
 @Component({
   selector: 'app-launch-to-codespace-dialog',
   templateUrl: './launch-to-codespace-dialog.component.html',
   styleUrls: ['./launch-to-codespace-dialog.component.scss'],
+  standalone: true,
+  imports: [MatLegacyDialogModule, AlertComponent, NgIf, FlexModule, MatLegacyButtonModule, TitleCasePipe],
 })
 export class LaunchToCodespaceDialogComponent {
   clicked: boolean;

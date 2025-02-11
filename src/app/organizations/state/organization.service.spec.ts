@@ -16,14 +16,17 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 import { Routes } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { OrganizationService } from './organization.service';
 import { OrganizationStore } from './organization.store';
+import { UrlResolverService } from '../../shared/url-resolver.service';
 
 @Component({
   template: ` <router-outlet></router-outlet> `,
+  standalone: true,
+  imports: [HttpClientTestingModule, MatSnackBarModule],
 })
 export class OrganizationsComponent {}
 
@@ -33,9 +36,13 @@ describe('OrganizationService', () => {
   let organizationService: OrganizationService;
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [OrganizationsComponent],
-      providers: [OrganizationService, OrganizationStore],
-      imports: [HttpClientTestingModule, MatSnackBarModule, RouterTestingModule.withRoutes(MOCK_ORGANIZATIONS_ROUTES)],
+      providers: [OrganizationService, OrganizationStore, UrlResolverService],
+      imports: [
+        HttpClientTestingModule,
+        MatSnackBarModule,
+        RouterTestingModule.withRoutes(MOCK_ORGANIZATIONS_ROUTES),
+        OrganizationsComponent,
+      ],
     });
 
     organizationService = TestBed.inject(OrganizationService);

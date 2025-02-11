@@ -29,12 +29,16 @@ import { WorkflowService } from '../../shared/state/workflow.service';
 import { WorkflowsService } from '../../shared/openapi';
 import { Workflow } from '../../shared/openapi/model/workflow';
 import { UserQuery } from '../../shared/user/user.query';
+import { AsyncPipe } from '@angular/common';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
 
 @Component({
   selector: 'app-refresh-workflow-organization',
   // Note that the template and style is actually from the shared one (used by both my-workflows and my-tools)
   templateUrl: './../../shared/refresh-organization/refresh-organization.component.html',
   styleUrls: ['./../../shared/refresh-organization/refresh-organization.component.css'],
+  standalone: true,
+  imports: [MatLegacyButtonModule, AsyncPipe],
 })
 export class RefreshWorkflowOrganizationComponent extends RefreshOrganizationComponent implements OnInit, OnChanges {
   @Input() protected orgWorkflowObject: OrgWorkflowObject<Workflow>;

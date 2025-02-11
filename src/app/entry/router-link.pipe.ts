@@ -4,6 +4,7 @@ import { EntryTypeMetadataService } from './type-metadata/entry-type-metadata.se
 
 @Pipe({
   name: 'routerLink',
+  standalone: true,
 })
 export class RouterLinkPipe implements PipeTransform {
   constructor(private entryTypeMetadataService: EntryTypeMetadataService) {}

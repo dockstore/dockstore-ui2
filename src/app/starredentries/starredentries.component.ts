@@ -2,23 +2,72 @@ import { Component, OnInit } from '@angular/core';
 import { Base } from '../shared/base';
 import { ImageProviderService } from '../shared/image-provider.service';
 import { ProviderService } from '../shared/provider.service';
-import { DockstoreTool, Entry, Organization, Workflow, EntryType as OpenApiEntryType } from '../shared/openapi';
+import { Entry, Organization, Workflow, EntryType as OpenApiEntryType } from '../shared/openapi';
 import { UserQuery } from '../shared/user/user.query';
 import { UsersService } from './../shared/openapi/api/users.service';
-import { MatTabChangeEvent } from '@angular/material/tabs';
+import { MatLegacyTabChangeEvent as MatTabChangeEvent, MatLegacyTabsModule } from '@angular/material/legacy-tabs';
 import { UntypedFormControl } from '@angular/forms';
 import { ExtendedDockstoreTool } from 'app/shared/models/ExtendedDockstoreTool';
 import { ExtendedWorkflow } from 'app/shared/models/ExtendedWorkflow';
 import { OrgLogoService } from '../shared/org-logo.service';
 import { EntryType } from '../shared/enum/entry-type';
-import { ActivatedRoute } from '@angular/router';
-import { Location } from '@angular/common';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { Location, NgIf, NgClass, NgFor, NgTemplateOutlet, SlicePipe, DatePipe } from '@angular/common';
 import { Dockstore } from 'app/shared/dockstore.model';
+import { DescriptorLanguagePipe } from '../shared/entry/descriptor-language.pipe';
+import { BaseUrlPipe } from '../shared/entry/base-url.pipe';
+import { RouterLinkPipe } from '../entry/router-link.pipe';
+import { GravatarPipe } from '../gravatar/gravatar.pipe';
+import { OrganizationStarringComponent } from '../organizations/organization/organization-starring/organization-starring.component';
+import { ImgFallbackDirective } from '../shared/img-fallback.directive';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatLegacyChipsModule } from '@angular/material/legacy-chips';
+import { MarkdownWrapperComponent } from '../shared/markdown-wrapper/markdown-wrapper.component';
+import { StarringComponent } from '../starring/starring.component';
+import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
+import { OrganizationStargazersComponent } from '../organizations/organization/organization-stargazers/organization-stargazers.component';
+import { MatIconModule } from '@angular/material/icon';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { StargazersComponent } from '../stargazers/stargazers.component';
+import { HeaderComponent } from '../header/header.component';
+import { MySidebarComponent } from '../my-sidebar/my-sidebar.component';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
 
 @Component({
   selector: 'app-starredentries',
   templateUrl: './starredentries.component.html',
   styleUrls: ['./starredentries.component.scss'],
+  standalone: true,
+  imports: [
+    FlexModule,
+    MySidebarComponent,
+    HeaderComponent,
+    NgIf,
+    StargazersComponent,
+    MatLegacyButtonModule,
+    MatIconModule,
+    OrganizationStargazersComponent,
+    MatLegacyTabsModule,
+    NgClass,
+    ExtendedModule,
+    MatLegacyCardModule,
+    NgFor,
+    NgTemplateOutlet,
+    RouterLink,
+    StarringComponent,
+    MarkdownWrapperComponent,
+    MatLegacyChipsModule,
+    MatLegacyTooltipModule,
+    ImgFallbackDirective,
+    OrganizationStarringComponent,
+    SlicePipe,
+    DatePipe,
+    GravatarPipe,
+    RouterLinkPipe,
+    BaseUrlPipe,
+    DescriptorLanguagePipe,
+  ],
 })
 export class StarredEntriesComponent extends Base implements OnInit {
   Dockstore = Dockstore;

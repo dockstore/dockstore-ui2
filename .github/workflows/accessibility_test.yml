@@ -12,11 +12,11 @@ jobs:
     # Uses if/else expression evaluation workaround from https://github.com/actions/runner/issues/409#issuecomment-752775072
     # 'matrix.branch == github.base_ref' is the condition, 'base' is the true value and 'current' is the false value
     name: Accessibility test (${{ matrix.branch == github.base_ref && 'base' || 'current' }} branch)
-  
+
     runs-on: ubuntu-20.04
     services:
       postgres:
-        image: postgres:13.3
+        image: postgres:16.1
         env:
           POSTGRES_USER: postgres
           POSTGRES_DB: postgres
@@ -56,7 +56,7 @@ jobs:
 
       - name: Cache dependencies
         id: cache-dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         env:
           cache-version: version1
         with:
@@ -97,17 +97,17 @@ jobs:
           if [[ "${{ matrix.branch }}" == "$GITHUB_BASE_REF" ]]; then
             echo "Running accessibility test for base branch"
             npm run accessibility-test -- -RB
-          else 
+          else
             echo "Running accessibility test for current branch"
             npm run accessibility-test -- -R
           fi
-          
+
       - name: Save accessibility results
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: accessibility-results
+          name: accessibility-results-${{ matrix.branch == github.base_ref && 'base' || 'current' }}
           path: accessibility-results/
-  
+
   compare_accessibility_results:
     needs: run-accessibility-test
     runs-on: ubuntu-20.04
@@ -120,12 +120,12 @@ jobs:
           node-version-file: '.nvmrc'
 
       - name: Download accessibility results
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
-          name: accessibility-results
           # Download to this directory because this is the directory that the accessibility script looks at for the results
-          path: accessibility-results 
-          
+          path: accessibility-results
+          pattern: accessibility-results-*
+          merge-multiple: true
+
       - name: Compare accessibility results
         run: npm run accessibility-test -- -A
-        

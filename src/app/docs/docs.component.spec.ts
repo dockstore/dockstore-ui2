@@ -15,7 +15,7 @@
  */
 
 import { TestBed, waitForAsync } from '@angular/core/testing';
-import { HeaderModule } from './../shared/modules/header.module';
+import { MatLegacySnackBarModule } from '@angular/material/legacy-snack-bar';
 import { RouterLinkStubDirective, RouterOutletStubComponent } from './../test/router-stubs';
 import { DocsComponent } from './docs.component';
 
@@ -25,24 +25,26 @@ import { DocsComponent } from './docs.component';
 describe('DocsComponent', () => {
   // let component: DocsComponent;
   // let fixture: ComponentFixture<DocsComponent>;
+  let fixture;
+  let component;
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [DocsComponent, RouterLinkStubDirective, RouterOutletStubComponent],
-        imports: [HeaderModule],
+        declarations: [RouterLinkStubDirective, RouterOutletStubComponent],
+        imports: [DocsComponent, MatLegacySnackBarModule],
       }).compileComponents();
     })
   );
 
-  // beforeEach(() => {
-  //   fixture = TestBed.createComponent(DocsComponent);
-  //   component = fixture.componentInstance;
-  //   fixture.detectChanges();
-  // });
+  beforeEach(() => {
+    fixture = TestBed.createComponent(DocsComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
 
-  // it('should create', () => {
-  //   expect(component).toBeTruthy();
-  // });
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
 
   // it('should render subject', () => {
   //   const h3 = fixture.debugElement.query(By.css('h3'));

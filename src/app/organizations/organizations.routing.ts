@@ -14,7 +14,8 @@
  *    limitations under the License.
  */
 
-import { RouterModule, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
+import { OrgSchemaService } from '../shared/org-schema.service';
 
 import { CollectionComponent } from './collection/collection.component';
 import { OrganizationComponent } from './organization/organization.component';
@@ -22,8 +23,13 @@ import { OrganizationsComponent } from './organizations/organizations.component'
 
 const ORGANIZATIONS_ROUTES: Routes = [
   { path: '', component: OrganizationsComponent, data: { title: 'Dockstore | Organizations' } },
-  { path: ':organizationName', component: OrganizationComponent, data: { title: 'Dockstore | Organization' } },
+  {
+    path: ':organizationName',
+    component: OrganizationComponent,
+    data: { title: 'Dockstore | Organization' },
+    providers: [OrgSchemaService],
+  },
   { path: ':organizationName/collections/:collectionName', component: CollectionComponent, data: { title: 'Dockstore | Collection' } },
 ];
 
-export const OrganizationsRouting = RouterModule.forChild(ORGANIZATIONS_ROUTES);
+export const OrganizationsRouting = ORGANIZATIONS_ROUTES;

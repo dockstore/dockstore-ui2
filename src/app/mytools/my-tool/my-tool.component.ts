@@ -14,7 +14,7 @@
  *     limitations under the License.
  */
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ActivatedRoute, NavigationEnd, Router, RouterEvent } from '@angular/router';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { AlertService } from 'app/shared/alert/state/alert.service';
@@ -22,7 +22,6 @@ import { SessionQuery } from 'app/shared/session/session.query';
 import { SessionService } from 'app/shared/session/session.service';
 import { MyEntriesQuery } from 'app/shared/state/my-entries.query';
 import { MyEntriesStateService } from 'app/shared/state/my-entries.service';
-import { AuthService } from 'ng2-ui-auth';
 import { combineLatest, Observable } from 'rxjs';
 import { filter, map, takeUntil } from 'rxjs/operators';
 import { RegisterToolComponent } from '../../container/register-tool/register-tool.component';
@@ -31,6 +30,7 @@ import { Tool } from '../../container/register-tool/tool';
 import { AccountsService } from '../../loginComponents/accounts/external/accounts.service';
 import { OrgWorkflowObject } from '../../myworkflows/my-workflow/my-workflow.component';
 import { MyWorkflowsService } from '../../myworkflows/myworkflows.service';
+import { AuthService } from '../../ng2-ui-auth/public_api';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
 import { bootstrap4largeModalSize } from '../../shared/constants';
 import { ContainerService } from '../../shared/container.service';
@@ -47,11 +47,45 @@ import { UserQuery } from '../../shared/user/user.query';
 import { MytoolsService } from '../mytools.service';
 import { EntryType } from '../../shared/enum/entry-type';
 import { UserService } from 'app/shared/user/user.service';
+import { ContainerComponent } from '../../container/container.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { MatLegacyMenuModule } from '@angular/material/legacy-menu';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { NgIf, AsyncPipe, TitleCasePipe } from '@angular/common';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatIconModule } from '@angular/material/icon';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { HeaderComponent } from '../../header/header.component';
+import { MySidebarComponent } from '../../my-sidebar/my-sidebar.component';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { SidebarAccordionComponent } from '../sidebar-accordion/sidebar-accordion.component';
+import { SidebarAccordionComponent as WorkflowSidebarAccordionComponent } from '../../myworkflows/sidebar-accordion/sidebar-accordion.component';
+import { Dockstore } from 'app/shared/dockstore.model';
 
 @Component({
   selector: 'app-my-tool',
   templateUrl: './my-tool.component.html',
   styleUrls: ['../../shared/styles/my-entry.component.scss'],
+  standalone: true,
+  imports: [
+    FlexModule,
+    MySidebarComponent,
+    HeaderComponent,
+    MatLegacyButtonModule,
+    MatIconModule,
+    MatSidenavModule,
+    NgIf,
+    MatLegacyTooltipModule,
+    MatLegacyMenuModule,
+    SidebarAccordionComponent,
+    WorkflowSidebarAccordionComponent,
+    MatLegacyCardModule,
+    FontAwesomeModule,
+    ContainerComponent,
+    AsyncPipe,
+    TitleCasePipe,
+  ],
 })
 export class MyToolComponent extends MyEntry implements OnInit {
   faGithub = faGithub;
@@ -69,6 +103,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
   public groupEntriesObject$: Observable<Array<OrgToolObject<DockstoreTool>>>;
   public groupAppToolEntryObjects$: Observable<Array<OrgWorkflowObject<Workflow>>>;
   EntryType = EntryType;
+  Dockstore = Dockstore;
   constructor(
     private mytoolsService: MytoolsService,
     protected configuration: Configuration,
@@ -115,6 +150,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
     this.router.events
       .pipe(
         filter((event) => event instanceof NavigationEnd),
+        map((event) => event as NavigationEnd),
         takeUntil(this.ngUnsubscribe)
       )
       .subscribe((event: RouterEvent) => {
@@ -222,7 +258,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
 
   addToExistingTools(): void {
     if (this.user) {
-      this.userService.addUserToWorkflows(this.user.id);
+      this.userService.addUserToWorkflows(this.user.id, EntryType.Tool);
     }
   }
 

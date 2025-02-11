@@ -3,6 +3,7 @@ import { CloudInstance } from '../../shared/openapi';
 
 @Pipe({
   name: 'filterCloudInstances',
+  standalone: true,
 })
 export class FilterCloudInstancesPipe implements PipeTransform {
   transform(cloudInstances: Array<CloudInstance>, filterFor: string): Array<CloudInstance> | null {

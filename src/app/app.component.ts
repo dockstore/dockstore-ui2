@@ -1,21 +1,40 @@
+import { AsyncPipe, NgIf } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 import { filter, map, mergeMap, takeUntil } from 'rxjs/operators';
+import { BannerComponent } from './banner/banner.component';
+import { ChangeUsernameBannerComponent } from './changeUsernameBanner/changeUsernameBanner.component';
+import { FooterComponent } from './footer/footer.component';
+import { NavbarComponent } from './navbar/navbar.component';
+import { SitewideNotificationsComponent } from './notifications/sitewide-notifications.component';
 import { AlertService } from './shared/alert/state/alert.service';
 import { currentPrivacyPolicyVersion, currentTOSVersion } from './shared/constants';
 import { Dockstore } from './shared/dockstore.model';
 import { User } from './shared/openapi/model/user';
 import { TrackLoginService } from './shared/track-login.service';
-import { TosBannerQuery } from './tosBanner/state/tos-banner.query';
 import { UserQuery } from './shared/user/user.query';
+import { TosBannerQuery } from './tosBanner/state/tos-banner.query';
 import { TosBannerService } from './tosBanner/state/tos-banner.service';
+import { TosBannerComponent } from './tosBanner/tos-banner.component';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
+  standalone: true,
+  imports: [
+    NgIf,
+    TosBannerComponent,
+    ChangeUsernameBannerComponent,
+    SitewideNotificationsComponent,
+    BannerComponent,
+    NavbarComponent,
+    RouterOutlet,
+    FooterComponent,
+    AsyncPipe,
+  ],
 })
 export class AppComponent implements OnInit, OnDestroy {
   public isLoggedIn$: Observable<boolean>;

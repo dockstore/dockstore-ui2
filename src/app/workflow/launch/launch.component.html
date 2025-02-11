@@ -30,7 +30,10 @@
         <mat-card *ngIf="entryType === EntryType.Tool" class="alert alert-info mat-elevation-z" role="alert">
           <mat-icon>info</mat-icon> GitHub App Tools are launched in workflow mode with the Dockstore CLI
         </mat-card>
-        <mat-card *ngIf="(isNFL$ | async) === false" matTooltip="Commands for creating a runtime JSON template">
+        <mat-card
+          *ngIf="(isNFL$ | async) === false && (isGalaxy$ | async) === false"
+          matTooltip="Commands for creating a runtime JSON template"
+        >
           Make a runtime JSON template and fill in desired inputs, outputs, and other parameters
           <button mat-icon-button color="secondary" matTooltip="Copy command" [cdkCopyToClipboard]="params" appSnackbar>
             <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
@@ -44,8 +47,28 @@
             <pre>{{ wgetTestJsonDescription }}</pre>
           </span>
         </mat-card>
+        <mat-card *ngIf="(isGalaxy$ | async) === true" matTooltip="Commands for creating a runtime JSON template">
+          Download the workflow and other included files (such as example parameter files)
+          <button mat-icon-button color="secondary" matTooltip="Copy command" [cdkCopyToClipboard]="planemoSharedZipString" appSnackbar>
+            <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
+          </button>
+          <pre>{{ planemoSharedZipString }}</pre>
+
+          Then, create a runtime parameter template with Planemo and fill in desired inputs, outputs, and other parameters
+          <button mat-icon-button color="secondary" matTooltip="Copy command" [cdkCopyToClipboard]="planemoLocalInitString" appSnackbar>
+            <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
+          </button>
+          <pre>{{ planemoLocalInitString }}</pre>
+          <span *ngIf="wgetTestJsonDescription">
+            or grab one that the workflow author has provided (if applicable)
+            <button mat-icon-button color="secondary" matTooltip="Copy command" [cdkCopyToClipboard]="wgetTestJsonDescription" appSnackbar>
+              <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
+            </button>
+            <pre>{{ wgetTestJsonDescription }}</pre>
+          </span>
+        </mat-card>
         <mat-card
-          *ngIf="(isNFL$ | async) === false"
+          *ngIf="(isNFL$ | async) === false && (isGalaxy$ | async) === false"
           matTooltip="Commands for launching tool through Dockstore CLI (Supports file provisioning)"
         >
           Run locally with the Dockstore CLI
@@ -68,6 +91,16 @@
             </button>
             <pre>{{ nextflowNativeLaunchDescription }}</pre>
             <small>*You can override the default parameters by appending --paramName 'value' to the above command.</small>
+          </div>
+        </mat-card>
+
+        <mat-card *ngIf="(isGalaxy$ | async) && DockstoreToolType.ModeEnum.HOSTED !== mode && WorkflowType.ModeEnum.HOSTED !== mode">
+          <div matTooltip="Planemo can run a workflow locally">
+            Run with Planemo
+            <button mat-icon-button color="secondary" matTooltip="Copy command" [cdkCopyToClipboard]="planemoLocalLaunchString" appSnackbar>
+              <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
+            </button>
+            <pre>{{ planemoLocalLaunchString }}</pre>
           </div>
         </mat-card>
 

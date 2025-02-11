@@ -3,21 +3,50 @@ import { TokenSource } from '../shared/enum/token-source.enum';
 import { Profile, TokenUser, User } from '../shared/openapi';
 import { UsersService } from '../shared/openapi/api/users.service';
 import { UserService } from '../shared/user/user.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AlertService } from '../shared/alert/state/alert.service';
 import { GithubAppsLogsComponent } from '../myworkflows/sidebar-accordion/github-apps-logs/github-apps-logs.component';
 import { accountInfo, bootstrap4extraLargeModalSize } from '../shared/constants';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { UserQuery } from '../shared/user/user.query';
 import { Base } from '../shared/base';
 import { AccountInfo } from '../loginComponents/accounts/external/accounts.component';
+import { UrlResolverService } from '../shared/url-resolver.service';
+import { RecentEventsComponent } from '../home-page/recent-events/recent-events.component';
+import { MatLegacyTabsModule } from '@angular/material/legacy-tabs';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatLineModule } from '@angular/material/core';
+import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { NgIf, NgFor } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
+import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { HeaderComponent } from '../header/header.component';
 
 @Component({
   selector: 'app-user-page',
   templateUrl: './user-page.component.html',
   styleUrls: ['./user-page.component.scss'],
+  standalone: true,
+  imports: [
+    HeaderComponent,
+    FlexModule,
+    ExtendedModule,
+    MatIconModule,
+    NgIf,
+    MatLegacyCardModule,
+    MatLineModule,
+    MatBadgeModule,
+    MatLegacyButtonModule,
+    MatLegacyTooltipModule,
+    MatLegacyTabsModule,
+    RecentEventsComponent,
+    NgFor,
+  ],
 })
 export class UserPageComponent extends Base implements OnInit {
   public user: User;
@@ -35,9 +64,9 @@ export class UserPageComponent extends Base implements OnInit {
     private userService: UserService,
     private usersService: UsersService,
     private activatedRoute: ActivatedRoute,
-    private router: Router,
     private alertService: AlertService,
-    private userQuery: UserQuery
+    private userQuery: UserQuery,
+    public urlResolverService: UrlResolverService
   ) {
     super();
   }
@@ -67,7 +96,8 @@ export class UserPageComponent extends Base implements OnInit {
       },
       (error: HttpErrorResponse) => {
         this.alertService.detailedError(error);
-        this.router.navigateByUrl('/page-not-found'); //redirects to Page Not Found if user doesn't exist or another error occurs;
+        // Redirects to Page Not Found if user doesn't exist or another error occurs
+        this.urlResolverService.showPageNotFound();
       }
     );
   }

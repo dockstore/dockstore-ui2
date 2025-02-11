@@ -6,7 +6,6 @@ import { BioWorkflow } from '../openapi/model/bioWorkflow';
 import { Service } from '../openapi/model/service';
 import { Notebook } from '../openapi/model/notebook';
 import { ExtendedWorkflowService } from './extended-workflow.service';
-import { WorkflowQuery } from './workflow.query';
 import { WorkflowStore } from './workflow.store';
 
 @Injectable({ providedIn: 'root' })
@@ -21,11 +20,7 @@ export class WorkflowService {
   nsWorkflows$: BehaviorSubject<Array<Workflow>> = new BehaviorSubject<Array<Workflow>>(null);
   private copyBtnSource = new BehaviorSubject<any>(null); // This is the currently selected copy button.
   copyBtn$ = this.copyBtnSource.asObservable();
-  constructor(
-    private workflowStore: WorkflowStore,
-    private extendedWorkflowService: ExtendedWorkflowService,
-    private workflowQuery: WorkflowQuery
-  ) {}
+  constructor(private workflowStore: WorkflowStore, private extendedWorkflowService: ExtendedWorkflowService) {}
 
   /**
    * Converts the mapping of roles to workflows to a concatentation of all the workflows
@@ -51,18 +46,6 @@ export class WorkflowService {
       this.workflowStore.remove();
       this.extendedWorkflowService.remove();
     }
-  }
-
-  updateActiveTopic(topic: string) {
-    const newWorkflow = { ...this.workflowQuery.getActive(), topicManual: topic };
-    this.workflowStore.upsert(newWorkflow.id, newWorkflow);
-    this.extendedWorkflowService.update(newWorkflow);
-  }
-
-  updateActiveTopicSelection(topicSelection: Workflow.TopicSelectionEnum) {
-    const newWorkflow = { ...this.workflowQuery.getActive(), topicSelection: topicSelection };
-    this.workflowStore.upsert(newWorkflow.id, newWorkflow);
-    this.extendedWorkflowService.update(newWorkflow);
   }
 
   get() {

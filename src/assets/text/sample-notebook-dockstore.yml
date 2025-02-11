@@ -1,0 +1,11 @@
+version: 1.2 # The .dockstore.yml schema version
+notebooks:
+  - format: <JUPYTER>
+    language: <PYTHON | R | JAVASCRIPT | SCALA | JULIA | OTHER>
+    path: <String>
+    kernel: <String>
+    otherFiles: <String Array>
+    readMePath: <String>
+    authors:
+      - orcid: <String>
+    topic: <String>

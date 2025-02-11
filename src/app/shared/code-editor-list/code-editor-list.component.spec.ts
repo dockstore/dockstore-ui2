@@ -1,14 +1,14 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ClipboardModule } from '@angular/cdk/clipboard';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
+import { MatLegacyCardModule as MatCardModule } from '@angular/material/legacy-card';
+import { MatLegacyFormFieldModule as MatFormFieldModule } from '@angular/material/legacy-form-field';
 import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
-import { MatTabsModule } from '@angular/material/tabs';
+import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
+import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
 
 import { WorkflowService } from '../state/workflow.service';
 import { PrivateFilePathPipe } from './../../shared/entry/private-file-path.pipe';
@@ -27,7 +27,6 @@ describe('CodeEditorListComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [CodeEditorListComponent, CodeEditorComponent, PublicFileDownloadPipe, PrivateFilePathPipe],
         imports: [
           MatButtonModule,
           MatTabsModule,
@@ -39,6 +38,10 @@ describe('CodeEditorListComponent', () => {
           MatCardModule,
           ClipboardModule,
           HttpClientTestingModule,
+          CodeEditorListComponent,
+          CodeEditorComponent,
+          PublicFileDownloadPipe,
+          PrivateFilePathPipe,
         ],
         providers: [
           { provide: WorkflowService, useClass: WorkflowStubService },

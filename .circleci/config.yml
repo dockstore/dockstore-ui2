@@ -3,7 +3,7 @@ orbs:
   aws-s3: circleci/aws-s3@3.0.0
   aws-cli: circleci/aws-cli@3.1.1
   slack: circleci/slack@4.4.4
-  browser-tools: circleci/browser-tools@1.4.7
+  browser-tools: circleci/browser-tools@1.4.8
 executors:
   integration_test_exec: # declares a reusable executor
     docker:
@@ -13,7 +13,7 @@ executors:
           password: $DOCKERHUB_PASSWORD
         environment:
           JAVA_TOOL_OPTIONS: -Xmx2g # Java can read cgroup. Sadly the cgroup in CircleCI is wrong. Have to manually set. Using 1/2 memory as heap.
-      - image: cimg/postgres:13.3
+      - image: cimg/postgres:<< pipeline.parameters.postgres-tag >>
         command: postgres -c max_connections=200 -c jit=off
         auth:
           username: dockstoretestuser
@@ -81,6 +81,10 @@ jobs:
     steps:
       - setup_nightly_tests
       - run:
+          name: Reset dockstoretestuser4's resources
+          # Reset user dockstoretestuser4's resources such that it has no registered tools and published workflows
+          command: bash scripts/reset-dockstoretestuser4-resources.sh << parameters.stack >>
+      - run:
           name: Run remote verification test against << parameters.stack >> (with auth)
           command: bash -i -c 'npm run test-<< parameters.stack >>-auth'
           environment:
@@ -89,6 +93,8 @@ jobs:
           name: Reset dockstoretestuser4's resources
           # Reset user dockstoretestuser4's resources such that it has no registered tools and published workflows
           command: bash scripts/reset-dockstoretestuser4-resources.sh << parameters.stack >>
+          # Reset even if the tests failed
+          when: always
       - upload_nightly_artifacts
       - slack/notify:
           channel: $<< parameters.stack >>_id
@@ -131,6 +137,13 @@ jobs:
           command: |
             bash -i -c 'npm run circle-ci-license-test-file'
             bash scripts/detect-package-json-changes.sh
+      # Override the use_snapshot in package.json to instead build against develop webservice
+      - when:
+         condition: << pipeline.parameters.sanity-check-against-develop >>
+         steps:
+          - run:
+              name: set use_snapshot to true (grab snapshot artifacts)
+              command: bash -i -c 'npm config set dockstore-ui2:use_snapshot true'
       - build_ui
       - run:
           name: Install codecov
@@ -184,7 +197,7 @@ jobs:
       - setup_integration_test
       - run:
           name: Test
-          command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/e2e/<< parameters.integration_test_name >>/**/*'
+          command: bash -i -c 'npx cypress run --browser chrome --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/e2e/<< parameters.integration_test_name >>/**/*'
           no_output_timeout: 30m
           environment:
             MOCHA_FILE: integration-tests/test-results/junit/test-results-[hash].xml
@@ -211,7 +224,7 @@ jobs:
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
-      - image: cimg/python:3.11
+      - image: cimg/python:<< pipeline.parameters.python-tag >>
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
@@ -256,17 +269,25 @@ jobs:
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
-      - image: cimg/python:3.11
+      - image: cimg/python:<< pipeline.parameters.python-tag >>
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
     steps:
-      - get_workspace
-      # Override the webservice version in package.json to instead build against develop webservice
-      - run:
-          name: set webservice to develop
-          command: bash -i -c 'npm config set dockstore-ui2:webservice_version develop'
-      - build_ui
+      - run: # should not need this, but circle ci does not like it when a condition wipes out a whole job https://discuss.circleci.com/t/pipeline-parameters-in-steps-when-conditions-seems-to-have-no-value-using-dynamic-configuration/50524/2
+          name: Java/Maven/Python versions
+          command: |
+            java -version
+            npm --version
+      - when:
+          condition:
+            not: << pipeline.parameters.sanity-check-against-develop >>
+          steps:
+            - get_workspace
+            - run:
+                name: set use_snapshot to true
+                command: bash -i -c 'npm config set dockstore-ui2:use_snapshot true'
+            - build_ui
 
 parameters:
   run_nightly_auth:
@@ -278,6 +299,15 @@ parameters:
   java-tag:
     type: string
     default: "17.0.4-browsers"
+  postgres-tag:
+    type: string
+    default: "16.1"
+  python-tag:
+    type: string
+    default: "3.11"
+  sanity-check-against-develop:
+    type: boolean
+    default: false
 
 workflows:
   version: 2

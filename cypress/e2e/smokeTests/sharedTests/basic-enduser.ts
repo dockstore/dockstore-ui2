@@ -1,6 +1,6 @@
 import { ga4ghPath } from '../../../../src/app/shared/constants';
 import { ToolDescriptor } from '../../../../src/app/shared/openapi';
-import { goToTab, checkFeaturedContent, checkNewsAndUpdates, checkMastodonFeedOrTwitterFeed } from '../../../support/commands';
+import { goToTab, checkFeaturedContent, checkNewsAndUpdates, checkMastodonFeed } from '../../../support/commands';
 
 // Test an entry, these should be ambiguous between tools, workflows, and notebooks.
 describe('run stochastic smoke test', () => {
@@ -10,18 +10,6 @@ describe('run stochastic smoke test', () => {
 });
 function testEntry(tab: string) {
   function goToRandomEntry() {
-    // Notebooks search is not functional in staging or prod in 1.14.
-    // TODO after 1.15 release: remove the following code path
-    if (tab === 'Notebooks' && isStagingOrProd()) {
-      cy.visit('/notebooks');
-      cy.get('[data-cy=entry-link]')
-        .eq(0)
-        .then((el) => {
-          cy.log(el.prop('href')); // log the href in case a test fails
-          cy.visit(el.prop('href'));
-        });
-      return;
-    }
     cy.visit('/search');
     cy.get('[data-cy=workflowColumn] a');
     goToTab(tab);
@@ -85,7 +73,6 @@ function isStagingOrProd() {
   return baseUrl === 'https://staging.dockstore.org' || baseUrl === 'https://dockstore.org';
 }
 
-const organizations = [['Broad Institute']];
 describe('Check organizations page', () => {
   it('has multiple organizations and org with content', () => {
     cy.visit('/');
@@ -154,9 +141,6 @@ describe('Test search page functionality', () => {
     cy.url().should('contain', 'verified=1');
     cy.get('[data-cy=workflowColumn] a');
     cy.contains('mat-checkbox', /^[ ]*verified/);
-    cy.get('[data-cy=verificationStatus] a').each(($el, index, $list) => {
-      cy.wrap($el).contains('done');
-    });
   });
 });
 
@@ -374,7 +358,7 @@ describe('Check extra content', () => {
 
   it('mastodon feed should be visible', () => {
     cy.visit('/');
-    checkMastodonFeedOrTwitterFeed();
+    checkMastodonFeed();
   });
 });
 

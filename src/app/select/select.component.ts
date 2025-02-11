@@ -15,10 +15,17 @@
  */
 
 import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { NgFor, NgIf } from '@angular/common';
+import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
 
 @Component({
   selector: 'app-select',
   templateUrl: './select.component.html',
+  standalone: true,
+  imports: [MatLegacyFormFieldModule, MatLegacySelectModule, NgFor, MatLegacyOptionModule, MatLegacyTooltipModule, NgIf],
 })
 export class SelectComponent implements OnChanges {
   @Input() items: Array<any>;

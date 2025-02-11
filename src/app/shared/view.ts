@@ -13,8 +13,8 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Directive, Input, OnDestroy } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Directive, Input } from '@angular/core';
+import { Observable } from 'rxjs';
 import { AlertQuery } from './alert/state/alert.query';
 import { Base } from './base';
 import { DateService } from './date.service';

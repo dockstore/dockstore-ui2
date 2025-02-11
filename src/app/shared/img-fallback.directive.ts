@@ -2,6 +2,7 @@ import { Directive, ElementRef, HostListener, Input } from '@angular/core';
 
 @Directive({
   selector: 'img[appFallback]',
+  standalone: true,
 })
 export class ImgFallbackDirective {
   @Input() appFallback: string;

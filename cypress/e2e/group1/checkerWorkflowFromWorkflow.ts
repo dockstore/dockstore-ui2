@@ -46,8 +46,8 @@ describe('Checker workflow test from my-workflows', () => {
       cy.get('#launchCheckerWorkflow').should('not.exist');
       goToTab('Info');
       cy.get('#addCheckerWorkflowButton').should('be.visible').click();
-      cy.get('#checkerWorkflowPath').type('/Dockstore.cwl');
-      cy.get('#checkerWorkflowTestParameterFilePath').type('/test.json');
+      cy.get('#checkerWorkflowPath').should('be.visible').type('/Dockstore.cwl');
+      cy.get('#checkerWorkflowTestParameterFilePath').should('be.visible').type('/test.json');
       cy.fixture('refreshedChecker').then((json) => {
         cy.intercept('GET', '/api/workflows/*/refresh', {
           body: json,
@@ -123,7 +123,7 @@ describe('Checker workflow test from my-workflows', () => {
       cy.url().should('eq', Cypress.config().baseUrl + '/my-workflows/github.com/A/l');
 
       goToTab('Versions');
-      cy.contains('button', 'Actions').should('be.visible').click();
+      cy.contains('button', 'Actions').click();
       cy.get('[data-cy=set-default-version-button]').should('be.visible').click();
       goToTab('Info');
 

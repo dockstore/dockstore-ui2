@@ -14,8 +14,8 @@
  *    limitations under the License.
  */
 import { AfterViewChecked, Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { NgForm, FormsModule } from '@angular/forms';
+import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogModule } from '@angular/material/legacy-dialog';
 import { Service } from 'app/shared/openapi/model/service';
 import { Notebook } from 'app/shared/openapi/model/notebook';
 import { Observable, Subject } from 'rxjs';
@@ -25,7 +25,7 @@ import { formInputDebounceTime } from '../../shared/constants';
 import { DateService } from '../../shared/date.service';
 import { SessionQuery } from '../../shared/session/session.query';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
-import { AppTool, BioWorkflow, ToolDescriptor, VersionVerifiedPlatform } from '../../shared/openapi';
+import { AppTool, BioWorkflow, Doi, ToolDescriptor, VersionVerifiedPlatform } from '../../shared/openapi';
 import { SourceFile } from '../../shared/openapi/model/sourceFile';
 import { Workflow } from '../../shared/openapi/model/workflow';
 import { WorkflowVersion } from '../../shared/openapi/model/workflowVersion';
@@ -34,6 +34,15 @@ import { formErrors, validationDescriptorPatterns, validationMessages } from '..
 import { VersionModalService } from './version-modal.service';
 import { EntryType } from '../../shared/enum/entry-type';
 import { DockstoreService } from 'app/shared/dockstore.service';
+import { VerifiedPlatformsPipe } from '../../shared/entry/verified-platforms.pipe';
+import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { MatIconModule } from '@angular/material/icon';
+import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
+import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { NgIf, NgFor, NgClass, AsyncPipe } from '@angular/common';
+import { AlertComponent } from '../../shared/alert/alert.component';
 
 export interface Dialogdata {
   canRead: boolean;
@@ -47,6 +56,23 @@ export interface Dialogdata {
   selector: 'app-version-modal',
   templateUrl: './version-modal.component.html',
   styleUrls: ['./version-modal.component.css'],
+  standalone: true,
+  imports: [
+    MatLegacyDialogModule,
+    AlertComponent,
+    FormsModule,
+    NgIf,
+    MatLegacyTooltipModule,
+    MatLegacyCardModule,
+    NgFor,
+    NgClass,
+    ExtendedModule,
+    MatIconModule,
+    FlexModule,
+    MatLegacyButtonModule,
+    AsyncPipe,
+    VerifiedPlatformsPipe,
+  ],
 })
 export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestroy {
   isPublic: boolean;
@@ -60,6 +86,7 @@ export class VersionModalComponent implements OnInit, AfterViewChecked, OnDestro
   public testParameterFilePaths: string[];
   originalTestParameterFilePaths: string[];
   ToolDescriptor = ToolDescriptor;
+  DoiInitiatorEnum = Doi.InitiatorEnum;
   public testParameterFilePath = '';
   formErrors = formErrors;
   validationMessages = validationMessages;

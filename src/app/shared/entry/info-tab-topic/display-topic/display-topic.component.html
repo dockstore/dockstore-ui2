@@ -1,0 +1,47 @@
+<div fxLayout="row" fxLayoutAlign="space-between">
+  <div>
+    <strong matTooltip="Short description of the {{ entryTypeMetadata.term }}">Topic: </strong>
+    <span data-cy="selected-topic">{{ selectedTopic || 'n/a' }}</span>
+    <!-- Display a bubble indicating the topic selection. AI bubble is always displayed privately. Publicly, AI bubble is only displayed if the topic is not user-approved. 
+     Bubbles for other topic types are only displayed for the non-public view -->
+    <app-ai-bubble
+      *ngIf="entry.topicSelection === TopicSelectionEnum.AI && (!entry.approvedAITopic || (isPublic$ | async) === false)"
+      [isPublic]="isPublic$ | async"
+    ></app-ai-bubble>
+    <span
+      *ngIf="
+        (entry.topicSelection === TopicSelectionEnum.MANUAL || entry.topicSelection === TopicSelectionEnum.AUTOMATIC) &&
+        (isPublic$ | async) === false
+      "
+      class="bubble ml-2"
+      matTooltip="Short description of the {{ entryTypeMetadata.term }}, {{
+        entry.topicSelection === TopicSelectionEnum.MANUAL
+          ? 'entered manually by the user'
+          : 'retrieved automatically from the GitHub repository description'
+      }}"
+      data-cy="topic-selection-bubble"
+    >
+      <mat-icon *ngIf="entry.topicSelection === TopicSelectionEnum.MANUAL" class="mat-icon-sm">edit</mat-icon>
+      <img
+        *ngIf="entry.topicSelection === TopicSelectionEnum.AUTOMATIC"
+        class="site-icons-small mr-2"
+        src="../assets/images/thirdparty/github.svg"
+        alt="GitHub icon"
+      />
+      <span>{{ entry.topicSelection === TopicSelectionEnum.MANUAL ? 'Manual' : 'GitHub' }}</span>
+    </span>
+  </div>
+  <button
+    *ngIf="(isPublic$ | async) === false"
+    [disabled]="disableEditing"
+    type="button"
+    mat-raised-button
+    class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+    (click)="editTopic()"
+    data-cy="topicEditButton"
+    matTooltip="Edit topic"
+  >
+    <img src="../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit Topic" />
+    Edit
+  </button>
+</div>

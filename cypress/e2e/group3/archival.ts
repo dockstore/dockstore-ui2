@@ -13,7 +13,7 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-import { resetDB, setTokenUserViewPort, insertNotebooks, insertAppTools, invokeSql, goToTab } from '../../support/commands';
+import { resetDB, setTokenUserViewPort, insertNotebooks, insertAppTools, invokeSql } from '../../support/commands';
 
 describe('Entry Archival', () => {
   resetDB();

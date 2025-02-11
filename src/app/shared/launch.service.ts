@@ -28,6 +28,8 @@ export abstract class LaunchService {
   public readonly cwltoolTooltip =
     'Commands for launching tools/workflows through CWLtool: the CWL reference implementation. ' + this.nonStrict;
   public readonly wesTooltip = 'Commands for provisioning files and launching a workflow against AWS AGC infrastructure.';
+  private readonly galaxyParamFileName = 'galaxy_job.yml';
+
   constructor(protected descriptorTypeCompatService: DescriptorTypeCompatService) {}
   abstract getParamsString(path: string, versionName: string, currentDescriptor: string): string;
   abstract getCliString(path: string, versionName: string, currentDescriptor: string): string;
@@ -77,6 +79,31 @@ export abstract class LaunchService {
     return `nextflow run https://${workflowPath} -r ${versionName}`;
   }
 
+  getSharedZipString(workflowPath: string, versionName: string) {
+    return `wget -O temp.zip '${Dockstore.API_URI}${ga4ghPath}/tools/${encodeURIComponent(
+      '#workflow/' + workflowPath
+    )}/versions/${encodeURIComponent(versionName)}/GALAXY/files?format=zip'
+unzip temp.zip`;
+  }
+
+  /**
+   * This creates the planemo local init command
+   * @param path The GA4GH Tool's path
+   * @param versionName The ToolVersion's name
+   */
+  getPlanemoLocalInitString(workflowPath: string, versionName: string, primaryDescriptorPath: string) {
+    return `planemo workflow_job_init ${primaryDescriptorPath} -o ${this.galaxyParamFileName}`;
+  }
+
+  /**
+   * This creates the planemo local launch commands
+   * @param path The GA4GH Tool's path
+   * @param versionName The ToolVersion's name
+   */
+  getPlanemoLocalLaunchString(workflowPath: string, versionName: string, primaryDescriptorPath: string) {
+    return `planemo run ${primaryDescriptorPath} ${this.galaxyParamFileName} --download_outputs --output_directory . --output_json output.json --engine docker_galaxy`;
+  }
+
   /**
    * Gets local launch command
    */
@@ -99,7 +126,7 @@ export abstract class LaunchService {
    * @param {string} entryPath     The entry path
    * @param {string} versionName   The workflow version
    * @param {ToolDescriptor.TypeEnum} descriptorType  The descriptor type (cwl, wdl, nfl)
-   * @param {string} filePath      Relative file path of the the test parameter file
+   * @param {string} filePath      Relative file path of the test parameter file
    * @returns {string}             The wget command
    * @memberof LaunchService
    */
@@ -127,7 +154,11 @@ export abstract class LaunchService {
     }
 
     const prefix = `wget --header='Accept: text/plain`;
-    const outputFile = `-O Dockstore.json`;
+
+    let outputFile = `-O Dockstore.json`;
+    if (descriptorType === ToolDescriptor.TypeEnum.GALAXY) {
+      outputFile = '-O ' + this.galaxyParamFileName;
+    }
     const id = encodeURIComponent(entryPath);
     const versionId = encodeURIComponent(versionName);
 

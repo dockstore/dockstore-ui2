@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { MatCardModule } from '@angular/material/card';
+import { MatLegacyCardModule as MatCardModule } from '@angular/material/legacy-card';
 import { MatIconModule } from '@angular/material/icon';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatLegacyProgressBarModule as MatProgressBarModule } from '@angular/material/legacy-progress-bar';
+import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 
 import { AlertComponent } from './alert.component';
 
@@ -13,8 +13,7 @@ describe('RefreshAlertComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [MatProgressBarModule, MatSnackBarModule, MatIconModule, MatCardModule],
-        declarations: [AlertComponent],
+        imports: [MatProgressBarModule, MatSnackBarModule, MatIconModule, MatCardModule, AlertComponent],
       }).compileComponents();
     })
   );

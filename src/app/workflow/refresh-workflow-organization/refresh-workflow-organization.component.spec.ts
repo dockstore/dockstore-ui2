@@ -15,12 +15,12 @@
  */
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { MatButtonModule } from '@angular/material/button';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { MatIconModule } from '@angular/material/icon';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
 import { DateService } from '../../shared/date.service';
 import { ExtendedDockstoreToolService } from '../../shared/extended-dockstoreTool/extended-dockstoreTool.service';
 import { ProviderService } from '../../shared/provider.service';
@@ -46,8 +46,15 @@ describe('RefreshWorkflowOrganizationComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [RefreshWorkflowOrganizationComponent],
-        imports: [MatToolbarModule, MatIconModule, MatButtonModule, MatTooltipModule, MatSnackBarModule, HttpClientTestingModule],
+        imports: [
+          MatToolbarModule,
+          MatIconModule,
+          MatButtonModule,
+          MatTooltipModule,
+          MatSnackBarModule,
+          HttpClientTestingModule,
+          RefreshWorkflowOrganizationComponent,
+        ],
         providers: [
           { provide: UsersService, useClass: UsersStubService },
           { provide: WorkflowService, useClass: WorkflowStubService },
