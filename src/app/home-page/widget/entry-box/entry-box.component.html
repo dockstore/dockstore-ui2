@@ -16,16 +16,16 @@
 
 <mat-card appearance="outlined" class="h-100">
   <div fxLayout="column" fxLayoutAlign="start stretch" class="h-100">
-    <div id="header-bar" fxLayout="row wrap" fxLayoutGap="0.5rem" class="space-between">
-      <div id="workflow-number" fxLayout="row">
-        <mat-card-header fxLayout="row">
-          <mat-card-title class="ml-2">{{ entryTypeLowerCase | titlecase }}s</mat-card-title>
-          <span class="bubble {{ entryTypeLowerCase }}-background" [attr.data-cy]="'dashboard-' + entryTypeLowerCase + '-count-bubble'">{{
-            totalEntries
-          }}</span>
-          <span class="bubble preview-bubble" *ngIf="entryType === newEntryType.SERVICE">PREVIEW</span>
-        </mat-card-header>
-      </div>
+    <mat-card-header fxLayout="row" fxLayoutAlign="space-between">
+      <mat-card-title class="ml-2"
+        >{{ entryTypeLowerCase | titlecase }}s
+        <span
+          class="bubble {{ entryTypeLowerCase }}-background align-middle"
+          [attr.data-cy]="'dashboard-' + entryTypeLowerCase + '-count-bubble'"
+          >{{ totalEntries }}</span
+        >
+        <span class="bubble preview-bubble" *ngIf="entryType === newEntryType.SERVICE">PREVIEW</span>
+      </mat-card-title>
       <button
         mat-button
         class="private-btn small-btn-structure ml-3 mb-3"
@@ -38,7 +38,7 @@
         <img src="../../../assets/svg/icons-plus.svg" alt="Register a {{ entryTypeLowerCase | titlecase }}" class="pr-2 pb-1" />
         Register a {{ entryTypeLowerCase | titlecase }}
       </button>
-    </div>
+    </mat-card-header>
     <mat-divider></mat-divider>
     <mat-card-content class="mx-2 mt-3 h-100">
       <div *ngIf="totalEntries > 0 || isLoading; else noEntries">
@@ -57,7 +57,7 @@
           <mat-option *ngIf="noResults" disabled class="m-2">No matching {{ entryTypeLowerCase }}s</mat-option>
         </mat-autocomplete>
         <h5 class="weight-bold my-0">Recent Activity</h5>
-        <div *ngFor="let entry of listOfEntries" fxLayout="row" class="widget-list-items space-between w-100 py-2">
+        <div *ngFor="let entry of listOfEntries" fxLayout="row" fxLayoutAlign="space-between" class="widget-list-items w-100 py-2">
           <a class="no-wrap" data-cy="dashboard-entry-links" [routerLink]="allEntriesLink + entry.path">
             {{ entry.prettyPath }}
           </a>

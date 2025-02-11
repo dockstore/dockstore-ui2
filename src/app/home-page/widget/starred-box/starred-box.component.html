@@ -1,9 +1,7 @@
 <mat-card appearance="outlined" class="h-100">
   <div fxLayout="column" fxLayoutAlign="start stretch" class="h-100">
-    <div id="header-bar" fxLayout="row wrap" fxLayoutAlign="space-between">
-      <mat-card-header fxLayout="row">
-        <mat-card-title class="ml-2">Starred</mat-card-title>
-      </mat-card-header>
+    <mat-card-header fxLayout="row" fxLayoutAlign="space-between">
+      <mat-card-title class="ml-2">Starred</mat-card-title>
       <div fxLayout="row wrap" fxLayoutGap="2rem" class="size-small pb-3">
         <div fxLayout fxLayoutAlign="center center">
           <mat-icon class="mat-icon-sm">{{ totalStarredWorkflows ? 'star' : 'star_border' }}</mat-icon>
@@ -37,7 +35,8 @@
           </a>
         </div>
       </div>
-    </div>
+    </mat-card-header>
+
     <mat-divider></mat-divider>
     <mat-card-content class="mx-2 mt-3 mb-0 h-100">
       <div *ngIf="totalStarredServices || totalStarredTools || totalStarredWorkflows || totalStarredOrganizations; else noStarred">

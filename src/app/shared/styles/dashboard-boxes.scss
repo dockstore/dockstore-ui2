@@ -33,8 +33,3 @@ button[mat-icon-button] {
 .event {
   min-height: 8rem;
 }
-
-// Overide mat-card padding to extend mat-divider to edges
-mat-divider {
-  margin: 0 -16px;
-}

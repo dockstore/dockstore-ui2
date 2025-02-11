@@ -1,12 +1,11 @@
 <mat-card appearance="outlined" class="h-100">
   <div fxLayout="column" fxLayoutAlign="start stretch" class="h-100">
-    <div id="header-bar" fxLayout="row wrap" fxLayoutGap="1rem" class="space-between">
-      <div id="organization-number" fxLayout="row">
-        <mat-card-header fxLayout="row">
-          <mat-card-title class="ml-2">Organizations</mat-card-title>
-          <span class="bubble org-background">{{ totalOrgs }}</span>
-        </mat-card-header>
-      </div>
+    <mat-card-header fxLayout="row" fxLayoutAlign="space-between">
+      <mat-card-title class="ml-2"
+        >Organizations
+        <span class="bubble org-background align-middle">{{ totalOrgs }}</span>
+      </mat-card-title>
+
       <div fxLayout="row wrap" fxLayoutGap="1rem">
         <div id="pending-requests" fxLayout="row" fxLayoutAlign="center center" class="mb-3">
           <mat-icon [class.disabled]="(pendingRequests$ | async)?.length === 0" class="pending-requests mr-1">pending_icon</mat-icon>
@@ -43,7 +42,7 @@
           Request an Organization
         </button>
       </div>
-    </div>
+    </mat-card-header>
     <mat-divider></mat-divider>
     <mat-card-content class="mx-2 mt-3 mb-0 h-100">
       <div *ngIf="totalOrgs > 0 || isLoading; else noOrganizations">
