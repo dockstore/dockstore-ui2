@@ -12,6 +12,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { DoiBadgeComponent } from '../doi-badge/doi-badge.component';
 import { MatLegacySlideToggleModule } from '@angular/material/legacy-slide-toggle';
 import { Dockstore } from 'app/shared/dockstore.model';
+import { AlertComponent } from 'app/shared/alert/alert.component';
 
 export interface ManageDoisDialogData {
   entry: Workflow;
@@ -43,6 +44,7 @@ export interface DoiInfo {
     KeyValuePipe,
     TitleCasePipe,
     DoiBadgeComponent,
+    AlertComponent,
   ],
 })
 export class ManageDoisDialogComponent {
