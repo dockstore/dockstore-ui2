@@ -32,6 +32,8 @@ export class PlatformPartnerPipe implements PipeTransform {
         return 'Nextflow Tower';
       case PartnerEnum.ELWAZI:
         return 'eLwazi';
+      case PartnerEnum.TOIL:
+        return 'Toil';
       case PartnerEnum.OTHER:
         return 'Other';
       case PartnerEnum.ALL:
