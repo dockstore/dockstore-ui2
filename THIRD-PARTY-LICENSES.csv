@@ -252,7 +252,7 @@
 "pump@2.0.1","MIT","https://github.com/mafintosh/pump"
 "pump@3.0.0","MIT","https://github.com/mafintosh/pump"
 "pumpify@1.5.1","MIT","https://github.com/mafintosh/pumpify"
-"punycode@2.1.1","MIT","https://github.com/bestiejs/punycode.js"
+"punycode@2.3.1","MIT","https://github.com/mathiasbynens/punycode.js"
 "readable-stream@2.3.7","MIT","https://github.com/nodejs/readable-stream"
 "resolve@1.22.2","MIT","https://github.com/browserify/resolve"
 "retry@0.10.1","MIT","https://github.com/tim-kos/node-retry"
