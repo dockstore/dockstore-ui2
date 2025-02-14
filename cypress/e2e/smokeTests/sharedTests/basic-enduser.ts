@@ -10,7 +10,7 @@ describe('run stochastic smoke test', () => {
 });
 
 // TODO: set to only 'entryColumn' when search cards are deployed to staging and prod
-function getSearchDataCy(tab: string = 'Workflow') {
+function getSearchDataCy(tab: string = 'Workflows') {
   return isStagingOrProd() ? getLinkName(tab) : 'entryColumn';
 }
 
