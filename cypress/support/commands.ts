@@ -18,6 +18,11 @@
 // const psqlInvocation: string = 'PASSWORD=dockstore docker exec -i postgres1 psql';
 const psqlInvocation: string = 'PASSWORD=dockstore psql';
 
+export function isStagingOrProd() {
+  const baseUrl = Cypress.config('baseUrl');
+  return baseUrl === 'https://staging.dockstore.org' || baseUrl === 'https://dockstore.org';
+}
+
 export function goToTab(tabName: string): void {
   // cypress tests run asynchronously, so if the DOM changes and an element-of-interest becomes detached while we're manipulating it, the test will fail.
   // our current (admittedly primitive) go-to solution is to wait (sleep) for long enough that the DOM "settles", thus avoiding the "detached element" bug.
