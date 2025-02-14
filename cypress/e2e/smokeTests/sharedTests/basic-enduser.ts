@@ -30,7 +30,8 @@ function getLinkName(tab: string): string {
 function testEntry(tab: string) {
   function goToRandomEntry() {
     cy.visit('/search');
-    cy.get(`[data-cy=${getSearchDataCy(tab)}] a`);
+    // Get a workflow in the table results to make sure things are loaded.
+    cy.get(`[data-cy=${getSearchDataCy()}] a`);
     goToTab(tab);
     // select a random entry on the first page and navigate to it
     let chosen_index = 0;
