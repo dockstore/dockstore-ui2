@@ -26,12 +26,12 @@
 
     <p class="size-small gray-caption">
       <span>
-        Dockstore automatically creates a DOI for each valid, tagged version of this {{ entryTypeMetadata.term }} if it is published. It
-        does not require a Zenodo account to be linked.
+        Dockstore automatically creates a DOI for each valid, tagged version of this {{ entryTypeMetadata.term }} if it is published and has
+        at least one author in its metadata. It does not require a Zenodo account to be linked.
       </span>
-      <span *ngIf="isGitHubAppEntry">
-        Edit the enableAutoDoi field in the .dockstore.yml to change your Automatic DOI Generation preference.
-      </span>
+      <strong *ngIf="isGitHubAppEntry">
+        Edit the enableAutoDois field in the .dockstore.yml to change your Automatic DOI Generation preference.
+      </strong>
       <a
         class="ds-green"
         [href]="Dockstore.DOCUMENTATION_URL + '/end-user-topics/dois.html#automatic-dockstore-doi-generation'"
