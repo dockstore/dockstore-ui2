@@ -32,7 +32,7 @@ import { AlertService } from '../../shared/alert/state/alert.service';
 import { DateService } from '../../shared/date.service';
 import { Dockstore } from '../../shared/dockstore.model';
 import { DockstoreService } from '../../shared/dockstore.service';
-import { CloudInstance, Doi, EntryType, VersionVerifiedPlatform, WorkflowsService } from '../../shared/openapi';
+import { CloudInstance, Doi, EntryType, VersionVerifiedPlatform, Workflow, WorkflowsService, WorkflowVersion } from '../../shared/openapi';
 import { ExtendedWorkflow } from '../../shared/models/ExtendedWorkflow';
 import { SessionQuery } from '../../shared/session/session.query';
 import { ExtendedWorkflowQuery } from '../../shared/state/extended-workflow.query';
@@ -41,6 +41,9 @@ import { Versions } from '../../shared/versions';
 import { ViewWorkflowComponent } from '../view/view.component';
 import { VersionsDataSource } from './versions-datasource';
 import PartnerEnum = CloudInstance.PartnerEnum;
+import { DescriptorLanguageVersionsPipe } from 'app/shared/entry/descriptor-language-versions.pipe';
+import { DescriptorLanguagePipe } from 'app/shared/entry/descriptor-language.pipe';
+import { CommitUrlPipe } from 'app/shared/entry/commit-url.pipe';
 
 @Component({
   selector: 'app-versions-workflow',
