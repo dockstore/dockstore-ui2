@@ -57,7 +57,7 @@ export class VersionsDataSource implements DataSource<WorkflowVersion> {
         pageIndex,
         sortCol,
         sortDirection,
-        null, // TODO: Replace null
+        'metrics',
         'response'
       );
     } else {
@@ -67,9 +67,9 @@ export class VersionsDataSource implements DataSource<WorkflowVersion> {
         pageIndex,
         sortCol,
         sortDirection,
-        null,
+        'metrics',
         'response'
-      ); // TODO: Replace null
+      );
     }
 
     workflowVersions.pipe(finalize(() => this.loadingSubject$.next(false))).subscribe((versions) => {

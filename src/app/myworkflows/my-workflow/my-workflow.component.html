@@ -65,30 +65,15 @@
                   *ngIf="entryType === EntryType.BioWorkflow || entryType === EntryType.Notebook"
                   mat-button
                   class="private-btn small-btn-structure ml-3 mb-3"
-                  [matMenuTriggerFor]="myWorkflowsActions"
-                  [disabled]="isRefreshing$ | async"
-                  id="myWorkflowsMoreActionButtons"
-                  data-cy="myWorkflowsMoreActionButtons"
+                  (click)="addToExistingWorkflows()"
+                  [disabled]="(isRefreshing$ | async) || (user$ | async) === null"
+                  matTooltip="Discover {{ entryType$ | async }}s added by others using your linked source control accounts"
+                  matTooltipPosition="after"
+                  id="addToExistingWorkflows"
+                  data-cy="addToExistingWorkflows"
                 >
-                  <img src="../../../assets/svg/gear-icon.svg" alt="Gear icon" />
-                  More
-                  <img src="../../../assets/svg/drop-down-arrow.svg" alt="Drop down menu icon" />
+                  <span>Discover {{ entryType$ | async | titlecase }}s</span>
                 </button>
-                <mat-menu #myWorkflowsActions="matMenu">
-                  <button
-                    mat-menu-item
-                    color="primary"
-                    type="button"
-                    (click)="addToExistingWorkflows()"
-                    [disabled]="(isRefreshing$ | async) || (user$ | async) === null"
-                    matTooltip="Discover {{ entryType$ | async }}s added by others using your linked source control accounts"
-                    matTooltipPosition="after"
-                    id="addToExistingWorkflows"
-                    data-cy="addToExistingWorkflows"
-                  >
-                    <span>Discover Existing Dockstore {{ entryType$ | async | titlecase }}s</span>
-                  </button>
-                </mat-menu>
               </div>
               <p *ngIf="(hasGroupEntriesObject$ | async) === false">You have not registered any {{ entryType$ | async }}s</p>
               <app-workflow-sidebar-accordion

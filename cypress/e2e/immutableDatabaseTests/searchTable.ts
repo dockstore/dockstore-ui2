@@ -37,6 +37,16 @@ describe('Dockstore tool/workflow search table', () => {
               _id: '52',
               _score: 1.0,
               _source: {
+                entryTypeMetadata: {
+                  termPlural: 'tools',
+                  sitePath: 'containers',
+                  trsSupported: true,
+                  trsPrefix: '',
+                  term: 'tool',
+                  searchSupported: true,
+                  type: 'TOOL',
+                  searchEntryType: 'tools',
+                },
                 tool_maintainer_email: '',
                 aliases: {},
                 default_dockerfile_path: '/Dockerfile',
@@ -102,6 +112,16 @@ describe('Dockstore tool/workflow search table', () => {
               _id: '5',
               _score: 1.0,
               _source: {
+                entryTypeMetadata: {
+                  termPlural: 'tools',
+                  sitePath: 'containers',
+                  trsSupported: true,
+                  trsPrefix: '',
+                  term: 'tool',
+                  searchSupported: true,
+                  type: 'TOOL',
+                  searchEntryType: 'tools',
+                },
                 tool_maintainer_email: '',
                 aliases: {},
                 default_dockerfile_path: '/Dockerfile',
@@ -190,6 +210,16 @@ describe('Dockstore tool/workflow search table', () => {
               _id: '4',
               _score: 1.0,
               _source: {
+                entryTypeMetadata: {
+                  termPlural: 'tools',
+                  sitePath: 'containers',
+                  trsSupported: true,
+                  trsPrefix: '',
+                  term: 'tool',
+                  searchSupported: true,
+                  type: 'TOOL',
+                  searchEntryType: 'tools',
+                },
                 tool_maintainer_email: '',
                 aliases: {},
                 default_dockerfile_path: '/Dockerfile',
@@ -278,6 +308,16 @@ describe('Dockstore tool/workflow search table', () => {
               _id: '11',
               _score: 1.0,
               _source: {
+                entryTypeMetadata: {
+                  termPlural: 'workflows',
+                  sitePath: 'workflows',
+                  trsSupported: true,
+                  trsPrefix: '#workflow/',
+                  term: 'workflow',
+                  searchSupported: true,
+                  type: 'WORKFLOW',
+                  searchEntryType: 'workflows',
+                },
                 aliases: {},
                 is_published: true,
                 last_modified_date: null,
@@ -338,7 +378,7 @@ describe('Dockstore tool/workflow search table', () => {
     if (type === 'workflow') {
       goToTab('Workflows');
     }
-    cy.get('.mat-icon.star-icon').should('not.exist');
+    cy.get('[data-cy=starredUsers]').should('not.exist');
     // cy.visit(url);
     // cy.get('#starringButton')
     //   .click();
@@ -354,7 +394,7 @@ describe('Dockstore tool/workflow search table', () => {
     if (type === 'workflow') {
       goToTab('Workflows');
     }
-    cy.get('.mat-icon.star-icon').should('exist');
+    cy.get('[data-cy=starredUsers]').should('exist');
     // cy.visit(url);
     // cy.get('#starringButton')
     //   .click();
@@ -382,11 +422,15 @@ describe('search table items per page', () => {
 
   it('tool items per page', () => {
     cy.visit('/search');
-    cy.get('#mat-select-0 ').click();
-    cy.get('#mat-option-1 ').click();
+    // Modify the number of items per page
+    cy.get('[data-cy=search-entry-table-paginator]').contains(10).should('be.visible').click();
+    cy.get('mat-option').contains(20).click();
+    cy.get('[data-cy=search-entry-table-paginator]').contains(20);
+    // Click an entry then go back to the search page
     cy.contains('A/l').click();
-    cy.get('.flex-toolbar ').contains(' Search ').click();
-    cy.get('.mat-mdc-select-value-text ').contains('20');
+    cy.get('a').contains('Search').click();
+    // The number of items should remain the same
+    cy.get('[data-cy=search-entry-table-paginator]').contains(20);
   });
 
   it('tool items per page after advanced search', () => {
@@ -454,9 +498,6 @@ describe('check search table and tabs for notebooks', () => {
     // Select notebooks tab
     goToTab('Notebooks');
     cy.url().should('contain', 'notebooks');
-    // Check that the notebooks variations are in the table header
-    cy.get('mat-header-cell').contains('Language');
-    cy.get('mat-header-cell').contains('Format');
     // Check that the notebooks variations are in the table body
     cy.get('mat-cell').contains('jupyter', { matchCase: false });
     cy.get('mat-cell').contains('python', { matchCase: false });

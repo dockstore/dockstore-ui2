@@ -50,14 +50,16 @@ describe('Dockstore my tools', () => {
   });
 
   it('Should have discover existing tools button', () => {
+    cy.intercept('api/containers/*?include=validations').as('getTool');
+    cy.visit('/my-tools');
+    cy.wait('@getTool');
+
     cy.fixture('myWorkflows.json').then((json) => {
       cy.intercept('PATCH', '/api/users/1/workflows', {
         body: json,
         statusCode: 200,
       });
     });
-
-    cy.get('[data-cy=myToolsMoreActionButtons]').should('be.visible').click();
     cy.fixture('myTools.json').then((json) => {
       cy.intercept('GET', '/api/users/1/containers', {
         body: json,
@@ -68,8 +70,8 @@ describe('Dockstore my tools', () => {
       body: {},
       statusCode: 200,
     }).as('getAppTools');
-    cy.get('[data-cy=addToExistingTools]').should('be.visible').click();
 
+    cy.get('[data-cy=addToExistingTools]').should('be.visible').click();
     cy.wait('@getContainers');
     cy.wait('@getAppTools');
     cy.contains('addedthistoolviasync');

@@ -1,6 +1,6 @@
 import { ga4ghPath } from '../../../../src/app/shared/constants';
 import { ToolDescriptor } from '../../../../src/app/shared/openapi';
-import { goToTab, checkFeaturedContent, checkNewsAndUpdates, checkMastodonFeed } from '../../../support/commands';
+import { goToTab, checkFeaturedContent, checkNewsAndUpdates, checkMastodonFeed, isStagingOrProd } from '../../../support/commands';
 
 // Test an entry, these should be ambiguous between tools, workflows, and notebooks.
 describe('run stochastic smoke test', () => {
@@ -8,15 +8,34 @@ describe('run stochastic smoke test', () => {
   testEntry('Workflows');
   testEntry('Notebooks');
 });
+
+// TODO: set to only 'entryColumn' when search cards are deployed to staging and prod
+function getSearchDataCy(tab: string = 'Workflows') {
+  return isStagingOrProd() ? getLinkName(tab) : 'entryColumn';
+}
+
+function getLinkName(tab: string): string {
+  switch (tab) {
+    case 'Tools':
+      return 'toolNames';
+    case 'Workflows':
+      return 'workflowColumn';
+    case 'Notebooks':
+      return 'notebookColumn';
+    default:
+      throw new Error('unknown tab');
+  }
+}
+
 function testEntry(tab: string) {
   function goToRandomEntry() {
     cy.visit('/search');
-    cy.get('[data-cy=workflowColumn] a');
+    // Get a workflow in the table results to make sure things are loaded.
+    cy.get(`[data-cy=${getSearchDataCy()}] a`);
     goToTab(tab);
-    const linkName = getLinkName(tab);
     // select a random entry on the first page and navigate to it
     let chosen_index = 0;
-    cy.get('[data-cy=' + linkName + ']')
+    cy.get(`[data-cy=${getSearchDataCy(tab)}]`)
       .then(($list) => {
         chosen_index = Math.floor(Math.random() * $list.length);
       })
@@ -55,24 +74,6 @@ function testEntry(tab: string) {
   });
 }
 
-function getLinkName(tab: string): string {
-  switch (tab) {
-    case 'Tools':
-      return 'toolNames';
-    case 'Workflows':
-      return 'workflowColumn';
-    case 'Notebooks':
-      return 'notebookColumn';
-    default:
-      throw new Error('unknown tab');
-  }
-}
-
-function isStagingOrProd() {
-  const baseUrl = Cypress.config('baseUrl');
-  return baseUrl === 'https://staging.dockstore.org' || baseUrl === 'https://dockstore.org';
-}
-
 describe('Check organizations page', () => {
   it('has multiple organizations and org with content', () => {
     cy.visit('/');
@@ -104,7 +105,7 @@ describe('Test logged out home page', () => {
 describe('Test search page functionality', () => {
   it('displays tools', () => {
     cy.visit('/search');
-    cy.get('[data-cy=workflowColumn]').should('have.length.of.at.least', 1);
+    cy.get(`[data-cy=${getSearchDataCy()}]`).should('have.length.of.at.least', 1);
   });
   it('has working tag cloud', () => {
     cy.visit('/search');
@@ -123,7 +124,7 @@ describe('Test search page functionality', () => {
     cy.visit('/search');
     cy.wait(2500); // Wait less than ideal, facets keep getting rerendered is the problem
     cy.contains('mat-checkbox', 'Nextflow').click();
-    cy.get('[data-cy=workflowColumn] a');
+    cy.get(`[data-cy=${getSearchDataCy()}] a`);
     cy.wait(2500); // Wait less than ideal, facets keep getting rerendered is the problem
     cy.contains('mat-checkbox', 'Nextflow'); // wait for the checkbox to reappear, indicating the filtering is almost complete
     cy.get('[data-cy=descriptorType]').each(($el, index, $list) => {
@@ -139,7 +140,7 @@ describe('Test search page functionality', () => {
     cy.visit('/search');
     cy.contains('mat-checkbox', /^[ ]*verified/).click();
     cy.url().should('contain', 'verified=1');
-    cy.get('[data-cy=workflowColumn] a');
+    cy.get(`[data-cy=${getSearchDataCy()}] a`);
     cy.contains('mat-checkbox', /^[ ]*verified/);
   });
 });
@@ -148,11 +149,11 @@ describe('Test workflow page functionality', () => {
   it('find a WDL workflow', () => {
     cy.visit('/search');
     cy.contains('.mat-mdc-tab', 'Workflows');
-    cy.get('[data-cy=workflowColumn]').should('have.length.of.at.least', 1);
+    cy.get(`[data-cy=${getSearchDataCy()}]`).should('have.length.of.at.least', 1);
 
-    // click twice to sort by descriptor type descending so WDL is at the top
-    cy.get('[data-cy=descriptorTypeHeader]').click().click();
-    cy.get('[data-cy=workflowColumn] a').first().click();
+    // Use facet to find WDL workflow
+    cy.contains('mat-checkbox', 'WDL').click();
+    cy.get(`[data-cy=${getSearchDataCy()}] a`).first().click();
   });
 });
 

@@ -183,7 +183,7 @@
           class="private-btn small-btn-structure ml-2"
           matTooltip="Manage DOIs"
           (click)="manageDois()"
-          [disabled]="!canWrite"
+          [disabled]="!canWrite || (isRefreshing$ | async)"
         >
           <img src="../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Manage DOIs" />
           Manage DOIs
@@ -216,7 +216,7 @@
             mat-raised-button
             class="private-btn small-btn-structure"
             (click)="toggleLabelsEditMode()"
-            [disabled]="!canWrite"
+            [disabled]="!canWrite || (isRefreshing$ | async)"
           >
             <img src="../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit labels" />
             Manage labels

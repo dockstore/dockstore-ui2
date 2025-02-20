@@ -32,19 +32,15 @@ import { AlertService } from '../../shared/alert/state/alert.service';
 import { DateService } from '../../shared/date.service';
 import { Dockstore } from '../../shared/dockstore.model';
 import { DockstoreService } from '../../shared/dockstore.service';
-import { CommitUrlPipe } from '../../shared/entry/commit-url.pipe';
-import { DescriptorLanguageVersionsPipe } from '../../shared/entry/descriptor-language-versions.pipe';
-import { DescriptorLanguagePipe } from '../../shared/entry/descriptor-language.pipe';
+import { CloudInstance, Doi, EntryType, VersionVerifiedPlatform, WorkflowsService } from '../../shared/openapi';
 import { ExtendedWorkflow } from '../../shared/models/ExtendedWorkflow';
-import { Doi, EntryType, VersionVerifiedPlatform, WorkflowsService } from '../../shared/openapi';
-import { Workflow } from '../../shared/openapi/model/workflow';
-import { WorkflowVersion } from '../../shared/openapi/model/workflowVersion';
 import { SessionQuery } from '../../shared/session/session.query';
 import { ExtendedWorkflowQuery } from '../../shared/state/extended-workflow.query';
 import { PaginatorService } from '../../shared/state/paginator.service';
 import { Versions } from '../../shared/versions';
 import { ViewWorkflowComponent } from '../view/view.component';
 import { VersionsDataSource } from './versions-datasource';
+import PartnerEnum = CloudInstance.PartnerEnum;
 
 @Component({
   selector: 'app-versions-workflow',
@@ -82,6 +78,7 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
   @Input() workflowId: number;
   @Input() verifiedVersionPlatforms: Array<VersionVerifiedPlatform>;
   @Input() publicPage: boolean;
+
   _selectedVersion: WorkflowVersion;
   Dockstore = Dockstore;
   @Input() set selectedVersion(value: WorkflowVersion) {
@@ -101,6 +98,7 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
   public pageSize$: Observable<number>;
   public pageIndex$: Observable<number>;
   public versionsLength$: Observable<number>;
+  protected readonly PartnerEnum = PartnerEnum;
   private sortCol: string;
 
   setNoOrderCols(): Array<number> {

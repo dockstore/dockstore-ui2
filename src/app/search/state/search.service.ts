@@ -28,7 +28,7 @@ import { ImageProviderService } from '../../shared/image-provider.service';
 import { SubBucket } from '../../shared/models/SubBucket';
 import { ExtendedGA4GHService } from '../../shared/openapi/api/extendedGA4GH.service';
 import { ProviderService } from '../../shared/provider.service';
-import { DockstoreTool, Workflow } from '../../shared/openapi';
+import { DockstoreTool, EntryType, Workflow } from '../../shared/openapi';
 import { SearchQuery } from './search.query';
 import { SearchStore } from './search.store';
 import { SearchAuthorsHtmlPipe } from '../search-authors-html.pipe';
@@ -232,13 +232,13 @@ export class SearchService {
     b: DockstoreTool | Workflow,
     attribute: string,
     direction: SortDirection,
-    entryType: 'tool' | 'workflow' | 'notebook'
+    entryType: EntryType
   ) {
     // For sorting tools by name, sort tool_path
     // For sorting workflows by name, sort full_workflow_path
-    if (entryType === 'tool' && attribute === 'name') {
+    if (entryType === EntryType.TOOL && attribute === 'name') {
       attribute = 'tool_path';
-    } else if ((entryType === 'workflow' || entryType == 'notebook') && attribute === 'name') {
+    } else if ((entryType === EntryType.WORKFLOW || entryType == EntryType.NOTEBOOK) && attribute === 'name') {
       attribute = 'full_workflow_path';
     }
     let aVal = a[attribute];
@@ -322,32 +322,14 @@ export class SearchService {
     this.setSearchText(suggestTerm);
   }
 
-  setShowTagCloud(entryType: 'tool' | 'workflow' | 'notebook') {
-    if (entryType === 'tool') {
-      const showTagCloud: boolean = this.searchQuery.getValue().showToolTagCloud;
-      this.searchStore.update((state) => {
-        return {
-          ...state,
-          showToolTagCloud: !showTagCloud,
-        };
-      });
-    } else if (entryType === 'workflow') {
-      const showTagCloud: boolean = this.searchQuery.getValue().showWorkflowTagCloud;
-      this.searchStore.update((state) => {
-        return {
-          ...state,
-          showWorkflowTagCloud: !showTagCloud,
-        };
-      });
-    } else {
-      const showTagCloud: boolean = this.searchQuery.getValue().showNotebookTagCloud;
-      this.searchStore.update((state) => {
-        return {
-          ...state,
-          showNotebookTagCloud: !showTagCloud,
-        };
-      });
-    }
+  setShowTagCloud(entryType: EntryType) {
+    this.searchStore.update((state) => {
+      return {
+        ...state,
+        showTagCloud: !(this.searchQuery.getValue().showTagCloud && this.searchQuery.getValue().currentEntryType === entryType),
+        currentEntryType: entryType,
+      };
+    });
   }
 
   /**

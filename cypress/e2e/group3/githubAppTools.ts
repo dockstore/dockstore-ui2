@@ -103,6 +103,7 @@ describe('GitHub App Tools', () => {
       cy.contains('Apps Logs').click();
       cy.wait('@lambdaEvents1');
       cy.contains('There were problems retrieving the GitHub App logs for this organization.');
+      cy.wait(1000);
       cy.contains('Close').click();
       cy.intercept('GET', '/api/lambdaEvents/**', {
         body: [],
@@ -110,6 +111,7 @@ describe('GitHub App Tools', () => {
       cy.contains('Apps Logs').click();
       cy.wait('@lambdaEvents2');
       cy.contains('There are no GitHub App logs for this organization.');
+      cy.wait(1000);
       cy.contains('Close').click();
 
       const realResponse: LambdaEvent[] = [
@@ -202,6 +204,7 @@ describe('GitHub App Tools', () => {
       cy.contains('/.dockstore.yml');
 
       selectUnpublishedGitHubAppTab('C');
+      cy.wait(1000);
       selectGitHubAppTool('test-github-app-tools/md5sum');
       cy.get('#publishButton').should('not.be.disabled');
       cy.get('[data-cy=viewPublicWorkflowButton]').should('not.exist');

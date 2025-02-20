@@ -639,6 +639,16 @@ export const elasticSearchResponse: Hit[] = [
     _id: '2313',
     _score: 1,
     _source: {
+      entryTypeMetadata: {
+        termPlural: 'tools',
+        sitePath: 'containers',
+        trsSupported: true,
+        trsPrefix: '',
+        term: 'tool',
+        searchSupported: true,
+        type: 'TOOL',
+        searchEntryType: 'tools',
+      },
       tool_maintainer_email: '',
       aliases: {},
       default_dockerfile_path: '/delly_docker/Dockerfile',
@@ -722,6 +732,16 @@ export const elasticSearchResponse: Hit[] = [
     _id: '2210',
     _score: 1,
     _source: {
+      entryTypeMetadata: {
+        termPlural: 'workflows',
+        sitePath: 'workflows',
+        trsSupported: true,
+        trsPrefix: '#workflow/',
+        term: 'workflow',
+        searchSupported: true,
+        type: 'WORKFLOW',
+        searchEntryType: 'workflows',
+      },
       aliases: {},
       is_published: true,
       last_modified_date: null,
