@@ -93,7 +93,7 @@
     "@angular/cli": "^16.2.14",
     "@angular/compiler-cli": "^16.2.12",
     "@angular/language-service": "^16.2.12",
-    "@cypress/webpack-batteries-included-preprocessor": "^2.4.1",
+    "@cypress/webpack-batteries-included-preprocessor": "^3.0.5",
     "@cypress/webpack-preprocessor": "^5.17.1",
     "@datorama/akita-ngdevtools": "^7.0.0",
     "@types/cytoscape": "^3.14.15",
