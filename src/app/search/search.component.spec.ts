@@ -22,7 +22,7 @@ import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { ExtendedGA4GHService } from 'app/shared/openapi';
+import { EntryType, ExtendedGA4GHService } from 'app/shared/openapi';
 import { of } from 'rxjs';
 import { DateService } from '../shared/date.service';
 import { ProviderService } from '../shared/provider.service';
@@ -107,9 +107,8 @@ describe('SearchComponent', () => {
       workflowhit: null,
       toolhit: null,
       notebookhit: null,
-      showToolTagCloud: false,
-      showWorkflowTagCloud: false,
-      showNotebookTagCloud: false,
+      showTagCloud: false,
+      currentEntryType: EntryType.WORKFLOW,
       searchText: '',
       filterKeys: [],
       autocompleteTerms: [],

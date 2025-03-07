@@ -53,7 +53,6 @@ describe('Dockstore my workflows', () => {
     });
 
     cy.visit('/my-workflows');
-    cy.get('[data-cy=myWorkflowsMoreActionButtons]').should('be.visible').click();
     cy.fixture('myWorkflows.json').then((json) => {
       cy.intercept('GET', '/api/users/1/workflows', {
         body: json,
@@ -337,6 +336,8 @@ describe('Dockstore my workflows part 2', () => {
     cy.visit('/my-workflows/github.com/A/l');
     cy.url().should('eq', Cypress.config().baseUrl + '/my-workflows/github.com/A/l');
     goToTab('Versions');
+    cy.wait(1000);
+
     cy.get('td').contains('Actions').click();
   }
 
@@ -426,21 +427,36 @@ describe('Dockstore my workflows part 2', () => {
       cy.get('[data-cy=version-DOI-badge]').should('not.exist');
       gotoVersionsAndClickActions();
       // Request DOI
+      cy.fixture('versionWithDoi.json').then((json) => {
+        cy.intercept('GET', '/api/workflows/11/workflowVersions?limit=10&offset=0&sortOrder=desc&include=metrics', {
+          body: json,
+          statusCode: 200,
+        }).as('getVersionWithDoi');
+      });
       cy.get('[data-cy=dockstore-request-doi-button]').click();
       cy.get('[data-cy=export-button').should('be.enabled');
       cy.get('[data-cy=export-button').click();
+
       // Should have DOI badges now
       cy.get('[data-cy=user-DOI-icon]').should('be.visible');
       cy.get('[data-cy=concept-DOI-badge]').should('be.visible');
       cy.get('[data-cy=version-DOI-badge]').should('be.visible');
+      goToTab('Versions');
       cy.get('td').contains('Actions').click();
       cy.get('[data-cy=dockstore-request-doi-button').should('not.exist'); // Should not be able to request another DOI
 
       // Export to ORCID
+      cy.fixture('versionAfterOrcidExport.json').then((json) => {
+        cy.intercept('GET', '/api/workflows/11/workflowVersions?limit=10&offset=0&sortOrder=desc&include=metrics', {
+          body: json,
+          statusCode: 200,
+        }).as('getVersionAfterOrcidExport');
+      });
       cy.get('[data-cy=dockstore-export-orcid-button]').click();
       cy.get('[data-cy=export-button').should('be.enabled');
       cy.get('[data-cy=export-button').click();
-      cy.get('td').contains('Actions').click();
+
+      gotoVersionsAndClickActions();
       cy.get('[data-cy=dockstore-export-orcid-button]').should('not.exist'); // Should not be able to export to ORCID again
     });
   });
@@ -485,6 +501,7 @@ describe('Dockstore my workflows part 2', () => {
     cy.visit('/my-workflows/github.com/A/l');
     cy.url().should('eq', Cypress.config().baseUrl + '/my-workflows/github.com/A/l');
     goToTab('Versions');
+    cy.wait(1000);
     cy.contains('button', 'Actions').click();
     cy.contains('button', 'Refresh Version').should('not.be.disabled');
   });
@@ -502,7 +519,14 @@ describe('Dockstore my workflows part 2', () => {
     cy.get('[data-cy=refreshOrganization]:visible').should('be.visible').click();
     cy.get('[data-cy=confirm-dialog-button] > .mat-button-wrapper').contains('Refresh').click();
     cy.wait('@refreshWorkflow');
+
+    cy.fixture('sampleWorkflowVersion').then((json) => {
+      cy.intercept('GET', '/api/workflows/11/workflowVersions?limit=10&offset=0&sortOrder=desc&include=metrics', {
+        body: json,
+      }).as('getVersion');
+    });
     goToTab('Versions');
+    cy.wait('@getVersion');
     cy.get('table>tbody>tr').should('have.length', 1); // 2 Versions and no warning line
   });
 
@@ -633,6 +657,7 @@ describe('Dockstore my workflows part 3', () => {
       cy.get('#publishButton').should('contain', 'Publish').should('be.visible');
 
       goToTab('Versions');
+      cy.wait(1000);
       cy.contains('button', 'Actions').click();
       cy.get('[data-cy=set-default-version-button]').should('be.visible').click();
       cy.wait(1000);

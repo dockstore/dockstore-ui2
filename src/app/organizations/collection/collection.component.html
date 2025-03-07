@@ -133,11 +133,11 @@
                       </span>
                     </div>
                   </div>
-                  <div class="truncate-text-2">
-                    <app-ai-bubble *ngIf="entry.topicSelection === TopicSelectionEnum.AI && !entry.isApprovedAITopic"></app-ai-bubble>
+                  <div>
                     <span class="size-small" [matTooltip]="entry.topic" matTooltipPosition="left">
                       {{ entry.topic }}
                     </span>
+                    <app-ai-bubble *ngIf="entry.topicSelection === TopicSelectionEnum.AI && !entry.isApprovedAITopic"></app-ai-bubble>
                   </div>
                   <hr />
                   <div fxLayout="row" fxLayoutAlign="space-between center">

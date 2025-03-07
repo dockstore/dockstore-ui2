@@ -29,8 +29,19 @@ export class GetHistogramStylePipe implements PipeTransform {
     // Arbitrary scaling so that selected boolean facets (like Verified) won't have the histogram take up the entire width
     // Downside is that the histogram doesn't appear to "add" up to 100% when looking at a single facet
     const scaledHistogramWidth = histogramWidth * 0.75;
-    // #d2fbf0 is the workflow color, #d0effd is the tool color
-    const histogramColor = selectedIndex === 0 ? '#d2fbf0' : '#d0effd';
+    // #d2fbf0 is the workflow color, #d0effd is the tool color, #dde1f2 is the notebook color
+    const histogramColor = this.getHistogramColor(selectedIndex);
     return { background: `linear-gradient(to left, ${histogramColor} ${scaledHistogramWidth}%, transparent ${scaledHistogramWidth}%)` };
+  }
+
+  private getHistogramColor(selectedIndex: number): string {
+    // #d2fbf0 is the workflow color, #d0effd is the tool color, #dde1f2 is the notebook color
+    if (selectedIndex === 0) {
+      return '#d2fbf0';
+    } else if (selectedIndex === 1) {
+      return '#d0effd';
+    } else {
+      return '#dde1f2';
+    }
   }
 }

@@ -1,47 +1,94 @@
 <h1 mat-dialog-title>Manage DOIs</h1>
 <mat-dialog-content>
-  <p>
-    A Digital Object Identifier (DOI) allows a {{ entryTypeMetadata.term }} version to be easily cited in publications. There are two types
-    of DOIs:
-  </p>
-  <ul>
-    <li><strong>Version DOI:</strong> represents a specific version.</li>
-    <li><strong>Concept DOI:</strong> represents all versions and resolves to the latest one.</li>
-  </ul>
-  <mat-card *ngIf="!doiInfoMap.size" class="alert alert-info mat-elevation-z mt-3" role="alert">
-    <mat-icon class="alert-info-icon">info</mat-icon> This {{ entryTypeMetadata.term }} has no DOIs.
-  </mat-card>
-  <p *ngIf="doiInfoMap.size">Select which DOI to display publicly:</p>
-  <mat-radio-group [(ngModel)]="selectedOption" aria-label="Select an option" fxLayout="column" fxLayoutGap="1rem">
-    <mat-card *ngFor="let doiInfo of doiInfoMap | keyvalue: originalOrder" [class]="doiInfo.key === selectedOption ? 'selected-card' : ''">
-      <mat-radio-button [value]="doiInfo.key" class="w-100">
-        <div>
-          <app-doi-badge [doi]="doiInfo.value.conceptDoi" [displayDoi]="false" class="mr-2"></app-doi-badge>
-          <strong>{{ doiInfo.key | titlecase }}</strong>
-        </div>
-      </mat-radio-button>
-      <div class="ml-5">
-        <div class="size-small gray-caption">
-          <span *ngIf="doiInfo.key === DoiInitiatorEnum.USER"> Manually created by a user in the Dockstore UI. </span>
-          <span *ngIf="doiInfo.key === DoiInitiatorEnum.DOCKSTORE">
-            Automatically created by Dockstore for valid tags belonging to published {{ entryTypeMetadata.termPlural }}.
-          </span>
-          <span *ngIf="doiInfo.key === DoiInitiatorEnum.GITHUB"> Created by Zenodo's integration with GitHub. </span>
-        </div>
-        <span class="mr-4">
-          <span>Version DOI: </span>
-          <app-doi-badge *ngIf="doiInfo.value.versionDoi" [doi]="doiInfo.value.versionDoi" [displayInitiator]="false"></app-doi-badge>
-          <span *ngIf="!doiInfo.value.versionDoi">n/a</span>
-        </span>
-        <span>
-          <span>Concept DOI: </span>
-          <app-doi-badge *ngIf="doiInfo.value.conceptDoi" [doi]="doiInfo.value.conceptDoi" [displayInitiator]="false"></app-doi-badge>
-        </span>
-      </div>
+  <app-alert></app-alert>
+  <div>
+    <p>
+      A Digital Object Identifier (DOI) allows a {{ entryTypeMetadata.term }} version to be easily cited in publications. There are two
+      types of DOIs:
+    </p>
+    <ul>
+      <li><strong>Version DOI:</strong> represents a specific version.</li>
+      <li><strong>Concept DOI:</strong> represents all versions and resolves to the latest one.</li>
+    </ul>
+  </div>
+  <div class="my-5">
+    <strong class="mr-3">Automatic DOI Generation:</strong>
+    <strong *ngIf="isGitHubAppEntry">{{ isAutoDoiEnabled ? 'On' : 'Off' }}</strong>
+    <mat-slide-toggle
+      *ngIf="!isGitHubAppEntry"
+      [(ngModel)]="isAutoDoiEnabled"
+      (change)="toggleAutoDoiGeneration()"
+      labelPosition="after"
+      class="align-middle"
+      >{{ isAutoDoiEnabled ? 'On' : 'Off' }}</mat-slide-toggle
+    >
+    <br />
+
+    <p class="size-small gray-caption">
+      <span>
+        Dockstore automatically creates a DOI for each valid, tagged version of this {{ entryTypeMetadata.term }} if it is published and has
+        at least one author in its metadata. It does not require a Zenodo account to be linked.
+      </span>
+      <strong *ngIf="isGitHubAppEntry">
+        Edit the enableAutoDois field in the .dockstore.yml to change your Automatic DOI Generation preference.
+      </strong>
+      <a
+        class="ds-green"
+        [href]="Dockstore.DOCUMENTATION_URL + '/end-user-topics/dois.html#automatic-dockstore-doi-generation'"
+        target="_blank"
+        rel="noopener noreferrer"
+        ><mat-icon>info</mat-icon></a
+      >
+    </p>
+  </div>
+  <div>
+    <strong>DOI Selection</strong><br />
+    <p class="size-small gray-caption">Select which DOI to display publicly:</p>
+    <mat-card *ngIf="!doiInfoMap.size" class="alert alert-info mat-elevation-z mt-3" role="alert">
+      <mat-icon class="alert-info-icon">info</mat-icon> This {{ entryTypeMetadata.term }} has no DOIs.
     </mat-card>
-  </mat-radio-group>
+    <mat-radio-group
+      [(ngModel)]="selectedOption"
+      aria-label="Select an option"
+      fxLayout="column"
+      fxLayoutGap="1rem"
+      (change)="saveDoiSelection()"
+    >
+      <mat-card
+        *ngFor="let doiInfo of doiInfoMap | keyvalue: originalOrder"
+        [class]="doiInfo.key === selectedOption ? 'selected-card' : ''"
+      >
+        <mat-radio-button [value]="doiInfo.key" class="w-100">
+          <div>
+            <app-doi-badge [doi]="doiInfo.value.conceptDoi" [displayDoi]="false" class="mr-2"></app-doi-badge>
+            <strong>{{ doiInfo.key | titlecase }}</strong>
+          </div>
+        </mat-radio-button>
+        <div class="ml-5">
+          <div class="size-small gray-caption">
+            <span *ngIf="doiInfo.key === DoiInitiatorEnum.USER"> Manually created by a user in the Dockstore UI. </span>
+            <span *ngIf="doiInfo.key === DoiInitiatorEnum.DOCKSTORE">
+              Automatically created by Dockstore for valid tags belonging to published {{ entryTypeMetadata.termPlural }}.
+            </span>
+            <span *ngIf="doiInfo.key === DoiInitiatorEnum.GITHUB"> Created by Zenodo's integration with GitHub. </span>
+          </div>
+
+          <div>
+            <span class="mr-4">
+              <span>Version DOI: </span>
+              <app-doi-badge *ngIf="doiInfo.value.versionDoi" [doi]="doiInfo.value.versionDoi" [displayInitiator]="false"></app-doi-badge>
+              <span *ngIf="!doiInfo.value.versionDoi">n/a</span>
+            </span>
+            <span>
+              <span>Concept DOI: </span>
+              <app-doi-badge *ngIf="doiInfo.value.conceptDoi" [doi]="doiInfo.value.conceptDoi" [displayInitiator]="false"></app-doi-badge>
+            </span>
+          </div>
+        </div>
+      </mat-card>
+    </mat-radio-group>
+  </div>
 </mat-dialog-content>
 <div mat-dialog-actions class="pull-right">
-  <button mat-button mat-dialog-close class="secondary-1" cdkFocusInitial>Cancel</button>
-  <button mat-raised-button mat-dialog-close class="accent-1-dark-btn mat-elevation-z" (click)="saveDoiSelection()">Save</button>
+  <button mat-raised-button mat-dialog-close class="accent-1-dark-btn mat-elevation-z">Done</button>
 </div>

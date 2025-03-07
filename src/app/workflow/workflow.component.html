@@ -171,7 +171,7 @@
           class="private-btn small-btn-structure ml-2"
           matTooltip="Manage DOIs"
           (click)="manageDois()"
-          [disabled]="!canWrite"
+          [disabled]="!canWrite || (isRefreshing$ | async)"
         >
           <img src="../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Manage DOIs" />
           Manage DOIs
@@ -204,7 +204,7 @@
             mat-button
             class="private-btn small-btn-structure"
             (click)="toggleLabelsEditMode()"
-            [disabled]="!canWrite"
+            [disabled]="!canWrite || (isRefreshing$ | async)"
           >
             <img src="../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit labels" />
             Manage labels
@@ -334,11 +334,11 @@
           <mat-tab id="versionsTab" label="Versions">
             <div *ngIf="(extendedWorkflow$ | async)?.workflowVersions.length > 0; else noVersionsVersionTab">
               <app-versions-workflow
-                [versions]="(extendedWorkflow$ | async)?.workflowVersions"
                 (selectedVersionChange)="onSelectedVersionChange($event)"
                 [verifiedSource]="(extendedWorkflow$ | async)?.verifiedSources"
                 [verifiedVersionPlatforms]="versionsWithVerifiedPlatforms"
                 [workflowId]="workflow?.id"
+                [publicPage]="publicPage"
                 [selectedVersion]="selectedVersion"
                 [canRead]="canRead"
                 [canWrite]="canWrite"
