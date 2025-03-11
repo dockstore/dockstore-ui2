@@ -74,7 +74,7 @@
                   id="addToExistingWorkflows"
                   data-cy="addToExistingWorkflows"
                 >
-                  <span>Discover {{ entryType$ | async | titlecase }}s</span>
+                  Discover {{ entryType$ | async | titlecase }}s
                 </button>
               </div>
               <p *ngIf="(hasGroupEntriesObject$ | async) === false">You have not registered any {{ entryType$ | async }}s</p>
