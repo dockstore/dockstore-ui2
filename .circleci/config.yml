@@ -583,7 +583,7 @@ commands:
           background: true
       - run:
           name: Run webservice
-          command: java -jar dockstore-webservice.jar server test/web.yml #1>/dev/null
+          command: java -jar dockstore-webservice.jar server test/web.yml 1>/dev/null
           background: true
       - run:
           name: Wait for services
