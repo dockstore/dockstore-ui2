@@ -54,13 +54,15 @@
                     </h5>
                   </a>
                 </div>
-                <div class="bubble" [ngClass]="{ 'pending-bubble': organizationUser.status !== OrganizationUser.StatusEnum.ACCEPTED }">
-                  {{
-                    organizationUser.status === OrganizationUser.StatusEnum.ACCEPTED
-                      ? (organizationUser.role | titlecase)
-                      : (organizationUser.status | titlecase) + ' Invitation'
-                  }}
-                </div>
+                <mat-chip-set>
+                  <mat-chip [ngClass]="{ 'pending-bubble': organizationUser.status !== OrganizationUser.StatusEnum.ACCEPTED }">
+                    {{
+                      organizationUser.status === OrganizationUser.StatusEnum.ACCEPTED
+                        ? (organizationUser.role | titlecase)
+                        : (organizationUser.status | titlecase) + ' Invitation'
+                    }}
+                  </mat-chip>
+                </mat-chip-set>
               </div>
               <div fxLayout fxLayoutAlign="space-between">
                 <span class="orcid white-space-no-wrap" *ngIf="organizationUser.user?.orcid" fxLayout fxLayoutAlign="start">

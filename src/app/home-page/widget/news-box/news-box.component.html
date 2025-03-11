@@ -1,8 +1,12 @@
 <mat-card appearance="outlined" class="h-100">
   <div fxLayout="column" fxLayoutAlign="start stretch" class="h-100">
     <mat-card-header>
-      <mat-card-title class="ml-2">News & Updates</mat-card-title>
-      <span class="bubble">{{ newsUpdates.newsEntriesCount }}</span>
+      <mat-card-title>
+        News & Updates
+        <mat-chip-set>
+          <mat-chip>{{ newsUpdates.newsEntriesCount }}</mat-chip>
+        </mat-chip-set>
+      </mat-card-title>
     </mat-card-header>
     <mat-divider></mat-divider>
     <mat-card-content class="h-100 mx-3 mt-3 mb-0">

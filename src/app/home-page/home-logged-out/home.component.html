@@ -60,23 +60,23 @@
       <span>Browse popular categories</span>
       <div *ngIf="(workflowCategories$ | async).length > 0" class="inline-block">
         <img src="../../../assets/svg/sub-nav/workflow.svg" class="ml-4 mr-2" alt="workflow icon" />
-        <mat-chip-listbox class="bubble-list">
+        <mat-chip-set>
           <app-category-button
             *ngFor="let category of workflowCategories$ | async | slice: 0:4"
             [category]="category"
             entryType="workflow"
           ></app-category-button>
-        </mat-chip-listbox>
+        </mat-chip-set>
       </div>
       <div *ngIf="(toolCategories$ | async).length > 0" class="inline-block">
         <img src="../../../assets/svg/sub-nav/tool.svg" class="ml-3 mr-2" alt="tool icon" />
-        <mat-chip-listbox class="bubble-list">
+        <mat-chip-set>
           <app-category-button
             *ngFor="let category of toolCategories$ | async | slice: 0:4"
             [category]="category"
             entryType="tool"
           ></app-category-button>
-        </mat-chip-listbox>
+        </mat-chip-set>
       </div>
     </div>
   </div>

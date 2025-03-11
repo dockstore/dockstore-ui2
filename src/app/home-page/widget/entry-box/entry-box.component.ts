@@ -38,6 +38,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { NgIf, NgFor, TitleCasePipe, DatePipe } from '@angular/common';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { MatCardModule } from '@angular/material/card';
+import { MatChipsModule } from '@angular/material/chips';
 
 @Component({
   selector: 'app-entry-box',
@@ -61,6 +62,7 @@ import { MatCardModule } from '@angular/material/card';
     RouterLink,
     TitleCasePipe,
     DatePipe,
+    MatChipsModule,
   ],
 })
 export class EntryBoxComponent extends Base implements OnInit {

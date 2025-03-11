@@ -53,13 +53,9 @@
               <span fxFlex="40">
                 <span *ngIf="fileTab.value.length > 10" fxLayoutAlign="center center">
                   <span class="no-wrap"> {{ fileName }} </span>
-                  <span
-                    *ngIf="isCurrentFilePrimary"
-                    class="bubble preview-bubble primary-bubble-header"
-                    data-cy="primary-descriptor-bubble"
-                  >
-                    Primary
-                  </span>
+                  <mat-chip-set *ngIf="isCurrentFilePrimary" class="ml-2">
+                    <mat-chip class="preview-bubble primary-bubble-header" data-cy="primary-descriptor-bubble"> Primary </mat-chip>
+                  </mat-chip-set>
                   <a
                     color="secondary"
                     type="button"
@@ -79,20 +75,16 @@
                     </mat-select-trigger>
                     <mat-option [value]="file" *ngFor="let file of fileTab.value">
                       {{ file.path }}
-                      <span *ngIf="primaryDescriptorPath === file.path" class="bubble preview-bubble" data-cy="primary-descriptor-bubble"
-                        >Primary</span
-                      >
+                      <mat-chip-set *ngIf="primaryDescriptorPath === file.path">
+                        <mat-chip class="preview-bubble" data-cy="primary-descriptor-bubble">Primary</mat-chip>
+                      </mat-chip-set>
                     </mat-option>
                   </mat-select>
                 </mat-form-field>
 
-                <span
-                  *ngIf="isCurrentFilePrimary && fileTab.value.length <= 10"
-                  class="bubble preview-bubble primary-bubble-header"
-                  data-cy="primary-descriptor-bubble"
-                >
-                  Primary
-                </span>
+                <mat-chip-set *ngIf="isCurrentFilePrimary && fileTab.value.length <= 10" class="ml-2">
+                  <mat-chip class="preview-bubble primary-bubble-header" data-cy="primary-descriptor-bubble"> Primary </mat-chip>
+                </mat-chip-set>
                 <a
                   color="secondary"
                   type="button"

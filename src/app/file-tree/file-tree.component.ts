@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { NgIf } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatChipsModule } from '@angular/material/chips';
 
 /** File node data with possible child nodes. */
 export interface FileNode {
@@ -40,7 +41,7 @@ export interface FlatTreeNode {
   selector: 'app-file-tree',
   templateUrl: './file-tree.component.html',
   standalone: true,
-  imports: [MatDialogModule, MatFormFieldModule, MatInputModule, MatTreeModule, NgIf, MatButtonModule, MatIconModule],
+  imports: [MatDialogModule, MatFormFieldModule, MatInputModule, MatTreeModule, NgIf, MatButtonModule, MatIconModule, MatChipsModule],
 })
 export class FileTreeComponent {
   /** The TreeControl controls the expand/collapse state of tree nodes.  */

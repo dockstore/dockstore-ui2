@@ -55,6 +55,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { HeaderComponent } from '../../header/header.component';
 import { MySidebarComponent } from '../../my-sidebar/my-sidebar.component';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { MatChipsModule } from '@angular/material/chips';
 
 /**
  * How the workflow selection works:
@@ -93,6 +94,7 @@ import { FlexModule } from '@ngbracket/ngx-layout/flex';
     WorkflowComponent,
     AsyncPipe,
     TitleCasePipe,
+    MatChipsModule,
   ],
 })
 export class MyWorkflowComponent extends MyEntry implements OnInit {

@@ -33,6 +33,6 @@ a {
   color: $header-color;
 }
 
-.pending-bubble {
+.mat-mdc-chip.pending-bubble {
   background: mat.get-color-from-palette($dockstore-app-accent-4, 4);
 }

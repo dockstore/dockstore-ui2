@@ -1,5 +1,5 @@
-<mat-chip-option
-  class="bubble pointer"
+<mat-chip
+  class="pointer"
   data-cy="categoriesBubble"
   [routerLink]="routerLink"
   [queryParams]="queryParams"
@@ -8,4 +8,4 @@
   (click)="$event.stopPropagation(); $event.preventDefault()"
 >
   {{ category.displayName }}
-</mat-chip-option>
+</mat-chip>

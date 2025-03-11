@@ -14,13 +14,7 @@
  *     limitations under the License.
  */
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import {
-  MatLegacyPaginatorModule,
-  MatLegacyPaginator as MatPaginator,
-  LegacyPageEvent as PageEvent,
-} from '@angular/material/legacy-paginator';
 import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
-import { MatLegacyTableModule, MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
 import { combineLatest, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Base } from '../shared/base';
@@ -29,16 +23,10 @@ import { SearchService } from './state/search.service';
 import { EntryType, ExtendedGA4GHService, Workflow } from 'app/shared/openapi';
 import { AsyncPipe, DatePipe, KeyValuePipe, LowerCasePipe, NgFor, NgIf } from '@angular/common';
 import TopicSelectionEnum = Workflow.TopicSelectionEnum;
-import { MatLegacyProgressBarModule } from '@angular/material/legacy-progress-bar';
-import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
 import { RouterLink } from '@angular/router';
 import { AiBubbleComponent } from 'app/shared/ai-bubble/ai-bubble.component';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyCardModule } from '@angular/material/legacy-card';
-import { MatLegacyOptionModule } from '@angular/material/legacy-core';
-import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
-import { MatLegacySelectModule } from '@angular/material/legacy-select';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ExtendedModule, FlexLayoutModule } from '@ngbracket/ngx-layout';
 import { RouterLinkPipe } from 'app/entry/router-link.pipe';
@@ -50,9 +38,17 @@ import { SearchAuthorsHtmlPipe } from './search-authors-html.pipe';
 import { CloudData, CloudOptions, TagCloudComponent } from 'angular-tag-cloud-module';
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 import { QueryBuilderService } from './query-builder.service';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
 import { CategoryButtonComponent } from 'app/categories/button/category-button.component';
-import { MatLegacyChipsModule } from '@angular/material/legacy-chips';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatOptionModule } from '@angular/material/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSelectModule } from '@angular/material/select';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 export interface SortOption {
   label: string;
@@ -70,37 +66,37 @@ export interface SortOption {
   standalone: true,
   imports: [
     NgIf,
-    MatLegacyProgressBarModule,
-    MatLegacyTableModule,
+    MatProgressBarModule,
+    MatTableModule,
     MatSortModule,
-    MatLegacyTooltipModule,
+    MatTooltipModule,
     RouterLink,
     AiBubbleComponent,
     ExtendedModule,
     MatIconModule,
     FontAwesomeModule,
     NgFor,
-    MatLegacyPaginatorModule,
+    MatPaginatorModule,
     KeyValuePipe,
     DescriptorLanguagePipe,
     SearchAuthorsHtmlPipe,
     JoinWithEllipsesPipe,
-    MatLegacyCardModule,
+    MatCardModule,
     FlexLayoutModule,
     DatePipe,
     DoiBadgeComponent,
-    MatLegacyFormFieldModule,
-    MatLegacyOptionModule,
-    MatLegacySelectModule,
+    MatFormFieldModule,
+    MatOptionModule,
+    MatSelectModule,
     EntryToDisplayNamePipe,
     RouterLinkPipe,
     MatDividerModule,
     TagCloudComponent,
     AsyncPipe,
-    MatLegacyButtonModule,
+    MatButtonModule,
     LowerCasePipe,
     CategoryButtonComponent,
-    MatLegacyChipsModule,
+    MatChipsModule,
   ],
 })
 export class SearchEntryTableComponent extends Base implements OnInit {

@@ -150,25 +150,23 @@
                     <div fxLayout="row" fxLayoutAlign="space-between center">
                       <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="1rem">
                         <span class="update-time"> Last updated {{ entry.dbUpdateDate | date }} </span>
-                        <mat-chip-listbox class="bubble-list">
+                        <mat-chip-set>
                           <app-category-button
                             *ngFor="let category of entry.categories"
                             [category]="category"
                             [entryType]="entry.entryType"
                           ></app-category-button>
-                          <mat-chip-option
-                            [ngClass]="entry.entryType === 'workflow' ? 'workflow-background bubble' : 'tool-background bubble'"
+                          <mat-chip
+                            [ngClass]="entry.entryType === 'workflow' ? 'workflow-background' : 'tool-background'"
                             *ngIf="entry.verified"
                           >
-                            <span class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">
-                              <mat-icon class="verified-icon">done</mat-icon>
-                              <span>Verified</span>
-                            </span>
-                          </mat-chip-option>
-                          <span class="bubble" *ngFor="let descriptorType of entry.descriptorTypes">{{
+                            <mat-icon matChipAvatar>done</mat-icon>
+                            <span class="ml-2">Verified</span>
+                          </mat-chip>
+                          <mat-chip *ngFor="let descriptorType of entry.descriptorTypes">{{
                             'descriptor_type' | mapFriendlyValue: descriptorType
-                          }}</span>
-                        </mat-chip-listbox>
+                          }}</mat-chip>
+                        </mat-chip-set>
                       </div>
                       <button mat-raised-button class="small-btn-structure" color="accent">View</button>
                     </div>

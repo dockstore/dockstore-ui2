@@ -93,12 +93,12 @@
           >
         </span>
         <span id="verifiedIcon" *ngIf="(extendedWorkflow$ | async)?.versionVerified" fxHide.lt-sm>
-          <mat-chip-option matTooltip="Verified" class="bubble workflow-background ml-3">
-            <a [href]="verifiedLink" class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">
-              <mat-icon class="verified-icon">done</mat-icon>
-              <span>Verified</span>
+          <mat-chip-set>
+            <a mat-chip [href]="verifiedLink" matTooltip="Verified" class="workflow-background">
+              <mat-icon matChipAvatar>done</mat-icon>
+              <span class="ml-2">Verified</span>
             </a>
-          </mat-chip-option>
+          </mat-chip-set>
         </span>
       </h3>
       <div *ngIf="!publicPage && workflow.workflowVersions && workflow.workflowVersions.length > 0" class="input-group">
@@ -191,24 +191,24 @@
       </div>
       <span *ngIf="(categories$ | async)?.length > 0" class="inline-block mr-5 mt-1 mb-1">
         <span class="size-small mr-2">Categories</span>
-        <mat-chip-listbox class="bubble-list">
+        <mat-chip-set>
           <app-category-button
             *ngFor="let category of categories$ | async"
             [category]="category"
             entryType="workflow"
           ></app-category-button>
-        </mat-chip-listbox>
+        </mat-chip-set>
       </span>
       <span *ngIf="!labelsEditMode && !starGazersClicked" class="inline-block mt-1 mb-1">
         <span *ngIf="workflowEditData?.labels.length > 0 || !isWorkflowPublic" class="size-small mr-2">
           <span>Labels:{{ workflowEditData?.labels.length === 0 ? ' n/a' : '' }}</span>
         </span>
-        <mat-chip-listbox class="bubble-list">
-          <mat-chip-option
-            class="bubble workflow-background pointer"
+        <mat-chip-set>
+          <mat-chip
+            class="workflow-background pointer"
             *ngFor="let label of workflowEditData?.labels"
             (click)="goToSearch(label, entryType)"
-            >{{ label }}</mat-chip-option
+            >{{ label }}</mat-chip
           >
           <button
             type="button"
@@ -221,7 +221,7 @@
             <img src="../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit labels" />
             Manage labels
           </button>
-        </mat-chip-listbox>
+        </mat-chip-set>
       </span>
       <span *ngIf="labelsEditMode && !isWorkflowPublic">
         <mat-form-field class="mt-3" style="width: 100%">
@@ -560,13 +560,11 @@
                 <div>
                   <a (click)="onSelectedVersionChange(sortedVersion)" class="pointer panel-body-anchor">{{ sortedVersion.name }}</a
                   >&nbsp;
-                  <span *ngIf="sortedVersion?.verified">
-                    <mat-chip-option matTooltip="Verified" class="bubble">
-                      <a [href]="verifiedLink" class="verified-check">
-                        <mat-icon class="verified-icon">done</mat-icon>
-                      </a>
-                    </mat-chip-option>
-                  </span>
+                  <mat-chip-set *ngIf="sortedVersion?.verified">
+                    <a mat-chip matTooltip="Verified" [href]="verifiedLink">
+                      <mat-icon matChipAvatar>done</mat-icon>
+                    </a>
+                  </mat-chip-set>
                 </div>
                 <small>{{ sortedVersion.last_modified | date }}</small>
               </div>

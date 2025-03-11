@@ -1,15 +1,15 @@
 <a
+  mat-chip
   [href]="Dockstore.DOCUMENTATION_URL + '/faq.html#in-plain-language-what-is-dockstore-s-approach-to-generative-ai'"
   target="_blank"
   rel="noopener noreferrer"
   data-cy="ai-bubble"
-  class="bubble ai-bubble"
   matTooltip="{{
     isPublic
       ? 'This topic sentence was AI generated.'
       : 'This topic sentence was AI generated. AI topic sentences are only generated for published entries.'
   }}"
 >
-  <img class="site-icons-small" src="../../../assets/svg/ai-icon.svg" alt="AI generation icon" />
+  <img matChipAvatar src="../../../assets/svg/ai-icon.svg" alt="AI generation icon" />
   AI
 </a>

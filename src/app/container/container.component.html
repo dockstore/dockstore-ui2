@@ -58,14 +58,12 @@
         <span fxLayout.lt-sm="column" style="word-break: break-word">
           {{ tool?.tool_path }}<span *ngIf="tool?.workflowVersions.length > 0">:</span
           ><span class="ds-steelblue">{{ selectedVersion?.name }}</span>
-          <span id="verifiedIcon" *ngIf="(extendedTool$ | async)?.versionVerified" fxHide.lt-sm>
-            <mat-chip-option matTooltip="Verified" class="bubble tool-background ml-3">
-              <a [href]="verifiedLink" class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">
-                <mat-icon class="verified-icon">done</mat-icon>
-                <span>Verified</span>
-              </a>
-            </mat-chip-option>
-          </span>
+          <mat-chip-set *ngIf="(extendedTool$ | async)?.versionVerified" class="ml-3">
+            <a mat-chip id="verifiedIcon" fxHide.lt-sm [href]="verifiedLink" class="tool-background">
+              <mat-icon matChipAvatar>done</mat-icon>
+              <span class="ml-2">Verified</span>
+            </a>
+          </mat-chip-set>
         </span>
       </h3>
 
@@ -111,33 +109,35 @@
   </div>
   <div class="row m-1">
     <div *ngIf="tool">
-      <span *ngIf="(categories$ | async).length > 0" class="inline-block mr-5 mt-1 mb-1">
+      <span *ngIf="(categories$ | async).length > 0" class="mr-5 mt-1 mb-1">
         <span class="size-small mr-2">Categories</span>
-        <mat-chip-listbox class="bubble-list">
+        <mat-chip-set>
           <app-category-button *ngFor="let category of categories$ | async" [category]="category" entryType="tool"></app-category-button>
-        </mat-chip-listbox>
+        </mat-chip-set>
       </span>
-      <span *ngIf="!labelsEditMode && !starGazersClicked" class="inline-block mt-1 mb-1">
-        <span *ngIf="containerEditData?.labels.length > 0" class="size-small mr-2">Labels</span>
-        <mat-chip-listbox class="bubble-list">
-          <mat-chip-option
-            class="bubble tool-background pointer"
-            *ngFor="let label of containerEditData?.labels"
-            (click)="goToSearch(label, EntryType.Tool)"
-            >{{ label }}</mat-chip-option
-          >
-          <button
-            type="button"
-            *ngIf="!labelsEditMode && !isToolPublic"
-            mat-button
-            class="private-btn small-btn-structure"
-            (click)="toggleLabelsEditMode()"
-            [disabled]="tool.archived"
-          >
-            <img src="../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit labels" />
-            Manage labels
-          </button>
-        </mat-chip-listbox>
+      <span *ngIf="!labelsEditMode && !starGazersClicked" class="mt-1 mb-1">
+        <span *ngIf="containerEditData?.labels.length > 0" class="size-small mr-3">
+          Labels
+          <mat-chip-set class="ml-2">
+            <mat-chip
+              class="tool-background pointer"
+              *ngFor="let label of containerEditData?.labels"
+              (click)="goToSearch(label, EntryType.Tool)"
+              >{{ label }}</mat-chip
+            >
+          </mat-chip-set>
+        </span>
+        <button
+          type="button"
+          *ngIf="!labelsEditMode && !isToolPublic"
+          mat-button
+          class="private-btn small-btn-structure"
+          (click)="toggleLabelsEditMode()"
+          [disabled]="tool.archived"
+        >
+          <img src="../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit labels" />
+          Manage labels
+        </button>
       </span>
 
       <span *ngIf="labelsEditMode && !isToolPublic">
@@ -320,11 +320,11 @@
                   <a (click)="onSelectedVersionChange(sortedVersion)" class="pointer panel-body-anchor">{{ sortedVersion.name }}</a
                   >&nbsp;
                   <span *ngIf="sortedVersion?.verified">
-                    <mat-chip-option matTooltip="Verified" class="bubble">
-                      <a [href]="verifiedLink" class="verified-check">
-                        <mat-icon class="verified-icon">done</mat-icon>
+                    <mat-chip-set>
+                      <a mat-chip [href]="verifiedLink">
+                        <mat-icon matChipAvatar>done</mat-icon>
                       </a>
-                    </mat-chip-option>
+                    </mat-chip-set>
                   </span>
                 </div>
                 <small>{{ sortedVersion.last_built | date }}</small>

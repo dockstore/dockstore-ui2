@@ -578,19 +578,6 @@ div.modal form {
   margin-bottom: 5px;
 }
 
-.verified-check,
-.verified-check:hover,
-.verified-check:visited {
-  text-decoration: none;
-  color: #151c3d;
-}
-
-.verified-icon {
-  font-size: 1.5rem;
-  height: auto !important;
-  width: auto !important;
-}
-
 .footer-list li {
   margin: 0 0 0.6rem 0 !important;
 }
@@ -648,22 +635,8 @@ div.modal form {
   word-break: break-word;
 }
 
-.mat-mdc-standard-chip {
-  padding: 5px 8px !important;
-}
-
-/*TODO(mdc-migration): The following rule targets internal classes of chips that may no longer apply for the MDC version.
- */
-.mat-chip-list-wrapper .mat-mdc-standard-chip,
-.mat-chip-list-wrapper input.mat-input-element {
-  margin: 2px !important;
-}
-
-/*TODO(mdc-migration): The following rule targets internal classes of chips that may no longer apply for the MDC version.
- */
-.mat-chip-list-wrapper {
+.mat-mdc-chip-set {
   display: inline-flex !important;
-  margin: auto !important;
 }
 
 .mat-drawer-container {

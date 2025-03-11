@@ -76,6 +76,7 @@ import { ViewService } from './app/workflow/view/view.service';
 import { environment } from './environments/environment';
 import { EditTopicDialogService } from 'app/shared/entry/info-tab-topic/edit-topic/edit-topic-dialog.service';
 import { ManageDoisDialogService } from 'app/shared/entry/doi/manage-dois/manage-dois-dialog.service';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 
 if (environment.production) {
   enableProdMode();
@@ -168,6 +169,8 @@ bootstrapApplication(AppComponent, {
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: myCustomSnackbarDefaults },
     { provide: HTTP_INTERCEPTORS, useClass: WorkflowVersionsInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: CustomHeaderInterceptor, multi: true },
+    // Removes the hint/error space under form fields until an error or hint actually needs to get displayed
+    { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { subscriptSizing: 'dynamic' } },
     { provide: Window, useValue: window },
     provideAnimations(),
     provideHttpClient(withInterceptorsFromDi()),

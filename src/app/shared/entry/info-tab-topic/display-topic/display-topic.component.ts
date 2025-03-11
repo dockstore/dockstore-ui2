@@ -12,13 +12,24 @@ import { EditTopicDialogComponent } from '../edit-topic/edit-topic-dialog.compon
 import { bootstrap4largeModalSize } from 'app/shared/constants';
 import { AiBubbleComponent } from 'app/shared/ai-bubble/ai-bubble.component';
 import { FlexModule } from '@ngbracket/ngx-layout';
+import { MatChipsModule } from '@angular/material/chips';
 
 @Component({
   selector: 'app-display-topic',
   templateUrl: './display-topic.component.html',
   styleUrls: ['../../../styles/info-tab.component.scss'],
   standalone: true,
-  imports: [NgIf, MatTooltipModule, MatButtonModule, MatIconModule, AsyncPipe, AiBubbleComponent, FlexModule, TitleCasePipe],
+  imports: [
+    NgIf,
+    MatTooltipModule,
+    MatButtonModule,
+    MatIconModule,
+    AsyncPipe,
+    AiBubbleComponent,
+    FlexModule,
+    TitleCasePipe,
+    MatChipsModule,
+  ],
 })
 export class DisplayTopicComponent extends Base implements OnInit, OnDestroy {
   TopicSelectionEnum = Entry.TopicSelectionEnum;

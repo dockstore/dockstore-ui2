@@ -18,6 +18,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { MatCardModule } from '@angular/material/card';
+import { MatChipsModule } from '@angular/material/chips';
 
 @Component({
   selector: 'app-organization-box',
@@ -35,6 +36,7 @@ import { MatCardModule } from '@angular/material/card';
     MatDividerModule,
     RecentEventsComponent,
     AsyncPipe,
+    MatChipsModule,
   ],
 })
 export class OrganizationBoxComponent extends Base implements OnInit {

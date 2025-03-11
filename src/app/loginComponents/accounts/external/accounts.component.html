@@ -18,20 +18,20 @@
   <div class="p-3" fxFlex="50" fxFlex.lt-md="100">
     <mat-card appearance="outlined" class="mb-2 h-100" *ngIf="dockstoreToken">
       <div class="h-100" fxLayout="column" fxLayoutAlign="space-between stretch">
-        <div fxLayoutAlign="space-between">
-          <mat-card-header>
-            <div mat-card-avatar matBadge="✓" class="mr-4">
-              <img src="../../../../assets/images/dockstore/dockstore.png" alt="Dockstore logo" class="w-100" />
-            </div>
-            <mat-card-title class="normal-line-height">Dockstore Account</mat-card-title>
-            <mat-card-subtitle class="accent-1-dark normal-line-height">
+        <mat-card-header>
+          <div mat-card-avatar matBadge="✓" class="mr-4">
+            <img src="../../../../assets/images/dockstore/dockstore.png" alt="Dockstore logo" class="w-100" />
+          </div>
+          <mat-card-title-group>
+            <mat-card-title>Dockstore Account</mat-card-title>
+            <mat-card-subtitle class="accent-1-dark">
               <strong>Username: {{ username$ | async }} </strong>
             </mat-card-subtitle>
-          </mat-card-header>
-          <mat-chip-listbox>
-            <mat-chip-option class="bubble"> Main Account </mat-chip-option>
-          </mat-chip-listbox>
-        </div>
+            <mat-chip-set>
+              <mat-chip>Main Account</mat-chip>
+            </mat-chip-set>
+          </mat-card-title-group>
+        </mat-card-header>
         <mat-card-content>
           <div>
             Use with our CLI utilities or with our
@@ -90,14 +90,14 @@
     <mat-card appearance="outlined" class="mb-2 h-100">
       <div class="h-100" fxLayout="column" fxLayoutAlign="space-between stretch">
         <div>
-          <div fxLayoutAlign="space-between">
-            <mat-card-header>
-              <div mat-card-avatar matBadge="✓" [matBadgeHidden]="!row.isLinked" class="mr-4">
-                <img src="../../../../assets/images/account-logos/{{ row.logo }}" alt="{{ row.name }} logo" class="w-100" />
-              </div>
-              <mat-card-title class="normal-line-height">{{ row.name }} Account&nbsp;</mat-card-title>
+          <mat-card-header>
+            <div mat-card-avatar matBadge="✓" [matBadgeHidden]="!row.isLinked" class="mr-4">
+              <img src="../../../../assets/images/account-logos/{{ row.logo }}" alt="{{ row.name }} logo" class="w-100" />
+            </div>
+            <mat-card-title-group>
+              <mat-card-title>{{ row.name }} Account&nbsp;</mat-card-title>
               <!-- TODO: Reduce margin bottom from subtitle's default 16px to 7px -->
-              <mat-card-subtitle class="accent-1-dark normal-line-height" *ngIf="row.isLinked; else placeholder">
+              <mat-card-subtitle class="accent-1-dark" *ngIf="row.isLinked; else placeholder">
                 <strong>Username: {{ row.source | getTokenUsername: tokens }} </strong>
                 <span *ngIf="row.name === 'ORCID'">
                   <img src="../../assets/images/account-logos/{{ row.logo }}" alt="ORCID iD logo" class="orcid-id-logo site-icons-small" />
@@ -105,34 +105,29 @@
                 </span>
               </mat-card-subtitle>
               <ng-template #placeholder><br /></ng-template>
-            </mat-card-header>
-            <mat-chip-listbox>
-              <mat-chip-option
-                class="bubble"
-                *ngIf="row.control"
-                matTooltip="Pull your workflows from cloud source control to make them available on Dockstore"
-              >
-                Source Control
-              </mat-chip-option>
-              <mat-chip-option class="bubble" *ngIf="row.bold" matTooltip="A method of logging into Dockstore">
-                Login Method
-              </mat-chip-option>
-              <mat-chip-option
-                class="bubble"
-                *ngIf="row.docker"
-                matTooltip="Link Docker repository accounts to help Dockstore find information on your Docker containers"
-              >
-                Docker Repository
-              </mat-chip-option>
-              <mat-chip-option
-                class="bubble"
-                *ngIf="row.research"
-                matTooltip="Services popular among scientific researchers to aid with publications and citation"
-              >
-                Research
-              </mat-chip-option>
-            </mat-chip-listbox>
-          </div>
+              <mat-chip-set>
+                <mat-chip
+                  *ngIf="row.control"
+                  matTooltip="Pull your workflows from cloud source control to make them available on Dockstore"
+                >
+                  Source Control
+                </mat-chip>
+                <mat-chip *ngIf="row.bold" matTooltip="A method of logging into Dockstore"> Login Method </mat-chip>
+                <mat-chip
+                  *ngIf="row.docker"
+                  matTooltip="Link Docker repository accounts to help Dockstore find information on your Docker containers"
+                >
+                  Docker Repository
+                </mat-chip>
+                <mat-chip
+                  *ngIf="row.research"
+                  matTooltip="Services popular among scientific researchers to aid with publications and citation"
+                >
+                  Research
+                </mat-chip>
+              </mat-chip-set>
+            </mat-card-title-group>
+          </mat-card-header>
           <mat-card-content>
             <p>
               {{ row.message }}

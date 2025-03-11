@@ -8,16 +8,16 @@
       <!-- The already selected file -->
       <button *ngIf="!node.child && data.selectedFile.absolutePath === node.absolutePath" mat-raised-button disabled>
         <mat-icon class="mr-2" [attr.aria-label]="'file icon'">description</mat-icon>{{ node.name }}
-        <span *ngIf="primaryDescriptorPath === node.absolutePath" class="bubble preview-bubble" data-cy="primary-descriptor-bubble"
-          >Primary</span
-        >
+        <mat-chip-set *ngIf="primaryDescriptorPath === node.absolutePath" class="ml-2">
+          <mat-chip class="preview-bubble" data-cy="primary-descriptor-bubble">Primary</mat-chip>
+        </mat-chip-set>
       </button>
       <!-- The not-selected files -->
       <button (click)="selectFile(node)" *ngIf="!(!node.child && data.selectedFile.absolutePath === node.absolutePath)" mat-stroked-button>
         <mat-icon color="primary" class="mr-2" [attr.aria-label]="'file icon'">description</mat-icon>{{ node.name }}
-        <span *ngIf="primaryDescriptorPath === node.absolutePath" class="bubble preview-bubble" data-cy="primary-descriptor-bubble"
-          >Primary</span
-        >
+        <mat-chip-set class="ml-2" *ngIf="primaryDescriptorPath === node.absolutePath">
+          <mat-chip class="preview-bubble" data-cy="primary-descriptor-bubble">Primary</mat-chip>
+        </mat-chip-set>
       </button>
     </mat-tree-node>
 

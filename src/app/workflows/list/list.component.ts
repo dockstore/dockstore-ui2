@@ -41,6 +41,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NgIf, AsyncPipe, TitleCasePipe } from '@angular/common';
+import { MatChipsModule } from '@angular/material/chips';
 
 @Component({
   selector: 'app-list-workflows',
@@ -65,6 +66,7 @@ import { NgIf, AsyncPipe, TitleCasePipe } from '@angular/common';
     TitleCasePipe,
     RouterLinkPipe,
     DescriptorLanguagePipe,
+    MatChipsModule,
   ],
 })
 export class ListWorkflowsComponent extends ToolLister<PublishedWorkflowsDataSource> implements OnInit {

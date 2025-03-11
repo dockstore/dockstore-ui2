@@ -33,3 +33,8 @@ button[mat-icon-button] {
 .event {
   min-height: 8rem;
 }
+
+// Align mat chips
+.mat-mdc-chip-set {
+  vertical-align: text-bottom;
+}

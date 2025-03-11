@@ -161,26 +161,18 @@
               <small class="mx-2">Last updated {{ workflow?.lastUpdated | date }}</small>
               <div fxLayout="row wrap" fxLayoutGap="1rem">
                 <span>
-                  <mat-chip-listbox>
-                    <mat-chip-option class="bubble workflow-background" *ngFor="let label of workflow?.labels | slice: 0:3">{{
+                  <mat-chip-set>
+                    <mat-chip class="workflow-background" *ngFor="let label of workflow?.labels | slice: 0:3">{{
                       $any(label).value
-                    }}</mat-chip-option>
-                    <mat-chip-option class="bubble" *ngIf="workflow.versionVerified === true">
-                      <span class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">
-                        <mat-icon class="verified-icon">done</mat-icon>
-                        <span>Verified</span>
-                      </span>
-                    </mat-chip-option>
-                    <mat-chip-option class="bubble">
+                    }}</mat-chip>
+                    <mat-chip *ngIf="workflow.versionVerified === true">
+                      <mat-icon matChipAvatar>done</mat-icon>
+                      <span class="ml-2">Verified</span>
+                    </mat-chip>
+                    <mat-chip>
                       {{ workflow?.descriptorType | descriptorLanguage }}
-                    </mat-chip-option>
-                    <mat-chip-option class="bubble" *ngIf="workflow.versionVerified === true">
-                      <span class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">
-                        <mat-icon class="verified-icon">done</mat-icon>
-                        <span>Verified</span>
-                      </span>
-                    </mat-chip-option>
-                  </mat-chip-listbox>
+                    </mat-chip>
+                  </mat-chip-set>
                 </span>
               </div>
             </div>
@@ -208,20 +200,16 @@
             <div fxLayout="row" fxLayoutAlign="space-between stretch">
               <div fxLayout="row" fxLayoutAlign="flex-start" fxLayoutGap="1rem">
                 <small class="mx-2">Last updated {{ tool?.lastUpdated | date }}</small>
-                <mat-chip-listbox>
-                  <mat-chip-option class="bubble tool-background" *ngFor="let label of tool?.labels | slice: 0:3">{{
-                    $any(label).value
-                  }}</mat-chip-option>
-                  <mat-chip-option *ngIf="tool?.versionVerified" matTooltip="Verified" class="bubble">
-                    <a class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">
-                      <mat-icon class="verified-icon">done</mat-icon>
-                      <span>Verified</span>
-                    </a>
-                  </mat-chip-option>
-                  <mat-chip-option class="bubble" *ngFor="let descriptortype of tool?.descriptorType">
+                <mat-chip-set>
+                  <mat-chip class="tool-background" *ngFor="let label of tool?.labels | slice: 0:3">{{ $any(label).value }}</mat-chip>
+                  <mat-chip *ngIf="tool?.versionVerified" matTooltip="Verified">
+                    <mat-icon matChipAvatar>done</mat-icon>
+                    <span class="ml-2">Verified</span>
+                  </mat-chip>
+                  <mat-chip *ngFor="let descriptortype of tool?.descriptorType">
                     {{ descriptortype }}
-                  </mat-chip-option>
-                </mat-chip-listbox>
+                  </mat-chip>
+                </mat-chip-set>
               </div>
               <a [routerLink]="tool | routerLink" class="no-underline">
                 <button mat-raised-button class="small-btn-structure" color="accent">View</button>
@@ -315,11 +303,13 @@
                         <hr class="mb-4" />
                         <a routerLink="/organizations/{{ org.name }}" class="no-underline">
                           <div fxLayout="row" fxLayoutAlign="space-between center">
-                            <span class="bubble">
-                              {{ org.collectionsLength }}
-                              <span *ngIf="org.collectionsLength !== 1; else oneCollection"> Collections</span>
-                              <ng-template #oneCollection> Collection</ng-template>
-                            </span>
+                            <mat-chip-set>
+                              <mat-chip>
+                                {{ org.collectionsLength }}
+                                <span *ngIf="org.collectionsLength !== 1; else oneCollection"> Collections</span>
+                                <ng-template #oneCollection> Collection</ng-template>
+                              </mat-chip>
+                            </mat-chip-set>
                             <button mat-raised-button color="accent">View</button>
                           </div>
                         </a>

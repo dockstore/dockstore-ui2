@@ -50,6 +50,7 @@ import { NgIf, NgClass } from '@angular/common';
 
 import DescriptorTypeEnum = ToolVersion.DescriptorTypeEnum;
 import { DisplayTopicComponent } from 'app/shared/entry/info-tab-topic/display-topic/display-topic.component';
+import { MatChipsModule } from '@angular/material/chips';
 
 @Component({
   selector: 'app-info-tab-container',
@@ -79,6 +80,7 @@ import { DisplayTopicComponent } from 'app/shared/entry/info-tab-topic/display-t
     MapFriendlyValuesPipe,
     BaseUrlPipe,
     DisplayTopicComponent,
+    MatChipsModule,
   ],
 })
 export class InfoTabComponent extends Base implements OnInit, OnChanges {

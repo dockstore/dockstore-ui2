@@ -1,9 +1,11 @@
 <mat-card appearance="outlined" class="h-100">
   <div fxLayout="column" fxLayoutAlign="start stretch" class="h-100">
     <mat-card-header fxLayout="row" fxLayoutAlign="space-between">
-      <mat-card-title class="ml-2"
-        >Organizations
-        <span class="bubble org-background align-middle">{{ totalOrgs }}</span>
+      <mat-card-title class="ml-2">
+        Organizations
+        <mat-chip-set>
+          <mat-chip class="org-background">{{ totalOrgs }}</mat-chip>
+        </mat-chip-set>
       </mat-card-title>
 
       <div fxLayout="row wrap" fxLayoutGap="1rem">

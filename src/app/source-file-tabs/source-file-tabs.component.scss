@@ -1,7 +1,7 @@
-.primary-bubble-header {
-  font-size: 14px !important;
-  padding: 0 1rem !important;
+.mat-mdc-chip.primary-bubble-header {
+  --mdc-chip-label-text-size: 14px !important;
 }
+
 ::ng-deep .mat-mdc-select-panel {
   max-width: max-content !important;
 }

@@ -199,13 +199,14 @@ $dockstore-app-theme: mat.define-light-theme(
       $headline-4: $small-size,
       $headline-5: $small-size,
       $headline-6: $small-size,
-      */
+      
           $subtitle-1: $small-size,
         $subtitle-2: $small-size,
         $body-1: $normal-size,
         $body-2: $normal-size,
         $caption: $small-size,
-        $button:
+        */
+          $button:
           mat.define-typography-level(
             $font-size: 14px,
             $font-weight: 700,

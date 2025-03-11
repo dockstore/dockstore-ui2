@@ -32,6 +32,7 @@ import { LoadingComponent } from '../../shared/loading/loading.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonModule } from '@angular/material/button';
+import { MatChipsModule } from '@angular/material/chips';
 
 @Component({
   selector: 'app-collections',
@@ -51,6 +52,7 @@ import { MatButtonModule } from '@angular/material/button';
     AsyncPipe,
     JsonPipe,
     KeyValuePipe,
+    MatChipsModule,
   ],
 })
 export class CollectionsComponent implements OnInit, OnChanges {

@@ -19,14 +19,14 @@
       [class]="topicOption.type === selectedOption ? 'selected-card' : ''"
     >
       <mat-card-content>
-        <mat-radio-button [value]="topicOption.type" class="w-100">
-          <div fxLayoutAlign="space-between">
-            <div>
-              <span class="bubble mr-2">
-                <mat-icon *ngIf="topicOption.type === TopicSelectionEnum.MANUAL" class="mat-icon-sm">edit</mat-icon>
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+          <mat-radio-button [value]="topicOption.type">
+            <mat-chip-set>
+              <mat-chip disableRipple>
+                <mat-icon *ngIf="topicOption.type === TopicSelectionEnum.MANUAL" matChipAvatar>edit</mat-icon>
                 <img
                   *ngIf="topicOption.type === TopicSelectionEnum.AUTOMATIC"
-                  class="site-icons-small"
+                  matChipAvatar
                   src="../assets/images/thirdparty/github.svg"
                   alt="GitHub icon"
                 />
@@ -36,17 +36,19 @@
                   src="../../../assets/svg/ai-icon.svg"
                   alt="AI generation icon"
                 />
-              </span>
-              <strong>{{ topicOption.label }}</strong>
-            </div>
-            <span
-              *ngIf="topicOption.type === TopicSelectionEnum.AI && entry.approvedAITopic"
-              class="bubble approved"
+              </mat-chip>
+            </mat-chip-set>
+            <strong class="ml-2">{{ topicOption.label }}</strong>
+          </mat-radio-button>
+          <mat-chip-set *ngIf="topicOption.type === TopicSelectionEnum.AI && entry.approvedAITopic">
+            <mat-chip
+              disableRipple
+              class="checkmark"
               matTooltip="This AI topic was reviewed and selected by a {{ entryTypeMetadata.term }} owner"
-              ><mat-icon class="mat-icon-sm">checkmark</mat-icon> Approved</span
+              ><mat-icon matChipAvatar>checkmark</mat-icon>Approved</mat-chip
             >
-          </div>
-        </mat-radio-button>
+          </mat-chip-set>
+        </div>
         <div class="ml-5">
           <div class="size-small gray-caption">
             {{ topicOption.description }}

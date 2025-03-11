@@ -56,28 +56,28 @@
             <div>
               <hr />
               <div fxLayout="row" fxLayoutAlign="space-between stretch">
-                <div fxLayout="row" fxLayoutAlign="flex-start" fxLayoutGap="1rem">
-                  <span class="bubble" *ngIf="collection.value.workflowsLength > 0">
+                <mat-chip-set>
+                  <mat-chip *ngIf="collection.value.workflowsLength > 0">
                     {{ collection.value.workflowsLength }}
                     <span *ngIf="collection.value.workflowsLength !== 1; else oneWorkflow"> Workflows</span>
                     <ng-template #oneWorkflow> Workflow</ng-template>
-                  </span>
-                  <span class="bubble" *ngIf="collection.value.toolsLength > 0">
+                  </mat-chip>
+                  <mat-chip *ngIf="collection.value.toolsLength > 0">
                     {{ collection.value.toolsLength }}
                     <span *ngIf="collection.value.toolsLength !== 1; else oneTool"> Tools</span>
                     <ng-template #oneTool> Tool</ng-template>
-                  </span>
-                  <span class="bubble" data-cy="collections-services-count-bubble" *ngIf="collection.value.servicesLength > 0">
+                  </mat-chip>
+                  <mat-chip data-cy="collections-services-count-bubble" *ngIf="collection.value.servicesLength > 0">
                     {{ collection.value.servicesLength }}
                     <span *ngIf="collection.value.servicesLength !== 1; else oneService"> Services</span>
                     <ng-template #oneService> Service</ng-template>
-                  </span>
-                  <span class="bubble" data-cy="collections-notebooks-count-bubble" *ngIf="collection.value.notebooksLength > 0">
+                  </mat-chip>
+                  <mat-chip data-cy="collections-notebooks-count-bubble" *ngIf="collection.value.notebooksLength > 0">
                     {{ collection.value.notebooksLength }}
                     <span *ngIf="collection.value.notebooksLength !== 1; else oneNotebook"> Notebooks</span>
                     <ng-template #oneNotebook> Notebook</ng-template>
-                  </span>
-                </div>
+                  </mat-chip>
+                </mat-chip-set>
                 <div *ngIf="canEdit$ | async; else viewBtn">
                   <button
                     mat-button

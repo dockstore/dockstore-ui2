@@ -39,6 +39,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonModule } from '@angular/material/button';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { NgIf, NgFor, NgClass, AsyncPipe, TitleCasePipe } from '@angular/common';
+import { MatChipsModule } from '@angular/material/chips';
 
 @Component({
   selector: 'app-organization-members',
@@ -59,6 +60,7 @@ import { NgIf, NgFor, NgClass, AsyncPipe, TitleCasePipe } from '@angular/common'
     ExtendedModule,
     AsyncPipe,
     TitleCasePipe,
+    MatChipsModule,
   ],
 })
 export class OrganizationMembersComponent extends Base implements OnInit {

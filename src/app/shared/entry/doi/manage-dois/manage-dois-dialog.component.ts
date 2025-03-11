@@ -10,9 +10,9 @@ import { Doi, EntryTypeMetadata, Workflow, WorkflowVersion } from 'app/shared/op
 import { ManageDoisDialogService } from './manage-dois-dialog.service';
 import { MatIconModule } from '@angular/material/icon';
 import { DoiBadgeComponent } from '../doi-badge/doi-badge.component';
-import { MatLegacySlideToggleModule } from '@angular/material/legacy-slide-toggle';
 import { Dockstore } from 'app/shared/dockstore.model';
 import { AlertComponent } from 'app/shared/alert/alert.component';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 export interface ManageDoisDialogData {
   entry: Workflow;
@@ -35,7 +35,7 @@ export interface DoiInfo {
     MatButtonModule,
     MatCardModule,
     MatRadioModule,
-    MatLegacySlideToggleModule,
+    MatSlideToggleModule,
     MatIconModule,
     FlexModule,
     FormsModule,

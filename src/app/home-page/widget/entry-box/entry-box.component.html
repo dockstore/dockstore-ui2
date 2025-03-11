@@ -16,31 +16,33 @@
 
 <mat-card appearance="outlined" class="h-100">
   <div fxLayout="column" fxLayoutAlign="start stretch" class="h-100">
-    <mat-card-header fxLayout="row" fxLayoutAlign="space-between">
-      <mat-card-title class="ml-2"
-        >{{ entryTypeLowerCase | titlecase }}s
-        <span
-          class="bubble {{ entryTypeLowerCase }}-background align-middle"
-          [attr.data-cy]="'dashboard-' + entryTypeLowerCase + '-count-bubble'"
-          >{{ totalEntries }}</span
+    <mat-card-header>
+      <mat-card-title-group>
+        <mat-card-title>
+          {{ entryTypeLowerCase | titlecase }}s
+          <mat-chip-set>
+            <mat-chip class="{{ entryTypeLowerCase }}-background" [attr.data-cy]="'dashboard-' + entryTypeLowerCase + '-count-bubble'">{{
+              totalEntries
+            }}</mat-chip>
+            <mat-chip class="preview-bubble" *ngIf="entryType === newEntryType.SERVICE">PREVIEW</mat-chip>
+          </mat-chip-set>
+        </mat-card-title>
+        <button
+          mat-button
+          class="private-btn small-btn-structure ml-3 mb-3"
+          id="register{{ entryTypeLowerCase | titlecase }}Button"
+          matTooltip="Register {{ entryTypeLowerCase | titlecase }}"
+          matTooltipPosition="after"
+          (click)="showRegisterEntryModal()"
+          data-cy="register-entry-btn"
         >
-        <span class="bubble preview-bubble" *ngIf="entryType === newEntryType.SERVICE">PREVIEW</span>
-      </mat-card-title>
-      <button
-        mat-button
-        class="private-btn small-btn-structure ml-3 mb-3"
-        id="register{{ entryTypeLowerCase | titlecase }}Button"
-        matTooltip="Register {{ entryTypeLowerCase | titlecase }}"
-        matTooltipPosition="after"
-        (click)="showRegisterEntryModal()"
-        data-cy="register-entry-btn"
-      >
-        <img src="../../../assets/svg/icons-plus.svg" alt="Register a {{ entryTypeLowerCase | titlecase }}" class="pr-2 pb-1" />
-        Register a {{ entryTypeLowerCase | titlecase }}
-      </button>
+          <img src="../../../assets/svg/icons-plus.svg" alt="Register a {{ entryTypeLowerCase | titlecase }}" class="pr-2 pb-1" />
+          Register a {{ entryTypeLowerCase | titlecase }}
+        </button>
+      </mat-card-title-group>
     </mat-card-header>
     <mat-divider></mat-divider>
-    <mat-card-content class="mx-2 mt-3 h-100">
+    <mat-card-content class="mt-3 h-100">
       <div *ngIf="totalEntries > 0 || isLoading; else noEntries">
         <mat-form-field appearance="outline" class="search-form-field w-100 pb-0">
           <mat-label>Search your {{ entryTypeLowerCase | titlecase }}s...</mat-label>

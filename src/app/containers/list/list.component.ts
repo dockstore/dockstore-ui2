@@ -39,6 +39,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NgIf, NgFor, AsyncPipe, UpperCasePipe } from '@angular/common';
+import { MatChipsModule } from '@angular/material/chips';
 
 @Component({
   selector: 'app-list-containers',
@@ -63,6 +64,7 @@ import { NgIf, NgFor, AsyncPipe, UpperCasePipe } from '@angular/common';
     MatPaginatorModule,
     AsyncPipe,
     UpperCasePipe,
+    MatChipsModule,
   ],
 })
 export class ListContainersComponent extends ToolLister<PublishedToolsDataSource> implements OnInit {

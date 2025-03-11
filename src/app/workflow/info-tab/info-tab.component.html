@@ -321,9 +321,11 @@
     <mat-divider></mat-divider>
     <mat-card-content class="pt-3">
       <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="2rem">
-        <span class="bubble">
-          {{ selectedVersion?.name }}
-        </span>
+        <mat-chip-set>
+          <mat-chip>
+            {{ selectedVersion?.name }}
+          </mat-chip>
+        </mat-chip-set>
         <span *ngIf="isValidVersion" id="downloadZipButton" data-cy="downloadZip">
           <button *ngIf="!workflow?.is_published" mat-button color="accent" class="private-btn small-btn-structure" (click)="downloadZip()">
             <mat-icon class="mat-icon-sm">file_download</mat-icon>

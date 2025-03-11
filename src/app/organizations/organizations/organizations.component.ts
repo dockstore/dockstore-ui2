@@ -43,6 +43,7 @@ import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
 import { NgIf, NgFor, AsyncPipe } from '@angular/common';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { HeaderComponent } from '../../header/header.component';
+import { MatChipsModule } from '@angular/material/chips';
 
 @Component({
   selector: 'app-organizations',
@@ -70,6 +71,7 @@ import { HeaderComponent } from '../../header/header.component';
     MatPaginatorModule,
     AsyncPipe,
     GravatarPipe,
+    MatChipsModule,
   ],
 })
 export class OrganizationsComponent extends Base implements OnInit {

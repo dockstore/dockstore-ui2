@@ -55,6 +55,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatCardModule } from '@angular/material/card';
 import { NgIf, NgFor, NgClass, NgSwitch, NgSwitchCase, NgSwitchDefault, AsyncPipe, TitleCasePipe } from '@angular/common';
 import { DisplayTopicComponent } from 'app/shared/entry/info-tab-topic/display-topic/display-topic.component';
+import { MatChipsModule } from '@angular/material/chips';
 
 @Component({
   selector: 'app-info-tab',
@@ -89,6 +90,7 @@ import { DisplayTopicComponent } from 'app/shared/entry/info-tab-topic/display-t
     BaseUrlPipe,
     VersionProviderUrlPipe,
     DisplayTopicComponent,
+    MatChipsModule,
   ],
 })
 export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {

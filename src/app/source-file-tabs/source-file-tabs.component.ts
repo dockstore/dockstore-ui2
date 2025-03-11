@@ -23,6 +23,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { LoadingComponent } from '../shared/loading/loading.component';
+import { MatChipsModule } from '@angular/material/chips';
 
 @Component({
   selector: 'app-source-file-tabs',
@@ -47,6 +48,7 @@ import { LoadingComponent } from '../shared/loading/loading.component';
     CodeEditorComponent,
     AsyncPipe,
     KeyValuePipe,
+    MatChipsModule,
   ],
 })
 export class SourceFileTabsComponent implements OnChanges {

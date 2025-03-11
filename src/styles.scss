@@ -810,6 +810,10 @@ body {
   vertical-align: middle;
 }
 
+.align-text-bottom {
+  vertical-align: text-bottom;
+}
+
 // In our UI mockups, non-header text is rendered in two sizes: a default size and a smaller size.
 // Use this style to set the font size to the smaller size.
 .size-small {
@@ -914,56 +918,67 @@ app-workflow-sidebar-accordion
   background: $org-selection-color !important;
 }
 
-// Styles an element as a "bubble", which is a small very-rounded rectangular element that typically contains a word or short phrase.
-// Bubbles always render in a 12px font, are 28px tall, and default to gray background.
-.bubble {
-  color: black !important;
-  text-decoration: none !important;
-  border-radius: 0.8rem !important;
-  font-size: 12px !important;
-  line-height: 26px !important;
-  min-height: 26px !important;
-  max-height: 26px !important;
-  padding: 0 0.75rem !important;
-  display: inline-block !important;
-  font-weight: 500 !important;
-  background: mat.get-color-from-palette($dockstore-app-gray, lighter);
+// Styles a mat chip as a "bubble", which is a small very-rounded rectangular element that typically contains a word or short phrase.
+// Bubbles always render in a 12px font, are 26px tall, and default to gray background.
+.mat-mdc-chip {
+  // Remove y-axis margin
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+
+  // Styles for mat-chip container
+  --mdc-chip-elevated-container-color: #{mat.get-color-from-palette($dockstore-app-gray, lighter)} !important;
+  --mdc-chip-container-shape-radius: 0.8rem !important;
+  --mdc-chip-container-height: 26px !important;
+  // Styles for mat-chip text
+  --mdc-chip-label-text-color: black !important;
+  --mdc-chip-label-text-size: 12px !important;
+  --mdc-chip-label-text-weight: 500 !important;
+  --mdc-chip-label-text-line-height: 26px !important;
+  // Styles for mat-chip avatars
+  // Sets the mat-icon/img size to 16px if the mat-icon/img is annotated with matChipAvatar
+  // to match mat-icon-sm
+  --mdc-chip-with-icon-icon-size: 16px !important;
+  --mdc-chip-with-avatar-avatar-size: 16px !important;
+  // Remove the matChipAvatar radius to prevent mat-icon/imgs from being cut-off
+  --mdc-chip-with-avatar-avatar-shape-radius: 0 !important;
+
+  .mdc-evolution-chip__action--primary {
+    padding: 0 8px !important;
+  }
 }
 
-.preview-bubble {
-  color: white !important;
-  background-color: mat.get-color-from-palette($kim-primary, 3);
-  margin: 0 1.25rem;
+.mat-mdc-chip.preview-bubble {
+  --mdc-chip-label-text-color: white !important;
+  background-color: mat.get-color-from-palette($kim-primary, 3) !important;
 }
 
-// Remove any default link styling from a bubble, and ensure the font-weight is correct.
-a.bubble,
-a.bubble:hover,
-a.bubble:focus,
-a.bubble:active,
-a.bubble:link,
-a.bubble:visited {
-  font-weight: 500;
-  border: none;
-  outline: none;
+// mat chips with a white checkmark and white text and a green background
+// Used for the Approved and Synced bubbles
+.mat-mdc-chip.checkmark {
+  --mdc-chip-label-text-color: white !important;
+  --mdc-chip-with-icon-icon-color: white !important;
+  background-color: $accent-3-dark;
 }
 
-// Space out the bubbles in a list.
-// Add this class to a mat-chip-list that surrounds some bubbles.
-.bubble-list .bubble {
-  margin: 0 0.6rem 0 0 !important;
-}
-
-// Set the font size of an app-category-button to 12px.
-// This is necessary to prevent single-pixel vertical offsets between adjacent elements, such as that crop up when an app-category-button is displayed next to a bubble span.
-app-category-button {
-  font-size: 12px !important;
-}
-
-// Change the cursor to a pointer.
+// Change the cursor to a pointer for a mat-chip
 // Use this to make elements appear to navigate somewhere.
-.pointer {
+.mat-mdc-chip.pointer .mdc-evolution-chip__action--presentational {
   cursor: pointer !important;
+}
+
+a.mat-mdc-chip {
+  text-decoration: none !important;
+
+  // Set the cursor to a pointer because the anchor will navigate somewhere
+  .mdc-evolution-chip__action--presentational {
+    cursor: pointer !important;
+  }
+}
+
+// Remove the padding around a mat-chip avatar to ensure even padding around the mat-chip content
+.mat-mdc-chip-with-avatar .mat-mdc-chip-graphic {
+  padding-right: 0 !important;
+  padding-left: 0 !important;
 }
 
 // Make the dropdown at least the size of the default material dropdown.
@@ -1034,18 +1049,6 @@ mat-tab-group.no-pagination {
 // Used to make text center-aligned
 .text-align-center {
   text-align: center;
-}
-
-// Styling from design mockups
-// These badges are not clickable, thus different from Material Design Chips
-.nonclick-badge {
-  display: inline-flex;
-  border-radius: 0.8rem;
-  background-color: mat.get-color-from-palette($dockstore-app-gray, lighter);
-  padding: 0.2rem 0.8rem;
-  color: $header-color;
-  font-size: 1.2rem;
-  font-weight: 500;
 }
 
 @media only screen and (max-width: 1200px) {
@@ -1382,12 +1385,6 @@ button.inline-text-btn {
 .mat-mdc-card:not([class*='mat-elevation-z']) {
   border: solid 1px mat.get-color-from-palette($dockstore-app-gray, 7);
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1), 0 2px 3px 0 rgba(0, 0, 0, 0.08) !important;
-  // Override mat-card-header margin
-  /*TODO(mdc-migration): The following rule targets internal classes of card that may no longer apply for the MDC version.
- */
-  .mat-card-header-text {
-    margin-left: 0rem;
-  }
 }
 
 // Alert and Warning styles
@@ -1475,14 +1472,6 @@ div.mat-mdc-menu-panel {
   flex-grow: 1;
   align-items: center;
   justify-content: space-between;
-}
-
-app-ai-bubble {
-  margin: 0 0.5rem;
-}
-
-.ai-bubble:hover {
-  background-color: mat.get-color-from-palette($dockstore-app-gray, 7);
 }
 
 .primary-3 {
