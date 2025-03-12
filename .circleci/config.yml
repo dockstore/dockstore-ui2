@@ -7,7 +7,7 @@ orbs:
 executors:
   integration_test_exec: # declares a reusable executor
     docker:
-      - image: cimg/eclipse-temurin:<< pipeline.parameters.java-tag >>
+      - image: cimg/openjdk:<< pipeline.parameters.java-tag >>
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
@@ -40,7 +40,7 @@ jobs:
         type: string
     working_directory: ~/repo
     docker:
-      - image: cimg/eclipse-temurin:<< pipeline.parameters.java-tag >>
+      - image: cimg/openjdk:<< pipeline.parameters.java-tag >>
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
@@ -74,7 +74,7 @@ jobs:
         type: string
     working_directory: ~/repo
     docker:
-        - image: cimg/eclipse-temurin:<< pipeline.parameters.java-tag >>
+        - image: cimg/openjdk:<< pipeline.parameters.java-tag >>
           auth:
             username: dockstoretestuser
             password: $DOCKERHUB_PASSWORD
@@ -108,7 +108,7 @@ jobs:
   lint_license_unit_test_coverage:
     working_directory: ~/repo
     docker:
-      - image: cimg/eclipse-temurin:<< pipeline.parameters.java-tag >>
+      - image: cimg/openjdk:<< pipeline.parameters.java-tag >>
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
@@ -220,7 +220,7 @@ jobs:
   upload_to_s3:
     working_directory: ~/repo
     docker:
-      - image: cimg/eclipse-temurin:<< pipeline.parameters.java-tag >>
+      - image: cimg/openjdk:<< pipeline.parameters.java-tag >>
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
@@ -265,7 +265,7 @@ jobs:
   check_build_develop:
     working_directory: ~/repo
     docker:
-      - image: cimg/eclipse-temurin:<< pipeline.parameters.java-tag >>
+      - image: cimg/openjdk:<< pipeline.parameters.java-tag >>
         auth:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
@@ -298,7 +298,7 @@ parameters:
     default: false
   java-tag:
     type: string
-    default: "21.0.5-browsers"
+    default: "21.0.6-browsers"
   postgres-tag:
     type: string
     default: "16.1"
@@ -459,6 +459,8 @@ commands:
       - run:
           name: Install cypress dependencies
           command: |
+            # update to key may only be for Java 19
+            wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
             sudo apt-get update -y
             sudo apt-get -o Acquire::Retries=3 install libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb -yq
       - run:
