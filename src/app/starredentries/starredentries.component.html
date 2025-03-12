@@ -47,12 +47,7 @@
               <span class="tab-display workflow-background">{{ starredWorkflows?.length }}</span>
             </div>
           </ng-template>
-          <mat-card
-            appearance="outlined"
-            class="alert alert-info mat-elevation-z starred-header"
-            role="alert"
-            *ngIf="starredWorkflows?.length === 0"
-          >
+          <mat-card appearance="outlined" class="alert alert-info" role="alert" *ngIf="starredWorkflows?.length === 0">
             <mat-card-content> You have no starred workflows. </mat-card-content>
           </mat-card>
           <div fxLayout="column" fxLayoutGap="1rem" class="mb-2 mx-1">
@@ -75,12 +70,7 @@
             </div>
           </ng-template>
           <div>
-            <mat-card
-              appearance="outlined"
-              class="alert alert-info mat-elevation-z starred-header"
-              role="alert"
-              *ngIf="starredTools?.length === 0"
-            >
+            <mat-card appearance="outlined" class="alert alert-info" role="alert" *ngIf="starredTools?.length === 0">
               <mat-card-content> You have no starred tools. </mat-card-content>
             </mat-card>
             <div fxLayout="column" fxLayoutGap="1rem" class="mb-2 mx-1">
@@ -111,7 +101,7 @@
           <div>
             <mat-card
               appearance="outlined"
-              class="alert alert-info mat-elevation-z starred-header"
+              class="alert alert-info"
               data-cy="no-notebooks-banner"
               role="alert"
               *ngIf="starredNotebooks?.length === 0"
@@ -228,7 +218,7 @@
               <span class="tab-display service-background">0</span>
             </div>
           </ng-template>
-          <mat-card appearance="outlined" class="alert alert-info mat-elevation-z starred-header" role="alert">
+          <mat-card appearance="outlined" class="alert alert-info" role="alert">
             <mat-card-content> You have no starred services. </mat-card-content>
           </mat-card>
         </mat-tab>
@@ -241,12 +231,7 @@
               <span class="tab-display org-background">{{ starredOrganizations?.length }}</span>
             </div>
           </ng-template>
-          <mat-card
-            appearance="outlined"
-            class="alert alert-info mat-elevation-z starred-header"
-            role="alert"
-            *ngIf="starredOrganizations?.length === 0"
-          >
+          <mat-card appearance="outlined" class="alert alert-info" role="alert" *ngIf="starredOrganizations?.length === 0">
             <mat-card-content> You have no starred organizations. </mat-card-content>
           </mat-card>
           <div *ngIf="starredOrganizations?.length > 0">

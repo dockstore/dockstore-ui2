@@ -14,7 +14,7 @@
   ~    limitations under the License.
   -->
 <div *ngIf="!_selectedVersion" class="p-3">
-  <mat-card appearance="outlined" class="alert alert-warning mat-elevation-z" role="alert">
+  <mat-card appearance="outlined" class="alert alert-warning" role="alert">
     <mat-card-content>
       <mat-icon class="alert-warning-icon">warning</mat-icon>
       &nbsp;No versions exist for this tool.
@@ -22,7 +22,7 @@
   </mat-card>
 </div>
 <div *ngIf="_selectedVersion" class="p-3">
-  <mat-card appearance="outlined" class="alert alert-warning mat-elevation-z" role="alert" *ngIf="!content">
+  <mat-card appearance="outlined" class="alert alert-warning" role="alert" *ngIf="!content">
     <mat-card-content>
       <mat-icon class="alert-warning-icon">warning</mat-icon>
       &nbsp;A Dockerfile associated with this Docker container could not be found.

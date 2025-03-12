@@ -16,7 +16,7 @@
 <app-workflow *ngIf="displayAppTool" [isWorkflowPublic]="isToolPublic" [shouldClearState]="false"></app-workflow>
 <div *ngIf="tool && !displayAppTool">
   <div class="row m-1 mt-3 mb-0" *ngIf="tool?.archived">
-    <mat-card appearance="outlined" class="alert alert-warning mat-elevation-z m-0">
+    <mat-card appearance="outlined" class="alert alert-warning m-0">
       <mat-card-content>
         This {{ tool.entryTypeMetadata.term }} was archived on {{ tool.dbUpdateDate | date: 'yyyy-MM-dd' }}. It is now read-only.
       </mat-card-content>
@@ -28,7 +28,7 @@
       (tool?.mode === ModeEnum.AUTODETECTQUAYTAGSAUTOMATEDBUILDS || tool?.mode === ModeEnum.AUTODETECTQUAYTAGSWITHMIXED) && !tool?.gitUrl
     "
   >
-    <mat-card appearance="outlined" class="alert alert-info mat-elevation-z" role="alert">
+    <mat-card appearance="outlined" class="alert alert-info" role="alert">
       <mat-card-content>
         <mat-icon>warning</mat-icon> This Quay.io tool does not have an associated Git repository. Please view the Quay.io repository and
         add a build trigger for a valid Git repository. Once the build has been added, refresh the tool.
@@ -37,7 +37,7 @@
   </div>
 
   <div class="row m-1" *ngIf="tool?.mode === ModeEnum.HOSTED && tool?.workflowVersions?.length === 0">
-    <mat-card appearance="outlined" class="alert alert-info mat-elevation-z" role="alert">
+    <mat-card appearance="outlined" class="alert alert-info" role="alert">
       <mat-card-content>
         <mat-icon>warning</mat-icon> Your manually added tool does not have any tags. Go to the versions tab to add one.
       </mat-card-content>
@@ -225,7 +225,7 @@
             ></app-container-launch>
             <ng-template #noTags>
               <div class="p-3">
-                <mat-card appearance="outlined" class="alert alert-warning mat-elevation-z" role="alert">
+                <mat-card appearance="outlined" class="alert alert-warning" role="alert">
                   <mat-card-content> <mat-icon class="alert-warning-icon">warning</mat-icon> No tags exist for this </mat-card-content>
                 </mat-card>
               </div>
@@ -294,7 +294,7 @@
       <div *ngIf="publicPage" class="mt-2 mr-3">
         <div *ngIf="tool?.topicId !== null; else noTopicId" id="discourse-comments"></div>
         <ng-template #noTopicId>
-          <mat-card appearance="outlined" class="alert alert-warning mat-elevation-z" role="alert">
+          <mat-card appearance="outlined" class="alert alert-warning" role="alert">
             <mat-card-content>
               <mat-icon class="alert-warning-icon">info</mat-icon> No Discourse topic exists for this tool.
             </mat-card-content>
@@ -448,13 +448,15 @@
 </div>
 <ng-template #noVersions>
   <div class="p-3">
-    <mat-card appearance="outlined" class="alert alert-info mat-elevation-z p-3" role="alert">
-      <mat-icon>info</mat-icon>
-      <span *ngIf="tool?.mode === ModeEnum.HOSTED"> To see versions, please add a new version in the Files tab. </span>
-      <span *ngIf="tool?.mode === ModeEnum.MANUALIMAGEPATH"> To see versions, click the Add Tag button below. </span>
-      <span *ngIf="tool?.mode === ModeEnum.AUTODETECTQUAYTAGSAUTOMATEDBUILDS || tool?.mode === ModeEnum.AUTODETECTQUAYTAGSWITHMIXED">
-        To see versions, please refresh the tool.
-      </span>
+    <mat-card appearance="outlined" class="alert alert-info p-3" role="alert">
+      <mat-card-content>
+        <mat-icon>info</mat-icon>
+        <span *ngIf="tool?.mode === ModeEnum.HOSTED"> To see versions, please add a new version in the Files tab. </span>
+        <span *ngIf="tool?.mode === ModeEnum.MANUALIMAGEPATH"> To see versions, click the Add Tag button below. </span>
+        <span *ngIf="tool?.mode === ModeEnum.AUTODETECTQUAYTAGSAUTOMATEDBUILDS || tool?.mode === ModeEnum.AUTODETECTQUAYTAGSWITHMIXED">
+          To see versions, please refresh the tool.
+        </span>
+      </mat-card-content>
     </mat-card>
   </div>
 </ng-template>

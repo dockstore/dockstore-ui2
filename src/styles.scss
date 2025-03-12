@@ -1384,10 +1384,14 @@ button.inline-text-btn {
 // Updated mat-card style matching Zeplin redesign
 .mat-mdc-card:not([class*='mat-elevation-z']) {
   border: solid 1px mat.get-color-from-palette($dockstore-app-gray, 7);
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1), 0 2px 3px 0 rgba(0, 0, 0, 0.08) !important;
+  //box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1), 0 2px 3px 0 rgba(0, 0, 0, 0.08) !important;
 }
 
 // Alert and Warning styles
+.alert {
+  padding: 0 !important; // Remove padding because mat-card-content already adds padding
+}
+
 .alert-warning {
   background-color: mat.get-color-from-palette($dockstore-app-warn, 6) !important;
   border: solid 1px mat.get-color-from-palette($dockstore-app-warn, 3) !important;

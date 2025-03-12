@@ -15,14 +15,14 @@
   -->
 
 <div class="p-3">
-  <mat-card appearance="outlined" *ngIf="!_selectedVersion" class="alert alert-warning mat-elevation-z" role="alert">
+  <mat-card appearance="outlined" *ngIf="!_selectedVersion" class="alert alert-warning" role="alert">
     <mat-card-content>
       <mat-icon class="alert-warning-icon">warning</mat-icon> To see launch with, please refresh the workflow.
     </mat-card-content>
   </mat-card>
   <div *ngIf="_selectedVersion">
     <div *ngIf="!_selectedVersion.valid">
-      <mat-card appearance="outlined" class="alert alert-warning mat-elevation-z" role="alert">
+      <mat-card appearance="outlined" class="alert alert-warning" role="alert">
         <mat-card-content>
           <mat-icon class="alert-warning-icon">warning</mat-icon> This section is only available for valid versions. A valid version
           requires a valid descriptor file.
@@ -31,7 +31,7 @@
     </div>
     <div *ngIf="_selectedVersion.valid" fxLayout="column" fxLayoutGap="1rem">
       <div fxLayout="column" fxLayoutGap="1rem">
-        <mat-card appearance="outlined" *ngIf="entryType === EntryType.Tool" class="alert alert-info mat-elevation-z" role="alert">
+        <mat-card appearance="outlined" *ngIf="entryType === EntryType.Tool" class="alert alert-info" role="alert">
           <mat-card-content>
             <mat-icon>info</mat-icon> GitHub App Tools are launched in workflow mode with the Dockstore CLI
           </mat-card-content>

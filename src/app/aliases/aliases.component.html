@@ -1,6 +1,6 @@
 <app-header> Redirecting </app-header>
 <div class="container">
-  <mat-card appearance="outlined" class="alert alert-warning mat-elevation-z" role="alert" *ngIf="!validType">
+  <mat-card appearance="outlined" class="alert alert-warning" role="alert" *ngIf="!validType">
     <mat-card-content>
       <mat-icon class="alert-warning-icon">warning</mat-icon>
       &nbsp;<strong>{{ type }}</strong> is not a valid type
@@ -11,7 +11,7 @@
   </div>
   <ng-template #doneLoading>
     <div *ngIf="validType && found">Redirecting...</div>
-    <mat-card appearance="outlined" class="alert alert-warning mat-elevation-z" role="alert" *ngIf="validType && !found">
+    <mat-card appearance="outlined" class="alert alert-warning" role="alert" *ngIf="validType && !found">
       <mat-card-content>
         <mat-icon class="alert-warning-icon">warning</mat-icon>
         &nbsp;No <strong>{{ type }}</strong> with the alias <strong>{{ alias }}</strong> found

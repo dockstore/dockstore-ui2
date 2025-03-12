@@ -31,7 +31,7 @@
 <app-loading [loading]="(loadingCollection$ | async) || (loadingOrganization$ | async)">
   <div *ngIf="organization$ | async as organization">
     <div class="container mb-5" *ngIf="collection$ | async as collection" fxLayout="column">
-      <mat-card appearance="outlined" fxFlex class="my-3 alert alert-info mat-elevation-z" *ngIf="organization?.status === pendingEnum">
+      <mat-card appearance="outlined" fxFlex class="my-3 alert alert-info" *ngIf="organization?.status === pendingEnum">
         <mat-card-content>
           <mat-icon>info</mat-icon> This collection is part of an organization that is pending approval by a Dockstore curator.
           <span *ngIf="(isAdmin$ | async) || (isCurator$ | async); else notAdminOrCurator">
@@ -45,7 +45,7 @@
         </mat-card-content>
       </mat-card>
 
-      <mat-card appearance="outlined" fxFlex class="my-3 alert alert-info mat-elevation-z" *ngIf="organization?.status === 'REJECTED'">
+      <mat-card appearance="outlined" fxFlex class="my-3 alert alert-info" *ngIf="organization?.status === 'REJECTED'">
         <mat-card-content>
           <mat-icon>info</mat-icon> This collection is part of an organization that has been rejected by a curator. Members can re-request
           approval on the <a [routerLink]="'/accounts'" style="text-decoration: underline">accounts page</a>.
@@ -94,7 +94,7 @@
           </button>
         </mat-card-actions>
       </div>
-      <mat-card appearance="outlined" class="alert alert-info mat-elevation-z" *ngIf="collection?.entries?.length === 0">
+      <mat-card appearance="outlined" class="alert alert-info" *ngIf="collection?.entries?.length === 0">
         <mat-card-content>
           <mat-icon>info</mat-icon> This collection has no associated entries. To add an entry, navigate to the public page of the tool or
           workflow you want to add and select `Add to collection`

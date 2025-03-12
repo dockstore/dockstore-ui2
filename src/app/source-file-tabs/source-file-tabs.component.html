@@ -1,6 +1,6 @@
 <app-loading class="w-100" [loading]="loading">
   <div *ngIf="version" class="p-3">
-    <mat-card appearance="outlined" class="alert alert-warning mat-elevation-z" *ngIf="validationMessage">
+    <mat-card appearance="outlined" class="alert alert-warning" *ngIf="validationMessage">
       <mat-card-content>
         <mat-icon class="alert-warning-icon">warning</mat-icon>
         &nbsp;
@@ -12,13 +12,13 @@
     </mat-card>
   </div>
   <div *ngIf="!loading && (!fileTabs || fileTabs.size === 0) && !displayError" class="p-3">
-    <mat-card appearance="outlined" class="alert alert-warning mat-elevation-z">
+    <mat-card appearance="outlined" class="alert alert-warning">
       <mat-card-content> <mat-icon class="alert-warning-icon">warning</mat-icon>This version has no files. </mat-card-content>
     </mat-card>
   </div>
 
   <div *ngIf="displayError" class="p-3">
-    <mat-card appearance="outlined" class="alert alert-warning mat-elevation-z">
+    <mat-card appearance="outlined" class="alert alert-warning">
       <mat-card-content>
         <mat-icon class="alert-warning-icon">warning</mat-icon>There was an error retrieving the files for this version. Please reload the
         page.
@@ -26,7 +26,7 @@
     </mat-card>
   </div>
   <div *ngIf="notFoundError" class="p-3">
-    <mat-card appearance="outlined" class="alert alert-warning mat-elevation-z">
+    <mat-card appearance="outlined" class="alert alert-warning">
       <mat-card-content>
         <mat-icon class="alert-warning-icon">warning</mat-icon>Could not find the specified file.<br />Other files are displayed below.
       </mat-card-content>
@@ -36,7 +36,7 @@
     <mat-tab *ngFor="let fileTab of fileTabs | keyvalue: originalOrder" [label]="fileTab.key">
       <ng-template matTabContent>
         <div class="p-3" *ngIf="fileTab.value.length === 0">
-          <mat-card appearance="outlined" class="alert alert-warning mat-elevation-z">
+          <mat-card appearance="outlined" class="alert alert-warning">
             <mat-card-content>
               <mat-icon class="alert-warning-icon">warning</mat-icon>This version has no files of this type.
             </mat-card-content>

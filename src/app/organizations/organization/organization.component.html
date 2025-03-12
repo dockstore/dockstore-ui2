@@ -37,7 +37,7 @@
   <!-- Organization header -->
   <div class="container mb-5" *ngIf="organization$ | async as org" fxLayout="column" fxLayoutGap="10px">
     <app-json-ld [json]="schema$ | async" class="m-0"></app-json-ld>
-    <mat-card appearance="outlined" fxFlex class="my-3 alert alert-info mat-elevation-z" *ngIf="org?.status === 'PENDING'">
+    <mat-card appearance="outlined" fxFlex class="my-3 alert alert-info" *ngIf="org?.status === 'PENDING'">
       <mat-card-content>
         <mat-icon>info</mat-icon> This organization is pending approval by a Dockstore curator.
         <span *ngIf="(isAdmin$ | async) || (isCurator$ | async); else notAdminOrCurator">
@@ -51,7 +51,7 @@
       </mat-card-content>
     </mat-card>
 
-    <mat-card appearance="outlined" fxFlex class="my-3 alert alert-info mat-elevation-z" *ngIf="org?.status === 'REJECTED'">
+    <mat-card appearance="outlined" fxFlex class="my-3 alert alert-info" *ngIf="org?.status === 'REJECTED'">
       <mat-card-content>
         <mat-icon>info</mat-icon> This organization has been rejected by a curator. Members can re-request approval on the
         <a [routerLink]="'/accounts'" [queryParams]="{ tab: 'requests' }">accounts page</a>.

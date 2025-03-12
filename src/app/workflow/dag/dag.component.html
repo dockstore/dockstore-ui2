@@ -17,7 +17,7 @@
   <div class="p-3" fxLayout="column" fxLayoutGap="10px">
     <div fxFlex *ngIf="(isNFL$ | async) && dagType === 'classic'">
       <!-- alert class not present because it adds too much margin above a DAG that actually exists -->
-      <mat-card appearance="outlined" class="alert-warning mat-elevation-z" role="alert">
+      <mat-card appearance="outlined" class="alert-warning" role="alert">
         <mat-card-content>
           <mat-icon class="alert-warning-icon">warning</mat-icon>&nbsp;DAG display is still experimental for Nextflow.
         </mat-card-content>
@@ -25,7 +25,7 @@
     </div>
     <div fxFlex *ngIf="dagType === 'classic' && (isNFL$ | async) === false && (missingTool$ | async)">
       <!-- This covers CWL, WDL, Service, and other plugin languages (everything except NFL) -->
-      <mat-card appearance="outlined" class="alert alert-warning mat-elevation-z" role="alert" *ngIf="!selectedVersion?.valid">
+      <mat-card appearance="outlined" class="alert alert-warning" role="alert" *ngIf="!selectedVersion?.valid">
         <mat-card-content>
           <mat-icon class="alert-warning-icon">warning</mat-icon>&nbsp;
           <span *ngIf="(descriptorType$ | async) !== ToolDescriptor.TypeEnum.SERVICE">
@@ -38,7 +38,7 @@
           </span>
         </mat-card-content>
       </mat-card>
-      <mat-card appearance="outlined" class="alert alert-warning mat-elevation-z" role="alert" *ngIf="selectedVersion?.valid">
+      <mat-card appearance="outlined" class="alert alert-warning" role="alert" *ngIf="selectedVersion?.valid">
         <mat-card-content>
           <mat-icon class="alert-warning-icon">warning</mat-icon>&nbsp; DAG cannot be created because some required tools are missing from
           GitHub repo.

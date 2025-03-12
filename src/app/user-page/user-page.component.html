@@ -129,13 +129,8 @@
       </ng-template>
       <div class="w-100">
         <div *ngIf="otherLinkedAccountsInfo.length === 0">
-          <mat-card
-            appearance="outlined"
-            class="alert alert-info mat-elevation-z starred-header"
-            role="alert"
-            data-cy="no-other-linked-accounts-banner"
-          >
-            This user has no other linked accounts.
+          <mat-card appearance="outlined" class="alert alert-info" role="alert" data-cy="no-other-linked-accounts-banner">
+            <mat-card-content> This user has no other linked accounts. </mat-card-content>
           </mat-card>
         </div>
         <div *ngFor="let row of otherLinkedAccountsInfo" class="p-3" fxFlex.lt-md="100">

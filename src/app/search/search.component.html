@@ -249,7 +249,7 @@
 
     <div class="col-md-9 containers-rsb" *ngIf="advancedSearchObject$ | async as advancedSearchObject">
       <div class="hits">
-        <mat-card appearance="outlined" *ngIf="!isLoading && hits?.length === 0" class="alert alert-warning mat-elevation-z text-break">
+        <mat-card appearance="outlined" *ngIf="!isLoading && hits?.length === 0" class="alert alert-warning text-break">
           <mat-card-content>
             <div *ngIf="searchTerm" data-cy="no-searchTerm-results">
               Sorry, no matches found for <strong>{{ basicSearchText$ | async }}</strong
@@ -266,7 +266,7 @@
         </mat-card>
 
         <div *ngIf="searchService.hasSearchText(advancedSearchObject, searchTerm, hits) || searchService.hasFilters(filters)">
-          <mat-card appearance="outlined" class="alert alert-info mat-elevation-z text-break">
+          <mat-card appearance="outlined" class="alert alert-info text-break">
             <mat-card-content>
               <div>
                 <button
@@ -325,7 +325,7 @@
         </div>
         <mat-card
           appearance="outlined"
-          class="alert alert-info mat-elevation-z"
+          class="alert alert-info"
           *ngIf="hits?.length > query_size - 1 && searchService.hasNarrowedSearch(advancedSearchObject, searchTerm, hits, filters)"
         >
           <mat-card-content>
