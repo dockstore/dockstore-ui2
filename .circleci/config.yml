@@ -301,7 +301,7 @@ parameters:
     default: "17.0.14-browsers"
   postgres-tag:
     type: string
-    default: "16.1"
+    default: "16.4"
   python-tag:
     type: string
     default: "3.11"
@@ -546,7 +546,7 @@ commands:
           command: sudo apt install -y nginx || true
       - run:
           name: Prepapre nginx config
-          command: sed "s%REPLACEME%`pwd`%" .circleci/nginx.conf.tmpl > .circleci/nginx.conf
+          command: sed "s%REPLACEME%`pwd`%" .circleci/nginx.conf.tmpl > .circleci/nginx.conf && cat .circleci/nginx.conf
       - run:
           name: Run nginx
           command: sudo nginx -c `pwd`/.circleci/nginx.conf
