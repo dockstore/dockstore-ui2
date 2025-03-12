@@ -5,6 +5,7 @@ http {
   include       /etc/nginx/mime.types;
 
   access_log /dev/stdout;
+  error_log /dev/stdout info;
 
   server {
     listen 4200;
