@@ -37,7 +37,6 @@
           </mat-card-content>
         </mat-card>
         <mat-card
-          appearance="outlined"
           *ngIf="(isNFL$ | async) === false && (isGalaxy$ | async) === false"
           matTooltip="Commands for creating a runtime JSON template"
         >
@@ -62,7 +61,7 @@
             </span>
           </mat-card-content>
         </mat-card>
-        <mat-card appearance="outlined" *ngIf="(isGalaxy$ | async) === true" matTooltip="Commands for creating a runtime JSON template">
+        <mat-card *ngIf="(isGalaxy$ | async) === true" matTooltip="Commands for creating a runtime JSON template">
           <mat-card-content>
             Download the workflow and other included files (such as example parameter files)
             <button mat-icon-button color="secondary" matTooltip="Copy command" [cdkCopyToClipboard]="planemoSharedZipString" appSnackbar>
@@ -91,7 +90,6 @@
           </mat-card-content>
         </mat-card>
         <mat-card
-          appearance="outlined"
           *ngIf="(isNFL$ | async) === false && (isGalaxy$ | async) === false"
           matTooltip="Commands for launching tool through Dockstore CLI (Supports file provisioning)"
         >
@@ -103,10 +101,7 @@
             <pre>{{ cli }}</pre>
           </mat-card-content>
         </mat-card>
-        <mat-card
-          appearance="outlined"
-          *ngIf="(isNFL$ | async) && DockstoreToolType.ModeEnum.HOSTED !== mode && WorkflowType.ModeEnum.HOSTED !== mode"
-        >
+        <mat-card *ngIf="(isNFL$ | async) && DockstoreToolType.ModeEnum.HOSTED !== mode && WorkflowType.ModeEnum.HOSTED !== mode">
           <mat-card-content>
             <div matTooltip="Nextflow can conveniently run a workflow off of source control">
               Run with nextflow
@@ -125,10 +120,7 @@
           </mat-card-content>
         </mat-card>
 
-        <mat-card
-          appearance="outlined"
-          *ngIf="(isGalaxy$ | async) && DockstoreToolType.ModeEnum.HOSTED !== mode && WorkflowType.ModeEnum.HOSTED !== mode"
-        >
+        <mat-card *ngIf="(isGalaxy$ | async) && DockstoreToolType.ModeEnum.HOSTED !== mode && WorkflowType.ModeEnum.HOSTED !== mode">
           <mat-card-content>
             <div matTooltip="Planemo can run a workflow locally">
               Run with Planemo
@@ -146,10 +138,7 @@
           </mat-card-content>
         </mat-card>
 
-        <mat-card
-          appearance="outlined"
-          *ngIf="(isNFL$ | async) && (DockstoreToolType.ModeEnum.HOSTED === mode || WorkflowType.ModeEnum.HOSTED === mode)"
-        >
+        <mat-card *ngIf="(isNFL$ | async) && (DockstoreToolType.ModeEnum.HOSTED === mode || WorkflowType.ModeEnum.HOSTED === mode)">
           <mat-card-content>
             <div matTooltip="Nextflow can also run a local workflow">
               Download the workflow files
@@ -179,7 +168,7 @@
           </mat-card-content>
         </mat-card>
 
-        <mat-card appearance="outlined" *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL && (published$ | async)">
+        <mat-card *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL && (published$ | async)">
           <mat-card-content>
             <div [matTooltip]="cwlrunnerTooltip">
               {{ cwlrunnerDescription }}
@@ -190,7 +179,7 @@
             </div>
           </mat-card-content>
         </mat-card>
-        <mat-card appearance="outlined" *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL && (published$ | async)">
+        <mat-card *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL && (published$ | async)">
           <mat-card-content>
             <div [matTooltip]="cwltoolTooltip">
               Alternatively, <a href="https://github.com/common-workflow-language/cwltool">cwltool</a> can conveniently run a workflow off
@@ -224,7 +213,7 @@
         <app-launch-checker-workflow [versionName]="_selectedVersion?.name" [command]="checkEntryCommand"></app-launch-checker-workflow>
       </div>
 
-      <mat-card appearance="outlined" *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.WDL && (published$ | async)">
+      <mat-card *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.WDL && (published$ | async)">
         <mat-card-content>
           <div [matTooltip]="wesTooltip">
             <p>Launch this workflow on Amazon Web Services' (AWS) Amazon Genomics CLI (AGC) cloud infrastructure.</p>

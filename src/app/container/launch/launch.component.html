@@ -42,26 +42,26 @@
       </div>
 
       <div fxLayout="column" fxLayoutGap="1rem" *ngIf="currentDescriptor">
-        <mat-card appearance="outlined" matTooltip="Commands for creating a runtime JSON template">
+        <mat-card matTooltip="Commands for creating a runtime JSON template">
           <mat-card-content>
             Make a runtime JSON template and fill in desired inputs, outputs, and other parameters
             <pre>{{ params }}</pre>
           </mat-card-content>
         </mat-card>
-        <mat-card appearance="outlined" matTooltip="Commands for launching tool through Dockstore CLI (Supports file provisioning)">
+        <mat-card matTooltip="Commands for launching tool through Dockstore CLI (Supports file provisioning)">
           <mat-card-content>
             Run locally with the Dockstore CLI
             <pre>{{ cli }}</pre>
           </mat-card-content>
         </mat-card>
         <div fxLayout="column" fxLayoutGap="1rem" *ngIf="currentDescriptor === ToolDescriptor.TypeEnum.CWL && (published$ | async)">
-          <mat-card appearance="outlined" [matTooltip]="cwlrunnerTooltip">
+          <mat-card [matTooltip]="cwlrunnerTooltip">
             <mat-card-content>
               {{ cwlrunnerDescription }}
               <pre>{{ cwl }}</pre>
             </mat-card-content>
           </mat-card>
-          <mat-card appearance="outlined" [matTooltip]="cwltoolTooltip">
+          <mat-card [matTooltip]="cwltoolTooltip">
             <mat-card-content>
               Alternatively, <a href="https://github.com/common-workflow-language/cwltool">cwltool</a> can conveniently run a tool off of
               dockstore.org and other

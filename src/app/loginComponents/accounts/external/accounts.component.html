@@ -16,165 +16,158 @@
 
 <div fxLayout="row wrap">
   <div class="p-3" fxFlex="50" fxFlex.lt-md="100">
-    <mat-card appearance="outlined" class="mb-2 h-100" *ngIf="dockstoreToken">
-      <div class="h-100" fxLayout="column" fxLayoutAlign="space-between stretch">
-        <mat-card-header>
-          <div mat-card-avatar matBadge="✓" class="mr-4">
-            <img src="../../../../assets/images/dockstore/dockstore.png" alt="Dockstore logo" class="w-100" />
-          </div>
-          <mat-card-title-group>
-            <mat-card-title>Dockstore Account</mat-card-title>
-            <mat-card-subtitle class="accent-1-dark">
-              <strong>Username: {{ username$ | async }} </strong>
-            </mat-card-subtitle>
-            <mat-chip-set>
-              <mat-chip>Main Account</mat-chip>
-            </mat-chip-set>
-          </mat-card-title-group>
-        </mat-card-header>
-        <mat-card-content>
-          <div>
-            Use with our CLI utilities or with our
-            <a [href]="dsServerURI + '/static/swagger-ui/index.html#'" target="_blank">REST web service interface</a> to work with and
-            launch tools and workflows. See the <a routerLink="/onboarding">Onboarding</a> page for more details on using the CLI.
-          </div>
-          <div>
-            <mat-form-field appearance="outline" class="w-75">
-              <mat-label class="accent-1-dark">
-                <strong>Token</strong>
-              </mat-label>
-              <input matInput readonly [type]="show ? 'text' : 'password'" value="{{ dockstoreToken }}" />
-              <button
-                mat-icon-button
-                matSuffix
-                class="accent-1-dark"
-                [cdkCopyToClipboard]="dockstoreToken"
-                matTooltip="Copy Token"
-                appSnackbar
-              >
-                <mat-icon>file_copy</mat-icon>
-              </button>
-            </mat-form-field>
+    <mat-card class="mb-2 h-100" *ngIf="dockstoreToken" fxLayout="column" fxLayoutAlign="space-between stretch">
+      <mat-card-header>
+        <div mat-card-avatar matBadge="✓" class="mr-4">
+          <img src="../../../../assets/images/dockstore/dockstore.png" alt="Dockstore logo" class="w-100" />
+        </div>
+        <mat-card-title-group>
+          <mat-card-title>Dockstore Account</mat-card-title>
+          <mat-card-subtitle class="accent-1-dark">
+            <strong>Username: {{ username$ | async }} </strong>
+          </mat-card-subtitle>
+          <mat-chip-set>
+            <mat-chip>Main Account</mat-chip>
+          </mat-chip-set>
+        </mat-card-title-group>
+      </mat-card-header>
+      <mat-card-content>
+        <div>
+          Use with our CLI utilities or with our
+          <a [href]="dsServerURI + '/static/swagger-ui/index.html#'" target="_blank">REST web service interface</a> to work with and launch
+          tools and workflows. See the <a routerLink="/onboarding">Onboarding</a> page for more details on using the CLI.
+        </div>
+        <div>
+          <mat-form-field appearance="outline" class="w-75">
+            <mat-label class="accent-1-dark">
+              <strong>Token</strong>
+            </mat-label>
+            <input matInput readonly [type]="show ? 'text' : 'password'" value="{{ dockstoreToken }}" />
             <button
-              [matTooltip]="show ? 'Hide token' : 'Show token'"
-              mat-button
-              color="secondary"
-              class="accent-1-dark small-btn-structure"
-              (click)="show = !show"
+              mat-icon-button
+              matSuffix
+              class="accent-1-dark"
+              [cdkCopyToClipboard]="dockstoreToken"
+              matTooltip="Copy Token"
+              appSnackbar
             >
-              <mat-icon class="mat-icon-sm">{{ show ? 'visibility_off' : 'visibility' }}</mat-icon>
-              <span> Show </span>
+              <mat-icon>file_copy</mat-icon>
             </button>
-          </div>
-          <div>
-            <hr />
-            <span class="pull-right" fxLayoutAlign="end end">
-              <button
-                mat-button
-                class="accent-1-dark-btn small-btn-structure mt-2"
-                matTooltip="Revoke Dockstore token"
-                data-cy="revoke-token-button"
-                (click)="revokeToken()"
-              >
-                <mat-icon class="mat-icon-sm">link_off</mat-icon>
-                <span> Revoke Token </span>
-              </button>
-            </span>
-          </div>
-        </mat-card-content>
-      </div>
+          </mat-form-field>
+          <button
+            [matTooltip]="show ? 'Hide token' : 'Show token'"
+            mat-button
+            color="secondary"
+            class="accent-1-dark small-btn-structure"
+            (click)="show = !show"
+          >
+            <mat-icon class="mat-icon-sm">{{ show ? 'visibility_off' : 'visibility' }}</mat-icon>
+            <span> Show </span>
+          </button>
+        </div>
+        <div>
+          <hr />
+          <span class="pull-right" fxLayoutAlign="end end">
+            <button
+              mat-button
+              class="accent-1-dark-btn small-btn-structure mt-2"
+              matTooltip="Revoke Dockstore token"
+              data-cy="revoke-token-button"
+              (click)="revokeToken()"
+            >
+              <mat-icon class="mat-icon-sm">link_off</mat-icon>
+              <span> Revoke Token </span>
+            </button>
+          </span>
+        </div>
+      </mat-card-content>
     </mat-card>
   </div>
 
   <div *ngFor="let row of accountsInfo" class="p-3" fxFlex="50" fxFlex.lt-md="100">
-    <mat-card appearance="outlined" class="mb-2 h-100">
-      <div class="h-100" fxLayout="column" fxLayoutAlign="space-between stretch">
-        <div>
-          <mat-card-header>
-            <div mat-card-avatar matBadge="✓" [matBadgeHidden]="!row.isLinked" class="mr-4">
-              <img src="../../../../assets/images/account-logos/{{ row.logo }}" alt="{{ row.name }} logo" class="w-100" />
-            </div>
-            <mat-card-title-group>
-              <mat-card-title>{{ row.name }} Account&nbsp;</mat-card-title>
-              <!-- TODO: Reduce margin bottom from subtitle's default 16px to 7px -->
-              <mat-card-subtitle class="accent-1-dark" *ngIf="row.isLinked; else placeholder">
-                <strong>Username: {{ row.source | getTokenUsername: tokens }} </strong>
-                <span *ngIf="row.name === 'ORCID'">
-                  <img src="../../assets/images/account-logos/{{ row.logo }}" alt="ORCID iD logo" class="orcid-id-logo site-icons-small" />
-                  <a href="{{ orcidRootUrl }}/{{ orcidId$ | async }}">{{ orcidId$ | async }}</a>
-                </span>
-              </mat-card-subtitle>
-              <ng-template #placeholder><br /></ng-template>
-              <mat-chip-set>
-                <mat-chip
-                  *ngIf="row.control"
-                  matTooltip="Pull your workflows from cloud source control to make them available on Dockstore"
-                >
-                  Source Control
-                </mat-chip>
-                <mat-chip *ngIf="row.bold" matTooltip="A method of logging into Dockstore"> Login Method </mat-chip>
-                <mat-chip
-                  *ngIf="row.docker"
-                  matTooltip="Link Docker repository accounts to help Dockstore find information on your Docker containers"
-                >
-                  Docker Repository
-                </mat-chip>
-                <mat-chip
-                  *ngIf="row.research"
-                  matTooltip="Services popular among scientific researchers to aid with publications and citation"
-                >
-                  Research
-                </mat-chip>
-              </mat-chip-set>
-            </mat-card-title-group>
-          </mat-card-header>
-          <mat-card-content>
-            <p>
-              {{ row.message }}
-              <strong>{{ row.bold }}</strong>
-            </p>
-            <div *ngIf="row.source === TokenSource.ORCID">
-              See <a target="_blank" rel="noopener noreferrer" href="https://info.orcid.org/what-is-orcid/">ORCID</a> and
-              <a target="_blank" rel="noopener noreferrer" [href]="Dockstore.DOCUMENTATION_URL + '/end-user-topics/ORCID.html'">docs</a> for
-              information on what is ORCID.
-            </div>
-          </mat-card-content>
-        </div>
+    <mat-card class="mb-2 h-100" fxLayout="column" fxLayoutAlign="space-between stretch">
+      <div>
+        <mat-card-header>
+          <div mat-card-avatar matBadge="✓" [matBadgeHidden]="!row.isLinked" class="mr-4">
+            <img src="../../../../assets/images/account-logos/{{ row.logo }}" alt="{{ row.name }} logo" class="w-100" />
+          </div>
+          <mat-card-title-group>
+            <mat-card-title>{{ row.name }} Account&nbsp;</mat-card-title>
+            <!-- TODO: Reduce margin bottom from subtitle's default 16px to 7px -->
+            <mat-card-subtitle class="accent-1-dark" *ngIf="row.isLinked; else placeholder">
+              <strong>Username: {{ row.source | getTokenUsername: tokens }} </strong>
+              <span *ngIf="row.name === 'ORCID'">
+                <img src="../../assets/images/account-logos/{{ row.logo }}" alt="ORCID iD logo" class="orcid-id-logo site-icons-small" />
+                <a href="{{ orcidRootUrl }}/{{ orcidId$ | async }}">{{ orcidId$ | async }}</a>
+              </span>
+            </mat-card-subtitle>
+            <ng-template #placeholder><br /></ng-template>
+            <mat-chip-set>
+              <mat-chip *ngIf="row.control" matTooltip="Pull your workflows from cloud source control to make them available on Dockstore">
+                Source Control
+              </mat-chip>
+              <mat-chip *ngIf="row.bold" matTooltip="A method of logging into Dockstore"> Login Method </mat-chip>
+              <mat-chip
+                *ngIf="row.docker"
+                matTooltip="Link Docker repository accounts to help Dockstore find information on your Docker containers"
+              >
+                Docker Repository
+              </mat-chip>
+              <mat-chip
+                *ngIf="row.research"
+                matTooltip="Services popular among scientific researchers to aid with publications and citation"
+              >
+                Research
+              </mat-chip>
+            </mat-chip-set>
+          </mat-card-title-group>
+        </mat-card-header>
         <mat-card-content>
-          <div>
-            <hr />
-            <span class="pull-right" fxLayoutAlign="end end">
-              <!-- This button needs to be vertically centered -->
-              <button
-                *ngIf="row.isLinked === false; else linked"
-                mat-button
-                class="accent-1-dark private-btn small-btn-structure mt-2"
-                [attr.id]="'link-' + row.name"
-                (click)="link(row.source)"
-                matTooltip="Link the account"
-              >
-                <mat-icon class="mat-icon-sm" *ngIf="row.name !== 'ORCID'; else orcid">link</mat-icon>
-                <span> Link Account</span>
-              </button>
-            </span>
-            <ng-template #linked>
-              <button
-                mat-raised-button
-                class="accent-1-dark-btn small-btn-structure mt-2"
-                [attr.id]="'unlink-' + row.name"
-                (click)="unlink(row.source)"
-                matTooltip="Unlink the account"
-              >
-                <mat-icon class="mat-icon-sm" *ngIf="row.name !== 'ORCID'; else orcid">link_off </mat-icon>
-                <span> Unlink Account</span>
-              </button>
-            </ng-template>
-            <ng-template #orcid>
-              <img src="../../assets/images/account-logos/{{ row.logo }}" alt="ORCID iD logo" class="orcid-id-logo site-icons-small" />
-            </ng-template>
+          <p>
+            {{ row.message }}
+            <strong>{{ row.bold }}</strong>
+          </p>
+          <div *ngIf="row.source === TokenSource.ORCID">
+            See <a target="_blank" rel="noopener noreferrer" href="https://info.orcid.org/what-is-orcid/">ORCID</a> and
+            <a target="_blank" rel="noopener noreferrer" [href]="Dockstore.DOCUMENTATION_URL + '/end-user-topics/ORCID.html'">docs</a> for
+            information on what is ORCID.
           </div>
         </mat-card-content>
       </div>
+      <mat-card-content>
+        <div>
+          <hr />
+          <span class="pull-right" fxLayoutAlign="end end">
+            <!-- This button needs to be vertically centered -->
+            <button
+              *ngIf="row.isLinked === false; else linked"
+              mat-button
+              class="accent-1-dark private-btn small-btn-structure mt-2"
+              [attr.id]="'link-' + row.name"
+              (click)="link(row.source)"
+              matTooltip="Link the account"
+            >
+              <mat-icon class="mat-icon-sm" *ngIf="row.name !== 'ORCID'; else orcid">link</mat-icon>
+              <span> Link Account</span>
+            </button>
+          </span>
+          <ng-template #linked>
+            <button
+              mat-raised-button
+              class="accent-1-dark-btn small-btn-structure mt-2"
+              [attr.id]="'unlink-' + row.name"
+              (click)="unlink(row.source)"
+              matTooltip="Unlink the account"
+            >
+              <mat-icon class="mat-icon-sm" *ngIf="row.name !== 'ORCID'; else orcid">link_off </mat-icon>
+              <span> Unlink Account</span>
+            </button>
+          </ng-template>
+          <ng-template #orcid>
+            <img src="../../assets/images/account-logos/{{ row.logo }}" alt="ORCID iD logo" class="orcid-id-logo site-icons-small" />
+          </ng-template>
+        </div>
+      </mat-card-content>
     </mat-card>
   </div>
 </div>

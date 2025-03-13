@@ -15,7 +15,7 @@
 -->
 <mat-dialog-content>
   <app-loading [loading]="isLoading$ | async">
-    <mat-card appearance="outlined">
+    <mat-card>
       <mat-card-header>
         <mat-card-title> Verification Information </mat-card-title>
         <mat-card-subtitle>
@@ -31,7 +31,7 @@
         ></app-verified-display>
       </mat-card-content>
     </mat-card>
-    <mat-card appearance="outlined" *ngIf="(availableLogs$ | async).length > 0">
+    <mat-card *ngIf="(availableLogs$ | async).length > 0">
       <mat-card-header>
         <mat-card-title> Logs </mat-card-title>
         <mat-card-subtitle>

@@ -1,39 +1,35 @@
-<mat-card appearance="outlined">
-  <mat-card-content>
-    <app-loading [loading]="loading$ | async">
-      <div fxLayout="column wrap">
-        <span *ngFor="let event of events$ | async">
-          <div class="my-3">
-            <mat-chip-set [matTooltip]="'on ' + (event.dbCreateDate | date: 'medium')">
-              <mat-chip class="pointer" routerLink="/users/{{ event.initiatorUser.username }}">{{ event.initiatorUser.username }}</mat-chip>
-              <span *ngIf="event?.type === EventType.CREATEORG"> &nbsp;created&nbsp;the&nbsp;organization </span>
-              <span *ngIf="event?.type === EventType.APPROVEORGINVITE"> &nbsp;joined&nbsp;the&nbsp;organization </span>
-              <span *ngIf="event?.type === EventType.MODIFYORG"> &nbsp;updated&nbsp;the&nbsp;organization </span>
-              <span *ngIf="event?.type === EventType.CREATECOLLECTION"> &nbsp;created&nbsp;the&nbsp;collection</span>
-              <span *ngIf="event?.type === EventType.DELETECOLLECTION"> &nbsp;removed&nbsp;the&nbsp;collection</span>
-              <span
-                *ngIf="
-                  event?.type === EventType.MODIFYCOLLECTION ||
-                  event?.type === EventType.ADDTOCOLLECTION ||
-                  event?.type === EventType.REMOVEFROMCOLLECTION
-                "
-              >
-                &nbsp;updated&nbsp;the&nbsp;collection
-              </span>
-              <mat-chip
-                *ngIf="
-                  event?.type === EventType.CREATECOLLECTION ||
-                  event?.type === EventType.DELETECOLLECTION ||
-                  event?.type === EventType.MODIFYCOLLECTION ||
-                  event?.type === EventType.ADDTOCOLLECTION ||
-                  event?.type === EventType.REMOVEFROMCOLLECTION
-                "
-                >{{ event.collection.name }}</mat-chip
-              >
-            </mat-chip-set>
-          </div>
-        </span>
+<app-loading [loading]="loading$ | async">
+  <div fxLayout="column wrap" class="p-4">
+    <span *ngFor="let event of events$ | async">
+      <div class="my-3">
+        <mat-chip-set [matTooltip]="'on ' + (event.dbCreateDate | date: 'medium')">
+          <mat-chip class="pointer" routerLink="/users/{{ event.initiatorUser.username }}">{{ event.initiatorUser.username }}</mat-chip>
+          <span *ngIf="event?.type === EventType.CREATEORG"> &nbsp;created&nbsp;the&nbsp;organization </span>
+          <span *ngIf="event?.type === EventType.APPROVEORGINVITE"> &nbsp;joined&nbsp;the&nbsp;organization </span>
+          <span *ngIf="event?.type === EventType.MODIFYORG"> &nbsp;updated&nbsp;the&nbsp;organization </span>
+          <span *ngIf="event?.type === EventType.CREATECOLLECTION"> &nbsp;created&nbsp;the&nbsp;collection</span>
+          <span *ngIf="event?.type === EventType.DELETECOLLECTION"> &nbsp;removed&nbsp;the&nbsp;collection</span>
+          <span
+            *ngIf="
+              event?.type === EventType.MODIFYCOLLECTION ||
+              event?.type === EventType.ADDTOCOLLECTION ||
+              event?.type === EventType.REMOVEFROMCOLLECTION
+            "
+          >
+            &nbsp;updated&nbsp;the&nbsp;collection
+          </span>
+          <mat-chip
+            *ngIf="
+              event?.type === EventType.CREATECOLLECTION ||
+              event?.type === EventType.DELETECOLLECTION ||
+              event?.type === EventType.MODIFYCOLLECTION ||
+              event?.type === EventType.ADDTOCOLLECTION ||
+              event?.type === EventType.REMOVEFROMCOLLECTION
+            "
+            >{{ event.collection.name }}</mat-chip
+          >
+        </mat-chip-set>
       </div>
-    </app-loading>
-  </mat-card-content>
-</mat-card>
+    </span>
+  </div>
+</app-loading>

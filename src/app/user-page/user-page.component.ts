@@ -26,6 +26,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { HeaderComponent } from '../header/header.component';
+import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
   selector: 'app-user-page',
@@ -46,6 +47,7 @@ import { HeaderComponent } from '../header/header.component';
     MatTabsModule,
     RecentEventsComponent,
     NgFor,
+    MatDividerModule,
   ],
 })
 export class UserPageComponent extends Base implements OnInit {

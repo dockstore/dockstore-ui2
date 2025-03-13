@@ -28,8 +28,8 @@
 <div class="container">
   <div class="row">
     <div fxLayout="row" fxLayoutAlign="center center" class="mt-5">
-      <mat-card appearance="outlined">
-        <div>
+      <mat-card>
+        <mat-card-content>
           <mat-tab-group layout-fill color="primary" mat-stretch-tabs fxFlex="400px" selectedIndex="{{ tabindex }}">
             <ng-template #PrivacyAndTOSDisclaimer>
               <a href="../assets/docs/Dockstore_Terms_of_Service.pdf" target="_blank" rel="noopener noreferrer">Terms of Service</a> and
@@ -100,7 +100,7 @@
               </div>
             </mat-tab>
           </mat-tab-group>
-        </div>
+        </mat-card-content>
       </mat-card>
     </div>
   </div>

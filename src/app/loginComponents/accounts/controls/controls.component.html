@@ -6,11 +6,15 @@
     </mat-card-content>
   </mat-card>
 
-  <mat-card appearance="outlined">
-    <h3>Delete your Dockstore Account</h3>
-    <p>This action is only available for accounts with no published tools/workflows and have not shared workflows via permissions.</p>
-    <button class="mr-1" mat-flat-button color="warn" (click)="deleteAccount()" [disabled]="(canChangeUsername$ | async) === false">
-      Delete Dockstore Account
-    </button>
+  <mat-card>
+    <mat-card-header>
+      <h3 matCardTitle>Delete your Dockstore Account</h3>
+    </mat-card-header>
+    <mat-card-content>
+      <p>This action is only available for accounts with no published tools/workflows and have not shared workflows via permissions.</p>
+      <button class="mr-1" mat-flat-button color="warn" (click)="deleteAccount()" [disabled]="(canChangeUsername$ | async) === false">
+        Delete Dockstore Account
+      </button>
+    </mat-card-content>
   </mat-card>
 </div>

@@ -105,7 +105,7 @@
           <div fxLayout="column" fxLayoutGap="15px">
             <h3>Workflows, Notebooks, Services, and Tools</h3>
             <div data-cy="collectionEntry" *ngFor="let entry of collection?.entries">
-              <mat-card appearance="outlined" class="pb-3">
+              <mat-card>
                 <mat-card-content>
                   <a [routerLink]="entry | routerLink" class="no-underline">
                     <div fxLayout="row" fxLayoutAlign="space-between center">

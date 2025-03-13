@@ -1,18 +1,10 @@
 @use '@angular/material' as mat;
 @import '/src/materialColorScheme.scss';
 
-.header-image {
-  background-size: cover;
-}
-
-/* TODO(mdc-migration): The following rule targets internal classes of card that may no longer apply for the MDC version.*/
-mat-card {
-  padding: 0.7rem 0.9rem;
-}
-
 .mat-mdc-card-avatar {
   height: 50px !important;
   width: 50px !important;
+  margin-bottom: 0 !important;
 }
 
 // Allow word break/wrapping for long usernames (ex. emails)

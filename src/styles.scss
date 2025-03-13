@@ -301,7 +301,8 @@ h2.title.caption {
   /*color: #dad4d4;*/
 }
 
-h3 {
+h3,
+h3.mat-mdc-card-title {
   font-size: 20px;
   color: mat.get-color-from-palette($dockstore-app-primary);
   font-weight: normal;
@@ -599,6 +600,7 @@ code {
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 h5,
+h5.mat-mdc-card-title,
 .h5 {
   font-size: 16px;
   color: $header-color;
@@ -834,6 +836,10 @@ body {
 .weight-bold,
 .mat-mdc-menu-item.weight-bold {
   font-weight: 500;
+}
+
+.weight-normal {
+  font-weight: normal;
 }
 
 // Reduces the width of the sidebar tab by half (160px default). Can't seem to move this to the sidebar scss for some reason
@@ -1382,9 +1388,9 @@ button.inline-text-btn {
 }
 
 // Updated mat-card style matching Zeplin redesign
-.mat-mdc-card:not([class*='mat-elevation-z']) {
-  border: solid 1px mat.get-color-from-palette($dockstore-app-gray, 7);
-  //box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1), 0 2px 3px 0 rgba(0, 0, 0, 0.08) !important;
+.mat-mdc-card:not([class*='mat-mdc-card-outlined']) {
+  border: solid 1px mat.get-color-from-palette($dockstore-app-gray, 7) !important;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1), 0 2px 3px 0 rgba(0, 0, 0, 0.08) !important;
 }
 
 // Alert and Warning styles

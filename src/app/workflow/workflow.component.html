@@ -467,7 +467,7 @@
                 >
                 </app-dag>
                 <div *ngIf="!selectedVersion">
-                  <mat-card appearance="outlined" class="alert alert-warning p-3" role="alert">
+                  <mat-card appearance="outlined" class="alert alert-warning" role="alert">
                     <mat-card-content> <mat-icon class="alert-warning-icon">warning</mat-icon> No version selected. </mat-card-content>
                   </mat-card>
                 </div>
@@ -502,10 +502,12 @@
     </div>
     <div fxLayout="column" fxLayoutGap="1rem" class="p-0 col-sm-12 col-md-3 col-lg-3 ng-scope" *ngIf="isWorkflowPublic && workflow">
       <app-launch-third-party [workflow]="workflow" [selectedVersion]="selectedVersion"></app-launch-third-party>
-      <mat-card appearance="outlined" *ngIf="selectedVersion && selectedConceptDoi">
+      <mat-card *ngIf="selectedVersion && selectedConceptDoi">
+        <mat-card-header>
+          <h5 matCardTitle>Cite this {{ workflow.entryTypeMetadata.term }}</h5>
+        </mat-card-header>
+        <mat-divider></mat-divider>
         <mat-card-content>
-          <div class="h5">Cite this {{ workflow.entryTypeMetadata.term }}</div>
-          <mat-divider></mat-divider>
           <p *ngIf="selectedVersionDoi" class="pt-2">
             Cite version <strong>{{ selectedVersion.name }}</strong> using DOI
             <app-doi-badge [doi]="selectedVersionDoi" [displayInitiator]="false"></app-doi-badge>.
@@ -520,75 +522,75 @@
           </p>
         </mat-card-content>
       </mat-card>
-      <mat-card appearance="outlined">
-        <mat-card-content>
-          <div class="h5">Recent Versions</div>
-          <mat-divider></mat-divider>
-          <div class="pt-2">
-            <div *ngFor="let sortedVersion of sortedVersions">
-              <div
-                fxLayout
-                fxLayoutAlign="space-between"
-                class="top-down-padding my-1 px-2"
-                [ngClass]="{ 'selected-item weight-bold': selectedVersion?.name === sortedVersion?.name }"
-              >
-                <div>
-                  <a (click)="onSelectedVersionChange(sortedVersion)" class="pointer panel-body-anchor">{{ sortedVersion.name }}</a
-                  >&nbsp;
-                  <mat-chip-set *ngIf="sortedVersion?.verified">
-                    <a mat-chip matTooltip="Verified" [href]="verifiedLink">
-                      <mat-icon matChipAvatar>done</mat-icon>
-                    </a>
-                  </mat-chip-set>
-                </div>
-                <small>{{ sortedVersion.last_modified | date }}</small>
+      <mat-card>
+        <mat-card-header>
+          <h5 matCardTitle>Recent Versions</h5>
+        </mat-card-header>
+        <mat-divider></mat-divider>
+        <mat-card-content class="pt-2">
+          <div *ngFor="let sortedVersion of sortedVersions">
+            <div
+              fxLayout
+              fxLayoutAlign="space-between"
+              class="top-down-padding my-1 px-2"
+              [ngClass]="{ 'selected-item weight-bold': selectedVersion?.name === sortedVersion?.name }"
+            >
+              <div>
+                <a (click)="onSelectedVersionChange(sortedVersion)" class="pointer panel-body-anchor">{{ sortedVersion.name }}</a
+                >&nbsp;
+                <mat-chip-set *ngIf="sortedVersion?.verified">
+                  <a mat-chip matTooltip="Verified" [href]="verifiedLink">
+                    <mat-icon matChipAvatar>done</mat-icon>
+                  </a>
+                </mat-chip-set>
               </div>
-              <mat-divider></mat-divider>
+              <small>{{ sortedVersion.last_modified | date }}</small>
             </div>
-            <a (click)="selectVersionsTab()" class="pointer">See all versions</a>
+            <mat-divider></mat-divider>
           </div>
+          <a (click)="selectVersionsTab()" class="pointer">See all versions</a>
         </mat-card-content>
       </mat-card>
-      <mat-card appearance="outlined" *ngIf="!isStub() && !isHosted()">
-        <mat-card-content>
-          <div class="h5">Source Repositories</div>
-          <mat-divider></mat-divider>
-          <div class="container-source-repos pt-3">
-            <p>
-              <span *ngIf="(extendedWorkflow$ | async).provider">
-                Git Repository
-                <a
-                  [href]="(extendedWorkflow$ | async).providerUrl"
-                  target="_blank"
-                  rel="noopener"
-                  mat-raised-button
-                  color="accent"
-                  class="underline-none ml-4"
-                >
-                  <img src="../../assets/images/dockstore/github.svg" class="site-icons-small mr-2" alt="Git Repository" />
-                  {{ (extendedWorkflow$ | async).provider }}
-                </a>
-              </span>
-            </p>
-          </div>
+      <mat-card *ngIf="!isStub() && !isHosted()">
+        <mat-card-header>
+          <h5 matCardTitle>Source Repositories</h5>
+        </mat-card-header>
+        <mat-divider></mat-divider>
+        <mat-card-content class="container-source-repos pt-3">
+          <p>
+            <span *ngIf="(extendedWorkflow$ | async).provider">
+              Git Repository
+              <a
+                [href]="(extendedWorkflow$ | async).providerUrl"
+                target="_blank"
+                rel="noopener"
+                mat-raised-button
+                color="accent"
+                class="underline-none ml-4"
+              >
+                <img src="../../assets/images/dockstore/github.svg" class="site-icons-small mr-2" alt="Git Repository" />
+                {{ (extendedWorkflow$ | async).provider }}
+              </a>
+            </span>
+          </p>
         </mat-card-content>
       </mat-card>
       <app-current-collections [id]="workflow.id" [versions]="workflow.workflowVersions"></app-current-collections>
       <app-verified-by *ngIf="selectedVersion" [version]="selectedVersion" [verifiedByPlatform]="versionsWithVerifiedPlatforms">
       </app-verified-by>
-      <mat-card appearance="outlined" *ngIf="workflow">
+      <mat-card *ngIf="workflow" class="mb-2">
+        <mat-card-header>
+          <h5 matCardTitle>Share on</h5>
+        </mat-card-header>
+        <mat-divider></mat-divider>
         <mat-card-content>
-          <div class="h5">Share on</div>
-          <mat-divider></mat-divider>
-          <div>
-            <div class="container-sharing pt-3">
-              <share-buttons
-                [include]="['facebook', 'twitter', 'linkedin', 'reddit']"
-                [show]="5"
-                [url]="shareURL"
-                [autoSetMeta]="false"
-              ></share-buttons>
-            </div>
+          <div class="container-sharing pt-3">
+            <share-buttons
+              [include]="['facebook', 'twitter', 'linkedin', 'reddit']"
+              [show]="5"
+              [url]="shareURL"
+              [autoSetMeta]="false"
+            ></share-buttons>
           </div>
         </mat-card-content>
       </mat-card>

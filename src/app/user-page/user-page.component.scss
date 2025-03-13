@@ -9,9 +9,12 @@ mat-card > img[mat-card-image] {
   max-width: 18rem;
 }
 
+.mat-mdc-card-avatar {
+  margin-bottom: 0 !important;
+}
+
 img[alt='GitHub avatar'],
 img[alt='Google avatar'] {
-  width: 5rem;
   border-radius: 50%;
   border: solid 1px mat.get-color-from-palette($dockstore-app-gray, 4);
 }
