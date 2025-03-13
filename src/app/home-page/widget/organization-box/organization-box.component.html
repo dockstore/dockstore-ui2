@@ -1,6 +1,6 @@
 <mat-card class="h-100">
   <mat-card-header fxLayout="row" fxLayoutAlign="space-between">
-    <mat-card-title class="ml-2">
+    <mat-card-title>
       Organizations
       <mat-chip-set>
         <mat-chip class="org-background">{{ totalOrgs }}</mat-chip>
@@ -45,7 +45,7 @@
     </div>
   </mat-card-header>
   <mat-divider></mat-divider>
-  <mat-card-content class="mx-2 mt-3 mb-0 h-100">
+  <mat-card-content class="mt-3 h-100">
     <div *ngIf="totalOrgs > 0 || isLoading; else noOrganizations">
       <h5 class="weight-bold mb-0">Recent Activity</h5>
       <app-recent-events [eventType]="'SELF_ORGANIZATIONS'"></app-recent-events>

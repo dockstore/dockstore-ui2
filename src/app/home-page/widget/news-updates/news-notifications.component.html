@@ -4,7 +4,7 @@
   class="alert alert-info mx-4 mt-4 mb-1"
   data-cy="news-notifications-container"
 >
-  <mat-card-content fxLayout fxLayoutAlign="space-between center" class="pl-3" data-cy="news-notifications-item">
+  <mat-card-content fxLayout fxLayoutAlign="space-between center" data-cy="news-notifications-item">
     <app-markdown-wrapper [data]="notification.message"></app-markdown-wrapper>
     <button mat-icon-button data-dismiss="alert" (click)="dismissNotification(notification)" data-cy="dismiss-notification">
       <mat-icon>cancel</mat-icon>
