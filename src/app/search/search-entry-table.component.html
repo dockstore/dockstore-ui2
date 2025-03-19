@@ -57,7 +57,7 @@
                   >{{ entry?.source | entryToDisplayName: true }}</a
                 >
               </div>
-              <div *ngIf="entry?.source.starredUsers?.length" data-cy="starredUsers" class="star-color">
+              <div *ngIf="entry?.source.starredUsers?.length" data-cy="starredUsers" class="accent-1-dark">
                 <mat-icon class="mat-icon-sm">star_rate</mat-icon>
                 <span class="weight-bold align-middle">{{ entry?.source.starredUsers.length }}</span>
               </div>

@@ -13,11 +13,11 @@
       <img mat-card-image [src]="user?.avatarUrl" class="mt-4 mx-auto mb-3" alt="Dockstore avatar" />
       <mat-card-content fxLayout="column" fxLayoutAlign="center center">
         <mat-card-title class="accent-1-dark">{{ user?.username }}</mat-card-title>
-        <mat-card-subtitle class="text-break">
-          <span *ngIf="gitHubProfile?.bio" class="accent-1-dark">
+        <mat-card-subtitle class="text-break" class="accent-1-dark">
+          <span *ngIf="gitHubProfile?.bio">
             {{ gitHubProfile.bio }}
           </span>
-          <a *ngIf="gitHubProfile?.link" rel="noopener noreferrer" href="{{ gitHubProfile?.link }}" target="_blank" class="accent-1-dark">
+          <a *ngIf="gitHubProfile?.link" rel="noopener noreferrer" href="{{ gitHubProfile?.link }}" target="_blank">
             {{ gitHubProfile.link }}
           </a>
         </mat-card-subtitle>
@@ -39,7 +39,7 @@
               >
               <span>
                 Username:
-                <a href="https://github.com/{{ gitHubProfile.username }}" target="_blank" class="accent-1-dark">
+                <a href="https://github.com/{{ gitHubProfile.username }}" target="_blank">
                   <span>{{ gitHubProfile.username }}</span>
                 </a>
               </span>

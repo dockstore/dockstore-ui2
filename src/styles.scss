@@ -883,7 +883,7 @@ app-workflow-sidebar-accordion
 // Setting the notebook ink-bar to purple as well for the time being since it matches the icon
 .purple-tab-group.mat-primary .mat-ink-bar,
 .notebook-tab-group.mat-primary .mat-ink-bar {
-  background: mat.get-color-from-palette($dockstore-app-accent-1, darker) !important;
+  background: $accent-1-dark !important;
 }
 
 // Automatically used by Angular Material
@@ -999,11 +999,7 @@ mat-icon.star-icon {
   font-size: 1.6rem;
   height: 1.6rem;
   width: 1.6rem;
-  color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
-}
-
-.star-color {
-  color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
+  color: $accent-1-dark;
 }
 
 .date-display {
@@ -1112,18 +1108,34 @@ hr {
 }
 
 // Following 4 items are for stepper/stepper-like dialogs as well as other places for unclear reasons (like the unlink account button)
-.accent-1-dark {
-  color: mat.get-color-from-palette($dockstore-app-accent-1, darker) !important;
-}
 
+// Class for things that are accent-1-dark.
+// Some material components require the use of component tokens (prefixed with '--')
+// to target the correct element for styling without using !important
 .accent-1-dark {
+  // General color style. Should work on all non-Material components
+  // and some Material components like mat-icons without requiring component tokens
+  color: $accent-1-dark;
+
+  // Below are styles for material components that require the use of component tokens to apply the color
+
+  // Style for mat-card-subtitles
+  &.mat-mdc-card-subtitle {
+    --mat-card-subtitle-text-color: #{$accent-1-dark};
+    a,
+    mat-icon {
+      color: $accent-1-dark;
+    }
+  }
+
+  // Styles for buttons
   &.mdc-button--unelevated,
   &.mat-mdc-raised-button {
     // mat-flat-button has accent-1-dark background and white text
-    --mdc-filled-button-container-color: #{mat.get-color-from-palette($dockstore-app-accent-1, darker)};
-    --mdc-filled-button-label-text-color: white; // mat-raised-button
+    --mdc-filled-button-container-color: #{$accent-1-dark};
+    --mdc-filled-button-label-text-color: white;
     // mat-raise-button has accent-1-dark background and white text
-    --mdc-protected-button-container-color: #{mat.get-color-from-palette($dockstore-app-accent-1, darker)};
+    --mdc-protected-button-container-color: #{$accent-1-dark};
     --mdc-protected-button-label-text-color: white;
 
     mat-icon {
@@ -1134,11 +1146,11 @@ hr {
   &.mat-mdc-button,
   &.mdc-button--outlined {
     // The other types of buttons have accent-1-dark text with the default white background
-    --mdc-outlined-button-label-text-color: #{mat.get-color-from-palette($dockstore-app-accent-1, darker)}; // mat-stroked-button
-    --mdc-text-button-label-text-color: #{mat.get-color-from-palette($dockstore-app-accent-1, darker)}; // mat-button
+    --mdc-outlined-button-label-text-color: #{$accent-1-dark}; // mat-stroked-button
+    --mdc-text-button-label-text-color: #{$accent-1-dark}; // mat-button
 
     mat-icon {
-      color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
+      color: $accent-1-dark;
     }
   }
 }
@@ -1191,7 +1203,7 @@ mat-icon.mat-icon-sm {
 .mat-form-field.mat-focused:not(.mat-form-field-invalid) .mat-form-field-label .mat-form-field-required-marker,
 .mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float
   .mat-form-field-label:not(.mat-empty):not(.mat-form-field-empty) {
-  color: mat.get-color-from-palette($dockstore-app-accent-1, darker) !important;
+  color: $accent-1-dark !important;
 }
 
 // Keep the outer circle in a radio button gray even when selected
@@ -1333,8 +1345,8 @@ button.private-btn.mdc-button,
 a.private-btn.mdc-button {
   font-weight: bold;
   font-size: 12px;
-  color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
-  background-color: #fff;
+  //color: $accent-1-dark;
+  //background-color: #fff;
   //box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.08);
   border: solid 1px #d8d8d8;
 }
@@ -1394,13 +1406,6 @@ a.mat-mdc-raised-button:not([class*='mat-elevation-z']) {
   box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.08);
 }
 
-button.inline-text-btn {
-  text-decoration: underline;
-  color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
-  font-size: 12px;
-  padding: 0.5rem;
-}
-
 // Updated mat-card style matching Zeplin redesign
 .mat-mdc-card:not([class*='mat-mdc-card-outlined']) {
   border: solid 1px mat.get-color-from-palette($dockstore-app-gray, 7) !important;
@@ -1453,7 +1458,7 @@ button.inline-text-btn {
 
 .about-h3 {
   font-size: 1.7rem;
-  color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
+  color: $accent-1-dark;
   line-height: 2.5rem;
   font-weight: 500;
 }

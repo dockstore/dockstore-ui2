@@ -309,3 +309,6 @@ $accent-3-dark: #00bfa5 !important;
 
 // This color is commonly used by headers, titles, and names
 $header-color: #151c3d;
+
+// This color is commonly used by buttons
+$accent-1-dark: mat.get-color-from-palette($dockstore-app-accent-1, darker);
