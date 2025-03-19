@@ -52,7 +52,7 @@
         id="submitButton"
         type="submit"
         mat-flat-button
-        class="accent-1-dark-btn"
+        class="accent-1-dark"
         [disabled]="!registerCheckerWorkflowForm.form.valid || (isRefreshing$ | async)"
       >
         {{ (mode$ | async) === 'add' ? 'Add Checker Workflow' : 'Save Checker Workflow' }}

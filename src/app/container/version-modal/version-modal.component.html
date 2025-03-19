@@ -415,7 +415,7 @@
           <button
             type="button"
             mat-flat-button
-            class="accent-1-dark-btn"
+            class="accent-1-dark"
             mat-dialog-close
             data-cy="ok-dialog-close-button"
             *ngIf="!editMode"
@@ -428,7 +428,7 @@
             type="button"
             (click)="onSubmit()"
             mat-flat-button
-            class="accent-1-dark-btn"
+            class="accent-1-dark"
             *ngIf="mode === TagEditorMode.Edit"
             [disabled]="!tagEditorForm.form.valid || hasDuplicateTestJson(DescriptorType.WDL) || hasDuplicateTestJson(DescriptorType.CWL)"
             data-dismiss="modal"

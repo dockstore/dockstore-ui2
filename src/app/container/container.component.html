@@ -89,7 +89,7 @@
       ></app-starring>
       <h3 class="pull-right">
         <div class="mr-2" *ngIf="publicPage && tool?.private_access">
-          <a mat-raised-button class="accent-1-dark-btn" [href]="requestAccessHREF$ | async"> Request Access </a>
+          <a mat-raised-button class="accent-1-dark" [href]="requestAccessHREF$ | async"> Request Access </a>
         </div>
         <div class="mr-2" *ngIf="publicPage && (extendedTool$ | async)?.email && !tool?.private_access">
           <a mat-raised-button class="mat-accent" [href]="contactAuthorHREF"> Contact Author </a>
@@ -187,7 +187,7 @@
   </div>
   <div class="row ml-4 mr-4 mb-4" *ngIf="starGazersClicked">
     <app-stargazers></app-stargazers>
-    <button mat-button class="accent-1-dark-btn" id="backButton" type="button" (click)="starGazersClicked = false">
+    <button mat-flat-button class="accent-1-dark" id="backButton" type="button" (click)="starGazersClicked = false">
       <mat-icon>chevron_left</mat-icon>Back to details
     </button>
   </div>
@@ -250,7 +250,7 @@
                 class="pull-right m-3"
                 *ngIf="!publicPage && (isManualMode$ | async)"
                 mat-flat-button
-                class="accent-1-dark-btn"
+                class="accent-1-dark"
                 (click)="showAddTagModal()"
               >
                 Add Tag

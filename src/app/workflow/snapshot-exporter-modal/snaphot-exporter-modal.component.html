@@ -13,7 +13,7 @@
         <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
           <button mat-button mat-dialog-close color="accent">Cancel</button>
           <button
-            class="accent-1-dark-btn"
+            class="accent-1-dark"
             data-cy="snapshot-button"
             [disabled]="(isAjaxing$ | async) || (!version.authors?.length && !version.orcidAuthors?.length)"
             mat-flat-button
@@ -78,7 +78,7 @@
               (action === SnapshotExporterAction.ORCID && (hasOrcidToken$ | async) === false) ||
               state.overall !== StepState.INITIAL
             "
-            class="accent-1-dark-btn"
+            class="accent-1-dark"
             mat-flat-button
             data-cy="export-button"
             (click)="export(false)"
@@ -87,7 +87,7 @@
             {{ action === SnapshotExporterAction.DOI ? 'Request DOI' : 'Export' }}
           </button>
           <button
-            class="accent-1-dark-btn"
+            class="accent-1-dark"
             mat-flat-button
             [disabled]="state.overall !== StepState.INITIAL"
             (click)="export(true)"

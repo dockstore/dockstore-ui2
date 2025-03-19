@@ -15,7 +15,7 @@
       <button
         id="publishToolButton"
         mat-flat-button
-        class="accent-1-dark-btn"
+        class="accent-1-dark"
         (click)="publishToggle()"
         [disabled]="(isRefreshing$ | async) || publishDisabled"
       >
@@ -31,7 +31,7 @@
     </ng-template>
     <button
       mat-flat-button
-      class="accent-1-dark-btn"
+      class="accent-1-dark"
       (click)="archive()"
       [disabled]="isRefreshing$ | async"
       matTooltip="Archive this tool"
@@ -42,7 +42,7 @@
     <button
       *ngIf="!isHosted"
       mat-flat-button
-      class="accent-1-dark-btn"
+      class="accent-1-dark"
       (click)="refresh()"
       [disabled]="isRefreshing$ | async"
       matTooltip="Sync the tool with the Docker image repository, etc"
@@ -53,7 +53,7 @@
   <ng-container *ngIf="tool?.archived">
     <button
       mat-flat-button
-      class="accent-1-dark-btn"
+      class="accent-1-dark"
       (click)="unarchive()"
       [disabled]="isRefreshing$ | async"
       matTooltip="Unarchive this tool"

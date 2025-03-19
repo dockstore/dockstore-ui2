@@ -31,7 +31,7 @@
   <p>Launch this {{ term }} to a GitHub Codespace?</p>
   <div class="btn-group" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="1rem">
     <button mat-button (click)="no()" data-cy="archive-no" [disabled]="clicked" mat-dialog-close color="accent">Cancel</button>
-    <button mat-flat-button (click)="yes()" data-cy="archive-yes" [disabled]="clicked" class="accent-1-dark-btn mat-elevation-z">
+    <button mat-flat-button (click)="yes()" data-cy="archive-yes" [disabled]="clicked" class="accent-1-dark">
       Launch This {{ term | titlecase }}
     </button>
   </div>

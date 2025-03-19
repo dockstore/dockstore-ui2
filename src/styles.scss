@@ -1116,17 +1116,31 @@ hr {
   color: mat.get-color-from-palette($dockstore-app-accent-1, darker) !important;
 }
 
-button.accent-1-dark-btn.mdc-button,
-a.accent-1-dark-btn {
-  background-color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
-  color: white;
-}
+.accent-1-dark {
+  &.mdc-button--unelevated,
+  &.mat-mdc-raised-button {
+    // mat-flat-button has accent-1-dark background and white text
+    --mdc-filled-button-container-color: #{mat.get-color-from-palette($dockstore-app-accent-1, darker)};
+    --mdc-filled-button-label-text-color: white; // mat-raised-button
+    // mat-raise-button has accent-1-dark background and white text
+    --mdc-protected-button-container-color: #{mat.get-color-from-palette($dockstore-app-accent-1, darker)};
+    --mdc-protected-button-label-text-color: white;
 
-// .mat-mdc-unelevated-button.secondary-1.mdc-button {
-//   color: mat.get-color-from-palette($dockstore-app-accent);
-// }
-.mat-mdc-unelevated-button.accent-1-dark.mdc-button {
-  color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
+    mat-icon {
+      color: white;
+    }
+  }
+
+  &.mat-mdc-button,
+  &.mdc-button--outlined {
+    // The other types of buttons have accent-1-dark text with the default white background
+    --mdc-outlined-button-label-text-color: #{mat.get-color-from-palette($dockstore-app-accent-1, darker)}; // mat-stroked-button
+    --mdc-text-button-label-text-color: #{mat.get-color-from-palette($dockstore-app-accent-1, darker)}; // mat-button
+
+    mat-icon {
+      color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
+    }
+  }
 }
 
 // Automatically used by Angular Material

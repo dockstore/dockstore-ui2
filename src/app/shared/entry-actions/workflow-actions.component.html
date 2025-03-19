@@ -14,7 +14,7 @@
     <div [matTooltip]="pubUnpubMessage">
       <button
         mat-flat-button
-        class="accent-1-dark-btn"
+        class="accent-1-dark"
         id="publishButton"
         (click)="publishToggle()"
         [disabled]="(isRefreshing$ | async) || publishDisabled"
@@ -24,7 +24,7 @@
     </div>
     <button
       mat-flat-button
-      class="accent-1-dark-btn"
+      class="accent-1-dark"
       (click)="refresh()"
       [disabled]="isRefreshing$ | async"
       *ngIf="!isHosted && canWrite && workflow?.mode !== WorkflowModel.ModeEnum.DOCKSTOREYML"
@@ -36,7 +36,7 @@
     <ng-container *ngIf="workflow?.deletable">
       <button
         mat-flat-button
-        class="accent-1-dark-btn"
+        class="accent-1-dark"
         (click)="delete()"
         [disabled]="isRefreshing$ | async"
         matTooltip="Delete this {{ entryType }}"
@@ -48,7 +48,7 @@
     <ng-container *ngIf="!workflow?.deletable">
       <button
         mat-flat-button
-        class="accent-1-dark-btn"
+        class="accent-1-dark"
         (click)="archive()"
         [disabled]="isRefreshing$ | async"
         matTooltip="Archive this {{ entryType }}"
@@ -61,7 +61,7 @@
   <ng-container *ngIf="workflow?.archived">
     <button
       mat-flat-button
-      class="accent-1-dark-btn"
+      class="accent-1-dark"
       (click)="unarchive()"
       [disabled]="isRefreshing$ | async"
       matTooltip="Unarchive this {{ entryType }}"

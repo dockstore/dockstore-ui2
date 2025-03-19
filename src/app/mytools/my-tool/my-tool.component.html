@@ -117,7 +117,7 @@
                     <li>Press the 'Add Tool' button to add a tool using the registration wizard.</li>
                     <button
                       mat-raised-button
-                      class="accent-1-dark-btn"
+                      class="accent-1-dark"
                       (click)="showRegisterEntryModal()"
                       type="button"
                       [disabled]="isRefreshing$ | async"
@@ -127,7 +127,7 @@
                     <li>If there are already tools on Dockstore added by other users that you have access to, press the button below.</li>
                     <button
                       mat-raised-button
-                      class="accent-1-dark-btn"
+                      class="accent-1-dark"
                       type="button"
                       (click)="addToExistingTools()"
                       [disabled]="(isRefreshing$ | async) || (userQuery.user$ | async) === null"

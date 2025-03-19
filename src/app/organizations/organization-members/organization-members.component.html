@@ -91,7 +91,7 @@
                   [id]="'edit-user-role-' + index"
                   (click)="editUser(organizationUser)"
                 >
-                  <mat-icon class="info-icon accent-1-dark"
+                  <mat-icon class="info-icon"
                     >{{ organizationUser.status === OrganizationUser.StatusEnum.REJECTED ? 'sync' : 'edit' }}
                   </mat-icon>
                   {{ organizationUser.status === OrganizationUser.StatusEnum.REJECTED ? 'Resend Invite' : 'Edit' }}

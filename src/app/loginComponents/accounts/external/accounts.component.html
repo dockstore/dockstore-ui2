@@ -69,8 +69,8 @@
           <hr />
           <span class="pull-right" fxLayoutAlign="end end">
             <button
-              mat-button
-              class="accent-1-dark-btn small-btn-structure mt-2"
+              mat-flat-button
+              class="accent-1-dark small-btn-structure mt-2"
               matTooltip="Revoke Dockstore token"
               data-cy="revoke-token-button"
               (click)="revokeToken()"
@@ -141,7 +141,7 @@
             <!-- This button needs to be vertically centered -->
             <button
               *ngIf="row.isLinked === false; else linked"
-              mat-button
+              mat-stroked-button
               class="accent-1-dark private-btn small-btn-structure mt-2"
               [attr.id]="'link-' + row.name"
               (click)="link(row.source)"
@@ -154,7 +154,7 @@
           <ng-template #linked>
             <button
               mat-raised-button
-              class="accent-1-dark-btn small-btn-structure mt-2"
+              class="accent-1-dark small-btn-structure mt-2"
               [attr.id]="'unlink-' + row.name"
               (click)="unlink(row.source)"
               matTooltip="Unlink the account"

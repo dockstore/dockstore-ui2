@@ -61,7 +61,7 @@
         <mat-divider *ngIf="!user?.orcid && !googleProfile" class="mt-2"></mat-divider>
         <mat-card-actions *ngIf="!user?.orcid && !googleProfile" [align]="'end'">
           <a href="https://github.com/{{ gitHubProfile?.username }}" target="_blank">
-            <button mat-button class="accent-1-dark-btn small-btn-structure">
+            <button mat-flat-button class="accent-1-dark small-btn-structure">
               <mat-icon class="mat-icon-sm">open_in_new</mat-icon>
               View
             </button>

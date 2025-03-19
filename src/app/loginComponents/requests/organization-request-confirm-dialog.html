@@ -9,7 +9,7 @@
   <span *ngIf="data.approve; else rejectBlock">
     <button
       mat-flat-button
-      class="accent-1-dark-btn ml-2"
+      class="accent-1-dark ml-2"
       id="approve-pending-org-dialog"
       data-cy="approve-pending-org-dialog"
       [mat-dialog-close]="{ 'id': data.id, 'approve': data.approve }"
@@ -20,7 +20,7 @@
   <ng-template #rejectBlock>
     <button
       mat-flat-button
-      class="accent-1-dark-btn"
+      class="accent-1-dark"
       id="reject-pending-org-dialog"
       data-cy="reject-pending-org-dialog"
       [mat-dialog-close]="{ 'id': data.id, 'approve': data.approve }"

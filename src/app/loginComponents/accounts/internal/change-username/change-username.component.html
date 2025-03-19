@@ -1,94 +1,96 @@
 <h1 mat-dialog-title *ngIf="!noDialog">Edit Dockstore Username</h1>
 
-<p>
-  Your current username is <strong>{{ user?.username }}</strong
-  >. It may have been auto-generated when you initially created a Dockstore account.
-  <span *ngIf="(canChangeUsername$ | async) === true; else cannotChange"
-    >You <strong>can</strong> update your username since you have no published workflows/tools and have shared no workflows via
-    permissions.</span
-  >
-  <ng-template #cannotChange
-    >You <strong>cannot</strong> update your username since you have published workflows/tools or have shared workflows via
-    permissions.</ng-template
-  >
-</p>
-
-<!-- Alert -->
-<mat-card appearance="outlined" *ngIf="showEmailWarning" class="alert alert-danger p-2" role="alert">
-  <mat-card-content fxLayout fxLayoutGap="1rem">
-    <mat-icon class="alert-danger-icon">warning</mat-icon>
-    <div>
-      <strong>Caution:</strong> Your username seems to be an email address. We recommend changing your username to something else so that
-      your email is not picked up by a spambot. The @ symbol is not allowed in a username, so note that once you change your username you
-      cannot change it back to your email.
-    </div>
-  </mat-card-content>
-</mat-card>
-
-<!-- Warnings -->
-<mat-card appearance="outlined" *ngIf="(canChangeUsername$ | async) === true && !noDialog" class="alert alert-warning p-2" role="alert">
-  <mat-card-content fxLayout fxLayoutGap="1rem">
-    <mat-icon class="alert-warning-icon">warning</mat-icon>
-    <div>
-      <strong>Warning:</strong> You may have unpublished workflows or tools. Changing your username could impact any shared unpublished
-      workflows or tools.
-    </div>
-  </mat-card-content>
-</mat-card>
-<mat-card appearance="outlined" *ngIf="isUsernameChangeRequired$ | async" class="alert alert-warning p-2" role="alert">
-  <mat-card-content fxLayout fxLayoutGap="1rem">
-    <mat-icon class="alert-warning-icon">warning</mat-icon>
-    <div>
-      <strong>Warning:</strong> Your username contains one or more banned words. Some operations on Dockstore will be blocked until you
-      change your username.
-    </div>
-  </mat-card-content>
-</mat-card>
-
-<div class="change-username-form">
-  <mat-form-field appearance="outline" class="mb-4">
-    <mat-label>Username</mat-label>
-    <input
-      [errorStateMatcher]="matcher"
-      [formControl]="usernameFormControl"
-      matInput
-      id="username"
-      name="username"
-      [(ngModel)]="username"
-    />
-    <mat-error *ngIf="usernameFormControl.hasError('pattern'); else checkRequired" class="mt-2"
-      >Invalid Username Pattern (Only alphanumeric characters and internal underscores and dashes allowed)</mat-error
+<mat-dialog-content>
+  <p>
+    Your current username is <strong>{{ user?.username }}</strong
+    >. It may have been auto-generated when you initially created a Dockstore account.
+    <span *ngIf="(canChangeUsername$ | async) === true; else cannotChange"
+      >You <strong>can</strong> update your username since you have no published workflows/tools and have shared no workflows via
+      permissions.</span
     >
-    <ng-template #checkRequired>
-      <mat-error *ngIf="usernameFormControl.hasError('required'); else checkMaxLength" class="mt-2">Username is required</mat-error>
-      <ng-template #checkMaxLength>
-        <mat-error *ngIf="usernameFormControl.hasError('maxlength')" class="mt-2">Username is too long (Max 39 characters)</mat-error>
+    <ng-template #cannotChange
+      >You <strong>cannot</strong> update your username since you have published workflows/tools or have shared workflows via
+      permissions.</ng-template
+    >
+  </p>
+
+  <!-- Alert -->
+  <mat-card appearance="outlined" *ngIf="showEmailWarning" class="alert alert-danger p-2" role="alert">
+    <mat-card-content fxLayout fxLayoutGap="1rem">
+      <mat-icon class="alert-danger-icon">warning</mat-icon>
+      <div>
+        <strong>Caution:</strong> Your username seems to be an email address. We recommend changing your username to something else so that
+        your email is not picked up by a spambot. The @ symbol is not allowed in a username, so note that once you change your username you
+        cannot change it back to your email.
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Warnings -->
+  <mat-card appearance="outlined" *ngIf="(canChangeUsername$ | async) === true && !noDialog" class="alert alert-warning p-2" role="alert">
+    <mat-card-content fxLayout fxLayoutGap="1rem">
+      <mat-icon class="alert-warning-icon">warning</mat-icon>
+      <div>
+        <strong>Warning:</strong> You may have unpublished workflows or tools. Changing your username could impact any shared unpublished
+        workflows or tools.
+      </div>
+    </mat-card-content>
+  </mat-card>
+  <mat-card appearance="outlined" *ngIf="isUsernameChangeRequired$ | async" class="alert alert-warning p-2" role="alert">
+    <mat-card-content fxLayout fxLayoutGap="1rem">
+      <mat-icon class="alert-warning-icon">warning</mat-icon>
+      <div>
+        <strong>Warning:</strong> Your username contains one or more banned words. Some operations on Dockstore will be blocked until you
+        change your username.
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <div class="change-username-form">
+    <mat-form-field appearance="outline" class="mb-4">
+      <mat-label>Username</mat-label>
+      <input
+        [errorStateMatcher]="matcher"
+        [formControl]="usernameFormControl"
+        matInput
+        id="username"
+        name="username"
+        [(ngModel)]="username"
+      />
+      <mat-error *ngIf="usernameFormControl.hasError('pattern'); else checkRequired" class="mt-2"
+        >Invalid Username Pattern (Only alphanumeric characters and internal underscores and dashes allowed)</mat-error
+      >
+      <ng-template #checkRequired>
+        <mat-error *ngIf="usernameFormControl.hasError('required'); else checkMaxLength" class="mt-2">Username is required</mat-error>
+        <ng-template #checkMaxLength>
+          <mat-error *ngIf="usernameFormControl.hasError('maxlength')" class="mt-2">Username is too long (Max 39 characters)</mat-error>
+        </ng-template>
       </ng-template>
-    </ng-template>
-  </mat-form-field>
-  <span fxLayout="row wrap" *ngIf="noDialog">
-    <button
-      mat-flat-button
-      class="accent-1-dark-btn"
-      id="updateUsername"
-      [disabled]="usernameTaken || usernameFormControl.invalid || (canChangeUsername$ | async) === false"
-      (click)="updateUsername()"
-    >
-      Update Username
-    </button>
-  </span>
-  <!-- Dialog actions -->
-  <span fxLayout="row wrap" fxLayoutAlign="end center" mat-dialog-actions *ngIf="!noDialog">
-    <button mat-button color="accent" class="mb-3" mat-dialog-close>Close</button>
-    <button
-      class="accent-1-dark-btn mb-3"
-      mat-flat-button
-      id="updateUsername"
-      [disabled]="usernameTaken || usernameFormControl.invalid || (canChangeUsername$ | async) === false"
-      (click)="updateUsername()"
-      mat-dialog-close
-    >
-      Save
-    </button>
-  </span>
-</div>
+    </mat-form-field>
+    <span fxLayout="row wrap" *ngIf="noDialog">
+      <button
+        mat-flat-button
+        class="accent-1-dark"
+        id="updateUsername"
+        [disabled]="usernameTaken || usernameFormControl.invalid || (canChangeUsername$ | async) === false"
+        (click)="updateUsername()"
+      >
+        Update Username
+      </button>
+    </span>
+  </div>
+</mat-dialog-content>
+<!-- Dialog actions -->
+<mat-dialog-actions *ngIf="!noDialog" [align]="'end'">
+  <button mat-button color="accent" class="mb-3" mat-dialog-close>Close</button>
+  <button
+    class="accent-1-dark mb-3"
+    mat-flat-button
+    id="updateUsername"
+    [disabled]="usernameTaken || usernameFormControl.invalid || (canChangeUsername$ | async) === false"
+    (click)="updateUsername()"
+    mat-dialog-close
+  >
+    Save
+  </button>
+</mat-dialog-actions>

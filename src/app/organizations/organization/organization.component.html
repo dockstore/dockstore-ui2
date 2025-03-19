@@ -80,7 +80,7 @@
       </div>
       <mat-card-actions *ngIf="(canEdit$ | async) && !organizationStarGazersClicked" fxLayoutAlign="flex-end">
         <button
-          mat-flat-button
+          mat-button
           class="accent-1-dark small-btn-structure"
           (click)="editOrganization()"
           id="editOrgInfo"
@@ -140,7 +140,7 @@
             <div fxLayout="row" fxLayoutAlign="space-between">
               <h4>About the Organization</h4>
               <button
-                mat-flat-button
+                mat-button
                 class="accent-1-dark small-btn-structure"
                 *ngIf="canEdit$ | async"
                 (click)="updateDescription()"
