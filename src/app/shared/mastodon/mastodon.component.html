@@ -22,12 +22,12 @@
 <div class="mt-timeline">
   <mat-card class="h-100">
     <mat-card-header>
-      <mat-card-title class="mt-header-text ml-2">
+      <mat-card-title class="mt-header-text">
         Mastodon Posts from <a class="mt-header-link" target="_blank" [href]="mastodonDockstoreLink">@dockstore</a></mat-card-title
       >
     </mat-card-header>
     <mat-divider></mat-divider>
-    <mat-card-content class="mt-3 mb-0">
+    <mat-card-content class="mt-3">
       <div id="mt-body" role="feed" class="mt-body">
         <article
           *ngFor="let data of timelineData"
