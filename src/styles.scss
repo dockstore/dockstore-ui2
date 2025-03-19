@@ -23,6 +23,7 @@ $material-design-icons-font-directory-path: '~material-design-icons-iconfont/dis
 @import 'ngx-sharebuttons/themes/default/default-theme';
 @import 'featured-content.scss';
 @import '/src/materialColorScheme.scss';
+@import '/src/functions';
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 /*@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,600);*/
 
@@ -1107,54 +1108,6 @@ hr {
   color: $accent-3-dark;
 }
 
-// Following 4 items are for stepper/stepper-like dialogs as well as other places for unclear reasons (like the unlink account button)
-
-// Class for things that are accent-1-dark.
-// Some material components require the use of component tokens (prefixed with '--')
-// to target the correct element for styling without using !important
-.accent-1-dark {
-  // General color style. Should work on all non-Material components
-  // and some Material components like mat-icons without requiring component tokens
-  color: $accent-1-dark;
-
-  // Below are styles for material components that require the use of component tokens to apply the color
-
-  // Style for mat-card-subtitles
-  &.mat-mdc-card-subtitle {
-    --mat-card-subtitle-text-color: #{$accent-1-dark};
-    a,
-    mat-icon {
-      color: $accent-1-dark;
-    }
-  }
-
-  // Styles for buttons
-  &.mdc-button--unelevated,
-  &.mat-mdc-raised-button {
-    // mat-flat-button has accent-1-dark background and white text
-    --mdc-filled-button-container-color: #{$accent-1-dark};
-    --mdc-filled-button-label-text-color: white;
-    // mat-raise-button has accent-1-dark background and white text
-    --mdc-protected-button-container-color: #{$accent-1-dark};
-    --mdc-protected-button-label-text-color: white;
-
-    mat-icon {
-      color: white;
-    }
-  }
-
-  &.mat-mdc-button,
-  &.mdc-button--outlined {
-    // The other types of buttons have accent-1-dark text with the default white background
-    --mdc-outlined-button-label-text-color: #{$accent-1-dark}; // mat-stroked-button
-    --mdc-text-button-label-text-color: #{$accent-1-dark}; // mat-button
-
-    mat-icon {
-      color: $accent-1-dark;
-    }
-  }
-}
-
 // Automatically used by Angular Material
 /*TODO(mdc-migration): The following rule targets internal classes of radio that may no longer apply for the MDC version.
  */
@@ -1338,17 +1291,43 @@ table td {
 //   margin-left: 0px; // Override the -4px margin that Material uses
 // }
 
+.small-btn-structure {
+  @include small-btn();
+}
+
 // This style should be used for buttons and drop downs in the private "My Dockstore" pages, they do not seem to exist in public dockstore pages
-// These redesigned buttons have purple text and white backgrounds
-// Use with mat-button and small-btn-structure
-button.private-btn.mdc-button,
-a.private-btn.mdc-button {
-  font-weight: bold;
-  font-size: 12px;
-  //color: $accent-1-dark;
-  //background-color: #fff;
-  //box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.08);
-  border: solid 1px #d8d8d8;
+// Use with mat buttons of your choice (ex: mat-stroked-button for border, mat-raised-button for elevation, mat-button for no border, mat-flat-button for flat background)
+.private-btn {
+  @include button-color($accent-1-dark);
+  @include small-btn();
+
+  // Outline color for mat-stroked-button
+  --mdc-outlined-button-outline-color: #d8d8d8;
+}
+
+// Following 4 items are for stepper/stepper-like dialogs as well as other places for unclear reasons (like the unlink account button)
+
+// Class for things that are accent-1-dark.
+// Some material components require the use of component tokens (prefixed with '--')
+// to target the correct element for styling without using !important
+.accent-1-dark {
+  // General color style. Should work on all non-Material components
+  // and some Material components like mat-icons without requiring component tokens
+  color: $accent-1-dark;
+
+  // Below are styles for material components that require the use of component tokens to apply the color
+
+  // Style for mat-card-subtitles
+  &.mat-mdc-card-subtitle {
+    --mat-card-subtitle-text-color: #{$accent-1-dark};
+    a,
+    mat-icon {
+      color: $accent-1-dark;
+    }
+  }
+
+  // Styles for buttons
+  @include button-color($accent-1-dark);
 }
 
 // Updated mat-raised-button style to match new redesigned buttons. This style can be used alone for the LARGER dockstore buttons
@@ -1368,10 +1347,6 @@ a.mdc-button {
   padding: 0 15px;
 }
 
-button.mat-mdc-outlined-button {
-  border: solid 1px #d8d8d8;
-}
-
 // Most cases style should be used accompanied with the mat-raised-button style
 // This style is for the new SMALLER dockstore buttons with size 12 font
 // a.small... is included to account for "buttons" that have links ex. "launch"
@@ -1380,18 +1355,6 @@ a.small-mat-btn-skin {
   //font-size: 12px;
   // For cases when not accompanied by mat-raised-button
   //font-weight: bold;
-}
-
-// This style is for the SMALLER dockstore buttons with 26px height
-// Use this most likely with the small-mat-btn-skin
-button.small-btn-structure.mdc-button,
-a.small-btn-structure.mdc-button {
-  font-size: 12px;
-  line-height: 26px;
-  height: 26px;
-  padding: 0 10px;
-  // Needed for smaller mat buttons ex. "info"
-  min-width: 42px;
 }
 
 // Updated box shadows for small mat-raised-buttons (excluding buttons specified to be flat)

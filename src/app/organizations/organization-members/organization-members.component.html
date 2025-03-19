@@ -15,8 +15,8 @@
 -->
 <div *ngIf="canEditMembership$ | async" fxLayout class="pt-3">
   <button
-    mat-button
-    class="private-btn small-btn-structure"
+    mat-stroked-button
+    class="private-btn"
     matTooltip="Invite a member to the organization"
     (click)="addUser()"
     id="addUserToOrgButton"

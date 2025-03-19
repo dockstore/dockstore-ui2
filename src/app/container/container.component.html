@@ -130,8 +130,8 @@
         <button
           type="button"
           *ngIf="!labelsEditMode && !isToolPublic"
-          mat-button
-          class="private-btn small-btn-structure"
+          mat-stroked-button
+          class="private-btn"
           (click)="toggleLabelsEditMode()"
           [disabled]="tool.archived"
         >
@@ -164,8 +164,8 @@
         <button
           type="button"
           (click)="cancelLabelChanges()"
-          mat-button
-          class="private-btn small-btn-structure mr-2"
+          mat-stroked-button
+          class="private-btn mr-2"
           *ngIf="labelsEditMode && !isToolPublic"
         >
           <img src="../assets/svg/icons-reject.svg" alt="Cancel" class="pr-1 pb-1" />
@@ -173,10 +173,10 @@
         </button>
         <button
           data-cy="saveLabelButton"
-          mat-button
+          mat-stroked-button
           type="button"
           (click)="submitContainerEdits()"
-          class="private-btn small-btn-structure"
+          class="private-btn"
           *ngIf="labelsEditMode && !isToolPublic"
           [disabled]="labelFormControl.hasError('pattern')"
         >

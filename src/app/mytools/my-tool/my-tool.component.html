@@ -45,8 +45,8 @@
             <div id="child">
               <div class="clearfix sidebar-header w-100">
                 <button
-                  mat-button
-                  class="private-btn small-btn-structure ml-3 mb-3"
+                  mat-stroked-button
+                  class="private-btn ml-3 mb-3"
                   id="register_tool_button"
                   matTooltip="Register tool"
                   matTooltipPosition="after"
@@ -58,8 +58,8 @@
                 </button>
 
                 <button
-                  mat-button
-                  class="private-btn small-btn-structure ml-3 mb-3"
+                  mat-stroked-button
+                  class="private-btn ml-3 mb-3"
                   (click)="addToExistingTools()"
                   [disabled]="(isRefreshing$ | async) || (userQuery.user$ | async) === null"
                   matTooltip="Discover tools added by others using your linked source control accounts"

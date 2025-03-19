@@ -19,8 +19,8 @@
       <h5 matCardTitle>Collections</h5>
       <div *ngIf="isLoggedIn$ | async">
         <button
-          mat-button
-          class="private-btn small-btn-structure"
+          mat-stroked-button
+          class="private-btn"
           matTooltip="Add the entry to a collection"
           (click)="addEntryToCollection()"
           id="addToolToCollectionButton"

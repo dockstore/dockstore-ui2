@@ -1,0 +1,40 @@
+// This style is for the SMALLER dockstore buttons with 26px height
+@mixin small-btn {
+  &.mdc-button {
+    font-size: 12px;
+    line-height: 26px;
+    height: 26px;
+    padding: 0 10px;
+    // Needed for smaller mat buttons ex. "info"
+    min-width: 42px;
+  }
+}
+
+@mixin button-color($color) {
+  &.mdc-button--unelevated,
+  &.mat-mdc-raised-button:not([disabled]) {
+    // mat-flat-button has accent-1-dark background and white text
+    --mdc-filled-button-container-color: #{$color};
+    --mdc-filled-button-label-text-color: white;
+    // mat-raise-button has accent-1-dark background and white text
+    --mdc-protected-button-container-color: #{$color};
+    --mdc-protected-button-label-text-color: white;
+
+    mat-icon {
+      color: white;
+    }
+  }
+
+  &.mat-mdc-button,
+  &.mdc-button--outlined:not([disabled]) {
+    // The other types of buttons have accent-1-dark text with the default white background
+    --mdc-outlined-button-label-container-color: white;
+    --mdc-outlined-button-label-text-color: #{$color}; // mat-stroked-button
+    --mdc-text-button-label-container-color: white;
+    --mdc-text-button-label-text-color: #{$color}; // mat-button
+
+    mat-icon {
+      color: $color;
+    }
+  }
+}

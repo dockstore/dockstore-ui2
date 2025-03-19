@@ -52,8 +52,8 @@
                 [matTooltip]="(hasSourceControlToken$ | async) ? '' : 'Requires source control token'"
               >
                 <button
-                  mat-button
-                  class="private-btn small-btn-structure ml-3 mb-3"
+                  mat-stroked-button
+                  class="private-btn ml-3 mb-3"
                   [attr.data-cy]="'register-' + entryType + '-button'"
                   matTooltip="Register {{ entryType$ | async }}"
                   matTooltipPosition="after"
@@ -65,8 +65,8 @@
                 </button>
                 <button
                   *ngIf="entryType === EntryType.BioWorkflow || entryType === EntryType.Notebook"
-                  mat-button
-                  class="private-btn small-btn-structure ml-3 mb-3"
+                  mat-stroked-button
+                  class="private-btn ml-3 mb-3"
                   (click)="addToExistingWorkflows()"
                   [disabled]="(isRefreshing$ | async) || (user$ | async) === null"
                   matTooltip="Discover {{ entryType$ | async }}s added by others using your linked source control accounts"

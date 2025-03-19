@@ -180,8 +180,8 @@
         </mat-card-content>
         <mat-card-actions [align]="'end'">
           <button
-            mat-button
-            class="mr-2 private-btn small-btn-structure"
+            mat-stroked-button
+            class="mr-2 private-btn"
             [id]="'reject-invite-org-' + i"
             (click)="openInviteDialog(membership.organization.displayName, membership.organization.id, false)"
             matTooltip="Decline an organization invite"

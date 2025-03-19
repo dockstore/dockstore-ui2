@@ -327,16 +327,16 @@
           </mat-chip>
         </mat-chip-set>
         <span *ngIf="isValidVersion" id="downloadZipButton" data-cy="downloadZip">
-          <button *ngIf="!workflow?.is_published" mat-button color="accent" class="private-btn small-btn-structure" (click)="downloadZip()">
+          <button *ngIf="!workflow?.is_published" mat-stroked-button color="accent" class="small-btn-structure" (click)="downloadZip()">
             <mat-icon class="mat-icon-sm">file_download</mat-icon>
             Export as ZIP
           </button>
           <a
             [href]="downloadZipLink"
             *ngIf="workflow?.is_published"
-            mat-button
+            mat-stroked-button
             color="accent"
-            class="private-btn small-btn-structure no-underline"
+            class="small-btn-structure no-underline"
           >
             <mat-icon class="mat-icon-sm">file_download</mat-icon>
             Export as ZIP
