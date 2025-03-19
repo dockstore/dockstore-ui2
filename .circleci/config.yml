@@ -298,10 +298,10 @@ parameters:
     default: false
   java-tag:
     type: string
-    default: "17.0.4-browsers"
+    default: "17.0.5-browsers"
   postgres-tag:
     type: string
-    default: "16.1"
+    default: "16.4"
   python-tag:
     type: string
     default: "3.11"
