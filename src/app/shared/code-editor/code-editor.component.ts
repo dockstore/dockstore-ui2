@@ -138,7 +138,7 @@ export class CodeEditorComponent implements AfterViewInit {
         this.mode = 'nfl';
       } else if (filepath.endsWith('.r')) {
         this.mode = 'r';
-      } else if (filepath.endsWith('.py')) {
+      } else if (filepath.endsWith('.py') || filepath.endsWith('.smk') || filepath.endsWith('Snakefile')) {
         this.mode = 'python';
       } else if (filepath.endsWith('.html')) {
         this.mode = 'html';
