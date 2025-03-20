@@ -1,14 +1,16 @@
 <div [matTooltip]="tooltip">
   <button
-    mat-raised-button
+    mat-stroked-button
     class="launch-with-button"
     [matMenuTriggerFor]="menu"
     [disabled]="disabled"
     (click)="toggleExpanded()"
     (menuClosed)="menuClosed()"
   >
-    <img [src]="imagePath" [class]="className" [alt]="partner + ' launch with logo'" />
-    <mat-icon>{{ expanded ? 'expand_less' : 'expand_more' }}</mat-icon>
+    <span>
+      <img [src]="imagePath" [class]="className" [alt]="partner + ' launch with logo'" />
+      <mat-icon>{{ expanded ? 'expand_less' : 'expand_more' }}</mat-icon>
+    </span>
   </button>
 </div>
 <mat-menu #menu="matMenu" xPosition="before" yPosition="below" data-cy="matMenu">
