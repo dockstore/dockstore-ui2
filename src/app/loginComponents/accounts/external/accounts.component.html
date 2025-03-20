@@ -54,13 +54,7 @@
               <mat-icon>file_copy</mat-icon>
             </button>
           </mat-form-field>
-          <button
-            [matTooltip]="show ? 'Hide token' : 'Show token'"
-            mat-button
-            color="secondary"
-            class="accent-1-dark small-btn-structure"
-            (click)="show = !show"
-          >
+          <button [matTooltip]="show ? 'Hide token' : 'Show token'" mat-button color="secondary" class="private-btn" (click)="show = !show">
             <mat-icon class="mat-icon-sm">{{ show ? 'visibility_off' : 'visibility' }}</mat-icon>
             <span> Show </span>
           </button>
@@ -70,7 +64,7 @@
           <span class="pull-right" fxLayoutAlign="end end">
             <button
               mat-flat-button
-              class="accent-1-dark small-btn-structure mt-2"
+              class="private-btn mt-2"
               matTooltip="Revoke Dockstore token"
               data-cy="revoke-token-button"
               (click)="revokeToken()"
@@ -154,7 +148,7 @@
           <ng-template #linked>
             <button
               mat-raised-button
-              class="accent-1-dark small-btn-structure mt-2"
+              class="private-btn mt-2"
               [attr.id]="'unlink-' + row.name"
               (click)="unlink(row.source)"
               matTooltip="Unlink the account"

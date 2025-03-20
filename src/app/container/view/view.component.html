@@ -28,13 +28,7 @@
 </div>
 <!-- Display private tool button design-->
 <ng-template #displayPrivateButton>
-  <button
-    data-cy="actionsButton"
-    mat-raised-button
-    class="accent-1-dark small-btn-structure"
-    [disabled]="!canWrite"
-    [matMenuTriggerFor]="menu"
-  >
+  <button data-cy="actionsButton" mat-stroked-button class="private-btn" [disabled]="!canWrite" [matMenuTriggerFor]="menu">
     <img src="../assets/svg/gear-icon.svg" alt="Gear icon" class="pb-1" />
     Actions
     <img src="../assets/svg/drop-down-arrow.svg" alt="Drop down menu icon" />

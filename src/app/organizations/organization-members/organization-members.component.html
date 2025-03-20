@@ -21,7 +21,7 @@
     (click)="addUser()"
     id="addUserToOrgButton"
   >
-    <mat-icon class="info-icon accent-1-dark">email</mat-icon>Invite a Member
+    <mat-icon class="info-icon">email</mat-icon>Invite a Member
   </button>
 </div>
 <app-loading [loading]="loading$ | async">
@@ -82,7 +82,7 @@
               >
                 <button
                   mat-button
-                  class="accent-1-dark small-btn-structure"
+                  class="private-btn"
                   [matTooltip]="
                     organizationUser.status === OrganizationUser.StatusEnum.REJECTED
                       ? 'Reinvite a user'
@@ -98,7 +98,7 @@
                 </button>
                 <button
                   mat-button
-                  class="accent-1-dark small-btn-structure"
+                  class="small-btn-structure"
                   [matTooltip]="
                     organizationUser.status === OrganizationUser.StatusEnum.ACCEPTED
                       ? 'Remove member from organization'

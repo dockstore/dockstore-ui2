@@ -110,7 +110,7 @@
                     data-cy="cancelWorkflowPathButton"
                     type="button"
                     mat-button
-                    class="accent-1-dark small-btn-structure"
+                    class="private-btn"
                     (click)="cancelEditing()"
                   >
                     <img src="../assets/svg/icons-reject-small.svg" alt="Cancel" class="pr-2 pb-1" />Cancel
@@ -120,7 +120,7 @@
                     data-cy="editWorkflowPathButton"
                     type="button"
                     mat-button
-                    class="accent-1-dark small-btn-structure"
+                    class="private-btn"
                     [disabled]="
                       topicEditing ||
                       defaultTestFilePathEditing ||
@@ -165,7 +165,7 @@
                     *ngIf="!isPublic && defaultTestFilePathEditing"
                     type="button"
                     mat-button
-                    class="accent-1-dark small-btn-structure"
+                    class="private-btn"
                     (click)="cancelEditing()"
                   >
                     <img src="../assets/svg/icons-reject-small.svg" alt="Cancel" class="pr-2 pb-1" />Cancel
@@ -174,7 +174,7 @@
                     *ngIf="!isPublic"
                     type="button"
                     mat-button
-                    class="accent-1-dark small-btn-structure"
+                    class="private-btn"
                     [disabled]="
                       topicEditing ||
                       workflowPathEditing ||
@@ -225,13 +225,7 @@
                   />
                 </div>
                 <span *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED">
-                  <button
-                    *ngIf="!isPublic && forumUrlEditing"
-                    type="button"
-                    mat-button
-                    class="accent-1-dark small-btn-structure"
-                    (click)="cancelEditing()"
-                  >
+                  <button *ngIf="!isPublic && forumUrlEditing" type="button" mat-button class="private-btn" (click)="cancelEditing()">
                     <img src="../assets/svg/icons-reject-small.svg" alt="Cancel" class="pr-2 pb-1" />Cancel
                   </button>
                   <button
@@ -239,7 +233,7 @@
                     [disabled]="topicEditing || workflowPathEditing || defaultTestFilePathEditing || (isRefreshing$ | async) || !canWrite"
                     type="button"
                     mat-button
-                    class="accent-1-dark small-btn-structure"
+                    class="private-btn"
                     (click)="toggleEditForumUrl()"
                   >
                     <img *ngIf="!forumUrlEditing" src="../assets/svg/icons-plus.svg" class="pr-2 pb-1" alt="Plus sign" />Add
@@ -248,7 +242,7 @@
                     *ngIf="!isPublic && (workflow?.forumUrl || forumUrlEditing)"
                     type="button"
                     mat-button
-                    class="accent-1-dark small-btn-structure"
+                    class="private-btn"
                     (click)="toggleEditForumUrl()"
                   >
                     <mat-icon *ngIf="forumUrlEditing" class="mat-icon-sm">save</mat-icon>
@@ -277,7 +271,7 @@
             </div>
             <button
               mat-button
-              class="accent-1-dark small-btn-structure"
+              class="private-btn"
               type="button"
               *ngIf="workflow?.mode === WorkflowType.ModeEnum.FULL && !workflow?.is_published && !workflow?.isChecker"
               (click)="restubWorkflow()"

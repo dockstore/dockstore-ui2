@@ -1287,16 +1287,15 @@ table td {
   color: mat.get-color-from-palette($kim-gray, 1);
 }
 
-// .mat-mdc-unelevated-button > .mat-icon, .mat-mdc-raised-button > .mat-icon, .mat-mdc-outlined-button > .mat-icon {
-//   margin-left: 0px; // Override the -4px margin that Material uses
-// }
-
+// This style is for the SMALLER dockstore buttons with 26px height
 .small-btn-structure {
   @include small-btn();
 }
 
-// This style should be used for buttons and drop downs in the private "My Dockstore" pages, they do not seem to exist in public dockstore pages
-// Use with mat buttons of your choice (ex: mat-stroked-button for border, mat-raised-button for elevation, mat-button for no border, mat-flat-button for flat background)
+// Private buttons have accent-1-dark color and small button structure.
+// This style should be used for buttons and drop downs in the private "My Dockstore" pages, they do not seem to exist in public dockstore pages.
+// Use with mat buttons of your choice depending on the border style/elevation you want.
+// (ex: mat-stroked-button for border, mat-raised-button for elevation, mat-button for no border, mat-flat-button for flat background)
 .private-btn {
   @include button-color($accent-1-dark);
   @include small-btn();
@@ -1328,33 +1327,6 @@ table td {
 
   // Styles for buttons
   @include button-color($accent-1-dark);
-}
-
-// Updated mat-raised-button style to match new redesigned buttons. This style can be used alone for the LARGER dockstore buttons
-// 14px font and 36px height
-// button.mat-mdc-raised-button,
-// a.mat-mdc-raised-button {
-//   font-weight: bold;
-//   line-height: 36px;
-//   height: 36px;
-//   padding: 0 15px;
-// }
-
-// Updated mat-raised-button style to match new redesigned buttons. This style can be used alone for the LARGER dockstore buttons
-// 14px font and 36px height
-button.mdc-button,
-a.mdc-button {
-  padding: 0 15px;
-}
-
-// Most cases style should be used accompanied with the mat-raised-button style
-// This style is for the new SMALLER dockstore buttons with size 12 font
-// a.small... is included to account for "buttons" that have links ex. "launch"
-button.small-mat-btn-skin,
-a.small-mat-btn-skin {
-  //font-size: 12px;
-  // For cases when not accompanied by mat-raised-button
-  //font-weight: bold;
 }
 
 // Updated box shadows for small mat-raised-buttons (excluding buttons specified to be flat)

@@ -83,20 +83,14 @@
                 />
               </div>
               <div *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED" class="btn-group" role="group" aria-label="Basic example">
-                <button
-                  *ngIf="!isPublic && dockerFileEditing"
-                  type="button"
-                  mat-button
-                  class="accent-1-dark small-btn-structure"
-                  (click)="cancelEditing()"
-                >
+                <button *ngIf="!isPublic && dockerFileEditing" type="button" mat-button class="private-btn" (click)="cancelEditing()">
                   <img src="../assets/svg/icons-reject-small.svg" alt="Cancel" class="pr-2 pb-1" />Cancel
                 </button>
                 <button
                   *ngIf="!isPublic"
                   type="button"
                   mat-button
-                  class="accent-1-dark small-btn-structure"
+                  class="private-btn"
                   [disabled]="!(!somethingIsBeingEdited() || (dockerFileEditing && editDockerfileForm.valid)) || !canWrite"
                   (click)="toggleEditDockerFile()"
                 >
@@ -128,20 +122,14 @@
                 />
               </div>
               <div *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED" class="btn-group" role="group" aria-label="Basic example">
-                <button
-                  *ngIf="!isPublic && cwlPathEditing"
-                  type="button"
-                  mat-button
-                  class="accent-1-dark small-btn-structure"
-                  (click)="cancelEditing()"
-                >
+                <button *ngIf="!isPublic && cwlPathEditing" type="button" mat-button class="private-btn" (click)="cancelEditing()">
                   <img src="../assets/svg/icons-reject-small.svg" alt="Cancel" class="pr-2 pb-1" />Cancel
                 </button>
                 <button
                   *ngIf="!isPublic"
                   type="button"
                   mat-button
-                  class="accent-1-dark small-btn-structure"
+                  class="private-btn"
                   [disabled]="!(!somethingIsBeingEdited() || (cwlPathEditing && editCWLPathForm.valid)) || !canWrite"
                   (click)="toggleEditCWLPath()"
                 >
@@ -173,20 +161,14 @@
                 />
               </div>
               <div *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED" class="btn-group" role="group" aria-label="Basic example">
-                <button
-                  *ngIf="!isPublic && wdlPathEditing"
-                  type="button"
-                  mat-button
-                  class="accent-1-dark small-btn-structure"
-                  (click)="cancelEditing()"
-                >
+                <button *ngIf="!isPublic && wdlPathEditing" type="button" mat-button class="private-btn" (click)="cancelEditing()">
                   <img src="../assets/svg/icons-reject-small.svg" alt="Cancel" class="pr-2 pb-1" />Cancel
                 </button>
                 <button
                   *ngIf="!isPublic"
                   type="button"
                   mat-button
-                  class="accent-1-dark small-btn-structure"
+                  class="private-btn"
                   [disabled]="!(!somethingIsBeingEdited() || (wdlPathEditing && editWDLPathForm.valid)) || !canWrite"
                   (click)="toggleEditWDLPath()"
                 >
@@ -220,7 +202,7 @@
                 *ngIf="!isPublic && tool?.mode !== DockstoreToolType.ModeEnum.HOSTED"
                 type="button"
                 mat-button
-                class="accent-1-dark small-btn-structure"
+                class="private-btn"
                 [disabled]="!(!somethingIsBeingEdited() || (cwlTestPathEditing && editCWLTestPathForm.valid)) || !canWrite"
                 (click)="toggleEditCWLTestPath()"
               >
@@ -253,7 +235,7 @@
                 *ngIf="!isPublic && tool?.mode !== DockstoreToolType.ModeEnum.HOSTED"
                 type="button"
                 mat-button
-                class="accent-1-dark small-btn-structure"
+                class="private-btn"
                 [disabled]="!(!somethingIsBeingEdited() || (wdlTestPathEditing && editWDLTestPathForm.valid)) || !canWrite"
                 (click)="toggleEditWDLTestPath()"
               >

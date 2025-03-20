@@ -10,13 +10,16 @@
   }
 }
 
+// Mixin for generating a button color class.
+// mat-raised-button and mat-flat-button have the $color as the background and white text
+// mat-button and mat-stroked-button have the $color as the text and white as the background
 @mixin button-color($color) {
-  &.mdc-button--unelevated,
-  &.mat-mdc-raised-button:not([disabled]) {
-    // mat-flat-button has accent-1-dark background and white text
+  &.mdc-button--unelevated:not(:disabled),
+  &.mat-mdc-raised-button:not(:disabled) {
+    // mat-flat-button has $color background and white text
     --mdc-filled-button-container-color: #{$color};
     --mdc-filled-button-label-text-color: white;
-    // mat-raise-button has accent-1-dark background and white text
+    // mat-raise-button has $color background and white text
     --mdc-protected-button-container-color: #{$color};
     --mdc-protected-button-label-text-color: white;
 
@@ -25,13 +28,15 @@
     }
   }
 
-  &.mat-mdc-button,
-  &.mdc-button--outlined:not([disabled]) {
-    // The other types of buttons have accent-1-dark text with the default white background
+  &.mat-mdc-button:not(:disabled),
+  &.mdc-button--outlined:not(:disabled) {
+    // The other types of buttons have $color text with the default white background
+    // mat-stroked-button
     --mdc-outlined-button-label-container-color: white;
-    --mdc-outlined-button-label-text-color: #{$color}; // mat-stroked-button
+    --mdc-outlined-button-label-text-color: #{$color};
+    // mat-button
     --mdc-text-button-label-container-color: white;
-    --mdc-text-button-label-text-color: #{$color}; // mat-button
+    --mdc-text-button-label-text-color: #{$color};
 
     mat-icon {
       color: $color;
