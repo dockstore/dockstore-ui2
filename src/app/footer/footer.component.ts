@@ -50,7 +50,7 @@ export class FooterComponent extends Base implements OnInit {
   year: number;
   content: string;
   public sponsors: Sponsor[] = [
-    new Sponsor('collaboratory.svg', new URL('https://www.cancercollaboratory.org/')),
+    new Sponsor('collaboratory.svg', new URL('https://doi.org/10.1158/1538-7445.AM2017-378')),
     new Sponsor('oicr.svg', new URL('https://oicr.on.ca/')),
     new Sponsor('broad1.svg', new URL('https://www.broadinstitute.org/')),
     new Sponsor('ga.svg', new URL('https://genomicsandhealth.org/')),
