@@ -32,14 +32,17 @@
   &.mdc-button--outlined:not(:disabled) {
     // The other types of buttons have $color text with the default white background
     // mat-stroked-button
-    --mdc-outlined-button-label-container-color: white;
     --mdc-outlined-button-label-text-color: #{$color};
     // mat-button
-    --mdc-text-button-label-container-color: white;
     --mdc-text-button-label-text-color: #{$color};
 
     mat-icon {
       color: $color;
     }
+  }
+
+  // Set the background color of mat-stroked-button to white to override the transparent background
+  &.mdc-button--outlined:not(:disabled) {
+    background-color: white;
   }
 }

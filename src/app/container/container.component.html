@@ -92,7 +92,7 @@
           <a mat-raised-button class="accent-1-dark" [href]="requestAccessHREF$ | async"> Request Access </a>
         </div>
         <div class="mr-2" *ngIf="publicPage && (extendedTool$ | async)?.email && !tool?.private_access">
-          <a mat-raised-button class="mat-accent" [href]="contactAuthorHREF"> Contact Author </a>
+          <a mat-raised-button color="accent" [href]="contactAuthorHREF"> Contact Author </a>
         </div>
       </h3>
     </div>
