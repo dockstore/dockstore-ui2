@@ -29,7 +29,7 @@
       <ng-template #items let-items="items" let-itemState="itemState">
         <mat-list class="org-accordion-list">
           <mat-list-item *ngFor="let toolObj of items" [ngClass]="{ selectedTool: (toolId$ | async) === toolObj?.id }">
-            <mat-icon class="arrow mat-icon-sm">arrow_forward</mat-icon>
+            <mat-icon *ngIf="(toolId$ | async) === toolObj?.id" class="mr-1 mat-icon-sm">arrow_forward</mat-icon>
             <a
               class="no-wrap"
               title="{{ toolObj?.name + (toolObj?.toolname ? '/' + toolObj?.toolname : '') }}"

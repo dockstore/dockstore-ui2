@@ -674,7 +674,7 @@ div.modal form {
 
 mat-list.org-accordion-list > .mat-mdc-list-item {
   height: 30px !important;
-  font-size: 12px !important;
+  --mdc-list-list-item-label-text-size: 12px;
 }
 
 .add-entry-button {

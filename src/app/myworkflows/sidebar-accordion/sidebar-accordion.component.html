@@ -60,7 +60,7 @@
               selectedTool: (isTool$ | async) && (workflowId$ | async) === workflowObj?.id
             }"
           >
-            <mat-icon class="arrow mat-icon-sm">arrow_forward</mat-icon>
+            <mat-icon *ngIf="(workflowId$ | async) === workflowObj?.id" class="mr-1 mat-icon-sm">arrow_forward</mat-icon>
             <a
               class="no-wrap"
               title="{{ workflowObj?.repository + (workflowObj?.workflowName ? '/' + workflowObj?.workflowName : '') }}"

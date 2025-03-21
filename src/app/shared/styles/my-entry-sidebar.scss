@@ -97,14 +97,4 @@ mat-expansion-panel {
     color: #181f40;
     text-decoration: none;
   }
-
-  .arrow {
-    display: block;
-    margin-right: 0.5rem;
-  }
-}
-
-// Hide arrow for non-selected entry
-.arrow {
-  display: none;
 }
