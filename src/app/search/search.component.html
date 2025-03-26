@@ -130,7 +130,7 @@
             </mat-autocomplete>
           </div>
           <!-- overflow-hidden because buttons are using floats causing the parent div to be 0 height -->
-          <div class="overflow-hidden" *ngIf="orderedBuckets.get(key).Items.size > 10">
+          <div class="overflow-hidden my-2" *ngIf="orderedBuckets.get(key).Items.size > 10">
             <button
               mat-stroked-button
               (click)="clickSortMode(key, false)"
@@ -155,19 +155,14 @@
               <div [ngStyle]="orderedBuckets.get(key) | getHistogramStyle: subBucket:(selectedIndex$ | async)">
                 <div class="panel-container-label">
                   <div fxLayout="row" fxLayoutAlign="space-between center">
-                    <div class="container-name-oflw">
+                    <div fxFlex="80">
                       <span>
-                        <mat-checkbox
-                          class="search-facet-checkboxes"
-                          type="checkbox"
-                          [checked]="checkboxMap?.get(key)?.get(subBucket)"
-                          (change)="onClick(key, subBucket)"
-                        >
+                        <mat-checkbox type="checkbox" [checked]="checkboxMap?.get(key)?.get(subBucket)" (change)="onClick(key, subBucket)">
                           {{ key | mapFriendlyValue: subBucket }}
                         </mat-checkbox>
                       </span>
                     </div>
-                    <span>{{ orderedBuckets.get(key).SelectedItems.get(subBucket) }}</span>
+                    <span class="mr-2">{{ orderedBuckets.get(key).SelectedItems.get(subBucket) }}</span>
                   </div>
                 </div>
               </div>
@@ -183,36 +178,30 @@
             <div [ngStyle]="orderedBuckets.get(key) | getHistogramStyle: subBucket:(selectedIndex$ | async)">
               <div class="panel-container-label">
                 <div *ngIf="i < 5" fxLayout="row" fxLayoutAlign="space-between center">
-                  <div class="container-name-oflw">
+                  <div fxFlex="80">
                     <span matTooltip="{{ key | mapFriendlyValue: subBucket }}" [matTooltipPosition]="'after'">
-                      <mat-checkbox
-                        class="search-facet-checkboxes"
-                        type="checkbox"
-                        [checked]="checkboxMap?.get(key)?.get(subBucket)"
-                        (change)="onClick(key, subBucket)"
-                      >
-                        {{ key | mapFriendlyValue: subBucket }}
+                      <mat-checkbox type="checkbox" [checked]="checkboxMap?.get(key)?.get(subBucket)" (change)="onClick(key, subBucket)">
+                        <span class="truncate-text-1">{{ key | mapFriendlyValue: subBucket }}</span>
                       </mat-checkbox>
                     </span>
                   </div>
-                  <span>{{ orderedBuckets.get(key).Items.get(subBucket) }}</span>
+                  <span class="mr-2">{{ orderedBuckets.get(key).Items.get(subBucket) }}</span>
                 </div>
                 <div *ngIf="i >= 5 && fullyExpandMap.get(key)" fxLayout="row" fxLayoutAlign="space-between center">
-                  <div class="container-name-oflw">
+                  <div fxFlex="80">
                     <span matTooltip="{{ key | mapFriendlyValue: subBucket }}" [matTooltipPosition]="'after'">
                       <mat-checkbox
-                        class="search-facet-checkboxes"
                         matTooltip="{{ subBucket }}"
                         [matTooltipPosition]="'after'"
                         type="checkbox"
                         [checked]="checkboxMap?.get(key)?.get(subBucket)"
                         (change)="onClick(key, subBucket)"
                       >
-                        {{ key | mapFriendlyValue: subBucket }}
+                        <span class="truncate-text-1">{{ key | mapFriendlyValue: subBucket }}</span>
                       </mat-checkbox>
                     </span>
                   </div>
-                  <span>{{ orderedBuckets.get(key).Items.get(subBucket) }}</span>
+                  <span class="mr-2">{{ orderedBuckets.get(key).Items.get(subBucket) }}</span>
                 </div>
               </div>
             </div>

@@ -28,20 +28,6 @@ mat-tab-group.homeComponent {
   color: $header-color;
 }
 
-// Bootstrap applies bold font-weight and material checkbox automatically sets a line height and default overflow
-// behaviour that needs to be overridden.
-:host::ng-deep .mat-mdc-checkbox.search-facet-checkboxes .mdc-label {
-  font-weight: normal;
-  overflow: hidden;
-  // This doesn't actually work, but doesn't work in prod either, as ellipsis requires a fixed width
-  text-overflow: ellipsis;
-}
-
-// Makes facets the right height
-:host ::ng-deep mat-checkbox div.mdc-form-field {
-  height: 1.25rem;
-}
-
 .hits {
   line-height: 1.8;
 }
@@ -139,7 +125,6 @@ fa-icon.ng-fa-icon {
 // Need individual classes for left and right sort buttons to adjust unique border-radiuses
 .leftSortbtn {
   border-radius: 4px 0px 0px 4px;
-  margin-left: 0.8rem;
 }
 
 .rightSortbtn {
@@ -214,49 +199,9 @@ mat-expansion-panel mat-expansion-panel-header[aria-expanded='false'] {
   text-decoration: underline;
 }
 
-// Form field box
-/*TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.
- */
-:host .mat-expansion-panel ::ng-deep .mat-form-field-wrapper {
-  margin: 0 0.75rem;
-  padding-bottom: 0.8rem;
-  line-height: 3.6rem;
-}
-
-// Form field label
-/*TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.
- */
-:host
-  .mat-expansion-panel
-  ::ng-deep
-  .mat-form-field-wrapper
-  .mat-form-field-flex
-  .mat-form-field-infix
-  .mat-form-field-label-wrapper
-  .mat-form-field-label {
-  top: 1.8rem;
-}
-
-// Form field inner
-/*TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.
- */
-:host .mat-expansion-panel ::ng-deep .mat-form-field-wrapper .mat-form-field-infix {
-  border: 0rem;
-  padding: 0rem;
-}
-
-// Form field text animation re-implementation
-/*TODO(mdc-migration): The following rule targets internal classes of form-field that may no longer apply for the MDC version.
- */
-:host ::ng-deep .mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
-  transform: translateY(-1.1em) scale(0.75);
-  width: 133.33333%;
-  top: 1.84375em;
-}
-
 // Panel body
 :host .mat-expansion-panel ::ng-deep .mat-expansion-panel-body {
-  padding: 0rem 0.25rem 0.7rem 0rem;
+  padding: 0rem 0.7rem 0.7rem;
 }
 
 // Panel

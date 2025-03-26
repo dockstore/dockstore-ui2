@@ -232,29 +232,13 @@ div.view-content.ns-containers {
     margin-bottom: 20px;
   }
 }
-div.panel-container-label {
-  padding: 0 10px;
-  clear: both;
-  .container-name-oflw {
-    width: 170px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  a {
-    color: #487980;
-  }
-}
 
-/*TODO(mdc-migration): The following rule targets internal classes of checkbox that may no longer apply for the MDC version.
- */
-label.mat-checkbox-layout {
+mat-checkbox label {
+  // Bootstrap adds margin-bottom padding to labels, which misaligns the label text for checkboxes.
+  // Set the margin-bottom to 0 for mat checkbox labels to center the text with the checkbox.
   margin-bottom: 0 !important;
-}
-
-div.panel-container-label:hover {
-  background-color: #7987a5;
-  color: #ffffff;
+  // Bootstrap applies bold font-weight to labels. Set to normal.
+  font-weight: normal;
 }
 
 @keyframes spin {
