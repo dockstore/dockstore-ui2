@@ -244,7 +244,7 @@
 "parse5@7.1.2","MIT","https://github.com/inikulin/parse5"
 "path-is-absolute@1.0.1","MIT","https://github.com/sindresorhus/path-is-absolute"
 "path-parse@1.0.7","MIT","https://github.com/jbgutierrez/path-parse"
-"prismjs@1.29.0","MIT","https://github.com/PrismJS/prism"
+"prismjs@1.30.0","MIT","https://github.com/PrismJS/prism"
 "process-nextick-args@2.0.1","MIT","https://github.com/calvinmetcalf/process-nextick-args"
 "promise-inflight@1.0.1","ISC","https://github.com/iarna/promise-inflight"
 "promise-retry@1.1.1","MIT","https://github.com/IndigoUnited/node-promise-retry"
