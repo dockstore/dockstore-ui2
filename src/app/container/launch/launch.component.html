@@ -33,7 +33,8 @@
     <div *ngIf="_selectedVersion.valid">
       <div class="row">
         <div class="col-sm-4">
-          <mat-form-field>
+          <mat-form-field class="mb-3">
+            <mat-label>Descriptor Type</mat-label>
             <mat-select name="toolVersions" [(value)]="currentDescriptor">
               <mat-option *ngFor="let descriptor of filteredDescriptors" [value]="descriptor">{{ descriptor }}</mat-option>
             </mat-select>

@@ -25,7 +25,8 @@
     <p>Please enter your account username to delete.</p>
     <div [formGroup]="usernameForm">
       <mat-form-field>
-        <input id="deleteUserUsernameInput" matInput [formControl]="usernameFormControl" placeholder="Username" />
+        <mat-label>Username</mat-label>
+        <input id="deleteUserUsernameInput" matInput [formControl]="usernameFormControl" />
       </mat-form-field>
     </div>
     <div class="btn-group">

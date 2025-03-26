@@ -32,15 +32,15 @@
   <mat-progress-bar mode="indeterminate" *ngIf="loading; else loaded"></mat-progress-bar>
   <ng-template #loaded>
     <div [hidden]="!content">
-      <mat-toolbar color="primary">
+      <mat-toolbar class="files-toolbar">
         <mat-toolbar-row>
           <span>{{ filePath }}</span>
           <span class="spacer"></span>
           <div class="btn-group pull-right" role="group">
-            <a mat-icon-button color="secondary" class="mr-1" type="button" title="{{ filePath }}" (click)="downloadFileContent()">
+            <a mat-icon-button color="accent" class="mr-1" type="button" title="{{ filePath }}" (click)="downloadFileContent()">
               <mat-icon>save_alt</mat-icon>
             </a>
-            <button mat-icon-button color="secondary" type="button" [cdkCopyToClipboard]="content">
+            <button mat-icon-button color="accent" type="button" [cdkCopyToClipboard]="content">
               <mat-icon>file_copy</mat-icon>
             </button>
           </div>

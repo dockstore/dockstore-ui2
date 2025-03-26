@@ -42,8 +42,8 @@
             </mat-card-content>
           </mat-card>
         </div>
-        <div *ngIf="fileTab.value.length > 0">
-          <mat-toolbar color="primary">
+        <div *ngIf="fileTab.value.length > 0" class="p-3">
+          <mat-toolbar class="files-toolbar">
             <div fxFlex="grow" fxLayout="row" fxLayoutAlign="space-between center">
               <span *ngIf="fileTab.value.length > 10">
                 <button color="accent" data-cy="select-file-button" mat-raised-button (click)="openFileTree(fileTab.value)">
@@ -57,8 +57,7 @@
                     <mat-chip class="preview-bubble primary-bubble-header" data-cy="primary-descriptor-bubble"> Primary </mat-chip>
                   </mat-chip-set>
                   <a
-                    color="secondary"
-                    type="button"
+                    color="accent"
                     *ngIf="!isCurrentFilePrimary && fileTab.key === 'Descriptor Files'"
                     (click)="selectFile(primaryDescriptors[0])"
                     matTooltip="View the primary descriptor"
@@ -68,7 +67,8 @@
                     <mat-icon aria-hidden="false" aria-label="Navigate to Primary Descriptor file" fontIcon="home"></mat-icon>
                   </a>
                 </span>
-                <mat-form-field class="w-100" *ngIf="fileTab.value.length <= 10">
+                <mat-form-field class="w-100 white-background" *ngIf="fileTab.value.length <= 10">
+                  <mat-label>File</mat-label>
                   <mat-select [value]="currentFile" (selectionChange)="matSelectChange($event)">
                     <mat-select-trigger>
                       {{ currentFile.path }}
@@ -86,8 +86,7 @@
                   <mat-chip class="preview-bubble primary-bubble-header" data-cy="primary-descriptor-bubble"> Primary </mat-chip>
                 </mat-chip-set>
                 <a
-                  color="secondary"
-                  type="button"
+                  color="accent"
                   *ngIf="!isCurrentFilePrimary && fileTab.value.length <= 10 && fileTab.key === 'Descriptor Files'"
                   (click)="selectFile(primaryDescriptors[0])"
                   matTooltip="View the primary descriptor"
@@ -100,7 +99,7 @@
               <span>
                 <a
                   mat-icon-button
-                  color="secondary"
+                  color="accent"
                   class="mr-1"
                   type="button"
                   *ngIf="isPublished$ | async; else unpublishedDownloadLink"
@@ -114,7 +113,7 @@
                 <ng-template #unpublishedDownloadLink>
                   <a
                     mat-icon-button
-                    color="secondary"
+                    color="accent"
                     class="mr-1"
                     type="button"
                     matTooltip="Download {{ fileName }}"
@@ -123,7 +122,7 @@
                     <mat-icon>save_alt</mat-icon>
                   </a>
                 </ng-template>
-                <button mat-icon-button color="secondary" type="button" [cdkCopyToClipboard]="currentFile?.content" matTooltip="Copy File">
+                <button mat-icon-button color="accent" type="button" [cdkCopyToClipboard]="currentFile?.content" matTooltip="Copy File">
                   <mat-icon>file_copy</mat-icon>
                 </button>
               </span>

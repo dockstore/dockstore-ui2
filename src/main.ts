@@ -169,8 +169,13 @@ bootstrapApplication(AppComponent, {
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: myCustomSnackbarDefaults },
     { provide: HTTP_INTERCEPTORS, useClass: WorkflowVersionsInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: CustomHeaderInterceptor, multi: true },
-    // Removes the hint/error space under form fields until an error or hint actually needs to get displayed
-    { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { subscriptSizing: 'dynamic' } },
+    {
+      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+      useValue: {
+        subscriptSizing: 'dynamic', // Removes the hint/error space under form fields until an error or hint actually needs to get displayed
+        appearance: 'outline', // Set outlined form fields as the default instead of filled
+      },
+    },
     { provide: Window, useValue: window },
     provideAnimations(),
     provideHttpClient(withInterceptorsFromDi()),

@@ -37,26 +37,19 @@
           <a [href]="dsServerURI + '/static/swagger-ui/index.html#'" target="_blank">REST web service interface</a> to work with and launch
           tools and workflows. See the <a routerLink="/onboarding">Onboarding</a> page for more details on using the CLI.
         </div>
-        <div>
-          <mat-form-field appearance="outline" class="w-75">
-            <mat-label class="accent-1-dark">
+        <div class="my-3">
+          <mat-form-field class="w-75">
+            <mat-label>
               <strong>Token</strong>
             </mat-label>
             <input matInput readonly [type]="show ? 'text' : 'password'" value="{{ dockstoreToken }}" />
-            <button
-              mat-icon-button
-              matSuffix
-              class="accent-1-dark"
-              [cdkCopyToClipboard]="dockstoreToken"
-              matTooltip="Copy Token"
-              appSnackbar
-            >
-              <mat-icon>file_copy</mat-icon>
+            <button mat-icon-button matSuffix [cdkCopyToClipboard]="dockstoreToken" matTooltip="Copy Token" appSnackbar>
+              <mat-icon class="accent-1-dark">file_copy</mat-icon>
             </button>
           </mat-form-field>
-          <button [matTooltip]="show ? 'Hide token' : 'Show token'" mat-button color="secondary" class="private-btn" (click)="show = !show">
+          <button [matTooltip]="show ? 'Hide token' : 'Show token'" mat-button class="private-btn" (click)="show = !show">
             <mat-icon class="mat-icon-sm">{{ show ? 'visibility_off' : 'visibility' }}</mat-icon>
-            <span> Show </span>
+            <span>{{ show ? 'Hide' : 'Show' }}</span>
           </button>
         </div>
         <div>

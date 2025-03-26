@@ -40,6 +40,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { AlertComponent } from '../../alert/alert.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { FlexModule } from '@ngbracket/ngx-layout';
 
 @Component({
   templateUrl: './register-checker-workflow.component.html',
@@ -57,6 +58,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatOptionModule,
     MatButtonModule,
     AsyncPipe,
+    FlexModule,
   ],
 })
 export class RegisterCheckerWorkflowComponent extends Base implements OnInit, AfterViewChecked {

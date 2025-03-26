@@ -35,14 +35,14 @@
         </button>
       </div>
       <form [formGroup]="organizationSearchForm" fxLayoutGap="1.5rem" fxLayout.lt-sm="column" fxLayoutGap.lt-sm="-1rem">
-        <mat-form-field appearance="outline" class="search-form-field">
+        <mat-form-field>
           <mat-label>Sort by...</mat-label>
           <mat-select formControlName="sort">
             <mat-option value="name">Name</mat-option>
             <mat-option value="starred">Starred</mat-option>
           </mat-select>
         </mat-form-field>
-        <mat-form-field appearance="outline" class="search-form-field">
+        <mat-form-field>
           <mat-label>Search Organizations</mat-label>
           <input #search matInput formControlName="name" />
           <button mat-button *ngIf="search.value" matSuffix mat-icon-button (click)="clearSearch()" type="button">

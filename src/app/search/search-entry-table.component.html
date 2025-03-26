@@ -3,7 +3,7 @@
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
   </div>
   <div fxLayout="row" fxLayoutAlign="space-between center">
-    <mat-form-field appearance="outline" class="search-form-field sort-by">
+    <mat-form-field>
       <mat-label>Sort by</mat-label>
       <mat-select [value]="defaultSortOption.sort" (selectionChange)="setSort($event.value)">
         <mat-option *ngFor="let sortOption of sortOptions" [value]="sortOption.sort">{{ sortOption.label }}</mat-option>
@@ -12,7 +12,6 @@
     <div class="tag-cloud-dropdown">
       <button
         mat-button
-        appearance="outline"
         fxFlex="21rem"
         class="tagCloud-btn {{ entryType | lowercase }}-background"
         (click)="clickTagCloudBtn(this.entryType)"

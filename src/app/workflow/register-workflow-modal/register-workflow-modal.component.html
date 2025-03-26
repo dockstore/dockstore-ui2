@@ -75,6 +75,7 @@
       <form
         fxLayout="column"
         fxLayoutAlign="space-evenly stretch"
+        fxLayoutGap="1rem"
         *ngIf="selectedOption?.value === 2"
         #registerWorkflowForm="ngForm"
         name="registerWorkflowForm"
@@ -86,7 +87,8 @@
           workflows.
         </p>
         <mat-form-field class="w-100">
-          <mat-select placeholder="Source Code Provider" class="radio-group" [(ngModel)]="workflow.repository" name="repository">
+          <mat-label>Source Code Provider</mat-label>
+          <mat-select class="radio-group" [(ngModel)]="workflow.repository" name="repository">
             <mat-option *ngFor="let repository of friendlyRepositoryKeys()" [value]="repository">
               {{ repository }}
             </mat-option>
@@ -191,6 +193,7 @@
       <form
         fxLayout="column"
         fxLayoutAlign="space-evenly stretch"
+        fxLayoutGap="1rem"
         *ngIf="selectedOption?.value === 3"
         #registerHostedWorkflowForm="ngForm"
         name="registerHostedWorkflowForm"
@@ -218,7 +221,7 @@
           </mat-radio-button>
         </mat-radio-group>
 
-        <mat-form-field appearance="outline" class="w-100">
+        <mat-form-field class="w-100">
           <mat-label>Repository</mat-label>
           <input
             matInput

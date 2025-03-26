@@ -44,7 +44,7 @@
       <!--        {{ usersInstance.displayName }} (Custom)-->
       <!--      </mat-radio-button>-->
       <mat-radio-button value="other" data-cy="multiCloudLaunchText">
-        <mat-form-field class="small-text" color="accent" appearance="outline">
+        <mat-form-field class="small-text">
           <mat-label>Specify a url...</mat-label>
           <input matInput [(ngModel)]="customLaunchWith" (ngModelChange)="presetLaunchWith = 'other'" name="something" />
         </mat-form-field>

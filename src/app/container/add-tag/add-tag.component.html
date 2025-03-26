@@ -16,7 +16,7 @@
 <h4 mat-dialog-title>Add Version Tag</h4>
 <div mat-dialog-content>
   <app-alert></app-alert>
-  <form #addTagForm="ngForm" name="addTagForm">
+  <form #addTagForm="ngForm" name="addTagForm" fxLayout="column" fxLayoutGap="1.5rem">
     <mat-form-field class="w-100">
       <mat-label>Docker Image Tag Name</mat-label>
       <input
@@ -33,7 +33,7 @@
       <mat-hint>e.g. "20.04" is the tag name of "docker pull ubuntu:20.04" </mat-hint>
       <mat-error *ngIf="formErrors.versionTag">{{ formErrors.versionTag }}</mat-error>
     </mat-form-field>
-    <mat-form-field class="w-100 my-3">
+    <mat-form-field class="w-100">
       <mat-label>Git Branch or Tag Name</mat-label>
       <input
         matInput
@@ -255,19 +255,21 @@
         <input class="form-control" placeholder="None provided" [disabled]="true" />
       </div>
     </div>
-    <div class="w-100">
-      <mat-checkbox
-        ng-if="editMode"
-        name="checkbox"
-        [disabled]="!editMode"
-        [(ngModel)]="unsavedVersion.hidden"
-        title="Hide tag from public view."
-      >
-        Hidden
-      </mat-checkbox>
-    </div>
-    <div class="w-100">
-      <mat-checkbox [value]="tool?.automated"> Automated </mat-checkbox>
+    <div>
+      <div class="w-100">
+        <mat-checkbox
+          ng-if="editMode"
+          name="checkbox"
+          [disabled]="!editMode"
+          [(ngModel)]="unsavedVersion.hidden"
+          title="Hide tag from public view."
+        >
+          Hidden
+        </mat-checkbox>
+      </div>
+      <div class="w-100">
+        <mat-checkbox [value]="tool?.automated"> Automated </mat-checkbox>
+      </div>
     </div>
   </form>
 </div>

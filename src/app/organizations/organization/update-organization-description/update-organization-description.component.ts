@@ -25,6 +25,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { MatTabsModule } from '@angular/material/tabs';
 import { AlertComponent } from '../../../shared/alert/alert.component';
+import { TitleCasePipe } from '@angular/common';
 
 @Component({
   templateUrl: './update-organization-description.component.html',
@@ -41,6 +42,7 @@ import { AlertComponent } from '../../../shared/alert/alert.component';
     MarkdownWrapperComponent,
     MatButtonModule,
     MatTooltipModule,
+    TitleCasePipe,
   ],
 })
 export class UpdateOrganizationOrCollectionDescriptionComponent implements OnInit {

@@ -22,7 +22,8 @@
   </ng-template>
   <div [hidden]="previewMode">
     <mat-form-field>
-      <input matInput placeholder="Search tools" #input />
+      <mat-label>Search tools</mat-label>
+      <input matInput #input />
     </mat-form-field>
   </div>
   <mat-table [dataSource]="dataSource" matSort matSortActive="stars" matSortDirection="desc" matSortDisableClear>

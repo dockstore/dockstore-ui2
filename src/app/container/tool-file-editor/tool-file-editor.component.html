@@ -29,7 +29,8 @@
   </mat-tab>
   <mat-tab label="Descriptor Files">
     <ng-template matTabContent>
-      <mat-form-field class="pl-2">
+      <mat-form-field class="my-3">
+        <mat-label>Descriptor Type</mat-label>
         <mat-select [(value)]="selectedDescriptorType" placeholder="Descriptor Type">
           <mat-option value="{{ ToolDescriptor.TypeEnum.CWL }}">{{ ToolDescriptor.TypeEnum.CWL }}</mat-option>
           <mat-option value="{{ ToolDescriptor.TypeEnum.WDL }}">{{ ToolDescriptor.TypeEnum.WDL }}</mat-option>
@@ -49,7 +50,8 @@
   </mat-tab>
   <mat-tab label="Test Parameter Files">
     <ng-template matTabContent>
-      <mat-form-field class="pl-2">
+      <mat-form-field class="my-3">
+        <mat-label>Descriptor Type</mat-label>
         <mat-select [(value)]="selectedDescriptorType" placeholder="Descriptor Type">
           <mat-option value="{{ ToolDescriptor.TypeEnum.CWL }}">{{ ToolDescriptor.TypeEnum.CWL }}</mat-option>
           <mat-option value="{{ ToolDescriptor.TypeEnum.WDL }}">{{ ToolDescriptor.TypeEnum.WDL }}</mat-option>

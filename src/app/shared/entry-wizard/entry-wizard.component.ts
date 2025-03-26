@@ -12,6 +12,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { FlexModule } from '@ngbracket/ngx-layout';
 
 @Component({
   selector: 'app-entry-wizard',
@@ -29,6 +30,7 @@ import { NgIf, NgFor, AsyncPipe } from '@angular/common';
     MatSlideToggleModule,
     MatTooltipModule,
     AsyncPipe,
+    FlexModule,
   ],
 })
 export class EntryWizardComponent implements OnInit {

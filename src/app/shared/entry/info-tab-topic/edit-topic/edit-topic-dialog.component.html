@@ -90,12 +90,7 @@
             </button>
           </div>
           <ng-template #editableManualField>
-            <mat-form-field
-              color="accent"
-              appearance="outline"
-              class="w-100"
-              matTooltip="Edit the manual topic for this {{ entryTypeMetadata.term }}"
-            >
+            <mat-form-field class="w-100" matTooltip="Edit the manual topic for this {{ entryTypeMetadata.term }}">
               <textarea
                 matInput
                 [(ngModel)]="editedTopicManual"

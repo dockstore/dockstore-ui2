@@ -37,6 +37,7 @@ import { NgIf, NgFor, NgClass } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { AlertComponent } from '../../shared/alert/alert.component';
+import { FlexModule } from '@ngbracket/ngx-layout';
 
 @Component({
   selector: 'app-add-tag',
@@ -56,6 +57,7 @@ import { AlertComponent } from '../../shared/alert/alert.component';
     MatIconModule,
     MatCheckboxModule,
     MatButtonModule,
+    FlexModule,
   ],
 })
 export class AddTagComponent extends Base implements OnInit, AfterViewChecked {

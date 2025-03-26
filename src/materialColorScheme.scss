@@ -189,24 +189,10 @@ $dockstore-app-theme: mat.define-light-theme(
       accent: $dockstore-app-accent,
       warn: $dockstore-app-error,
     ),
-    typography:
+    typography: /* See https://m2.material.io/components/dialogs#theming for what levels affect which part of the components */
       mat.define-typography-config(
         $font-family: 'Roboto, "Helvetica Neue", sans-serif',
-        /*
-      $headline-1: $small-size,
-      $headline-2: $small-size,
-      $headline-3: $small-size,
-      $headline-4: $small-size,
-      $headline-5: $small-size,
-      $headline-6: $small-size,
-      
-          $subtitle-1: $small-size,
-        $subtitle-2: $small-size,
-        $body-1: $normal-size,
-        $body-2: $normal-size,
-        $caption: $small-size,
-        */
-          $button:
+        $button:
           mat.define-typography-level(
             $font-size: 14px,
             $font-weight: 700,
@@ -216,33 +202,6 @@ $dockstore-app-theme: mat.define-light-theme(
     density: 0,
   )
 );
-/*
-$dockstore-app-theme: mat.define-light-theme(
-  (
-    color: (
-      primary: $dockstore-app-primary,
-      accent: $dockstore-app-accent,
-      warn: $dockstore-app-error,
-    ),
-    typography: map_merge(
-      mat.define-typography-config(
-        $button:
-          mat.define-typography-level(
-            $font-size: 14px,
-            $font-weight: 700,
-            $letter-spacing: normal,
-          )
-      ),
-      (
-        "input": $small-size,
-        "form-field": $small-size,
-        "select": $small-size,
-      )
-    ),
-    density: -3,
-  )
-);
-*/
 
 // Include the grayscale palette in the theme object
 // Example of getting the palette: map-get($dockstore-app-theme, grayscale)
@@ -252,12 +211,6 @@ $dockstore-app-theme: map_merge(
     grayscale: $dockstore-app-gray,
   )
 );
-
-// $dockstore-typography: mat.define-typography-config(
-//   $font-size: 12px,
-//   $font-weight: 700,
-//   $letter-spacing: normal
-// );
 
 $dockstore-small-button-theme: map_merge(
   $dockstore-app-theme,

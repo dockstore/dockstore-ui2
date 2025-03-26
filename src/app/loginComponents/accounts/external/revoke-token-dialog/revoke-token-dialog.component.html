@@ -23,13 +23,8 @@
     <p>Please enter your account username, {{ username }}, to revoke.</p>
     <div [formGroup]="usernameForm">
       <mat-form-field>
-        <input
-          id="revokeTokenUsernameInput"
-          data-cy="revoke-token-username-input"
-          matInput
-          [formControl]="usernameFormControl"
-          placeholder="Username"
-        />
+        <mat-label>Username</mat-label>
+        <input id="revokeTokenUsernameInput" data-cy="revoke-token-username-input" matInput [formControl]="usernameFormControl" />
       </mat-form-field>
     </div>
     <div class="btn-group" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="1rem">

@@ -67,13 +67,14 @@
         (submit)="registerTool()"
         novalidate
       >
-        <div fxLayout="column" fxLayoutAlign="start stretch">
+        <div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="1.5rem">
           <p>
             Manually register a tool with a custom Docker image and Git repository pairing. Use the optional tool name field to handle
             multiple tools with the same Docker image.
           </p>
           <mat-form-field>
-            <mat-select placeholder="Source Code Provider" [(value)]="tool.scrProvider">
+            <mat-label>Source Code Provider</mat-label>
+            <mat-select [(value)]="tool.scrProvider">
               <mat-option *ngFor="let repository of friendlyRepositoryKeys()" [value]="repository">
                 {{ repository }}
               </mat-option>
@@ -295,7 +296,6 @@
           </mat-form-field>
 
           <mat-checkbox
-            class="mt-4 mb-2"
             [disabled]="disablePrivateCheckbox"
             name="tool.private_access"
             [(ngModel)]="tool.private_access"
@@ -360,7 +360,7 @@
         (ngSubmit)="registerHostedTool()"
         novalidate
       >
-        <div fxLayout="column" fxLayoutAlign="start stretch">
+        <div fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="1.5rem">
           <p>
             Create a tool with all descriptor files stored and edited on Dockstore.org. Docker images are stored on sites like Quay.io and
             DockerHub.

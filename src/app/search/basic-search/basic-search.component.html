@@ -1,6 +1,7 @@
 <mat-expansion-panel expanded>
   <mat-expansion-panel-header> Search </mat-expansion-panel-header>
-  <mat-form-field appearance="outline" class="search-form-field w-100">
+  <mat-form-field class="w-100">
+    <mat-label>Enter search term...</mat-label>
     <!-- MDC conversion, comment this out and use place holder instead. Seems to have
     same behavior. Was causing search.ts to fail because label was overlapping input.
     <mat-label>Enter search term...</mat-label>
@@ -17,7 +18,6 @@
       type="text"
       (keydown.enter)="this.submitSearch(); trigger.closePanel()"
       data-cy="basic-search"
-      placeholder="Enter search term..."
     />
     <!-- <mat-hint align="end">Press &lt;Enter&gt; to search</mat-hint> -->
     <button *ngIf="search.value" matSuffix mat-icon-button (click)="clearSearch()">

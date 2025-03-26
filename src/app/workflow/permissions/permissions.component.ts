@@ -14,13 +14,14 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NgIf, NgFor } from '@angular/common';
 import RoleEnum = Permission.RoleEnum;
+import { FlexModule } from '@ngbracket/ngx-layout';
 
 @Component({
   selector: 'app-permissions',
   templateUrl: './permissions.component.html',
   styleUrls: ['./permissions.component.scss'],
   standalone: true,
-  imports: [NgIf, MatProgressBarModule, MatFormFieldModule, MatChipsModule, NgFor, MatIconModule],
+  imports: [NgIf, MatProgressBarModule, MatFormFieldModule, MatChipsModule, NgFor, MatIconModule, FlexModule],
 })
 export class PermissionsComponent implements OnInit {
   public Role = RoleEnum;

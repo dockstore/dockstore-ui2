@@ -1,7 +1,14 @@
 <h4 mat-dialog-title>Register Checker Workflow</h4>
 <div mat-dialog-content>
   <app-alert></app-alert>
-  <form #registerCheckerWorkflowForm="ngForm" name="registerCheckerWorkflowForm" (submit)="registerCheckerWorkflow()" novalidate>
+  <form
+    #registerCheckerWorkflowForm="ngForm"
+    name="registerCheckerWorkflowForm"
+    (submit)="registerCheckerWorkflow()"
+    novalidate
+    fxLayout="column"
+    fxLayoutGap="1.5rem"
+  >
     <mat-form-field class="w-100">
       <mat-label>Default Descriptor Path</mat-label>
       <input
