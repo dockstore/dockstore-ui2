@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Location, NgClass, NgFor, NgIf, NgStyle, AsyncPipe, LowerCasePipe } from '@angular/common';
+import { Location, NgClass, NgFor, NgIf, NgStyle, AsyncPipe, LowerCasePipe, NgTemplateOutlet } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatAccordion, MatExpansionModule } from '@angular/material/expansion';
@@ -122,6 +122,7 @@ import { HeaderComponent } from '../header/header.component';
     GetHistogramStylePipe,
     GetFacetSearchResultsPipe,
     GetFacetSearchUpdatePipe,
+    NgTemplateOutlet,
   ],
 })
 export class SearchComponent implements OnInit, OnDestroy {

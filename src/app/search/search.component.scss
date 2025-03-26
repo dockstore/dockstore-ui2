@@ -32,72 +32,6 @@ mat-tab-group.homeComponent {
   line-height: 1.8;
 }
 
-.sidebar {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  z-index: 1000;
-  display: block;
-  padding: 20px;
-  overflow-x: hidden;
-  overflow-y: auto;
-  background-color: mat.get-color-from-palette($dockstore-app-gray, 5);
-  border-right: 1px solid #eee;
-}
-
-.instructions {
-  display: block;
-  margin: 0 auto;
-  width: 450px;
-}
-
-/* Source: https://codepen.io/shidhincr/pen/ICLBD */
-.redfamily {
-  color: red;
-}
-.search-box {
-  border: 1px solid #ccc;
-  outline: 0;
-  border-radius: 10px;
-  &:focus {
-    box-shadow: 0 0 15px 5px #b0e0ee;
-    border: 2px solid #bebede;
-  }
-}
-
-.close-icon {
-  border: 1px solid transparent;
-  background-color: transparent;
-  display: inline-block;
-  vertical-align: middle;
-  outline: 0;
-  cursor: pointer;
-}
-.close-icon:after {
-  content: 'X';
-  /*display: inline-block;*/
-  width: 35px;
-  height: 30px;
-  position: absolute;
-  background-color: #fa9595;
-  z-index: 1;
-  right: 40px;
-  top: 0px;
-  bottom: 0px;
-  margin: auto;
-  padding: 3px;
-  border-radius: 50%;
-  text-align: center;
-  color: white;
-  font-weight: normal;
-  font-size: 12px;
-  box-shadow: 0 0 2px #e50f0f;
-  cursor: pointer;
-}
-.search-box:not(:valid) ~ .close-icon {
-  display: none;
-}
-
 .sortBtn {
   font-size: 16px;
   border-color: mat.get-color-from-palette($dockstore-app-gray, 4);
@@ -139,38 +73,13 @@ fa-icon.ng-fa-icon {
   }
 }
 
-.sidebar-btn {
-  width: 100%;
-  background-color: #51aad8;
-  &.expand {
-    margin-bottom: 10px;
-  }
-  &.reset {
-    margin-top: 10px;
-  }
-}
-
 .search-container {
   padding-top: 30px;
-}
-
-.advancedSearch-btn {
-  width: 90%;
-  margin-bottom: 10px;
-  background-color: #aaeed2;
-  color: #198055;
-  border-color: #3fd999;
 }
 
 div.panel-container-label:hover {
   background-color: mat.get-color-from-palette($dockstore-app-accent-1, 6, 0.5);
   color: black;
-}
-
-.expand-collapse-holder {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
 }
 
 mat-form-field {
