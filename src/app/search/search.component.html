@@ -153,18 +153,7 @@
             <div class="selected-item">
               <!-- TODO: Somehow make this re-useable, and make it so that the histogram is slightly thinner (less height) than the selected background -->
               <div [ngStyle]="orderedBuckets.get(key) | getHistogramStyle: subBucket:(selectedIndex$ | async)">
-                <div class="panel-container-label">
-                  <div fxLayout="row" fxLayoutAlign="space-between center">
-                    <div fxFlex="80">
-                      <span>
-                        <mat-checkbox type="checkbox" [checked]="checkboxMap?.get(key)?.get(subBucket)" (change)="onClick(key, subBucket)">
-                          {{ key | mapFriendlyValue: subBucket }}
-                        </mat-checkbox>
-                      </span>
-                    </div>
-                    <span class="mr-2">{{ orderedBuckets.get(key).SelectedItems.get(subBucket) }}</span>
-                  </div>
-                </div>
+                <ng-template *ngTemplateOutlet="facet; context: { key: key, subBucket: subBucket, isSelectedFacet: true }"></ng-template>
               </div>
             </div>
           </div>
@@ -176,36 +165,32 @@
             "
           >
             <div [ngStyle]="orderedBuckets.get(key) | getHistogramStyle: subBucket:(selectedIndex$ | async)">
-              <div class="panel-container-label">
-                <div *ngIf="i < 5" fxLayout="row" fxLayoutAlign="space-between center">
-                  <div fxFlex="80">
-                    <span matTooltip="{{ key | mapFriendlyValue: subBucket }}" [matTooltipPosition]="'after'">
-                      <mat-checkbox type="checkbox" [checked]="checkboxMap?.get(key)?.get(subBucket)" (change)="onClick(key, subBucket)">
-                        <span class="truncate-text-1">{{ key | mapFriendlyValue: subBucket }}</span>
-                      </mat-checkbox>
-                    </span>
-                  </div>
-                  <span class="mr-2">{{ orderedBuckets.get(key).Items.get(subBucket) }}</span>
-                </div>
-                <div *ngIf="i >= 5 && fullyExpandMap.get(key)" fxLayout="row" fxLayoutAlign="space-between center">
-                  <div fxFlex="80">
-                    <span matTooltip="{{ key | mapFriendlyValue: subBucket }}" [matTooltipPosition]="'after'">
-                      <mat-checkbox
-                        matTooltip="{{ subBucket }}"
-                        [matTooltipPosition]="'after'"
-                        type="checkbox"
-                        [checked]="checkboxMap?.get(key)?.get(subBucket)"
-                        (change)="onClick(key, subBucket)"
-                      >
-                        <span class="truncate-text-1">{{ key | mapFriendlyValue: subBucket }}</span>
-                      </mat-checkbox>
-                    </span>
-                  </div>
-                  <span class="mr-2">{{ orderedBuckets.get(key).Items.get(subBucket) }}</span>
-                </div>
-              </div>
+              <ng-container *ngIf="i < 5">
+                <ng-template *ngTemplateOutlet="facet; context: { key: key, subBucket: subBucket, isSelectedFacet: false }"></ng-template>
+              </ng-container>
+              <ng-container *ngIf="i >= 5 && fullyExpandMap.get(key)">
+                <ng-template *ngTemplateOutlet="facet; context: { key: key, subBucket: subBucket, isSelectedFacet: false }"></ng-template>
+              </ng-container>
             </div>
           </div>
+          <ng-template #facet let-key="key" let-subBucket="subBucket" let-isSelectedFacet="isSelectedFacet">
+            <div class="panel-container-label" fxLayout="row" fxLayoutAlign="space-between center">
+              <span fxFlex="80">
+                <mat-checkbox
+                  matTooltip="{{ key | mapFriendlyValue: subBucket }}"
+                  [matTooltipPosition]="'after'"
+                  type="checkbox"
+                  [checked]="checkboxMap?.get(key)?.get(subBucket)"
+                  (change)="onClick(key, subBucket)"
+                >
+                  <span class="truncate-text-1">{{ key | mapFriendlyValue: subBucket }}</span>
+                </mat-checkbox>
+              </span>
+              <span class="mr-2">{{
+                isSelectedFacet ? orderedBuckets.get(key).SelectedItems.get(subBucket) : orderedBuckets.get(key).Items.get(subBucket)
+              }}</span>
+            </div>
+          </ng-template>
           <div *ngIf="orderedBuckets.get(key).Items.size > 5">
             <span style="cursor: pointer" class="pull-right" (click)="clickExpand(key)">
               <!-- The anchor is an easy way to change the color of the icon and "more" -->
