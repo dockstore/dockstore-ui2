@@ -1101,6 +1101,11 @@ hr {
   color: $accent-3-dark;
 }
 
+// Change the color of the badge to the verified color
+.verified-badge {
+  --mat-badge-background-color: #{$accent-3-dark};
+}
+
 // Automatically used by Angular Material
 /*TODO(mdc-migration): The following rule targets internal classes of radio that may no longer apply for the MDC version.
  */

@@ -28,7 +28,7 @@
       <!-- GitHub -->
       <mat-card *ngIf="gitHubProfile" class="h-100">
         <mat-card-content fxLayout fxLayoutAlign="start center">
-          <div mat-card-avatar matBadge="✓" class="mr-4">
+          <div mat-card-avatar matBadge="✓" class="mr-4 verified-badge">
             <img src="../../assets/images/account-logos/github.svg" alt="GitHub logo" class="w-100" />
           </div>
           <mat-card-title-group fxLayoutAlign="space-between center">
@@ -71,7 +71,7 @@
       <!-- ORCID -->
       <mat-card *ngIf="user?.orcid" class="h-100">
         <mat-card-content fxLayout fxLayoutAlign="start center">
-          <div mat-card-avatar matBadge="✓" class="mr-4">
+          <div mat-card-avatar matBadge="✓" class="mr-4 verified-badge">
             <img src="../../assets/images/account-logos/orcid.svg" alt="ORCID logo" />
           </div>
           <mat-card-title-group>
@@ -87,7 +87,7 @@
       <!-- Google -->
       <mat-card *ngIf="googleProfile" class="h-100">
         <mat-card-content fxLayout fxLayoutAlign="start center">
-          <div mat-card-avatar matBadge="✓" class="mr-4">
+          <div mat-card-avatar matBadge="✓" class="mr-4 verified-badge">
             <img src="../../assets/images/account-logos/google.svg" alt="Google logo" class="w-100" />
           </div>
           <mat-card-title-group fxLayout fxLayoutAlign="space-between center">
@@ -129,7 +129,7 @@
         <div *ngFor="let row of otherLinkedAccountsInfo" class="p-3" fxFlex.lt-md="100">
           <mat-card [attr.data-cy]="'other-linked-accounts-' + row.name">
             <mat-card-content fxLayout fxLayoutAlign="start center">
-              <div mat-card-avatar matBadge="✓" class="mr-4">
+              <div mat-card-avatar matBadge="✓" class="mr-4 verified-badge">
                 <img src="../../assets/images/account-logos/{{ row.logo }}" alt="{{ row.name }} logo" class="w-100" />
               </div>
               <mat-card-title-group>

@@ -18,7 +18,7 @@
   <div class="p-3" fxFlex="50" fxFlex.lt-md="100">
     <mat-card class="mb-2 h-100" *ngIf="dockstoreToken" fxLayout="column" fxLayoutAlign="space-between stretch">
       <mat-card-header>
-        <div mat-card-avatar matBadge="✓" class="mr-4">
+        <div mat-card-avatar matBadge="✓" class="mr-4 verified-badge">
           <img src="../../../../assets/images/dockstore/dockstore.png" alt="Dockstore logo" class="w-100" />
         </div>
         <mat-card-title-group>
@@ -75,7 +75,7 @@
     <mat-card class="mb-2 h-100" fxLayout="column" fxLayoutAlign="space-between stretch">
       <div>
         <mat-card-header>
-          <div mat-card-avatar matBadge="✓" [matBadgeHidden]="!row.isLinked" class="mr-4">
+          <div mat-card-avatar matBadge="✓" [matBadgeHidden]="!row.isLinked" class="mr-4 verified-badge">
             <img src="../../../../assets/images/account-logos/{{ row.logo }}" alt="{{ row.name }} logo" class="w-100" />
           </div>
           <mat-card-title-group>
