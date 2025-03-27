@@ -23,20 +23,3 @@ img[alt='Google avatar'] {
   font-size: 2.2rem;
   color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
 }
-
-// Grey out tab labels
-/* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
-:host ::ng-deep .mat-tab-label img {
-  width: 2rem;
-  filter: brightness(0) saturate(100%) invert(50%) sepia(42%) saturate(0%) hue-rotate(238deg) brightness(88%) contrast(90%);
-}
-
-// Active tab labels
-/* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
-:host ::ng-deep .mat-tab-label.mat-tab-label-active {
-  opacity: 1;
-
-  img {
-    filter: none;
-  }
-}

@@ -47,10 +47,20 @@
   }
 }
 
+// Styles for making mat-icons smaller than the default
 @mixin small-mat-icon() {
   // These two override .mat-icon's default 24px height and width
   height: 16px;
   width: 16px;
   // This overrides .material-icon's default 24px font-size, changing the font-size fixes the position of it
   font-size: 16px;
+}
+
+// Sets the color of a selected tab's underline color
+@mixin tab-group-indicator-color($color) {
+  &.mat-mdc-tab-group {
+    --mdc-tab-indicator-active-indicator-color: #{$color};
+    --mat-tab-header-active-hover-indicator-color: #{$color};
+    --mat-tab-header-active-focus-indicator-color: #{$color};
+  }
 }

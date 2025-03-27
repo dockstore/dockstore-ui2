@@ -38,7 +38,7 @@
           (orgObj?.unpublished.length === 0 && orgObj?.published.length === 0)
         "
         mat-stretch-tabs
-        [ngClass]="(isTool$ | async) ? 'tool-tab-group' : 'workflow-tab-group'"
+        [ngClass]="((isTool$ | async) ? 'tool-tab-group' : 'workflow-tab-group') + ' small-tab-header no-scroll-tabs'"
         [selectedIndex]="orgObj | selectTab: (workflowId$ | async)"
       >
         <mat-tab label="Published">

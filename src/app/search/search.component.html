@@ -24,7 +24,7 @@
   </div>
 </app-header>
 <mat-tab-group
-  class="homeComponent no-pagination"
+  class="homeComponent"
   animationDuration="0ms"
   mat-align-tabs="center"
   [selectedIndex]="selectedIndex$ | async"
@@ -35,6 +35,7 @@
     'notebook-tab-group': (selectedIndex$ | async) === 2
   }"
   mat-stretch-tabs="false"
+  disablePagination="true"
 >
   <mat-tab>
     <ng-template mat-tab-label>

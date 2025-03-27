@@ -844,56 +844,22 @@ body {
   font-weight: normal;
 }
 
-// Reduces the width of the sidebar tab by half (160px default). Can't seem to move this to the sidebar scss for some reason
-app-sidebar-accordion
-  .mat-accordion
-  > .mat-expansion-panel
-  > .mat-expansion-panel-content
-  > .mat-expansion-panel-body
-  > .mat-mdc-tab-group
-  > .mat-mdc-tab-header
-  > .mat-tab-label-container
-  > .mat-tab-list
-  > .mat-tab-labels
-  .mat-tab-label[role^='tab'],
-app-workflow-sidebar-accordion
-  .mat-accordion
-  > .mat-expansion-panel
-  > .mat-expansion-panel-content
-  > .mat-expansion-panel-body
-  > .mat-tab-group
-  > .mat-tab-header
-  > .mat-tab-label-container
-  > .mat-tab-list
-  > .mat-tab-labels
-  .mat-tab-label[role^='tab'] {
-  min-width: 80px;
+.tool-tab-group {
+  @include tab-group-indicator-color(#{$tool-color});
 }
 
-.tool-tab-group.mat-primary .mat-ink-bar {
-  background: $tool-color !important;
+.workflow-tab-group {
+  @include tab-group-indicator-color(#{$workflow-color});
 }
 
-.workflow-tab-group.mat-primary .mat-ink-bar {
-  background: $workflow-color !important;
-}
-
-.service-tab-group.mat-primary .mat-ink-bar {
-  background: $service-color !important;
+.service-tab-group {
+  @include tab-group-indicator-color(#{$service-color});
 }
 
 // Setting the notebook ink-bar to purple as well for the time being since it matches the icon
-.purple-tab-group.mat-primary .mat-ink-bar,
-.notebook-tab-group.mat-primary .mat-ink-bar {
-  background: $accent-1-dark !important;
-}
-
-// Automatically used by Angular Material
-/*TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.
- */
-.mat-tab-label:hover {
-  color: black;
-  opacity: 0.7;
+.purple-tab-group,
+.notebook-tab-group {
+  @include tab-group-indicator-color(#{$accent-1-dark});
 }
 
 // Set the background to the color associated with containers/tools (blue).
@@ -1024,16 +990,18 @@ mat-icon.star-icon {
   white-space: normal;
 }
 
-/*TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.
- */
-/*TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.
- */
-mat-tab-group.no-pagination {
-  /*TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.
- */
-  .mat-tab-header-pagination {
-    display: none;
-  }
+// Makes the mat-tab text size smaller than the default
+mat-tab-group.small-tab-header .mat-mdc-tab-header {
+  --mat-tab-header-label-text-size: 12px;
+}
+
+// Makes the tabs shrink if necessary to avoid scrolling.
+// Must use with mat-stretch-tabs otherwise the tabs will have a small width due to the padding.
+// If you can't use mat-stretch-tabs, use disablePagination="true" on the mat-tab-group to achieve a similar effect as this class.
+mat-tab-group.no-scroll-tabs .mdc-tab {
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  min-width: 0;
 }
 
 //color from mat-card-subtitle

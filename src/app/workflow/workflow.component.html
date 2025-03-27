@@ -281,7 +281,7 @@
       <div [ngClass]="{ 'mr-3': isWorkflowPublic }">
         <mat-tab-group
           [selectedIndex]="selected.value"
-          class="{{ entryType }}-tab-group"
+          class="{{ entryType }}-tab-group no-scroll-tabs"
           id="workflow_tabs"
           #entryTabs
           (selectedIndexChange)="selected.setValue($event)"

@@ -13,7 +13,7 @@
       <mat-tab-group
         *ngIf="(toolId$ | async) || (appToolId$ | async)"
         mat-stretch-tabs
-        class="tool-tab-group"
+        class="tool-tab-group small-tab-header no-scroll-tabs"
         [selectedIndex]="orgObj | selectTab: (toolId$ | async)"
       >
         <mat-tab label="Published">

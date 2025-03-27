@@ -67,28 +67,6 @@ mat-expansion-panel {
 }
 
 ////////// MAT TABS ///////////
-/* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
-:host ::ng-deep .mat-tab-label {
-  min-width: 0 !important;
-  padding: 0.5em !important;
-}
-
-/* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
-:host ::ng-deep .mat-tab-label-content {
-  font-size: 12px;
-}
-
-// Selected tab style
-/* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
-/* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
-:host ::ng-deep .mat-tab-label-active {
-  opacity: 1;
-  /* TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.*/
-  .mat-tab-label-content {
-    font-weight: bold;
-    color: #181f40;
-  }
-}
 
 // Selected entry style
 .selectedTool,

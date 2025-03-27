@@ -16,8 +16,6 @@
 
 @use '@angular/material' as mat;
 
-//@include mat.select-density(-4);
-
 /* Better alignment for "save" icon instead of vertical-align: middle*/
 mat-icon.mat-icon-sm {
   vertical-align: text-bottom;
@@ -26,13 +24,4 @@ mat-icon.mat-icon-sm {
 a.underline-none {
   width: 14rem;
   text-align: start;
-}
-
-/*
- TODO(mdc-migration): The following rule targets internal classes of tabs that may no longer apply for the MDC version.
- */
-:host ::ng-deep .mat-tab-label {
-  padding-left: 0.5em !important;
-  padding-right: 0.5em !important;
-  min-width: 0 !important;
 }
