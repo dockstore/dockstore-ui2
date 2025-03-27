@@ -1438,3 +1438,8 @@ mat-toolbar.files-toolbar {
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
 }
+
+// Smaller text size for mat-card-titles
+.small-card-title {
+  --mat-card-title-text-size: 1.7rem;
+}

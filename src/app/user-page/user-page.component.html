@@ -12,7 +12,7 @@
     <mat-card *ngIf="user" fxFlex.gt-md="25" fxFlex.lt-md="100" fxLayout="column" fxLayoutAlign="center">
       <img mat-card-image [src]="user?.avatarUrl" class="mt-4 mx-auto mb-3" alt="Dockstore avatar" />
       <mat-card-content fxLayout="column" fxLayoutAlign="center center">
-        <mat-card-title class="accent-1-dark">{{ user?.username }}</mat-card-title>
+        <mat-card-title class="accent-1-dark small-card-title">{{ user?.username }}</mat-card-title>
         <mat-card-subtitle class="text-break" class="accent-1-dark">
           <span *ngIf="gitHubProfile?.bio">
             {{ gitHubProfile.bio }}
@@ -32,7 +32,7 @@
             <img src="../../assets/images/account-logos/github.svg" alt="GitHub logo" class="w-100" />
           </div>
           <mat-card-title-group fxLayoutAlign="space-between center">
-            <mat-card-title>GitHub Account</mat-card-title>
+            <mat-card-title class="small-card-title">GitHub Account</mat-card-title>
             <mat-card-subtitle class="accent-1-dark" fxLayout.lt-md="column" fxLayoutGap="1rem">
               <span *ngIf="gitHubProfile.name"
                 >Account Name: <span>{{ gitHubProfile.name }}</span></span
@@ -75,7 +75,7 @@
             <img src="../../assets/images/account-logos/orcid.svg" alt="ORCID logo" />
           </div>
           <mat-card-title-group>
-            <mat-card-title>ORCID Account</mat-card-title>
+            <mat-card-title class="small-card-title">ORCID Account</mat-card-title>
             <mat-card-subtitle class="accent-1-dark">
               <a href="https://orcid.org/{{ user.orcid }}" target="_blank">
                 <span class="weight-bold">https://orcid.org/{{ user?.orcid }}</span>
@@ -91,7 +91,7 @@
             <img src="../../assets/images/account-logos/google.svg" alt="Google logo" class="w-100" />
           </div>
           <mat-card-title-group fxLayout fxLayoutAlign="space-between center">
-            <mat-card-title>Google Account</mat-card-title>
+            <mat-card-title class="small-card-title">Google Account</mat-card-title>
             <mat-card-subtitle class="accent-1-dark">
               <span>Account Name: {{ googleProfile.name }}</span>
             </mat-card-subtitle>
@@ -133,7 +133,7 @@
                 <img src="../../assets/images/account-logos/{{ row.logo }}" alt="{{ row.name }} logo" class="w-100" />
               </div>
               <mat-card-title-group>
-                <mat-card-title>{{ row.name }} Account</mat-card-title>
+                <mat-card-title class="small-card-title">{{ row.name }} Account</mat-card-title>
                 <mat-card-subtitle class="accent-1-dark" [attr.data-cy]="row.name + '-username'">
                   <span>Username: {{ row.username }}</span>
                 </mat-card-subtitle>

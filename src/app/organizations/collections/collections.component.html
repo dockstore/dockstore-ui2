@@ -33,9 +33,9 @@
           data-cy="collectionName"
         >
           <mat-card-header>
-            <mat-card-title fxLayoutAlign="flex-start" fxLayoutGap="1rem">
-              <img src="../../../assets/svg/sub-nav/collections.svg" alt="collections icon" />
-              <h4>{{ collection.value.displayName }}</h4>
+            <mat-card-title class="small-card-title">
+              <img src="../../../assets/svg/sub-nav/collections.svg" alt="collections icon" class="mr-1" />
+              {{ collection.value.displayName }}
             </mat-card-title>
           </mat-card-header>
           <mat-card-content>{{ collection.value.topic }}</mat-card-content>
