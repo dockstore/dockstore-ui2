@@ -232,7 +232,7 @@
       </form>
     </fieldset>
   </div>
-  <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
+  <mat-dialog-actions [align]="'end'">
     <button type="button" mat-button color="accent" mat-dialog-close *ngIf="!isPublic && canWrite">Cancel</button>
     <button type="button" mat-flat-button class="accent-1-dark" mat-dialog-close *ngIf="isPublic || !canWrite">OK</button>
     <button
@@ -246,5 +246,5 @@
     >
       Save Changes
     </button>
-  </div>
+  </mat-dialog-actions>
 </div>

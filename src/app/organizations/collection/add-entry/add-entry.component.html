@@ -13,7 +13,7 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 -->
-<h1 mat-dialog-title>Add to collection</h1>
+<h1 mat-dialog-title>Add to Collection</h1>
 <div mat-dialog-content>
   <app-loading [loading]="isLoading$ | async" [retainContent]="true">
     <div fxLayout="column" fxLayoutGap="1.5rem">
@@ -68,7 +68,7 @@
   </app-loading>
 </div>
 
-<div mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
+<mat-dialog-actions [align]="'end'">
   <button mat-button color="accent" id="closeDialogButton" mat-dialog-close>Close</button>
   <button
     mat-flat-button
@@ -81,4 +81,4 @@
   >
     <mat-icon>add</mat-icon>Add to collection
   </button>
-</div>
+</mat-dialog-actions>

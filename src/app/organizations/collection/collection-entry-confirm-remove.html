@@ -6,7 +6,7 @@
     <strong>{{data.collectionName}}</strong>?
   </p>
 </div>
-<div mat-dialog-actions fxLayout fxLayoutAlign="end">
+<mat-dialog-actions [align]="'end'">
   <button mat-button color="accent" mat-dialog-close data-cy="cancel-remove-entry-from-org">Cancel</button>
   <button mat-flat-button class="accent-1-dark" data-cy="accept-remove-entry-from-org" (click)="deleteCollection()">Remove</button>
-</div>
+</mat-dialog-actions>

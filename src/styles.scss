@@ -24,6 +24,7 @@ $material-design-icons-font-directory-path: '~material-design-icons-iconfont/dis
 @import 'featured-content.scss';
 @import '/src/materialColorScheme.scss';
 @import '/src/functions';
+@import '/src/material_overrides';
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 /*@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,600);*/
 
@@ -892,35 +893,6 @@ body {
   background: $org-selection-color !important;
 }
 
-// Styles a mat chip as a "bubble", which is a small very-rounded rectangular element that typically contains a word or short phrase.
-// Bubbles always render in a 12px font, are 26px tall, and default to gray background.
-.mat-mdc-chip {
-  // Remove y-axis margin
-  margin-top: 0 !important;
-  margin-bottom: 0 !important;
-
-  // Styles for mat-chip container
-  --mdc-chip-elevated-container-color: #{mat.get-color-from-palette($dockstore-app-gray, lighter)} !important;
-  --mdc-chip-container-shape-radius: 0.8rem !important;
-  --mdc-chip-container-height: 26px !important;
-  // Styles for mat-chip text
-  --mdc-chip-label-text-color: black !important;
-  --mdc-chip-label-text-size: 12px !important;
-  --mdc-chip-label-text-weight: 500 !important;
-  --mdc-chip-label-text-line-height: 26px !important;
-  // Styles for mat-chip avatars
-  // Sets the mat-icon/img size to 16px if the mat-icon/img is annotated with matChipAvatar
-  // to match mat-icon-sm
-  --mdc-chip-with-icon-icon-size: 16px !important;
-  --mdc-chip-with-avatar-avatar-size: 16px !important;
-  // Remove the matChipAvatar radius to prevent mat-icon/imgs from being cut-off
-  --mdc-chip-with-avatar-avatar-shape-radius: 0 !important;
-
-  .mdc-evolution-chip__action--primary {
-    padding: 0 8px !important;
-  }
-}
-
 .mat-mdc-chip.preview-bubble {
   --mdc-chip-label-text-color: white !important;
   background-color: mat.get-color-from-palette($kim-primary, 3) !important;
@@ -1081,30 +1053,6 @@ hr {
   font-weight: normal;
 }
 
-.mat-mdc-form-field {
-  --mat-form-field-container-text-size: 14px;
-  // <mat-label> text size for outlined form fields
-  --mdc-outlined-text-field-label-text-size: 14px;
-
-  // Lower the density of mat-icon-buttons in form fields
-  // so that the mat form field text is aligned properly.
-  @include mat.icon-button-density(-3);
-  // Also decrease the mat-icon side inside form fields for the same reason
-  .mat-icon {
-    @include small-mat-icon();
-  }
-
-  // Purple outline and text for outlined mat-form-field
-  .mdc-floating-label--float-above {
-    // Only set label text color when the form field has a value and the label is "floating"
-    // (as opposed to when the label is the placeholder value when the form field has no value)
-    --mdc-outlined-text-field-label-text-color: #{$accent-1-dark};
-  }
-  --mdc-outlined-text-field-focus-label-text-color: #{$accent-1-dark};
-  --mdc-outlined-text-field-focus-outline-color: #{$accent-1-dark};
-  --mdc-outlined-text-field-caret-color: #{accent-1-dark};
-}
-
 // Outlined mat form fields have a transparent background, which is okay most of the time,
 // but sometimes we have outlined form fields on non-white backgrounds so it's hard to see the
 // form field text. Use this class to set the outlined form field background to white.
@@ -1113,11 +1061,6 @@ hr {
   // Set the border-radius to the border radius of the text field otherwise the background
   // will exceed the form field border
   border-radius: var(--mdc-outlined-text-field-container-shape);
-}
-
-:root {
-  @include mat.form-field-density(-5);
-  @include mat.checkbox-density(-3);
 }
 
 // Used for smaller than usual forms
@@ -1276,24 +1219,6 @@ table td {
 
   // Styles for buttons using mixin from _functions.scss
   @include button-color($accent-1-dark);
-}
-
-// Updated box shadows for small mat-raised-buttons (excluding buttons specified to be flat)
-// button.small-mat-btn-skin.mat-mdc-raised-button:not([class*='mat-elevation-z']),
-// a.small-mat-btn-skin.mat-mdc-raised-button:not([class*='mat-elevation-z']) {
-//   box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.08);
-// }
-
-// Updated box shadows for small mat-raised-buttons (excluding buttons specified to be flat)
-button.mat-mdc-raised-button:not([class*='mat-elevation-z']),
-a.mat-mdc-raised-button:not([class*='mat-elevation-z']) {
-  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.08);
-}
-
-// Updated mat-card style matching Zeplin redesign
-.mat-mdc-card:not([class*='mat-mdc-card-outlined']) {
-  border: solid 1px mat.get-color-from-palette($dockstore-app-gray, 7) !important;
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1), 0 2px 3px 0 rgba(0, 0, 0, 0.08) !important;
 }
 
 // Alert and Warning styles

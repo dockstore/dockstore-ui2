@@ -9,7 +9,7 @@
     <strong>The collection will be deleted, and you will not be able to restore it.</strong>
   </p>
 </div>
-<div mat-dialog-actions fxLayout fxLayoutAlign="end">
+<mat-dialog-actions [align]="'end'">
   <button mat-button color="accent" mat-dialog-close cdkFocusInitial matTooltip="Cancel" data-cy="cancel-remove-collection">Cancel</button>
   <button
     mat-flat-button
@@ -21,4 +21,4 @@
   >
     Remove
   </button>
-</div>
+</mat-dialog-actions>

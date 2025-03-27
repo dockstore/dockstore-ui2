@@ -17,10 +17,8 @@
     you push to the repo.
   </p>
   <p>Are you sure you want to delete this {{ term }}?</p>
-  <div class="btn-group" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="1rem">
-    <button mat-button (click)="no()" data-cy="delete-no" [disabled]="clicked" mat-dialog-close color="accent">Cancel</button>
-    <button mat-flat-button (click)="yes()" data-cy="delete-yes" [disabled]="clicked" color="warn">
-      Delete This {{ term | titlecase }}
-    </button>
-  </div>
 </div>
+<mat-dialog-actions [align]="'end'">
+  <button mat-button (click)="no()" data-cy="delete-no" [disabled]="clicked" mat-dialog-close color="accent">Cancel</button>
+  <button mat-flat-button (click)="yes()" data-cy="delete-yes" [disabled]="clicked" color="warn">Delete This {{ term | titlecase }}</button>
+</mat-dialog-actions>

@@ -4,7 +4,7 @@
   <p [innerHTML]="description"></p>
   <form [formGroup]="form">
     <div fxLayout="column" fxLayoutGap="1.5rem">
-      <mat-form-field>
+      <mat-form-field class="mt-3">
         <mat-label>Username</mat-label>
         <input type="text" matInput formControlName="username" required />
         <mat-error *ngIf="name.hasError('required')">Name is required</mat-error>
@@ -20,7 +20,7 @@
     </div>
   </form>
 </div>
-<div mat-dialog-actions class="pull-right">
+<mat-dialog-actions [align]="'end'">
   <button mat-button color="accent" mat-dialog-close>Cancel</button>
   <button
     id="upsertUserDialogButton"
@@ -33,4 +33,4 @@
   >
     {{ confirmationButtonText }}
   </button>
-</div>
+</mat-dialog-actions>

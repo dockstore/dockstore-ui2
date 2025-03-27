@@ -15,7 +15,7 @@
     </mat-tab>
   </mat-tab-group>
 </div>
-<div mat-dialog-actions class="pull-right">
+<mat-dialog-actions [align]="'end'">
   <button mat-button color="accent" mat-dialog-close>Cancel</button>
   <button
     id="updateOrganizationDescriptionButton"
@@ -28,4 +28,4 @@
   >
     Update
   </button>
-</div>
+</mat-dialog-actions>

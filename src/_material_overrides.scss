@@ -1,0 +1,104 @@
+/*
+ *     Copyright 2025 OICR and UCSC
+ *
+ *     Licensed under the Apache License, Version 2.0 (the "License")
+ *     you may not use this file except in compliance with the License
+ *     You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *     Unless required by applicable law or agreed to in writing, software
+ *     distributed under the License is distributed on an "AS IS" BASIS
+ *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *     See the License for the specific language governing permissions and
+ *     limitations under the License.
+ */
+
+// This file contains overrides of core Material styles.
+
+@import '/src/materialColorScheme.scss';
+
+:root {
+  @include mat.form-field-density(-5);
+  @include mat.checkbox-density(-3);
+}
+
+// Form fields
+.mat-mdc-form-field {
+  --mat-form-field-container-text-size: 14px;
+  // <mat-label> text size for outlined form fields
+  --mdc-outlined-text-field-label-text-size: 14px;
+
+  // Lower the density of mat-icon-buttons in form fields
+  // so that the mat form field text is aligned properly.
+  @include mat.icon-button-density(-3);
+  // Also decrease the mat-icon side inside form fields for the same reason
+  .mat-icon {
+    @include small-mat-icon();
+  }
+
+  // Purple outline and text for outlined mat-form-field
+  .mdc-floating-label--float-above {
+    // Only set label text color when the form field has a value and the label is "floating"
+    // (as opposed to when the label is the placeholder value when the form field has no value)
+    --mdc-outlined-text-field-label-text-color: #{$accent-1-dark};
+  }
+  --mdc-outlined-text-field-focus-label-text-color: #{$accent-1-dark};
+  --mdc-outlined-text-field-focus-outline-color: #{$accent-1-dark};
+  --mdc-outlined-text-field-caret-color: #{accent-1-dark};
+}
+
+// Dialogs
+.mat-mdc-dialog-container {
+  --mdc-dialog-supporting-text-color: black; // Set to black instead of the default grey
+  --mdc-dialog-supporting-text-size: 14px; // Make it smaller than default
+}
+
+// Chips
+// Styles a mat chip as a "bubble", which is a small very-rounded rectangular element that typically contains a word or short phrase.
+// Bubbles always render in a 12px font, are 26px tall, and default to gray background.
+.mat-mdc-chip {
+  // Remove y-axis margin
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+
+  // Styles for mat-chip container
+  --mdc-chip-elevated-container-color: #{mat.get-color-from-palette($dockstore-app-gray, lighter)} !important;
+  --mdc-chip-container-shape-radius: 0.8rem !important;
+  --mdc-chip-container-height: 26px !important;
+  // Styles for mat-chip text
+  --mdc-chip-label-text-color: black !important;
+  --mdc-chip-label-text-size: 12px !important;
+  --mdc-chip-label-text-weight: 500 !important;
+  --mdc-chip-label-text-line-height: 26px !important;
+  // Styles for mat-chip avatars
+  // Sets the mat-icon/img size to 16px if the mat-icon/img is annotated with matChipAvatar
+  // to match mat-icon-sm
+  --mdc-chip-with-icon-icon-size: 16px !important;
+  --mdc-chip-with-avatar-avatar-size: 16px !important;
+  // Remove the matChipAvatar radius to prevent mat-icon/imgs from being cut-off
+  --mdc-chip-with-avatar-avatar-shape-radius: 0 !important;
+
+  .mdc-evolution-chip__action--primary {
+    padding: 0 8px !important;
+  }
+}
+
+// Buttons
+// Updated box shadows for small mat-raised-buttons (excluding buttons specified to be flat)
+button.mat-mdc-raised-button:not([class*='mat-elevation-z']),
+a.mat-mdc-raised-button:not([class*='mat-elevation-z']) {
+  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.08);
+}
+
+// Cards
+// Updated mat-card style matching Zeplin redesign
+.mat-mdc-card:not([class*='mat-mdc-card-outlined']) {
+  border: solid 1px mat.get-color-from-palette($dockstore-app-gray, 7) !important;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1), 0 2px 3px 0 rgba(0, 0, 0, 0.08) !important;
+}
+
+// Tables
+.mat-mdc-header-row {
+  --mat-table-header-headline-size: 12px; // Smaller than default
+}

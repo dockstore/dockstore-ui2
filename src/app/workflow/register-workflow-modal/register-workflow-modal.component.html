@@ -49,7 +49,7 @@
       <ng-template matStepLabel>Create a workflow</ng-template>
       <div *ngIf="selectedOption?.value === 0">
         <app-register-github-app [entryType]="EntryType.WORKFLOW"></app-register-github-app>
-        <div class="modal-footer">
+        <div class="modal-footer mt-4">
           <button mat-button color="accent" matStepperPrevious>Back</button>
           <button
             type="button"

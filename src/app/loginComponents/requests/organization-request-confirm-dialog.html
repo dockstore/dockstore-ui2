@@ -3,8 +3,7 @@
 <div mat-dialog-content>
   <p>Are you sure you want to <strong>{{data.approve ? 'approve' : 'reject'}}</strong> the organization <strong>{{data.name}}</strong>?</p>
 </div>
-<div mat-dialog-actions>
-  <div fxFlex></div>
+<mat-dialog-actions [align]="'end'">
   <button mat-button color="accent" (click)="onNoClick()">Cancel</button>
   <span *ngIf="data.approve; else rejectBlock">
     <button
@@ -28,4 +27,4 @@
       Reject
     </button>
   </ng-template>
-</div>
+</mat-dialog-actions>

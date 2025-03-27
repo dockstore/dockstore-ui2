@@ -17,7 +17,7 @@
       <div class="date-display">{{ org.lastUpdateDate | date: 'MMM d, yyyy' }}</div>
     </div>
   </div>
-  <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" class="mt-4">
-    <button data-cy="close-dialog-button" mat-button mat-dialog-close color="accent" cdkFocusInitial>Close</button>
-  </div>
 </mat-dialog-content>
+<mat-dialog-actions [align]="'end'">
+  <button data-cy="close-dialog-button" mat-button mat-dialog-close color="accent" cdkFocusInitial>Close</button>
+</mat-dialog-actions>

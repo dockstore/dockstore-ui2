@@ -106,7 +106,7 @@
     </mat-card>
   </mat-radio-group>
 </mat-dialog-content>
-<div mat-dialog-actions fxLayout="row" fxLayoutAlign="end">
+<mat-dialog-actions [align]="'end'">
   <div *ngIf="promptToConfirmAISelection" fxLayout="row" fxLayoutAlign="end" class="mb-3">
     <mat-card appearance="outlined" data-cy="confirmAISelectionPrompt" class="alert-warning size-small weight-bold py-1" fxFlex="50">
       <mat-card-content
@@ -125,4 +125,4 @@
   >
     {{ promptToConfirmAISelection ? 'Confirm' : 'Save' }}
   </button>
-</div>
+</mat-dialog-actions>

@@ -48,7 +48,7 @@
           </mat-form-field>
         </form>
       </div>
-      <div mat-dialog-actions class="pull-right">
+      <mat-dialog-actions [align]="'end'">
         <button matTooltip="Cancel" mat-button color="accent" mat-dialog-close>Cancel</button>
         <button
           id="createOrUpdateCollectionButton"
@@ -61,7 +61,7 @@
         >
           {{ saveLabel }}
         </button>
-      </div>
+      </mat-dialog-actions>
     </div>
   </ng-container>
 </ng-container>
