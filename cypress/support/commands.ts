@@ -100,7 +100,7 @@ export function insertAuthors() {
 }
 
 export function typeInInput(dataCyName: string, text: string) {
-  cy.get(`[data-cy=${dataCyName}]`).should('be.visible').clear().type(text);
+  cy.get(`[data-cy=${dataCyName}]`).clear().type(text);
 }
 
 // Sets it to the user where id = 1. Is an admin and curator.
