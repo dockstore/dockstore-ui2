@@ -1,6 +1,13 @@
 import { ga4ghPath } from '../../../../src/app/shared/constants';
 import { ToolDescriptor } from '../../../../src/app/shared/openapi';
-import { goToTab, checkFeaturedContent, checkNewsAndUpdates, checkMastodonFeed, isStagingOrProd } from '../../../support/commands';
+import {
+  goToTab,
+  checkFeaturedContent,
+  checkNewsAndUpdates,
+  checkMastodonFeed,
+  isStagingOrProd,
+  typeInInput,
+} from '../../../support/commands';
 
 // Test an entry, these should be ambiguous between tools, workflows, and notebooks.
 describe('run stochastic smoke test', () => {
@@ -117,7 +124,7 @@ describe('Test search page functionality', () => {
   });
   it('searches', () => {
     cy.visit('/search');
-    cy.get('[data-cy=basic-search]').type('topmed{enter}');
+    typeInInput('basic-search', 'topmed{enter}');
     cy.url().should('contain', '/search?entryType=workflows&search=topmed');
   });
   it('filters and unfilters by facets', () => {

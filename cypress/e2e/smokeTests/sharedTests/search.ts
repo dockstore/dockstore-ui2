@@ -1,4 +1,4 @@
-import { isStagingOrProd } from '../../../support/commands';
+import { isStagingOrProd, typeInInput } from '../../../support/commands';
 
 describe('Admin UI', () => {
   before(() => {
@@ -18,7 +18,7 @@ describe('Admin UI', () => {
       cy.go('forward');
       cy.url().should('include', '/search?descriptorType=WDL');
       cy.contains('the Language is WDL').should('exist');
-      cy.get('[data-cy=basic-search]').scrollIntoView().type('dhockstore{enter}');
+      typeInInput('basic-search', 'dhockstore{enter}');
       cy.contains(' Sorry, no matches found for dhockstore');
       cy.contains(/Do[ ]you[ ]mean:[ ].+/);
       cy.url().should('include', 'search=dhockstore');

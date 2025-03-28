@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { goToTab, isActiveTab, setTokenUserViewPort, setTokenUserViewPortCurator } from '../../support/commands';
+import { goToTab, isActiveTab, setTokenUserViewPort, setTokenUserViewPortCurator, typeInInput } from '../../support/commands';
 
 describe('Dropdown test', () => {
   // TODO: GitLab tests are commented out
@@ -346,11 +346,11 @@ describe('Dropdown test', () => {
     });
     it('Should have the delete button enabled', () => {
       cy.contains('Delete Dockstore Account').should('not.be.disabled').click();
-      cy.contains('Yes, delete my account').should('be.disabled');
-      cy.get('#deleteUserUsernameInput').type('potato');
-      cy.contains('Yes, delete my account').should('be.disabled');
-      cy.get('#deleteUserUsernameInput').clear().type('user_curator');
-      cy.contains('Yes, delete my account').should('not.be.disabled').click();
+      cy.get('[data-cy=confirm-delete-button]').should('be.disabled');
+      typeInInput('delete-username-input', 'potato');
+      cy.get('[data-cy=confirm-delete-button]').should('be.disabled');
+      typeInInput('delete-username-input', 'user_curator');
+      cy.get('[data-cy=confirm-delete-button]').should('not.be.disabled').click();
       cy.url().should('eq', Cypress.config().baseUrl + '/logout');
     });
     it('Should have the change username button disabled for current username', () => {
