@@ -124,6 +124,8 @@ describe('Test search page functionality', () => {
   });
   it('searches', () => {
     cy.visit('/search');
+    cy.get('[data-cy=dismiss-tos-banner]').click();
+    cy.get('[data-cy=tos-banner]').should('not.exist');
     typeInInput('basic-search', 'topmed{enter}');
     cy.url().should('contain', '/search?entryType=workflows&search=topmed');
   });

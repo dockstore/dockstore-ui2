@@ -4,6 +4,8 @@ describe('Admin UI', () => {
   before(() => {
     cy.visit('');
     cy.get('a').contains('Search').click();
+    cy.get('[data-cy=dismiss-tos-banner]').click();
+    cy.get('[data-cy=tos-banner]').should('not.exist');
   });
 
   describe('Basic search functions', () => {
