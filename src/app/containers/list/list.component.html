@@ -23,7 +23,7 @@
   <div [hidden]="previewMode">
     <mat-form-field>
       <mat-label>Search tools</mat-label>
-      <input matInput #input />
+      <input matInput #input data-cy="search-input" />
     </mat-form-field>
   </div>
   <mat-table [dataSource]="dataSource" matSort matSortActive="stars" matSortDirection="desc" matSortDisableClear>

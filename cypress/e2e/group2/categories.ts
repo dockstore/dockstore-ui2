@@ -13,7 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { resetDB, setTokenUserViewPort, insertNotebooks, addOrganizationAdminUser, addToCollection } from '../../support/commands';
+import {
+  resetDB,
+  setTokenUserViewPort,
+  insertNotebooks,
+  addOrganizationAdminUser,
+  addToCollection,
+  typeInInput,
+} from '../../support/commands';
 
 describe('Dockstore Categories', () => {
   const categoryName = 'foooo';
@@ -27,19 +34,15 @@ describe('Dockstore Categories', () => {
   resetDB();
   setTokenUserViewPort();
 
-  function typeInInput(fieldName: string, text: string) {
-    cy.get(`input[placeholder="${fieldName}"]`).should('be.visible').clear().type(text);
-  }
-
   describe('Should be able to create a category', () => {
     it('be able to create a category', () => {
       addOrganizationAdminUser('dockstore', 'user_A');
       cy.visit('/organizations/dockstore');
       cy.get('#createCollection').click();
       cy.get('#createOrUpdateCollectionButton').should('be.visible').should('be.disabled');
-      typeInInput('Name', categoryName);
-      typeInInput('Display Name', categoryDisplayName);
-      typeInInput('Topic', categoryTopic);
+      typeInInput('name-input', categoryName);
+      typeInInput('display-name-input', categoryDisplayName);
+      typeInInput('topic-input', categoryTopic);
       cy.get('#createOrUpdateCollectionButton').should('be.visible').should('not.be.disabled').click();
       cy.contains(categoryDisplayName);
       cy.contains(categoryTopic);

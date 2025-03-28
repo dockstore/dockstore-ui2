@@ -22,7 +22,7 @@ describe('Notebooks Pages', () => {
     cy.visit('/notebooks');
     cy.url().should('contain', 'notebooks');
     cy.get('[data-cy=header]').contains('h3', 'Notebooks');
-    cy.get('input[placeholder="Search notebooks"]');
+    cy.get('[data-cy=search-input]');
     cy.contains('Format');
     cy.contains('Language');
   });

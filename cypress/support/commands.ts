@@ -99,8 +99,8 @@ export function insertAuthors() {
   addBeforeSqlFromFile('test/authors_db_dump.sql');
 }
 
-export function typeInInput(fieldName: string, text: string) {
-  cy.get(`input[placeholder="${fieldName}"]`).should('be.visible').clear().type(text);
+export function typeInInput(dataCyName: string, text: string) {
+  cy.get(`[data-cy=${dataCyName}]`).should('be.visible').clear().type(text);
 }
 
 // Sets it to the user where id = 1. Is an admin and curator.
@@ -147,8 +147,8 @@ export function invokeSql(sqlStatement: string) {
 }
 
 export function createPotatoMembership() {
-  cy.get('#addUserToOrgButton').click();
-  typeInInput('Username', 'potato');
+  cy.get('[data-cy=add-user-to-org-button]').click();
+  typeInInput('username-input', 'potato');
   cy.get('mat-select').click();
   cy.get('mat-option').contains('Member').click();
   cy.get('.mat-select-panel').should('not.exist');
@@ -181,12 +181,12 @@ export function addOrganizationAdminUser(organization: string, user: string) {
 export function createOrganization(name: string, displayName: string, topic: string, location: string, website: string, email: string) {
   cy.contains('button', 'Create Organization Request').should('be.visible').click();
   cy.contains('button', 'Next').should('be.visible').click();
-  typeInInput('Name', name);
-  typeInInput('Display Name', displayName);
-  typeInInput('Topic', topic);
-  typeInInput('Location', location);
-  typeInInput('Organization website', website);
-  typeInInput('Contact Email Address', email);
+  typeInInput('name-input', name);
+  typeInInput('display-name-input', displayName);
+  typeInInput('topic-input', topic);
+  typeInInput('location-input', location);
+  typeInInput('website-input', website);
+  typeInInput('email-input', email);
   cy.get('[data-cy=create-or-update-organization-button]').should('be.visible').should('not.be.disabled').click();
   cy.url().should('eq', Cypress.config().baseUrl + '/organizations/' + name);
 

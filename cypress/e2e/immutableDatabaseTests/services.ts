@@ -58,7 +58,7 @@ describe('Dockstore Home', () => {
       cy.url().should('contain', 'services');
       cy.get('[data-cy=header]').contains('h3', 'Services');
       cy.get('mat-header-cell').contains('Format').should('not.exist');
-      cy.get('input[placeholder="Search services"]');
+      cy.get('[data-cy=search-input]');
       cy.contains('garyluu/another-test-service');
     });
     it('Have fake service in /services/{id}', () => {

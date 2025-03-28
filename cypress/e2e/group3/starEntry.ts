@@ -13,15 +13,12 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-import { resetDB, setTokenUserViewPort } from '../../support/commands';
+import { resetDB, setTokenUserViewPort, typeInInput } from '../../support/commands';
 
 describe('Tool, Workflow, and Organization starring', () => {
   resetDB();
   setTokenUserViewPort();
 
-  function typeInInput(fieldName: string, text: string) {
-    cy.get(`input[placeholder="${fieldName}"]`).should('be.visible').clear().type(text);
-  }
   function beUnstarred() {
     cy.get('#starringButtonIcon').should('be.visible');
     cy.get('#starCountButton').should('contain', '0');
@@ -95,11 +92,11 @@ describe('Tool, Workflow, and Organization starring', () => {
       cy.visit('/organizations');
       cy.contains('button', 'Create Organization Request').should('be.visible').click();
       cy.contains('button', 'Next').should('be.visible').click();
-      typeInInput('Name', 'Potato');
-      typeInInput('Display Name', 'Potato');
-      typeInInput('Topic', "Boil 'em, mash 'em, stick 'em in a stew");
-      typeInInput('Contact Email Address', 'yukon@potato.com');
-      cy.get('#createOrUpdateOrganizationButton').should('be.visible').should('not.be.disabled').click();
+      typeInInput('name-input', 'Potato');
+      typeInInput('display-name-input', 'Potato');
+      typeInInput('topic-input', "Boil 'em, mash 'em, stick 'em in a stew");
+      typeInInput('email-input', 'yukon@potato.com');
+      cy.get('[data-cy=create-or-update-organization-button]').should('be.visible').should('not.be.disabled').click();
       cy.url().should('eq', Cypress.config().baseUrl + '/organizations/Potato');
 
       starringUnapprovedOrg('organizations/Potato');

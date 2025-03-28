@@ -232,8 +232,8 @@ describe('Dockstore my tools', () => {
       cy.visit('/my-tools/amazon.dkr.ecr.test.amazonaws.com/A/a');
       cy.contains('Versions').click();
       cy.get('#addTagButton').click();
-      typeInInput('20.04', 'fakeTag');
-      typeInInput('develop', 'fakeGitReference');
+      typeInInput('version-tag-input', 'fakeTag');
+      typeInInput('git-ref-input', 'fakeGitReference');
       cy.get('#addVersionTagButton').click();
       cy.wait('@putTestParameterFile');
     });

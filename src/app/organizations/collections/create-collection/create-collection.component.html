@@ -22,7 +22,7 @@
         <form [formGroup]="createCollectionForm" fxLayout="column" fxLayoutGap="1rem">
           <mat-form-field>
             <mat-label>Name</mat-label>
-            <input type="text" matInput formControlName="name" required />
+            <input type="text" matInput formControlName="name" required data-cy="name-input" />
             <mat-error *ngIf="name.hasError('required')">Name is required</mat-error>
             <mat-error *ngIf="name.hasError('minlength')">Name should be at least 3 characters long</mat-error>
             <mat-error *ngIf="name.hasError('maxlength')">Name should be at most 39 characters long</mat-error>
@@ -33,7 +33,7 @@
           </mat-form-field>
           <mat-form-field>
             <mat-label>Display Name</mat-label>
-            <input type="text" matInput formControlName="displayName" required />
+            <input type="text" matInput formControlName="displayName" required data-cy="display-name-input" />
             <mat-error *ngIf="displayName.hasError('required')">Display Name is required</mat-error>
             <mat-error *ngIf="displayName.hasError('minlength')">Display Name should be at least 3 characters long</mat-error>
             <mat-error *ngIf="displayName.hasError('maxlength')">Display Name should be at most 50 characters long</mat-error>
@@ -44,7 +44,7 @@
           </mat-form-field>
           <mat-form-field>
             <mat-label>Topic</mat-label>
-            <input type="text" matInput formControlName="topic" required />
+            <input type="text" matInput formControlName="topic" required data-cy="topic-input" />
           </mat-form-field>
         </form>
       </div>

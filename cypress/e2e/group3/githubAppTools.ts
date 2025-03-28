@@ -1,5 +1,5 @@
 import { LambdaEvent } from '../../../src/app/shared/openapi';
-import { goToTab, insertAppTools, isActiveTab, resetDB, setTokenUserViewPort, typeInInput } from '../../support/commands';
+import { goToTab, insertAppTools, isActiveTab, resetDB, setTokenUserViewPort } from '../../support/commands';
 
 describe('GitHub App Tools', () => {
   resetDB();
@@ -253,7 +253,7 @@ describe('GitHub App Tools', () => {
     it('Table view', () => {
       cy.visit('/apptools');
       cy.url().should('contain', 'apptools');
-      cy.get('input[placeholder="Search app tools"]');
+      cy.get('[data-cy=search-input]');
       cy.get('[data-cy=entry-link]').should('contain', 'test-github-app-tools');
     });
   });

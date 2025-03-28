@@ -13,12 +13,9 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { createOrganization, resetDB, setTokenUserViewPort, setTokenUserViewPortCurator } from '../../support/commands';
+import { createOrganization, resetDB, setTokenUserViewPort, setTokenUserViewPortCurator, typeInInput } from '../../support/commands';
 
 describe('Test notification badge on navbar', () => {
-  function typeInInput(fieldName: string, text: string) {
-    cy.get(`input[placeholder="${fieldName}"]`).should('be.visible').clear().type(text);
-  }
   resetDB();
   setTokenUserViewPort();
 
@@ -64,8 +61,8 @@ describe('Test notification badge on navbar', () => {
         'a111sdf@asdf.ca'
       );
       cy.contains('span', 'Members').click();
-      cy.get('#addUserToOrgButton').should('be.visible').click();
-      typeInInput('Username', 'user_A');
+      cy.get('[data-cy=add-user-to-org-button]').should('be.visible').click();
+      typeInInput('username-input', 'user_A');
       cy.get('#upsertUserDialogButton').should('be.visible').should('not.be.disabled').click();
       cy.reload();
     });

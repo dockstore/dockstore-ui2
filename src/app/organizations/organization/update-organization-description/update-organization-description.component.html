@@ -6,7 +6,7 @@
       <form class="p-1 mt-4" [formGroup]="updateOrganizationOrCollectionDescriptionForm" fxLayout="column">
         <mat-form-field>
           <mat-label>{{ data.type | titlecase }} Description</mat-label>
-          <textarea matTextareaAutosize type="text" matInput formControlName="description"></textarea>
+          <textarea matTextareaAutosize type="text" matInput formControlName="description" data-cy="description-input"></textarea>
         </mat-form-field>
       </form>
     </mat-tab>
