@@ -15,11 +15,12 @@
  */
 
 // This file contains overrides of core Material styles.
+// These styles should be applied automatically and do not require a class to be added to the element.
 
 @import '/src/materialColorScheme.scss';
 
 :root {
-  @include mat.form-field-density(-5);
+  @include mat.form-field-density(-4);
   @include mat.checkbox-density(-3);
 }
 
@@ -46,6 +47,18 @@
   --mdc-outlined-text-field-focus-label-text-color: #{$accent-1-dark};
   --mdc-outlined-text-field-focus-outline-color: #{$accent-1-dark};
   --mdc-outlined-text-field-caret-color: #{accent-1-dark};
+}
+
+// Select
+.mat-mdc-select {
+  // Font size of text selected item
+  --mat-select-trigger-text-size: 14px;
+}
+
+// Select options
+.mat-mdc-option {
+  // Font size of select options when the select drop down is expanded
+  --mat-option-label-text-size: 14px;
 }
 
 // Dialogs
@@ -101,4 +114,9 @@ a.mat-mdc-raised-button:not([class*='mat-elevation-z']) {
 // Tables
 .mat-mdc-header-row {
   --mat-table-header-headline-size: 12px; // Smaller than default
+}
+
+// Menus
+.mat-mdc-menu-content {
+  --mat-menu-item-label-text-size: 14px;
 }

@@ -70,16 +70,11 @@ a:focus {
   padding: 5px;
 }
 
-/*
- TODO(mdc-migration): The following rule targets internal classes of menu that may no longer apply for the MDC version.
- */
-mat-menu {
-  padding-right: 10px;
-}
-
-.bell-icon {
+mat-icon.bell-icon {
   color: mat.get-color-from-palette($kim-accent1-success, 4);
-  transform: scale(1.25);
+  height: 3rem;
+  width: 3rem;
+  font-size: 3rem;
 }
 
 .navbar-avatar {
@@ -94,7 +89,7 @@ mat-menu {
 }
 
 .menu-icon {
-  color: mat.get-color-from-palette($dockstore-app-primary, 3);
+  --mat-menu-item-icon-color: #{mat.get-color-from-palette($dockstore-app-primary, 3)};
 }
 
 #dropdown-profile,
