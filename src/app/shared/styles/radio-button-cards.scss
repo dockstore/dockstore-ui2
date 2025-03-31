@@ -19,22 +19,6 @@
 
 // This file contains styles for mat-cards with radio buttons
 
-// This style ensures that the mat radio content text fills up the whole mat-card
-/*
- TODO(mdc-migration): The following rule targets internal classes of radio that may no longer apply for the MDC version.
- */
-:host ::ng-deep .mat-radio-label-content {
-  width: 100%;
-}
-
-// Wraps the text because by default, mat-radio-label doesn't wrap
-/*
- TODO(mdc-migration): The following rule targets internal classes of radio that may no longer apply for the MDC version.
- */
-:host ::ng-deep .mat-radio-label {
-  white-space: normal;
-}
-
 // Highlights the card with the selected radio button
 .selected-card {
   border-width: 0.15rem;

@@ -89,9 +89,9 @@
                 >
                   <fa-icon [icon]="faGoogle"></fa-icon> Register with Google
                 </button>
-                <mat-checkbox class="text-wrap" (change)="registrationDisabled = !registrationDisabled"
-                  >I agree to Dockstore's <template [ngTemplateOutlet]="PrivacyAndTOSDisclaimer"></template
-                ></mat-checkbox>
+                <mat-checkbox (change)="registrationDisabled = !registrationDisabled">
+                  <strong>I agree to Dockstore's <template [ngTemplateOutlet]="PrivacyAndTOSDisclaimer"></template></strong>
+                </mat-checkbox>
                 <!-- Attempt at using  -->
                 <!-- <mat-icon svgIcon="google"></mat-icon> -->
                 <!-- <a class="btn btn-block btn-social btn-real-google" matTooltip="Register with Google account" (click)="registerWith('google')">
