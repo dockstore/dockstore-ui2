@@ -38,7 +38,7 @@ describe('Admin UI', () => {
       cy.go('back');
       cy.get(searchPaginatorDataCy).contains(20);
 
-      cy.get('[data-cy=basic-search]').type('dockstore_{enter}');
+      typeInInput('basic-search', 'dockstore_{enter}');
       cy.contains('Open Advanced Search').click();
       cy.contains('button', /^Advanced Search$/)
         .should('be.visible')
