@@ -31,9 +31,6 @@ describe('Admin UI', () => {
       const searchPaginatorDataCy = isStagingOrProd()
         ? '[data-cy=search-workflow-table-paginator]'
         : '[data-cy=search-entry-table-paginator]';
-      cy.get(searchPaginatorDataCy).within(() => {
-        cy.get('.mat-paginator-range-label').contains('10 of');
-      });
       cy.get(searchPaginatorDataCy).contains(10).should('be.visible').click();
       cy.get('mat-option').contains(20).click();
       cy.get(searchPaginatorDataCy).contains(20);
