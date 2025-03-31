@@ -241,7 +241,7 @@ describe('Dockstore my workflows', () => {
       // Select the manual topic and verify that it's displayed publicly
       cy.visit(privateEntryURI);
       cy.get('[data-cy=topicEditButton]').click();
-      cy.get('mat-radio-button').contains('Manual').click();
+      cy.get('[data-cy=Manual-radio-button]').click();
       cy.get('[data-cy=topicSaveButton]').click();
       cy.wait('@updateWorkflow');
       cy.get('[data-cy=selected-topic]').should('contain.text', 'goodTopic');
@@ -266,7 +266,7 @@ describe('Dockstore my workflows', () => {
       // Select the AI topic and verify that it's displayed publicly without an AI bubble
       cy.visit(privateEntryURI);
       cy.get('[data-cy=topicEditButton]').click();
-      cy.get('.mat-mdc-radio-button').contains('AI').click();
+      cy.get('[data-cy=AI-radio-button]').click();
       cy.get('[data-cy=topicSaveButton]').click();
       cy.get('[data-cy=confirmAISelectionPrompt').should('be.visible');
       cy.get('[data-cy=topicConfirmButton]').click();

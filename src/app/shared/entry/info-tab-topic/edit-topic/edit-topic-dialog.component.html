@@ -16,7 +16,7 @@
     <mat-card *ngFor="let topicOption of topicOptions" [class]="topicOption.type === selectedOption ? 'selected-card' : ''">
       <mat-card-content>
         <div fxLayout="row" fxLayoutAlign="space-between center">
-          <mat-radio-button [value]="topicOption.type">
+          <mat-radio-button [value]="topicOption.type" [attr.data-cy]="topicOption.label + '-radio-button'">
             <mat-chip-set>
               <mat-chip disableRipple>
                 <mat-icon *ngIf="topicOption.type === TopicSelectionEnum.MANUAL" matChipAvatar>edit</mat-icon>
