@@ -9,7 +9,7 @@
       <mat-divider></mat-divider>
       <div fxLayout="row wrap" fxLayoutGap="2rem grid" class="mt-4">
         <div *ngFor="let funder of section.funders" fxFlex="33.3" fxFlex.lt-lg="50" fxFlex.lt-md="100">
-          <mat-card class="my-2" fxLayout="column" fxLayoutAlign="space-between stretch">
+          <mat-card class="my-2 funding-card" fxLayout="column" fxLayoutAlign="space-between stretch">
             <mat-card-content>
               <div fxLayout fxLayoutAlign="center center" class="image-wrapper">
                 <a [href]="funder.website" target="_blank">

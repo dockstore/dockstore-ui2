@@ -233,12 +233,15 @@ div.view-content.ns-containers {
   }
 }
 
-mat-checkbox label {
-  // Bootstrap adds margin-bottom padding to labels, which misaligns the label text for checkboxes.
-  // Set the margin-bottom to 0 for mat checkbox labels to center the text with the checkbox.
-  margin-bottom: 0 !important;
-  // Bootstrap applies bold font-weight to labels. Set to normal.
-  font-weight: normal;
+mat-checkbox,
+mat-radio-button {
+  label {
+    // Bootstrap adds margin-bottom padding to labels, which misaligns the label text for checkboxes.
+    // Set the margin-bottom to 0 for mat checkbox labels to center the text with the checkbox.
+    margin-bottom: 0 !important;
+    // Bootstrap applies bold font-weight to labels. Set to normal.
+    font-weight: unset;
+  }
 }
 
 @keyframes spin {

@@ -14,21 +14,7 @@
  *    limitations under the License.
  */
 
-/* Bootstrap adds a 5px bottom margin, this counteracts it. Remove once Bootstrap is removed */
-::ng-deep label {
-  margin-bottom: 0px;
-}
-
 /* Better alignment for "save" button icon instead of vertical-align: middle*/
 .mat-icon-sm {
   vertical-align: text-bottom;
-}
-
-/* Disabled state for "edit" buttons */
-/*
- TODO(mdc-migration): The following rule targets internal classes of button that may no longer apply for the MDC version.
- */
-.mat-mdc-raised-button.mat-button-disabled.mat-button-disabled {
-  background-color: white;
-  filter: opacity(0.3);
 }
