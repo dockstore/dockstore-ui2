@@ -70,20 +70,19 @@
 // Chips
 // Styles a mat chip as a "bubble", which is a small very-rounded rectangular element that typically contains a word or short phrase.
 // Bubbles always render in a 12px font, are 26px tall, and default to gray background.
-.mat-mdc-chip {
+.mat-mdc-standard-chip {
   // Remove y-axis margin
   margin-top: 0 !important;
   margin-bottom: 0 !important;
 
   // Styles for mat-chip container
-  --mdc-chip-elevated-container-color: #{mat.get-color-from-palette($dockstore-app-gray, lighter)} !important;
+  --mdc-chip-elevated-container-color: #{mat.get-color-from-palette($dockstore-app-gray, lighter)};
   --mdc-chip-container-shape-radius: 0.8rem !important;
   --mdc-chip-container-height: 26px !important;
   // Styles for mat-chip text
-  --mdc-chip-label-text-color: black !important;
-  --mdc-chip-label-text-size: 12px !important;
-  --mdc-chip-label-text-weight: 500 !important;
-  --mdc-chip-label-text-line-height: 26px !important;
+  --mdc-chip-label-text-color: black;
+  --mdc-chip-label-text-size: 12px;
+  --mdc-chip-label-text-weight: 500;
   // Styles for mat-chip avatars
   // Sets the mat-icon/img size to 16px if the mat-icon/img is annotated with matChipAvatar
   // to match mat-icon-sm
@@ -95,20 +94,6 @@
   .mdc-evolution-chip__action--primary {
     padding: 0 8px !important;
   }
-}
-
-// Buttons
-// Updated box shadows for small mat-raised-buttons (excluding buttons specified to be flat)
-button.mat-mdc-raised-button:not([class*='mat-elevation-z']),
-a.mat-mdc-raised-button:not([class*='mat-elevation-z']) {
-  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.08);
-}
-
-// Cards
-// Updated mat-card style matching Zeplin redesign
-.mat-mdc-card:not([class*='mat-mdc-card-outlined']) {
-  border: solid 1px mat.get-color-from-palette($dockstore-app-gray, 7) !important;
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1), 0 2px 3px 0 rgba(0, 0, 0, 0.08) !important;
 }
 
 // Tables

@@ -100,7 +100,7 @@
               </a>
             </li>
             <li class="m-0">
-              <button mat-stroked-button [cdkCopyToClipboard]="content" appSnackbar>
+              <button mat-stroked-button class="copy-build-info-button" [cdkCopyToClipboard]="content" appSnackbar>
                 <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
                 <small>&nbsp;Copy Build Info</small>
               </button>
@@ -278,7 +278,7 @@
         </a>
       </div>
       <div class="bottom-footer">
-        <small class="p-4 dockstore-support">
+        <small class="p-4 text-align-center">
           <a class="footer-link" [routerLink]="['/funding']" target="_self">Support for Dockstore</a>
           <span> is provided by grants from Genome Canada, the National Institutes of Health, and the Province of Ontario. </span>
         </small>

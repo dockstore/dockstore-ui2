@@ -836,8 +836,7 @@ body {
 }
 
 // Set font weight to bold
-.weight-bold,
-.mat-mdc-menu-item.weight-bold {
+.weight-bold {
   font-weight: 500;
 }
 
@@ -893,17 +892,17 @@ body {
   background: $org-selection-color !important;
 }
 
-.mat-mdc-chip.preview-bubble {
-  --mdc-chip-label-text-color: white !important;
-  background-color: mat.get-color-from-palette($kim-primary, 3) !important;
+.preview-bubble {
+  --mdc-chip-label-text-color: white;
+  --mdc-chip-elevated-container-color: #{mat.get-color-from-palette($kim-primary, 3)};
 }
 
 // mat chips with a white checkmark and white text and a green background
 // Used for the Approved and Synced bubbles
-.mat-mdc-chip.checkmark {
-  --mdc-chip-label-text-color: white !important;
-  --mdc-chip-with-icon-icon-color: white !important;
-  background-color: $accent-3-dark;
+.checkmark {
+  --mdc-chip-label-text-color: white;
+  --mdc-chip-with-icon-icon-color: white;
+  --mdc-chip-elevated-container-color: #{$accent-3-dark};
 }
 
 // Change the cursor to a pointer for a mat-chip
