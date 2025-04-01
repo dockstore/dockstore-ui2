@@ -30,6 +30,7 @@
             [checked]="repo.present"
             [disabled]="!repo.canDelete && repo.present"
             [matTooltip]="!repo.canDelete && repo.present ? 'Only workflow stubs can be deleted.' : ''"
+            [attr.data-cy]="repo.path + '-toggle'"
             >{{ repo.path }}</mat-slide-toggle
           >
         </div>

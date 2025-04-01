@@ -602,15 +602,14 @@ describe('Dockstore my workflows part 3', () => {
         cy.get('mat-select').eq(1).click().type('{enter}', { force: true });
 
         // foobar/canDeleteMe should be on and not disabled
-        const matMdcSlideToggleChecked = 'mat-mdc-slide-toggle-checked';
-        cy.get('mat-slide-toggle').eq(0).should('have.class', matMdcSlideToggleChecked);
+        cy.get('[data-cy="foobar/canDeleteMe-toggle"] button').should('be.checked');
         // foobar/cannotDeleteMe should be on and disabled
-        cy.get('mat-slide-toggle').eq(1).should('have.class', matMdcSlideToggleChecked);
-        cy.get('mat-slide-toggle').eq(1).find('button').should('be.disabled');
+        cy.get('[data-cy="foobar/cannotDeleteMe-toggle"] button').should('be.checked');
+        cy.get('[data-cy="foobar/cannotDeleteMe-toggle"] button').should('be.disabled');
 
         // foobar/doesNotExist should be off and not disabled
-        cy.get('mat-slide-toggle').eq(2).should('not.have.class', matMdcSlideToggleChecked);
-        cy.get('mat-slide-toggle').eq(2).find('button').should('not.be.disabled');
+        cy.get('[data-cy="foobar/doesNotExist-toggle"] button').should('not.be.checked');
+        cy.get('[data-cy="foobar/doesNotExist-toggle"] button').should('not.be.disabled');
       });
     });
   });
