@@ -103,5 +103,26 @@
 
 // Menus
 .mat-mdc-menu-content {
-  --mat-menu-item-label-text-size: 14px;
+  --mat-menu-item-label-text-size: 14px; // Smaller than default
+}
+
+// Slide toggles
+// TODO: remove these slide toggle overrides when we implement a full color palette
+// according to https://v16.material.angular.io/guide/theming#create-your-own-palette.
+// These styles are needed because we have an incomplete color palette and slide toggles use
+// hues that we have not defined https://github.com/angular/components/issues/26818#issuecomment-2221701887
+.mat-mdc-slide-toggle {
+  $accent-color: mat.get-color-from-palette($dockstore-app-accent, 2);
+  // Variables taken from https://github.com/angular/components/issues/26818#issuecomment-1726616513
+  --mdc-switch-selected-handle-color: #{$accent-color};
+  --mdc-switch-selected-pressed-handle-color: #{$accent-color};
+  --mdc-switch-selected-pressed-state-layer-color: #{$accent-color};
+  --mdc-switch-selected-hover-state-layer-color: #{$accent-color};
+  --mdc-switch-selected-hover-handle-color: #{$accent-color};
+  --mdc-switch-selected-focus-state-layer-color: #{$accent-color};
+  --mdc-switch-selected-focus-handle-color: #{$accent-color};
+  --mdc-switch-selected-track-color: #e0e0e0;
+  --mdc-switch-selected-pressed-track-color: #e0e0e0;
+  --mdc-switch-selected-hover-track-color: #e0e0e0;
+  --mdc-switch-selected-focus-track-color: #e0e0e0;
 }
