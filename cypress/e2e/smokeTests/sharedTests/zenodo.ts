@@ -77,7 +77,7 @@ describe('Create Zenodo DOI for workflow version', () => {
           // Select the Use CWL, WDL or Nextflow from GitHub, Bitbucket, etc.' option to create a hosted workflow
           cy.contains('Create and save CWL, WDL, or Nextflow on Dockstore.org').click();
           cy.contains('button', 'Next').click();
-          cy.get('#descriptorTypeRadioButtons').contains(wdlDescriptorType).find('.mat-radio-container').click();
+          cy.get(`[data-cy=${wdlDescriptorType}-radio-button]`).click();
           cy.get('[id="hostedWorkflowRepository"]').type(zenodoWorkflow);
           cy.get('[id=submitButton]').should('be.visible').click();
           // Check that the workflow was created by looking for the test workflow

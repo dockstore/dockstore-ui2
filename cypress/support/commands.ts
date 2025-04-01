@@ -153,8 +153,8 @@ export function createPotatoMembership() {
   cy.get('mat-select').click();
   cy.get('mat-option').contains('Member').click();
   cy.get('.mat-select-panel').should('not.exist');
-  cy.get('#upsertUserDialogButton').should('be.visible').should('not.be.disabled').click();
-  cy.get('#upsertUserDialogButton').should('not.exist');
+  cy.get('[data-cy=upsert-member-button]').should('be.visible').should('not.be.disabled').click();
+  cy.get('[data-cy=upsert-member-button]').should('not.exist');
 }
 
 export function approvePotatoMembership() {

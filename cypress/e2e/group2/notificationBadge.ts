@@ -63,7 +63,7 @@ describe('Test notification badge on navbar', () => {
       cy.contains('span', 'Members').click();
       cy.get('[data-cy=add-user-to-org-button]').should('be.visible').click();
       typeInInput('username-input', 'user_A');
-      cy.get('#upsertUserDialogButton').should('be.visible').should('not.be.disabled').click();
+      cy.get('[data-cy=upsert-member-button]').should('be.visible').should('not.be.disabled').click();
       cy.reload();
     });
 

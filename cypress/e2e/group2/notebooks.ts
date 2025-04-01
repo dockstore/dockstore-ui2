@@ -26,10 +26,7 @@ describe('Dockstore notebooks', () => {
   it('should have /notebooks/<name> page for single notebook', () => {
     cy.visit('/notebooks/' + name);
     // Check the labels on the tabs.
-    cy.get('.mat-mdc-tab').contains('Info');
-    cy.get('.mat-mdc-tab').contains('Preview');
-    cy.get('.mat-mdc-tab').contains('Versions');
-    cy.get('.mat-mdc-tab').contains('Files');
+    checkTabLabels();
     // Should initially display the Info tab.
     // Check for some key information.
     cy.contains(name);
@@ -97,10 +94,7 @@ describe('Dockstore notebooks', () => {
   it('should have my-notebooks page', () => {
     cy.visit('/my-notebooks/' + name);
     // Check the labels on the tabs.
-    cy.get('.mat-mdc-tab').contains('Info');
-    cy.get('.mat-mdc-tab').contains('Preview');
-    cy.get('.mat-mdc-tab').contains('Versions');
-    cy.get('.mat-mdc-tab').contains('Files');
+    checkTabLabels();
     // Should initially display the Info tab.
     // Check for some key information.
     cy.contains(name);
@@ -193,5 +187,12 @@ describe('Dockstore notebooks', () => {
         state: 'COMPLETE',
       },
     ]);
+  }
+
+  function checkTabLabels() {
+    cy.get('[data-cy=info-tab]').contains('Info');
+    cy.get('[data-cy=preview-tab]').contains('Preview');
+    cy.get('[data-cy=versions-tab]').contains('Versions');
+    cy.get('[data-cy=files-tab]').contains('Files');
   }
 });

@@ -336,20 +336,20 @@ describe('Dockstore Organizations', () => {
 
     it('be able to Read organization user', () => {
       cy.get('mat-progress-bar').should('not.exist');
-      cy.get('#organization-member-0').should('be.visible').should('contain', 'user_A').should('contain', 'Admin');
-      cy.get('#edit-user-role-0').should('not.exist');
+      cy.get('[data-cy=organization-member-0]').should('be.visible').should('contain', 'user_A').should('contain', 'Admin');
+      cy.get('[data-cy=edit-user-role-0]').should('not.exist');
     });
 
     it('be able to Create organization user', () => {
       createPotatoMembership();
-      cy.get('#organization-member-1').should('be.visible').should('contain', 'potato').should('contain', 'Pending Invitation');
-      cy.get('#edit-user-role-1').should('exist').should('be.enabled');
+      cy.get('[data-cy=organization-member-1]').should('be.visible').should('contain', 'potato').should('contain', 'Pending Invitation');
+      cy.get('[data-cy=edit-user-role-1]').should('exist').should('be.enabled');
 
       // Need to approve membership and reload for it to be visible
       approvePotatoMembership();
       cy.visit('/organizations/Potatoe');
       cy.contains('Members').click();
-      cy.get('#organization-member-1').should('be.visible').should('contain', 'potato').should('contain', 'Member');
+      cy.get('[data-cy=organization-member-1]').should('be.visible').should('contain', 'potato').should('contain', 'Member');
     });
 
     it('be able to edit an approved organization', () => {
@@ -359,40 +359,40 @@ describe('Dockstore Organizations', () => {
     });
 
     it('be able to Update organization user', () => {
-      cy.get('#edit-user-role-1').should('not.be.disabled').click();
-      cy.get('.mat-mdc-dialog-title').should('contain', 'Edit Member');
+      cy.get('[data-cy=edit-user-role-1]').should('not.be.disabled').click();
+      cy.get('[data-cy=upsert-member-dialog-title]').should('contain', 'Edit Member');
       cy.get('mat-select').click();
       cy.get('mat-option').contains('Maintainer').click();
       cy.get('.mat-select-panel').should('not.exist');
-      cy.get('#upsertUserDialogButton').should('be.visible').should('not.be.disabled').click();
-      cy.get('#upsertUserDialogButton').should('not.exist');
-      cy.get('#organization-member-1').should('be.visible').should('contain', 'potato').should('contain', 'Maintainer');
+      cy.get('[data-cy=upsert-member-button]').should('be.visible').should('not.be.disabled').click();
+      cy.get('[data-cy=upsert-member-button]').should('not.exist');
+      cy.get('[data-cy=organization-member-1]').should('be.visible').should('contain', 'potato').should('contain', 'Maintainer');
     });
 
     it('be able to Delete organization user', () => {
-      cy.get('#remove-user-1').should('not.be.disabled').click();
-      cy.get('.mat-mdc-dialog-title').should('contain', 'Remove Member from Organization');
+      cy.get('[data-cy=remove-user-1]').should('not.be.disabled').click();
+      cy.get('[data-cy=upsert-member-dialog-title]').should('contain', 'Remove Member from Organization');
       cy.get('[data-cy=confirm-dialog-button]').should('not.be.disabled').click();
       cy.get('app-organization-members').contains('potato').should('not.exist');
     });
 
     it('Reject organization member invite', () => {
       createPotatoMembership();
-      cy.get('#organization-member-1').should('be.visible').should('contain', 'potato').should('contain', 'Pending Invitation');
+      cy.get('[data-cy=organization-member-1]').should('be.visible').should('contain', 'potato').should('contain', 'Pending Invitation');
 
       // Need to reject membership and reload for it to be visible
       rejectPotatoMembership();
       cy.visit('/organizations/Potatoe');
       cy.contains('Members').click();
       cy.get('app-organization-members').should('contain', 'potato').should('contain', 'Rejected Invitation');
-      cy.get('#remove-user-1').should('exist').should('be.enabled');
+      cy.get('[data-cy=remove-user-1]').should('exist').should('be.enabled');
     });
 
     it('Resend invitation to organization user who rejected previous invite', () => {
-      cy.get('#edit-user-role-1').should('exist').should('be.enabled').click();
-      cy.get('.mat-mdc-dialog-title').should('contain', 'Resend Invitation');
-      cy.get('#upsertUserDialogButton').should('be.visible').should('not.be.disabled').click();
-      cy.get('#upsertUserDialogButton').should('not.exist');
+      cy.get('[data-cy=edit-user-role-1]').should('exist').should('be.enabled').click();
+      cy.get('[data-cy=upsert-member-dialog-title]').should('contain', 'Resend Invitation');
+      cy.get('[data-cy=upsert-member-button]').should('be.visible').should('not.be.disabled').click();
+      cy.get('[data-cy=upsert-member-button]').should('not.exist');
       cy.get('app-organization-members').should('contain', 'potato').should('contain', 'Pending Invitation');
 
       // Reject membership again and reload for it to be visible
@@ -403,8 +403,8 @@ describe('Dockstore Organizations', () => {
     });
 
     it('Delete rejected invitation', () => {
-      cy.get('#remove-user-1').should('exist').should('be.enabled').click();
-      cy.get('.mat-mdc-dialog-title').should('contain', 'Delete Invitation');
+      cy.get('[data-cy=remove-user-1]').should('exist').should('be.enabled').click();
+      cy.get('[data-cy=upsert-member-dialog-title]').should('contain', 'Delete Invitation');
       cy.get('[data-cy=confirm-dialog-button]').should('not.be.disabled').click();
       cy.get('app-organization-members').contains('potato').should('not.exist');
     });

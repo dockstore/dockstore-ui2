@@ -288,7 +288,7 @@
           (selectedTabChange)="selectedTabChange($event)"
           mat-stretch-tabs
         >
-          <mat-tab id="infoTab" label="Info">
+          <mat-tab label="Info" data-cy="info-tab">
             <app-info-tab
               [validVersions]="validVersions"
               [extendedWorkflow]="extendedWorkflow$ | async"
@@ -300,7 +300,7 @@
             ></app-info-tab>
           </mat-tab>
           <div *ngIf="entryType === EntryType.Notebook">
-            <mat-tab id="previewTab" label="Preview">
+            <mat-tab label="Preview" data-cy="preview-tab">
               <ng-template matTabContent>
                 <div class="mt-4 ml-4 mr-4">
                   <app-notebook
@@ -349,7 +349,7 @@
               </ng-template>
             </mat-tab>
           </div>
-          <mat-tab id="versionsTab" label="Versions">
+          <mat-tab label="Versions" data-cy="versions-tab">
             <div *ngIf="(extendedWorkflow$ | async)?.workflowVersions.length > 0; else noVersionsVersionTab">
               <app-versions-workflow
                 (selectedVersionChange)="onSelectedVersionChange($event)"
@@ -388,7 +388,7 @@
               </div>
             </ng-template>
           </mat-tab>
-          <mat-tab id="fileTab" label="Files">
+          <mat-tab label="Files" data-cy="files-tab">
             <!-- See https://docs.google.com/spreadsheets/d/1tDsm87okoWwaeO9Ae4cc5vapWbTSbXI5eqNSWEOrUcE/edit#gid=0 for all combinations -->
             <ng-template matTabContent>
               <!-- Check if there's versions, then check workflow mode, then check descriptor type -->

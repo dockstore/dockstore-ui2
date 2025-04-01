@@ -1,4 +1,4 @@
-<h1 mat-dialog-title>{{ title }}</h1>
+<h1 mat-dialog-title data-cy="upsert-member-dialog-title">{{ title }}</h1>
 <div mat-dialog-content>
   <app-alert></app-alert>
   <p [innerHTML]="description"></p>
@@ -23,7 +23,7 @@
 <mat-dialog-actions [align]="'end'">
   <button mat-button color="accent" mat-dialog-close>Cancel</button>
   <button
-    id="upsertUserDialogButton"
+    data-cy="upsert-member-button"
     [matTooltip]="title"
     mat-flat-button
     class="accent-1-dark"

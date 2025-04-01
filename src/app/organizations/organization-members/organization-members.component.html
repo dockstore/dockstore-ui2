@@ -32,7 +32,7 @@
       fxFlex.lt-lg="100"
       *ngFor="let organizationUser of organizationMembers$ | async; let index = index"
     >
-      <mat-card [id]="'organization-member-' + index">
+      <mat-card [attr.data-cy]="'organization-member-' + index">
         <mat-card-content fxLayout fxLayoutGap="1rem" fxLayoutAlign="space-between stretch">
           <img
             *ngIf="organizationUser.user?.avatarUrl; else noAvatar"
@@ -88,7 +88,7 @@
                       ? 'Reinvite a user'
                       : 'Edit member\'s role in organization'
                   "
-                  [id]="'edit-user-role-' + index"
+                  [attr.data-cy]="'edit-user-role-' + index"
                   (click)="editUser(organizationUser)"
                 >
                   <mat-icon class="info-icon"
@@ -104,7 +104,7 @@
                       ? 'Remove member from organization'
                       : 'Delete Invitation'
                   "
-                  [id]="'remove-user-' + index"
+                  [attr.data-cy]="'remove-user-' + index"
                   (click)="removeUserDialog(organizationUser)"
                 >
                   <img src="../assets/svg/icons-actions-trash.svg" class="pr-2" alt="Remove member" />

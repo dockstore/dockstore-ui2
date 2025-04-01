@@ -631,18 +631,16 @@ describe('Dockstore my workflows part 3', () => {
       cy.get('#sourceCodeRepositoryWorkflowPathInput').clear();
       cy.get('#sourceCodeRepositoryWorkflowPathInput').type('/Dockstore.cwl');
       notHaveAlert();
-      // Apparently the actual radio button inside Angular material buttons is hidden, so doing it this way
-      const matMdcRadioButton = '.mat-mdc-radio-button';
-      cy.get('#descriptorTypeRadioButtons').contains(cwlDescriptorType).click();
-      cy.get('#descriptorTypeRadioButtons').contains(wdlDescriptorType).click();
+      cy.get(`[data-cy=${cwlDescriptorType}-radio-button]`).click();
+      cy.get(`[data-cy=${wdlDescriptorType}-radio-button]`).click();
       haveAlert();
       cy.get('#sourceCodeRepositoryWorkflowPathInput').clear().type('/Dockstore.wdl');
       notHaveAlert();
-      cy.get('#descriptorTypeRadioButtons').contains(nextflowDescriptorType).click();
+      cy.get(`[data-cy=${nextflowDescriptorType}-radio-button]`).click();
       haveAlert();
       cy.get('#sourceCodeRepositoryWorkflowPathInput').clear().type('/Dockstore.config');
       notHaveAlert();
-      cy.get('#descriptorTypeRadioButtons').contains(cwlDescriptorType).click();
+      cy.get(`[data-cy=${cwlDescriptorType}-radio-button]`).click();
       haveAlert();
       cy.get('#sourceCodeRepositoryWorkflowPathInput').clear().type('/Dockstore.cwl');
       notHaveAlert();

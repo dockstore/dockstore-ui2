@@ -114,13 +114,17 @@
         <mat-radio-group
           class="w-100 radio-group"
           position="before"
-          id="descriptorTypeRadioButtons"
           [(ngModel)]="workflow.descriptorType"
           name="descriptorTypes"
           (change)="radioButtonChange($event)"
         >
           <mat-label>Descriptor Type: </mat-label>
-          <mat-radio-button class="radio-button" *ngFor="let descriptorType of descriptorLanguages$ | async" [value]="descriptorType">
+          <mat-radio-button
+            class="radio-button"
+            *ngFor="let descriptorType of descriptorLanguages$ | async"
+            [value]="descriptorType"
+            [attr.data-cy]="('descriptor_type' | mapFriendlyValue: descriptorType) + '-radio-button'"
+          >
             {{ 'descriptor_type' | mapFriendlyValue: descriptorType }}
           </mat-radio-button>
         </mat-radio-group>
@@ -203,7 +207,6 @@
         <p>Create a workflow with all descriptor files created and stored on Dockstore.org.</p>
 
         <mat-radio-group
-          id="descriptorTypeRadioButtons"
           position="before"
           class="radio-group"
           [(ngModel)]="hostedWorkflow.descriptorType"
