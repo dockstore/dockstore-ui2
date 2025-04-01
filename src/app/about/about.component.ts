@@ -53,7 +53,7 @@ export class AboutComponent implements OnInit {
     new Sponsor('galaxy.png', new URL('https://galaxyproject.org/')),
   ];
   public contributors: Sponsor[] = [
-    new Sponsor('collaboratory.svg', new URL('https://www.cancercollaboratory.org/')),
+    new Sponsor('collaboratory.svg', new URL('https://doi.org/10.1158/1538-7445.AM2017-378')),
     new Sponsor('oicr.svg', new URL('https://oicr.on.ca/')),
     new Sponsor('ucsc.png', new URL('https://ucscgenomics.soe.ucsc.edu/')),
     new Sponsor('broad.svg', new URL('https://www.broadinstitute.org/')),
