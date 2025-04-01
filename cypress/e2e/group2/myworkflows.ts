@@ -602,13 +602,13 @@ describe('Dockstore my workflows part 3', () => {
         cy.get('mat-select').eq(1).click().type('{enter}', { force: true });
 
         // foobar/canDeleteMe should be on and not disabled
-        cy.get('[data-cy="foobar/canDeleteMe-toggle"] button').should('be.checked');
+        cy.get('[data-cy="foobar/canDeleteMe-toggle"]').should('be.checked');
         // foobar/cannotDeleteMe should be on and disabled
-        cy.get('[data-cy="foobar/cannotDeleteMe-toggle"] button').should('be.checked');
+        cy.get('[data-cy="foobar/cannotDeleteMe-toggle"]').should('be.checked');
         cy.get('[data-cy="foobar/cannotDeleteMe-toggle"] button').should('be.disabled');
 
         // foobar/doesNotExist should be off and not disabled
-        cy.get('[data-cy="foobar/doesNotExist-toggle"] button').should('not.be.checked');
+        cy.get('[data-cy="foobar/doesNotExist-toggle"]').should('not.be.checked');
         cy.get('[data-cy="foobar/doesNotExist-toggle"] button').should('not.be.disabled');
       });
     });

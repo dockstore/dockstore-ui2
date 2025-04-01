@@ -100,6 +100,7 @@ export function insertAuthors() {
 }
 
 export function typeInInput(dataCyName: string, text: string) {
+  // Need focus() so that the input is revealed and not hidden by the mat label
   cy.get(`[data-cy=${dataCyName}]`).focus().clear().type(text);
 }
 
