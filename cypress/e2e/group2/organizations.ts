@@ -371,7 +371,7 @@ describe('Dockstore Organizations', () => {
 
     it('be able to Delete organization user', () => {
       cy.get('[data-cy=remove-user-1]').should('not.be.disabled').click();
-      cy.get('[data-cy=upsert-member-dialog-title]').should('contain', 'Remove Member from Organization');
+      cy.get('[data-cy=confirmation-dialog-title]').should('contain', 'Remove Member from Organization');
       cy.get('[data-cy=confirm-dialog-button]').should('not.be.disabled').click();
       cy.get('app-organization-members').contains('potato').should('not.exist');
     });
@@ -404,7 +404,7 @@ describe('Dockstore Organizations', () => {
 
     it('Delete rejected invitation', () => {
       cy.get('[data-cy=remove-user-1]').should('exist').should('be.enabled').click();
-      cy.get('[data-cy=upsert-member-dialog-title]').should('contain', 'Delete Invitation');
+      cy.get('[data-cy=confirmation-dialog-title]').should('contain', 'Delete Invitation');
       cy.get('[data-cy=confirm-dialog-button]').should('not.be.disabled').click();
       cy.get('app-organization-members').contains('potato').should('not.exist');
     });

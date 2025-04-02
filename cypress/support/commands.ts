@@ -285,3 +285,12 @@ export function checkNewsAndUpdates() {
 export function checkMastodonFeed() {
   cy.get('[data-cy=mt-toot]').should('exist');
 }
+
+export function selectUnpublishedTab(org: string) {
+  // Get tab in <org>-tab-group containing 'Unpublished'
+  cy.get(`[data-cy="${org}-tab-group"]`).should('be.visible').contains('Unpublished').click();
+}
+
+export function selectEntryFromSideBar(entry: string) {
+  cy.get(`[data-cy="${entry}-link"]`).should('be.visible').click();
+}

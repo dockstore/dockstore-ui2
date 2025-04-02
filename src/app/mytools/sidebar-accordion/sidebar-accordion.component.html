@@ -15,6 +15,7 @@
         mat-stretch-tabs
         class="tool-tab-group small-tab-header no-scroll-tabs"
         [selectedIndex]="orgObj | selectTab: (toolId$ | async)"
+        [attr.data-cy]="orgObj?.namespace + '-tab-group'"
       >
         <mat-tab label="Published">
           <ng-template *ngTemplateOutlet="items; context: { items: orgObj.published, itemState: 'published' }"></ng-template>
@@ -34,6 +35,7 @@
               class="no-wrap"
               title="{{ toolObj?.name + (toolObj?.toolname ? '/' + toolObj?.toolname : '') }}"
               [routerLink]="'/my-tools/' + toolObj.tool_path"
+              [attr.data-cy]="toolObj?.name + (toolObj?.toolname ? '/' + toolObj?.toolname : '') + '-link'"
             >
               {{ toolObj?.name + (toolObj?.toolname ? '/' + toolObj?.toolname : '') }}
             </a>

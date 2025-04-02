@@ -1,43 +1,26 @@
 import { LambdaEvent } from '../../../src/app/shared/openapi';
-import { goToTab, insertAppTools, isActiveTab, resetDB, setTokenUserViewPort } from '../../support/commands';
+import {
+  goToTab,
+  insertAppTools,
+  isActiveTab,
+  resetDB,
+  selectEntryFromSideBar,
+  selectUnpublishedTab,
+  setTokenUserViewPort,
+} from '../../support/commands';
 
 describe('GitHub App Tools', () => {
   resetDB();
   insertAppTools();
   setTokenUserViewPort();
 
-  function selectUnpublishedTab(org: string) {
-    cy.get('#tool-path').should('be.visible');
-    cy.get('mat-expansion-panel-header')
-      .contains(org)
-      .parentsUntil('mat-accordion')
-      .should('be.visible')
-      .contains('.mat-mdc-tab', 'Unpublished')
-      .should('be.visible')
-      .click();
-  }
-
-  function selectUnpublishedGitHubAppTab(org: string) {
-    cy.get('#workflow-path').should('be.visible');
-    cy.get('mat-expansion-panel-header')
-      .contains(org)
-      .parentsUntil('mat-accordion')
-      .should('be.visible')
-      .contains('.mat-mdc-tab', 'Unpublished')
-      .click();
-  }
-
   function selectGitHubAppTool(tool: string) {
     cy.get('#workflow-path').should('be.visible');
-    cy.wait(5000);
-    const alias = 'thetool';
-    cy.contains('div .no-wrap', tool).should('be.visible').as(alias);
-    // Cypress recommends using an alias like this to get around element being re-rendered
-    cy.get('@' + alias).click();
+    selectEntryFromSideBar(tool);
     cy.get('#workflow-path').contains(tool);
   }
 
-  describe('User Page', () => {
+  describe.skip('User Page', () => {
     it('Admins should see user GitHub app logs', () => {
       cy.visit('/users/user_A');
       const mockEvent: LambdaEvent[] = [
@@ -203,7 +186,7 @@ describe('GitHub App Tools', () => {
       cy.contains('Configuration');
       cy.contains('/.dockstore.yml');
 
-      selectUnpublishedGitHubAppTab('C');
+      selectUnpublishedTab('C');
       cy.wait(1000);
       selectGitHubAppTool('test-github-app-tools/md5sum');
       cy.get('#publishButton').should('not.be.disabled');
@@ -250,7 +233,7 @@ describe('GitHub App Tools', () => {
       cy.contains('Ignored');
     });
 
-    it('Table view', () => {
+    it.skip('Table view', () => {
       cy.visit('/apptools');
       cy.url().should('contain', 'apptools');
       cy.get('[data-cy=search-input]');

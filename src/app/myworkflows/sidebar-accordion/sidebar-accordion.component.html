@@ -27,7 +27,7 @@
       *ngFor="let orgObj of sourceObj.value.groupEntryInfo; trackBy: trackByOrgWorkflowObject"
       [class.tool]="isTool$ | async"
     >
-      <mat-expansion-panel-header class="pt-2" [class.tool]="isTool$ | async">
+      <mat-expansion-panel-header class="pt-2" [class.tool]="isTool$ | async" [attr.data-cy]="orgObj?.organization + '-panel-header'">
         {{ orgObj?.organization }}
       </mat-expansion-panel-header>
 
@@ -40,6 +40,7 @@
         mat-stretch-tabs
         [ngClass]="((isTool$ | async) ? 'tool-tab-group' : 'workflow-tab-group') + ' small-tab-header no-scroll-tabs'"
         [selectedIndex]="orgObj | selectTab: (workflowId$ | async)"
+        [attr.data-cy]="orgObj?.organization + '-tab-group'"
       >
         <mat-tab label="Published">
           <ng-template *ngTemplateOutlet="items; context: { items: orgObj.published, itemState: 'published' }"></ng-template>
@@ -65,6 +66,7 @@
               class="no-wrap"
               title="{{ workflowObj?.repository + (workflowObj?.workflowName ? '/' + workflowObj?.workflowName : '') }}"
               [routerLink]="'/my-' + (entryType$ | async) + 's/' + workflowObj.full_workflow_path"
+              [attr.data-cy]="workflowObj?.repository + (workflowObj?.workflowName ? '/' + workflowObj?.workflowName : '') + '-link'"
             >
               {{ workflowObj?.repository + (workflowObj?.workflowName ? '/' + workflowObj?.workflowName : '') }}
             </a>

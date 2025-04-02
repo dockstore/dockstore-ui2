@@ -14,7 +14,15 @@
  *     limitations under the License.
  */
 import { DockstoreTool } from '../../../src/app/shared/openapi';
-import { goToTab, resetDB, setTokenUserViewPort, setTokenUserViewPortCurator, typeInInput } from '../../support/commands';
+import {
+  goToTab,
+  resetDB,
+  selectEntryFromSideBar,
+  selectUnpublishedTab,
+  setTokenUserViewPort,
+  setTokenUserViewPortCurator,
+  typeInInput,
+} from '../../support/commands';
 
 describe('Dockstore my tools', () => {
   resetDB();
@@ -24,26 +32,9 @@ describe('Dockstore my tools', () => {
     cy.visit('/my-tools');
   });
 
-  function selectUnpublishedTab(org: string) {
-    cy.get('#tool-path').should('be.visible');
-    cy.get('mat-expansion-panel-header')
-      .contains(org)
-      .parentsUntil('mat-accordion')
-      .should('be.visible')
-      .contains('.mdc-tab', 'Unpublished')
-      .should('be.visible')
-      .click();
-  }
-
-  function selectTool(tool: string) {
-    cy.get('#tool-path').should('be.visible');
-    cy.contains('div .no-wrap', tool).should('be.visible').click();
-    cy.get('#tool-path').contains(tool);
-  }
-
   describe('Go to published tool A2/b3', () => {
     it('Should have two versions visible', () => {
-      selectTool('b3');
+      selectEntryFromSideBar('b3');
       goToTab('Versions');
       cy.get('tbody>tr').should('have.length', 2);
     });
@@ -85,7 +76,7 @@ describe('Dockstore my tools', () => {
       cy.visit('/my-tools');
       cy.wait('@getTool');
       selectUnpublishedTab('A2');
-      selectTool('b1');
+      selectEntryFromSideBar('b1');
       cy.contains('github.com');
       cy.get('a#sourceRepository').contains('A2/b1').should('have.attr', 'href', 'https://github.com/A2/b1');
       cy.contains('quay.io');
@@ -136,7 +127,7 @@ describe('Dockstore my tools', () => {
       // Select the manual topic and verify that it's displayed publicly
       cy.visit(privateEntryURI);
       cy.get('[data-cy=topicEditButton]').click();
-      cy.get('.mat-mdc-radio-button').contains('Manual').click();
+      cy.get('[data-cy=Manual-radio-button]').click();
       cy.get('[data-cy=topicSaveButton]').click();
       cy.wait('@updateTool');
       cy.get('[data-cy=viewPublicToolButton]').should('be.visible').click();
@@ -155,7 +146,7 @@ describe('Dockstore my tools', () => {
       cy.intercept('api/containers/*?include=validations').as('getTool');
       cy.wait('@getTool');
       selectUnpublishedTab('A2');
-      selectTool('b1');
+      selectEntryFromSideBar('b1');
       cy.contains('Versions').click();
       cy.contains('button', 'Actions').should('be.visible').click();
       cy.get('[data-cy=editTagButton]').should('be.visible').click();
@@ -188,7 +179,7 @@ describe('Dockstore my tools', () => {
       cy.intercept('api/containers/*?include=validations').as('getTool');
       cy.wait('@getTool');
       selectUnpublishedTab('A2');
-      selectTool('b1');
+      selectEntryFromSideBar('b1');
 
       cy.get('[data-cy=viewPublicToolButton]').should('not.exist');
 

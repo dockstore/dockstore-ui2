@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { goToTab, resetDB, setTokenUserViewPort } from '../../support/commands';
+import { goToTab, resetDB, selectEntryFromSideBar, setTokenUserViewPort } from '../../support/commands';
 
 describe('Checker workflow test from my-workflows', () => {
   resetDB();
@@ -27,12 +27,7 @@ describe('Checker workflow test from my-workflows', () => {
    * This specifically gets the 'l' workflow, not something containing the 'l', but exactly 'l'
    */
   function getWorkflow() {
-    cy.contains('mat-expansion-panel', 'A')
-      .first()
-      .parentsUntil('accordion-group')
-      .contains('div .no-wrap', /\l\b/)
-      .should('be.visible')
-      .click();
+    selectEntryFromSideBar('l');
   }
 
   describe('Should be able to register and publish a checker workflow from a workflow', () => {

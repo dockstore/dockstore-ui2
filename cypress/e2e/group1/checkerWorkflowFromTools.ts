@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { goToTab, resetDB, setTokenUserViewPort } from '../../support/commands';
+import { goToTab, resetDB, selectEntryFromSideBar, setTokenUserViewPort } from '../../support/commands';
 
 describe('Checker workflow test from my-tools', () => {
   resetDB();
@@ -25,11 +25,7 @@ describe('Checker workflow test from my-tools', () => {
   });
 
   function goToB3() {
-    cy.contains('A2')
-      .parentsUntil('accordion-group')
-      .contains('div .no-wrap', /\bb3\b/)
-      .should('be.visible')
-      .click();
+    selectEntryFromSideBar('b3');
     cy.get('#tool-path').contains('quay.io/A2/b3:latest');
   }
 

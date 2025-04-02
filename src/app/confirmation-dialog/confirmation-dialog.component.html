@@ -1,4 +1,4 @@
-<h1 *ngIf="data?.title" mat-dialog-title>{{ data.title }}</h1>
+<h1 *ngIf="data?.title" mat-dialog-title data-cy="confirmation-dialog-title">{{ data.title }}</h1>
 
 <div *ngIf="data?.message" mat-dialog-content [innerHTML]="data.message"></div>
 <mat-dialog-actions [align]="'end'">

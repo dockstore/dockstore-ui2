@@ -190,9 +190,10 @@ describe('Dockstore notebooks', () => {
   }
 
   function checkTabLabels() {
-    cy.get('[data-cy=info-tab]').contains('Info');
-    cy.get('[data-cy=preview-tab]').contains('Preview');
-    cy.get('[data-cy=versions-tab]').contains('Versions');
-    cy.get('[data-cy=files-tab]').contains('Files');
+    cy.get('[data-cy=workflow-tab-group]').contains('Info');
+    cy.get('[data-cy=workflow-tab-group]').contains('Info');
+    cy.get('[data-cy=workflow-tab-group]').contains('Preview');
+    cy.get('[data-cy=workflow-tab-group]').contains('Versions');
+    cy.get('[data-cy=workflow-tab-group]').contains('Files');
   }
 });
