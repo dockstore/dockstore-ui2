@@ -72,6 +72,10 @@ export class WorkflowLaunchService extends LaunchService {
     return `dockstore workflow wes launch --entry ${workflowPath}:${versionName} --json ${this.agcWrapperFile} -a ${this.wesInputFile}`;
   }
 
+  getToilLaunch(workflow: Workflow, versionName: string) {
+    return `toil command {workflow.trsId}:{versionName}`;
+  }
+
   getAgcFileWrapper() {
     return `echo '{\"workflowInputs\": \"${this.wesInputFile}\"}' > ${this.agcWrapperFile}`;
   }
