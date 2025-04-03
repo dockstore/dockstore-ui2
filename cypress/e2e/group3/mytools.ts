@@ -15,13 +15,14 @@
  */
 import { DockstoreTool } from '../../../src/app/shared/openapi';
 import {
+  selectRadioButton,
   goToTab,
   resetDB,
-  selectEntryFromSideBar,
-  selectUnpublishedTab,
   setTokenUserViewPort,
   setTokenUserViewPortCurator,
   typeInInput,
+  selectSidebarEntry,
+  selectOrganizationSidebarTab,
 } from '../../support/commands';
 
 describe('Dockstore my tools', () => {
@@ -34,7 +35,7 @@ describe('Dockstore my tools', () => {
 
   describe('Go to published tool A2/b3', () => {
     it('Should have two versions visible', () => {
-      selectEntryFromSideBar('b3');
+      selectSidebarEntry('quay.io/A2/b3');
       goToTab('Versions');
       cy.get('tbody>tr').should('have.length', 2);
     });
@@ -75,8 +76,8 @@ describe('Dockstore my tools', () => {
       cy.intercept('PUT', 'api/containers/*').as('updateTool');
       cy.visit('/my-tools');
       cy.wait('@getTool');
-      selectUnpublishedTab('A2');
-      selectEntryFromSideBar('b1');
+      selectOrganizationSidebarTab('A2', false);
+      selectSidebarEntry('quay.io/A2/b1');
       cy.contains('github.com');
       cy.get('a#sourceRepository').contains('A2/b1').should('have.attr', 'href', 'https://github.com/A2/b1');
       cy.contains('quay.io');
@@ -127,7 +128,7 @@ describe('Dockstore my tools', () => {
       // Select the manual topic and verify that it's displayed publicly
       cy.visit(privateEntryURI);
       cy.get('[data-cy=topicEditButton]').click();
-      cy.get('[data-cy=Manual-radio-button]').click();
+      selectRadioButton('Manual-radio-button');
       cy.get('[data-cy=topicSaveButton]').click();
       cy.wait('@updateTool');
       cy.get('[data-cy=viewPublicToolButton]').should('be.visible').click();
@@ -145,8 +146,8 @@ describe('Dockstore my tools', () => {
     it('add and remove test parameter file', () => {
       cy.intercept('api/containers/*?include=validations').as('getTool');
       cy.wait('@getTool');
-      selectUnpublishedTab('A2');
-      selectEntryFromSideBar('b1');
+      selectOrganizationSidebarTab('A2', false);
+      selectSidebarEntry('quay.io/A2/b1');
       cy.contains('Versions').click();
       cy.contains('button', 'Actions').should('be.visible').click();
       cy.get('[data-cy=editTagButton]').should('be.visible').click();
@@ -178,8 +179,8 @@ describe('Dockstore my tools', () => {
     it('publish and unpublish', () => {
       cy.intercept('api/containers/*?include=validations').as('getTool');
       cy.wait('@getTool');
-      selectUnpublishedTab('A2');
-      selectEntryFromSideBar('b1');
+      selectOrganizationSidebarTab('A2', false);
+      selectSidebarEntry('quay.io/A2/b1');
 
       cy.get('[data-cy=viewPublicToolButton]').should('not.exist');
 

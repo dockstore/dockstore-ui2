@@ -66,7 +66,7 @@
               class="no-wrap"
               title="{{ workflowObj?.repository + (workflowObj?.workflowName ? '/' + workflowObj?.workflowName : '') }}"
               [routerLink]="'/my-' + (entryType$ | async) + 's/' + workflowObj.full_workflow_path"
-              [attr.data-cy]="workflowObj?.repository + (workflowObj?.workflowName ? '/' + workflowObj?.workflowName : '') + '-link'"
+              [attr.data-cy]="workflowObj?.full_workflow_path + '-link'"
             >
               {{ workflowObj?.repository + (workflowObj?.workflowName ? '/' + workflowObj?.workflowName : '') }}
             </a>

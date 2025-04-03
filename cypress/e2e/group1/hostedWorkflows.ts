@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { clickFirstActionsButtonPrivate, goToTab, goToUnexpandedSidebarEntry, resetDB, setTokenUserViewPort } from '../../support/commands';
+import { clickFirstActionsButtonPrivate, goToTab, resetDB, setTokenUserViewPort, goToUnexpandedSidebarEntry } from '../../support/commands';
 
 describe('Dockstore hosted workflows', () => {
   resetDB();
@@ -26,7 +26,7 @@ describe('Dockstore hosted workflows', () => {
   });
 
   function getWorkflow() {
-    goToUnexpandedSidebarEntry('A2', /hosted/);
+    goToUnexpandedSidebarEntry('A2', 'dockstore.org/A2/hosted-workflow');
   }
 
   // using an ugly name to flex workflow naming functionality a bit
@@ -154,9 +154,7 @@ describe('Dockstore hosted workflows', () => {
     });
     it('Add files to hosted workflow', () => {
       // navigate to workflow
-      cy.get('.mat-expansion-panel');
-      cy.contains('.mat-expansion-panel', 'user_A').click();
-      cy.contains('a', NEW_WORKFLOW_NAME).click();
+      goToUnexpandedSidebarEntry('user_A', 'dockstore.org/user_A/' + NEW_WORKFLOW_NAME);
 
       // Check content of the info tab
       cy.contains('Mode: Hosted');

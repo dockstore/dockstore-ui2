@@ -17,9 +17,9 @@ import {
   cancelMatMenu,
   clickFirstActionsButtonPrivate,
   goToTab,
-  goToUnexpandedSidebarEntry,
   resetDB,
   setTokenUserViewPort,
+  goToUnexpandedSidebarEntry,
 } from '../../support/commands';
 import { workflowEntryTypeMetadata } from '../../../src/app/test/mocked-objects';
 import { BioWorkflow } from '../../../src/app/shared/openapi/model/bioWorkflow';
@@ -206,15 +206,15 @@ describe('Shared with me workflow test from my-workflows', () => {
   }
 
   function getReadOnlyWorkflow() {
-    goToUnexpandedSidebarEntry('user_B', /readertest/);
+    goToUnexpandedSidebarEntry('user_B', 'dockstore.org/user_B/readertest');
   }
 
   function getWriteOnlyWorkflow() {
-    goToUnexpandedSidebarEntry('user_B', /writertest/);
+    goToUnexpandedSidebarEntry('user_B', 'dockstore.org/user_B/writertest');
   }
 
   function getOwnerWorkflow() {
-    goToUnexpandedSidebarEntry('user_B', /ownertest/);
+    goToUnexpandedSidebarEntry('user_B', 'dockstore.org/user_B/ownertest');
   }
 
   describe('Should be able to perform operations on shared with me workflows based on permissions', () => {

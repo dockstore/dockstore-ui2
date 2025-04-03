@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { goToTab, goToUnexpandedSidebarEntry, resetDB, setTokenUserViewPort } from '../../support/commands';
+import { goToTab, resetDB, setTokenUserViewPort, goToUnexpandedSidebarEntry } from '../../support/commands';
 
 describe('Dockstore hosted tools', () => {
   resetDB();
@@ -26,8 +26,7 @@ describe('Dockstore hosted tools', () => {
   });
 
   function getTool() {
-    cy.wait(1000);
-    goToUnexpandedSidebarEntry('hosted-tool', 'ht');
+    goToUnexpandedSidebarEntry('hosted-tool', 'quay.io/hosted-tool/ht');
   }
 
   // Ensure tabs are correct for the hosted tool, try adding a version

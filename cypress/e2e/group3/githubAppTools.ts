@@ -4,9 +4,9 @@ import {
   insertAppTools,
   isActiveTab,
   resetDB,
-  selectEntryFromSideBar,
-  selectUnpublishedTab,
   setTokenUserViewPort,
+  selectSidebarEntry,
+  selectOrganizationSidebarTab,
 } from '../../support/commands';
 
 describe('GitHub App Tools', () => {
@@ -14,13 +14,7 @@ describe('GitHub App Tools', () => {
   insertAppTools();
   setTokenUserViewPort();
 
-  function selectGitHubAppTool(tool: string) {
-    cy.get('#workflow-path').should('be.visible');
-    selectEntryFromSideBar(tool);
-    cy.get('#workflow-path').contains(tool);
-  }
-
-  describe.skip('User Page', () => {
+  describe('User Page', () => {
     it('Admins should see user GitHub app logs', () => {
       cy.visit('/users/user_A');
       const mockEvent: LambdaEvent[] = [
@@ -138,7 +132,7 @@ describe('GitHub App Tools', () => {
       cy.contains('1 – 1 of 1');
       cy.contains('Close').click();
 
-      selectGitHubAppTool('test-github-app-tools/testing');
+      selectSidebarEntry('github.com/C/test-github-app-tools/testing');
       cy.get('#publishButton').should('not.be.disabled');
       cy.get('#publishButton').contains('Unpublish');
       cy.get('[data-cy=viewPublicWorkflowButton]').should('not.be.disabled');
@@ -186,9 +180,8 @@ describe('GitHub App Tools', () => {
       cy.contains('Configuration');
       cy.contains('/.dockstore.yml');
 
-      selectUnpublishedTab('C');
-      cy.wait(1000);
-      selectGitHubAppTool('test-github-app-tools/md5sum');
+      selectOrganizationSidebarTab('C', false);
+      selectSidebarEntry('github.com/C/test-github-app-tools/md5sum');
       cy.get('#publishButton').should('not.be.disabled');
       cy.get('[data-cy=viewPublicWorkflowButton]').should('not.exist');
       cy.get('#publishButton').should('be.visible').contains('Publish').click();
@@ -202,9 +195,9 @@ describe('GitHub App Tools', () => {
       cy.get('#publishButton').should('be.visible').contains('Publish').click();
 
       // Fix that the entry list on the left doesn't update without refreshing the page
-      selectGitHubAppTool('test-github-app-tools/testing');
+      selectSidebarEntry('github.com/C/test-github-app-tools/testing');
 
-      selectGitHubAppTool('test-github-app-tools/md5sum');
+      selectSidebarEntry('github.com/C/test-github-app-tools/md5sum');
       cy.get('[data-cy=viewPublicWorkflowButton]').click();
 
       // Look for something that is on public page that is not in My Tools; avoids detached DOM when clicking on versions below; also
@@ -214,10 +207,10 @@ describe('GitHub App Tools', () => {
       cy.get('[data-cy=tool-icon]').should('exist');
       cy.contains('Tool Information');
       cy.contains('Tool Version Information');
-      cy.get('[data-cy=workflowTitle]').contains('github.com/C/test-github-app-tools/md5sum:invalidTool');
+      cy.get('[data-cy=entry-title]').contains('github.com/C/test-github-app-tools/md5sum:invalidTool');
       goToTab('Versions');
       cy.contains('main').click();
-      cy.get('[data-cy=workflowTitle]').contains('github.com/C/test-github-app-tools/md5sum:main');
+      cy.get('[data-cy=entry-title]').contains('github.com/C/test-github-app-tools/md5sum:main');
       cy.get('#starringButton').click();
       cy.get('#starCountButton').should('contain', '1');
       goToTab('Info');
@@ -233,7 +226,7 @@ describe('GitHub App Tools', () => {
       cy.contains('Ignored');
     });
 
-    it.skip('Table view', () => {
+    it('Table view', () => {
       cy.visit('/apptools');
       cy.url().should('contain', 'apptools');
       cy.get('[data-cy=search-input]');

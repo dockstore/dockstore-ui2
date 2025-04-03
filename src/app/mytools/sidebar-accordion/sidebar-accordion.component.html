@@ -6,7 +6,7 @@
 
   <mat-accordion multi="true">
     <mat-expansion-panel [expanded]="orgObj.expanded" class="mat-elevation-z tool" *ngFor="let orgObj of registryObj.value.groupEntryInfo">
-      <mat-expansion-panel-header class="tool pt-2">
+      <mat-expansion-panel-header class="tool pt-2" [attr.data-cy]="orgObj?.namespace + '-panel-header'">
         {{ orgObj?.namespace }}
       </mat-expansion-panel-header>
 
@@ -35,7 +35,7 @@
               class="no-wrap"
               title="{{ toolObj?.name + (toolObj?.toolname ? '/' + toolObj?.toolname : '') }}"
               [routerLink]="'/my-tools/' + toolObj.tool_path"
-              [attr.data-cy]="toolObj?.name + (toolObj?.toolname ? '/' + toolObj?.toolname : '') + '-link'"
+              [attr.data-cy]="toolObj.tool_path + '-link'"
             >
               {{ toolObj?.name + (toolObj?.toolname ? '/' + toolObj?.toolname : '') }}
             </a>

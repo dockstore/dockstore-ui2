@@ -101,7 +101,11 @@ export function insertAuthors() {
 
 export function typeInInput(dataCyName: string, text: string) {
   // Need focus() so that the input is revealed and not hidden by the mat label
-  cy.get(`[data-cy=${dataCyName}]`).focus().clear().type(text);
+  cy.get(`[data-cy="${dataCyName}"]`).focus().clear().type(text);
+}
+
+export function selectRadioButton(dataCyName: string) {
+  cy.get(`[data-cy="${dataCyName}"] [type="radio"]`).check();
 }
 
 // Sets it to the user where id = 1. Is an admin and curator.
@@ -133,14 +137,27 @@ export function setPlatformPartnerRole() {
   invokeSql("update enduser set platformpartner='TERRA' where username = 'user_platform_partner'");
 }
 
-export function goToUnexpandedSidebarEntry(organization: string, repo: RegExp | string) {
-  // This is needed because of a possible defect in the implementation.
-  // All expansion panels are shown before any of them are expanded (after some logic of choosing which to expanded).
-  // If the user expands a panel before the above happens, their choice gets overwritten
-  cy.get('.mat-expanded');
-  cy.contains(organization).parent().click();
-  // Can't seem to select the mat-expansion-panel for some reason without triple parent
-  cy.contains(organization).parent().parent().parent().contains('div .no-wrap', repo).should('be.visible').click();
+export function goToUnexpandedSidebarEntry(organization: string, entryPath: string) {
+  expandOrganizationSidebarPanel(organization);
+  selectSidebarEntry(entryPath);
+}
+
+export function expandOrganizationSidebarPanel(organization: string) {
+  cy.get('[data-cy=entry-title]').should('be.visible'); // Ensures that the page and side bar is fully loaded
+  cy.get(`[data-cy="${organization}-panel-header"]`).click();
+  cy.get(`[data-cy="${organization}-tab-group"]`).should('be.visible');
+}
+
+export function selectOrganizationSidebarTab(organization: string, published: boolean) {
+  cy.get(`[data-cy="${organization}-tab-group"]`)
+    .should('be.visible')
+    .contains(published ? 'Published' : 'Unpublished')
+    .click();
+}
+
+export function selectSidebarEntry(entryPath: string) {
+  cy.get(`[data-cy="${entryPath}-link"]`).should('be.visible').click();
+  cy.get('[data-cy=entry-title]').contains(entryPath);
 }
 
 export function invokeSql(sqlStatement: string) {
@@ -284,13 +301,4 @@ export function checkNewsAndUpdates() {
 
 export function checkMastodonFeed() {
   cy.get('[data-cy=mt-toot]').should('exist');
-}
-
-export function selectUnpublishedTab(org: string) {
-  // Get tab in <org>-tab-group containing 'Unpublished'
-  cy.get(`[data-cy="${org}-tab-group"]`).should('be.visible').contains('Unpublished').click();
-}
-
-export function selectEntryFromSideBar(entry: string) {
-  cy.get(`[data-cy="${entry}-link"]`).should('be.visible').click();
 }

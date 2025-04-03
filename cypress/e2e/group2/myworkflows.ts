@@ -16,6 +16,7 @@
 import { LambdaEvent, TokenUser } from '../../../src/app/shared/openapi';
 import { Repository } from '../../../src/app/shared/openapi/model/repository';
 import {
+  selectRadioButton,
   goToTab,
   insertAuthors,
   invokeSql,
@@ -241,7 +242,7 @@ describe('Dockstore my workflows', () => {
       // Select the manual topic and verify that it's displayed publicly
       cy.visit(privateEntryURI);
       cy.get('[data-cy=topicEditButton]').click();
-      cy.get('[data-cy=Manual-radio-button]').click();
+      selectRadioButton('Manual-radio-button');
       cy.get('[data-cy=topicSaveButton]').click();
       cy.wait('@updateWorkflow');
       cy.get('[data-cy=selected-topic]').should('contain.text', 'goodTopic');
@@ -266,7 +267,7 @@ describe('Dockstore my workflows', () => {
       // Select the AI topic and verify that it's displayed publicly without an AI bubble
       cy.visit(privateEntryURI);
       cy.get('[data-cy=topicEditButton]').click();
-      cy.get('[data-cy=AI-radio-button]').click();
+      selectRadioButton('AI-radio-button');
       cy.get('[data-cy=topicSaveButton]').click();
       cy.get('[data-cy=confirmAISelectionPrompt').should('be.visible');
       cy.get('[data-cy=topicConfirmButton]').click();
@@ -631,16 +632,16 @@ describe('Dockstore my workflows part 3', () => {
       cy.get('#sourceCodeRepositoryWorkflowPathInput').clear();
       cy.get('#sourceCodeRepositoryWorkflowPathInput').type('/Dockstore.cwl');
       notHaveAlert();
-      cy.get(`[data-cy=${cwlDescriptorType}-radio-button]`).click();
-      cy.get(`[data-cy=${wdlDescriptorType}-radio-button]`).click();
+      selectRadioButton(`${cwlDescriptorType}-radio-button`);
+      selectRadioButton(`${wdlDescriptorType}-radio-button`);
       haveAlert();
       cy.get('#sourceCodeRepositoryWorkflowPathInput').clear().type('/Dockstore.wdl');
       notHaveAlert();
-      cy.get(`[data-cy=${nextflowDescriptorType}-radio-button]`).click();
+      selectRadioButton(`${nextflowDescriptorType}-radio-button`);
       haveAlert();
       cy.get('#sourceCodeRepositoryWorkflowPathInput').clear().type('/Dockstore.config');
       notHaveAlert();
-      cy.get(`[data-cy=${cwlDescriptorType}-radio-button]`).click();
+      selectRadioButton(`${cwlDescriptorType}-radio-button`);
       haveAlert();
       cy.get('#sourceCodeRepositoryWorkflowPathInput').clear().type('/Dockstore.cwl');
       notHaveAlert();
