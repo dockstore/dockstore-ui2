@@ -172,10 +172,17 @@
         </mat-card>
         <app-launch-checker-workflow [versionName]="_selectedVersion?.name" [command]="checkEntryCommand"></app-launch-checker-workflow>
 
-        <mat-card *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.WDL && (published$ | async)">
+        <mat-card
+          *ngIf="
+            ((descriptorType$ | async) === ToolDescriptor.TypeEnum.WDL || (descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL) &&
+            (published$ | async)
+          "
+        >
           <div [matTooltip]="toilTooltip">
-            To run this workflow using UCSC's Toil workflow engine, download and install Toil, and then use the following invocation to
-            start the workflow run:
+            Run this workflow using UCSC's Toil workflow engine
+            <button mat-icon-button color="secondary" matTooltip="Copy command" [cdkCopyToClipboard]="toilLaunchCommand" appSnackbar>
+              <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
+            </button>
             <pre>{{ toilLaunchCommand }}</pre>
           </div>
         </mat-card>

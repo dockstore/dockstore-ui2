@@ -98,6 +98,7 @@ export class LaunchWorkflowComponent extends EntryTab implements OnInit, OnChang
   EntryType = EntryType;
   protected published$: Observable<boolean>;
   protected ngUnsubscribe: Subject<{}> = new Subject();
+  toilLaunchCommand: string;
   toilTooltip = this.launchService.toilTooltip;
 
   constructor(
@@ -126,9 +127,15 @@ export class LaunchWorkflowComponent extends EntryTab implements OnInit, OnChang
   }
 
   reactToDescriptor(): void {
-    this.changeMessages(this.basePath, this.path, this._selectedVersion.name, this.currentDescriptor);
+    this.changeMessages(this.workflow, this.basePath, this.path, this._selectedVersion.name, this.currentDescriptor);
   }
-  private changeMessages(basePath: string, workflowPath: string, versionName: string, descriptorType: ToolDescriptor.TypeEnum) {
+  private changeMessages(
+    workflow: Workflow,
+    basePath: string,
+    workflowPath: string,
+    versionName: string,
+    descriptorType: ToolDescriptor.TypeEnum
+  ) {
     if (descriptorType === undefined) {
       return;
     }

@@ -20,6 +20,7 @@ import { Dockstore } from '../../shared/dockstore.model';
 import { LaunchService } from '../../shared/launch.service';
 import { ToolDescriptor } from '../../shared/openapi';
 import { EntryType } from '../../shared/enum/entry-type';
+import { Workflow } from '../../shared/openapi/model/workflow';
 
 @Injectable()
 export class WorkflowLaunchService extends LaunchService {
@@ -73,7 +74,7 @@ export class WorkflowLaunchService extends LaunchService {
   }
 
   getToilLaunch(workflow: Workflow, versionName: string) {
-    return `toil command {workflow.trsId}:{versionName}`;
+    return `toil '${workflow.trsId}:${versionName}'`;
   }
 
   getAgcFileWrapper() {
