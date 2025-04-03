@@ -552,12 +552,6 @@ export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterVi
     this.validVersions = this.dockstoreService.getValidVersions(this.workflow.workflowVersions);
   }
 
-  restubWorkflow() {
-    this.workflowsService.restub(this.workflow.id).subscribe((response) => {
-      this.workflowService.setWorkflow(response);
-    });
-  }
-
   resetWorkflowEditData() {
     const labelArray = this.dockstoreService.getLabelStrings(this.workflow.labels);
     const workflowLabels = labelArray;

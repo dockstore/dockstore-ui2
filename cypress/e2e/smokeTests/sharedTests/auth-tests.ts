@@ -233,7 +233,7 @@ function testTool(registry: string, repo: string, name: string) {
 }
 
 function testWorkflow() {
-  describe('Refresh, publish, unpublish, and restub a workflow', () => {
+  describe('Refresh, publish, unpublish a workflow', () => {
     it('refresh and publish', () => {
       storeToken();
 
@@ -271,22 +271,6 @@ function testWorkflow() {
       cy.get('#publishButton').contains('Unpublish').click({ force: true });
 
       goToTab('Info');
-
-      // For now, only restub the workflow in environments that use the sandbox zenodo,
-      // to avoid the subsequent creation of new versions and auto-generation of real
-      // zenodo DOIs, which will accumulate over time because they are effectively
-      // undeletable.
-      // See https://ucsc-cgl.atlassian.net/browse/SEAB-6508
-      if (hasSandboxZenodo()) {
-        cy.intercept('**/restub').as('restub');
-        cy.contains('button', 'Restub').click();
-        // Wait for the restub request to complete, so that it does not overlap
-        // with the subsequent refresh and occasionally trigger a db error on
-        // the webservice.
-        // See https://ucsc-cgl.atlassian.net/browse/SEAB-6535
-        cy.wait('@restub');
-        cy.contains('button', 'Publish').should('be.disabled');
-      }
 
       cy.get('[data-cy=refreshButton]').click();
       goToTab('Versions');

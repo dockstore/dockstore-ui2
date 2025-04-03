@@ -272,16 +272,6 @@
             <div fxFlex="noshrink" fxLayoutAlign="start center">
               <strong [matTooltip]="modeTooltipContent">Mode</strong>: {{ 'mode' | mapFriendlyValue: workflow?.mode }}
             </div>
-            <button
-              mat-raised-button
-              class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
-              type="button"
-              *ngIf="workflow?.mode === WorkflowType.ModeEnum.FULL && !workflow?.is_published && !workflow?.isChecker"
-              (click)="restubWorkflow()"
-              [disabled]="(isRefreshing$ | async) || !canWrite"
-            >
-              <img src="../assets/svg/icons-reject-small.svg" alt="Cancel" class="pr-2 pb-1" />Restub
-            </button>
           </li>
           <li *ngIf="(entryType$ | async) === EntryType.Notebook">
             <strong matTooltip="Programming language used in the notebook">Programming Language</strong>:

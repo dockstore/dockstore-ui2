@@ -30,7 +30,6 @@ import { ExtendedWorkflowsService } from '../../shared/extended-workflows.servic
 import { ExtendedWorkflow } from '../../shared/models/ExtendedWorkflow';
 import { SessionQuery } from '../../shared/session/session.query';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
-import { WorkflowService } from '../../shared/state/workflow.service';
 import { Workflow } from '../../shared/openapi/model/workflow';
 import { WorkflowVersion } from '../../shared/openapi/model/workflowVersion';
 import { Tooltip } from '../../shared/tooltip';
@@ -133,7 +132,6 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   HOSTED: Workflow metadata and files hosted on Dockstore.`;
   Dockstore = Dockstore;
   constructor(
-    private workflowService: WorkflowService,
     private extendedWorkflowsService: ExtendedWorkflowsService,
     private workflowsService: WorkflowsService,
     private sessionQuery: SessionQuery,
@@ -210,18 +208,6 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((editing) => (this.defaultTestFilePathEditing = editing));
     this.infoTabService.forumUrlEditing$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((editing) => (this.forumUrlEditing = editing));
-  }
-  /**
-   * Handle restubbing a workflow
-   * TODO: Handle restub error
-   *
-   * @memberof InfoTabComponent
-   */
-  restubWorkflow() {
-    this.extendedWorkflowsService.restub(this.workflow.id).subscribe((restubbedWorkflow: Workflow) => {
-      this.workflowService.setWorkflow(restubbedWorkflow);
-      this.workflowService.upsertWorkflowToWorkflow(restubbedWorkflow);
-    });
   }
 
   downloadZip() {
