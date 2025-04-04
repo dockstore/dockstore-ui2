@@ -17,7 +17,6 @@ import { LambdaEvent, TokenUser } from '../../../src/app/shared/openapi';
 import { Repository } from '../../../src/app/shared/openapi/model/repository';
 import {
   selectRadioButton,
-  goToTab,
   insertAuthors,
   invokeSql,
   isActiveTab,
@@ -25,6 +24,10 @@ import {
   setTokenUserViewPort,
   setTokenUserViewPortCurator,
   snapshot,
+  goToVersionsTab,
+  goToFilesTab,
+  goToConfigurationTab,
+  clickElement,
 } from '../../support/commands';
 import TokenSourceEnum = TokenUser.TokenSourceEnum;
 
@@ -336,7 +339,7 @@ describe('Dockstore my workflows part 2', () => {
   function gotoVersionsAndClickActions() {
     cy.visit('/my-workflows/github.com/A/l');
     cy.url().should('eq', Cypress.config().baseUrl + '/my-workflows/github.com/A/l');
-    goToTab('Versions');
+    goToVersionsTab();
     cy.wait(1000);
 
     cy.get('td').contains('Actions').click();
@@ -442,7 +445,7 @@ describe('Dockstore my workflows part 2', () => {
       cy.get('[data-cy=user-DOI-icon]').should('be.visible');
       cy.get('[data-cy=concept-DOI-badge]').should('be.visible');
       cy.get('[data-cy=version-DOI-badge]').should('be.visible');
-      goToTab('Versions');
+      goToVersionsTab();
       cy.get('td').contains('Actions').click();
       cy.get('[data-cy=dockstore-request-doi-button').should('not.exist'); // Should not be able to request another DOI
 
@@ -474,14 +477,14 @@ describe('Dockstore my workflows part 2', () => {
     cy.contains('Test File Path').should('not.exist');
 
     // Should not be able to refresh a dockstore.yml workflow version
-    goToTab('Versions');
+    goToVersionsTab();
     cy.contains('button', 'Actions').click();
     cy.contains('button', 'Refresh Version').should('be.disabled');
 
     cy.get('body').type('{esc}');
 
     // Test file content
-    goToTab('Files');
+    goToFilesTab();
 
     cy.contains('/Dockstore.cwl');
     cy.contains('class: Workflow');
@@ -493,7 +496,7 @@ describe('Dockstore my workflows part 2', () => {
     cy.get('mat-option').contains('md5sum-tool.cwl').click();
     cy.contains('class: CommandLineTool');
 
-    goToTab('Configuration');
+    goToConfigurationTab();
     cy.contains('Configuration');
     cy.contains('/.dockstore.yml');
   });
@@ -501,7 +504,7 @@ describe('Dockstore my workflows part 2', () => {
   it('Should be able to refresh a workflow version', () => {
     cy.visit('/my-workflows/github.com/A/l');
     cy.url().should('eq', Cypress.config().baseUrl + '/my-workflows/github.com/A/l');
-    goToTab('Versions');
+    goToVersionsTab();
     cy.wait(1000);
     cy.contains('button', 'Actions').click();
     cy.contains('button', 'Refresh Version').should('not.be.disabled');
@@ -515,7 +518,7 @@ describe('Dockstore my workflows part 2', () => {
     });
     cy.visit('/my-workflows/github.com/A/l');
     cy.url().should('eq', Cypress.config().baseUrl + '/my-workflows/github.com/A/l');
-    goToTab('Versions');
+    goToVersionsTab();
     cy.get('table>tbody>tr').should('have.length', 2); // 2 Versions and no warning line
     cy.get('[data-cy=refreshOrganization]:visible').should('be.visible').click();
     cy.get('[data-cy=confirm-dialog-button]').contains('Refresh').click();
@@ -526,7 +529,7 @@ describe('Dockstore my workflows part 2', () => {
         body: json,
       }).as('getVersion');
     });
-    goToTab('Versions');
+    goToVersionsTab();
     cy.wait('@getVersion');
     cy.get('table>tbody>tr').should('have.length', 1); // 2 Versions and no warning line
   });
@@ -658,7 +661,7 @@ describe('Dockstore my workflows part 3', () => {
       cy.get('[data-cy=close-dialog-button]').should('be.visible').click();
       cy.get('#publishButton').should('contain', 'Publish').should('be.visible');
 
-      goToTab('Versions');
+      goToVersionsTab();
       cy.wait(1000);
       cy.contains('button', 'Actions').click();
       cy.get('[data-cy=set-default-version-button]').should('be.visible').click();
@@ -669,7 +672,7 @@ describe('Dockstore my workflows part 3', () => {
       cy.visit('/my-workflows/github.com/A/l');
       isActiveTab('Info');
       tabs.forEach((tab) => {
-        goToTab(tab);
+        clickElement(`${tab.toLowerCase()}-tab`);
         isActiveTab(tab);
         if (tab === 'Versions') {
           cy.get('table>tbody>tr').should('have.length', 2); // 2 Versions and no warning line

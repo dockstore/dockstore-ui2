@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { goToTab, resetDB, selectSidebarEntry, setTokenUserViewPort } from '../../support/commands';
+import { goToInfoTab, goToLaunchTab, goToVersionsTab, resetDB, selectSidebarEntry, setTokenUserViewPort } from '../../support/commands';
 
 describe('Checker workflow test from my-tools', () => {
   resetDB();
@@ -58,9 +58,9 @@ describe('Checker workflow test from my-tools', () => {
       // cy.url().should('eq', 'http://localhost:4200/my-tools/quay.io/A2/b3')
       cy.get('#viewParentEntryButton').should('not.exist');
       cy.get('#addCheckerWorkflowButton').should('not.exist');
-      goToTab('Launch');
+      goToLaunchTab();
       cy.get('#launchCheckerWorkflow').should('be.visible');
-      goToTab('Info');
+      goToInfoTab();
       cy.get('#viewCheckerWorkflowButton').should('be.visible').click();
 
       // In the checker workflow right now
@@ -68,18 +68,18 @@ describe('Checker workflow test from my-tools', () => {
       cy.get('#viewCheckerWorkflowButton').should('not.exist');
       cy.get('#addCheckerWorkflowButton').should('not.exist');
       cy.wait(3000);
-      goToTab('Launch');
+      goToLaunchTab();
       cy.get('#launchCheckerWorkflow').should('not.exist');
-      goToTab('Info');
+      goToInfoTab();
       cy.get('#viewParentEntryButton').should('be.visible').click();
 
       // In the parent tool right now
       cy.url().should('eq', Cypress.config().baseUrl + '/my-tools/quay.io/A2/b3');
       cy.get('#viewParentEntryButton').should('not.exist');
       cy.get('#addCheckerWorkflowButton').should('not.exist');
-      goToTab('Launch');
+      goToLaunchTab();
       cy.get('#launchCheckerWorkflow').should('be.visible');
-      goToTab('Info');
+      goToInfoTab();
       cy.get('#viewCheckerWorkflowButton').should('be.visible');
     });
     it('visit the tool and have its publish/unpublish reflected in the checker workflow', () => {
@@ -93,10 +93,10 @@ describe('Checker workflow test from my-tools', () => {
       cy.get('#publishToolButton').should('be.visible').should('contain', 'Unpublish').click();
       cy.wait('@unpublishTool');
 
-      goToTab('Versions');
+      goToVersionsTab();
       cy.contains('button', 'Actions').click(); // Clicking it should scroll it into view
       cy.get('[data-cy=set-default-version-button]').should('be.visible').click();
-      goToTab('Info');
+      goToInfoTab();
 
       cy.get('#publishToolButton').should('be.visible').should('contain', 'Publish');
       cy.wait(250);
@@ -138,18 +138,18 @@ describe('Should be able to see the checker workflow from a tool', () => {
     cy.url().should('eq', Cypress.config().baseUrl + '/containers/quay.io/A2/b3:latest?tab=info');
     cy.get('#viewParentEntryButton').should('not.exist');
     cy.get('#addCheckerWorkflowButton').should('not.exist');
-    goToTab('Launch');
+    goToLaunchTab();
     cy.get('#launchCheckerWorkflow').should('be.visible');
-    goToTab('Info');
+    goToInfoTab();
     cy.get('#viewCheckerWorkflowButton').should('be.visible').click();
 
     // In the checker workflow right now
     cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A2/b3/_cwl_checker?tab=info');
     cy.get('#viewCheckerWorkflowButton').should('not.exist');
     cy.get('#addCheckerWorkflowButton').should('not.exist');
-    goToTab('Launch');
+    goToLaunchTab();
     cy.get('#launchCheckerWorkflow').should('not.exist');
-    goToTab('Info');
+    goToInfoTab();
     cy.get('#viewParentEntryButton').should('be.visible').click();
 
     // In the parent tool right now
@@ -157,9 +157,9 @@ describe('Should be able to see the checker workflow from a tool', () => {
     cy.url().should('eq', Cypress.config().baseUrl + '/containers/quay.io/A2/b3:latest?tab=info');
     cy.get('#viewParentEntryButton').should('not.exist');
     cy.get('#addCheckerWorkflowButton').should('not.exist');
-    goToTab('Launch');
+    goToLaunchTab();
     cy.get('#launchCheckerWorkflow').should('be.visible');
-    goToTab('Info');
+    goToInfoTab();
     cy.get('#viewCheckerWorkflowButton').should('be.visible');
   });
 });

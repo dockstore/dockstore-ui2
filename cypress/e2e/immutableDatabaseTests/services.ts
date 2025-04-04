@@ -19,9 +19,11 @@ import {
   cancelMatMenu,
   clickFirstActionsButtonPublic,
   clickFirstActionsButtonPrivate,
-  goToTab,
   setTokenUserViewPort,
   setTokenUserViewPortCurator,
+  goToVersionsTab,
+  goToFilesTab,
+  goToConfigurationTab,
 } from '../../support/commands';
 
 describe('Dockstore Home', () => {
@@ -109,11 +111,11 @@ describe('Dockstore Home', () => {
     });
   });
   function checkTabs() {
-    assertVisibleTab('Info');
-    assertVisibleTab('Versions');
-    assertVisibleTab('Files');
-    assertNoTab('Tools');
-    assertNoTab('DAG');
+    assertVisibleTab('info-tab');
+    assertVisibleTab('versions-tab');
+    assertVisibleTab('files-tab');
+    assertNoTab('tools-tab');
+    assertNoTab('dag-tab');
   }
 
   function checkInfoTab() {
@@ -132,7 +134,7 @@ describe('Dockstore Home', () => {
   }
 
   function checkVersionsTab() {
-    goToTab('Versions');
+    goToVersionsTab();
     cy.contains('tr', 'Git Reference');
     cy.contains('td', '1.3');
     cy.contains('tr', 'Date Modified');
@@ -141,7 +143,7 @@ describe('Dockstore Home', () => {
     cy.contains('tr', 'Verified');
   }
   function checkFilesTab() {
-    goToTab('Files');
+    goToFilesTab();
 
     // Files Tab
     cy.contains('README.md');
@@ -154,7 +156,7 @@ describe('Dockstore Home', () => {
     cy.contains('docker-compose.yml');
 
     // Configuration tab
-    goToTab('Configuration');
+    goToConfigurationTab();
     cy.contains('.dockstore.yml');
     cy.contains('subclass: docker-compose');
   }

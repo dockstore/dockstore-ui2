@@ -13,7 +13,16 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { clickFirstActionsButtonPrivate, goToTab, resetDB, setTokenUserViewPort, goToUnexpandedSidebarEntry } from '../../support/commands';
+import {
+  clickFirstActionsButtonPrivate,
+  resetDB,
+  setTokenUserViewPort,
+  goToUnexpandedSidebarEntry,
+  goToInfoTab,
+  goToVersionsTab,
+  goToFilesTab,
+  goToTestParameterFilesTab,
+} from '../../support/commands';
 
 describe('Dockstore hosted workflows', () => {
   resetDB();
@@ -48,11 +57,11 @@ describe('Dockstore hosted workflows', () => {
       cy.get('#downloadZipButton').should('not.exist');
 
       // Should have alert saying there are no versions
-      goToTab('Versions');
+      goToVersionsTab();
       cy.contains('To see versions, please add a new version in the Files tab.');
 
       // Add a new version with one descriptor
-      goToTab('Files');
+      goToFilesTab();
       cy.get('#editFilesButton').click();
       cy.contains('Add File').click();
       cy.wait(100);
@@ -67,11 +76,11 @@ describe('Dockstore hosted workflows', () => {
       cy.get('#saveNewVersionButton').click();
       cy.get('#workflow-path').contains('dockstore.org/A2/hosted-workflow:1');
       // Should have a version 1
-      goToTab('Versions');
+      goToVersionsTab();
       cy.get('table').contains('span', /\b1\b/);
 
       // Should be able to download zip
-      goToTab('Info');
+      goToInfoTab();
 
       cy.get('#downloadZipButton').should('be.visible');
 
@@ -84,7 +93,7 @@ describe('Dockstore hosted workflows', () => {
       // cy.wait('@downloadZip').its('response.statusCode').should('eq', 200);
 
       // Add a new version with a second descriptor and a test json
-      goToTab('Files');
+      goToFilesTab();
       cy.get('#editFilesButton').click();
       cy.contains('Add File').click();
       cy.window().then(function (window: any) {
@@ -95,7 +104,7 @@ describe('Dockstore hosted workflows', () => {
         });
       });
 
-      goToTab('Test Parameter Files');
+      goToTestParameterFilesTab();
       cy.wait(500);
       cy.contains('Add File').click();
       cy.window().then(function (window: any) {
@@ -109,14 +118,14 @@ describe('Dockstore hosted workflows', () => {
       cy.get('#saveNewVersionButton').click();
       cy.get('#workflow-path').contains('dockstore.org/A2/hosted-workflow:2');
       // Should have a version 2
-      goToTab('Versions');
+      goToVersionsTab();
       cy.get('table').contains('span', /\b2\b/);
 
       // Should be able to publish
       cy.get('#publishButton').should('not.be.disabled');
 
       // Try deleting a file (.wdl file)
-      goToTab('Files');
+      goToFilesTab();
       cy.get('#editFilesButton').click();
       cy.get('.delete-editor-file').first().click();
       cy.get('#saveNewVersionButton').click();
@@ -126,7 +135,7 @@ describe('Dockstore hosted workflows', () => {
       cy.get('.ace_editor').should('have.length', 1);
 
       // New version should be added
-      goToTab('Versions');
+      goToVersionsTab();
       cy.get('table').contains('span', /\b3\b/);
 
       // Delete a version
@@ -135,13 +144,13 @@ describe('Dockstore hosted workflows', () => {
       // Automatically selects the newest version that wasn't the one that was just deleted
       cy.get('#workflow-path').contains('dockstore.org/A2/hosted-workflow:2');
       // Version 3 should no longer exist since it was just deleted
-      goToTab('Versions');
+      goToVersionsTab();
       cy.get('table').find('a').should('not.contain', '3');
 
       // Reload the hosted workflow to test https://github.com/dockstore/dockstore/issues/2854
       cy.reload();
 
-      goToTab('Files');
+      goToFilesTab();
       cy.contains('/Dockstore.wdl').should('be.visible');
     });
     it('Create a new hosted workflow', () => {
@@ -160,7 +169,7 @@ describe('Dockstore hosted workflows', () => {
       cy.contains('Mode: Hosted');
 
       // Add a new version with 3 descriptors
-      goToTab('Files');
+      goToFilesTab();
       cy.get('#editFilesButton').click();
 
       // there should be no descriptors files

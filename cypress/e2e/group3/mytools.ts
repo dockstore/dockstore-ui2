@@ -16,13 +16,13 @@
 import { DockstoreTool } from '../../../src/app/shared/openapi';
 import {
   selectRadioButton,
-  goToTab,
   resetDB,
   setTokenUserViewPort,
   setTokenUserViewPortCurator,
   typeInInput,
   selectSidebarEntry,
   selectOrganizationSidebarTab,
+  goToVersionsTab,
 } from '../../support/commands';
 
 describe('Dockstore my tools', () => {
@@ -36,7 +36,7 @@ describe('Dockstore my tools', () => {
   describe('Go to published tool A2/b3', () => {
     it('Should have two versions visible', () => {
       selectSidebarEntry('quay.io/A2/b3');
-      goToTab('Versions');
+      goToVersionsTab();
       cy.get('tbody>tr').should('have.length', 2);
     });
   });
@@ -187,7 +187,7 @@ describe('Dockstore my tools', () => {
       cy.get('#publishToolButton').click();
       cy.get('[data-cy=close-dialog-button]').click();
 
-      goToTab('Versions');
+      goToVersionsTab();
       cy.contains('button', 'Actions').should('be.visible').click();
       cy.get('[data-cy=set-default-version-button]').should('be.visible').click();
 
@@ -213,7 +213,7 @@ describe('Dockstore my tools', () => {
       cy.get('#publishToolButton').click();
       cy.get('[data-cy=close-dialog-button]').click();
 
-      goToTab('Versions');
+      goToVersionsTab();
       cy.contains('button', 'Actions').should('be.visible').click();
       cy.get('[data-cy=set-default-version-button]').should('be.visible').click();
 
@@ -525,11 +525,11 @@ describe('Dockstore my tools', () => {
     });
     cy.visit('/my-tools/quay.io/A2/a');
     cy.url().should('eq', Cypress.config().baseUrl + '/my-tools/quay.io/A2/a');
-    goToTab('Versions');
+    goToVersionsTab();
     cy.get('table>tbody>tr').should('have.length.greaterThan', 0); // More than one version
     cy.get('[data-cy=refreshOrganization]:visible').click();
     cy.wait('@refreshEntry');
-    goToTab('Versions');
+    goToVersionsTab();
     cy.get('table>tbody>tr').should('have.length', 0); // No versions
   });
   // Refresh org button does not have tool tip, re-enable test when feature is added
@@ -542,7 +542,7 @@ describe('Dockstore my tools', () => {
   describe('Should have correct buttons in Version modal', () => {
     it('Should have "Save Changes" and "Cancel" button when in editing view', () => {
       cy.visit('/my-tools/quay.io/A2/b1');
-      goToTab('Versions');
+      goToVersionsTab();
       cy.contains('button', 'Actions').should('be.visible').click();
       cy.get('[data-cy=editTagButton]').should('be.visible').click();
       cy.get('[data-cy=save-changes-button]').scrollIntoView().should('be.visible');
@@ -550,7 +550,7 @@ describe('Dockstore my tools', () => {
     });
     it('Should have "OK" button when in public (non-editing) view', () => {
       cy.visit('/containers/quay.io/A2/a');
-      goToTab('Versions');
+      goToVersionsTab();
       cy.get('[data-cy=actionsButton]').should('be.visible').first().click();
       cy.get('[data-cy=ok-dialog-close-button]').scrollIntoView().should('be.visible');
       cy.get('[data-cy=ok-dialog-close-button]').click();

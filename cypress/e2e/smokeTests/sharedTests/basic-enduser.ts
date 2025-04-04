@@ -1,12 +1,19 @@
 import { ga4ghPath } from '../../../../src/app/shared/constants';
 import { ToolDescriptor } from '../../../../src/app/shared/openapi';
 import {
-  goToTab,
   checkFeaturedContent,
   checkNewsAndUpdates,
   checkMastodonFeed,
   isStagingOrProd,
   typeInInput,
+  goToLaunchTab,
+  goToInfoTab,
+  goToVersionsTab,
+  goToPreviewTab,
+  goToFilesTab,
+  goToTestParameterFilesTab,
+  goToToolsTab,
+  goToSearchEntryTab,
 } from '../../../support/commands';
 
 // Test an entry, these should be ambiguous between tools, workflows, and notebooks.
@@ -39,7 +46,7 @@ function testEntry(tab: string) {
     cy.visit('/search');
     // Get a workflow in the table results to make sure things are loaded.
     cy.get(`[data-cy=${getSearchDataCy()}] a`);
-    goToTab(tab);
+    goToSearchEntryTab(tab);
     // select a random entry on the first page and navigate to it
     let chosen_index = 0;
     cy.get(`[data-cy=${getSearchDataCy(tab)}]`)
@@ -57,7 +64,7 @@ function testEntry(tab: string) {
 
   it('check info tab', () => {
     goToRandomEntry();
-    goToTab('Info');
+    goToInfoTab();
     // test export to zip button
     cy.get('[data-cy=downloadZip]').within(() => {
       cy.get('a').then((el) => {
@@ -68,14 +75,14 @@ function testEntry(tab: string) {
 
   it('check files tab', () => {
     goToRandomEntry();
-    goToTab('Files');
+    goToFilesTab();
     cy.url().should('contain', '?tab=files');
     cy.contains(tab === 'Notebooks' ? 'Notebook Files' : 'Descriptor Files');
   });
 
   it('check versions tab', () => {
     goToRandomEntry();
-    goToTab('Versions');
+    goToVersionsTab();
     cy.url().should('contain', '?tab=versions');
     cy.get('[data-cy=versionRow]').should('have.length.of.at.least', 1);
   });
@@ -218,30 +225,30 @@ if (Cypress.config('baseUrl') !== 'http://localhost:4200') {
 function testWorkflow(url: string, version1: string, version2: string, trsUrl: string, type: string) {
   it('workflow tabs work for ' + url, () => {
     cy.visit('/workflows/' + url + ':' + version1);
-    goToTab('Launch');
+    goToLaunchTab();
     cy.url().should('contain', '?tab=launch');
-    goToTab('Info');
+    goToInfoTab();
     cy.url().should('contain', '?tab=info');
     cy.contains('mat-card-header', 'Workflow Information');
 
-    goToTab('Versions');
+    goToVersionsTab();
     cy.url().should('contain', '?tab=versions');
 
     // check that clicking on a different version goes to that version's url
     cy.contains('[data-cy=versionName]', version2).click();
     cy.url().should('contain', url + ':' + version2);
 
-    goToTab('Files');
+    goToFilesTab();
     cy.url().should('contain', '?tab=files');
     cy.contains('Descriptor Files');
     cy.get('.ace_editor').should('be.visible');
     cy.wait(1000); // https://ucsc-cgl.atlassian.net/browse/SEAB-5240 wait seems to fix; I think the import script needs to finish downloading
     // before clicking away.
-    goToTab('Test Parameter Files');
+    goToTestParameterFilesTab();
     if (type === ToolDescriptor.TypeEnum.NFL) {
       cy.contains('This version has no files of this type.');
     }
-    goToTab('Tools');
+    goToToolsTab();
     cy.url().should('contain', '?tab=tools');
 
     /// New material have to click twice
@@ -313,14 +320,14 @@ function testNotebook(url: string, version1: string, version2: string, trsUrl: s
   it('notebook tabs work for ' + url, () => {
     cy.visit('/notebooks/' + url + ':' + version1);
 
-    goToTab('Info');
+    goToInfoTab();
     cy.url().should('contain', '?tab=info');
     cy.contains('mat-card-header', 'Notebook Information');
 
-    goToTab('Preview');
+    goToPreviewTab();
     cy.url().should('contain', '?tab=preview');
 
-    goToTab('Versions');
+    goToVersionsTab();
     cy.url().should('contain', '?tab=versions');
 
     // check that clicking on a different version goes to that version's url
@@ -329,7 +336,7 @@ function testNotebook(url: string, version1: string, version2: string, trsUrl: s
       cy.url().should('contain', url + ':' + version2);
     }
 
-    goToTab('Files');
+    goToFilesTab();
     cy.url().should('contain', '?tab=files');
 
     // Check the "Launch with" buttons.

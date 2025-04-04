@@ -13,7 +13,15 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { goToTab, isActiveTab, setTokenUserViewPort } from '../../support/commands';
+import {
+  goToDescriptorFilesTab,
+  goToFilesTab,
+  goToLaunchTab,
+  goToTestParameterFilesTab,
+  goToVersionsTab,
+  isActiveTab,
+  setTokenUserViewPort,
+} from '../../support/commands';
 
 describe('Variations of URL', () => {
   setTokenUserViewPort();
@@ -62,18 +70,18 @@ describe('Dockstore Tool Details of quay.io/A2/a', () => {
     cy.get('.sb-reddit').should('be.visible');
   });
   it('Change tab to launch', () => {
-    goToTab('Launch');
+    goToLaunchTab();
     cy.url().should('eq', Cypress.config().baseUrl + '/containers/quay.io/A2/a:latest?tab=launch');
   });
 
   it('Change tab to versions', () => {
-    goToTab('Versions');
+    goToVersionsTab();
     cy.url().should('eq', Cypress.config().baseUrl + '/containers/quay.io/A2/a:latest?tab=versions');
   });
 
   describe('Change tab to files', () => {
     beforeEach(() => {
-      goToTab('Files');
+      goToFilesTab();
       cy.url().should('contain', Cypress.config().baseUrl + '/containers/quay.io/A2/a:latest?tab=files');
     });
 
@@ -88,7 +96,7 @@ describe('Dockstore Tool Details of quay.io/A2/a', () => {
 
     describe('Change tab to Descriptor files', () => {
       beforeEach(() => {
-        goToTab('Descriptor Files');
+        goToDescriptorFilesTab();
       });
 
       it('Should have content in file viewer', () => {
@@ -98,7 +106,7 @@ describe('Dockstore Tool Details of quay.io/A2/a', () => {
 
     describe('Change tab to Test Parameters', () => {
       beforeEach(() => {
-        goToTab('Test Parameter Files');
+        goToTestParameterFilesTab();
       });
 
       it('Should not have content in file viewer', () => {
@@ -119,7 +127,7 @@ describe('Dockstore Tool Details of quay.io/garyluu/dockstore-cgpmap/cgpmap-cram
 
   describe('Change tab to files', () => {
     beforeEach(() => {
-      goToTab('Files');
+      goToFilesTab();
     });
 
     it('Should have Dockerfile tab selected', () => {
@@ -132,7 +140,7 @@ describe('Dockstore Tool Details of quay.io/garyluu/dockstore-cgpmap/cgpmap-cram
 
     describe('Change tab to Descriptor files', () => {
       beforeEach(() => {
-        goToTab('Descriptor Files');
+        goToDescriptorFilesTab();
       });
 
       it('Should have content in file viewer', () => {
@@ -142,7 +150,7 @@ describe('Dockstore Tool Details of quay.io/garyluu/dockstore-cgpmap/cgpmap-cram
 
     describe('Change tab to Test Parameters', () => {
       beforeEach(() => {
-        goToTab('Test Parameter Files');
+        goToTestParameterFilesTab();
       });
 
       it('Should have content in file viewer', () => {
@@ -160,7 +168,7 @@ describe('Dockstore Tool Details of quay.io/A2/b3', () => {
   });
 
   it('Change tab to versions, should only have one visible', () => {
-    goToTab('Versions');
+    goToVersionsTab();
 
     cy.url().should('eq', Cypress.config().baseUrl + '/containers/quay.io/A2/b3:latest?tab=versions');
 

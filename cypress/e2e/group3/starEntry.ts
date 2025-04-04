@@ -13,7 +13,7 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-import { resetDB, setTokenUserViewPort, typeInInput } from '../../support/commands';
+import { goToRequestsTab, resetDB, setTokenUserViewPort, typeInInput } from '../../support/commands';
 
 describe('Tool, Workflow, and Organization starring', () => {
   resetDB();
@@ -57,13 +57,12 @@ describe('Tool, Workflow, and Organization starring', () => {
 
   function starredPage(entity: string) {
     cy.visit('/starred');
-    const mdcTabClass = '.mdc-tab';
     if (entity === 'tool') {
-      cy.contains(mdcTabClass, 'Tools').click();
+      cy.get('[data-cy=starred-tools-tab]').click();
     } else if (entity === 'workflow') {
-      cy.contains(mdcTabClass, 'Workflows').click();
+      cy.get('[data-cy=starred-workflows-tab]').click();
     } else {
-      cy.contains(mdcTabClass, 'Organizations').click();
+      cy.get('[data-cy=starred-orgs-tab]').click();
     }
     cy.get('#starringButton').should('exist');
     cy.get('#starCountButton').should('exist');
@@ -103,7 +102,7 @@ describe('Tool, Workflow, and Organization starring', () => {
 
       // Approve org
       cy.visit('/accounts');
-      cy.get('.mat-mdc-tab').should('exist').contains('Requests').click();
+      goToRequestsTab();
       cy.get('#approve-pending-org-0').should('exist').click();
       cy.get('#approve-pending-org-dialog').contains('Approve').should('exist').click().wait(500);
 

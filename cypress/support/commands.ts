@@ -14,6 +14,8 @@
  *    limitations under the License.
  */
 
+import { configurationTabName, descriptorFilesTabName, testParameterFilesTabName } from '../../src/app/shared/constants';
+
 // Set the following variable to an appropriate value for your postgres setup.
 // const psqlInvocation: string = 'PASSWORD=dockstore docker exec -i postgres1 psql';
 const psqlInvocation: string = 'PASSWORD=dockstore psql';
@@ -23,14 +25,82 @@ export function isStagingOrProd() {
   return baseUrl === 'https://staging.dockstore.org' || baseUrl === 'https://dockstore.org';
 }
 
-export function goToTab(tabName: string): void {
-  // cypress tests run asynchronously, so if the DOM changes and an element-of-interest becomes detached while we're manipulating it, the test will fail.
-  // our current (admittedly primitive) go-to solution is to wait (sleep) for long enough that the DOM "settles", thus avoiding the "detached element" bug.
-  cy.contains('.mdc-tab', tabName).should('be.visible').click();
+export function clickElement(dataCyName: string): void {
+  // data-cy value is quoted because it's possible for a data-cy name to have spaces
+  cy.get(`[data-cy="${dataCyName}"]`).click();
 }
 
-export function assertVisibleTab(tabName: string): void {
-  cy.get('.mdc-tab').should('be.visible').contains('div', tabName).should('be.visible');
+// Tabs on search page
+export function goToSearchEntryTab(tab: 'Tools' | 'Workflows' | 'Notebooks') {
+  switch (tab) {
+    case 'Tools':
+      clickElement('search-tools-tab');
+    case 'Workflows':
+      clickElement('search-workflows-tab');
+    case 'Notebooks':
+      clickElement('search-notebooks-tab');
+    default:
+      throw new Error('unknown tab');
+  }
+}
+
+// Tabs in an entry page
+export function goToInfoTab(): void {
+  clickElement('info-tab');
+}
+
+export function goToVersionsTab(): void {
+  clickElement('versions-tab');
+}
+
+export function goToLaunchTab(): void {
+  clickElement('launch-tab');
+}
+
+export function goToPreviewTab(): void {
+  clickElement('preview-tab');
+}
+
+export function goToFilesTab(): void {
+  clickElement('files-tab');
+}
+
+export function goToMetricsTab(): void {
+  clickElement('metrics-tab');
+}
+
+export function goToToolsTab(): void {
+  clickElement('tools-tab');
+}
+
+export function goToDagTab(): void {
+  clickElement('dag-tab');
+}
+
+// Secondary tabs in an entry's Files tab
+export function goToDescriptorFilesTab() {
+  clickElement(`${descriptorFilesTabName} tab`);
+}
+
+export function goToTestParameterFilesTab() {
+  clickElement(`${testParameterFilesTabName} tab`);
+}
+
+export function goToConfigurationTab() {
+  clickElement(`${configurationTabName} tab`);
+}
+
+// Tabs in the Account page
+export function goToAccountPreferencesTab() {
+  clickElement('account-preferences-tab');
+}
+
+export function goToRequestsTab() {
+  clickElement('requests-tab');
+}
+
+export function assertVisibleTab(tabDataCyName: string): void {
+  cy.get(`[data-cy="${tabDataCyName}"]`).should('be.visible');
 }
 
 /**
@@ -57,8 +127,8 @@ export function isActiveTab(tabName: string): void {
   cy.contains('.mat-mdc-tab', tabName).should('have.class', 'mat-mdc-focus-indicator');
 }
 
-export function assertNoTab(tabName: string): any {
-  return cy.get('.mat-mdc-tab').should('be.visible').contains('div', tabName).should('not.exist');
+export function assertNoTab(tabDataCyName: string): any {
+  return cy.get(`[data-cy="${tabDataCyName}"]`).should('not.exist');
 }
 
 export function resetDB() {

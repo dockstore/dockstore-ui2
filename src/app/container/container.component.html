@@ -207,7 +207,10 @@
           #entryTabs
           mat-stretch-tabs
         >
-          <mat-tab id="infoTab" label="Info">
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <span data-cy="info-tab">Info</span>
+            </ng-template>
             <app-info-tab-container
               [selectedVersion]="selectedVersion"
               [privateOnlyRegistry]="privateOnlyRegistry"
@@ -215,7 +218,10 @@
               [validVersions]="validVersions"
             ></app-info-tab-container>
           </mat-tab>
-          <mat-tab id="launchTab" label="Launch">
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <span data-cy="launch-tab">Launch</span>
+            </ng-template>
             <app-container-launch
               *ngIf="tool?.workflowVersions.length > 0; else noTags"
               [basePath]="tool?.path"
@@ -233,7 +239,10 @@
               </div>
             </ng-template>
           </mat-tab>
-          <mat-tab id="versionTab" label="Versions">
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <span data-cy="versions-tab">Versions</span>
+            </ng-template>
             <div *ngIf="validVersions">
               <div *ngIf="tool?.workflowVersions?.length > 0; else noVersions">
                 <app-versions-container
@@ -259,7 +268,10 @@
               </button>
             </div>
           </mat-tab>
-          <mat-tab label="Files">
+          <mat-tab>
+            <ng-template mat-tab-label>
+              <span data-cy="files-tab">Files</span>
+            </ng-template>
             <ng-template matTabContent>
               <div *ngIf="validVersions">
                 <div *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">

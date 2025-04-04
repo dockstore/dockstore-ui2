@@ -13,7 +13,14 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { goToTab, isActiveTab, setTokenUserViewPort, setTokenUserViewPortCurator, typeInInput } from '../../support/commands';
+import {
+  goToAccountPreferencesTab,
+  goToRequestsTab,
+  isActiveTab,
+  setTokenUserViewPort,
+  setTokenUserViewPortCurator,
+  typeInInput,
+} from '../../support/commands';
 
 describe('Dropdown test', () => {
   // TODO: GitLab tests are commented out
@@ -94,11 +101,11 @@ describe('Dropdown test', () => {
       cy.url().should('eq', Cypress.config().baseUrl + '/accounts?tab=accounts');
     });
     it('Change tab to Dockstore Account & Preferences', () => {
-      goToTab('Dockstore Account & Preferences');
+      goToAccountPreferencesTab();
       cy.url().should('eq', Cypress.config().baseUrl + '/accounts?tab=dockstore%20account%20and%20preferences');
     });
     it('Change tab to requests', () => {
-      goToTab('Requests');
+      goToRequestsTab();
       cy.url().should('eq', Cypress.config().baseUrl + '/accounts?tab=requests');
     });
     // Check that changing the url changes the tab
@@ -160,7 +167,7 @@ describe('Dropdown test', () => {
       });
       // Choose dropdown
       cy.get('#dropdown-accounts').click();
-      cy.contains('Requests').click();
+      goToRequestsTab();
     });
 
     it('Should have one rejected org', () => {
@@ -339,7 +346,7 @@ describe('Dropdown test', () => {
         body: 'true',
       });
       cy.get('[data-cy=dropdown-account-button]').should('be.visible').click();
-      cy.contains('Dockstore Account & Preferences').click();
+      goToAccountPreferencesTab();
     });
     it('Should have the danger alert', () => {
       cy.get('.alert-danger').should('be.visible');

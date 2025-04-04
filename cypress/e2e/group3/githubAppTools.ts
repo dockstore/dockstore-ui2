@@ -1,12 +1,16 @@
 import { LambdaEvent } from '../../../src/app/shared/openapi';
 import {
-  goToTab,
   insertAppTools,
   isActiveTab,
   resetDB,
   setTokenUserViewPort,
   selectSidebarEntry,
   selectOrganizationSidebarTab,
+  goToLaunchTab,
+  goToInfoTab,
+  goToVersionsTab,
+  goToFilesTab,
+  goToConfigurationTab,
 } from '../../support/commands';
 
 describe('GitHub App Tools', () => {
@@ -138,14 +142,14 @@ describe('GitHub App Tools', () => {
       cy.get('[data-cy=viewPublicWorkflowButton]').should('not.be.disabled');
       cy.get('[data-cy=refreshButton]').should('not.exist');
 
-      goToTab('Info');
+      goToInfoTab();
       isActiveTab('Info');
 
       // Add tests once fixed.
-      goToTab('Launch');
+      goToLaunchTab();
       isActiveTab('Launch');
 
-      goToTab('Versions');
+      goToVersionsTab();
       isActiveTab('Versions');
       cy.get('table>tbody>tr').should('have.length', 1);
       cy.contains('button', 'Actions').click();
@@ -165,7 +169,7 @@ describe('GitHub App Tools', () => {
       cy.get('[data-cy=save-version]').click();
       cy.get('[data-cy=hidden').should('not.exist');
 
-      goToTab('Files');
+      goToFilesTab();
       isActiveTab('Files');
       cy.contains('tools/Dockstore.cwl');
       cy.contains('class: CommandLineTool');
@@ -176,7 +180,7 @@ describe('GitHub App Tools', () => {
             .its('status')
             .should('eq', 200);
         });
-      goToTab('Configuration');
+      goToConfigurationTab();
       cy.contains('Configuration');
       cy.contains('/.dockstore.yml');
 
@@ -187,7 +191,7 @@ describe('GitHub App Tools', () => {
       cy.get('#publishButton').should('be.visible').contains('Publish').click();
       cy.contains('Default Version Required');
       cy.get('[data-cy=close-dialog-button]').click();
-      goToTab('Versions');
+      goToVersionsTab();
       cy.contains('tr', 'invalidTool').contains('button', 'Actions').click();
       cy.contains('button', 'Set as Default Version').should('be.visible').click();
       cy.wait(500);
@@ -208,12 +212,12 @@ describe('GitHub App Tools', () => {
       cy.contains('Tool Information');
       cy.contains('Tool Version Information');
       cy.get('[data-cy=entry-title]').contains('github.com/C/test-github-app-tools/md5sum:invalidTool');
-      goToTab('Versions');
+      goToVersionsTab();
       cy.contains('main').click();
       cy.get('[data-cy=entry-title]').contains('github.com/C/test-github-app-tools/md5sum:main');
       cy.get('#starringButton').click();
       cy.get('#starCountButton').should('contain', '1');
-      goToTab('Info');
+      goToInfoTab();
       cy.get('[data-cy=trs-link]').contains('TRS: github.com/C/test-github-app-tools/md5sum');
 
       // Confirm that an ignored event is displayed correctly.

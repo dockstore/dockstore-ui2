@@ -13,7 +13,18 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { goToTab, isActiveTab, setTokenUserViewPort } from '../../support/commands';
+import {
+  goToConfigurationTab,
+  goToDagTab,
+  goToFilesTab,
+  goToLaunchTab,
+  goToMetricsTab,
+  goToTestParameterFilesTab,
+  goToToolsTab,
+  goToVersionsTab,
+  isActiveTab,
+  setTokenUserViewPort,
+} from '../../support/commands';
 
 describe('Variations of URL', () => {
   setTokenUserViewPort();
@@ -55,12 +66,12 @@ describe('Dockstore Workflow Details', () => {
   });
 
   it('Change tab to launch', () => {
-    goToTab('Launch');
+    goToLaunchTab();
     cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=launch');
   });
 
   it('Change tab to versions and not see snapshotted version', () => {
-    goToTab('Versions');
+    goToVersionsTab();
     cy.get('tbody>tr').should('have.length', 1); // 1 Version and no warning line
     cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=versions');
     // Buttons to create snapshots are hidden on public
@@ -73,7 +84,7 @@ describe('Dockstore Workflow Details', () => {
 
   describe('Change tab to files', () => {
     beforeEach(() => {
-      goToTab('Files');
+      goToFilesTab();
       cy.url().should('contain', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=files');
     });
 
@@ -87,7 +98,7 @@ describe('Dockstore Workflow Details', () => {
 
     describe('Change tab to Test Parameters', () => {
       beforeEach(() => {
-        goToTab('Test Parameter Files');
+        goToTestParameterFilesTab();
       });
 
       it('Should not have content in file viewer', () => {
@@ -100,21 +111,21 @@ describe('Dockstore Workflow Details', () => {
     it('Should see No Metrics banner', () => {
       cy.visit('/workflows/github.com/A/l');
       cy.get('.mat-mdc-tab').should('have.length', 7);
-      goToTab('Metrics');
+      goToMetricsTab();
       cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=metrics');
       cy.get('[data-cy=no-metrics-banner]').should('be.visible');
     });
   });
 
   it('Change tab to tools', () => {
-    goToTab('Tools');
+    goToToolsTab();
     cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=tools');
   });
 
   describe('Change tab to dag', () => {
     it('Change to fullscreen and back', () => {
-      goToTab('DAG');
-      goToTab('DAG');
+      goToDagTab();
+      goToDagTab();
       cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=dag');
       cy.get('[data-cy=dag-holder]').should('have.class', 'small');
       cy.get('[data-cy=dag-holder]').should('not.have.class', 'big');
@@ -140,7 +151,7 @@ describe('Find workflow by alias', () => {
 describe('Test bble', () => {
   it('go to a workflow with multiple files', () => {
     cy.visit('/workflows/github.com/A/l');
-    goToTab('Files');
+    goToFilesTab();
     cy.get('[data-cy=primary-descriptor-bubble]').should('be.visible');
     cy.get('mat-form-field').click();
     cy.contains('mat-option', 'arguments.cwl').click();
@@ -173,7 +184,7 @@ describe('Test sourcefile links', () => {
   it('Should change the Dockstore URL to include the source file path', () => {
     cy.visit('/workflows/github.com/A/l?tab=files');
     cy.url().should('contain', 'file=%2F1st-workflow.cwl');
-    goToTab('Configuration');
+    goToConfigurationTab();
     cy.url().should('not.contain', 'file=');
   });
 

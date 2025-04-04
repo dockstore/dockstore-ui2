@@ -21,12 +21,18 @@
             <mat-tab label="Linked Accounts & Tokens">
               <app-accounts-external></app-accounts-external>
             </mat-tab>
-            <mat-tab label="Dockstore Account & Preferences">
+            <mat-tab>
+              <ng-template mat-tab-label>
+                <span data-cy="account-preferences-tab">Dockstore Account & Preferences</span>
+              </ng-template>
               <ng-template matTabContent>
                 <app-controls></app-controls>
               </ng-template>
             </mat-tab>
-            <mat-tab label="Requests">
+            <mat-tab>
+              <ng-template mat-tab-label>
+                <span data-cy="requests-tab">Requests</span>
+              </ng-template>
               <app-requests></app-requests>
             </mat-tab>
           </mat-tab-group>
