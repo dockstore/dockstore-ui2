@@ -278,16 +278,11 @@ export function verifyGithubLinkDashboard(entryType: string) {
   cy.contains('button', 'Manage Dockstore installations on GitHub').click();
 }
 
-export function testNoGithubEntriesText(entryType: string, repository: string) {
-  it('Should have no published ' + entryType + 's in ' + repository + ' repository', () => {
+export function testNoGithubEntriesText(entryType: string, organization: string) {
+  it('Should have no published ' + entryType + 's in ' + organization + ' repository', () => {
     cy.visit('/my-' + entryType + 's');
-    cy.get('mat-expansion-panel-header').contains(repository).click();
-    cy.get('mat-expansion-panel-header')
-      .contains(repository)
-      .parentsUntil('mat-accordion')
-      .should('be.visible')
-      .contains('.mat-mdc-tab', 'Published')
-      .click();
+    expandOrganizationSidebarPanel(organization);
+    selectOrganizationSidebarTab(organization, true);
     if (entryType === 'tool') {
       cy.get('[data-cy=no-published-appTool-message]').should('contain', 'No published ' + entryType + 's');
     } else {
@@ -296,13 +291,8 @@ export function testNoGithubEntriesText(entryType: string, repository: string) {
   });
   it('Should have no unpublished ' + entryType + 's in dockstore repository', () => {
     cy.visit('/my-' + entryType + 's');
-    cy.get('mat-expansion-panel-header').contains(repository).click();
-    cy.get('mat-expansion-panel-header')
-      .contains(repository)
-      .parentsUntil('mat-accordion')
-      .should('be.visible')
-      .contains('.mat-mdc-tab', 'Unpublished')
-      .click();
+    expandOrganizationSidebarPanel(organization);
+    selectOrganizationSidebarTab(organization, false);
     if (entryType === 'tool') {
       cy.get('[data-cy=no-unpublished-appTool-message]').should('contain', 'No unpublished ' + entryType + 's');
     } else {
