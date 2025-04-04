@@ -124,11 +124,15 @@ export class SearchEntryTableComponent extends Base implements OnInit {
     ['categories.displayName', 'Category'],
   ]);
   public defaultSortOption: SortOption = {
-    label: 'Most Stars',
-    sort: { active: 'starredUsers', direction: 'desc' },
+    label: 'Relevance',
+    sort: { active: null, direction: 'desc' },
   };
   public sortOptions: SortOption[] = [
     this.defaultSortOption,
+    {
+      label: 'Most Stars',
+      sort: { active: 'starredUsers', direction: 'desc' },
+    },
     {
       label: 'Recently Updated',
       sort: { active: 'last_modified_date', direction: 'desc' },
