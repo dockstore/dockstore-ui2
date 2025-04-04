@@ -26,7 +26,11 @@ export function isStagingOrProd() {
 }
 
 export function goToTab(tabName: string): void {
-  cy.get('[role=tab]').contains(tabName).click();
+  getTab(tabName).click();
+}
+
+export function getTab(tabName: string): Cypress.Chainable {
+  return cy.get('[role=tab]').contains(tabName);
 }
 
 // Tabs in an entry page
@@ -84,8 +88,8 @@ export function goToRequestsTab() {
   goToTab('Requests');
 }
 
-export function assertVisibleTab(tabDataCyName: string): void {
-  cy.get(`[data-cy="${tabDataCyName}"]`).should('be.visible');
+export function assertVisibleTab(tabName: string): void {
+  getTab(tabName).should('be.visible');
 }
 
 /**
@@ -112,8 +116,8 @@ export function isActiveTab(tabName: string): void {
   cy.contains('.mat-mdc-tab', tabName).should('have.class', 'mat-mdc-focus-indicator');
 }
 
-export function assertNoTab(tabDataCyName: string): any {
-  return cy.get(`[data-cy="${tabDataCyName}"]`).should('not.exist');
+export function assertNoTab(tabName: string): void {
+  getTab(tabName).should('not.exist');
 }
 
 export function resetDB() {
