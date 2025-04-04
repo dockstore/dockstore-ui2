@@ -74,7 +74,10 @@ export class WorkflowLaunchService extends LaunchService {
   }
 
   getToilLaunch(workflow: Workflow, versionName: string) {
-    return `toil '${workflow.trsId}:${versionName}'`;
+    const language = String(workflow.descriptorType).toLowerCase();
+    const inputFile = 'Dockstore.json';
+    const inputArguments = language === 'wdl' ? `--input ${inputFile}` : inputFile;
+    return `toil-${language}-runner '${workflow.trsId}:${versionName}' ${inputArguments}`;
   }
 
   getAgcFileWrapper() {

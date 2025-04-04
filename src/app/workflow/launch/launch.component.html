@@ -179,11 +179,16 @@
           "
         >
           <div [matTooltip]="toilTooltip">
-            Run this workflow using UCSC's Toil workflow engine
+            Use the <a href="https://toil.ucsc-cgl.org/">Toil</a> workflow engine to run on private compute such as AWS, Kubernetes, Mesos,
+            and Slurm HPC clusters.
             <button mat-icon-button color="secondary" matTooltip="Copy command" [cdkCopyToClipboard]="toilLaunchCommand" appSnackbar>
               <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
             </button>
             <pre>{{ toilLaunchCommand }}</pre>
+            See the Toil "<a href="https://toil.readthedocs.io/en/latest/{{ descriptorType$ | async | lowercase }}/running.html"
+              >Running {{ descriptorType$ | async }} Workflows</a
+            >" and "<a href="https://toil.readthedocs.io/en/latest/running/cliOptions.html">Commandline Options</a>" documentation for more
+            information.
           </div>
         </mat-card>
       </div>

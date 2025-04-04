@@ -37,7 +37,7 @@ import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { MatIconModule } from '@angular/material/icon';
 import { MatLegacyCardModule } from '@angular/material/legacy-card';
-import { NgIf, AsyncPipe } from '@angular/common';
+import { NgIf, AsyncPipe, LowerCasePipe } from '@angular/common';
 
 @Component({
   selector: 'app-launch',
@@ -55,6 +55,7 @@ import { NgIf, AsyncPipe } from '@angular/common';
     ClipboardModule,
     LaunchCheckerWorkflowComponent,
     AsyncPipe,
+    LowerCasePipe,
   ],
 })
 export class LaunchWorkflowComponent extends EntryTab implements OnInit, OnChanges {
