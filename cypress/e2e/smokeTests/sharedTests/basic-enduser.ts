@@ -41,7 +41,7 @@ function getLinkName(tab: string): string {
   }
 }
 
-function testEntry(tab: string) {
+function testEntry(tab: 'Tools' | 'Workflows' | 'Notebooks') {
   function goToRandomEntry() {
     cy.visit('/search');
     // Get a workflow in the table results to make sure things are loaded.
