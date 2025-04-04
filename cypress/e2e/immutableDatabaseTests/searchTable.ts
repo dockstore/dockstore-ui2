@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { ga4ghExtendedPath } from '../../../src/app/shared/constants';
-import { goToSearchEntryTab, setTokenUserViewPort } from '../../support/commands';
+import { goToTab, setTokenUserViewPort } from '../../support/commands';
 
 describe('Dockstore tool/workflow search table', () => {
   setTokenUserViewPort();
@@ -376,7 +376,7 @@ describe('Dockstore tool/workflow search table', () => {
     cy.visit('/search');
 
     if (type === 'workflow') {
-      goToSearchEntryTab('Workflows');
+      goToTab('Workflows');
     }
     cy.get('[data-cy=starredUsers]').should('not.exist');
     // cy.visit(url);
@@ -392,7 +392,7 @@ describe('Dockstore tool/workflow search table', () => {
 
     cy.visit('/search');
     if (type === 'workflow') {
-      goToSearchEntryTab('Workflows');
+      goToTab('Workflows');
     }
     cy.get('[data-cy=starredUsers]').should('exist');
     // cy.visit(url);
@@ -496,7 +496,7 @@ describe('check search table and tabs for notebooks', () => {
     // Check that Notebooks tab exists
     cy.get('.mat-mdc-tab').contains('Notebooks');
     // Select notebooks tab
-    goToSearchEntryTab('Notebooks');
+    goToTab('Notebooks');
     cy.url().should('contain', 'notebooks');
     // Check that the notebooks variations are in the table body
     cy.get('mat-cell').contains('jupyter', { matchCase: false });

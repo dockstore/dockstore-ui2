@@ -13,7 +13,7 @@ import {
   goToFilesTab,
   goToTestParameterFilesTab,
   goToToolsTab,
-  goToSearchEntryTab,
+  goToTab,
 } from '../../../support/commands';
 
 // Test an entry, these should be ambiguous between tools, workflows, and notebooks.
@@ -46,7 +46,7 @@ function testEntry(tab: 'Tools' | 'Workflows' | 'Notebooks') {
     cy.visit('/search');
     // Get a workflow in the table results to make sure things are loaded.
     cy.get(`[data-cy=${getSearchDataCy()}] a`);
-    goToSearchEntryTab(tab);
+    goToTab(tab);
     // select a random entry on the first page and navigate to it
     let chosen_index = 0;
     cy.get(`[data-cy=${getSearchDataCy(tab)}]`)

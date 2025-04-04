@@ -25,78 +25,63 @@ export function isStagingOrProd() {
   return baseUrl === 'https://staging.dockstore.org' || baseUrl === 'https://dockstore.org';
 }
 
-export function clickElement(dataCyName: string): void {
-  // data-cy value is quoted because it's possible for a data-cy name to have spaces
-  cy.get(`[data-cy="${dataCyName}"]`).click();
-}
-
-// Tabs on search page
-export function goToSearchEntryTab(tab: 'Tools' | 'Workflows' | 'Notebooks') {
-  switch (tab) {
-    case 'Tools':
-      clickElement('search-tools-tab');
-    case 'Workflows':
-      clickElement('search-workflows-tab');
-    case 'Notebooks':
-      clickElement('search-notebooks-tab');
-    default:
-      throw new Error('unknown tab');
-  }
+export function goToTab(tabName: string): void {
+  cy.get('[role=tab]').contains(tabName).click();
 }
 
 // Tabs in an entry page
 export function goToInfoTab(): void {
-  clickElement('info-tab');
+  goToTab('Info');
 }
 
 export function goToVersionsTab(): void {
-  clickElement('versions-tab');
+  goToTab('Versions');
 }
 
 export function goToLaunchTab(): void {
-  clickElement('launch-tab');
+  goToTab('Launch');
 }
 
 export function goToPreviewTab(): void {
-  clickElement('preview-tab');
+  goToTab('Preview');
 }
 
 export function goToFilesTab(): void {
-  clickElement('files-tab');
+  goToTab('Files');
 }
 
 export function goToMetricsTab(): void {
-  clickElement('metrics-tab');
+  goToTab('Metrics');
 }
 
 export function goToToolsTab(): void {
-  clickElement('tools-tab');
+  goToTab('Tools');
 }
 
 export function goToDagTab(): void {
-  clickElement('dag-tab');
+  goToTab('DAG');
 }
 
 // Secondary tabs in an entry's Files tab
 export function goToDescriptorFilesTab() {
-  clickElement(`${descriptorFilesTabName} tab`);
+  goToTab(descriptorFilesTabName);
 }
 
 export function goToTestParameterFilesTab() {
-  clickElement(`${testParameterFilesTabName} tab`);
+  goToTab(testParameterFilesTabName);
 }
 
 export function goToConfigurationTab() {
-  clickElement(`${configurationTabName} tab`);
+  goToTab(configurationTabName);
 }
 
 // Tabs in the Account page
 export function goToAccountPreferencesTab() {
-  clickElement('account-preferences-tab');
+  goToTab('Dockstore Account & Preferences');
 }
 
 export function goToRequestsTab() {
-  clickElement('requests-tab');
+  goToTab('Requests');
 }
 
 export function assertVisibleTab(tabDataCyName: string): void {

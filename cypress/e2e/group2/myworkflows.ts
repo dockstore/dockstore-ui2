@@ -27,7 +27,7 @@ import {
   goToVersionsTab,
   goToFilesTab,
   goToConfigurationTab,
-  clickElement,
+  goToTab,
 } from '../../support/commands';
 import TokenSourceEnum = TokenUser.TokenSourceEnum;
 
@@ -672,7 +672,7 @@ describe('Dockstore my workflows part 3', () => {
       cy.visit('/my-workflows/github.com/A/l');
       isActiveTab('Info');
       tabs.forEach((tab) => {
-        clickElement(`${tab.toLowerCase()}-tab`);
+        goToTab(tab);
         isActiveTab(tab);
         if (tab === 'Versions') {
           cy.get('table>tbody>tr').should('have.length', 2); // 2 Versions and no warning line

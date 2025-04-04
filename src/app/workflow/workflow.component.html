@@ -289,10 +289,7 @@
           mat-stretch-tabs
           data-cy="workflow-tab-group"
         >
-          <mat-tab>
-            <ng-template mat-tab-label>
-              <span data-cy="info-tab">Info</span>
-            </ng-template>
+          <mat-tab label="Info">
             <app-info-tab
               [validVersions]="validVersions"
               [extendedWorkflow]="extendedWorkflow$ | async"
@@ -304,10 +301,7 @@
             ></app-info-tab>
           </mat-tab>
           <div *ngIf="entryType === EntryType.Notebook">
-            <mat-tab>
-              <ng-template mat-tab-label>
-                <span data-cy="preview-tab">Preview</span>
-              </ng-template>
+            <mat-tab label="Preview">
               <ng-template matTabContent>
                 <div class="mt-4 ml-4 mr-4">
                   <app-notebook
@@ -321,10 +315,7 @@
             </mat-tab>
           </div>
           <div *ngIf="entryType === EntryType.BioWorkflow || entryType === EntryType.Tool">
-            <mat-tab>
-              <ng-template mat-tab-label>
-                <span data-cy="launch-tab">Launch</span>
-              </ng-template>
+            <mat-tab label="Launch">
               <div *ngIf="(launchSupport$ | async) === false; else launchSupported">
                 <div class="p-3">
                   <mat-card appearance="outlined" class="alert alert-warning" role="alert">
@@ -359,10 +350,7 @@
               </ng-template>
             </mat-tab>
           </div>
-          <mat-tab>
-            <ng-template mat-tab-label>
-              <span data-cy="versions-tab">Versions</span>
-            </ng-template>
+          <mat-tab label="Versions">
             <div *ngIf="(extendedWorkflow$ | async)?.workflowVersions.length > 0; else noVersionsVersionTab">
               <app-versions-workflow
                 (selectedVersionChange)="onSelectedVersionChange($event)"
@@ -401,10 +389,7 @@
               </div>
             </ng-template>
           </mat-tab>
-          <mat-tab>
-            <ng-template mat-tab-label>
-              <span data-cy="files-tab">Files</span>
-            </ng-template>
+          <mat-tab label="Files">
             <!-- See https://docs.google.com/spreadsheets/d/1tDsm87okoWwaeO9Ae4cc5vapWbTSbXI5eqNSWEOrUcE/edit#gid=0 for all combinations -->
             <ng-template matTabContent>
               <!-- Check if there's versions, then check workflow mode, then check descriptor type -->
@@ -460,10 +445,7 @@
             </ng-template>
           </mat-tab>
           <div *ngIf="entryType === EntryType.BioWorkflow">
-            <mat-tab>
-              <ng-template mat-tab-label>
-                <span data-cy="tools-tab">Tools</span>
-              </ng-template>
+            <mat-tab label="Tools">
               <div *ngIf="!isStub()">
                 <app-tool-tab [selectedVersion]="selectedVersion" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner">
                 </app-tool-tab>
@@ -476,10 +458,7 @@
                 </mat-card>
               </div>
             </mat-tab>
-            <mat-tab>
-              <ng-template mat-tab-label>
-                <span data-cy="dag-tab">DAG</span>
-              </ng-template>
+            <mat-tab label="DAG">
               <ng-template matTabContent>
                 <app-dag
                   *ngIf="selectedVersion"
@@ -505,10 +484,7 @@
               </ng-template>
             </mat-tab>
           </div>
-          <mat-tab>
-            <ng-template mat-tab-label>
-              <span data-cy="metrics-tab">Metrics</span>
-            </ng-template>
+          <mat-tab label="Metrics">
             <app-executions-tab [entry]="workflow" [version]="selectedVersion"></app-executions-tab>
           </mat-tab>
           <mat-tab *ngIf="!isPublic() && isHosted() && isOwner" id="permissionsTab" label="Permissions">
