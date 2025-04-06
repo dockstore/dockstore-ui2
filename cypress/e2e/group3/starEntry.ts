@@ -13,7 +13,7 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-import { goToRequestsTab, resetDB, setTokenUserViewPort, typeInInput } from '../../support/commands';
+import { goToRequestsTab, goToTab, resetDB, setTokenUserViewPort, typeInInput } from '../../support/commands';
 
 describe('Tool, Workflow, and Organization starring', () => {
   resetDB();
@@ -58,11 +58,11 @@ describe('Tool, Workflow, and Organization starring', () => {
   function starredPage(entity: string) {
     cy.visit('/starred');
     if (entity === 'tool') {
-      cy.get('[data-cy=starred-tools-tab]').click();
+      goToTab('Tools');
     } else if (entity === 'workflow') {
-      cy.get('[data-cy=starred-workflows-tab]').click();
+      goToTab('Workflows');
     } else {
-      cy.get('[data-cy=starred-orgs-tab]').click();
+      goToTab('Organizations');
     }
     cy.get('#starringButton').should('exist');
     cy.get('#starCountButton').should('exist');

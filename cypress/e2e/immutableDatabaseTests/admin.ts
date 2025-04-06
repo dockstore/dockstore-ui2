@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { goToTab, setTokenUserViewPort } from '../../support/commands';
+import { assertNoTab, goToTab, setTokenUserViewPort } from '../../support/commands';
 describe('Admin UI', () => {
   setTokenUserViewPort();
   beforeEach(() => {
@@ -31,8 +31,9 @@ describe('Admin UI', () => {
   });
   describe('Userpage', () => {
     it('Admin can view other linked accounts of a user', () => {
+      const otherLinkedAccountsTabName = 'Other Linked Accounts';
       cy.visit('/users/user_A');
-      goToTab('Other Linked Accounts');
+      goToTab(otherLinkedAccountsTabName);
       cy.get('[data-cy=other-linked-accounts-Quay]').should('be.visible');
       cy.get('[data-cy=Quay-username]').contains('user_A').should('be.visible');
 
@@ -40,6 +41,7 @@ describe('Admin UI', () => {
       cy.get('[data-cy=dropdown-main]:visible').click();
       cy.get('[data-cy=dropdown-logout-button]').click();
       cy.visit('/users/user_A');
+      assertNoTab(otherLinkedAccountsTabName);
       cy.get('[data-cy=other-linked-accounts-tab]').should('not.exist');
     });
   });

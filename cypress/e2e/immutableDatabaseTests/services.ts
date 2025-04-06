@@ -111,11 +111,11 @@ describe('Dockstore Home', () => {
     });
   });
   function checkTabs() {
-    assertVisibleTab('info-tab');
-    assertVisibleTab('versions-tab');
-    assertVisibleTab('files-tab');
-    assertNoTab('tools-tab');
-    assertNoTab('dag-tab');
+    assertVisibleTab('Info');
+    assertVisibleTab('Versions');
+    assertVisibleTab('Files');
+    assertNoTab('Tools');
+    assertNoTab('DAG');
   }
 
   function checkInfoTab() {
