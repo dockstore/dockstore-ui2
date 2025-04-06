@@ -15,6 +15,7 @@
  */
 
 import {
+  getTab,
   goToFilesTab,
   goToInfoTab,
   goToPreviewTab,
@@ -199,9 +200,9 @@ describe('Dockstore notebooks', () => {
   }
 
   function checkTabLabels() {
-    cy.get('[data-cy=info-tab]').contains('Info');
-    cy.get('[data-cy=preview-tab]').contains('Preview');
-    cy.get('[data-cy=versions-tab]').contains('Versions');
-    cy.get('[data-cy=files-tab]').contains('Files');
+    getTab('Info');
+    getTab('Preview');
+    getTab('Versions');
+    getTab('Files');
   }
 });
