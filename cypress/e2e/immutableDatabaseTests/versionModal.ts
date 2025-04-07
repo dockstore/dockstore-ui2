@@ -13,13 +13,13 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { goToVersionsTab, setTokenUserViewPort } from '../../support/commands';
+import { assertNumberOfTabs, goToVersionsTab, setTokenUserViewPort } from '../../support/commands';
 
 describe('Public Version Modal', () => {
   setTokenUserViewPort();
   beforeEach(() => {
     cy.visit('/containers/quay.io/garyluu/dockstore-cgpmap/cgpmap-cramOut');
-    cy.get('.mdc-tab').should('have.length', 4);
+    assertNumberOfTabs(4);
   });
 
   it('Change tab to versions', () => {

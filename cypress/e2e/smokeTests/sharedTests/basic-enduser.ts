@@ -162,7 +162,7 @@ describe('Test search page functionality', () => {
 describe('Test workflow page functionality', () => {
   it('find a WDL workflow', () => {
     cy.visit('/search');
-    cy.contains('.mat-mdc-tab', 'Workflows');
+    goToTab('Workflows');
     cy.get(`[data-cy=${getSearchDataCy()}]`).should('have.length.of.at.least', 1);
 
     // Use facet to find WDL workflow
@@ -252,8 +252,8 @@ function testWorkflow(url: string, version1: string, version2: string, trsUrl: s
     cy.url().should('contain', '?tab=tools');
 
     /// New material have to click twice
-    cy.contains('.mat-mdc-tab', 'DAG').click();
-    cy.contains('.mat-mdc-tab', 'DAG').click();
+    goToTab('DAG');
+    goToTab('DAG');
     cy.url().should('contain', '?tab=dag');
     cy.get('[data-cy=dag-holder]').children().should('have.length.of.at.least', 1);
 

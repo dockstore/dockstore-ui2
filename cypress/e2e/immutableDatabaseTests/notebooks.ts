@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-import { setTokenUserViewPort } from '../../support/commands';
+import { getTab, setTokenUserViewPort } from '../../support/commands';
 
 describe('Notebooks Pages', () => {
   setTokenUserViewPort();
@@ -43,12 +43,12 @@ describe('Notebooks Pages', () => {
   describe('Notebooks should be visible', () => {
     it('should be included in search', () => {
       cy.visit('/search?entryType=notebooks&searchMode=files&notebooks');
-      cy.contains('.mat-mdc-tab', 'Notebooks');
+      getTab('Notebooks');
     });
 
     it('should exist on starred page', () => {
       cy.visit('/starred?tab=notebooks');
-      cy.contains('.mat-mdc-tab', 'Notebooks');
+      getTab('Notebooks');
     });
 
     it('should exist on dashboard', () => {

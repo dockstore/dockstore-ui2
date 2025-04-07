@@ -14,6 +14,7 @@
  *    limitations under the License.
  */
 import {
+  assertNumberOfTabs,
   goToConfigurationTab,
   goToDagTab,
   goToFilesTab,
@@ -55,7 +56,7 @@ describe('Dockstore Workflow Details', () => {
   beforeEach(() => {
     cy.visit('/workflows/github.com/A/l');
     // Info, Launch, Version, Files, Tools, DAG, Metrics
-    cy.get('.mat-mdc-tab').should('have.length', 7);
+    assertNumberOfTabs(7);
     cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=info');
   });
 
@@ -110,7 +111,7 @@ describe('Dockstore Workflow Details', () => {
   describe('Change tab to Executions', () => {
     it('Should see No Metrics banner', () => {
       cy.visit('/workflows/github.com/A/l');
-      cy.get('.mat-mdc-tab').should('have.length', 7);
+      assertNumberOfTabs(7);
       goToMetricsTab();
       cy.url().should('eq', Cypress.config().baseUrl + '/workflows/github.com/A/l:master?tab=metrics');
       cy.get('[data-cy=no-metrics-banner]').should('be.visible');
@@ -148,7 +149,7 @@ describe('Find workflow by alias', () => {
   });
 });
 
-describe('Test bble', () => {
+describe('Test primary descriptor bubble', () => {
   it('go to a workflow with multiple files', () => {
     cy.visit('/workflows/github.com/A/l');
     goToFilesTab();

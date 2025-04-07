@@ -30,7 +30,11 @@ export function goToTab(tabName: string): void {
 }
 
 export function getTab(tabName: string): Cypress.Chainable {
-  return cy.get('[role=tab]').contains(tabName);
+  return cy.contains('[role=tab]', tabName);
+}
+
+export function assertNumberOfTabs(expectedNumberOfTabs: number): void {
+  cy.get('[role=tab]').should('have.length', expectedNumberOfTabs);
 }
 
 // Tabs in an entry page
@@ -113,7 +117,7 @@ export function clickFirstActionsButtonPrivate(): void {
 }
 
 export function isActiveTab(tabName: string): void {
-  cy.contains('.mat-mdc-tab', tabName).should('have.class', 'mat-mdc-focus-indicator');
+  getTab(tabName).should('have.attr', 'aria-selected', 'true');
 }
 
 export function assertNoTab(tabName: string): void {
@@ -165,6 +169,10 @@ export function typeInInput(dataCyName: string, text: string) {
 
 export function selectRadioButton(dataCyName: string) {
   cy.get(`[data-cy="${dataCyName}"] [type="radio"]`).check();
+}
+
+export function checkCheckBox(dataCyName: string) {
+  cy.get(`[data-cy="${dataCyName}"] [type="checkbox"]`).check();
 }
 
 // Sets it to the user where id = 1. Is an admin and curator.

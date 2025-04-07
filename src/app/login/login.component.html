@@ -89,7 +89,7 @@
                 >
                   <fa-icon [icon]="faGoogle"></fa-icon> Register with Google
                 </button>
-                <mat-checkbox (change)="registrationDisabled = !registrationDisabled">
+                <mat-checkbox (change)="registrationDisabled = !registrationDisabled" data-cy="tos-checkbox">
                   <strong>I agree to Dockstore's <template [ngTemplateOutlet]="PrivacyAndTOSDisclaimer"></template></strong>
                 </mat-checkbox>
                 <!-- Attempt at using  -->

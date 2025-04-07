@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-import { setTokenUserViewPort } from '../../support/commands';
+import { checkCheckBox, setTokenUserViewPort } from '../../support/commands';
 import { User } from '../../../src/app/shared/openapi';
 describe('TOS Banner', () => {
   function checkForBanner() {
@@ -80,7 +80,7 @@ describe('TOS Banner', () => {
       cy.get('[data-cy=register-with-google]').should('be.disabled');
       cy.get('[data-cy=register-with-github]').should('be.disabled');
 
-      cy.get('.mdc-checkbox').click();
+      checkCheckBox('tos-checkbox');
       cy.get('[data-cy=register-with-google]').should('not.be.disabled');
       cy.get('[data-cy=register-with-github]').should('not.be.disabled');
     });

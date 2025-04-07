@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { ga4ghExtendedPath } from '../../../src/app/shared/constants';
-import { goToTab, setTokenUserViewPort } from '../../support/commands';
+import { getTab, goToTab, setTokenUserViewPort } from '../../support/commands';
 
 describe('Dockstore tool/workflow search table', () => {
   setTokenUserViewPort();
@@ -494,7 +494,7 @@ describe('check search table and tabs for notebooks', () => {
   it('should contain notebooks-related information', () => {
     cy.visit('/search');
     // Check that Notebooks tab exists
-    cy.get('.mat-mdc-tab').contains('Notebooks');
+    getTab('Notebooks');
     // Select notebooks tab
     goToTab('Notebooks');
     cy.url().should('contain', 'notebooks');

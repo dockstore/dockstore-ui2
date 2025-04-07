@@ -42,7 +42,6 @@ describe('Admin UI', () => {
       cy.get('[data-cy=dropdown-logout-button]').click();
       cy.visit('/users/user_A');
       assertNoTab(otherLinkedAccountsTabName);
-      cy.get('[data-cy=other-linked-accounts-tab]').should('not.exist');
     });
   });
 });
