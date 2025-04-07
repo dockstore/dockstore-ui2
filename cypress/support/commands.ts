@@ -201,8 +201,11 @@ export function goToUnexpandedSidebarEntry(organization: string, entryPath: stri
   selectSidebarEntry(entryPath);
 }
 
-export function expandOrganizationSidebarPanel(organization: string) {
-  cy.get('[data-cy=entry-title]').should('be.visible'); // Ensures that the page and side bar is fully loaded
+export function expandOrganizationSidebarPanel(organization: string, userHasEntries: boolean = true) {
+  // If the user has entries, check that the entry title is loaded to ensure that the page and side bar is fully loaded
+  if (userHasEntries) {
+    cy.get('[data-cy=entry-title]').should('be.visible');
+  }
   cy.get(`[data-cy="${organization}-panel-header"]`).click();
   cy.get(`[data-cy="${organization}-tab-group"]`).should('be.visible');
 }
@@ -281,7 +284,7 @@ export function verifyGithubLinkDashboard(entryType: string) {
 export function testNoGithubEntriesText(entryType: string, organization: string) {
   it('Should have no published ' + entryType + 's in ' + organization + ' repository', () => {
     cy.visit('/my-' + entryType + 's');
-    expandOrganizationSidebarPanel(organization);
+    expandOrganizationSidebarPanel(organization, false);
     selectOrganizationSidebarTab(organization, true);
     if (entryType === 'tool') {
       cy.get('[data-cy=no-published-appTool-message]').should('contain', 'No published ' + entryType + 's');
@@ -291,7 +294,7 @@ export function testNoGithubEntriesText(entryType: string, organization: string)
   });
   it('Should have no unpublished ' + entryType + 's in dockstore repository', () => {
     cy.visit('/my-' + entryType + 's');
-    expandOrganizationSidebarPanel(organization);
+    expandOrganizationSidebarPanel(organization, false);
     selectOrganizationSidebarTab(organization, false);
     if (entryType === 'tool') {
       cy.get('[data-cy=no-unpublished-appTool-message]').should('contain', 'No unpublished ' + entryType + 's');
