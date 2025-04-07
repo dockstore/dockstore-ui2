@@ -20,8 +20,11 @@
 @import '/src/materialColorScheme.scss';
 
 :root {
+  // Lower the density of these components to closer match the legacy Material appearance.
+  // The new MDC components have alot of extra space.
   @include mat.form-field-density(-4);
   @include mat.checkbox-density(-3);
+  @include mat.icon-button-density(-3);
 }
 
 // Form fields
@@ -30,10 +33,7 @@
   // <mat-label> text size for outlined form fields
   --mdc-outlined-text-field-label-text-size: 14px;
 
-  // Lower the density of mat-icon-buttons in form fields
-  // so that the mat form field text is aligned properly.
-  @include mat.icon-button-density(-3);
-  // Also decrease the mat-icon side inside form fields for the same reason
+  // Decrease the mat-icon side inside form fields so that the mat form field text is aligned properly
   .mat-icon {
     @include small-mat-icon();
   }
