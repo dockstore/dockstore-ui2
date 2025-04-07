@@ -66,7 +66,7 @@ export function resetDB() {
     cy.exec('java -jar dockstore-webservice.jar db drop-all --confirm-delete-everything test/web.yml');
     cy.exec(psqlInvocation + ' -h localhost webservice_test -U dockstore < test/db_dump.sql');
     cy.exec(
-      'java -jar dockstore-webservice.jar db migrate -i 1.5.0,1.6.0,1.7.0,1.8.0,1.9.0,1.10.0,alter_test_user_1.10.2,1.11.0,1.12.0,1.13.0,1.14.0,1.15.0,1.16.0 test/web.yml'
+      'java -jar dockstore-webservice.jar db migrate -i 1.5.0,1.6.0,1.7.0,1.8.0,1.9.0,1.10.0,alter_test_user_1.10.2,1.11.0,1.12.0,1.13.0,1.14.0,1.15.0,1.16.0,1.17.0 test/web.yml'
     );
   });
 }
@@ -76,7 +76,7 @@ export function resetDBWithService() {
     cy.exec('java -jar dockstore-webservice.jar db drop-all --confirm-delete-everything test/web.yml');
     cy.exec(psqlInvocation + ' -h localhost webservice_test -U dockstore < test/db_dump.sql');
     cy.exec(
-      'java -jar dockstore-webservice.jar db migrate -i 1.5.0,1.6.0,1.7.0,add_service_1.7.0,1.8.0,1.9.0,1.10.0,alter_test_user_1.10.2,1.11.0,1.12.0,1.13.0,1.14.0,1.15.0,1.16.0 test/web.yml'
+      'java -jar dockstore-webservice.jar db migrate -i 1.5.0,1.6.0,1.7.0,add_service_1.7.0,1.8.0,1.9.0,1.10.0,alter_test_user_1.10.2,1.11.0,1.12.0,1.13.0,1.14.0,1.15.0,1.16.0,1.17.0 test/web.yml'
     );
   });
 }
