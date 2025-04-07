@@ -171,16 +171,6 @@ $dockstore-app-accent-4: mat.define-palette($kim-accent-4, 2, 4, 1);
 // Main color was chosen arbitrarily to be between darker and lighter.
 $dockstore-app-gray: mat.define-palette($kim-gray, 2, 4, 1);
 
-$small-size: mat.define-typography-level(
-  $font-size: 12px,
-  $letter-spacing: normal,
-);
-
-$normal-size: mat.define-typography-level(
-  $font-size: 14px,
-  $letter-spacing: normal,
-);
-
 // Create the theme object (a Sass map containing all of the palettes).
 $dockstore-app-theme: mat.define-light-theme(
   (
@@ -211,33 +201,6 @@ $dockstore-app-theme: map_merge(
     grayscale: $dockstore-app-gray,
   )
 );
-
-$dockstore-small-button-theme: map_merge(
-  $dockstore-app-theme,
-  (
-    typography:
-      mat.define-typography-config(
-        $button:
-          mat.define-typography-level(
-            $font-size: 12px,
-            $font-weight: 700,
-            $letter-spacing: normal,
-          ),
-      ),
-    density: -3,
-    text-primary-on-light: mat.get-color-from-palette($dockstore-app-accent-1, darker),
-  )
-);
-
-// $form-field: mat.define-typography-level($font-size: 12px, $font-weight: 700, $letter-spacing: normal);
-// $dockstore-form-field-theme: map_merge(
-//   $dockstore-app-theme,
-//   (
-//     typography:
-//     density: -3,
-//     text-primary-on-light: mat.get-color-from-palette($dockstore-app-accent-1, darker)
-//   )
-// );
 
 // The following are common colors used that are not used in Material paletttes
 // It is not placed in styles.scss to prevent importing styles.scss multiple times
