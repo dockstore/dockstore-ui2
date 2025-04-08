@@ -112,8 +112,33 @@ a.mat-mdc-chip {
 }
 
 // Tables
+// The redesigned tables have no borders, bolded headers, no left-padding on the first elements and no right-padding on the last elements.
 .mat-mdc-header-row {
   --mat-table-header-headline-size: 12px; // Smaller than default
+  white-space: nowrap; // Don't have multi-line headers
+}
+
+.mat-mdc-table,
+table {
+  border: none !important;
+}
+
+.mat-mdc-header-cell,
+table th {
+  //font-weight: 500 !important;
+  color: $header-color !important;
+}
+
+.mat-mdc-header-cell:first-of-type,
+.mat-mdc-cell:first-of-type,
+.mat-mdc-footer-cell:first-of-type {
+  padding-left: 0;
+}
+
+.mat-mdc-cell:last-of-type,
+.mat-mdc-header-cell:last-of-type,
+.mat-mdc-footer-cell:last-of-type {
+  padding-right: 0;
 }
 
 // Menus

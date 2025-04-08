@@ -45,20 +45,14 @@ tr.mat-mdc-row.highlight {
   background-color: mat.get-color-from-palette($dockstore-app-accent-1, 6);
 }
 
-/* Add padding to the left of first cell for selected version */
-tr.highlight > .mat-mdc-cell:first-of-type > span {
-  padding-left: 5px;
-}
-
 /* Narrow the version table columns by decreasing their padding. */
 /* See https://ucsc-cgl.atlassian.net/browse/SEAB-6777 */
-.mat-cell:not(:first-of-type),
-.mat-header-cell:not(:first-of-type) {
+.mat-mdc-cell:not(:first-of-type),
+.mat-mdc-header-cell:not(:first-of-type) {
   padding-left: 1rem;
 }
 
-.mat-cell:not(:last-of-type),
-.mat-header-cell:not(:last-of-type),
-table th {
+.mat-mdc-cell:not(:last-of-type),
+.mat-mdc-header-cell:not(:last-of-type) {
   padding-right: 1rem;
 }

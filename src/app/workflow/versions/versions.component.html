@@ -44,7 +44,12 @@
         >
       </th>
       <td mat-cell *matCellDef="let version">
-        <span fxLayout="row wrap" fxLayoutGap="0.5rem" fxLayoutAlign="start center">
+        <span
+          fxLayout="row wrap"
+          fxLayoutGap="0.5rem"
+          fxLayoutAlign="start center"
+          [ngClass]="{ 'ml-2': version.name === _selectedVersion.name }"
+        >
           <mat-chip-set *ngIf="defaultVersion === version.name">
             <a
               mat-chip
