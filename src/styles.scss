@@ -915,21 +915,6 @@ body {
   cursor: pointer !important;
 }
 
-a.mat-mdc-chip {
-  text-decoration: none !important;
-
-  // Set the cursor to a pointer because the anchor will navigate somewhere
-  .mdc-evolution-chip__action--presentational {
-    cursor: pointer !important;
-  }
-}
-
-// Remove the padding around a mat-chip avatar to ensure even padding around the mat-chip content
-.mat-mdc-chip-with-avatar .mat-mdc-chip-graphic {
-  padding-right: 0 !important;
-  padding-left: 0 !important;
-}
-
 mat-icon.star-icon {
   @include mat-icon-size(1.6rem);
   color: $accent-1-dark;
