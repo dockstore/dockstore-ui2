@@ -42,20 +42,20 @@
         >
           <mat-card-content>
             Make a runtime JSON template and fill in desired inputs, outputs, and other parameters
-            <button mat-icon-button color="secondary" matTooltip="Copy command" [cdkCopyToClipboard]="params" appSnackbar>
-              <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
+            <button mat-icon-button class="copy-button" matTooltip="Copy command" [cdkCopyToClipboard]="params" appSnackbar>
+              <mat-icon>file_copy</mat-icon>
             </button>
             <pre>{{ params }}</pre>
             <span *ngIf="wgetTestJsonDescription">
               or grab one that the workflow author has provided (if applicable)
               <button
                 mat-icon-button
-                color="secondary"
+                class="copy-button"
                 matTooltip="Copy command"
                 [cdkCopyToClipboard]="wgetTestJsonDescription"
                 appSnackbar
               >
-                <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
+                <mat-icon>file_copy</mat-icon>
               </button>
               <pre>{{ wgetTestJsonDescription }}</pre>
             </span>
@@ -64,26 +64,26 @@
         <mat-card *ngIf="(isGalaxy$ | async) === true" matTooltip="Commands for creating a runtime JSON template">
           <mat-card-content>
             Download the workflow and other included files (such as example parameter files)
-            <button mat-icon-button color="secondary" matTooltip="Copy command" [cdkCopyToClipboard]="planemoSharedZipString" appSnackbar>
-              <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
+            <button mat-icon-button class="copy-button" matTooltip="Copy command" [cdkCopyToClipboard]="planemoSharedZipString" appSnackbar>
+              <mat-icon>file_copy</mat-icon>
             </button>
             <pre>{{ planemoSharedZipString }}</pre>
 
             Then, create a runtime parameter template with Planemo and fill in desired inputs, outputs, and other parameters
-            <button mat-icon-button color="secondary" matTooltip="Copy command" [cdkCopyToClipboard]="planemoLocalInitString" appSnackbar>
-              <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
+            <button mat-icon-button class="copy-button" matTooltip="Copy command" [cdkCopyToClipboard]="planemoLocalInitString" appSnackbar>
+              <mat-icon>file_copy</mat-icon>
             </button>
             <pre>{{ planemoLocalInitString }}</pre>
             <span *ngIf="wgetTestJsonDescription">
               or grab one that the workflow author has provided (if applicable)
               <button
                 mat-icon-button
-                color="secondary"
+                class="copy-button"
                 matTooltip="Copy command"
                 [cdkCopyToClipboard]="wgetTestJsonDescription"
                 appSnackbar
               >
-                <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
+                <mat-icon>file_copy</mat-icon>
               </button>
               <pre>{{ wgetTestJsonDescription }}</pre>
             </span>
@@ -95,8 +95,8 @@
         >
           <mat-card-content>
             Run locally with the Dockstore CLI
-            <button mat-icon-button color="secondary" matTooltip="Copy command" [cdkCopyToClipboard]="cli" appSnackbar>
-              <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
+            <button mat-icon-button class="copy-button" matTooltip="Copy command" [cdkCopyToClipboard]="cli" appSnackbar>
+              <mat-icon>file_copy</mat-icon>
             </button>
             <pre>{{ cli }}</pre>
           </mat-card-content>
@@ -107,12 +107,12 @@
               Run with nextflow
               <button
                 mat-icon-button
-                color="secondary"
+                class="copy-button"
                 matTooltip="Copy command"
                 [cdkCopyToClipboard]="nextflowNativeLaunchDescription"
                 appSnackbar
               >
-                <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
+                <mat-icon>file_copy</mat-icon>
               </button>
               <pre>{{ nextflowNativeLaunchDescription }}</pre>
               <small>*You can override the default parameters by appending --paramName 'value' to the above command.</small>
@@ -126,12 +126,12 @@
               Run with Planemo
               <button
                 mat-icon-button
-                color="secondary"
+                class="copy-button"
                 matTooltip="Copy command"
                 [cdkCopyToClipboard]="planemoLocalLaunchString"
                 appSnackbar
               >
-                <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
+                <mat-icon>file_copy</mat-icon>
               </button>
               <pre>{{ planemoLocalLaunchString }}</pre>
             </div>
@@ -144,24 +144,24 @@
               Download the workflow files
               <button
                 mat-icon-button
-                color="secondary"
+                class="copy-button"
                 matTooltip="Copy command"
                 [cdkCopyToClipboard]="nextflowDownloadFileDescription"
                 appSnackbar
               >
-                <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
+                <mat-icon>file_copy</mat-icon>
               </button>
               <pre>{{ nextflowDownloadFileDescription }}</pre>
 
               Run with nextflow
               <button
                 mat-icon-button
-                color="secondary"
+                class="copy-button"
                 matTooltip="Copy command"
                 [cdkCopyToClipboard]="nextflowLocalLaunchDescription"
                 appSnackbar
               >
-                <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
+                <mat-icon>file_copy</mat-icon>
               </button>
               <pre>{{ nextflowLocalLaunchDescription }}</pre>
             </div>
@@ -172,8 +172,8 @@
           <mat-card-content>
             <div [matTooltip]="cwlrunnerTooltip">
               {{ cwlrunnerDescription }}
-              <button mat-icon-button color="secondary" matTooltip="Copy command" [cdkCopyToClipboard]="cwl" appSnackbar>
-                <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
+              <button mat-icon-button class="copy-button" matTooltip="Copy command" [cdkCopyToClipboard]="cwl" appSnackbar>
+                <mat-icon>file_copy</mat-icon>
               </button>
               <pre>{{ cwl }}</pre>
             </div>
@@ -188,23 +188,23 @@
               all inputs and outputs are available on the local filesystem or via HTTP(S):
               <button
                 mat-icon-button
-                color="secondary"
+                class="copy-button"
                 matTooltip="Copy command"
                 [cdkCopyToClipboard]="dockstoreSupportedCwlLaunch"
                 appSnackbar
               >
-                <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
+                <mat-icon>file_copy</mat-icon>
               </button>
               <pre>{{ dockstoreSupportedCwlLaunch }}</pre>
               cwltool can also be used to create the input template:
               <button
                 mat-icon-button
-                color="secondary"
+                class="copy-button"
                 matTooltip="Copy command"
                 [cdkCopyToClipboard]="dockstoreSupportedCwlMakeTemplate"
                 appSnackbar
               >
-                <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
+                <mat-icon>file_copy</mat-icon>
               </button>
               <pre>{{ dockstoreSupportedCwlMakeTemplate }}</pre>
             </div>
@@ -228,21 +228,21 @@
 
             <div>
               Make a runtime JSON template and fill in desired inputs, outputs, and other parameters
-              <button mat-icon-button color="secondary" matTooltip="Copy command" [cdkCopyToClipboard]="params" appSnackbar>
-                <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
+              <button mat-icon-button class="copy-button" matTooltip="Copy command" [cdkCopyToClipboard]="params" appSnackbar>
+                <mat-icon>file_copy</mat-icon>
               </button>
               <pre>{{ params }}</pre>
 
               Create a wrapper JSON file, which is used by AWS AGC.
-              <button mat-icon-button color="secondary" matTooltip="Copy command" [cdkCopyToClipboard]="wesWrapperJson" appSnackbar>
-                <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
+              <button mat-icon-button class="copy-button" matTooltip="Copy command" [cdkCopyToClipboard]="wesWrapperJson" appSnackbar>
+                <mat-icon>file_copy</mat-icon>
               </button>
               <pre>{{ wesWrapperJson }}</pre>
 
               Launch the workflow. (Note: Any input files required to run this workflow must be specified using the `--attach` or `-a`
               command line switch.)
-              <button mat-icon-button color="secondary" matTooltip="Copy command" [cdkCopyToClipboard]="wesLaunchCommand" appSnackbar>
-                <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
+              <button mat-icon-button class="copy-button" matTooltip="Copy command" [cdkCopyToClipboard]="wesLaunchCommand" appSnackbar>
+                <mat-icon>file_copy</mat-icon>
               </button>
               <pre>{{ wesLaunchCommand }}</pre>
             </div>

@@ -647,8 +647,12 @@ div.side-block img {
   vertical-align: unset;
 }
 
-.mat-icon-copy-button {
-  transform: scale(0.85);
+.copy-button {
+  vertical-align: middle;
+
+  .mat-icon {
+    @include mat-icon-size(20px);
+  }
 }
 
 div.side-block code {
@@ -927,9 +931,7 @@ a.mat-mdc-chip {
 }
 
 mat-icon.star-icon {
-  font-size: 1.6rem;
-  height: 1.6rem;
-  width: 1.6rem;
+  @include mat-icon-size(1.6rem);
   color: $accent-1-dark;
 }
 

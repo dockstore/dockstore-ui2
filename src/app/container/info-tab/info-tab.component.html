@@ -51,29 +51,15 @@
             <li *ngIf="trsLinkCWL">
               <strong matTooltip="TRS link to the main CWL descriptor for the selected tool version">TRS CWL</strong>:
               <a [href]="trsLinkCWL">{{ tool?.tool_path }}</a>
-              <button
-                mat-icon-button
-                color="secondary"
-                [cdkCopyToClipboard]="tool?.tool_path"
-                matTooltip="Copy TRS ID"
-                appSnackbar
-                class="align-middle"
-              >
-                <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
+              <button mat-icon-button [cdkCopyToClipboard]="tool?.tool_path" matTooltip="Copy TRS ID" appSnackbar class="copy-button">
+                <mat-icon>file_copy</mat-icon>
               </button>
             </li>
             <li *ngIf="trsLinkWDL">
               <strong matTooltip="TRS link to the main WDL descriptor for the selected tool version">TRS WDL</strong>:
               <a [href]="trsLinkWDL">{{ tool?.tool_path }}</a>
-              <button
-                mat-icon-button
-                color="secondary"
-                [cdkCopyToClipboard]="tool?.tool_path"
-                matTooltip="Copy TRS ID"
-                appSnackbar
-                class="align-middle"
-              >
-                <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
+              <button mat-icon-button class="copy-button" [cdkCopyToClipboard]="tool?.tool_path" matTooltip="Copy TRS ID" appSnackbar>
+                <mat-icon>file_copy</mat-icon>
               </button>
             </li>
           </span>

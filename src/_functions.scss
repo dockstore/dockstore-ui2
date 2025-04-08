@@ -65,13 +65,17 @@
   }
 }
 
+@mixin mat-icon-size($size) {
+  // These two override .mat-icon's default 24px height and width
+  height: $size;
+  width: $size;
+  // This overrides .material-icon's default 24px font-size, changing the font-size fixes the position of it
+  font-size: $size;
+}
+
 // Styles for making mat-icons smaller than the default
 @mixin small-mat-icon() {
-  // These two override .mat-icon's default 24px height and width
-  height: 16px;
-  width: 16px;
-  // This overrides .material-icon's default 24px font-size, changing the font-size fixes the position of it
-  font-size: 16px;
+  @include mat-icon-size(16px);
 }
 
 // Sets the color of a selected tab's underline color

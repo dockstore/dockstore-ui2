@@ -67,15 +67,8 @@
         <li *ngIf="isPublic && isValidVersion && workflow?.entryTypeMetadata.trsSupported" data-cy="trs-link">
           <strong matTooltip="TRS link to the main descriptor for the selected workflow version">TRS</strong>:
           <a [href]="trsLink">{{ workflow?.entryTypeMetadata.trsPrefix }}{{ workflow?.full_workflow_path }}</a>
-          <button
-            mat-icon-button
-            color="secondary"
-            matTooltip="Copy TRS ID"
-            [cdkCopyToClipboard]="displayTextForButton"
-            appSnackbar
-            class="align-middle"
-          >
-            <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
+          <button mat-icon-button class="copy-button" matTooltip="Copy TRS ID" [cdkCopyToClipboard]="displayTextForButton" appSnackbar>
+            <mat-icon>file_copy</mat-icon>
           </button>
         </li>
         <div

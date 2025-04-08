@@ -52,13 +52,13 @@
                 <span class="w-100">{{ element.deliveryId.substring(0, 7) }}</span>
                 <button
                   mat-icon-button
-                  color="secondary"
+                  class="copy-button"
                   type="button"
                   matTooltip="{{ element.deliveryId }}"
                   [cdkCopyToClipboard]="element.deliveryId"
                   appSnackbar
                 >
-                  <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
+                  <mat-icon>file_copy</mat-icon>
                 </button>
               </div>
             </td>
