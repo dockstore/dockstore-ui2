@@ -32,7 +32,7 @@
       fxFlex.lt-lg="100"
       *ngFor="let organizationUser of organizationMembers$ | async; let index = index"
     >
-      <mat-card [attr.data-cy]="'organization-member-' + index">
+      <mat-card class="h-100" [attr.data-cy]="'organization-member-' + index">
         <mat-card-content fxLayout fxLayoutGap="1rem" fxLayoutAlign="space-between stretch">
           <img
             *ngIf="organizationUser.user?.avatarUrl; else noAvatar"
