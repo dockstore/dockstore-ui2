@@ -4,7 +4,7 @@
   </mat-card>
 </div>
 
-<div *ngIf="metricsExist" class="mt-3">
+<div *ngIf="metricsExist" class="my-3 px-2">
   <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1rem">
     <mat-form-field class="mb-3">
       <mat-label>Select a Platform</mat-label>
@@ -107,8 +107,8 @@
 
           <tr mat-header-row *matHeaderRowDef="executionMetricsColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: executionMetricsColumns"></tr>
-          <tr class="mat-row" *matNoDataRow>
-            <td class="mat-cell" [colSpan]="executionMetricsColumns.length">Not Available</td>
+          <tr class="mat-mdc-row" *matNoDataRow>
+            <td class="mat-mdc-cell" [colSpan]="executionMetricsColumns.length">Not Available</td>
           </tr>
         </table>
       </div>

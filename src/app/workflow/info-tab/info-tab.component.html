@@ -383,8 +383,8 @@
             </span>
           </td>
         </ng-container>
-        <tr class="mat-row" *matNoDataRow>
-          <td class="mat-cell" [colSpan]="displayedColumns.length">Not Available</td>
+        <tr class="mat-mdc-row" *matNoDataRow>
+          <td class="mat-mdc-cell" [colSpan]="displayedColumns.length">Not Available</td>
         </tr>
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
