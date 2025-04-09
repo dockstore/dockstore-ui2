@@ -22,7 +22,8 @@
   </ng-template>
   <div [hidden]="previewMode">
     <mat-form-field>
-      <input matInput placeholder="Search {{ entryTypeDisplayName$ | async }}s" #input />
+      <mat-label>Search {{ entryTypeDisplayName$ | async }}s</mat-label>
+      <input matInput #input data-cy="search-input" />
     </mat-form-field>
   </div>
   <mat-table [dataSource]="dataSource" matSort matSortActive="stars" matSortDirection="desc" matSortDisableClear>
@@ -56,9 +57,11 @@
     <ng-container matColumnDef="descriptorType">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Format</mat-header-cell>
       <mat-cell *matCellDef="let workflow">
-        <span class="nonclick-badge">
-          {{ workflow?.descriptorType | descriptorLanguage }}
-        </span>
+        <mat-chip-set>
+          <mat-chip>
+            {{ workflow?.descriptorType | descriptorLanguage }}
+          </mat-chip>
+        </mat-chip-set>
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="descriptorTypeSubclass">

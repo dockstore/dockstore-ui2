@@ -20,15 +20,15 @@ import { ConfirmationDialogData } from '../../confirmation-dialog/confirmation-d
 import { ConfirmationDialogService } from '../../confirmation-dialog/confirmation-dialog.service';
 import { bootstrap4mediumModalSize } from '../../shared/constants';
 import { RegisterToolService } from './../register-tool/register-tool.service';
-import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-deregister-modal',
   templateUrl: './deregister-modal.component.html',
   styleUrls: ['./deregister-modal.component.css'],
   standalone: true,
-  imports: [MatLegacyButtonModule, MatLegacyTooltipModule],
+  imports: [MatButtonModule, MatTooltipModule],
 })
 export class ModalComponent {
   @Input() refreshMessage: boolean;

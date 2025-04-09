@@ -16,7 +16,7 @@ import { GravatarService } from '../../gravatar/gravatar.service';
 import { RecentEventsPipe } from '../../shared/entry/recent-events.pipe';
 import { GravatarPipe } from '../../gravatar/gravatar.pipe';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { MatCardModule } from '@angular/material/card';
 import { ImgFallbackDirective } from '../../shared/img-fallback.directive';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { NgIf, NgFor, NgSwitch, NgSwitchCase, AsyncPipe, LowerCasePipe, SlicePipe, DatePipe } from '@angular/common';
@@ -43,7 +43,7 @@ import { LoadingComponent } from '../../shared/loading/loading.component';
     NgSwitch,
     NgSwitchCase,
     ImgFallbackDirective,
-    MatLegacyCardModule,
+    MatCardModule,
     MatIconModule,
     AsyncPipe,
     LowerCasePipe,

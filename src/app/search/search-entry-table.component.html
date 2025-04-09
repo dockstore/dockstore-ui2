@@ -2,8 +2,8 @@
   <div *ngIf="!dataSource">
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
   </div>
-  <div fxLayout="row" fxLayoutAlign="space-between center">
-    <mat-form-field appearance="outline" class="search-form-field sort-by">
+  <div fxLayout="row" fxLayoutAlign="space-between center" class="py-2">
+    <mat-form-field>
       <mat-label>Sort by</mat-label>
       <mat-select [value]="defaultSortOption.sort" (selectionChange)="setSort($event.value)">
         <mat-option *ngFor="let sortOption of sortOptions" [value]="sortOption.sort">{{ sortOption.label }}</mat-option>
@@ -12,7 +12,6 @@
     <div class="tag-cloud-dropdown">
       <button
         mat-button
-        appearance="outline"
         fxFlex="21rem"
         class="tagCloud-btn {{ entryType | lowercase }}-background"
         (click)="clickTagCloudBtn(this.entryType)"
@@ -41,91 +40,87 @@
     <ng-container matColumnDef="result">
       <mat-header-cell *matHeaderCellDef></mat-header-cell>
       <mat-cell data-cy="entryColumn" *matCellDef="let entry">
-        <mat-card fxLayout="column" fxLayoutGap="0.5rem" class="w-100">
-          <div fxLayout="row" fxLayoutAlign="space-between">
-            <div>
-              <img
-                src="../../../../assets/svg/{{ entry?.source.entryTypeMetadata.term }}-circle.svg"
-                class="mr-2_5 site-icons-small"
-                alt="{{ entry?.source.entryTypeMetadata.term }} icon"
-              />
-              <a
-                [matTooltip]="entry?.source | entryToDisplayName: true"
-                matTooltipPosition="left"
-                [routerLink]="entry?.source | routerLink"
-                >{{ entry?.source | entryToDisplayName: true }}</a
-              >
+        <mat-card class="w-100">
+          <mat-card-content fxLayout="column" fxLayoutGap="0.5rem">
+            <div fxLayout="row" fxLayoutAlign="space-between">
+              <div>
+                <img
+                  src="../../../../assets/svg/{{ entry?.source.entryTypeMetadata.term }}-circle.svg"
+                  class="mr-2_5 site-icons-small"
+                  alt="{{ entry?.source.entryTypeMetadata.term }} icon"
+                />
+                <a
+                  [matTooltip]="entry?.source | entryToDisplayName: true"
+                  matTooltipPosition="left"
+                  [routerLink]="entry?.source | routerLink"
+                  >{{ entry?.source | entryToDisplayName: true }}</a
+                >
+              </div>
+              <div *ngIf="entry?.source.starredUsers?.length" data-cy="starredUsers" class="accent-1-dark">
+                <mat-icon class="mat-icon-sm">star_rate</mat-icon>
+                <span class="weight-bold align-middle">{{ entry?.source.starredUsers.length }}</span>
+              </div>
             </div>
-            <div *ngIf="entry?.source.starredUsers?.length" data-cy="starredUsers" class="star-color">
-              <mat-icon class="mat-icon-sm">star_rate</mat-icon>
-              <span class="weight-bold align-middle">{{ entry?.source.starredUsers.length }}</span>
+            <div class="single-spaced">
+              <span
+                >{{ entry?.source.topicAutomatic }}
+                <mat-chip-set *ngIf="entry?.source.topicSelection === TopicSelectionEnum.AI && !entry?.source.approvedAITopic">
+                  <app-ai-bubble [isPublic]="true"></app-ai-bubble>
+                </mat-chip-set>
+              </span>
             </div>
-          </div>
-          <div class="single-spaced">
-            <span>{{ entry?.source.topicAutomatic }}</span>
-            <app-ai-bubble
-              *ngIf="entry?.source.topicSelection === TopicSelectionEnum.AI && !entry?.source.approvedAITopic"
-              [isPublic]="true"
-            ></app-ai-bubble>
-          </div>
 
-          <!-- Search highlighting results-->
-          <div *ngIf="entry.highlight">
-            <table class="search-highlighting size-small">
-              <tr *ngFor="let highlight of entry.highlight | keyvalue">
-                <th>{{ this.searchEverythingFriendlyNames.get(highlight.key.toString()) }}:</th>
-                <td class="single-spaced"><span [innerHTML]="highlight.value | joinWithEllipses"></span></td>
-              </tr>
-            </table>
-          </div>
+            <!-- Search highlighting results-->
+            <div *ngIf="entry.highlight">
+              <table class="search-highlighting size-small horizontal-table">
+                <tr *ngFor="let highlight of entry.highlight | keyvalue">
+                  <th>{{ this.searchEverythingFriendlyNames.get(highlight.key.toString()) }}:</th>
+                  <td class="single-spaced"><span [innerHTML]="highlight.value | joinWithEllipses"></span></td>
+                </tr>
+              </table>
+            </div>
 
-          <div fxLayout="row wrap" fxLayoutGap="1rem">
-            <span *ngIf="entry?.source?.all_authors">
-              <mat-icon color="primary" class="mat-icon-sm mr-1">person</mat-icon
-              ><span class="size-small" [innerHTML]="entry?.source?.all_authors | getSearchAuthorsHtml"></span>
-            </span>
-            <span>
-              <mat-icon color="primary" class="mat-icon-sm mr-1">history</mat-icon>
-              <span class="size-small"
-                >Last updated {{ entry?.source.last_modified_date ? (entry?.source.last_modified_date | date) : 'n/a' }}</span
-              >
-            </span>
-            <app-doi-badge
-              *ngIf="entry?.source?.selected_concept_doi"
-              [doi]="entry.source.selected_concept_doi"
-              [displayInitiator]="false"
-            ></app-doi-badge>
-            <span>
-              <mat-chip-list *ngIf="entry?.source.categories?.length" class="bubble-list">
+            <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="1rem">
+              <span *ngIf="entry?.source?.all_authors">
+                <mat-icon color="primary" class="mat-icon-sm mr-1">person</mat-icon
+                ><span class="size-small" [innerHTML]="entry?.source?.all_authors | getSearchAuthorsHtml"></span>
+              </span>
+              <span>
+                <mat-icon color="primary" class="mat-icon-sm mr-1">history</mat-icon>
+                <span class="size-small"
+                  >Last updated {{ entry?.source.last_modified_date ? (entry?.source.last_modified_date | date) : 'n/a' }}</span
+                >
+              </span>
+              <app-doi-badge
+                *ngIf="entry?.source?.selected_concept_doi"
+                [doi]="entry.source.selected_concept_doi"
+                [displayInitiator]="false"
+              ></app-doi-badge>
+              <mat-chip-set>
                 <app-category-button
                   *ngFor="let category of entry?.source.categories"
                   [category]="category"
                   [entryType]="entryType | lowercase"
                 ></app-category-button>
-              </mat-chip-list>
-              <span data-cy="descriptorType">
-                <span *ngIf="entry?.source.entryTypeMetadata.type !== EntryType.TOOL" class="nonclick-badge">{{
-                  entry?.source.descriptorType | descriptorLanguage
-                }}</span>
-                <span *ngIf="entry?.source.entryTypeMetadata.type === EntryType.TOOL">
-                  <span *ngFor="let language of entry?.source.descriptorType" class="nonclick-badge mr-2">
+                <mat-chip data-cy="descriptorType" *ngIf="entry?.source.entryTypeMetadata.type !== EntryType.TOOL">
+                  {{ entry?.source.descriptorType | descriptorLanguage }}
+                </mat-chip>
+                <ng-container *ngIf="entry?.source.entryTypeMetadata.type === EntryType.TOOL">
+                  <mat-chip data-cy="descriptorType" *ngFor="let language of entry?.source.descriptorType">
                     {{ language ? language : '' }}
-                  </span>
-                </span>
-              </span>
-              <span
-                *ngIf="entry?.source.entryTypeMetadata.type === EntryType.NOTEBOOK"
-                class="nonclick-badge ml-2"
-                data-cy="descriptorTypeSubclass"
-                >{{ entry?.source.descriptorTypeSubclass }}</span
-              >
-            </span>
-          </div>
+                  </mat-chip>
+                </ng-container>
+                <mat-chip *ngIf="entry?.source.entryTypeMetadata.type === EntryType.NOTEBOOK" data-cy="descriptorTypeSubclass">{{
+                  entry?.source.descriptorTypeSubclass
+                }}</mat-chip>
+              </mat-chip-set>
+            </div>
+          </mat-card-content>
         </mat-card>
       </mat-cell>
     </ng-container>
 
-    <mat-row *matRowDef="let element; columns: displayedColumns" class="element-row py-2"></mat-row>
+    <mat-row *matRowDef="let element; columns: displayedColumns" class="py-2"></mat-row>
   </mat-table>
   <mat-paginator
     data-cy="search-entry-table-paginator"

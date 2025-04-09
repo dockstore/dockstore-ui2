@@ -1,4 +1,4 @@
-import { goToTab, insertNotebooks, resetDB, setTokenUserViewPort } from '../../support/commands';
+import { goToMetricsTab, goToVersionsTab, insertNotebooks, resetDB, setTokenUserViewPort } from '../../support/commands';
 
 describe('Dockstore Metrics', () => {
   resetDB();
@@ -6,11 +6,11 @@ describe('Dockstore Metrics', () => {
   setTokenUserViewPort();
   it('Should see no metrics banner', () => {
     cy.visit('/workflows/github.com/A/l:master');
-    goToTab('Metrics');
+    goToMetricsTab();
     cy.get('[data-cy=no-metrics-banner]').should('be.visible');
 
     cy.visit('/notebooks/github.com/dockstore-testing/simple-notebook');
-    goToTab('Metrics');
+    goToMetricsTab();
     cy.get('[data-cy=no-metrics-banner]').should('be.visible');
   });
 
@@ -29,12 +29,12 @@ describe('Dockstore Metrics', () => {
       }).as('getVersionWithMetrics');
     });
     cy.wait('@getVersionWithMetrics');
-    goToTab('Versions');
+    goToVersionsTab();
     cy.get('[data-cy=execution-metrics-icon]').should('be.visible');
     cy.get('[data-cy=validation-metrics-icon]').should('be.visible');
 
     cy.wait('@getMetrics');
-    goToTab('Metrics');
+    goToMetricsTab();
 
     cy.get('[data-cy=no-metrics-banner]').should('not.exist');
     cy.get('[data-cy=metrics-partner-dropdown]').should('contain', 'All Platforms');
@@ -84,7 +84,7 @@ describe('Dockstore Metrics', () => {
 
   it('Should not see metrics checked on versions table if no metrics', () => {
     cy.visit('/my-workflows/github.com/A/l:master');
-    goToTab('Versions');
+    goToVersionsTab();
     cy.get('[data-cy=metrics]').should('not.exist');
   });
 });

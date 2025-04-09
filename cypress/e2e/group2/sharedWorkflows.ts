@@ -16,10 +16,11 @@
 import {
   cancelMatMenu,
   clickFirstActionsButtonPrivate,
-  goToTab,
-  goToUnexpandedSidebarEntry,
   resetDB,
   setTokenUserViewPort,
+  goToUnexpandedSidebarEntry,
+  goToVersionsTab,
+  goToFilesTab,
 } from '../../support/commands';
 import { workflowEntryTypeMetadata } from '../../../src/app/test/mocked-objects';
 import { BioWorkflow } from '../../../src/app/shared/openapi/model/bioWorkflow';
@@ -206,15 +207,15 @@ describe('Shared with me workflow test from my-workflows', () => {
   }
 
   function getReadOnlyWorkflow() {
-    goToUnexpandedSidebarEntry('user_B', /readertest/);
+    goToUnexpandedSidebarEntry('user_B', 'dockstore.org/user_B/readertest');
   }
 
   function getWriteOnlyWorkflow() {
-    goToUnexpandedSidebarEntry('user_B', /writertest/);
+    goToUnexpandedSidebarEntry('user_B', 'dockstore.org/user_B/writertest');
   }
 
   function getOwnerWorkflow() {
-    goToUnexpandedSidebarEntry('user_B', /ownertest/);
+    goToUnexpandedSidebarEntry('user_B', 'dockstore.org/user_B/ownertest');
   }
 
   describe('Should be able to perform operations on shared with me workflows based on permissions', () => {
@@ -224,13 +225,13 @@ describe('Shared with me workflow test from my-workflows', () => {
       cy.wait('@getReaderWorkflow');
       cy.get('#publishButton').should('be.disabled');
 
-      goToTab('Versions');
+      goToVersionsTab();
       clickFirstActionsButtonPrivate();
       cy.contains('View').should('be.visible');
       cy.contains('Edit Info').should('not.exist');
       cy.contains('Delete').should('not.exist');
       cancelMatMenu();
-      goToTab('Files');
+      goToFilesTab();
       cy.contains('Edit Files').should('not.exist');
     });
 
@@ -240,13 +241,13 @@ describe('Shared with me workflow test from my-workflows', () => {
       cy.wait('@getWriterWorkflow');
       cy.get('#publishButton').should('be.disabled');
 
-      goToTab('Versions');
+      goToVersionsTab();
       clickFirstActionsButtonPrivate();
       cy.contains('View').should('not.exist');
       cy.contains('Edit Info').should('be.visible');
       cy.contains('Delete').should('be.visible');
       cancelMatMenu();
-      goToTab('Files');
+      goToFilesTab();
       cy.contains('Edit Files').should('be.visible');
     });
 
@@ -256,13 +257,13 @@ describe('Shared with me workflow test from my-workflows', () => {
       cy.wait('@getOwnerWorkflow');
       cy.get('#publishButton').should('not.be.disabled');
 
-      goToTab('Versions');
+      goToVersionsTab();
       clickFirstActionsButtonPrivate();
       cy.contains('View').should('not.exist');
       cy.contains('Edit Info').should('be.visible');
       cy.contains('Delete').should('be.visible');
       cancelMatMenu();
-      goToTab('Files');
+      goToFilesTab();
       cy.contains('Edit Files').should('be.visible');
     });
   });

@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { MatLegacySnackBarModule } from '@angular/material/legacy-snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { EntriesService } from '../../../shared/openapi';
 import { EntriesStubService } from '../../../test/service-stubs';
 import { DeleteEntryDialogComponent } from './delete-entry-dialog.component';
@@ -15,7 +15,7 @@ describe('DeleteEntryDialogComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         schemas: [NO_ERRORS_SCHEMA],
-        imports: [DeleteEntryDialogComponent, MatLegacySnackBarModule],
+        imports: [DeleteEntryDialogComponent, MatSnackBarModule],
         providers: [
           { provide: EntriesService, useClass: EntriesStubService },
           {

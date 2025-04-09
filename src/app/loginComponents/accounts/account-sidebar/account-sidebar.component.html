@@ -1,10 +1,10 @@
 <div fxFlex.lt-md="100" class="p-3">
-  <div fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="1rem" class="pt-2 pb-4">
-    <div fxLayout="row wrap" fxLayoutAlign="start start" fxLayoutGap="0.5rem" class="w-100 ml-2">
-      <strong *ngIf="user?.isAdmin" data-cy="account-is-admin" class="bubble">Administrator</strong>
-      <strong *ngIf="user?.curator" data-cy="account-is-curator" class="bubble">Curator</strong>
-      <strong *ngIf="user?.platformPartner" data-cy="account-is-platform-partner" class="bubble">Platform Partner</strong>
-    </div>
+  <mat-chip-set class="ml-2">
+    <mat-chip *ngIf="user?.isAdmin" class="role" data-cy="account-is-admin">Administrator</mat-chip>
+    <mat-chip *ngIf="user?.curator" class="role" data-cy="account-is-curator">Curator</mat-chip>
+    <mat-chip *ngIf="user?.platformPartner" class="role" data-cy="account-is-platform-partner">Platform Partner</mat-chip>
+  </mat-chip-set>
+  <div fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="1rem" class="pt-3 pb-4">
     <img src="{{ user?.avatarUrl }}" alt="Dockstore avatar" />
     <h4>{{ user?.name }}</h4>
     <span fxLayoutGap="1rem" class="w-60">
@@ -14,13 +14,13 @@
         matTooltip="We strongly suggest you change your username to something other than an email address."
         >warning</mat-icon
       >
-      <button mat-button class="private-btn small-btn-structure w-100" (click)="editUsernameModal()">
+      <button mat-stroked-button class="private-btn w-100" (click)="editUsernameModal()">
         <img src="../../../../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit Dockstore Username" />
         Edit Dockstore Username
       </button>
     </span>
     <span fxLayoutGap="1rem" class="w-60">
-      <button mat-button class="private-btn small-btn-structure w-100" routerLink="/users/{{ user?.username }}">
+      <button mat-stroked-button class="private-btn w-100" routerLink="/users/{{ user?.username }}">
         <mat-icon class="mat-icon-sm">account_circle</mat-icon>
         View Public Profile
       </button>
@@ -29,17 +29,21 @@
   <hr />
 
   <div *ngIf="gitHubProfile" class="pl-2 pr-2">
-    <div fxLayout fxLayoutAlign="space-between start">
+    <div fxLayout fxLayoutAlign="space-between center">
       <div fxLayout>
-        <h5 class="weight-bold">GitHub Profile</h5>
-        <p *ngIf="syncBadgeGit" class="bubble mt-2 ml-3">
-          <img src="../../../../assets/svg/icons-checkmark.svg" alt="Synced" />
-          Synced
-        </p>
+        <h5 class="weight-bold">
+          GitHub Profile
+          <mat-chip-set *ngIf="syncBadgeGit">
+            <mat-chip class="checkmark">
+              <mat-icon alt="Synced">done</mat-icon>
+              Synced
+            </mat-chip>
+          </mat-chip-set>
+        </h5>
       </div>
       <img src="{{ gitHubProfile.avatarURL }}" alt="GitHub avatar" />
     </div>
-    <table class="size-small">
+    <table class="size-small horizontal-table">
       <tr *ngIf="gitHubProfile.name">
         <th>Name</th>
         <td>{{ gitHubProfile.name }}</td>
@@ -58,8 +62,8 @@
       </tr>
     </table>
     <button
-      mat-button
-      class="private-btn small-btn-structure ml-1 mt-2"
+      mat-stroked-button
+      class="private-btn ml-1 mt-2"
       matTooltip="Sync profile with GitHub"
       [disabled]="syncing"
       (click)="sync(TokenSource.GITHUB)"
@@ -71,25 +75,29 @@
   </div>
 
   <div *ngIf="googleProfile" class="pl-2 pr-2">
-    <div fxLayout fxLayoutAlign="space-between start">
+    <div fxLayout fxLayoutAlign="space-between center">
       <div fxLayout>
-        <h5 class="weight-bold">Google Profile</h5>
-        <p *ngIf="syncBadgeGoogle" class="bubble mt-2 ml-3">
-          <img src="../../../../assets/svg/icons-checkmark.svg" alt="Synced" />
-          Synced
-        </p>
+        <h5 class="weight-bold">
+          Google Profile
+          <mat-chip-set *ngIf="syncBadgeGoogle">
+            <mat-chip class="checkmark">
+              <mat-icon alt="Synced">done</mat-icon>
+              Synced
+            </mat-chip>
+          </mat-chip-set>
+        </h5>
       </div>
       <img src="{{ googleProfile.avatarURL }}" alt="Google avatar" />
     </div>
-    <table class="size-small">
+    <table class="size-small horizontal-table">
       <tr *ngIf="googleProfile.name">
         <th>Name</th>
         <td>{{ googleProfile.name }}</td>
       </tr>
     </table>
     <button
-      mat-button
-      class="private-btn small-btn-structure ml-1 mt-2"
+      mat-stroked-button
+      class="private-btn ml-1 mt-2"
       matTooltip="Sync profile with Google"
       [disabled]="syncing"
       (click)="sync(TokenSource.GOOGLE)"

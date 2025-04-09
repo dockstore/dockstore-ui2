@@ -41,20 +41,20 @@
         </mat-radio-group>
       </div>
       <div class="modal-footer">
-        <button mat-flat-button class="secondary-1" (click)="hideModal(); clearWorkflowRegisterError()">Close</button>
-        <button mat-raised-button class="accent-1-dark-btn mat-elevation-z" matStepperNext>Next</button>
+        <button mat-button color="accent" (click)="hideModal(); clearWorkflowRegisterError()">Close</button>
+        <button mat-flat-button class="accent-1-dark" matStepperNext>Next</button>
       </div>
     </mat-step>
     <mat-step>
       <ng-template matStepLabel>Create a workflow</ng-template>
       <div *ngIf="selectedOption?.value === 0">
         <app-register-github-app [entryType]="EntryType.WORKFLOW"></app-register-github-app>
-        <div class="modal-footer">
-          <button mat-flat-button class="secondary-1" matStepperPrevious>Back</button>
+        <div class="modal-footer mt-4">
+          <button mat-button color="accent" matStepperPrevious>Back</button>
           <button
             type="button"
-            mat-raised-button
-            class="accent-1-dark-btn mat-elevation-z"
+            mat-flat-button
+            class="accent-1-dark"
             [mat-dialog-close]="true"
             (click)="clearWorkflowRegisterError()"
             data-cy="close-modal-btn"
@@ -66,14 +66,8 @@
       <div *ngIf="selectedOption?.value === 1">
         <app-entry-wizard></app-entry-wizard>
         <div class="modal-footer">
-          <button mat-flat-button class="secondary-1" matStepperPrevious>Back</button>
-          <button
-            type="button"
-            mat-raised-button
-            class="accent-1-dark-btn mat-elevation-z"
-            [mat-dialog-close]="true"
-            (click)="clearWorkflowRegisterError()"
-          >
+          <button mat-button color="accent" matStepperPrevious>Back</button>
+          <button type="button" mat-flat-button class="accent-1-dark" [mat-dialog-close]="true" (click)="clearWorkflowRegisterError()">
             Finish
           </button>
         </div>
@@ -81,6 +75,7 @@
       <form
         fxLayout="column"
         fxLayoutAlign="space-evenly stretch"
+        fxLayoutGap="1rem"
         *ngIf="selectedOption?.value === 2"
         #registerWorkflowForm="ngForm"
         name="registerWorkflowForm"
@@ -92,7 +87,8 @@
           workflows.
         </p>
         <mat-form-field class="w-100">
-          <mat-select placeholder="Source Code Provider" class="radio-group" [(ngModel)]="workflow.repository" name="repository">
+          <mat-label>Source Code Provider</mat-label>
+          <mat-select class="radio-group" [(ngModel)]="workflow.repository" name="repository">
             <mat-option *ngFor="let repository of friendlyRepositoryKeys()" [value]="repository">
               {{ repository }}
             </mat-option>
@@ -118,13 +114,17 @@
         <mat-radio-group
           class="w-100 radio-group"
           position="before"
-          id="descriptorTypeRadioButtons"
           [(ngModel)]="workflow.descriptorType"
           name="descriptorTypes"
           (change)="radioButtonChange($event)"
         >
           <mat-label>Descriptor Type: </mat-label>
-          <mat-radio-button class="radio-button" *ngFor="let descriptorType of descriptorLanguages$ | async" [value]="descriptorType">
+          <mat-radio-button
+            class="radio-button"
+            *ngFor="let descriptorType of descriptorLanguages$ | async"
+            [value]="descriptorType"
+            [attr.data-cy]="('descriptor_type' | mapFriendlyValue: descriptorType) + '-radio-button'"
+          >
             {{ 'descriptor_type' | mapFriendlyValue: descriptorType }}
           </mat-radio-button>
         </mat-radio-group>
@@ -175,10 +175,10 @@
         </mat-form-field>
         <div class="modal-footer">
           <button
-            mat-flat-button
+            mat-button
             type="button"
             id="closeRegisterWorkflowModalButton"
-            class="secondary-1"
+            color="accent"
             (click)="hideModal(); clearWorkflowRegisterError()"
           >
             Close
@@ -186,8 +186,8 @@
           <button
             id="submitButton"
             type="submit"
-            mat-raised-button
-            class="accent-1-dark-btn mat-elevation-z"
+            mat-flat-button
+            class="accent-1-dark"
             [disabled]="!registerWorkflowForm.form.valid || (isRefreshing$ | async)"
           >
             Register Workflow
@@ -197,6 +197,7 @@
       <form
         fxLayout="column"
         fxLayoutAlign="space-evenly stretch"
+        fxLayoutGap="1rem"
         *ngIf="selectedOption?.value === 3"
         #registerHostedWorkflowForm="ngForm"
         name="registerHostedWorkflowForm"
@@ -206,7 +207,6 @@
         <p>Create a workflow with all descriptor files created and stored on Dockstore.org.</p>
 
         <mat-radio-group
-          id="descriptorTypeRadioButtons"
           position="before"
           class="radio-group"
           [(ngModel)]="hostedWorkflow.descriptorType"
@@ -224,7 +224,7 @@
           </mat-radio-button>
         </mat-radio-group>
 
-        <mat-form-field appearance="outline" class="w-100">
+        <mat-form-field class="w-100">
           <mat-label>Repository</mat-label>
           <input
             matInput
@@ -254,14 +254,8 @@
         </div>
 
         <div class="modal-footer">
-          <button type="button" mat-flat-button class="secondary-1" (click)="hideModal(); clearWorkflowRegisterError()">Close</button>
-          <button
-            id="submitButton"
-            type="submit"
-            mat-raised-button
-            class="accent-1-dark-btn mat-elevation-z"
-            [disabled]="!registerHostedWorkflowForm.form.valid"
-          >
+          <button type="button" mat-button color="accent" (click)="hideModal(); clearWorkflowRegisterError()">Close</button>
+          <button id="submitButton" type="submit" mat-flat-button class="accent-1-dark" [disabled]="!registerHostedWorkflowForm.form.valid">
             Register Workflow
           </button>
         </div>

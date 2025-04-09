@@ -1,0 +1,88 @@
+/*
+ *     Copyright 2025 OICR and UCSC
+ *
+ *     Licensed under the Apache License, Version 2.0 (the "License")
+ *     you may not use this file except in compliance with the License
+ *     You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *     Unless required by applicable law or agreed to in writing, software
+ *     distributed under the License is distributed on an "AS IS" BASIS
+ *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *     See the License for the specific language governing permissions and
+ *     limitations under the License.
+ */
+
+// This file contains re-usable Sass functions
+
+// This style is for the SMALLER dockstore buttons with 26px height
+@mixin small-btn {
+  &.mdc-button {
+    font-size: 12px;
+    line-height: 26px;
+    height: 26px;
+    padding: 0 10px;
+    // Needed for smaller mat buttons ex. "info"
+    min-width: 42px;
+  }
+}
+
+// Mixin for generating a button color class.
+// mat-raised-button and mat-flat-button have the $color as the background and white text
+// mat-button and mat-stroked-button have the $color as the text and white as the background
+@mixin button-color($color) {
+  &.mdc-button--unelevated:not(:disabled),
+  &.mat-mdc-raised-button:not(:disabled) {
+    // mat-flat-button has $color background and white text
+    --mdc-filled-button-container-color: #{$color};
+    --mdc-filled-button-label-text-color: white;
+    // mat-raise-button has $color background and white text
+    --mdc-protected-button-container-color: #{$color};
+    --mdc-protected-button-label-text-color: white;
+
+    mat-icon {
+      color: white;
+    }
+  }
+
+  &.mat-mdc-button:not(:disabled),
+  &.mdc-button--outlined:not(:disabled) {
+    // The other types of buttons have $color text with the default white background
+    // mat-stroked-button
+    --mdc-outlined-button-label-text-color: #{$color};
+    // mat-button
+    --mdc-text-button-label-text-color: #{$color};
+
+    mat-icon {
+      color: $color;
+    }
+  }
+
+  // Set the background color of mat-stroked-button to white to override the transparent background
+  &.mdc-button--outlined:not(:disabled) {
+    background-color: white;
+  }
+}
+
+@mixin mat-icon-size($size) {
+  // These two override .mat-icon's default 24px height and width
+  height: $size;
+  width: $size;
+  // This overrides .material-icon's default 24px font-size, changing the font-size fixes the position of it
+  font-size: $size;
+}
+
+// Styles for making mat-icons smaller than the default
+@mixin small-mat-icon() {
+  @include mat-icon-size(16px);
+}
+
+// Sets the color of a selected tab's underline color
+@mixin tab-group-indicator-color($color) {
+  &.mat-mdc-tab-group {
+    --mdc-tab-indicator-active-indicator-color: #{$color};
+    --mat-tab-header-active-hover-indicator-color: #{$color};
+    --mat-tab-header-active-focus-indicator-color: #{$color};
+  }
+}

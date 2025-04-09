@@ -15,18 +15,18 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-import { MatLegacyDialog as MatDialog, MatLegacyDialogModule } from '@angular/material/legacy-dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { takeUntil } from 'rxjs/operators';
 import { Base } from '../../shared/base';
 import { SearchAuthorsHtmlPipe } from '../search-authors-html.pipe';
 import { SearchService } from '../state/search.service';
 import { AdvancedSearchObject } from './../../shared/models/AdvancedSearchObject';
 import { AdvancedSearchQuery } from './state/advanced-search.query';
-import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { FormsModule } from '@angular/forms';
-import { MatLegacyOptionModule } from '@angular/material/legacy-core';
-import { MatLegacySelectModule } from '@angular/material/legacy-select';
-import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatOptionModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { NgIf } from '@angular/common';
 
 @Component({
@@ -35,13 +35,13 @@ import { NgIf } from '@angular/common';
   styleUrls: ['./advancedsearch.component.scss'],
   standalone: true,
   imports: [
-    MatLegacyDialogModule,
+    MatDialogModule,
     NgIf,
-    MatLegacyFormFieldModule,
-    MatLegacySelectModule,
-    MatLegacyOptionModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatOptionModule,
     FormsModule,
-    MatLegacyTooltipModule,
+    MatTooltipModule,
     SearchAuthorsHtmlPipe,
   ],
 })

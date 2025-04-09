@@ -1,4 +1,4 @@
-import { goToTab } from '../../../support/commands';
+import { goToInfoTab, goToVersionsTab } from '../../../support/commands';
 
 /**
  * To run these on tests you have the following:
@@ -213,7 +213,7 @@ function testTool(registry: string, repo: string, name: string) {
     it('hide a version', () => {
       storeToken();
       cy.visit('/my-tools');
-      goToTab('Versions');
+      goToVersionsTab();
       toggleHiddenToolVersion();
       cy.get('[data-cy=hiddenCheck]').should('have.length', 1);
       // un-hide and verify
@@ -257,7 +257,7 @@ function testWorkflow() {
       // WARNING: don't actually snapshot since it can't be undone
       // define routes to watch for
 
-      goToTab('Versions');
+      goToVersionsTab();
 
       cy.contains('button', 'Actions').should('be.visible');
       cy.contains('td', 'Actions').first().click();
@@ -270,7 +270,7 @@ function testWorkflow() {
       storeToken();
       cy.get('#publishButton').contains('Unpublish').click({ force: true });
 
-      goToTab('Info');
+      goToInfoTab();
 
       // For now, only restub the workflow in environments that use the sandbox zenodo,
       // to avoid the subsequent creation of new versions and auto-generation of real
@@ -289,7 +289,7 @@ function testWorkflow() {
       }
 
       cy.get('[data-cy=refreshButton]').click();
-      goToTab('Versions');
+      goToVersionsTab();
       // hide
       toggleHiddenWorkflowVersion();
       cy.get('[data-cy=hidden]').should('have.length', 1);

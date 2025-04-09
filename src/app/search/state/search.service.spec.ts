@@ -15,7 +15,7 @@
  */
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { inject, TestBed } from '@angular/core/testing';
-import { MatLegacySnackBarModule as MatLegacySnackBarModule } from '@angular/material/legacy-snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterTestingModule } from '@angular/router/testing';
 import { first } from 'rxjs/operators';
 import { ImageProviderService } from '../../shared/image-provider.service';
@@ -31,7 +31,7 @@ describe('SearchService', () => {
   let searchService: SearchService;
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule, HttpClientTestingModule, MatLegacySnackBarModule],
+      imports: [RouterTestingModule, HttpClientTestingModule, MatSnackBarModule],
       providers: [
         ImageProviderService,
         SearchService,

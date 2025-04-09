@@ -28,19 +28,20 @@ import { ToolLister } from '../../shared/tool-lister';
 import { PublishedWorkflowsDataSource } from './published-workflows.datasource';
 import { DescriptorLanguagePipe } from '../../shared/entry/descriptor-language.pipe';
 import { RouterLinkPipe } from '../../entry/router-link.pipe';
-import { MatLegacyPaginatorModule } from '@angular/material/legacy-paginator';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatButtonModule } from '@angular/material/button';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
 import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
 import { RouterLink } from '@angular/router';
 import { MatSortModule } from '@angular/material/sort';
-import { MatLegacyTableModule } from '@angular/material/legacy-table';
-import { MatLegacyInputModule } from '@angular/material/legacy-input';
-import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
-import { MatLegacyProgressBarModule } from '@angular/material/legacy-progress-bar';
+import { MatTableModule } from '@angular/material/table';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NgIf, AsyncPipe, TitleCasePipe } from '@angular/common';
+import { MatChipsModule } from '@angular/material/chips';
 
 @Component({
   selector: 'app-list-workflows',
@@ -49,22 +50,23 @@ import { NgIf, AsyncPipe, TitleCasePipe } from '@angular/common';
   standalone: true,
   imports: [
     NgIf,
-    MatLegacyProgressBarModule,
-    MatLegacyFormFieldModule,
-    MatLegacyInputModule,
-    MatLegacyTableModule,
+    MatProgressBarModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatTableModule,
     MatSortModule,
     RouterLink,
     ExtendedModule,
     MatIconModule,
-    MatLegacyTooltipModule,
+    MatTooltipModule,
     FontAwesomeModule,
-    MatLegacyButtonModule,
-    MatLegacyPaginatorModule,
+    MatButtonModule,
+    MatPaginatorModule,
     AsyncPipe,
     TitleCasePipe,
     RouterLinkPipe,
     DescriptorLanguagePipe,
+    MatChipsModule,
   ],
 })
 export class ListWorkflowsComponent extends ToolLister<PublishedWorkflowsDataSource> implements OnInit {

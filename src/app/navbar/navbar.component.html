@@ -98,7 +98,7 @@
             routerLink="/users/{{ user?.username }}"
             routerLinkActive="menu-item-active"
             data-cy="dropdown-profile-button"
-            class="weight-bold px-5"
+            class="px-5"
           >
             <mat-icon class="menu-icon">account_circle</mat-icon>Profile
           </button>
@@ -108,11 +108,11 @@
             routerLink="/accounts"
             routerLinkActive="menu-item-active"
             data-cy="dropdown-account-button"
-            class="weight-bold px-5"
+            class="px-5"
           >
             <mat-icon class="menu-icon">settings</mat-icon>Account
           </button>
-          <button mat-menu-item id="dropdown-logout" data-cy="dropdown-logout-button" (click)="logout()" class="weight-bold px-5">
+          <button mat-menu-item id="dropdown-logout" data-cy="dropdown-logout-button" (click)="logout()" class="px-5">
             <mat-icon class="menu-icon">logout</mat-icon>Log out
           </button>
         </mat-menu>

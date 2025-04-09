@@ -1,19 +1,15 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import {
-  MatLegacyDialogRef as MatDialogRef,
-  MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
-  MatLegacyDialogModule,
-} from '@angular/material/legacy-dialog';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { Collection, OrganizationUser } from '../../../shared/openapi';
 import { AddEntryQuery } from '../state/add-entry.query';
 import { AddEntryService } from '../state/add-entry.service';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
-import { MatLegacyOptionModule } from '@angular/material/legacy-core';
-import { MatLegacySelectModule } from '@angular/material/legacy-select';
-import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatButtonModule } from '@angular/material/button';
+import { MatOptionModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { MatCardModule } from '@angular/material/card';
 import { NgIf, NgFor, AsyncPipe } from '@angular/common';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { LoadingComponent } from '../../../shared/loading/loading.component';
@@ -24,17 +20,17 @@ import { LoadingComponent } from '../../../shared/loading/loading.component';
   styleUrls: ['./add-entry.component.scss'],
   standalone: true,
   imports: [
-    MatLegacyDialogModule,
+    MatDialogModule,
     LoadingComponent,
     FlexModule,
     NgIf,
-    MatLegacyCardModule,
+    MatCardModule,
     MatIconModule,
-    MatLegacyFormFieldModule,
-    MatLegacySelectModule,
+    MatFormFieldModule,
+    MatSelectModule,
     NgFor,
-    MatLegacyOptionModule,
-    MatLegacyButtonModule,
+    MatOptionModule,
+    MatButtonModule,
     AsyncPipe,
   ],
 })

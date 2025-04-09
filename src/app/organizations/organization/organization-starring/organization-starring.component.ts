@@ -25,7 +25,7 @@ import { Organization, User } from '../../../shared/openapi';
 import { TrackLoginService } from '../../../shared/track-login.service';
 import { UserQuery } from '../../../shared/user/user.query';
 import { OrganizationStarringService } from './organization-starring.service';
-import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
 import { NgClass, NgIf } from '@angular/common';
 
@@ -34,7 +34,7 @@ import { NgClass, NgIf } from '@angular/common';
   templateUrl: '../../../starring/starring.component.html',
   styleUrls: ['../../../starring/starring.component.scss'],
   standalone: true,
-  imports: [NgClass, NgIf, MatIconModule, MatLegacyTooltipModule],
+  imports: [NgClass, NgIf, MatIconModule, MatTooltipModule],
 })
 export class OrganizationStarringComponent extends Base implements OnInit, OnDestroy, OnChanges {
   @Input() organization: Organization;

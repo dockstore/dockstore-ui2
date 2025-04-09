@@ -15,7 +15,8 @@
  */
 import { Component, Input, OnInit } from '@angular/core';
 import { Dockstore } from '../dockstore.model';
-import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatChipsModule } from '@angular/material/chips';
 
 /**
  * Component for the AI generated indicator.
@@ -28,7 +29,7 @@ import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
   selector: 'app-ai-bubble',
   templateUrl: './ai-bubble.component.html',
   standalone: true,
-  imports: [MatLegacyTooltipModule],
+  imports: [MatTooltipModule, MatChipsModule],
 })
 export class AiBubbleComponent implements OnInit {
   constructor() {}

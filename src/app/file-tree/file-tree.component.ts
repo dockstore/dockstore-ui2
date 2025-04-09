@@ -1,17 +1,14 @@
 import { Component, Inject } from '@angular/core';
 import { MatTreeFlatDataSource, MatTreeFlattener, MatTreeModule } from '@angular/material/tree';
 import { FlatTreeControl } from '@angular/cdk/tree';
-import {
-  MatLegacyDialogRef as MatDialogRef,
-  MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
-  MatLegacyDialogModule,
-} from '@angular/material/legacy-dialog';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { EntryType, SourceFile, ToolDescriptor } from 'app/shared/openapi';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatButtonModule } from '@angular/material/button';
 import { NgIf } from '@angular/common';
-import { MatLegacyInputModule } from '@angular/material/legacy-input';
-import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatChipsModule } from '@angular/material/chips';
 
 /** File node data with possible child nodes. */
 export interface FileNode {
@@ -44,15 +41,7 @@ export interface FlatTreeNode {
   selector: 'app-file-tree',
   templateUrl: './file-tree.component.html',
   standalone: true,
-  imports: [
-    MatLegacyDialogModule,
-    MatLegacyFormFieldModule,
-    MatLegacyInputModule,
-    MatTreeModule,
-    NgIf,
-    MatLegacyButtonModule,
-    MatIconModule,
-  ],
+  imports: [MatDialogModule, MatFormFieldModule, MatInputModule, MatTreeModule, NgIf, MatButtonModule, MatIconModule, MatChipsModule],
 })
 export class FileTreeComponent {
   /** The TreeControl controls the expand/collapse state of tree nodes.  */

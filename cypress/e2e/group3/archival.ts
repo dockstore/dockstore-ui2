@@ -13,7 +13,15 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-import { resetDB, setTokenUserViewPort, insertNotebooks, insertAppTools, invokeSql } from '../../support/commands';
+import {
+  resetDB,
+  setTokenUserViewPort,
+  insertNotebooks,
+  insertAppTools,
+  invokeSql,
+  assertVisibleTab,
+  assertNoTab,
+} from '../../support/commands';
 
 describe('Entry Archival', () => {
   resetDB();
@@ -64,7 +72,7 @@ describe('Entry Archival', () => {
       // "Archive" button should appear
       goToPrivatePage(entry);
       cy.contains('app-workflow', 'was archived').should('not.exist');
-      cy.contains('.mat-accordion', 'Archived').should('not.exist');
+      assertNoTab('Archived');
       cy.contains('button', 'Archive').should('be.visible').should('not.be.disabled').click();
 
       // Confirmation dialog should appear, select "yes".
@@ -76,7 +84,7 @@ describe('Entry Archival', () => {
       // "Unarchive" button should appear
       goToPrivatePage(entry);
       cy.contains('app-workflow', 'was archived').should('exist');
-      cy.contains('.mat-accordion', 'Archived').should('exist');
+      assertVisibleTab('Archived');
       cy.get('[data-cy=topicEditButton]').should('be.visible').should('be.disabled');
       cy.contains('button', 'Unarchive').should('be.visible').should('not.be.disabled').click();
 
@@ -85,7 +93,7 @@ describe('Entry Archival', () => {
       // "Archive" button should appear
       goToPrivatePage(entry);
       cy.contains('app-workflow', 'was archived').should('not.exist');
-      cy.contains('.mat-accordion', 'Archived').should('not.exist');
+      assertNoTab('Archived');
       cy.contains('button', 'Archive').should('be.visible').should('not.be.disabled');
     });
   });

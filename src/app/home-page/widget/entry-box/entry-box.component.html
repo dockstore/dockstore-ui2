@@ -15,20 +15,20 @@
   -->
 
 <mat-card class="h-100">
-  <div fxLayout="column" fxLayoutAlign="start stretch" class="h-100">
-    <div id="header-bar" fxLayout="row wrap" fxLayoutGap="0.5rem" class="space-between">
-      <div id="workflow-number" fxLayout="row">
-        <mat-card-header fxLayout="row">
-          <mat-card-title class="ml-2">{{ entryTypeLowerCase | titlecase }}s</mat-card-title>
-          <span class="bubble {{ entryTypeLowerCase }}-background" [attr.data-cy]="'dashboard-' + entryTypeLowerCase + '-count-bubble'">{{
+  <mat-card-header>
+    <mat-card-title-group>
+      <mat-card-title>
+        {{ entryTypeLowerCase | titlecase }}s
+        <mat-chip-set>
+          <mat-chip class="{{ entryTypeLowerCase }}-background" [attr.data-cy]="'dashboard-' + entryTypeLowerCase + '-count-bubble'">{{
             totalEntries
-          }}</span>
-          <span class="bubble preview-bubble" *ngIf="entryType === newEntryType.SERVICE">PREVIEW</span>
-        </mat-card-header>
-      </div>
+          }}</mat-chip>
+          <mat-chip class="preview-bubble" *ngIf="entryType === newEntryType.SERVICE">PREVIEW</mat-chip>
+        </mat-chip-set>
+      </mat-card-title>
       <button
-        mat-button
-        class="private-btn small-btn-structure ml-3 mb-3"
+        mat-stroked-button
+        class="private-btn ml-3 mb-3"
         id="register{{ entryTypeLowerCase | titlecase }}Button"
         matTooltip="Register {{ entryTypeLowerCase | titlecase }}"
         matTooltipPosition="after"
@@ -38,62 +38,58 @@
         <img src="../../../assets/svg/icons-plus.svg" alt="Register a {{ entryTypeLowerCase | titlecase }}" class="pr-2 pb-1" />
         Register a {{ entryTypeLowerCase | titlecase }}
       </button>
-    </div>
-    <mat-divider></mat-divider>
-    <mat-card-content class="mx-2 mt-3 h-100">
-      <div *ngIf="totalEntries > 0 || isLoading; else noEntries">
-        <mat-form-field appearance="outline" class="search-form-field w-100 pb-0">
-          <mat-label>Search your {{ entryTypeLowerCase | titlecase }}s...</mat-label>
-          <input matInput data-cy="search-field" [(ngModel)]="filterText" (keyup)="onTextChange($event)" [matAutocomplete]="auto" />
-          <button *ngIf="filterText" mat-button matSuffix mat-icon-button (click)="clearSearch()" type="button">
-            <mat-icon>cancel</mat-icon>
-          </button>
-        </mat-form-field>
-        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="navigateToEntry($event.option.value)">
-          <mat-option *ngFor="let result of listOfResults" [value]="result.path" class="no-wrap">{{ result.prettyPath }}</mat-option>
-          <div *ngIf="totalResults > resultsDisplayed" class="date-display no-wrap p-2 px-4">
-            Showing {{ resultsDisplayed }} of {{ totalResults }} matching {{ entryTypeLowerCase }}s
-          </div>
-          <mat-option *ngIf="noResults" disabled class="m-2">No matching {{ entryTypeLowerCase }}s</mat-option>
-        </mat-autocomplete>
-        <h5 class="weight-bold my-0">Recent Activity</h5>
-        <div *ngFor="let entry of listOfEntries" fxLayout="row" class="widget-list-items space-between w-100 py-2">
-          <a class="no-wrap" data-cy="dashboard-entry-links" [routerLink]="allEntriesLink + entry.path">
-            {{ entry.prettyPath }}
-          </a>
-          <div class="date-display">{{ entry.lastUpdateDate | date: 'MMM d, yyyy' }}</div>
+    </mat-card-title-group>
+  </mat-card-header>
+  <mat-divider></mat-divider>
+  <mat-card-content class="mt-3 h-100">
+    <div *ngIf="totalEntries > 0 || isLoading; else noEntries">
+      <mat-form-field class="w-100 mb-3">
+        <mat-label>Search your {{ entryTypeLowerCase | titlecase }}s...</mat-label>
+        <input matInput data-cy="search-field" [(ngModel)]="filterText" (keyup)="onTextChange($event)" [matAutocomplete]="auto" />
+        <button *ngIf="filterText" matSuffix mat-icon-button (click)="clearSearch()">
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </mat-form-field>
+      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="navigateToEntry($event.option.value)">
+        <mat-option *ngFor="let result of listOfResults" [value]="result.path" class="no-wrap">{{ result.prettyPath }}</mat-option>
+        <div *ngIf="totalResults > resultsDisplayed" class="date-display no-wrap p-2 px-4">
+          Showing {{ resultsDisplayed }} of {{ totalResults }} matching {{ entryTypeLowerCase }}s
         </div>
-        <div class="weight-bold py-2">
-          <a [routerLink]="allEntriesLink" data-cy="all-entries-btn">
-            All {{ entryTypeLowerCase | titlecase }}s<mat-icon class="mat-icon-sm">keyboard_double_arrow_right</mat-icon>
-          </a>
-        </div>
+        <mat-option *ngIf="noResults" disabled class="m-2">No matching {{ entryTypeLowerCase }}s</mat-option>
+      </mat-autocomplete>
+      <h5 class="weight-bold my-0">Recent Activity</h5>
+      <div *ngFor="let entry of listOfEntries" fxLayout="row" fxLayoutAlign="space-between" class="widget-list-items w-100 py-2">
+        <a class="no-wrap" data-cy="dashboard-entry-links" [routerLink]="allEntriesLink + entry.path">
+          {{ entry.prettyPath }}
+        </a>
+        <div class="date-display">{{ entry.lastUpdateDate | date: 'MMM d, yyyy' }}</div>
       </div>
-      <ng-template #noEntries>
-        <div *ngIf="!isLoading" fxLayout="column" class="h-100 text-align-center" fxLayoutAlign="center center">
-          <img
-            src="../assets/svg/{{ entryTypeLowerCase }}-circle.svg"
-            alt="my {{ entryTypeLowerCase }}s"
-            class="widget-box-type-logo mb-4"
-          />
-          <span>You have not registered any {{ entryTypeLowerCase }}s.</span>
-          <div class="size-small">
-            <span>Use the </span>
-            <a
-              class="size-small pointer mt-3"
-              matTooltip="Register {{ entryTypeLowerCase }}"
-              matTooltipPosition="after"
-              (click)="showRegisterEntryModal()"
-              data-cy="no-entry-register-modal"
-              >{{ entryTypeLowerCase }} registration wizard</a
-            >
-            <span> to register a {{ entryTypeLowerCase }}.</span>
-          </div>
-          <a class="size-small" target="_blank" rel="noopener noreferrer" [href]="helpLink" data-cy="help-link"
-            >Learn more about {{ entryTypeLowerCase }}s.
-          </a>
+      <div class="weight-bold py-2">
+        <a [routerLink]="allEntriesLink" data-cy="all-entries-btn">
+          All {{ entryTypeLowerCase | titlecase }}s<mat-icon class="mat-icon-sm">keyboard_double_arrow_right</mat-icon>
+        </a>
+      </div>
+    </div>
+    <ng-template #noEntries>
+      <div *ngIf="!isLoading" fxLayout="column" class="h-100 text-align-center" fxLayoutAlign="center center">
+        <img src="../assets/svg/{{ entryTypeLowerCase }}-circle.svg" alt="my {{ entryTypeLowerCase }}s" class="widget-box-type-logo mb-4" />
+        <span>You have not registered any {{ entryTypeLowerCase }}s.</span>
+        <div class="size-small">
+          <span>Use the </span>
+          <a
+            class="size-small pointer mt-3"
+            matTooltip="Register {{ entryTypeLowerCase }}"
+            matTooltipPosition="after"
+            (click)="showRegisterEntryModal()"
+            data-cy="no-entry-register-modal"
+            >{{ entryTypeLowerCase }} registration wizard</a
+          >
+          <span> to register a {{ entryTypeLowerCase }}.</span>
         </div>
-      </ng-template>
-    </mat-card-content>
-  </div>
+        <a class="size-small" target="_blank" rel="noopener noreferrer" [href]="helpLink" data-cy="help-link"
+          >Learn more about {{ entryTypeLowerCase }}s.
+        </a>
+      </div>
+    </ng-template>
+  </mat-card-content>
 </mat-card>

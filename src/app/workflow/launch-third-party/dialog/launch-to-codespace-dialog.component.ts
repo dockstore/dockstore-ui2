@@ -14,16 +14,12 @@
  *     limitations under the License.
  */
 import { Component, Inject } from '@angular/core';
-import {
-  MatLegacyDialogRef as MatDialogRef,
-  MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
-  MatLegacyDialogModule,
-} from '@angular/material/legacy-dialog';
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Dockstore } from '../../../shared/dockstore.model';
 import { DockstoreTool, Entry, Workflow } from '../../../shared/openapi';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatButtonModule } from '@angular/material/button';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { NgIf, TitleCasePipe } from '@angular/common';
 import { AlertComponent } from '../../../shared/alert/alert.component';
@@ -33,7 +29,7 @@ import { AlertComponent } from '../../../shared/alert/alert.component';
   templateUrl: './launch-to-codespace-dialog.component.html',
   styleUrls: ['./launch-to-codespace-dialog.component.scss'],
   standalone: true,
-  imports: [MatLegacyDialogModule, AlertComponent, NgIf, FlexModule, MatLegacyButtonModule, TitleCasePipe],
+  imports: [MatDialogModule, AlertComponent, NgIf, FlexModule, MatButtonModule, TitleCasePipe],
 })
 export class LaunchToCodespaceDialogComponent {
   clicked: boolean;

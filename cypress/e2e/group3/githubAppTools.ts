@@ -1,41 +1,22 @@
 import { LambdaEvent } from '../../../src/app/shared/openapi';
-import { goToTab, insertAppTools, isActiveTab, resetDB, setTokenUserViewPort, typeInInput } from '../../support/commands';
+import {
+  insertAppTools,
+  isActiveTab,
+  resetDB,
+  setTokenUserViewPort,
+  selectSidebarEntry,
+  selectOrganizationSidebarTab,
+  goToLaunchTab,
+  goToInfoTab,
+  goToVersionsTab,
+  goToFilesTab,
+  goToConfigurationTab,
+} from '../../support/commands';
 
 describe('GitHub App Tools', () => {
   resetDB();
   insertAppTools();
   setTokenUserViewPort();
-
-  function selectUnpublishedTab(org: string) {
-    cy.get('#tool-path').should('be.visible');
-    cy.get('mat-expansion-panel-header')
-      .contains(org)
-      .parentsUntil('mat-accordion')
-      .should('be.visible')
-      .contains('.mat-tab-label-content', 'Unpublished')
-      .should('be.visible')
-      .click();
-  }
-
-  function selectUnpublishedGitHubAppTab(org: string) {
-    cy.get('#workflow-path').should('be.visible');
-    cy.get('mat-expansion-panel-header')
-      .contains(org)
-      .parentsUntil('mat-accordion')
-      .should('be.visible')
-      .contains('.mat-tab-label-content', 'Unpublished')
-      .click();
-  }
-
-  function selectGitHubAppTool(tool: string) {
-    cy.get('#workflow-path').should('be.visible');
-    cy.wait(5000);
-    const alias = 'thetool';
-    cy.contains('div .no-wrap', tool).should('be.visible').as(alias);
-    // Cypress recommends using an alias like this to get around element being re-rendered
-    cy.get('@' + alias).click();
-    cy.get('#workflow-path').contains(tool);
-  }
 
   describe('User Page', () => {
     it('Admins should see user GitHub app logs', () => {
@@ -155,20 +136,20 @@ describe('GitHub App Tools', () => {
       cy.contains('1 – 1 of 1');
       cy.contains('Close').click();
 
-      selectGitHubAppTool('test-github-app-tools/testing');
+      selectSidebarEntry('github.com/C/test-github-app-tools/testing');
       cy.get('#publishButton').should('not.be.disabled');
       cy.get('#publishButton').contains('Unpublish');
       cy.get('[data-cy=viewPublicWorkflowButton]').should('not.be.disabled');
       cy.get('[data-cy=refreshButton]').should('not.exist');
 
-      goToTab('Info');
+      goToInfoTab();
       isActiveTab('Info');
 
       // Add tests once fixed.
-      goToTab('Launch');
+      goToLaunchTab();
       isActiveTab('Launch');
 
-      goToTab('Versions');
+      goToVersionsTab();
       isActiveTab('Versions');
       cy.get('table>tbody>tr').should('have.length', 1);
       cy.contains('button', 'Actions').click();
@@ -188,7 +169,7 @@ describe('GitHub App Tools', () => {
       cy.get('[data-cy=save-version]').click();
       cy.get('[data-cy=hidden').should('not.exist');
 
-      goToTab('Files');
+      goToFilesTab();
       isActiveTab('Files');
       cy.contains('tools/Dockstore.cwl');
       cy.contains('class: CommandLineTool');
@@ -199,19 +180,18 @@ describe('GitHub App Tools', () => {
             .its('status')
             .should('eq', 200);
         });
-      goToTab('Configuration');
+      goToConfigurationTab();
       cy.contains('Configuration');
       cy.contains('/.dockstore.yml');
 
-      selectUnpublishedGitHubAppTab('C');
-      cy.wait(1000);
-      selectGitHubAppTool('test-github-app-tools/md5sum');
+      selectOrganizationSidebarTab('C', false);
+      selectSidebarEntry('github.com/C/test-github-app-tools/md5sum');
       cy.get('#publishButton').should('not.be.disabled');
       cy.get('[data-cy=viewPublicWorkflowButton]').should('not.exist');
       cy.get('#publishButton').should('be.visible').contains('Publish').click();
       cy.contains('Default Version Required');
       cy.get('[data-cy=close-dialog-button]').click();
-      goToTab('Versions');
+      goToVersionsTab();
       cy.contains('tr', 'invalidTool').contains('button', 'Actions').click();
       cy.contains('button', 'Set as Default Version').should('be.visible').click();
       cy.wait(500);
@@ -219,9 +199,9 @@ describe('GitHub App Tools', () => {
       cy.get('#publishButton').should('be.visible').contains('Publish').click();
 
       // Fix that the entry list on the left doesn't update without refreshing the page
-      selectGitHubAppTool('test-github-app-tools/testing');
+      selectSidebarEntry('github.com/C/test-github-app-tools/testing');
 
-      selectGitHubAppTool('test-github-app-tools/md5sum');
+      selectSidebarEntry('github.com/C/test-github-app-tools/md5sum');
       cy.get('[data-cy=viewPublicWorkflowButton]').click();
 
       // Look for something that is on public page that is not in My Tools; avoids detached DOM when clicking on versions below; also
@@ -231,13 +211,13 @@ describe('GitHub App Tools', () => {
       cy.get('[data-cy=tool-icon]').should('exist');
       cy.contains('Tool Information');
       cy.contains('Tool Version Information');
-      cy.get('[data-cy=workflowTitle]').contains('github.com/C/test-github-app-tools/md5sum:invalidTool');
-      goToTab('Versions');
+      cy.get('[data-cy=entry-title]').contains('github.com/C/test-github-app-tools/md5sum:invalidTool');
+      goToVersionsTab();
       cy.contains('main').click();
-      cy.get('[data-cy=workflowTitle]').contains('github.com/C/test-github-app-tools/md5sum:main');
+      cy.get('[data-cy=entry-title]').contains('github.com/C/test-github-app-tools/md5sum:main');
       cy.get('#starringButton').click();
       cy.get('#starCountButton').should('contain', '1');
-      goToTab('Info');
+      goToInfoTab();
       cy.get('[data-cy=trs-link]').contains('TRS: github.com/C/test-github-app-tools/md5sum');
 
       // Confirm that an ignored event is displayed correctly.
@@ -253,7 +233,7 @@ describe('GitHub App Tools', () => {
     it('Table view', () => {
       cy.visit('/apptools');
       cy.url().should('contain', 'apptools');
-      cy.contains('Search app tools');
+      cy.get('[data-cy=search-input]');
       cy.get('[data-cy=entry-link]').should('contain', 'test-github-app-tools');
     });
   });

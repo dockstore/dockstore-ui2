@@ -3,8 +3,8 @@
     *ngIf="tool?.is_published"
     [routerLink]="['/tools/', tool.tool_path]"
     data-cy="viewPublicToolButton"
-    mat-flat-button
-    class="secondary-1"
+    mat-button
+    color="accent"
     [disabled]="isRefreshing$ | async"
     [matTooltip]="viewPublicMessage"
   >
@@ -14,8 +14,8 @@
     <div [matTooltip]="pubUnpubMessage">
       <button
         id="publishToolButton"
-        mat-raised-button
-        class="accent-1-dark-btn mat-elevation-z"
+        mat-flat-button
+        class="accent-1-dark"
         (click)="publishToggle()"
         [disabled]="(isRefreshing$ | async) || publishDisabled"
       >
@@ -30,8 +30,8 @@
       <app-deregister-modal *ngIf="!tool?.is_published" [refreshMessage]="isRefreshing$ | async"></app-deregister-modal>
     </ng-template>
     <button
-      mat-raised-button
-      class="accent-1-dark-btn mat-elevation-z"
+      mat-flat-button
+      class="accent-1-dark"
       (click)="archive()"
       [disabled]="isRefreshing$ | async"
       matTooltip="Archive this tool"
@@ -41,8 +41,8 @@
     </button>
     <button
       *ngIf="!isHosted"
-      mat-raised-button
-      class="accent-1-dark-btn mat-elevation-z"
+      mat-flat-button
+      class="accent-1-dark"
       (click)="refresh()"
       [disabled]="isRefreshing$ | async"
       matTooltip="Sync the tool with the Docker image repository, etc"
@@ -52,8 +52,8 @@
   </ng-container>
   <ng-container *ngIf="tool?.archived">
     <button
-      mat-raised-button
-      class="accent-1-dark-btn mat-elevation-z"
+      mat-flat-button
+      class="accent-1-dark"
       (click)="unarchive()"
       [disabled]="isRefreshing$ | async"
       matTooltip="Unarchive this tool"

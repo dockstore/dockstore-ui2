@@ -13,7 +13,16 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { goToTab, goToUnexpandedSidebarEntry, resetDB, setTokenUserViewPort } from '../../support/commands';
+import {
+  resetDB,
+  setTokenUserViewPort,
+  goToUnexpandedSidebarEntry,
+  goToInfoTab,
+  goToVersionsTab,
+  goToFilesTab,
+  goToDescriptorFilesTab,
+  goToTestParameterFilesTab,
+} from '../../support/commands';
 
 describe('Dockstore hosted tools', () => {
   resetDB();
@@ -26,8 +35,7 @@ describe('Dockstore hosted tools', () => {
   });
 
   function getTool() {
-    cy.wait(1000);
-    goToUnexpandedSidebarEntry('hosted-tool', 'ht');
+    goToUnexpandedSidebarEntry('hosted-tool', 'quay.io/hosted-tool/ht');
   }
 
   // Ensure tabs are correct for the hosted tool, try adding a version
@@ -43,11 +51,11 @@ describe('Dockstore hosted tools', () => {
       cy.get('#downloadZipButton').should('not.exist');
 
       // Check content of the version tab. New hosted tool, there's no versions
-      goToTab('Versions');
+      goToVersionsTab();
       cy.contains('To see versions, please add a new version in the Files tab.');
 
       // Add a new version with one descriptor and dockerfile
-      goToTab('Files');
+      goToFilesTab();
 
       cy.get('#editFilesButton').click();
 
@@ -61,7 +69,7 @@ describe('Dockstore hosted tools', () => {
       });
       cy.get('.ace_editor').should('have.length', 1);
 
-      goToTab('Descriptor Files');
+      goToDescriptorFilesTab();
       cy.wait(500);
       cy.contains('Add File').click();
       cy.window().then(function (window: any) {
@@ -78,11 +86,11 @@ describe('Dockstore hosted tools', () => {
       cy.get('#tool-path').contains('quay.io/hosted-tool/ht:1');
 
       // Should have a version 1
-      goToTab('Versions');
+      goToVersionsTab();
       cy.get('table').contains('span', /\b1\b/);
 
       // Should be able to download zip
-      goToTab('Info');
+      goToInfoTab();
       cy.get('#downloadZipButton').should('be.visible');
 
       // Verify that clicking calls the correct endpoint
@@ -95,9 +103,9 @@ describe('Dockstore hosted tools', () => {
       // cy.wait('@downloadZip').its('response.statusCode').should('eq', 200);
 
       // Add a new version with a second descriptor and a test json
-      goToTab('Files');
+      goToFilesTab();
       cy.get('#editFilesButton').click();
-      goToTab('Test Parameter Files');
+      goToTestParameterFilesTab();
       cy.wait(500);
       cy.contains('Add File').click();
       cy.window().then(function (window: any) {
@@ -109,7 +117,7 @@ describe('Dockstore hosted tools', () => {
       });
       cy.get('.ace_editor').should('have.length', 1);
 
-      goToTab('Descriptor Files');
+      goToDescriptorFilesTab();
       cy.wait(500);
       cy.contains('Add File').click();
       cy.window().then(function (window: any) {
@@ -124,16 +132,16 @@ describe('Dockstore hosted tools', () => {
       cy.get('.ace_editor').should('have.length', 2);
       cy.get('#tool-path').contains('quay.io/hosted-tool/ht:2');
       // Should have a version 2
-      goToTab('Versions');
+      goToVersionsTab();
       cy.get('table').contains('span', /\b2\b/).click();
 
       // Should be able to publish
       cy.get('#publishToolButton').should('not.be.disabled');
 
       // Try deleting a file (.cwl file)
-      goToTab('Files');
+      goToFilesTab();
       cy.get('#editFilesButton').click();
-      goToTab('Descriptor Files');
+      goToDescriptorFilesTab();
       cy.wait(500);
       cy.get('.delete-editor-file').first().click();
       cy.get('#saveNewVersionButton').click();
@@ -143,7 +151,7 @@ describe('Dockstore hosted tools', () => {
       cy.get('.ace_editor:visible').should('have.length', 1);
 
       // New version should be added
-      goToTab('Versions');
+      goToVersionsTab();
       cy.get('table').contains('span', /\b3\b/);
 
       // Delete a version
@@ -153,7 +161,7 @@ describe('Dockstore hosted tools', () => {
       // Automatically selects the newest version that wasn't the one that was just deleted
       cy.get('#tool-path').contains('quay.io/hosted-tool/ht:2');
       // Version 3 should no longer exist since it was just deleted
-      goToTab('Versions');
+      goToVersionsTab();
       cy.get('table').find('a').should('not.contain', '3');
     });
   });
@@ -161,7 +169,7 @@ describe('Dockstore hosted tools', () => {
   describe('Should be able to edit unpublished tools', () => {
     it('Should not return an error when editing an unpublished hosted tool', () => {
       getTool();
-      goToTab('Versions');
+      goToVersionsTab();
       cy.get('[data-cy=actionsButton]').first().click();
       cy.get('[data-cy=editTagButton]').click();
       cy.get('.alert').should('not.exist');
@@ -169,7 +177,7 @@ describe('Dockstore hosted tools', () => {
     });
     it('Should not return an error when editing a published hosted tool', () => {
       getTool();
-      goToTab('Versions');
+      goToVersionsTab();
       cy.get('#publishToolButton').click();
       // Disabled since it is already published
       cy.get('#publishToolButton').contains('Unpublish');

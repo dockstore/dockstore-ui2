@@ -1,0 +1,157 @@
+/*
+ *     Copyright 2025 OICR and UCSC
+ *
+ *     Licensed under the Apache License, Version 2.0 (the "License")
+ *     you may not use this file except in compliance with the License
+ *     You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *     Unless required by applicable law or agreed to in writing, software
+ *     distributed under the License is distributed on an "AS IS" BASIS
+ *     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *     See the License for the specific language governing permissions and
+ *     limitations under the License.
+ */
+
+// This file contains overrides of core Material styles.
+// These styles should be applied automatically and do not require a class to be added to the element.
+
+@import '/src/materialColorScheme.scss';
+@import '/src/functions.scss';
+
+:root {
+  // Lower the density of these components to closer match the legacy Material appearance.
+  // The new MDC components have alot of extra space.
+  @include mat.form-field-density(-4);
+  @include mat.checkbox-density(-3);
+  @include mat.icon-button-density(-3);
+}
+
+// Form fields
+.mat-mdc-form-field {
+  --mat-form-field-container-text-size: 14px;
+  // <mat-label> text size for outlined form fields
+  --mdc-outlined-text-field-label-text-size: 14px;
+
+  // Decrease the mat-icon side inside form fields so that the mat form field text is aligned properly
+  .mat-icon {
+    @include small-mat-icon();
+  }
+
+  // Purple outline and text for outlined mat-form-field
+  .mdc-floating-label--float-above {
+    // Only set label text color when the form field has a value and the label is "floating"
+    // (as opposed to when the label is the placeholder value when the form field has no value)
+    --mdc-outlined-text-field-label-text-color: #{$accent-1-dark};
+  }
+  --mdc-outlined-text-field-focus-label-text-color: #{$accent-1-dark};
+  --mdc-outlined-text-field-focus-outline-color: #{$accent-1-dark};
+  --mdc-outlined-text-field-caret-color: #{accent-1-dark};
+}
+
+// Select
+.mat-mdc-select {
+  // Font size of text selected item
+  --mat-select-trigger-text-size: 14px;
+}
+
+// Select options
+.mat-mdc-option {
+  // Font size of select options when the select drop down is expanded
+  --mat-option-label-text-size: 14px;
+}
+
+// Dialogs
+.mat-mdc-dialog-container {
+  --mdc-dialog-supporting-text-color: black; // Set to black instead of the default grey
+  --mdc-dialog-supporting-text-size: 14px; // Make it smaller than default
+}
+
+// Chips
+// Styles a mat chip as a "bubble", which is a small very-rounded rectangular element that typically contains a word or short phrase.
+// Bubbles always render in a 12px font, are 26px tall, and default to gray background.
+.mat-mdc-standard-chip {
+  // Remove y-axis margin
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+
+  // Styles for mat-chip container
+  --mdc-chip-elevated-container-color: #{mat.get-color-from-palette($dockstore-app-gray, lighter)};
+  --mdc-chip-container-shape-radius: 0.8rem !important;
+  --mdc-chip-container-height: 26px !important;
+  // Styles for mat-chip text
+  --mdc-chip-label-text-color: black;
+  --mdc-chip-label-text-size: 12px;
+  --mdc-chip-label-text-weight: 500;
+
+  .mat-icon,
+  img {
+    @include small-mat-icon();
+    vertical-align: text-bottom;
+  }
+}
+
+a.mat-mdc-chip {
+  text-decoration: none !important;
+
+  // Set the cursor to a pointer because the anchor will navigate somewhere
+  .mdc-evolution-chip__action--presentational {
+    cursor: pointer !important;
+  }
+}
+
+// Tables
+// The redesigned tables have no borders, bolded headers, no left-padding on the first elements and no right-padding on the last elements.
+.mat-mdc-header-row {
+  --mat-table-header-headline-size: 12px; // Smaller than default
+  white-space: nowrap; // Don't have multi-line headers
+}
+
+.mat-mdc-table,
+table {
+  border: none !important;
+}
+
+.mat-mdc-header-cell,
+table th {
+  color: $header-color !important;
+}
+
+.mat-mdc-header-cell:first-of-type,
+.mat-mdc-cell:first-of-type,
+.mat-mdc-footer-cell:first-of-type {
+  padding-left: 0;
+}
+
+.mat-mdc-cell:last-of-type,
+.mat-mdc-header-cell:last-of-type,
+.mat-mdc-footer-cell:last-of-type {
+  padding-right: 0;
+}
+
+// Menus
+.mat-mdc-menu-content {
+  --mat-menu-item-label-text-size: 14px; // Smaller than default
+}
+
+// Slide toggles
+// TODO: remove these slide toggle overrides when we implement a full color palette
+// according to https://v16.material.angular.io/guide/theming#create-your-own-palette.
+// These styles are needed because we have an incomplete color palette and slide toggles use
+// hues that we have not defined https://github.com/angular/components/issues/26818#issuecomment-2221701887
+.mat-mdc-slide-toggle {
+  $accent-color: mat.get-color-from-palette($dockstore-app-accent, 2);
+  // Variables taken from https://github.com/angular/components/issues/26818#issuecomment-1726616513
+  --mdc-switch-selected-handle-color: #{$accent-color};
+  --mdc-switch-selected-pressed-handle-color: #{$accent-color};
+  --mdc-switch-selected-pressed-state-layer-color: #{$accent-color};
+  --mdc-switch-selected-hover-state-layer-color: #{$accent-color};
+  --mdc-switch-selected-hover-handle-color: #{$accent-color};
+  --mdc-switch-selected-focus-state-layer-color: #{$accent-color};
+  --mdc-switch-selected-focus-handle-color: #{$accent-color};
+  --mdc-switch-selected-track-color: #e0e0e0;
+  --mdc-switch-selected-pressed-track-color: #e0e0e0;
+  --mdc-switch-selected-hover-track-color: #e0e0e0;
+  --mdc-switch-selected-focus-track-color: #e0e0e0;
+}
