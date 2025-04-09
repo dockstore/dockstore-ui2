@@ -27,12 +27,11 @@ import { DockstoreTool, Entry, EntryType, EntryTypeMetadata, Workflow } from 'ap
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { AiBubbleComponent } from 'app/shared/ai-bubble/ai-bubble.component';
 import { FormsModule } from '@angular/forms';
-import { MatRadioModule } from '@angular/material/radio';
+import { MatRadioModule, MatRadioChange } from '@angular/material/radio';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { EditTopicDialogService } from './edit-topic-dialog.service';
 import { EntryActionsService } from 'app/shared/entry-actions/entry-actions.service';
-import { MatRadioChange } from '@angular/material/radio';
 import { Dockstore } from 'app/shared/dockstore.model';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { SnackbarDirective } from 'app/shared/snackbar.directive';

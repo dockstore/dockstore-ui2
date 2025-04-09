@@ -39,7 +39,7 @@ export class DisplayTopicComponent extends Base implements OnInit, OnDestroy {
   selectedTopic: string;
   @Input() entry: DockstoreTool | Workflow;
   @Input() disableEditing: boolean;
-  constructor(private sessionQuery: SessionQuery, private dialog: MatDialog) {
+  constructor(private readonly sessionQuery: SessionQuery, private readonly dialog: MatDialog) {
     super();
   }
 

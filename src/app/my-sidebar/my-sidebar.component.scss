@@ -17,8 +17,6 @@
 @use '@angular/material' as mat;
 @import 'materialColorScheme.scss';
 
-//@include mat.button-theme($dockstore-button-theme);
-
 div[fxFlex='0 0 auto'] {
   width: 9rem;
   height: 100%;
