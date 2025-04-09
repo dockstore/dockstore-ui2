@@ -21,13 +21,8 @@
         }}"
         data-cy="topic-selection-bubble"
       >
-        <mat-icon *ngIf="entry.topicSelection === TopicSelectionEnum.MANUAL" matChipAvatar>edit</mat-icon>
-        <img
-          *ngIf="entry.topicSelection === TopicSelectionEnum.AUTOMATIC"
-          matChipAvatar
-          src="../assets/images/thirdparty/github.svg"
-          alt="GitHub icon"
-        />
+        <mat-icon *ngIf="entry.topicSelection === TopicSelectionEnum.MANUAL">edit</mat-icon>
+        <img *ngIf="entry.topicSelection === TopicSelectionEnum.AUTOMATIC" src="../assets/images/thirdparty/github.svg" alt="GitHub icon" />
         <span class="ml-2">{{ entry.topicSelection === TopicSelectionEnum.MANUAL ? 'Manual' : 'GitHub' }}</span>
       </mat-chip>
     </mat-chip-set>

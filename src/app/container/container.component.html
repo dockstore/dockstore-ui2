@@ -60,7 +60,7 @@
           ><span class="ds-steelblue">{{ selectedVersion?.name }}</span>
           <mat-chip-set *ngIf="(extendedTool$ | async)?.versionVerified" class="ml-3">
             <a mat-chip id="verifiedIcon" fxHide.lt-sm [href]="verifiedLink" class="tool-background">
-              <mat-icon matChipAvatar>done</mat-icon>
+              <mat-icon>done</mat-icon>
               <span class="ml-2">Verified</span>
             </a>
           </mat-chip-set>
@@ -317,6 +317,7 @@
               <div
                 fxLayout
                 fxLayoutAlign="space-between"
+                fxLayoutGap="1rem"
                 class="top-down-padding my-1 px-2"
                 [ngClass]="{ 'selected-item weight-bold': selectedVersion?.name === sortedVersion?.name }"
               >
@@ -326,12 +327,12 @@
                   <span *ngIf="sortedVersion?.verified">
                     <mat-chip-set>
                       <a mat-chip [href]="verifiedLink">
-                        <mat-icon matChipAvatar>done</mat-icon>
+                        <mat-icon>done</mat-icon>
                       </a>
                     </mat-chip-set>
                   </span>
                 </div>
-                <small>{{ sortedVersion.last_built | date }}</small>
+                <small class="white-space-no-wrap">{{ sortedVersion.last_built | date }}</small>
               </div>
               <mat-divider></mat-divider>
             </span>

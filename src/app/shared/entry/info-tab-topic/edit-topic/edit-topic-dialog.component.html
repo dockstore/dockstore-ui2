@@ -19,10 +19,9 @@
           <mat-radio-button [value]="topicOption.type" [attr.data-cy]="topicOption.label + '-radio-button'">
             <mat-chip-set>
               <mat-chip disableRipple>
-                <mat-icon *ngIf="topicOption.type === TopicSelectionEnum.MANUAL" matChipAvatar>edit</mat-icon>
+                <mat-icon *ngIf="topicOption.type === TopicSelectionEnum.MANUAL">edit</mat-icon>
                 <img
                   *ngIf="topicOption.type === TopicSelectionEnum.AUTOMATIC"
-                  matChipAvatar
                   src="../assets/images/thirdparty/github.svg"
                   alt="GitHub icon"
                 />
@@ -41,7 +40,7 @@
               disableRipple
               class="checkmark"
               matTooltip="This AI topic was reviewed and selected by a {{ entryTypeMetadata.term }} owner"
-              ><mat-icon matChipAvatar>checkmark</mat-icon>Approved</mat-chip
+              ><mat-icon>checkmark</mat-icon>Approved</mat-chip
             >
           </mat-chip-set>
         </div>

@@ -18,6 +18,7 @@
 // These styles should be applied automatically and do not require a class to be added to the element.
 
 @import '/src/materialColorScheme.scss';
+@import '/src/functions.scss';
 
 :root {
   // Lower the density of these components to closer match the legacy Material appearance.
@@ -83,16 +84,11 @@
   --mdc-chip-label-text-color: black;
   --mdc-chip-label-text-size: 12px;
   --mdc-chip-label-text-weight: 500;
-  // Styles for mat-chip avatars
-  // Sets the mat-icon/img size to 16px if the mat-icon/img is annotated with matChipAvatar
-  // to match mat-icon-sm
-  --mdc-chip-with-icon-icon-size: 16px !important;
-  --mdc-chip-with-avatar-avatar-size: 16px !important;
-  // Remove the matChipAvatar radius to prevent mat-icon/imgs from being cut-off
-  --mdc-chip-with-avatar-avatar-shape-radius: 0 !important;
 
-  .mdc-evolution-chip__action--primary {
-    padding: 0 8px !important;
+  .mat-icon,
+  img {
+    @include small-mat-icon();
+    vertical-align: text-bottom;
   }
 }
 
@@ -103,12 +99,6 @@ a.mat-mdc-chip {
   .mdc-evolution-chip__action--presentational {
     cursor: pointer !important;
   }
-}
-
-// Remove the padding around a mat-chip avatar to ensure even padding around the mat-chip content
-.mat-mdc-chip-with-avatar .mat-mdc-chip-graphic {
-  padding-right: 0 !important;
-  padding-left: 0 !important;
 }
 
 // Tables

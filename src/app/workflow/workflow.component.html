@@ -95,7 +95,7 @@
         <span id="verifiedIcon" *ngIf="(extendedWorkflow$ | async)?.versionVerified" fxHide.lt-sm>
           <mat-chip-set>
             <a mat-chip [href]="verifiedLink" matTooltip="Verified" class="workflow-background">
-              <mat-icon matChipAvatar>done</mat-icon>
+              <mat-icon>done</mat-icon>
               <span class="ml-2">Verified</span>
             </a>
           </mat-chip-set>
@@ -535,6 +535,7 @@
             <div
               fxLayout
               fxLayoutAlign="space-between"
+              fxLayoutGap="1rem"
               class="top-down-padding my-1 px-2"
               [ngClass]="{ 'selected-item weight-bold': selectedVersion?.name === sortedVersion?.name }"
             >
@@ -543,11 +544,11 @@
                 >&nbsp;
                 <mat-chip-set *ngIf="sortedVersion?.verified">
                   <a mat-chip matTooltip="Verified" [href]="verifiedLink">
-                    <mat-icon matChipAvatar>done</mat-icon>
+                    <mat-icon>done</mat-icon>
                   </a>
                 </mat-chip-set>
               </div>
-              <small>{{ sortedVersion.last_modified | date }}</small>
+              <small class="white-space-no-wrap">{{ sortedVersion.last_modified | date }}</small>
             </div>
             <mat-divider></mat-divider>
           </div>

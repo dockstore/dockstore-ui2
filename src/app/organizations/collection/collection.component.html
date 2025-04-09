@@ -160,7 +160,7 @@
                             [ngClass]="entry.entryType === 'workflow' ? 'workflow-background' : 'tool-background'"
                             *ngIf="entry.verified"
                           >
-                            <mat-icon matChipAvatar>done</mat-icon>
+                            <mat-icon>done</mat-icon>
                             <span class="ml-2">Verified</span>
                           </mat-chip>
                           <mat-chip *ngFor="let descriptorType of entry.descriptorTypes">{{

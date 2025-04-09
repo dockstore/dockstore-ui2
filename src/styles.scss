@@ -815,7 +815,8 @@ body {
 }
 
 // This is like the bootstrap 4 utility class, remove once we have the real one
-.align-middle {
+.align-middle,
+img.align-middle {
   vertical-align: middle;
 }
 

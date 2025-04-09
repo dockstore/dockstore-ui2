@@ -52,11 +52,9 @@
           </mat-card>
           <div fxLayout="column" fxLayoutGap="1rem" class="mb-2 mx-1">
             <mat-card fxFlex *ngFor="let workflow of starredWorkflows; let last = last">
-              <mat-card-content>
-                <ng-container
-                  *ngTemplateOutlet="workflowSummary; context: { workflow: workflow, entryType: entryType.BioWorkflow }"
-                ></ng-container>
-              </mat-card-content>
+              <ng-container
+                *ngTemplateOutlet="workflowSummary; context: { workflow: workflow, entryType: entryType.BioWorkflow }"
+              ></ng-container>
             </mat-card>
           </div>
         </mat-tab>
@@ -75,16 +73,12 @@
             </mat-card>
             <div fxLayout="column" fxLayoutGap="1rem" class="mb-2 mx-1">
               <mat-card fxFlex *ngFor="let tool of starredTools; let last = last">
-                <mat-card-content>
-                  <ng-container
-                    *ngTemplateOutlet="
-                      tool.entryType === OpenApiEntryType.APPTOOL ? workflowSummary : toolSummary;
-                      context: tool.entryType === OpenApiEntryType.APPTOOL
-                        ? { workflow: tool, entryType: entryType.AppTool }
-                        : { tool: tool }
-                    "
-                  ></ng-container>
-                </mat-card-content>
+                <ng-container
+                  *ngTemplateOutlet="
+                    tool.entryType === OpenApiEntryType.APPTOOL ? workflowSummary : toolSummary;
+                    context: tool.entryType === OpenApiEntryType.APPTOOL ? { workflow: tool, entryType: entryType.AppTool } : { tool: tool }
+                  "
+                ></ng-container>
               </mat-card>
             </div>
           </div>
@@ -110,34 +104,30 @@
             </mat-card>
             <div fxLayout="column" fxLayoutGap="1rem" class="mb-2 mx-1">
               <mat-card fxFlex *ngFor="let notebook of starredNotebooks; let last = last">
-                <mat-card-content>
-                  <ng-container
-                    *ngTemplateOutlet="workflowSummary; context: { workflow: notebook, entryType: entryType.Notebook }"
-                  ></ng-container>
-                </mat-card-content>
+                <ng-container
+                  *ngTemplateOutlet="workflowSummary; context: { workflow: notebook, entryType: entryType.Notebook }"
+                ></ng-container>
               </mat-card>
             </div>
           </div>
         </mat-tab>
 
         <ng-template #workflowSummary let-workflow="workflow">
-          <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-between">
-            <a [routerLink]="workflow | routerLink" class="no-underline">
-              <mat-card-header class="ml-2">
-                <mat-card-title fxLayoutAlign="space-between" fxLayoutGap="1rem">
+          <mat-card-header>
+            <mat-card-title-group>
+              <a matCardTitle [routerLink]="workflow | routerLink" class="no-underline">
+                <h4>
                   <img
                     src="../../../assets/svg/sub-nav/{{ workflow?.entryTypeMetadata.term }}.svg"
                     alt="{{ workflow?.entryTypeMetadata.term }} logo"
                   />
-                  <h4>
-                    {{ workflow?.organization + '/' + workflow?.repository + (workflow?.workflowName ? '/' + workflow?.workflowName : '') }}
-                  </h4>
-                </mat-card-title>
-              </mat-card-header>
-            </a>
-            <app-starring class="pull-right" [workflow]="workflow" (starGazersChange)="starGazersChange()"></app-starring>
-          </div>
-          <div class="ml-2">
+                  {{ workflow?.organization + '/' + workflow?.repository + (workflow?.workflowName ? '/' + workflow?.workflowName : '') }}
+                </h4>
+              </a>
+              <app-starring class="pull-right" [workflow]="workflow" (starGazersChange)="starGazersChange()"></app-starring>
+            </mat-card-title-group>
+          </mat-card-header>
+          <mat-card-content>
             <div class="truncate-text-3 mb-3">
               <app-markdown-wrapper
                 [data]="workflow?.description"
@@ -145,47 +135,46 @@
               ></app-markdown-wrapper>
             </div>
             <hr />
-          </div>
-          <div fxLayout="row" fxLayoutAlign="space-between stretch">
-            <div fxLayout="row" fxLayoutAlign="flex-start" fxLayoutGap="1rem">
-              <small class="mx-2">Last updated {{ workflow?.lastUpdated | date }}</small>
-              <div fxLayout="row wrap" fxLayoutGap="1rem">
-                <span>
-                  <mat-chip-set>
-                    <mat-chip class="workflow-background" *ngFor="let label of workflow?.labels | slice: 0:3">{{
-                      $any(label).value
-                    }}</mat-chip>
-                    <mat-chip *ngIf="workflow.versionVerified === true">
-                      <mat-icon matChipAvatar>done</mat-icon>
-                      <span class="ml-2">Verified</span>
-                    </mat-chip>
-                    <mat-chip>
-                      {{ workflow?.descriptorType | descriptorLanguage }}
-                    </mat-chip>
-                  </mat-chip-set>
-                </span>
+            <div fxLayout="row" fxLayoutAlign="space-between stretch">
+              <div fxLayout="row" fxLayoutAlign="flex-start" fxLayoutGap="1rem">
+                <small class="mx-2">Last updated {{ workflow?.lastUpdated | date }}</small>
+                <div fxLayout="row wrap" fxLayoutGap="1rem">
+                  <span>
+                    <mat-chip-set>
+                      <mat-chip class="workflow-background" *ngFor="let label of workflow?.labels | slice: 0:3">{{
+                        $any(label).value
+                      }}</mat-chip>
+                      <mat-chip *ngIf="workflow.versionVerified === true">
+                        <mat-icon>done</mat-icon>
+                        <span class="ml-2">Verified</span>
+                      </mat-chip>
+                      <mat-chip>
+                        {{ workflow?.descriptorType | descriptorLanguage }}
+                      </mat-chip>
+                    </mat-chip-set>
+                  </span>
+                </div>
               </div>
+              <a [routerLink]="workflow | routerLink" class="no-underline">
+                <button mat-raised-button class="small-btn-structure" color="accent">View</button>
+              </a>
             </div>
-            <a [routerLink]="workflow | routerLink" class="no-underline">
-              <button mat-raised-button class="small-btn-structure" color="accent">View</button>
-            </a>
-          </div>
+          </mat-card-content>
         </ng-template>
 
         <ng-template #toolSummary let-tool="tool">
-          <div fxLayout="row" fxLayoutAlign="space-between">
-            <a [routerLink]="tool | routerLink" class="no-underline">
-              <mat-card-header class="ml-2">
-                <mat-card-title fxLayoutAlign="flex-start" fxLayoutGap="1rem">
+          <mat-card-header>
+            <mat-card-title-group>
+              <a matCardTitle [routerLink]="tool | routerLink" class="no-underline">
+                <h4>
                   <img src="../../../assets/svg/sub-nav/tool.svg" alt="tool logo" />
-                  <h4>{{ tool?.namespace + '/' + tool?.name + (tool?.toolname ? '/' + tool?.toolname : '') }}</h4>
-                </mat-card-title>
-                <div *ngIf="tool?.starredUsers.length !== 0" fxLayout="row" fxLayoutAlign="end center"></div>
-              </mat-card-header>
-            </a>
-            <app-starring class="pull-right" [tool]="tool" (starGazersChange)="starGazersChange()"></app-starring>
-          </div>
-          <div>
+                  {{ tool?.namespace + '/' + tool?.name + (tool?.toolname ? '/' + tool?.toolname : '') }}
+                </h4>
+              </a>
+              <app-starring class="pull-right" [tool]="tool" (starGazersChange)="starGazersChange()"></app-starring>
+            </mat-card-title-group>
+          </mat-card-header>
+          <mat-card-content>
             <hr />
             <div fxLayout="row" fxLayoutAlign="space-between stretch">
               <div fxLayout="row" fxLayoutAlign="flex-start" fxLayoutGap="1rem">
@@ -193,7 +182,7 @@
                 <mat-chip-set>
                   <mat-chip class="tool-background" *ngFor="let label of tool?.labels | slice: 0:3">{{ $any(label).value }}</mat-chip>
                   <mat-chip *ngIf="tool?.versionVerified" matTooltip="Verified">
-                    <mat-icon matChipAvatar>done</mat-icon>
+                    <mat-icon>done</mat-icon>
                     <span class="ml-2">Verified</span>
                   </mat-chip>
                   <mat-chip *ngFor="let descriptortype of tool?.descriptorType">
@@ -205,7 +194,7 @@
                 <button mat-raised-button class="small-btn-structure" color="accent">View</button>
               </a>
             </div>
-          </div>
+          </mat-card-content>
         </ng-template>
 
         <!-- Services not done -->
