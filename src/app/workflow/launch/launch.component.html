@@ -170,7 +170,6 @@
             <pre>{{ dockstoreSupportedCwlMakeTemplate }}</pre>
           </div>
         </mat-card>
-        <app-launch-checker-workflow [versionName]="_selectedVersion?.name" [command]="checkEntryCommand"></app-launch-checker-workflow>
 
         <mat-card
           *ngIf="
@@ -191,6 +190,8 @@
             information.
           </div>
         </mat-card>
+
+        <app-launch-checker-workflow [versionName]="_selectedVersion?.name" [command]="checkEntryCommand"></app-launch-checker-workflow>
       </div>
     </div>
   </div>
