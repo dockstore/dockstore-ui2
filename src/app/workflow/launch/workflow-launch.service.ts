@@ -20,6 +20,7 @@ import { Dockstore } from '../../shared/dockstore.model';
 import { LaunchService } from '../../shared/launch.service';
 import { ToolDescriptor } from '../../shared/openapi';
 import { EntryType } from '../../shared/enum/entry-type';
+import { Workflow } from '../../shared/openapi/model/workflow';
 
 @Injectable()
 export class WorkflowLaunchService extends LaunchService {
@@ -70,6 +71,13 @@ export class WorkflowLaunchService extends LaunchService {
 
   getWesLaunch(workflowPath: string, versionName: string) {
     return `dockstore workflow wes launch --entry ${workflowPath}:${versionName} --json ${this.agcWrapperFile} -a ${this.wesInputFile}`;
+  }
+
+  getToilLaunch(workflow: Workflow, versionName: string) {
+    const language = String(workflow.descriptorType).toLowerCase();
+    const inputFile = 'Dockstore.json';
+    const inputArguments = language === 'wdl' ? `--input ${inputFile}` : inputFile;
+    return `toil-${language}-runner '${workflow.trsId}:${versionName}' ${inputArguments}`;
   }
 
   getAgcFileWrapper() {

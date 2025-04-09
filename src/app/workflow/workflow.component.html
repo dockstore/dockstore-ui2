@@ -328,7 +328,8 @@
               </div>
               <ng-template #launchSupported>
                 <app-launch
-                  *ngIf="workflow?.workflowVersions.length > 0; else noVersions"
+                  *ngIf="workflow?.workflowVersions?.length > 0; else noVersions"
+                  [workflow]="workflow"
                   [selectedVersion]="selectedVersion"
                   [basePath]="workflow?.path"
                   [path]="workflow?.full_workflow_path"

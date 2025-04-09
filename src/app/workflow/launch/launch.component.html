@@ -210,45 +210,31 @@
             </div>
           </mat-card-content>
         </mat-card>
+
+        <mat-card
+          *ngIf="
+            ((descriptorType$ | async) === ToolDescriptor.TypeEnum.WDL || (descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL) &&
+            (published$ | async)
+          "
+        >
+          <mat-card-content>
+            <div [matTooltip]="toilTooltip">
+              Use the <a href="https://toil.ucsc-cgl.org/">Toil</a> workflow engine to run on private compute such as AWS, Kubernetes,
+              Mesos, and Slurm HPC clusters.
+              <button mat-icon-button class="copy-button" matTooltip="Copy command" [cdkCopyToClipboard]="toilLaunchCommand" appSnackbar>
+                <mat-icon>file_copy</mat-icon>
+              </button>
+              <pre>{{ toilLaunchCommand }}</pre>
+              See the Toil "<a href="https://toil.readthedocs.io/en/latest/{{ descriptorType$ | async | lowercase }}/running.html"
+                >Running {{ descriptorType$ | async }} Workflows</a
+              >" and "<a href="https://toil.readthedocs.io/en/latest/running/cliOptions.html">Commandline Options</a>" documentation for
+              more information.
+            </div>
+          </mat-card-content>
+        </mat-card>
+
         <app-launch-checker-workflow [versionName]="_selectedVersion?.name" [command]="checkEntryCommand"></app-launch-checker-workflow>
       </div>
-
-      <mat-card *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.WDL && (published$ | async)">
-        <mat-card-content>
-          <div [matTooltip]="wesTooltip">
-            <p>Launch this workflow on Amazon Web Services' (AWS) Amazon Genomics CLI (AGC) cloud infrastructure.</p>
-
-            <!--TODO: replace with actual documentation link after https://github.com/dockstore/dockstore-documentation/pull/173-->
-            <p>
-              Learn how to configure the Dockstore CLI to communicate with AWS AGC infrastructure by reading the
-              <a [href]="Dockstore.DOCUMENTATION_URL + '/advanced-topics/wes/cli-wes-tutorial.html'">Dockstore documentation</a>. For an
-              introduction to AWS AGC, see their official
-              <a href="https://aws.github.io/amazon-genomics-cli/docs/getting-started/">quick start guide</a>.
-            </p>
-
-            <div>
-              Make a runtime JSON template and fill in desired inputs, outputs, and other parameters
-              <button mat-icon-button class="copy-button" matTooltip="Copy command" [cdkCopyToClipboard]="params" appSnackbar>
-                <mat-icon>file_copy</mat-icon>
-              </button>
-              <pre>{{ params }}</pre>
-
-              Create a wrapper JSON file, which is used by AWS AGC.
-              <button mat-icon-button class="copy-button" matTooltip="Copy command" [cdkCopyToClipboard]="wesWrapperJson" appSnackbar>
-                <mat-icon>file_copy</mat-icon>
-              </button>
-              <pre>{{ wesWrapperJson }}</pre>
-
-              Launch the workflow. (Note: Any input files required to run this workflow must be specified using the `--attach` or `-a`
-              command line switch.)
-              <button mat-icon-button class="copy-button" matTooltip="Copy command" [cdkCopyToClipboard]="wesLaunchCommand" appSnackbar>
-                <mat-icon>file_copy</mat-icon>
-              </button>
-              <pre>{{ wesLaunchCommand }}</pre>
-            </div>
-          </div>
-        </mat-card-content>
-      </mat-card>
     </div>
   </div>
 </div>
