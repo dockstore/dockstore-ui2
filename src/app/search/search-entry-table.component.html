@@ -64,11 +64,8 @@
             <div class="single-spaced">
               <span
                 >{{ entry?.source.topicAutomatic }}
-                <mat-chip-set>
-                  <app-ai-bubble
-                    *ngIf="entry?.source.topicSelection === TopicSelectionEnum.AI && !entry?.source.approvedAITopic"
-                    [isPublic]="true"
-                  ></app-ai-bubble>
+                <mat-chip-set *ngIf="entry?.source.topicSelection === TopicSelectionEnum.AI && !entry?.source.approvedAITopic">
+                  <app-ai-bubble [isPublic]="true"></app-ai-bubble>
                 </mat-chip-set>
               </span>
             </div>
