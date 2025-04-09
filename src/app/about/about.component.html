@@ -14,9 +14,11 @@
           </p>
           <a target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/channel/UCFWNYqxQvVLAuZq8rdOSE4g/videos">
             <button mat-raised-button color="accent" class="mb-5" fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="space-around center">
-              <mat-icon [ngStyle]="{ color: 'white' }">play_circle_filled</mat-icon>
-              <span fxHide fxShow.lt-sm> Video Tutorials</span>
-              <span fxHide.lt-sm> More Videos</span>
+              <span>
+                <mat-icon [ngStyle]="{ color: 'white' }">play_circle_filled</mat-icon>
+                <span fxHide fxShow.lt-sm class="align-middle"> Video Tutorials</span>
+                <span fxHide.lt-sm class="align-middle"> More Videos</span>
+              </span>
             </button>
           </a>
           <img fxHide.lt-md src="../../assets/images/about-page/truck.png" alt="truck image" class="truck-img" />

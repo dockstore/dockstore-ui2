@@ -32,13 +32,15 @@
         <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="start start" fxLayoutGap="2rem">
           <a [routerLink]="['/about']">
             <button mat-raised-button color="accent">
-              <img src="../../../assets/images/home/icons-navigation-about-white.svg" alt="dockstore icon" />
+              <img src="../../../assets/images/home/icons-navigation-about-white.svg" alt="dockstore icon" class="mr-2" />
               About Dockstore
             </button>
           </a>
           <button mat-raised-button color="accent" data-cy="video-overview-button" (click)="openYoutube()">
-            <mat-icon class="play-icon">play_circle_filled</mat-icon>
-            Watch the Overview
+            <span>
+              <mat-icon>play_circle_filled</mat-icon>
+              Watch the Overview
+            </span>
           </button>
         </div>
       </div>
@@ -318,7 +320,7 @@
           <span>Discourse forum about helpful Dockstore topics.</span>
         </div>
       </div>
-      <app-mastodon-timeline fxLayout="column" fxFlex="33" fxFlex.lt-md="100" class="p-3 mh-100"></app-mastodon-timeline>
+      <app-mastodon-timeline fxLayout="column" fxFlex="33" fxFlex.lt-md="100" class="mh-100"></app-mastodon-timeline>
     </div>
   </div>
 </div>

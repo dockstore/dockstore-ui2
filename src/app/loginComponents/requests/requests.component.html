@@ -40,7 +40,7 @@
             matTooltip="Delete pending organization"
             (click)="removeOrganizationDialog(org.displayName, org.status, org.id)"
           >
-            <mat-icon>delete</mat-icon>Delete
+            <span><mat-icon>delete</mat-icon>Delete</span>
           </button>
           <button
             mat-stroked-button
@@ -98,7 +98,7 @@
               removeOrganizationDialog(membership.organization.displayName, membership.organization.status, membership.organization.id)
             "
           >
-            <mat-icon>delete</mat-icon>Delete
+            <span><mat-icon>delete</mat-icon>Delete</span>
           </button>
         </mat-card-actions>
       </mat-card>
@@ -135,7 +135,7 @@
               removeOrganizationDialog(membership.organization.displayName, membership.organization.status, membership.organization.id)
             "
           >
-            <mat-icon>delete</mat-icon>Delete
+            <span><mat-icon>delete</mat-icon>Delete</span>
           </button>
           <button
             mat-raised-button
