@@ -100,9 +100,11 @@
               </a>
             </li>
             <li class="m-0">
-              <button mat-stroked-button class="copy-build-info-button" [cdkCopyToClipboard]="content" appSnackbar>
-                <mat-icon>file_copy</mat-icon>
-                <small>&nbsp;Copy Build Info</small>
+              <button mat-stroked-button class="copy-build-info-button copy-button" [cdkCopyToClipboard]="content" appSnackbar>
+                <span>
+                  <mat-icon>file_copy</mat-icon>
+                  <small>&nbsp;Copy Build Info</small>
+                </span>
               </button>
             </li>
           </ul>

@@ -85,9 +85,7 @@ app-header h3 {
 app-header h3,
 app-header .h5 {
   color: black;
-  margin: 2rem 0rem 1.5rem 0rem;
-  display: inline;
-  line-height: 4rem;
+  margin: 0.25rem 0rem 0.25rem 0rem;
 }
 
 #format > tbody > tr > th,
@@ -1090,9 +1088,6 @@ $truncate-text-values: 1, 2, 3;
     word-break: break-word;
   }
 }
-
-// The following styles are for mat-tables.
-// The redesigned tables have no borders, bolded headers, no left-padding on the first elements and no right-padding on the last elements.
 
 // This style is used by table headers when there is no data to display
 .inactive-table-header {
