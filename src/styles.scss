@@ -82,10 +82,15 @@ app-header h3 {
   font-size: 1.3rem;
 }
 
+.app-header-height {
+  height: 4rem;
+}
+
 app-header h3,
 app-header .h5 {
   color: black;
-  margin: 0.25rem 0rem 0.25rem 0rem;
+  line-height: inherit; // Override the line-height that bootstrap adds
+  margin: 0; // Override the margin that bootstrap adds
 }
 
 #format > tbody > tr > th,
