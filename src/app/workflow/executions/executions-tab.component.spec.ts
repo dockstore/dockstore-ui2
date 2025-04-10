@@ -16,7 +16,7 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { MatLegacySnackBarModule } from '@angular/material/legacy-snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
 import { PipeModule } from '../../shared/pipe/pipe.module';
@@ -32,7 +32,7 @@ describe('ExecutionsTabComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         schemas: [NO_ERRORS_SCHEMA],
-        imports: [HttpClientTestingModule, PipeModule, ExecutionsTabComponent, MatLegacySnackBarModule],
+        imports: [HttpClientTestingModule, PipeModule, ExecutionsTabComponent, MatSnackBarModule],
         providers: [{ provide: DescriptorLanguageService, useClass: DescriptorLanguageStubService }, AlertService],
       }).compileComponents();
     })

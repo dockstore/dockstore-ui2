@@ -9,13 +9,11 @@
     <strong>The collection will be deleted, and you will not be able to restore it.</strong>
   </p>
 </div>
-<div mat-dialog-actions fxLayout fxLayoutAlign="end">
-  <button mat-flat-button class="secondary-1" mat-dialog-close cdkFocusInitial matTooltip="Cancel" data-cy="cancel-remove-collection">
-    Cancel
-  </button>
+<mat-dialog-actions [align]="'end'">
+  <button mat-button color="accent" mat-dialog-close cdkFocusInitial matTooltip="Cancel" data-cy="cancel-remove-collection">Cancel</button>
   <button
-    mat-raised-button
-    class="accent-1-dark-btn mat-elevation-z"
+    mat-flat-button
+    class="accent-1-dark"
     [disabled]="collectionsQueryLoading$ | async"
     (click)="removeCollection()"
     matTooltip="Remove the collection"
@@ -23,4 +21,4 @@
   >
     Remove
   </button>
-</div>
+</mat-dialog-actions>

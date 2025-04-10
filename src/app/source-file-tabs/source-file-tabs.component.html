@@ -1,41 +1,49 @@
 <app-loading class="w-100" [loading]="loading">
   <div *ngIf="version" class="p-3">
-    <mat-card class="alert alert-warning mat-elevation-z" *ngIf="validationMessage">
-      <mat-icon class="alert-warning-icon">warning</mat-icon>
-      &nbsp;
-      <span *ngFor="let item of validationMessage | keyvalue">
-        <strong>{{ item.key }}</strong
-        >: {{ item.value }}
-      </span>
+    <mat-card appearance="outlined" class="alert alert-warning" *ngIf="validationMessage">
+      <mat-card-content>
+        <mat-icon class="alert-warning-icon">warning</mat-icon>
+        &nbsp;
+        <span *ngFor="let item of validationMessage | keyvalue">
+          <strong>{{ item.key }}</strong
+          >: {{ item.value }}
+        </span>
+      </mat-card-content>
     </mat-card>
   </div>
   <div *ngIf="!loading && (!fileTabs || fileTabs.size === 0) && !displayError" class="p-3">
-    <mat-card class="alert alert-warning mat-elevation-z">
-      <mat-icon class="alert-warning-icon">warning</mat-icon>This version has no files.</mat-card
-    >
+    <mat-card appearance="outlined" class="alert alert-warning">
+      <mat-card-content> <mat-icon class="alert-warning-icon">warning</mat-icon>This version has no files. </mat-card-content>
+    </mat-card>
   </div>
 
   <div *ngIf="displayError" class="p-3">
-    <mat-card class="alert alert-warning mat-elevation-z">
-      <mat-icon class="alert-warning-icon">warning</mat-icon>There was an error retrieving the files for this version. Please reload the
-      page.</mat-card
-    >
+    <mat-card appearance="outlined" class="alert alert-warning">
+      <mat-card-content>
+        <mat-icon class="alert-warning-icon">warning</mat-icon>There was an error retrieving the files for this version. Please reload the
+        page.
+      </mat-card-content>
+    </mat-card>
   </div>
   <div *ngIf="notFoundError" class="p-3">
-    <mat-card class="alert alert-warning mat-elevation-z">
-      <mat-icon class="alert-warning-icon">warning</mat-icon>Could not find the specified file.<br />Other files are displayed below.
+    <mat-card appearance="outlined" class="alert alert-warning">
+      <mat-card-content>
+        <mat-icon class="alert-warning-icon">warning</mat-icon>Could not find the specified file.<br />Other files are displayed below.
+      </mat-card-content>
     </mat-card>
   </div>
   <mat-tab-group mat-stretch-tabs (selectedTabChange)="matTabChange($event)" [(selectedIndex)]="selectedTabIndex">
     <mat-tab *ngFor="let fileTab of fileTabs | keyvalue: originalOrder" [label]="fileTab.key">
       <ng-template matTabContent>
         <div class="p-3" *ngIf="fileTab.value.length === 0">
-          <mat-card class="alert alert-warning mat-elevation-z">
-            <mat-icon class="alert-warning-icon">warning</mat-icon>This version has no files of this type.</mat-card
-          >
+          <mat-card appearance="outlined" class="alert alert-warning">
+            <mat-card-content>
+              <mat-icon class="alert-warning-icon">warning</mat-icon>This version has no files of this type.
+            </mat-card-content>
+          </mat-card>
         </div>
-        <div *ngIf="fileTab.value.length > 0">
-          <mat-toolbar color="primary">
+        <div *ngIf="fileTab.value.length > 0" class="p-3">
+          <mat-toolbar class="files-toolbar">
             <div fxFlex="grow" fxLayout="row" fxLayoutAlign="space-between center">
               <span *ngIf="fileTab.value.length > 10">
                 <button color="accent" data-cy="select-file-button" mat-raised-button (click)="openFileTree(fileTab.value)">
@@ -45,16 +53,11 @@
               <span fxFlex="40">
                 <span *ngIf="fileTab.value.length > 10" fxLayoutAlign="center center">
                   <span class="no-wrap"> {{ fileName }} </span>
-                  <span
-                    *ngIf="isCurrentFilePrimary"
-                    class="bubble preview-bubble primary-bubble-header"
-                    data-cy="primary-descriptor-bubble"
-                  >
-                    Primary
-                  </span>
+                  <mat-chip-set *ngIf="isCurrentFilePrimary" class="ml-2">
+                    <mat-chip class="preview-bubble primary-bubble-header" data-cy="primary-descriptor-bubble"> Primary </mat-chip>
+                  </mat-chip-set>
                   <a
-                    color="secondary"
-                    type="button"
+                    color="accent"
                     *ngIf="!isCurrentFilePrimary && fileTab.key === 'Descriptor Files'"
                     (click)="selectFile(primaryDescriptors[0])"
                     matTooltip="View the primary descriptor"
@@ -64,30 +67,26 @@
                     <mat-icon aria-hidden="false" aria-label="Navigate to Primary Descriptor file" fontIcon="home"></mat-icon>
                   </a>
                 </span>
-                <mat-form-field class="w-100" *ngIf="fileTab.value.length <= 10">
+                <mat-form-field class="w-100 white-background" *ngIf="fileTab.value.length <= 10">
+                  <mat-label>File</mat-label>
                   <mat-select [value]="currentFile" (selectionChange)="matSelectChange($event)">
                     <mat-select-trigger>
                       {{ currentFile.path }}
                     </mat-select-trigger>
                     <mat-option [value]="file" *ngFor="let file of fileTab.value">
                       {{ file.path }}
-                      <span *ngIf="primaryDescriptorPath === file.path" class="bubble preview-bubble" data-cy="primary-descriptor-bubble"
-                        >Primary</span
-                      >
+                      <mat-chip-set *ngIf="primaryDescriptorPath === file.path">
+                        <mat-chip class="preview-bubble" data-cy="primary-descriptor-bubble">Primary</mat-chip>
+                      </mat-chip-set>
                     </mat-option>
                   </mat-select>
                 </mat-form-field>
 
-                <span
-                  *ngIf="isCurrentFilePrimary && fileTab.value.length <= 10"
-                  class="bubble preview-bubble primary-bubble-header"
-                  data-cy="primary-descriptor-bubble"
-                >
-                  Primary
-                </span>
+                <mat-chip-set *ngIf="isCurrentFilePrimary && fileTab.value.length <= 10" class="ml-2">
+                  <mat-chip class="preview-bubble primary-bubble-header" data-cy="primary-descriptor-bubble"> Primary </mat-chip>
+                </mat-chip-set>
                 <a
-                  color="secondary"
-                  type="button"
+                  color="accent"
                   *ngIf="!isCurrentFilePrimary && fileTab.value.length <= 10 && fileTab.key === 'Descriptor Files'"
                   (click)="selectFile(primaryDescriptors[0])"
                   matTooltip="View the primary descriptor"
@@ -100,7 +99,7 @@
               <span>
                 <a
                   mat-icon-button
-                  color="secondary"
+                  color="accent"
                   class="mr-1"
                   type="button"
                   *ngIf="isPublished$ | async; else unpublishedDownloadLink"
@@ -114,7 +113,7 @@
                 <ng-template #unpublishedDownloadLink>
                   <a
                     mat-icon-button
-                    color="secondary"
+                    color="accent"
                     class="mr-1"
                     type="button"
                     matTooltip="Download {{ fileName }}"
@@ -123,7 +122,7 @@
                     <mat-icon>save_alt</mat-icon>
                   </a>
                 </ng-template>
-                <button mat-icon-button color="secondary" type="button" [cdkCopyToClipboard]="currentFile?.content" matTooltip="Copy File">
+                <button mat-icon-button color="accent" type="button" [cdkCopyToClipboard]="currentFile?.content" matTooltip="Copy File">
                   <mat-icon>file_copy</mat-icon>
                 </button>
               </span>

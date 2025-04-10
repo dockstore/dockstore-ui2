@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { Component, OnInit } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { EntryType } from 'app/shared/enum/entry-type';
@@ -44,17 +44,18 @@ import { MyWorkflowsService } from '../myworkflows.service';
 import { Dockstore } from '../../shared/dockstore.model';
 import { WorkflowComponent } from '../../workflow/workflow.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { MatCardModule } from '@angular/material/card';
 import { SidebarAccordionComponent } from '../sidebar-accordion/sidebar-accordion.component';
-import { MatLegacyMenuModule } from '@angular/material/legacy-menu';
-import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { NgIf, AsyncPipe, TitleCasePipe } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatButtonModule } from '@angular/material/button';
 import { HeaderComponent } from '../../header/header.component';
 import { MySidebarComponent } from '../../my-sidebar/my-sidebar.component';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { MatChipsModule } from '@angular/material/chips';
 
 /**
  * How the workflow selection works:
@@ -81,18 +82,19 @@ import { FlexModule } from '@ngbracket/ngx-layout/flex';
     FlexModule,
     MySidebarComponent,
     HeaderComponent,
-    MatLegacyButtonModule,
+    MatButtonModule,
     MatIconModule,
     NgIf,
     MatSidenavModule,
-    MatLegacyTooltipModule,
-    MatLegacyMenuModule,
+    MatTooltipModule,
+    MatMenuModule,
     SidebarAccordionComponent,
-    MatLegacyCardModule,
+    MatCardModule,
     FontAwesomeModule,
     WorkflowComponent,
     AsyncPipe,
     TitleCasePipe,
+    MatChipsModule,
   ],
 })
 export class MyWorkflowComponent extends MyEntry implements OnInit {

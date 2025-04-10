@@ -14,7 +14,16 @@
  *     limitations under the License.
  */
 import { DockstoreTool } from '../../../src/app/shared/openapi';
-import { goToTab, resetDB, setTokenUserViewPort, setTokenUserViewPortCurator, typeInInput } from '../../support/commands';
+import {
+  selectRadioButton,
+  resetDB,
+  setTokenUserViewPort,
+  setTokenUserViewPortCurator,
+  typeInInput,
+  selectSidebarEntry,
+  selectOrganizationSidebarTab,
+  goToVersionsTab,
+} from '../../support/commands';
 
 describe('Dockstore my tools', () => {
   resetDB();
@@ -24,27 +33,10 @@ describe('Dockstore my tools', () => {
     cy.visit('/my-tools');
   });
 
-  function selectUnpublishedTab(org: string) {
-    cy.get('#tool-path').should('be.visible');
-    cy.get('mat-expansion-panel-header')
-      .contains(org)
-      .parentsUntil('mat-accordion')
-      .should('be.visible')
-      .contains('.mat-tab-label', 'Unpublished')
-      .should('be.visible')
-      .click();
-  }
-
-  function selectTool(tool: string) {
-    cy.get('#tool-path').should('be.visible');
-    cy.contains('div .no-wrap', tool).should('be.visible').click();
-    cy.get('#tool-path').contains(tool);
-  }
-
   describe('Go to published tool A2/b3', () => {
     it('Should have two versions visible', () => {
-      selectTool('b3');
-      goToTab('Versions');
+      selectSidebarEntry('quay.io/A2/b3');
+      goToVersionsTab();
       cy.get('tbody>tr').should('have.length', 2);
     });
   });
@@ -84,8 +76,8 @@ describe('Dockstore my tools', () => {
       cy.intercept('PUT', 'api/containers/*').as('updateTool');
       cy.visit('/my-tools');
       cy.wait('@getTool');
-      selectUnpublishedTab('A2');
-      selectTool('b1');
+      selectOrganizationSidebarTab('A2', false);
+      selectSidebarEntry('quay.io/A2/b1');
       cy.contains('github.com');
       cy.get('a#sourceRepository').contains('A2/b1').should('have.attr', 'href', 'https://github.com/A2/b1');
       cy.contains('quay.io');
@@ -136,7 +128,7 @@ describe('Dockstore my tools', () => {
       // Select the manual topic and verify that it's displayed publicly
       cy.visit(privateEntryURI);
       cy.get('[data-cy=topicEditButton]').click();
-      cy.get('.mat-radio-label').contains('Manual').click();
+      selectRadioButton('Manual-radio-button');
       cy.get('[data-cy=topicSaveButton]').click();
       cy.wait('@updateTool');
       cy.get('[data-cy=viewPublicToolButton]').should('be.visible').click();
@@ -154,8 +146,8 @@ describe('Dockstore my tools', () => {
     it('add and remove test parameter file', () => {
       cy.intercept('api/containers/*?include=validations').as('getTool');
       cy.wait('@getTool');
-      selectUnpublishedTab('A2');
-      selectTool('b1');
+      selectOrganizationSidebarTab('A2', false);
+      selectSidebarEntry('quay.io/A2/b1');
       cy.contains('Versions').click();
       cy.contains('button', 'Actions').should('be.visible').click();
       cy.get('[data-cy=editTagButton]').should('be.visible').click();
@@ -187,15 +179,15 @@ describe('Dockstore my tools', () => {
     it('publish and unpublish', () => {
       cy.intercept('api/containers/*?include=validations').as('getTool');
       cy.wait('@getTool');
-      selectUnpublishedTab('A2');
-      selectTool('b1');
+      selectOrganizationSidebarTab('A2', false);
+      selectSidebarEntry('quay.io/A2/b1');
 
       cy.get('[data-cy=viewPublicToolButton]').should('not.exist');
 
       cy.get('#publishToolButton').click();
       cy.get('[data-cy=close-dialog-button]').click();
 
-      goToTab('Versions');
+      goToVersionsTab();
       cy.contains('button', 'Actions').should('be.visible').click();
       cy.get('[data-cy=set-default-version-button]').should('be.visible').click();
 
@@ -221,7 +213,7 @@ describe('Dockstore my tools', () => {
       cy.get('#publishToolButton').click();
       cy.get('[data-cy=close-dialog-button]').click();
 
-      goToTab('Versions');
+      goToVersionsTab();
       cy.contains('button', 'Actions').should('be.visible').click();
       cy.get('[data-cy=set-default-version-button]').should('be.visible').click();
 
@@ -232,8 +224,8 @@ describe('Dockstore my tools', () => {
       cy.visit('/my-tools/amazon.dkr.ecr.test.amazonaws.com/A/a');
       cy.contains('Versions').click();
       cy.get('#addTagButton').click();
-      typeInInput('Docker Image Tag Name', 'fakeTag');
-      typeInInput('Git Branch or Tag Name', 'fakeGitReference');
+      typeInInput('version-tag-input', 'fakeTag');
+      typeInInput('git-ref-input', 'fakeGitReference');
       cy.get('#addVersionTagButton').click();
       cy.wait('@putTestParameterFile');
     });
@@ -533,11 +525,11 @@ describe('Dockstore my tools', () => {
     });
     cy.visit('/my-tools/quay.io/A2/a');
     cy.url().should('eq', Cypress.config().baseUrl + '/my-tools/quay.io/A2/a');
-    goToTab('Versions');
+    goToVersionsTab();
     cy.get('table>tbody>tr').should('have.length.greaterThan', 0); // More than one version
     cy.get('[data-cy=refreshOrganization]:visible').click();
     cy.wait('@refreshEntry');
-    goToTab('Versions');
+    goToVersionsTab();
     cy.get('table>tbody>tr').should('have.length', 0); // No versions
   });
   // Refresh org button does not have tool tip, re-enable test when feature is added
@@ -550,7 +542,7 @@ describe('Dockstore my tools', () => {
   describe('Should have correct buttons in Version modal', () => {
     it('Should have "Save Changes" and "Cancel" button when in editing view', () => {
       cy.visit('/my-tools/quay.io/A2/b1');
-      goToTab('Versions');
+      goToVersionsTab();
       cy.contains('button', 'Actions').should('be.visible').click();
       cy.get('[data-cy=editTagButton]').should('be.visible').click();
       cy.get('[data-cy=save-changes-button]').scrollIntoView().should('be.visible');
@@ -558,7 +550,7 @@ describe('Dockstore my tools', () => {
     });
     it('Should have "OK" button when in public (non-editing) view', () => {
       cy.visit('/containers/quay.io/A2/a');
-      goToTab('Versions');
+      goToVersionsTab();
       cy.get('[data-cy=actionsButton]').should('be.visible').first().click();
       cy.get('[data-cy=ok-dialog-close-button]').scrollIntoView().should('be.visible');
       cy.get('[data-cy=ok-dialog-close-button]').click();

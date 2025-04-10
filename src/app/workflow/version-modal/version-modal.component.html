@@ -67,10 +67,13 @@
                 {{ version.workflow_path }}
               </div>
               <mat-card
+                appearance="outlined"
                 *ngIf="formErrors.workflow_path && (isService$ | async) === false && (isNotebook$ | async) === false"
-                class="alert alert-danger mat-elevation-z"
+                class="alert alert-danger"
               >
-                {{ formErrors.workflow_path }}
+                <mat-card-content>
+                  {{ formErrors.workflow_path }}
+                </mat-card-content>
               </mat-card>
             </div>
           </div>
@@ -165,8 +168,8 @@
               <div *ngIf="formErrors.testParameterFilePath" class="form-error-messages alert alert-danger">
                 {{ formErrors.testParameterFilePath }}
               </div>
-              <mat-card *ngIf="hasDuplicateTestJson()" class="alert alert-danger mat-elevation-z">
-                Duplicate test json files are not allowed.
+              <mat-card appearance="outlined" *ngIf="hasDuplicateTestJson()" class="alert alert-danger">
+                <mat-card-content> Duplicate test json files are not allowed. </mat-card-content>
               </mat-card>
             </div>
             <div class="col-sm-9 col-md-9 col-lg-9" *ngIf="testParameterFilePaths.length === 0 && isPublic">
@@ -229,21 +232,19 @@
       </form>
     </fieldset>
   </div>
-  <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
-    <button type="button" mat-flat-button class="secondary-1" mat-dialog-close *ngIf="!isPublic && canWrite">Cancel</button>
-    <button type="button" mat-raised-button class="accent-1-dark-btn mat-elevation-z" mat-dialog-close *ngIf="isPublic || !canWrite">
-      OK
-    </button>
+  <mat-dialog-actions [align]="'end'">
+    <button type="button" mat-button color="accent" mat-dialog-close *ngIf="!isPublic && canWrite">Cancel</button>
+    <button type="button" mat-flat-button class="accent-1-dark" mat-dialog-close *ngIf="isPublic || !canWrite">OK</button>
     <button
       data-cy="save-version"
       type="button"
       (click)="saveChanges()"
-      mat-raised-button
-      class="accent-1-dark-btn mat-elevation-z"
+      mat-flat-button
+      class="accent-1-dark"
       *ngIf="!isPublic && canWrite"
       [disabled]="!versionEditorForm.form.valid"
     >
       Save Changes
     </button>
-  </div>
+  </mat-dialog-actions>
 </div>

@@ -220,13 +220,17 @@
                 </span>
               </div>
               <div *ngIf="formErrors.cwlTestParameterFilePath" class="form-error-messages">
-                <mat-card class="alert alert-danger mat-elevation-z" role="alert">
-                  <mat-icon class="alert-danger-icon">error</mat-icon> {{ formErrors.cwlTestParameterFilePath }}
+                <mat-card appearance="outlined" class="alert alert-danger" role="alert">
+                  <mat-card-content>
+                    <mat-icon class="alert-danger-icon">error</mat-icon> {{ formErrors.cwlTestParameterFilePath }}
+                  </mat-card-content>
                 </mat-card>
               </div>
               <div *ngIf="hasDuplicateTestJson(DescriptorType.CWL)">
-                <mat-card class="alert alert-danger mat-elevation-z" role="alert">
-                  <mat-icon class="alert-danger-icon">error</mat-icon> Duplicate test json files are not allowed.
+                <mat-card appearance="outlined" class="alert alert-danger" role="alert">
+                  <mat-card-content>
+                    <mat-icon class="alert-danger-icon">error</mat-icon> Duplicate test json files are not allowed.
+                  </mat-card-content>
                 </mat-card>
               </div>
             </div>
@@ -316,13 +320,17 @@
                 </span>
               </div>
               <div *ngIf="formErrors.wdlTestParameterFilePath" class="form-error-messages">
-                <mat-card class="alert alert-danger mat-elevation-z" role="alert">
-                  <mat-icon class="alert-danger-icon">error</mat-icon> {{ formErrors.wdlTestParameterFilePath }}
+                <mat-card appearance="outlined" class="alert alert-danger" role="alert">
+                  <mat-card-content>
+                    <mat-icon class="alert-danger-icon">error</mat-icon> {{ formErrors.wdlTestParameterFilePath }}
+                  </mat-card-content>
                 </mat-card>
               </div>
               <div *ngIf="hasDuplicateTestJson(DescriptorType.WDL)">
-                <mat-card class="alert alert-danger mat-elevation-z" role="alert">
-                  <mat-icon class="alert-danger-icon">error</mat-icon> Duplicate test json files are not allowed.
+                <mat-card appearance="outlined" class="alert alert-danger" role="alert">
+                  <mat-card-content>
+                    <mat-icon class="alert-danger-icon">error</mat-icon> Duplicate test json files are not allowed.
+                  </mat-card-content>
                 </mat-card>
               </div>
             </div>
@@ -401,20 +409,13 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button
-            type="button"
-            data-cy="cancel-edit-version-button"
-            mat-flat-button
-            class="secondary-1"
-            *ngIf="editMode"
-            (click)="onHidden()"
-          >
+          <button type="button" data-cy="cancel-edit-version-button" mat-button color="accent" *ngIf="editMode" (click)="onHidden()">
             Cancel
           </button>
           <button
             type="button"
-            mat-raised-button
-            class="accent-1-dark-btn mat-elevation-z"
+            mat-flat-button
+            class="accent-1-dark"
             mat-dialog-close
             data-cy="ok-dialog-close-button"
             *ngIf="!editMode"
@@ -426,8 +427,8 @@
             id="saveVersionModal"
             type="button"
             (click)="onSubmit()"
-            mat-raised-button
-            class="accent-1-dark-btn mat-elevation-z"
+            mat-flat-button
+            class="accent-1-dark"
             *ngIf="mode === TagEditorMode.Edit"
             [disabled]="!tagEditorForm.form.valid || hasDuplicateTestJson(DescriptorType.WDL) || hasDuplicateTestJson(DescriptorType.CWL)"
             data-dismiss="modal"

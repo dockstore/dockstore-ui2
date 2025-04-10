@@ -32,12 +32,12 @@ import { EntryType } from '../../shared/enum/entry-type';
 import { LaunchCheckerWorkflowComponent } from '../../shared/entry/launch-checker-workflow/launch-checker-workflow.component';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { SnackbarDirective } from '../../shared/snackbar.directive';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
-import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyCardModule } from '@angular/material/legacy-card';
-import { NgIf, AsyncPipe } from '@angular/common';
+import { MatCardModule } from '@angular/material/card';
+import { NgIf, AsyncPipe, LowerCasePipe } from '@angular/common';
 
 @Component({
   selector: 'app-launch',
@@ -46,18 +46,20 @@ import { NgIf, AsyncPipe } from '@angular/common';
   standalone: true,
   imports: [
     NgIf,
-    MatLegacyCardModule,
+    MatCardModule,
     MatIconModule,
     FlexModule,
-    MatLegacyTooltipModule,
-    MatLegacyButtonModule,
+    MatTooltipModule,
+    MatButtonModule,
     SnackbarDirective,
     ClipboardModule,
     LaunchCheckerWorkflowComponent,
     AsyncPipe,
+    LowerCasePipe,
   ],
 })
 export class LaunchWorkflowComponent extends EntryTab implements OnInit, OnChanges {
+  @Input() workflow;
   @Input() basePath;
   @Input() path;
   currentDescriptor: ToolDescriptor.TypeEnum;
@@ -97,9 +99,8 @@ export class LaunchWorkflowComponent extends EntryTab implements OnInit, OnChang
   EntryType = EntryType;
   protected published$: Observable<boolean>;
   protected ngUnsubscribe: Subject<{}> = new Subject();
-  wesWrapperJson: string;
-  wesLaunchCommand: string;
-  wesTooltip = this.launchService.wesTooltip;
+  toilLaunchCommand: string;
+  toilTooltip = this.launchService.toilTooltip;
 
   constructor(
     private launchService: WorkflowLaunchService,
@@ -127,9 +128,15 @@ export class LaunchWorkflowComponent extends EntryTab implements OnInit, OnChang
   }
 
   reactToDescriptor(): void {
-    this.changeMessages(this.basePath, this.path, this._selectedVersion.name, this.currentDescriptor);
+    this.changeMessages(this.workflow, this.basePath, this.path, this._selectedVersion.name, this.currentDescriptor);
   }
-  private changeMessages(basePath: string, workflowPath: string, versionName: string, descriptorType: ToolDescriptor.TypeEnum) {
+  private changeMessages(
+    workflow: Workflow,
+    basePath: string,
+    workflowPath: string,
+    versionName: string,
+    descriptorType: ToolDescriptor.TypeEnum
+  ) {
     if (descriptorType === undefined) {
       return;
     }
@@ -148,8 +155,7 @@ export class LaunchWorkflowComponent extends EntryTab implements OnInit, OnChang
     this.nextflowLocalLaunchDescription = this.launchService.getNextflowLocalLaunchString();
     this.nextflowDownloadFileDescription = this.launchService.getNextflowDownload(basePath, versionName);
     this.updateWgetTestJsonString(workflowPath, versionName, descriptorType);
-    this.wesLaunchCommand = this.launchService.getWesLaunch(workflowPath, versionName);
-    this.wesWrapperJson = this.launchService.getAgcFileWrapper();
+    this.toilLaunchCommand = this.launchService.getToilLaunch(workflow, versionName);
   }
 
   /**

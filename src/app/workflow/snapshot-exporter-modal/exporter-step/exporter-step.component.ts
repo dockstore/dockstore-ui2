@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { IconDefinition } from '@fortawesome/free-brands-svg-icons';
-import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MatIconModule } from '@angular/material/icon';
 import { NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
@@ -12,7 +12,7 @@ import { StepState } from '../step.state';
   templateUrl: './exporter-step.component.html',
   styleUrls: ['./exporter-step.component.scss'],
   standalone: true,
-  imports: [FlexModule, NgIf, MatIconModule, FontAwesomeModule, MatLegacyProgressSpinnerModule, NgSwitch, NgSwitchCase, NgSwitchDefault],
+  imports: [FlexModule, NgIf, MatIconModule, FontAwesomeModule, MatProgressSpinnerModule, NgSwitch, NgSwitchCase, NgSwitchDefault],
 })
 export class ExporterStepComponent {
   @Input() stepState: StepState;

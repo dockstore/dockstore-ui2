@@ -4,7 +4,7 @@ import { Base } from 'app/shared/base';
 import { ActivatedRoute } from 'app/test';
 import { takeUntil } from 'rxjs/operators';
 import { GithubCallbackService } from './github-callback.service';
-import { MatLegacyProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 
 @Component({
@@ -12,7 +12,7 @@ import { FlexModule } from '@ngbracket/ngx-layout/flex';
   templateUrl: './github-callback.component.html',
   styleUrls: ['./github-callback.component.scss'],
   standalone: true,
-  imports: [FlexModule, MatLegacyProgressSpinnerModule],
+  imports: [FlexModule, MatProgressSpinnerModule],
 })
 export class GithubCallbackComponent extends Base implements OnInit {
   constructor(private activatedRoute: ActivatedRoute, private router: GithubCallbackService) {

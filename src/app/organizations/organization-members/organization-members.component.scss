@@ -1,17 +1,10 @@
 @use '@angular/material' as mat;
 @import '/src/materialColorScheme.scss';
 
-.header-image {
-  background-size: cover;
-}
-
-mat-card {
-  padding: 0.7rem 0.9rem;
-}
-
-.mat-card-avatar {
+.mat-mdc-card-avatar {
   height: 50px !important;
   width: 50px !important;
+  margin-bottom: 0 !important;
 }
 
 // Allow word break/wrapping for long usernames (ex. emails)
@@ -32,6 +25,6 @@ a {
   color: $header-color;
 }
 
-.pending-bubble {
+.mat-mdc-chip.pending-bubble {
   background: mat.get-color-from-palette($dockstore-app-accent-4, 4);
 }

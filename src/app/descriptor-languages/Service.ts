@@ -1,6 +1,7 @@
 import { ExtendedDescriptorLanguageBean } from 'app/entry/extendedDescriptorLanguage';
 import { SourceFile, ToolDescriptor, Workflow } from 'app/shared/openapi';
 import { Dockstore } from '../shared/dockstore.model';
+import { configurationTabName, descriptorFilesTabName, testParameterFilesTabName } from 'app/shared/constants';
 
 const SERVICE_DOCUMENTATION_URL = Dockstore.DOCUMENTATION_URL + '/getting-started/getting-started-with-services.html';
 
@@ -26,13 +27,13 @@ export const extendedService: ExtendedDescriptorLanguageBean = {
   testParameterFileType: SourceFile.TypeEnum.DOCKSTORESERVICETESTJSON,
   fileTabs: [
     {
-      tabName: 'Descriptor Files',
+      tabName: descriptorFilesTabName,
       fileTypes: [SourceFile.TypeEnum.DOCKSTORESERVICEOTHER],
     },
     {
-      tabName: 'Test Parameter Files',
+      tabName: testParameterFilesTabName,
       fileTypes: [SourceFile.TypeEnum.DOCKSTORESERVICETESTJSON],
     },
-    { tabName: 'Configuration', fileTypes: [SourceFile.TypeEnum.DOCKSTORESERVICEYML] },
+    { tabName: configurationTabName, fileTypes: [SourceFile.TypeEnum.DOCKSTORESERVICEYML] },
   ],
 };

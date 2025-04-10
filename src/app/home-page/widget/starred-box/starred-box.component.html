@@ -1,72 +1,69 @@
 <mat-card class="h-100">
-  <div fxLayout="column" fxLayoutAlign="start stretch" class="h-100">
-    <div id="header-bar" fxLayout="row wrap" fxLayoutAlign="space-between">
-      <mat-card-header fxLayout="row">
-        <mat-card-title class="ml-2">Starred</mat-card-title>
-      </mat-card-header>
-      <div fxLayout="row wrap" fxLayoutGap="2rem" class="size-small pb-3">
-        <div fxLayout fxLayoutAlign="center center">
-          <mat-icon class="mat-icon-sm">{{ totalStarredWorkflows ? 'star' : 'star_border' }}</mat-icon>
-          <a [routerLink]="['/starred']" [queryParams]="{ tab: 'workflows' }">
-            {{ totalStarredWorkflows }} Workflow<span *ngIf="totalStarredWorkflows !== 1">s</span>
-          </a>
-        </div>
-        <div fxLayout fxLayoutAlign="center center">
-          <mat-icon class="mat-icon-sm">{{ totalStarredTools ? 'star' : 'star_border' }}</mat-icon>
-          <a [routerLink]="['/starred']" [queryParams]="{ tab: 'tools' }">
-            {{ totalStarredTools }} Tool<span *ngIf="totalStarredTools !== 1">s</span>
-          </a>
-        </div>
-        <div fxLayout fxLayoutAlign="center center">
-          <mat-icon class="mat-icon-sm">{{ totalStarredNotebooks ? 'star' : 'star_border' }}</mat-icon>
-          <a [routerLink]="['/starred']" [queryParams]="{ tab: 'notebooks' }">
-            {{ totalStarredNotebooks }} Notebook<span *ngIf="totalStarredNotebooks !== 1">s</span>
-          </a>
-        </div>
-        <!-- TODO: remove *ngIf when services implemented-->
-        <div *ngIf="serviceImplemented" fxLayout fxLayoutAlign="center center">
-          <mat-icon class="mat-icon-sm">{{ totalStarredServices ? 'star' : 'star_border' }}</mat-icon>
-          <a [routerLink]="['/starred']" [queryParams]="{ tab: 'services' }">
-            {{ totalStarredServices }} Service<span *ngIf="totalStarredServices !== 1">s</span>
-          </a>
-        </div>
-        <div fxLayout fxLayoutAlign="center center">
-          <mat-icon class="mat-icon-sm">{{ totalStarredOrganizations ? 'star' : 'star_border' }}</mat-icon>
-          <a [routerLink]="['/starred']" [queryParams]="{ tab: 'organizations' }">
-            {{ totalStarredOrganizations }} Organization<span *ngIf="totalStarredOrganizations !== 1">s</span>
-          </a>
-        </div>
+  <mat-card-header fxLayout="row" fxLayoutAlign="space-between">
+    <mat-card-title>Starred</mat-card-title>
+    <div fxLayout="row wrap" fxLayoutGap="2rem" class="size-small pb-3">
+      <div fxLayout fxLayoutAlign="center center">
+        <mat-icon class="mat-icon-sm">{{ totalStarredWorkflows ? 'star' : 'star_border' }}</mat-icon>
+        <a [routerLink]="['/starred']" [queryParams]="{ tab: 'workflows' }">
+          {{ totalStarredWorkflows }} Workflow<span *ngIf="totalStarredWorkflows !== 1">s</span>
+        </a>
+      </div>
+      <div fxLayout fxLayoutAlign="center center">
+        <mat-icon class="mat-icon-sm">{{ totalStarredTools ? 'star' : 'star_border' }}</mat-icon>
+        <a [routerLink]="['/starred']" [queryParams]="{ tab: 'tools' }">
+          {{ totalStarredTools }} Tool<span *ngIf="totalStarredTools !== 1">s</span>
+        </a>
+      </div>
+      <div fxLayout fxLayoutAlign="center center">
+        <mat-icon class="mat-icon-sm">{{ totalStarredNotebooks ? 'star' : 'star_border' }}</mat-icon>
+        <a [routerLink]="['/starred']" [queryParams]="{ tab: 'notebooks' }">
+          {{ totalStarredNotebooks }} Notebook<span *ngIf="totalStarredNotebooks !== 1">s</span>
+        </a>
+      </div>
+      <!-- TODO: remove *ngIf when services implemented-->
+      <div *ngIf="serviceImplemented" fxLayout fxLayoutAlign="center center">
+        <mat-icon class="mat-icon-sm">{{ totalStarredServices ? 'star' : 'star_border' }}</mat-icon>
+        <a [routerLink]="['/starred']" [queryParams]="{ tab: 'services' }">
+          {{ totalStarredServices }} Service<span *ngIf="totalStarredServices !== 1">s</span>
+        </a>
+      </div>
+      <div fxLayout fxLayoutAlign="center center">
+        <mat-icon class="mat-icon-sm">{{ totalStarredOrganizations ? 'star' : 'star_border' }}</mat-icon>
+        <a [routerLink]="['/starred']" [queryParams]="{ tab: 'organizations' }">
+          {{ totalStarredOrganizations }} Organization<span *ngIf="totalStarredOrganizations !== 1">s</span>
+        </a>
       </div>
     </div>
-    <mat-divider></mat-divider>
-    <mat-card-content class="mx-2 mt-3 mb-0 h-100">
-      <div *ngIf="totalStarredServices || totalStarredTools || totalStarredWorkflows || totalStarredOrganizations; else noStarred">
-        <h5 class="weight-bold mb-0">Recent Activity</h5>
-        <app-recent-events [eventType]="'ALL_STARRED'"></app-recent-events>
-        <div class="weight-bold py-2">
-          <a [routerLink]="'/starred'">All Starred<mat-icon class="mat-icon-sm">keyboard_double_arrow_right</mat-icon> </a>
-        </div>
+  </mat-card-header>
+
+  <mat-divider></mat-divider>
+  <mat-card-content class="mt-3 h-100">
+    <div *ngIf="totalStarredServices || totalStarredTools || totalStarredWorkflows || totalStarredOrganizations; else noStarred">
+      <h5 class="weight-bold mb-0">Recent Activity</h5>
+      <app-recent-events [eventType]="'ALL_STARRED'"></app-recent-events>
+      <div class="weight-bold py-2">
+        <a [routerLink]="'/starred'">All Starred<mat-icon class="mat-icon-sm">keyboard_double_arrow_right</mat-icon> </a>
       </div>
-      <ng-template #noStarred>
-        <div fxLayout="column" fxLayoutAlign="center center" class="h-100 text-align-center">
-          <img src="../assets/svg/star-circle.svg" alt="starred" class="widget-box-type-logo mb-4" />
-          <span>You do not have any starred entries or organizations.</span>
-          <div class="size-small mt-3">
-            <div>Star entries or organizations to follow updates for them.</div>
-            <div>
-              Read
-              <a
-                class="size-small mt-3"
-                target="_blank"
-                rel="noopener noreferrer"
-                [href]="Dockstore.DOCUMENTATION_URL + '/end-user-topics/starring.html'"
-                >Starring Tools and Workflows</a
-              >
-              to learn how to become a stargazer.
-            </div>
+    </div>
+    <ng-template #noStarred>
+      <div fxLayout="column" fxLayoutAlign="center center" class="h-100 text-align-center">
+        <img src="../assets/svg/star-circle.svg" alt="starred" class="widget-box-type-logo mb-4" />
+        <span>You do not have any starred entries or organizations.</span>
+        <div class="size-small mt-3">
+          <div>Star entries or organizations to follow updates for them.</div>
+          <div>
+            Read
+            <a
+              class="size-small mt-3"
+              target="_blank"
+              rel="noopener noreferrer"
+              [href]="Dockstore.DOCUMENTATION_URL + '/end-user-topics/starring.html'"
+              >Starring Tools and Workflows</a
+            >
+            to learn how to become a stargazer.
           </div>
         </div>
-      </ng-template>
-    </mat-card-content>
-  </div>
+      </div>
+    </ng-template>
+  </mat-card-content>
 </mat-card>

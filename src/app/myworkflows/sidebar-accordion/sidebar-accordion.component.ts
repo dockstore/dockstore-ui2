@@ -15,7 +15,7 @@
  */
 
 import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { AlertQuery } from 'app/shared/alert/state/alert.query';
 import { bootstrap4extraLargeModalSize } from 'app/shared/constants';
 import { EntryType } from 'app/shared/enum/entry-type';
@@ -29,13 +29,13 @@ import { KeyValue, NgFor, NgIf, NgClass, NgTemplateOutlet, AsyncPipe, KeyValuePi
 import { MetadataService } from '../../shared/openapi/api/metadata.service';
 import { SelectTabPipe } from '../../shared/entry/select-tab.pipe';
 import { RefreshWorkflowOrganizationComponent } from '../../workflow/refresh-workflow-organization/refresh-workflow-organization.component';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatButtonModule } from '@angular/material/button';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyListModule } from '@angular/material/legacy-list';
+import { MatListModule } from '@angular/material/list';
 import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
-import { MatLegacyTabsModule } from '@angular/material/legacy-tabs';
+import { MatTabsModule } from '@angular/material/tabs';
 import { MatExpansionModule } from '@angular/material/expansion';
 
 interface GroupEntriesBySource {
@@ -56,15 +56,15 @@ interface GroupEntriesBySource {
     NgFor,
     NgIf,
     MatExpansionModule,
-    MatLegacyTabsModule,
+    MatTabsModule,
     ExtendedModule,
     NgClass,
     NgTemplateOutlet,
-    MatLegacyListModule,
+    MatListModule,
     MatIconModule,
     RouterLink,
     FlexModule,
-    MatLegacyButtonModule,
+    MatButtonModule,
     RefreshWorkflowOrganizationComponent,
     AsyncPipe,
     KeyValuePipe,

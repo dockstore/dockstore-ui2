@@ -1,19 +1,17 @@
 import { Component, Inject } from '@angular/core';
-import {
-  MatLegacyDialogRef as MatDialogRef,
-  MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
-  MatLegacyDialogModule,
-} from '@angular/material/legacy-dialog';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { OrganizationUpdateTime } from 'app/shared/openapi';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatButtonModule } from '@angular/material/button';
 import { NgFor, DatePipe } from '@angular/common';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { MatChipsModule } from '@angular/material/chips';
 
 @Component({
   selector: 'app-my-organizations-dialog',
   templateUrl: './my-organizations-dialog.component.html',
+  styleUrls: ['../../../../shared/styles/dashboard-boxes.scss'],
   standalone: true,
-  imports: [FlexModule, MatLegacyDialogModule, NgFor, MatLegacyButtonModule, DatePipe],
+  imports: [FlexModule, MatDialogModule, NgFor, MatButtonModule, DatePipe, MatChipsModule],
 })
 export class MyOrganizationsDialogComponent {
   constructor(

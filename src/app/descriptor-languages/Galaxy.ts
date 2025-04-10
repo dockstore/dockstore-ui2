@@ -1,4 +1,5 @@
 import { ExtendedDescriptorLanguageBean } from 'app/entry/extendedDescriptorLanguage';
+import { configurationTabName, descriptorFilesTabName, testParameterFilesTabName } from 'app/shared/constants';
 import { SourceFile, ToolDescriptor, Workflow } from 'app/shared/openapi';
 
 export const extendedGalaxy: ExtendedDescriptorLanguageBean = {
@@ -22,13 +23,13 @@ export const extendedGalaxy: ExtendedDescriptorLanguageBean = {
   testParameterFileType: SourceFile.TypeEnum.GXFORMAT2TESTFILE,
   fileTabs: [
     {
-      tabName: 'Descriptor Files',
+      tabName: descriptorFilesTabName,
       fileTypes: [SourceFile.TypeEnum.DOCKSTOREGXFORMAT2],
     },
     {
-      tabName: 'Test Parameter Files',
+      tabName: testParameterFilesTabName,
       fileTypes: [SourceFile.TypeEnum.GXFORMAT2TESTFILE],
     },
-    { tabName: 'Configuration', fileTypes: [SourceFile.TypeEnum.DOCKSTOREYML] },
+    { tabName: configurationTabName, fileTypes: [SourceFile.TypeEnum.DOCKSTOREYML] },
   ],
 };

@@ -15,17 +15,13 @@
  */
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Inject } from '@angular/core';
-import {
-  MatLegacyDialogRef as MatDialogRef,
-  MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
-  MatLegacyDialogModule,
-} from '@angular/material/legacy-dialog';
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Entry, EntriesService, DockstoreTool, Workflow } from '../../../shared/openapi';
 import { AlertService } from '../../../shared/alert/state/alert.service';
 import { TitleCasePipe } from '@angular/common';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatButtonModule } from '@angular/material/button';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { AlertComponent } from '../../../shared/alert/alert.component';
 
@@ -34,7 +30,7 @@ import { AlertComponent } from '../../../shared/alert/alert.component';
   templateUrl: './archive-entry-dialog.component.html',
   styleUrls: ['./archive-entry-dialog.component.scss'],
   standalone: true,
-  imports: [MatLegacyDialogModule, AlertComponent, FlexModule, MatLegacyButtonModule, TitleCasePipe],
+  imports: [MatDialogModule, AlertComponent, FlexModule, MatButtonModule, TitleCasePipe],
 })
 export class ArchiveEntryDialogComponent {
   clicked: boolean;

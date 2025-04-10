@@ -15,7 +15,7 @@
  */
 import { AfterViewChecked, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm, FormsModule } from '@angular/forms';
-import { MatLegacyDialog as MatDialog, MatLegacyDialogModule } from '@angular/material/legacy-dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { Base } from 'app/shared/base';
 import { forkJoin } from 'rxjs';
 import { debounceTime, finalize, takeUntil } from 'rxjs/operators';
@@ -35,10 +35,10 @@ import { ToolQuery } from '../../shared/tool/tool.query';
 import { formErrors, validationDescriptorPatterns, validationMessages } from '../../shared/validationMessages.model';
 import { ParamfilesService } from '../paramfiles/paramfiles.service';
 import { VersionModalService } from './version-modal.service';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatButtonModule } from '@angular/material/button';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { SnackbarDirective } from '../../shared/snackbar.directive';
-import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
 import { NgIf, NgFor, NgClass } from '@angular/common';
@@ -51,7 +51,7 @@ import { AlertComponent } from '../../shared/alert/alert.component';
   styleUrls: ['./version-modal.component.css'],
   standalone: true,
   imports: [
-    MatLegacyDialogModule,
+    MatDialogModule,
     AlertComponent,
     LoadingComponent,
     NgIf,
@@ -60,10 +60,10 @@ import { AlertComponent } from '../../shared/alert/alert.component';
     NgClass,
     ExtendedModule,
     MatIconModule,
-    MatLegacyCardModule,
+    MatCardModule,
     SnackbarDirective,
     ClipboardModule,
-    MatLegacyButtonModule,
+    MatButtonModule,
   ],
 })
 export class VersionModalComponent extends Base implements OnInit, AfterViewChecked, OnDestroy {

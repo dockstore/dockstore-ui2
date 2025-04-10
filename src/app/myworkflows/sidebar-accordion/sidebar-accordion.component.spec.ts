@@ -1,6 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { MatLegacyDialogModule, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { RouterTestingModule } from '@angular/router/testing';
 import { RefreshWorkflowOrganizationComponent } from 'app/workflow/refresh-workflow-organization/refresh-workflow-organization.component';
 import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
@@ -24,7 +24,7 @@ describe('SidebarAccordionComponent', () => {
           SidebarAccordionComponent,
           RefreshWorkflowOrganizationComponent,
           SelectTabPipe,
-          MatLegacyDialogModule,
+          MatDialogModule,
         ],
         providers: [
           {

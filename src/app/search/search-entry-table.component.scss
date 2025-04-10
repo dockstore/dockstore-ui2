@@ -40,15 +40,9 @@
   vertical-align: text-bottom;
 }
 
-::ng-deep .sort-by {
-  .mat-form-field-wrapper {
-    // Removing the padding because we don't need hint
-    padding-bottom: 0;
-  }
-}
-
-.mat-cell {
+.mat-mdc-cell {
   overflow: visible; // Needed so the mat-card's box-shadow is displayed
+  border-bottom-width: 0; // Hide the bottom border between each mat-cell
 }
 
 .search-highlighting {
