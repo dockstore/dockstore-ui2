@@ -78,7 +78,6 @@
 
   // Styles for mat-chip container
   --mdc-chip-elevated-container-color: #{mat.get-color-from-palette($dockstore-app-gray, lighter)};
-  --mdc-chip-container-shape-radius: 0.8rem !important;
   --mdc-chip-container-height: 26px !important;
   // Styles for mat-chip text
   --mdc-chip-label-text-color: black;
@@ -154,4 +153,10 @@ table th {
   --mdc-switch-selected-pressed-track-color: #e0e0e0;
   --mdc-switch-selected-hover-track-color: #e0e0e0;
   --mdc-switch-selected-focus-track-color: #e0e0e0;
+}
+
+// Cards
+.mat-mdc-card {
+  // All mat-cards have this border to make the top edge of a raised card more prominent
+  border: solid 1px mat.get-color-from-palette($dockstore-app-gray, 7) !important;
 }
