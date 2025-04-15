@@ -160,3 +160,10 @@ table th {
   // All mat-cards have this border to make the top edge of a raised card more prominent
   border: solid 1px mat.get-color-from-palette($dockstore-app-gray, 7) !important;
 }
+
+// Checkboxes
+.mat-mdc-checkbox {
+  // Make the checkbox size smaller than the default.
+  // Especially important for the search page facets so that they aren't too large.
+  --mdc-checkbox-state-layer-size: 24px;
+}
