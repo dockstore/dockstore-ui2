@@ -1,6 +1,6 @@
 <app-loading class="w-100" [loading]="loading">
-  <div *ngIf="version" class="p-3">
-    <mat-card appearance="outlined" class="alert alert-warning" *ngIf="validationMessage">
+  <div *ngIf="version && validationMessage" class="p-3">
+    <mat-card appearance="outlined" class="alert alert-warning">
       <mat-card-content>
         <mat-icon class="alert-warning-icon">warning</mat-icon>
         &nbsp;
