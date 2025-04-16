@@ -191,7 +191,7 @@
         </button>
       </div>
       <span *ngIf="(categories$ | async)?.length > 0" class="inline-block mr-5 mt-1 mb-1">
-        <span class="size-small mr-2">Categories</span>
+        <span class="size-small mr-2">Categories:</span>
         <mat-chip-set>
           <app-category-button
             *ngFor="let category of categories$ | async"
