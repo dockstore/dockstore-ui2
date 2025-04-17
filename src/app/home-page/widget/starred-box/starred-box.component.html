@@ -1,7 +1,7 @@
 <mat-card class="h-100">
   <mat-card-header fxLayout="row" fxLayoutAlign="space-between">
     <mat-card-title>Starred</mat-card-title>
-    <div fxLayout="row wrap" fxLayoutGap="2rem" class="size-small pb-3">
+    <div fxLayout="row wrap" fxLayoutGap="2rem" class="size-small">
       <div fxLayout fxLayoutAlign="center center">
         <mat-icon class="mat-icon-sm">{{ totalStarredWorkflows ? 'star' : 'star_border' }}</mat-icon>
         <a [routerLink]="['/starred']" [queryParams]="{ tab: 'workflows' }">
