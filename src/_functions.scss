@@ -78,9 +78,11 @@
   @include mat-icon-size(16px);
 }
 
-// Sets the color of a selected tab's underline color
+// Sets the color of a selected tab's underline color.
+// Applies the style to children tab groups as well
 @mixin tab-group-indicator-color($color) {
-  &.mat-mdc-tab-group {
+  &.mat-mdc-tab-group,
+  .mat-mdc-tab-group {
     --mdc-tab-indicator-active-indicator-color: #{$color};
     --mat-tab-header-active-hover-indicator-color: #{$color};
     --mat-tab-header-active-focus-indicator-color: #{$color};
