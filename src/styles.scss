@@ -1267,6 +1267,7 @@ mat-toolbar.files-toolbar {
   --mat-card-title-text-size: 1.7rem;
 }
 
-mat-card-header {
-  margin-bottom: 12px;
+// Add spacing above horizontal dividers that follow mat card headers
+mat-card-header + .mat-divider-horizontal {
+  margin-top: 12px;
 }
