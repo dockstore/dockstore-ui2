@@ -603,6 +603,7 @@ h5.mat-mdc-card-title,
   font-size: 16px;
   color: $header-color;
   font-weight: normal;
+  line-height: 1.1;
 }
 
 // Used by container and workflow's last build/modified "subtitle"
@@ -1264,4 +1265,9 @@ mat-toolbar.files-toolbar {
 // Smaller text size for mat-card-titles
 .small-card-title {
   --mat-card-title-text-size: 1.7rem;
+}
+
+// Add spacing above horizontal dividers that follow mat card headers
+mat-card-header + .mat-divider-horizontal {
+  margin-top: 12px;
 }
