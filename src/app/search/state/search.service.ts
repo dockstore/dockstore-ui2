@@ -71,6 +71,7 @@ export class SearchService {
   private static readonly WORKFLOWS_TAB_INDEX = 0;
   private static readonly TOOLS_TAB_INDEX = 1;
   private static readonly NOTEBOOKS_TAB_INDEX = 2;
+  private static readonly NOT_AVAILABLE = 'n/a';
   private searchInfoSource = new BehaviorSubject<any>(null);
   public toSaveSearch$ = new BehaviorSubject<boolean>(false);
   public searchTerm$ = new BehaviorSubject<boolean>(false);
@@ -260,11 +261,11 @@ export class SearchService {
         bVal = [];
       }
     } else {
-      // otherwise, regardless of sort direction, null or empty values go at the end
-      if (!aVal) {
+      // otherwise, regardless of sort direction, null, empty, or "not available" values go at the end
+      if (!aVal || aVal === SearchService.NOT_AVAILABLE) {
         return 1;
       }
-      if (!bVal) {
+      if (!bVal || bVal === SearchService.NOT_AVAILABLE) {
         return -1;
       }
     }
