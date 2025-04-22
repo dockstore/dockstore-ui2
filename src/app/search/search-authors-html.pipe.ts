@@ -1,5 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { Author, OrcidAuthorInformation } from 'app/shared/openapi';
+import { SearchService } from 'app/search/state/search.service';
 
 @Pipe({
   name: 'getSearchAuthorsHtml',
@@ -19,7 +20,7 @@ export class SearchAuthorsHtmlPipe implements PipeTransform {
     // Filter for authors with names
     const nonNullAuthors = authors.filter((author) => author.name);
     if (nonNullAuthors.length === 0) {
-      return 'n/a';
+      return SearchService.NOT_AVAILABLE;
     }
 
     const authorNames: Array<string> = [];

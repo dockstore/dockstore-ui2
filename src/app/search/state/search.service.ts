@@ -71,7 +71,7 @@ export class SearchService {
   private static readonly WORKFLOWS_TAB_INDEX = 0;
   private static readonly TOOLS_TAB_INDEX = 1;
   private static readonly NOTEBOOKS_TAB_INDEX = 2;
-  private static readonly NOT_AVAILABLE = 'n/a';
+  public static readonly NOT_AVAILABLE = 'n/a';
   private searchInfoSource = new BehaviorSubject<any>(null);
   public toSaveSearch$ = new BehaviorSubject<boolean>(false);
   public searchTerm$ = new BehaviorSubject<boolean>(false);
