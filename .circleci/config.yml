@@ -96,14 +96,14 @@ jobs:
           # Reset even if the tests failed
           when: always
       - upload_nightly_artifacts
-      - slack/notify:
-          channel: $<< parameters.stack >>_id
-          event: fail
-          template: basic_fail_1
-      - slack/notify:
-          channel: $<< parameters.stack >>_id
-          event: pass
-          template: basic_success_1
+      # - slack/notify:
+      #     channel: $<< parameters.stack >>_id
+      #     event: fail
+      #     template: basic_fail_1
+      # - slack/notify:
+      #     channel: $<< parameters.stack >>_id
+      #     event: pass
+      #     template: basic_success_1
 
   lint_license_unit_test_coverage:
     working_directory: ~/repo
