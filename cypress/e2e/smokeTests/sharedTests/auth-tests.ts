@@ -96,11 +96,7 @@ function registerQuayTool(repo: string, name: string) {
     });
     cy.contains('mat-option', repo).should('be.visible').click();
     cy.wait('@repos');
-    cy.get('mat-dialog-content').within(() => {
-      cy.contains('div', name).within(() => {
-        cy.contains('mat-icon', 'sync').should('be.visible').click();
-      });
-    });
+    cy.get('[data-cy=refresh-repo-button]').should('be.visible').click();
     cy.wait('@containers');
     cy.contains('button', 'Finish').should('be.visible').click();
     cy.url().should('contain', toolName);
