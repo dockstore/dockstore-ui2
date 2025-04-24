@@ -48,6 +48,7 @@
                 (click)="refreshRepository(repository)"
                 [disabled]="(loading$ | async) || (repositoryLoading$ | async)"
                 matTooltip="Refresh on Dockstore"
+                data-cy="refresh-repo-button"
               >
                 <mat-icon>sync</mat-icon>
               </button>
