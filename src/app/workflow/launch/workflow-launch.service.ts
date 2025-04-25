@@ -85,9 +85,10 @@ export class WorkflowLaunchService extends LaunchService {
   }
 
   getSnakemakeGetWorkflowCommand(workflow: Workflow, versionName: string): string {
-    const line1 = `git clone --branch ${versionName} https://github.com/${workflow.organization}/${workflow.repository}`;
-    const line2 = `cd ${workflow.repository}`;
-    return `${line1}\n${line2}`;
+    return [
+      `git clone --branch ${versionName} https://github.com/${workflow.organization}/${workflow.repository}`,
+      `cd ${workflow.repository}`,
+    ].join('\n');
   }
 
   getSnakemakeRunWorkflowCommand(workflow: Workflow, versionName: string): string {
