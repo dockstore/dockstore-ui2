@@ -58,6 +58,9 @@
 </mat-tab-group>
 
 <div class="container search-container">
+  <div *ngIf="Dockstore.FEATURES.enableSnakemake" class="starred-header mb-4">
+    <app-preview-warning featureName="Snakemake workflows"></app-preview-warning>
+  </div>
   <div class="row">
     <div class="col-md-3 mb-5">
       <div class="p-2">

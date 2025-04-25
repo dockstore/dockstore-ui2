@@ -49,6 +49,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { Dockstore } from '../shared/dockstore.model';
 
 export interface SortOption {
   label: string;
@@ -276,4 +277,6 @@ export class SearchEntryTableComponent extends Base implements OnInit {
     this.searchService.setSearchText(clicked.text);
     this.searchService.tagClicked$.next(true);
   }
+
+  protected readonly Dockstore = Dockstore;
 }

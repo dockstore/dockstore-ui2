@@ -114,6 +114,9 @@
                   entry?.source.descriptorTypeSubclass
                 }}</mat-chip>
               </mat-chip-set>
+              <mat-chip-set class="ml-2" *ngIf="Dockstore.FEATURES.enableSnakemake && entry?.source.descriptorType === 'SMK'">
+                <mat-chip class="preview-bubble">PREVIEW</mat-chip>
+              </mat-chip-set>
             </div>
           </mat-card-content>
         </mat-card>
