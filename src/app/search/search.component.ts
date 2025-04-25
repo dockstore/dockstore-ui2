@@ -62,7 +62,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { HeaderComponent } from '../header/header.component';
-import { PreviewWarningComponent } from '../preview-warning/preview-warning.component';
 
 /**
  *
@@ -124,7 +123,6 @@ import { PreviewWarningComponent } from '../preview-warning/preview-warning.comp
     GetFacetSearchResultsPipe,
     GetFacetSearchUpdatePipe,
     NgTemplateOutlet,
-    PreviewWarningComponent,
   ],
 })
 export class SearchComponent implements OnInit, OnDestroy {

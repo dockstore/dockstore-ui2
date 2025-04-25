@@ -9,7 +9,6 @@ import { NgIf } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatChipsModule } from '@angular/material/chips';
-import { Dockstore } from '../shared/dockstore.model';
 
 /** File node data with possible child nodes. */
 export interface FileNode {
@@ -154,6 +153,4 @@ export class FileTreeComponent {
   isPrimaryDescriptor(path: string): boolean {
     return path === this.data.versionPath && this.data.entryType !== EntryType.NOTEBOOK;
   }
-
-  protected readonly Dockstore = Dockstore;
 }

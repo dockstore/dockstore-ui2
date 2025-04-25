@@ -49,6 +49,7 @@ import { NgFor, NgIf, AsyncPipe } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatStepperModule } from '@angular/material/stepper';
 import { AlertComponent } from '../../shared/alert/alert.component';
+import { MatChipsModule } from '@angular/material/chips';
 
 export interface HostedWorkflowObject {
   name: string;
@@ -80,6 +81,7 @@ export interface HostedWorkflowObject {
     MatTooltipModule,
     AsyncPipe,
     MapFriendlyValuesPipe,
+    MatChipsModule,
   ],
 })
 export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked, OnDestroy {

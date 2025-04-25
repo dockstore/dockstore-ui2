@@ -126,6 +126,9 @@
             [attr.data-cy]="('descriptor_type' | mapFriendlyValue: descriptorType) + '-radio-button'"
           >
             {{ 'descriptor_type' | mapFriendlyValue: descriptorType }}
+            <mat-chip-set class="ml-2" *ngIf="Dockstore.FEATURES.enableSnakemake && descriptorType === 'SMK'">
+              <mat-chip class="preview-bubble">PREVIEW</mat-chip>
+            </mat-chip-set>
           </mat-radio-button>
         </mat-radio-group>
         <mat-form-field class="w-100">
