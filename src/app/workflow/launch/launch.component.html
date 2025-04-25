@@ -37,7 +37,7 @@
           </mat-card-content>
         </mat-card>
         <mat-card
-          *ngIf="(isNFL$ | async) === false && (isGalaxy$ | async) === false"
+          *ngIf="(isNFL$ | async) === false && (isGalaxy$ | async) === false && (isSMK$ | async) === false"
           matTooltip="Commands for creating a runtime JSON template"
         >
           <mat-card-content>
@@ -90,7 +90,7 @@
           </mat-card-content>
         </mat-card>
         <mat-card
-          *ngIf="(isNFL$ | async) === false && (isGalaxy$ | async) === false"
+          *ngIf="(isNFL$ | async) === false && (isGalaxy$ | async) === false && (isSMK$ | async) === false"
           matTooltip="Commands for launching tool through Dockstore CLI (Supports file provisioning)"
         >
           <mat-card-content>
@@ -134,6 +134,20 @@
                 <mat-icon>file_copy</mat-icon>
               </button>
               <pre>{{ planemoLocalLaunchString }}</pre>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card *ngIf="(isSMK$ | async) && DockstoreToolType.ModeEnum.HOSTED !== mode && WorkflowType.ModeEnum.HOSTED !== mode">
+          <mat-card-content>
+            <div matTooltip="Run a Snakemake workflow locally">
+              Download the workflow files from the Github repository:
+              <pre>
+git clone --branch {{ _selectedVersion.name }} https://github.com/{{ workflow.organization }}/{{ workflow.repository }}
+cd {{ workflow.repository }}</pre
+              >
+              Run the Snakemake workflow:
+              <pre>snakemake</pre>
             </div>
           </mat-card-content>
         </mat-card>

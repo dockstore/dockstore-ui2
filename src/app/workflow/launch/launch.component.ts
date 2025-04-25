@@ -95,6 +95,7 @@ export class LaunchWorkflowComponent extends EntryTab implements OnInit, OnChang
   descriptorType$: Observable<ToolDescriptor.TypeEnum>;
   isNFL$: Observable<boolean>;
   isGalaxy$: Observable<boolean>;
+  isSMK$: Observable<boolean>;
   ToolDescriptor = ToolDescriptor;
   EntryType = EntryType;
   protected published$: Observable<boolean>;
@@ -120,6 +121,7 @@ export class LaunchWorkflowComponent extends EntryTab implements OnInit, OnChang
     });
     this.isNFL$ = this.workflowQuery.isNFL$;
     this.isGalaxy$ = this.workflowQuery.isGalaxy$;
+    this.isSMK$ = this.workflowQuery.isSMK$;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
