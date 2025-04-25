@@ -78,6 +78,9 @@
                       <mat-chip-set *ngIf="primaryDescriptorPath === file.path">
                         <mat-chip class="preview-bubble" data-cy="primary-descriptor-bubble">Primary</mat-chip>
                       </mat-chip-set>
+                      <mat-chip-set class="ml-2" *ngIf="fileName.includes('.smk') && Dockstore.FEATURES.enableSnakemake">
+                        <mat-chip class="preview-bubble">PREVIEW</mat-chip>
+                      </mat-chip-set>
                     </mat-option>
                   </mat-select>
                 </mat-form-field>

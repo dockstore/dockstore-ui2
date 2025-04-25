@@ -24,6 +24,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { LoadingComponent } from '../shared/loading/loading.component';
 import { MatChipsModule } from '@angular/material/chips';
+import { Dockstore } from '../shared/dockstore.model';
 
 @Component({
   selector: 'app-source-file-tabs',
@@ -252,4 +253,6 @@ export class SourceFileTabsComponent implements OnChanges {
   isPrimaryDescriptor(path: string): boolean {
     return path === this.version.workflow_path && this.entry.entryType !== EntryType.NOTEBOOK;
   }
+
+  protected readonly Dockstore = Dockstore;
 }

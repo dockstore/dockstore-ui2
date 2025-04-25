@@ -18,6 +18,9 @@
         <mat-chip-set class="ml-2" *ngIf="primaryDescriptorPath === node.absolutePath">
           <mat-chip class="preview-bubble" data-cy="primary-descriptor-bubble">Primary</mat-chip>
         </mat-chip-set>
+        <mat-chip-set class="ml-2" *ngIf="node.name.includes('.smk') && Dockstore.FEATURES.enableSnakemake">
+          <mat-chip class="preview-bubble">PREVIEW</mat-chip>
+        </mat-chip-set>
       </button>
     </mat-tree-node>
 
