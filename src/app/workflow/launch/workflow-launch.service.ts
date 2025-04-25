@@ -73,14 +73,24 @@ export class WorkflowLaunchService extends LaunchService {
     return `dockstore workflow wes launch --entry ${workflowPath}:${versionName} --json ${this.agcWrapperFile} -a ${this.wesInputFile}`;
   }
 
-  getToilLaunch(workflow: Workflow, versionName: string) {
+  getAgcFileWrapper() {
+    return `echo '{\"workflowInputs\": \"${this.wesInputFile}\"}' > ${this.agcWrapperFile}`;
+  }
+
+  getToilLaunchCommand(workflow: Workflow, versionName: string) {
     const language = String(workflow.descriptorType).toLowerCase();
     const inputFile = 'Dockstore.json';
     const inputArguments = language === 'wdl' ? `--input ${inputFile}` : inputFile;
     return `toil-${language}-runner '${workflow.trsId}:${versionName}' ${inputArguments}`;
   }
 
-  getAgcFileWrapper() {
-    return `echo '{\"workflowInputs\": \"${this.wesInputFile}\"}' > ${this.agcWrapperFile}`;
+  getSnakemakeGetWorkflowCommand(workflow: Workflow, versionName: string): string {
+    const line1 = `git clone --branch ${versionName} https://github.com/${workflow.organization}/${workflow.repository}`;
+    const line2 = `cd ${workflow.repository}`;
+    return `${line1}\n${line2}`;
+  }
+
+  getSnakemakeRunWorkflowCommand(workflow: Workflow, versionName: string): string {
+    return 'snakemake';
   }
 }

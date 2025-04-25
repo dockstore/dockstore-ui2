@@ -86,10 +86,15 @@ export class LaunchWorkflowComponent extends EntryTab implements OnInit, OnChang
   planemoSharedZipString: string;
   planemoLocalInitString: string;
   planemoLocalLaunchString: string;
-  descriptors: Array<any>;
   cwlrunnerDescription = this.launchService.cwlrunnerDescription;
   cwlrunnerTooltip = this.launchService.cwlrunnerTooltip;
   cwltoolTooltip = this.launchService.cwltoolTooltip;
+  toilLaunchCommand: string;
+  toilTooltip = this.launchService.toilTooltip;
+  snakemakeGetWorkflowCommand: string;
+  snakemakeRunWorkflowCommand: string;
+  snakemakeTooltip = this.launchService.snakemakeTooltip;
+  descriptors: Array<any>;
   primaryDescriptorPath: string;
   testParameterPath: string;
   descriptorType$: Observable<ToolDescriptor.TypeEnum>;
@@ -100,8 +105,6 @@ export class LaunchWorkflowComponent extends EntryTab implements OnInit, OnChang
   EntryType = EntryType;
   protected published$: Observable<boolean>;
   protected ngUnsubscribe: Subject<{}> = new Subject();
-  toilLaunchCommand: string;
-  toilTooltip = this.launchService.toilTooltip;
 
   constructor(
     private launchService: WorkflowLaunchService,
@@ -157,7 +160,9 @@ export class LaunchWorkflowComponent extends EntryTab implements OnInit, OnChang
     this.nextflowLocalLaunchDescription = this.launchService.getNextflowLocalLaunchString();
     this.nextflowDownloadFileDescription = this.launchService.getNextflowDownload(basePath, versionName);
     this.updateWgetTestJsonString(workflowPath, versionName, descriptorType);
-    this.toilLaunchCommand = this.launchService.getToilLaunch(workflow, versionName);
+    this.toilLaunchCommand = this.launchService.getToilLaunchCommand(workflow, versionName);
+    this.snakemakeGetWorkflowCommand = this.launchService.getSnakemakeGetWorkflowCommand(workflow, versionName);
+    this.snakemakeRunWorkflowCommand = this.launchService.getSnakemakeRunWorkflowCommand(workflow, versionName);
   }
 
   /**

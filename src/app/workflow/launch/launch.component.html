@@ -140,14 +140,29 @@
 
         <mat-card *ngIf="(isSMK$ | async) && DockstoreToolType.ModeEnum.HOSTED !== mode && WorkflowType.ModeEnum.HOSTED !== mode">
           <mat-card-content>
-            <div matTooltip="Run a Snakemake workflow locally">
-              Download the workflow files from the Github repository:
-              <pre>
-git clone --branch {{ _selectedVersion.name }} https://github.com/{{ workflow.organization }}/{{ workflow.repository }}
-cd {{ workflow.repository }}</pre
+            <div [matTooltip]="snakemakeTooltip">
+              To run a Snakemake workflow locally, download the workflow files:
+              <button
+                mat-icon-button
+                class="copy-button"
+                matTooltip="Copy command"
+                [cdkCopyToClipboard]="snakemakeGetWorkflowCommand"
+                appSnackbar
               >
-              Run the Snakemake workflow:
-              <pre>snakemake</pre>
+                <mat-icon>file_copy</mat-icon>
+              </button>
+              <pre>{{ snakemakeGetWorkflowCommand }}</pre>
+              Then, run the Snakemake workflow:
+              <button
+                mat-icon-button
+                class="copy-button"
+                matTooltip="Copy command"
+                [cdkCopyToClipboard]="snakemakeRunWorkflowCommand"
+                appSnackbar
+              >
+                <mat-icon>file_copy</mat-icon>
+              </button>
+              <pre>{{ snakemakeRunWorkflowCommand }}</pre>
             </div>
           </mat-card-content>
         </mat-card>
