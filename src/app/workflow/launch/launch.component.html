@@ -138,35 +138,6 @@
           </mat-card-content>
         </mat-card>
 
-        <mat-card *ngIf="(isSMK$ | async) && DockstoreToolType.ModeEnum.HOSTED !== mode && WorkflowType.ModeEnum.HOSTED !== mode">
-          <mat-card-content>
-            <div [matTooltip]="snakemakeTooltip">
-              To run a Snakemake workflow locally, download the workflow files:
-              <button
-                mat-icon-button
-                class="copy-button"
-                matTooltip="Copy command"
-                [cdkCopyToClipboard]="snakemakeGetWorkflowCommand"
-                appSnackbar
-              >
-                <mat-icon>file_copy</mat-icon>
-              </button>
-              <pre>{{ snakemakeGetWorkflowCommand }}</pre>
-              Then, run the Snakemake workflow:
-              <button
-                mat-icon-button
-                class="copy-button"
-                matTooltip="Copy command"
-                [cdkCopyToClipboard]="snakemakeRunWorkflowCommand"
-                appSnackbar
-              >
-                <mat-icon>file_copy</mat-icon>
-              </button>
-              <pre>{{ snakemakeRunWorkflowCommand }}</pre>
-            </div>
-          </mat-card-content>
-        </mat-card>
-
         <mat-card *ngIf="(isNFL$ | async) && (DockstoreToolType.ModeEnum.HOSTED === mode || WorkflowType.ModeEnum.HOSTED === mode)">
           <mat-card-content>
             <div matTooltip="Nextflow can also run a local workflow">
@@ -193,6 +164,35 @@
                 <mat-icon>file_copy</mat-icon>
               </button>
               <pre>{{ nextflowLocalLaunchDescription }}</pre>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card *ngIf="(isSMK$ | async) && 'github.com' === workflow.sourceControl">
+          <mat-card-content>
+            <div [matTooltip]="snakemakeTooltip">
+              Download the workflow files
+              <button
+                mat-icon-button
+                class="copy-button"
+                matTooltip="Copy command"
+                [cdkCopyToClipboard]="snakemakeGetWorkflowCommand"
+                appSnackbar
+              >
+                <mat-icon>file_copy</mat-icon>
+              </button>
+              <pre>{{ snakemakeGetWorkflowCommand }}</pre>
+              Run with Snakemake
+              <button
+                mat-icon-button
+                class="copy-button"
+                matTooltip="Copy command"
+                [cdkCopyToClipboard]="snakemakeRunWorkflowCommand"
+                appSnackbar
+              >
+                <mat-icon>file_copy</mat-icon>
+              </button>
+              <pre>{{ snakemakeRunWorkflowCommand }}</pre>
             </div>
           </mat-card-content>
         </mat-card>
