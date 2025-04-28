@@ -14,6 +14,7 @@ import {
   goToTestParameterFilesTab,
   goToToolsTab,
   goToTab,
+  isProd,
 } from '../../../support/commands';
 
 // Test an entry, these should be ambiguous between tools, workflows, and notebooks.
@@ -25,7 +26,7 @@ describe('run stochastic smoke test', () => {
 
 // TODO: set to only 'entryColumn' when search cards are deployed to staging and prod
 function getSearchDataCy(tab: string = 'Workflows') {
-  return isStagingOrProd() ? getLinkName(tab) : 'entryColumn';
+  return isProd() ? getLinkName(tab) : 'entryColumn';
 }
 
 function getLinkName(tab: string): string {

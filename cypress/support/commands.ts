@@ -25,6 +25,11 @@ export function isStagingOrProd() {
   return baseUrl === 'https://staging.dockstore.org' || baseUrl === 'https://dockstore.org';
 }
 
+export function isProd() {
+  const baseUrl = Cypress.config('baseUrl');
+  return baseUrl === 'https://dockstore.org';
+}
+
 export function goToTab(tabName: string): void {
   getTab(tabName).click();
 }
