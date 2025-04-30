@@ -30,10 +30,10 @@
         Could not get any organizations, try relinking the Quay.io token in the accounts page.
       </div>
       <div *ngIf="organizations && organizations.length > 0">
-        <mat-form-field class="w-100">
+        <mat-form-field class="w-100" data-cy="select-namespace">
           <mat-label>Select namespace</mat-label>
           <mat-select (selectionChange)="selectOrganization($event.value)">
-            <mat-option *ngFor="let organization of organizations" [value]="organization">
+            <mat-option *ngFor="let organization of organizations" [value]="organization" [attr.data-cy]="organization + '-option'">
               {{ organization }}
             </mat-option>
           </mat-select>
@@ -48,7 +48,7 @@
                 (click)="refreshRepository(repository)"
                 [disabled]="(loading$ | async) || (repositoryLoading$ | async)"
                 matTooltip="Refresh on Dockstore"
-                data-cy="refresh-repo-button"
+                [attr.data-cy]="repository + '-refresh-button'"
               >
                 <mat-icon>sync</mat-icon>
               </button>
