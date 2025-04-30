@@ -37,7 +37,7 @@
           </mat-card-content>
         </mat-card>
         <mat-card
-          *ngIf="(isNFL$ | async) === false && (isGalaxy$ | async) === false"
+          *ngIf="(isNFL$ | async) === false && (isGalaxy$ | async) === false && (isSMK$ | async) === false"
           matTooltip="Commands for creating a runtime JSON template"
         >
           <mat-card-content>
@@ -90,7 +90,7 @@
           </mat-card-content>
         </mat-card>
         <mat-card
-          *ngIf="(isNFL$ | async) === false && (isGalaxy$ | async) === false"
+          *ngIf="(isNFL$ | async) === false && (isGalaxy$ | async) === false && (isSMK$ | async) === false"
           matTooltip="Commands for launching tool through Dockstore CLI (Supports file provisioning)"
         >
           <mat-card-content>
@@ -164,6 +164,35 @@
                 <mat-icon>file_copy</mat-icon>
               </button>
               <pre>{{ nextflowLocalLaunchDescription }}</pre>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card *ngIf="(isSMK$ | async) && 'github.com' === workflow.sourceControl">
+          <mat-card-content>
+            <div [matTooltip]="snakemakeTooltip">
+              Download the workflow files
+              <button
+                mat-icon-button
+                class="copy-button"
+                matTooltip="Copy command"
+                [cdkCopyToClipboard]="snakemakeGetWorkflowCommand"
+                appSnackbar
+              >
+                <mat-icon>file_copy</mat-icon>
+              </button>
+              <pre>{{ snakemakeGetWorkflowCommand }}</pre>
+              Run with Snakemake
+              <button
+                mat-icon-button
+                class="copy-button"
+                matTooltip="Copy command"
+                [cdkCopyToClipboard]="snakemakeRunWorkflowCommand"
+                appSnackbar
+              >
+                <mat-icon>file_copy</mat-icon>
+              </button>
+              <pre>{{ snakemakeRunWorkflowCommand }}</pre>
             </div>
           </mat-card-content>
         </mat-card>

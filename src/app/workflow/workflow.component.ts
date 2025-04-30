@@ -654,4 +654,8 @@ export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterVi
       data: { entry: this.workflow, version: this.selectedVersion },
     });
   }
+
+  equalIds(a: WorkflowVersion, b: WorkflowVersion): boolean {
+    return a.id == b.id;
+  }
 }

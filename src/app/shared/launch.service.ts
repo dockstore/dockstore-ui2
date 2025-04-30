@@ -28,6 +28,7 @@ export abstract class LaunchService {
   public readonly cwltoolTooltip =
     'Commands for launching tools/workflows through CWLtool: the CWL reference implementation. ' + this.nonStrict;
   public readonly toilTooltip = "Commands for running using UCSC's Toil workflow engine.";
+  public readonly snakemakeTooltip = 'Run a Snakemake workflow locally';
   private readonly galaxyParamFileName = 'galaxy_job.yml';
 
   constructor(protected descriptorTypeCompatService: DescriptorTypeCompatService) {}
