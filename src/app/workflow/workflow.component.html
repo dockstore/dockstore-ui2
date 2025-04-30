@@ -107,6 +107,7 @@
           <mat-select
             (selectionChange)="onSelectedVersionChange(selectedVersion)"
             [(value)]="selectedVersion"
+            [compareWith]="equalIds"
             [formControl]="workflowVersionsCtrl"
           >
             <mat-option>
