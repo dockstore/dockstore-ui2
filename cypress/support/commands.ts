@@ -317,7 +317,8 @@ export function testNoGithubEntriesText(entryType: string, organization: string)
   });
 }
 
-export function addToCollection(path: string, organizationName: string, collectionDisplayName: string) {
+export function addToCollection(path: string, organizationName: string, collectionDisplayName: string, versionName?: string) {
+  cy.intercept('post', '**/collections/**').as('postToCollection');
   cy.visit(path);
   cy.get('[data-cy=addToolToCollectionButton]').should('be.visible').click();
   cy.get('[data-cy=addEntryToCollectionButton]').should('be.disabled');
@@ -326,8 +327,16 @@ export function addToCollection(path: string, organizationName: string, collecti
   cy.get('[data-cy=addEntryToCollectionButton]').should('be.disabled');
   cy.get('[data-cy=selectCollection]').click();
   cy.get('mat-option').contains(collectionDisplayName).click();
+  if (versionName) {
+    cy.get('[data-cy=selectVersion]').click();
+    cy.get('mat-option').contains(versionName).click();
+  }
   cy.get('[data-cy=addEntryToCollectionButton]').should('not.be.disabled').click();
+  cy.wait('@postToCollection');
+  cy.get('[data-cy=addEntryToCollectionButton]').should('not.exist');
+  cy.get('mat-progress-bar').should('not.exist');
 }
+
 export function snapshot() {
   cy.get('[data-cy=dockstore-snapshot-locked]').should('have.length', 0);
   // The buttons should be present
