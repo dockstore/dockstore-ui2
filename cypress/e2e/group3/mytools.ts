@@ -545,7 +545,7 @@ describe('Dockstore my tools', () => {
       goToVersionsTab();
       cy.contains('button', 'Actions').should('be.visible').click();
       cy.get('[data-cy=edit-button]').should('be.visible').click();
-      cy.get('[data-cy=save-changes-button]').scrollIntoView().should('be.visible');
+      cy.get('[data-cy=save-version]').scrollIntoView().should('be.visible');
       cy.get('[data-cy=cancel-edit-version-button]').should('be.visible').click();
     });
     it('Should have "OK" button when in public (non-editing) view', () => {

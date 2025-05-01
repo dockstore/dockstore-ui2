@@ -233,7 +233,9 @@
     </fieldset>
   </div>
   <mat-dialog-actions [align]="'end'">
-    <button type="button" mat-button color="accent" mat-dialog-close *ngIf="!isPublic && canWrite">Cancel</button>
+    <button type="button" mat-button color="accent" mat-dialog-close *ngIf="!isPublic && canWrite" data-cy="cancel-edit-version-button">
+      Cancel
+    </button>
     <button type="button" mat-flat-button class="accent-1-dark" mat-dialog-close *ngIf="isPublic || !canWrite">OK</button>
     <button
       data-cy="save-version"

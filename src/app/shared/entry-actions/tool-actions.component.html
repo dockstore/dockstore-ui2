@@ -14,6 +14,7 @@
     <div [matTooltip]="pubUnpubMessage">
       <button
         id="publishToolButton"
+        [attr.data-cy]="(tool?.is_published ? 'unpublish' : 'publish') + '-button'"
         mat-flat-button
         class="accent-1-dark"
         (click)="publishToggle()"
@@ -46,6 +47,7 @@
       (click)="refresh()"
       [disabled]="isRefreshing$ | async"
       matTooltip="Sync the tool with the Docker image repository, etc"
+      data-cy="refreshButton"
     >
       Refresh
     </button>

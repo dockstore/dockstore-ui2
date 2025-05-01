@@ -58,7 +58,7 @@ function deleteTool() {
     cy.intercept('delete', '**/containers/**').as('containers');
     cy.contains('#deregisterButton', 'Delete').should('be.visible').click();
     cy.contains('div', 'Are you sure you wish to delete this tool?').within(() => {
-      cy.contains('button', 'Delete').should('be.visible').click();
+      cy.get('[data-cy=confirm-dialog-button]').should('be.visible').click();
     });
     cy.wait('@containers');
     // TODO: Revisit this -- with change to show GitHub orgs with no entries, this got broken
@@ -181,7 +181,7 @@ function toggleHiddenWorkflowVersion() {
   cy.contains('div', 'Hidden:').within(() => {
     cy.get('[name=checkbox]').click();
   });
-  cy.contains('button', 'Save Changes').click();
+  cy.get('[data-cy=save-version]').click();
 }
 
 function testTool(registry: string, repo: string, name: string) {
