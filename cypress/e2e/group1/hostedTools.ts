@@ -171,7 +171,7 @@ describe('Dockstore hosted tools', () => {
       getTool();
       goToVersionsTab();
       cy.get('[data-cy=actions-button]').first().click();
-      cy.get('[data-cy=editTagButton]').click();
+      cy.get('[data-cy=edit-button]').click();
       cy.get('.alert').should('not.exist');
       cy.get('[data-cy=editToolVersionDialog]').should('exist');
     });
@@ -183,7 +183,7 @@ describe('Dockstore hosted tools', () => {
       cy.get('#publishToolButton').contains('Unpublish');
       cy.wait(1000);
       cy.get('[data-cy=actions-button]').first().click();
-      cy.get('[data-cy=editTagButton]').click();
+      cy.get('[data-cy=edit-button]').click();
       cy.get('.alert').should('not.exist');
       cy.get('[data-cy=editToolVersionDialog]').should('exist');
     });

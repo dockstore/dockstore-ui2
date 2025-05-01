@@ -31,16 +31,7 @@
 
 <mat-menu #menu="matMenu">
   <ng-container *ngIf="(isPublic$ | async) === false">
-    <button
-      data-cy="editTagButton"
-      type="button"
-      mat-menu-item
-      color="accent"
-      (click)="setMode(TagEditorMode.Edit); (false)"
-      data-cy="edit-button"
-    >
-      Edit
-    </button>
+    <button type="button" mat-menu-item color="accent" (click)="setMode(TagEditorMode.Edit); (false)" data-cy="edit-button">Edit</button>
     <button
       type="button"
       mat-menu-item
