@@ -16,6 +16,7 @@
         mat-flat-button
         class="accent-1-dark"
         id="publishButton"
+        [attr.data-cy]="(workflow?.is_published ? 'unpublish' : 'publish') + '-button'"
         (click)="publishToggle()"
         [disabled]="(isRefreshing$ | async) || publishDisabled"
       >

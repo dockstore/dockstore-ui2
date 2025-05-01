@@ -25,13 +25,8 @@
         </ng-template>
         <mat-form-field *ngIf="memberships && memberships.length > 0; else noMemberships">
           <mat-label>Organization</mat-label>
-          <mat-select
-            id="selectOrganization"
-            data-cy="selectOrganization"
-            [(value)]="selectedOrganizationId"
-            (selectionChange)="onOrganizationChange($event)"
-          >
-            <mat-option *ngFor="let membership of memberships" [value]="membership.organization.id">
+          <mat-select data-cy="selectOrganization" [(value)]="selectedOrganizationId" (selectionChange)="onOrganizationChange($event)">
+            <mat-option *ngFor="let membership of memberships" [value]="membership.organization.id" data-cy="organization-option">
               {{ membership.organization.displayName }}
             </mat-option>
           </mat-select>
@@ -43,10 +38,10 @@
             <mat-card-content> <mat-icon>info</mat-icon> The selected organization has no collections that can be added </mat-card-content>
           </mat-card>
         </ng-template>
-        <mat-form-field id="selectCollection" data-cy="selectCollection" *ngIf="collections && collections.length > 0; else noCollections">
+        <mat-form-field data-cy="selectCollection" *ngIf="collections && collections.length > 0; else noCollections">
           <mat-label>Collection</mat-label>
           <mat-select [(value)]="selectedCollectionId" [disabled]="!selectedOrganizationId">
-            <mat-option *ngFor="let collection of collections" [value]="collection.id">
+            <mat-option *ngFor="let collection of collections" [value]="collection.id" data-cy="collection-option">
               {{ collection.displayName }}
             </mat-option>
           </mat-select>
@@ -58,7 +53,7 @@
           <mat-label>Version (Optional)</mat-label>
           <mat-select [(value)]="selectedVersionId">
             <mat-option [value]="null">None</mat-option>
-            <mat-option *ngFor="let version of data.versions" [value]="version.id">
+            <mat-option *ngFor="let version of data.versions" [value]="version.id" data-cy="version-option">
               {{ version.name }}
             </mat-option>
           </mat-select>
@@ -72,7 +67,6 @@
   <button mat-button color="accent" id="closeDialogButton" mat-dialog-close>Close</button>
   <button
     mat-flat-button
-    id="addEntryToCollectionButton"
     data-cy="addEntryToCollectionButton"
     [mat-dialog-close]="selectedCollectionId"
     class="accent-1-dark"

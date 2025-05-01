@@ -48,7 +48,7 @@
       </div>
       <div class="modal-footer">
         <button mat-button color="accent" (click)="hideModal()">Close</button>
-        <button mat-flat-button class="accent-1-dark" matStepperNext>Next</button>
+        <button mat-flat-button class="accent-1-dark" data-cy="next-button" matStepperNext>Next</button>
       </div>
     </mat-step>
     <mat-step>
@@ -86,6 +86,7 @@
             <input
               matInput
               id="sourceCodeRepositoryInput"
+              data-cy="source-code-repo-input"
               type="text"
               name="gitPath"
               [(ngModel)]="tool.gitPath"
@@ -196,6 +197,7 @@
               <input
                 matInput
                 id="imageRegistryInput"
+                data-cy="image-registry-input"
                 type="text"
                 name="privateAmazonImagePath"
                 [(ngModel)]="tool.imagePath"
@@ -214,6 +216,7 @@
               <input
                 matInput
                 id="imageRegistryInput"
+                data-cy="image-registry-input"
                 type="text"
                 name="repoNameWithSlashesImagePath"
                 [(ngModel)]="tool.imagePath"
@@ -232,6 +235,7 @@
             <input
               matInput
               id="imageRegistryInput"
+              data-cy="image-registry-input"
               type="text"
               name="imagePath"
               [(ngModel)]="tool.imagePath"
@@ -343,6 +347,7 @@
           <button mat-button color="accent" type="button" data-dismiss="modal" (click)="hideModal()">Close</button>
           <button
             id="submitButton"
+            data-cy="add-tool-button"
             type="submit"
             mat-flat-button
             class="accent-1-dark"
@@ -381,6 +386,7 @@
             <input
               matInput
               id="hostedImagePath"
+              data-cy="hosted-image-path-input"
               type="text"
               name="hostedImagePath"
               #hostedImagePath="ngModel"
@@ -487,7 +493,14 @@
         </div>
         <div mat-dialog-actions class="pull-right">
           <button mat-button type="button" color="accent" (click)="hideModal()">Close</button>
-          <button id="submitButton" type="submit" mat-flat-button class="accent-1-dark" [disabled]="!registerHostedToolForm.form.valid">
+          <button
+            id="submitButton"
+            data-cy="add-tool-button"
+            type="submit"
+            mat-flat-button
+            class="accent-1-dark"
+            [disabled]="!registerHostedToolForm.form.valid"
+          >
             Add Tool
           </button>
         </div>

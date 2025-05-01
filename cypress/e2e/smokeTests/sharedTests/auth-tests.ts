@@ -1,4 +1,4 @@
-import { goToInfoTab, goToVersionsTab } from '../../../support/commands';
+import { addToCollection, goToInfoTab, goToVersionsTab } from '../../../support/commands';
 
 /**
  * To run these on tests you have the following:
@@ -40,11 +40,6 @@ function storeToken() {
   }
 }
 
-function hasSandboxZenodo() {
-  const baseUrl = Cypress.config('baseUrl');
-  return baseUrl === 'https://qa.dockstore.org' || baseUrl === 'https://staging.dockstore.org' || baseUrl === 'https://dev.dockstore.net';
-}
-
 function unpublishTool() {
   it('unpublish the tool', () => {
     storeToken();
@@ -63,7 +58,7 @@ function deleteTool() {
     cy.intercept('delete', '**/containers/**').as('containers');
     cy.contains('#deregisterButton', 'Delete').should('be.visible').click();
     cy.contains('div', 'Are you sure you wish to delete this tool?').within(() => {
-      cy.contains('button', 'Delete').should('be.visible').click();
+      cy.get('[data-cy=confirm-dialog-button]').should('be.visible').click();
     });
     cy.wait('@containers');
     // TODO: Revisit this -- with change to show GitHub orgs with no entries, this got broken
@@ -98,7 +93,7 @@ function registerQuayTool(repo: string, name: string) {
     cy.wait('@repos');
     cy.get('mat-dialog-content').within(() => {
       cy.contains('div', name).within(() => {
-        cy.contains('mat-icon', 'sync').should('be.visible').click();
+        cy.contains('button', 'sync').should('be.visible').click();
       });
     });
     cy.wait('@containers');
@@ -124,14 +119,12 @@ function registerRemoteSitesTool(repo: string, name: string) {
     cy.wait(hardcodedWaitTime); // The page loads asynchronously, and causes a detached DOM to be grabbed by Cypress. This is a 'fix'.
     cy.get('#register_tool_button').should('be.visible').as(registerAliasName);
     cy.get(registerAlias).click();
-    cy.get('mat-dialog-content').within(() => {
-      cy.contains('mat-radio-button', 'Create tool with descriptor(s) on remote sites').click();
-      cy.wait(1000); // Need previous line to "take effect" before clicking next
-      cy.contains('button', 'Next').should('be.visible').click();
-      cy.get('#sourceCodeRepositoryInput').type(`${repo}/${name}`);
-      cy.get('#imageRegistryInput').type(`${repo}/${name}`);
-      cy.contains('button', 'Add Tool').should('be.visible').click();
-    });
+    cy.contains('[data-cy=storage-type-choice]', 'Create tool with descriptor(s) on remote sites').click();
+    cy.wait(1000); // Need previous line to "take effect" before clicking next
+    cy.contains('button', 'Next').should('be.visible').click();
+    cy.get('#sourceCodeRepositoryInput').type(`${repo}/${name}`);
+    cy.get('#imageRegistryInput').type(`${repo}/${name}`);
+    cy.contains('button', 'Add Tool').should('be.visible').click();
     cy.url().should('contain', toolName);
     cy.wait(hardcodedWaitTime); // The publish button is enabled even when publishing fails, so we need to wait for the refresh to complete.
     cy.contains('button', 'Refresh').should('be.visible').click(); // Need to refresh because it sets the default version, which publish needs
@@ -159,13 +152,11 @@ function registerToolOnDockstore(repo: string, name: string) {
     cy.wait('@tokens');
     cy.wait(hardcodedWaitTime); // The page loads asynchronously, and causes a detached DOM to be grabbed by Cypress. This is a 'fix'.
     cy.get('#register_tool_button').should('be.visible').click();
-    cy.get('mat-dialog-content').within(() => {
-      cy.contains('mat-radio-button', 'Create tool with descriptor(s) on Dockstore.org').should('be.visible').click();
-      cy.wait(1000);
-      cy.contains('button', 'Next').should('be.visible').click();
-      cy.get('#hostedImagePath').type(`${repo}/${name}`);
-      cy.contains('button', 'Add Tool').should('be.visible').click();
-    });
+    cy.contains('[data-cy=storage-type-choice]', 'Create tool with descriptor(s) on Dockstore.org').click();
+    cy.wait(1000);
+    cy.contains('button', 'Next').should('be.visible').click();
+    cy.get('#hostedImagePath').type(`${repo}/${name}`);
+    cy.contains('button', 'Add Tool').should('be.visible').click();
     cy.url().should('contain', toolName);
     // should not be able to publish because there should be no files or versions
     cy.contains('button', 'Publish').should('be.disabled');
@@ -187,11 +178,10 @@ function toggleHiddenWorkflowVersion() {
   cy.get('[data-cy=versionRow]').last().contains('button', 'Actions').click();
   cy.contains('button', 'Edit').scrollIntoView();
   cy.contains('button', 'Edit').click();
-  // TODO: Use [data-cy=hiddenCheck] -- do after 1.14 deployed
   cy.contains('div', 'Hidden:').within(() => {
     cy.get('[name=checkbox]').click();
   });
-  cy.contains('button', 'Save Changes').click();
+  cy.get('[data-cy=save-version]').click();
 }
 
 function testTool(registry: string, repo: string, name: string) {
@@ -215,10 +205,10 @@ function testTool(registry: string, repo: string, name: string) {
       cy.visit('/my-tools');
       goToVersionsTab();
       toggleHiddenToolVersion();
-      cy.get('[data-cy=hiddenCheck]').should('have.length', 1);
+      cy.get('.mat-column-hidden').contains('mat-icon', 'check').should('have.length', 1);
       // un-hide and verify
       toggleHiddenToolVersion();
-      cy.get('[data-cy=hiddenCheck]').should('not.exist');
+      cy.get('.mat-column-hidden').contains('mat-icon', 'check').should('not.exist');
     });
     it('refresh namespace', () => {
       storeToken();
@@ -259,12 +249,9 @@ function testWorkflow() {
 
       goToVersionsTab();
 
-      cy.contains('button', 'Actions').should('be.visible');
       cy.contains('td', 'Actions').first().click();
-      cy.get('.mat-menu-content').within(() => {
-        cy.contains('button', 'Snapshot');
-        cy.contains('button', 'Edit').click();
-      });
+      cy.get('[data-cy=dockstore-snapshot]').should('be.visible');
+      cy.contains('button', 'Edit').click();
       cy.contains('button', 'Cancel').click();
 
       storeToken();
@@ -276,10 +263,10 @@ function testWorkflow() {
       goToVersionsTab();
       // hide
       toggleHiddenWorkflowVersion();
-      cy.get('[data-cy=hidden]').should('have.length', 1);
+      cy.get('.mat-column-hidden').contains('mat-icon', 'check').should('have.length', 1);
       // un-hide
       toggleHiddenWorkflowVersion();
-      cy.get('[data-cy=hidden]').should('not.exist');
+      cy.get('.mat-column-hidden').contains('mat-icon', 'check').should('not.exist');
     });
   });
 }
@@ -289,20 +276,8 @@ function testCollection(org: string, collection: string, registry: string, repo:
     registerQuayTool(repo, name);
     it('be able to add an entry to the collection', () => {
       storeToken();
-      // define routes to watch for
-      cy.intercept('post', '**/collections/**').as('postToCollection');
-      cy.visit(`/containers/quay.io/${repo}/${name}:develop?tab=info`);
-      cy.get('#addToolToCollectionButton').should('be.visible').click();
-      cy.get('#addEntryToCollectionButton').should('be.disabled');
-      cy.get('#selectOrganization').should('be.visible').click();
-      cy.get('mat-option').contains(org).should('be.visible').click();
-      cy.get('#addEntryToCollectionButton').should('be.disabled');
-      cy.get('#selectCollection').should('be.visible').click();
-      cy.get('mat-option').contains(collection).click();
-      cy.get('#addEntryToCollectionButton').should('not.be.disabled').click();
-      cy.wait('@postToCollection');
-      cy.get('#addEntryToCollectionButton').should('not.exist');
-      cy.get('mat-progress-bar').should('not.exist');
+      const toolPath = `/containers/quay.io/${repo}/${name}:develop?tab=info`;
+      addToCollection(toolPath, org, collection);
     });
 
     it('be able to remove an entry from a collection', () => {

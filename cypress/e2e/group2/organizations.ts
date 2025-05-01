@@ -229,33 +229,13 @@ describe('Dockstore Organizations', () => {
       cy.contains('veryFakeCollectionName');
       cy.contains('very fake collection topic2');
 
+      const toolPath = '/containers/quay.io/garyluu/dockstore-cgpmap/cgpmap-cramOut:3.0.0-rc8?tab=info';
+      const organization = 'Potatoe';
+      const collection = 'veryFakeCollectionName';
       cy.visit('/containers/quay.io/garyluu/dockstore-cgpmap/cgpmap-cramOut:3.0.0-rc8?tab=info');
-      cy.get('#addToolToCollectionButton').should('be.visible').click();
-      cy.get('#addEntryToCollectionButton').should('be.disabled');
-      cy.get('#selectOrganization').click();
-      cy.get('mat-option').contains('Potatoe').click();
+      addToCollection(toolPath, organization, collection);
 
-      cy.get('#addEntryToCollectionButton').should('be.disabled');
-      cy.get('#selectCollection').click();
-      cy.get('mat-option').contains('veryFakeCollectionName').click();
-      cy.get('#addEntryToCollectionButton').should('not.be.disabled').click();
-      cy.get('#addEntryToCollectionButton').should('not.exist');
-      cy.get('mat-progress-bar').should('not.exist');
-
-      cy.visit('/containers/quay.io/garyluu/dockstore-cgpmap/cgpmap-cramOut:3.0.0-rc8?tab=info');
-      cy.get('#addToolToCollectionButton').should('be.visible').click();
-      cy.get('#addEntryToCollectionButton').should('be.disabled');
-      cy.get('#selectOrganization').click();
-      cy.get('mat-option').contains('Potatoe').click();
-
-      cy.get('#addEntryToCollectionButton').should('be.disabled');
-      cy.get('#selectCollection').click();
-      cy.get('mat-option').contains('veryFakeCollectionName').click();
-      cy.get('[data-cy=selectVersion]').click();
-      cy.get('mat-option').contains('3.0.0-rc8').click();
-      cy.get('#addEntryToCollectionButton').should('not.be.disabled').click();
-      cy.get('#addEntryToCollectionButton').should('not.exist');
-      cy.get('mat-progress-bar').should('not.exist');
+      addToCollection(toolPath, organization, collection, '3.0.0-rc8');
 
       cy.visit('/organizations/Potatoe/collections/veryFakeCollectionName');
       cy.contains('quay.io/garyluu/dockstore-cgpmap/cgpmap-cramOut:3.0.0-rc8');
