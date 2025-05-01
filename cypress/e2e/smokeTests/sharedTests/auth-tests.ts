@@ -178,7 +178,9 @@ function toggleHiddenWorkflowVersion() {
   cy.get('[data-cy=versionRow]').last().contains('button', 'Actions').click();
   cy.contains('button', 'Edit').scrollIntoView();
   cy.contains('button', 'Edit').click();
-  cy.get('[data-cy=hiddenCheck]').click();
+  cy.contains('div', 'Hidden:').within(() => {
+    cy.get('[name=checkbox]').click();
+  });
   cy.contains('button', 'Save Changes').click();
 }
 
@@ -203,10 +205,10 @@ function testTool(registry: string, repo: string, name: string) {
       cy.visit('/my-tools');
       goToVersionsTab();
       toggleHiddenToolVersion();
-      cy.get('[data-cy=hiddenCheck]').should('have.length', 1);
+      cy.get('.mat-column-hidden').contains('mat-icon', 'check').should('have.length', 1);
       // un-hide and verify
       toggleHiddenToolVersion();
-      cy.get('[data-cy=hiddenCheck]').should('not.exist');
+      cy.get('.mat-column-hidden').contains('mat-icon', 'check').should('not.exist');
     });
     it('refresh namespace', () => {
       storeToken();
@@ -261,10 +263,10 @@ function testWorkflow() {
       goToVersionsTab();
       // hide
       toggleHiddenWorkflowVersion();
-      cy.get('[data-cy=hidden]').should('have.length', 1);
+      cy.get('.mat-column-hidden').contains('mat-icon', 'check').should('have.length', 1);
       // un-hide
       toggleHiddenWorkflowVersion();
-      cy.get('[data-cy=hidden]').should('not.exist');
+      cy.get('.mat-column-hidden').contains('mat-icon', 'check').should('not.exist');
     });
   });
 }
