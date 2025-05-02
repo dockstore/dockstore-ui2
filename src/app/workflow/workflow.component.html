@@ -96,11 +96,7 @@
             >:<span class="ds-steelblue">{{ selectedVersion?.name }}</span>
           </span>
         </span>
-        <mat-chip-set
-          *ngIf="workflow?.descriptorType === DescriptorTypeEnum.SMK || (extendedWorkflow$ | async)?.versionVerified"
-          fxHide.lt-sm
-        >
-          <mat-chip *ngIf="workflow?.descriptorType === DescriptorTypeEnum.SMK" class="preview-bubble">PREVIEW</mat-chip>
+        <mat-chip-set *ngIf="(extendedWorkflow$ | async)?.versionVerified" fxHide.lt-sm>
           <a
             mat-chip
             *ngIf="(extendedWorkflow$ | async)?.versionVerified"

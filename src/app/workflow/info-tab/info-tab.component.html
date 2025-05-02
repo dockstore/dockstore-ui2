@@ -292,6 +292,11 @@
                 >{{ (entryType$ | async) === EntryType.Notebook ? 'Format' : 'Descriptor Type' }}</Strong
               >:
               {{ 'descriptor_type' | mapFriendlyValue: workflow?.descriptorType }}
+              <app-preview-warning
+                *ngIf="workflow?.descriptorType === DescriptorTypeEnum.SMK"
+                [featureName]="'Snakemake workflows'"
+                [isBubble]="true"
+              ></app-preview-warning>
             </div>
           </li>
         </div>

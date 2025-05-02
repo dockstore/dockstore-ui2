@@ -49,6 +49,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { PreviewWarningComponent } from 'app/preview-warning/preview-warning.component';
 
 export interface SortOption {
   label: string;
@@ -97,6 +98,7 @@ export interface SortOption {
     LowerCasePipe,
     CategoryButtonComponent,
     MatChipsModule,
+    PreviewWarningComponent,
   ],
 })
 export class SearchEntryTableComponent extends Base implements OnInit {

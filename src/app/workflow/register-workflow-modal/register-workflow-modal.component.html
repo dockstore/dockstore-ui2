@@ -131,7 +131,7 @@
           >
             {{ 'descriptor_type' | mapFriendlyValue: descriptorType }}
             <mat-chip-set class="ml-2" *ngIf="Dockstore.FEATURES.enableSnakemake && descriptorType === DescriptorTypeEnum.SMK">
-              <mat-chip class="preview-bubble">PREVIEW</mat-chip>
+              <app-preview-warning [featureName]="'Snakemake workflows'" [isBubble]="true"></app-preview-warning>
             </mat-chip-set>
           </mat-radio-button>
         </mat-radio-group>
@@ -229,7 +229,7 @@
           >
             {{ 'descriptor_type' | mapFriendlyValue: descriptorType }}
             <mat-chip-set class="ml-2" *ngIf="Dockstore.FEATURES.enableSnakemake && descriptorType === DescriptorTypeEnum.SMK">
-              <mat-chip class="preview-bubble">PREVIEW</mat-chip>
+              <app-preview-warning [featureName]="'Snakemake workflows'" [isBubble]="true"></app-preview-warning>
             </mat-chip-set>
           </mat-radio-button>
         </mat-radio-group>
