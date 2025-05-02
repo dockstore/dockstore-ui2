@@ -1,4 +1,5 @@
 import { SearchAuthorsHtmlPipe } from './search-authors-html.pipe';
+import { SearchService } from 'app/search/state/search.service';
 
 describe('Pipe: SearchAuthorsHtmlPipe', () => {
   it('create an instance and return search authors HTML', () => {
@@ -13,6 +14,6 @@ describe('Pipe: SearchAuthorsHtmlPipe', () => {
     );
 
     // The list of authors may contain a dummy Author where the name is null for the purposes of ES indexing
-    expect(pipe.transform([{ name: null }], false)).toBe('n/a');
+    expect(pipe.transform([{ name: null }], false)).toBe(SearchService.NOT_AVAILABLE);
   });
 });

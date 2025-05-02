@@ -16,19 +16,13 @@
 
 <!-- Display public tool button design -->
 <div *ngIf="isPublic$ | async; else displayPrivateButton">
-  <button
-    class="small-btn-structure"
-    mat-raised-button
-    color="accent"
-    data-cy="actionsButton"
-    (click)="setMode(TagEditorMode.View); (false)"
-  >
+  <button class="small-btn-structure" mat-raised-button color="accent" data-cy="info-button" (click)="setMode(TagEditorMode.View); (false)">
     Info
   </button>
 </div>
 <!-- Display private tool button design-->
 <ng-template #displayPrivateButton>
-  <button data-cy="actionsButton" mat-stroked-button class="private-btn" [disabled]="!canWrite" [matMenuTriggerFor]="menu">
+  <button data-cy="actions-button" mat-stroked-button class="private-btn" [disabled]="!canWrite" [matMenuTriggerFor]="menu">
     <img src="../assets/svg/gear-icon.svg" alt="Gear icon" class="pb-1" />
     Actions
     <img src="../assets/svg/drop-down-arrow.svg" alt="Drop down menu icon" />
@@ -37,7 +31,7 @@
 
 <mat-menu #menu="matMenu">
   <ng-container *ngIf="(isPublic$ | async) === false">
-    <button data-cy="editTagButton" type="button" mat-menu-item color="accent" (click)="setMode(TagEditorMode.Edit); (false)">Edit</button>
+    <button type="button" mat-menu-item color="accent" (click)="setMode(TagEditorMode.Edit); (false)" data-cy="edit-button">Edit</button>
     <button
       type="button"
       mat-menu-item

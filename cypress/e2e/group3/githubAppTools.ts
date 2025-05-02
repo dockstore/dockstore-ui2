@@ -162,12 +162,12 @@ describe('GitHub App Tools', () => {
       cy.get('[type="checkbox"]').check();
       cy.get('[data-cy=save-version]').click();
       cy.get('[data-cy=valid').should('exist');
-      cy.get('[data-cy=hidden').should('exist');
+      cy.get('[data-cy=hidden-column-check]').should('exist');
       cy.contains('button', 'Actions').click();
       cy.contains('Edit Info').click();
       cy.get('[type="checkbox"]').uncheck();
       cy.get('[data-cy=save-version]').click();
-      cy.get('[data-cy=hidden').should('not.exist');
+      cy.get('[data-cy=hidden-column-check]').should('not.exist');
 
       goToFilesTab();
       isActiveTab('Files');
