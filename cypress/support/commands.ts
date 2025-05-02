@@ -25,6 +25,11 @@ export function isStagingOrProd() {
   return baseUrl === 'https://staging.dockstore.org' || baseUrl === 'https://dockstore.org';
 }
 
+export function isProd() {
+  const baseUrl = Cypress.config('baseUrl');
+  return baseUrl === 'https://dockstore.org';
+}
+
 export function goToTab(tabName: string): void {
   getTab(tabName).click();
 }
@@ -108,12 +113,12 @@ export function cancelMatMenu(): void {
 
 // Public workflow should display "Info" "
 export function clickFirstActionsButtonPublic(): void {
-  cy.get('.small-btn-structure').contains('Info').click();
+  cy.get('[data-cy=info-button]').first().click();
 }
 
 // Private workflow should display "Actions"
 export function clickFirstActionsButtonPrivate(): void {
-  cy.get('.private-btn').contains('Actions').click();
+  cy.get('[data-cy=actions-button]').first().click();
 }
 
 export function isActiveTab(tabName: string): void {
@@ -312,7 +317,8 @@ export function testNoGithubEntriesText(entryType: string, organization: string)
   });
 }
 
-export function addToCollection(path: string, organizationName: string, collectionDisplayName: string) {
+export function addToCollection(path: string, organizationName: string, collectionDisplayName: string, versionName?: string) {
+  cy.intercept('post', '**/collections/**').as('postToCollection');
   cy.visit(path);
   cy.get('[data-cy=addToolToCollectionButton]').should('be.visible').click();
   cy.get('[data-cy=addEntryToCollectionButton]').should('be.disabled');
@@ -321,8 +327,16 @@ export function addToCollection(path: string, organizationName: string, collecti
   cy.get('[data-cy=addEntryToCollectionButton]').should('be.disabled');
   cy.get('[data-cy=selectCollection]').click();
   cy.get('mat-option').contains(collectionDisplayName).click();
+  if (versionName) {
+    cy.get('[data-cy=selectVersion]').click();
+    cy.get('mat-option').contains(versionName).click();
+  }
   cy.get('[data-cy=addEntryToCollectionButton]').should('not.be.disabled').click();
+  cy.wait('@postToCollection');
+  cy.get('[data-cy=addEntryToCollectionButton]').should('not.exist');
+  cy.get('mat-progress-bar').should('not.exist');
 }
+
 export function snapshot() {
   cy.get('[data-cy=dockstore-snapshot-locked]').should('have.length', 0);
   // The buttons should be present

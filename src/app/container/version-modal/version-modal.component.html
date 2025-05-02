@@ -345,6 +345,7 @@
               <div>
                 <label>
                   <input
+                    data-cy="hidden-checkbox"
                     type="checkbox"
                     name="checkbox"
                     [disabled]="!editMode"
@@ -432,7 +433,7 @@
             *ngIf="mode === TagEditorMode.Edit"
             [disabled]="!tagEditorForm.form.valid || hasDuplicateTestJson(DescriptorType.WDL) || hasDuplicateTestJson(DescriptorType.CWL)"
             data-dismiss="modal"
-            data-cy="save-changes-button"
+            data-cy="save-version"
           >
             Save Changes
           </button>

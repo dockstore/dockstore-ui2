@@ -151,7 +151,8 @@ describe('SearchService', () => {
     expect(searchService.compareAttributes(a, b, 'all_authors', 'asc', EntryType.WORKFLOW)).toEqual(-1);
     expect(searchService.compareAttributes(a, b, 'all_authors', 'desc', EntryType.WORKFLOW)).toEqual(1);
     expect(searchService.compareAttributes(b, c, 'all_authors', 'asc', EntryType.WORKFLOW)).toEqual(-1);
-    expect(searchService.compareAttributes(b, c, 'all_authors', 'desc', EntryType.WORKFLOW)).toEqual(1);
+    // when all_authors is [], compareAttributes converts the value to 'n/a', which should be sorted last
+    expect(searchService.compareAttributes(b, c, 'all_authors', 'desc', EntryType.WORKFLOW)).toEqual(-1);
     expect(searchService.compareAttributes(a, c, 'descriptorType', 'asc', EntryType.WORKFLOW)).toEqual(-1);
     expect(searchService.compareAttributes(a, b, 'descriptorType', 'desc', EntryType.WORKFLOW)).toEqual(-0);
     expect(searchService.compareAttributes(a, b, 'starredUsers', 'asc', EntryType.WORKFLOW)).toEqual(-1);

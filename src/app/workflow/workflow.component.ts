@@ -658,5 +658,9 @@ export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterVi
     });
   }
 
+  equalIds(a: WorkflowVersion, b: WorkflowVersion): boolean {
+    return a.id == b.id;
+  }
+
   protected readonly Dockstore = Dockstore;
 }
