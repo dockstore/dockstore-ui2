@@ -170,6 +170,7 @@ import { PreviewWarningComponent } from '../preview-warning/preview-warning.comp
 })
 export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterViewInit, OnInit {
   DoiInitiatorEnum = Doi.InitiatorEnum;
+  DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
   workflowEditData: any;
   public isRefreshing$: Observable<boolean>;
   public workflow: BioWorkflow | Service | Notebook;

@@ -50,6 +50,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatStepperModule } from '@angular/material/stepper';
 import { AlertComponent } from '../../shared/alert/alert.component';
 import { MatChipsModule } from '@angular/material/chips';
+import { PreviewWarningComponent } from 'app/preview-warning/preview-warning.component';
 
 export interface HostedWorkflowObject {
   name: string;
@@ -82,6 +83,7 @@ export interface HostedWorkflowObject {
     AsyncPipe,
     MapFriendlyValuesPipe,
     MatChipsModule,
+    PreviewWarningComponent,
   ],
 })
 export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked, OnDestroy {
@@ -135,6 +137,8 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
   private ngUnsubscribe: Subject<{}> = new Subject();
 
   Dockstore = Dockstore;
+
+  DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
 
   registerWorkflowForm: NgForm;
   @ViewChild('registerWorkflowForm') currentForm: NgForm;

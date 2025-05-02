@@ -16,6 +16,9 @@
 <h4 mat-dialog-title>Register Workflow</h4>
 <div mat-dialog-content>
   <app-alert></app-alert>
+  <div *ngIf="Dockstore.FEATURES.enableSnakemake" class="mb-3">
+    <app-preview-warning featureName="Snakemake workflow registration"></app-preview-warning>
+  </div>
   <mat-horizontal-stepper #stepper>
     <ng-template matStepperIcon="edit">
       <mat-icon>done</mat-icon>
@@ -126,7 +129,7 @@
             [attr.data-cy]="('descriptor_type' | mapFriendlyValue: descriptorType) + '-radio-button'"
           >
             {{ 'descriptor_type' | mapFriendlyValue: descriptorType }}
-            <mat-chip-set class="ml-2" *ngIf="Dockstore.FEATURES.enableSnakemake && descriptorType === 'SMK'">
+            <mat-chip-set class="ml-2" *ngIf="Dockstore.FEATURES.enableSnakemake && descriptorType === DescriptorTypeEnum.SMK">
               <mat-chip class="preview-bubble">PREVIEW</mat-chip>
             </mat-chip-set>
           </mat-radio-button>
@@ -224,6 +227,9 @@
             [value]="descriptorType"
           >
             {{ 'descriptor_type' | mapFriendlyValue: descriptorType }}
+            <mat-chip-set class="ml-2" *ngIf="Dockstore.FEATURES.enableSnakemake && descriptorType === DescriptorTypeEnum.SMK">
+              <mat-chip class="preview-bubble">PREVIEW</mat-chip>
+            </mat-chip-set>
           </mat-radio-button>
         </mat-radio-group>
 
