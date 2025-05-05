@@ -115,7 +115,7 @@
                 }}</mat-chip>
                 <app-preview-warning
                   *ngIf="entry?.source.descriptorType === DescriptorTypeEnum.SMK"
-                  [featureName]="'Snakemake workflows'"
+                  [featureName]="Dockstore.FEATURES.snakemakeFeatureName"
                   [isBubble]="true"
                 ></app-preview-warning>
               </mat-chip-set>

@@ -80,7 +80,7 @@
     </mat-card>
   </div>
   <div *ngIf="workflow?.descriptorType === DescriptorTypeEnum.SMK" class="mt-3">
-    <app-preview-warning featureName="Snakemake workflows"></app-preview-warning>
+    <app-preview-warning [featureName]="Dockstore.FEATURES.snakemakeFeatureName"></app-preview-warning>
   </div>
   <div class="row m-1" *ngIf="!showRedirect" fxLayout.lt-sm="column" fxLayout.gt-sm="row">
     <app-json-ld [json]="schema"></app-json-ld>

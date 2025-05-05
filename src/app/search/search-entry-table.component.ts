@@ -50,6 +50,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { PreviewWarningComponent } from 'app/preview-warning/preview-warning.component';
+import { Dockstore } from 'app/shared/dockstore.model';
 
 export interface SortOption {
   label: string;
@@ -107,6 +108,7 @@ export class SearchEntryTableComponent extends Base implements OnInit {
   public EntryType = EntryType;
   protected readonly TopicSelectionEnum = TopicSelectionEnum;
   protected readonly DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
+  protected readonly Dockstore = Dockstore;
   @Input() entryType: EntryType;
   @ViewChild(MatPaginator, { static: true }) protected paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) protected sort: MatSort;

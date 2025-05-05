@@ -287,7 +287,7 @@
               </select>
               <app-preview-warning
                 *ngIf="workflow?.descriptorType === DescriptorTypeEnum.SMK"
-                [featureName]="'Snakemake workflows'"
+                [featureName]="Dockstore.FEATURES.snakemakeFeatureName"
                 [isBubble]="true"
                 class="ml-2"
               ></app-preview-warning>
@@ -300,7 +300,7 @@
               {{ 'descriptor_type' | mapFriendlyValue: workflow?.descriptorType }}
               <app-preview-warning
                 *ngIf="workflow?.descriptorType === DescriptorTypeEnum.SMK"
-                [featureName]="'Snakemake workflows'"
+                [featureName]="Dockstore.FEATURES.snakemakeFeatureName"
                 [isBubble]="true"
               ></app-preview-warning>
             </div>

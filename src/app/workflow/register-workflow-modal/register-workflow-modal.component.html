@@ -83,7 +83,7 @@
         novalidate
       >
         <ng-template
-          *ngTemplateOutlet="snakemakePreview; context: { isSnakemakeSelected: workflow.descriptorType === DescriptorTypeEnum.SMK }"
+          *ngTemplateOutlet="snakemakePreviewBanner; context: { isSnakemakeSelected: workflow.descriptorType === DescriptorTypeEnum.SMK }"
         ></ng-template>
         <p>
           Manually register a workflow with custom file paths. Use the optional workflow name field to handle repositories with multiple
@@ -130,9 +130,9 @@
             [attr.data-cy]="('descriptor_type' | mapFriendlyValue: descriptorType) + '-radio-button'"
           >
             {{ 'descriptor_type' | mapFriendlyValue: descriptorType }}
-            <mat-chip-set class="ml-2" *ngIf="Dockstore.FEATURES.enableSnakemake && descriptorType === DescriptorTypeEnum.SMK">
-              <app-preview-warning [featureName]="'Snakemake workflows'" [isBubble]="true"></app-preview-warning>
-            </mat-chip-set>
+            <ng-template
+              *ngTemplateOutlet="snakemakePreviewBubble; context: { isSnakemakeSelected: descriptorType === DescriptorTypeEnum.SMK }"
+            ></ng-template>
           </mat-radio-button>
         </mat-radio-group>
         <mat-form-field class="w-100">
@@ -212,7 +212,10 @@
         novalidate
       >
         <ng-template
-          *ngTemplateOutlet="snakemakePreview; context: { isSnakemakeSelected: hostedWorkflow.descriptorType === DescriptorTypeEnum.SMK }"
+          *ngTemplateOutlet="
+            snakemakePreviewBanner;
+            context: { isSnakemakeSelected: hostedWorkflow.descriptorType === DescriptorTypeEnum.SMK }
+          "
         ></ng-template>
         <p>Create a workflow with all descriptor files created and stored on Dockstore.org.</p>
         <mat-radio-group
@@ -230,9 +233,9 @@
             [value]="descriptorType"
           >
             {{ 'descriptor_type' | mapFriendlyValue: descriptorType }}
-            <mat-chip-set class="ml-2" *ngIf="Dockstore.FEATURES.enableSnakemake && descriptorType === DescriptorTypeEnum.SMK">
-              <app-preview-warning [featureName]="'Snakemake workflows'" [isBubble]="true"></app-preview-warning>
-            </mat-chip-set>
+            <ng-template
+              *ngTemplateOutlet="snakemakePreviewBubble; context: { isSnakemakeSelected: descriptorType === DescriptorTypeEnum.SMK }"
+            ></ng-template>
           </mat-radio-button>
         </mat-radio-group>
 
@@ -272,10 +275,15 @@
           </button>
         </div>
       </form>
-      <ng-template #snakemakePreview let-isSnakemakeSelected="isSnakemakeSelected">
+      <ng-template #snakemakePreviewBanner let-isSnakemakeSelected="isSnakemakeSelected">
         <div *ngIf="Dockstore.FEATURES.enableSnakemake && isSnakemakeSelected" class="mt-2">
-          <app-preview-warning featureName="Snakemake workflows"></app-preview-warning>
+          <app-preview-warning [featureName]="Dockstore.FEATURES.snakemakeFeatureName"></app-preview-warning>
         </div>
+      </ng-template>
+      <ng-template #snakemakePreviewBubble let-isSnakemakeSelected="isSnakemakeSelected">
+        <mat-chip-set class="ml-2" *ngIf="Dockstore.FEATURES.enableSnakemake && isSnakemakeSelected">
+          <app-preview-warning [featureName]="Dockstore.FEATURES.snakemakeFeatureName" [isBubble]="true"></app-preview-warning>
+        </mat-chip-set>
       </ng-template>
     </mat-step>
   </mat-horizontal-stepper>
