@@ -238,12 +238,17 @@ export class DescriptorLanguageService {
    */
   filterLanguages(descriptorTypes: Workflow.DescriptorTypeEnum[], entryType: EntryType): Workflow.DescriptorTypeEnum[] {
     if (entryType === EntryType.BioWorkflow || entryType === EntryType.Tool || !entryType) {
-      return descriptorTypes.filter(
+      let filteredDescriptorTypes = descriptorTypes.filter(
         (descriptorType) =>
           descriptorType !== Workflow.DescriptorTypeEnum.Service &&
           descriptorType !== Workflow.DescriptorTypeEnum.Jupyter &&
-          (Dockstore.FEATURES.enableSnakemake ? true : descriptorType !== Workflow.DescriptorTypeEnum.SMK)
+          descriptorType !== Workflow.DescriptorTypeEnum.SMK
       );
+      if (Dockstore.FEATURES.enableSnakemake) {
+        // Snakemake should appear last
+        filteredDescriptorTypes.push(Workflow.DescriptorTypeEnum.SMK);
+      }
+      return filteredDescriptorTypes;
     } else if (entryType === EntryType.Notebook) {
       return [Workflow.DescriptorTypeEnum.Jupyter];
     } else {

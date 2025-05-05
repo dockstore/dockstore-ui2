@@ -285,6 +285,12 @@
                   {{ 'descriptor_type' | mapFriendlyValue: descriptorLanguage }}
                 </option>
               </select>
+              <app-preview-warning
+                *ngIf="workflow?.descriptorType === DescriptorTypeEnum.SMK"
+                [featureName]="'Snakemake workflows'"
+                [isBubble]="true"
+                class="ml-2"
+              ></app-preview-warning>
             </div>
             <div *ngIf="workflow?.mode !== WorkflowType.ModeEnum.STUB && workflow?.descriptorType">
               <Strong

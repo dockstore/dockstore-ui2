@@ -16,9 +16,6 @@
 <h4 mat-dialog-title>Register Workflow</h4>
 <div mat-dialog-content>
   <app-alert></app-alert>
-  <div *ngIf="Dockstore.FEATURES.enableSnakemake" class="mb-3">
-    <app-preview-warning featureName="Snakemake workflow registration"></app-preview-warning>
-  </div>
   <mat-horizontal-stepper #stepper>
     <ng-template matStepperIcon="edit">
       <mat-icon>done</mat-icon>
@@ -85,6 +82,9 @@
         (submit)="registerWorkflow()"
         novalidate
       >
+        <ng-template
+          *ngTemplateOutlet="snakemakePreview; context: { isSnakemakeSelected: workflow.descriptorType === DescriptorTypeEnum.SMK }"
+        ></ng-template>
         <p>
           Manually register a workflow with custom file paths. Use the optional workflow name field to handle repositories with multiple
           workflows.
@@ -211,8 +211,10 @@
         (ngSubmit)="registerHostedWorkflow()"
         novalidate
       >
+        <ng-template
+          *ngTemplateOutlet="snakemakePreview; context: { isSnakemakeSelected: hostedWorkflow.descriptorType === DescriptorTypeEnum.SMK }"
+        ></ng-template>
         <p>Create a workflow with all descriptor files created and stored on Dockstore.org.</p>
-
         <mat-radio-group
           position="before"
           class="radio-group"
@@ -270,6 +272,11 @@
           </button>
         </div>
       </form>
+      <ng-template #snakemakePreview let-isSnakemakeSelected="isSnakemakeSelected">
+        <div *ngIf="Dockstore.FEATURES.enableSnakemake && isSnakemakeSelected" class="mt-2">
+          <app-preview-warning featureName="Snakemake workflows"></app-preview-warning>
+        </div>
+      </ng-template>
     </mat-step>
   </mat-horizontal-stepper>
 </div>

@@ -104,6 +104,6 @@ export class Dockstore {
     enableLaunchWithGalaxy: true,
     enableMultiCloudLaunchWithDNAstack: false,
     enableOrcidExport: true,
-    enableSnakemake: false,
+    enableSnakemake: true,
   };
 }
