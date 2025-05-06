@@ -92,6 +92,6 @@ export class WorkflowLaunchService extends LaunchService {
   }
 
   getSnakemakeRunWorkflowCommand(workflow: Workflow, versionName: string): string {
-    return 'snakemake';
+    return 'snakemake --cores 1';
   }
 }
