@@ -285,6 +285,12 @@
                   {{ 'descriptor_type' | mapFriendlyValue: descriptorLanguage }}
                 </option>
               </select>
+              <app-preview-warning
+                *ngIf="workflow?.descriptorType === DescriptorTypeEnum.SMK"
+                [featureName]="Dockstore.FEATURES.snakemakeFeatureName"
+                [isBubble]="true"
+                class="ml-2"
+              ></app-preview-warning>
             </div>
             <div *ngIf="workflow?.mode !== WorkflowType.ModeEnum.STUB && workflow?.descriptorType">
               <Strong
@@ -292,6 +298,11 @@
                 >{{ (entryType$ | async) === EntryType.Notebook ? 'Format' : 'Descriptor Type' }}</Strong
               >:
               {{ 'descriptor_type' | mapFriendlyValue: workflow?.descriptorType }}
+              <app-preview-warning
+                *ngIf="workflow?.descriptorType === DescriptorTypeEnum.SMK"
+                [featureName]="Dockstore.FEATURES.snakemakeFeatureName"
+                [isBubble]="true"
+              ></app-preview-warning>
             </div>
           </li>
         </div>

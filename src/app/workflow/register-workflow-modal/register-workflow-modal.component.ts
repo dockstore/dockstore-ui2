@@ -45,10 +45,12 @@ import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { EntryWizardComponent } from '../../shared/entry-wizard/entry-wizard.component';
 import { RegisterGithubAppComponent } from '../../shared/register-github-app/register-github-app.component';
 import { MatButtonModule } from '@angular/material/button';
-import { NgFor, NgIf, AsyncPipe } from '@angular/common';
+import { NgFor, NgIf, AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatStepperModule } from '@angular/material/stepper';
 import { AlertComponent } from '../../shared/alert/alert.component';
+import { MatChipsModule } from '@angular/material/chips';
+import { PreviewWarningComponent } from 'app/preview-warning/preview-warning.component';
 
 export interface HostedWorkflowObject {
   name: string;
@@ -80,6 +82,9 @@ export interface HostedWorkflowObject {
     MatTooltipModule,
     AsyncPipe,
     MapFriendlyValuesPipe,
+    MatChipsModule,
+    PreviewWarningComponent,
+    NgTemplateOutlet,
   ],
 })
 export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked, OnDestroy {
@@ -133,6 +138,8 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
   private ngUnsubscribe: Subject<{}> = new Subject();
 
   Dockstore = Dockstore;
+
+  DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
 
   registerWorkflowForm: NgForm;
   @ViewChild('registerWorkflowForm') currentForm: NgForm;

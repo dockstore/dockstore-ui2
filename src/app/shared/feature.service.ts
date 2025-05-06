@@ -5,6 +5,6 @@ import { Injectable } from '@angular/core';
 })
 export class FeatureService {
   updateFeatureFlags(queryParams: string) {
-    // Currently, there are no feature flags being used.
+    // Currently, there are no feature flags being used that are controlled by query parameters.
   }
 }

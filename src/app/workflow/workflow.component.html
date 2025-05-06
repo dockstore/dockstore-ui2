@@ -79,8 +79,12 @@
       </mat-card-content>
     </mat-card>
   </div>
+  <div *ngIf="workflow?.descriptorType === DescriptorTypeEnum.SMK" class="mt-3">
+    <app-preview-warning [featureName]="Dockstore.FEATURES.snakemakeFeatureName"></app-preview-warning>
+  </div>
   <div class="row m-1" *ngIf="!showRedirect" fxLayout.lt-sm="column" fxLayout.gt-sm="row">
     <app-json-ld [json]="schema"></app-json-ld>
+
     <div fxFlex="80">
       <h3 id="workflow-path" data-cy="entry-title" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1rem">
         <span [attr.data-cy]="entryType + '-icon'">
@@ -89,17 +93,21 @@
         <span fxLayout.lt-sm="column" style="word-break: break-word">
           {{ title
           }}<span *ngIf="workflow?.workflowVersions.length > 0"
-            >:<span class="ds-steelblue">{{ selectedVersion?.name }}</span></span
+            >:<span class="ds-steelblue">{{ selectedVersion?.name }}</span>
+          </span>
+        </span>
+        <mat-chip-set *ngIf="(extendedWorkflow$ | async)?.versionVerified" fxHide.lt-sm>
+          <a
+            mat-chip
+            *ngIf="(extendedWorkflow$ | async)?.versionVerified"
+            [href]="verifiedLink"
+            matTooltip="Verified"
+            class="workflow-background"
           >
-        </span>
-        <span id="verifiedIcon" *ngIf="(extendedWorkflow$ | async)?.versionVerified" fxHide.lt-sm>
-          <mat-chip-set>
-            <a mat-chip [href]="verifiedLink" matTooltip="Verified" class="workflow-background">
-              <mat-icon>done</mat-icon>
-              <span class="ml-2">Verified</span>
-            </a>
-          </mat-chip-set>
-        </span>
+            <mat-icon>done</mat-icon>
+            <span class="ml-2">Verified</span>
+          </a>
+        </mat-chip-set>
       </h3>
       <div *ngIf="!publicPage && workflow.workflowVersions && workflow.workflowVersions.length > 0" class="input-group">
         <mat-form-field data-cy="version-dropdown" class="my-3">
