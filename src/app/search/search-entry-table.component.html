@@ -113,6 +113,11 @@
                 <mat-chip *ngIf="entry?.source.entryTypeMetadata.type === EntryType.NOTEBOOK" data-cy="descriptorTypeSubclass">{{
                   entry?.source.descriptorTypeSubclass
                 }}</mat-chip>
+                <app-preview-warning
+                  *ngIf="entry?.source.descriptorType === DescriptorTypeEnum.SMK"
+                  [featureName]="Dockstore.FEATURES.snakemakeFeatureName"
+                  [isBubble]="true"
+                ></app-preview-warning>
               </mat-chip-set>
             </div>
           </mat-card-content>
