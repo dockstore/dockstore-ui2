@@ -55,6 +55,7 @@ import { MatCardModule } from '@angular/material/card';
 import { NgIf, NgFor, NgClass, NgSwitch, NgSwitchCase, NgSwitchDefault, AsyncPipe, TitleCasePipe } from '@angular/common';
 import { DisplayTopicComponent } from 'app/shared/entry/info-tab-topic/display-topic/display-topic.component';
 import { MatChipsModule } from '@angular/material/chips';
+import { PreviewWarningComponent } from 'app/preview-warning/preview-warning.component';
 
 @Component({
   selector: 'app-info-tab',
@@ -90,6 +91,7 @@ import { MatChipsModule } from '@angular/material/chips';
     VersionProviderUrlPipe,
     DisplayTopicComponent,
     MatChipsModule,
+    PreviewWarningComponent,
   ],
 })
 export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
@@ -108,6 +110,7 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   public validationPatterns = validationDescriptorPatterns;
   public WorkflowType = Workflow;
   public TopicSelectionEnum = Workflow.TopicSelectionEnum;
+  public DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
   public tooltip = Tooltip;
   public description: string | null;
   workflowPathEditing: boolean;
