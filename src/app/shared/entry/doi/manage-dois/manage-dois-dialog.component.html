@@ -87,6 +87,42 @@
                 <app-doi-badge *ngIf="doiInfo.value.conceptDoi" [doi]="doiInfo.value.conceptDoi" [displayInitiator]="false"></app-doi-badge>
               </span>
             </div>
+
+            <div class="mt-3" *ngIf="doiInfo.key === DoiInitiatorEnum.DOCKSTORE">
+              <div class="size-small gray-caption">
+                You can edit the metadata of a published Dockstore DOI at anytime.
+                <button mat-button (click)="toggleShowMoreEditLinkInfo()" class="private-btn">
+                  <mat-icon class="mat-icon-sm">{{ showMoreEditLinkInfo ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</mat-icon
+                  >{{ showMoreEditLinkInfo ? 'Collapse' : 'Show more' }}
+                </button>
+              </div>
+              <div *ngIf="showMoreEditLinkInfo">
+                <p class="size-small gray-caption">
+                  Dockstore uses Zenodo's link sharing feature to create a secret link with edit access so you can edit the record. You must
+                  be logged into a Zenodo account when you open the link. When you are done editing the record, delete the link on
+                  Dockstore.
+                </p>
+                <span *ngIf="dockstoreDoiAccessLink">
+                  <a
+                    [href]="
+                      doiInfo.value.versionDoi?.name ?? doiInfo.value.conceptDoi.name | zenodoAccessLink: dockstoreDoiAccessLink.token
+                    "
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Edit record on Zenodo<mat-icon class="mat-icon-sm">open_in_new</mat-icon>
+                  </a>
+                  <button mat-flat-button (click)="deleteDoiAccessLink()" color="warn" class="small-btn-structure ml-2">
+                    <mat-icon class="mat-icon-sm">delete</mat-icon>Delete Link
+                  </button>
+                </span>
+                <span *ngIf="!dockstoreDoiAccessLink">
+                  <button mat-stroked-button (click)="requestDoiAccessLink()" class="private-btn">
+                    <mat-icon class="mat-icon-sm">add_link</mat-icon>Create Edit Link
+                  </button>
+                </span>
+              </div>
+            </div>
           </div>
         </mat-card-content>
       </mat-card>
