@@ -56,15 +56,14 @@ export class ManageDoisDialogService {
     );
   }
 
-  deleteDoiAccessLink(entry: Workflow) {
+  deleteDoiAccessLink(entry: Workflow): Observable<any> {
     this.alertService.start('Deleting DOI edit link');
-    this.workflowsService.deleteDOIEditLink(entry.id).subscribe(
-      () => {
-        this.alertService.detailedSuccess();
-      },
-      (error) => {
+    return this.workflowsService.deleteDOIEditLink(entry.id).pipe(
+      tap(() => this.alertService.detailedSuccess()),
+      catchError((error) => {
         this.alertService.detailedError(error);
-      }
+        throw throwError(error);
+      })
     );
   }
 }

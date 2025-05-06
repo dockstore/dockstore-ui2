@@ -108,8 +108,9 @@ export class ManageDoisDialogComponent implements OnInit {
   }
 
   deleteDoiAccessLink() {
-    this.manageDoisDialogService.deleteDoiAccessLink(this.entry);
-    this.dockstoreDoiAccessLink = undefined;
+    this.manageDoisDialogService.deleteDoiAccessLink(this.entry).subscribe(() => {
+      this.dockstoreDoiAccessLink = undefined;
+    });
   }
 
   toggleShowMoreEditLinkInfo() {

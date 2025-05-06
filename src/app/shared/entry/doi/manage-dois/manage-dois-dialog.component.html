@@ -98,8 +98,9 @@
               </div>
               <div *ngIf="showMoreEditLinkInfo">
                 <p class="size-small gray-caption">
-                  Dockstore uses Zenodo's link sharing feature to create a secret link with edit access so you can edit the DOI. You must be
-                  logged into your Zenodo account when you open the link. When you are done editing the DOI, delete the link on Dockstore.
+                  Dockstore uses Zenodo's link sharing feature to create a secret link with edit access so you can edit the record. You must
+                  be logged into your Zenodo account when you open the link. When you are done editing the record, delete the link on
+                  Dockstore.
                 </p>
                 <span *ngIf="dockstoreDoiAccessLink">
                   <a
@@ -109,7 +110,7 @@
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    Edit DOI on Zenodo<mat-icon class="mat-icon-sm">open_in_new</mat-icon>
+                    Edit record on Zenodo<mat-icon class="mat-icon-sm">open_in_new</mat-icon>
                   </a>
                   <button mat-flat-button (click)="deleteDoiAccessLink()" color="warn" class="small-btn-structure ml-2">
                     <mat-icon class="mat-icon-sm">delete</mat-icon>Delete Link
