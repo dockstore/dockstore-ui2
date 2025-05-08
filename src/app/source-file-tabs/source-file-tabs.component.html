@@ -67,34 +67,36 @@
                     <mat-icon aria-hidden="false" aria-label="Navigate to Primary Descriptor file" fontIcon="home"></mat-icon>
                   </a>
                 </span>
-                <mat-form-field class="w-100 white-background" *ngIf="fileTab.value.length <= 10">
-                  <mat-label>File</mat-label>
-                  <mat-select [value]="currentFile" (selectionChange)="matSelectChange($event)">
-                    <mat-select-trigger>
-                      {{ currentFile.path }}
-                    </mat-select-trigger>
-                    <mat-option [value]="file" *ngFor="let file of fileTab.value">
-                      {{ file.path }}
-                      <mat-chip-set *ngIf="primaryDescriptorPath === file.path">
-                        <mat-chip class="preview-bubble" data-cy="primary-descriptor-bubble">Primary</mat-chip>
-                      </mat-chip-set>
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
+                <span *ngIf="fileTab.value.length <= 10" fxLayoutAlign="start center">
+                  <mat-form-field class="w-100 white-background">
+                    <mat-label>File</mat-label>
+                    <mat-select [value]="currentFile" (selectionChange)="matSelectChange($event)">
+                      <mat-select-trigger>
+                        {{ currentFile.path }}
+                      </mat-select-trigger>
+                      <mat-option [value]="file" *ngFor="let file of fileTab.value">
+                        {{ file.path }}
+                        <mat-chip-set *ngIf="primaryDescriptorPath === file.path">
+                          <mat-chip class="preview-bubble" data-cy="primary-descriptor-bubble">Primary</mat-chip>
+                        </mat-chip-set>
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
 
-                <mat-chip-set *ngIf="isCurrentFilePrimary && fileTab.value.length <= 10" class="ml-2">
-                  <mat-chip class="preview-bubble primary-bubble-header" data-cy="primary-descriptor-bubble"> Primary </mat-chip>
-                </mat-chip-set>
-                <a
-                  color="accent"
-                  *ngIf="!isCurrentFilePrimary && fileTab.value.length <= 10 && fileTab.key === 'Descriptor Files'"
-                  (click)="selectFile(primaryDescriptors[0])"
-                  matTooltip="View the primary descriptor"
-                  mat-icon-button
-                  data-cy="go-to-primary-icon"
-                >
-                  <mat-icon aria-hidden="false" aria-label="Navigate to Primary Descriptor file" fontIcon="home"></mat-icon>
-                </a>
+                  <mat-chip-set *ngIf="isCurrentFilePrimary" class="ml-2">
+                    <mat-chip class="preview-bubble primary-bubble-header" data-cy="primary-descriptor-bubble"> Primary </mat-chip>
+                  </mat-chip-set>
+                  <a
+                    color="accent"
+                    *ngIf="!isCurrentFilePrimary && fileTab.key === 'Descriptor Files'"
+                    (click)="selectFile(primaryDescriptors[0])"
+                    matTooltip="View the primary descriptor 2"
+                    mat-icon-button
+                    data-cy="go-to-primary-icon"
+                  >
+                    <mat-icon aria-hidden="false" aria-label="Navigate to Primary Descriptor file" fontIcon="home"></mat-icon>
+                  </a>
+                </span>
               </span>
               <span>
                 <a
