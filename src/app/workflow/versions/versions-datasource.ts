@@ -49,7 +49,8 @@ export class VersionsDataSource implements DataSource<WorkflowVersion> {
     sortCol: string
   ) {
     // Check to see if the arguments are the same as the last call, and if so, don't load again.
-    if (JSON.stringify(previousArguments) == JSON.stringify(this.arguments)) {
+    // "arguments" is a built-in Javascript variable that contains the method arguments.
+    if (JSON.stringify(this.previousArguments) == JSON.stringify(arguments)) {
       return;
     }
     this.previousArguments = arguments;
