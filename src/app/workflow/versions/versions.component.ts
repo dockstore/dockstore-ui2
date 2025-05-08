@@ -103,6 +103,7 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
   public versionsLength$: Observable<number>;
   protected readonly PartnerEnum = PartnerEnum;
   private sortCol: string;
+  private loadedAtLeastOnce: boolean;
 
   setNoOrderCols(): Array<number> {
     return [4, 5];
@@ -181,10 +182,15 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
         )
         .subscribe();
     });
+    if (!this.loadedAtLeastOnce) {
+      this.loadVersions(this.publicPage);
+    }
   }
 
-  ngOnChanges() {
-    this.loadVersions(this.publicPage);
+  ngOnChanges(changes) {
+    if (!this.loadedAtLeastOnce || changes.hasOwnProperty('workflowId') || changes.hasOwnProperty('publicPage')) {
+      this.loadVersions(this.publicPage);
+    }
   }
 
   ngOnInit() {
@@ -200,6 +206,9 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
   }
 
   loadVersions(publicPage: boolean) {
+    if (!this.dataSource) {
+      return;
+    }
     let direction: 'asc' | 'desc';
     switch (this.sort.direction) {
       case 'asc': {
@@ -222,6 +231,7 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
       this.paginator.pageSize,
       this.sortCol
     );
+    this.loadedAtLeastOnce = true;
   }
 
   /**
