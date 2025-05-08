@@ -24,6 +24,7 @@ import { HttpResponse } from '@angular/common/http';
 export class VersionsDataSource implements DataSource<WorkflowVersion> {
   private versionsSubject$ = new BehaviorSubject<WorkflowVersion[]>([]);
   private loadingSubject$ = new BehaviorSubject<boolean>(false);
+  private previousArguments;
   public versionsLengthSubject$ = new BehaviorSubject<number>(0);
   public loading$ = this.loadingSubject$.asObservable();
 
@@ -47,6 +48,12 @@ export class VersionsDataSource implements DataSource<WorkflowVersion> {
     pageSize: number,
     sortCol: string
   ) {
+    // Check to see if the arguments are the same as the last call, and if so, don't load again.
+    if (JSON.stringify(previousArguments) == JSON.stringify(this.arguments)) {
+      return;
+    }
+    this.previousArguments = arguments;
+
     this.loadingSubject$.next(true);
     let workflowVersions: Observable<HttpResponse<WorkflowVersion[]>>;
 
