@@ -895,6 +895,9 @@ export class WorkflowsStubService {
   secondaryDescriptors1(workflowId, descriptorType, versionName) {
     return observableOf([]);
   }
+  getPublicWorkflowVersions(workflowId, limit, offset, sortCol, sortOrder, include, observe) {
+    return observableOf([]);
+  }
 }
 
 export class ContainersStubService {

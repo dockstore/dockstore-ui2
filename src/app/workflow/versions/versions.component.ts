@@ -181,6 +181,7 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
         )
         .subscribe();
     });
+    this.loadVersions(this.publicPage);
   }
 
   ngOnChanges() {
@@ -200,6 +201,9 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
   }
 
   loadVersions(publicPage: boolean) {
+    if (!this.dataSource) {
+      return;
+    }
     let direction: 'asc' | 'desc';
     switch (this.sort.direction) {
       case 'asc': {
