@@ -111,6 +111,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { ManageDoisDialogComponent } from 'app/shared/entry/doi/manage-dois/manage-dois-dialog.component';
 import { DoiBadgeComponent } from 'app/shared/entry/doi/doi-badge/doi-badge.component';
+import { PreviewWarningComponent } from '../preview-warning/preview-warning.component';
 
 @Component({
   selector: 'app-workflow',
@@ -164,10 +165,13 @@ import { DoiBadgeComponent } from 'app/shared/entry/doi/doi-badge/doi-badge.comp
     DatePipe,
     BaseUrlPipe,
     DoiBadgeComponent,
+    PreviewWarningComponent,
   ],
 })
 export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterViewInit, OnInit {
   DoiInitiatorEnum = Doi.InitiatorEnum;
+  DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
+  Dockstore = Dockstore;
   workflowEditData: any;
   public isRefreshing$: Observable<boolean>;
   public workflow: BioWorkflow | Service | Notebook;

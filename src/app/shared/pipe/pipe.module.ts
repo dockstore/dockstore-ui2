@@ -19,6 +19,7 @@ import { PlatformPartnerPipe } from '../entry/platform-partner.pipe';
 import { JoinWithEllipsesPipe } from 'app/search/join-with-ellipses.pipe';
 import { SecondsToHoursMinutesSecondsPipe } from 'app/workflow/executions/seconds-to-hours-minutes-seconds.pipe';
 import { ExecutionStatusPipe } from '../entry/execution-status.pipe';
+import { ZenodoAccessLinkPipe } from '../entry/zenodo-access-link.pipe';
 
 const DECLARATIONS: any[] = [
   FilePathPipe,
@@ -39,6 +40,7 @@ const DECLARATIONS: any[] = [
   JoinWithEllipsesPipe,
   SecondsToHoursMinutesSecondsPipe,
   ExecutionStatusPipe,
+  ZenodoAccessLinkPipe,
 ];
 @NgModule({
   imports: [CommonModule, ...DECLARATIONS],
