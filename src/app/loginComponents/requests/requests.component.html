@@ -7,8 +7,8 @@
   <div *ngIf="(isAdmin$ | async) || (isCurator$ | async)" class="p-3">
     <h3>Curator Requests</h3>
     <p>As a curator/admin, you can approve and reject organization requests.</p>
-    <mat-card class="alert alert-info mat-elevation-z" role="alert" *ngIf="(allPendingOrganizations$ | async)?.length === 0">
-      <mat-icon>info</mat-icon> There are no organizations waiting for approval.
+    <mat-card appearance="outlined" class="alert alert-info" role="alert" *ngIf="(allPendingOrganizations$ | async)?.length === 0">
+      <mat-card-content> <mat-icon>info</mat-icon> There are no organizations waiting for approval. </mat-card-content>
     </mat-card>
 
     <div fxLayout="column" fxLayoutGap="32px">
@@ -29,23 +29,23 @@
             </p>
           </mat-card-subtitle>
         </mat-card-header>
-        <mat-card-content class="px-4">
+        <mat-card-content>
           {{ org.topic }}
         </mat-card-content>
-        <mat-card-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
+        <mat-card-actions [align]="'end'">
           <button
             mat-flat-button
             [id]="'delete-pending-org' + i"
-            class="mr-1"
+            class="mr-2"
             matTooltip="Delete pending organization"
             (click)="removeOrganizationDialog(org.displayName, org.status, org.id)"
           >
-            <mat-icon>delete</mat-icon>Delete
+            <span><mat-icon>delete</mat-icon>Delete</span>
           </button>
           <button
-            mat-button
+            mat-stroked-button
             [id]="'reject-pending-org-' + i"
-            class="mr-1 private-btn small-btn-structure"
+            class="mr-2 private-btn"
             (click)="openDialog(org.displayName, org.id, false)"
             matTooltip="Reject an organization request"
           >
@@ -53,7 +53,7 @@
           </button>
           <button
             mat-raised-button
-            class="accent-1-dark-btn small-mat-btn-skin small-btn-structure"
+            class="private-btn"
             [id]="'approve-pending-org-' + i"
             (click)="openDialog(org.displayName, org.id, true)"
             matTooltip="Approve an organization request"
@@ -69,8 +69,8 @@
   <div class="p-3">
     <h3>My Requests</h3>
     <p>The following organizations that you have created are pending approval.</p>
-    <mat-card class="alert alert-info mat-elevation-z" role="alert" *ngIf="(myPendingOrganizationRequests$ | async)?.length === 0">
-      <mat-icon>info</mat-icon> You have no organizations pending approval.
+    <mat-card appearance="outlined" class="alert alert-info" role="alert" *ngIf="(myPendingOrganizationRequests$ | async)?.length === 0">
+      <mat-card-content> <mat-icon>info</mat-icon> You have no organizations pending approval. </mat-card-content>
     </mat-card>
 
     <div fxLayout="column" fxLayoutGap="32px">
@@ -86,10 +86,10 @@
           </mat-card-title>
           <mat-card-subtitle> Requested on {{ membership.dbCreateDate | date }} </mat-card-subtitle>
         </mat-card-header>
-        <mat-card-content class="px-4">
+        <mat-card-content>
           {{ membership.organization.topic }}
         </mat-card-content>
-        <mat-card-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
+        <mat-card-actions [align]="'end'">
           <button
             mat-flat-button
             [id]="'delete-my-pending-org-' + i"
@@ -98,15 +98,15 @@
               removeOrganizationDialog(membership.organization.displayName, membership.organization.status, membership.organization.id)
             "
           >
-            <mat-icon>delete</mat-icon>Delete
+            <span><mat-icon>delete</mat-icon>Delete</span>
           </button>
         </mat-card-actions>
       </mat-card>
     </div>
 
     <p class="pt-2">The following organizations that you have created are rejected.</p>
-    <mat-card class="alert alert-info mat-elevation-z" role="alert" *ngIf="(myRejectedOrganizationRequests$ | async)?.length === 0">
-      <mat-icon>info</mat-icon> You have no rejected organizations.
+    <mat-card appearance="outlined" class="alert alert-info" role="alert" *ngIf="(myRejectedOrganizationRequests$ | async)?.length === 0">
+      <mat-card-content> <mat-icon>info</mat-icon> You have no rejected organizations. </mat-card-content>
     </mat-card>
     <div fxLayout="column" fxLayoutGap="32px">
       <mat-card
@@ -122,24 +122,24 @@
           </mat-card-title>
           <mat-card-subtitle> Requested on {{ membership.dbCreateDate | date }} </mat-card-subtitle>
         </mat-card-header>
-        <mat-card-content class="px-4">
+        <mat-card-content>
           {{ membership.organization.topic }}
         </mat-card-content>
-        <mat-card-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
+        <mat-card-actions [align]="'end'">
           <button
             mat-flat-button
-            class="mr-1"
+            class="mr-2"
             [id]="'delete-my-rejected-org-' + i"
             matTooltip="Delete rejected organization"
             (click)="
               removeOrganizationDialog(membership.organization.displayName, membership.organization.status, membership.organization.id)
             "
           >
-            <mat-icon>delete</mat-icon>Delete
+            <span><mat-icon>delete</mat-icon>Delete</span>
           </button>
           <button
             mat-raised-button
-            class="accent-1-dark-btn small-mat-btn-skin small-btn-structure"
+            class="private-btn"
             [id]="'request-re-review-' + i"
             (click)="rerequestReview(membership)"
             matTooltip="Request a re-review of a rejected organization"
@@ -156,8 +156,8 @@
   <div class="p-3">
     <h3>Organization Invites</h3>
     <p>Accept and decline invitations to join organizations.</p>
-    <mat-card class="alert alert-info mat-elevation-z" role="alert" *ngIf="(myOrganizationInvites$ | async)?.length === 0">
-      <mat-icon>info</mat-icon> You have no pending organization invites.
+    <mat-card appearance="outlined" class="alert alert-info" role="alert" *ngIf="(myOrganizationInvites$ | async)?.length === 0">
+      <mat-card-content> <mat-icon>info</mat-icon> You have no pending organization invites. </mat-card-content>
     </mat-card>
 
     <div fxLayout="column" fxLayoutGap="32px">
@@ -173,15 +173,15 @@
           </mat-card-title>
           <mat-card-subtitle> Requested on {{ membership.dbCreateDate | date }} </mat-card-subtitle>
         </mat-card-header>
-        <mat-card-content class="px-4">
+        <mat-card-content>
           {{ membership.organization.topic }}<br />
           You have been invited to join the organization with the role <strong>{{ membership.role | lowercase }}</strong
           >.
         </mat-card-content>
-        <mat-card-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
+        <mat-card-actions [align]="'end'">
           <button
-            mat-button
-            class="mr-1 private-btn small-btn-structure"
+            mat-stroked-button
+            class="mr-2 private-btn"
             [id]="'reject-invite-org-' + i"
             (click)="openInviteDialog(membership.organization.displayName, membership.organization.id, false)"
             matTooltip="Decline an organization invite"
@@ -190,7 +190,7 @@
           </button>
           <button
             mat-raised-button
-            class="accent-1-dark-btn small-mat-btn-skin small-btn-structure"
+            class="private-btn"
             [id]="'accept-invite-org-' + i"
             (click)="openInviteDialog(membership.organization.displayName, membership.organization.id, true)"
             matTooltip="Accept an organization invite"

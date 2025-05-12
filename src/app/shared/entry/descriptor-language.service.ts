@@ -27,6 +27,7 @@ import { SourceFile, ToolDescriptor } from '../openapi';
 import { Workflow } from '../openapi/model/workflow';
 import { MetadataService } from './../openapi/api/metadata.service';
 import { DescriptorLanguageBean } from './../openapi/model/descriptorLanguageBean';
+import { Dockstore } from '../dockstore.model';
 
 @Injectable()
 export class DescriptorLanguageService {
@@ -238,7 +239,10 @@ export class DescriptorLanguageService {
   filterLanguages(descriptorTypes: Workflow.DescriptorTypeEnum[], entryType: EntryType): Workflow.DescriptorTypeEnum[] {
     if (entryType === EntryType.BioWorkflow || entryType === EntryType.Tool || !entryType) {
       return descriptorTypes.filter(
-        (descriptorType) => descriptorType !== Workflow.DescriptorTypeEnum.Service && descriptorType !== Workflow.DescriptorTypeEnum.Jupyter
+        (descriptorType) =>
+          descriptorType !== Workflow.DescriptorTypeEnum.Service &&
+          descriptorType !== Workflow.DescriptorTypeEnum.Jupyter &&
+          (Dockstore.FEATURES.enableSnakemake ? true : descriptorType !== Workflow.DescriptorTypeEnum.SMK)
       );
     } else if (entryType === EntryType.Notebook) {
       return [Workflow.DescriptorTypeEnum.Jupyter];

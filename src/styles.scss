@@ -23,6 +23,8 @@ $material-design-icons-font-directory-path: '~material-design-icons-iconfont/dis
 @import 'ngx-sharebuttons/themes/default/default-theme';
 @import 'featured-content.scss';
 @import '/src/materialColorScheme.scss';
+@import '/src/functions';
+@import '/src/material-overrides';
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 /*@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,600);*/
 
@@ -80,12 +82,15 @@ app-header h3 {
   font-size: 1.3rem;
 }
 
+.app-header-height {
+  height: 4rem;
+}
+
 app-header h3,
 app-header .h5 {
   color: black;
-  margin: 2rem 0rem 1.5rem 0rem;
-  display: inline;
-  line-height: 4rem;
+  line-height: inherit; // Override the line-height that bootstrap adds
+  margin: 0; // Override the margin that bootstrap adds
 }
 
 #format > tbody > tr > th,
@@ -301,7 +306,8 @@ h2.title.caption {
   /*color: #dad4d4;*/
 }
 
-h3 {
+h3,
+h3.mat-mdc-card-title {
   font-size: 20px;
   color: mat.get-color-from-palette($dockstore-app-primary);
   font-weight: normal;
@@ -335,7 +341,7 @@ h3.available-containers {
 // Globally allow any material tooltip to break the word if it's too long
 // Long sentences should still break on spaces if needed
 // Long continuous words (without spaces and hyphens) will break at different points depending on browser
-.mat-tooltip {
+.mat-mdc-tooltip {
   overflow-wrap: break-word;
 }
 
@@ -398,13 +404,6 @@ img.contain-img {
   object-fit: contain;
 }
 
-/* SEARCH BAR - - - - - - - - - - - - */
-.fully-rounded {
-  -webkit-border-radius: 8px;
-  -moz-border-radius: 8px;
-  border-radius: 8px;
-}
-
 .button.login p {
   line-height: 2.2em;
 }
@@ -464,7 +463,7 @@ div.button a {
   margin-top: 8px;
 }
 
-.mat-raised-button.mat-accent:hover {
+.mat-mdc-raised-button.mat-accent:hover {
   background-color: mat.get-color-from-palette($dockstore-app-accent, darker);
 }
 
@@ -599,10 +598,12 @@ code {
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
 h5,
+h5.mat-mdc-card-title,
 .h5 {
   font-size: 16px;
   color: $header-color;
   font-weight: normal;
+  line-height: 1.1;
 }
 
 // Used by container and workflow's last build/modified "subtitle"
@@ -642,8 +643,20 @@ div.side-block img {
   vertical-align: middle;
 }
 
-.mat-icon-copy-button {
-  transform: scale(0.85);
+// Unset the vertical align from the style above for mat-icon-button icons.
+// We want it for mat-icons in most cases, but for mat-icon-buttons, it misaligns the icon.
+// It's too risky to completely remove the style above without an in depth review to
+// make sure our mat-icons are aligned properly
+.mat-mdc-icon-button .mat-icon {
+  vertical-align: unset;
+}
+
+.copy-button {
+  vertical-align: middle;
+
+  .mat-icon {
+    @include mat-icon-size(20px);
+  }
 }
 
 div.side-block code {
@@ -806,8 +819,13 @@ body {
 }
 
 // This is like the bootstrap 4 utility class, remove once we have the real one
-.align-middle {
+.align-middle,
+img.align-middle {
   vertical-align: middle;
+}
+
+.align-text-bottom {
+  vertical-align: text-bottom;
 }
 
 // In our UI mockups, non-header text is rendered in two sizes: a default size and a smaller size.
@@ -827,59 +845,30 @@ body {
 }
 
 // Set font weight to bold
-.weight-bold,
-.mat-menu-item.weight-bold {
+.weight-bold {
   font-weight: 500;
 }
 
-// Reduces the width of the sidebar tab by half (160px default). Can't seem to move this to the sidebar scss for some reason
-app-sidebar-accordion
-  .mat-accordion
-  > .mat-expansion-panel
-  > .mat-expansion-panel-content
-  > .mat-expansion-panel-body
-  > .mat-tab-group
-  > .mat-tab-header
-  > .mat-tab-label-container
-  > .mat-tab-list
-  > .mat-tab-labels
-  .mat-tab-label[role^='tab'],
-app-workflow-sidebar-accordion
-  .mat-accordion
-  > .mat-expansion-panel
-  > .mat-expansion-panel-content
-  > .mat-expansion-panel-body
-  > .mat-tab-group
-  > .mat-tab-header
-  > .mat-tab-label-container
-  > .mat-tab-list
-  > .mat-tab-labels
-  .mat-tab-label[role^='tab'] {
-  min-width: 80px;
+.weight-normal {
+  font-weight: normal;
 }
 
-.tool-tab-group.mat-primary .mat-ink-bar {
-  background: $tool-color !important;
+.tool-tab-group {
+  @include tab-group-indicator-color(#{$tool-color});
 }
 
-.workflow-tab-group.mat-primary .mat-ink-bar {
-  background: $workflow-color !important;
+.workflow-tab-group {
+  @include tab-group-indicator-color(#{$workflow-color});
 }
 
-.service-tab-group.mat-primary .mat-ink-bar {
-  background: $service-color !important;
+.service-tab-group {
+  @include tab-group-indicator-color(#{$service-color});
 }
 
 // Setting the notebook ink-bar to purple as well for the time being since it matches the icon
-.purple-tab-group.mat-primary .mat-ink-bar,
-.notebook-tab-group.mat-primary .mat-ink-bar {
-  background: mat.get-color-from-palette($dockstore-app-accent-1, darker) !important;
-}
-
-// Automatically used by Angular Material
-.mat-tab-label:hover {
-  color: black;
-  opacity: 0.7;
+.purple-tab-group,
+.notebook-tab-group {
+  @include tab-group-indicator-color(#{$accent-1-dark});
 }
 
 // Set the background to the color associated with containers/tools (blue).
@@ -912,70 +901,28 @@ app-workflow-sidebar-accordion
   background: $org-selection-color !important;
 }
 
-// Styles an element as a "bubble", which is a small very-rounded rectangular element that typically contains a word or short phrase.
-// Bubbles always render in a 12px font, are 28px tall, and default to gray background.
-.bubble {
-  color: black !important;
-  text-decoration: none !important;
-  border-radius: 0.8rem !important;
-  font-size: 12px !important;
-  line-height: 26px !important;
-  min-height: 26px !important;
-  max-height: 26px !important;
-  padding: 0 0.75rem !important;
-  display: inline-block !important;
-  font-weight: 500 !important;
-  background: mat.get-color-from-palette($dockstore-app-gray, lighter);
-}
-
 .preview-bubble {
-  color: white !important;
-  background-color: mat.get-color-from-palette($kim-primary, 3);
-  margin: 0 1.25rem;
+  --mdc-chip-label-text-color: white;
+  --mdc-chip-elevated-container-color: #{mat.get-color-from-palette($kim-primary, 3)};
 }
 
-// Remove any default link styling from a bubble, and ensure the font-weight is correct.
-a.bubble,
-a.bubble:hover,
-a.bubble:focus,
-a.bubble:active,
-a.bubble:link,
-a.bubble:visited {
-  font-weight: 500;
-  border: none;
-  outline: none;
+// mat chips with a white checkmark and white text and a green background
+// Used for the Approved and Synced bubbles
+.checkmark {
+  --mdc-chip-label-text-color: white;
+  --mdc-chip-with-icon-icon-color: white;
+  --mdc-chip-elevated-container-color: #{$accent-3-dark};
 }
 
-// Space out the bubbles in a list.
-// Add this class to a mat-chip-list that surrounds some bubbles.
-.bubble-list .bubble {
-  margin: 0 0.6rem 0 0 !important;
-}
-
-// Set the font size of an app-category-button to 12px.
-// This is necessary to prevent single-pixel vertical offsets between adjacent elements, such as that crop up when an app-category-button is displayed next to a bubble span.
-app-category-button {
-  font-size: 12px !important;
-}
-
-// Change the cursor to a pointer.
+// Change the cursor to a pointer for a mat-chip
 // Use this to make elements appear to navigate somewhere.
-.pointer {
+.mat-mdc-chip.pointer .mdc-evolution-chip__action--presentational {
   cursor: pointer !important;
 }
 
-// Make the dropdown at least the size of the default material dropdown.
-// Making the general width to grow to 50% of the parent width so that there's more room to display long file names
-// TODO: Ideally this should stretch to the length of the longest dropdown option.
-app-select.longer {
-  min-width: 180px;
-  width: 50%;
-}
-
 mat-icon.star-icon {
-  font-size: 1.6rem;
-  height: 1.6rem;
-  width: 1.6rem;
+  @include mat-icon-size(1.6rem);
+  color: $accent-1-dark;
 }
 
 .date-display {
@@ -1006,10 +953,18 @@ mat-icon.star-icon {
   white-space: normal;
 }
 
-mat-tab-group.no-pagination {
-  .mat-tab-header-pagination {
-    display: none;
-  }
+// Makes the mat-tab text size smaller than the default
+mat-tab-group.small-tab-header .mat-mdc-tab-header {
+  --mat-tab-header-label-text-size: 12px;
+}
+
+// Makes the tabs shrink if necessary to avoid scrolling.
+// Must use with mat-stretch-tabs otherwise the tabs will have a small width due to the padding.
+// If you can't use mat-stretch-tabs, use disablePagination="true" on the mat-tab-group to achieve a similar effect as this class.
+mat-tab-group.no-scroll-tabs .mdc-tab {
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  min-width: 0;
 }
 
 //color from mat-card-subtitle
@@ -1021,18 +976,6 @@ mat-tab-group.no-pagination {
 // Used to make text center-aligned
 .text-align-center {
   text-align: center;
-}
-
-// Styling from design mockups
-// These badges are not clickable, thus different from Material Design Chips
-.nonclick-badge {
-  display: inline-flex;
-  border-radius: 0.8rem;
-  background-color: mat.get-color-from-palette($dockstore-app-gray, lighter);
-  padding: 0.2rem 0.8rem;
-  color: $header-color;
-  font-size: 1.2rem;
-  font-weight: 500;
 }
 
 @media only screen and (max-width: 1200px) {
@@ -1089,84 +1032,32 @@ hr {
   color: $accent-3-dark;
 }
 
-// Following 4 items are for stepper/stepper-like dialogs as well as other places for unclear reasons (like the unlink account button)
-.accent-1-dark {
-  color: mat.get-color-from-palette($dockstore-app-accent-1, darker) !important;
+// Change the color of the badge to the verified color
+.verified-badge {
+  --mat-badge-background-color: #{$accent-3-dark};
 }
 
-button.accent-1-dark-btn,
-a.accent-1-dark-btn {
-  background-color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
-  color: white;
-}
-
-.mat-flat-button.secondary-1 {
-  color: mat.get-color-from-palette($dockstore-app-accent);
-  font-weight: bold;
-}
-.mat-flat-button.accent-1-dark {
-  color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
-}
-
-// Automatically used by Angular Material
-.mat-radio-label-content {
-  font-weight: normal;
+// Outlined mat form fields have a transparent background, which is okay most of the time,
+// but sometimes we have outlined form fields on non-white backgrounds so it's hard to see the
+// form field text. Use this class to set the outlined form field background to white.
+.mat-mdc-form-field.white-background .mdc-text-field--outlined {
+  background: white;
+  // Set the border-radius to the border radius of the text field otherwise the background
+  // will exceed the form field border
+  border-radius: var(--mdc-outlined-text-field-container-shape);
 }
 
 // Used for smaller than usual forms
-.mat-form-field.small-text {
+.mat-mdc-form-field.small-text {
   font-size: 12px;
 }
 
 // Applied to mat-icons to make them smaller than Material defaults. 16px was chosen based on ORCID's recommended min logo size.
 // Typically accompanied with mat-btn-sm above.
 // This is also the same size as site-icons-small
-mat-icon.mat-icon-sm {
-  // These two override .mat-icon's default 24px height and width
-  height: 16px;
-  width: 16px;
-  // This overrides .material-icon's default 24px font-size, changing the font-size fixes the position of it
-  font-size: 16px;
-}
-
-// Can use this class for all search bars
-.search-form-field {
-  width: 200px;
-  button {
-    // Workaround for Firefox since x icon does not align correctly, but can remove this if using angular 11
-    display: inline-block !important;
-  }
-}
-
-// Purple outline and text for mat-form-field
-.mat-form-field-appearance-outline.mat-focused:not(.mat-form-field-invalid) .mat-form-field-outline,
-.mat-form-field.mat-focused:not(.mat-form-field-invalid) .mat-form-field-label,
-.mat-form-field.mat-focused:not(.mat-form-field-invalid) .mat-form-field-label .mat-form-field-required-marker,
-.mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float
-  .mat-form-field-label:not(.mat-empty):not(.mat-form-field-empty) {
-  color: mat.get-color-from-palette($dockstore-app-accent-1, darker) !important;
-}
-
-// Keep the outer circle in a radio button gray even when selected
-.mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
-  border-color: mat.get-color-from-palette($dockstore-app-gray, 2) !important;
-}
-
-// Remove some padding from mat form fields that are part of a radio group
-.mat-radio-label-content > .mat-form-field > .mat-form-field-wrapper > .mat-form-field-flex > .mat-form-field-infix {
-  padding: 0.5em 0 0.5em 0;
-}
-// Align the radio button with the form field (only applies to form fields that are part of a radio group and is due to the style directly above)
-.mat-radio-label-content > .mat-form-field > .mat-form-field-wrapper {
-  padding: 0;
-}
-// Center align the place holder text in a mat form if it's part of a radio group. Gets out of alignment because of styles above.
-.mat-radio-button .mat-form-field-appearance-outline .mat-form-field-label {
-  top: 1.4em;
-}
-// Align the floating text in a mat form if it's part of a radio group. Gets out of alignment because of styles above.
-.mat-radio-button .mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
-  top: 1.8em;
+mat-icon.mat-icon-sm,
+.mdc-button > .mat-icon.mat-icon-sm {
+  @include small-mat-icon();
 }
 
 // Used for mat tabs to display the number of items
@@ -1189,11 +1080,6 @@ mat-icon.mat-icon-sm {
   line-height: 2rem;
 }
 
-// The material checkbox overflows text by default so this style wraps the text instead.
-.mat-checkbox.text-wrap > label.mat-checkbox-layout {
-  white-space: normal;
-}
-
 $truncate-text-values: 1, 2, 3;
 
 // Hide overflow, values denote the number of lines to keep
@@ -1209,128 +1095,67 @@ $truncate-text-values: 1, 2, 3;
   }
 }
 
-// The following styles are for mat-tables.
-// The redesigned tables have no borders, bolded headers, no left-padding on the first elements and no right-padding on the last elements.
-.mat-table,
-table {
-  border: none;
-}
-
-.mat-header-cell,
-table th {
-  font-weight: 500 !important;
-  color: $header-color !important;
-}
-
-.mat-header-cell:first-of-type,
-.mat-cell:first-of-type,
-.mat-footer-cell:first-of-type {
-  padding-left: 0 !important;
-}
-
-.mat-cell:last-of-type,
-.mat-header-cell:last-of-type,
-.mat-footer-cell:last-of-type {
-  padding-right: 0 !important;
-}
-
 // This style is used by table headers when there is no data to display
 .inactive-table-header {
   color: #d8d8d8 !important;
 }
 
-/* Don't have multi-line headers */
-.mat-header-row,
 .white-space-no-wrap {
   white-space: nowrap;
 }
 
-/* Material says it should have 16dp to the left and right, sadly Angular Material does not */
-.mat-cell:not(:first-of-type),
-.mat-header-cell:not(:first-of-type) {
-  padding-left: 1.6rem;
-}
-
-/* Material says it should have 16dp to the left and right, sadly Angular Material does not */
-.mat-cell:not(:last-of-type),
-.mat-header-cell:not(:last-of-type),
-table th {
+// Add right-padding after headers for horizontal tables
+table.horizontal-table th {
   padding-right: 1.6rem;
 }
 
-.mat-cell,
-table td {
-  color: mat.get-color-from-palette($kim-gray, 1);
-}
-
-// This style should be used for buttons and drop downs in the private "My Dockstore" pages, they do not seem to exist in public dockstore pages
-// These redesigned buttons have purple text and white backgrounds
-// Use with mat-button and small-btn-structure
-button.private-btn,
-a.private-btn {
-  font-weight: bold;
-  font-size: 12px;
-  color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
-  background-color: #fff;
-  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.08);
-  border: solid 1px #d8d8d8;
-}
-
-// Updated mat-raised-button style to match new redesigned buttons. This style can be used alone for the LARGER dockstore buttons
-// 14px font and 36px height
-button.mat-raised-button,
-a.mat-raised-button {
-  font-weight: bold;
-  line-height: 36px;
-  height: 36px;
-  padding: 0 15px;
-}
-
-// Most cases style should be used accompanied with the mat-raised-button style
-// This style is for the new SMALLER dockstore buttons with size 12 font
-// a.small... is included to account for "buttons" that have links ex. "launch"
-button.small-mat-btn-skin,
-a.small-mat-btn-skin {
-  font-size: 12px;
-  // For cases when not accompanied by mat-raised-button
-  font-weight: bold;
-}
-
 // This style is for the SMALLER dockstore buttons with 26px height
-// Use this most likely with the small-mat-btn-skin
-button.small-btn-structure,
-a.small-btn-structure {
-  line-height: 26px;
-  height: 26px;
-  padding: 0 10px;
-  // Needed for smaller mat buttons ex. "info"
-  min-width: 42px;
+.small-btn-structure {
+  @include small-btn();
 }
 
-// Updated box shadows for small mat-raised-buttons (excluding buttons specified to be flat)
-button.small-mat-btn-skin:not([class*='mat-elevation-z']),
-a.small-mat-btn-skin:not([class*='mat-elevation-z']) {
-  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.08);
+// Private buttons have accent-1-dark color and small button structure.
+// This style should be used for buttons and drop downs in the private "My Dockstore" pages, they do not seem to exist in public dockstore pages.
+// Use with mat buttons of your choice depending on the border style/elevation you want.
+// (ex: mat-stroked-button for border, mat-raised-button for elevation, mat-button for no border, mat-flat-button for flat background)
+.private-btn {
+  @include button-color($accent-1-dark);
+  @include small-btn();
+
+  // Outline color for mat-stroked-button
+  --mdc-outlined-button-outline-color: #d8d8d8;
 }
 
-button.inline-text-btn {
-  text-decoration: underline;
-  color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
-  font-size: 12px;
-  padding: 0.5rem;
-}
+// Following 4 items are for stepper/stepper-like dialogs as well as other places for unclear reasons (like the unlink account button)
 
-// Updated mat-card style matching Zeplin redesign
-.mat-card:not([class*='mat-elevation-z']) {
-  border: solid 1px mat.get-color-from-palette($dockstore-app-gray, 7);
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1), 0 2px 3px 0 rgba(0, 0, 0, 0.08) !important;
-  // Override mat-card-header margin
-  .mat-card-header-text {
-    margin-left: 0rem;
+// Class for things that are accent-1-dark.
+// Some material components require the use of component tokens (prefixed with '--')
+// to target the correct element for styling without using !important
+.accent-1-dark {
+  // General color style. Should work on all non-Material components
+  // and some Material components like mat-icons without requiring component tokens
+  color: $accent-1-dark;
+
+  // Below are styles for material components that require the use of component tokens to apply the color
+
+  // Style for mat-card-subtitles
+  &.mat-mdc-card-subtitle {
+    --mat-card-subtitle-text-color: #{$accent-1-dark};
+    a,
+    mat-icon {
+      color: $accent-1-dark;
+    }
   }
+
+  // Styles for buttons using mixin from _functions.scss
+  @include button-color($accent-1-dark);
 }
 
 // Alert and Warning styles
+.alert {
+  padding: 0 !important; // Remove padding because mat-card-content already adds padding
+}
+
 .alert-warning {
   background-color: mat.get-color-from-palette($dockstore-app-warn, 6) !important;
   border: solid 1px mat.get-color-from-palette($dockstore-app-warn, 3) !important;
@@ -1363,10 +1188,6 @@ button.inline-text-btn {
   line-height: 2rem;
 }
 
-.space-between {
-  justify-content: space-between;
-}
-
 // For the about page and the not found page
 .truck-img {
   padding-bottom: 1rem;
@@ -1376,7 +1197,7 @@ button.inline-text-btn {
 
 .about-h3 {
   font-size: 1.7rem;
-  color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
+  color: $accent-1-dark;
   line-height: 2.5rem;
   font-weight: 500;
 }
@@ -1395,7 +1216,7 @@ button.inline-text-btn {
 }
 
 // Override min-height: 64px for mat-menu-panel dropdowns
-div.mat-menu-panel {
+div.mat-mdc-menu-panel {
   min-height: min-content;
 }
 
@@ -1421,14 +1242,6 @@ div.mat-menu-panel {
   justify-content: space-between;
 }
 
-app-ai-bubble {
-  margin: 0 0.5rem;
-}
-
-.ai-bubble:hover {
-  background-color: mat.get-color-from-palette($dockstore-app-gray, 7);
-}
-
 .primary-3 {
   color: mat.get-color-from-palette($dockstore-app-primary, 3);
 }
@@ -1439,4 +1252,22 @@ app-ai-bubble {
 
 .mr-2_5 {
   margin-right: 0.75rem;
+}
+
+// Used for toolbars in Files tab
+mat-toolbar.files-toolbar {
+  --mat-toolbar-container-background-color: #{mat.get-color-from-palette($kim-gray, 6)};
+  border: solid 1px #d8d8d8;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+
+// Smaller text size for mat-card-titles
+.small-card-title {
+  --mat-card-title-text-size: 1.7rem;
+}
+
+// Add spacing above horizontal dividers that follow mat card headers
+mat-card-header + .mat-divider-horizontal {
+  margin-top: 12px;
 }

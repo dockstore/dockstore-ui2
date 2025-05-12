@@ -1,19 +1,19 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { MatLegacyMenuTrigger as MatMenuTrigger, MatLegacyMenuModule } from '@angular/material/legacy-menu';
+import { MatMenuTrigger, MatMenuModule } from '@angular/material/menu';
 import { AlertService } from '../../../shared/alert/state/alert.service';
 import { Base } from '../../../shared/base';
 import { CloudInstance, Language, User, UsersService } from '../../../shared/openapi';
 import { FilterCloudInstancesPipe } from '../filterCloudInstances.pipe';
-import { MatLegacyInputModule } from '@angular/material/legacy-input';
-import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { NgFor } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { MatLegacyRadioModule } from '@angular/material/legacy-radio';
+import { MatRadioModule } from '@angular/material/radio';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
-import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-multi-cloud-launch',
@@ -21,16 +21,16 @@ import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
   styleUrls: ['./multi-cloud-launch.component.scss', '../launch-third-party.component.scss'],
   standalone: true,
   imports: [
-    MatLegacyTooltipModule,
-    MatLegacyButtonModule,
-    MatLegacyMenuModule,
+    MatTooltipModule,
+    MatButtonModule,
+    MatMenuModule,
     MatIconModule,
     FlexModule,
-    MatLegacyRadioModule,
+    MatRadioModule,
     FormsModule,
     NgFor,
-    MatLegacyFormFieldModule,
-    MatLegacyInputModule,
+    MatFormFieldModule,
+    MatInputModule,
     FilterCloudInstancesPipe,
   ],
 })

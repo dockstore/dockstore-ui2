@@ -1,6 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { MatLegacySnackBarModule } from '@angular/material/legacy-snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AlertService } from 'app/shared/alert/state/alert.service';
 import { ga4ghPath } from 'app/shared/constants';
 import { DescriptorTypeCompatService } from 'app/shared/descriptor-type-compat.service';
@@ -32,7 +32,7 @@ describe('ValueService', () => {
         DescriptorTypeCompatService,
         DescriptorLanguageService,
       ],
-      imports: [HttpClientTestingModule, MatLegacySnackBarModule],
+      imports: [HttpClientTestingModule, MatSnackBarModule],
     });
   });
 

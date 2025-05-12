@@ -14,18 +14,91 @@
  *    limitations under the License.
  */
 
+import { configurationTabName, descriptorFilesTabName, testParameterFilesTabName } from '../../src/app/shared/constants';
+
 // Set the following variable to an appropriate value for your postgres setup.
 // const psqlInvocation: string = 'PASSWORD=dockstore docker exec -i postgres1 psql';
 const psqlInvocation: string = 'PASSWORD=dockstore psql';
 
+export function isStagingOrProd() {
+  const baseUrl = Cypress.config('baseUrl');
+  return baseUrl === 'https://staging.dockstore.org' || baseUrl === 'https://dockstore.org';
+}
+
+export function isProd() {
+  const baseUrl = Cypress.config('baseUrl');
+  return baseUrl === 'https://dockstore.org';
+}
+
 export function goToTab(tabName: string): void {
-  // cypress tests run asynchronously, so if the DOM changes and an element-of-interest becomes detached while we're manipulating it, the test will fail.
-  // our current (admittedly primitive) go-to solution is to wait (sleep) for long enough that the DOM "settles", thus avoiding the "detached element" bug.
-  cy.contains('.mat-tab-label', tabName).should('be.visible').click();
+  getTab(tabName).click();
+}
+
+export function getTab(tabName: string): Cypress.Chainable {
+  return cy.contains('[role=tab]', tabName);
+}
+
+export function assertNumberOfTabs(expectedNumberOfTabs: number): void {
+  cy.get('[role=tab]').should('have.length', expectedNumberOfTabs);
+}
+
+// Tabs in an entry page
+export function goToInfoTab(): void {
+  goToTab('Info');
+}
+
+export function goToVersionsTab(): void {
+  goToTab('Versions');
+}
+
+export function goToLaunchTab(): void {
+  goToTab('Launch');
+}
+
+export function goToPreviewTab(): void {
+  goToTab('Preview');
+}
+
+export function goToFilesTab(): void {
+  goToTab('Files');
+}
+
+export function goToMetricsTab(): void {
+  goToTab('Metrics');
+}
+
+export function goToToolsTab(): void {
+  goToTab('Tools');
+}
+
+export function goToDagTab(): void {
+  goToTab('DAG');
+}
+
+// Secondary tabs in an entry's Files tab
+export function goToDescriptorFilesTab() {
+  goToTab(descriptorFilesTabName);
+}
+
+export function goToTestParameterFilesTab() {
+  goToTab(testParameterFilesTabName);
+}
+
+export function goToConfigurationTab() {
+  goToTab(configurationTabName);
+}
+
+// Tabs in the Account page
+export function goToAccountPreferencesTab() {
+  goToTab('Dockstore Account & Preferences');
+}
+
+export function goToRequestsTab() {
+  goToTab('Requests');
 }
 
 export function assertVisibleTab(tabName: string): void {
-  cy.get('.mat-tab-labels').should('be.visible').contains('div', tabName).should('be.visible');
+  getTab(tabName).should('be.visible');
 }
 
 /**
@@ -40,20 +113,20 @@ export function cancelMatMenu(): void {
 
 // Public workflow should display "Info" "
 export function clickFirstActionsButtonPublic(): void {
-  cy.get('.small-btn-structure').contains('Info').click();
+  cy.get('[data-cy=info-button]').first().click();
 }
 
 // Private workflow should display "Actions"
 export function clickFirstActionsButtonPrivate(): void {
-  cy.get('.private-btn').contains('Actions').click();
+  cy.get('[data-cy=actions-button]').first().click();
 }
 
 export function isActiveTab(tabName: string): void {
-  cy.contains('.mat-tab-label', tabName).should('have.class', 'mat-tab-label-active');
+  getTab(tabName).should('have.attr', 'aria-selected', 'true');
 }
 
-export function assertNoTab(tabName: string): any {
-  return cy.get('.mat-tab-labels').should('be.visible').contains('div', tabName).should('not.exist');
+export function assertNoTab(tabName: string): void {
+  getTab(tabName).should('not.exist');
 }
 
 export function resetDB() {
@@ -61,7 +134,7 @@ export function resetDB() {
     cy.exec('java -jar dockstore-webservice.jar db drop-all --confirm-delete-everything test/web.yml');
     cy.exec(psqlInvocation + ' -h localhost webservice_test -U dockstore < test/db_dump.sql');
     cy.exec(
-      'java -jar dockstore-webservice.jar db migrate -i 1.5.0,1.6.0,1.7.0,1.8.0,1.9.0,1.10.0,alter_test_user_1.10.2,1.11.0,1.12.0,1.13.0,1.14.0,1.15.0,1.16.0 test/web.yml'
+      'java -jar dockstore-webservice.jar db migrate -i 1.5.0,1.6.0,1.7.0,1.8.0,1.9.0,1.10.0,alter_test_user_1.10.2,1.11.0,1.12.0,1.13.0,1.14.0,1.15.0,1.16.0,1.17.0 test/web.yml'
     );
   });
 }
@@ -71,7 +144,7 @@ export function resetDBWithService() {
     cy.exec('java -jar dockstore-webservice.jar db drop-all --confirm-delete-everything test/web.yml');
     cy.exec(psqlInvocation + ' -h localhost webservice_test -U dockstore < test/db_dump.sql');
     cy.exec(
-      'java -jar dockstore-webservice.jar db migrate -i 1.5.0,1.6.0,1.7.0,add_service_1.7.0,1.8.0,1.9.0,1.10.0,alter_test_user_1.10.2,1.11.0,1.12.0,1.13.0,1.14.0,1.15.0,1.16.0 test/web.yml'
+      'java -jar dockstore-webservice.jar db migrate -i 1.5.0,1.6.0,1.7.0,add_service_1.7.0,1.8.0,1.9.0,1.10.0,alter_test_user_1.10.2,1.11.0,1.12.0,1.13.0,1.14.0,1.15.0,1.16.0,1.17.0 test/web.yml'
     );
   });
 }
@@ -94,8 +167,17 @@ export function insertAuthors() {
   addBeforeSqlFromFile('test/authors_db_dump.sql');
 }
 
-export function typeInInput(fieldName: string, text: string) {
-  cy.contains('span', fieldName).parentsUntil('.mat-form-field-wrapper').find('input').first().should('be.visible').clear().type(text);
+export function typeInInput(dataCyName: string, text: string) {
+  // Need focus() so that the input is revealed and not hidden by the mat label
+  cy.get(`[data-cy="${dataCyName}"]`).focus().clear().type(text);
+}
+
+export function selectRadioButton(dataCyName: string) {
+  cy.get(`[data-cy="${dataCyName}"] [type="radio"]`).check();
+}
+
+export function checkCheckBox(dataCyName: string) {
+  cy.get(`[data-cy="${dataCyName}"] [type="checkbox"]`).check();
 }
 
 // Sets it to the user where id = 1. Is an admin and curator.
@@ -127,14 +209,30 @@ export function setPlatformPartnerRole() {
   invokeSql("update enduser set platformpartner='TERRA' where username = 'user_platform_partner'");
 }
 
-export function goToUnexpandedSidebarEntry(organization: string, repo: RegExp | string) {
-  // This is needed because of a possible defect in the implementation.
-  // All expansion panels are shown before any of them are expanded (after some logic of choosing which to expanded).
-  // If the user expands a panel before the above happens, their choice gets overwritten
-  cy.get('.mat-expanded');
-  cy.contains(organization).parent().click();
-  // Can't seem to select the mat-expansion-panel for some reason without triple parent
-  cy.contains(organization).parent().parent().parent().contains('div .no-wrap', repo).should('be.visible').click();
+export function goToUnexpandedSidebarEntry(organization: string, entryPath: string) {
+  expandOrganizationSidebarPanel(organization);
+  selectSidebarEntry(entryPath);
+}
+
+export function expandOrganizationSidebarPanel(organization: string, userHasEntries: boolean = true) {
+  // If the user has entries, check that the entry title is loaded to ensure that the page and side bar is fully loaded
+  if (userHasEntries) {
+    cy.get('[data-cy=entry-title]').should('be.visible');
+  }
+  cy.get(`[data-cy="${organization}-panel-header"]`).click();
+  cy.get(`[data-cy="${organization}-tab-group"]`).should('be.visible');
+}
+
+export function selectOrganizationSidebarTab(organization: string, published: boolean) {
+  cy.get(`[data-cy="${organization}-tab-group"]`)
+    .should('be.visible')
+    .contains(published ? 'Published' : 'Unpublished')
+    .click();
+}
+
+export function selectSidebarEntry(entryPath: string) {
+  cy.get(`[data-cy="${entryPath}-link"]`).should('be.visible').click();
+  cy.get('[data-cy=entry-title]').contains(entryPath);
 }
 
 export function invokeSql(sqlStatement: string) {
@@ -142,13 +240,13 @@ export function invokeSql(sqlStatement: string) {
 }
 
 export function createPotatoMembership() {
-  cy.get('#addUserToOrgButton').click();
-  typeInInput('Username', 'potato');
+  cy.get('[data-cy=add-user-to-org-button]').click();
+  typeInInput('username-input', 'potato');
   cy.get('mat-select').click();
   cy.get('mat-option').contains('Member').click();
   cy.get('.mat-select-panel').should('not.exist');
-  cy.get('#upsertUserDialogButton').should('be.visible').should('not.be.disabled').click();
-  cy.get('#upsertUserDialogButton').should('not.exist');
+  cy.get('[data-cy=upsert-member-button]').should('be.visible').should('not.be.disabled').click();
+  cy.get('[data-cy=upsert-member-button]').should('not.exist');
 }
 
 export function approvePotatoMembership() {
@@ -176,12 +274,12 @@ export function addOrganizationAdminUser(organization: string, user: string) {
 export function createOrganization(name: string, displayName: string, topic: string, location: string, website: string, email: string) {
   cy.contains('button', 'Create Organization Request').should('be.visible').click();
   cy.contains('button', 'Next').should('be.visible').click();
-  typeInInput('Name', name);
-  typeInInput('Display Name', displayName);
-  typeInInput('Topic', topic);
-  typeInInput('Location', location);
-  typeInInput('Organization website', website);
-  typeInInput('Contact Email Address', email);
+  typeInInput('name-input', name);
+  typeInInput('display-name-input', displayName);
+  typeInInput('topic-input', topic);
+  typeInInput('location-input', location);
+  typeInInput('website-input', website);
+  typeInInput('email-input', email);
   cy.get('[data-cy=create-or-update-organization-button]').should('be.visible').should('not.be.disabled').click();
   cy.url().should('eq', Cypress.config().baseUrl + '/organizations/' + name);
 
@@ -196,16 +294,11 @@ export function verifyGithubLinkDashboard(entryType: string) {
   cy.contains('button', 'Manage Dockstore installations on GitHub').click();
 }
 
-export function testNoGithubEntriesText(entryType: string, repository: string) {
-  it('Should have no published ' + entryType + 's in ' + repository + ' repository', () => {
+export function testNoGithubEntriesText(entryType: string, organization: string) {
+  it('Should have no published ' + entryType + 's in ' + organization + ' repository', () => {
     cy.visit('/my-' + entryType + 's');
-    cy.get('mat-expansion-panel-header').contains(repository).click();
-    cy.get('mat-expansion-panel-header')
-      .contains(repository)
-      .parentsUntil('mat-accordion')
-      .should('be.visible')
-      .contains('.mat-tab-label-content', 'Published')
-      .click();
+    expandOrganizationSidebarPanel(organization, false);
+    selectOrganizationSidebarTab(organization, true);
     if (entryType === 'tool') {
       cy.get('[data-cy=no-published-appTool-message]').should('contain', 'No published ' + entryType + 's');
     } else {
@@ -214,13 +307,8 @@ export function testNoGithubEntriesText(entryType: string, repository: string) {
   });
   it('Should have no unpublished ' + entryType + 's in dockstore repository', () => {
     cy.visit('/my-' + entryType + 's');
-    cy.get('mat-expansion-panel-header').contains(repository).click();
-    cy.get('mat-expansion-panel-header')
-      .contains(repository)
-      .parentsUntil('mat-accordion')
-      .should('be.visible')
-      .contains('.mat-tab-label-content', 'Unpublished')
-      .click();
+    expandOrganizationSidebarPanel(organization, false);
+    selectOrganizationSidebarTab(organization, false);
     if (entryType === 'tool') {
       cy.get('[data-cy=no-unpublished-appTool-message]').should('contain', 'No unpublished ' + entryType + 's');
     } else {
@@ -229,7 +317,8 @@ export function testNoGithubEntriesText(entryType: string, repository: string) {
   });
 }
 
-export function addToCollection(path: string, organizationName: string, collectionDisplayName: string) {
+export function addToCollection(path: string, organizationName: string, collectionDisplayName: string, versionName?: string) {
+  cy.intercept('post', '**/collections/**').as('postToCollection');
   cy.visit(path);
   cy.get('[data-cy=addToolToCollectionButton]').should('be.visible').click();
   cy.get('[data-cy=addEntryToCollectionButton]').should('be.disabled');
@@ -238,8 +327,16 @@ export function addToCollection(path: string, organizationName: string, collecti
   cy.get('[data-cy=addEntryToCollectionButton]').should('be.disabled');
   cy.get('[data-cy=selectCollection]').click();
   cy.get('mat-option').contains(collectionDisplayName).click();
+  if (versionName) {
+    cy.get('[data-cy=selectVersion]').click();
+    cy.get('mat-option').contains(versionName).click();
+  }
   cy.get('[data-cy=addEntryToCollectionButton]').should('not.be.disabled').click();
+  cy.wait('@postToCollection');
+  cy.get('[data-cy=addEntryToCollectionButton]').should('not.exist');
+  cy.get('mat-progress-bar').should('not.exist');
 }
+
 export function snapshot() {
   cy.get('[data-cy=dockstore-snapshot-locked]').should('have.length', 0);
   // The buttons should be present

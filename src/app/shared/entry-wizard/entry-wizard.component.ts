@@ -1,17 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { MatLegacySlideToggleChange as MatSlideToggleChange, MatLegacySlideToggleModule } from '@angular/material/legacy-slide-toggle';
+import { MatSlideToggleChange, MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Repository } from '../openapi/model/repository';
 import { EntryWizardQuery } from '../state/entry-wizard.query';
 import { EntryWizardService } from '../state/entry-wizard.service';
-import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
-import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatOptionModule } from '@angular/material/core';
 import { FormsModule } from '@angular/forms';
-import { MatLegacySelectModule } from '@angular/material/legacy-select';
-import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
-import { MatLegacyProgressBarModule } from '@angular/material/legacy-progress-bar';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { FlexModule } from '@ngbracket/ngx-layout';
 
 @Component({
   selector: 'app-entry-wizard',
@@ -20,15 +21,16 @@ import { NgIf, NgFor, AsyncPipe } from '@angular/common';
   standalone: true,
   imports: [
     NgIf,
-    MatLegacyProgressBarModule,
-    MatLegacyFormFieldModule,
-    MatLegacySelectModule,
+    MatProgressBarModule,
+    MatFormFieldModule,
+    MatSelectModule,
     FormsModule,
     NgFor,
-    MatLegacyOptionModule,
-    MatLegacySlideToggleModule,
-    MatLegacyTooltipModule,
+    MatOptionModule,
+    MatSlideToggleModule,
+    MatTooltipModule,
     AsyncPipe,
+    FlexModule,
   ],
 })
 export class EntryWizardComponent implements OnInit {

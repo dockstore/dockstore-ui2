@@ -7,9 +7,11 @@
     workflow.descriptorType === WorkflowModel.DescriptorTypeEnum.Jupyter
   "
 >
-  <div class="h5">Launch with</div>
+  <mat-card-header>
+    <h5 matCardTitle>Launch with</h5>
+  </mat-card-header>
   <mat-divider class="mb-2"></mat-divider>
-  <mat-card-content class="pt-3">
+  <mat-card-content>
     <div class="container-source-repos">
       <div class="container-launch-with">
         <div *ngIf="workflow?.descriptorType === WorkflowModel.DescriptorTypeEnum.WDL">
@@ -40,8 +42,8 @@
               matTooltipPosition="left"
             ></app-multi-cloud-launch>
             <a
-              mat-button
-              class="launch-with-button private-btn"
+              mat-stroked-button
+              class="launch-with-button"
               [matTooltip]="(hasContent$ | async) ? '' : 'The WDL workflow has no content.'"
               matTooltipPosition="left"
               target="_blank"
@@ -52,8 +54,8 @@
               ><img class="partner-launch" src="../assets/images/thirdparty/dnanexus.png" alt="DNAnexus launch with logo"
             /></a>
             <a
-              mat-button
-              class="launch-with-button private-btn"
+              mat-stroked-button
+              class="launch-with-button"
               [matTooltip]="terraTooltip$ | async"
               matTooltipPosition="left"
               target="_blank"
@@ -61,11 +63,11 @@
               [disabled]="disableTerraPlatform$ | async"
               [attr.href]="config.TERRA_IMPORT_URL + '/' + workflow?.full_workflow_path + ':' + selectedVersion?.name"
               data-cy="terraLaunchWith"
-              ><img class="partner-launch" src="../assets/images/thirdparty/terra.png" alt="Terra launch with logo" />Terra</a
+              ><img class="partner-icon" src="../assets/images/thirdparty/terra.png" alt="Terra launch with logo" />Terra</a
             >
             <a
-              mat-button
-              class="launch-with-button private-btn"
+              mat-stroked-button
+              class="launch-with-button"
               [matTooltip]="elwaziToolTip$ | async"
               matTooltipPosition="left"
               target="_blank"
@@ -76,8 +78,8 @@
               ><img class="partner-launch" src="../assets/images/thirdparty/elwazi.png" alt="eLwazi launch with logo"
             /></a>
             <a
-              mat-button
-              class="launch-with-button private-btn"
+              mat-stroked-button
+              class="launch-with-button"
               [matTooltip]="anvilTooltip$ | async"
               matTooltipPosition="left"
               target="_blank"
@@ -88,8 +90,8 @@
               ><img class="partner-launch pb-2" src="../assets/images/thirdparty/anvil.png" alt="AnVIL launch with logo"
             /></a>
             <a
-              mat-button
-              class="launch-with-button private-btn"
+              mat-stroked-button
+              class="launch-with-button"
               [matTooltip]="bdCatalystTerraTooltip$ | async"
               matTooltipPosition="left"
               target="_blank"
@@ -116,8 +118,8 @@
               <!--              ><img class="partner-icon" src="../assets/images/thirdparty/dnastack.png" alt="DNAstack icon" /> DNAstack &raquo;</a-->
               <!--              >-->
               <a
-                mat-button
-                class="launch-with-button private-btn"
+                mat-stroked-button
+                class="launch-with-button"
                 [matTooltip]="(hasContent$ | async) ? '' : 'The WDL workflow has no content.'"
                 matTooltipPosition="left"
                 target="_blank"
@@ -128,8 +130,8 @@
                 ><img class="partner-launch" src="../assets/images/thirdparty/dnanexus.png" alt="DNAnexus launch with logo"
               /></a>
               <a
-                mat-button
-                class="launch-with-button private-btn"
+                mat-stroked-button
+                class="launch-with-button"
                 [matTooltip]="terraTooltip$ | async"
                 matTooltipPosition="left"
                 target="_blank"
@@ -137,11 +139,11 @@
                 [disabled]="disableTerraPlatform$ | async"
                 [attr.href]="config.TERRA_IMPORT_URL + '/' + workflow?.full_workflow_path + ':' + selectedVersion?.name"
                 data-cy="terraLaunchWith"
-                ><img class="partner-launch mr-2" src="../assets/images/thirdparty/terra.png" alt="Terra launch with logo" />Terra</a
+                ><img class="partner-icon mr-2" src="../assets/images/thirdparty/terra.png" alt="Terra launch with logo" />Terra</a
               >
               <a
-                mat-button
-                class="launch-with-button private-btn"
+                mat-stroked-button
+                class="launch-with-button"
                 [matTooltip]="elwaziToolTip$ | async"
                 matTooltipPosition="left"
                 target="_blank"
@@ -152,8 +154,8 @@
                 ><img class="partner-launch" src="../assets/images/thirdparty/elwazi.png" alt="eLwazi launch with logo"
               /></a>
               <a
-                mat-button
-                class="launch-with-button private-btn"
+                mat-stroked-button
+                class="launch-with-button"
                 [matTooltip]="anvilTooltip$ | async"
                 matTooltipPosition="left"
                 target="_blank"
@@ -164,8 +166,8 @@
                 ><img class="partner-launch pb-2" src="../assets/images/thirdparty/anvil.png" alt="AnVIL launch with logo"
               /></a>
               <a
-                mat-button
-                class="launch-with-button private-btn"
+                mat-stroked-button
+                class="launch-with-button"
                 [matTooltip]="bdCatalystTerraTooltip$ | async"
                 matTooltipPosition="left"
                 target="_blank"
@@ -185,8 +187,8 @@
           *ngIf="workflow?.descriptorType === WorkflowModel.DescriptorTypeEnum.CWL"
         >
           <a
-            mat-button
-            class="launch-with-button private-btn"
+            mat-stroked-button
+            class="launch-with-button"
             [matTooltip]="cgcTooltip$ | async"
             matTooltipPosition="left"
             target="_blank"
@@ -197,8 +199,8 @@
             ><img class="partner-icon mr-1" src="../assets/images/thirdparty/cgc-colour.png" alt="CGC icon" /> CGC
           </a>
           <a
-            mat-button
-            class="launch-with-button private-btn"
+            mat-stroked-button
+            class="launch-with-button"
             [matTooltip]="bdCatalystSevenBridgesTooltip$ | async"
             matTooltipPosition="left"
             target="_blank"
@@ -209,8 +211,8 @@
             >NHLBI BioData Catalyst®
           </a>
           <a
-            mat-button
-            class="launch-with-button private-btn"
+            mat-stroked-button
+            class="launch-with-button"
             [matTooltip]="cavaticaTooltip$ | async"
             matTooltipPosition="left"
             target="_blank"
@@ -238,8 +240,8 @@
         </div>
         <div *ngIf="workflow?.descriptorType === WorkflowModel.DescriptorTypeEnum.NFL">
           <a
-            mat-button
-            class="launch-with-button private-btn"
+            mat-stroked-button
+            class="launch-with-button"
             [matTooltip]="(hasContent$ | async) ? 'Export this workflow to Seqera' : 'The Nextflow workflow has no content.'"
             matTooltipPosition="left"
             target="_blank"
@@ -265,8 +267,8 @@
       <div *ngIf="workflow?.descriptorType === WorkflowModel.DescriptorTypeEnum.Jupyter">
         <div fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="0.625rem">
           <a
-            mat-button
-            class="launch-with-button private-btn"
+            mat-stroked-button
+            class="launch-with-button"
             [matTooltip]="colabTooltip$ | async"
             matTooltipPosition="left"
             target="_blank"
@@ -286,8 +288,8 @@
             ><img class="partner-icon mr-3" src="../assets/images/thirdparty/colab.svg" alt="Google Colab icon" />Google Colab</a
           >
           <a
-            mat-button
-            class="launch-with-button private-btn"
+            mat-stroked-button
+            class="launch-with-button"
             [matTooltip]="codespaceTooltip$ | async"
             matTooltipPosition="left"
             (click)="launchToCodespace()"
@@ -296,8 +298,8 @@
             ><img class="partner-icon mr-3" src="../assets/images/thirdparty/github.svg" alt="GitHub icon" />GitHub Codespaces</a
           >
           <a
-            mat-button
-            class="launch-with-button private-btn"
+            mat-stroked-button
+            class="launch-with-button"
             [matTooltip]="mybinderTooltip$ | async"
             matTooltipPosition="left"
             target="_blank"

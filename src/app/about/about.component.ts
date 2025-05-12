@@ -7,12 +7,12 @@ import { Funder, FundingComponent } from '../funding/funding.component';
 import { Dockstore } from '../shared/dockstore.model';
 import { Sponsor } from '../sponsors/sponsor.model';
 import { RouterLink } from '@angular/router';
-import { MatLegacyCardModule } from '@angular/material/legacy-card';
-import { MatLegacyTabsModule } from '@angular/material/legacy-tabs';
+import { MatCardModule } from '@angular/material/card';
+import { MatTabsModule } from '@angular/material/tabs';
 import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
 import { NgStyle, NgFor, AsyncPipe, SlicePipe } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatButtonModule } from '@angular/material/button';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 
 @Component({
@@ -23,12 +23,12 @@ import { FlexModule } from '@ngbracket/ngx-layout/flex';
   standalone: true,
   imports: [
     FlexModule,
-    MatLegacyButtonModule,
+    MatButtonModule,
     MatIconModule,
     NgStyle,
     ExtendedModule,
-    MatLegacyTabsModule,
-    MatLegacyCardModule,
+    MatTabsModule,
+    MatCardModule,
     RouterLink,
     NgFor,
     AsyncPipe,
@@ -53,7 +53,7 @@ export class AboutComponent implements OnInit {
     new Sponsor('galaxy.png', new URL('https://galaxyproject.org/')),
   ];
   public contributors: Sponsor[] = [
-    new Sponsor('collaboratory.svg', new URL('https://www.cancercollaboratory.org/')),
+    new Sponsor('collaboratory.svg', new URL('https://doi.org/10.1158/1538-7445.AM2017-378')),
     new Sponsor('oicr.svg', new URL('https://oicr.on.ca/')),
     new Sponsor('ucsc.png', new URL('https://ucscgenomics.soe.ucsc.edu/')),
     new Sponsor('broad.svg', new URL('https://www.broadinstitute.org/')),

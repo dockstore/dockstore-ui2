@@ -16,7 +16,7 @@
 import { LambdaEvent, TokenUser } from '../../../src/app/shared/openapi';
 import { Repository } from '../../../src/app/shared/openapi/model/repository';
 import {
-  goToTab,
+  selectRadioButton,
   insertAuthors,
   invokeSql,
   isActiveTab,
@@ -24,6 +24,10 @@ import {
   setTokenUserViewPort,
   setTokenUserViewPortCurator,
   snapshot,
+  goToVersionsTab,
+  goToFilesTab,
+  goToConfigurationTab,
+  goToTab,
 } from '../../support/commands';
 import TokenSourceEnum = TokenUser.TokenSourceEnum;
 
@@ -53,7 +57,6 @@ describe('Dockstore my workflows', () => {
     });
 
     cy.visit('/my-workflows');
-    cy.get('[data-cy=myWorkflowsMoreActionButtons]').should('be.visible').click();
     cy.fixture('myWorkflows.json').then((json) => {
       cy.intercept('GET', '/api/users/1/workflows', {
         body: json,
@@ -242,7 +245,7 @@ describe('Dockstore my workflows', () => {
       // Select the manual topic and verify that it's displayed publicly
       cy.visit(privateEntryURI);
       cy.get('[data-cy=topicEditButton]').click();
-      cy.get('.mat-radio-label').contains('Manual').click();
+      selectRadioButton('Manual-radio-button');
       cy.get('[data-cy=topicSaveButton]').click();
       cy.wait('@updateWorkflow');
       cy.get('[data-cy=selected-topic]').should('contain.text', 'goodTopic');
@@ -267,7 +270,7 @@ describe('Dockstore my workflows', () => {
       // Select the AI topic and verify that it's displayed publicly without an AI bubble
       cy.visit(privateEntryURI);
       cy.get('[data-cy=topicEditButton]').click();
-      cy.get('.mat-radio-label').contains('AI').click();
+      selectRadioButton('AI-radio-button');
       cy.get('[data-cy=topicSaveButton]').click();
       cy.get('[data-cy=confirmAISelectionPrompt').should('be.visible');
       cy.get('[data-cy=topicConfirmButton]').click();
@@ -283,7 +286,7 @@ describe('Dockstore my workflows', () => {
       cy.visit('/my-workflows/github.com/A/g');
       // .trigger('mouseover') doesn't work for some reason
       cy.contains('Mode').trigger('mouseenter');
-      cy.get('.mat-tooltip').contains('STUB: Basic metadata pulled from source control.');
+      cy.get('.mdc-tooltip').contains('STUB: Basic metadata pulled from source control.');
 
       cy.contains('github.com/A/g');
       cy.get('button').contains('Manage labels').click();
@@ -307,8 +310,8 @@ describe('Dockstore my workflows', () => {
       cy.get('td').contains('Actions').click();
       cy.get('.cdk-overlay-connected-position-bounding-box').contains('Edit').click();
       cy.get('[data-cy=remove-test-parameter-file-button]').click();
-      cy.get('[data-cy=save-version').click();
-      cy.get('[data-cy=save-version').should('not.exist');
+      cy.get('[data-cy=save-version]').click();
+      cy.get('[data-cy=save-version]').should('not.exist');
     });
     it('Should be able to hide/unhide', () => {
       cy.visit('/my-workflows/github.com/A/l');
@@ -318,7 +321,7 @@ describe('Dockstore my workflows', () => {
       cy.get('[type="checkbox"]').check();
       cy.contains('button', ' Save ').click();
       // Check for hidden version and unhide
-      cy.get('[data-cy=hidden').should('exist');
+      cy.get('[data-cy=hidden-column-check]').should('exist');
       cy.visit('/my-workflows/github.com/A/l');
       cy.contains('Versions').click();
       cy.get('td').contains('Actions').should('exist').click();
@@ -336,7 +339,9 @@ describe('Dockstore my workflows part 2', () => {
   function gotoVersionsAndClickActions() {
     cy.visit('/my-workflows/github.com/A/l');
     cy.url().should('eq', Cypress.config().baseUrl + '/my-workflows/github.com/A/l');
-    goToTab('Versions');
+    goToVersionsTab();
+    cy.wait(1000);
+
     cy.get('td').contains('Actions').click();
   }
 
@@ -426,21 +431,36 @@ describe('Dockstore my workflows part 2', () => {
       cy.get('[data-cy=version-DOI-badge]').should('not.exist');
       gotoVersionsAndClickActions();
       // Request DOI
+      cy.fixture('versionWithDoi.json').then((json) => {
+        cy.intercept('GET', '/api/workflows/11/workflowVersions?limit=10&offset=0&sortOrder=desc&include=metrics', {
+          body: json,
+          statusCode: 200,
+        }).as('getVersionWithDoi');
+      });
       cy.get('[data-cy=dockstore-request-doi-button]').click();
       cy.get('[data-cy=export-button').should('be.enabled');
       cy.get('[data-cy=export-button').click();
+
       // Should have DOI badges now
       cy.get('[data-cy=user-DOI-icon]').should('be.visible');
       cy.get('[data-cy=concept-DOI-badge]').should('be.visible');
       cy.get('[data-cy=version-DOI-badge]').should('be.visible');
+      goToVersionsTab();
       cy.get('td').contains('Actions').click();
       cy.get('[data-cy=dockstore-request-doi-button').should('not.exist'); // Should not be able to request another DOI
 
       // Export to ORCID
+      cy.fixture('versionAfterOrcidExport.json').then((json) => {
+        cy.intercept('GET', '/api/workflows/11/workflowVersions?limit=10&offset=0&sortOrder=desc&include=metrics', {
+          body: json,
+          statusCode: 200,
+        }).as('getVersionAfterOrcidExport');
+      });
       cy.get('[data-cy=dockstore-export-orcid-button]').click();
       cy.get('[data-cy=export-button').should('be.enabled');
       cy.get('[data-cy=export-button').click();
-      cy.get('td').contains('Actions').click();
+
+      gotoVersionsAndClickActions();
       cy.get('[data-cy=dockstore-export-orcid-button]').should('not.exist'); // Should not be able to export to ORCID again
     });
   });
@@ -457,14 +477,14 @@ describe('Dockstore my workflows part 2', () => {
     cy.contains('Test File Path').should('not.exist');
 
     // Should not be able to refresh a dockstore.yml workflow version
-    goToTab('Versions');
+    goToVersionsTab();
     cy.contains('button', 'Actions').click();
     cy.contains('button', 'Refresh Version').should('be.disabled');
 
     cy.get('body').type('{esc}');
 
     // Test file content
-    goToTab('Files');
+    goToFilesTab();
 
     cy.contains('/Dockstore.cwl');
     cy.contains('class: Workflow');
@@ -476,7 +496,7 @@ describe('Dockstore my workflows part 2', () => {
     cy.get('mat-option').contains('md5sum-tool.cwl').click();
     cy.contains('class: CommandLineTool');
 
-    goToTab('Configuration');
+    goToConfigurationTab();
     cy.contains('Configuration');
     cy.contains('/.dockstore.yml');
   });
@@ -484,7 +504,8 @@ describe('Dockstore my workflows part 2', () => {
   it('Should be able to refresh a workflow version', () => {
     cy.visit('/my-workflows/github.com/A/l');
     cy.url().should('eq', Cypress.config().baseUrl + '/my-workflows/github.com/A/l');
-    goToTab('Versions');
+    goToVersionsTab();
+    cy.wait(1000);
     cy.contains('button', 'Actions').click();
     cy.contains('button', 'Refresh Version').should('not.be.disabled');
   });
@@ -497,12 +518,19 @@ describe('Dockstore my workflows part 2', () => {
     });
     cy.visit('/my-workflows/github.com/A/l');
     cy.url().should('eq', Cypress.config().baseUrl + '/my-workflows/github.com/A/l');
-    goToTab('Versions');
+    goToVersionsTab();
     cy.get('table>tbody>tr').should('have.length', 2); // 2 Versions and no warning line
     cy.get('[data-cy=refreshOrganization]:visible').should('be.visible').click();
-    cy.get('[data-cy=confirm-dialog-button] > .mat-button-wrapper').contains('Refresh').click();
+    cy.get('[data-cy=confirm-dialog-button]').contains('Refresh').click();
     cy.wait('@refreshWorkflow');
-    goToTab('Versions');
+
+    cy.fixture('sampleWorkflowVersion').then((json) => {
+      cy.intercept('GET', '/api/workflows/11/workflowVersions?limit=10&offset=0&sortOrder=desc&include=metrics', {
+        body: json,
+      }).as('getVersion');
+    });
+    goToVersionsTab();
+    cy.wait('@getVersion');
     cy.get('table>tbody>tr').should('have.length', 1); // 2 Versions and no warning line
   });
 
@@ -520,11 +548,11 @@ describe('Dockstore my workflows part 3', () => {
   setTokenUserViewPort();
 
   function haveAlert() {
-    cy.get('.mat-error').should('be.visible');
+    cy.get('mat-error').should('be.visible');
   }
 
   function notHaveAlert() {
-    cy.get('.mat-error').should('not.exist');
+    cy.get('mat-error').should('not.exist');
   }
 
   describe('Test workflow wizard form', () => {
@@ -578,12 +606,14 @@ describe('Dockstore my workflows part 3', () => {
         cy.get('mat-select').eq(1).click().type('{enter}', { force: true });
 
         // foobar/canDeleteMe should be on and not disabled
-        cy.get('mat-slide-toggle').eq(0).should('not.have.class', 'mat-disabled').should('have.class', 'mat-checked');
+        cy.get('[data-cy="foobar/canDeleteMe-toggle"] button').should('have.attr', 'aria-checked', 'true');
         // foobar/cannotDeleteMe should be on and disabled
-        cy.get('mat-slide-toggle').eq(1).should('have.class', 'mat-disabled').should('have.class', 'mat-checked');
+        cy.get('[data-cy="foobar/cannotDeleteMe-toggle"] button').should('have.attr', 'aria-checked', 'true');
+        cy.get('[data-cy="foobar/cannotDeleteMe-toggle"] button').should('be.disabled');
 
         // foobar/doesNotExist should be off and not disabled
-        cy.get('mat-slide-toggle').eq(2).should('not.have.class', 'mat-disabled').should('not.have.class', 'mat-checked');
+        cy.get('[data-cy="foobar/doesNotExist-toggle"] button').should('have.attr', 'aria-checked', 'false');
+        cy.get('[data-cy="foobar/doesNotExist-toggle"] button').should('not.be.disabled');
       });
     });
   });
@@ -605,17 +635,16 @@ describe('Dockstore my workflows part 3', () => {
       cy.get('#sourceCodeRepositoryWorkflowPathInput').clear();
       cy.get('#sourceCodeRepositoryWorkflowPathInput').type('/Dockstore.cwl');
       notHaveAlert();
-      // Apparently the actual radio button inside Angular material buttons is hidden, so doing it this way
-      cy.get('#descriptorTypeRadioButtons').contains(cwlDescriptorType).find('.mat-radio-container').click();
-      cy.get('#descriptorTypeRadioButtons').contains(wdlDescriptorType).find('.mat-radio-container').click();
+      selectRadioButton(`${cwlDescriptorType}-radio-button`);
+      selectRadioButton(`${wdlDescriptorType}-radio-button`);
       haveAlert();
       cy.get('#sourceCodeRepositoryWorkflowPathInput').clear().type('/Dockstore.wdl');
       notHaveAlert();
-      cy.get('#descriptorTypeRadioButtons').contains(nextflowDescriptorType).find('.mat-radio-container').click();
+      selectRadioButton(`${nextflowDescriptorType}-radio-button`);
       haveAlert();
       cy.get('#sourceCodeRepositoryWorkflowPathInput').clear().type('/Dockstore.config');
       notHaveAlert();
-      cy.get('#descriptorTypeRadioButtons').contains(cwlDescriptorType).find('.mat-radio-container').click();
+      selectRadioButton(`${cwlDescriptorType}-radio-button`);
       haveAlert();
       cy.get('#sourceCodeRepositoryWorkflowPathInput').clear().type('/Dockstore.cwl');
       notHaveAlert();
@@ -632,7 +661,8 @@ describe('Dockstore my workflows part 3', () => {
       cy.get('[data-cy=close-dialog-button]').should('be.visible').click();
       cy.get('#publishButton').should('contain', 'Publish').should('be.visible');
 
-      goToTab('Versions');
+      goToVersionsTab();
+      cy.wait(1000);
       cy.contains('button', 'Actions').click();
       cy.get('[data-cy=set-default-version-button]').should('be.visible').click();
       cy.wait(1000);
@@ -672,7 +702,7 @@ describe('Dockstore my workflows part 3', () => {
       ).trigger('mouseenter');
       cy.get('[data-cy=refreshOrganization]:visible').should('be.visible').click();
       cy.contains('button', 'Cancel').should('be.visible');
-      cy.get('[data-cy=confirm-dialog-button] > .mat-button-wrapper').contains('Refresh').click();
+      cy.get('[data-cy=confirm-dialog-button]').contains('Refresh').click();
       cy.get('.error-output').should('be.visible');
       cy.get('[data-cy=refreshOrganization]:visible').should('be.visible').click();
       cy.contains('button', 'Cancel').should('be.visible').click();

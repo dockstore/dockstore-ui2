@@ -35,39 +35,7 @@ mat-expansion-panel mat-expansion-panel-header[aria-expanded='false'] {
   text-decoration: underline;
 }
 
-//Form field box
-:host .mat-expansion-panel ::ng-deep .mat-form-field-wrapper {
-  margin: 0rem;
-  padding-bottom: 0.8rem;
-  line-height: 3.6rem;
-}
-
-// Form field label
-:host
-  .mat-expansion-panel
-  ::ng-deep
-  .mat-form-field-wrapper
-  .mat-form-field-flex
-  .mat-form-field-infix
-  .mat-form-field-label-wrapper
-  .mat-form-field-label {
-  top: 1.8rem;
-}
-
-// Form field inner
-:host .mat-expansion-panel ::ng-deep .mat-form-field-wrapper .mat-form-field-infix {
-  border: 0rem;
-  padding: 0rem;
-}
-
-// Form field text animation re-implementation
-:host ::ng-deep .mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
-  transform: translateY(-1.1em) scale(0.75);
-  width: 133.33333%;
-  top: 1.84375em;
-}
-
 // Panel body
 :host mat-expansion-panel ::ng-deep .mat-expansion-panel-body {
-  padding: 0rem 1rem 0.8rem;
+  padding: 0rem 0.7rem 0.8rem;
 }

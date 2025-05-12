@@ -25,7 +25,7 @@
   <div mat-dialog-actions class="form-horizontal dialog-actions mb-0">
     Find tools, workflows, and notebooks with
     <span *ngIf="searchMode === 'description'"> a </span>
-    <mat-form-field>
+    <mat-form-field class="mb-3">
       <mat-label class="dropdown-display"> {{ searchMode }} </mat-label>
       <mat-select data-cy="dropdown">
         <a *ngIf="searchMode !== 'description'">

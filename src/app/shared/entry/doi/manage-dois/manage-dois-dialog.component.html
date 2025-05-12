@@ -44,8 +44,10 @@
   <div>
     <strong>DOI Selection</strong><br />
     <p class="size-small gray-caption">Select which DOI to display publicly:</p>
-    <mat-card *ngIf="!doiInfoMap.size" class="alert alert-info mat-elevation-z mt-3" role="alert">
-      <mat-icon class="alert-info-icon">info</mat-icon> This {{ entryTypeMetadata.term }} has no DOIs.
+    <mat-card appearance="outlined" *ngIf="!doiInfoMap.size" class="alert alert-info mt-3" role="alert">
+      <mat-card-content>
+        <mat-icon class="alert-info-icon">info</mat-icon> This {{ entryTypeMetadata.term }} has no DOIs.
+      </mat-card-content>
     </mat-card>
     <mat-radio-group
       [(ngModel)]="selectedOption"
@@ -58,37 +60,75 @@
         *ngFor="let doiInfo of doiInfoMap | keyvalue: originalOrder"
         [class]="doiInfo.key === selectedOption ? 'selected-card' : ''"
       >
-        <mat-radio-button [value]="doiInfo.key" class="w-100">
-          <div>
-            <app-doi-badge [doi]="doiInfo.value.conceptDoi" [displayDoi]="false" class="mr-2"></app-doi-badge>
-            <strong>{{ doiInfo.key | titlecase }}</strong>
-          </div>
-        </mat-radio-button>
-        <div class="ml-5">
-          <div class="size-small gray-caption">
-            <span *ngIf="doiInfo.key === DoiInitiatorEnum.USER"> Manually created by a user in the Dockstore UI. </span>
-            <span *ngIf="doiInfo.key === DoiInitiatorEnum.DOCKSTORE">
-              Automatically created by Dockstore for valid tags belonging to published {{ entryTypeMetadata.termPlural }}.
-            </span>
-            <span *ngIf="doiInfo.key === DoiInitiatorEnum.GITHUB"> Created by Zenodo's integration with GitHub. </span>
-          </div>
+        <mat-card-content>
+          <mat-radio-button [value]="doiInfo.key" class="w-100">
+            <div>
+              <app-doi-badge [doi]="doiInfo.value.conceptDoi" [displayDoi]="false" class="mr-2"></app-doi-badge>
+              <strong>{{ doiInfo.key | titlecase }}</strong>
+            </div>
+          </mat-radio-button>
+          <div class="ml-5">
+            <div class="size-small gray-caption">
+              <span *ngIf="doiInfo.key === DoiInitiatorEnum.USER"> Manually created by a user in the Dockstore UI. </span>
+              <span *ngIf="doiInfo.key === DoiInitiatorEnum.DOCKSTORE">
+                Automatically created by Dockstore for valid tags belonging to published {{ entryTypeMetadata.termPlural }}.
+              </span>
+              <span *ngIf="doiInfo.key === DoiInitiatorEnum.GITHUB"> Created by Zenodo's integration with GitHub. </span>
+            </div>
 
-          <div>
-            <span class="mr-4">
-              <span>Version DOI: </span>
-              <app-doi-badge *ngIf="doiInfo.value.versionDoi" [doi]="doiInfo.value.versionDoi" [displayInitiator]="false"></app-doi-badge>
-              <span *ngIf="!doiInfo.value.versionDoi">n/a</span>
-            </span>
-            <span>
-              <span>Concept DOI: </span>
-              <app-doi-badge *ngIf="doiInfo.value.conceptDoi" [doi]="doiInfo.value.conceptDoi" [displayInitiator]="false"></app-doi-badge>
-            </span>
+            <div>
+              <span class="mr-4">
+                <span>Version DOI: </span>
+                <app-doi-badge *ngIf="doiInfo.value.versionDoi" [doi]="doiInfo.value.versionDoi" [displayInitiator]="false"></app-doi-badge>
+                <span *ngIf="!doiInfo.value.versionDoi">n/a</span>
+              </span>
+              <span>
+                <span>Concept DOI: </span>
+                <app-doi-badge *ngIf="doiInfo.value.conceptDoi" [doi]="doiInfo.value.conceptDoi" [displayInitiator]="false"></app-doi-badge>
+              </span>
+            </div>
+
+            <div class="mt-3" *ngIf="doiInfo.key === DoiInitiatorEnum.DOCKSTORE">
+              <div class="size-small gray-caption">
+                You can edit the metadata of a published Dockstore DOI at anytime.
+                <button mat-button (click)="toggleShowMoreEditLinkInfo()" class="private-btn">
+                  <mat-icon class="mat-icon-sm">{{ showMoreEditLinkInfo ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</mat-icon
+                  >{{ showMoreEditLinkInfo ? 'Collapse' : 'Show more' }}
+                </button>
+              </div>
+              <div *ngIf="showMoreEditLinkInfo">
+                <p class="size-small gray-caption">
+                  Dockstore uses Zenodo's link sharing feature to create a secret link with edit access so you can edit the record. You must
+                  be logged into a Zenodo account when you open the link. When you are done editing the record, delete the link on
+                  Dockstore.
+                </p>
+                <span *ngIf="dockstoreDoiAccessLink">
+                  <a
+                    [href]="
+                      doiInfo.value.versionDoi?.name ?? doiInfo.value.conceptDoi.name | zenodoAccessLink: dockstoreDoiAccessLink.token
+                    "
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Edit record on Zenodo<mat-icon class="mat-icon-sm">open_in_new</mat-icon>
+                  </a>
+                  <button mat-flat-button (click)="deleteDoiAccessLink()" color="warn" class="small-btn-structure ml-2">
+                    <mat-icon class="mat-icon-sm">delete</mat-icon>Delete Link
+                  </button>
+                </span>
+                <span *ngIf="!dockstoreDoiAccessLink">
+                  <button mat-stroked-button (click)="requestDoiAccessLink()" class="private-btn">
+                    <mat-icon class="mat-icon-sm">add_link</mat-icon>Create Edit Link
+                  </button>
+                </span>
+              </div>
+            </div>
           </div>
-        </div>
+        </mat-card-content>
       </mat-card>
     </mat-radio-group>
   </div>
 </mat-dialog-content>
-<div mat-dialog-actions class="pull-right">
-  <button mat-raised-button mat-dialog-close class="accent-1-dark-btn mat-elevation-z">Done</button>
-</div>
+<mat-dialog-actions [align]="'end'">
+  <button mat-flat-button mat-dialog-close class="accent-1-dark">Done</button>
+</mat-dialog-actions>

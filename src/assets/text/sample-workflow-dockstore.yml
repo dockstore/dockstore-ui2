@@ -1,6 +1,6 @@
 version: 1.2 # The .dockstore.yml schema version
 workflows:
-  - subclass: <CWL | WDL | NFL | GALAXY>
+  - subclass: <CWL | WDL | NFL | GALAXY | SMK>
     primaryDescriptorPath: <String>
     testParameterFiles: # <String Array>
       - <String>

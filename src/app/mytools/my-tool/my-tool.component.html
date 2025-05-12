@@ -45,9 +45,10 @@
             <div id="child">
               <div class="clearfix sidebar-header w-100">
                 <button
-                  mat-button
-                  class="private-btn small-btn-structure ml-3 mb-3"
+                  mat-stroked-button
+                  class="private-btn ml-3 mb-3"
                   id="register_tool_button"
+                  data-cy="register-tool-button"
                   matTooltip="Register tool"
                   matTooltipPosition="after"
                   (click)="showRegisterEntryModal()"
@@ -56,33 +57,19 @@
                   <img src="../../../assets/svg/icons-plus.svg" alt="Register a tool" class="pr-2 pb-1" />
                   Register a Tool
                 </button>
+
                 <button
-                  mat-button
-                  class="private-btn small-btn-structure ml-3 mb-3"
-                  [matMenuTriggerFor]="myToolsActions"
-                  [disabled]="isRefreshing$ | async"
-                  id="myToolsMoreActionButtons"
-                  data-cy="myToolsMoreActionButtons"
+                  mat-stroked-button
+                  class="private-btn ml-3 mb-3"
+                  (click)="addToExistingTools()"
+                  [disabled]="(isRefreshing$ | async) || (userQuery.user$ | async) === null"
+                  matTooltip="Discover tools added by others using your linked source control accounts"
+                  matTooltipPosition="after"
+                  id="addToExistingTools"
+                  data-cy="addToExistingTools"
                 >
-                  <img src="../../../assets/svg/gear-icon.svg" alt="Gear icon" />
-                  More
-                  <img src="../../../assets/svg/drop-down-arrow.svg" alt="Drop down menu icon" />
+                  Discover Tools
                 </button>
-                <mat-menu #myToolsActions="matMenu">
-                  <button
-                    mat-menu-item
-                    color="primary"
-                    type="button"
-                    (click)="addToExistingTools()"
-                    [disabled]="(isRefreshing$ | async) || (userQuery.user$ | async) === null"
-                    matTooltip="Discover tools added by others using your linked source control accounts"
-                    matTooltipPosition="after"
-                    id="addToExistingTools"
-                    data-cy="addToExistingTools"
-                  >
-                    <span>Discover Existing Dockstore Tools</span>
-                  </button>
-                </mat-menu>
               </div>
               <p *ngIf="(hasGroupEntriesObject$ | async) === false && (hasGroupGitHubAppToolEntriesObjects$ | async) === false">
                 You have not registered any tools
@@ -121,39 +108,41 @@
             "
           >
             <div fxFlex>
-              <mat-card class="alert alert-info mat-elevation-z" role="alert">
-                <p>
-                  <mat-icon>info</mat-icon>
-                  There are currently no tools registered under this account. To add your first tool, do one of the following:
-                </p>
-                <ul>
-                  <li>Press the 'Add Tool' button to add a tool using the registration wizard.</li>
-                  <button
-                    mat-raised-button
-                    class="accent-1-dark-btn"
-                    (click)="showRegisterEntryModal()"
-                    type="button"
-                    [disabled]="isRefreshing$ | async"
-                  >
-                    Register a Tool
-                  </button>
-                  <li>If there are already tools on Dockstore added by other users that you have access to, press the button below.</li>
-                  <button
-                    mat-raised-button
-                    class="accent-1-dark-btn"
-                    type="button"
-                    (click)="addToExistingTools()"
-                    [disabled]="(isRefreshing$ | async) || (userQuery.user$ | async) === null"
-                    matTooltip="Discover tools added by others using your linked source control accounts"
-                  >
-                    Discover Existing Dockstore Tools
-                  </button>
-                </ul>
-                <div *ngIf="!hasGitHubToken" class="mt-3">
-                  <button mat-raised-button (click)="link()">
-                    <fa-icon [icon]="faGithub"></fa-icon> You do not have a linked GitHub token, click here to link a GitHub token
-                  </button>
-                </div>
+              <mat-card appearance="outlined" class="alert alert-info" role="alert">
+                <mat-card-content>
+                  <p>
+                    <mat-icon>info</mat-icon>
+                    There are currently no tools registered under this account. To add your first tool, do one of the following:
+                  </p>
+                  <ul>
+                    <li>Press the 'Add Tool' button to add a tool using the registration wizard.</li>
+                    <button
+                      mat-raised-button
+                      class="accent-1-dark"
+                      (click)="showRegisterEntryModal()"
+                      type="button"
+                      [disabled]="isRefreshing$ | async"
+                    >
+                      Register a Tool
+                    </button>
+                    <li>If there are already tools on Dockstore added by other users that you have access to, press the button below.</li>
+                    <button
+                      mat-raised-button
+                      class="accent-1-dark"
+                      type="button"
+                      (click)="addToExistingTools()"
+                      [disabled]="(isRefreshing$ | async) || (userQuery.user$ | async) === null"
+                      matTooltip="Discover tools added by others using your linked source control accounts"
+                    >
+                      Discover Existing Dockstore Tools
+                    </button>
+                  </ul>
+                  <div *ngIf="!hasGitHubToken" class="mt-3">
+                    <button mat-raised-button (click)="link()">
+                      <fa-icon [icon]="faGithub"></fa-icon> You do not have a linked GitHub token, click here to link a GitHub token
+                    </button>
+                  </div>
+                </mat-card-content>
               </mat-card>
             </div>
           </div>

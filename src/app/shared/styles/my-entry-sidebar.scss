@@ -67,24 +67,6 @@ mat-expansion-panel {
 }
 
 ////////// MAT TABS ///////////
-:host ::ng-deep .mat-tab-label {
-  min-width: 0 !important;
-  padding: 0.5em !important;
-}
-
-:host ::ng-deep .mat-tab-label-content {
-  font-size: 12px;
-}
-
-// Selected tab style
-:host ::ng-deep .mat-tab-label-active {
-  opacity: 1;
-
-  .mat-tab-label-content {
-    font-weight: bold;
-    color: #181f40;
-  }
-}
 
 // Selected entry style
 .selectedTool,
@@ -93,14 +75,4 @@ mat-expansion-panel {
     color: #181f40;
     text-decoration: none;
   }
-
-  .arrow {
-    display: block;
-    margin-right: 0.5rem;
-  }
-}
-
-// Hide arrow for non-selected entry
-.arrow {
-  display: none;
 }

@@ -14,25 +14,20 @@
     limitations under the License.
 -->
 <mat-card *ngIf="verifiedByStringArray && verifiedByStringArray.length > 0">
-  <div fxLayout fxLayoutAlign="space-between" class="mb-3">
-    <div class="h5 mt-2">Verification and Logs</div>
-    <button
-      mat-button
-      class="private-btn small-btn-structure"
-      (click)="openVerificationAndAvailableLogsDialog()"
-      data-cy="verificationLogsDialog"
-    >
-      More Info
-    </button>
-  </div>
+  <mat-card-header>
+    <mat-card-title-group>
+      <h5 matCardTitle>Verification and Logs</h5>
+      <button mat-stroked-button class="private-btn" (click)="openVerificationAndAvailableLogsDialog()" data-cy="verificationLogsDialog">
+        More Info
+      </button>
+    </mat-card-title-group>
+  </mat-card-header>
   <mat-divider></mat-divider>
-  <mat-card-content class="mt-4">
-    <div>
-      <strong>{{ version.name }} is verified with:</strong>
-      <br />
-      <p *ngFor="let verifiedByString of verifiedByStringArray" class="mb-0">
-        {{ verifiedByString }}
-      </p>
-    </div>
+  <mat-card-content>
+    <strong>{{ version.name }} is verified with:</strong>
+    <br />
+    <p *ngFor="let verifiedByString of verifiedByStringArray" class="mb-0">
+      {{ verifiedByString }}
+    </p>
   </mat-card-content>
 </mat-card>

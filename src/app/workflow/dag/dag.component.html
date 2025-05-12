@@ -17,26 +17,32 @@
   <div class="p-3" fxLayout="column" fxLayoutGap="10px">
     <div fxFlex *ngIf="(isNFL$ | async) && dagType === 'classic'">
       <!-- alert class not present because it adds too much margin above a DAG that actually exists -->
-      <mat-card class="alert-warning mat-elevation-z" role="alert">
-        <mat-icon class="alert-warning-icon">warning</mat-icon>&nbsp;DAG display is still experimental for Nextflow.
+      <mat-card appearance="outlined" class="alert-warning" role="alert">
+        <mat-card-content>
+          <mat-icon class="alert-warning-icon">warning</mat-icon>&nbsp;DAG display is still experimental for Nextflow.
+        </mat-card-content>
       </mat-card>
     </div>
     <div fxFlex *ngIf="dagType === 'classic' && (isNFL$ | async) === false && (missingTool$ | async)">
       <!-- This covers CWL, WDL, Service, and other plugin languages (everything except NFL) -->
-      <mat-card class="alert alert-warning mat-elevation-z" role="alert" *ngIf="!selectedVersion?.valid">
-        <mat-icon class="alert-warning-icon">warning</mat-icon>&nbsp;
-        <span *ngIf="(descriptorType$ | async) !== ToolDescriptor.TypeEnum.SERVICE">
-          The DAG cannot be displayed because the descriptor is either missing or not valid.
-          {{
-            (isPublic$ | async)
-              ? 'Click on the Files tab for more information.'
-              : 'Ensure the descriptor exists and is valid. Click on the Files tab for more information.'
-          }}
-        </span>
+      <mat-card appearance="outlined" class="alert alert-warning" role="alert" *ngIf="!selectedVersion?.valid">
+        <mat-card-content>
+          <mat-icon class="alert-warning-icon">warning</mat-icon>&nbsp;
+          <span *ngIf="(descriptorType$ | async) !== ToolDescriptor.TypeEnum.SERVICE">
+            The DAG cannot be displayed because the descriptor is either missing or not valid.
+            {{
+              (isPublic$ | async)
+                ? 'Click on the Files tab for more information.'
+                : 'Ensure the descriptor exists and is valid. Click on the Files tab for more information.'
+            }}
+          </span>
+        </mat-card-content>
       </mat-card>
-      <mat-card class="alert alert-warning mat-elevation-z" role="alert" *ngIf="selectedVersion?.valid">
-        <mat-icon class="alert-warning-icon">warning</mat-icon>&nbsp; DAG cannot be created because some required tools are missing from
-        GitHub repo.
+      <mat-card appearance="outlined" class="alert alert-warning" role="alert" *ngIf="selectedVersion?.valid">
+        <mat-card-content>
+          <mat-icon class="alert-warning-icon">warning</mat-icon>&nbsp; DAG cannot be created because some required tools are missing from
+          GitHub repo.
+        </mat-card-content>
       </mat-card>
     </div>
     <div fxFlex #dagHolder id="dag-holder">
@@ -80,11 +86,15 @@
           <div fxFlex fxFlexAlign="end">
             <div id="DAGButtonGroup" fxLayout="row" fxLayoutAlign="end start">
               <button mat-stroked-button id="dag_fullscreen" (click)="toggleExpand()" matTooltip="Toggle fullscreen">
-                <mat-icon id="resize-full-button" *ngIf="!expanded">fullscreen</mat-icon>
-                <mat-icon id="resize-small-button" *ngIf="expanded">fullscreen_exit</mat-icon>
+                <span>
+                  <mat-icon id="resize-full-button" *ngIf="!expanded">fullscreen</mat-icon>
+                  <mat-icon id="resize-small-button" *ngIf="expanded">fullscreen_exit</mat-icon>
+                </span>
               </button>
               <button mat-stroked-button id="dag_reload" (click)="reset()" matTooltip="Reset">
-                <mat-icon>control_camera</mat-icon>
+                <span>
+                  <mat-icon>control_camera</mat-icon>
+                </span>
               </button>
             </div>
           </div>

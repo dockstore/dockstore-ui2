@@ -5,79 +5,83 @@
 
   <div [ngSwitch]="action">
     <div *ngSwitchCase="SnapshotExporterAction.SNAPSHOT">
-      <ng-container *ngIf="!version.authors?.length && !version.orcidAuthors?.length">
-        <ng-template *ngTemplateOutlet="warning; context: { innerTemplate: noAuthors }"></ng-template>
-      </ng-container>
-      <ng-template *ngTemplateOutlet="snapshotBlurb"></ng-template>
-      <div>
-        <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
-          <button mat-flat-button mat-dialog-close class="secondary-1">Cancel</button>
-          <button
-            class="accent-1-dark-btn mat-elevation-z"
-            data-cy="snapshot-button"
-            [disabled]="(isAjaxing$ | async) || (!version.authors?.length && !version.orcidAuthors?.length)"
-            mat-raised-button
-            (click)="snapshot()"
-          >
-            Snapshot
-          </button>
-        </div>
-      </div>
+      <mat-dialog-content>
+        <ng-container *ngIf="!version.authors?.length && !version.orcidAuthors?.length">
+          <ng-template *ngTemplateOutlet="warning; context: { innerTemplate: noAuthors }"></ng-template>
+        </ng-container>
+        <ng-template *ngTemplateOutlet="snapshotBlurb"></ng-template>
+      </mat-dialog-content>
+      <mat-dialog-actions [align]="'end'">
+        <button mat-button mat-dialog-close color="accent">Cancel</button>
+        <button
+          class="accent-1-dark"
+          data-cy="snapshot-button"
+          [disabled]="(isAjaxing$ | async) || (!version.authors?.length && !version.orcidAuthors?.length)"
+          mat-flat-button
+          (click)="snapshot()"
+        >
+          Snapshot
+        </button>
+      </mat-dialog-actions>
     </div>
 
     <div *ngSwitchDefault>
-      <div fxLayout="row" fxLayoutAlign="space-evenly center">
-        <app-exporter-step
-          [stepState]="state.snapshot"
-          matIcon="photo_camera"
-          successText="Snapshot created"
-          errorText="Snapshot error"
-          defaultText="Snapshot"
-        ></app-exporter-step>
-        <app-exporter-step [stepState]="state.doi" aiIcon="ai-doi" successText="DOI created" errorText="DOI error" defaultText="DOI">
-        </app-exporter-step>
-        <app-exporter-step
-          *ngIf="action === SnapshotExporterAction.ORCID"
-          [stepState]="state.orcid"
-          [faIcon]="faOrcid"
-          successText="ORCID created"
-          errorText="ORCID error"
-          defaultText="ORCID"
-        ></app-exporter-step>
-      </div>
+      <mat-dialog-content>
+        <div fxLayout="row" fxLayoutAlign="space-evenly center">
+          <app-exporter-step
+            [stepState]="state.snapshot"
+            matIcon="photo_camera"
+            successText="Snapshot created"
+            errorText="Snapshot error"
+            defaultText="Snapshot"
+          ></app-exporter-step>
+          <app-exporter-step [stepState]="state.doi" aiIcon="ai-doi" successText="DOI created" errorText="DOI error" defaultText="DOI">
+          </app-exporter-step>
+          <app-exporter-step
+            *ngIf="action === SnapshotExporterAction.ORCID"
+            [stepState]="state.orcid"
+            [faIcon]="faOrcid"
+            successText="ORCID created"
+            errorText="ORCID error"
+            defaultText="ORCID"
+          ></app-exporter-step>
+        </div>
 
-      <ng-container
-        *ngIf="action === SnapshotExporterAction.DOI && (hasZenodoToken$ | async) === false && !version.dois[DoiInitiatorEnum.USER]"
-      >
-        <ng-template *ngTemplateOutlet="warning; context: { innerTemplate: zenodoNotLinked }"></ng-template>
-      </ng-container>
-      <div *ngIf="action === SnapshotExporterAction.ORCID && (hasOrcidToken$ | async) === false">
-        <ng-template *ngTemplateOutlet="warning; context: { innerTemplate: orcidNotLinked }"></ng-template>
-      </div>
+        <ng-container
+          *ngIf="action === SnapshotExporterAction.DOI && (hasZenodoToken$ | async) === false && !version.dois[DoiInitiatorEnum.USER]"
+        >
+          <ng-template *ngTemplateOutlet="warning; context: { innerTemplate: zenodoNotLinked }"></ng-template>
+        </ng-container>
+        <div *ngIf="action === SnapshotExporterAction.ORCID && (hasOrcidToken$ | async) === false">
+          <ng-template *ngTemplateOutlet="warning; context: { innerTemplate: orcidNotLinked }"></ng-template>
+        </div>
 
-      <div *ngIf="action === SnapshotExporterAction.DOI">
-        <ng-template *ngTemplateOutlet="doiBlurb"></ng-template>
-      </div>
-      <div *ngIf="action === SnapshotExporterAction.ORCID">
-        <ng-template *ngTemplateOutlet="orcidBlurb"></ng-template>
-      </div>
+        <div *ngIf="action === SnapshotExporterAction.DOI">
+          <ng-template *ngTemplateOutlet="doiBlurb"></ng-template>
+        </div>
+        <div *ngIf="action === SnapshotExporterAction.ORCID">
+          <ng-template *ngTemplateOutlet="orcidBlurb"></ng-template>
+        </div>
+      </mat-dialog-content>
 
-      <div mat-dialog-actions fxLayout="row" fxLayoutAlign="end">
+      <mat-dialog-actions [align]="'end'">
         <div *ngIf="promptToConfirmSnapshot && state.overall === StepState.INITIAL" fxLayout="row" fxLayoutAlign="end" class="mb-3 w-100">
-          <mat-card fxFlex="50" class="alert-warning mat-elevation-z size-small weight-bold py-1"
-            >Are you sure you want to snapshot this version, making it uneditable? This cannot be undone.</mat-card
-          >
+          <mat-card appearance="outlined" fxFlex="50" class="alert-warning size-small weight-bold">
+            <mat-card-content>
+              Are you sure you want to snapshot this version, making it uneditable? This cannot be undone.
+            </mat-card-content>
+          </mat-card>
         </div>
         <div fxLayoutAlign="end" fxLayout="row" fxFlex="50">
-          <button mat-flat-button mat-dialog-close class="secondary-1">Cancel</button>
+          <button mat-button mat-dialog-close color="accent">Cancel</button>
           <button
             [disabled]="
               ((hasZenodoToken$ | async) === false && !version.dois[DoiInitiatorEnum.USER]) ||
               (action === SnapshotExporterAction.ORCID && (hasOrcidToken$ | async) === false) ||
               state.overall !== StepState.INITIAL
             "
-            class="accent-1-dark-btn mat-elevation-z"
-            mat-raised-button
+            class="accent-1-dark"
+            mat-flat-button
             data-cy="export-button"
             (click)="export(false)"
             *ngIf="!promptToConfirmSnapshot"
@@ -85,8 +89,8 @@
             {{ action === SnapshotExporterAction.DOI ? 'Request DOI' : 'Export' }}
           </button>
           <button
-            class="accent-1-dark-btn mat-elevation-z"
-            mat-raised-button
+            class="accent-1-dark"
+            mat-flat-button
             [disabled]="state.overall !== StepState.INITIAL"
             (click)="export(true)"
             *ngIf="promptToConfirmSnapshot"
@@ -94,7 +98,7 @@
             Confirm
           </button>
         </div>
-      </div>
+      </mat-dialog-actions>
     </div>
   </div>
 
@@ -145,31 +149,25 @@
   </ng-template>
 
   <ng-template #zenodoNotLinked>
-    <div>
-      <div data-cy="zenodo-not-linked">
-        To request a DOI, you must first link your Zenodo account in your Dockstore Linked Accounts section. After linking, come back to
-        this screen and try again.
-      </div>
-      <div>
-        <button data-cy="link-zenodo" class="ml-1 accent-1-dark mat-elevation-z" mat-raised-button (click)="linkAccount()">
-          <mat-icon>link</mat-icon>
-          Link account now
-        </button>
-      </div>
-    </div>
+    <span data-cy="zenodo-not-linked">
+      To request a DOI, you must first link your Zenodo account in your Dockstore Linked Accounts section. After linking, come back to this
+      screen and try again.
+    </span>
+    <button data-cy="link-zenodo" class="ml-1 accent-1-dark" mat-stroked-button (click)="linkAccount()">
+      <mat-icon class="mat-icon-sm">link</mat-icon>
+      Link account now
+    </button>
   </ng-template>
 
   <ng-template #orcidNotLinked>
-    <div>
-      <div data-cy="orcid-not-linked">
-        To export a {{ workflowTerm }} to ORCID, you must first link your ORCID account in your Dockstore Linked Accounts section. After
-        linking, come back to this screen and try again.
-        <button data-cy="link-orcid" class="ml-1 accent-1-dark mat-elevation-z" mat-raised-button (click)="linkAccount()">
-          <mat-icon>link</mat-icon>
-          Link account now
-        </button>
-      </div>
-    </div>
+    <span data-cy="orcid-not-linked">
+      To export a {{ workflowTerm }} to ORCID, you must first link your ORCID account in your Dockstore Linked Accounts section. After
+      linking, come back to this screen and try again.
+      <button data-cy="link-orcid" class="ml-1 accent-1-dark" mat-stroked-button (click)="linkAccount()">
+        <mat-icon class="mat-icon-sm">link</mat-icon>
+        Link account now
+      </button>
+    </span>
   </ng-template>
 
   <ng-template #noAuthors>
@@ -198,11 +196,11 @@
   </ng-template>
 
   <ng-template #warning let-innerTemplate="innerTemplate">
-    <div class="alert-danger p-2" fxLayout="row" fxLayoutGap="0.625rem;" fxLayoutAlign="end top">
-      <div>
+    <mat-card appearance="outlined" role="alert" class="alert alert-danger" fxLayout="row" fxLayoutGap="0.625rem;" fxLayoutAlign="end top">
+      <mat-card-content>
         <mat-icon class="alert-danger-icon">warning</mat-icon>
-      </div>
-      <ng-container *ngTemplateOutlet="innerTemplate"></ng-container>
-    </div>
+        <ng-container *ngTemplateOutlet="innerTemplate"></ng-container>
+      </mat-card-content>
+    </mat-card>
   </ng-template>
 </div>
