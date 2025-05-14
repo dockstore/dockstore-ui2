@@ -23,7 +23,6 @@
     "test": "npx ng test",
     "lint": "npx ng lint",
     "e2e": "npx ng e2e",
-    "postinstall": "ngcc",
     "test-qa-waf": "npx cypress run -c baseUrl=https://qa.dockstore.org -s \"cypress/e2e/smokeTests/qaOnly/waf.ts,cypress/e2e/smokeTests/sharedTests/waf.ts\"",
     "test-staging-waf": "npx cypress run -c baseUrl=https://staging.dockstore.org -s \"cypress/e2e/smokeTests/stagingOnly/waf.ts,cypress/e2e/smokeTests/sharedTests/waf.ts\"",
     "test-prod-waf": "npx cypress run -c baseUrl=https://dockstore.org -s \"cypress/e2e/smokeTests/prodOnly/waf.ts,cypress/e2e/smokeTests/sharedTests/waf.ts\"",
