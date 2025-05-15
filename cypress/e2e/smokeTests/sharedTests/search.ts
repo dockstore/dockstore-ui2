@@ -1,4 +1,4 @@
-import { isProd, typeInInput } from '../../../support/commands';
+import { typeInInput } from '../../../support/commands';
 
 describe('Admin UI', () => {
   before(() => {
@@ -27,8 +27,7 @@ describe('Admin UI', () => {
       cy.url().should('not.include', 'search=dhockstore');
 
       cy.contains('Items per page');
-      // TODO: set to '[data-cy=search-entry-table-paginator]' when search cards are in staging and prod
-      const searchPaginatorDataCy = isProd() ? '[data-cy=search-workflow-table-paginator]' : '[data-cy=search-entry-table-paginator]';
+      const searchPaginatorDataCy = '[data-cy=search-entry-table-paginator]';
       cy.get(searchPaginatorDataCy).contains(10).should('be.visible').click();
       cy.get('mat-option').contains(20).click();
       cy.get(searchPaginatorDataCy).contains(20);
