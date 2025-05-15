@@ -23,7 +23,6 @@ describe('run stochastic smoke test', () => {
   testEntry('Notebooks');
 });
 
-// TODO: set to only 'entryColumn' when search cards are deployed to staging and prod
 function getSearchDataCy() {
   return 'entryColumn';
 }
