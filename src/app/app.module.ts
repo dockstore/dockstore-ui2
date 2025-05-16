@@ -13,8 +13,8 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { MatLegacySnackBarConfig as MatSnackBarConfig } from '@angular/material/legacy-snack-bar';
-import { MatLegacyTooltipDefaultOptions as MatTooltipDefaultOptions } from '@angular/material/legacy-tooltip';
+import { MatSnackBarConfig } from '@angular/material/snack-bar';
+import { MatTooltipDefaultOptions } from '@angular/material/tooltip';
 import { ConfigurationService } from './configuration.service';
 import { EntryTypeMetadataService } from './entry/type-metadata/entry-type-metadata.service';
 import { Configuration } from './shared/openapi/configuration';

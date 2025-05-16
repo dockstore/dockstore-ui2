@@ -103,12 +103,6 @@ h3 {
   font-size: 2.5rem;
 }
 
-.play-icon {
-  font-size: 20px;
-  color: white;
-  display: inline;
-}
-
 .search-background {
   background: mat.get-color-from-palette($dockstore-app-accent);
   padding: 2rem;
@@ -117,25 +111,6 @@ h3 {
 
 .warn-1 {
   color: mat.get-color-from-palette($dockstore-app-error, darker);
-}
-
-// Style home search mat-form-field which is vastly different from all other form fields on the site due to the accented border on a non-white background
-::ng-deep .search-background .landing-search {
-  max-width: 600px;
-  background: white;
-  color: black;
-  .mat-form-field-wrapper {
-    // Removing the padding because we don't need hint
-    padding-bottom: 0;
-    // Material expects to have some extra space from the form field with `margin: .25em 0;`
-    // However, we have none because of the accent border surrounding the form field
-    margin: 0;
-  }
-
-  .mat-form-field-infix {
-    // Overriding the default `padding: 1em 0 1em 0;` and making it smaller to align with mocks
-    padding: 0.5em 0;
-  }
 }
 
 // Changing the color of the search icon

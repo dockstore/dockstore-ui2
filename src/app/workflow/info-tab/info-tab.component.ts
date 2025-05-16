@@ -15,7 +15,7 @@
  */
 import { HttpResponse } from '@angular/common/http';
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { MatLegacyRadioModule } from '@angular/material/legacy-radio';
+import { MatRadioModule } from '@angular/material/radio';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { FileService } from 'app/shared/file.service';
@@ -30,7 +30,6 @@ import { ExtendedWorkflowsService } from '../../shared/extended-workflows.servic
 import { ExtendedWorkflow } from '../../shared/models/ExtendedWorkflow';
 import { SessionQuery } from '../../shared/session/session.query';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
-import { WorkflowService } from '../../shared/state/workflow.service';
 import { Workflow } from '../../shared/openapi/model/workflow';
 import { WorkflowVersion } from '../../shared/openapi/model/workflowVersion';
 import { Tooltip } from '../../shared/tooltip';
@@ -41,7 +40,7 @@ import { BaseUrlPipe } from '../../shared/entry/base-url.pipe';
 import { MapFriendlyValuesPipe } from '../../search/map-friendly-values.pipe';
 import { MarkdownWrapperComponent } from '../../shared/markdown-wrapper/markdown-wrapper.component';
 import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
-import { MatLegacyTableModule } from '@angular/material/legacy-table';
+import { MatTableModule } from '@angular/material/table';
 import { InfoTabCheckerWorkflowPathComponent } from '../../shared/entry/info-tab-checker-workflow-path/info-tab-checker-workflow-path.component';
 import { AiBubbleComponent } from '../../shared/ai-bubble/ai-bubble.component';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
@@ -49,12 +48,14 @@ import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { SnackbarDirective } from '../../shared/snackbar.directive';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
-import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { MatCardModule } from '@angular/material/card';
 import { NgIf, NgFor, NgClass, NgSwitch, NgSwitchCase, NgSwitchDefault, AsyncPipe, TitleCasePipe } from '@angular/common';
 import { DisplayTopicComponent } from 'app/shared/entry/info-tab-topic/display-topic/display-topic.component';
+import { MatChipsModule } from '@angular/material/chips';
+import { PreviewWarningComponent } from 'app/preview-warning/preview-warning.component';
 
 @Component({
   selector: 'app-info-tab',
@@ -63,20 +64,20 @@ import { DisplayTopicComponent } from 'app/shared/entry/info-tab-topic/display-t
   standalone: true,
   imports: [
     NgIf,
-    MatLegacyCardModule,
+    MatCardModule,
     MatDividerModule,
-    MatLegacyTooltipModule,
-    MatLegacyButtonModule,
+    MatTooltipModule,
+    MatButtonModule,
     SnackbarDirective,
     ClipboardModule,
     MatIconModule,
     FormsModule,
     FlexModule,
     AiBubbleComponent,
-    MatLegacyRadioModule,
+    MatRadioModule,
     InfoTabCheckerWorkflowPathComponent,
     NgFor,
-    MatLegacyTableModule,
+    MatTableModule,
     ExtendedModule,
     NgClass,
     MarkdownWrapperComponent,
@@ -89,6 +90,8 @@ import { DisplayTopicComponent } from 'app/shared/entry/info-tab-topic/display-t
     BaseUrlPipe,
     VersionProviderUrlPipe,
     DisplayTopicComponent,
+    MatChipsModule,
+    PreviewWarningComponent,
   ],
 })
 export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
@@ -107,6 +110,7 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   public validationPatterns = validationDescriptorPatterns;
   public WorkflowType = Workflow;
   public TopicSelectionEnum = Workflow.TopicSelectionEnum;
+  public DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
   public tooltip = Tooltip;
   public description: string | null;
   workflowPathEditing: boolean;
@@ -133,7 +137,6 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   HOSTED: Workflow metadata and files hosted on Dockstore.`;
   Dockstore = Dockstore;
   constructor(
-    private workflowService: WorkflowService,
     private extendedWorkflowsService: ExtendedWorkflowsService,
     private workflowsService: WorkflowsService,
     private sessionQuery: SessionQuery,
@@ -210,18 +213,6 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((editing) => (this.defaultTestFilePathEditing = editing));
     this.infoTabService.forumUrlEditing$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((editing) => (this.forumUrlEditing = editing));
-  }
-  /**
-   * Handle restubbing a workflow
-   * TODO: Handle restub error
-   *
-   * @memberof InfoTabComponent
-   */
-  restubWorkflow() {
-    this.extendedWorkflowsService.restub(this.workflow.id).subscribe((restubbedWorkflow: Workflow) => {
-      this.workflowService.setWorkflow(restubbedWorkflow);
-      this.workflowService.upsertWorkflowToWorkflow(restubbedWorkflow);
-    });
   }
 
   downloadZip() {

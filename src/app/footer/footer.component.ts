@@ -29,7 +29,7 @@ import { NgFor } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { SnackbarDirective } from '../shared/snackbar.directive';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatButtonModule } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 
@@ -38,7 +38,7 @@ import { FlexModule } from '@ngbracket/ngx-layout/flex';
   templateUrl: './footer.component.html',
   styleUrls: ['./footer.component.scss'],
   standalone: true,
-  imports: [FlexModule, RouterLink, MatLegacyButtonModule, SnackbarDirective, ClipboardModule, MatIconModule, NgFor, GitTagPipe],
+  imports: [FlexModule, RouterLink, MatButtonModule, SnackbarDirective, ClipboardModule, MatIconModule, NgFor, GitTagPipe],
 })
 export class FooterComponent extends Base implements OnInit {
   domain: string;
@@ -50,7 +50,7 @@ export class FooterComponent extends Base implements OnInit {
   year: number;
   content: string;
   public sponsors: Sponsor[] = [
-    new Sponsor('collaboratory.svg', new URL('https://www.cancercollaboratory.org/')),
+    new Sponsor('collaboratory.svg', new URL('https://doi.org/10.1158/1538-7445.AM2017-378')),
     new Sponsor('oicr.svg', new URL('https://oicr.on.ca/')),
     new Sponsor('broad1.svg', new URL('https://www.broadinstitute.org/')),
     new Sponsor('ga.svg', new URL('https://genomicsandhealth.org/')),

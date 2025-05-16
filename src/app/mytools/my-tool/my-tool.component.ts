@@ -14,7 +14,7 @@
  *     limitations under the License.
  */
 import { Component, OnInit } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, NavigationEnd, Router, RouterEvent } from '@angular/router';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { AlertService } from 'app/shared/alert/state/alert.service';
@@ -49,13 +49,13 @@ import { EntryType } from '../../shared/enum/entry-type';
 import { UserService } from 'app/shared/user/user.service';
 import { ContainerComponent } from '../../container/container.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { MatLegacyCardModule } from '@angular/material/legacy-card';
-import { MatLegacyMenuModule } from '@angular/material/legacy-menu';
-import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatCardModule } from '@angular/material/card';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { NgIf, AsyncPipe, TitleCasePipe } from '@angular/common';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatButtonModule } from '@angular/material/button';
 import { HeaderComponent } from '../../header/header.component';
 import { MySidebarComponent } from '../../my-sidebar/my-sidebar.component';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
@@ -72,15 +72,15 @@ import { Dockstore } from 'app/shared/dockstore.model';
     FlexModule,
     MySidebarComponent,
     HeaderComponent,
-    MatLegacyButtonModule,
+    MatButtonModule,
     MatIconModule,
     MatSidenavModule,
     NgIf,
-    MatLegacyTooltipModule,
-    MatLegacyMenuModule,
+    MatTooltipModule,
+    MatMenuModule,
     SidebarAccordionComponent,
     WorkflowSidebarAccordionComponent,
-    MatLegacyCardModule,
+    MatCardModule,
     FontAwesomeModule,
     ContainerComponent,
     AsyncPipe,

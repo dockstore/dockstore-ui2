@@ -14,7 +14,7 @@
  *     limitations under the License.
  */
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router, RouterLink } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 import { first, map, takeUntil } from 'rxjs/operators';
@@ -30,7 +30,7 @@ import { TokenUser } from './../../../shared/openapi/model/tokenUser';
 import { AccountsService } from './accounts.service';
 import { LogoutService } from '../../../shared/logout.service';
 import { RevokeTokenDialogComponent } from './revoke-token-dialog/revoke-token-dialog.component';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { accountInfo, bootstrap4largeModalSize } from '../../../shared/constants';
 import { AlertService } from '../../../shared/alert/state/alert.service';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -38,13 +38,13 @@ import { GetTokenUsernamePipe } from './getTokenUsername.pipe';
 import { MatIconModule } from '@angular/material/icon';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { SnackbarDirective } from '../../../shared/snackbar.directive';
-import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
-import { MatLegacyInputModule } from '@angular/material/legacy-input';
-import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
-import { MatLegacyChipsModule } from '@angular/material/legacy-chips';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatChipsModule } from '@angular/material/chips';
 import { MatBadgeModule } from '@angular/material/badge';
-import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { MatCardModule } from '@angular/material/card';
 import { NgIf, NgFor, AsyncPipe } from '@angular/common';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 
@@ -70,14 +70,14 @@ export interface AccountInfo {
   imports: [
     FlexModule,
     NgIf,
-    MatLegacyCardModule,
+    MatCardModule,
     MatBadgeModule,
-    MatLegacyChipsModule,
+    MatChipsModule,
     RouterLink,
-    MatLegacyFormFieldModule,
-    MatLegacyInputModule,
-    MatLegacyButtonModule,
-    MatLegacyTooltipModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatTooltipModule,
     SnackbarDirective,
     ClipboardModule,
     MatIconModule,

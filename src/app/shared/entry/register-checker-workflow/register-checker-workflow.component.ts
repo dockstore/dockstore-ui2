@@ -31,32 +31,34 @@ import { Workflow } from '../../openapi/model/workflow';
 import { formErrors, validationDescriptorPatterns, validationMessages } from '../../validationMessages.model';
 import { DescriptorLanguageService } from '../descriptor-language.service';
 import { RegisterCheckerWorkflowService } from './register-checker-workflow.service';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
-import { MatLegacyOptionModule } from '@angular/material/legacy-core';
-import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { MatButtonModule } from '@angular/material/button';
+import { MatOptionModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
 import { NgIf, NgFor, AsyncPipe } from '@angular/common';
-import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
-import { MatLegacyInputModule } from '@angular/material/legacy-input';
-import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { AlertComponent } from '../../alert/alert.component';
-import { MatLegacyDialogModule } from '@angular/material/legacy-dialog';
+import { MatDialogModule } from '@angular/material/dialog';
+import { FlexModule } from '@ngbracket/ngx-layout';
 
 @Component({
   templateUrl: './register-checker-workflow.component.html',
   standalone: true,
   imports: [
-    MatLegacyDialogModule,
+    MatDialogModule,
     AlertComponent,
     FormsModule,
-    MatLegacyFormFieldModule,
-    MatLegacyInputModule,
-    MatLegacyTooltipModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatTooltipModule,
     NgIf,
-    MatLegacySelectModule,
+    MatSelectModule,
     NgFor,
-    MatLegacyOptionModule,
-    MatLegacyButtonModule,
+    MatOptionModule,
+    MatButtonModule,
     AsyncPipe,
+    FlexModule,
   ],
 })
 export class RegisterCheckerWorkflowComponent extends Base implements OnInit, AfterViewChecked {

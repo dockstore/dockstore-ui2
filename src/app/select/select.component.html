@@ -13,9 +13,9 @@
   ~    See the License for the specific language governing permissions and
   ~    limitations under the License.
   -->
-
-<mat-form-field class="w-100">
-  <mat-select [placeholder]="placeholder" [(value)]="obj" (selectionChange)="changedSelect(obj)">
+<mat-form-field class="w-100 white-background">
+  <mat-label *ngIf="placeholder">{{ placeholder }}</mat-label>
+  <mat-select [(value)]="obj" (selectionChange)="changedSelect(obj)">
     <mat-option [matTooltip]="field ? obj[field] : obj" *ngFor="let obj of items" [value]="obj">
       <div *ngIf="field">
         {{ obj[field] }}

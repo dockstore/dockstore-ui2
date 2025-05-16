@@ -15,7 +15,7 @@
  */
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { MatLegacyCardModule as MatCardModule } from '@angular/material/legacy-card';
+import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { StarentryService } from '../shared/starentry.service';
 import { UserService } from '../shared/user/user.service';

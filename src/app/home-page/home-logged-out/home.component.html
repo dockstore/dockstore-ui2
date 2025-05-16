@@ -32,22 +32,24 @@
         <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="start start" fxLayoutGap="2rem">
           <a [routerLink]="['/about']">
             <button mat-raised-button color="accent">
-              <img src="../../../assets/images/home/icons-navigation-about-white.svg" alt="dockstore icon" />
+              <img src="../../../assets/images/home/icons-navigation-about-white.svg" alt="dockstore icon" class="mr-2" />
               About Dockstore
             </button>
           </a>
           <button mat-raised-button color="accent" data-cy="video-overview-button" (click)="openYoutube()">
-            <mat-icon class="play-icon">play_circle_filled</mat-icon>
-            Watch the Overview
+            <span>
+              <mat-icon>play_circle_filled</mat-icon>
+              Watch the Overview
+            </span>
           </button>
         </div>
       </div>
       <div fxFlex>
         <div class="search-background">
-          <mat-form-field appearance="outline" class="w-100 landing-search fully-rounded">
+          <mat-form-field class="w-100 white-background">
             <mat-icon class="search-icon" matPrefix>search</mat-icon>
             <input #search matInput id="searchBar" placeholder="Search..." (keyup.enter)="goToSearch(search.value)" />
-            <button mat-button *ngIf="search.value" matSuffix mat-icon-button (click)="search.value = ''">
+            <button *ngIf="search.value" matSuffix mat-icon-button (click)="search.value = ''">
               <mat-icon>close</mat-icon>
             </button>
           </mat-form-field>
@@ -60,23 +62,23 @@
       <span>Browse popular categories</span>
       <div *ngIf="(workflowCategories$ | async).length > 0" class="inline-block">
         <img src="../../../assets/svg/sub-nav/workflow.svg" class="ml-4 mr-2" alt="workflow icon" />
-        <mat-chip-list class="bubble-list">
+        <mat-chip-set>
           <app-category-button
             *ngFor="let category of workflowCategories$ | async | slice: 0:4"
             [category]="category"
             entryType="workflow"
           ></app-category-button>
-        </mat-chip-list>
+        </mat-chip-set>
       </div>
       <div *ngIf="(toolCategories$ | async).length > 0" class="inline-block">
         <img src="../../../assets/svg/sub-nav/tool.svg" class="ml-3 mr-2" alt="tool icon" />
-        <mat-chip-list class="bubble-list">
+        <mat-chip-set>
           <app-category-button
             *ngFor="let category of toolCategories$ | async | slice: 0:4"
             [category]="category"
             entryType="tool"
           ></app-category-button>
-        </mat-chip-list>
+        </mat-chip-set>
       </div>
     </div>
   </div>
@@ -112,7 +114,7 @@
                 </li>
                 <li>
                   Try out the workflow by running it on a variety of launch partners including
-                  <a target="_blank" rel="noopener noreferrer" href="https://www.dnastack.com/">DNAstack</a>,
+                  <a target="_blank" rel="noopener noreferrer" href="https://dnastack.com/">DNAstack</a>,
                   <a target="_blank" rel="noopener noreferrer" href="https://terra.bio">Terra</a>,
                   <a target="_blank" rel="noopener noreferrer" href="https://www.dnanexus.com/">DNAnexus</a>, and
                   <a target="_blank" rel="noopener noreferrer" href="https://www.sevenbridges.com">SevenBridges</a>.
@@ -318,7 +320,7 @@
           <span>Discourse forum about helpful Dockstore topics.</span>
         </div>
       </div>
-      <app-mastodon-timeline fxLayout="column" fxFlex="33" fxFlex.lt-md="100" class="p-3 mh-100"></app-mastodon-timeline>
+      <app-mastodon-timeline fxLayout="column" fxFlex="33" fxFlex.lt-md="100" class="mh-100"></app-mastodon-timeline>
     </div>
   </div>
 </div>

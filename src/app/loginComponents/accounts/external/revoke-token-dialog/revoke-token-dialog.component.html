@@ -23,20 +23,15 @@
     <p>Please enter your account username, {{ username }}, to revoke.</p>
     <div [formGroup]="usernameForm">
       <mat-form-field>
-        <input
-          id="revokeTokenUsernameInput"
-          data-cy="revoke-token-username-input"
-          matInput
-          [formControl]="usernameFormControl"
-          placeholder="Username"
-        />
+        <mat-label>Username</mat-label>
+        <input id="revokeTokenUsernameInput" data-cy="revoke-token-username-input" matInput [formControl]="usernameFormControl" />
       </mat-form-field>
-    </div>
-    <div class="btn-group" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="1rem">
-      <button mat-flat-button mat-dialog-close class="secondary-1">No</button>
-      <button mat-flat-button (click)="revokeToken()" [disabled]="usernameForm.invalid" data-cy="confirm-revoke-token-button" color="warn">
-        Yes, revoke my Dockstore token
-      </button>
     </div>
   </div>
 </div>
+<mat-dialog-actions [align]="'end'">
+  <button mat-button mat-dialog-close color="accent">Cancel</button>
+  <button mat-flat-button (click)="revokeToken()" [disabled]="usernameForm.invalid" data-cy="confirm-revoke-token-button" color="warn">
+    Revoke Token
+  </button>
+</mat-dialog-actions>

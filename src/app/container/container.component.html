@@ -16,8 +16,10 @@
 <app-workflow *ngIf="displayAppTool" [isWorkflowPublic]="isToolPublic" [shouldClearState]="false"></app-workflow>
 <div *ngIf="tool && !displayAppTool">
   <div class="row m-1 mt-3 mb-0" *ngIf="tool?.archived">
-    <mat-card class="alert alert-warning mat-elevation-z m-0">
-      This {{ tool.entryTypeMetadata.term }} was archived on {{ tool.dbUpdateDate | date: 'yyyy-MM-dd' }}. It is now read-only.
+    <mat-card appearance="outlined" class="alert alert-warning m-0">
+      <mat-card-content>
+        This {{ tool.entryTypeMetadata.term }} was archived on {{ tool.dbUpdateDate | date: 'yyyy-MM-dd' }}. It is now read-only.
+      </mat-card-content>
     </mat-card>
   </div>
   <div
@@ -26,21 +28,25 @@
       (tool?.mode === ModeEnum.AUTODETECTQUAYTAGSAUTOMATEDBUILDS || tool?.mode === ModeEnum.AUTODETECTQUAYTAGSWITHMIXED) && !tool?.gitUrl
     "
   >
-    <mat-card class="alert alert-info mat-elevation-z" role="alert">
-      <mat-icon>warning</mat-icon> This Quay.io tool does not have an associated Git repository. Please view the Quay.io repository and add
-      a build trigger for a valid Git repository. Once the build has been added, refresh the tool.
+    <mat-card appearance="outlined" class="alert alert-info" role="alert">
+      <mat-card-content>
+        <mat-icon>warning</mat-icon> This Quay.io tool does not have an associated Git repository. Please view the Quay.io repository and
+        add a build trigger for a valid Git repository. Once the build has been added, refresh the tool.
+      </mat-card-content>
     </mat-card>
   </div>
 
   <div class="row m-1" *ngIf="tool?.mode === ModeEnum.HOSTED && tool?.workflowVersions?.length === 0">
-    <mat-card class="alert alert-info mat-elevation-z" role="alert">
-      <mat-icon>warning</mat-icon> Your manually added tool does not have any tags. Go to the versions tab to add one.
+    <mat-card appearance="outlined" class="alert alert-info" role="alert">
+      <mat-card-content>
+        <mat-icon>warning</mat-icon> Your manually added tool does not have any tags. Go to the versions tab to add one.
+      </mat-card-content>
     </mat-card>
   </div>
   <div class="row m-1" fxLayout.lt-sm="column" fxLayout.gt-sm="row">
     <app-json-ld [json]="schema"></app-json-ld>
     <div fxFlex="80">
-      <h3 id="tool-path" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1rem">
+      <h3 id="tool-path" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1rem" data-cy="entry-title">
         <span fxLayout.lt-sm="column">
           <span>
             <img src="../../assets/svg/tool-circle.svg" alt="tool icon" />
@@ -52,19 +58,18 @@
         <span fxLayout.lt-sm="column" style="word-break: break-word">
           {{ tool?.tool_path }}<span *ngIf="tool?.workflowVersions.length > 0">:</span
           ><span class="ds-steelblue">{{ selectedVersion?.name }}</span>
-          <span id="verifiedIcon" *ngIf="(extendedTool$ | async)?.versionVerified" fxHide.lt-sm>
-            <mat-chip matTooltip="Verified" class="bubble tool-background ml-3">
-              <a [href]="verifiedLink" class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">
-                <mat-icon class="verified-icon">done</mat-icon>
-                <span>Verified</span>
-              </a>
-            </mat-chip>
-          </span>
+          <mat-chip-set *ngIf="(extendedTool$ | async)?.versionVerified" class="ml-3">
+            <a mat-chip id="verifiedIcon" fxHide.lt-sm [href]="verifiedLink" class="tool-background">
+              <mat-icon>done</mat-icon>
+              <span class="ml-2">Verified</span>
+            </a>
+          </mat-chip-set>
         </span>
       </h3>
 
       <div *ngIf="!publicPage && tool?.workflowVersions.length > 0">
-        <mat-form-field>
+        <mat-form-field class="my-3">
+          <mat-label>Current Version</mat-label>
           <mat-select name="toolVersions" [(value)]="selectedVersion" (selectionChange)="onSelectedVersionChange(selectedVersion)">
             <mat-option *ngFor="let tag of tool.workflowVersions" [value]="tag">{{ tag.name }}</mat-option>
           </mat-select>
@@ -85,10 +90,10 @@
       ></app-starring>
       <h3 class="pull-right">
         <div class="mr-2" *ngIf="publicPage && tool?.private_access">
-          <a mat-raised-button class="accent-1-dark-btn" [href]="requestAccessHREF$ | async"> Request Access </a>
+          <a mat-raised-button class="accent-1-dark" [href]="requestAccessHREF$ | async"> Request Access </a>
         </div>
         <div class="mr-2" *ngIf="publicPage && (extendedTool$ | async)?.email && !tool?.private_access">
-          <a mat-raised-button class="mat-accent" [href]="contactAuthorHREF"> Contact Author </a>
+          <a mat-raised-button color="accent" [href]="contactAuthorHREF"> Contact Author </a>
         </div>
       </h3>
     </div>
@@ -105,42 +110,45 @@
   </div>
   <div class="row m-1">
     <div *ngIf="tool">
-      <span *ngIf="(categories$ | async).length > 0" class="inline-block mr-5 mt-1 mb-1">
-        <span class="size-small mr-2">Categories</span>
-        <mat-chip-list class="bubble-list">
+      <span *ngIf="(categories$ | async).length > 0" class="mr-5 mt-1 mb-1">
+        <span class="size-small mr-2">Categories:</span>
+        <mat-chip-set>
           <app-category-button *ngFor="let category of categories$ | async" [category]="category" entryType="tool"></app-category-button>
-        </mat-chip-list>
+        </mat-chip-set>
       </span>
-      <span *ngIf="!labelsEditMode && !starGazersClicked" class="inline-block mt-1 mb-1">
-        <span *ngIf="containerEditData?.labels.length > 0" class="size-small mr-2">Labels</span>
-        <mat-chip-list class="bubble-list">
-          <mat-chip
-            class="bubble tool-background pointer"
-            *ngFor="let label of containerEditData?.labels"
-            (click)="goToSearch(label, EntryType.Tool)"
-            >{{ label }}</mat-chip
-          >
-          <button
-            type="button"
-            *ngIf="!labelsEditMode && !isToolPublic"
-            mat-button
-            class="private-btn small-btn-structure"
-            (click)="toggleLabelsEditMode()"
-            [disabled]="tool.archived"
-          >
-            <img src="../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit labels" />
-            Manage labels
-          </button>
-        </mat-chip-list>
+      <span *ngIf="!labelsEditMode && !starGazersClicked" class="mt-1 mb-1">
+        <span *ngIf="containerEditData?.labels.length > 0" class="size-small mr-3">
+          Labels:
+          <mat-chip-set class="ml-2">
+            <mat-chip
+              class="tool-background pointer"
+              *ngFor="let label of containerEditData?.labels"
+              (click)="goToSearch(label, EntryType.Tool)"
+              >{{ label }}</mat-chip
+            >
+          </mat-chip-set>
+        </span>
+        <button
+          type="button"
+          *ngIf="!labelsEditMode && !isToolPublic"
+          mat-stroked-button
+          class="private-btn"
+          (click)="toggleLabelsEditMode()"
+          [disabled]="tool.archived"
+        >
+          <img src="../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit labels" />
+          Manage labels
+        </button>
       </span>
 
       <span *ngIf="labelsEditMode && !isToolPublic">
-        <mat-form-field class="mt-3" style="width: 100%">
-          <mat-chip-list #chipList>
-            <mat-chip *ngFor="let label of containerEditData?.labels" [removable]="true" (removed)="removeLabel(label)">
+        <mat-form-field class="my-3 w-100">
+          <mat-label>Labels</mat-label>
+          <mat-chip-grid #chipList>
+            <mat-chip-row *ngFor="let label of containerEditData?.labels" [removable]="true" (removed)="removeLabel(label)">
               {{ label }}
               <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
-            </mat-chip>
+            </mat-chip-row>
             <input
               data-cy="toolLabelInput"
               placeholder="New label..."
@@ -153,13 +161,13 @@
             <mat-error *ngIf="labelFormControl.hasError('pattern')"
               >Only comma-separated labels with alphanumeric characters and internal dashes allowed</mat-error
             >
-          </mat-chip-list>
+          </mat-chip-grid>
         </mat-form-field>
         <button
           type="button"
           (click)="cancelLabelChanges()"
-          mat-button
-          class="private-btn small-btn-structure mr-2"
+          mat-stroked-button
+          class="private-btn mr-2"
           *ngIf="labelsEditMode && !isToolPublic"
         >
           <img src="../assets/svg/icons-reject.svg" alt="Cancel" class="pr-1 pb-1" />
@@ -167,10 +175,10 @@
         </button>
         <button
           data-cy="saveLabelButton"
-          mat-button
+          mat-stroked-button
           type="button"
           (click)="submitContainerEdits()"
-          class="private-btn small-btn-structure"
+          class="private-btn"
           *ngIf="labelsEditMode && !isToolPublic"
           [disabled]="labelFormControl.hasError('pattern')"
         >
@@ -181,7 +189,7 @@
   </div>
   <div class="row ml-4 mr-4 mb-4" *ngIf="starGazersClicked">
     <app-stargazers></app-stargazers>
-    <button mat-raised-button class="accent-1-dark-btn mat-elevation-z" id="backButton" type="button" (click)="starGazersClicked = false">
+    <button mat-flat-button class="accent-1-dark" id="backButton" type="button" (click)="starGazersClicked = false">
       <mat-icon>chevron_left</mat-icon>Back to details
     </button>
   </div>
@@ -199,7 +207,7 @@
           #entryTabs
           mat-stretch-tabs
         >
-          <mat-tab id="infoTab" label="Info">
+          <mat-tab label="Info">
             <app-info-tab-container
               [selectedVersion]="selectedVersion"
               [privateOnlyRegistry]="privateOnlyRegistry"
@@ -207,7 +215,7 @@
               [validVersions]="validVersions"
             ></app-info-tab-container>
           </mat-tab>
-          <mat-tab id="launchTab" label="Launch">
+          <mat-tab label="Launch">
             <app-container-launch
               *ngIf="tool?.workflowVersions.length > 0; else noTags"
               [basePath]="tool?.path"
@@ -219,13 +227,13 @@
             ></app-container-launch>
             <ng-template #noTags>
               <div class="p-3">
-                <mat-card class="alert alert-warning mat-elevation-z" role="alert">
-                  <mat-icon class="alert-warning-icon">warning</mat-icon> No tags exist for this
+                <mat-card appearance="outlined" class="alert alert-warning" role="alert">
+                  <mat-card-content> <mat-icon class="alert-warning-icon">warning</mat-icon> No tags exist for this </mat-card-content>
                 </mat-card>
               </div>
             </ng-template>
           </mat-tab>
-          <mat-tab id="versionTab" label="Versions">
+          <mat-tab label="Versions">
             <div *ngIf="validVersions">
               <div *ngIf="tool?.workflowVersions?.length > 0; else noVersions">
                 <app-versions-container
@@ -243,8 +251,8 @@
                 type="button"
                 class="pull-right m-3"
                 *ngIf="!publicPage && (isManualMode$ | async)"
-                mat-raised-button
-                class="accent-1-dark-btn mat-elevation-z"
+                mat-flat-button
+                class="accent-1-dark"
                 (click)="showAddTagModal()"
               >
                 Add Tag
@@ -288,8 +296,10 @@
       <div *ngIf="publicPage" class="mt-2 mr-3">
         <div *ngIf="tool?.topicId !== null; else noTopicId" id="discourse-comments"></div>
         <ng-template #noTopicId>
-          <mat-card class="alert alert-warning mat-elevation-z" role="alert">
-            <mat-icon class="alert-warning-icon">info</mat-icon> No Discourse topic exists for this tool.
+          <mat-card appearance="outlined" class="alert alert-warning" role="alert">
+            <mat-card-content>
+              <mat-icon class="alert-warning-icon">info</mat-icon> No Discourse topic exists for this tool.
+            </mat-card-content>
           </mat-card>
         </ng-template>
       </div>
@@ -297,7 +307,9 @@
 
     <div fxLayout="column" fxLayoutGap="1rem" class="p-0 col-sm-12 col-md-3 col-lg-3 ng-scope" *ngIf="isToolPublic && tool">
       <mat-card>
-        <div class="h5">Recent Versions</div>
+        <mat-card-header>
+          <h5 matCardTitle>Recent Versions</h5>
+        </mat-card-header>
         <mat-divider></mat-divider>
         <mat-card-content>
           <div class="pt-2">
@@ -305,6 +317,7 @@
               <div
                 fxLayout
                 fxLayoutAlign="space-between"
+                fxLayoutGap="1rem"
                 class="top-down-padding my-1 px-2"
                 [ngClass]="{ 'selected-item weight-bold': selectedVersion?.name === sortedVersion?.name }"
               >
@@ -312,14 +325,14 @@
                   <a (click)="onSelectedVersionChange(sortedVersion)" class="pointer panel-body-anchor">{{ sortedVersion.name }}</a
                   >&nbsp;
                   <span *ngIf="sortedVersion?.verified">
-                    <mat-chip matTooltip="Verified" class="bubble">
-                      <a [href]="verifiedLink" class="verified-check">
-                        <mat-icon class="verified-icon">done</mat-icon>
+                    <mat-chip-set>
+                      <a mat-chip [href]="verifiedLink">
+                        <mat-icon>done</mat-icon>
                       </a>
-                    </mat-chip>
+                    </mat-chip-set>
                   </span>
                 </div>
-                <small>{{ sortedVersion.last_built | date }}</small>
+                <small class="white-space-no-wrap">{{ sortedVersion.last_built | date }}</small>
               </div>
               <mat-divider></mat-divider>
             </span>
@@ -328,7 +341,9 @@
         </mat-card-content>
       </mat-card>
       <mat-card *ngIf="tool">
-        <div class="h5">Docker Pull Command</div>
+        <mat-card-header>
+          <h5 matCardTitle>Docker Pull Command</h5>
+        </mat-card-header>
         <mat-divider></mat-divider>
         <mat-card-content>
           <div class="input-group pt-3">
@@ -349,7 +364,9 @@
         </mat-card-content>
       </mat-card>
       <mat-card *ngIf="extendedTool$ | async">
-        <div class="h5">Source Repositories</div>
+        <mat-card-header>
+          <h5 matCardTitle>Source Repositories</h5>
+        </mat-card-header>
         <mat-divider></mat-divider>
         <mat-card-content>
           <div fxLayout="row wrap" class="container-source-repos pt-3">
@@ -411,7 +428,9 @@
         [verifiedByPlatform]="versionsWithVerifiedPlatforms"
       ></app-verified-by>
       <mat-card class="mb-1" *ngIf="tool">
-        <div class="h5">Share on</div>
+        <mat-card-header>
+          <h5 matCardTitle>Share on</h5>
+        </mat-card-header>
         <mat-divider></mat-divider>
         <mat-card-content>
           <div class="container-sharing pt-3">
@@ -440,13 +459,15 @@
 </div>
 <ng-template #noVersions>
   <div class="p-3">
-    <mat-card class="alert alert-info mat-elevation-z p-3" role="alert">
-      <mat-icon>info</mat-icon>
-      <span *ngIf="tool?.mode === ModeEnum.HOSTED"> To see versions, please add a new version in the Files tab. </span>
-      <span *ngIf="tool?.mode === ModeEnum.MANUALIMAGEPATH"> To see versions, click the Add Tag button below. </span>
-      <span *ngIf="tool?.mode === ModeEnum.AUTODETECTQUAYTAGSAUTOMATEDBUILDS || tool?.mode === ModeEnum.AUTODETECTQUAYTAGSWITHMIXED">
-        To see versions, please refresh the tool.
-      </span>
+    <mat-card appearance="outlined" class="alert alert-info" role="alert">
+      <mat-card-content>
+        <mat-icon>info</mat-icon>
+        <span *ngIf="tool?.mode === ModeEnum.HOSTED"> To see versions, please add a new version in the Files tab. </span>
+        <span *ngIf="tool?.mode === ModeEnum.MANUALIMAGEPATH"> To see versions, click the Add Tag button below. </span>
+        <span *ngIf="tool?.mode === ModeEnum.AUTODETECTQUAYTAGSAUTOMATEDBUILDS || tool?.mode === ModeEnum.AUTODETECTQUAYTAGSWITHMIXED">
+          To see versions, please refresh the tool.
+        </span>
+      </mat-card-content>
     </mat-card>
   </div>
 </ng-template>

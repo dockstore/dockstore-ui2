@@ -24,14 +24,14 @@
     Workflows can only be shared with users and user groups who are registered with <a [href]="terraUrl">Terra</a>.
   </div>
   <mat-progress-bar mode="indeterminate" *ngIf="updating"> </mat-progress-bar>
-  <ul class="list-unstyled container-info" *ngIf="canViewPermissions">
+  <ul class="list-unstyled container-info" *ngIf="canViewPermissions" fxLayout="column" fxLayoutGap="1rem">
     <li>
-      <mat-form-field style="width: 100%">
-        <mat-chip-list #ownerlist>
-          <mat-chip *ngFor="let owner of owners" (removed)="remove(owner, Role.OWNER)" [removable]="owners.length > 1">
+      <mat-form-field class="w-100">
+        <mat-chip-grid #ownerlist>
+          <mat-chip-row *ngFor="let owner of owners" (removed)="remove(owner, Role.OWNER)" [removable]="owners.length > 1">
             {{ owner }}
             <mat-icon matChipRemove *ngIf="owners.length > 1">cancel</mat-icon>
-          </mat-chip>
+          </mat-chip-row>
           <input
             placeholder="Owners"
             [matChipInputFor]="ownerlist"
@@ -39,16 +39,16 @@
             [matChipInputAddOnBlur]="addOnBlur"
             (matChipInputTokenEnd)="add($event, Role.OWNER)"
           />
-        </mat-chip-list>
+        </mat-chip-grid>
       </mat-form-field>
     </li>
     <li>
-      <mat-form-field style="width: 100%">
-        <mat-chip-list #writerlist>
-          <mat-chip *ngFor="let writer of writers" (removed)="remove(writer, Role.WRITER)" [removable]="true">
+      <mat-form-field class="w-100">
+        <mat-chip-grid #writerlist>
+          <mat-chip-row *ngFor="let writer of writers" (removed)="remove(writer, Role.WRITER)" [removable]="true">
             {{ writer }}
             <mat-icon matChipRemove>cancel</mat-icon>
-          </mat-chip>
+          </mat-chip-row>
           <input
             placeholder="Writers"
             [matChipInputFor]="writerlist"
@@ -56,16 +56,16 @@
             [matChipInputAddOnBlur]="addOnBlur"
             (matChipInputTokenEnd)="add($event, Role.WRITER)"
           />
-        </mat-chip-list>
+        </mat-chip-grid>
       </mat-form-field>
     </li>
     <li>
-      <mat-form-field style="width: 100%">
-        <mat-chip-list #readerlist>
-          <mat-chip *ngFor="let reader of readers" (removed)="remove(reader, Role.READER)" [removable]="true">
+      <mat-form-field class="w-100">
+        <mat-chip-grid #readerlist>
+          <mat-chip-row *ngFor="let reader of readers" (removed)="remove(reader, Role.READER)" [removable]="true">
             {{ reader }}
             <mat-icon matChipRemove>cancel</mat-icon>
-          </mat-chip>
+          </mat-chip-row>
           <input
             placeholder="Readers"
             [matChipInputFor]="readerlist"
@@ -73,7 +73,7 @@
             [matChipInputAddOnBlur]="addOnBlur"
             (matChipInputTokenEnd)="add($event, Role.READER)"
           />
-        </mat-chip-list>
+        </mat-chip-grid>
       </mat-form-field>
     </li>
   </ul>

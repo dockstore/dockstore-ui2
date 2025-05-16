@@ -20,10 +20,10 @@ import { Observable } from 'rxjs';
 import { AlertQuery } from '../../../shared/alert/state/alert.query';
 import { Dockstore } from '../../../shared/dockstore.model';
 import { RegisterWorkflowModalService } from '../register-workflow-modal.service';
-import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogModule } from '@angular/material/legacy-dialog';
+import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { EntryType } from 'app/shared/openapi';
 import { TitleCasePipe } from '@angular/common';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatButtonModule } from '@angular/material/button';
 import { RegisterGithubAppComponent } from '../../../shared/register-github-app/register-github-app.component';
 
 @Component({
@@ -31,7 +31,7 @@ import { RegisterGithubAppComponent } from '../../../shared/register-github-app/
   templateUrl: './register-github-app-modal.component.html',
   styleUrls: ['../register-workflow-modal.component.scss'],
   standalone: true,
-  imports: [MatLegacyDialogModule, RegisterGithubAppComponent, MatLegacyButtonModule, TitleCasePipe],
+  imports: [MatDialogModule, RegisterGithubAppComponent, MatButtonModule, TitleCasePipe],
 })
 export class RegisterGithubAppModalComponent implements OnInit {
   public EntryType = EntryType;

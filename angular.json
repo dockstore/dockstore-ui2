@@ -29,8 +29,8 @@
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.css",
               "node_modules/academicons/css/academicons.css",
-              "src/styles.scss",
-              "src/material.scss"
+              "src/material.scss",
+              "src/styles.scss"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.js",
@@ -135,8 +135,8 @@
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.css",
-              "src/styles.scss",
-              "src/material.scss"
+              "src/material.scss",
+              "src/styles.scss"
             ],
             "assets": [
               "src/assets",

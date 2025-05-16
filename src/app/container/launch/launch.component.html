@@ -16,20 +16,25 @@
 
 <div class="p-3">
   <div *ngIf="!_selectedVersion">
-    <mat-card class="alert alert-warning mat-elevation-z" role="alert">
-      <mat-icon class="alert-warning-icon">warning</mat-icon> To see launch with, please select a version.
+    <mat-card appearance="outlined" class="alert alert-warning" role="alert">
+      <mat-card-content>
+        <mat-icon class="alert-warning-icon">warning</mat-icon> To see launch with, please select a version.
+      </mat-card-content>
     </mat-card>
   </div>
   <div *ngIf="_selectedVersion">
     <div *ngIf="!_selectedVersion.valid">
-      <mat-card class="alert alert-warning mat-elevation-z" role="alert">
-        <mat-icon class="alert-warning-icon">warning</mat-icon> This section is only available for valid versions.
+      <mat-card appearance="outlined" class="alert alert-warning" role="alert">
+        <mat-card-content>
+          <mat-icon class="alert-warning-icon">warning</mat-icon> This section is only available for valid versions.
+        </mat-card-content>
       </mat-card>
     </div>
     <div *ngIf="_selectedVersion.valid">
       <div class="row">
         <div class="col-sm-4">
-          <mat-form-field>
+          <mat-form-field class="mb-3">
+            <mat-label>Descriptor Type</mat-label>
             <mat-select name="toolVersions" [(value)]="currentDescriptor">
               <mat-option *ngFor="let descriptor of filteredDescriptors" [value]="descriptor">{{ descriptor }}</mat-option>
             </mat-select>
@@ -39,26 +44,34 @@
 
       <div fxLayout="column" fxLayoutGap="1rem" *ngIf="currentDescriptor">
         <mat-card matTooltip="Commands for creating a runtime JSON template">
-          Make a runtime JSON template and fill in desired inputs, outputs, and other parameters
-          <pre>{{ params }}</pre>
+          <mat-card-content>
+            Make a runtime JSON template and fill in desired inputs, outputs, and other parameters
+            <pre>{{ params }}</pre>
+          </mat-card-content>
         </mat-card>
         <mat-card matTooltip="Commands for launching tool through Dockstore CLI (Supports file provisioning)">
-          Run locally with the Dockstore CLI
-          <pre>{{ cli }}</pre>
+          <mat-card-content>
+            Run locally with the Dockstore CLI
+            <pre>{{ cli }}</pre>
+          </mat-card-content>
         </mat-card>
         <div fxLayout="column" fxLayoutGap="1rem" *ngIf="currentDescriptor === ToolDescriptor.TypeEnum.CWL && (published$ | async)">
           <mat-card [matTooltip]="cwlrunnerTooltip">
-            {{ cwlrunnerDescription }}
-            <pre>{{ cwl }}</pre>
+            <mat-card-content>
+              {{ cwlrunnerDescription }}
+              <pre>{{ cwl }}</pre>
+            </mat-card-content>
           </mat-card>
           <mat-card [matTooltip]="cwltoolTooltip">
-            Alternatively, <a href="https://github.com/common-workflow-language/cwltool">cwltool</a> can conveniently run a tool off of
-            dockstore.org and other
-            <a href="https://github.com/common-workflow-language/cwltool#use-with-ga4gh-tool-registry-api">GA4GH tool registries</a> when
-            all inputs and outputs are available on the local filesystem or via HTTP(S):
-            <pre>{{ dockstoreSupportedCwlLaunch }}</pre>
-            cwltool can also be used to create the input template:
-            <pre>{{ dockstoreSupportedCwlMakeTemplate }}</pre>
+            <mat-card-content>
+              Alternatively, <a href="https://github.com/common-workflow-language/cwltool">cwltool</a> can conveniently run a tool off of
+              dockstore.org and other
+              <a href="https://github.com/common-workflow-language/cwltool#use-with-ga4gh-tool-registry-api">GA4GH tool registries</a> when
+              all inputs and outputs are available on the local filesystem or via HTTP(S):
+              <pre>{{ dockstoreSupportedCwlLaunch }}</pre>
+              cwltool can also be used to create the input template:
+              <pre>{{ dockstoreSupportedCwlMakeTemplate }}</pre>
+            </mat-card-content>
           </mat-card>
         </div>
         <app-launch-checker-workflow [versionName]="_selectedVersion?.name" [command]="checkEntryCommand"></app-launch-checker-workflow>

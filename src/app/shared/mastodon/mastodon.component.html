@@ -22,12 +22,12 @@
 <div class="mt-timeline">
   <mat-card class="h-100">
     <mat-card-header>
-      <mat-card-title class="mt-header-text ml-2">
+      <mat-card-title class="mt-header-text">
         Mastodon Posts from <a class="mt-header-link" target="_blank" [href]="mastodonDockstoreLink">@dockstore</a></mat-card-title
       >
     </mat-card-header>
     <mat-divider></mat-divider>
-    <mat-card-content class="mx-3 mt-3 mb-0">
+    <mat-card-content class="mt-3 h-75">
       <div id="mt-body" role="feed" class="mt-body">
         <article
           *ngFor="let data of timelineData"
@@ -95,11 +95,11 @@
         </article>
       </div>
       <mat-divider></mat-divider>
-      <div class="mt-footer">
-        <a [href]="mastodonDockstoreLink" class="btn" target="_blank" rel="nofollow noopener noreferrer">
-          {{ linkSeeMore }}
-        </a>
-      </div>
     </mat-card-content>
+    <mat-card-footer class="mt-footer">
+      <a [href]="mastodonDockstoreLink" class="btn" target="_blank" rel="nofollow noopener noreferrer">
+        {{ linkSeeMore }}
+      </a>
+    </mat-card-footer>
   </mat-card>
 </div>

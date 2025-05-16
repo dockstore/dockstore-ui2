@@ -47,14 +47,6 @@ mat-sidenav {
   box-shadow: 1px 2px 1px rgb(0 0 0 / 10%);
 }
 
-// Dropdown style for workflows
-.mat-menu-item {
-  font-size: 13px;
-  font-weight: 500;
-  height: 40px;
-  line-height: 40px;
-}
-
 // Overflow-x: hidden is used 1.to enable resizing of mat-sidenav-content 2.to hide mat-sidenav-content when resized to md breakpoint
 // TODO: Explore additional methods to get the navbar to resize on top of content when in narrow window to remove large white space scrolling
 div[fxLayout='column'] {
