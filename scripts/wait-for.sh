@@ -3,7 +3,7 @@ set -o errexit
 set -o pipefail
 set -o nounset
 set -o xtrace
-until wget --output-document /dev/null --waitretry=100 localhost:4200 ; do sleep 60 ; done
-until wget --output-document /dev/null --waitretry=100 localhost:8080 ; do sleep 60 ; done
-until wget --output-document /dev/null --waitretry=100 localhost:9200 ; do sleep 60 ; done
+wget --output-document /dev/null --waitretry=100 --tries=200 --retry-connrefused localhost:4200 || true
+wget --output-document /dev/null --waitretry=100 --tries=200 --retry-connrefused localhost:8080 || true
+wget --output-document /dev/null --waitretry=100 --tries=200 --retry-connrefused localhost:9200 || true
 
