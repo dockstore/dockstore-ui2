@@ -89,6 +89,7 @@ describe('Service: version-modal.service.ts', () => {
 
   it('regex should still be valid in v mode', () => {
     for (const [, pattern] of Object.entries(validationDescriptorPatterns)) {
+      console.log(pattern);
       expect(new RegExp(pattern, 'v')).toBeTruthy();
     }
   });
