@@ -1,4 +1,5 @@
 import { ExtendedDescriptorLanguageBean } from 'app/entry/extendedDescriptorLanguage';
+import { configurationTabName, descriptorFilesTabName, testParameterFilesTabName } from 'app/shared/constants';
 import { SourceFile, ToolDescriptor, Workflow } from 'app/shared/openapi';
 
 export const extendedSMK: ExtendedDescriptorLanguageBean = {
@@ -7,7 +8,7 @@ export const extendedSMK: ExtendedDescriptorLanguageBean = {
   shortFriendlyName: 'Snakemake',
   friendlyName: 'Snakemake',
   defaultDescriptorPath: '/Snakefile',
-  descriptorPathPattern: '^/([^/?:*|<>]++/)*(Snakefile|[^./?:*|<>]++.smk))$',
+  descriptorPathPattern: '^\\/([^\\/?:*\\|<>]+\\/)*(Snakefile|[^.\\/?:*\\|<>]+.smk)$',
   descriptorPathPlaceholder: 'e.g. /Snakefile',
 
   toolDescriptorEnum: ToolDescriptor.TypeEnum.SMK,
@@ -24,13 +25,13 @@ export const extendedSMK: ExtendedDescriptorLanguageBean = {
   testParameterFileType: SourceFile.TypeEnum.SMKTESTPARAMS,
   fileTabs: [
     {
-      tabName: 'Descriptor Files',
+      tabName: descriptorFilesTabName,
       fileTypes: [SourceFile.TypeEnum.DOCKSTORESMK],
     },
     {
-      tabName: 'Test Parameter Files',
+      tabName: testParameterFilesTabName,
       fileTypes: [SourceFile.TypeEnum.SMKTESTPARAMS],
     },
-    { tabName: 'Configuration', fileTypes: [SourceFile.TypeEnum.DOCKSTOREYML] },
+    { tabName: configurationTabName, fileTypes: [SourceFile.TypeEnum.DOCKSTOREYML] },
   ],
 };

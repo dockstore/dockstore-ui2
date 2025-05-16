@@ -20,6 +20,7 @@ import { SearchStubService } from './../test/service-stubs';
 import { inject, TestBed } from '@angular/core/testing';
 import { QueryBuilderService } from './query-builder.service';
 import { SearchService } from './state/search.service';
+import { EntryType } from 'app/shared/openapi';
 
 describe('Service: QueryBuilder', () => {
   beforeEach(() => {
@@ -32,7 +33,7 @@ describe('Service: QueryBuilder', () => {
     expect(service).toBeTruthy();
   }));
   it('should exclude terms from tagcloud query', inject([QueryBuilderService], (service: QueryBuilderService) => {
-    expect(service.getTagCloudQuery('tool')).toContain('significant_text');
-    expect(service.getTagCloudQuery('tool')).toContain('exclude');
+    expect(service.getTagCloudQuery(EntryType.TOOL)).toContain('significant_text');
+    expect(service.getTagCloudQuery(EntryType.TOOL)).toContain('exclude');
   }));
 });

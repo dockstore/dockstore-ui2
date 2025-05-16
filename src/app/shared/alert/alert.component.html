@@ -1,10 +1,12 @@
-<mat-card class="alert alert-danger mat-elevation-z alert-dismissable" role="alert" *ngIf="showError$ | async">
-  <button type="button" class="close" data-dismiss="alert" (click)="clear()">&times;</button>
-  <p>
-    <mat-icon class="alert-danger-icon">warning</mat-icon>
-    {{ message$ | async }}
-  </p>
-  <p class="error-output">{{ details$ | async }}</p>
+<mat-card appearance="outlined" class="alert alert-danger alert-dismissable" role="alert" *ngIf="showError$ | async">
+  <mat-card-content>
+    <button type="button" class="close" data-dismiss="alert" (click)="clear()">&times;</button>
+    <p>
+      <mat-icon class="alert-danger-icon">warning</mat-icon>
+      {{ message$ | async }}
+    </p>
+    <p class="error-output">{{ details$ | async }}</p>
+  </mat-card-content>
 </mat-card>
 <div *ngIf="showInfo$ | async; else placeholder">
   <mat-progress-bar mode="indeterminate"></mat-progress-bar>

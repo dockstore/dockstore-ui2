@@ -1,14 +1,16 @@
 <h4 mat-dialog-title>Register {{ entryType | titlecase }}</h4>
-<app-register-github-app [entryType]="entryType"></app-register-github-app>
-<div class="modal-footer p-0 mt-4">
+<mat-dialog-content>
+  <app-register-github-app [entryType]="entryType"></app-register-github-app>
+</mat-dialog-content>
+<mat-dialog-actions [align]="'end'">
   <button
     type="button"
-    mat-raised-button
-    class="accent-1-dark-btn mat-elevation-z"
+    mat-flat-button
+    class="accent-1-dark"
     [mat-dialog-close]="true"
     (click)="clearWorkflowRegisterError()"
     data-cy="close-modal-btn"
   >
     Close
   </button>
-</div>
+</mat-dialog-actions>

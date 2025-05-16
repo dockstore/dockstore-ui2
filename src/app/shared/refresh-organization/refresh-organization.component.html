@@ -17,7 +17,7 @@
 <button
   mat-button
   type="button"
-  class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z mr-1 mt-2 mb-2"
+  class="private-btn mr-1 mt-2 mb-2"
   data-cy="refreshOrganization"
   (click)="isGitHubOrg ? openConfirmationDialog() : refreshOrganization()"
   [disabled]="isRefreshing$ | async"

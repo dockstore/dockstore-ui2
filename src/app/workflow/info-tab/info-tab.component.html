@@ -15,29 +15,32 @@
   -->
 <div class="p-3">
   <mat-card
-    class="alert alert-info mat-elevation-z"
+    appearance="outlined"
+    class="alert alert-info"
     *ngIf="
       !isPublic &&
       workflow?.source_control_provider === 'GITHUB' &&
       (workflow?.mode === WorkflowType.ModeEnum.FULL || workflow?.mode === WorkflowType.ModeEnum.STUB)
     "
   >
-    Keep your workflow automatically in sync with GitHub with our new registration process. Click
-    <a
-      [href]="Dockstore.DOCUMENTATION_URL + '/getting-started/github-apps/github-apps.html#why-have-a-dockstore-github-app'"
-      target="_blank"
-      rel="noopener noreferrer"
-      class="link-with-underline"
-      >here</a
-    >
-    to learn more.
+    <mat-card-content>
+      Keep your workflow automatically in sync with GitHub with our new registration process. Click
+      <a
+        [href]="Dockstore.DOCUMENTATION_URL + '/getting-started/github-apps/github-apps.html#why-have-a-dockstore-github-app'"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="link-with-underline"
+        >here</a
+      >
+      to learn more.
+    </mat-card-content>
   </mat-card>
   <mat-card>
     <mat-card-header>
       <mat-card-title>{{ entryType$ | async | titlecase }} Information</mat-card-title>
     </mat-card-header>
     <mat-divider></mat-divider>
-    <mat-card-content class="p-1 pt-3">
+    <mat-card-content class="pt-3">
       <ul class="list-unstyled container-info" *ngIf="workflow">
         <span *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED" class="truncate-text-1">
           <li *ngIf="workflow?.provider && workflow?.providerUrl">
@@ -64,8 +67,8 @@
         <li *ngIf="isPublic && isValidVersion && workflow?.entryTypeMetadata.trsSupported" data-cy="trs-link">
           <strong matTooltip="TRS link to the main descriptor for the selected workflow version">TRS</strong>:
           <a [href]="trsLink">{{ workflow?.entryTypeMetadata.trsPrefix }}{{ workflow?.full_workflow_path }}</a>
-          <button mat-icon-button color="secondary" matTooltip="Copy TRS ID" [cdkCopyToClipboard]="displayTextForButton" appSnackbar>
-            <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
+          <button mat-icon-button class="copy-button" matTooltip="Copy TRS ID" [cdkCopyToClipboard]="displayTextForButton" appSnackbar>
+            <mat-icon>file_copy</mat-icon>
           </button>
         </li>
         <div
@@ -106,8 +109,8 @@
                     *ngIf="!isPublic && workflowPathEditing"
                     data-cy="cancelWorkflowPathButton"
                     type="button"
-                    mat-raised-button
-                    class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+                    mat-button
+                    class="private-btn"
                     (click)="cancelEditing()"
                   >
                     <img src="../assets/svg/icons-reject-small.svg" alt="Cancel" class="pr-2 pb-1" />Cancel
@@ -116,8 +119,8 @@
                     *ngIf="!isPublic"
                     data-cy="editWorkflowPathButton"
                     type="button"
-                    mat-raised-button
-                    class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+                    mat-button
+                    class="private-btn"
                     [disabled]="
                       topicEditing ||
                       defaultTestFilePathEditing ||
@@ -161,8 +164,8 @@
                   <button
                     *ngIf="!isPublic && defaultTestFilePathEditing"
                     type="button"
-                    mat-raised-button
-                    class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+                    mat-button
+                    class="private-btn"
                     (click)="cancelEditing()"
                   >
                     <img src="../assets/svg/icons-reject-small.svg" alt="Cancel" class="pr-2 pb-1" />Cancel
@@ -170,8 +173,8 @@
                   <button
                     *ngIf="!isPublic"
                     type="button"
-                    mat-raised-button
-                    class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+                    mat-button
+                    class="private-btn"
                     [disabled]="
                       topicEditing ||
                       workflowPathEditing ||
@@ -222,21 +225,15 @@
                   />
                 </div>
                 <span *ngIf="workflow?.mode !== WorkflowType.ModeEnum.HOSTED">
-                  <button
-                    *ngIf="!isPublic && forumUrlEditing"
-                    type="button"
-                    mat-raised-button
-                    class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
-                    (click)="cancelEditing()"
-                  >
+                  <button *ngIf="!isPublic && forumUrlEditing" type="button" mat-button class="private-btn" (click)="cancelEditing()">
                     <img src="../assets/svg/icons-reject-small.svg" alt="Cancel" class="pr-2 pb-1" />Cancel
                   </button>
                   <button
                     *ngIf="!isPublic && !workflow?.forumUrl && !forumUrlEditing"
                     [disabled]="topicEditing || workflowPathEditing || defaultTestFilePathEditing || (isRefreshing$ | async) || !canWrite"
                     type="button"
-                    mat-raised-button
-                    class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+                    mat-button
+                    class="private-btn"
                     (click)="toggleEditForumUrl()"
                   >
                     <img *ngIf="!forumUrlEditing" src="../assets/svg/icons-plus.svg" class="pr-2 pb-1" alt="Plus sign" />Add
@@ -244,8 +241,8 @@
                   <button
                     *ngIf="!isPublic && (workflow?.forumUrl || forumUrlEditing)"
                     type="button"
-                    mat-raised-button
-                    class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+                    mat-button
+                    class="private-btn"
                     (click)="toggleEditForumUrl()"
                   >
                     <mat-icon *ngIf="forumUrlEditing" class="mat-icon-sm">save</mat-icon>
@@ -272,16 +269,6 @@
             <div fxFlex="noshrink" fxLayoutAlign="start center">
               <strong [matTooltip]="modeTooltipContent">Mode</strong>: {{ 'mode' | mapFriendlyValue: workflow?.mode }}
             </div>
-            <button
-              mat-raised-button
-              class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
-              type="button"
-              *ngIf="workflow?.mode === WorkflowType.ModeEnum.FULL && !workflow?.is_published && !workflow?.isChecker"
-              (click)="restubWorkflow()"
-              [disabled]="(isRefreshing$ | async) || !canWrite"
-            >
-              <img src="../assets/svg/icons-reject-small.svg" alt="Cancel" class="pr-2 pb-1" />Restub
-            </button>
           </li>
           <li *ngIf="(entryType$ | async) === EntryType.Notebook">
             <strong matTooltip="Programming language used in the notebook">Programming Language</strong>:
@@ -298,6 +285,12 @@
                   {{ 'descriptor_type' | mapFriendlyValue: descriptorLanguage }}
                 </option>
               </select>
+              <app-preview-warning
+                *ngIf="workflow?.descriptorType === DescriptorTypeEnum.SMK"
+                [featureName]="Dockstore.FEATURES.snakemakeFeatureName"
+                [isBubble]="true"
+                class="ml-2"
+              ></app-preview-warning>
             </div>
             <div *ngIf="workflow?.mode !== WorkflowType.ModeEnum.STUB && workflow?.descriptorType">
               <Strong
@@ -305,6 +298,11 @@
                 >{{ (entryType$ | async) === EntryType.Notebook ? 'Format' : 'Descriptor Type' }}</Strong
               >:
               {{ 'descriptor_type' | mapFriendlyValue: workflow?.descriptorType }}
+              <app-preview-warning
+                *ngIf="workflow?.descriptorType === DescriptorTypeEnum.SMK"
+                [featureName]="Dockstore.FEATURES.snakemakeFeatureName"
+                [isBubble]="true"
+              ></app-preview-warning>
             </div>
           </li>
         </div>
@@ -316,22 +314,24 @@
       <mat-card-title>{{ entryType$ | async | titlecase }} Version Information</mat-card-title>
     </mat-card-header>
     <mat-divider></mat-divider>
-    <mat-card-content class="p-1 pt-3">
+    <mat-card-content class="pt-3">
       <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="2rem">
-        <span class="bubble">
-          {{ selectedVersion?.name }}
-        </span>
+        <mat-chip-set>
+          <mat-chip>
+            {{ selectedVersion?.name }}
+          </mat-chip>
+        </mat-chip-set>
         <span *ngIf="isValidVersion" id="downloadZipButton" data-cy="downloadZip">
-          <button *ngIf="!workflow?.is_published" mat-button color="accent" class="private-btn small-btn-structure" (click)="downloadZip()">
+          <button *ngIf="!workflow?.is_published" mat-stroked-button color="accent" class="small-btn-structure" (click)="downloadZip()">
             <mat-icon class="mat-icon-sm">file_download</mat-icon>
             Export as ZIP
           </button>
           <a
             [href]="downloadZipLink"
             *ngIf="workflow?.is_published"
-            mat-button
+            mat-stroked-button
             color="accent"
-            class="private-btn small-btn-structure no-underline"
+            class="small-btn-structure no-underline"
           >
             <mat-icon class="mat-icon-sm">file_download</mat-icon>
             Export as ZIP
@@ -340,9 +340,11 @@
       </div>
       <mat-divider class="mt-3"></mat-divider>
       <div *ngIf="selectedVersion?.frozen && hasHttpImports" class="pt-3">
-        <mat-card class="alert alert-warning mat-elevation-z" role="alert">
-          <mat-icon class="alert-warning-icon">warning</mat-icon> This version is snapshotted but contains HTTP imports. HTTP imports may
-          change and execution results may vary.
+        <mat-card appearance="outlined" class="alert alert-warning" role="alert">
+          <mat-card-content>
+            <mat-icon class="alert-warning-icon">warning</mat-icon> This version is snapshotted but contains HTTP imports. HTTP imports may
+            change and execution results may vary.
+          </mat-card-content>
         </mat-card>
       </div>
       <table mat-table [dataSource]="this.authors" class="w-100 mb-5" aria-describedby="Authors">
@@ -382,8 +384,8 @@
             </span>
           </td>
         </ng-container>
-        <tr class="mat-row" *matNoDataRow>
-          <td class="mat-cell" [colSpan]="displayedColumns.length">Not Available</td>
+        <tr class="mat-mdc-row" *matNoDataRow>
+          <td class="mat-mdc-cell" [colSpan]="displayedColumns.length">Not Available</td>
         </tr>
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>

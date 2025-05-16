@@ -13,7 +13,14 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { goToTab, isActiveTab, setTokenUserViewPort, setTokenUserViewPortCurator } from '../../support/commands';
+import {
+  goToAccountPreferencesTab,
+  goToRequestsTab,
+  isActiveTab,
+  setTokenUserViewPort,
+  setTokenUserViewPortCurator,
+  typeInInput,
+} from '../../support/commands';
 
 describe('Dropdown test', () => {
   // TODO: GitLab tests are commented out
@@ -94,11 +101,11 @@ describe('Dropdown test', () => {
       cy.url().should('eq', Cypress.config().baseUrl + '/accounts?tab=accounts');
     });
     it('Change tab to Dockstore Account & Preferences', () => {
-      goToTab('Dockstore Account & Preferences');
+      goToAccountPreferencesTab();
       cy.url().should('eq', Cypress.config().baseUrl + '/accounts?tab=dockstore%20account%20and%20preferences');
     });
     it('Change tab to requests', () => {
-      goToTab('Requests');
+      goToRequestsTab();
       cy.url().should('eq', Cypress.config().baseUrl + '/accounts?tab=requests');
     });
     // Check that changing the url changes the tab
@@ -160,7 +167,7 @@ describe('Dropdown test', () => {
       });
       // Choose dropdown
       cy.get('#dropdown-accounts').click();
-      cy.contains('Requests').click();
+      goToRequestsTab();
     });
 
     it('Should have one rejected org', () => {
@@ -294,7 +301,7 @@ describe('Dropdown test', () => {
       // Route all DELETE API calls to organizations respond with with an empty JSON object
       cy.intercept('DELETE', '*/organizations/*', {
         body: [],
-      });
+      }).as('delete');
 
       // Route GET API call to user/membership with the mocked membership JSON object after first deletion
       cy.intercept('GET', '*/users/user/memberships', {
@@ -307,6 +314,7 @@ describe('Dropdown test', () => {
       cy.contains('div', 'Delete Organization').within(() => {
         cy.contains('button', 'Delete').click();
       });
+      cy.wait('@delete');
       cy.get('#my-pending-org-card-0').should('be.visible');
       cy.get('#my-rejected-org-card-0').should('not.exist');
 
@@ -338,18 +346,18 @@ describe('Dropdown test', () => {
         body: 'true',
       });
       cy.get('[data-cy=dropdown-account-button]').should('be.visible').click();
-      cy.contains('Dockstore Account & Preferences').click();
+      goToAccountPreferencesTab();
     });
     it('Should have the danger alert', () => {
       cy.get('.alert-danger').should('be.visible');
     });
     it('Should have the delete button enabled', () => {
       cy.contains('Delete Dockstore Account').should('not.be.disabled').click();
-      cy.contains('Yes, delete my account').should('be.disabled');
-      cy.get('#deleteUserUsernameInput').type('potato');
-      cy.contains('Yes, delete my account').should('be.disabled');
-      cy.get('#deleteUserUsernameInput').clear().type('user_curator');
-      cy.contains('Yes, delete my account').should('not.be.disabled').click();
+      cy.get('[data-cy=confirm-delete-button]').should('be.disabled');
+      typeInInput('delete-username-input', 'potato');
+      cy.get('[data-cy=confirm-delete-button]').should('be.disabled');
+      typeInInput('delete-username-input', 'user_curator');
+      cy.get('[data-cy=confirm-delete-button]').should('not.be.disabled').click();
       cy.url().should('eq', Cypress.config().baseUrl + '/logout');
     });
     it('Should have the change username button disabled for current username', () => {

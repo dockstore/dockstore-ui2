@@ -3,7 +3,7 @@ orbs:
   aws-s3: circleci/aws-s3@3.0.0
   aws-cli: circleci/aws-cli@3.1.1
   slack: circleci/slack@4.4.4
-  browser-tools: circleci/browser-tools@1.4.7
+  browser-tools: circleci/browser-tools@1.4.8
 executors:
   integration_test_exec: # declares a reusable executor
     docker:
@@ -30,6 +30,7 @@ executors:
           - network.host: 127.0.0.1
           - http.port: 9200
           - discovery.type: single-node
+    resource_class: large
 
 jobs:
   # Specify the webpage url (https://dev.dockstore.net or https://staging.dockstore.org or https://dockstore.org)
@@ -81,6 +82,10 @@ jobs:
     steps:
       - setup_nightly_tests
       - run:
+          name: Reset dockstoretestuser4's resources
+          # Reset user dockstoretestuser4's resources such that it has no registered tools and published workflows
+          command: bash scripts/reset-dockstoretestuser4-resources.sh << parameters.stack >>
+      - run:
           name: Run remote verification test against << parameters.stack >> (with auth)
           command: bash -i -c 'npm run test-<< parameters.stack >>-auth'
           environment:
@@ -89,6 +94,8 @@ jobs:
           name: Reset dockstoretestuser4's resources
           # Reset user dockstoretestuser4's resources such that it has no registered tools and published workflows
           command: bash scripts/reset-dockstoretestuser4-resources.sh << parameters.stack >>
+          # Reset even if the tests failed
+          when: always
       - upload_nightly_artifacts
       - slack/notify:
           channel: $<< parameters.stack >>_id

@@ -27,7 +27,7 @@
       *ngFor="let orgObj of sourceObj.value.groupEntryInfo; trackBy: trackByOrgWorkflowObject"
       [class.tool]="isTool$ | async"
     >
-      <mat-expansion-panel-header class="pt-2" [class.tool]="isTool$ | async">
+      <mat-expansion-panel-header class="pt-2" [class.tool]="isTool$ | async" [attr.data-cy]="orgObj?.organization + '-panel-header'">
         {{ orgObj?.organization }}
       </mat-expansion-panel-header>
 
@@ -38,8 +38,9 @@
           (orgObj?.unpublished.length === 0 && orgObj?.published.length === 0)
         "
         mat-stretch-tabs
-        [ngClass]="(isTool$ | async) ? 'tool-tab-group' : 'workflow-tab-group'"
+        [ngClass]="((isTool$ | async) ? 'tool-tab-group' : 'workflow-tab-group') + ' small-tab-header no-scroll-tabs'"
         [selectedIndex]="orgObj | selectTab: (workflowId$ | async)"
+        [attr.data-cy]="orgObj?.organization + '-tab-group'"
       >
         <mat-tab label="Published">
           <ng-template *ngTemplateOutlet="items; context: { items: orgObj.published, itemState: 'published' }"></ng-template>
@@ -60,11 +61,12 @@
               selectedTool: (isTool$ | async) && (workflowId$ | async) === workflowObj?.id
             }"
           >
-            <mat-icon class="arrow mat-icon-sm">arrow_forward</mat-icon>
+            <mat-icon *ngIf="(workflowId$ | async) === workflowObj?.id" class="mr-1 mat-icon-sm">arrow_forward</mat-icon>
             <a
               class="no-wrap"
               title="{{ workflowObj?.repository + (workflowObj?.workflowName ? '/' + workflowObj?.workflowName : '') }}"
               [routerLink]="'/my-' + (entryType$ | async) + 's/' + workflowObj.full_workflow_path"
+              [attr.data-cy]="workflowObj?.full_workflow_path + '-link'"
             >
               {{ workflowObj?.repository + (workflowObj?.workflowName ? '/' + workflowObj?.workflowName : '') }}
             </a>
@@ -87,11 +89,7 @@
       >
         <div fxFlex>
           <span fxLayout fxLayoutAlign="start" *ngIf="orgObj.sourceControl.startsWith('github.com')">
-            <button
-              mat-button
-              class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z mr-1 mt-2 mb-2"
-              (click)="openGitHubAppsLogs(orgObj.organization)"
-            >
+            <button mat-button class="private-btn mr-1 mt-2 mb-2" (click)="openGitHubAppsLogs(orgObj.organization)">
               <img src="../../../assets/svg/git-hub.svg" alt="GitHub app logs" class="pr-2" />
               Apps Logs
             </button>

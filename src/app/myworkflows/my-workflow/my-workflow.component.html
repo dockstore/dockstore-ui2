@@ -26,7 +26,9 @@
           <mat-icon>chevron_{{ showSidebar ? 'left' : 'right' }}</mat-icon>
         </button>
         <span>{{ myEntryPageTitle$ | async | titlecase }}</span>
-        <span *ngIf="entryType === EntryType.Service" class="bubble preview-bubble">PREVIEW</span>
+        <mat-chip-set class="ml-2">
+          <mat-chip *ngIf="entryType === EntryType.Service" class="preview-bubble">PREVIEW</mat-chip>
+        </mat-chip-set>
       </div>
     </app-header>
 
@@ -50,8 +52,8 @@
                 [matTooltip]="(hasSourceControlToken$ | async) ? '' : 'Requires source control token'"
               >
                 <button
-                  mat-button
-                  class="private-btn small-btn-structure ml-3 mb-3"
+                  mat-stroked-button
+                  class="private-btn ml-3 mb-3"
                   [attr.data-cy]="'register-' + entryType + '-button'"
                   matTooltip="Register {{ entryType$ | async }}"
                   matTooltipPosition="after"
@@ -63,32 +65,17 @@
                 </button>
                 <button
                   *ngIf="entryType === EntryType.BioWorkflow || entryType === EntryType.Notebook"
-                  mat-button
-                  class="private-btn small-btn-structure ml-3 mb-3"
-                  [matMenuTriggerFor]="myWorkflowsActions"
-                  [disabled]="isRefreshing$ | async"
-                  id="myWorkflowsMoreActionButtons"
-                  data-cy="myWorkflowsMoreActionButtons"
+                  mat-stroked-button
+                  class="private-btn ml-3 mb-3"
+                  (click)="addToExistingWorkflows()"
+                  [disabled]="(isRefreshing$ | async) || (user$ | async) === null"
+                  matTooltip="Discover {{ entryType$ | async }}s added by others using your linked source control accounts"
+                  matTooltipPosition="after"
+                  id="addToExistingWorkflows"
+                  data-cy="addToExistingWorkflows"
                 >
-                  <img src="../../../assets/svg/gear-icon.svg" alt="Gear icon" />
-                  More
-                  <img src="../../../assets/svg/drop-down-arrow.svg" alt="Drop down menu icon" />
+                  Discover {{ entryType$ | async | titlecase }}s
                 </button>
-                <mat-menu #myWorkflowsActions="matMenu">
-                  <button
-                    mat-menu-item
-                    color="primary"
-                    type="button"
-                    (click)="addToExistingWorkflows()"
-                    [disabled]="(isRefreshing$ | async) || (user$ | async) === null"
-                    matTooltip="Discover {{ entryType$ | async }}s added by others using your linked source control accounts"
-                    matTooltipPosition="after"
-                    id="addToExistingWorkflows"
-                    data-cy="addToExistingWorkflows"
-                  >
-                    <span>Discover Existing Dockstore {{ entryType$ | async | titlecase }}s</span>
-                  </button>
-                </mat-menu>
               </div>
               <p *ngIf="(hasGroupEntriesObject$ | async) === false">You have not registered any {{ entryType$ | async }}s</p>
               <app-workflow-sidebar-accordion
@@ -131,55 +118,57 @@
             fxLayout
           >
             <div fxFlex>
-              <mat-card class="alert alert-info mat-elevation-z" role="alert">
-                <p>
-                  <mat-icon>info</mat-icon>
-                  There are currently no {{ entryType$ | async }}s registered under this account. To add your first {{ entryType$ | async
-                  }}<span *ngIf="entryType === EntryType.BioWorkflow">, do one of the following</span>:
-                </p>
-                <ul>
-                  <li>
-                    Press the 'Register a {{ entryType$ | async | titlecase }}' button
-                    <span *ngIf="entryType === EntryType.BioWorkflow; else githubAppsRegistration"
-                      >to manually add a {{ entryType$ | async }} using the registration wizard.</span
-                    >
-                    <ng-template #githubAppsRegistration
-                      >and follow the GitHub apps web interface to create {{ entryType$ | async }}s from your GitHub
-                      repositories.</ng-template
-                    >
-                  </li>
-                  <button
-                    mat-raised-button
-                    class="accent-1-dark-btn"
-                    type="button"
-                    (click)="showRegisterEntryModal()"
-                    [disabled]="isRefreshing$ | async"
-                  >
-                    Register a {{ entryType$ | async | titlecase }}
-                  </button>
-
-                  <span *ngIf="entryType === EntryType.BioWorkflow || entryType === EntryType.Notebook">
+              <mat-card appearance="outlined" class="alert alert-info" role="alert">
+                <mat-card-content>
+                  <p>
+                    <mat-icon>info</mat-icon>
+                    There are currently no {{ entryType$ | async }}s registered under this account. To add your first {{ entryType$ | async
+                    }}<span *ngIf="entryType === EntryType.BioWorkflow">, do one of the following</span>:
+                  </p>
+                  <ul>
                     <li>
-                      If there are already {{ entryType$ | async }}s on Dockstore added by other users that you have access to, press the
-                      button below.
+                      Press the 'Register a {{ entryType$ | async | titlecase }}' button
+                      <span *ngIf="entryType === EntryType.BioWorkflow; else githubAppsRegistration"
+                        >to manually add a {{ entryType$ | async }} using the registration wizard.</span
+                      >
+                      <ng-template #githubAppsRegistration
+                        >and follow the GitHub apps web interface to create {{ entryType$ | async }}s from your GitHub
+                        repositories.</ng-template
+                      >
                     </li>
                     <button
                       mat-raised-button
-                      class="accent-1-dark-btn"
+                      class="accent-1-dark"
                       type="button"
-                      (click)="addToExistingWorkflows()"
-                      [disabled]="(isRefreshing$ | async) || (noUser$ | async)"
-                      matTooltip="Discover {{ entryType$ | async }}s added by others using your linked source control accounts"
+                      (click)="showRegisterEntryModal()"
+                      [disabled]="isRefreshing$ | async"
                     >
-                      Discover Existing Dockstore {{ entryType$ | async | titlecase }}s
+                      Register a {{ entryType$ | async | titlecase }}
                     </button>
-                  </span>
-                </ul>
-                <div *ngIf="!hasGitHubToken" class="mt-3">
-                  <button mat-raised-button (click)="link()">
-                    <fa-icon [icon]="faGithub"></fa-icon> You do not have a linked GitHub token, click here to link a GitHub token
-                  </button>
-                </div>
+
+                    <span *ngIf="entryType === EntryType.BioWorkflow || entryType === EntryType.Notebook">
+                      <li>
+                        If there are already {{ entryType$ | async }}s on Dockstore added by other users that you have access to, press the
+                        button below.
+                      </li>
+                      <button
+                        mat-raised-button
+                        class="accent-1-dark"
+                        type="button"
+                        (click)="addToExistingWorkflows()"
+                        [disabled]="(isRefreshing$ | async) || (noUser$ | async)"
+                        matTooltip="Discover {{ entryType$ | async }}s added by others using your linked source control accounts"
+                      >
+                        Discover Existing Dockstore {{ entryType$ | async | titlecase }}s
+                      </button>
+                    </span>
+                  </ul>
+                  <div *ngIf="!hasGitHubToken" class="mt-3">
+                    <button mat-raised-button (click)="link()">
+                      <fa-icon [icon]="faGithub"></fa-icon> You do not have a linked GitHub token, click here to link a GitHub token
+                    </button>
+                  </div>
+                </mat-card-content>
               </mat-card>
             </div>
           </div>

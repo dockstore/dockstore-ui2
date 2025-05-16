@@ -27,7 +27,8 @@ export abstract class LaunchService {
   public readonly cwlrunnerTooltip = 'Commands for launching tools/workflows through cwl-runner. ' + this.nonStrict;
   public readonly cwltoolTooltip =
     'Commands for launching tools/workflows through CWLtool: the CWL reference implementation. ' + this.nonStrict;
-  public readonly wesTooltip = 'Commands for provisioning files and launching a workflow against AWS AGC infrastructure.';
+  public readonly toilTooltip = "Commands for running using UCSC's Toil workflow engine.";
+  public readonly snakemakeTooltip = 'Run a Snakemake workflow locally';
   private readonly galaxyParamFileName = 'galaxy_job.yml';
 
   constructor(protected descriptorTypeCompatService: DescriptorTypeCompatService) {}

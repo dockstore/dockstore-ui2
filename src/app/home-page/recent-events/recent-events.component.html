@@ -156,10 +156,12 @@
     </div>
   </div>
   <ng-template #noEvents>
-    <mat-card class="alert alert-info mat-elevation-z mx-1" role="alert">
-      <mat-icon>info</mat-icon> No events found. Star entries or organizations to see events for them. Read
-      <a [href]="starringDocUrl" target="_blank" rel="noopener noreferrer">Starring Tools and Workflows</a>
-      to learn how to star entries.
+    <mat-card appearance="outlined" class="alert alert-info" role="alert">
+      <mat-card-content>
+        <mat-icon>info</mat-icon> No events found. Star entries or organizations to see events for them. Read
+        <a [href]="starringDocUrl" target="_blank" rel="noopener noreferrer">Starring Tools and Workflows</a>
+        to learn how to star entries.
+      </mat-card-content>
     </mat-card>
   </ng-template>
 </app-loading>

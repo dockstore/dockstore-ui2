@@ -1,20 +1,20 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { UntypedFormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, shareReplay, takeUntil } from 'rxjs/operators';
 import { Base } from '../../shared/base';
 import { bootstrap4largeModalSize, formInputDebounceTime } from '../../shared/constants';
 import { AdvancedSearchComponent } from '../advancedsearch/advancedsearch.component';
 import { SearchQuery } from '../state/search.query';
-import { MatLegacyOptionModule } from '@angular/material/legacy-core';
+import { MatOptionModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatButtonModule } from '@angular/material/button';
 import { NgIf, NgFor, AsyncPipe } from '@angular/common';
-import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
-import { MatLegacyAutocompleteModule } from '@angular/material/legacy-autocomplete';
-import { MatLegacyInputModule } from '@angular/material/legacy-input';
-import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatExpansionModule } from '@angular/material/expansion';
 
 @Component({
@@ -24,17 +24,17 @@ import { MatExpansionModule } from '@angular/material/expansion';
   standalone: true,
   imports: [
     MatExpansionModule,
-    MatLegacyFormFieldModule,
-    MatLegacyInputModule,
-    MatLegacyAutocompleteModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatAutocompleteModule,
     FormsModule,
-    MatLegacyTooltipModule,
+    MatTooltipModule,
     ReactiveFormsModule,
     NgIf,
-    MatLegacyButtonModule,
+    MatButtonModule,
     MatIconModule,
     NgFor,
-    MatLegacyOptionModule,
+    MatOptionModule,
     AsyncPipe,
   ],
 })

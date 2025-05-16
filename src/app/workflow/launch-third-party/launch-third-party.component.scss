@@ -1,4 +1,5 @@
 @import '/src/materialColorScheme.scss';
+@import '/src/functions';
 
 .partner-icon {
   width: 2.24rem;
@@ -18,13 +19,15 @@
   font-size: 1.4rem;
   height: 3.6rem;
   width: 20rem;
-  color: $header-color;
   text-align: left;
   text-decoration: none;
+  @include button-color($header-color);
 }
 
 img.partner-launch,
 img.galaxy-launch {
+  width: 8.3rem;
+  height: auto;
   max-width: 8.3rem;
   max-height: 2.7rem;
 }

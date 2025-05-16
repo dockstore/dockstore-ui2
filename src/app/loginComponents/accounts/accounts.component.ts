@@ -1,7 +1,7 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
-import { MatLegacyTabChangeEvent as MatTabChangeEvent, MatLegacyTabsModule } from '@angular/material/legacy-tabs';
+import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -24,7 +24,7 @@ import { FlexModule } from '@ngbracket/ngx-layout/flex';
     MySidebarComponent,
     HeaderComponent,
     AccountSidebarComponent,
-    MatLegacyTabsModule,
+    MatTabsModule,
     AccountsExternalComponent,
     ControlsComponent,
     RequestsComponent,

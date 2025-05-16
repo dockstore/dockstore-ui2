@@ -21,9 +21,9 @@ import { CheckerWorkflowQuery } from '../../state/checker-workflow.query';
 import { MatIconModule } from '@angular/material/icon';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { SnackbarDirective } from '../../snackbar.directive';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
-import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
-import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatCardModule } from '@angular/material/card';
 import { NgIf, AsyncPipe } from '@angular/common';
 
 @Component({
@@ -31,16 +31,7 @@ import { NgIf, AsyncPipe } from '@angular/common';
   templateUrl: './launch-checker-workflow.component.html',
   styleUrls: ['./launch-checker-workflow.component.scss'],
   standalone: true,
-  imports: [
-    NgIf,
-    MatLegacyCardModule,
-    MatLegacyTooltipModule,
-    MatLegacyButtonModule,
-    SnackbarDirective,
-    ClipboardModule,
-    MatIconModule,
-    AsyncPipe,
-  ],
+  imports: [NgIf, MatCardModule, MatTooltipModule, MatButtonModule, SnackbarDirective, ClipboardModule, MatIconModule, AsyncPipe],
 })
 export class LaunchCheckerWorkflowComponent {
   @Input() command: string;

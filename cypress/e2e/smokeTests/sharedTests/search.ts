@@ -1,3 +1,5 @@
+import { typeInInput } from '../../../support/commands';
+
 describe('Admin UI', () => {
   before(() => {
     cy.visit('');
@@ -16,7 +18,7 @@ describe('Admin UI', () => {
       cy.go('forward');
       cy.url().should('include', '/search?descriptorType=WDL');
       cy.contains('the Language is WDL').should('exist');
-      cy.get('[data-cy=basic-search]').type('dhockstore{enter}');
+      typeInInput('basic-search', 'dhockstore{enter}');
       cy.contains(' Sorry, no matches found for dhockstore');
       cy.contains(/Do[ ]you[ ]mean:[ ].+/);
       cy.url().should('include', 'search=dhockstore');
@@ -25,17 +27,15 @@ describe('Admin UI', () => {
       cy.url().should('not.include', 'search=dhockstore');
 
       cy.contains('Items per page');
-      cy.get('[data-cy=search-workflow-table-paginator]').within(() => {
-        cy.get('.mat-paginator-range-label').contains('10 of');
-      });
-      cy.get('[data-cy=search-workflow-table-paginator]').contains(10).should('be.visible').click();
+      const searchPaginatorDataCy = '[data-cy=search-entry-table-paginator]';
+      cy.get(searchPaginatorDataCy).contains(10).should('be.visible').click();
       cy.get('mat-option').contains(20).click();
-      cy.get('[data-cy=search-workflow-table-paginator]').contains(20);
+      cy.get(searchPaginatorDataCy).contains(20);
       cy.get('a').contains('Organizations').click();
       cy.go('back');
-      cy.get('[data-cy=search-workflow-table-paginator]').contains(20);
+      cy.get(searchPaginatorDataCy).contains(20);
 
-      cy.get('[data-cy=basic-search]').type('dockstore_{enter}');
+      typeInInput('basic-search', 'dockstore_{enter}');
       cy.contains('Open Advanced Search').click();
       cy.contains('button', /^Advanced Search$/)
         .should('be.visible')

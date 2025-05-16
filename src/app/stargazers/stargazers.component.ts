@@ -25,7 +25,7 @@ import { StarringService } from '../starring/starring.service';
 import { RouterLink } from '@angular/router';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { MatCardModule } from '@angular/material/card';
 import { NgIf, NgFor } from '@angular/common';
 
 @Component({
@@ -33,7 +33,7 @@ import { NgIf, NgFor } from '@angular/common';
   templateUrl: './stargazers.component.html',
   styleUrls: ['./stargazers.component.css'],
   standalone: true,
-  imports: [NgIf, MatLegacyCardModule, MatIconModule, FlexModule, NgFor, RouterLink],
+  imports: [NgIf, MatCardModule, MatIconModule, FlexModule, NgFor, RouterLink],
 })
 export class StargazersComponent extends Base implements OnInit {
   starGazers: User[];

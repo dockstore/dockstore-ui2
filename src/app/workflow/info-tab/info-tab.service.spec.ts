@@ -1,6 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
-import { MatLegacySnackBarModule } from '@angular/material/legacy-snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AlertService } from 'app/shared/alert/state/alert.service';
 import { ga4ghPath } from 'app/shared/constants';
 import { DescriptorTypeCompatService } from 'app/shared/descriptor-type-compat.service';
@@ -10,7 +10,7 @@ import { WorkflowsService } from 'app/shared/openapi';
 import { ExtendedWorkflowQuery } from 'app/shared/state/extended-workflow.query';
 import { WorkflowService } from 'app/shared/state/workflow.service';
 import { WorkflowsStubService, WorkflowStubService } from 'app/test/service-stubs';
-import { sampleWorkflow3 } from '../../test/mocked-objects';
+import { sampleWorkflow3, appToolEntryTypeMetadata, serviceEntryTypeMetadata, notebookEntryTypeMetadata } from '../../test/mocked-objects';
 import { InfoTabService } from './info-tab.service';
 
 describe('ValueService', () => {
@@ -32,7 +32,7 @@ describe('ValueService', () => {
         DescriptorTypeCompatService,
         DescriptorLanguageService,
       ],
-      imports: [HttpClientTestingModule, MatLegacySnackBarModule],
+      imports: [HttpClientTestingModule, MatSnackBarModule],
     });
   });
 
@@ -54,10 +54,15 @@ describe('ValueService', () => {
   it(`getTRSId should work for tools and workflows`, () => {
     service = TestBed.inject(InfoTabService);
     const fullWorkflowPath = sampleWorkflow3.full_workflow_path;
-    expect(service.getTRSId(sampleWorkflow3, EntryType.BioWorkflow)).toBe(`#workflow/${fullWorkflowPath}`);
-    expect(service.getTRSId(sampleWorkflow3, EntryType.AppTool)).toBe(fullWorkflowPath);
-    expect(service.getTRSId(sampleWorkflow3, EntryType.Service)).toBe(`#service/${fullWorkflowPath}`);
-    expect(service.getTRSId(null, EntryType.BioWorkflow)).toBe('');
+    const clone = Object.assign({}, sampleWorkflow3);
+    expect(service.getTRSId(clone)).toBe(`#workflow/${fullWorkflowPath}`);
+    clone.entryTypeMetadata = appToolEntryTypeMetadata;
+    expect(service.getTRSId(clone)).toBe(fullWorkflowPath);
+    clone.entryTypeMetadata = serviceEntryTypeMetadata;
+    expect(service.getTRSId(clone)).toBe(`#service/${fullWorkflowPath}`);
+    clone.entryTypeMetadata = notebookEntryTypeMetadata;
+    expect(service.getTRSId(clone)).toBe(`#notebook/${fullWorkflowPath}`);
+    expect(service.getTRSId(null)).toBe('');
   });
 
   it(`getTRSPlainType should work for various descriptor types`, () => {

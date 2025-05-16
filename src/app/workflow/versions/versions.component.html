@@ -21,9 +21,8 @@
     [dataSource]="dataSource"
     class="w-100"
     matSort
-    matSortActive="last_modified"
-    matSortDisableClear
-    matSortDirection="desc"
+    matSortStart="asc"
+    [trackBy]="trackBy"
   >
     <ng-container matColumnDef="name">
       <th
@@ -45,16 +44,22 @@
         >
       </th>
       <td mat-cell *matCellDef="let version">
-        <span fxLayout="row wrap" fxLayoutGap="0.5rem" fxLayoutAlign="start center">
-          <mat-chip *ngIf="defaultVersion === version.name" class="bubble workflow-background">
+        <span
+          fxLayout="row wrap"
+          fxLayoutGap="0.5rem"
+          fxLayoutAlign="start center"
+          [ngClass]="{ 'ml-2': version.name === _selectedVersion.name }"
+        >
+          <mat-chip-set *ngIf="defaultVersion === version.name">
             <a
+              mat-chip
+              class="workflow-background"
               target="_blank"
               rel="noopener noreferrer"
               [href]="Dockstore.DOCUMENTATION_URL + '/faq.html#what-is-a-default-version-of-a-tool-or-workflow'"
-              class="verified-check"
               ><span style="word-break: normal">Default</span></a
             >
-          </mat-chip>
+          </mat-chip-set>
           <fa-icon *ngIf="version.referenceType === 'BRANCH'" [icon]="faCodeBranch" aria-hidden="true" title="Branch"></fa-icon>
           <fa-icon *ngIf="version.referenceType === 'TAG'" [icon]="faTag" aria-hidden="true" title="Tag"></fa-icon>
           <!-- The href is so that the cursor changes to pointer on hover while not actually going anymore when clicked -->
@@ -84,9 +89,10 @@
         mat-header-cell
         *matHeaderCellDef
         mat-sort-header
-        disableClear
+        start="desc"
         matTooltip="Date of last update to Git reference"
         matTooltipPosition="above"
+        data-cy="date-modified-header"
       >
         Date Modified
       </th>
@@ -103,7 +109,6 @@
         scope="col"
         mat-header-cell
         *matHeaderCellDef
-        mat-sort-header
         matTooltip="The {{
           workflow.entryType === entryType.NOTEBOOK ? 'format' : 'language versions'
         }} used by the version's descriptor file(s)."
@@ -118,12 +123,28 @@
       </td>
     </ng-container>
 
+    <ng-container matColumnDef="engineVersions">
+      <th
+        scope="col"
+        mat-header-cell
+        *matHeaderCellDef
+        matTooltip="The minimum required {{ workflow.descriptorType | descriptorLanguage }} engine version."
+        matTooltipPosition="above"
+      >
+        Engine Versions
+      </th>
+      <td mat-cell *matCellDef="let version">
+        <span>{{
+          workflow.descriptorType | descriptorLanguage | descriptorLanguageVersions: version.versionMetadata?.engineVersions:false
+        }}</span>
+      </td>
+    </ng-container>
+
     <ng-container matColumnDef="valid">
       <th
         scope="col"
         mat-header-cell
         *matHeaderCellDef
-        mat-sort-header
         matTooltip="A version is valid if the descriptor file(s) have been successfully validated."
         matTooltipPosition="above"
       >
@@ -139,14 +160,13 @@
         scope="col"
         mat-header-cell
         *matHeaderCellDef
-        mat-sort-header
         matTooltip="A hidden version is only visible here and not publicly."
         matTooltipPosition="above"
       >
         Hidden
       </th>
       <td mat-cell *matCellDef="let version">
-        <mat-icon data-cy="hidden" *ngIf="version.hidden">check</mat-icon>
+        <mat-icon data-cy="hidden-column-check" *ngIf="version.hidden">check</mat-icon>
       </td>
     </ng-container>
 
@@ -155,7 +175,6 @@
         scope="col"
         mat-header-cell
         *matHeaderCellDef
-        mat-sort-header
         matTooltip="The version has a test parameter file with open data or requires no input files."
         matTooltipPosition="above"
       >
@@ -188,7 +207,6 @@
         scope="col"
         mat-header-cell
         *matHeaderCellDef
-        mat-sort-header
         matTooltip="The version has has execution and/or validation metrics."
         matTooltipPosition="above"
       >
@@ -198,7 +216,20 @@
         >
       </th>
       <td mat-cell *matCellDef="let version">
-        <mat-icon data-cy="metrics" *ngIf="version.metricsByPlatform && (version.metricsByPlatform | json) !== '{}'">check</mat-icon>
+        <img
+          *ngIf="version.metricsByPlatform && (version.metricsByPlatform[PartnerEnum.ALL]?.executionStatusCount | json) !== 'null'"
+          src="../assets/svg/execution-icon.svg"
+          alt="Execution Metrics Icon"
+          data-cy="execution-metrics-icon"
+          matTooltip="This version contains execution metrics."
+        />
+        <img
+          *ngIf="version.metricsByPlatform && (version.metricsByPlatform[PartnerEnum.ALL]?.validationStatus | json) !== 'null'"
+          src="../assets/svg/validation-icon.svg"
+          alt="Validation Metrics Icon"
+          data-cy="validation-metrics-icon"
+          matTooltip="This version contains validation metrics."
+        />
       </td>
     </ng-container>
 
@@ -233,7 +264,11 @@
         DOI
       </th>
       <td mat-cell *matCellDef="let version">
-        <mat-icon *ngIf="this.publicPage && version.dois[workflow.doiSelection]">check</mat-icon>
+        <app-doi-badge
+          *ngIf="this.publicPage && version.dois[workflow.doiSelection]"
+          [doi]="version.dois[workflow.doiSelection]"
+          [displayDoi]="false"
+        ></app-doi-badge>
         <span *ngIf="!this.publicPage" fxLayout="row" fxLayoutGap="0.5rem">
           <span *ngFor="let doiEntry of version.dois | keyvalue: originalOrder">
             <app-doi-badge [doi]="doiEntry.value" [displayDoi]="false"></app-doi-badge>
@@ -273,4 +308,11 @@
       data-cy="versionRow"
     ></tr>
   </table>
+  <mat-paginator
+    [pageSizeOptions]="[10, 20, 50]"
+    [length]="versionsLength$ | async"
+    [pageSize]="pageSize$ | async"
+    [pageIndex]="pageIndex$ | async"
+    showFirstLastButtons
+  ></mat-paginator>
 </div>

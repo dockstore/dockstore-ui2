@@ -27,8 +27,8 @@ import {
   DatePipe,
 } from '@angular/common';
 import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
-import { MatLegacyChipInputEvent as MatChipInputEvent, MatLegacyChipsModule } from '@angular/material/legacy-chips';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertService } from 'app/shared/alert/state/alert.service';
 import { BioWorkflow } from 'app/shared/openapi/model/bioWorkflow';
@@ -93,24 +93,25 @@ import { VersionsWorkflowComponent } from './versions/versions.component';
 import { LaunchWorkflowComponent } from './launch/launch.component';
 import { NotebookComponent } from '../notebook/notebook.component';
 import { InfoTabComponent } from './info-tab/info-tab.component';
-import { MatLegacyTabsModule } from '@angular/material/legacy-tabs';
+import { MatTabsModule } from '@angular/material/tabs';
 import { StargazersComponent } from '../stargazers/stargazers.component';
 import { CategoryButtonComponent } from '../categories/button/category-button.component';
 import { WorkflowActionsComponent } from '../shared/entry-actions/workflow-actions.component';
 import { StarringComponent } from '../starring/starring.component';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
-import { MatLegacyOptionModule } from '@angular/material/legacy-core';
-import { MatLegacySelectModule } from '@angular/material/legacy-select';
-import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatOptionModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
 import { JsonLdComponent } from '../shared/json-ld/json-ld.component';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
-import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { MatCardModule } from '@angular/material/card';
 import { ManageDoisDialogComponent } from 'app/shared/entry/doi/manage-dois/manage-dois-dialog.component';
 import { DoiBadgeComponent } from 'app/shared/entry/doi/doi-badge/doi-badge.component';
+import { PreviewWarningComponent } from '../preview-warning/preview-warning.component';
 
 @Component({
   selector: 'app-workflow',
@@ -119,19 +120,19 @@ import { DoiBadgeComponent } from 'app/shared/entry/doi/doi-badge/doi-badge.comp
   standalone: true,
   imports: [
     NgIf,
-    MatLegacyCardModule,
+    MatCardModule,
     MatIconModule,
-    MatLegacyButtonModule,
-    MatLegacyTooltipModule,
+    MatButtonModule,
+    MatTooltipModule,
     FlexModule,
     JsonLdComponent,
     ExtendedModule,
-    MatLegacyChipsModule,
-    MatLegacyFormFieldModule,
-    MatLegacySelectModule,
+    MatChipsModule,
+    MatFormFieldModule,
+    MatSelectModule,
     FormsModule,
     ReactiveFormsModule,
-    MatLegacyOptionModule,
+    MatOptionModule,
     NgxMatSelectSearchModule,
     NgFor,
     StarringComponent,
@@ -139,7 +140,7 @@ import { DoiBadgeComponent } from 'app/shared/entry/doi/doi-badge/doi-badge.comp
     CategoryButtonComponent,
     StargazersComponent,
     NgClass,
-    MatLegacyTabsModule,
+    MatTabsModule,
     InfoTabComponent,
     NotebookComponent,
     LaunchWorkflowComponent,
@@ -164,10 +165,13 @@ import { DoiBadgeComponent } from 'app/shared/entry/doi/doi-badge/doi-badge.comp
     DatePipe,
     BaseUrlPipe,
     DoiBadgeComponent,
+    PreviewWarningComponent,
   ],
 })
 export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterViewInit, OnInit {
   DoiInitiatorEnum = Doi.InitiatorEnum;
+  DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
+  Dockstore = Dockstore;
   workflowEditData: any;
   public isRefreshing$: Observable<boolean>;
   public workflow: BioWorkflow | Service | Notebook;
@@ -210,6 +214,7 @@ export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterVi
 
   @Input() user;
   @Input() selectedVersion: WorkflowVersion;
+  @Input() shouldClearState: boolean = true;
 
   constructor(
     private dockstoreService: DockstoreService,
@@ -283,7 +288,7 @@ export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterVi
   }
 
   ngOnInit() {
-    this.init();
+    this.init(this.shouldClearState);
     //watch for changes in search
     this.versionFilterCtrl.valueChanges.pipe(takeUntil(this.ngUnsubscribe)).subscribe(() => {
       this.filterVersions();
@@ -551,12 +556,6 @@ export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterVi
     this.validVersions = this.dockstoreService.getValidVersions(this.workflow.workflowVersions);
   }
 
-  restubWorkflow() {
-    this.workflowsService.restub(this.workflow.id).subscribe((response) => {
-      this.workflowService.setWorkflow(response);
-    });
-  }
-
   resetWorkflowEditData() {
     const labelArray = this.dockstoreService.getLabelStrings(this.workflow.labels);
     const workflowLabels = labelArray;
@@ -658,5 +657,9 @@ export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterVi
       width: bootstrap4largeModalSize,
       data: { entry: this.workflow, version: this.selectedVersion },
     });
+  }
+
+  equalIds(a: WorkflowVersion, b: WorkflowVersion): boolean {
+    return a.id == b.id;
   }
 }

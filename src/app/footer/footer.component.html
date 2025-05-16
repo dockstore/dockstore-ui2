@@ -100,9 +100,11 @@
               </a>
             </li>
             <li class="m-0">
-              <button mat-stroked-button [cdkCopyToClipboard]="content" appSnackbar>
-                <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
-                <small>&nbsp;Copy Build Info</small>
+              <button mat-stroked-button class="copy-build-info-button copy-button" [cdkCopyToClipboard]="content" appSnackbar>
+                <span>
+                  <mat-icon>file_copy</mat-icon>
+                  <small>&nbsp;Copy Build Info</small>
+                </span>
               </button>
             </li>
           </ul>
@@ -178,13 +180,6 @@
               </a>
             </li>
             <li class="m-0">
-              <a href="https://twitter.com/DockstoreOrg" target="_blank" rel="noopener noreferrer" class="footer-link" fxLayoutGap="0.5rem">
-                <img class="site-icons-tab" src="../../assets/images/dockstore/twitter.svg" alt="small Twitter logo" /><small
-                  >@DockstoreOrg</small
-                >
-              </a>
-            </li>
-            <li class="m-0">
               <a
                 href="https://genomic.social/@dockstore"
                 target="_blank"
@@ -194,6 +189,26 @@
               >
                 <img class="site-icons-tab" src="../../assets/images/dockstore/mastodon.svg" alt="small Mastodon logo" /><small
                   >@dockstore</small
+                >
+              </a>
+            </li>
+            <li class="m-0">
+              <a
+                href="https://bsky.app/profile/dockstore.org"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="footer-link"
+                fxLayoutGap="0.5rem"
+              >
+                <img class="site-icons-tab" src="../../assets/images/dockstore/Bluesky_Logo.svg" alt="small Bluesky logo" /><small
+                  >@dockstore.org</small
+                >
+              </a>
+            </li>
+            <li class="m-0">
+              <a href="https://twitter.com/DockstoreOrg" target="_blank" rel="noopener noreferrer" class="footer-link" fxLayoutGap="0.5rem">
+                <img class="site-icons-tab" src="../../assets/images/dockstore/twitter.svg" alt="small Twitter logo" /><small
+                  >@DockstoreOrg</small
                 >
               </a>
             </li>
@@ -265,7 +280,7 @@
         </a>
       </div>
       <div class="bottom-footer">
-        <small class="p-4 dockstore-support">
+        <small class="p-4 text-align-center">
           <a class="footer-link" [routerLink]="['/funding']" target="_self">Support for Dockstore</a>
           <span> is provided by grants from Genome Canada, the National Institutes of Health, and the Province of Ontario. </span>
         </small>

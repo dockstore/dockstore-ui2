@@ -29,13 +29,13 @@ import { FilesService } from '../../workflow/files/state/files.service';
 import { CodeEditorComponent } from '../../shared/code-editor/code-editor.component';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { SnackbarDirective } from '../../shared/snackbar.directive';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatButtonModule } from '@angular/material/button';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { SelectComponent } from '../../select/select.component';
-import { MatLegacyProgressBarModule } from '@angular/material/legacy-progress-bar';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { MatCardModule } from '@angular/material/card';
 import { NgIf, NgFor, AsyncPipe, KeyValuePipe } from '@angular/common';
 
 @Component({
@@ -45,14 +45,14 @@ import { NgIf, NgFor, AsyncPipe, KeyValuePipe } from '@angular/common';
   standalone: true,
   imports: [
     NgIf,
-    MatLegacyCardModule,
+    MatCardModule,
     MatIconModule,
     NgFor,
-    MatLegacyProgressBarModule,
+    MatProgressBarModule,
     SelectComponent,
     MatToolbarModule,
     FlexModule,
-    MatLegacyButtonModule,
+    MatButtonModule,
     SnackbarDirective,
     ClipboardModule,
     CodeEditorComponent,

@@ -46,16 +46,17 @@
       </th>
       <td mat-cell *matCellDef="let version">
         <span fxLayout="row wrap" fxLayoutGap="0.5rem" fxLayoutAlign="start center">
-          <mat-chip *ngIf="defaultVersion === version.name" class="bubble tool-background">
+          <mat-chip-set *ngIf="defaultVersion === version.name" class="mr-2">
             <a
+              mat-chip
               target="_blank"
               rel="noopener noreferrer"
               [href]="Dockstore.DOCUMENTATION_URL + '/faq.html#what-is-a-default-version-of-a-tool-or-workflow'"
-              class="verified-check"
+              class="tool-background"
             >
               <span style="word-break: normal">Default</span>
             </a>
-          </mat-chip>
+          </mat-chip-set>
           <!-- The href is so that the cursor changes to pointer on hover while not actually going anymore when clicked -->
           <a
             href="javascript:undefined"
@@ -122,7 +123,7 @@
     <ng-container matColumnDef="hidden">
       <th scope="col" mat-header-cell *matHeaderCellDef mat-sort-header matTooltip="" matTooltipPosition="above">Hidden</th>
       <td mat-cell *matCellDef="let version">
-        <mat-icon data-cy="hiddenCheck" *ngIf="version.hidden">check</mat-icon>
+        <mat-icon data-cy="hidden-column-check" *ngIf="version.hidden">check</mat-icon>
       </td>
     </ng-container>
     <ng-container matColumnDef="verified">

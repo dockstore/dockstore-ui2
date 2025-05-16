@@ -7,9 +7,9 @@ import { ActivatedRoute, Router } from '../test';
 import { AliasesQuery } from './state/aliases.query';
 import { AliasesService } from './state/aliases.service';
 import { EntryTypeMetadataService } from '../entry/type-metadata/entry-type-metadata.service';
-import { MatLegacyProgressBarModule } from '@angular/material/legacy-progress-bar';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { MatCardModule } from '@angular/material/card';
 import { NgIf, AsyncPipe } from '@angular/common';
 import { HeaderComponent } from '../header/header.component';
 
@@ -18,7 +18,7 @@ import { HeaderComponent } from '../header/header.component';
   templateUrl: './aliases.component.html',
   styleUrls: ['./aliases.component.scss'],
   standalone: true,
-  imports: [HeaderComponent, NgIf, MatLegacyCardModule, MatIconModule, MatLegacyProgressBarModule, AsyncPipe],
+  imports: [HeaderComponent, NgIf, MatCardModule, MatIconModule, MatProgressBarModule, AsyncPipe],
 })
 export class AliasesComponent extends Base implements OnInit {
   loading$: Observable<boolean>;

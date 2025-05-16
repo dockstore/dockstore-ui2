@@ -27,7 +27,7 @@ div.p-3 {
   box-shadow: 0.1rem 0.2rem 0.1rem rgba(0, 0, 0, 0.1);
 }
 
-.bubble {
+.mat-mdc-chip.role {
   background-color: mat.get-color-from-palette($kim-accent1-success, 5);
 }
 
@@ -35,13 +35,6 @@ img[alt='Dockstore avatar'] {
   width: 18rem;
   border-radius: 50%;
   box-shadow: 0rem 0.2rem 0.4rem 0rem rgba(0, 0, 0, 0.1), 0rem 0.2rem 0.3rem 0rem rgba(0, 0, 0, 0.05);
-}
-
-// Synced badge
-.bubble.mt-2 {
-  border-radius: 1rem !important;
-  color: white !important;
-  background-color: $accent-3-dark;
 }
 
 img[alt='GitHub avatar'],

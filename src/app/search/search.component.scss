@@ -16,78 +16,12 @@
 @use '@angular/material' as mat;
 @import '/src/materialColorScheme.scss';
 
-mat-tab-group.homeComponent {
-  margin: 0.5rem 5rem;
+.mat-mdc-tab-group {
+  --mat-tab-header-active-label-text-color: #{$header-color};
 }
 
-::ng-deep .mat-tab-list .mat-tab-labels .mat-tab-label-active {
-  color: $header-color;
-}
-
-.sidebar {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  z-index: 1000;
-  display: block;
-  padding: 20px;
-  overflow-x: hidden;
-  overflow-y: auto;
-  background-color: mat.get-color-from-palette($dockstore-app-gray, 5);
-  border-right: 1px solid #eee;
-}
-
-.instructions {
-  display: block;
-  margin: 0 auto;
-  width: 450px;
-}
-
-/* Source: https://codepen.io/shidhincr/pen/ICLBD */
-.redfamily {
-  color: red;
-}
-.search-box {
-  border: 1px solid #ccc;
-  outline: 0;
-  border-radius: 10px;
-  &:focus {
-    box-shadow: 0 0 15px 5px #b0e0ee;
-    border: 2px solid #bebede;
-  }
-}
-
-.close-icon {
-  border: 1px solid transparent;
-  background-color: transparent;
-  display: inline-block;
-  vertical-align: middle;
-  outline: 0;
-  cursor: pointer;
-}
-.close-icon:after {
-  content: 'X';
-  /*display: inline-block;*/
-  width: 35px;
-  height: 30px;
-  position: absolute;
-  background-color: #fa9595;
-  z-index: 1;
-  right: 40px;
-  top: 0px;
-  bottom: 0px;
-  margin: auto;
-  padding: 3px;
-  border-radius: 50%;
-  text-align: center;
-  color: white;
-  font-weight: normal;
-  font-size: 12px;
-  box-shadow: 0 0 2px #e50f0f;
-  cursor: pointer;
-}
-.search-box:not(:valid) ~ .close-icon {
-  display: none;
+.hits {
+  line-height: 1.8;
 }
 
 .sortBtn {
@@ -117,7 +51,6 @@ fa-icon.ng-fa-icon {
 // Need individual classes for left and right sort buttons to adjust unique border-radiuses
 .leftSortbtn {
   border-radius: 4px 0px 0px 4px;
-  margin-left: 0.8rem;
 }
 
 .rightSortbtn {
@@ -132,27 +65,8 @@ fa-icon.ng-fa-icon {
   }
 }
 
-.sidebar-btn {
-  width: 100%;
-  background-color: #51aad8;
-  &.expand {
-    margin-bottom: 10px;
-  }
-  &.reset {
-    margin-top: 10px;
-  }
-}
-
 .search-container {
   padding-top: 30px;
-}
-
-.advancedSearch-btn {
-  width: 90%;
-  margin-bottom: 10px;
-  background-color: #aaeed2;
-  color: #198055;
-  border-color: #3fd999;
 }
 
 div.panel-container-label:hover {
@@ -160,18 +74,8 @@ div.panel-container-label:hover {
   color: black;
 }
 
-.expand-collapse-holder {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-}
-
 mat-form-field {
   width: 100%;
-}
-
-input.mat-input-element:not(:focus) {
-  height: 1rem;
 }
 
 // Panel spacing
@@ -192,41 +96,9 @@ mat-expansion-panel mat-expansion-panel-header[aria-expanded='false'] {
   text-decoration: underline;
 }
 
-// Form field box
-:host .mat-expansion-panel ::ng-deep .mat-form-field-wrapper {
-  margin: 0 0.75rem;
-  padding-bottom: 0.8rem;
-  line-height: 3.6rem;
-}
-
-// Form field label
-:host
-  .mat-expansion-panel
-  ::ng-deep
-  .mat-form-field-wrapper
-  .mat-form-field-flex
-  .mat-form-field-infix
-  .mat-form-field-label-wrapper
-  .mat-form-field-label {
-  top: 1.8rem;
-}
-
-// Form field inner
-:host .mat-expansion-panel ::ng-deep .mat-form-field-wrapper .mat-form-field-infix {
-  border: 0rem;
-  padding: 0rem;
-}
-
-// Form field text animation re-implementation
-:host ::ng-deep .mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
-  transform: translateY(-1.1em) scale(0.75);
-  width: 133.33333%;
-  top: 1.84375em;
-}
-
 // Panel body
 :host .mat-expansion-panel ::ng-deep .mat-expansion-panel-body {
-  padding: 0rem 0.25rem 0.7rem 0rem;
+  padding: 0rem 0.7rem 0.7rem;
 }
 
 // Panel

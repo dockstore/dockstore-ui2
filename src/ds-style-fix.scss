@@ -232,35 +232,16 @@ div.view-content.ns-containers {
     margin-bottom: 20px;
   }
 }
-div.panel-container-label {
-  padding: 0 10px;
-  clear: both;
-  .container-name-oflw {
-    width: 170px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+
+mat-checkbox,
+mat-radio-button {
+  label {
+    // Bootstrap adds margin-bottom padding to labels, which misaligns the label text for checkboxes.
+    // Set the margin-bottom to 0 for mat checkbox labels to center the text with the checkbox.
+    margin-bottom: 0 !important;
+    // Bootstrap applies bold font-weight to labels. Set to normal.
+    font-weight: unset;
   }
-  a {
-    color: #487980;
-  }
-}
-
-// Bootstrap applies bold font-weight and material checkbox automatically sets a line height and default overflow
-// behaviour that needs to be overridden.
-.search-facet-checkboxes .mat-checkbox-layout .mat-checkbox-label {
-  font-weight: normal !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-}
-
-label.mat-checkbox-layout {
-  margin-bottom: 0 !important;
-}
-
-div.panel-container-label:hover {
-  background-color: #7987a5;
-  color: #ffffff;
 }
 
 @keyframes spin {
@@ -584,19 +565,6 @@ div.modal form {
   margin-bottom: 5px;
 }
 
-.verified-check,
-.verified-check:hover,
-.verified-check:visited {
-  text-decoration: none;
-  color: #151c3d;
-}
-
-.verified-icon {
-  font-size: 1.5rem;
-  height: auto !important;
-  width: auto !important;
-}
-
 .footer-list li {
   margin: 0 0 0.6rem 0 !important;
 }
@@ -654,18 +622,8 @@ div.modal form {
   word-break: break-word;
 }
 
-.mat-standard-chip {
-  padding: 5px 8px !important;
-}
-
-.mat-chip-list-wrapper .mat-standard-chip,
-.mat-chip-list-wrapper input.mat-input-element {
-  margin: 2px !important;
-}
-
-.mat-chip-list-wrapper {
+.mat-mdc-chip-set {
   display: inline-flex !important;
-  margin: auto !important;
 }
 
 .mat-drawer-container {
@@ -701,9 +659,9 @@ div.modal form {
   }
 }
 
-mat-list.org-accordion-list > mat-list-item {
+mat-list.org-accordion-list > .mat-mdc-list-item {
   height: 30px !important;
-  font-size: 12px !important;
+  --mdc-list-list-item-label-text-size: 12px;
 }
 
 .add-entry-button {

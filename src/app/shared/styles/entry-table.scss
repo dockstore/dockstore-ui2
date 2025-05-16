@@ -5,15 +5,15 @@
 .mat-column-starredUsers,
 .mat-column-stars {
   max-width: 6rem;
-  justify-content: flex-end;
   color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
 }
 
 .mat-column-all_authors {
-  max-width: 20rem;
+  max-width: 16rem;
 }
 
 .mat-column-descriptorType,
+.mat-column-descriptorTypeSubclass,
 .mat-column-format {
   min-width: min-content;
   max-width: 14rem;
@@ -39,17 +39,7 @@
   min-height: 0;
 }
 
-// To not have border between the entry detail row and the search highlight row
-.element-row {
-  border-bottom-width: 0;
-}
-
 th {
   white-space: nowrap;
   vertical-align: top;
-}
-
-// Align AI bubble all the way to the left
-app-ai-bubble {
-  margin-left: 0;
 }

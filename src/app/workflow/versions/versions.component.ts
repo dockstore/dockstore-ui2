@@ -13,34 +13,37 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { AsyncPipe, DatePipe, JsonPipe, KeyValue, KeyValuePipe, NgClass, NgFor, NgIf } from '@angular/common';
 import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatIconModule } from '@angular/material/icon';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
-import { MatLegacyTableDataSource as MatTableDataSource, MatLegacyTableModule } from '@angular/material/legacy-table';
+import { MatTableModule } from '@angular/material/table';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faCodeBranch, faTag } from '@fortawesome/free-solid-svg-icons';
-import { takeUntil } from 'rxjs/operators';
+import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
+import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { DoiBadgeComponent } from 'app/shared/entry/doi/doi-badge/doi-badge.component';
+import { merge, Observable } from 'rxjs';
+import { distinctUntilChanged, takeUntil, tap } from 'rxjs/operators';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { DateService } from '../../shared/date.service';
 import { Dockstore } from '../../shared/dockstore.model';
 import { DockstoreService } from '../../shared/dockstore.service';
-import { Doi, EntryType, VersionVerifiedPlatform } from '../../shared/openapi';
+import { CloudInstance, Doi, EntryType, VersionVerifiedPlatform, Workflow, WorkflowsService, WorkflowVersion } from '../../shared/openapi';
 import { ExtendedWorkflow } from '../../shared/models/ExtendedWorkflow';
 import { SessionQuery } from '../../shared/session/session.query';
 import { ExtendedWorkflowQuery } from '../../shared/state/extended-workflow.query';
-import { Workflow } from '../../shared/openapi/model/workflow';
-import { WorkflowVersion } from '../../shared/openapi/model/workflowVersion';
+import { PaginatorService } from '../../shared/state/paginator.service';
 import { Versions } from '../../shared/versions';
-import { CommitUrlPipe } from '../../shared/entry/commit-url.pipe';
-import { DescriptorLanguagePipe } from '../../shared/entry/descriptor-language.pipe';
-import { DescriptorLanguageVersionsPipe } from '../../shared/entry/descriptor-language-versions.pipe';
-import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
 import { ViewWorkflowComponent } from '../view/view.component';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { MatLegacyChipsModule } from '@angular/material/legacy-chips';
-import { NgIf, NgClass, NgFor, JsonPipe, DatePipe, KeyValuePipe, KeyValue } from '@angular/common';
-import { FlexModule } from '@ngbracket/ngx-layout/flex';
-import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
-import { DoiBadgeComponent } from 'app/shared/entry/doi/doi-badge/doi-badge.component';
+import { VersionsDataSource } from './versions-datasource';
+import PartnerEnum = CloudInstance.PartnerEnum;
+import { DescriptorLanguageVersionsPipe } from 'app/shared/entry/descriptor-language-versions.pipe';
+import { DescriptorLanguagePipe } from 'app/shared/entry/descriptor-language.pipe';
+import { CommitUrlPipe } from 'app/shared/entry/commit-url.pipe';
 
 @Component({
   selector: 'app-versions-workflow',
@@ -48,14 +51,14 @@ import { DoiBadgeComponent } from 'app/shared/entry/doi/doi-badge/doi-badge.comp
   styleUrls: ['./versions.component.scss'],
   standalone: true,
   imports: [
-    MatLegacyTableModule,
+    MatTableModule,
     MatSortModule,
-    MatLegacyTooltipModule,
+    MatTooltipModule,
     MatIconModule,
     FlexModule,
     NgIf,
     NgFor,
-    MatLegacyChipsModule,
+    MatChipsModule,
     FontAwesomeModule,
     ViewWorkflowComponent,
     NgClass,
@@ -67,14 +70,18 @@ import { DoiBadgeComponent } from 'app/shared/entry/doi/doi-badge/doi-badge.comp
     CommitUrlPipe,
     KeyValuePipe,
     DoiBadgeComponent,
+    AsyncPipe,
+    MatPaginatorModule,
   ],
 })
 export class VersionsWorkflowComponent extends Versions implements OnInit, OnChanges, AfterViewInit {
   faTag = faTag;
   faCodeBranch = faCodeBranch;
-  @Input() versions: Array<WorkflowVersion>;
+  versions: Array<WorkflowVersion>;
   @Input() workflowId: number;
   @Input() verifiedVersionPlatforms: Array<VersionVerifiedPlatform>;
+  @Input() publicPage: boolean;
+
   _selectedVersion: WorkflowVersion;
   Dockstore = Dockstore;
   @Input() set selectedVersion(value: WorkflowVersion) {
@@ -82,13 +89,21 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
       this._selectedVersion = value;
     }
   }
-  dataSource = new MatTableDataSource(this.versions);
+  dataSource: VersionsDataSource;
   @Output() selectedVersionChange = new EventEmitter<WorkflowVersion>();
-  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
+  @ViewChild(MatPaginator, { static: true }) protected paginator: MatPaginator;
   public WorkflowType = Workflow;
   workflow: ExtendedWorkflow;
   entryType = EntryType;
   DoiInitiatorEnum = Doi.InitiatorEnum;
+  type: 'workflow' | 'tool' | 'lambdaEvent' | 'version' = 'version';
+  public pageSize$: Observable<number>;
+  public pageIndex$: Observable<number>;
+  public versionsLength$: Observable<number>;
+  protected readonly PartnerEnum = PartnerEnum;
+  private sortCol: string;
+
   setNoOrderCols(): Array<number> {
     return [4, 5];
   }
@@ -97,6 +112,8 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
     dockstoreService: DockstoreService,
     dateService: DateService,
     private alertService: AlertService,
+    private paginatorService: PaginatorService,
+    private workflowsService: WorkflowsService,
     private extendedWorkflowQuery: ExtendedWorkflowQuery,
     protected sessionQuery: SessionQuery
   ) {
@@ -116,7 +133,7 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
     const allColumns = [
       'name',
       'last_modified',
-      'descriptorTypeVersions',
+      this.workflow?.descriptorType === Workflow.DescriptorTypeEnum.NFL ? 'engineVersions' : 'descriptorTypeVersions',
       'valid',
       hiddenColumn,
       verifiedColumn,
@@ -135,31 +152,80 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
   }
 
   ngAfterViewInit(): void {
-    this.dataSource.sort = this.sort;
+    setTimeout(() => {
+      // Handle paginator changes
+      merge(this.paginator.page)
+        .pipe(
+          distinctUntilChanged(),
+          tap(() => this.loadVersions(this.publicPage)),
+          takeUntil(this.ngUnsubscribe)
+        )
+        .subscribe(() => this.paginatorService.setPaginator(this.type, this.paginator.pageSize, this.paginator.pageIndex));
+
+      // Handle sort changes
+      this.sort.sortChange
+        .pipe(
+          tap(() => {
+            this.paginator.pageIndex = 0; // go back to first page after changing sort
+            if (this.sort.active === 'last_modified') {
+              this.sortCol = 'lastModified';
+            } else {
+              this.sortCol = this.sort.active;
+            }
+            if (this.sort.direction === '') {
+              this.sortCol = null;
+            }
+            this.loadVersions(this.publicPage);
+          }),
+          takeUntil(this.ngUnsubscribe)
+        )
+        .subscribe();
+    });
+    this.loadVersions(this.publicPage);
   }
 
   ngOnChanges() {
-    this.dataSource.data = this.versions;
+    this.loadVersions(this.publicPage);
   }
 
   ngOnInit() {
-    this.publicPageSubscription();
     this.extendedWorkflowQuery.extendedWorkflow$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((workflow) => {
       this.workflow = workflow;
       if (workflow) {
         this.defaultVersion = workflow.defaultVersion;
       }
-      this.dtOptions = {
-        bFilter: false,
-        bPaginate: false,
-        columnDefs: [
-          {
-            orderable: false,
-            targets: this.setNoOrderCols(),
-          },
-        ],
-      };
+      this.publicPageSubscription();
     });
+    this.dataSource = new VersionsDataSource(this.workflowsService);
+    this.versionsLength$ = this.dataSource.versionsLengthSubject$;
+  }
+
+  loadVersions(publicPage: boolean) {
+    if (!this.dataSource) {
+      return;
+    }
+    let direction: 'asc' | 'desc';
+    switch (this.sort.direction) {
+      case 'asc': {
+        direction = 'asc';
+        break;
+      }
+      case 'desc': {
+        direction = 'desc';
+        break;
+      }
+      default: {
+        direction = 'desc';
+      }
+    }
+    this.dataSource.loadVersions(
+      publicPage,
+      this.workflowId,
+      direction,
+      this.paginator.pageIndex * this.paginator.pageSize,
+      this.paginator.pageSize,
+      this.sortCol
+    );
   }
 
   /**
@@ -180,4 +246,8 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
   originalOrder = (a: KeyValue<string, Doi>, b: KeyValue<string, Doi>): number => {
     return 0;
   };
+
+  trackBy(index: number, item: WorkflowVersion) {
+    return item.id;
+  }
 }

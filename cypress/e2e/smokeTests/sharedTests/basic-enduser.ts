@@ -1,6 +1,20 @@
 import { ga4ghPath } from '../../../../src/app/shared/constants';
 import { ToolDescriptor } from '../../../../src/app/shared/openapi';
-import { goToTab, checkFeaturedContent, checkNewsAndUpdates, checkMastodonFeed } from '../../../support/commands';
+import {
+  checkFeaturedContent,
+  checkNewsAndUpdates,
+  checkMastodonFeed,
+  isStagingOrProd,
+  typeInInput,
+  goToLaunchTab,
+  goToInfoTab,
+  goToVersionsTab,
+  goToPreviewTab,
+  goToFilesTab,
+  goToTestParameterFilesTab,
+  goToToolsTab,
+  goToTab,
+} from '../../../support/commands';
 
 // Test an entry, these should be ambiguous between tools, workflows, and notebooks.
 describe('run stochastic smoke test', () => {
@@ -8,27 +22,20 @@ describe('run stochastic smoke test', () => {
   testEntry('Workflows');
   testEntry('Notebooks');
 });
-function testEntry(tab: string) {
+
+function getSearchDataCy() {
+  return 'entryColumn';
+}
+
+function testEntry(tab: 'Tools' | 'Workflows' | 'Notebooks') {
   function goToRandomEntry() {
-    // Notebooks search is not functional in staging or prod in 1.14.
-    // TODO after 1.15 release: remove the following code path
-    if (tab === 'Notebooks' && isStagingOrProd()) {
-      cy.visit('/notebooks');
-      cy.get('[data-cy=entry-link]')
-        .eq(0)
-        .then((el) => {
-          cy.log(el.prop('href')); // log the href in case a test fails
-          cy.visit(el.prop('href'));
-        });
-      return;
-    }
     cy.visit('/search');
-    cy.get('[data-cy=workflowColumn] a');
+    // Get a workflow in the table results to make sure things are loaded.
+    cy.get(`[data-cy=${getSearchDataCy()}] a`);
     goToTab(tab);
-    const linkName = getLinkName(tab);
     // select a random entry on the first page and navigate to it
     let chosen_index = 0;
-    cy.get('[data-cy=' + linkName + ']')
+    cy.get(`[data-cy=${getSearchDataCy()}]`)
       .then(($list) => {
         chosen_index = Math.floor(Math.random() * $list.length);
       })
@@ -43,7 +50,7 @@ function testEntry(tab: string) {
 
   it('check info tab', () => {
     goToRandomEntry();
-    goToTab('Info');
+    goToInfoTab();
     // test export to zip button
     cy.get('[data-cy=downloadZip]').within(() => {
       cy.get('a').then((el) => {
@@ -54,35 +61,17 @@ function testEntry(tab: string) {
 
   it('check files tab', () => {
     goToRandomEntry();
-    goToTab('Files');
+    goToFilesTab();
     cy.url().should('contain', '?tab=files');
     cy.contains(tab === 'Notebooks' ? 'Notebook Files' : 'Descriptor Files');
   });
 
   it('check versions tab', () => {
     goToRandomEntry();
-    goToTab('Versions');
+    goToVersionsTab();
     cy.url().should('contain', '?tab=versions');
     cy.get('[data-cy=versionRow]').should('have.length.of.at.least', 1);
   });
-}
-
-function getLinkName(tab: string): string {
-  switch (tab) {
-    case 'Tools':
-      return 'toolNames';
-    case 'Workflows':
-      return 'workflowColumn';
-    case 'Notebooks':
-      return 'notebookColumn';
-    default:
-      throw new Error('unknown tab');
-  }
-}
-
-function isStagingOrProd() {
-  const baseUrl = Cypress.config('baseUrl');
-  return baseUrl === 'https://staging.dockstore.org' || baseUrl === 'https://dockstore.org';
 }
 
 describe('Check organizations page', () => {
@@ -116,7 +105,7 @@ describe('Test logged out home page', () => {
 describe('Test search page functionality', () => {
   it('displays tools', () => {
     cy.visit('/search');
-    cy.get('[data-cy=workflowColumn]').should('have.length.of.at.least', 1);
+    cy.get(`[data-cy=${getSearchDataCy()}]`).should('have.length.of.at.least', 1);
   });
   it('has working tag cloud', () => {
     cy.visit('/search');
@@ -128,14 +117,14 @@ describe('Test search page functionality', () => {
   });
   it('searches', () => {
     cy.visit('/search');
-    cy.get('[data-cy=basic-search]').type('topmed{enter}');
+    typeInInput('basic-search', 'topmed{enter}');
     cy.url().should('contain', '/search?entryType=workflows&search=topmed');
   });
   it('filters and unfilters by facets', () => {
     cy.visit('/search');
     cy.wait(2500); // Wait less than ideal, facets keep getting rerendered is the problem
     cy.contains('mat-checkbox', 'Nextflow').click();
-    cy.get('[data-cy=workflowColumn] a');
+    cy.get(`[data-cy=${getSearchDataCy()}] a`);
     cy.wait(2500); // Wait less than ideal, facets keep getting rerendered is the problem
     cy.contains('mat-checkbox', 'Nextflow'); // wait for the checkbox to reappear, indicating the filtering is almost complete
     cy.get('[data-cy=descriptorType]').each(($el, index, $list) => {
@@ -151,23 +140,20 @@ describe('Test search page functionality', () => {
     cy.visit('/search');
     cy.contains('mat-checkbox', /^[ ]*verified/).click();
     cy.url().should('contain', 'verified=1');
-    cy.get('[data-cy=workflowColumn] a');
+    cy.get(`[data-cy=${getSearchDataCy()}] a`);
     cy.contains('mat-checkbox', /^[ ]*verified/);
-    cy.get('[data-cy=verificationStatus] a').each(($el, index, $list) => {
-      cy.wrap($el).contains('done');
-    });
   });
 });
 
 describe('Test workflow page functionality', () => {
   it('find a WDL workflow', () => {
     cy.visit('/search');
-    cy.contains('.mat-tab-label', 'Workflows');
-    cy.get('[data-cy=workflowColumn]').should('have.length.of.at.least', 1);
+    goToTab('Workflows');
+    cy.get(`[data-cy=${getSearchDataCy()}]`).should('have.length.of.at.least', 1);
 
-    // click twice to sort by descriptor type descending so WDL is at the top
-    cy.get('[data-cy=descriptorTypeHeader]').click().click();
-    cy.get('[data-cy=workflowColumn] a').first().click();
+    // Use facet to find WDL workflow
+    cy.contains('mat-checkbox', 'WDL').click();
+    cy.get(`[data-cy=${getSearchDataCy()}] a`).first().click();
   });
 });
 
@@ -225,35 +211,35 @@ if (Cypress.config('baseUrl') !== 'http://localhost:4200') {
 function testWorkflow(url: string, version1: string, version2: string, trsUrl: string, type: string) {
   it('workflow tabs work for ' + url, () => {
     cy.visit('/workflows/' + url + ':' + version1);
-    goToTab('Launch');
+    goToLaunchTab();
     cy.url().should('contain', '?tab=launch');
-    goToTab('Info');
+    goToInfoTab();
     cy.url().should('contain', '?tab=info');
     cy.contains('mat-card-header', 'Workflow Information');
 
-    goToTab('Versions');
+    goToVersionsTab();
     cy.url().should('contain', '?tab=versions');
 
     // check that clicking on a different version goes to that version's url
     cy.contains('[data-cy=versionName]', version2).click();
     cy.url().should('contain', url + ':' + version2);
 
-    goToTab('Files');
+    goToFilesTab();
     cy.url().should('contain', '?tab=files');
     cy.contains('Descriptor Files');
     cy.get('.ace_editor').should('be.visible');
     cy.wait(1000); // https://ucsc-cgl.atlassian.net/browse/SEAB-5240 wait seems to fix; I think the import script needs to finish downloading
     // before clicking away.
-    goToTab('Test Parameter Files');
+    goToTestParameterFilesTab();
     if (type === ToolDescriptor.TypeEnum.NFL) {
       cy.contains('This version has no files of this type.');
     }
-    goToTab('Tools');
+    goToToolsTab();
     cy.url().should('contain', '?tab=tools');
 
     /// New material have to click twice
-    cy.contains('.mat-tab-label', 'DAG').click();
-    cy.contains('.mat-tab-label', 'DAG').click();
+    goToTab('DAG');
+    goToTab('DAG');
     cy.url().should('contain', '?tab=dag');
     cy.get('[data-cy=dag-holder]').children().should('have.length.of.at.least', 1);
 
@@ -320,14 +306,14 @@ function testNotebook(url: string, version1: string, version2: string, trsUrl: s
   it('notebook tabs work for ' + url, () => {
     cy.visit('/notebooks/' + url + ':' + version1);
 
-    goToTab('Info');
+    goToInfoTab();
     cy.url().should('contain', '?tab=info');
     cy.contains('mat-card-header', 'Notebook Information');
 
-    goToTab('Preview');
+    goToPreviewTab();
     cy.url().should('contain', '?tab=preview');
 
-    goToTab('Versions');
+    goToVersionsTab();
     cy.url().should('contain', '?tab=versions');
 
     // check that clicking on a different version goes to that version's url
@@ -336,7 +322,7 @@ function testNotebook(url: string, version1: string, version2: string, trsUrl: s
       cy.url().should('contain', url + ':' + version2);
     }
 
-    goToTab('Files');
+    goToFilesTab();
     cy.url().should('contain', '?tab=files');
 
     // Check the "Launch with" buttons.

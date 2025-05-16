@@ -1,15 +1,5 @@
 @import '/src/materialColorScheme.scss';
 
-.mat-card-title,
-.mat-card-subtitle,
-h4 {
+.mat-mdc-card-title {
   color: $header-color;
-}
-
-.mat-card-title {
-  font-size: 1.7rem;
-}
-
-.mat-card-subtitle {
-  font-size: 1.4rem;
 }

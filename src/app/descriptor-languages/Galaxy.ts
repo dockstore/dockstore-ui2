@@ -1,4 +1,5 @@
 import { ExtendedDescriptorLanguageBean } from 'app/entry/extendedDescriptorLanguage';
+import { configurationTabName, descriptorFilesTabName, testParameterFilesTabName } from 'app/shared/constants';
 import { SourceFile, ToolDescriptor, Workflow } from 'app/shared/openapi';
 
 export const extendedGalaxy: ExtendedDescriptorLanguageBean = {
@@ -7,7 +8,7 @@ export const extendedGalaxy: ExtendedDescriptorLanguageBean = {
   shortFriendlyName: 'Galaxy',
   friendlyName: 'Galaxy Workflow Format',
   defaultDescriptorPath: '/workflow-name.yml',
-  descriptorPathPattern: '^/([^/?:*|<>]+/)*[^/?:*|<>]+.(ga|yaml|yml)',
+  descriptorPathPattern: '^\\/([^\\/?:*\\|<>]+\\/)*[^\\/?:*\\|<>]+.(ga|yaml|yml)$',
   descriptorPathPlaceholder: 'e.g. /workflow-name.yml',
   toolDescriptorEnum: ToolDescriptor.TypeEnum.GALAXY,
   workflowDescriptorEnum: Workflow.DescriptorTypeEnum.Gxformat2,
@@ -22,13 +23,13 @@ export const extendedGalaxy: ExtendedDescriptorLanguageBean = {
   testParameterFileType: SourceFile.TypeEnum.GXFORMAT2TESTFILE,
   fileTabs: [
     {
-      tabName: 'Descriptor Files',
+      tabName: descriptorFilesTabName,
       fileTypes: [SourceFile.TypeEnum.DOCKSTOREGXFORMAT2],
     },
     {
-      tabName: 'Test Parameter Files',
+      tabName: testParameterFilesTabName,
       fileTypes: [SourceFile.TypeEnum.GXFORMAT2TESTFILE],
     },
-    { tabName: 'Configuration', fileTypes: [SourceFile.TypeEnum.DOCKSTOREYML] },
+    { tabName: configurationTabName, fileTypes: [SourceFile.TypeEnum.DOCKSTOREYML] },
   ],
 };

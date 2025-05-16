@@ -1,4 +1,5 @@
 import { ExtendedDescriptorLanguageBean } from 'app/entry/extendedDescriptorLanguage';
+import { configurationTabName, descriptorFilesTabName, testParameterFilesTabName } from 'app/shared/constants';
 import { SourceFile, ToolDescriptor, Workflow } from 'app/shared/openapi';
 
 export const extendedNFL: ExtendedDescriptorLanguageBean = {
@@ -7,7 +8,7 @@ export const extendedNFL: ExtendedDescriptorLanguageBean = {
   shortFriendlyName: 'Nextflow',
   friendlyName: 'Nextflow',
   defaultDescriptorPath: '/nextflow.config',
-  descriptorPathPattern: '^/([^/?:*|<>]+/)*[^/?:*|<>]+.(config)',
+  descriptorPathPattern: '^\\/([^\\/?:*\\|<>]+\\/)*[^\\/?:*\\|<>]+.(config)$',
   descriptorPathPlaceholder: 'e.g. /nextflow.config',
   toolDescriptorEnum: ToolDescriptor.TypeEnum.NFL,
   workflowDescriptorEnum: Workflow.DescriptorTypeEnum.NFL,
@@ -22,13 +23,13 @@ export const extendedNFL: ExtendedDescriptorLanguageBean = {
   testParameterFileType: SourceFile.TypeEnum.NEXTFLOWTESTPARAMS,
   fileTabs: [
     {
-      tabName: 'Descriptor Files',
+      tabName: descriptorFilesTabName,
       fileTypes: [SourceFile.TypeEnum.NEXTFLOWCONFIG, SourceFile.TypeEnum.NEXTFLOW],
     },
     {
-      tabName: 'Test Parameter Files',
+      tabName: testParameterFilesTabName,
       fileTypes: [SourceFile.TypeEnum.NEXTFLOWTESTPARAMS],
     },
-    { tabName: 'Configuration', fileTypes: [SourceFile.TypeEnum.DOCKSTOREYML] },
+    { tabName: configurationTabName, fileTypes: [SourceFile.TypeEnum.DOCKSTOREYML] },
   ],
 };

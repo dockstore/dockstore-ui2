@@ -1,4 +1,5 @@
 import { ExtendedDescriptorLanguageBean } from 'app/entry/extendedDescriptorLanguage';
+import { configurationTabName, descriptorFilesTabName, testParameterFilesTabName } from 'app/shared/constants';
 import { SourceFile, ToolDescriptor, Workflow } from 'app/shared/openapi';
 
 export const extendedCWL: ExtendedDescriptorLanguageBean = {
@@ -7,7 +8,7 @@ export const extendedCWL: ExtendedDescriptorLanguageBean = {
   shortFriendlyName: 'CWL',
   friendlyName: 'Common Workflow Language',
   defaultDescriptorPath: '/Dockstore.cwl',
-  descriptorPathPattern: '^/([^/?:*|<>]+/)*[^/?:*|<>]+.(cwl|yaml|yml)',
+  descriptorPathPattern: '^\\/([^\\/?:*\\|<>]+\\/)*[^\\/?:*\\|<>]+.(cwl|yaml|yml)$',
   descriptorPathPlaceholder: 'e.g. /Dockstore.cwl',
   toolDescriptorEnum: ToolDescriptor.TypeEnum.CWL,
   workflowDescriptorEnum: Workflow.DescriptorTypeEnum.CWL,
@@ -22,13 +23,13 @@ export const extendedCWL: ExtendedDescriptorLanguageBean = {
   testParameterFileType: SourceFile.TypeEnum.CWLTESTJSON,
   fileTabs: [
     {
-      tabName: 'Descriptor Files',
+      tabName: descriptorFilesTabName,
       fileTypes: [SourceFile.TypeEnum.DOCKSTORECWL],
     },
     {
-      tabName: 'Test Parameter Files',
+      tabName: testParameterFilesTabName,
       fileTypes: [SourceFile.TypeEnum.CWLTESTJSON],
     },
-    { tabName: 'Configuration', fileTypes: [SourceFile.TypeEnum.DOCKSTOREYML] },
+    { tabName: configurationTabName, fileTypes: [SourceFile.TypeEnum.DOCKSTOREYML] },
   ],
 };

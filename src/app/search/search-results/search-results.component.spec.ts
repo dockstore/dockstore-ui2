@@ -17,14 +17,13 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { DateService } from '../../shared/date.service';
-import { DateStubService, ExtendedGA4GHStubService, QueryBuilderStubService, SearchStubService } from './../../test/service-stubs';
+import { QueryBuilderStubService, SearchStubService } from './../../test/service-stubs';
 import { QueryBuilderService } from './../query-builder.service';
 
 import { RouterTestingModule } from '@angular/router/testing';
-import { ExtendedGA4GHService } from 'app/shared/openapi';
 import { SearchService } from '../state/search.service';
 import { SearchResultsComponent } from './search-results.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('SearchResultsComponent', () => {
   let component: SearchResultsComponent;
@@ -34,12 +33,10 @@ describe('SearchResultsComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         schemas: [NO_ERRORS_SCHEMA],
-        imports: [RouterTestingModule, SearchResultsComponent, NoopAnimationsModule],
+        imports: [RouterTestingModule, SearchResultsComponent, NoopAnimationsModule, HttpClientTestingModule],
         providers: [
           { provide: SearchService, useClass: SearchStubService },
           { provide: QueryBuilderService, useClass: QueryBuilderStubService },
-          { provide: ExtendedGA4GHService, useClass: ExtendedGA4GHStubService },
-          { provide: DateService, useClass: DateStubService },
         ],
       }).compileComponents();
     })

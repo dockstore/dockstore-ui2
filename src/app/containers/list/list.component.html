@@ -22,7 +22,8 @@
   </ng-template>
   <div [hidden]="previewMode">
     <mat-form-field>
-      <input matInput placeholder="Search tools" #input />
+      <mat-label>Search tools</mat-label>
+      <input matInput #input data-cy="search-input" />
     </mat-form-field>
   </div>
   <mat-table [dataSource]="dataSource" matSort matSortActive="stars" matSortDirection="desc" matSortDisableClear>
@@ -59,9 +60,11 @@
     <ng-container matColumnDef="format">
       <mat-header-cell *matHeaderCellDef>Format</mat-header-cell>
       <mat-cell *matCellDef="let tool">
-        <span *ngFor="let language of tool?.descriptorType" class="nonclick-badge m-1">
-          {{ language ? (language.toString() | uppercase) : '' }}
-        </span>
+        <mat-chip-set>
+          <mat-chip *ngFor="let language of tool?.descriptorType">
+            {{ language ? (language.toString() | uppercase) : '' }}
+          </mat-chip>
+        </mat-chip-set>
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="projectLinks">

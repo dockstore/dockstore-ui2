@@ -17,8 +17,8 @@ import { Location } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Directive, Injectable, Input, OnDestroy, ViewChild } from '@angular/core';
 import { UntypedFormControl, Validators } from '@angular/forms';
-import { MatLegacyChipInputEvent as MatChipInputEvent } from '@angular/material/legacy-chips';
-import { MatLegacyTabChangeEvent as MatTabChangeEvent, MatLegacyTabGroup as MatTabGroup } from '@angular/material/legacy-tabs';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { MatTabChangeEvent, MatTabGroup } from '@angular/material/tabs';
 import { ActivatedRoute, NavigationEnd, Params, Router, RouterEvent } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 import { filter, map, takeUntil } from 'rxjs/operators';
@@ -91,9 +91,15 @@ export abstract class Entry<V extends WorkflowVersion | Tag> implements OnDestro
     this.gA4GHFilesService.clearFiles();
   }
 
-  init() {
-    // Getting rid of this line makes the linking work again and I didn't notice any weird behaviour, but I'm not sure.. Needs more testing
-    // this.clearState();
+  init(shouldClearState: boolean) {
+    // In a PR that added support for displaying AppTools, this clearState call was commented out:
+    // https://github.com/dockstore/dockstore-ui2/pull/1388#discussion_r761229496
+    // It has been partially restored, for non-tool/AppTool entry types, to eliminate the
+    // Flash Of Previous Entry (FOPE) problem for those entry types:
+    // https://ucsc-cgl.atlassian.net/browse/SEAB-6748
+    if (shouldClearState) {
+      this.clearState();
+    }
     this.subscriptions();
     this.router.events
       .pipe(
