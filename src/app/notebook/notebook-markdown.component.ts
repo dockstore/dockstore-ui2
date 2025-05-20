@@ -23,23 +23,25 @@ export class NotebookMarkdownComponent implements OnChanges {
   ngOnChanges(): void {
     // BE VERY CAREFUL when modifying this function, because to accomodate MathJax markup,
     // which is destroyed by the Angular sanitizer, it must implement its own sanitization scheme.
-    const dangerousHtml = this.compileMarkdown(join(this.cell?.source), this.cell?.attachments ?? {});
+    this.compileMarkdown(join(this.cell?.source), this.cell?.attachments ?? {}).then((html) => {
+      const dangerousHtml = html;
 
-    // Sanitize using both the markdown wrapper and Angular sanitizers.
-    const sanitizedHtml = this.sanitize(dangerousHtml);
+      // Sanitize using both the markdown wrapper and Angular sanitizers.
+      const sanitizedHtml = this.sanitize(dangerousHtml);
 
-    // Format embedded TeX math expressions.
-    const mathjaxedSanitizedHtml = this.formatMath(sanitizedHtml);
+      // Format embedded TeX math expressions.
+      const mathjaxedSanitizedHtml = this.formatMath(sanitizedHtml);
 
-    // Mark as pre-sanitized and assign to html field.
-    this.html = this.sanitizer.bypassSecurityTrustHtml(mathjaxedSanitizedHtml);
+      // Mark as pre-sanitized and assign to html field.
+      this.html = this.sanitizer.bypassSecurityTrustHtml(mathjaxedSanitizedHtml);
+    });
   }
 
   sanitize(dangerousHtml: string): string {
     return this.sanitizer.sanitize(SecurityContext.HTML, this.markdownWrapperService.customSanitize(dangerousHtml));
   }
 
-  compileMarkdown(markdown: string, attachments: Attachments): string {
+  async compileMarkdown(markdown: string, attachments: Attachments): Promise<string> {
     // Adjustment the markdown to support attached notebook images and embedded TeX math expressions.
     let adjusted = markdown;
     adjusted = this.convertBackslashedDollars(adjusted);
