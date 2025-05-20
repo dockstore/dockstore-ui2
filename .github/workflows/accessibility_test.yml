@@ -46,7 +46,7 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
-          java-version: '21.0.4+7'
+          java-version: '21.0.7+6.0.LTS'
           distribution: 'temurin'
 
       - name: Install npm
