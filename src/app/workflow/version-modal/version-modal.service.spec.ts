@@ -87,6 +87,7 @@ describe('Service: version-modal.service.ts', () => {
     expect(regexp.test('/Dockstore.cw')).toBeFalsy();
   });
 
+  // TODO: https://ucsc-cgl.atlassian.net/browse/SEAB-6612 someone more well versed than me should investigate whether this is known breakage with newer node versions
   // it('regex should still be valid in v mode', () => {
   //   for (const [, pattern] of Object.entries(validationDescriptorPatterns)) {
   //     expect(new RegExp(pattern, 'v')).toBeTruthy();
