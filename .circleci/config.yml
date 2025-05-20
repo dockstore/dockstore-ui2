@@ -299,7 +299,7 @@ parameters:
     default: false
   java-tag:
     type: string
-    default: "20.0.2-browsers"
+    default: "21.0.6-browsers"
   postgres-tag:
     type: string
     default: "16.1"
