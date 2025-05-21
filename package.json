@@ -123,9 +123,6 @@
   "overrides": {
     "@schematics/update": {
       "ini": "^1.3.8"
-    },
-    "ngx-mat-select-search": {
-      "@angular/material": "^16.2.14"
     }
   }
 }
