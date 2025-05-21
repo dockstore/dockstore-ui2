@@ -515,7 +515,6 @@ commands:
           name: Install dependencies
           #Only run 'npm ci' if node_modules was not restored from cache
           command: |
-              node --version
               if [ ! -d "./node_modules" ]
               then
                 bash -i -c 'npm ci'
