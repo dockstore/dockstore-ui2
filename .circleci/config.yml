@@ -299,7 +299,7 @@ parameters:
     default: false
   java-tag:
     type: string
-    default: "17.0.4-browsers"
+    default: "17.0.13-browsers"
   postgres-tag:
     type: string
     default: "16.1"
@@ -515,6 +515,7 @@ commands:
           name: Install dependencies
           #Only run 'npm ci' if node_modules was not restored from cache
           command: |
+              node --version
               if [ ! -d "./node_modules" ]
               then
                 bash -i -c 'npm ci'
