@@ -83,13 +83,17 @@ export class MarkdownWrapperService {
   /**
    * Compiles markdown into HTML with custom options.
    * @param data
-   * @param baseUrl A base url used as a prefix for relative links
+   * @param markdownBaseUrl A base url used as a prefix for relative links
    * @returns {string} HTML string
    */
-  async customCompile(data, base): Promise<string> {
-    marked.use(baseUrl(base));
+  customCompile(data, markdownBaseUrl?): string {
+    // Use the marked-base-url extension if a base URL is specified
+    if (markdownBaseUrl) {
+      marked.use(baseUrl(markdownBaseUrl));
+    }
     const markdownData = this.removeTabsFromTableHeaders(data);
-    const html = await marked.parse(markdownData, { async: false });
+    // Set async: false so a Promise<string> is not returned and we can cast the result to a string
+    const html = marked.parse(markdownData, { async: false }) as string;
     return this.makeGitHubImagesRaw(html);
   }
 
