@@ -32,7 +32,7 @@ export class NotebookMarkdownComponent implements OnChanges {
     const mathjaxedSanitizedHtml = this.formatMath(sanitizedHtml);
 
     // Mark as pre-sanitized and assign to html field.
-    this.html = this.sanitizer.bypassSecurityTrustHtml(mathjaxedSanitizedHtml) as string;
+    this.html = this.sanitizer.bypassSecurityTrustHtml(mathjaxedSanitizedHtml);
   }
 
   sanitize(dangerousHtml: string): string {
