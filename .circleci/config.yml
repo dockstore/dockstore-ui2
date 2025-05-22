@@ -299,7 +299,7 @@ parameters:
     default: false
   java-tag:
     type: string
-    default: "17.0.13-browsers"
+    default: "21.0.6-browsers"
   postgres-tag:
     type: string
     default: "16.1"
@@ -548,6 +548,9 @@ commands:
       - run:
           name: Prepapre nginx config
           command: sed "s%REPLACEME%`pwd`%" .circleci/nginx.conf.tmpl > .circleci/nginx.conf
+      - run:
+          name: Give nginx permissions to everything
+          command: sudo chmod -R a+wrx /home
       - run:
           name: Run nginx
           command: sudo nginx -c `pwd`/.circleci/nginx.conf
