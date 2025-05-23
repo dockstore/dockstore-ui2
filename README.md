@@ -142,8 +142,8 @@ Run `ng g component component-name` to generate a new component. You can also us
 When building against artifactory, the build should use the latest SNAPSHOT. In this scenario, the package.json will look like
 ```
  "config": {
-    "webservice_version_prefix": "1.16.0",
-    "webservice_version": "1.16.0-alpha.10",
+    "webservice_version_prefix": "1.17.0",
+    "webservice_version": "1.17.0-alpha.10",
     "use_snapshot": true
 ```
 
