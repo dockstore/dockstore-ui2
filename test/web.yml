@@ -42,6 +42,14 @@ esconfiguration:
 
 authenticationCachePolicy: maximumSize=10000, expireAfterAccess=10s
 
+localCloudWatchMetrics: true
+
+logging:
+  level: INFO
+  appenders:
+    - type: console
+      logFormat: "%-5p [%d{ISO8601,UTC}] %c: %replace(%msg){'[\\n]','→'}%n%rEx"
+
 database:
   # the name of your JDBC driver
   driverClass: org.postgresql.Driver

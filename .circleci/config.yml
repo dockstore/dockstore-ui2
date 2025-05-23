@@ -299,7 +299,7 @@ parameters:
     default: false
   java-tag:
     type: string
-    default: "17.0.4-browsers"
+    default: "21.0.6-browsers"
   postgres-tag:
     type: string
     default: "16.1"
@@ -546,8 +546,11 @@ commands:
           name: Install nginx
           command: sudo apt install -y nginx || true
       - run:
-          name: Prepapre nginx config
+          name: Prepare nginx config
           command: sed "s%REPLACEME%`pwd`%" .circleci/nginx.conf.tmpl > .circleci/nginx.conf
+      - run:
+          name: Give nginx permissions to everything
+          command: sudo chmod -R a+wrx /home
       - run:
           name: Run nginx
           command: sudo nginx -c `pwd`/.circleci/nginx.conf
