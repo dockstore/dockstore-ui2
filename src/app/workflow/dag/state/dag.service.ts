@@ -15,7 +15,7 @@
  */
 import { DOCUMENT } from '@angular/common';
 import { ElementRef, Inject, Injectable, Renderer2 } from '@angular/core';
-import * as cytoscape from 'cytoscape';
+import cytoscape from 'cytoscape';
 import { CytoscapeOptions } from 'cytoscape';
 import dagreExtension from 'cytoscape-dagre';
 import popperExtension from 'cytoscape-popper';
@@ -29,10 +29,10 @@ import { DagStore } from './dag.store';
 
 @Injectable()
 export class DagService {
-  readonly style: cytoscape.Stylesheet[] = [
+  readonly style: cytoscape.StylesheetCSS[] = [
     {
       selector: 'node',
-      style: {
+      css: {
         content: 'data(name)',
         'font-size': 16,
         'text-valign': 'center',
@@ -43,7 +43,7 @@ export class DagService {
 
     {
       selector: 'edge',
-      style: {
+      css: {
         width: 3,
         'target-arrow-shape': 'triangle',
         'line-color': '#9dbaea',
@@ -54,7 +54,7 @@ export class DagService {
 
     {
       selector: 'node[id = "UniqueBeginKey"]',
-      style: {
+      css: {
         content: 'Start',
         'font-size': 16,
         'text-valign': 'center',
@@ -65,7 +65,7 @@ export class DagService {
 
     {
       selector: 'node[id = "UniqueEndKey"]',
-      style: {
+      css: {
         content: 'End',
         'font-size': 16,
         'text-valign': 'center',
@@ -76,7 +76,7 @@ export class DagService {
 
     {
       selector: 'node[type = "workflow"]',
-      style: {
+      css: {
         content: 'data(name)',
         'font-size': 16,
         'text-valign': 'center',
@@ -87,7 +87,7 @@ export class DagService {
 
     {
       selector: 'node[type = "tool"]',
-      style: {
+      css: {
         content: 'data(name)',
         'font-size': 16,
         'text-valign': 'center',
@@ -98,7 +98,7 @@ export class DagService {
 
     {
       selector: 'node[type = "expressionTool"]',
-      style: {
+      css: {
         content: 'data(name)',
         'font-size': 16,
         'text-valign': 'center',
@@ -109,7 +109,7 @@ export class DagService {
 
     {
       selector: 'edge.notselected',
-      style: {
+      css: {
         opacity: 0.4,
       },
     },

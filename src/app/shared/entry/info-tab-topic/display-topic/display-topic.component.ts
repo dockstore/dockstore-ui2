@@ -1,5 +1,5 @@
 import { AsyncPipe, NgIf, TitleCasePipe } from '@angular/common';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
@@ -31,7 +31,7 @@ import { MatChipsModule } from '@angular/material/chips';
     MatChipsModule,
   ],
 })
-export class DisplayTopicComponent extends Base implements OnInit, OnDestroy {
+export class DisplayTopicComponent extends Base implements OnInit, OnChanges, OnDestroy {
   TopicSelectionEnum = Entry.TopicSelectionEnum;
   isPublic$: Observable<boolean>;
   isGitHubAppEntry: boolean;
