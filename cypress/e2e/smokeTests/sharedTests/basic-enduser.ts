@@ -14,7 +14,6 @@ import {
   goToTestParameterFilesTab,
   goToToolsTab,
   goToTab,
-  isProd,
 } from '../../../support/commands';
 
 // Test an entry, these should be ambiguous between tools, workflows, and notebooks.
@@ -24,22 +23,8 @@ describe('run stochastic smoke test', () => {
   testEntry('Notebooks');
 });
 
-// TODO: set to only 'entryColumn' when search cards are deployed to staging and prod
-function getSearchDataCy(tab: string = 'Workflows') {
-  return isProd() ? getLinkName(tab) : 'entryColumn';
-}
-
-function getLinkName(tab: string): string {
-  switch (tab) {
-    case 'Tools':
-      return 'toolNames';
-    case 'Workflows':
-      return 'workflowColumn';
-    case 'Notebooks':
-      return 'notebookColumn';
-    default:
-      throw new Error('unknown tab');
-  }
+function getSearchDataCy() {
+  return 'entryColumn';
 }
 
 function testEntry(tab: 'Tools' | 'Workflows' | 'Notebooks') {
@@ -50,7 +35,7 @@ function testEntry(tab: 'Tools' | 'Workflows' | 'Notebooks') {
     goToTab(tab);
     // select a random entry on the first page and navigate to it
     let chosen_index = 0;
-    cy.get(`[data-cy=${getSearchDataCy(tab)}]`)
+    cy.get(`[data-cy=${getSearchDataCy()}]`)
       .then(($list) => {
         chosen_index = Math.floor(Math.random() * $list.length);
       })

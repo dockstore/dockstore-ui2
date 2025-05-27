@@ -546,7 +546,7 @@ commands:
           name: Install nginx
           command: sudo apt install -y nginx || true
       - run:
-          name: Prepapre nginx config
+          name: Prepare nginx config
           command: sed "s%REPLACEME%`pwd`%" .circleci/nginx.conf.tmpl > .circleci/nginx.conf
       - run:
           name: Give nginx permissions to everything
