@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Dockstore } from '../dockstore.model';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatChipsModule } from '@angular/material/chips';
@@ -23,7 +23,6 @@ import { MatChipsModule } from '@angular/material/chips';
  *
  * @export
  * @class AiBubbleComponent
- * @implements {OnInit}
  */
 @Component({
   selector: 'app-ai-bubble',
@@ -31,10 +30,8 @@ import { MatChipsModule } from '@angular/material/chips';
   standalone: true,
   imports: [MatTooltipModule, MatChipsModule],
 })
-export class AiBubbleComponent implements OnInit {
+export class AiBubbleComponent {
   constructor() {}
-
-  ngOnInit() {}
 
   protected readonly Dockstore = Dockstore;
 
