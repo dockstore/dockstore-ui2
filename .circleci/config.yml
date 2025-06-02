@@ -142,9 +142,7 @@ jobs:
       - when:
          condition: << pipeline.parameters.sanity-check-against-develop >>
          steps:
-          - run:
-              name: set use_snapshot to true (grab snapshot artifacts)
-              command: bash -i -c 'npm config set dockstore-ui2:use_snapshot true'
+          - use_snapshot_artifacts
       - build_ui
       - run:
           name: Install codecov
@@ -285,9 +283,7 @@ jobs:
             not: << pipeline.parameters.sanity-check-against-develop >>
           steps:
             - get_workspace
-            - run:
-                name: set use_snapshot to true
-                command: npm pkg set 'config.use_snapshot'='true'
+            - use_snapshot_artifacts
             - build_ui
 
 parameters:
@@ -523,6 +519,12 @@ commands:
     steps:
       - browser-tools/install-chrome
       - browser-tools/install-chromedriver
+  use_snapshot_artifacts:
+    steps:
+      - run:
+          name: set use_snapshot to true (grab snapshot artifacts)
+          command: npm pkg set 'config.use_snapshot'='true'
+
   build_ui:
     steps:
       - run:
