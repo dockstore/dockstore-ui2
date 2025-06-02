@@ -1,5 +1,5 @@
 import { KeyValue, Location, NgIf, NgFor, AsyncPipe, KeyValuePipe } from '@angular/common';
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
@@ -51,7 +51,7 @@ import { MatChipsModule } from '@angular/material/chips';
     MatChipsModule,
   ],
 })
-export class SourceFileTabsComponent implements OnChanges {
+export class SourceFileTabsComponent implements OnInit, OnChanges {
   constructor(
     private fileService: FileService,
     private sourceFileTabsService: SourceFileTabsService,
