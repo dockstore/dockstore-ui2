@@ -523,7 +523,7 @@ commands:
     steps:
       - run:
           name: set use_snapshot to true (grab snapshot artifacts)
-          command: npm pkg set 'config.use_snapshot'='true'
+          command: bash -i -c 'npm pkg set config.use_snapshot=true'
 
   build_ui:
     steps:
