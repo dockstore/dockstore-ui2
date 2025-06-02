@@ -10,6 +10,7 @@
     "noUnusedLocals": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
     "target": "ES2020",
     "typeRoots": [
       "node_modules/@types"

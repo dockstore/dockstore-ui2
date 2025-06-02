@@ -3,9 +3,9 @@
   "version": "2.13.0",
   "license": "Apache License 2.0",
   "config": {
-    "webservice_version_prefix": "1.17.0",
+    "webservice_version_prefix": "1.18.0",
     "webservice_version": "1.17.0",
-    "use_snapshot": false 
+    "use_snapshot": false
   },
   "scripts": {
     "ng": "npx ng",
@@ -23,7 +23,6 @@
     "test": "npx ng test",
     "lint": "npx ng lint",
     "e2e": "npx ng e2e",
-    "postinstall": "ngcc",
     "test-qa-waf": "npx cypress run -c baseUrl=https://qa.dockstore.org -s \"cypress/e2e/smokeTests/qaOnly/waf.ts,cypress/e2e/smokeTests/sharedTests/waf.ts\"",
     "test-staging-waf": "npx cypress run -c baseUrl=https://staging.dockstore.org -s \"cypress/e2e/smokeTests/stagingOnly/waf.ts,cypress/e2e/smokeTests/sharedTests/waf.ts\"",
     "test-prod-waf": "npx cypress run -c baseUrl=https://dockstore.org -s \"cypress/e2e/smokeTests/prodOnly/waf.ts,cypress/e2e/smokeTests/sharedTests/waf.ts\"",
@@ -41,18 +40,18 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "^16.2.12",
-    "@angular/cdk": "^16.2.14",
-    "@angular/common": "^16.2.12",
-    "@angular/compiler": "^16.2.12",
-    "@angular/core": "^16.2.12",
-    "@angular/forms": "^16.2.12",
-    "@angular/material": "^16.2.14",
-    "@angular/platform-browser": "^16.2.12",
-    "@angular/platform-browser-dynamic": "^16.2.12",
-    "@angular/router": "^16.2.12",
+    "@angular/animations": "^17.3.12",
+    "@angular/cdk": "^17.3.10",
+    "@angular/common": "^17.3.12",
+    "@angular/compiler": "^17.3.12",
+    "@angular/core": "^17.3.12",
+    "@angular/forms": "^17.3.12",
+    "@angular/material": "^17.3.10",
+    "@angular/platform-browser": "^17.3.12",
+    "@angular/platform-browser-dynamic": "^17.3.12",
+    "@angular/router": "^17.3.12",
     "@datorama/akita": "^7.0.0",
-    "@fortawesome/angular-fontawesome": "^0.13.0",
+    "@fortawesome/angular-fontawesome": "^0.14.1",
     "@fortawesome/fontawesome-svg-core": "^6.2.0",
     "@fortawesome/free-brands-svg-icons": "^6.0.0",
     "@fortawesome/free-solid-svg-icons": "^6.0.0",
@@ -70,9 +69,11 @@
     "file-saver": "^2.0.5",
     "ini": "^4.1.1",
     "jquery": "^3.6.0",
+    "marked": "^12.0.2",
+    "marked-base-url": "^1.1.6",
     "material-design-icons-iconfont": "^6.1.0",
     "mathjax": "^3.2.2",
-    "ngx-markdown": "^16.0.0",
+    "ngx-markdown": "^17.2.1",
     "ngx-mat-select-search": "^7.0.2",
     "ngx-sharebuttons": "^8.0.5",
     "prismjs": "^1.30.0",
@@ -81,18 +82,18 @@
     "ts-md5": "^1.2.8",
     "tslib": "^2.3.0",
     "uuid": "^8.3.2",
-    "zone.js": "~0.13.3"
+    "zone.js": "~0.14.10"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^16.2.16",
-    "@angular-eslint/builder": "^16.3.1",
-    "@angular-eslint/eslint-plugin": "^16.3.1",
-    "@angular-eslint/eslint-plugin-template": "^16.3.1",
-    "@angular-eslint/schematics": "^16.3.1",
-    "@angular-eslint/template-parser": "^15.2.1",
-    "@angular/cli": "^16.2.14",
-    "@angular/compiler-cli": "^16.2.12",
-    "@angular/language-service": "^16.2.12",
+    "@angular-devkit/build-angular": "^17.3.17",
+    "@angular-eslint/builder": "^17.5.3",
+    "@angular-eslint/eslint-plugin": "^17.5.3",
+    "@angular-eslint/eslint-plugin-template": "^17.5.3",
+    "@angular-eslint/schematics": "^17.5.3",
+    "@angular-eslint/template-parser": "^17.5.3",
+    "@angular/cli": "^17.3.17",
+    "@angular/compiler-cli": "^17.3.12",
+    "@angular/language-service": "^17.3.12",
     "@cypress/webpack-batteries-included-preprocessor": "^3.0.5",
     "@cypress/webpack-preprocessor": "^5.17.1",
     "@datorama/akita-ngdevtools": "^7.0.0",
@@ -101,10 +102,10 @@
     "@types/jasmine": "^3.7.7",
     "@types/jquery": "^3.5.5",
     "@types/node": "^18.19.39",
-    "@typescript-eslint/eslint-plugin": "5.3.0",
-    "@typescript-eslint/parser": "5.3.0",
+    "@typescript-eslint/eslint-plugin": "^7.2.0",
+    "@typescript-eslint/parser": "^7.2.0",
     "cypress": "^13.7.2",
-    "eslint": "^8.2.0",
+    "eslint": "^8.57.0",
     "husky": "^7.0.0",
     "jasmine-core": "^3.7.1",
     "karma": "^6.3.16",
@@ -117,14 +118,11 @@
     "pa11y-ci": "^3.0.1",
     "prettier": "^2.3.1",
     "ts-node": "^10.9.1",
-    "typescript": "^4.9.5"
+    "typescript": "^5.4.5"
   },
   "overrides": {
     "@schematics/update": {
       "ini": "^1.3.8"
-    },
-    "ngx-mat-select-search": {
-      "@angular/material": "^16.2.14"
     }
   }
 }
