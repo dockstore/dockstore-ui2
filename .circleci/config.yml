@@ -524,7 +524,6 @@ commands:
       - run:
           name: set use_snapshot to true (grab snapshot artifacts)
           command: bash -i -c 'npm pkg set config.use_snapshot=true'
-
   build_ui:
     steps:
       - run:
