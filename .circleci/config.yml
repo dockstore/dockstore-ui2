@@ -287,7 +287,7 @@ jobs:
             - get_workspace
             - run:
                 name: set use_snapshot to true
-                command: bash -i -c 'npm config set dockstore-ui2:use_snapshot true'
+                command: npm pkg set 'config.use_snapshot'='true'
             - build_ui
 
 parameters:
