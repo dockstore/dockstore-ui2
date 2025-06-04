@@ -23,7 +23,8 @@ import { QueryBuilderService } from './../query-builder.service';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SearchService } from '../state/search.service';
 import { SearchResultsComponent } from './search-results.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('SearchResultsComponent', () => {
   let component: SearchResultsComponent;
@@ -33,10 +34,12 @@ describe('SearchResultsComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         schemas: [NO_ERRORS_SCHEMA],
-        imports: [RouterTestingModule, SearchResultsComponent, NoopAnimationsModule, HttpClientTestingModule],
+        imports: [RouterTestingModule, SearchResultsComponent, NoopAnimationsModule],
         providers: [
           { provide: SearchService, useClass: SearchStubService },
           { provide: QueryBuilderService, useClass: QueryBuilderStubService },
+          provideHttpClient(withInterceptorsFromDi()),
+          provideHttpClientTesting(),
         ],
       }).compileComponents();
     })

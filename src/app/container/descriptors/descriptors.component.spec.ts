@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -31,7 +31,7 @@ import { EntriesService, GA4GHV20Service, ContainersService } from '../../shared
 import { sampleToolVersion } from '../../test/mocked-objects';
 import { DescriptorsComponent } from './descriptors.component';
 import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 describe('DescriptorsComponent', () => {
   let component: DescriptorsComponent;
@@ -41,8 +41,8 @@ describe('DescriptorsComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [HttpClientModule, MatSnackBarModule, HttpClientTestingModule, DescriptorsComponent],
         schemas: [NO_ERRORS_SCHEMA],
+        imports: [MatSnackBarModule, DescriptorsComponent],
         providers: [
           DescriptorService,
           { provide: ContainersService, useClass: ContainersStubService },
@@ -51,6 +51,8 @@ describe('DescriptorsComponent', () => {
           { provide: GA4GHV20Service, useClass: GA4GHV20StubService },
           { provide: EntriesService, useClass: EntriesStubService },
           { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
+          provideHttpClient(withInterceptorsFromDi()),
+          provideHttpClientTesting(),
         ],
       }).compileComponents();
     })

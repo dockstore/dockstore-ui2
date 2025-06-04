@@ -24,18 +24,21 @@ import { Tag } from './../../shared/openapi/model/tag';
 import { ContainersStubService, RefreshStubService, WorkflowsStubService } from './../../test/service-stubs';
 import { ParamfilesService } from './paramfiles.service';
 import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('Service: paramFiles.service.ts', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [],
       providers: [
         ParamfilesService,
         { provide: WorkflowsService, useClass: WorkflowsStubService },
         { provide: ContainersService, useClass: ContainersStubService },
         { provide: RefreshService, useClass: RefreshStubService },
         { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     });
   });

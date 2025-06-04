@@ -1,16 +1,17 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed, inject } from '@angular/core/testing';
 import { NotificationsService } from './notifications.service';
 import { NotificationsStore } from './notifications.store';
 import { expiredMockNotification, mockedNotification } from '../../test/mocked-objects';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('NotificationsService', () => {
   let notificationsService: NotificationsService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [NotificationsService, NotificationsStore],
-      imports: [HttpClientTestingModule],
+      imports: [],
+      providers: [NotificationsService, NotificationsStore, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
     });
 
     notificationsService = TestBed.inject(NotificationsService);

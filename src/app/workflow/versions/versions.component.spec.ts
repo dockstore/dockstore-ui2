@@ -39,14 +39,16 @@ import {
   WorkflowStubService,
 } from '../../test/service-stubs';
 import { VersionsWorkflowComponent } from './versions.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 @Component({
   selector: 'app-view-workflow',
   template: '<p>App View Component</p>',
   standalone: true,
-  imports: [FormsModule, FontAwesomeModule, HttpClientTestingModule],
+  imports: [FormsModule, FontAwesomeModule],
+  providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
 })
 class MockViewWorkflowComponent {
   @Input() versions;
@@ -62,7 +64,8 @@ class MockViewWorkflowComponent {
   selector: 'app-version-modal',
   template: '<p>Version Modal Component</p>',
   standalone: true,
-  imports: [FormsModule, FontAwesomeModule, HttpClientTestingModule],
+  imports: [FormsModule, FontAwesomeModule],
+  providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
 })
 class MockVersionModalComponent {
   @Input() canRead;
@@ -80,7 +83,6 @@ describe('VersionsWorkflowComponent', () => {
           FormsModule,
           FontAwesomeModule,
           BrowserAnimationsModule,
-          HttpClientTestingModule,
           VersionsWorkflowComponent,
           MatSnackBarModule,
           OrderBy,
@@ -100,6 +102,8 @@ describe('VersionsWorkflowComponent', () => {
           { provide: ImageProviderService, useClass: ImageProviderStubService },
           { provide: RefreshService, useClass: RefreshStubService },
           { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
+          provideHttpClient(withInterceptorsFromDi()),
+          provideHttpClientTesting(),
         ],
       }).compileComponents();
     })

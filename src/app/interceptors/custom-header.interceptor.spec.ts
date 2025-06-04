@@ -1,5 +1,5 @@
-import { HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { HttpClient, HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { inject, TestBed } from '@angular/core/testing';
 import { versions } from '../footer/versions';
 import { CustomHeaderInterceptor } from './custom-header.interceptor';
@@ -7,13 +7,15 @@ import { CustomHeaderInterceptor } from './custom-header.interceptor';
 describe('CustomHeaderInterceptor', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
+      imports: [],
       providers: [
         {
           provide: HTTP_INTERCEPTORS,
           useClass: CustomHeaderInterceptor,
           multi: true,
         },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     });
   });

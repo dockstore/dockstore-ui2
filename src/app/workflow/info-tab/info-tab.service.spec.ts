@@ -1,4 +1,4 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AlertService } from 'app/shared/alert/state/alert.service';
@@ -12,11 +12,13 @@ import { WorkflowService } from 'app/shared/state/workflow.service';
 import { WorkflowsStubService, WorkflowStubService } from 'app/test/service-stubs';
 import { sampleWorkflow3, appToolEntryTypeMetadata, serviceEntryTypeMetadata, notebookEntryTypeMetadata } from '../../test/mocked-objects';
 import { InfoTabService } from './info-tab.service';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('ValueService', () => {
   let service: InfoTabService;
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [MatSnackBarModule],
       providers: [
         InfoTabService,
         {
@@ -31,8 +33,9 @@ describe('ValueService', () => {
         ExtendedWorkflowQuery,
         DescriptorTypeCompatService,
         DescriptorLanguageService,
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
-      imports: [HttpClientTestingModule, MatSnackBarModule],
     });
   });
 

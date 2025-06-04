@@ -1,6 +1,6 @@
 import { ClipboardModule } from '@angular/cdk/clipboard';
-import { HttpClientModule } from '@angular/common/http';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -48,8 +48,6 @@ describe('ToolFileEditorComponent', () => {
           MatCardModule,
           BrowserAnimationsModule,
           ClipboardModule,
-          HttpClientModule,
-          HttpClientTestingModule,
           ToolFileEditorComponent,
           CodeEditorListComponent,
           CodeEditorComponent,
@@ -63,6 +61,8 @@ describe('ToolFileEditorComponent', () => {
           { provide: WorkflowService, useClass: WorkflowStubService },
           { provide: FileService, useClass: FileStubService },
           { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
+          provideHttpClient(withInterceptorsFromDi()),
+          provideHttpClientTesting(),
         ],
       }).compileComponents();
     })

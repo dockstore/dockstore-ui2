@@ -1,4 +1,4 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatButtonModule } from '@angular/material/button';
@@ -26,6 +26,7 @@ import {
 } from 'app/test/service-stubs';
 import { RegisterWorkflowModalService } from 'app/workflow/register-workflow-modal/register-workflow-modal.service';
 import { EntryBoxComponent } from './entry-box.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('EntryBoxComponent', () => {
   let component: EntryBoxComponent;
@@ -41,7 +42,6 @@ describe('EntryBoxComponent', () => {
           MatButtonModule,
           MatIconModule,
           MatDialogModule,
-          HttpClientTestingModule,
           MatSnackBarModule,
           EntryBoxComponent,
         ],
@@ -57,6 +57,8 @@ describe('EntryBoxComponent', () => {
           MyEntriesStateService,
           MyEntriesStore,
           MyEntriesQuery,
+          provideHttpClient(withInterceptorsFromDi()),
+          provideHttpClientTesting(),
         ],
       }).compileComponents();
     })

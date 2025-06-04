@@ -1,4 +1,4 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, inject, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
@@ -9,6 +9,7 @@ import { WorkflowService } from '../../../shared/state/workflow.service';
 import { sampleCwlExtendedWorkflow, sampleWorkflowVersion } from '../../../test/mocked-objects';
 import { CwlViewerComponent } from './cwl-viewer.component';
 import { DescriptorLanguageService } from '../../../shared/entry/descriptor-language.service';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('cwl-viewerComponent', () => {
   let component: CwlViewerComponent;
@@ -17,9 +18,17 @@ describe('cwl-viewerComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule, FormsModule, HttpClientTestingModule, CwlViewerComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        providers: [DockstoreService, DateService, ProviderService, WorkflowService, DescriptorLanguageService],
+        imports: [FormsModule, HttpClientTestingModule, CwlViewerComponent],
+        providers: [
+          DockstoreService,
+          DateService,
+          ProviderService,
+          WorkflowService,
+          DescriptorLanguageService,
+          provideHttpClient(withInterceptorsFromDi()),
+          provideHttpClientTesting(),
+        ],
       }).compileComponents();
     })
   );

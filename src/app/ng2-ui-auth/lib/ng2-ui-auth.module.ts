@@ -18,7 +18,7 @@
  */
 
 import { NgModule, ModuleWithProviders } from '@angular/core';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { IPartialConfigOptions } from './config-interfaces';
 import { CONFIG_OPTIONS, ConfigService } from './config.service';
 import { StorageService } from './storage-service';
@@ -31,11 +31,7 @@ import { PopupService } from './popup.service';
 import { LocalService } from './local.service';
 import { AuthService } from './auth.service';
 
-@NgModule({
-  imports: [HttpClientModule],
-  declarations: [],
-  exports: [],
-})
+@NgModule({ declarations: [], exports: [], imports: [], providers: [provideHttpClient(withInterceptorsFromDi())] })
 export class Ng2UiAuthModule {
   static forRoot(configOptions?: IPartialConfigOptions, defaultJwtInterceptor = true): ModuleWithProviders<Ng2UiAuthModule> {
     return {

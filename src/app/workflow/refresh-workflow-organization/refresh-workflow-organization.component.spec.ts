@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
@@ -37,6 +37,7 @@ import {
   WorkflowStubService,
 } from '../../test/service-stubs';
 import { RefreshWorkflowOrganizationComponent } from './refresh-workflow-organization.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('RefreshWorkflowOrganizationComponent', () => {
   let component: RefreshWorkflowOrganizationComponent;
@@ -52,7 +53,6 @@ describe('RefreshWorkflowOrganizationComponent', () => {
           MatButtonModule,
           MatTooltipModule,
           MatSnackBarModule,
-          HttpClientTestingModule,
           RefreshWorkflowOrganizationComponent,
         ],
         providers: [
@@ -63,6 +63,8 @@ describe('RefreshWorkflowOrganizationComponent', () => {
           { provide: DateService, useClass: DateStubService },
           { provide: ProviderService, useClass: ProviderStubService },
           { provide: MatDialog, useValue: matDialogStub },
+          provideHttpClient(withInterceptorsFromDi()),
+          provideHttpClientTesting(),
         ],
       }).compileComponents();
     })

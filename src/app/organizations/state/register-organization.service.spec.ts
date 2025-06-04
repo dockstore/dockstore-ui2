@@ -1,4 +1,4 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -10,6 +10,7 @@ import { UntypedFormBuilder } from '@angular/forms';
 import { OrganizationsService } from '../../shared/openapi';
 import { RegisterOrganizationService } from './register-organization.service';
 import { UrlResolverService } from '../../shared/url-resolver.service';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 let organizationsServiceSpy: jasmine.SpyObj<OrganizationsService>;
 let matDialogSpy: jasmine.SpyObj<MatDialog>;
@@ -21,14 +22,16 @@ describe('RegisterOrganizationService', () => {
     const organizationsServiceStub = jasmine.createSpyObj('OrganizationsService', ['createOrganization', 'updateOrganization']);
     const matDialogStub = jasmine.createSpyObj('MatDialog', ['closeAll']);
     TestBed.configureTestingModule({
+      imports: [MatSnackBarModule, MatDialogModule, BrowserAnimationsModule, RouterTestingModule],
       providers: [
         RegisterOrganizationService,
         UntypedFormBuilder,
         UrlResolverService,
         { provide: OrganizationsService, useValue: organizationsServiceStub },
         { provide: MatDialog, useValue: matDialogStub },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
-      imports: [HttpClientTestingModule, MatSnackBarModule, MatDialogModule, BrowserAnimationsModule, RouterTestingModule],
     });
 
     registerOrganizationService = TestBed.inject(RegisterOrganizationService);
