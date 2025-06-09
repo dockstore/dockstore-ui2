@@ -48,7 +48,7 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
   template: '<p>App View Component</p>',
   standalone: true,
   imports: [FormsModule, FontAwesomeModule],
-  providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
+  providers: [provideHttpClientTesting()],
 })
 class MockViewWorkflowComponent {
   @Input() versions;
@@ -65,7 +65,7 @@ class MockViewWorkflowComponent {
   template: '<p>Version Modal Component</p>',
   standalone: true,
   imports: [FormsModule, FontAwesomeModule],
-  providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
+  providers: [provideHttpClientTesting()],
 })
 class MockVersionModalComponent {
   @Input() canRead;

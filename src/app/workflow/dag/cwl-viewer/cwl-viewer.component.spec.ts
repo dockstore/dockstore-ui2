@@ -19,7 +19,7 @@ describe('cwl-viewerComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         schemas: [NO_ERRORS_SCHEMA],
-        imports: [FormsModule, HttpClientTestingModule, CwlViewerComponent],
+        imports: [FormsModule, CwlViewerComponent],
         providers: [
           DockstoreService,
           DateService,
