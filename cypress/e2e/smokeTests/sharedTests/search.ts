@@ -27,7 +27,7 @@ describe('Admin UI', () => {
       cy.url().should('not.include', 'search=dhockstore');
 
       cy.contains('Items per page');
-      const searchPaginatorDataCy = '[data-cy=search-entry-table-paginator]';
+      const searchPaginatorDataCy = '[data-cy=search-entry-table-paginator] mat-select';
       cy.get(searchPaginatorDataCy).contains(10).should('be.visible').click();
       cy.get('mat-option').contains(20).click();
       cy.get(searchPaginatorDataCy).contains(20);

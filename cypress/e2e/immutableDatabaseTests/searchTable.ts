@@ -423,7 +423,7 @@ describe('search table items per page', () => {
   it('tool items per page', () => {
     cy.visit('/search');
     // Modify the number of items per page
-    cy.get('[data-cy=search-entry-table-paginator]').contains(10).should('be.visible').click();
+    cy.get('[data-cy=search-entry-table-paginator] mat-select').contains(10).should('be.visible').click();
     cy.get('mat-option').contains(20).click();
     cy.get('[data-cy=search-entry-table-paginator]').contains(20);
     // Click an entry then go back to the search page
