@@ -27,7 +27,12 @@ describe('Find broken anchor links', () => {
    * Checks if the link is a buff.ly link which are primarily used in our Mastodon posts.
    */
   function isBufferUrl(url: string): boolean {
-    return url.includes('https://buff.ly');
+    try {
+      const parsedUrl = new URL(url);
+      return parsedUrl.host === 'buff.ly';
+    } catch {
+      return false; // Return false if the URL is invalid
+    }
   }
 
   function checkUrls(path: string) {
