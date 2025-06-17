@@ -159,20 +159,20 @@ $kim-accent-4: (
 // main color is assumed to be 2 based on prevalence of it on the home page (buttons). It's also called default in zeplin
 // 1 is the darker version of it because it's the only one that's darker
 // 4 was arbitrarily chosen to be the lighter version because while looking at the progress bar, there wasn't enough contrast
-$dockstore-app-primary: mat.define-palette($kim-primary, 2, 4, 1);
-$dockstore-app-accent: mat.define-palette($kim-secondary, 2, 4, 1);
-$dockstore-app-error: mat.define-palette($kim-error, 2, 4, 1);
-$dockstore-app-warn: mat.define-palette($kim-warn, 2, 4, 1);
-$dockstore-app-accent-1: mat.define-palette($kim-accent1-success, 2, 4, 1);
-$dockstore-app-accent-2: mat.define-palette($kim-accent2, 2, 4, 1);
-$dockstore-app-accent-4: mat.define-palette($kim-accent-4, 2, 4, 1);
+$dockstore-app-primary: mat.m2-define-palette($kim-primary, 2, 4, 1);
+$dockstore-app-accent: mat.m2-define-palette($kim-secondary, 2, 4, 1);
+$dockstore-app-error: mat.m2-define-palette($kim-error, 2, 4, 1);
+$dockstore-app-warn: mat.m2-define-palette($kim-warn, 2, 4, 1);
+$dockstore-app-accent-1: mat.m2-define-palette($kim-accent1-success, 2, 4, 1);
+$dockstore-app-accent-2: mat.m2-define-palette($kim-accent2, 2, 4, 1);
+$dockstore-app-accent-4: mat.m2-define-palette($kim-accent-4, 2, 4, 1);
 
 // 4 and 1 were chosen as darker and lighter versions, respectively, because those were used in styles.
 // Main color was chosen arbitrarily to be between darker and lighter.
-$dockstore-app-gray: mat.define-palette($kim-gray, 2, 4, 1);
+$dockstore-app-gray: mat.m2-define-palette($kim-gray, 2, 4, 1);
 
 // Create the theme object (a Sass map containing all of the palettes).
-$dockstore-app-theme: mat.define-light-theme(
+$dockstore-app-theme: mat.m2-define-light-theme(
   (
     color: (
       primary: $dockstore-app-primary,
@@ -180,10 +180,10 @@ $dockstore-app-theme: mat.define-light-theme(
       warn: $dockstore-app-error,
     ),
     typography: /* See https://m2.material.io/components/dialogs#theming for what levels affect which part of the components */
-      mat.define-typography-config(
+      mat.m2-define-typography-config(
         $font-family: 'Roboto, "Helvetica Neue", sans-serif',
         $button:
-          mat.define-typography-level(
+          mat.m2-define-typography-level(
             $font-size: 14px,
             $font-weight: 700,
             $letter-spacing: normal,
@@ -227,4 +227,4 @@ $accent-3-dark: #00bfa5 !important;
 $header-color: #151c3d;
 
 // This color is commonly used by buttons
-$accent-1-dark: mat.get-color-from-palette($dockstore-app-accent-1, darker);
+$accent-1-dark: mat.m2-get-color-from-palette($dockstore-app-accent-1, darker);

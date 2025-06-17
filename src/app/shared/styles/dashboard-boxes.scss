@@ -5,7 +5,7 @@ img[alt='User avatar'] {
   width: 3.5rem;
   height: 3.5rem;
   border-radius: 50%;
-  border: solid 1px mat.get-color-from-palette($dockstore-app-gray, 4);
+  border: solid 1px mat.m2-get-color-from-palette($dockstore-app-gray, 4);
   margin: 0.8rem;
 }
 
@@ -16,7 +16,7 @@ img.entry-img {
 }
 
 button[mat-icon-button] {
-  color: mat.get-color-from-palette($dockstore-app-gray, 3);
+  color: mat.m2-get-color-from-palette($dockstore-app-gray, 3);
 }
 
 .mat-mdc-option {
@@ -26,7 +26,7 @@ button[mat-icon-button] {
 }
 
 .mat-mdc-option:not([disabled]) {
-  border-bottom: 0.1rem solid mat.get-color-from-palette($dockstore-app-gray, 3);
+  border-bottom: 0.1rem solid mat.m2-get-color-from-palette($dockstore-app-gray, 3);
 }
 
 // Ensure recent activity events are uniform

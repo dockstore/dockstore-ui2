@@ -11,7 +11,7 @@ h2 {
 }
 
 .register-dockstore {
-  background: mat.get-color-from-palette($dockstore-app-gray, 5);
+  background: mat.m2-get-color-from-palette($dockstore-app-gray, 5);
 }
 
 ul.ordered-list > li:before {
@@ -65,7 +65,7 @@ hr {
 }
 
 .workflowlength {
-  background: mat.get-color-from-palette($dockstore-app-gray, lighter);
+  background: mat.m2-get-color-from-palette($dockstore-app-gray, lighter);
   border-radius: 1rem;
   padding: 0.2rem 0.6rem;
 }

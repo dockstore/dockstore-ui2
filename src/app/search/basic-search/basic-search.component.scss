@@ -31,7 +31,7 @@ mat-expansion-panel mat-expansion-panel-header {
 
 // Panel header collapse style
 mat-expansion-panel mat-expansion-panel-header[aria-expanded='false'] {
-  color: mat.get-color-from-palette($kim-secondary, 2);
+  color: mat.m2-get-color-from-palette($kim-secondary, 2);
   text-decoration: underline;
 }
 
