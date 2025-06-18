@@ -1,4 +1,4 @@
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { UsersService } from '../../../shared/openapi';
@@ -13,8 +13,8 @@ describe('MultiCloudLaunchComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [HttpClientModule, MultiCloudLaunchComponent, FilterCloudInstancesPipe, MatSnackBarModule],
-        providers: [{ provider: UsersService, useClass: UserStubService }],
+        imports: [MultiCloudLaunchComponent, FilterCloudInstancesPipe, MatSnackBarModule],
+        providers: [{ provider: UsersService, useClass: UserStubService }, provideHttpClient(withInterceptorsFromDi())],
       });
     })
   );

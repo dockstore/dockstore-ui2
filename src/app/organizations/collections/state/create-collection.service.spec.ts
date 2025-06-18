@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { UntypedFormBuilder } from '@angular/forms';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
@@ -25,6 +25,7 @@ import { CollectionsService } from '../../state/collections.service';
 import { OrganizationQuery } from '../../state/organization.query';
 import { CreateCollectionService } from './create-collection.service';
 import { CreateCollectionStore } from './create-collection.store';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 let organizationsServiceSpy: jasmine.SpyObj<OrganizationsService>;
 let organizationQuerySpy: jasmine.SpyObj<OrganizationQuery>;
@@ -40,6 +41,7 @@ describe('CreateCollectionService', () => {
     const collectionsServiceStub = jasmine.createSpyObj('CollectionsService', ['updateCollections']);
     const matDialogStub = jasmine.createSpyObj('MatDialog', ['closeAll']);
     TestBed.configureTestingModule({
+      imports: [BrowserAnimationsModule, MatDialogModule, MatSnackBarModule],
       providers: [
         CreateCollectionService,
         CreateCollectionStore,
@@ -48,8 +50,9 @@ describe('CreateCollectionService', () => {
         { provide: CollectionsService, useValue: collectionsServiceStub },
         { provide: OrganizationsService, useValue: organizationsServiceStub },
         { provide: OrganizationQuery, useValue: organizationQueryStub },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
-      imports: [BrowserAnimationsModule, HttpClientTestingModule, MatDialogModule, MatSnackBarModule],
     });
 
     createCollectionService = TestBed.inject(CreateCollectionService);

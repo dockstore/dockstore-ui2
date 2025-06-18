@@ -1,4 +1,4 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
@@ -12,6 +12,7 @@ import { SourceFileTabsService } from '../source-file-tabs/source-file-tabs.serv
 import { DescriptorLanguageStubService, SourceFileTabsStubService } from '../test/service-stubs';
 
 import { FileTreeComponent } from './file-tree.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('FileTreeComponent', () => {
   let component: FileTreeComponent;
@@ -25,7 +26,6 @@ describe('FileTreeComponent', () => {
           MatIconModule,
           MatTreeModule,
           MatDialogModule,
-          HttpClientTestingModule,
           MatInputModule,
           BrowserAnimationsModule,
           FileTreeComponent,
@@ -35,6 +35,8 @@ describe('FileTreeComponent', () => {
           { provide: MAT_DIALOG_DATA, useValue: [] },
           { provide: SourceFileTabsService, useClass: SourceFileTabsStubService },
           { provide: DescriptorLanguageService, useClass: DescriptorLanguageStubService },
+          provideHttpClient(withInterceptorsFromDi()),
+          provideHttpClientTesting(),
         ],
       }).compileComponents();
     })

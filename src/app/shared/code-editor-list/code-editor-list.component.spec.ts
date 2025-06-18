@@ -18,7 +18,8 @@ import { WorkflowStubService } from './../../test/service-stubs';
 import { CodeEditorComponent } from './../code-editor/code-editor.component';
 import { CodeEditorListComponent } from './code-editor-list.component';
 import { DescriptorLanguageService } from '../entry/descriptor-language.service';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('CodeEditorListComponent', () => {
   let component: CodeEditorListComponent;
@@ -37,7 +38,6 @@ describe('CodeEditorListComponent', () => {
           MatTooltipModule,
           MatCardModule,
           ClipboardModule,
-          HttpClientTestingModule,
           CodeEditorListComponent,
           CodeEditorComponent,
           PublicFileDownloadPipe,
@@ -47,6 +47,8 @@ describe('CodeEditorListComponent', () => {
           { provide: WorkflowService, useClass: WorkflowStubService },
           { provide: FileService, useClass: FileStubService },
           { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
+          provideHttpClient(withInterceptorsFromDi()),
+          provideHttpClientTesting(),
         ],
       }).compileComponents();
     })

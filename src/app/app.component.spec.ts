@@ -1,4 +1,4 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 import { Component } from '@angular/core';
 import { TestBed, waitForAsync } from '@angular/core/testing';
@@ -37,6 +37,7 @@ import {
   UsersStubService,
 } from './test/service-stubs';
 import { TosBannerService } from './tosBanner/state/tos-banner.service';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 @Component({
   selector: 'app-banner',
@@ -87,7 +88,6 @@ describe('AppComponent', () => {
           RouterTestingModule,
           MatDialogModule,
           MatSnackBarModule,
-          HttpClientTestingModule,
           NavbarStubComponent,
           FooterStubComponent,
           BannerStubComponent,
@@ -113,6 +113,8 @@ describe('AppComponent', () => {
           MytoolsService,
           MyWorkflowsService,
           PagenumberService,
+          provideHttpClient(withInterceptorsFromDi()),
+          provideHttpClientTesting(),
         ],
       }).compileComponents();
     })

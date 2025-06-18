@@ -10,7 +10,8 @@ import { SearchService } from './state/search.service';
 import { SearchEntryTableComponent } from './search-entry-table.component';
 import { EntryType } from 'app/shared/openapi';
 import { QueryBuilderService } from './query-builder.service';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('SearchEntryTableComponent', () => {
   let component: SearchEntryTableComponent;
@@ -20,11 +21,13 @@ describe('SearchEntryTableComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         schemas: [NO_ERRORS_SCHEMA],
-        imports: [BrowserAnimationsModule, RouterTestingModule, SearchEntryTableComponent, HttpClientTestingModule],
+        imports: [BrowserAnimationsModule, RouterTestingModule, SearchEntryTableComponent],
         providers: [
           { provide: DockstoreService, useClass: DockstoreStubService },
           { provide: SearchService, useClass: SearchStubService },
           { provide: QueryBuilderService, useClass: QueryBuilderStubService },
+          provideHttpClient(withInterceptorsFromDi()),
+          provideHttpClientTesting(),
         ],
       }).compileComponents();
     })

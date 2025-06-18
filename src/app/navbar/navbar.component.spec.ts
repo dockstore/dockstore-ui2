@@ -20,7 +20,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterTestingModule } from '@angular/router/testing';
 import { RequestsService } from '../loginComponents/state/requests.service';
@@ -30,6 +30,7 @@ import { PagenumberService } from '../shared/pagenumber.service';
 import { TrackLoginService } from '../shared/track-login.service';
 import { LogoutStubService, TrackLoginStubService } from '../test/service-stubs';
 import { NavbarComponent } from './navbar.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('NavbarComponent', () => {
   let component: NavbarComponent;
@@ -38,6 +39,7 @@ describe('NavbarComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
+        schemas: [NO_ERRORS_SCHEMA],
         imports: [
           RouterTestingModule,
           MatMenuModule,
@@ -46,15 +48,15 @@ describe('NavbarComponent', () => {
           MatIconModule,
           MatDividerModule,
           MatToolbarModule,
-          HttpClientTestingModule,
           NavbarComponent,
         ],
-        schemas: [NO_ERRORS_SCHEMA],
         providers: [
           PagenumberService,
           { provide: TrackLoginService, useClass: TrackLoginStubService },
           { provide: LogoutService, useClass: LogoutStubService },
           RequestsService,
+          provideHttpClient(withInterceptorsFromDi()),
+          provideHttpClientTesting(),
         ],
       }).compileComponents();
     })

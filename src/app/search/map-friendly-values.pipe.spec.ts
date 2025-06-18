@@ -2,14 +2,21 @@ import { PlatformPartnerPipe } from '../shared/entry/platform-partner.pipe';
 import { MapFriendlyValuesPipe } from './map-friendly-values.pipe';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 import { TestBed } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { SourceFile } from '../shared/openapi/model/sourceFile';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('Pipe: MapFriendlyValuese', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [MapFriendlyValuesPipe, { provide: DescriptorLanguageService, useClass: DescriptorLanguageService }, PlatformPartnerPipe],
+      imports: [],
+      providers: [
+        MapFriendlyValuesPipe,
+        { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
+        PlatformPartnerPipe,
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ],
     });
   });
 

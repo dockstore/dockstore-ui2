@@ -17,7 +17,7 @@
  *
  */
 
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed, inject } from '@angular/core/testing';
 import { CONFIG_OPTIONS, ConfigService } from './config.service';
 
@@ -25,12 +25,22 @@ import { OauthService } from './oauth.service';
 import { PopupService } from './popup.service';
 import { SharedService } from './shared.service';
 import { StorageService } from './storage-service';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('OauthService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [OauthService, SharedService, PopupService, StorageService, { provide: CONFIG_OPTIONS, useValue: {} }, ConfigService],
+      imports: [],
+      providers: [
+        OauthService,
+        SharedService,
+        PopupService,
+        StorageService,
+        { provide: CONFIG_OPTIONS, useValue: {} },
+        ConfigService,
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ],
     });
   });
 

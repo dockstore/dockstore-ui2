@@ -35,8 +35,9 @@ import {
 import { VersionModalService } from '../version-modal/version-modal.service';
 import { ViewWorkflowComponent } from './view.component';
 import { ViewService } from './view.service';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('ViewWorkflowComponent', () => {
   let component: ViewWorkflowComponent;
@@ -45,7 +46,7 @@ describe('ViewWorkflowComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule, ViewWorkflowComponent, MatSnackBarModule, MatDialogModule],
+        imports: [ViewWorkflowComponent, MatSnackBarModule, MatDialogModule],
         providers: [
           { provide: ViewService },
           { provide: AccountsService, useClass: AccountsStubService },
@@ -56,6 +57,8 @@ describe('ViewWorkflowComponent', () => {
           { provide: HostedService, useClass: HostedStubService },
           { provide: RefreshService, useClass: RefreshStubService },
           { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
+          provideHttpClient(withInterceptorsFromDi()),
+          provideHttpClientTesting(),
         ],
       }).compileComponents();
     })

@@ -5,7 +5,7 @@
 .mat-column-starredUsers,
 .mat-column-stars {
   max-width: 6rem;
-  color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
+  color: mat.m2-get-color-from-palette($dockstore-app-accent-1, darker);
 }
 
 .mat-column-all_authors {

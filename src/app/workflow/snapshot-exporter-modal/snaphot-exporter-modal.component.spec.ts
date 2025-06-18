@@ -1,4 +1,4 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
@@ -12,6 +12,7 @@ import { AccountsStubService, AuthStubService, DateStubService } from '../../tes
 
 import { SnaphotExporterModalComponent, SnapshotExporterAction } from './snaphot-exporter-modal.component';
 import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('SnapshotDoiOrcidComponent', () => {
   let component: SnaphotExporterModalComponent;
@@ -19,7 +20,7 @@ describe('SnapshotDoiOrcidComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MatSnackBarModule, HttpClientTestingModule, RouterTestingModule, MatIconModule, SnaphotExporterModalComponent],
+      imports: [MatSnackBarModule, RouterTestingModule, MatIconModule, SnaphotExporterModalComponent],
       providers: [
         {
           provide: MAT_DIALOG_DATA,
@@ -49,6 +50,8 @@ describe('SnapshotDoiOrcidComponent', () => {
         { provide: DateService, useClass: DateStubService },
         ProviderService,
         { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     }).compileComponents();
   });

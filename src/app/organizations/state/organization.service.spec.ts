@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -22,11 +22,13 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { OrganizationService } from './organization.service';
 import { OrganizationStore } from './organization.store';
 import { UrlResolverService } from '../../shared/url-resolver.service';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 @Component({
   template: ` <router-outlet></router-outlet> `,
   standalone: true,
-  imports: [HttpClientTestingModule, MatSnackBarModule],
+  imports: [MatSnackBarModule],
+  providers: [provideHttpClientTesting()],
 })
 export class OrganizationsComponent {}
 
@@ -36,12 +38,13 @@ describe('OrganizationService', () => {
   let organizationService: OrganizationService;
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [OrganizationService, OrganizationStore, UrlResolverService],
-      imports: [
-        HttpClientTestingModule,
-        MatSnackBarModule,
-        RouterTestingModule.withRoutes(MOCK_ORGANIZATIONS_ROUTES),
-        OrganizationsComponent,
+      imports: [MatSnackBarModule, RouterTestingModule.withRoutes(MOCK_ORGANIZATIONS_ROUTES), OrganizationsComponent],
+      providers: [
+        OrganizationService,
+        OrganizationStore,
+        UrlResolverService,
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     });
 

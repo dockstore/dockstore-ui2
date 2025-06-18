@@ -30,17 +30,17 @@
   padding: 1.4rem;
 }
 .navbar-button:hover {
-  // Hover color is darker than mat.get-color-from-palette($dockstore-app-primary, default),
-  // but lighter than mat.get-color-from-palette($dockstore-app-primary, darker), which is used for the navbar active state
+  // Hover color is darker than mat.m2-get-color-from-palette($dockstore-app-primary, default),
+  // but lighter than mat.m2-get-color-from-palette($dockstore-app-primary, darker), which is used for the navbar active state
   background-color: #112246;
 }
 
 .navbar-button-active {
-  background-color: mat.get-color-from-palette($dockstore-app-primary, darker);
+  background-color: mat.m2-get-color-from-palette($dockstore-app-primary, darker);
 }
 
 .menu-item-active {
-  background-color: mat.get-color-from-palette($dockstore-app-gray, lighter);
+  background-color: mat.m2-get-color-from-palette($dockstore-app-gray, lighter);
 }
 
 .spacer {
@@ -71,7 +71,7 @@ a:focus {
 }
 
 mat-icon.bell-icon {
-  color: mat.get-color-from-palette($kim-accent1-success, 4);
+  color: mat.m2-get-color-from-palette($kim-accent1-success, 4);
   height: 3rem;
   width: 3rem;
   font-size: 3rem;
@@ -89,7 +89,7 @@ mat-icon.bell-icon {
 }
 
 .menu-icon {
-  --mat-menu-item-icon-color: #{mat.get-color-from-palette($dockstore-app-primary, 3)};
+  --mat-menu-item-icon-color: #{mat.m2-get-color-from-palette($dockstore-app-primary, 3)};
 }
 
 #dropdown-profile,

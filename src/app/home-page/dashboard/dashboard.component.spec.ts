@@ -15,11 +15,12 @@ import { MyEntriesStore } from '../../shared/state/my-entries.store';
 import { UrlResolverService } from '../../shared/url-resolver.service';
 import { DashboardComponent } from './dashboard.component';
 import { RegisterToolService } from 'app/container/register-tool/register-tool.service';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ContainerService } from '../../shared/container.service';
 import { ContainerStubService, DateStubService, OrgLogoStubService, UrlResolverStubService } from '../../test/service-stubs';
 import { MastodonService } from '../../shared/mastodon/mastodon.service';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
@@ -34,7 +35,6 @@ describe('DashboardComponent', () => {
           MatButtonModule,
           MatIconModule,
           MatDialogModule,
-          HttpClientTestingModule,
           MatSnackBarModule,
           DashboardComponent,
           NoopAnimationsModule,
@@ -51,6 +51,8 @@ describe('DashboardComponent', () => {
           { provide: OrgLogoService, useClass: OrgLogoStubService },
           MyEntriesStateService,
           MyEntriesStore,
+          provideHttpClient(withInterceptorsFromDi()),
+          provideHttpClientTesting(),
         ],
       }).compileComponents();
     })

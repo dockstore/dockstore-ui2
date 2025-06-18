@@ -1,16 +1,17 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RequestsService } from './requests.service';
 import { RequestsStore } from './requests.store';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('RequestsService', () => {
   let requestsService: RequestsService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [RequestsService, RequestsStore],
-      imports: [HttpClientTestingModule, MatSnackBarModule],
+      imports: [MatSnackBarModule],
+      providers: [RequestsService, RequestsStore, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
     });
 
     requestsService = TestBed.inject(RequestsService);

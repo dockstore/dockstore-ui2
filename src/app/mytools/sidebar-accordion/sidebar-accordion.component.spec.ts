@@ -13,8 +13,9 @@ import { RefreshToolOrganizationComponent } from './../../container/refresh-tool
 import { ContainerService } from './../../shared/container.service';
 import { ContainerStubService, RegisterToolStubService } from './../../test/service-stubs';
 import { SidebarAccordionComponent } from './sidebar-accordion.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('SidebarAccordionComponent', () => {
   let component: SidebarAccordionComponent;
@@ -32,7 +33,6 @@ describe('SidebarAccordionComponent', () => {
           MatListModule,
           MatTooltipModule,
           RouterTestingModule,
-          HttpClientTestingModule,
           SidebarAccordionComponent,
           RefreshToolOrganizationComponent,
           SelectTabPipe,
@@ -41,6 +41,8 @@ describe('SidebarAccordionComponent', () => {
           { provide: RegisterToolService, useClass: RegisterToolStubService },
           { provide: ContainerService, useClass: ContainerStubService },
           { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
+          provideHttpClient(withInterceptorsFromDi()),
+          provideHttpClientTesting(),
         ],
       }).compileComponents();
     })
