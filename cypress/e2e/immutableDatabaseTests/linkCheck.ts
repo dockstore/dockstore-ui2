@@ -23,6 +23,18 @@ describe('Find broken anchor links', () => {
     return url.includes('/my-workflows/') || url.includes('/my-tools/') || url.includes('/my-notebooks/');
   }
 
+  /**
+   * Checks if the link is a buff.ly link which are primarily used in our Mastodon posts.
+   */
+  function isBufferUrl(url: string): boolean {
+    try {
+      const parsedUrl = new URL(url);
+      return parsedUrl.host === 'buff.ly';
+    } catch {
+      return false; // Return false if the URL is invalid
+    }
+  }
+
   function checkUrls(path: string) {
     let brokenUrls = [];
     cy.visit(path).wait(1000); // Temporary solution to ensure the page loads entirely
@@ -31,7 +43,7 @@ describe('Find broken anchor links', () => {
         cy.get(anchor).then((anchor) => {
           const href = anchor.prop('href');
           // Send requests to non-dynamic URLs that haven't yet been visited and shouldn't be skipped
-          if (href && !skippedUrls.includes(href) && !visitedUrls.includes(href) && !isDynamicUrl(href)) {
+          if (href && !skippedUrls.includes(href) && !visitedUrls.includes(href) && !isDynamicUrl(href) && !isBufferUrl(href)) {
             cy.request({
               url: href,
               failOnStatusCode: false,
