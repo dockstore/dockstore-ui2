@@ -61,6 +61,7 @@ interface ExecutionMetricsTableObject {
 @Component({
   selector: 'app-executions-tab',
   templateUrl: './executions-tab.component.html',
+  styleUrls: ['./executions-tab.component.scss'],
   standalone: true,
   imports: [
     NgIf,
