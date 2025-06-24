@@ -58,14 +58,8 @@ jobs:
           environment:
             MOCHA_FILE: nightly-test-results/junit/test-<< parameters.stack >>-waf-[hash].xml
       - upload_nightly_artifacts
-      - slack/notify:
-          channel: $<< parameters.stack >>_id
-          event: fail
-          template: basic_fail_1
-      - slack/notify:
-          channel: $<< parameters.stack >>_id
-          event: pass
-          template: basic_success_1
+      - notify-slack-pass-fail:
+          slack-channel-id: $<< parameters.stack >>_id
 
   # Specify the webpage url (https://dev.dockstore.net or https://staging.dockstore.org or https://dockstore.org)
   # and stack (dev or staging or prod) and the no auth smoke tests will be run against the corresponding webpage.
@@ -97,14 +91,8 @@ jobs:
           # Reset even if the tests failed
           when: always
       - upload_nightly_artifacts
-      - slack/notify:
-          channel: $<< parameters.stack >>_id
-          event: fail
-          template: basic_fail_1
-      - slack/notify:
-          channel: $<< parameters.stack >>_id
-          event: pass
-          template: basic_success_1
+      - notify-slack-pass-fail:
+          slack-channel-id: $<< parameters.stack >>_id
 
   lint_license_unit_test_coverage:
     working_directory: ~/repo
@@ -140,9 +128,9 @@ jobs:
             bash scripts/detect-package-json-changes.sh
       # Override the use_snapshot in package.json to instead build against develop webservice
       - when:
-         condition: << pipeline.parameters.sanity-check-against-develop >>
-         steps:
-          - use_snapshot_artifacts
+          condition: << pipeline.parameters.sanity-check-against-develop >>
+          steps:
+            - use_snapshot_artifacts
       - build_ui
       - run:
           name: Install codecov
@@ -391,6 +379,12 @@ workflows:
               only: /^develop/
           context:
             - dockerhub
+      - notify-slack-pass-fail:
+          when:
+            condition: << pipeline.parameters.sanity-check-against-develop >>
+          slack-channel-id: $qa_id # develop tests only go to QA slack channel
+          context:
+            - oicr-slack
 
   nightly_no_auth:
     when: << pipeline.parameters.run_nightly_no_auth >>
@@ -581,3 +575,16 @@ commands:
               git fetch origin +refs/pull/${CIRCLE_PULL_REQUEST##*/}/merge:
               git checkout -qf FETCH_HEAD
             fi
+  notify-slack-pass-fail:
+    parameters:
+      slack-channel-id:
+        type: string
+    steps:
+      - slack/notify:
+          channel: << parameters.slack-channel-id >>
+          event: fail
+          template: basic_fail_1
+      - slack/notify:
+          channel: << parameters.slack-channel-id >>
+          event: pass
+          template: basic_success_1
