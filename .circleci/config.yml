@@ -342,11 +342,10 @@ workflows:
     when: << pipeline.parameters.run_nightly_no_auth >>
     jobs:
       - smoke_tests:
-          parameters: 
-            test-name: "no-auth"
           matrix:
             parameters: 
               stack: [ "qa", "staging", "prod" ]
+              test-name: "no-auth"
           name: no_auth_smoke_tests_<< matrix.stack >>
           context:
             - dockerhub
@@ -356,11 +355,10 @@ workflows:
     when: << pipeline.parameters.run_nightly_auth >>
     jobs:
       - smoke_tests:
-          parameters:
-            test-name: "auth"
           matrix:
             parameters: 
               stack: ["qa", "staging", "prod"]
+              test-name: "auth"
           name: auth_smoke_tests_<< matrix.stack >>
           context:
             - dockerhub
