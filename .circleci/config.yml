@@ -345,7 +345,7 @@ workflows:
           matrix:
             parameters: 
               stack: [ "qa", "staging", "prod" ]
-              test-name: "no-auth"
+              test-name: [ "no-auth" ]
           name: no_auth_smoke_tests_<< matrix.stack >>
           context:
             - dockerhub
@@ -357,8 +357,8 @@ workflows:
       - smoke_tests:
           matrix:
             parameters: 
-              stack: ["qa", "staging", "prod"]
-              test-name: "auth"
+              stack: [ "qa", "staging", "prod" ]
+              test-name: [ "auth" ]
           name: auth_smoke_tests_<< matrix.stack >>
           context:
             - dockerhub
