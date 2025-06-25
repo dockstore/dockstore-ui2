@@ -60,7 +60,7 @@ jobs:
             MOCHA_FILE: nightly-test-results/junit/test-<< parameters.stack >>-<< parameters.test-name >>-[hash].xml
       - when:
           condition: 
-            - equal: [ "no-auth", << parameters.test-name >> ]
+            equal: [ "no-auth", << parameters.test-name >> ]
           steps:
             - run:
                 name: Run remote verification of WAF against << parameters.stack >>
@@ -543,7 +543,7 @@ commands:
     steps:
       - when:
           condition: 
-            - equal: [ "auth", << parameters.test-name >> ]
+            equal: [ "auth", << parameters.test-name >> ]
           steps:
             - run:
                 name: Reset dockstoretestuser4's resources
