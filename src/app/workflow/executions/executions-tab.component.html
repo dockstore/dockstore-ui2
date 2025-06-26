@@ -38,7 +38,7 @@
           <div><strong>Failed: </strong>{{ failedExecutions | number }}</div>
           <div><strong>Aborted: </strong>{{ abortedExecutions | number }}</div>
         </div>
-        <mat-form-field class="w-25 mt-3" data-cy="metrics-execution-status-dropdown">
+        <mat-form-field class="metrics-execution-status-dropdown" data-cy="metrics-execution-status-dropdown">
           <mat-label>Select an Execution Status</mat-label>
           <mat-select [value]="currentExecutionStatus" (selectionChange)="onSelectedExecutionStatusChange($event.value)">
             <mat-option
