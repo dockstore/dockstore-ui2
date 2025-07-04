@@ -216,20 +216,18 @@
         >
       </th>
       <td mat-cell *matCellDef="let version">
-        <img
-          *ngIf="version.metricsByPlatform && (version.metricsByPlatform[PartnerEnum.ALL]?.executionStatusCount | json) !== 'null'"
-          src="../assets/svg/execution-icon.svg"
-          alt="Execution Metrics Icon"
-          data-cy="execution-metrics-icon"
-          matTooltip="This version contains execution metrics."
-        />
-        <img
-          *ngIf="version.metricsByPlatform && (version.metricsByPlatform[PartnerEnum.ALL]?.validationStatus | json) !== 'null'"
-          src="../assets/svg/validation-icon.svg"
-          alt="Validation Metrics Icon"
-          data-cy="validation-metrics-icon"
-          matTooltip="This version contains validation metrics."
-        />
+        <canvas
+          width="50"
+          height="30"
+          baseChart
+          [data]="{ datasets: [{ data: [1, 2, 3] }], labels: ['x', 'y', 'z'] }"
+          [options]="{
+            plugins: { legend: { display: false } },
+            responsive: false,
+            scales: { x: { ticks: { display: false } }, y: { ticks: { display: false } } }
+          }"
+          >no canvas</canvas
+        >
       </td>
     </ng-container>
 

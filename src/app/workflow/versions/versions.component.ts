@@ -28,6 +28,7 @@ import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { DoiBadgeComponent } from 'app/shared/entry/doi/doi-badge/doi-badge.component';
 import { merge, Observable } from 'rxjs';
 import { distinctUntilChanged, takeUntil, tap } from 'rxjs/operators';
+import { BaseChartDirective } from 'ng2-charts';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { DateService } from '../../shared/date.service';
 import { Dockstore } from '../../shared/dockstore.model';
@@ -72,6 +73,7 @@ import { CommitUrlPipe } from 'app/shared/entry/commit-url.pipe';
     DoiBadgeComponent,
     AsyncPipe,
     MatPaginatorModule,
+    BaseChartDirective,
   ],
 })
 export class VersionsWorkflowComponent extends Versions implements OnInit, OnChanges, AfterViewInit {
