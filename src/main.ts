@@ -14,6 +14,7 @@ import { FlexLayoutModule } from '@ngbracket/ngx-layout';
 import { MarkdownModule } from 'ngx-markdown';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { AppComponent } from './app/app.component';
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 
 import { getApiConfig, initializerFactory, myCustomSnackbarDefaults, myCustomTooltipDefaults } from './app/app.module';
 import { CLIENT_ROUTER_PROVIDERS, routing } from './app/app.routing';
@@ -178,6 +179,7 @@ bootstrapApplication(AppComponent, {
     },
     { provide: Window, useValue: window },
     provideAnimations(),
+    provideCharts(withDefaultRegisterables()),
     provideHttpClient(withInterceptorsFromDi()),
   ],
 });
