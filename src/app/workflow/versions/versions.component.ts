@@ -252,4 +252,16 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
   trackBy(index: number, item: WorkflowVersion) {
     return item.id;
   }
+
+  // https://github.com/davidbau/seedrandom
+  data(index: number) {
+    switch (index) {
+      case 0:
+        return [1, 2, 3, 5, 2, 1, 4, 3];
+      case 1:
+        return [2, 4, 2, 3, 1, 2, 0, 1];
+      default:
+        return [0, 1, 2, 0, 1, 0, 1, 1];
+    }
+  }
 }

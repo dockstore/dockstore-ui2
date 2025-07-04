@@ -210,23 +210,23 @@
         matTooltip="The version has has execution and/or validation metrics."
         matTooltipPosition="above"
       >
-        Metrics
+        Usage
         <a class="ds-green" [href]="Dockstore.DOCUMENTATION_URL + '/advanced-topics/metrics.html'" target="_blank" rel="noopener noreferrer"
           ><mat-icon>info</mat-icon></a
         >
       </th>
-      <td mat-cell *matCellDef="let version">
+      <td mat-cell *matCellDef="let version; let i = index">
         <canvas
-          width="60"
+          width="55"
           height="30"
           baseChart
-          [data]="{ datasets: [{ data: [1, 2, 3, 5, 2, 1, 4, 3] }], labels: ['s', 't', 'u', 'v', 'w', 'x', 'y', 'z'] }"
+          [data]="{ datasets: [{ data: data(i) }], labels: ['s', 't', 'u', 'v', 'w', 'x', 'y', 'z'] }"
           [options]="{
             plugins: { legend: { display: false } },
             fill: true,
             backgroundColor: 'rgb(72, 121, 128)',
             responsive: false,
-            scales: { x: { display: false, ticks: { display: false } }, y: { display: false, ticks: { display: false } } }
+            scales: { x: { display: false, ticks: { display: false } }, y: { min: 0, max: 5, display: false, ticks: { display: false } } }
           }"
           >no canvas</canvas
         >
