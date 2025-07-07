@@ -210,7 +210,7 @@
         matTooltip="The version has has execution and/or validation metrics."
         matTooltipPosition="above"
       >
-        Usage
+        Weekly Runs
         <a class="ds-green" [href]="Dockstore.DOCUMENTATION_URL + '/advanced-topics/metrics.html'" target="_blank" rel="noopener noreferrer"
           ><mat-icon>info</mat-icon></a
         >
@@ -226,7 +226,10 @@
             fill: true,
             backgroundColor: 'rgb(72, 121, 128)',
             responsive: false,
-            scales: { x: { display: false, ticks: { display: false } }, y: { min: 0, max: 10, display: false, ticks: { display: false } } }
+            scales: {
+              x: { ticks: { display: false }, grid: { tickLength: 0 } },
+              y: { min: 0, max: 10, ticks: { display: false }, grid: { tickLength: 0 } }
+            }
           }"
           >no canvas</canvas
         >

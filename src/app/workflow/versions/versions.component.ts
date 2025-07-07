@@ -122,7 +122,7 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
   ) {
     super(dockstoreService, dateService, sessionQuery);
     this.sortColumn = 'last_modified';
-    seedrandom('seed', { global: true });
+    seedrandom('seed!', { global: true });
   }
 
   /**
@@ -259,16 +259,18 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
   data(index: number) {
     switch (index) {
       case 0:
-        return [3, 1, 2, 7, 3, 2, 4, 2];
+        return [2, 5, 4, 3, 4, 6, 3, 4];
       case 1:
-        return [2, 6, 4, 3, 7, 4, 8, 10];
+        return [3, 1, 2, 7, 3, 2, 4, 2];
       case 2:
-        return [5, 7, 4, 6, 2, 5, 1, 2];
+        return [2, 6, 4, 3, 7, 4, 8, 10];
       case 3:
-        return [6, 3, 2, 5, 1, 3, 1, 0];
+        return [5, 7, 4, 6, 2, 5, 1, 2];
       case 4:
+        return [6, 3, 2, 5, 1, 3, 1, 0];
+      case 5:
         return [3, 4, 2, 5, 2, 3, 2, 1];
-      case 6:
+      case 7:
         return [1, 3, 2, 3, 1, 5, 2, 1];
       default:
         let result = [];
