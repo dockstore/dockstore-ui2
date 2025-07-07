@@ -41,7 +41,7 @@ jobs:
           ref: ${{ matrix.branch }}
 
       - name: Install browser
-        uses: browser-actions/setup-chrome@v1
+        uses: browser-actions/setup-chrome@v2
 
       - name: Set up JDK
         uses: actions/setup-java@v4
