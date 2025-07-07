@@ -29,6 +29,7 @@ import { DoiBadgeComponent } from 'app/shared/entry/doi/doi-badge/doi-badge.comp
 import { merge, Observable } from 'rxjs';
 import { distinctUntilChanged, takeUntil, tap } from 'rxjs/operators';
 import { BaseChartDirective } from 'ng2-charts';
+import * as seedrandom from 'seedrandom';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { DateService } from '../../shared/date.service';
 import { Dockstore } from '../../shared/dockstore.model';
@@ -121,6 +122,7 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
   ) {
     super(dockstoreService, dateService, sessionQuery);
     this.sortColumn = 'last_modified';
+    seedrandom('seed', { global: true });
   }
 
   /**
@@ -257,11 +259,23 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
   data(index: number) {
     switch (index) {
       case 0:
-        return [1, 2, 3, 5, 2, 1, 4, 3];
+        return [3, 1, 2, 7, 3, 2, 4, 2];
       case 1:
-        return [2, 4, 2, 3, 1, 2, 0, 1];
+        return [2, 6, 4, 3, 7, 4, 8, 10];
+      case 2:
+        return [5, 7, 4, 6, 2, 5, 1, 2];
+      case 3:
+        return [6, 3, 2, 5, 1, 3, 1, 0];
+      case 4:
+        return [3, 4, 2, 5, 2, 3, 2, 1];
+      case 6:
+        return [1, 3, 2, 3, 1, 5, 2, 1];
       default:
-        return [0, 1, 2, 0, 1, 0, 1, 1];
+        let result = [];
+        for (let i = 0; i < 8; i++) {
+          result.push(Math.floor(0.5 + 3 * Math.random()));
+        }
+        return result;
     }
   }
 }
