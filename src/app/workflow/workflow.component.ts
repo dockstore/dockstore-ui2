@@ -180,7 +180,7 @@ export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterVi
   public sortedVersions: Array<WorkflowVersion> = [];
   private resourcePath: string;
   public showRedirect = false;
-  public gitHubAppInstalled: boolean | null;
+  public gitHubAppInstalled: boolean | undefined;
   public githubPath = 'github.com/';
   public gitlabPath = 'gitlab.com/';
   public bitbucketPath = 'bitbucket.org/';
@@ -377,6 +377,7 @@ export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterVi
       }
       this.canRead = this.canWrite = this.isOwner = false;
       this.readers = this.writers = this.owners = [];
+      this.gitHubAppInstalled = undefined;
       if (!this.isPublic()) {
         const subclass: WorkflowSubClass = this.getWorkflowSubclass(this.entryType);
         this.showWorkflowActions = false;
