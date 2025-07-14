@@ -328,6 +328,16 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
   n = 40;
 
   data() {
+    let values = this.rawdata();
+    return values.map((v) => {
+      v *= 6;
+      v += 3 - Math.floor(10 * Math.random());
+      v = Math.max(v, 0);
+      return v;
+    });
+  }
+
+  rawdata() {
     let values = [];
     for (let i = 0; i < this.n; i++) {
       let value = 1 + (2 * i) / (1 * this.n);

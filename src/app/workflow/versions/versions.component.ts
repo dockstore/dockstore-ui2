@@ -256,7 +256,7 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
   }
 
   // https://github.com/davidbau/seedrandom
-  data(index: number) {
+  rawdata(index: number) {
     switch (index) {
       case 0:
         return [2, 5, 4, 3, 4, 6, 3, 4];
@@ -279,5 +279,15 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
         }
         return result;
     }
+  }
+
+  data(index: number) {
+    let values = this.rawdata(index);
+    return values.map((v) => {
+      v *= 20;
+      v += 10 - Math.floor(20 * Math.random());
+      v = Math.max(v, 0);
+      return v;
+    });
   }
 }
