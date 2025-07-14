@@ -122,7 +122,7 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
   ) {
     super(dockstoreService, dateService, sessionQuery);
     this.sortColumn = 'last_modified';
-    seedrandom('seed!', { global: true });
+    seedrandom('seed!');
   }
 
   /**

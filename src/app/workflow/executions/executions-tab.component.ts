@@ -49,6 +49,8 @@ import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { NgIf, NgFor, NgClass, NgTemplateOutlet, DecimalPipe, DatePipe } from '@angular/common';
+import { BaseChartDirective } from 'ng2-charts';
+import * as seedrandom from 'seedrandom';
 
 interface ExecutionMetricsTableObject {
   metric: string; // Name of the execution metric
@@ -83,6 +85,7 @@ interface ExecutionMetricsTableObject {
     PlatformPartnerPipe,
     SecondsToHoursMinutesSecondsPipe,
     ExecutionStatusPipe,
+    BaseChartDirective,
   ],
 })
 export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChanges {
@@ -130,6 +133,7 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
     protected sessionQuery: SessionQuery
   ) {
     super();
+    seedrandom('seed');
   }
 
   ngOnInit(): void {
@@ -319,5 +323,30 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
       this.currentValidatorTool = null;
       this.validationsTable = [];
     }
+  }
+
+  n = 40;
+
+  data() {
+    let values = [];
+    for (let i = 0; i < this.n; i++) {
+      let value = 1 + (2 * i) / (1 * this.n);
+      value += 6 * Math.random();
+      values.push(Math.floor(Math.max(value, 0)));
+    }
+    return values;
+  }
+
+  labels() {
+    const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    let date = new Date('2025-09-01T12:00:00Z');
+    let values = [];
+    for (let i = 0; i < this.n; i++) {
+      let value = date.getDate() + '-' + monthNames[date.getMonth()];
+      values.push(value);
+      date = new Date(date.getTime() + 24 * 60 * 60 * 1000);
+    }
+    console.log(values);
+    return values;
   }
 }

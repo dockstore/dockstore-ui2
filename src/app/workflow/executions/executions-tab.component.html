@@ -50,6 +50,23 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
+        <div class="pt-4 pb-1">
+          <div><strong>Daily Executions</strong></div>
+          <canvas
+            width="400"
+            height="120"
+            baseChart
+            [data]="{ datasets: [{ data: data() }], labels: labels() }"
+            [options]="{
+              plugins: { legend: { display: false } },
+              scales: { x: { ticks: { minRotation: 0, maxRotation: 0 } } },
+              fill: true,
+              backgroundColor: 'rgb(72, 121, 128)',
+              responsive: false
+            }"
+            >no canvas</canvas
+          >
+        </div>
         <table
           mat-table
           class="w-100"
