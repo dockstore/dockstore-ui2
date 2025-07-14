@@ -133,15 +133,12 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
   setDisplayColumns(publicPage: boolean) {
     const hiddenColumn = 'hidden';
     const metricsColumn = 'metrics';
-    const verifiedColumn = 'verified';
     const allColumns = [
       'name',
       'last_modified',
       this.workflow?.descriptorType === Workflow.DescriptorTypeEnum.NFL ? 'engineVersions' : 'descriptorTypeVersions',
       'valid',
       hiddenColumn,
-      verifiedColumn,
-      'open',
       metricsColumn,
       'snapshot',
       'doi',
