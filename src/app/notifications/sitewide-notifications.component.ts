@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Notification } from '../shared/openapi/model/notification';
 import { NotificationsService } from './state/notifications.service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MarkdownWrapperComponent } from '../shared/markdown-wrapper/markdown-wrapper.component';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { NgFor, AsyncPipe } from '@angular/common';
+import { PublicNotification } from 'app/shared/openapi';
 
 @Component({
   selector: 'app-sitewide-notifications',
@@ -16,10 +16,10 @@ import { NgFor, AsyncPipe } from '@angular/common';
   imports: [NgFor, FlexModule, MarkdownWrapperComponent, MatButtonModule, MatIconModule, AsyncPipe],
 })
 export class SitewideNotificationsComponent implements OnInit {
-  public activeNotifications$: Observable<Array<Notification>>;
+  public activeNotifications$: Observable<Array<PublicNotification>>;
 
   constructor(private notificationsService: NotificationsService) {
-    this.activeNotifications$ = this.notificationsService.getActiveNotificationsByType(Notification.TypeEnum.SITEWIDE);
+    this.activeNotifications$ = this.notificationsService.getActiveNotificationsByType(PublicNotification.TypeEnum.SITEWIDE);
   }
 
   ngOnInit() {
@@ -27,7 +27,7 @@ export class SitewideNotificationsComponent implements OnInit {
     this.notificationsService.removeExpiredDisabledNotifications();
   }
 
-  dismissNotification(notification: Notification) {
+  dismissNotification(notification: PublicNotification) {
     this.notificationsService.dismissNotification(notification);
   }
 }
