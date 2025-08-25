@@ -3,9 +3,9 @@
   "version": "2.13.0",
   "license": "Apache License 2.0",
   "config": {
-    "webservice_version_prefix": "1.18.0",
-    "webservice_version": "1.17.0",
-    "use_snapshot": false
+    "webservice_version_prefix": "1.18.0-feature-seab-6531-dockstore-yml-inference",
+    "webservice_version": "1.17.2",
+    "use_snapshot": true
   },
   "scripts": {
     "ng": "npx ng",
