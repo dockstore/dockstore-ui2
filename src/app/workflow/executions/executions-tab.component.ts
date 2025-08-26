@@ -50,6 +50,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { NgIf, NgFor, NgClass, NgTemplateOutlet, DecimalPipe, DatePipe } from '@angular/common';
 import { BaseChartDirective } from 'ng2-charts';
+import { ChartDataset, ChartOptions } from 'chart.js';
 
 interface ExecutionMetricsTableObject {
   metric: string; // Name of the execution metric
@@ -121,6 +122,15 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
   validatorTools: string[];
   validatorToolMetricsExist: boolean;
   isAdminCuratorOrPlatformPartner: boolean;
+  pieChartOptions: ChartOptions<'pie'> = {
+    responsive: true,
+    maintainAspectRatio: false,
+  };
+  pieChartLabels: string[] = ['Successful', 'Failed', 'Aborted'];
+  pieChartDataset: ChartDataset<'pie', number[]> = {
+    data: [],
+    backgroundColor: ['rgb(50,205,50)', 'rgb(255, 0, 0)', 'rgb(255,165,0)'],
+  };
 
   @Input() entry: BioWorkflow | Service | Notebook;
   @Input() version: WorkflowVersion;
@@ -238,6 +248,8 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
       this.totalExecutions = this.successfulExecutions + this.failedExecutions + this.abortedExecutions;
       const completedExecutions = (this.successfulExecutions || 0) + (this.failedExecutions || 0); // Per schema, values could be undefined, even though in practice they currently aren't
       this.successfulExecutionRate = completedExecutions > 0 ? (100 * this.successfulExecutions) / completedExecutions : null; // Don't divide by 0
+      // The order of data is important - it matches the order of this.pieChartLabels
+      this.pieChartDataset.data = [this.successfulExecutions, this.failedExecutions, this.abortedExecutions];
     }
   }
 

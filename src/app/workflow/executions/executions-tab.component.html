@@ -119,9 +119,10 @@
             <canvas
               baseChart
               [type]="'pie'"
-              [datasets]="[ { data: [ successfulExecutions, failedExecutions, abortedExecutions ], backgroundColor: [ 'rgb(50,205,50)', 'rgb(255, 0, 0)', 'rgb(255,165,0)' ], }]"
-              [labels]="['Successful', 'Failed', 'Aborted']"
+              [datasets]="[pieChartDataset]"
+              [labels]="pieChartLabels"
               [legend]="true"
+              [options]="pieChartOptions"
             >
             </canvas>
           </mat-card-content>
