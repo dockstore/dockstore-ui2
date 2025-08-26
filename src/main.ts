@@ -77,6 +77,7 @@ import { environment } from './environments/environment';
 import { EditTopicDialogService } from 'app/shared/entry/info-tab-topic/edit-topic/edit-topic-dialog.service';
 import { ManageDoisDialogService } from 'app/shared/entry/doi/manage-dois/manage-dois-dialog.service';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 
 if (environment.production) {
   enableProdMode();
@@ -179,5 +180,6 @@ bootstrapApplication(AppComponent, {
     { provide: Window, useValue: window },
     provideAnimations(),
     provideHttpClient(withInterceptorsFromDi()),
+    provideCharts(withDefaultRegisterables()),
   ],
 });

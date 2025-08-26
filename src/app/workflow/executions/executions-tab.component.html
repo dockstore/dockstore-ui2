@@ -52,7 +52,7 @@
         </mat-form-field>
         <table
           mat-table
-          class="w-100"
+          class="w-100 mb-3"
           aria-label="execution-metrics-table"
           [dataSource]="executionMetricsTable"
           data-cy="execution-metrics-table"
@@ -111,6 +111,22 @@
             <td class="mat-mdc-cell" [colSpan]="executionMetricsColumns.length">Not Available</td>
           </tr>
         </table>
+        <mat-card class="w-25">
+          <mat-card-header>
+            <mat-card-subtitle>Status</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <canvas
+              baseChart
+              [type]="'pie'"
+              [datasets]="[pieChartDataset]"
+              [labels]="pieChartLabels"
+              [legend]="true"
+              [options]="pieChartOptions"
+            >
+            </canvas>
+          </mat-card-content>
+        </mat-card>
       </div>
     </mat-card-content>
   </mat-card>
