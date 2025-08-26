@@ -49,6 +49,7 @@ import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { NgIf, NgFor, NgClass, NgTemplateOutlet, DecimalPipe, DatePipe } from '@angular/common';
+import { BaseChartDirective } from 'ng2-charts';
 
 interface ExecutionMetricsTableObject {
   metric: string; // Name of the execution metric
@@ -83,6 +84,7 @@ interface ExecutionMetricsTableObject {
     PlatformPartnerPipe,
     SecondsToHoursMinutesSecondsPipe,
     ExecutionStatusPipe,
+    BaseChartDirective,
   ],
 })
 export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChanges {
