@@ -139,9 +139,9 @@ Run `ng g component component-name` to generate a new component. You can also us
 
 ## Build
 
-When building against artifactory, the build should use the latest SNAPSHOT. Set `use_snapshot` to `true` and set `webservice_version_prefix` to the desired SNAPSHOT prefix version. For example, if you want to use the `1.17.0-SNAPSHOT` artifacts on artifactory, set `webservice_version_prefix` to `1.17.0`. 
+When building against artifactory, the build should use the latest SNAPSHOT. Set `use_snapshot` to `true` and set `webservice_version_prefix` to the desired SNAPSHOT prefix version. The `webservice_prefix_version` will be prefixed to `-SNAPSHOT` during the build. For example, if you want to use the `1.17.0-SNAPSHOT` artifacts on artifactory, set `webservice_version_prefix` to `1.17.0`. 
 
-In this scenario, the package.json will look like the following
+In this scenario, the package.json will look like the following:
 ```
  "config": {
     "webservice_version_prefix": "1.17.0",
@@ -150,10 +150,10 @@ In this scenario, the package.json will look like the following
  }
 ```
 
-For example, to build against a specific branch, edit the package.json the following, where slashes in the branch name are replaced with hyphens
+To build against a specific branch, edit the `webservice_version_prefix` like the following, where slashes in the branch name are replaced with hyphens:
 ```
   "config": {
-    "webservice_version_prefix": "1.17.0-<branch-name-where-slashes-are-subbed-with-hyphens>-SNAPSHOT",
+    "webservice_version_prefix": "1.17.0-<branch-name-where-slashes-are-subbed-with-hyphens>",
     "webservice_version": "1.17.0",
     "use_snapshot": true
   },
@@ -162,7 +162,7 @@ For example, to build against a specific branch, edit the package.json the follo
 To build against a release version on artifactory, set `use_snapshot` to `false` and set the `webservice_version` to your desired version.
 ```
   "config": {
-    "webservice_version_prefix": "1.17.0-<branch-name-where-slashes-are-subbed-with-hyphens>-SNAPSHOT",
+    "webservice_version_prefix": "1.17.0",
     "webservice_version": "1.17.0",
     "use_snapshot": false
   },
