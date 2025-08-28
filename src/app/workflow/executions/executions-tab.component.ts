@@ -134,9 +134,58 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
   barChartOptions: ChartOptions<'bar'> = {
     responsive: false,
     maintainAspectRatio: false,
+    scales: { x: { stacked: true }, y: { stacked: true } },
   };
-  barChartLabels: string[] = ['a', 'b', 'c'];
-  barChartDatasets: ChartDataset<'bar', number[]>[] = [{ data: [1, 2, 3] }];
+  barChartLabels: string[] = [
+    'a',
+    'b',
+    'c',
+    'd',
+    'e',
+    'f',
+    'g',
+    'h',
+    'i',
+    'j',
+    'a',
+    'b',
+    'c',
+    'd',
+    'e',
+    'f',
+    'g',
+    'h',
+    'i',
+    'j',
+    'a',
+    'b',
+    'c',
+    'd',
+    'e',
+    'f',
+    'g',
+    'h',
+    'i',
+    'j',
+    'a',
+    'b',
+    'c',
+    'd',
+    'e',
+    'f',
+    'g',
+    'h',
+    'i',
+    'j',
+  ];
+  data: number[] = [
+    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+  ];
+  barChartDatasets: ChartDataset<'bar', number[]>[] = [
+    { data: this.data, label: 'Successful', backgroundColor: 'rgb(50,205,50)', barPercentage: 0.9, categoryPercentage: 1 },
+    { data: this.data, label: 'Failed', backgroundColor: 'rgb(255,0,0)', barPercentage: 0.9, categoryPercentage: 1 },
+    { data: this.data, label: 'Aborted', backgroundColor: 'rgb(255,165,0)', barPercentage: 0.9, categoryPercentage: 1 },
+  ];
 
   @Input() entry: BioWorkflow | Service | Notebook;
   @Input() version: WorkflowVersion;
