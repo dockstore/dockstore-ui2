@@ -131,6 +131,12 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
     data: [],
     backgroundColor: ['rgb(50,205,50)', 'rgb(255, 0, 0)', 'rgb(255,165,0)'],
   };
+  barChartOptions: ChartOptions<'bar'> = {
+    responsive: false,
+    maintainAspectRatio: false,
+  };
+  barChartLabels: string[] = ['a', 'b', 'c'];
+  barChartDatasets: ChartDataset<'bar', number[]>[] = [{ data: [1, 2, 3] }];
 
   @Input() entry: BioWorkflow | Service | Notebook;
   @Input() version: WorkflowVersion;

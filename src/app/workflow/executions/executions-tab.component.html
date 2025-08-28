@@ -139,8 +139,10 @@
                 baseChart
                 width="400"
                 height="250"
-                [data]="{ datasets: [{ data: [1, 2, 3] }], labels: ['a', 'b', 'c'] }"
-                [options]="{ responsive: false }"
+                [type]="'bar'"
+                [datasets]="barChartDatasets"
+                [labels]="barChartLabels"
+                [options]="barChartOptions"
                 >no chart
               </canvas>
             </mat-card-content>
