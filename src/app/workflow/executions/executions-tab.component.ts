@@ -123,7 +123,7 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
   validatorToolMetricsExist: boolean;
   isAdminCuratorOrPlatformPartner: boolean;
   pieChartOptions: ChartOptions<'pie'> = {
-    responsive: true,
+    responsive: false,
     maintainAspectRatio: false,
   };
   pieChartLabels: string[] = ['Successful', 'Failed', 'Aborted'];

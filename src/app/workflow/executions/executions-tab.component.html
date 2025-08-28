@@ -111,22 +111,41 @@
             <td class="mat-mdc-cell" [colSpan]="executionMetricsColumns.length">Not Available</td>
           </tr>
         </table>
-        <mat-card class="w-25">
-          <mat-card-header>
-            <mat-card-subtitle>Status</mat-card-subtitle>
-          </mat-card-header>
-          <mat-card-content>
-            <canvas
-              baseChart
-              [type]="'pie'"
-              [datasets]="[pieChartDataset]"
-              [labels]="pieChartLabels"
-              [legend]="true"
-              [options]="pieChartOptions"
-            >
-            </canvas>
-          </mat-card-content>
-        </mat-card>
+        <div style="display: flex">
+          <mat-card class="m-2">
+            <mat-card-header>
+              <mat-card-subtitle>Status</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+              <canvas
+                baseChart
+                width="120"
+                height="250"
+                [type]="'pie'"
+                [datasets]="[pieChartDataset]"
+                [labels]="pieChartLabels"
+                [legend]="true"
+                [options]="pieChartOptions"
+              >
+              </canvas>
+            </mat-card-content>
+          </mat-card>
+          <mat-card class="m-2">
+            <mat-card-header>
+              <mat-card-subtitle>Weekly Runs</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+              <canvas
+                baseChart
+                width="400"
+                height="250"
+                [data]="{ datasets: [{ data: [1, 2, 3] }], labels: ['a', 'b', 'c'] }"
+                [options]="{ responsive: false }"
+                >no chart
+              </canvas>
+            </mat-card-content>
+          </mat-card>
+        </div>
       </div>
     </mat-card-content>
   </mat-card>
