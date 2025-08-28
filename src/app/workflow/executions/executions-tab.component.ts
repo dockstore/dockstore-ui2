@@ -303,8 +303,9 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
       this.totalExecutions = this.successfulExecutions + this.failedExecutions + this.abortedExecutions;
       const completedExecutions = (this.successfulExecutions || 0) + (this.failedExecutions || 0); // Per schema, values could be undefined, even though in practice they currently aren't
       this.successfulExecutionRate = completedExecutions > 0 ? (100 * this.successfulExecutions) / completedExecutions : null; // Don't divide by 0
+      // Clone pieChartDataset and set the data field on the clone, so that the chart component knows that its inputs have changed
       // The order of data is important - it matches the order of this.pieChartLabels
-      this.pieChartDataset.data = [this.successfulExecutions, this.failedExecutions, this.abortedExecutions];
+      this.pieChartDataset = { ...this.pieChartDataset, data: [this.successfulExecutions, this.failedExecutions, this.abortedExecutions] };
     }
   }
 
