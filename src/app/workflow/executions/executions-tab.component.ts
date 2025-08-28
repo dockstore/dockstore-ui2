@@ -127,10 +127,7 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
     maintainAspectRatio: false,
   };
   pieChartLabels: string[] = ['Successful', 'Failed', 'Aborted'];
-  pieChartDataset: ChartDataset<'pie', number[]> = {
-    data: [],
-    backgroundColor: ['rgb(50,205,50)', 'rgb(255, 0, 0)', 'rgb(255,165,0)'],
-  };
+  pieChartDatasets: ChartDataset<'pie', number[]>[] = undefined;
   barChartOptions: ChartOptions<'bar'> = {
     responsive: false,
     maintainAspectRatio: false,
@@ -181,11 +178,7 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
   data: number[] = [
     1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
   ];
-  barChartDatasets: ChartDataset<'bar', number[]>[] = [
-    { data: this.data, label: 'Successful', backgroundColor: 'rgb(50,205,50)', barPercentage: 0.9, categoryPercentage: 1 },
-    { data: this.data, label: 'Failed', backgroundColor: 'rgb(255,0,0)', barPercentage: 0.9, categoryPercentage: 1 },
-    { data: this.data, label: 'Aborted', backgroundColor: 'rgb(255,165,0)', barPercentage: 0.9, categoryPercentage: 1 },
-  ];
+  barChartDatasets: ChartDataset<'bar', number[]>[] = undefined;
 
   @Input() entry: BioWorkflow | Service | Notebook;
   @Input() version: WorkflowVersion;
@@ -303,9 +296,29 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
       this.totalExecutions = this.successfulExecutions + this.failedExecutions + this.abortedExecutions;
       const completedExecutions = (this.successfulExecutions || 0) + (this.failedExecutions || 0); // Per schema, values could be undefined, even though in practice they currently aren't
       this.successfulExecutionRate = completedExecutions > 0 ? (100 * this.successfulExecutions) / completedExecutions : null; // Don't divide by 0
-      // Clone pieChartDataset and set the data field on the clone, so that the chart component knows that its inputs have changed
-      // The order of data is important - it matches the order of this.pieChartLabels
-      this.pieChartDataset = { ...this.pieChartDataset, data: [this.successfulExecutions, this.failedExecutions, this.abortedExecutions] };
+
+      this.pieChartDatasets = [
+        {
+          data: [this.successfulExecutions, this.failedExecutions, this.abortedExecutions],
+          backgroundColor: ['rgb(50,205,50)', 'rgb(255, 0, 0)', 'rgb(255,165,0)'],
+        },
+      ];
+
+      // console.log(JSON.stringify(metrics.executionStatusCount.count['SUCCESSFUL'].dailyExecutionCounts));
+      // console.log(JSON.stringify(metrics.executionStatusCount.count['SUCCESSFUL'].weeklyExecutionCounts));
+      const successfulCounts = metrics.executionStatusCount?.count['SUCCESSFUL']?.dailyExecutionCounts?.values;
+      const failedCounts = metrics.executionStatusCount?.count['FAILED']?.dailyExecutionCounts?.values;
+      const abortedCounts = metrics.executionStatusCount?.count['ABORTED']?.dailyExecutionCounts?.values;
+
+      console.log(JSON.stringify(successfulCounts));
+      console.log(JSON.stringify(failedCounts));
+      console.log(JSON.stringify(abortedCounts));
+
+      this.barChartDatasets = [
+        { data: successfulCounts, label: 'Successful', backgroundColor: 'rgb(50,205,50)', barPercentage: 0.9, categoryPercentage: 1 },
+        { data: failedCounts, label: 'Failed', backgroundColor: 'rgb(255,0,0)', barPercentage: 0.9, categoryPercentage: 1 },
+        { data: abortedCounts, label: 'Aborted', backgroundColor: 'rgb(255,165,0)', barPercentage: 0.9, categoryPercentage: 1 },
+      ];
     }
   }
 
