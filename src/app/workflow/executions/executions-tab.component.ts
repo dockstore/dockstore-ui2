@@ -27,6 +27,7 @@ import {
   Service,
   MetricsByStatus,
   RunExecution,
+  TimeSeriesMetric,
 } from '../../shared/openapi';
 import { SessionQuery } from '../../shared/session/session.query';
 import { takeUntil } from 'rxjs/operators';
@@ -131,53 +132,9 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
   barChartOptions: ChartOptions<'bar'> = {
     responsive: false,
     maintainAspectRatio: false,
-    scales: { x: { stacked: true }, y: { stacked: true } },
+    scales: { x: { stacked: true, ticks: { font: { size: 9 } } }, y: { stacked: true } },
   };
-  barChartLabels: string[] = [
-    'a',
-    'b',
-    'c',
-    'd',
-    'e',
-    'f',
-    'g',
-    'h',
-    'i',
-    'j',
-    'a',
-    'b',
-    'c',
-    'd',
-    'e',
-    'f',
-    'g',
-    'h',
-    'i',
-    'j',
-    'a',
-    'b',
-    'c',
-    'd',
-    'e',
-    'f',
-    'g',
-    'h',
-    'i',
-    'j',
-    'a',
-    'b',
-    'c',
-    'd',
-    'e',
-    'f',
-    'g',
-    'h',
-    'i',
-    'j',
-  ];
-  data: number[] = [
-    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-  ];
+  barChartLabels: string[] = undefined;
   barChartDatasets: ChartDataset<'bar', number[]>[] = undefined;
 
   @Input() entry: BioWorkflow | Service | Notebook;
@@ -306,20 +263,113 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
 
       // console.log(JSON.stringify(metrics.executionStatusCount.count['SUCCESSFUL'].dailyExecutionCounts));
       // console.log(JSON.stringify(metrics.executionStatusCount.count['SUCCESSFUL'].weeklyExecutionCounts));
-      const successfulCounts = metrics.executionStatusCount?.count['SUCCESSFUL']?.dailyExecutionCounts?.values;
-      const failedCounts = metrics.executionStatusCount?.count['FAILED']?.dailyExecutionCounts?.values;
-      const abortedCounts = metrics.executionStatusCount?.count['ABORTED']?.dailyExecutionCounts?.values;
+      let successfulCounts = metrics.executionStatusCount?.count['SUCCESSFUL']?.weeklyExecutionCounts;
+      let failedCounts = metrics.executionStatusCount?.count['FAILED']?.weeklyExecutionCounts;
+      let abortedCounts = metrics.executionStatusCount?.count['ABORTED']?.weeklyExecutionCounts;
+      const representativeCounts = successfulCounts ?? failedCounts ?? abortedCounts;
 
       console.log(JSON.stringify(successfulCounts));
       console.log(JSON.stringify(failedCounts));
       console.log(JSON.stringify(abortedCounts));
+      if (representativeCounts) {
+        const now = new Date();
+        const binCount = 52;
+        const emptyCounts = this.emptyTimeSeries(representativeCounts);
+        successfulCounts = this.adjustTimeSeries(successfulCounts ?? emptyCounts, now, binCount);
+        failedCounts = this.adjustTimeSeries(failedCounts ?? emptyCounts, now, binCount);
+        abortedCounts = this.adjustTimeSeries(abortedCounts ?? emptyCounts, now, binCount);
 
-      this.barChartDatasets = [
-        { data: successfulCounts, label: 'Successful', backgroundColor: 'rgb(50,205,50)', barPercentage: 0.9, categoryPercentage: 1 },
-        { data: failedCounts, label: 'Failed', backgroundColor: 'rgb(255,0,0)', barPercentage: 0.9, categoryPercentage: 1 },
-        { data: abortedCounts, label: 'Aborted', backgroundColor: 'rgb(255,165,0)', barPercentage: 0.9, categoryPercentage: 1 },
-      ];
+        console.log('adjusted');
+        console.log(JSON.stringify(successfulCounts));
+        console.log(JSON.stringify(failedCounts));
+        console.log(JSON.stringify(abortedCounts));
+
+        this.barChartLabels = this.labelsFromTimeSeries(successfulCounts);
+        this.barChartDatasets = [
+          {
+            data: successfulCounts.values,
+            label: 'Successful',
+            backgroundColor: 'rgb(50,205,50)',
+            barPercentage: 0.9,
+            categoryPercentage: 1,
+          },
+          { data: failedCounts.values, label: 'Failed', backgroundColor: 'rgb(255,0,0)', barPercentage: 0.9, categoryPercentage: 1 },
+          { data: abortedCounts.values, label: 'Aborted', backgroundColor: 'rgb(255,165,0)', barPercentage: 0.9, categoryPercentage: 1 },
+        ];
+      } else {
+        this.barChartDatasets = null;
+      }
     }
+  }
+
+  private adjustTimeSeries(timeSeriesMetric: TimeSeriesMetric, now: Date, binCount: number): TimeSeriesMetric {
+    const adjusted: TimeSeriesMetric = {
+      begins: timeSeriesMetric.begins,
+      interval: timeSeriesMetric.interval,
+      values: timeSeriesMetric.values.slice(),
+    };
+
+    // TODO make this work for daily or weekly
+    const week = 7 * 24 * 3600 * 1000;
+    let begins = Number(adjusted.begins);
+    console.log('RAWBEGINS ' + begins);
+    console.log('BEGINS ' + new Date(begins));
+    const ends = begins + (adjusted.values.length - 1) * week + week / 2;
+
+    // Expand the newer end of the time series to overlap the current date
+    const binsToAppend = Math.ceil((now.getTime() - ends) / week);
+    console.log('APPEND ' + binsToAppend);
+    if (binsToAppend > 0) {
+      adjusted.values = [...adjusted.values, ...new Array(binsToAppend).fill(0)];
+    }
+
+    // Expand the older end of the time series to match the desired bin count
+    const binsToPrepend = binCount - adjusted.values.length;
+    console.log('PREPEND ' + binsToPrepend);
+    if (binsToPrepend > 0) {
+      adjusted.values = [...new Array(binsToPrepend).fill(0), ...adjusted.values];
+      begins = begins - binsToPrepend * week;
+    }
+
+    const binsToTrim = adjusted.values.length - binCount;
+    console.log('TRIM ' + binsToTrim);
+    if (binsToTrim > 0) {
+      adjusted.values = adjusted.values.slice(binsToTrim);
+      begins = begins + binsToTrim * week;
+    }
+
+    console.log('ADJUSTEDBEGINS ' + begins);
+    adjusted.begins = String(begins);
+    return adjusted;
+  }
+
+  private emptyTimeSeries(timeSeriesMetric: TimeSeriesMetric) {
+    return {
+      begins: timeSeriesMetric.begins,
+      interval: timeSeriesMetric.interval,
+      values: new Array(timeSeriesMetric.values.length).fill(0),
+    };
+  }
+
+  private labelsFromTimeSeries(timeSeriesMetric: TimeSeriesMetric): string[] {
+    // TODO make work for daily or weekly
+    const week = 7 * 24 * 3600 * 1000;
+    const day = 24 * 3600 * 1000;
+    let begins = Number(timeSeriesMetric.begins);
+    const labels: string[] = [];
+    for (var i = 0; i < timeSeriesMetric.values.length; i++) {
+      const firstDay: Date = new Date(begins + i * week - 3 * day);
+      const lastDay: Date = new Date(begins + i * week + 3 * day);
+      const label = this.formatShortDate(firstDay) + '-' + this.formatShortDate(lastDay);
+      console.log('LABEL ' + label);
+      labels.push(label);
+    }
+    return labels;
+  }
+
+  private formatShortDate(date: Date): string {
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    return date.getDate() + '/' + months[date.getMonth()];
   }
 
   /**
