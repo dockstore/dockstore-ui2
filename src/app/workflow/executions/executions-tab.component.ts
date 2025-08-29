@@ -126,13 +126,13 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
   pieChartDatasets: ChartDataset<'pie', number[]>[] = undefined;
   pieChartLabels: string[] = ['Successful', 'Failed', 'Aborted'];
   pieChartOptions: ChartOptions<'pie'> = {
-    responsive: false,
+    responsive: false, // non-responsive to avoid resizing when leaving tab
     maintainAspectRatio: false,
   };
   barChartDatasets: ChartDataset<'bar', number[]>[] = undefined;
   barChartLabels: string[] = undefined;
   barChartOptions: ChartOptions<'bar'> = {
-    responsive: false,
+    responsive: false, // non-responsive to avoid resizing when leaving tab
     maintainAspectRatio: false,
     scales: {
       x: {
@@ -329,7 +329,7 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
     };
 
     // TODO make this work for daily intervals, also.
-    const day = 24 * 60 * 60 * 1000; // milliseconds in one day
+    const day = 24 * 60 * 60 * 1000; // milliseconds in one day (hours * minutes * seconds * milliseconds)
     const week = 7 * day;
     let begins = Number(adjusted.begins); // Midpoint of the oldest bin
     const ends = begins + (adjusted.values.length - 1) * week + week / 2; // Exact time that the youngest bin ends
@@ -368,7 +368,7 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
 
   private labelsFromTimeSeries(timeSeriesMetric: TimeSeriesMetric): string[] {
     // TODO make this work for daily time series, also.
-    const day = 24 * 60 * 60 * 1000; // milliseconds in one day
+    const day = 24 * 60 * 60 * 1000; // milliseconds in one day (hours * minutes * seconds * milliseconds)
     const week = 7 * day;
     let begins = Number(timeSeriesMetric.begins);
     const labels: string[] = [];
