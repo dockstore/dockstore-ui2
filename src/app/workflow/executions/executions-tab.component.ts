@@ -123,19 +123,19 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
   validatorTools: string[];
   validatorToolMetricsExist: boolean;
   isAdminCuratorOrPlatformPartner: boolean;
+  pieChartDatasets: ChartDataset<'pie', number[]>[] = undefined;
+  pieChartLabels: string[] = ['Successful', 'Failed', 'Aborted'];
   pieChartOptions: ChartOptions<'pie'> = {
     responsive: false,
     maintainAspectRatio: false,
   };
-  pieChartLabels: string[] = ['Successful', 'Failed', 'Aborted'];
-  pieChartDatasets: ChartDataset<'pie', number[]>[] = undefined;
+  barChartDatasets: ChartDataset<'bar', number[]>[] = undefined;
+  barChartLabels: string[] = undefined;
   barChartOptions: ChartOptions<'bar'> = {
     responsive: false,
     maintainAspectRatio: false,
     scales: { x: { stacked: true, ticks: { font: { size: 9 } } }, y: { stacked: true } },
   };
-  barChartLabels: string[] = undefined;
-  barChartDatasets: ChartDataset<'bar', number[]>[] = undefined;
 
   @Input() entry: BioWorkflow | Service | Notebook;
   @Input() version: WorkflowVersion;
@@ -286,20 +286,24 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
 
         this.barChartLabels = this.labelsFromTimeSeries(successfulCounts);
         this.barChartDatasets = [
-          {
-            data: successfulCounts.values,
-            label: 'Successful',
-            backgroundColor: 'rgb(50,205,50)',
-            barPercentage: 0.9,
-            categoryPercentage: 1,
-          },
-          { data: failedCounts.values, label: 'Failed', backgroundColor: 'rgb(255,0,0)', barPercentage: 0.9, categoryPercentage: 1 },
-          { data: abortedCounts.values, label: 'Aborted', backgroundColor: 'rgb(255,165,0)', barPercentage: 0.9, categoryPercentage: 1 },
+          this.barChartDatasetFromTimeSeries(successfulCounts, 'Successful', 'rgb(50,205,50)'),
+          this.barChartDatasetFromTimeSeries(failedCounts, 'Failed', 'rgb(255,0,0)'),
+          this.barChartDatasetFromTimeSeries(abortedCounts, 'Aborted', 'rgb(255,165,0)'),
         ];
       } else {
         this.barChartDatasets = null;
       }
     }
+  }
+
+  private barChartDatasetFromTimeSeries(timeSeriesMetric: TimeSeriesMetric, label: string, color: string): ChartDataset<'bar', number[]> {
+    return {
+      data: timeSeriesMetric.values,
+      label: label,
+      backgroundColor: color,
+      barPercentage: 0.9,
+      categoryPercentage: 1,
+    };
   }
 
   private adjustTimeSeries(timeSeriesMetric: TimeSeriesMetric, now: Date, binCount: number): TimeSeriesMetric {
