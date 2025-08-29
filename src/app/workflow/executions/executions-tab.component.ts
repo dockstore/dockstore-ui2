@@ -134,7 +134,24 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
   barChartOptions: ChartOptions<'bar'> = {
     responsive: false,
     maintainAspectRatio: false,
-    scales: { x: { stacked: true, ticks: { font: { size: 9 } } }, y: { stacked: true } },
+    scales: {
+      x: {
+        stacked: true,
+        ticks: {
+          font: {
+            size: 9,
+          },
+          // Use the first date in the bar label as the tick label
+          callback: function (value, index) {
+            const label = this.getLabelForValue(index);
+            return label.substring(0, label.indexOf(' '));
+          },
+        },
+      },
+      y: {
+        stacked: true,
+      },
+    },
   };
 
   @Input() entry: BioWorkflow | Service | Notebook;
@@ -312,20 +329,21 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
     };
 
     // TODO make this work for daily intervals, also.
-    const week = 7 * 24 * 3600 * 1000;
+    const day = 24 * 60 * 60 * 1000; // milliseconds in one day
+    const week = 7 * day;
     let begins = Number(adjusted.begins); // Midpoint of the oldest bin
     const ends = begins + (adjusted.values.length - 1) * week + week / 2; // Exact time that the youngest bin ends
 
     // Expand the newer end of the time series to overlap the current date
     const binsToAppend = Math.ceil((now.getTime() - ends) / week);
     if (binsToAppend > 0) {
-      adjusted.values = [...adjusted.values, ...new Array(binsToAppend).fill(0)];
+      adjusted.values = [...adjusted.values, ...this.zeros(binsToAppend)];
     }
 
     // Expand the older end of the time series to match the desired bin count
     const binsToPrepend = binCount - adjusted.values.length;
     if (binsToPrepend > 0) {
-      adjusted.values = [...new Array(binsToPrepend).fill(0), ...adjusted.values];
+      adjusted.values = [...this.zeros(binsToPrepend), ...adjusted.values];
       begins = begins - binsToPrepend * week;
     }
 
@@ -344,28 +362,32 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
     return {
       begins: timeSeriesMetric.begins,
       interval: timeSeriesMetric.interval,
-      values: new Array(timeSeriesMetric.values.length).fill(0),
+      values: this.zeros(timeSeriesMetric.values.length),
     };
   }
 
   private labelsFromTimeSeries(timeSeriesMetric: TimeSeriesMetric): string[] {
     // TODO make this work for daily time series, also.
-    const week = 7 * 24 * 3600 * 1000;
-    const day = 24 * 3600 * 1000;
+    const day = 24 * 60 * 60 * 1000; // milliseconds in one day
+    const week = 7 * day;
     let begins = Number(timeSeriesMetric.begins);
     const labels: string[] = [];
-    for (var i = 0; i < timeSeriesMetric.values.length; i++) {
-      const firstDay: Date = new Date(begins + i * week - 3 * day);
-      const lastDay: Date = new Date(begins + i * week + 3 * day);
-      const label = this.formatShortDate(firstDay) + '-' + this.formatShortDate(lastDay);
+    for (let i = 0; i < timeSeriesMetric.values.length; i++) {
+      const middle = begins + i * week;
+      const firstDay: Date = new Date(middle - 3 * day);
+      const lastDay: Date = new Date(middle + 3 * day);
+      const label = this.formatShortDate(firstDay) + ' to ' + this.formatShortDate(lastDay);
       labels.push(label);
     }
     return labels;
   }
 
   private formatShortDate(date: Date): string {
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    return date.getDate() + '/' + months[date.getMonth()];
+    return date.toISOString().slice(0, 10);
+  }
+
+  private zeros(count: number): number[] {
+    return new Array(count).fill(0);
   }
 
   /**
