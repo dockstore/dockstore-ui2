@@ -38,6 +38,43 @@
           <div><strong>Failed: </strong>{{ failedExecutions | number }}</div>
           <div><strong>Aborted: </strong>{{ abortedExecutions | number }}</div>
         </div>
+        <div class="pb-3" style="display: flex; flex-wrap: wrap">
+          <mat-card class="m-2">
+            <mat-card-header>
+              <mat-card-subtitle>Status</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+              <canvas
+                baseChart
+                width="120"
+                height="250"
+                [type]="'pie'"
+                [legend]="true"
+                [datasets]="pieChartDatasets"
+                [labels]="pieChartLabels"
+                [options]="pieChartOptions"
+              >
+              </canvas>
+            </mat-card-content>
+          </mat-card>
+          <mat-card class="m-2">
+            <mat-card-header>
+              <mat-card-subtitle>Weekly Execution Counts</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+              <canvas
+                baseChart
+                width="450"
+                height="250"
+                [type]="'bar'"
+                [datasets]="barChartDatasets"
+                [labels]="barChartLabels"
+                [options]="barChartOptions"
+                >no chart
+              </canvas>
+            </mat-card-content>
+          </mat-card>
+        </div>
         <mat-form-field class="metrics-execution-status-dropdown" data-cy="metrics-execution-status-dropdown">
           <mat-label>Select an Execution Status</mat-label>
           <mat-select [value]="currentExecutionStatus" (selectionChange)="onSelectedExecutionStatusChange($event.value)">
@@ -111,22 +148,6 @@
             <td class="mat-mdc-cell" [colSpan]="executionMetricsColumns.length">Not Available</td>
           </tr>
         </table>
-        <mat-card class="w-25">
-          <mat-card-header>
-            <mat-card-subtitle>Status</mat-card-subtitle>
-          </mat-card-header>
-          <mat-card-content>
-            <canvas
-              baseChart
-              [type]="'pie'"
-              [datasets]="[pieChartDataset]"
-              [labels]="pieChartLabels"
-              [legend]="true"
-              [options]="pieChartOptions"
-            >
-            </canvas>
-          </mat-card-content>
-        </mat-card>
       </div>
     </mat-card-content>
   </mat-card>

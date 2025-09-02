@@ -27,6 +27,7 @@ import {
   Service,
   MetricsByStatus,
   RunExecution,
+  TimeSeriesMetric,
 } from '../../shared/openapi';
 import { SessionQuery } from '../../shared/session/session.query';
 import { takeUntil } from 'rxjs/operators';
@@ -122,14 +123,35 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
   validatorTools: string[];
   validatorToolMetricsExist: boolean;
   isAdminCuratorOrPlatformPartner: boolean;
+  pieChartDatasets: ChartDataset<'pie', number[]>[] = undefined;
+  pieChartLabels: string[] = ['Successful', 'Failed', 'Aborted'];
   pieChartOptions: ChartOptions<'pie'> = {
-    responsive: true,
+    responsive: false, // non-responsive to avoid resizing when leaving tab
     maintainAspectRatio: false,
   };
-  pieChartLabels: string[] = ['Successful', 'Failed', 'Aborted'];
-  pieChartDataset: ChartDataset<'pie', number[]> = {
-    data: [],
-    backgroundColor: ['rgb(50,205,50)', 'rgb(255, 0, 0)', 'rgb(255,165,0)'],
+  barChartDatasets: ChartDataset<'bar', number[]>[] = undefined;
+  barChartLabels: string[] = undefined;
+  barChartOptions: ChartOptions<'bar'> = {
+    responsive: false, // non-responsive to avoid resizing when leaving tab
+    maintainAspectRatio: false,
+    scales: {
+      x: {
+        stacked: true,
+        ticks: {
+          font: {
+            size: 9,
+          },
+          // Use the first date in the bar label as the tick label
+          callback: function (value, index) {
+            const label = this.getLabelForValue(index);
+            return label.substring(0, label.indexOf(' '));
+          },
+        },
+      },
+      y: {
+        stacked: true,
+      },
+    },
   };
 
   @Input() entry: BioWorkflow | Service | Notebook;
@@ -248,9 +270,124 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
       this.totalExecutions = this.successfulExecutions + this.failedExecutions + this.abortedExecutions;
       const completedExecutions = (this.successfulExecutions || 0) + (this.failedExecutions || 0); // Per schema, values could be undefined, even though in practice they currently aren't
       this.successfulExecutionRate = completedExecutions > 0 ? (100 * this.successfulExecutions) / completedExecutions : null; // Don't divide by 0
-      // The order of data is important - it matches the order of this.pieChartLabels
-      this.pieChartDataset.data = [this.successfulExecutions, this.failedExecutions, this.abortedExecutions];
+
+      // Calculate the information for the status pie graph.
+      this.pieChartDatasets = [
+        {
+          data: [this.successfulExecutions, this.failedExecutions, this.abortedExecutions],
+          backgroundColor: ['rgb(50,205,50)', 'rgb(255, 0, 0)', 'rgb(255,165,0)'],
+        },
+      ];
+
+      // Calculate the information for the weekly time series graph.
+      // Extract the weekly time series from the metrics object, if they exist, and then select a time series to be "representative".
+      // The "representative" time series is used to create empty replacements for any missing time series.
+      // The following code assumes that all time series bins which overlap cover the same time period.
+      let successfulCounts = metrics.executionStatusCount?.count['SUCCESSFUL']?.weeklyExecutionCounts;
+      let failedCounts = metrics.executionStatusCount?.count['FAILED']?.weeklyExecutionCounts;
+      let abortedCounts = metrics.executionStatusCount?.count['ABORTED']?.weeklyExecutionCounts;
+      const representativeCounts = successfulCounts ?? failedCounts ?? abortedCounts;
+
+      if (representativeCounts) {
+        const now = new Date();
+        const binCount = 52;
+        const emptyCounts = this.emptyTimeSeries(representativeCounts);
+        // Replace any missing time series with an empty (zero execution count) time series,
+        // and then adjust the time series so they all have the same number of bins and span the same time range.
+        successfulCounts = this.adjustTimeSeries(successfulCounts ?? emptyCounts, now, binCount);
+        failedCounts = this.adjustTimeSeries(failedCounts ?? emptyCounts, now, binCount);
+        abortedCounts = this.adjustTimeSeries(abortedCounts ?? emptyCounts, now, binCount);
+
+        // Create the labels and datasets, which will propagate to the canvas via the template.
+        this.barChartLabels = this.labelsFromTimeSeries(successfulCounts);
+        this.barChartDatasets = [
+          this.barChartDatasetFromTimeSeries(successfulCounts, 'Successful', 'rgb(50,205,50)'),
+          this.barChartDatasetFromTimeSeries(failedCounts, 'Failed', 'rgb(255,0,0)'),
+          this.barChartDatasetFromTimeSeries(abortedCounts, 'Aborted', 'rgb(255,165,0)'),
+        ];
+      } else {
+        this.barChartDatasets = null;
+      }
     }
+  }
+
+  private barChartDatasetFromTimeSeries(timeSeriesMetric: TimeSeriesMetric, label: string, color: string): ChartDataset<'bar', number[]> {
+    return {
+      data: timeSeriesMetric.values,
+      label: label,
+      backgroundColor: color,
+      barPercentage: 0.9,
+      categoryPercentage: 1,
+    };
+  }
+
+  private adjustTimeSeries(timeSeriesMetric: TimeSeriesMetric, now: Date, binCount: number): TimeSeriesMetric {
+    const adjusted: TimeSeriesMetric = {
+      begins: timeSeriesMetric.begins,
+      interval: timeSeriesMetric.interval,
+      values: timeSeriesMetric.values.slice(),
+    };
+
+    // TODO make this work for daily intervals, also.
+    const day = 24 * 60 * 60 * 1000; // milliseconds in one day (hours * minutes * seconds * milliseconds)
+    const week = 7 * day;
+    let begins = Number(adjusted.begins); // Midpoint of the oldest bin
+    const ends = begins + (adjusted.values.length - 1) * week + week / 2; // Exact time that the youngest bin ends
+
+    // Expand the newer end of the time series to overlap the current date
+    const binsToAppend = Math.ceil((now.getTime() - ends) / week);
+    if (binsToAppend > 0) {
+      adjusted.values = [...adjusted.values, ...this.zeros(binsToAppend)];
+    }
+
+    // Expand the older end of the time series to match the desired bin count
+    const binsToPrepend = binCount - adjusted.values.length;
+    if (binsToPrepend > 0) {
+      adjusted.values = [...this.zeros(binsToPrepend), ...adjusted.values];
+      begins = begins - binsToPrepend * week;
+    }
+
+    // Trim the older end of the time series to match the desired bin count
+    const binsToTrim = adjusted.values.length - binCount;
+    if (binsToTrim > 0) {
+      adjusted.values = adjusted.values.slice(binsToTrim);
+      begins = begins + binsToTrim * week;
+    }
+
+    adjusted.begins = String(begins);
+    return adjusted;
+  }
+
+  private emptyTimeSeries(timeSeriesMetric: TimeSeriesMetric) {
+    return {
+      begins: timeSeriesMetric.begins,
+      interval: timeSeriesMetric.interval,
+      values: this.zeros(timeSeriesMetric.values.length),
+    };
+  }
+
+  private labelsFromTimeSeries(timeSeriesMetric: TimeSeriesMetric): string[] {
+    // TODO make this work for daily time series, also.
+    const day = 24 * 60 * 60 * 1000; // milliseconds in one day (hours * minutes * seconds * milliseconds)
+    const week = 7 * day;
+    let begins = Number(timeSeriesMetric.begins);
+    const labels: string[] = [];
+    for (let i = 0; i < timeSeriesMetric.values.length; i++) {
+      const middle = begins + i * week;
+      const firstDay: Date = new Date(middle - 3 * day);
+      const lastDay: Date = new Date(middle + 3 * day);
+      const label = this.formatShortDate(firstDay) + ' to ' + this.formatShortDate(lastDay);
+      labels.push(label);
+    }
+    return labels;
+  }
+
+  private formatShortDate(date: Date): string {
+    return date.toISOString().slice(0, 10);
+  }
+
+  private zeros(count: number): number[] {
+    return new Array(count).fill(0);
   }
 
   /**
