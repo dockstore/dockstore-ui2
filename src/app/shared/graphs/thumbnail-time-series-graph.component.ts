@@ -22,25 +22,45 @@ export class ThumbnailTimeSeriesGraphComponent implements OnChanges {
   ngOnChanges(): void {
     this.datasets = undefined;
     this.options = undefined;
-    // if (this.timeSeries && this.now && this.binCount && this.maxValue) {
-    this.datasets = {
-      datasets: [{ data: [1, 3, 5, 7, 2, 4, 3, 5, 1, 3, 5] }],
-      labels: ['s', 't', 'u', 'v', 'w', 'x', 'y', 'z', 's', 't', 'u'],
-    };
-    this.options = {
-      plugins: { legend: { display: false } },
-      fill: true,
-      backgroundColor: 'rgb(72, 121, 128)',
-      scales: {
-        x: { ticks: { display: false }, grid: { tickLength: 0 } },
-        y: { min: 0, max: 10, ticks: { display: false }, grid: { tickLength: 0 } },
-      },
-      tooltips: {
-        enabled: false,
-      },
-      responsive: false,
-      animation: false,
-    };
-    // }
+    if (this.timeSeries && this.now && this.binCount && this.maxValue) {
+      this.datasets = {
+        datasets: [{ data: [1, 3, 5, 7, 2, 4, 3, 5, 1, 3, 5] }],
+        labels: ['s', 't', 'u', 'v', 'w', 'x', 'y', 'z', 's', 't', 'u'],
+      };
+      this.options = {
+        backgroundColor: 'rgb(72, 121, 128)',
+        fill: true,
+        scales: {
+          x: {
+            ticks: {
+              display: false,
+            },
+            grid: {
+              tickLength: 0,
+            },
+          },
+          y: {
+            min: 0,
+            max: this.maxValue,
+            ticks: {
+              display: false,
+            },
+            grid: {
+              tickLength: 0,
+            },
+          },
+        },
+        tooltips: {
+          enabled: false,
+        },
+        plugins: {
+          legend: {
+            display: false,
+          },
+        },
+        responsive: false,
+        animation: false,
+      };
+    }
   }
 }
