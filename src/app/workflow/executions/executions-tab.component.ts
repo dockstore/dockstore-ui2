@@ -35,6 +35,7 @@ import PartnerEnum = CloudInstance.PartnerEnum;
 import ExecutionStatusEnum = RunExecution.ExecutionStatusEnum;
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { AlertService } from '../../shared/alert/state/alert.service';
+import { TimeSeriesService } from '../../shared/timeseries.service';
 import { UserQuery } from 'app/shared/user/user.query';
 import { combineLatest } from 'rxjs';
 import { ExecutionStatusPipe } from '../../shared/entry/execution-status.pipe';
@@ -161,7 +162,8 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
     private extendedGA4GHService: ExtendedGA4GHService,
     private alertService: AlertService,
     private userQuery: UserQuery,
-    protected sessionQuery: SessionQuery
+    protected sessionQuery: SessionQuery,
+    private timeSeriesService: TimeSeriesService
   ) {
     super();
   }
@@ -291,15 +293,15 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
       if (representativeCounts) {
         const now = new Date();
         const binCount = 52;
-        const emptyCounts = this.emptyTimeSeries(representativeCounts);
+        const emptyCounts = this.timeSeriesService.emptyTimeSeries(representativeCounts);
         // Replace any missing time series with an empty (zero execution count) time series,
         // and then adjust the time series so they all have the same number of bins and span the same time range.
-        successfulCounts = this.adjustTimeSeries(successfulCounts ?? emptyCounts, now, binCount);
-        failedCounts = this.adjustTimeSeries(failedCounts ?? emptyCounts, now, binCount);
-        abortedCounts = this.adjustTimeSeries(abortedCounts ?? emptyCounts, now, binCount);
+        successfulCounts = this.timeSeriesService.adjustTimeSeries(successfulCounts ?? emptyCounts, now, binCount);
+        failedCounts = this.timeSeriesService.adjustTimeSeries(failedCounts ?? emptyCounts, now, binCount);
+        abortedCounts = this.timeSeriesService.adjustTimeSeries(abortedCounts ?? emptyCounts, now, binCount);
 
         // Create the labels and datasets, which will propagate to the canvas via the template.
-        this.barChartLabels = this.labelsFromTimeSeries(successfulCounts);
+        this.barChartLabels = this.timeSeriesService.labelsFromTimeSeries(successfulCounts);
         this.barChartDatasets = [
           this.barChartDatasetFromTimeSeries(successfulCounts, 'Successful', 'rgb(50,205,50)'),
           this.barChartDatasetFromTimeSeries(failedCounts, 'Failed', 'rgb(255,0,0)'),
@@ -319,75 +321,6 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
       barPercentage: 0.9,
       categoryPercentage: 1,
     };
-  }
-
-  private adjustTimeSeries(timeSeriesMetric: TimeSeriesMetric, now: Date, binCount: number): TimeSeriesMetric {
-    const adjusted: TimeSeriesMetric = {
-      begins: timeSeriesMetric.begins,
-      interval: timeSeriesMetric.interval,
-      values: timeSeriesMetric.values.slice(),
-    };
-
-    // TODO make this work for daily intervals, also.
-    const day = 24 * 60 * 60 * 1000; // milliseconds in one day (hours * minutes * seconds * milliseconds)
-    const week = 7 * day;
-    let begins = Number(adjusted.begins); // Midpoint of the oldest bin
-    const ends = begins + (adjusted.values.length - 1) * week + week / 2; // Exact time that the youngest bin ends
-
-    // Expand the newer end of the time series to overlap the current date
-    const binsToAppend = Math.ceil((now.getTime() - ends) / week);
-    if (binsToAppend > 0) {
-      adjusted.values = [...adjusted.values, ...this.zeros(binsToAppend)];
-    }
-
-    // Expand the older end of the time series to match the desired bin count
-    const binsToPrepend = binCount - adjusted.values.length;
-    if (binsToPrepend > 0) {
-      adjusted.values = [...this.zeros(binsToPrepend), ...adjusted.values];
-      begins = begins - binsToPrepend * week;
-    }
-
-    // Trim the older end of the time series to match the desired bin count
-    const binsToTrim = adjusted.values.length - binCount;
-    if (binsToTrim > 0) {
-      adjusted.values = adjusted.values.slice(binsToTrim);
-      begins = begins + binsToTrim * week;
-    }
-
-    adjusted.begins = String(begins);
-    return adjusted;
-  }
-
-  private emptyTimeSeries(timeSeriesMetric: TimeSeriesMetric) {
-    return {
-      begins: timeSeriesMetric.begins,
-      interval: timeSeriesMetric.interval,
-      values: this.zeros(timeSeriesMetric.values.length),
-    };
-  }
-
-  private labelsFromTimeSeries(timeSeriesMetric: TimeSeriesMetric): string[] {
-    // TODO make this work for daily time series, also.
-    const day = 24 * 60 * 60 * 1000; // milliseconds in one day (hours * minutes * seconds * milliseconds)
-    const week = 7 * day;
-    let begins = Number(timeSeriesMetric.begins);
-    const labels: string[] = [];
-    for (let i = 0; i < timeSeriesMetric.values.length; i++) {
-      const middle = begins + i * week;
-      const firstDay: Date = new Date(middle - 3 * day);
-      const lastDay: Date = new Date(middle + 3 * day);
-      const label = this.formatShortDate(firstDay) + ' to ' + this.formatShortDate(lastDay);
-      labels.push(label);
-    }
-    return labels;
-  }
-
-  private formatShortDate(date: Date): string {
-    return date.toISOString().slice(0, 10);
-  }
-
-  private zeros(count: number): number[] {
-    return new Array(count).fill(0);
   }
 
   /**

@@ -44,6 +44,7 @@ import { AuthConfig } from './app/shared/auth.model';
 import { BioschemaService } from './app/shared/bioschema.service';
 import { ContainerService } from './app/shared/container.service';
 import { DateService } from './app/shared/date.service';
+import { TimeSeriesService } from './app/shared/timeseries.service';
 import { EntryActionsService } from './app/shared/entry-actions/entry-actions.service';
 import { DescriptorLanguageService } from './app/shared/entry/descriptor-language.service';
 import { RegisterCheckerWorkflowService } from './app/shared/entry/register-checker-workflow/register-checker-workflow.service';
@@ -151,6 +152,7 @@ bootstrapApplication(AppComponent, {
     SearchAuthorsHtmlPipe,
     SearchService,
     ServiceInfoService,
+    TimeSeriesService,
     Title,
     ToolLaunchService,
     TosBannerService,
