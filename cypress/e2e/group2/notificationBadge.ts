@@ -40,12 +40,13 @@ describe('Test notification badge on navbar', () => {
       createOrganization('Test', 'Test Display', 'Testing Testing Testing', 'Lab', 'https://www.google.ca', 'asf@asdf.ca');
       cy.get('[data-cy=notification-button]').should('be.visible').click();
       cy.get('[data-cy=bell-icon]').should('contain.text', '1');
-      cy.get('[data-cy=notification-button]').should('be.visible').click();
+      cy.get('[data-cy=notification-menu-curator-requests-button]').should('be.visible').click();
       cy.contains('button', 'Reject').should('be.visible').click();
       cy.get('[data-cy=reject-pending-org-dialog]').should('be.visible').click();
       cy.reload();
       cy.get('[data-cy=notification-button]').should('be.visible').click();
       cy.get('[data-cy=bell-icon]').should('contain.text', '1');
+      cy.reload();
     });
   });
   describe('Should have badge count of 3 with one pending organization, one invitation, and one rejected organization request', () => {
