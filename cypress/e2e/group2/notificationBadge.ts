@@ -22,6 +22,7 @@ describe('Test notification badge on navbar', () => {
   it('Notification button should link to requests page', () => {
     cy.visit('/');
     cy.get('[data-cy=notification-button]').should('be.visible').click();
+    cy.get('[data-cy=notification-menu-curator-requests-button]').should('be.visible').click();
     cy.url().should('contain', 'accounts?tab=requests');
   });
 
