@@ -35,6 +35,9 @@ export class ThumbnailTimeSeriesGraphComponent implements OnChanges {
         x: { ticks: { display: false }, grid: { tickLength: 0 } },
         y: { min: 0, max: 10, ticks: { display: false }, grid: { tickLength: 0 } },
       },
+      tooltips: {
+        enabled: false,
+      },
       responsive: false,
       animation: false,
     };
