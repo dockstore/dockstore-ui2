@@ -24,8 +24,7 @@ describe('Test notification badge on navbar', () => {
     cy.get('[data-cy=notification-button]').should('be.visible').click();
     cy.get('[data-cy=notification-menu-curator-requests-button]').should('be.visible').click();
     cy.url().should('contain', 'accounts?tab=requests');
-    // need to close the drop-down after opening it
-    cy.get('[data-cy=notification-button]').should('be.visible').click();
+    cy.reload();
   });
 
   it('Red badge should not be visible when there are no notifications', () => {
