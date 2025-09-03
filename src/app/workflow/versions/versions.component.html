@@ -212,10 +212,10 @@
       <td mat-cell *matCellDef="let version">
         <div class="ml-4">
           <app-thumbnail-time-series-graph
-            [timeSeries]="version"
+            [timeSeries]="version?.metricsByPlatform?.['ALL']?.executionStatusCount?.count?.['ALL']?.weeklyExecutionCounts"
             [now]="now"
-            [binCount]="8"
-            [maxValue]="10"
+            [binCount]="11"
+            [maxValue]="50"
           ></app-thumbnail-time-series-graph>
         </div>
       </td>

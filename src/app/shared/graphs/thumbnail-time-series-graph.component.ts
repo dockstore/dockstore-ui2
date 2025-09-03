@@ -2,6 +2,7 @@ import { Component, Input, OnChanges } from '@angular/core';
 import { NgIf } from '@angular/common';
 import { BaseChartDirective } from 'ng2-charts';
 import { TimeSeriesMetric } from '../openapi';
+import { TimeSeriesService } from '../timeseries.service';
 
 @Component({
   selector: 'app-thumbnail-time-series-graph',
@@ -17,15 +18,18 @@ export class ThumbnailTimeSeriesGraphComponent implements OnChanges {
   datasets: any;
   options: any;
 
-  constructor() {}
+  constructor(private timeSeriesService: TimeSeriesService) {}
 
   ngOnChanges(): void {
     this.datasets = undefined;
     this.options = undefined;
     if (this.timeSeries && this.now && this.binCount && this.maxValue) {
+      const adjusted = this.timeSeriesService.adjustTimeSeries(this.timeSeries, this.now, this.binCount);
+      const values = adjusted.values;
+      const labels = new Array(values.length).fill('');
       this.datasets = {
-        datasets: [{ data: [1, 3, 5, 7, 2, 4, 3, 5, 1, 3, 5] }],
-        labels: ['s', 't', 'u', 'v', 'w', 'x', 'y', 'z', 's', 't', 'u'],
+        datasets: [{ data: values }],
+        labels: labels,
       };
       this.options = {
         backgroundColor: 'rgb(72, 121, 128)',
