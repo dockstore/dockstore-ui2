@@ -13,6 +13,7 @@ import { AccountSidebarComponent } from './account-sidebar/account-sidebar.compo
 import { HeaderComponent } from '../../header/header.component';
 import { MySidebarComponent } from '../../my-sidebar/my-sidebar.component';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { RecommendedActionsComponent } from 'app/myworkflows/sidebar-accordion/github-apps-logs/recommended-actions.component';
 
 @Component({
   selector: 'app-accounts',
@@ -28,12 +29,13 @@ import { FlexModule } from '@ngbracket/ngx-layout/flex';
     AccountsExternalComponent,
     ControlsComponent,
     RequestsComponent,
+    RecommendedActionsComponent,
   ],
 })
 export class AccountsComponent extends Base implements OnInit {
   public currentTab = 'accounts'; // default to the 'accounts' tab
   selected = new UntypedFormControl();
-  validTabs = ['linked accounts and tokens', 'dockstore account and preferences', 'requests'];
+  validTabs = ['linked accounts and tokens', 'dockstore account and preferences', 'requests', 'recommended actions'];
   constructor(private location: Location, private activatedRoute: ActivatedRoute) {
     super();
   }

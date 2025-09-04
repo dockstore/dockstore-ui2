@@ -9,19 +9,30 @@ import { CodeEditorComponent } from '../shared/code-editor/code-editor.component
 import { MatDividerModule } from '@angular/material/divider';
 import { MatCardModule } from '@angular/material/card';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
+import { RecommendedActionsComponent } from 'app/myworkflows/sidebar-accordion/github-apps-logs/recommended-actions.component';
+import { GenerateDockstoreYmlButtonComponent } from './generate-dockstore-yml-button.component';
 
 @Component({
   selector: 'app-github-landing-page',
   templateUrl: './github-landing-page.component.html',
   styleUrls: ['./github-landing-page.component.scss'],
   standalone: true,
-  imports: [FlexModule, MatCardModule, MatDividerModule, CodeEditorComponent, RouterLink],
+  imports: [
+    FlexModule,
+    MatCardModule,
+    MatDividerModule,
+    CodeEditorComponent,
+    RouterLink,
+    RecommendedActionsComponent,
+    GenerateDockstoreYmlButtonComponent,
+  ],
 })
 export class GithubLandingPageComponent extends Base implements OnInit {
   Dockstore = Dockstore;
   entryType: EntryType;
   entryTypeMetadata: EntryTypeMetadata;
   templateUrl: string;
+  repository: string;
 
   constructor(private activatedRoute: ActivatedRoute, private entryTypeMetadataService: EntryTypeMetadataService) {
     super();
