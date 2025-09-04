@@ -106,6 +106,7 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
   protected readonly PartnerEnum = PartnerEnum;
   private sortCol: string;
   public now: Date = new Date();
+  public maxWeeklyExecutionCount: number = undefined;
 
   setNoOrderCols(): Array<number> {
     return [4, 5];
@@ -189,6 +190,7 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
 
   ngOnChanges() {
     this.loadVersions(this.publicPage);
+    this.loadMaxWeeklyExecutionCount();
   }
 
   ngOnInit() {
@@ -229,6 +231,18 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
       this.paginator.pageSize,
       this.sortCol
     );
+  }
+
+  loadMaxWeeklyExecutionCount() {
+    if (this.workflowId) {
+      const slots = 11;
+      const onOrAfterEpochSeconds = Math.floor(this.now.getTime() / 1000) - slots * 7 * 24 * 60 * 60;
+      this.workflowsService
+        .getMaxWeeklyExecutionCountForAnyVersion(this.workflowId, onOrAfterEpochSeconds)
+        .subscribe((maxWeeklyExecutionCount) => {
+          this.maxWeeklyExecutionCount = maxWeeklyExecutionCount;
+        });
+    }
   }
 
   /**
