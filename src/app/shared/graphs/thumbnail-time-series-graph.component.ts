@@ -54,12 +54,12 @@ export class ThumbnailTimeSeriesGraphComponent implements OnChanges {
             },
           },
         },
-        tooltips: {
-          enabled: false,
-        },
         plugins: {
           legend: {
             display: false,
+          },
+          tooltip: {
+            enabled: false,
           },
         },
         responsive: false,
