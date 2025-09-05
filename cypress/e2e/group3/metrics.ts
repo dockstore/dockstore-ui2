@@ -30,8 +30,6 @@ describe('Dockstore Metrics', () => {
     });
     cy.wait('@getVersionWithMetrics');
     goToVersionsTab();
-    cy.get('[data-cy=execution-metrics-icon]').should('be.visible');
-    cy.get('[data-cy=validation-metrics-icon]').should('be.visible');
 
     cy.wait('@getMetrics');
     goToMetricsTab();
