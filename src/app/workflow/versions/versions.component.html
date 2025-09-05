@@ -214,7 +214,7 @@
           <app-thumbnail-time-series-graph
             [timeSeries]="version?.metricsByPlatform?.['ALL']?.executionStatusCount?.count?.['ALL']?.weeklyExecutionCounts"
             [now]="now"
-            [binCount]="11"
+            [binCount]="numberOfWeeksToGraph"
             [maxValue]="maxWeeklyExecutionCount"
           ></app-thumbnail-time-series-graph>
         </div>

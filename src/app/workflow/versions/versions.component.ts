@@ -107,6 +107,7 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
   private sortCol: string;
   public now: Date = new Date();
   public maxWeeklyExecutionCount: number = undefined;
+  public numberOfWeeksToGraph = 11;
 
   setNoOrderCols(): Array<number> {
     return [4, 5];
@@ -235,8 +236,8 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
 
   loadMaxWeeklyExecutionCount() {
     if (this.workflowId) {
-      const slots = 11;
-      const onOrAfterEpochSeconds = Math.floor(this.now.getTime() / 1000) - slots * 7 * 24 * 60 * 60;
+      const secondsPerWeek = 7 * 24 * 60 * 60; // days * hours * minutes * seconds
+      const onOrAfterEpochSeconds = Math.floor(this.now.getTime() / 1000) - this.numberOfWeeksToGraph * secondsPerWeek;
       this.workflowsService
         .getMaxWeeklyExecutionCountForAnyVersion(this.workflowId, onOrAfterEpochSeconds)
         .subscribe((maxWeeklyExecutionCount) => {
