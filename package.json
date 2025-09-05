@@ -3,9 +3,9 @@
   "version": "2.13.0",
   "license": "Apache License 2.0",
   "config": {
-    "webservice_version_prefix": "1.18.0",
+    "webservice_version_prefix": "1.18.0-feature-seab-7194-correct-max-count-endpoint-openapi-spec",
     "webservice_version": "1.18.0",
-    "use_snapshot": true
+    "use_snapshot": false
   },
   "scripts": {
     "ng": "npx ng",

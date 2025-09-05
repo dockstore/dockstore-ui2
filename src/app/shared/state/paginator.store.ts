@@ -6,6 +6,7 @@ export interface PaginatorState {
   workflow: PaginatorInfo;
   lambdaEvent: PaginatorInfo;
   version: PaginatorInfo;
+  gitHubAppNotification: PaginatorInfo;
 }
 
 export interface PaginatorInfo {
@@ -18,6 +19,7 @@ const initialState: PaginatorState = {
   workflow: { pageSize: 10, pageIndex: 0 },
   lambdaEvent: { pageSize: 10, pageIndex: 0 },
   version: { pageSize: 10, pageIndex: 0 },
+  gitHubAppNotification: { pageSize: 10, pageIndex: 0 },
 };
 
 @Injectable({ providedIn: 'root' })
