@@ -203,7 +203,13 @@
     </ng-container>
 
     <ng-container matColumnDef="metrics">
-      <th scope="col" mat-header-cell *matHeaderCellDef matTooltip="Weekly execution count." matTooltipPosition="above">
+      <th
+        scope="col"
+        mat-header-cell
+        *matHeaderCellDef
+        matTooltip="Graphs of execution counts over the most recent weekly periods."
+        matTooltipPosition="above"
+      >
         Weekly Runs
         <a class="ds-green" [href]="Dockstore.DOCUMENTATION_URL + '/advanced-topics/metrics.html'" target="_blank" rel="noopener noreferrer"
           ><mat-icon>info</mat-icon></a
