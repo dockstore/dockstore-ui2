@@ -56,6 +56,7 @@ export class ThumbnailTimeSeriesGraphComponent implements OnChanges {
             },
             grid: {
               tickLength: 0,
+              color: '#ddd',
             },
           },
           y: {
@@ -66,6 +67,7 @@ export class ThumbnailTimeSeriesGraphComponent implements OnChanges {
             },
             grid: {
               tickLength: 0,
+              color: '#ddd',
             },
           },
         },

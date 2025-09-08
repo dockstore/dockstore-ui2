@@ -216,13 +216,16 @@
         >
       </th>
       <td mat-cell *matCellDef="let version">
+        @let timeSeries = version?.metricsByPlatform?.['ALL']?.executionStatusCount?.count?.['ALL']?.weeklyExecutionCounts;
         <div class="ml-4">
           <app-thumbnail-time-series-graph
-            [timeSeries]="version?.metricsByPlatform?.['ALL']?.executionStatusCount?.count?.['ALL']?.weeklyExecutionCounts"
+            *ngIf="timeSeries"
+            [timeSeries]="timeSeries"
             [now]="now"
             [binCount]="numberOfWeeksToGraph"
             [maxValue]="maxWeeklyExecutionCount"
           ></app-thumbnail-time-series-graph>
+          <div *ngIf="!timeSeries" style="width: 55px; height: 30px" matTooltip="No metrics for this version."></div>
         </div>
       </td>
     </ng-container>
