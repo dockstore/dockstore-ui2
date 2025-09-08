@@ -993,3 +993,5 @@ export class EntryActionsStubService {
 export class EditTopicDialogStubService {
   saveTopicChanges(entry: Workflow | DockstoreTool, topicManual: string, topicSelection: Workflow.TopicSelectionEnum) {}
 }
+
+export class TimeSeriesStubService {}

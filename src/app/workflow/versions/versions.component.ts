@@ -40,6 +40,7 @@ import { PaginatorService } from '../../shared/state/paginator.service';
 import { Versions } from '../../shared/versions';
 import { ViewWorkflowComponent } from '../view/view.component';
 import { VersionsDataSource } from './versions-datasource';
+import { ThumbnailTimeSeriesGraphComponent } from '../../shared/graphs/thumbnail-time-series-graph.component';
 import PartnerEnum = CloudInstance.PartnerEnum;
 import { DescriptorLanguageVersionsPipe } from 'app/shared/entry/descriptor-language-versions.pipe';
 import { DescriptorLanguagePipe } from 'app/shared/entry/descriptor-language.pipe';
@@ -61,6 +62,7 @@ import { CommitUrlPipe } from 'app/shared/entry/commit-url.pipe';
     MatChipsModule,
     FontAwesomeModule,
     ViewWorkflowComponent,
+    ThumbnailTimeSeriesGraphComponent,
     NgClass,
     ExtendedModule,
     JsonPipe,
@@ -103,6 +105,9 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
   public versionsLength$: Observable<number>;
   protected readonly PartnerEnum = PartnerEnum;
   private sortCol: string;
+  public now: Date = new Date();
+  public maxWeeklyExecutionCount: number = undefined;
+  public numberOfWeeksToGraph = 11;
 
   setNoOrderCols(): Array<number> {
     return [4, 5];
@@ -186,6 +191,7 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
 
   ngOnChanges() {
     this.loadVersions(this.publicPage);
+    this.loadMaxWeeklyExecutionCount();
   }
 
   ngOnInit() {
@@ -226,6 +232,18 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
       this.paginator.pageSize,
       this.sortCol
     );
+  }
+
+  loadMaxWeeklyExecutionCount() {
+    if (this.workflowId) {
+      const secondsPerWeek = 7 * 24 * 60 * 60; // days * hours * minutes * seconds
+      const onOrAfterEpochSeconds = Math.floor(this.now.getTime() / 1000) - this.numberOfWeeksToGraph * secondsPerWeek;
+      this.workflowsService
+        .getMaxWeeklyExecutionCountForAnyVersion(this.workflowId, onOrAfterEpochSeconds)
+        .subscribe((maxWeeklyExecutionCount) => {
+          this.maxWeeklyExecutionCount = maxWeeklyExecutionCount;
+        });
+    }
   }
 
   /**

@@ -19,9 +19,10 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
+import { TimeSeriesService } from '../../shared/timeseries.service';
 import { PipeModule } from '../../shared/pipe/pipe.module';
 
-import { DescriptorLanguageStubService } from '../../test/service-stubs';
+import { DescriptorLanguageStubService, TimeSeriesStubService } from '../../test/service-stubs';
 import { ExecutionsTabComponent } from './executions-tab.component';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
@@ -36,6 +37,7 @@ describe('ExecutionsTabComponent', () => {
         imports: [PipeModule, ExecutionsTabComponent, MatSnackBarModule],
         providers: [
           { provide: DescriptorLanguageService, useClass: DescriptorLanguageStubService },
+          { provide: TimeSeriesService, useClass: TimeSeriesStubService },
           AlertService,
           provideHttpClient(withInterceptorsFromDi()),
           provideHttpClientTesting(),
