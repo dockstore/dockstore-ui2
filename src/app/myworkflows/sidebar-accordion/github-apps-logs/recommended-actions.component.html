@@ -1,0 +1,66 @@
+<mat-card class="h-100">
+  <mat-card-header>
+    <mat-card-title-group>
+      <mat-card-title>Recommended Actions</mat-card-title>
+      <button mat-stroked-button class="private-btn" (click)="loadGitHubAppNotifications()">
+        <mat-icon>sync</mat-icon><span> Refresh</span>
+      </button>
+    </mat-card-title-group>
+  </mat-card-header>
+  <mat-divider></mat-divider>
+
+  <mat-card-content class="h-100">
+    <app-loading [loading]="dataSource?.loading$ | async" class="h-100">
+      <mat-card appearance="outlined" *ngIf="(showContent$ | async) === 'error'" class="alert alert-warning" role="alert">
+        <mat-card-content>
+          <mat-icon class="alert-warning-icon">warning</mat-icon> There were problems retrieving your recommended actions.
+        </mat-card-content>
+      </mat-card>
+      <mat-card appearance="outlined" *ngIf="(showContent$ | async) === 'empty'" class="alert alert-info" role="alert">
+        <mat-card-content> <mat-icon>info</mat-icon> There are no recommended actions.</mat-card-content>
+      </mat-card>
+      <!-- *ngIf doesn't work with the sorting implementation, using hidden for now -->
+      <div [hidden]="(showContent$ | async) !== 'table' && (showContent$ | async) !== 'noResult'">
+        <mat-card appearance="outlined" *ngIf="(showContent$ | async) === 'noResult'" class="alert alert-info" role="alert">
+          <mat-card-content> <mat-icon>warning</mat-icon> No results. </mat-card-content>
+        </mat-card>
+        <mat-table [dataSource]="dataSource" class="w-100">
+          <ng-container matColumnDef="notifications">
+            <mat-header-cell *matHeaderCellDef></mat-header-cell>
+            <mat-cell *matCellDef="let notification">
+              <div fxLayout="column" class="size-small w-100 my-3">
+                <div class="size-small">
+                  The Dockstore GitHub App was installed in repository
+                  <strong>{{ notification.organization }}/{{ notification.repository }}</strong
+                  >, but a .dockstore.yml file was not found.
+                </div>
+                <div fxLayout="row" fxLayoutAlign="space-between center">
+                  <div class="subtitle">{{ notification.dbCreateDate | date: 'medium' }}</div>
+                  <div>
+                    <button mat-stroked-button class="private-btn mr-2" (click)="deleteGitHubAppNotification(notification.id)">
+                      <mat-icon>delete</mat-icon><span> Dismiss</span>
+                    </button>
+                    <app-generate-dockstore-yml-button
+                      [organization]="notification.organization"
+                      [repository]="notification.repository"
+                    ></app-generate-dockstore-yml-button>
+                  </div>
+                </div>
+              </div>
+            </mat-cell>
+          </ng-container>
+          <mat-row *matRowDef="let element; columns: displayedColumns" class="py-2"></mat-row>
+        </mat-table>
+      </div>
+    </app-loading>
+  </mat-card-content>
+  <mat-card-footer>
+    <mat-paginator
+      [pageSizeOptions]="[5, 10, 20, 50]"
+      [length]="eventsLength$ | async"
+      [pageSize]="pageSize$ | async"
+      [pageIndex]="pageIndex$ | async"
+      showFirstLastButtons
+    ></mat-paginator>
+  </mat-card-footer>
+</mat-card>

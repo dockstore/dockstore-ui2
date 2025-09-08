@@ -21,7 +21,7 @@ div[fxFlex='0 0 auto'] {
   width: 9rem;
   height: 100%;
   min-height: 115rem;
-  border-right: 0.1rem solid mat.get-color-from-palette($kim-gray, 4);
+  border-right: 0.1rem solid mat.m2-get-color-from-palette($kim-gray, 4);
   box-shadow: 1px 2px 1px rgba(0, 0, 0, 0.1);
 }
 
@@ -33,7 +33,7 @@ div[fxFlex='0 0 auto'] {
   font-size: 12px;
   line-height: 3rem;
   padding: 1.4rem 0.5rem;
-  color: mat.get-color-from-palette($kim-gray, 2);
+  color: mat.m2-get-color-from-palette($kim-gray, 2);
 }
 
 // Icons
@@ -54,12 +54,12 @@ button.active img {
 
 // Ative purple text
 button.active {
-  color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
+  color: mat.m2-get-color-from-palette($dockstore-app-accent-1, darker);
 }
 
 // Active line between buttons
 hr.active {
-  border: 1px solid mat.get-color-from-palette($kim-accent1-success, 2);
+  border: 1px solid mat.m2-get-color-from-palette($kim-accent1-success, 2);
 }
 
 // Active button circle
@@ -83,7 +83,7 @@ button div {
 
 // Active purple circle
 button.active.purple div {
-  background-color: mat.get-color-from-palette($kim-accent1-success, 2);
+  background-color: mat.m2-get-color-from-palette($kim-accent1-success, 2);
 }
 
 // Active green workflow circle
@@ -103,5 +103,5 @@ button.active.service div {
 
 // button hover effect
 button:hover {
-  background-color: mat.get-color-from-palette($dockstore-app-gray, 5);
+  background-color: mat.m2-get-color-from-palette($dockstore-app-gray, 5);
 }

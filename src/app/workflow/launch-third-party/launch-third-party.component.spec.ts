@@ -1,5 +1,5 @@
-import { HttpClientModule } from '@angular/common/http';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ga4ghPath } from '../../shared/constants';
@@ -20,7 +20,8 @@ describe('LaunchThirdPartyComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [HttpClientModule, HttpClientTestingModule, LaunchThirdPartyComponent],
+        schemas: [CUSTOM_ELEMENTS_SCHEMA],
+        imports: [LaunchThirdPartyComponent],
         providers: [
           GA4GHFilesService,
           GA4GHV20Service,
@@ -29,8 +30,9 @@ describe('LaunchThirdPartyComponent', () => {
           { provide: CloudInstancesService, useClass: CloudInstancesStubService },
           { provide: UsersService, useClass: UsersStubService },
           { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
+          provideHttpClient(withInterceptorsFromDi()),
+          provideHttpClientTesting(),
         ],
-        schemas: [CUSTOM_ELEMENTS_SCHEMA],
       }).compileComponents();
     })
   );

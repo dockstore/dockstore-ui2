@@ -43,12 +43,13 @@ import { UsersService } from './openapi/api/users.service';
 import { WorkflowsService } from './openapi/api/workflows.service';
 import { ToolQuery } from './tool/tool.query';
 import { DescriptorLanguageService } from './entry/descriptor-language.service';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('RefreshService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [BrowserAnimationsModule, MatSnackBarModule, HttpClientTestingModule],
+      imports: [BrowserAnimationsModule, MatSnackBarModule],
       providers: [
         RefreshService,
         { provide: ContainersService, useClass: ContainersStubService },
@@ -64,6 +65,8 @@ describe('RefreshService', () => {
         { provide: WorkflowService, useClass: WorkflowService },
         { provide: UsersService, useClass: UsersStubService },
         { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     });
   });

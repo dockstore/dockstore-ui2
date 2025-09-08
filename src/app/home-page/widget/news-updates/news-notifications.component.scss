@@ -2,5 +2,5 @@
 @import '/src/materialColorScheme.scss';
 
 button[mat-icon-button] mat-icon {
-  color: mat.get-color-from-palette($kim-primary, 3);
+  color: mat.m2-get-color-from-palette($kim-primary, 3);
 }

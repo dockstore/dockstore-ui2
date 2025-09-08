@@ -1,8 +1,9 @@
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { Subject } from 'rxjs';
 import { Dockstore } from '../../../shared/dockstore.model';
 import { CwlViewerService } from './cwl-viewer.service';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('Service: CWLViewer', () => {
   let cwlViewerService: CwlViewerService;
@@ -45,8 +46,8 @@ describe('Service: CWLViewer', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [CwlViewerService],
+      imports: [],
+      providers: [CwlViewerService, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
     });
     cwlViewerService = TestBed.inject(CwlViewerService);
     commonWlEndpoint = cwlViewerService.cwlViewerEndpoint(providerUrl, reference, workflowPath);

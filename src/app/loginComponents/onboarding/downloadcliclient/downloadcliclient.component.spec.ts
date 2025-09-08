@@ -1,7 +1,7 @@
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -14,6 +14,7 @@ import { RouterLinkStubDirective, RouterOutletStubComponent } from './../../../t
 import { AuthStubService, GA4GHV20StubService } from './../../../test/service-stubs';
 import { DownloadCLIClientComponent } from './downloadcliclient.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('DownloadCLIClientComponent', () => {
   let component: DownloadCLIClientComponent;
@@ -28,7 +29,6 @@ describe('DownloadCLIClientComponent', () => {
           MarkdownModule.forRoot(),
           MatIconModule,
           MatButtonModule,
-          HttpClientTestingModule,
           MatSnackBarModule,
           MatTabsModule,
           NoopAnimationsModule,
@@ -39,6 +39,8 @@ describe('DownloadCLIClientComponent', () => {
           { provide: GA4GHV20Service, useClass: GA4GHV20StubService },
           MetadataService,
           ServiceInfoService,
+          provideHttpClient(withInterceptorsFromDi()),
+          provideHttpClientTesting(),
         ],
       }).compileComponents();
     })

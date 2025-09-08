@@ -34,7 +34,7 @@ mat-expansion-panel-header[aria-expanded='false'] {
   background-color: white;
 
   :hover {
-    background-color: mat.get-color-from-palette($dockstore-app-gray, 5);
+    background-color: mat.m2-get-color-from-palette($dockstore-app-gray, 5);
   }
 }
 
@@ -46,12 +46,12 @@ mat-expansion-panel-header[aria-expanded='false'] {
 // Expansion panel outlines
 mat-expansion-panel {
   margin: 0px 2px;
-  border-bottom: 0.1rem solid mat.get-color-from-palette($dockstore-app-gray, 3);
+  border-bottom: 0.1rem solid mat.m2-get-color-from-palette($dockstore-app-gray, 3);
 }
 
 //Avoid overlap with borders (only first panel gets top, all others get bottom)
 .mat-accordion .mat-expansion-panel:first-of-type {
-  border-top: 0.1rem solid mat.get-color-from-palette($dockstore-app-gray, 3);
+  border-top: 0.1rem solid mat.m2-get-color-from-palette($dockstore-app-gray, 3);
 }
 
 // Expansion panel corners
@@ -62,7 +62,7 @@ mat-expansion-panel {
 
 // Refresh button div
 .mat-action-row {
-  border-color: mat.get-color-from-palette($dockstore-app-gray, 3);
+  border-color: mat.m2-get-color-from-palette($dockstore-app-gray, 3);
   padding: 0rem 0rem 0.3rem 0rem;
 }
 

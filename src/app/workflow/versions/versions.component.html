@@ -207,29 +207,26 @@
         scope="col"
         mat-header-cell
         *matHeaderCellDef
-        matTooltip="The version has has execution and/or validation metrics."
+        matTooltip="Graphs of execution counts over the most recent weekly periods."
         matTooltipPosition="above"
       >
-        Metrics
+        Weekly Runs
         <a class="ds-green" [href]="Dockstore.DOCUMENTATION_URL + '/advanced-topics/metrics.html'" target="_blank" rel="noopener noreferrer"
           ><mat-icon>info</mat-icon></a
         >
       </th>
       <td mat-cell *matCellDef="let version">
-        <img
-          *ngIf="version.metricsByPlatform && (version.metricsByPlatform[PartnerEnum.ALL]?.executionStatusCount | json) !== 'null'"
-          src="../assets/svg/execution-icon.svg"
-          alt="Execution Metrics Icon"
-          data-cy="execution-metrics-icon"
-          matTooltip="This version contains execution metrics."
-        />
-        <img
-          *ngIf="version.metricsByPlatform && (version.metricsByPlatform[PartnerEnum.ALL]?.validationStatus | json) !== 'null'"
-          src="../assets/svg/validation-icon.svg"
-          alt="Validation Metrics Icon"
-          data-cy="validation-metrics-icon"
-          matTooltip="This version contains validation metrics."
-        />
+        @let timeSeries = version?.metricsByPlatform?.['ALL']?.executionStatusCount?.count?.['ALL']?.weeklyExecutionCounts;
+        <div class="ml-4">
+          <app-thumbnail-time-series-graph
+            *ngIf="timeSeries"
+            [timeSeries]="timeSeries"
+            [now]="now"
+            [binCount]="numberOfWeeksToGraph"
+            [maxValue]="maxWeeklyExecutionCount"
+          ></app-thumbnail-time-series-graph>
+          <div *ngIf="!timeSeries" style="width: 55px; height: 30px" matTooltip="No metrics for this version."></div>
+        </div>
       </td>
     </ng-container>
 

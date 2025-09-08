@@ -17,19 +17,28 @@
  *
  */
 
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed, inject } from '@angular/core/testing';
 import { CONFIG_OPTIONS, ConfigService } from './config.service';
 
 import { LocalService } from './local.service';
 import { SharedService } from './shared.service';
 import { StorageService } from './storage-service';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('LocalService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [LocalService, SharedService, StorageService, ConfigService, { provide: CONFIG_OPTIONS, useValue: {} }],
+      imports: [],
+      providers: [
+        LocalService,
+        SharedService,
+        StorageService,
+        ConfigService,
+        { provide: CONFIG_OPTIONS, useValue: {} },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ],
     });
   });
 

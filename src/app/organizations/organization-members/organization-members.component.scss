@@ -18,7 +18,7 @@ h5 {
 }
 
 a {
-  color: mat.get-color-from-palette($kim-secondary, 2);
+  color: mat.m2-get-color-from-palette($kim-secondary, 2);
 }
 
 * {
@@ -26,5 +26,5 @@ a {
 }
 
 .mat-mdc-chip.pending-bubble {
-  background: mat.get-color-from-palette($dockstore-app-accent-4, 4);
+  background: mat.m2-get-color-from-palette($dockstore-app-accent-4, 4);
 }

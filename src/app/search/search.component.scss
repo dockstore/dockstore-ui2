@@ -26,11 +26,11 @@
 
 .sortBtn {
   font-size: 16px;
-  border-color: mat.get-color-from-palette($dockstore-app-gray, 4);
+  border-color: mat.m2-get-color-from-palette($dockstore-app-gray, 4);
   width: 4rem;
   min-width: 4rem;
   &.active {
-    background-color: mat.get-color-from-palette($kim-secondary, 2);
+    background-color: mat.m2-get-color-from-palette($kim-secondary, 2);
     color: white;
     font-weight: bold;
   }
@@ -39,7 +39,7 @@
       background-color: #f8f8f8;
     }
     .ng-fa-icon {
-      color: mat.get-color-from-palette($kim-secondary, 2);
+      color: mat.m2-get-color-from-palette($kim-secondary, 2);
     }
   }
 }
@@ -70,7 +70,7 @@ fa-icon.ng-fa-icon {
 }
 
 div.panel-container-label:hover {
-  background-color: mat.get-color-from-palette($dockstore-app-accent-1, 6, 0.5);
+  background-color: mat.m2-get-color-from-palette($dockstore-app-accent-1, 6, 0.5);
   color: black;
 }
 
@@ -92,7 +92,7 @@ mat-accordion mat-expansion-panel-header {
 
 // Panel header collapse style
 mat-expansion-panel mat-expansion-panel-header[aria-expanded='false'] {
-  color: mat.get-color-from-palette($kim-secondary, 2);
+  color: mat.m2-get-color-from-palette($kim-secondary, 2);
   text-decoration: underline;
 }
 
@@ -108,6 +108,6 @@ mat-expansion-panel,
 .p-2,
 :host ::ng-deep .mat-accordion app-basic-search .mat-expansion-panel:first-of-type {
   border-radius: 0rem;
-  border: solid 1px mat.get-color-from-palette($dockstore-app-gray, 7);
+  border: solid 1px mat.m2-get-color-from-palette($dockstore-app-gray, 7);
   box-shadow: 0 0.2rem 0.4rem 0 rgba(0, 0, 0, 0.1), 0 0.2rem 0.3rem 0 rgba(0, 0, 0, 0.08);
 }

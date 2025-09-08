@@ -13,16 +13,18 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
+import { TimeSeriesService } from '../../shared/timeseries.service';
 import { PipeModule } from '../../shared/pipe/pipe.module';
 
-import { DescriptorLanguageStubService } from '../../test/service-stubs';
+import { DescriptorLanguageStubService, TimeSeriesStubService } from '../../test/service-stubs';
 import { ExecutionsTabComponent } from './executions-tab.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('ExecutionsTabComponent', () => {
   let component: ExecutionsTabComponent;
@@ -32,8 +34,14 @@ describe('ExecutionsTabComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         schemas: [NO_ERRORS_SCHEMA],
-        imports: [HttpClientTestingModule, PipeModule, ExecutionsTabComponent, MatSnackBarModule],
-        providers: [{ provide: DescriptorLanguageService, useClass: DescriptorLanguageStubService }, AlertService],
+        imports: [PipeModule, ExecutionsTabComponent, MatSnackBarModule],
+        providers: [
+          { provide: DescriptorLanguageService, useClass: DescriptorLanguageStubService },
+          { provide: TimeSeriesService, useClass: TimeSeriesStubService },
+          AlertService,
+          provideHttpClient(withInterceptorsFromDi()),
+          provideHttpClientTesting(),
+        ],
       }).compileComponents();
     })
   );

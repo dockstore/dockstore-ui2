@@ -54,12 +54,14 @@
       <div fxFlex class="my-3">
         <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="2rem" fxLayoutAlign="start center">
           <div *ngIf="organization?.avatarUrl" fxHide.lt-sm>
-            <img
-              [src]="organization.avatarUrl | gravatar"
-              class="big-org-logo"
-              alt="organization logo"
-              [appFallback]="orgLogoService.DEFAULT_URL"
-            />
+            <a [routerLink]="['/organizations/', (organization$ | async)?.name]">
+              <img
+                [src]="organization.avatarUrl | gravatar"
+                class="big-org-logo"
+                alt="organization logo"
+                [appFallback]="orgLogoService.DEFAULT_URL"
+              />
+            </a>
           </div>
           <div>
             <h2>

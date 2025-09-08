@@ -99,10 +99,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "dockstore-ui2:build:production"
+              "buildTarget": "dockstore-ui2:build:production"
             },
             "development": {
-              "browserTarget": "dockstore-ui2:build:development"
+              "buildTarget": "dockstore-ui2:build:development"
             }
           },
 	  "defaultConfiguration": "development"
@@ -110,7 +110,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "dockstore-ui2:build"
+            "buildTarget": "dockstore-ui2:build"
           }
         },
         "test": {

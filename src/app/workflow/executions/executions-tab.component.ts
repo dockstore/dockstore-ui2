@@ -27,6 +27,7 @@ import {
   Service,
   MetricsByStatus,
   RunExecution,
+  TimeSeriesMetric,
 } from '../../shared/openapi';
 import { SessionQuery } from '../../shared/session/session.query';
 import { takeUntil } from 'rxjs/operators';
@@ -34,6 +35,7 @@ import PartnerEnum = CloudInstance.PartnerEnum;
 import ExecutionStatusEnum = RunExecution.ExecutionStatusEnum;
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { AlertService } from '../../shared/alert/state/alert.service';
+import { TimeSeriesService } from '../../shared/timeseries.service';
 import { UserQuery } from 'app/shared/user/user.query';
 import { combineLatest } from 'rxjs';
 import { ExecutionStatusPipe } from '../../shared/entry/execution-status.pipe';
@@ -49,6 +51,8 @@ import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { NgIf, NgFor, NgClass, NgTemplateOutlet, DecimalPipe, DatePipe } from '@angular/common';
+import { BaseChartDirective } from 'ng2-charts';
+import { ChartDataset, ChartOptions } from 'chart.js';
 
 interface ExecutionMetricsTableObject {
   metric: string; // Name of the execution metric
@@ -61,6 +65,7 @@ interface ExecutionMetricsTableObject {
 @Component({
   selector: 'app-executions-tab',
   templateUrl: './executions-tab.component.html',
+  styleUrls: ['./executions-tab.component.scss'],
   standalone: true,
   imports: [
     NgIf,
@@ -82,6 +87,7 @@ interface ExecutionMetricsTableObject {
     PlatformPartnerPipe,
     SecondsToHoursMinutesSecondsPipe,
     ExecutionStatusPipe,
+    BaseChartDirective,
   ],
 })
 export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChanges {
@@ -118,6 +124,36 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
   validatorTools: string[];
   validatorToolMetricsExist: boolean;
   isAdminCuratorOrPlatformPartner: boolean;
+  pieChartDatasets: ChartDataset<'pie', number[]>[] = undefined;
+  pieChartLabels: string[] = ['Successful', 'Failed', 'Aborted'];
+  pieChartOptions: ChartOptions<'pie'> = {
+    responsive: false, // non-responsive to avoid resizing when leaving tab
+    maintainAspectRatio: false,
+  };
+  barChartDatasets: ChartDataset<'bar', number[]>[] = undefined;
+  barChartLabels: string[] = undefined;
+  barChartOptions: ChartOptions<'bar'> = {
+    responsive: false, // non-responsive to avoid resizing when leaving tab
+    maintainAspectRatio: false,
+    scales: {
+      x: {
+        stacked: true,
+        ticks: {
+          font: {
+            size: 9,
+          },
+          // Use the first date in the bar label as the tick label
+          callback: function (value, index) {
+            const label = this.getLabelForValue(index);
+            return label.substring(0, label.indexOf(' '));
+          },
+        },
+      },
+      y: {
+        stacked: true,
+      },
+    },
+  };
 
   @Input() entry: BioWorkflow | Service | Notebook;
   @Input() version: WorkflowVersion;
@@ -126,7 +162,8 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
     private extendedGA4GHService: ExtendedGA4GHService,
     private alertService: AlertService,
     private userQuery: UserQuery,
-    protected sessionQuery: SessionQuery
+    protected sessionQuery: SessionQuery,
+    private timeSeriesService: TimeSeriesService
   ) {
     super();
   }
@@ -235,7 +272,55 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
       this.totalExecutions = this.successfulExecutions + this.failedExecutions + this.abortedExecutions;
       const completedExecutions = (this.successfulExecutions || 0) + (this.failedExecutions || 0); // Per schema, values could be undefined, even though in practice they currently aren't
       this.successfulExecutionRate = completedExecutions > 0 ? (100 * this.successfulExecutions) / completedExecutions : null; // Don't divide by 0
+
+      // Calculate the information for the status pie graph.
+      this.pieChartDatasets = [
+        {
+          data: [this.successfulExecutions, this.failedExecutions, this.abortedExecutions],
+          backgroundColor: ['rgb(50,205,50)', 'rgb(255, 0, 0)', 'rgb(255,165,0)'],
+        },
+      ];
+
+      // Calculate the information for the weekly time series graph.
+      // Extract the weekly time series from the metrics object, if they exist, and then select a time series to be "representative".
+      // The "representative" time series is used to create empty replacements for any missing time series.
+      // The following code assumes that all time series bins which overlap cover the same time period.
+      let successfulCounts = metrics.executionStatusCount?.count['SUCCESSFUL']?.weeklyExecutionCounts;
+      let failedCounts = metrics.executionStatusCount?.count['FAILED']?.weeklyExecutionCounts;
+      let abortedCounts = metrics.executionStatusCount?.count['ABORTED']?.weeklyExecutionCounts;
+      const representativeCounts = successfulCounts ?? failedCounts ?? abortedCounts;
+
+      if (representativeCounts) {
+        const now = new Date();
+        const binCount = 52;
+        const emptyCounts = this.timeSeriesService.emptyTimeSeries(representativeCounts);
+        // Replace any missing time series with an empty (zero execution count) time series,
+        // and then adjust the time series so they all have the same number of bins and span the same time range.
+        successfulCounts = this.timeSeriesService.adjustTimeSeries(successfulCounts ?? emptyCounts, now, binCount);
+        failedCounts = this.timeSeriesService.adjustTimeSeries(failedCounts ?? emptyCounts, now, binCount);
+        abortedCounts = this.timeSeriesService.adjustTimeSeries(abortedCounts ?? emptyCounts, now, binCount);
+
+        // Create the labels and datasets, which will propagate to the canvas via the template.
+        this.barChartLabels = this.timeSeriesService.labelsFromTimeSeries(successfulCounts);
+        this.barChartDatasets = [
+          this.barChartDatasetFromTimeSeries(successfulCounts, 'Successful', 'rgb(50,205,50)'),
+          this.barChartDatasetFromTimeSeries(failedCounts, 'Failed', 'rgb(255,0,0)'),
+          this.barChartDatasetFromTimeSeries(abortedCounts, 'Aborted', 'rgb(255,165,0)'),
+        ];
+      } else {
+        this.barChartDatasets = null;
+      }
     }
+  }
+
+  private barChartDatasetFromTimeSeries(timeSeriesMetric: TimeSeriesMetric, label: string, color: string): ChartDataset<'bar', number[]> {
+    return {
+      data: timeSeriesMetric.values,
+      label: label,
+      backgroundColor: color,
+      barPercentage: 0.9,
+      categoryPercentage: 1,
+    };
   }
 
   /**

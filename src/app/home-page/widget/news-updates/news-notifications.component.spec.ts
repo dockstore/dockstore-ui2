@@ -1,7 +1,8 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { MarkdownModule } from 'ngx-markdown';
 import { NewsNotificationsComponent } from './news-notifications.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('NewsNotificationsComponent', () => {
   let component: NewsNotificationsComponent;
@@ -10,7 +11,8 @@ describe('NewsNotificationsComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [MarkdownModule, HttpClientTestingModule, NewsNotificationsComponent],
+        imports: [MarkdownModule, NewsNotificationsComponent],
+        providers: [provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
       }).compileComponents();
     })
   );

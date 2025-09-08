@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
@@ -25,6 +25,7 @@ import { DagComponent } from './dag.component';
 import { DagQuery } from './state/dag.query';
 import { DagStore } from './state/dag.store';
 import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('DagComponent', () => {
   let component: DagComponent;
@@ -33,14 +34,16 @@ describe('DagComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [HttpClientTestingModule, FormsModule, DagComponent, CwlViewerComponent],
         schemas: [NO_ERRORS_SCHEMA],
+        imports: [FormsModule, DagComponent, CwlViewerComponent],
         providers: [
           DagStore,
           DagQuery,
           { provide: WorkflowsService, useClass: WorkflowsStubService },
           { provide: WorkflowService, useClass: WorkflowStubService },
           { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
+          provideHttpClient(withInterceptorsFromDi()),
+          provideHttpClientTesting(),
         ],
       }).compileComponents();
     })

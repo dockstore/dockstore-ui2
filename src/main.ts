@@ -44,6 +44,7 @@ import { AuthConfig } from './app/shared/auth.model';
 import { BioschemaService } from './app/shared/bioschema.service';
 import { ContainerService } from './app/shared/container.service';
 import { DateService } from './app/shared/date.service';
+import { TimeSeriesService } from './app/shared/timeseries.service';
 import { EntryActionsService } from './app/shared/entry-actions/entry-actions.service';
 import { DescriptorLanguageService } from './app/shared/entry/descriptor-language.service';
 import { RegisterCheckerWorkflowService } from './app/shared/entry/register-checker-workflow/register-checker-workflow.service';
@@ -77,6 +78,7 @@ import { environment } from './environments/environment';
 import { EditTopicDialogService } from 'app/shared/entry/info-tab-topic/edit-topic/edit-topic-dialog.service';
 import { ManageDoisDialogService } from 'app/shared/entry/doi/manage-dois/manage-dois-dialog.service';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 
 if (environment.production) {
   enableProdMode();
@@ -150,6 +152,7 @@ bootstrapApplication(AppComponent, {
     SearchAuthorsHtmlPipe,
     SearchService,
     ServiceInfoService,
+    TimeSeriesService,
     Title,
     ToolLaunchService,
     TosBannerService,
@@ -179,5 +182,6 @@ bootstrapApplication(AppComponent, {
     { provide: Window, useValue: window },
     provideAnimations(),
     provideHttpClient(withInterceptorsFromDi()),
+    provideCharts(withDefaultRegisterables()),
   ],
 });

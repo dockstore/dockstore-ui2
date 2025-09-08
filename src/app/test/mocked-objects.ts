@@ -18,8 +18,7 @@ import { OrgToolObject } from '../mytools/my-tool/my-tool.component';
 import { Hit } from '../search/state/search.service';
 import { ExtendedDockstoreTool } from '../shared/models/ExtendedDockstoreTool';
 import { ExtendedWorkflow } from '../shared/models/ExtendedWorkflow';
-import { VersionVerifiedPlatform, Tag, WorkflowVersion, Author, EntryTypeMetadata } from '../shared/openapi';
-import { Notification } from '../shared/openapi/model/notification';
+import { VersionVerifiedPlatform, Tag, WorkflowVersion, Author, EntryTypeMetadata, PublicNotification } from '../shared/openapi';
 import { DockstoreTool } from './../shared/openapi/model/dockstoreTool';
 import { SourceFile } from './../shared/openapi/model/sourceFile';
 import { TokenUser } from './../shared/openapi/model/tokenUser';
@@ -863,7 +862,7 @@ export const validTool: ExtendedDockstoreTool = {
   toolname: null,
 };
 
-export const mockedNotification: Notification = {
+export const mockedNotification: PublicNotification = {
   id: 123,
   message: 'TestingTesting123',
   type: 'SITEWIDE',
@@ -871,7 +870,7 @@ export const mockedNotification: Notification = {
   expiration: null,
 };
 
-export const expiredMockNotification: Notification = {
+export const expiredMockNotification: PublicNotification = {
   id: 121,
   message: 'Testing123',
   type: 'SITEWIDE',
