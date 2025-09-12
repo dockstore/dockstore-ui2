@@ -1,10 +1,10 @@
 {
   "name": "dockstore-ui2",
-  "version": "2.13.0",
+  "version": "2.15.0",
   "license": "Apache License 2.0",
   "config": {
     "webservice_version_prefix": "1.18.0",
-    "webservice_version": "1.18.0-rc.0",
+    "webservice_version": "1.18.0",
     "use_snapshot": false
   },
   "scripts": {
