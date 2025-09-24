@@ -133,7 +133,7 @@
           <button mat-menu-item [routerLink]="['/accounts']" [queryParams]="{ tab: 'recommended actions' }">
             <mat-icon
               matBadge="{{ userNotificationsCount$ | async }}"
-              matBadgeHidden="{{ (userNotificationsCount$ | async) == false }}"
+              matBadgeHidden="{{ (userNotificationsCount$ | async) <= 0 }}"
               matBadgeColor="warn"
               matBadgeSize="small"
               matBadgeOverlap="true"
