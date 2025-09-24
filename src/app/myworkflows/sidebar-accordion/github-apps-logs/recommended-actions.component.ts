@@ -109,6 +109,7 @@ export class RecommendedActionsComponent extends Base implements OnInit, AfterVi
     this.curationService.hideUserNotification(notificationId).subscribe(() => {
       this.alertService.detailedSuccess(`Successfully deleted notification`);
       this.loadGitHubAppNotifications();
+      this.notificationsService.loadUserNotificationsCount();
     });
   }
 

@@ -3,7 +3,8 @@ import { ID, Order } from '@datorama/akita';
 import { CurationService } from '../../shared/openapi/api/curation.service';
 import { NotificationsStore } from './notifications.store';
 import { NotificationsQuery } from '../../notifications/state/notifications.query';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { PublicNotification } from 'app/shared/openapi/model/publicNotification';
 import { GitHubAppNotification, UserNotification } from 'app/shared/openapi';
 import { HttpResponse } from '@angular/common/http';
@@ -17,6 +18,7 @@ export interface DismissedNotification {
 export class NotificationsService {
   private readonly storageKey = 'dismissedNotifications';
   public dismissedNotifications: Array<DismissedNotification> = JSON.parse(localStorage.getItem(this.storageKey) || '[]');
+  public userNotificationsCount$: BehaviorSubject<number> = new BehaviorSubject<number>(0);
 
   constructor(
     private notificationsStore: NotificationsStore,
@@ -77,10 +79,21 @@ export class NotificationsService {
   }
 
   getUserNotifications(pageIndex: number, pageSize: number): Observable<HttpResponse<UserNotification[]>> {
-    return this.curationService.getUserNotifications(pageIndex, pageSize, 'response');
+    return this.curationService.getUserNotifications(pageIndex, pageSize, 'response').pipe(
+      tap((response: HttpResponse<UserNotification[]>) => {
+        // Extract the count from the response header and update the corresponding Observable
+        const count = Number(response.headers.get('X-total-count'));
+        this.userNotificationsCount$.next(count);
+      })
+    );
   }
 
   getGitHubAppNotifications(pageIndex: number, pageSize: number): Observable<HttpResponse<GitHubAppNotification[]>> {
     return this.curationService.getGitHubAppNotifications(pageIndex, pageSize, 'response');
+  }
+
+  loadUserNotificationsCount() {
+    // The following call will update the userNotificationsCount$ Observable
+    this.getUserNotifications(0, 1).subscribe(() => {});
   }
 }
