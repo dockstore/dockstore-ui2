@@ -106,7 +106,7 @@ export class RecommendedActionsComponent extends Base implements OnInit, AfterVi
   }
 
   deleteGitHubAppNotification(notificationId: number) {
-    this.curationService.deleteUserNotification(notificationId).subscribe(() => {
+    this.curationService.hideUserNotification(notificationId).subscribe(() => {
       this.alertService.detailedSuccess(`Successfully deleted notification`);
       this.loadGitHubAppNotifications();
     });
