@@ -26,7 +26,7 @@ import { PageInfo } from './../shared/models/PageInfo';
 import { PagenumberService } from './../shared/pagenumber.service';
 import { User } from './../shared/openapi/model/user';
 import { TrackLoginService } from './../shared/track-login.service';
-import { Organization, OrganizationUser, UserNotification } from '../shared/openapi';
+import { Organization, OrganizationUser } from '../shared/openapi';
 import { RequestsQuery } from '../loginComponents/state/requests.query';
 import { RequestsService } from '../loginComponents/state/requests.service';
 import { MatMenuModule } from '@angular/material/menu';
@@ -39,7 +39,6 @@ import { NgClass, NgIf, NgTemplateOutlet, AsyncPipe } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { DomSanitizer } from '@angular/platform-browser';
 import { NotificationsService } from 'app/notifications/state/notifications.service';
-import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-navbar',
@@ -73,8 +72,7 @@ export class NavbarComponent extends Logout implements OnInit {
   public allPendingOrganizations$: Observable<Array<Organization>>;
   public isAdminOrCurator$: Observable<boolean>;
   public notificationCount$: Observable<number>;
-  public userNotificationsResponse$: Observable<HttpResponse<UserNotification[]>>;
-  public userNotificationsCount: number;
+  public userNotificationsCount$: Observable<number>;
 
   constructor(
     private pagenumberService: PagenumberService,
@@ -110,6 +108,7 @@ export class NavbarComponent extends Logout implements OnInit {
         if (user.curator || user.isAdmin) {
           this.requestsService.updateCuratorOrganizations();
         }
+        this.notificationsService.loadUserNotificationsCount();
       } else {
         // In case you went from logged in to logged out
         this.requestsService.updateMyMembershipState(null, null, null, null);
@@ -119,25 +118,24 @@ export class NavbarComponent extends Logout implements OnInit {
     this.myOrganizationInvites$ = this.requestsQuery.myOrganizationInvites$;
     this.myRejectedOrganizationRequests$ = this.requestsQuery.myRejectedOrganizationRequests$;
     this.allPendingOrganizations$ = this.requestsQuery.allPendingOrganizations$;
-    this.userNotificationsResponse$ = this.notificationsService.getUserNotifications(0, 1);
+    this.userNotificationsCount$ = this.notificationsService.userNotificationsCount$;
     this.notificationCount$ = combineLatest([
       this.myOrganizationInvites$,
       this.myRejectedOrganizationRequests$,
       this.allPendingOrganizations$,
-      this.userNotificationsResponse$,
+      this.userNotificationsCount$,
       this.isAdminOrCurator$,
     ]).pipe(
       takeUntil(this.ngUnsubscribe),
       map(
-        ([invites, rejections, pendingOrganizations, userNotificationsResponse, isAdminOrCurator]: [
+        ([invites, rejections, pendingOrganizations, userNotificationsCount, isAdminOrCurator]: [
           Array<OrganizationUser>,
           Array<OrganizationUser>,
           Array<Organization>,
-          HttpResponse<UserNotification[]>,
+          number,
           boolean
         ]) => {
-          this.userNotificationsCount = Number(userNotificationsResponse.headers.get('X-total-count'));
-          let count = (invites?.length ?? 0) + (rejections?.length ?? 0) + this.userNotificationsCount;
+          let count = (invites?.length ?? 0) + (rejections?.length ?? 0) + userNotificationsCount;
           if (isAdminOrCurator) {
             return count + (pendingOrganizations?.length ?? 0);
           } else {
