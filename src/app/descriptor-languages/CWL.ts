@@ -31,5 +31,9 @@ export const extendedCWL: ExtendedDescriptorLanguageBean = {
       fileTypes: [SourceFile.TypeEnum.CWLTESTJSON],
     },
     { tabName: configurationTabName, fileTypes: [SourceFile.TypeEnum.DOCKSTOREYML] },
+    {
+      tabName: 'Other Files',
+      fileTypes: [SourceFile.TypeEnum.DOCKSTOREWORKFLOWOTHER],
+    },
   ],
 };
