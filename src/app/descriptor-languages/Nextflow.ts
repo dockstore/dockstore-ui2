@@ -31,5 +31,9 @@ export const extendedNFL: ExtendedDescriptorLanguageBean = {
       fileTypes: [SourceFile.TypeEnum.NEXTFLOWTESTPARAMS],
     },
     { tabName: configurationTabName, fileTypes: [SourceFile.TypeEnum.DOCKSTOREYML] },
+    {
+      tabName: 'Other Files',
+      fileTypes: [SourceFile.TypeEnum.DOCKSTOREWORKFLOWOTHER],
+    },
   ],
 };

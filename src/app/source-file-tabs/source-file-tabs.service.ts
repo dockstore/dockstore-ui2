@@ -54,9 +54,7 @@ export class SourceFileTabsService {
       fileTab.fileTypes.forEach((fileType) => {
         // Find all the files of the type that's not the main descriptor
         const sourceFilesMatchingType = sourcefiles.filter(
-          (sourcefile) =>
-            (sourcefile.type === fileType || sourcefile.type === SourceFile.TypeEnum.DOCKSTOREWORKFLOWOTHER) &&
-            sourcefile.absolutePath !== mainDescriptorAbsolutePath
+          (sourcefile) => sourcefile.type === fileType && sourcefile.absolutePath !== mainDescriptorAbsolutePath
         );
         // Find the file of the type that is the main descriptor
         const mainDescriptorFile = sourcefiles.find(

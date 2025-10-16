@@ -31,5 +31,9 @@ export const extendedWDL: ExtendedDescriptorLanguageBean = {
       fileTypes: [SourceFile.TypeEnum.WDLTESTJSON],
     },
     { tabName: configurationTabName, fileTypes: [SourceFile.TypeEnum.DOCKSTOREYML] },
+    {
+      tabName: 'Other Files',
+      fileTypes: [SourceFile.TypeEnum.DOCKSTOREWORKFLOWOTHER],
+    },
   ],
 };
