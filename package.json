@@ -3,7 +3,7 @@
   "version": "2.15.0",
   "license": "Apache License 2.0",
   "config": {
-    "webservice_version_prefix": "1.19.0-feature-seab-7331-complete-fix-of-published-workflow-by-path-endpoint",
+    "webservice_version_prefix": "1.19.0",
     "webservice_version": "1.19.0",
     "use_snapshot": true
   },
