@@ -97,7 +97,7 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
   partners: PartnerEnum[];
   metricsExist: boolean;
   // Fields for the execution metrics
-  executionMetricsColumns: string[] = ['metric', 'minimum', 'average', 'maximum'];
+  executionMetricsColumns: string[] = ['metric', 'minimum', 'percentile05th', 'median', 'average', 'percentile95th', 'maximum'];
   executionMetricsTable: ExecutionMetricsTableObject[];
   totalExecutions: number;
   successfulExecutions: number;
