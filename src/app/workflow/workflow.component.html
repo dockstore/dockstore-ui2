@@ -495,24 +495,24 @@
             </mat-tab>
           </div>
           <mat-tab label="Metrics">
-            <div style="border: solid 1px #aaa; margin-top: 1rem">
+            <mat-card class="mt-3">
               <mat-expansion-panel>
                 <mat-expansion-panel-header>
-                  <mat-panel-title>Entry metrics</mat-panel-title>
-                  <mat-panel-description> Summarized execution and validation information for the entry. </mat-panel-description>
+                  <mat-panel-title>Entry Metrics</mat-panel-title>
+                  <mat-panel-description> Execution and validation information for the entry. </mat-panel-description>
                 </mat-expansion-panel-header>
                 <app-executions-tab [entry]="workflow"></app-executions-tab>
               </mat-expansion-panel>
-            </div>
-            <div style="border: solid 1px #aaa; margin-top: 1rem">
+            </mat-card>
+            <mat-card class="mt-3">
               <mat-expansion-panel [expanded]="true">
                 <mat-expansion-panel-header>
-                  <mat-panel-title>Version metrics</mat-panel-title>
-                  <mat-panel-description> Summarized execution and validation information for the version. </mat-panel-description>
+                  <mat-panel-title>Version Metrics</mat-panel-title>
+                  <mat-panel-description> Execution and validation information for the version. </mat-panel-description>
                 </mat-expansion-panel-header>
                 <app-executions-tab [entry]="workflow" [version]="selectedVersion" *ngIf="selectedVersion"></app-executions-tab>
               </mat-expansion-panel>
-            </div>
+            </mat-card>
           </mat-tab>
           <mat-tab *ngIf="!isPublic() && isHosted() && isOwner" id="permissionsTab" label="Permissions">
             <app-permissions [workflow]="workflow"></app-permissions>
