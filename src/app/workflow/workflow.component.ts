@@ -25,6 +25,7 @@ import {
   NgTemplateOutlet,
   AsyncPipe,
   DatePipe,
+  TitleCasePipe,
 } from '@angular/common';
 import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
@@ -165,6 +166,7 @@ import { PreviewWarningComponent } from '../preview-warning/preview-warning.comp
     ShareIconsModule,
     AsyncPipe,
     DatePipe,
+    TitleCasePipe,
     BaseUrlPipe,
     DoiBadgeComponent,
     PreviewWarningComponent,
