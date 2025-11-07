@@ -498,9 +498,9 @@
             <mat-card class="mt-3">
               <mat-expansion-panel>
                 <mat-expansion-panel-header>
-                  <mat-panel-title>{{ workflow.entryTypeMetadata.term | titlecase }} Metrics</mat-panel-title>
+                  <mat-panel-title>{{ workflow?.entryTypeMetadata?.term | titlecase }} Metrics</mat-panel-title>
                   <mat-panel-description>
-                    Execution and validation metrics for all versions of this {{ workflow.entryTypeMetadata.term }}.
+                    Execution and validation metrics for all versions of this {{ workflow?.entryTypeMetadata?.term }}.
                   </mat-panel-description>
                 </mat-expansion-panel-header>
                 <app-executions-tab [entry]="workflow"></app-executions-tab>
@@ -510,7 +510,7 @@
               <mat-expansion-panel [expanded]="true">
                 <mat-expansion-panel-header>
                   <mat-panel-title>Version Metrics</mat-panel-title>
-                  <mat-panel-description> Execution and validation metrics for version {{ selectedVersion.name }}. </mat-panel-description>
+                  <mat-panel-description> Execution and validation metrics for version {{ selectedVersion?.name }}. </mat-panel-description>
                 </mat-expansion-panel-header>
                 <app-executions-tab [entry]="workflow" [version]="selectedVersion"></app-executions-tab>
               </mat-expansion-panel>
