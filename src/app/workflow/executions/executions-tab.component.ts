@@ -30,6 +30,7 @@ import {
   TimeSeriesMetric,
 } from '../../shared/openapi';
 import { SessionQuery } from '../../shared/session/session.query';
+import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import PartnerEnum = CloudInstance.PartnerEnum;
 import ExecutionStatusEnum = RunExecution.ExecutionStatusEnum;
@@ -92,7 +93,6 @@ interface ExecutionMetricsTableObject {
 })
 export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChanges {
   metrics: Map<PartnerEnum, Metrics>;
-  trsID: string;
   currentPartner: PartnerEnum;
   partners: PartnerEnum[];
   metricsExist: boolean;
@@ -178,38 +178,43 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
 
   ngOnChanges() {
     this.resetMetricsData();
-    if (this.version) {
-      this.alertService.start('Retrieving metrics data');
-      this.trsID = this.entry.entryTypeMetadata.trsPrefix + this.entry.full_workflow_path;
-      this.extendedGA4GHService
-        .aggregatedMetricsGet(this.trsID, this.version.name)
-        .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe(
-          (metrics) => {
-            if (metrics) {
-              for (const [partner, metric] of Object.entries(metrics)) {
-                this.setMetricsObject(this.metrics, partner, metric);
-              }
-              this.partners = Array.from(this.metrics.keys());
-              this.metricsExist = this.partners.length > 0;
-              if (this.metricsExist) {
-                // Remove the ALL platform if there's only one execution
-                if (this.partners.length === 2 && this.partners.filter((partner) => partner === PartnerEnum.ALL).length === 1) {
-                  this.partners = this.partners.filter((partner) => partner !== PartnerEnum.ALL);
-                }
-                const platform =
-                  this.partners.filter((partner) => partner === PartnerEnum.ALL).length === 1
-                    ? this.partners.filter((partner) => partner === PartnerEnum.ALL)[0]
-                    : this.partners[0];
-                this.selectPartner(platform);
-              }
+    this.alertService.start('Retrieving metrics data');
+    this.getMetrics()
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(
+        (metrics) => {
+          if (metrics) {
+            for (const [partner, metric] of Object.entries(metrics)) {
+              this.setMetricsObject(this.metrics, partner, metric);
             }
-            this.alertService.simpleSuccess();
-          },
-          (error) => {
-            this.alertService.detailedError(error);
+            this.partners = Array.from(this.metrics.keys());
+            this.metricsExist = this.partners.length > 0;
+            if (this.metricsExist) {
+              // Remove the ALL platform if there's only one execution
+              if (this.partners.length === 2 && this.partners.filter((partner) => partner === PartnerEnum.ALL).length === 1) {
+                this.partners = this.partners.filter((partner) => partner !== PartnerEnum.ALL);
+              }
+              const platform =
+                this.partners.filter((partner) => partner === PartnerEnum.ALL).length === 1
+                  ? this.partners.filter((partner) => partner === PartnerEnum.ALL)[0]
+                  : this.partners[0];
+              this.selectPartner(platform);
+            }
           }
-        );
+          this.alertService.simpleSuccess();
+        },
+        (error) => {
+          this.alertService.detailedError(error);
+        }
+      );
+  }
+
+  getMetrics(): Observable<{ [key: string]: Metrics }> {
+    const trsID = this.entry.entryTypeMetadata.trsPrefix + this.entry.full_workflow_path;
+    if (this.version) {
+      return this.extendedGA4GHService.aggregatedMetricsGet(trsID, this.version.name);
+    } else {
+      return this.extendedGA4GHService.aggregatedMetricsGetEntry(trsID);
     }
   }
 
