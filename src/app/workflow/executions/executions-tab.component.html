@@ -123,6 +123,31 @@
             </td>
           </ng-container>
 
+          <ng-container matColumnDef="percentile05th">
+            <th mat-header-cell *matHeaderCellDef [ngClass]="{ 'inactive-table-header': this.executionMetricsTable.length === 0 }">
+              5th Percentile
+            </th>
+            <td mat-cell *matCellDef="let executionMetric">
+              <ng-template
+                *ngTemplateOutlet="
+                  displayExecutionMetricStat;
+                  context: { num: executionMetric.percentile05th, executionMetric: executionMetric }
+                "
+              ></ng-template>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="median">
+            <th mat-header-cell *matHeaderCellDef [ngClass]="{ 'inactive-table-header': this.executionMetricsTable.length === 0 }">
+              Median
+            </th>
+            <td mat-cell *matCellDef="let executionMetric">
+              <ng-template
+                *ngTemplateOutlet="displayExecutionMetricStat; context: { num: executionMetric.median, executionMetric: executionMetric }"
+              ></ng-template>
+            </td>
+          </ng-container>
+
           <ng-container matColumnDef="average">
             <th mat-header-cell *matHeaderCellDef [ngClass]="{ 'inactive-table-header': this.executionMetricsTable.length === 0 }">
               Average
@@ -130,6 +155,20 @@
             <td mat-cell *matCellDef="let executionMetric">
               <ng-template
                 *ngTemplateOutlet="displayExecutionMetricStat; context: { num: executionMetric.average, executionMetric: executionMetric }"
+              ></ng-template>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="percentile95th">
+            <th mat-header-cell *matHeaderCellDef [ngClass]="{ 'inactive-table-header': this.executionMetricsTable.length === 0 }">
+              95th Percentile
+            </th>
+            <td mat-cell *matCellDef="let executionMetric">
+              <ng-template
+                *ngTemplateOutlet="
+                  displayExecutionMetricStat;
+                  context: { num: executionMetric.percentile95th, executionMetric: executionMetric }
+                "
               ></ng-template>
             </td>
           </ng-container>
