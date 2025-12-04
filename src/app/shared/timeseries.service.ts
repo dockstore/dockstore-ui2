@@ -19,7 +19,7 @@ import { TimeSeriesMetric } from './openapi';
 @Injectable()
 export class TimeSeriesService {
   adjustTimeSeries(timeSeriesMetric: TimeSeriesMetric, now: Date, binCount: number): TimeSeriesMetric {
-    // TODO make this work for monthly intervals, also.
+    // TODO make this work for monthly time series, also.
     const day = 24 * 60 * 60 * 1000; // Milliseconds in one day (hours * minutes * seconds * milliseconds).
     const week = 7 * day;
 
@@ -35,14 +35,14 @@ export class TimeSeriesService {
       ends = ends + binsToAppend * week;
     }
 
-    // Prepend bins to the older end of the time series to make its length match the desired bin count.
+    // Prepend bins to the beginning (older end) of a "short" time series to make its length match the desired bin count.
     const binsToPrepend = binCount - values.length;
     if (binsToPrepend > 0) {
       values = [...this.zeros(binsToPrepend), ...values];
       begins = begins - binsToPrepend * week;
     }
 
-    // Trim bins from the older end of the time series to make its length match the desired bin count.
+    // Trim bins from the beginning (older end) of a "long" time series to make its length match the desired bin count.
     const binsToTrim = values.length - binCount;
     if (binsToTrim > 0) {
       values = values.slice(binsToTrim);
@@ -52,10 +52,26 @@ export class TimeSeriesService {
     return {
       begins: String(begins),
       ends: String(ends),
-      values: values,
       interval: timeSeriesMetric.interval,
+      values: values,
     };
   }
+
+  /*
+  // internal class that implements ops for each interval type
+  countIntervals(from: number, to: number): number {
+    // TODO implement weekly, monthly
+  }
+
+  addIntervals(from: number, intervalCount: number): number {
+  }
+
+  subtractIntervals(from: number, intervalCount: number): number {
+  }
+
+  label(begins: number): string[] {
+  }
+  */
 
   emptyTimeSeries(timeSeriesMetric: TimeSeriesMetric) {
     return {
@@ -77,15 +93,23 @@ export class TimeSeriesService {
       const middle = begins + i * week + halfWeek;
       const firstDay: Date = new Date(middle - 3 * day);
       const lastDay: Date = new Date(middle + 3 * day);
-      const label = this.formatShortDate(firstDay) + ' to ' + this.formatShortDate(lastDay);
+      const label = this.isoYearMonthDay(firstDay) + ' to ' + this.isoYearMonthDay(lastDay);
       labels.push(label);
     }
     return labels;
   }
 
-  private formatShortDate(date: Date): string {
+  // TODO labelsFromWeeklyTimeSeries, labelsFromMonthlyTimeSeries
+
+  private isoYearMonthDay(date: Date): string {
     return date.toISOString().slice(0, 10);
   }
+
+  /*
+  private isoYearMonth(date: Date): string {
+    return date.toISOString().slice(0, 7);
+  }
+  */
 
   private zeros(count: number): number[] {
     return new Array(count).fill(0);
