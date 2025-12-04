@@ -88,7 +88,8 @@ export class TimeSeriesService {
       case TimeSeriesMetric.IntervalEnum.MONTH:
         return new MonthIntervalOps();
     }
-    return new UnsupportedIntervalOps(); // TODO make NoopIntervalOps
+    // If we can't support a time series with the given interval, return some ops that do nothing, instead of crashing/throwing/guessing.
+    return new UnsupportedIntervalOps();
   }
 }
 
@@ -152,7 +153,7 @@ class WeekIntervalOps extends ConstantIntervalOps {
 
 class MonthIntervalOps implements IntervalOps {
   countIntervals(from: number, to: number): number {
-    // Step 1: to efficiently skip forward by a large number of months, compute a rough estimate, of the interval count, always slightly under the true count, and advance the time by that amount.
+    // Step 1: to efficiently skip forward by a large number of months, compute a slight underestimate of the true interval count, and advance the time by that amount.
     let intervalCount = Math.max(Math.floor((to - from) / TimeConstants.AVERAGE_MONTH_MILLIS) - 2, 0);
     let when = this.addIntervals(from, intervalCount);
     // Step 2: Add intervals one by one, until we've passed the "to" date.
