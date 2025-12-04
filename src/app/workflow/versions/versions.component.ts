@@ -106,8 +106,8 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
   protected readonly PartnerEnum = PartnerEnum;
   private sortCol: string;
   public now: Date = new Date();
-  public maxWeeklyExecutionCount: number = undefined;
-  public numberOfWeeksToGraph = 11;
+  public maxMonthlyExecutionCount: number = undefined;
+  public numberOfMonthsToGraph = 12;
 
   setNoOrderCols(): Array<number> {
     return [4, 5];
@@ -191,7 +191,7 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
 
   ngOnChanges() {
     this.loadVersions(this.publicPage);
-    this.loadMaxWeeklyExecutionCount();
+    this.loadMaxMonthlyExecutionCount();
   }
 
   ngOnInit() {
@@ -234,14 +234,12 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
     );
   }
 
-  loadMaxWeeklyExecutionCount() {
+  loadMaxMonthlyExecutionCount() {
     if (this.workflowId) {
-      const secondsPerWeek = 7 * 24 * 60 * 60; // days * hours * minutes * seconds
-      const onOrAfterEpochSeconds = Math.floor(this.now.getTime() / 1000) - this.numberOfWeeksToGraph * secondsPerWeek;
       this.workflowsService
-        .getMaxWeeklyExecutionCountForAnyVersion(this.workflowId, onOrAfterEpochSeconds)
-        .subscribe((maxWeeklyExecutionCount) => {
-          this.maxWeeklyExecutionCount = maxWeeklyExecutionCount;
+        .getMaxExecutionCountForAllVersions(this.workflowId, 'MONTH', 12, Math.floor(this.now.getTime() / 1000))
+        .subscribe((maxMonthlyExecutionCount) => {
+          this.maxMonthlyExecutionCount = maxMonthlyExecutionCount;
         });
     }
   }
