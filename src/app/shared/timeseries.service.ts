@@ -153,10 +153,10 @@ class WeekIntervalOps extends ConstantIntervalOps {
 
 class MonthIntervalOps implements IntervalOps {
   countIntervals(from: number, to: number): number {
-    // Step 1: to efficiently skip forward by a large number of months, compute a slight underestimate of the true interval count, and advance the time by that amount.
+    // Step 1: To efficiently skip forward by a large number of months, compute a slight underestimate of the true interval count, and advance the "from" time by that amount.
     let intervalCount = Math.max(Math.floor((to - from) / TimeConstants.AVERAGE_MONTH_MILLIS) - 2, 0);
     let when = this.addIntervals(from, intervalCount);
-    // Step 2: Add intervals one by one, until we've passed the "to" date.
+    // Step 2: Add intervals one by one until we've passed the "to" time.
     while (when < to) {
       when = this.addIntervals(when, 1);
       intervalCount++;
