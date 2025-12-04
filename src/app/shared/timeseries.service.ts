@@ -26,21 +26,21 @@ export class TimeSeriesService {
     let ends = Number(timeSeriesMetric.ends);
     let values = timeSeriesMetric.values.slice();
 
-    // Append bins to the newer end of the time series to make it overlap the specified date.
+    // Append bins to the newer end of the time series, if necessary, to make it overlap the specified date.
     const binsToAppend = ops.countIntervals(ends, now.getTime());
     if (binsToAppend > 0) {
       values = [...values, ...this.zeros(binsToAppend)];
       ends = ops.addIntervals(ends, binsToAppend);
     }
 
-    // Prepend bins to the beginning (older end) of a "short" time series to make its length match the desired bin count.
+    // Prepend bins to the beginning (older end) of the time series, if necessary, to make its length match the desired bin count.
     const binsToPrepend = binCount - values.length;
     if (binsToPrepend > 0) {
       values = [...this.zeros(binsToPrepend), ...values];
       begins = ops.subtractIntervals(begins, binsToPrepend);
     }
 
-    // Trim bins from the beginning (older end) of a "long" time series to make its length match the desired bin count.
+    // Trim bins from the beginning (older end) of the time series, if necessary, to make its length match the desired bin count.
     const binsToTrim = values.length - binCount;
     if (binsToTrim > 0) {
       values = values.slice(binsToTrim);
@@ -64,7 +64,6 @@ export class TimeSeriesService {
     };
   }
 
-  // TODO labelsForTimeSeries?
   labelsFromTimeSeries(timeSeriesMetric: TimeSeriesMetric): string[] {
     const ops = this.createIntervalOps(timeSeriesMetric);
     const labels: string[] = [];
@@ -83,11 +82,11 @@ export class TimeSeriesService {
   private createIntervalOps(timeSeriesMetric: TimeSeriesMetric): IntervalOps {
     switch (timeSeriesMetric.interval) {
       case TimeSeriesMetric.IntervalEnum.DAY:
-        return new DailyIntervalOps();
+        return new DayIntervalOps();
       case TimeSeriesMetric.IntervalEnum.WEEK:
-        return new WeeklyIntervalOps();
+        return new WeekIntervalOps();
       case TimeSeriesMetric.IntervalEnum.MONTH:
-        return new MonthlyIntervalOps();
+        return new MonthIntervalOps();
     }
     return new UnsupportedIntervalOps(); // TODO make NoopIntervalOps
   }
@@ -127,7 +126,7 @@ abstract class ConstantIntervalOps implements IntervalOps {
   abstract label(begins: number): string;
 }
 
-class DailyIntervalOps extends ConstantIntervalOps {
+class DayIntervalOps extends ConstantIntervalOps {
   constructor() {
     super(TimeConstants.DAY_MILLIS);
   }
@@ -138,7 +137,7 @@ class DailyIntervalOps extends ConstantIntervalOps {
   }
 }
 
-class WeeklyIntervalOps extends ConstantIntervalOps {
+class WeekIntervalOps extends ConstantIntervalOps {
   constructor() {
     super(TimeConstants.WEEK_MILLIS);
   }
@@ -151,12 +150,14 @@ class WeeklyIntervalOps extends ConstantIntervalOps {
   }
 }
 
-class MonthlyIntervalOps implements IntervalOps {
+class MonthIntervalOps implements IntervalOps {
   countIntervals(from: number, to: number): number {
+    // Step 1: to efficiently skip forward by a large number of months, compute a rough estimate, of the interval count, always slightly under the true count, and advance the time by that amount.
     let intervalCount = Math.max(Math.floor((to - from) / TimeConstants.AVERAGE_MONTH_MILLIS) - 2, 0);
-    from = this.addIntervals(from, intervalCount);
-    while (from < to) {
-      from = this.addIntervals(from, 1);
+    let when = this.addIntervals(from, intervalCount);
+    // Step 2: Add intervals one by one, until we've passed the "to" date.
+    while (when < to) {
+      when = this.addIntervals(when, 1);
       intervalCount++;
     }
     return intervalCount;
