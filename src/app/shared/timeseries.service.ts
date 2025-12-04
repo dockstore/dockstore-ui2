@@ -64,9 +64,16 @@ export class TimeSeriesService {
     };
   }
 
+  // TODO labelsForTimeSeries?
   labelsFromTimeSeries(timeSeriesMetric: TimeSeriesMetric): string[] {
     const ops = this.createIntervalOps(timeSeriesMetric);
-    return ops.labels(Number(timeSeriesMetric.begins), timeSeriesMetric.values.length);
+    const labels: string[] = [];
+    for (let i = 0; i < timeSeriesMetric.values.length; i++) {
+      const when = ops.addIntervals(Number(timeSeriesMetric.begins), i);
+      const label = ops.label(when);
+      labels.push(label);
+    }
+    return labels;
   }
 
   private zeros(count: number): number[] {
@@ -74,45 +81,118 @@ export class TimeSeriesService {
   }
 
   private createIntervalOps(timeSeriesMetric: TimeSeriesMetric): IntervalOps {
-    return new WeeklyIntervalOps();
+    switch (timeSeriesMetric.interval) {
+      case TimeSeriesMetric.IntervalEnum.DAY:
+        return new DailyIntervalOps();
+      case TimeSeriesMetric.IntervalEnum.WEEK:
+        return new WeeklyIntervalOps();
+      case TimeSeriesMetric.IntervalEnum.MONTH:
+        return new MonthlyIntervalOps();
+    }
+    return new UnsupportedIntervalOps(); // TODO make NoopIntervalOps
   }
 }
 
 module TimeConstants {
   export const DAY_MILLIS = 24 * 60 * 60 * 1000;
   export const WEEK_MILLIS = 7 * DAY_MILLIS;
+  export const AVERAGE_MONTH_MILLIS = (365.2425 / 12) * DAY_MILLIS;
 }
 
 interface IntervalOps {
   countIntervals(from: number, to: number): number;
   addIntervals(from: number, intervalCount: number): number;
   subtractIntervals(from: number, intervalCount: number): number;
-  labels(begins: number, length: number): string[];
+  label(begins: number): string;
 }
 
-class WeeklyIntervalOps implements IntervalOps {
+abstract class ConstantIntervalOps implements IntervalOps {
+  interval: number;
+  constructor(interval: number) {
+    this.interval = interval;
+  }
+
   countIntervals(from: number, to: number): number {
-    return Math.ceil((to - from) / TimeConstants.WEEK_MILLIS);
+    return Math.ceil((to - from) / this.interval);
   }
 
   addIntervals(from: number, intervalCount: number): number {
-    return from + intervalCount * TimeConstants.WEEK_MILLIS;
+    return from + intervalCount * this.interval;
   }
 
   subtractIntervals(from: number, intervalCount: number): number {
-    return from - intervalCount * TimeConstants.WEEK_MILLIS;
+    return from - intervalCount * this.interval;
   }
 
-  labels(from: number, length: number): string[] {
-    const labels: string[] = [];
-    for (let i = 0; i < length; i++) {
-      const middle = from + (i + 0.5) * TimeConstants.WEEK_MILLIS;
-      const firstDay: Date = new Date(middle - 3 * TimeConstants.DAY_MILLIS);
-      const lastDay: Date = new Date(middle + 3 * TimeConstants.DAY_MILLIS);
-      const label = isoYearMonthDay(firstDay) + ' to ' + isoYearMonthDay(lastDay);
-      labels.push(label);
+  abstract label(begins: number): string;
+}
+
+class DailyIntervalOps extends ConstantIntervalOps {
+  constructor() {
+    super(TimeConstants.DAY_MILLIS);
+  }
+
+  label(begins: number): string {
+    const middle = begins + 0.5 * TimeConstants.DAY_MILLIS;
+    return isoYearMonthDay(new Date(middle));
+  }
+}
+
+class WeeklyIntervalOps extends ConstantIntervalOps {
+  constructor() {
+    super(TimeConstants.WEEK_MILLIS);
+  }
+
+  label(begins: number): string {
+    const middle = begins + 0.5 * TimeConstants.WEEK_MILLIS;
+    const firstDay: Date = new Date(middle - 3 * TimeConstants.DAY_MILLIS);
+    const lastDay: Date = new Date(middle + 3 * TimeConstants.DAY_MILLIS);
+    return isoYearMonthDay(firstDay) + ' to ' + isoYearMonthDay(lastDay);
+  }
+}
+
+class MonthlyIntervalOps implements IntervalOps {
+  countIntervals(from: number, to: number): number {
+    let intervalCount = Math.max(Math.floor((to - from) / TimeConstants.AVERAGE_MONTH_MILLIS) - 2, 0);
+    from = this.addIntervals(from, intervalCount);
+    while (from < to) {
+      from = this.addIntervals(from, 1);
+      intervalCount++;
     }
-    return labels;
+    return intervalCount;
+  }
+
+  addIntervals(from: number, intervalCount: number): number {
+    const date = new Date(from);
+    date.setUTCMonth(date.getUTCMonth() + intervalCount);
+    return date.getTime();
+  }
+
+  subtractIntervals(from: number, intervalCount: number): number {
+    return this.addIntervals(from, -intervalCount);
+  }
+
+  label(begins: number): string {
+    const middle = begins + 0.5 * TimeConstants.AVERAGE_MONTH_MILLIS;
+    return isoYearMonth(new Date(middle));
+  }
+}
+
+class UnsupportedIntervalOps implements IntervalOps {
+  countIntervals(from: number, to: number): number {
+    return 0;
+  }
+
+  addIntervals(from: number, intervalCount: number): number {
+    return from;
+  }
+
+  subtractIntervals(from: number, intervalCount: number): number {
+    return from;
+  }
+
+  label(begins: number): string {
+    return '';
   }
 }
 
@@ -120,8 +200,6 @@ function isoYearMonthDay(date: Date): string {
   return date.toISOString().slice(0, 10);
 }
 
-/*
 function isoYearMonth(date: Date): string {
   return date.toISOString().slice(0, 7);
 }
-*/
