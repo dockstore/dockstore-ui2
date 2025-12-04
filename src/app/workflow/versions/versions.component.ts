@@ -237,7 +237,7 @@ export class VersionsWorkflowComponent extends Versions implements OnInit, OnCha
   loadMaxMonthlyExecutionCount() {
     if (this.workflowId) {
       this.workflowsService
-        .getMaxExecutionCountForAllVersions(this.workflowId, 'MONTH', 12, Math.floor(this.now.getTime() / 1000))
+        .getMaxExecutionCountForAllVersions(this.workflowId, 'MONTH', this.numberOfMonthsToGraph, Math.floor(this.now.getTime() / 1000))
         .subscribe((maxMonthlyExecutionCount) => {
           this.maxMonthlyExecutionCount = maxMonthlyExecutionCount;
         });
