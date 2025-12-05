@@ -36,7 +36,7 @@ jobs:
 
     steps:
       - name: Checkout branch
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           ref: ${{ matrix.branch }}
 
@@ -112,7 +112,7 @@ jobs:
     needs: run-accessibility-test
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: Install npm
         uses: actions/setup-node@v6
