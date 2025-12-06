@@ -18,6 +18,11 @@ import { dailyTimeSeries, weeklyTimeSeries, monthlyTimeSeries } from '../test/mo
 import { TimeSeriesMetric } from './openapi/model/timeSeriesMetric';
 import { TimeSeriesService } from './timeseries.service';
 
+/*
+ * The values coded into the following tests derive from the current mock TimeSeriesMetric values.
+ * If you change the values of the mocks, you will need to adjust these tests.
+ */
+
 describe('TimeSeriesService', () => {
   const DAY_MILLIS = 24 * 3600 * 1000;
   const WEEK_MILLIS = 7 * DAY_MILLIS;
@@ -55,10 +60,14 @@ describe('TimeSeriesService', () => {
   }));
 
   it('should adjust monthly timeseries correctly', inject([TimeSeriesService], (service: TimeSeriesService) => {
+    // The mock "begins" time is late on Dec 5, 2025, and the mock "ends" time is one month later.
     const begins = Number(monthlyTimeSeries.begins);
     const ends = Number(monthlyTimeSeries.ends);
-    const adjusted = service.adjustTimeSeries(monthlyTimeSeries, new Date(ends + (5 * 30 + 15) * DAY_MILLIS), 12);
+    // Adjust the time series to a "now" date about 5.5 months from the current end of the time series, causing the adjusted "ends" time to move 6 months into the future.
+    const adjusted = service.adjustTimeSeries(monthlyTimeSeries, new Date(ends + 5.5 * 30 * DAY_MILLIS), 12);
+    // The adjusted "begins" time should be earlier by the length of July through November 2025.
     expect(Number(adjusted.begins)).toEqual(begins - (31 + 30 + 31 + 31 + 30) * DAY_MILLIS);
+    // The adjusted "ends" time should be later by the length of January through June 2026.
     expect(Number(adjusted.ends)).toEqual(ends + (31 + 28 + 31 + 30 + 31 + 30) * DAY_MILLIS);
     expect(adjusted.values).toEqual([0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0]);
     expect(adjusted.interval).toEqual(monthlyTimeSeries.interval);
