@@ -18,6 +18,9 @@ import { TimeSeriesMetric } from './openapi';
 
 @Injectable()
 export class TimeSeriesService {
+  /**
+   * Create a new time series by adding bins to the newer end of the specified time series so that it overlaps the specified date, and then adding/removing bins on the older end of the resulting time series to make it have the specified number of bins.
+   */
   adjustTimeSeries(timeSeriesMetric: TimeSeriesMetric, now: Date, binCount: number): TimeSeriesMetric {
     const ops = this.createIntervalOps(timeSeriesMetric);
 
@@ -55,6 +58,9 @@ export class TimeSeriesService {
     };
   }
 
+  /**
+   * Create a new time series with all zero values and the same beginning time, ending time, and interval as the specified time series.
+   */
   emptyTimeSeries(timeSeriesMetric: TimeSeriesMetric) {
     return {
       begins: timeSeriesMetric.begins,
@@ -64,6 +70,9 @@ export class TimeSeriesService {
     };
   }
 
+  /**
+   * Create a list of labels, one for each bin of the time series, starting with the oldest bin.
+   */
   labelsFromTimeSeries(timeSeriesMetric: TimeSeriesMetric): string[] {
     const ops = this.createIntervalOps(timeSeriesMetric);
     const labels: string[] = [];
@@ -79,6 +88,9 @@ export class TimeSeriesService {
     return new Array(count).fill(0);
   }
 
+  /**
+   * Create an instance of IntervalOps that performs the appropriate operations for the specified time series.
+   */
   private createIntervalOps(timeSeriesMetric: TimeSeriesMetric): IntervalOps {
     switch (timeSeriesMetric.interval) {
       case TimeSeriesMetric.IntervalEnum.DAY:
@@ -99,13 +111,43 @@ module TimeConstants {
   export const AVERAGE_MONTH_MILLIS = (365.2425 / 12) * DAY_MILLIS;
 }
 
+/**
+ * Encapsulates primitive operations that can be used to manipulate a time series with a particular interval.
+ */
 interface IntervalOps {
+  /**
+   * Calculate the whole number of intervals by which the "from" time must be advanced to be later than the "to" time.
+   * @param from start time in epoch milliseconds
+   * @param to end time in epoch milliseconds
+   */
   countIntervals(from: number, to: number): number;
+
+  /**
+   * Add the specified number of intervals to the specified "from" time.
+   * @param from start time in epoch milliseconds
+   * @param intervalCount number of intervals to add
+   */
   addIntervals(from: number, intervalCount: number): number;
+
+  /**
+   * Subtract the specified number of intervals to the specified "from" time.
+   * @param from start time in epoch milliseconds
+   * @param intervalCount number of intervals to subtract
+   */
   subtractIntervals(from: number, intervalCount: number): number;
+
+  /**
+   * Calculate a label for the time series bin that begins at the specified time.
+   */
   label(begins: number): string;
 }
 
+/**
+ * Implements primitive operations to manipulate a time series wherein each interval is always the exact same
+ * duration (SECOND, MINUTE, HOUR, DAY, WEEK).  This class is not suitable for MONTH and YEAR intervals,
+ * because the the duration of the interval depends upon the particular month (28 to 31 days) or year
+ * (normal year or leap year).
+ */
 abstract class ConstantIntervalOps implements IntervalOps {
   interval: number;
   constructor(interval: number) {
@@ -127,6 +169,9 @@ abstract class ConstantIntervalOps implements IntervalOps {
   abstract label(begins: number): string;
 }
 
+/**
+ * Implements primitive operations to manipulate a time series wherein the interval is DAY.
+ */
 class DayIntervalOps extends ConstantIntervalOps {
   constructor() {
     super(TimeConstants.DAY_MILLIS);
@@ -138,6 +183,9 @@ class DayIntervalOps extends ConstantIntervalOps {
   }
 }
 
+/**
+ * Implements primitive operations to manipulate a time series wherein the interval is WEEK.
+ */
 class WeekIntervalOps extends ConstantIntervalOps {
   constructor() {
     super(TimeConstants.WEEK_MILLIS);
@@ -151,12 +199,17 @@ class WeekIntervalOps extends ConstantIntervalOps {
   }
 }
 
+/**
+ * Implements primitive operations to manipulate a time series wherein the interval is MONTH.
+ * Months differ in length (from 28 to 31 days), so it is not possible to adjust time by MONTH intervals by
+ * adding/subtracting the exact same amount of time for each month.
+ */
 class MonthIntervalOps implements IntervalOps {
   countIntervals(from: number, to: number): number {
     // Step 1: To efficiently skip forward by a large number of months, compute a slight underestimate of the true interval count, and advance the "from" time by that amount.
     let intervalCount = Math.max(Math.floor((to - from) / TimeConstants.AVERAGE_MONTH_MILLIS) - 2, 0);
     let when = this.addIntervals(from, intervalCount);
-    // Step 2: Add intervals one by one until we've passed the "to" time.
+    // Step 2: Add more intervals, one by one, until we've passed the "to" time.
     while (when < to) {
       when = this.addIntervals(when, 1);
       intervalCount++;
