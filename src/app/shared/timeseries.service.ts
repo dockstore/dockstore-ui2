@@ -22,7 +22,7 @@ export class TimeSeriesService {
    * Create a new time series by adding bins to the newer end of the specified time series so that it overlaps the specified date, and then adding/removing bins on the older end of the resulting time series to make it have the specified number of bins.
    */
   adjustTimeSeries(timeSeriesMetric: TimeSeriesMetric, now: Date, binCount: number): TimeSeriesMetric {
-    const ops = this.createIntervalOps(timeSeriesMetric);
+    const operations = this.createIntervalOperations(timeSeriesMetric);
 
     // Store information from the original time series in variables that we will adjust and then reassemble into a new time series at the end of this method.
     let begins = Number(timeSeriesMetric.begins);
@@ -30,24 +30,24 @@ export class TimeSeriesService {
     let values = timeSeriesMetric.values.slice();
 
     // Append bins to the newer end of the time series, if necessary, to make it overlap the specified date.
-    const binsToAppend = ops.countIntervals(ends, now.getTime());
+    const binsToAppend = operations.countIntervals(ends, now.getTime());
     if (binsToAppend > 0) {
       values = [...values, ...this.zeros(binsToAppend)];
-      ends = ops.addIntervals(ends, binsToAppend);
+      ends = operations.addIntervals(ends, binsToAppend);
     }
 
     // Prepend bins to the beginning (older end) of the time series, if necessary, to make its length match the desired bin count.
     const binsToPrepend = binCount - values.length;
     if (binsToPrepend > 0) {
       values = [...this.zeros(binsToPrepend), ...values];
-      begins = ops.subtractIntervals(begins, binsToPrepend);
+      begins = operations.subtractIntervals(begins, binsToPrepend);
     }
 
     // Trim bins from the beginning (older end) of the time series, if necessary, to make its length match the desired bin count.
     const binsToTrim = values.length - binCount;
     if (binsToTrim > 0) {
       values = values.slice(binsToTrim);
-      begins = ops.addIntervals(begins, binsToTrim);
+      begins = operations.addIntervals(begins, binsToTrim);
     }
 
     return {
@@ -74,11 +74,11 @@ export class TimeSeriesService {
    * Create a list of labels, one for each bin of the time series, starting with the oldest bin.
    */
   labelsFromTimeSeries(timeSeriesMetric: TimeSeriesMetric): string[] {
-    const ops = this.createIntervalOps(timeSeriesMetric);
+    const operations = this.createIntervalOperations(timeSeriesMetric);
     const labels: string[] = [];
     for (let i = 0; i < timeSeriesMetric.values.length; i++) {
-      const when = ops.addIntervals(Number(timeSeriesMetric.begins), i);
-      const label = ops.label(when);
+      const when = operations.addIntervals(Number(timeSeriesMetric.begins), i);
+      const label = operations.label(when);
       labels.push(label);
     }
     return labels;
@@ -89,19 +89,19 @@ export class TimeSeriesService {
   }
 
   /**
-   * Create an instance of IntervalOps that performs the appropriate operations for the specified time series.
+   * Create an instance of IntervalOperations that performs the appropriate operations for the specified time series.
    */
-  private createIntervalOps(timeSeriesMetric: TimeSeriesMetric): IntervalOps {
+  private createIntervalOperations(timeSeriesMetric: TimeSeriesMetric): IntervalOperations {
     switch (timeSeriesMetric.interval) {
       case TimeSeriesMetric.IntervalEnum.DAY:
-        return new DayIntervalOps();
+        return new DayIntervalOperations();
       case TimeSeriesMetric.IntervalEnum.WEEK:
-        return new WeekIntervalOps();
+        return new WeekIntervalOperations();
       case TimeSeriesMetric.IntervalEnum.MONTH:
-        return new MonthIntervalOps();
+        return new MonthIntervalOperations();
     }
-    // If we can't support a time series with the given interval, return some ops that do nothing, instead of crashing/throwing/guessing.
-    return new UnsupportedIntervalOps();
+    // If we can't support a time series with the given interval, return some operations that do nothing, instead of crashing/throwing/guessing.
+    return new UnsupportedIntervalOperations();
   }
 }
 
@@ -114,7 +114,7 @@ module TimeConstants {
 /**
  * Encapsulates primitive operations that can be used to manipulate a time series with a particular interval.
  */
-interface IntervalOps {
+interface IntervalOperations {
   /**
    * Calculate the whole number of intervals by which the "from" time must be advanced to be later than the "to" time.
    * @param from start time in epoch milliseconds
@@ -148,22 +148,22 @@ interface IntervalOps {
  * because the the duration of the interval depends upon the particular month (28 to 31 days) or year
  * (normal year or leap year).
  */
-abstract class ConstantIntervalOps implements IntervalOps {
-  interval: number;
-  constructor(interval: number) {
-    this.interval = interval;
+abstract class ConstantIntervalOperations implements IntervalOperations {
+  durationMillis: number;
+  constructor(durationMillis: number) {
+    this.durationMillis = durationMillis;
   }
 
   countIntervals(from: number, to: number): number {
-    return Math.ceil((to - from) / this.interval);
+    return Math.ceil((to - from) / this.durationMillis);
   }
 
   addIntervals(from: number, intervalCount: number): number {
-    return from + intervalCount * this.interval;
+    return from + intervalCount * this.durationMillis;
   }
 
   subtractIntervals(from: number, intervalCount: number): number {
-    return from - intervalCount * this.interval;
+    return from - intervalCount * this.durationMillis;
   }
 
   abstract label(begins: number): string;
@@ -172,12 +172,13 @@ abstract class ConstantIntervalOps implements IntervalOps {
 /**
  * Implements primitive operations to manipulate a time series wherein the interval is DAY.
  */
-class DayIntervalOps extends ConstantIntervalOps {
+class DayIntervalOperations extends ConstantIntervalOperations {
   constructor() {
     super(TimeConstants.DAY_MILLIS);
   }
 
   label(begins: number): string {
+    // Calculate the time of the middle of the day, and create a label from it.
     const middle = begins + 0.5 * TimeConstants.DAY_MILLIS;
     return isoYearMonthDay(new Date(middle));
   }
@@ -186,12 +187,13 @@ class DayIntervalOps extends ConstantIntervalOps {
 /**
  * Implements primitive operations to manipulate a time series wherein the interval is WEEK.
  */
-class WeekIntervalOps extends ConstantIntervalOps {
+class WeekIntervalOperations extends ConstantIntervalOperations {
   constructor() {
     super(TimeConstants.WEEK_MILLIS);
   }
 
   label(begins: number): string {
+    // Calculate the times that are three days before and after the middle of the week, and create a label from them.
     const middle = begins + 0.5 * TimeConstants.WEEK_MILLIS;
     const firstDay: Date = new Date(middle - 3 * TimeConstants.DAY_MILLIS);
     const lastDay: Date = new Date(middle + 3 * TimeConstants.DAY_MILLIS);
@@ -204,12 +206,15 @@ class WeekIntervalOps extends ConstantIntervalOps {
  * Months differ in length (from 28 to 31 days), so it is not possible to adjust time by MONTH intervals by
  * adding/subtracting the exact same amount of time for each month.
  */
-class MonthIntervalOps implements IntervalOps {
+class MonthIntervalOperations implements IntervalOperations {
   countIntervals(from: number, to: number): number {
     // Step 1: To efficiently skip forward by a large number of months, compute a slight underestimate of the true interval count, and advance the "from" time by that amount.
+    // To avoid skipping too far forward, we must underestimate, because some months are shorter than average.
     let intervalCount = Math.max(Math.floor((to - from) / TimeConstants.AVERAGE_MONTH_MILLIS) - 2, 0);
     let when = this.addIntervals(from, intervalCount);
-    // Step 2: Add more intervals, one by one, until we've passed the "to" time.
+    // Step 2: Add more intervals, one by one, until we've reached the "to" time.
+    // This step accounts for the remaining time due to the underestimate in the previous step.
+    // For example, if the "to" time is in March 1, and "when" is January 3, we add 31 days to move to February 3, and then 28 days to move to March 3, and we're done.
     while (when < to) {
       when = this.addIntervals(when, 1);
       intervalCount++;
@@ -228,12 +233,13 @@ class MonthIntervalOps implements IntervalOps {
   }
 
   label(begins: number): string {
+    // Calculate the time of the middle of the month, and create a label from it.
     const middle = begins + 0.5 * TimeConstants.AVERAGE_MONTH_MILLIS;
     return isoYearMonth(new Date(middle));
   }
 }
 
-class UnsupportedIntervalOps implements IntervalOps {
+class UnsupportedIntervalOperations implements IntervalOperations {
   countIntervals(from: number, to: number): number {
     return 0;
   }
