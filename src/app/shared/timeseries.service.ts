@@ -195,9 +195,9 @@ class WeekIntervalOperations extends ConstantIntervalOperations {
   label(begins: number): string {
     // Calculate the times that are three days before and after the middle of the week, and create a label from them.
     const middle = begins + 0.5 * TimeConstants.WEEK_MILLIS;
-    const firstDay: Date = new Date(middle - 3 * TimeConstants.DAY_MILLIS);
-    const lastDay: Date = new Date(middle + 3 * TimeConstants.DAY_MILLIS);
-    return isoYearMonthDay(firstDay) + ' to ' + isoYearMonthDay(lastDay);
+    const firstDay = middle - 3 * TimeConstants.DAY_MILLIS;
+    const lastDay = middle + 3 * TimeConstants.DAY_MILLIS;
+    return isoYearMonthDay(new Date(firstDay)) + ' to ' + isoYearMonthDay(new Date(lastDay));
   }
 }
 
