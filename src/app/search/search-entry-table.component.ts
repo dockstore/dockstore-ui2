@@ -143,6 +143,10 @@ export class SearchEntryTableComponent extends Base implements OnInit {
       sort: { active: 'last_modified_date', direction: 'desc' },
     },
     {
+      label: 'Most Used',
+      sort: { active: 'executionCount', direction: 'desc' },
+    },
+    {
       label: 'Name, A-Z',
       sort: { active: 'name', direction: 'asc' },
     },
