@@ -51,6 +51,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { PreviewWarningComponent } from 'app/preview-warning/preview-warning.component';
 import { Dockstore } from 'app/shared/dockstore.model';
+import { ThumbnailTimeSeriesGraphComponent } from '../shared/graphs/thumbnail-time-series-graph.component';
 
 export interface SortOption {
   label: string;
@@ -100,6 +101,7 @@ export interface SortOption {
     CategoryButtonComponent,
     MatChipsModule,
     PreviewWarningComponent,
+    ThumbnailTimeSeriesGraphComponent,
   ],
 })
 export class SearchEntryTableComponent extends Base implements OnInit {
@@ -163,6 +165,7 @@ export class SearchEntryTableComponent extends Base implements OnInit {
       sort: { active: 'all_authors', direction: 'desc' },
     },
   ];
+  public now: Date = new Date();
 
   dataSource: MatTableDataSource<SearchResult>;
   tagCloudData: Array<CloudData>;

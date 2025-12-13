@@ -91,6 +91,14 @@
                   >Last updated {{ entry?.source.last_modified_date ? (entry?.source.last_modified_date | date) : 'n/a' }}</span
                 >
               </span>
+              <span *ngIf="entry?.source.weeklyExecutionCounts"
+                ><app-thumbnail-time-series-graph
+                  [timeSeries]="entry?.source.weeklyExecutionCounts"
+                  [now]="now"
+                  [binCount]="12"
+                  [maxValue]="100"
+                ></app-thumbnail-time-series-graph
+              ></span>
               <app-doi-badge
                 *ngIf="entry?.source?.selected_concept_doi"
                 [doi]="entry.source.selected_concept_doi"
@@ -119,7 +127,6 @@
                   [isBubble]="true"
                 ></app-preview-warning>
               </mat-chip-set>
-              <span *ngIf="entry?.source.weeklyExecutionCounts">has time series app-thumbnail-time-series-graph</span>
             </div>
           </mat-card-content>
         </mat-card>
