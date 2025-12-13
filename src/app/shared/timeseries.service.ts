@@ -21,6 +21,7 @@ export class TimeSeriesService {
   adjustTimeSeries(timeSeriesMetric: TimeSeriesMetric, now: Date, binCount: number): TimeSeriesMetric {
     const adjusted: TimeSeriesMetric = {
       begins: timeSeriesMetric.begins,
+      ends: timeSeriesMetric.ends,
       interval: timeSeriesMetric.interval,
       values: timeSeriesMetric.values.slice(),
     };
@@ -28,13 +29,14 @@ export class TimeSeriesService {
     // TODO make this work for daily intervals, also.
     const day = 24 * 60 * 60 * 1000; // milliseconds in one day (hours * minutes * seconds * milliseconds)
     const week = 7 * day;
-    let begins = Number(adjusted.begins); // Midpoint of the oldest bin
-    const ends = begins + (adjusted.values.length - 1) * week + week / 2; // Exact time that the youngest bin ends
+    let begins = Number(adjusted.begins);
+    let ends = Number(adjusted.ends);
 
     // Expand the newer end of the time series to overlap the current date
     const binsToAppend = Math.ceil((now.getTime() - ends) / week);
     if (binsToAppend > 0) {
       adjusted.values = [...adjusted.values, ...this.zeros(binsToAppend)];
+      ends = ends + binsToAppend * week;
     }
 
     // Expand the older end of the time series to match the desired bin count
@@ -52,12 +54,14 @@ export class TimeSeriesService {
     }
 
     adjusted.begins = String(begins);
+    adjusted.ends = String(ends);
     return adjusted;
   }
 
   emptyTimeSeries(timeSeriesMetric: TimeSeriesMetric) {
     return {
       begins: timeSeriesMetric.begins,
+      ends: timeSeriesMetric.ends,
       interval: timeSeriesMetric.interval,
       values: this.zeros(timeSeriesMetric.values.length),
     };
@@ -70,7 +74,7 @@ export class TimeSeriesService {
     let begins = Number(timeSeriesMetric.begins);
     const labels: string[] = [];
     for (let i = 0; i < timeSeriesMetric.values.length; i++) {
-      const middle = begins + i * week;
+      const middle = begins + (i + 0.5) * week;
       const firstDay: Date = new Date(middle - 3 * day);
       const lastDay: Date = new Date(middle + 3 * day);
       const label = this.formatShortDate(firstDay) + ' to ' + this.formatShortDate(lastDay);
