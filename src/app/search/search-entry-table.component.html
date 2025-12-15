@@ -92,11 +92,9 @@
                 >
               </span>
               <span *ngIf="entry?.source.weeklyExecutionCounts"
-                ><app-thumbnail-time-series-graph
+                ><!-- todo float this and the stars to the right --><app-thumbnail-time-series-graph
                   [timeSeries]="entry?.source.weeklyExecutionCounts"
-                  [now]="now"
-                  [binCount]="12"
-                  [maxValue]="100"
+                  [maxValue]="1"
                 ></app-thumbnail-time-series-graph
               ></span>
               <app-doi-badge

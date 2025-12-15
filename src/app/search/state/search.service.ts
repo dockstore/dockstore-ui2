@@ -334,7 +334,7 @@ export class SearchService {
   }
 
   /**
-   * Separates the 'hits' object into 'toolHits' and 'workflowHits'
+   * Separates the 'hits' object into 'toolHits', 'workflowHits', and 'notebookHits'
    * Also sets up provider information
    * @param {Array<any>} hits
    * @param {number} query_size
@@ -346,7 +346,7 @@ export class SearchService {
     const notebookHits = [];
     hits.forEach((hit) => {
       hit['_source'] = this.providerService.setUpProvider(hit['_source']);
-      if (workflowHits.length + toolHits.length < query_size - 1) {
+      if (workflowHits.length + toolHits.length + notebookHits.length < query_size - 1) {
         if (hit['_index'] === 'tools') {
           hit['_source'] = this.imageProviderService.setUpImageProvider(hit['_source']);
           toolHits.push(hit);
@@ -361,6 +361,14 @@ export class SearchService {
   }
 
   setHits(toolHits: Array<Hit>, workflowHits: Array<Hit>, notebookHits: Array<Hit>) {
+    /* TODO adjust the time series and normalize so the maximum value is 1.0
+    Step 1: adjust each time series to current time and desired length
+    Step 2: determine maximum value
+    Step 3: divide all time series values by maximum value, amke sure to take into account zeros
+    Then, display thumbnail graph with maximumValue = 1
+    const keptHits = compute list of hits from [[toolHits, workflowHits, notebookHits];
+    this.adjustTimeSeries(keptHits);
+    */
     this.searchStore.update((state) => {
       return {
         ...state,
@@ -462,6 +470,7 @@ export class SearchService {
 
   // Given a search info object, will create the permalink for the current search
   createPermalinks(searchInfo): string[] {
+    // TODO add sort order
     // For local testing, use LOCAL_URI, else use HOSTNAME
     const url = `${Dockstore.HOSTNAME}/search`;
     let httpParams = new HttpParams();
