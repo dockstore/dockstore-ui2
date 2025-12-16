@@ -370,7 +370,7 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
   }
 
   private createExecutionTimeHistogramLabels(histogramMetric: HistogramMetric): string[] {
-    return [];
+    return histogramMetric.edges.map((x) => String(x));
   }
 
   private createExecutionTimeHistogramDataset(
