@@ -14,6 +14,7 @@
  *    limitations under the License.
  */
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { formatNumber } from '@angular/common';
 import { EntryTab } from '../../shared/entry/entry-tab';
 import {
   CloudInstance,
@@ -167,13 +168,15 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
           font: {
             size: 9,
           },
-          /* TODO
-          // Use the first date in the bar label as the tick label
           callback: function (value, index) {
             const label = this.getLabelForValue(index);
-            return label.substring(0, label.indexOf(' '));
+            const spaceIndex = label.indexOf(' ');
+            if (spaceIndex >= 0) {
+              return label.substring(0, spaceIndex);
+            } else {
+              return label;
+            }
           },
-          */
         },
       },
       y: {
@@ -370,7 +373,34 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
   }
 
   private createExecutionTimeHistogramLabels(histogramMetric: HistogramMetric): string[] {
-    return histogramMetric.edges.map((x) => String(x));
+    const count = histogramMetric.edges.length - 1;
+    const labels = [];
+    for (let i = 0; i < count; i++) {
+      const lo = histogramMetric.edges[i];
+      const hi = histogramMetric.edges[i + 1] - 1;
+      const loHoursMinutesSeconds = this.toHoursMinutesSeconds(lo);
+      const hiHoursMinutesSeconds = this.toHoursMinutesSeconds(hi);
+      if (lo >= hi) {
+        labels.push(loHoursMinutesSeconds);
+      } else {
+        labels.push(`${loHoursMinutesSeconds} to ${hiHoursMinutesSeconds}`);
+      }
+    }
+    return labels;
+  }
+
+  private toHoursMinutesSeconds(totalSeconds: number): string {
+    if (totalSeconds || totalSeconds === 0) {
+      const hours = Math.floor(totalSeconds / 3600);
+      const minutes = Math.floor((totalSeconds % 3600) / 60);
+      const seconds = totalSeconds % 60;
+      return this.formatNumber(hours) + ':' + this.formatNumber(minutes) + ':' + this.formatNumber(seconds);
+    }
+    return '';
+  }
+
+  private formatNumber(num: number): string {
+    return formatNumber(num, 'en-US', '2.0-0');
   }
 
   private createExecutionTimeHistogramDataset(
