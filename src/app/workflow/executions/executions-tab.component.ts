@@ -28,6 +28,7 @@ import {
   MetricsByStatus,
   RunExecution,
   TimeSeriesMetric,
+  HistogramMetric,
 } from '../../shared/openapi';
 import { SessionQuery } from '../../shared/session/session.query';
 import { Observable } from 'rxjs';
@@ -147,6 +148,32 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
             const label = this.getLabelForValue(index);
             return label.substring(0, label.indexOf(' '));
           },
+        },
+      },
+      y: {
+        stacked: true,
+      },
+    },
+  };
+  executionTimeHistogramDatasets: ChartDataset<'bar', number[]>[] = undefined;
+  executionTimeHistogramLabels: string[] = undefined;
+  executionTimeHistogramOptions: ChartOptions<'bar'> = {
+    responsive: false, // non-responsive to avoid resizing when leaving tab
+    maintainAspectRatio: false,
+    scales: {
+      x: {
+        stacked: true,
+        ticks: {
+          font: {
+            size: 9,
+          },
+          /* TODO
+          // Use the first date in the bar label as the tick label
+          callback: function (value, index) {
+            const label = this.getLabelForValue(index);
+            return label.substring(0, label.indexOf(' '));
+          },
+          */
         },
       },
       y: {
@@ -315,12 +342,44 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
       } else {
         this.barChartDatasets = null;
       }
+
+      // Calculate the information for the run time distribution graph.
+      // TODO
+      let successfulHistogram = metrics.executionStatusCount?.count['SUCCESSFUL']?.executionTimeHistogram;
+      let failedHistogram = metrics.executionStatusCount?.count['FAILED']?.executionTimeHistogram;
+      let abortedHistogram = metrics.executionStatusCount?.count['ABORTED']?.executionTimeHistogram;
+      if (successfulHistogram && failedHistogram && abortedHistogram) {
+        this.executionTimeHistogramLabels = this.createExecutionTimeHistogramLabels(successfulHistogram);
+        this.executionTimeHistogramDatasets = [
+          this.createExecutionTimeHistogramDataset(successfulHistogram, 'Successful', 'rgb(50,205,50)'),
+          this.createExecutionTimeHistogramDataset(failedHistogram, 'Failed', 'rgb(255,0,0)'),
+          this.createExecutionTimeHistogramDataset(abortedHistogram, 'Aborted', 'rgb(255,165,0)'),
+        ];
+      }
     }
   }
 
   private barChartDatasetFromTimeSeries(timeSeriesMetric: TimeSeriesMetric, label: string, color: string): ChartDataset<'bar', number[]> {
     return {
       data: timeSeriesMetric.values,
+      label: label,
+      backgroundColor: color,
+      barPercentage: 0.9,
+      categoryPercentage: 1,
+    };
+  }
+
+  private createExecutionTimeHistogramLabels(histogramMetric: HistogramMetric): string[] {
+    return [];
+  }
+
+  private createExecutionTimeHistogramDataset(
+    histogramMetric: HistogramMetric,
+    label: string,
+    color: string
+  ): ChartDataset<'bar', number[]> {
+    return {
+      data: histogramMetric.frequencies,
       label: label,
       backgroundColor: color,
       barPercentage: 0.9,

@@ -77,6 +77,23 @@
               </canvas>
             </mat-card-content>
           </mat-card>
+          <mat-card class="m-2">
+            <mat-card-header>
+              <mat-card-subtitle>Execution Time Distribution</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+              <canvas
+                baseChart
+                width="450"
+                height="250"
+                [type]="'bar'"
+                [datasets]="executionTimeHistogramDatasets"
+                [labels]="executionTimeHistogramLabels"
+                [options]="executionTimeHistogramOptions"
+              >
+              </canvas>
+            </mat-card-content>
+          </mat-card>
         </div>
         <mat-form-field class="metrics-execution-status-dropdown" data-cy="metrics-execution-status-dropdown">
           <mat-label>Select an Execution Status</mat-label>
