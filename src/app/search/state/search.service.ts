@@ -32,6 +32,7 @@ import { DockstoreTool, EntryType, Workflow } from '../../shared/openapi';
 import { SearchQuery } from './search.query';
 import { SearchStore } from './search.store';
 import { SearchAuthorsHtmlPipe } from '../search-authors-html.pipe';
+import { TimeSeriesService } from '../../shared/timeseries.service';
 
 export interface Hit {
   _index: string;
@@ -193,7 +194,8 @@ export class SearchService {
     private imageProviderService: ImageProviderService,
     private extendedGA4GHService: ExtendedGA4GHService,
     private alertService: AlertService,
-    private searchAuthorsHtmlPipe: SearchAuthorsHtmlPipe
+    private searchAuthorsHtmlPipe: SearchAuthorsHtmlPipe,
+    private timeSeriesService: TimeSeriesService
   ) {}
 
   static convertTabIndexToEntryType(index: number): 'tools' | 'workflows' | 'notebooks' | null {
@@ -369,6 +371,33 @@ export class SearchService {
     const keptHits = compute list of hits from [[toolHits, workflowHits, notebookHits];
     this.adjustTimeSeries(keptHits);
     */
+    const now = new Date();
+    const sampleCount = 12;
+    const hits = [...toolHits, ...workflowHits, ...notebookHits];
+    hits.forEach((hit) => {
+      const timeSeries = hit._source.weeklyExecutionCounts;
+      if (timeSeries) {
+        hit._source.weeklyExecutionCounts = this.timeSeriesService.adjustTimeSeries(timeSeries, now, sampleCount);
+      }
+    });
+    let maximumValue = 1;
+    hits.forEach((hit) => {
+      const timeSeries = hit._source.weeklyExecutionCounts;
+      if (timeSeries) {
+        timeSeries.values.forEach((value) => {
+          maximumValue = Math.max(value, maximumValue);
+        });
+      }
+    });
+    console.log('MAX ' + maximumValue);
+    hits.forEach((hit) => {
+      const timeSeries = hit._source.weeklyExecutionCounts;
+      if (timeSeries) {
+        timeSeries.values = timeSeries.values.map((value) => value / maximumValue);
+      }
+    });
+    // TODO add monthly
+
     this.searchStore.update((state) => {
       return {
         ...state,
