@@ -81,4 +81,10 @@ describe('TimeSeriesService', () => {
     expect(adjusted.values).toEqual(timeSeries.values);
     expect(adjusted.interval).toEqual(timeSeries.interval);
   }
+
+  it('should generate the correct number of labels', inject([TimeSeriesService], (service: TimeSeriesService) => {
+    expect(service.labelsFromTimeSeries(dailyTimeSeries).length).toEqual(dailyTimeSeries.values.length);
+    expect(service.labelsFromTimeSeries(weeklyTimeSeries).length).toEqual(weeklyTimeSeries.values.length);
+    expect(service.labelsFromTimeSeries(monthlyTimeSeries).length).toEqual(monthlyTimeSeries.values.length);
+  }));
 });

@@ -89,13 +89,10 @@ export class TimeSeriesService {
   labelsFromTimeSeries(timeSeriesMetric: TimeSeriesMetric): string[] {
     const operations = this.createIntervalOperations(timeSeriesMetric);
     const begins = this.stringToTime(timeSeriesMetric.begins);
-    const labels: string[] = [];
-    for (let i = 0; i < timeSeriesMetric.values.length; i++) {
-      const when = operations.addIntervals(begins, i);
-      const label = operations.label(when);
-      labels.push(label);
-    }
-    return labels;
+    return timeSeriesMetric.values.map((value, index) => {
+      const when = operations.addIntervals(begins, index);
+      return operations.label(when);
+    });
   }
 
   private zeros(count: number): number[] {
