@@ -15,6 +15,7 @@
  */
 import { Injectable } from '@angular/core';
 import { TimeSeriesMetric } from './openapi';
+import { Temporal } from '@js-temporal/polyfill';
 
 @Injectable()
 export class TimeSeriesService {
@@ -25,12 +26,12 @@ export class TimeSeriesService {
     const operations = this.createIntervalOperations(timeSeriesMetric);
 
     // Store information from the original time series in variables that we will adjust and then reassemble into a new time series at the end of this method.
-    let begins = Number(timeSeriesMetric.begins);
-    let ends = Number(timeSeriesMetric.ends);
+    let begins = this.stringToTime(timeSeriesMetric.begins);
+    let ends = this.stringToTime(timeSeriesMetric.ends);
     let values = timeSeriesMetric.values.slice();
 
     // Append bins to the newer end of the time series, if necessary, to make it overlap the specified date.
-    const binsToAppend = operations.countIntervals(ends, now.getTime());
+    const binsToAppend = operations.countIntervals(ends, this.dateToTime(now));
     if (binsToAppend > 0) {
       values = [...values, ...this.zeros(binsToAppend)];
       ends = operations.addIntervals(ends, binsToAppend);
@@ -51,11 +52,23 @@ export class TimeSeriesService {
     }
 
     return {
-      begins: String(begins),
-      ends: String(ends),
+      begins: this.timeToString(begins),
+      ends: this.timeToString(ends),
       interval: timeSeriesMetric.interval,
       values: values,
     };
+  }
+
+  private stringToTime(s: string): Temporal.ZonedDateTime {
+    return Temporal.Instant.fromEpochMilliseconds(Number(s)).toZonedDateTimeISO('UTC');
+  }
+
+  private timeToString(t: Temporal.ZonedDateTime): string {
+    return String(t.epochMilliseconds);
+  }
+
+  private dateToTime(d: Date) {
+    return Temporal.Instant.fromEpochMilliseconds(d.getTime()).toZonedDateTimeISO('UTC');
   }
 
   /**
@@ -75,9 +88,10 @@ export class TimeSeriesService {
    */
   labelsFromTimeSeries(timeSeriesMetric: TimeSeriesMetric): string[] {
     const operations = this.createIntervalOperations(timeSeriesMetric);
+    const begins = this.stringToTime(timeSeriesMetric.begins);
     const labels: string[] = [];
     for (let i = 0; i < timeSeriesMetric.values.length; i++) {
-      const when = operations.addIntervals(Number(timeSeriesMetric.begins), i);
+      const when = operations.addIntervals(begins, i);
       const label = operations.label(when);
       labels.push(label);
     }
@@ -105,12 +119,6 @@ export class TimeSeriesService {
   }
 }
 
-module TimeConstants {
-  export const DAY_MILLIS = 24 * 60 * 60 * 1000;
-  export const WEEK_MILLIS = 7 * DAY_MILLIS;
-  export const AVERAGE_MONTH_MILLIS = (365.2425 / 12) * DAY_MILLIS;
-}
-
 /**
  * Encapsulates primitive operations that can be used to manipulate a time series with a particular interval.
  */
@@ -120,147 +128,128 @@ interface IntervalOperations {
    * @param from start time in epoch milliseconds
    * @param to end time in epoch milliseconds
    */
-  countIntervals(from: number, to: number): number;
+  countIntervals(from: Temporal.ZonedDateTime, to: Temporal.ZonedDateTime): number;
 
   /**
    * Add the specified number of intervals to the specified "from" time.
    * @param from start time in epoch milliseconds
    * @param intervalCount number of intervals to add
    */
-  addIntervals(from: number, intervalCount: number): number;
+  addIntervals(from: Temporal.ZonedDateTime, intervalCount: number): Temporal.ZonedDateTime;
 
   /**
    * Subtract the specified number of intervals to the specified "from" time.
    * @param from start time in epoch milliseconds
    * @param intervalCount number of intervals to subtract
    */
-  subtractIntervals(from: number, intervalCount: number): number;
+  subtractIntervals(from: Temporal.ZonedDateTime, intervalCount: number): Temporal.ZonedDateTime;
 
   /**
    * Calculate a label for the time series bin that begins at the specified time.
    */
-  label(begins: number): string;
+  label(begins: Temporal.ZonedDateTime): string;
 }
 
 /**
- * Implements primitive operations to manipulate a time series wherein each interval is always the exact same
- * duration (SECOND, MINUTE, HOUR, DAY, WEEK).  This class is not suitable for MONTH and YEAR intervals,
- * because the the duration of the interval depends upon the particular month (28 to 31 days) or year
- * (normal year or leap year).
+ * Implements primitive operations to manipulate a time series wherein each interval is one of the
+ * accepted Temporal API units.
  */
-abstract class ConstantIntervalOperations implements IntervalOperations {
-  durationMillis: number;
-  constructor(durationMillis: number) {
-    this.durationMillis = durationMillis;
+abstract class UnitIntervalOperations implements IntervalOperations {
+  unit: Temporal.DateTimeUnit;
+  units: Temporal.PluralUnit<Temporal.DateTimeUnit>;
+  constructor(unit: Temporal.DateTimeUnit, units: Temporal.PluralUnit<Temporal.DateTimeUnit>) {
+    this.unit = unit;
+    this.units = units;
   }
 
-  countIntervals(from: number, to: number): number {
-    return Math.ceil((to - from) / this.durationMillis);
+  countIntervals(from: Temporal.ZonedDateTime, to: Temporal.ZonedDateTime): number {
+    if (Temporal.ZonedDateTime.compare(from, to) >= 0) {
+      return 0;
+    }
+    return Math.ceil(from.until(to).total({ relativeTo: from, unit: this.unit }));
   }
 
-  addIntervals(from: number, intervalCount: number): number {
-    return from + intervalCount * this.durationMillis;
+  addIntervals(from: Temporal.ZonedDateTime, intervalCount: number): Temporal.ZonedDateTime {
+    const duration = Temporal.Duration.from({ [this.units]: intervalCount });
+    return from.add(duration);
   }
 
-  subtractIntervals(from: number, intervalCount: number): number {
-    return from - intervalCount * this.durationMillis;
+  subtractIntervals(from: Temporal.ZonedDateTime, intervalCount: number): Temporal.ZonedDateTime {
+    const duration = Temporal.Duration.from({ [this.units]: intervalCount });
+    return from.subtract(duration);
   }
 
-  abstract label(begins: number): string;
+  abstract label(begins: Temporal.ZonedDateTime): string;
 }
 
 /**
  * Implements primitive operations to manipulate a time series wherein the interval is DAY.
  */
-class DayIntervalOperations extends ConstantIntervalOperations {
+class DayIntervalOperations extends UnitIntervalOperations {
   constructor() {
-    super(TimeConstants.DAY_MILLIS);
+    super('day', 'days');
   }
 
-  label(begins: number): string {
+  label(begins: Temporal.ZonedDateTime): string {
     // Calculate the time of the middle of the day, and create a label from it.
-    const middle = begins + 0.5 * TimeConstants.DAY_MILLIS;
-    return isoYearMonthDay(new Date(middle));
+    const middle = begins.add(Temporal.Duration.from({ hours: 12 }));
+    return isoYearMonthDay(middle);
   }
 }
 
 /**
  * Implements primitive operations to manipulate a time series wherein the interval is WEEK.
  */
-class WeekIntervalOperations extends ConstantIntervalOperations {
+class WeekIntervalOperations extends UnitIntervalOperations {
   constructor() {
-    super(TimeConstants.WEEK_MILLIS);
+    super('week', 'weeks');
   }
 
-  label(begins: number): string {
-    // Calculate the times that are three days before and after the middle of the week, and create a label from them.
-    const middle = begins + 0.5 * TimeConstants.WEEK_MILLIS;
-    const firstDay = middle - 3 * TimeConstants.DAY_MILLIS;
-    const lastDay = middle + 3 * TimeConstants.DAY_MILLIS;
-    return isoYearMonthDay(new Date(firstDay)) + ' to ' + isoYearMonthDay(new Date(lastDay));
+  label(begins: Temporal.ZonedDateTime): string {
+    // Calculate the times that are midway through the first and last days of the week (by adding 0.5 and 6.5 days to the beginning time) and create a label from them.
+    const firstDay = begins.add(Temporal.Duration.from({ hours: 12 }));
+    const lastDay = begins.add(Temporal.Duration.from({ days: 6, hours: 12 }));
+    return `${isoYearMonthDay(firstDay)} to ${isoYearMonthDay(lastDay)}`;
   }
 }
 
 /**
  * Implements primitive operations to manipulate a time series wherein the interval is MONTH.
- * Months differ in length (from 28 to 31 days), so it is not possible to adjust time by MONTH intervals by
- * adding/subtracting the exact same amount of time for each month.
  */
-class MonthIntervalOperations implements IntervalOperations {
-  countIntervals(from: number, to: number): number {
-    // Step 1: To efficiently skip forward by a large number of months, compute a slight underestimate of the true interval count, and advance the "from" time by that amount.
-    // To avoid skipping too far forward, we must underestimate, because some months are shorter than average.
-    let intervalCount = Math.max(Math.floor((to - from) / TimeConstants.AVERAGE_MONTH_MILLIS) - 2, 0);
-    let when = this.addIntervals(from, intervalCount);
-    // Step 2: Add more intervals, one by one, until we've reached the "to" time.
-    // This step accounts for the remaining time due to the underestimate in the previous step.
-    // For example, if the "to" time is in March 1, and "when" is January 3, we add 31 days to move to February 3, and then 28 days to move to March 3, and we're done.
-    while (when < to) {
-      when = this.addIntervals(when, 1);
-      intervalCount++;
-    }
-    return intervalCount;
+class MonthIntervalOperations extends UnitIntervalOperations {
+  constructor() {
+    super('month', 'months');
   }
 
-  addIntervals(from: number, intervalCount: number): number {
-    const date = new Date(from);
-    date.setUTCMonth(date.getUTCMonth() + intervalCount);
-    return date.getTime();
-  }
-
-  subtractIntervals(from: number, intervalCount: number): number {
-    return this.addIntervals(from, -intervalCount);
-  }
-
-  label(begins: number): string {
-    // Calculate the time of the middle of the month, and create a label from it.
-    const middle = begins + 0.5 * TimeConstants.AVERAGE_MONTH_MILLIS;
-    return isoYearMonth(new Date(middle));
+  label(begins: Temporal.ZonedDateTime): string {
+    // Calculate a time that is approximately the middle of the month, and create a label from it.
+    const middle = begins.add(Temporal.Duration.from({ days: 15 }));
+    return isoYearMonth(middle);
   }
 }
 
 class UnsupportedIntervalOperations implements IntervalOperations {
-  countIntervals(from: number, to: number): number {
+  countIntervals(from: Temporal.ZonedDateTime, to: Temporal.ZonedDateTime): number {
     return 0;
   }
 
-  addIntervals(from: number, intervalCount: number): number {
+  addIntervals(from: Temporal.ZonedDateTime, intervalCount: number): Temporal.ZonedDateTime {
     return from;
   }
 
-  subtractIntervals(from: number, intervalCount: number): number {
+  subtractIntervals(from: Temporal.ZonedDateTime, intervalCount: number): Temporal.ZonedDateTime {
     return from;
   }
 
-  label(begins: number): string {
+  label(begins: Temporal.ZonedDateTime): string {
     return '';
   }
 }
 
-function isoYearMonthDay(date: Date): string {
-  return date.toISOString().slice(0, 10);
+function isoYearMonthDay(when: Temporal.ZonedDateTime): string {
+  return when.toString().slice(0, 10);
 }
 
-function isoYearMonth(date: Date): string {
-  return date.toISOString().slice(0, 7);
+function isoYearMonth(when: Temporal.ZonedDateTime): string {
+  return when.toString().slice(0, 7);
 }

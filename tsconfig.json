@@ -17,7 +17,8 @@
     ],
     "lib": [
       "es2017",
-      "dom"
+      "dom",
+      "ES2021",
     ],
     "baseUrl": "./src",
     "paths": {
