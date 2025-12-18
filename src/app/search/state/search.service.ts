@@ -363,14 +363,20 @@ export class SearchService {
   }
 
   setHits(toolHits: Array<Hit>, workflowHits: Array<Hit>, notebookHits: Array<Hit>) {
-    /* TODO adjust the time series and normalize so the maximum value is 1.0
-    Step 1: adjust each time series to current time and desired length
-    Step 2: determine maximum value
-    Step 3: divide all time series values by maximum value, amke sure to take into account zeros
-    Then, display thumbnail graph with maximumValue = 1
-    const keptHits = compute list of hits from [[toolHits, workflowHits, notebookHits];
-    this.adjustTimeSeries(keptHits);
-    */
+    this.processHits(toolHits, workflowHits, notebookHits);
+
+    this.searchStore.update((state) => {
+      return {
+        ...state,
+        toolhit: toolHits,
+        workflowhit: workflowHits,
+        notebookhit: notebookHits,
+      };
+    });
+  }
+
+  private processHits(toolHits: Array<Hit>, workflowHits: Array<Hit>, notebookHits: Array<Hit>) {
+    // Adjust each time series to the current time and desired sample count.
     const now = new Date();
     const sampleCount = 12;
     const hits = [...toolHits, ...workflowHits, ...notebookHits];
@@ -380,31 +386,28 @@ export class SearchService {
         hit._source.weeklyExecutionCounts = this.timeSeriesService.adjustTimeSeries(timeSeries, now, sampleCount);
       }
     });
-    let maximumValue = 1;
     hits.forEach((hit) => {
-      const timeSeries = hit._source.weeklyExecutionCounts;
+      const timeSeries = hit._source.monthlyExecutionCounts;
       if (timeSeries) {
-        timeSeries.values.forEach((value) => {
-          maximumValue = Math.max(value, maximumValue);
-        });
+        hit._source.monthlyExecutionCounts = this.timeSeriesService.adjustTimeSeries(timeSeries, now, sampleCount);
       }
     });
-    console.log('MAX ' + maximumValue);
-    hits.forEach((hit) => {
-      const timeSeries = hit._source.weeklyExecutionCounts;
-      if (timeSeries) {
-        timeSeries.values = timeSeries.values.map((value) => value / maximumValue);
-      }
-    });
-    // TODO add monthly
+    // For each type of time series, normalize the values to a maximum of 1.0.
+    this.normalizeValues(hits.map((hit) => hit._source.weeklyExecutionCounts?.values).filter((values) => values != undefined));
+    this.normalizeValues(hits.map((hit) => hit._source.monthlyExecutionCounts?.values).filter((values) => values != undefined));
+  }
 
-    this.searchStore.update((state) => {
-      return {
-        ...state,
-        toolhit: toolHits,
-        workflowhit: workflowHits,
-        notebookhit: notebookHits,
-      };
+  private normalizeValues(valuesList: number[][]): void {
+    let maximumValue = 1;
+    valuesList.forEach((values) => {
+      values.forEach((value) => {
+        maximumValue = Math.max(value, maximumValue);
+      });
+    });
+    valuesList.forEach((values) => {
+      for (let i = 0; i < values.length; i++) {
+        values[i] = values[i] / maximumValue;
+      }
     });
   }
 
@@ -499,7 +502,6 @@ export class SearchService {
 
   // Given a search info object, will create the permalink for the current search
   createPermalinks(searchInfo): string[] {
-    // TODO add sort order
     // For local testing, use LOCAL_URI, else use HOSTNAME
     const url = `${Dockstore.HOSTNAME}/search`;
     let httpParams = new HttpParams();

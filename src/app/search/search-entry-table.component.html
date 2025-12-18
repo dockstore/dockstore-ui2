@@ -121,10 +121,10 @@
                   ></app-preview-warning>
                 </mat-chip-set>
               </div>
-              <div *ngIf="entry?.source.weeklyExecutionCounts" fxLayout="column" fxLayoutAlign="end">
+              <div *ngIf="entry?.source.monthlyExecutionCounts" fxLayout="column" fxLayoutAlign="end">
                 <app-thumbnail-time-series-graph
                   style="position: relative; bottom: 1px"
-                  [timeSeries]="entry?.source.weeklyExecutionCounts"
+                  [timeSeries]="entry?.source.monthlyExecutionCounts"
                   [maxValue]="1"
                 ></app-thumbnail-time-series-graph>
               </div>
