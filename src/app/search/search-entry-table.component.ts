@@ -165,7 +165,6 @@ export class SearchEntryTableComponent extends Base implements OnInit {
       sort: { active: 'all_authors', direction: 'desc' },
     },
   ];
-  public now: Date = new Date();
 
   dataSource: MatTableDataSource<SearchResult>;
   tagCloudData: Array<CloudData>;
