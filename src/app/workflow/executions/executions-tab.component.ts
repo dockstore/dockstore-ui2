@@ -347,7 +347,6 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
       }
 
       // Calculate the information for the run time distribution graph.
-      // TODO
       let successfulHistogram = metrics.executionStatusCount?.count['SUCCESSFUL']?.executionTimeHistogram;
       let failedHistogram = metrics.executionStatusCount?.count['FAILED']?.executionTimeHistogram;
       let abortedHistogram = metrics.executionStatusCount?.count['ABORTED']?.executionTimeHistogram;
