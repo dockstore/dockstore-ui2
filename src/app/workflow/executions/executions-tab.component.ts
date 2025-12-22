@@ -138,9 +138,9 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
     responsive: false, // non-responsive to avoid resizing when leaving tab
     maintainAspectRatio: false,
   };
-  barChartDatasets: ChartDataset<'bar', number[]>[] = undefined;
-  barChartLabels: string[] = undefined;
-  barChartOptions: ChartOptions<'bar'> = {
+  executionCountTimeSeriesDatasets: ChartDataset<'bar', number[]>[] = undefined;
+  executionCountTimeSeriesLabels: string[] = undefined;
+  executionCountTimeSeriesOptions: ChartOptions<'bar'> = {
     responsive: false, // non-responsive to avoid resizing when leaving tab
     maintainAspectRatio: false,
     scales: {
@@ -342,14 +342,14 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
         abortedCounts = this.timeSeriesService.adjustTimeSeries(abortedCounts ?? emptyCounts, now, binCount);
 
         // Create the labels and datasets, which will propagate to the canvas via the template.
-        this.barChartLabels = this.timeSeriesService.labelsFromTimeSeries(successfulCounts);
-        this.barChartDatasets = [
-          this.barChartDatasetFromTimeSeries(successfulCounts, this.SUCCESSFUL_LABEL, this.SUCCESSFUL_COLOR),
-          this.barChartDatasetFromTimeSeries(failedCounts, this.FAILED_LABEL, this.FAILED_COLOR),
-          this.barChartDatasetFromTimeSeries(abortedCounts, this.ABORTED_LABEL, this.ABORTED_COLOR),
+        this.executionCountTimeSeriesLabels = this.timeSeriesService.labelsFromTimeSeries(successfulCounts);
+        this.executionCountTimeSeriesDatasets = [
+          this.createExecutionCountTimeSeriesDataset(successfulCounts, this.SUCCESSFUL_LABEL, this.SUCCESSFUL_COLOR),
+          this.createExecutionCountTimeSeriesDataset(failedCounts, this.FAILED_LABEL, this.FAILED_COLOR),
+          this.createExecutionCountTimeSeriesDataset(abortedCounts, this.ABORTED_LABEL, this.ABORTED_COLOR),
         ];
       } else {
-        this.barChartDatasets = null;
+        this.executionCountTimeSeriesDatasets = null;
       }
 
       // Calculate the information for the run time distribution graph.
@@ -368,7 +368,11 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
     }
   }
 
-  private barChartDatasetFromTimeSeries(timeSeriesMetric: TimeSeriesMetric, label: string, color: string): ChartDataset<'bar', number[]> {
+  private createExecutionCountTimeSeriesDataset(
+    timeSeriesMetric: TimeSeriesMetric,
+    label: string,
+    color: string
+  ): ChartDataset<'bar', number[]> {
     return {
       data: timeSeriesMetric.values,
       label: label,
