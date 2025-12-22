@@ -94,6 +94,12 @@ interface ExecutionMetricsTableObject {
   ],
 })
 export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChanges {
+  readonly SUCCESSFUL_LABEL = 'Successful';
+  readonly FAILED_LABEL = 'Failed';
+  readonly ABORTED_LABEL = 'Aborted';
+  readonly SUCCESSFUL_COLOR = 'rgb(50,205,50)';
+  readonly FAILED_COLOR = 'rgb(255,0,0)';
+  readonly ABORTED_COLOR = 'rgb(255,165,0)';
   metrics: Map<PartnerEnum, Metrics>;
   currentPartner: PartnerEnum;
   partners: PartnerEnum[];
@@ -127,7 +133,7 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
   validatorToolMetricsExist: boolean;
   isAdminCuratorOrPlatformPartner: boolean;
   pieChartDatasets: ChartDataset<'pie', number[]>[] = undefined;
-  pieChartLabels: string[] = ['Successful', 'Failed', 'Aborted'];
+  pieChartLabels: string[] = [this.SUCCESSFUL_LABEL, this.FAILED_LABEL, this.ABORTED_LABEL];
   pieChartOptions: ChartOptions<'pie'> = {
     responsive: false, // non-responsive to avoid resizing when leaving tab
     maintainAspectRatio: false,
@@ -312,7 +318,7 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
       this.pieChartDatasets = [
         {
           data: [this.successfulExecutions, this.failedExecutions, this.abortedExecutions],
-          backgroundColor: ['rgb(50,205,50)', 'rgb(255, 0, 0)', 'rgb(255,165,0)'],
+          backgroundColor: [this.SUCCESSFUL_COLOR, this.FAILED_COLOR, this.ABORTED_COLOR],
         },
       ];
 
@@ -338,24 +344,25 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
         // Create the labels and datasets, which will propagate to the canvas via the template.
         this.barChartLabels = this.timeSeriesService.labelsFromTimeSeries(successfulCounts);
         this.barChartDatasets = [
-          this.barChartDatasetFromTimeSeries(successfulCounts, 'Successful', 'rgb(50,205,50)'),
-          this.barChartDatasetFromTimeSeries(failedCounts, 'Failed', 'rgb(255,0,0)'),
-          this.barChartDatasetFromTimeSeries(abortedCounts, 'Aborted', 'rgb(255,165,0)'),
+          this.barChartDatasetFromTimeSeries(successfulCounts, this.SUCCESSFUL_LABEL, this.SUCCESSFUL_COLOR),
+          this.barChartDatasetFromTimeSeries(failedCounts, this.FAILED_LABEL, this.FAILED_COLOR),
+          this.barChartDatasetFromTimeSeries(abortedCounts, this.ABORTED_LABEL, this.ABORTED_COLOR),
         ];
       } else {
         this.barChartDatasets = null;
       }
 
       // Calculate the information for the run time distribution graph.
+      // The following code assumes that all of the histograms have the same edge values.
       let successfulHistogram = metrics.executionStatusCount?.count['SUCCESSFUL']?.executionTimeHistogram;
       let failedHistogram = metrics.executionStatusCount?.count['FAILED']?.executionTimeHistogram;
       let abortedHistogram = metrics.executionStatusCount?.count['ABORTED']?.executionTimeHistogram;
       if (successfulHistogram && failedHistogram && abortedHistogram) {
         this.executionTimeHistogramLabels = this.createExecutionTimeHistogramLabels(successfulHistogram);
         this.executionTimeHistogramDatasets = [
-          this.createExecutionTimeHistogramDataset(successfulHistogram, 'Successful', 'rgb(50,205,50)'),
-          this.createExecutionTimeHistogramDataset(failedHistogram, 'Failed', 'rgb(255,0,0)'),
-          this.createExecutionTimeHistogramDataset(abortedHistogram, 'Aborted', 'rgb(255,165,0)'),
+          this.createExecutionTimeHistogramDataset(successfulHistogram, this.SUCCESSFUL_LABEL, this.SUCCESSFUL_COLOR),
+          this.createExecutionTimeHistogramDataset(failedHistogram, this.FAILED_LABEL, this.FAILED_COLOR),
+          this.createExecutionTimeHistogramDataset(abortedHistogram, this.ABORTED_LABEL, this.ABORTED_COLOR),
         ];
       }
     }
