@@ -64,6 +64,7 @@
     "bodybuilder": "^2.4.0",
     "bootstrap": "^3.4.1",
     "chart.js": "^4.5.0",
+    "chartjs-plugin-annotation": "^3.1.0",
     "cytoscape": "^3.19.0",
     "cytoscape-dagre": "^2.3.2",
     "cytoscape-popper": "^2.0.0",

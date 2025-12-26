@@ -55,7 +55,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { NgIf, NgFor, NgClass, NgTemplateOutlet, DecimalPipe, DatePipe } from '@angular/common';
 import { BaseChartDirective } from 'ng2-charts';
-import { ChartDataset, ChartOptions } from 'chart.js';
+import { Chart, ChartDataset, ChartOptions } from 'chart.js';
+import { default as Annotation } from 'chartjs-plugin-annotation';
 
 interface ExecutionMetricsTableObject {
   metric: string; // Name of the execution metric
@@ -164,32 +165,7 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
   };
   executionTimeHistogramDatasets: ChartDataset<'bar', number[]>[] = undefined;
   executionTimeHistogramLabels: string[] = undefined;
-  executionTimeHistogramOptions: ChartOptions<'bar'> = {
-    responsive: false, // non-responsive to avoid resizing when leaving tab
-    maintainAspectRatio: false,
-    scales: {
-      x: {
-        stacked: true,
-        ticks: {
-          font: {
-            size: 9,
-          },
-          callback: function (value, index) {
-            const label = this.getLabelForValue(index);
-            const spaceIndex = label.indexOf(' ');
-            if (spaceIndex >= 0) {
-              return label.substring(0, spaceIndex);
-            } else {
-              return label;
-            }
-          },
-        },
-      },
-      y: {
-        stacked: true,
-      },
-    },
-  };
+  executionTimeHistogramOptions: ChartOptions<'bar'> = undefined;
 
   @Input() entry: BioWorkflow | Service | Notebook;
   @Input() version: WorkflowVersion;
@@ -210,6 +186,7 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
       .subscribe(([isAdminOrCurator, isPlatformPartner]) => {
         this.isAdminCuratorOrPlatformPartner = isAdminOrCurator || isPlatformPartner;
       });
+    Chart.register(Annotation);
   }
 
   ngOnChanges() {
@@ -359,6 +336,7 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
       let abortedHistogram = metrics.executionStatusCount?.count['ABORTED']?.executionTimeHistogram;
       if (successfulHistogram && failedHistogram && abortedHistogram) {
         this.executionTimeHistogramLabels = this.createExecutionTimeHistogramLabels(successfulHistogram);
+        this.executionTimeHistogramOptions = this.createExecutionTimeHistogramOptions(successfulHistogram);
         this.executionTimeHistogramDatasets = [
           this.createExecutionTimeHistogramDataset(successfulHistogram, this.SUCCESSFUL_LABEL, this.SUCCESSFUL_COLOR),
           this.createExecutionTimeHistogramDataset(failedHistogram, this.FAILED_LABEL, this.FAILED_COLOR),
@@ -425,6 +403,152 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
       barPercentage: 0.9,
       categoryPercentage: 1,
     };
+  }
+
+  private createExecutionTimeHistogramOptions(histogramMetric: HistogramMetric): ChartOptions<'bar'> {
+    return {
+      responsive: false, // non-responsive to avoid resizing when leaving tab
+      maintainAspectRatio: false,
+      scales: {
+        x: {
+          grid: {
+            offset: false,
+            color: (context) => {
+              return context?.tick?.major ? 'rgb(210,210,210)' : 'rgb(235,235,235)';
+            },
+          },
+          stacked: true,
+          ticks: {
+            font: {
+              size: 9,
+            },
+            /*
+            major: {
+              enabled: true,
+            },
+            */
+
+            callback: function (value, index) {
+              const label = this.getLabelForValue(index);
+              const spaceIndex = label.indexOf(' ');
+              if (spaceIndex >= 0) {
+                return label.substring(0, spaceIndex);
+              } else {
+                return label;
+              }
+            },
+            /*
+            callback: function (value, index) {
+              const label = this.getLabelForValue(index);
+              return label;
+            },
+            */
+            autoSkip: false,
+          },
+
+          afterUpdate: (scale) => {
+            /*
+            for (let i = 0; i < 20; i=i+2) {
+                const label = i != 12 ? 'l' + i : '';
+                ticks.push({value: i - 0.5, label: label, major: i == 10});
+            }
+            */
+            /*
+            const ticks = [];
+            ticks.push({value: this.convertXValueToBarSpace(10, histogramMetric), label: '10s', major: true});
+            ticks.push({value: this.convertXValueToBarSpace(3 * 10, histogramMetric), label: '30s', major: true});
+            ticks.push({value: this.convertXValueToBarSpace(60, histogramMetric), label: '1m', major: true});
+            ticks.push({value: this.convertXValueToBarSpace(3 * 60, histogramMetric), label: '3m', major: true});
+            ticks.push({value: this.convertXValueToBarSpace(600, histogramMetric), label: '10m', major: true});
+            ticks.push({value: this.convertXValueToBarSpace(30 * 60, histogramMetric), label: '30m', major: true});
+            ticks.push({value: this.convertXValueToBarSpace(3600, histogramMetric), label: '1h', major: true});
+            ticks.push({value: this.convertXValueToBarSpace(3 * 3600, histogramMetric), label: '3h', major: true});
+            ticks.push({value: this.convertXValueToBarSpace(36000, histogramMetric), label: '10h', major: true});
+            ticks.push({value: this.convertXValueToBarSpace(24 * 3600, histogramMetric), label: '1d', major: true});
+            // ticks.push({value: this.convertXValueToBarSpace(10 * 24 * 3600, histogramMetric), label: '10d', major: true});
+            // ticks.push({value: this.convertXValueToBarSpace(600, histogramMetric), label: '10m', major: true});
+            // ticks.push({value: this.convertXValueToBarSpace(3600, histogramMetric), label: '1h', major: true});
+            // ticks.push({value: this.convertXValueToBarSpace(36000, histogramMetric), label: '10h', major: true});
+            */
+            const ticks = [
+              ...this.generateTicks(10, 10, 60, histogramMetric),
+              ...this.generateTicks(60, 60, 10 * 60, histogramMetric),
+              ...this.generateTicks(600, 600, 6 * 600, histogramMetric),
+              ...this.generateTicks(3600, 3600, 10 * 3600, histogramMetric),
+              ...this.generateTicks(36000, 36000, 2.4 * 10 * 3600, histogramMetric),
+              // ...this.generateTicks(24 * 3600, 24 * 3600, 25 * 3600, histogramMetric),
+            ];
+            scale.ticks = ticks;
+          },
+        },
+        y: {
+          stacked: true,
+        },
+      },
+      /*
+      plugins: {
+        annotation: {
+          annotations: {
+            line: {
+              type: 'line',
+              xMin: 0.5,
+              xMax: 0.5,
+              borderWidth: 1,
+              label: {
+                display: true,
+                content: 'Moo',
+                position: 'start',
+                yAdjust: 20,
+              }
+            }
+          },
+        },
+      },
+      */
+    };
+  }
+
+  private generateTicks(start: number, step: number, until: number, histogramMetric: HistogramMetric) {
+    const ticks = [];
+    let x = start;
+    let factor = 1;
+    while (x < until) {
+      const barSpace = this.convertXValueToBarSpace(x, histogramMetric);
+      const tick = {
+        value: barSpace,
+        label: factor == 1 ? this.convertDurationToText(x) : '',
+        major: factor == 1, // TODO
+      };
+      ticks.push(tick);
+      x += step;
+      factor++;
+    }
+    return ticks;
+  }
+
+  private convertDurationToText(duration: number): string {
+    if (duration < 60) {
+      return duration + 's';
+    }
+    if (duration < 3600) {
+      return duration / 60 + 'm';
+    }
+    if (duration < 24 * 3600) {
+      return duration / 3600 + 'h';
+    }
+    return duration / (24 * 3600) + 'd';
+  }
+
+  private convertXValueToBarSpace(x: number, histogramMetric: HistogramMetric) {
+    const edges = histogramMetric.edges;
+    let binIndex = 0;
+    while (!(x >= edges[binIndex] && x < edges[binIndex + 1]) && binIndex < edges.length - 1) {
+      binIndex++;
+    }
+    const loEdge = edges[binIndex];
+    const hiEdge = edges[binIndex + 1];
+    const bar = binIndex + (x - loEdge) / (hiEdge - loEdge) - 0.5;
+    return bar;
   }
 
   /**
