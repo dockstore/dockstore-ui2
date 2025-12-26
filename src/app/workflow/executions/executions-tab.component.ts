@@ -411,23 +411,17 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
       maintainAspectRatio: false,
       scales: {
         x: {
+          display: false,
           grid: {
-            offset: false,
-            color: (context) => {
-              return context?.tick?.major ? 'rgb(210,210,210)' : 'rgb(235,235,235)';
-            },
+            display: false,
           },
           stacked: true,
           ticks: {
+            display: false,
+            /*
             font: {
               size: 9,
             },
-            /*
-            major: {
-              enabled: true,
-            },
-            */
-
             callback: function (value, index) {
               const label = this.getLabelForValue(index);
               const spaceIndex = label.indexOf(' ');
@@ -437,16 +431,28 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
                 return label;
               }
             },
-            /*
-            callback: function (value, index) {
-              const label = this.getLabelForValue(index);
-              return label;
-            },
             */
+          },
+          afterBuildTicks: (scale) => {
+            scale.ticks = [];
+          },
+        },
+        xAxis2: {
+          position: 'bottom',
+          grid: {
+            offset: false,
+            color: (context) => {
+              return context?.tick?.major ? 'rgb(210,210,210)' : 'rgb(240,240,240)';
+            },
+          },
+          stacked: true,
+          ticks: {
+            font: {
+              size: 9,
+            },
             autoSkip: false,
           },
-
-          afterUpdate: (scale) => {
+          afterTickToLabelConversion: (scale) => {
             /*
             for (let i = 0; i < 20; i=i+2) {
                 const label = i != 12 ? 'l' + i : '';
@@ -476,7 +482,7 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
               ...this.generateTicks(600, 600, 6 * 600, histogramMetric),
               ...this.generateTicks(3600, 3600, 10 * 3600, histogramMetric),
               ...this.generateTicks(36000, 36000, 2.4 * 10 * 3600, histogramMetric),
-              // ...this.generateTicks(24 * 3600, 24 * 3600, 25 * 3600, histogramMetric),
+              // ...this.generateTicks(24 * 3600, 24 * 3600, 10 * 24 * 3600, histogramMetric),
             ];
             scale.ticks = ticks;
           },
