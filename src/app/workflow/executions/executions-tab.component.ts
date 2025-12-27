@@ -363,13 +363,13 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
     const labels = [];
     for (let i = 0; i < count; i++) {
       const lo = histogramMetric.edges[i];
-      const hi = histogramMetric.edges[i + 1] - 1;
+      const hi = histogramMetric.edges[i + 1];
       const loHoursMinutesSeconds = this.toHoursMinutesSeconds(lo);
       const hiHoursMinutesSeconds = this.toHoursMinutesSeconds(hi);
-      if (lo >= hi) {
-        labels.push(loHoursMinutesSeconds);
+      if (lo === 0) {
+        labels.push(`t < ${hiHoursMinutesSeconds}`);
       } else {
-        labels.push(`${loHoursMinutesSeconds} to ${hiHoursMinutesSeconds}`);
+        labels.push(`${loHoursMinutesSeconds} <= t < ${hiHoursMinutesSeconds}`);
       }
     }
     return labels;
