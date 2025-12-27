@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
-import { formatNumber } from '@angular/common';
+// import { formatNumber } from '@angular/common';
 import { EntryTab } from '../../shared/entry/entry-tab';
 import {
   CloudInstance,
@@ -56,6 +56,7 @@ import { MatCardModule } from '@angular/material/card';
 import { NgIf, NgFor, NgClass, NgTemplateOutlet, DecimalPipe, DatePipe } from '@angular/common';
 import { BaseChartDirective } from 'ng2-charts';
 import { ChartDataset, ChartOptions } from 'chart.js';
+import { Temporal } from '@js-temporal/polyfill';
 
 interface ExecutionMetricsTableObject {
   metric: string; // Name of the execution metric
@@ -364,17 +365,19 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
     for (let i = 0; i < count; i++) {
       const lo = histogramMetric.edges[i];
       const hi = histogramMetric.edges[i + 1];
-      const loHoursMinutesSeconds = this.toHoursMinutesSeconds(lo);
-      const hiHoursMinutesSeconds = this.toHoursMinutesSeconds(hi);
+      const loHoursMinutesSeconds = this.formatDuration(lo, 2);
+      const hiHoursMinutesSeconds = this.formatDuration(hi, 2);
+      // TODO support last bin
       if (lo === 0) {
         labels.push(`t < ${hiHoursMinutesSeconds}`);
       } else {
-        labels.push(`${loHoursMinutesSeconds} <= t < ${hiHoursMinutesSeconds}`);
+        labels.push(`${loHoursMinutesSeconds} \u2264 t < ${hiHoursMinutesSeconds}`);
       }
     }
     return labels;
   }
 
+  /*
   private toHoursMinutesSeconds(totalSeconds: number): string {
     if (totalSeconds || totalSeconds === 0) {
       const hours = Math.floor(totalSeconds / 3600);
@@ -388,6 +391,7 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
   private formatNumber(num: number): string {
     return formatNumber(num, 'en-US', '2.0-0');
   }
+  */
 
   private createExecutionTimeHistogramDataset(
     histogramMetric: HistogramMetric,
@@ -428,11 +432,11 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
           },
           afterTickToLabelConversion: (scale) => {
             scale.ticks = [
-              ...this.generateTicks(10, 5, histogramMetric),
-              ...this.generateTicks(60, 9, histogramMetric),
-              ...this.generateTicks(600, 5, histogramMetric),
-              ...this.generateTicks(3600, 9, histogramMetric),
-              ...this.generateTicks(36000, 2, histogramMetric),
+              ...this.generateLogTicks(10, 5, histogramMetric),
+              ...this.generateLogTicks(60, 9, histogramMetric),
+              ...this.generateLogTicks(600, 5, histogramMetric),
+              ...this.generateLogTicks(3600, 9, histogramMetric),
+              ...this.generateLogTicks(36000, 2, histogramMetric),
             ];
           },
         },
@@ -443,35 +447,19 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
     };
   }
 
-  private generateTicks(startX: number, n: number, histogramMetric: HistogramMetric) {
+  private generateLogTicks(initialX: number, tickCount: number, histogramMetric: HistogramMetric) {
     const ticks = [];
-    let factor = 1;
-    while (factor <= n) {
-      const x = factor * startX;
+    for (let factor = 1; factor <= tickCount; factor++) {
+      const x = factor * initialX;
       const barSpaceX = this.convertXToBarSpaceX(x, histogramMetric);
       const major = factor == 1;
-      const tick = {
+      ticks.push({
         value: barSpaceX,
-        label: major ? this.convertDurationToText(x) : '',
+        label: major ? this.formatDuration(x) : '',
         major: major,
-      };
-      ticks.push(tick);
-      factor++;
+      });
     }
     return ticks;
-  }
-
-  private convertDurationToText(duration: number): string {
-    if (duration < 60) {
-      return duration + 's';
-    }
-    if (duration < 3600) {
-      return duration / 60 + 'm';
-    }
-    if (duration < 24 * 3600) {
-      return duration / 3600 + 'h';
-    }
-    return duration / (24 * 3600) + 'd';
   }
 
   private convertXToBarSpaceX(x: number, histogramMetric: HistogramMetric) {
@@ -482,8 +470,32 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
     }
     const loEdge = edges[binIndex];
     const hiEdge = edges[binIndex + 1];
-    const bar = binIndex + (x - loEdge) / (hiEdge - loEdge) - 0.5;
-    return bar;
+    if (loEdge == Number.NEGATIVE_INFINITY) {
+      return binIndex + 0.5;
+    }
+    if (hiEdge == Number.POSITIVE_INFINITY) {
+      return binIndex - 0.5;
+    }
+    return binIndex - 0.5 + (x - loEdge) / (hiEdge - loEdge);
+  }
+
+  private formatDuration(seconds: number, precision: number = 1): string {
+    if (!Number.isFinite(seconds)) {
+      return `${seconds}`;
+    }
+    const duration = Temporal.Duration.from({ seconds: seconds });
+    const rounded = duration.round({ largestUnit: 'hours', smallestUnit: 'seconds' });
+    let text = '';
+    if (rounded.hours) {
+      text += `${rounded.hours}h`;
+    }
+    if (rounded.minutes || (rounded.hours && precision >= 2)) {
+      text += rounded.minutes.toLocaleString('en-US', { minimumIntegerDigits: text.length ? 2 : 1 }) + 'm';
+    }
+    if (rounded.seconds || (rounded.minutes && !rounded.hours && precision >= 2) || precision >= 3) {
+      text += rounded.seconds.toLocaleString('en-US', { minimumIntegerDigits: text.length ? 2 : 1 }) + 's';
+    }
+    return text;
   }
 
   /**
