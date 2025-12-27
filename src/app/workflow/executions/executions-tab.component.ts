@@ -14,6 +14,7 @@
  *    limitations under the License.
  */
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { formatNumber } from '@angular/common';
 import { EntryTab } from '../../shared/entry/entry-tab';
 import {
   CloudInstance,
@@ -28,6 +29,7 @@ import {
   MetricsByStatus,
   RunExecution,
   TimeSeriesMetric,
+  HistogramMetric,
 } from '../../shared/openapi';
 import { SessionQuery } from '../../shared/session/session.query';
 import { Observable } from 'rxjs';
@@ -92,6 +94,12 @@ interface ExecutionMetricsTableObject {
   ],
 })
 export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChanges {
+  readonly SUCCESSFUL_LABEL = 'Successful';
+  readonly FAILED_LABEL = 'Failed';
+  readonly ABORTED_LABEL = 'Aborted';
+  readonly SUCCESSFUL_COLOR = 'rgb(50,205,50)';
+  readonly FAILED_COLOR = 'rgb(255,0,0)';
+  readonly ABORTED_COLOR = 'rgb(255,165,0)';
   metrics: Map<PartnerEnum, Metrics>;
   currentPartner: PartnerEnum;
   partners: PartnerEnum[];
@@ -125,14 +133,14 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
   validatorToolMetricsExist: boolean;
   isAdminCuratorOrPlatformPartner: boolean;
   pieChartDatasets: ChartDataset<'pie', number[]>[] = undefined;
-  pieChartLabels: string[] = ['Successful', 'Failed', 'Aborted'];
+  pieChartLabels: string[] = [this.SUCCESSFUL_LABEL, this.FAILED_LABEL, this.ABORTED_LABEL];
   pieChartOptions: ChartOptions<'pie'> = {
     responsive: false, // non-responsive to avoid resizing when leaving tab
     maintainAspectRatio: false,
   };
-  barChartDatasets: ChartDataset<'bar', number[]>[] = undefined;
-  barChartLabels: string[] = undefined;
-  barChartOptions: ChartOptions<'bar'> = {
+  executionCountTimeSeriesDatasets: ChartDataset<'bar', number[]>[] = undefined;
+  executionCountTimeSeriesLabels: string[] = undefined;
+  executionCountTimeSeriesOptions: ChartOptions<'bar'> = {
     responsive: false, // non-responsive to avoid resizing when leaving tab
     maintainAspectRatio: false,
     scales: {
@@ -146,6 +154,34 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
           callback: function (value, index) {
             const label = this.getLabelForValue(index);
             return label.substring(0, label.indexOf(' '));
+          },
+        },
+      },
+      y: {
+        stacked: true,
+      },
+    },
+  };
+  executionTimeHistogramDatasets: ChartDataset<'bar', number[]>[] = undefined;
+  executionTimeHistogramLabels: string[] = undefined;
+  executionTimeHistogramOptions: ChartOptions<'bar'> = {
+    responsive: false, // non-responsive to avoid resizing when leaving tab
+    maintainAspectRatio: false,
+    scales: {
+      x: {
+        stacked: true,
+        ticks: {
+          font: {
+            size: 9,
+          },
+          callback: function (value, index) {
+            const label = this.getLabelForValue(index);
+            const spaceIndex = label.indexOf(' ');
+            if (spaceIndex >= 0) {
+              return label.substring(0, spaceIndex);
+            } else {
+              return label;
+            }
           },
         },
       },
@@ -282,7 +318,7 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
       this.pieChartDatasets = [
         {
           data: [this.successfulExecutions, this.failedExecutions, this.abortedExecutions],
-          backgroundColor: ['rgb(50,205,50)', 'rgb(255, 0, 0)', 'rgb(255,165,0)'],
+          backgroundColor: [this.SUCCESSFUL_COLOR, this.FAILED_COLOR, this.ABORTED_COLOR],
         },
       ];
 
@@ -306,21 +342,84 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
         abortedCounts = this.timeSeriesService.adjustTimeSeries(abortedCounts ?? emptyCounts, now, binCount);
 
         // Create the labels and datasets, which will propagate to the canvas via the template.
-        this.barChartLabels = this.timeSeriesService.labelsFromTimeSeries(successfulCounts);
-        this.barChartDatasets = [
-          this.barChartDatasetFromTimeSeries(successfulCounts, 'Successful', 'rgb(50,205,50)'),
-          this.barChartDatasetFromTimeSeries(failedCounts, 'Failed', 'rgb(255,0,0)'),
-          this.barChartDatasetFromTimeSeries(abortedCounts, 'Aborted', 'rgb(255,165,0)'),
+        this.executionCountTimeSeriesLabels = this.timeSeriesService.labelsFromTimeSeries(successfulCounts);
+        this.executionCountTimeSeriesDatasets = [
+          this.createExecutionCountTimeSeriesDataset(successfulCounts, this.SUCCESSFUL_LABEL, this.SUCCESSFUL_COLOR),
+          this.createExecutionCountTimeSeriesDataset(failedCounts, this.FAILED_LABEL, this.FAILED_COLOR),
+          this.createExecutionCountTimeSeriesDataset(abortedCounts, this.ABORTED_LABEL, this.ABORTED_COLOR),
         ];
       } else {
-        this.barChartDatasets = null;
+        this.executionCountTimeSeriesDatasets = null;
+      }
+
+      // Calculate the information for the run time distribution graph.
+      // The following code assumes that all of the histograms have the same edge values.
+      let successfulHistogram = metrics.executionStatusCount?.count['SUCCESSFUL']?.executionTimeHistogram;
+      let failedHistogram = metrics.executionStatusCount?.count['FAILED']?.executionTimeHistogram;
+      let abortedHistogram = metrics.executionStatusCount?.count['ABORTED']?.executionTimeHistogram;
+      if (successfulHistogram && failedHistogram && abortedHistogram) {
+        this.executionTimeHistogramLabels = this.createExecutionTimeHistogramLabels(successfulHistogram);
+        this.executionTimeHistogramDatasets = [
+          this.createExecutionTimeHistogramDataset(successfulHistogram, this.SUCCESSFUL_LABEL, this.SUCCESSFUL_COLOR),
+          this.createExecutionTimeHistogramDataset(failedHistogram, this.FAILED_LABEL, this.FAILED_COLOR),
+          this.createExecutionTimeHistogramDataset(abortedHistogram, this.ABORTED_LABEL, this.ABORTED_COLOR),
+        ];
       }
     }
   }
 
-  private barChartDatasetFromTimeSeries(timeSeriesMetric: TimeSeriesMetric, label: string, color: string): ChartDataset<'bar', number[]> {
+  private createExecutionCountTimeSeriesDataset(
+    timeSeriesMetric: TimeSeriesMetric,
+    label: string,
+    color: string
+  ): ChartDataset<'bar', number[]> {
     return {
       data: timeSeriesMetric.values,
+      label: label,
+      backgroundColor: color,
+      barPercentage: 0.9,
+      categoryPercentage: 1,
+    };
+  }
+
+  private createExecutionTimeHistogramLabels(histogramMetric: HistogramMetric): string[] {
+    const count = histogramMetric.edges.length - 1;
+    const labels = [];
+    for (let i = 0; i < count; i++) {
+      const lo = histogramMetric.edges[i];
+      const hi = histogramMetric.edges[i + 1] - 1;
+      const loHoursMinutesSeconds = this.toHoursMinutesSeconds(lo);
+      const hiHoursMinutesSeconds = this.toHoursMinutesSeconds(hi);
+      if (lo >= hi) {
+        labels.push(loHoursMinutesSeconds);
+      } else {
+        labels.push(`${loHoursMinutesSeconds} to ${hiHoursMinutesSeconds}`);
+      }
+    }
+    return labels;
+  }
+
+  private toHoursMinutesSeconds(totalSeconds: number): string {
+    if (totalSeconds || totalSeconds === 0) {
+      const hours = Math.floor(totalSeconds / 3600);
+      const minutes = Math.floor((totalSeconds % 3600) / 60);
+      const seconds = totalSeconds % 60;
+      return this.formatNumber(hours) + ':' + this.formatNumber(minutes) + ':' + this.formatNumber(seconds);
+    }
+    return '';
+  }
+
+  private formatNumber(num: number): string {
+    return formatNumber(num, 'en-US', '2.0-0');
+  }
+
+  private createExecutionTimeHistogramDataset(
+    histogramMetric: HistogramMetric,
+    label: string,
+    color: string
+  ): ChartDataset<'bar', number[]> {
+    return {
+      data: histogramMetric.frequencies,
       label: label,
       backgroundColor: color,
       barPercentage: 0.9,
