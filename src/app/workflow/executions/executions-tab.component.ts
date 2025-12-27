@@ -56,7 +56,6 @@ import { MatCardModule } from '@angular/material/card';
 import { NgIf, NgFor, NgClass, NgTemplateOutlet, DecimalPipe, DatePipe } from '@angular/common';
 import { BaseChartDirective } from 'ng2-charts';
 import { Chart, ChartDataset, ChartOptions } from 'chart.js';
-import { default as Annotation } from 'chartjs-plugin-annotation';
 
 interface ExecutionMetricsTableObject {
   metric: string; // Name of the execution metric
@@ -186,7 +185,6 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
       .subscribe(([isAdminOrCurator, isPlatformPartner]) => {
         this.isAdminCuratorOrPlatformPartner = isAdminOrCurator || isPlatformPartner;
       });
-    Chart.register(Annotation);
   }
 
   ngOnChanges() {
