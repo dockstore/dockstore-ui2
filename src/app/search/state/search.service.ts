@@ -32,6 +32,7 @@ import { DockstoreTool, EntryType, Workflow } from '../../shared/openapi';
 import { SearchQuery } from './search.query';
 import { SearchStore } from './search.store';
 import { SearchAuthorsHtmlPipe } from '../search-authors-html.pipe';
+import { TimeSeriesService } from '../../shared/timeseries.service';
 
 export interface Hit {
   _index: string;
@@ -193,7 +194,8 @@ export class SearchService {
     private imageProviderService: ImageProviderService,
     private extendedGA4GHService: ExtendedGA4GHService,
     private alertService: AlertService,
-    private searchAuthorsHtmlPipe: SearchAuthorsHtmlPipe
+    private searchAuthorsHtmlPipe: SearchAuthorsHtmlPipe,
+    private timeSeriesService: TimeSeriesService
   ) {}
 
   static convertTabIndexToEntryType(index: number): 'tools' | 'workflows' | 'notebooks' | null {
@@ -334,7 +336,7 @@ export class SearchService {
   }
 
   /**
-   * Separates the 'hits' object into 'toolHits' and 'workflowHits'
+   * Separates the 'hits' object into 'toolHits', 'workflowHits', and 'notebookHits'
    * Also sets up provider information
    * @param {Array<any>} hits
    * @param {number} query_size
@@ -346,7 +348,7 @@ export class SearchService {
     const notebookHits = [];
     hits.forEach((hit) => {
       hit['_source'] = this.providerService.setUpProvider(hit['_source']);
-      if (workflowHits.length + toolHits.length < query_size - 1) {
+      if (workflowHits.length + toolHits.length + notebookHits.length < query_size - 1) {
         if (hit['_index'] === 'tools') {
           hit['_source'] = this.imageProviderService.setUpImageProvider(hit['_source']);
           toolHits.push(hit);
@@ -361,6 +363,8 @@ export class SearchService {
   }
 
   setHits(toolHits: Array<Hit>, workflowHits: Array<Hit>, notebookHits: Array<Hit>) {
+    this.processHits(toolHits, workflowHits, notebookHits);
+
     this.searchStore.update((state) => {
       return {
         ...state,
@@ -368,6 +372,42 @@ export class SearchService {
         workflowhit: workflowHits,
         notebookhit: notebookHits,
       };
+    });
+  }
+
+  private processHits(toolHits: Array<Hit>, workflowHits: Array<Hit>, notebookHits: Array<Hit>) {
+    // Adjust each time series to the current time and desired sample count.
+    const now = new Date();
+    const sampleCount = 12;
+    const hits = [...toolHits, ...workflowHits, ...notebookHits];
+    hits.forEach((hit) => {
+      const timeSeries = hit._source.weeklyExecutionCounts;
+      if (timeSeries) {
+        hit._source.weeklyExecutionCounts = this.timeSeriesService.adjustTimeSeries(timeSeries, now, sampleCount);
+      }
+    });
+    hits.forEach((hit) => {
+      const timeSeries = hit._source.monthlyExecutionCounts;
+      if (timeSeries) {
+        hit._source.monthlyExecutionCounts = this.timeSeriesService.adjustTimeSeries(timeSeries, now, sampleCount);
+      }
+    });
+    // For each type of time series, normalize the values to a maximum of 1.0.
+    this.normalizeValues(hits.map((hit) => hit._source.weeklyExecutionCounts?.values).filter((values) => values != undefined));
+    this.normalizeValues(hits.map((hit) => hit._source.monthlyExecutionCounts?.values).filter((values) => values != undefined));
+  }
+
+  private normalizeValues(valuesList: number[][]): void {
+    let maximumValue = 1;
+    valuesList.forEach((values) => {
+      values.forEach((value) => {
+        maximumValue = Math.max(value, maximumValue);
+      });
+    });
+    valuesList.forEach((values) => {
+      for (let i = 0; i < values.length; i++) {
+        values[i] = values[i] / maximumValue;
+      }
     });
   }
 

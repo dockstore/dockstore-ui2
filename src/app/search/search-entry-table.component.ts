@@ -51,6 +51,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { PreviewWarningComponent } from 'app/preview-warning/preview-warning.component';
 import { Dockstore } from 'app/shared/dockstore.model';
+import { ThumbnailTimeSeriesGraphComponent } from '../shared/graphs/thumbnail-time-series-graph.component';
 
 export interface SortOption {
   label: string;
@@ -100,6 +101,7 @@ export interface SortOption {
     CategoryButtonComponent,
     MatChipsModule,
     PreviewWarningComponent,
+    ThumbnailTimeSeriesGraphComponent,
   ],
 })
 export class SearchEntryTableComponent extends Base implements OnInit {
@@ -141,6 +143,10 @@ export class SearchEntryTableComponent extends Base implements OnInit {
     {
       label: 'Recently Updated',
       sort: { active: 'last_modified_date', direction: 'desc' },
+    },
+    {
+      label: 'Most Used',
+      sort: { active: 'executionCount', direction: 'desc' },
     },
     {
       label: 'Name, A-Z',
