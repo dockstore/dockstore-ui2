@@ -14,7 +14,6 @@
  *    limitations under the License.
  */
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
-// import { formatNumber } from '@angular/common';
 import { EntryTab } from '../../shared/entry/entry-tab';
 import {
   CloudInstance,
@@ -367,31 +366,16 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
       const hi = histogramMetric.edges[i + 1];
       const loHoursMinutesSeconds = this.formatDuration(lo, 2);
       const hiHoursMinutesSeconds = this.formatDuration(hi, 2);
-      // TODO support last bin
-      if (lo === 0) {
+      if (lo <= 0) {
         labels.push(`t < ${hiHoursMinutesSeconds}`);
+      } else if (hi === Number.POSITIVE_INFINITY) {
+        labels.push(`${loHoursMinutesSeconds} \u2264 t`);
       } else {
         labels.push(`${loHoursMinutesSeconds} \u2264 t < ${hiHoursMinutesSeconds}`);
       }
     }
     return labels;
   }
-
-  /*
-  private toHoursMinutesSeconds(totalSeconds: number): string {
-    if (totalSeconds || totalSeconds === 0) {
-      const hours = Math.floor(totalSeconds / 3600);
-      const minutes = Math.floor((totalSeconds % 3600) / 60);
-      const seconds = totalSeconds % 60;
-      return this.formatNumber(hours) + ':' + this.formatNumber(minutes) + ':' + this.formatNumber(seconds);
-    }
-    return '';
-  }
-
-  private formatNumber(num: number): string {
-    return formatNumber(num, 'en-US', '2.0-0');
-  }
-  */
 
   private createExecutionTimeHistogramDataset(
     histogramMetric: HistogramMetric,
