@@ -14,6 +14,7 @@
  *    limitations under the License.
  */
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { formatNumber } from '@angular/common';
 import { EntryTab } from '../../shared/entry/entry-tab';
 import {
   CloudInstance,

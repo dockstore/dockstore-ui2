@@ -20,9 +20,10 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { first } from 'rxjs/operators';
 import { ImageProviderService } from '../../shared/image-provider.service';
 import { ProviderService } from '../../shared/provider.service';
+import { TimeSeriesService } from '../../shared/timeseries.service';
 import { EntryType, Workflow } from '../../shared/openapi';
 import { elasticSearchResponse } from '../../test/mocked-objects';
-import { ProviderStubService } from '../../test/service-stubs';
+import { ProviderStubService, TimeSeriesStubService } from '../../test/service-stubs';
 import { Hit, SearchService } from './search.service';
 import { SearchStore } from './search.store';
 import { SearchAuthorsHtmlPipe } from '../search-authors-html.pipe';
@@ -41,6 +42,10 @@ describe('SearchService', () => {
         {
           provide: ProviderService,
           useClass: ProviderStubService,
+        },
+        {
+          provide: TimeSeriesService,
+          useClass: TimeSeriesStubService,
         },
         provideHttpClient(withInterceptorsFromDi()),
         provideHttpClientTesting(),
