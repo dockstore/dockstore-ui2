@@ -17,6 +17,7 @@ import { Location, NgClass, NgFor, NgIf, NgStyle, AsyncPipe, LowerCasePipe, NgTe
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatAccordion, MatExpansionModule } from '@angular/material/expansion';
+import { Sort } from '@angular/material/sort';
 import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import {
@@ -193,6 +194,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   public suggestTerm$: Observable<string>;
   public values$: Observable<string>;
   public isLoading = false;
+  private sortValue: Sort;
 
   // For search within facets
   public facetAutocompleteTerms$: Observable<Array<string>>;
@@ -358,6 +360,7 @@ export class SearchComponent implements OnInit, OnDestroy {
 
     this.filters = newFilters;
     this.searchService.setFilterKeys(this.filters);
+    this.sortValue = null;
     this.updateQuery();
   }
 
@@ -524,6 +527,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       this.searchTerm,
       this.filters,
       this.exclusiveFilters,
+      this.sortValue,
       entryType
     );
     this.resetEntryOrder();
@@ -733,6 +737,12 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.expandedPanels.set(key, expanded);
     this.clearExpandedPanelsState();
     this.saveExpandedPanelsState();
+  }
+
+  setSort(sortValue: Sort) {
+    console.log('SEARCH COMPONENT ' + sortValue);
+    this.sortValue = sortValue;
+    this.updateQuery();
   }
 
   /**===============================================

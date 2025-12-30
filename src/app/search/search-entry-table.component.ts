@@ -13,7 +13,7 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
 import { combineLatest, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -115,6 +115,8 @@ export class SearchEntryTableComponent extends Base implements OnInit {
   @ViewChild(MatPaginator, { static: true }) protected paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) protected sort: MatSort;
   protected ngUnsubscribe: Subject<{}> = new Subject();
+  @Output() sortChange = new EventEmitter<Sort>();
+  private sortChangeCount: number = 0;
 
   public readonly displayedColumns = ['result'];
   public readonly columnsToDisplayWithExpand = [...this.displayedColumns, 'expand'];
@@ -239,6 +241,11 @@ export class SearchEntryTableComponent extends Base implements OnInit {
     this.sort.active = sortValue.active;
     this.sort.direction = sortValue.direction;
     this.sort.sortChange.emit(sortValue);
+    this.sortChangeCount++;
+    if (this.sortChangeCount > 1) {
+      this.sortChange.emit(sortValue);
+    }
+    console.log('SORTCHANGECOUNT ' + this.sortChangeCount);
   }
 
   createTagCloud(type: EntryType) {

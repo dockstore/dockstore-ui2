@@ -15,6 +15,7 @@
  */
 
 import { Injectable } from '@angular/core';
+import { Sort } from '@angular/material/sort';
 import * as bodybuilder from 'bodybuilder';
 import { Bodybuilder } from 'bodybuilder';
 import { CategorySort } from '../shared/models/CategorySort';
@@ -123,6 +124,7 @@ export class QueryBuilderService {
     searchTerm: boolean,
     filters: Map<string, Set<string>>,
     exclusiveFilters: Array<string>,
+    sortValue: Sort,
     index: Index
   ): string {
     let tableBody = bodybuilder().size(query_size);
@@ -130,12 +132,19 @@ export class QueryBuilderService {
     tableBody = tableBody.query('match', '_index', index);
     tableBody = this.appendQuery(tableBody, values, advancedSearchObject, searchTerm);
     tableBody = this.appendFilter(tableBody, null, filters, exclusiveFilters);
-    // if there's no inclusive search term, tell ES to sort hits by stars
+    // if there's an active search order, sort by it
+    // otherwise, if there's no inclusive search term, sort hits by stars
     // otherwise, sort by ES-calculated score
-    // in both cases, sort so that archived entries appear last
-    if (this.isEmpty(values) && !this.hasInclusiveSettings(advancedSearchObject)) {
+    // in all cases, sort so that archived entries appear last
+    console.log(`SORTVALUE ${sortValue}`);
+    if (sortValue?.active && sortValue?.direction) {
+      console.log(`QUERY ACTIVE ${sortValue?.active} ${sortValue.direction}`);
+      tableBody = tableBody.sort([{ archived: 'asc' }, { [sortValue?.active]: sortValue?.direction }]);
+    } else if (this.isEmpty(values) && !this.hasInclusiveSettings(advancedSearchObject)) {
+      console.log(`QUERY stars`);
       tableBody = tableBody.sort([{ archived: 'asc' }, { stars_count: 'desc' }]);
     } else {
+      console.log(`QUERY score`);
       tableBody = tableBody.sort([{ archived: 'asc' }, { _score: 'desc' }]);
     }
     tableBody.rawOption('highlight', {

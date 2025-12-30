@@ -13,7 +13,8 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { Sort } from '@angular/material/sort';
 import { EntryType } from 'app/shared/openapi';
 import { Observable } from 'rxjs';
 import { SearchQuery } from '../state/search.query';
@@ -36,6 +37,7 @@ export class SearchResultsComponent {
   public noToolHits$: Observable<boolean>;
   public noWorkflowHits$: Observable<boolean>;
   public noNotebookHits$: Observable<boolean>;
+  @Output() sortChange = new EventEmitter<Sort>();
 
   constructor(private readonly searchService: SearchService, private readonly searchQuery: SearchQuery) {
     this.noWorkflowHits$ = this.searchQuery.noWorkflowHits$;
@@ -50,5 +52,10 @@ export class SearchResultsComponent {
 
   getTabIndex() {
     return this.searchQuery.getValue().currentTabIndex;
+  }
+
+  setSort(sortValue: Sort) {
+    this.sortChange.emit(sortValue);
+    console.log('SEARCHRESULTS ' + sortValue);
   }
 }
