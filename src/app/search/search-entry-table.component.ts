@@ -140,7 +140,7 @@ export class SearchEntryTableComponent extends Base implements OnInit {
     this.defaultSortOption,
     {
       label: 'Most Stars',
-      sort: { active: 'starredUsers', direction: 'desc' },
+      sort: { active: 'stars_count', direction: 'desc' },
     },
     {
       label: 'Recently Updated',
@@ -152,19 +152,19 @@ export class SearchEntryTableComponent extends Base implements OnInit {
     },
     {
       label: 'Name, A-Z',
-      sort: { active: 'name', direction: 'asc' },
+      sort: { active: 'normalizedName', direction: 'asc' },
     },
     {
       label: 'Name, Z-A',
-      sort: { active: 'name', direction: 'desc' },
+      sort: { active: 'normalizedName', direction: 'desc' },
     },
     {
       label: 'Authors, A-Z',
-      sort: { active: 'all_authors', direction: 'asc' },
+      sort: { active: 'normalizedAuthors', direction: 'asc' },
     },
     {
       label: 'Authors, Z-A',
-      sort: { active: 'all_authors', direction: 'desc' },
+      sort: { active: 'normalizedAuthors', direction: 'desc' },
     },
   ];
 
@@ -221,6 +221,7 @@ export class SearchEntryTableComponent extends Base implements OnInit {
         // Must set data after paginator, just a material datatables thing.
         this.dataSource.data = entries || [];
       });
+    /*
     this.dataSource.sortData = (data: SearchResult[], sort: MatSort) => {
       if (sort.active && sort.direction) {
         return data.slice().sort((a: SearchResult, b: SearchResult) => {
@@ -230,6 +231,10 @@ export class SearchEntryTableComponent extends Base implements OnInit {
         // Either the active field or direction is unset, so return the data in the original order, unsorted.
         return data;
       }
+    };
+    */
+    this.dataSource.sortData = (data: SearchResult[], sort: MatSort) => {
+      return data;
     };
   }
 

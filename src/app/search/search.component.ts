@@ -360,7 +360,7 @@ export class SearchComponent implements OnInit, OnDestroy {
 
     this.filters = newFilters;
     this.searchService.setFilterKeys(this.filters);
-    this.sortValue = null;
+    // this.sortValue = null; // IS THIS OK? TODO
     this.updateQuery();
   }
 

@@ -93,12 +93,15 @@ export class QueryBuilderService {
       'monthlyExecutionCounts',
       'name',
       'namespace',
+      'normalizedAuthors',
+      'normalizedName',
       'organization',
       'private_access',
       'providerUrl',
       'repository',
       'selected_concept_doi',
       'starredUsers',
+      'stars_count',
       'toolname',
       'tool_path',
       'topicAutomatic',
@@ -139,7 +142,7 @@ export class QueryBuilderService {
     console.log(`SORTVALUE ${sortValue}`);
     if (sortValue?.active && sortValue?.direction) {
       console.log(`QUERY ACTIVE ${sortValue?.active} ${sortValue.direction}`);
-      tableBody = tableBody.sort([{ archived: 'asc' }, { [sortValue?.active]: sortValue?.direction }]);
+      tableBody = tableBody.sort([{ archived: 'asc' }, { [sortValue?.active]: { order: sortValue?.direction, missing: '_last' } }]);
     } else if (this.isEmpty(values) && !this.hasInclusiveSettings(advancedSearchObject)) {
       console.log(`QUERY stars`);
       tableBody = tableBody.sort([{ archived: 'asc' }, { stars_count: 'desc' }]);
