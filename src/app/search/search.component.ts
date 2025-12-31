@@ -302,6 +302,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     // Event is somehow triggered even though it's not the active tab
     if (matTabChangeEvent.tab.isActive) {
       this.searchService.saveCurrentTabAndClear(matTabChangeEvent.index);
+      this.sortValue = null;
     }
   }
 
@@ -360,7 +361,6 @@ export class SearchComponent implements OnInit, OnDestroy {
 
     this.filters = newFilters;
     this.searchService.setFilterKeys(this.filters);
-    // this.sortValue = null; // IS THIS OK? TODO
     this.updateQuery();
   }
 
@@ -740,8 +740,10 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   setSort(sortValue: Sort) {
-    console.log('SEARCH COMPONENT ' + sortValue);
     this.sortValue = sortValue;
+  }
+
+  setSortUser(sortValue: Sort) {
     this.updateQuery();
   }
 

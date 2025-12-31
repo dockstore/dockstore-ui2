@@ -115,8 +115,9 @@ export class SearchEntryTableComponent extends Base implements OnInit {
   @ViewChild(MatPaginator, { static: true }) protected paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) protected sort: MatSort;
   protected ngUnsubscribe: Subject<{}> = new Subject();
-  @Output() sortChange = new EventEmitter<Sort>();
   private sortChangeCount: number = 0;
+  @Output() sortChange = new EventEmitter<Sort>();
+  @Output() userSortChange = new EventEmitter<Sort>();
 
   public readonly displayedColumns = ['result'];
   public readonly columnsToDisplayWithExpand = [...this.displayedColumns, 'expand'];
@@ -246,11 +247,11 @@ export class SearchEntryTableComponent extends Base implements OnInit {
     this.sort.active = sortValue.active;
     this.sort.direction = sortValue.direction;
     this.sort.sortChange.emit(sortValue);
+    this.sortChange.emit(sortValue);
     this.sortChangeCount++;
     if (this.sortChangeCount > 1) {
-      this.sortChange.emit(sortValue);
+      this.userSortChange.emit(sortValue);
     }
-    console.log('SORTCHANGECOUNT ' + this.sortChangeCount);
   }
 
   createTagCloud(type: EntryType) {
