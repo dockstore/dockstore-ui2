@@ -741,9 +741,6 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   setSort(sortValue: Sort) {
     this.sortValue = sortValue;
-  }
-
-  setSortUser(sortValue: Sort) {
     this.updateQuery();
   }
 

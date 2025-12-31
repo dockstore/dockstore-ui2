@@ -38,7 +38,6 @@ export class SearchResultsComponent {
   public noWorkflowHits$: Observable<boolean>;
   public noNotebookHits$: Observable<boolean>;
   @Output() sortChange = new EventEmitter<Sort>();
-  @Output() userSortChange = new EventEmitter<Sort>();
 
   constructor(private readonly searchService: SearchService, private readonly searchQuery: SearchQuery) {
     this.noWorkflowHits$ = this.searchQuery.noWorkflowHits$;
@@ -58,10 +57,5 @@ export class SearchResultsComponent {
   setSort(sortValue: Sort) {
     console.log('SETSORT ' + sortValue);
     this.sortChange.emit(sortValue);
-  }
-
-  setSortUser(sortValue: Sort) {
-    console.log('SETSORTUSER ' + sortValue);
-    this.userSortChange.emit(sortValue);
   }
 }
