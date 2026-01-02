@@ -223,6 +223,7 @@ export class SearchService {
   }
 
   /**
+   * @deprecated Currently not used because we've switched to sorting search results server-side in Elasticsearch.
    * Return a negative number if a sorts before b, positive if b sorts before a, and 0 if they are the same,
    * comparing based on the given attribute and direction
    * @param a: DockstoreTool or Workflow

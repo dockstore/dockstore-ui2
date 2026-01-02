@@ -132,10 +132,10 @@ export class QueryBuilderService {
     tableBody = tableBody.query('match', '_index', index);
     tableBody = this.appendQuery(tableBody, values, advancedSearchObject, searchTerm);
     tableBody = this.appendFilter(tableBody, null, filters, exclusiveFilters);
-    // if the user has specified a search order, sort by it
-    // otherwise, if there's search term that's not inclusive, sort hits by stars
-    // otherwise, sort by ES-calculated score
-    // in all cases, sort so that archived entries appear last
+    // if the user has specified a search order, sort hits by it
+    // otherwise, if there's no search term, or a search term that's not inclusive, sort hits by stars
+    // otherwise, sort hits by ES-calculated score
+    // in all cases, sort hits so that archived entries appear last
     if (sortValue?.active && sortValue?.direction) {
       tableBody = tableBody.sort([{ archived: 'asc' }, { [sortValue?.active]: { order: sortValue?.direction, missing: '_last' } }]);
     } else if (this.isEmpty(values) && !this.hasInclusiveSettings(advancedSearchObject)) {
