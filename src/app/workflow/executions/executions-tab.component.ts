@@ -416,11 +416,11 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
           },
           afterTickToLabelConversion: (scale) => {
             scale.ticks = [
-              ...this.generateLogTicks(10, 5, histogramMetric),
-              ...this.generateLogTicks(60, 9, histogramMetric),
-              ...this.generateLogTicks(600, 5, histogramMetric),
-              ...this.generateLogTicks(3600, 9, histogramMetric),
-              ...this.generateLogTicks(36000, 2, histogramMetric),
+              ...this.generateLogTicks(10, 5, histogramMetric), // 10s ticks
+              ...this.generateLogTicks(60, 9, histogramMetric), // 1m ticks
+              ...this.generateLogTicks(600, 5, histogramMetric), // 10m ticks
+              ...this.generateLogTicks(3600, 9, histogramMetric), // 1h ticks
+              ...this.generateLogTicks(36000, 2, histogramMetric), // 10h ticks
             ];
           },
         },
@@ -431,6 +431,9 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
     };
   }
 
+  /**
+   * Generate a list of the specified number of ticks, starting at the specified X value and including the successive integer multiples.
+   */
   private generateLogTicks(initialX: number, tickCount: number, histogramMetric: HistogramMetric) {
     const ticks = [];
     for (let factor = 1; factor <= tickCount; factor++) {
@@ -446,7 +449,16 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
     return ticks;
   }
 
+  /**
+   * Convert the specified x value (seconds) to a position in "bar space".
+   * "bar space" is defined by how ng2-charts (charts.js) lays out the bars
+   * on the horizontal axis, with the center of the first bar at 0, the
+   * center of the Nth bar at N - 1, and each bar and padding consuming one
+   * unit of space.  For example, the second bar and padding spans the range
+   * (1 - 0.5, 1 + 0.5) = (0.5, 1.5).
+   */
   private convertXToBarSpaceX(x: number, histogramMetric: HistogramMetric) {
+    // Find the histogram bin that contains the specified X value.
     const edges = histogramMetric.edges;
     let binIndex = 0;
     while (!(x >= edges[binIndex] && x < edges[binIndex + 1]) && binIndex < edges.length - 1) {
@@ -454,12 +466,15 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
     }
     const loEdge = edges[binIndex];
     const hiEdge = edges[binIndex + 1];
+    // Handle the outliers.
     if (loEdge == Number.NEGATIVE_INFINITY) {
-      return binIndex + 0.5;
+      return binIndex + 0.5; // Right edge of bar.
     }
     if (hiEdge == Number.POSITIVE_INFINITY) {
-      return binIndex - 0.5;
+      return binIndex - 0.5; // Left edge of bar.
     }
+    // Approximate the "bar space" value.
+    // We can use linear interpolation because the difference between low and high edge values is small.
     return binIndex - 0.5 + (x - loEdge) / (hiEdge - loEdge);
   }
 
