@@ -55,7 +55,6 @@ export class SearchResultsComponent {
   }
 
   setSort(sortValue: Sort) {
-    console.log('SETSORT ' + sortValue);
     this.sortChange.emit(sortValue);
   }
 }

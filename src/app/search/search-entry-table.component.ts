@@ -221,18 +221,7 @@ export class SearchEntryTableComponent extends Base implements OnInit {
         // Must set data after paginator, just a material datatables thing.
         this.dataSource.data = entries || [];
       });
-    /*
-    this.dataSource.sortData = (data: SearchResult[], sort: MatSort) => {
-      if (sort.active && sort.direction) {
-        return data.slice().sort((a: SearchResult, b: SearchResult) => {
-          return this.searchService.compareAttributes(a.source, b.source, sort.active, sort.direction, this.entryType);
-        });
-      } else {
-        // Either the active field or direction is unset, so return the data in the original order, unsorted.
-        return data;
-      }
-    };
-    */
+    // Do not sort on the client side.
     this.dataSource.sortData = (data: SearchResult[], sort: MatSort) => {
       return data;
     };
@@ -246,8 +235,8 @@ export class SearchEntryTableComponent extends Base implements OnInit {
     this.sort.active = sortValue.active;
     this.sort.direction = sortValue.direction;
     this.sort.sortChange.emit(sortValue);
-    this.sortChangeCount++;
-    if (this.sortChangeCount > 1) {
+    // Emit a sortChange event if the user triggered the change.
+    if (this.sortChangeCount++ > 0) {
       this.sortChange.emit(sortValue);
     }
   }

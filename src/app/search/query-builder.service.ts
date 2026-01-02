@@ -135,19 +135,15 @@ export class QueryBuilderService {
     tableBody = tableBody.query('match', '_index', index);
     tableBody = this.appendQuery(tableBody, values, advancedSearchObject, searchTerm);
     tableBody = this.appendFilter(tableBody, null, filters, exclusiveFilters);
-    // if there's an active search order, sort by it
-    // otherwise, if there's no inclusive search term, sort hits by stars
+    // if the user has specified a search order, sort by it
+    // otherwise, if there's search term that's not inclusive, sort hits by stars
     // otherwise, sort by ES-calculated score
     // in all cases, sort so that archived entries appear last
-    console.log(`SORTVALUE ${sortValue}`);
     if (sortValue?.active && sortValue?.direction) {
-      console.log(`QUERY ACTIVE ${sortValue?.active} ${sortValue.direction}`);
       tableBody = tableBody.sort([{ archived: 'asc' }, { [sortValue?.active]: { order: sortValue?.direction, missing: '_last' } }]);
     } else if (this.isEmpty(values) && !this.hasInclusiveSettings(advancedSearchObject)) {
-      console.log(`QUERY stars`);
       tableBody = tableBody.sort([{ archived: 'asc' }, { stars_count: 'desc' }]);
     } else {
-      console.log(`QUERY score`);
       tableBody = tableBody.sort([{ archived: 'asc' }, { _score: 'desc' }]);
     }
     tableBody.rawOption('highlight', {
