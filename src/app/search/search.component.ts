@@ -501,7 +501,9 @@ export class SearchComponent implements OnInit, OnDestroy {
    *                Update Functions
    * ===============================================
    */
-  // Called from one place which is only when the URL has parsed and query non-result state has been set
+  // Called when:
+  // 1. The URL has changed, signaling a change in the search term, facets, etc.
+  // 2. The user has changed the sort order (via the "Sort by" dropdown menu).
   updateQuery() {
     const tabIndex = this.searchQuery.getValue().currentTabIndex;
     const entryType = SearchService.convertTabIndexToEntryType(tabIndex);
