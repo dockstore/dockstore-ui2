@@ -80,45 +80,54 @@
               </table>
             </div>
 
-            <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="1rem">
-              <span *ngIf="entry?.source?.all_authors">
-                <mat-icon color="primary" class="mat-icon-sm mr-1">person</mat-icon
-                ><span class="size-small" [innerHTML]="entry?.source?.all_authors | getSearchAuthorsHtml"></span>
-              </span>
-              <span>
-                <mat-icon color="primary" class="mat-icon-sm mr-1">history</mat-icon>
-                <span class="size-small"
-                  >Last updated {{ entry?.source.last_modified_date ? (entry?.source.last_modified_date | date) : 'n/a' }}</span
-                >
-              </span>
-              <app-doi-badge
-                *ngIf="entry?.source?.selected_concept_doi"
-                [doi]="entry.source.selected_concept_doi"
-                [displayInitiator]="false"
-              ></app-doi-badge>
-              <mat-chip-set>
-                <app-category-button
-                  *ngFor="let category of entry?.source.categories"
-                  [category]="category"
-                  [entryType]="entryType | lowercase"
-                ></app-category-button>
-                <mat-chip data-cy="descriptorType" *ngIf="entry?.source.entryTypeMetadata.type !== EntryType.TOOL">
-                  {{ entry?.source.descriptorType | descriptorLanguage }}
-                </mat-chip>
-                <ng-container *ngIf="entry?.source.entryTypeMetadata.type === EntryType.TOOL">
-                  <mat-chip data-cy="descriptorType" *ngFor="let language of entry?.source.descriptorType">
-                    {{ language ? language : '' }}
+            <div fxLayout="row" fxLayoutGap="1rem">
+              <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="1rem" fxFlex>
+                <span *ngIf="entry?.source?.all_authors">
+                  <mat-icon color="primary" class="mat-icon-sm mr-1">person</mat-icon
+                  ><span class="size-small" [innerHTML]="entry?.source?.all_authors | getSearchAuthorsHtml"></span>
+                </span>
+                <span>
+                  <mat-icon color="primary" class="mat-icon-sm mr-1">history</mat-icon>
+                  <span class="size-small"
+                    >Last updated {{ entry?.source.last_modified_date ? (entry?.source.last_modified_date | date) : 'n/a' }}</span
+                  >
+                </span>
+                <app-doi-badge
+                  *ngIf="entry?.source?.selected_concept_doi"
+                  [doi]="entry.source.selected_concept_doi"
+                  [displayInitiator]="false"
+                ></app-doi-badge>
+                <mat-chip-set>
+                  <app-category-button
+                    *ngFor="let category of entry?.source.categories"
+                    [category]="category"
+                    [entryType]="entryType | lowercase"
+                  ></app-category-button>
+                  <mat-chip data-cy="descriptorType" *ngIf="entry?.source.entryTypeMetadata.type !== EntryType.TOOL">
+                    {{ entry?.source.descriptorType | descriptorLanguage }}
                   </mat-chip>
-                </ng-container>
-                <mat-chip *ngIf="entry?.source.entryTypeMetadata.type === EntryType.NOTEBOOK" data-cy="descriptorTypeSubclass">{{
-                  entry?.source.descriptorTypeSubclass
-                }}</mat-chip>
-                <app-preview-warning
-                  *ngIf="entry?.source.descriptorType === DescriptorTypeEnum.SMK"
-                  [featureName]="Dockstore.FEATURES.snakemakeFeatureName"
-                  [isBubble]="true"
-                ></app-preview-warning>
-              </mat-chip-set>
+                  <ng-container *ngIf="entry?.source.entryTypeMetadata.type === EntryType.TOOL">
+                    <mat-chip data-cy="descriptorType" *ngFor="let language of entry?.source.descriptorType">
+                      {{ language ? language : '' }}
+                    </mat-chip>
+                  </ng-container>
+                  <mat-chip *ngIf="entry?.source.entryTypeMetadata.type === EntryType.NOTEBOOK" data-cy="descriptorTypeSubclass">{{
+                    entry?.source.descriptorTypeSubclass
+                  }}</mat-chip>
+                  <app-preview-warning
+                    *ngIf="entry?.source.descriptorType === DescriptorTypeEnum.SMK"
+                    [featureName]="Dockstore.FEATURES.snakemakeFeatureName"
+                    [isBubble]="true"
+                  ></app-preview-warning>
+                </mat-chip-set>
+              </div>
+              <div *ngIf="entry?.source.monthlyExecutionCounts" fxLayout="column" fxLayoutAlign="end">
+                <app-thumbnail-time-series-graph
+                  style="position: relative; bottom: 1px"
+                  [timeSeries]="entry?.source.monthlyExecutionCounts"
+                  [maxValue]="1"
+                ></app-thumbnail-time-series-graph>
+              </div>
             </div>
           </mat-card-content>
         </mat-card>
