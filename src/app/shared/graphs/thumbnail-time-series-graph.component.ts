@@ -38,9 +38,13 @@ export class ThumbnailTimeSeriesGraphComponent implements OnChanges {
   ngOnChanges(): void {
     this.datasets = undefined;
     this.options = undefined;
-    if (this.timeSeries != undefined && this.now != undefined && this.binCount != undefined && this.maxValue != undefined) {
-      const adjusted = this.timeSeriesService.adjustTimeSeries(this.timeSeries, this.now, this.binCount);
-      const values = adjusted.values;
+    if (this.timeSeries != undefined && this.maxValue != undefined) {
+      let values;
+      if (this.now != undefined && this.binCount != undefined) {
+        values = this.timeSeriesService.adjustTimeSeries(this.timeSeries, this.now, this.binCount).values;
+      } else {
+        values = this.timeSeries.values;
+      }
       const labels = new Array(values.length).fill('');
       this.datasets = {
         datasets: [{ data: values }],

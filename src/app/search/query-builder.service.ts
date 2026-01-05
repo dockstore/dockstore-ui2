@@ -85,9 +85,11 @@ export class QueryBuilderService {
       'descriptorType',
       'descriptorTypeSubclass',
       'entryTypeMetadata',
+      'executionCount',
       'full_workflow_path',
       'gitUrl',
       'last_modified_date',
+      'monthlyExecutionCounts',
       'name',
       'namespace',
       'organization',
@@ -101,6 +103,7 @@ export class QueryBuilderService {
       'topicAutomatic',
       'topicSelection',
       'verified',
+      'weeklyExecutionCounts',
       'workflowName',
     ]);
   }
