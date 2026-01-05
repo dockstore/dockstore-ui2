@@ -221,7 +221,7 @@ export class SearchEntryTableComponent extends Base implements OnInit {
         // Must set data after paginator, just a material datatables thing.
         this.dataSource.data = entries || [];
       });
-    // Do not sort on the client side.
+    // Don't sort on the client side.
     this.dataSource.sortData = (data: SearchResult[], sort: MatSort) => {
       return data;
     };
