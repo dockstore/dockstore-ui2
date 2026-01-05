@@ -126,11 +126,11 @@ jobs:
           command: |
             if [[ -n "${CIRCLE_BRANCH}" ]] && [[ -n "${CIRCLE_PULL_REQUEST}" || "${CIRCLE_BRANCH}" == "develop" ]]
             then
-              export SONAR_SCANNER_VERSION=6.2.1.4610
+              export VERSION=6.2.1.4610
               export OS="linux"
               export ARCH="x64"
               export VERSION_OS_ARCH="$VERSION-$OS-$ARCH"
-              export SONAR_SCANNER_HOME=$HOME/.sonar/sonar-scanner-$SONAR_SCANNER_VERSION-linux
+              export SONAR_SCANNER_HOME=$HOME/.sonar/sonar-scanner-$VERSION_OS_ARCH-linux
               curl --create-dirs -sSLo $HOME/.sonar/sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-$VERSION_OS_ARCH.zip
               unzip -o $HOME/.sonar/sonar-scanner.zip -d $HOME/.sonar/
               export PATH=$SONAR_SCANNER_HOME/bin:$PATH
