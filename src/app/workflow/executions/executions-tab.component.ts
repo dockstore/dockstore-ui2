@@ -454,8 +454,8 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
    * "bar space" is defined by how ng2-charts (charts.js) lays out the bars
    * on the horizontal axis, with the center of the first bar at 0, the
    * center of the Nth bar at N - 1, and each bar and padding consuming one
-   * unit of space.  For example, the second bar and padding spans the range
-   * (1 - 0.5, 1 + 0.5) = (0.5, 1.5).
+   * unit of space.  For example, in bar space, the second bar and its
+   * padding spans the range (1 - 0.5, 1 + 0.5) = (0.5, 1.5).
    */
   private convertXToBarSpaceX(x: number, histogramMetric: HistogramMetric) {
     // Find the histogram bin that contains the specified X value.
