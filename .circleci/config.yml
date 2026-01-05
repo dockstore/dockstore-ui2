@@ -126,6 +126,7 @@ jobs:
           command: |
             if [[ -n "${CIRCLE_BRANCH}" ]] && [[ -n "${CIRCLE_PULL_REQUEST}" || "${CIRCLE_BRANCH}" == "develop" ]]
             then
+              mkdir -p /tmp/cache/scanner
               export VERSION=6.2.1.4610
               export SCANNER_DIRECTORY=/tmp/cache/scanner
               export SONAR_USER_HOME=$SCANNER_DIRECTORY/.sonar
