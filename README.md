@@ -28,7 +28,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ### Prerequisites
 
-- Java 17+
+- Java 21+
 - Node and its included NPM (see [.nvmrc](.nvmrc) for the correct version of node to install)
 - wget 
 

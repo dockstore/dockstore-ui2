@@ -59,7 +59,7 @@ jobs:
           environment:
             MOCHA_FILE: nightly-test-results/junit/test-<< parameters.stack >>-<< parameters.test-name >>-[hash].xml
       - when:
-          condition: 
+          condition:
             equal: [ "no-auth", << parameters.test-name >> ]
           steps:
             - run:
@@ -126,25 +126,41 @@ jobs:
           command: |
             if [[ -n "${CIRCLE_BRANCH}" ]] && [[ -n "${CIRCLE_PULL_REQUEST}" || "${CIRCLE_BRANCH}" == "develop" ]]
             then
-              export SONAR_SCANNER_VERSION=5.0.1.3006
-              export SONAR_SCANNER_HOME=$HOME/.sonar/sonar-scanner-$SONAR_SCANNER_VERSION-linux
-              curl --create-dirs -sSLo $HOME/.sonar/sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-$SONAR_SCANNER_VERSION-linux.zip
-              unzip -o $HOME/.sonar/sonar-scanner.zip -d $HOME/.sonar/
-              export PATH=$SONAR_SCANNER_HOME/bin:$PATH
-              export SONAR_SCANNER_OPTS="-server"
+              mkdir -p /tmp/cache/scanner
+              export VERSION=6.2.1.4610
+              export SCANNER_DIRECTORY=/tmp/cache/scanner
+              export SONAR_USER_HOME=$SCANNER_DIRECTORY/.sonar
+              export OS="linux"
+              export ARCH="x64"
+              export VERSION_OS_ARCH="$VERSION-$OS-$ARCH"
+              echo "Sonar user home: $SONAR_USER_HOME"
+
+              if [[ ! -x "$SCANNER_DIRECTORY/sonar-scanner-$VERSION_OS_ARCH/bin/sonar-scanner" ]]; then
+                      echo "Downloading Sonar Scanner..."
+                      curl -Ol https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-$VERSION_OS_ARCH.zip
+                      unzip -qq -o sonar-scanner-cli-$VERSION_OS_ARCH.zip -d $SCANNER_DIRECTORY
+              fi
 
               if [ -n "${CIRCLE_PULL_REQUEST}" ]
               then
+                chmod +x $SCANNER_DIRECTORY/sonar-scanner-$VERSION_OS_ARCH/bin/sonar-scanner
+                chmod +x $SCANNER_DIRECTORY/sonar-scanner-$VERSION_OS_ARCH/jre/bin/java
+
+                PROJECT_ROOT=${PROJECT_ROOT:-.}
+                cd "$PROJECT_ROOT"
+                echo "Running Sonar Scanner in project root: $PROJECT_ROOT"
+                $SCANNER_DIRECTORY/sonar-scanner-$VERSION_OS_ARCH/bin/sonar-scanner
+
                 pr=$(echo https://api.github.com/repos/${CIRCLE_PULL_REQUEST:19} | sed "s/\/pull\//\/pulls\//")
                 base=$(curl -s $pr | jq '.base.ref')
                 number=$(curl -s $pr | jq '.number')
 
-                sonar-scanner \
+                $SCANNER_DIRECTORY/sonar-scanner-$VERSION_OS_ARCH/bin/sonar-scanner \
                   -Dsonar.pullrequest.key=$number \
                   -Dsonar.pullrequest.branch=$CIRCLE_BRANCH \
                   -Dsonar.pullrequest.base=$base
               else
-                sonar-scanner
+                $SCANNER_DIRECTORY/sonar-scanner-$VERSION_OS_ARCH/bin/sonar-scanner
               fi
             fi
       - persist_to_workspace:
@@ -297,7 +313,7 @@ workflows:
             - oicr-slack
       - integration_test:
           matrix:
-            parameters: 
+            parameters:
               integration_test_name: ["group1", "group2", "group3", "immutableDatabaseTests"]
           name: integration_test_<< matrix.integration_test_name >>
           filters:
@@ -343,7 +359,7 @@ workflows:
     jobs:
       - smoke_tests:
           matrix:
-            parameters: 
+            parameters:
               stack: [ "qa", "staging", "prod" ]
               test-name: [ "no-auth" ]
           name: no_auth_smoke_tests_<< matrix.stack >>
@@ -356,7 +372,7 @@ workflows:
     jobs:
       - smoke_tests:
           matrix:
-            parameters: 
+            parameters:
               stack: [ "qa", "staging", "prod" ]
               test-name: [ "auth" ]
           name: auth_smoke_tests_<< matrix.stack >>
@@ -524,7 +540,7 @@ commands:
           template: basic_success_1
   notify-slack-develop-fail:
     steps:
-      - when: 
+      - when:
           condition: << pipeline.parameters.sanity-check-against-develop >>
           steps:
             - slack/notify:
@@ -540,7 +556,7 @@ commands:
         enum: [ "auth", "no-auth" ]
     steps:
       - when:
-          condition: 
+          condition:
             equal: [ "auth", << parameters.test-name >> ]
           steps:
             - run:
