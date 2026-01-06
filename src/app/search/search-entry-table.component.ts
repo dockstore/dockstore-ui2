@@ -13,7 +13,7 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
 import { combineLatest, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -115,6 +115,8 @@ export class SearchEntryTableComponent extends Base implements OnInit {
   @ViewChild(MatPaginator, { static: true }) protected paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) protected sort: MatSort;
   protected ngUnsubscribe: Subject<{}> = new Subject();
+  private sortChangeCount: number = 0;
+  @Output() sortChange = new EventEmitter<Sort>();
 
   public readonly displayedColumns = ['result'];
   public readonly columnsToDisplayWithExpand = [...this.displayedColumns, 'expand'];
@@ -138,7 +140,7 @@ export class SearchEntryTableComponent extends Base implements OnInit {
     this.defaultSortOption,
     {
       label: 'Most Stars',
-      sort: { active: 'starredUsers', direction: 'desc' },
+      sort: { active: 'stars_count', direction: 'desc' },
     },
     {
       label: 'Recently Updated',
@@ -150,19 +152,19 @@ export class SearchEntryTableComponent extends Base implements OnInit {
     },
     {
       label: 'Name, A-Z',
-      sort: { active: 'name', direction: 'asc' },
+      sort: { active: 'normalizedName', direction: 'asc' },
     },
     {
       label: 'Name, Z-A',
-      sort: { active: 'name', direction: 'desc' },
+      sort: { active: 'normalizedName', direction: 'desc' },
     },
     {
       label: 'Authors, A-Z',
-      sort: { active: 'all_authors', direction: 'asc' },
+      sort: { active: 'normalizedAuthors', direction: 'asc' },
     },
     {
       label: 'Authors, Z-A',
-      sort: { active: 'all_authors', direction: 'desc' },
+      sort: { active: 'normalizedAuthors', direction: 'desc' },
     },
   ];
 
@@ -219,15 +221,9 @@ export class SearchEntryTableComponent extends Base implements OnInit {
         // Must set data after paginator, just a material datatables thing.
         this.dataSource.data = entries || [];
       });
+    // Don't sort on the client side.
     this.dataSource.sortData = (data: SearchResult[], sort: MatSort) => {
-      if (sort.active && sort.direction) {
-        return data.slice().sort((a: SearchResult, b: SearchResult) => {
-          return this.searchService.compareAttributes(a.source, b.source, sort.active, sort.direction, this.entryType);
-        });
-      } else {
-        // Either the active field or direction is unset, so return the data in the original order, unsorted.
-        return data;
-      }
+      return data;
     };
   }
 
@@ -239,6 +235,10 @@ export class SearchEntryTableComponent extends Base implements OnInit {
     this.sort.active = sortValue.active;
     this.sort.direction = sortValue.direction;
     this.sort.sortChange.emit(sortValue);
+    // Emit a sortChange event if the user triggered the change.
+    if (this.sortChangeCount++ > 0) {
+      this.sortChange.emit(sortValue);
+    }
   }
 
   createTagCloud(type: EntryType) {
