@@ -82,7 +82,8 @@ jobs:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
     steps:
-      - checkout
+      - checkout:
+          method: full
       - install_browser_tools
       - checkout_merge_commit
       - install_ui_dependencies
