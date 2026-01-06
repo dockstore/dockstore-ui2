@@ -100,6 +100,8 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
   readonly SUCCESSFUL_COLOR = 'rgb(50,205,50)';
   readonly FAILED_COLOR = 'rgb(255,0,0)';
   readonly ABORTED_COLOR = 'rgb(255,165,0)';
+  readonly LIGHT_GRAY = 'rgb(210,210,210)';
+  readonly VERY_LIGHT_GRAY = 'rgb(240,240,240)';
   metrics: Map<PartnerEnum, Metrics>;
   currentPartner: PartnerEnum;
   partners: PartnerEnum[];
@@ -405,7 +407,7 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
           grid: {
             offset: false,
             color: (context) => {
-              return context?.tick?.major ? 'rgb(210,210,210)' : 'rgb(240,240,240)';
+              return context?.tick?.major ? this.LIGHT_GRAY : this.VERY_LIGHT_GRAY;
             },
           },
           ticks: {
