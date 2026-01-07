@@ -422,7 +422,8 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
               ...this.generateLogTicks(60, 9, histogramMetric), // 1m ticks
               ...this.generateLogTicks(600, 5, histogramMetric), // 10m ticks
               ...this.generateLogTicks(3600, 9, histogramMetric), // 1h ticks
-              ...this.generateLogTicks(36000, 2, histogramMetric), // 10h ticks
+              ...this.generateLogTicks(36000, 9, histogramMetric), // 10h ticks
+              ...this.generateLogTicks(360000, 1, histogramMetric), // 100h tick
             ];
           },
         },
