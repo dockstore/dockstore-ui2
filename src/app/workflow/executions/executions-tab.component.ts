@@ -370,7 +370,7 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
       const hiHoursMinutesSeconds = this.formatDuration(hi, 2);
       if (lo <= 0) {
         labels.push(`t < ${hiHoursMinutesSeconds}`);
-      } else if (hi === Number.POSITIVE_INFINITY) {
+      } else if (hi == Number.POSITIVE_INFINITY) {
         labels.push(`${loHoursMinutesSeconds} \u2264 t`);
       } else {
         labels.push(`${loHoursMinutesSeconds} \u2264 t < ${hiHoursMinutesSeconds}`);
