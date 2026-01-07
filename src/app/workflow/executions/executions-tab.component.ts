@@ -14,7 +14,6 @@
  *    limitations under the License.
  */
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
-import { formatNumber } from '@angular/common';
 import { EntryTab } from '../../shared/entry/entry-tab';
 import {
   CloudInstance,
@@ -56,6 +55,7 @@ import { MatCardModule } from '@angular/material/card';
 import { NgIf, NgFor, NgClass, NgTemplateOutlet, DecimalPipe, DatePipe } from '@angular/common';
 import { BaseChartDirective } from 'ng2-charts';
 import { ChartDataset, ChartOptions } from 'chart.js';
+import { Temporal } from '@js-temporal/polyfill';
 
 interface ExecutionMetricsTableObject {
   metric: string; // Name of the execution metric
@@ -100,6 +100,8 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
   readonly SUCCESSFUL_COLOR = 'rgb(50,205,50)';
   readonly FAILED_COLOR = 'rgb(255,0,0)';
   readonly ABORTED_COLOR = 'rgb(255,165,0)';
+  readonly LIGHT_GRAY = 'rgb(210,210,210)';
+  readonly VERY_LIGHT_GRAY = 'rgb(240,240,240)';
   metrics: Map<PartnerEnum, Metrics>;
   currentPartner: PartnerEnum;
   partners: PartnerEnum[];
@@ -164,32 +166,7 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
   };
   executionTimeHistogramDatasets: ChartDataset<'bar', number[]>[] = undefined;
   executionTimeHistogramLabels: string[] = undefined;
-  executionTimeHistogramOptions: ChartOptions<'bar'> = {
-    responsive: false, // non-responsive to avoid resizing when leaving tab
-    maintainAspectRatio: false,
-    scales: {
-      x: {
-        stacked: true,
-        ticks: {
-          font: {
-            size: 9,
-          },
-          callback: function (value, index) {
-            const label = this.getLabelForValue(index);
-            const spaceIndex = label.indexOf(' ');
-            if (spaceIndex >= 0) {
-              return label.substring(0, spaceIndex);
-            } else {
-              return label;
-            }
-          },
-        },
-      },
-      y: {
-        stacked: true,
-      },
-    },
-  };
+  executionTimeHistogramOptions: ChartOptions<'bar'> = undefined;
 
   @Input() entry: BioWorkflow | Service | Notebook;
   @Input() version: WorkflowVersion;
@@ -359,6 +336,7 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
       let abortedHistogram = metrics.executionStatusCount?.count['ABORTED']?.executionTimeHistogram;
       if (successfulHistogram && failedHistogram && abortedHistogram) {
         this.executionTimeHistogramLabels = this.createExecutionTimeHistogramLabels(successfulHistogram);
+        this.executionTimeHistogramOptions = this.createExecutionTimeHistogramOptions(successfulHistogram);
         this.executionTimeHistogramDatasets = [
           this.createExecutionTimeHistogramDataset(successfulHistogram, this.SUCCESSFUL_LABEL, this.SUCCESSFUL_COLOR),
           this.createExecutionTimeHistogramDataset(failedHistogram, this.FAILED_LABEL, this.FAILED_COLOR),
@@ -387,30 +365,18 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
     const labels = [];
     for (let i = 0; i < count; i++) {
       const lo = histogramMetric.edges[i];
-      const hi = histogramMetric.edges[i + 1] - 1;
-      const loHoursMinutesSeconds = this.toHoursMinutesSeconds(lo);
-      const hiHoursMinutesSeconds = this.toHoursMinutesSeconds(hi);
-      if (lo >= hi) {
-        labels.push(loHoursMinutesSeconds);
+      const hi = histogramMetric.edges[i + 1];
+      const loHoursMinutesSeconds = this.formatDuration(lo, 2);
+      const hiHoursMinutesSeconds = this.formatDuration(hi, 2);
+      if (lo <= 0) {
+        labels.push(`t < ${hiHoursMinutesSeconds}`);
+      } else if (hi === Number.POSITIVE_INFINITY) {
+        labels.push(`${loHoursMinutesSeconds} \u2264 t`);
       } else {
-        labels.push(`${loHoursMinutesSeconds} to ${hiHoursMinutesSeconds}`);
+        labels.push(`${loHoursMinutesSeconds} \u2264 t < ${hiHoursMinutesSeconds}`);
       }
     }
     return labels;
-  }
-
-  private toHoursMinutesSeconds(totalSeconds: number): string {
-    if (totalSeconds || totalSeconds === 0) {
-      const hours = Math.floor(totalSeconds / 3600);
-      const minutes = Math.floor((totalSeconds % 3600) / 60);
-      const seconds = totalSeconds % 60;
-      return this.formatNumber(hours) + ':' + this.formatNumber(minutes) + ':' + this.formatNumber(seconds);
-    }
-    return '';
-  }
-
-  private formatNumber(num: number): string {
-    return formatNumber(num, 'en-US', '2.0-0');
   }
 
   private createExecutionTimeHistogramDataset(
@@ -425,6 +391,112 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
       barPercentage: 0.9,
       categoryPercentage: 1,
     };
+  }
+
+  private createExecutionTimeHistogramOptions(histogramMetric: HistogramMetric): ChartOptions<'bar'> {
+    return {
+      responsive: false, // non-responsive to avoid resizing when leaving tab
+      maintainAspectRatio: false,
+      scales: {
+        x: {
+          stacked: true,
+          display: false,
+        },
+        xLog: {
+          stacked: true,
+          grid: {
+            offset: false,
+            color: (context) => {
+              return context?.tick?.major ? this.LIGHT_GRAY : this.VERY_LIGHT_GRAY;
+            },
+          },
+          ticks: {
+            font: {
+              size: 9,
+            },
+            autoSkip: false,
+          },
+          afterTickToLabelConversion: (scale) => {
+            scale.ticks = [
+              ...this.generateLogTicks(10, 5, histogramMetric), // 10s ticks
+              ...this.generateLogTicks(60, 9, histogramMetric), // 1m ticks
+              ...this.generateLogTicks(600, 5, histogramMetric), // 10m ticks
+              ...this.generateLogTicks(3600, 9, histogramMetric), // 1h ticks
+              ...this.generateLogTicks(36000, 2, histogramMetric), // 10h ticks
+            ];
+          },
+        },
+        y: {
+          stacked: true,
+        },
+      },
+    };
+  }
+
+  /**
+   * Generate a list of the specified number of ticks, starting at the specified X value and including the successive integer multiples.
+   */
+  private generateLogTicks(initialX: number, tickCount: number, histogramMetric: HistogramMetric) {
+    const ticks = [];
+    for (let factor = 1; factor <= tickCount; factor++) {
+      const x = factor * initialX;
+      const barSpaceX = this.convertXToBarSpaceX(x, histogramMetric);
+      const major = factor == 1;
+      ticks.push({
+        value: barSpaceX,
+        label: major ? this.formatDuration(x) : '',
+        major: major,
+      });
+    }
+    return ticks;
+  }
+
+  /**
+   * Convert the specified x value (seconds) to a position in "bar space".
+   * "bar space" is defined by how ng2-charts (charts.js) lays out the bars
+   * on the horizontal axis, with the center of the first bar at 0, the
+   * center of the Nth bar at N - 1, and each bar and padding consuming one
+   * unit of space.  For example, in bar space, the second bar and its
+   * padding spans the range (1 - 0.5, 1 + 0.5) = (0.5, 1.5).
+   */
+  private convertXToBarSpaceX(x: number, histogramMetric: HistogramMetric) {
+    // Find the histogram bin that contains the specified X value.
+    const edges = histogramMetric.edges;
+    let binIndex = 0;
+    while (!(x >= edges[binIndex] && x < edges[binIndex + 1]) && binIndex < edges.length - 1) {
+      binIndex++;
+    }
+    const loEdge = edges[binIndex];
+    const hiEdge = edges[binIndex + 1];
+    // Handle the outliers.
+    if (loEdge == Number.NEGATIVE_INFINITY) {
+      return binIndex + 0.5; // Right edge of bar.
+    }
+    if (hiEdge == Number.POSITIVE_INFINITY) {
+      return binIndex - 0.5; // Left edge of bar.
+    }
+    // Approximate the "bar space" value.
+    // We can use linear interpolation because the difference between low and high edge values is small.
+    return binIndex - 0.5 + (x - loEdge) / (hiEdge - loEdge);
+  }
+
+  private formatDuration(seconds: number, precision: number = 1): string {
+    if (!Number.isFinite(seconds)) {
+      return `${seconds}`;
+    }
+    const duration = Temporal.Duration.from({ seconds: seconds });
+    const rounded = duration.round({ largestUnit: 'hours', smallestUnit: 'seconds' });
+    let text = '';
+    if (rounded.hours) {
+      text += `${rounded.hours}h`;
+    }
+    if (rounded.minutes || (rounded.hours && precision >= 2)) {
+      text += rounded.minutes.toLocaleString('en-US', { minimumIntegerDigits: text.length ? 2 : 1 }) + 'm';
+    }
+    if (rounded.seconds || (rounded.minutes && !rounded.hours && precision >= 2) || precision >= 3) {
+      text += rounded.seconds.toLocaleString('en-US', { minimumIntegerDigits: text.length ? 2 : 1 }) + 's';
+    }
+    return text;
   }
 
   /**
