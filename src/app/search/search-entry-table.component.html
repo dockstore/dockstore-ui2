@@ -97,9 +97,12 @@
                   [doi]="entry.source.selected_concept_doi"
                   [displayInitiator]="false"
                 ></app-doi-badge>
-                <span *ngIf="entry?.source.executionCount > 0">
+                @let executionCount = entry?.source.executionCount;
+                <span *ngIf="executionCount > 0">
                   <mat-icon color="primary" class="mat-icon-sm">play_arrow</mat-icon
-                  ><span class="size-small mr-1">{{ entry?.source.executionCount | number }} executions</span>
+                  ><span class="size-small mr-1"
+                    >{{ executionCount | number }} {{ executionCount === 1 ? 'execution' : 'executions' }}</span
+                  >
                 </span>
                 <mat-chip-set>
                   <app-category-button
