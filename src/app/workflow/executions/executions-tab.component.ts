@@ -334,7 +334,14 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
       let successfulHistogram = metrics.executionStatusCount?.count['SUCCESSFUL']?.executionTimeHistogram;
       let failedHistogram = metrics.executionStatusCount?.count['FAILED']?.executionTimeHistogram;
       let abortedHistogram = metrics.executionStatusCount?.count['ABORTED']?.executionTimeHistogram;
-      if (successfulHistogram && failedHistogram && abortedHistogram) {
+      const representativeHistogram = successfulHistogram ?? failedHistogram ?? abortedHistogram;
+
+      if (representativeHistogram) {
+        const emptyHistogram = this.emptyHistogram(representativeHistogram);
+        successfulHistogram ??= emptyHistogram;
+        failedHistogram ??= emptyHistogram;
+        abortedHistogram ??= emptyHistogram;
+
         this.executionTimeHistogramLabels = this.createExecutionTimeHistogramLabels(successfulHistogram);
         this.executionTimeHistogramOptions = this.createExecutionTimeHistogramOptions(successfulHistogram);
         this.executionTimeHistogramDatasets = [
@@ -342,6 +349,8 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
           this.createExecutionTimeHistogramDataset(failedHistogram, this.FAILED_LABEL, this.FAILED_COLOR),
           this.createExecutionTimeHistogramDataset(abortedHistogram, this.ABORTED_LABEL, this.ABORTED_COLOR),
         ];
+      } else {
+        this.executionTimeHistogramDatasets = null;
       }
     }
   }
@@ -497,6 +506,13 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
       text += rounded.seconds.toLocaleString('en-US', { minimumIntegerDigits: text.length ? 2 : 1 }) + 's';
     }
     return text;
+  }
+
+  private emptyHistogram(histogramMetric: HistogramMetric): HistogramMetric {
+    return {
+      edges: histogramMetric.edges.slice(),
+      frequencies: histogramMetric.frequencies.slice().fill(0),
+    };
   }
 
   /**
