@@ -97,6 +97,10 @@
                   [doi]="entry.source.selected_concept_doi"
                   [displayInitiator]="false"
                 ></app-doi-badge>
+                <span *ngIf="entry?.source.executionCount > 0">
+                  <mat-icon color="primary" class="mat-icon-sm">play_arrow</mat-icon
+                  ><span class="size-small mr-1">{{ entry?.source.executionCount }} executions</span>
+                </span>
                 <mat-chip-set>
                   <app-category-button
                     *ngFor="let category of entry?.source.categories"
