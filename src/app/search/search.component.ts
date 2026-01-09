@@ -504,7 +504,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   // Called when:
   // 1. The URL has changed, signaling a change in the search term, facets, etc.
   // 2. The user has changed the sort order (via the "Sort by" dropdown menu).
-  updateQuery() {
+  updateQuery(updateFacets: boolean = true) {
     const tabIndex = this.searchQuery.getValue().currentTabIndex;
     const entryType = SearchService.convertTabIndexToEntryType(tabIndex);
     // Separating into 2 queries otherwise the queries interfere with each other (filter applied before aggregation)
@@ -532,9 +532,13 @@ export class SearchComponent implements OnInit, OnDestroy {
       this.sortValue,
       entryType
     );
-    this.resetEntryOrder();
+    if (updateFacets) {
+      this.resetEntryOrder();
+    }
     this.resetPageIndex();
-    this.updateSideBar(sideBarQuery);
+    if (updateFacets) {
+      this.updateSideBar(sideBarQuery);
+    }
     this.updateResultsTable(tableQuery);
   }
 
@@ -743,7 +747,7 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   setSort(sortValue: Sort) {
     this.sortValue = sortValue;
-    this.updateQuery();
+    this.updateQuery(false);
   }
 
   /**===============================================
