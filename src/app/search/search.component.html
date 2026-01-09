@@ -188,7 +188,8 @@
                 </mat-checkbox>
               </span>
               <span class="mr-2">{{
-                isSelectedFacet ? orderedBuckets.get(key).SelectedItems.get(subBucket) : orderedBuckets.get(key).Items.get(subBucket)
+                (isSelectedFacet ? orderedBuckets.get(key).SelectedItems.get(subBucket) : orderedBuckets.get(key).Items.get(subBucket))
+                  | number
               }}</span>
             </div>
           </ng-template>
