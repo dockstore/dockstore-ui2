@@ -1095,6 +1095,16 @@ $truncate-text-values: 1, 2, 3;
   }
 }
 
+// Allow single line of text to fill the available horizontal space, and truncate with ellipsis if it reaches the right edge.
+.trim-line {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  word-break: break-all;
+}
+
 // This style is used by table headers when there is no data to display
 .inactive-table-header {
   color: #d8d8d8 !important;
