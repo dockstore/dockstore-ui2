@@ -219,7 +219,7 @@
         @let timeSeries = version?.metricsByPlatform?.['ALL']?.executionStatusCount?.count?.['ALL']?.monthlyExecutionCounts;
         <div class="ml-4">
           <app-thumbnail-time-series-graph
-            *ngIf="timeSeries && maxMonthlyExecutionCount != undefined"
+            *ngIf="timeSeries && maxMonthlyExecutionCount !== undefined"
             [timeSeries]="timeSeries"
             [now]="now"
             [binCount]="numberOfMonthsToGraph"
