@@ -82,6 +82,7 @@ export class QueryBuilderService {
     return body.rawOption('_source', [
       'all_authors',
       'approvedAITopic',
+      'archived',
       'categories',
       'descriptorType',
       'descriptorTypeSubclass',
