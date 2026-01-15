@@ -135,11 +135,11 @@ export class QueryBuilderService {
     // if the user has specified a search order, sort hits by it
     // otherwise, if there's no search term, or a search term that's not inclusive, sort hits by stars
     // otherwise, sort hits by ES-calculated score
-    // in all cases, sort hits so that archived entries appear last
+    // if we're sorting by ES-calculated score, sort archived entries last
     if (sortValue?.active && sortValue?.direction) {
-      tableBody = tableBody.sort([{ archived: 'asc' }, { [sortValue?.active]: { order: sortValue?.direction, missing: '_last' } }]);
+      tableBody = tableBody.sort([{ [sortValue?.active]: { order: sortValue?.direction, missing: '_last' } }]);
     } else if (this.isEmpty(values) && !this.hasInclusiveSettings(advancedSearchObject)) {
-      tableBody = tableBody.sort([{ archived: 'asc' }, { stars_count: 'desc' }]);
+      tableBody = tableBody.sort([{ relevance: 'desc' }]);
     } else {
       tableBody = tableBody.sort([{ archived: 'asc' }, { _score: 'desc' }]);
     }
