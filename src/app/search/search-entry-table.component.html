@@ -55,6 +55,7 @@
                   [routerLink]="entry?.source | routerLink"
                   >{{ entry?.source | entryToDisplayName: true }}</a
                 >
+                <mat-chip *ngIf="entry?.source?.archived" class="alert-warning ml-3">Archived</mat-chip>
               </div>
               <div *ngIf="entry?.source.starredUsers?.length" data-cy="starredUsers" class="accent-1-dark">
                 <mat-icon class="mat-icon-sm">star_rate</mat-icon>
