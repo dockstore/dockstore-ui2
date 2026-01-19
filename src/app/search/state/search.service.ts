@@ -393,23 +393,6 @@ export class SearchService {
         hit._source.monthlyExecutionCounts = this.timeSeriesService.adjustTimeSeries(timeSeries, now, sampleCount);
       }
     });
-    // For each type of time series, normalize the values to a maximum of 1.0.
-    this.normalizeValues(hits.map((hit) => hit._source.weeklyExecutionCounts?.values).filter((values) => values != undefined));
-    this.normalizeValues(hits.map((hit) => hit._source.monthlyExecutionCounts?.values).filter((values) => values != undefined));
-  }
-
-  private normalizeValues(valuesList: number[][]): void {
-    let maximumValue = 1;
-    valuesList.forEach((values) => {
-      values.forEach((value) => {
-        maximumValue = Math.max(value, maximumValue);
-      });
-    });
-    valuesList.forEach((values) => {
-      for (let i = 0; i < values.length; i++) {
-        values[i] = values[i] / maximumValue;
-      }
-    });
   }
 
   setFilterKeys(filters: Map<string, Set<string>>) {
