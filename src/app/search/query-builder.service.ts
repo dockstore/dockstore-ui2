@@ -133,7 +133,7 @@ export class QueryBuilderService {
     tableBody = this.appendQuery(tableBody, values, advancedSearchObject, searchTerm);
     tableBody = this.appendFilter(tableBody, null, filters, exclusiveFilters);
     // if the user has specified a search order, sort hits by it
-    // otherwise, if there's no search term, or a search term that's not inclusive, sort hits by stars
+    // otherwise, if there's no search term, or a search term that's not inclusive, sort hits by webservice-calculated "relevance"
     // otherwise, sort hits by ES-calculated score
     // if we're sorting by ES-calculated score, sort archived entries last
     if (sortValue?.active && sortValue?.direction) {
