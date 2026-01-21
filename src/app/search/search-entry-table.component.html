@@ -3,12 +3,20 @@
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
   </div>
   <div fxLayout="row" fxLayoutAlign="space-between center" class="py-2">
-    <mat-form-field>
-      <mat-label>Sort by</mat-label>
-      <mat-select [value]="defaultSortOption.sort" (selectionChange)="setSort($event.value)">
-        <mat-option *ngFor="let sortOption of sortOptions" [value]="sortOption.sort">{{ sortOption.label }}</mat-option>
-      </mat-select>
-    </mat-form-field>
+    <div fxLayout="row" fxLayoutAlign="start center">
+      <mat-form-field>
+        <mat-label>Sort by</mat-label>
+        <mat-select [value]="defaultSortOption.sort" (selectionChange)="setSort($event.value)">
+          <mat-option *ngFor="let sortOption of sortOptions" [value]="sortOption.sort">{{ sortOption.label }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <img
+        matTooltip="Relevance is calculated as a non-personalized weighted sum based on stars, executions, and membership in a Dockstore category, and decreases for archived entries and with the amount of time since last update and last used"
+        src="../../../../assets/svg/help.svg"
+        alt="help"
+        class="pl-2"
+      />
+    </div>
     <div class="tag-cloud-dropdown">
       <button
         mat-button
