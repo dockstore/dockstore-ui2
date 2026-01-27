@@ -218,7 +218,7 @@
 "layout-base@2.0.1","MIT","https://github.com/iVis-at-Bilkent/layout-base"
 "local-pkg@1.1.2","MIT","https://github.com/antfu-collective/local-pkg"
 "lodash-es@4.17.21","MIT","https://github.com/lodash/lodash"
-"lodash@4.17.21","MIT","https://github.com/lodash/lodash"
+"lodash@4.17.23","MIT","https://github.com/lodash/lodash"
 "lru-cache@5.1.1","ISC","https://github.com/isaacs/node-lru-cache"
 "magic-string@0.25.3","MIT","https://github.com/rich-harris/magic-string"
 "make-fetch-happen@5.0.2","ISC","https://github.com/zkat/make-fetch-happen"
