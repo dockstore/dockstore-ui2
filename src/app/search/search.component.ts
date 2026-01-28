@@ -13,10 +13,11 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Location, NgClass, NgFor, NgIf, NgStyle, AsyncPipe, LowerCasePipe, NgTemplateOutlet } from '@angular/common';
+import { Location, NgClass, NgFor, NgIf, NgStyle, AsyncPipe, DecimalPipe, LowerCasePipe, NgTemplateOutlet } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatAccordion, MatExpansionModule } from '@angular/material/expansion';
+import { Sort } from '@angular/material/sort';
 import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import {
@@ -117,6 +118,7 @@ import { HeaderComponent } from '../header/header.component';
     ClipboardModule,
     SearchResultsComponent,
     AsyncPipe,
+    DecimalPipe,
     LowerCasePipe,
     MapFriendlyValuesPipe,
     GetHistogramStylePipe,
@@ -193,6 +195,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   public suggestTerm$: Observable<string>;
   public values$: Observable<string>;
   public isLoading = false;
+  private sortValue: Sort;
 
   // For search within facets
   public facetAutocompleteTerms$: Observable<Array<string>>;
@@ -300,6 +303,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     // Event is somehow triggered even though it's not the active tab
     if (matTabChangeEvent.tab.isActive) {
       this.searchService.saveCurrentTabAndClear(matTabChangeEvent.index);
+      this.sortValue = null;
     }
   }
 
@@ -498,8 +502,10 @@ export class SearchComponent implements OnInit, OnDestroy {
    *                Update Functions
    * ===============================================
    */
-  // Called from one place which is only when the URL has parsed and query non-result state has been set
-  updateQuery() {
+  // Called when:
+  // 1. The URL has changed, signaling a change in the search term, facets, etc.
+  // 2. The user has changed the sort order (via the "Sort by" dropdown menu).
+  updateQuery(updateFacets: boolean = true) {
     const tabIndex = this.searchQuery.getValue().currentTabIndex;
     const entryType = SearchService.convertTabIndexToEntryType(tabIndex);
     // Separating into 2 queries otherwise the queries interfere with each other (filter applied before aggregation)
@@ -524,11 +530,16 @@ export class SearchComponent implements OnInit, OnDestroy {
       this.searchTerm,
       this.filters,
       this.exclusiveFilters,
+      this.sortValue,
       entryType
     );
-    this.resetEntryOrder();
+    if (updateFacets) {
+      this.resetEntryOrder();
+    }
     this.resetPageIndex();
-    this.updateSideBar(sideBarQuery);
+    if (updateFacets) {
+      this.updateSideBar(sideBarQuery);
+    }
     this.updateResultsTable(tableQuery);
   }
 
@@ -733,6 +744,11 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.expandedPanels.set(key, expanded);
     this.clearExpandedPanelsState();
     this.saveExpandedPanelsState();
+  }
+
+  setSort(sortValue: Sort) {
+    this.sortValue = sortValue;
+    this.updateQuery(false);
   }
 
   /**===============================================

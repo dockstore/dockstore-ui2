@@ -188,7 +188,8 @@
                 </mat-checkbox>
               </span>
               <span class="mr-2">{{
-                isSelectedFacet ? orderedBuckets.get(key).SelectedItems.get(subBucket) : orderedBuckets.get(key).Items.get(subBucket)
+                (isSelectedFacet ? orderedBuckets.get(key).SelectedItems.get(subBucket) : orderedBuckets.get(key).Items.get(subBucket))
+                  | number
               }}</span>
             </div>
           </ng-template>
@@ -310,7 +311,7 @@
             </p>
           </mat-card-content>
         </mat-card>
-        <app-search-results></app-search-results>
+        <app-search-results (sortChange)="setSort($event)"></app-search-results>
       </div>
     </div>
   </div>

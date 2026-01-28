@@ -33,5 +33,9 @@ export const extendedSMK: ExtendedDescriptorLanguageBean = {
       fileTypes: [SourceFile.TypeEnum.SMKTESTPARAMS],
     },
     { tabName: configurationTabName, fileTypes: [SourceFile.TypeEnum.DOCKSTOREYML] },
+    {
+      tabName: 'Other Files',
+      fileTypes: [SourceFile.TypeEnum.DOCKSTOREWORKFLOWOTHER],
+    },
   ],
 };

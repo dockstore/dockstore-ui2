@@ -18,7 +18,7 @@
     <p>A <b>Workflow</b> can use multiple containers and executes multiple actions or steps, outlined by one or more descriptors.</p>
   </span>
   <mat-divider class="my-2"></mat-divider>
-  <app-search-entry-table [entryType]="EntryType.WORKFLOW"></app-search-entry-table>
+  <app-search-entry-table [entryType]="EntryType.WORKFLOW" (sortChange)="setSort($event)"></app-search-entry-table>
 </div>
 
 <div *ngIf="getTabIndex() === 1">
@@ -26,7 +26,7 @@
     <p>A <b>Tool</b> uses a single container and performs a single action or step that is outlined by a descriptor.</p>
   </span>
   <mat-divider class="my-2"></mat-divider>
-  <app-search-entry-table [entryType]="EntryType.TOOL"></app-search-entry-table>
+  <app-search-entry-table [entryType]="EntryType.TOOL" (sortChange)="setSort($event)"></app-search-entry-table>
 </div>
 
 <div *ngIf="getTabIndex() === 2">
@@ -34,5 +34,5 @@
     <p>A <b>Notebook</b> is a document containing code and text that can be interactively edited and run.</p>
   </span>
   <mat-divider class="my-2"></mat-divider>
-  <app-search-entry-table [entryType]="EntryType.NOTEBOOK"></app-search-entry-table>
+  <app-search-entry-table [entryType]="EntryType.NOTEBOOK" (sortChange)="setSort($event)"></app-search-entry-table>
 </div>

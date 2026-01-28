@@ -21,6 +21,7 @@ import { ExtendedWorkflow } from '../shared/models/ExtendedWorkflow';
 import { VersionVerifiedPlatform, Tag, WorkflowVersion, Author, EntryTypeMetadata, PublicNotification } from '../shared/openapi';
 import { DockstoreTool } from './../shared/openapi/model/dockstoreTool';
 import { SourceFile } from './../shared/openapi/model/sourceFile';
+import { TimeSeriesMetric } from './../shared/openapi/model/timeSeriesMetric';
 import { TokenUser } from './../shared/openapi/model/tokenUser';
 import { Workflow } from './../shared/openapi/model/workflow';
 
@@ -876,4 +877,28 @@ export const expiredMockNotification: PublicNotification = {
   type: 'SITEWIDE',
   priority: 'LOW',
   expiration: new Date('2018-11-25T00:00:00').getTime(),
+};
+
+export const dailyTimeSeries: TimeSeriesMetric = {
+  id: 123,
+  begins: '1764993397000',
+  ends: '1765166197000',
+  interval: 'DAY',
+  values: [1, 2],
+};
+
+export const weeklyTimeSeries: TimeSeriesMetric = {
+  id: 124,
+  begins: '1764993397000',
+  ends: '1766807797000',
+  interval: 'WEEK',
+  values: [1, 2, 3],
+};
+
+export const monthlyTimeSeries: TimeSeriesMetric = {
+  id: 125,
+  begins: '1764993397000',
+  ends: '1767671797000',
+  interval: 'MONTH',
+  values: [1],
 };

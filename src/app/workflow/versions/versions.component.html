@@ -207,23 +207,23 @@
         scope="col"
         mat-header-cell
         *matHeaderCellDef
-        matTooltip="Graphs of execution counts over the most recent weekly periods."
+        matTooltip="Graph of execution counts over the most recent monthly periods."
         matTooltipPosition="above"
       >
-        Weekly Runs
+        Monthly Runs
         <a class="ds-green" [href]="Dockstore.DOCUMENTATION_URL + '/advanced-topics/metrics.html'" target="_blank" rel="noopener noreferrer"
           ><mat-icon>info</mat-icon></a
         >
       </th>
       <td mat-cell *matCellDef="let version">
-        @let timeSeries = version?.metricsByPlatform?.['ALL']?.executionStatusCount?.count?.['ALL']?.weeklyExecutionCounts;
+        @let timeSeries = version?.metricsByPlatform?.['ALL']?.executionStatusCount?.count?.['ALL']?.monthlyExecutionCounts;
         <div class="ml-4">
           <app-thumbnail-time-series-graph
-            *ngIf="timeSeries"
+            *ngIf="timeSeries && maxMonthlyExecutionCount !== undefined"
             [timeSeries]="timeSeries"
             [now]="now"
-            [binCount]="numberOfWeeksToGraph"
-            [maxValue]="maxWeeklyExecutionCount"
+            [binCount]="numberOfMonthsToGraph"
+            [maxValue]="maxMonthlyExecutionCount"
           ></app-thumbnail-time-series-graph>
           <div *ngIf="!timeSeries" style="width: 55px; height: 30px" matTooltip="No metrics for this version."></div>
         </div>

@@ -25,6 +25,7 @@ import {
   NgTemplateOutlet,
   AsyncPipe,
   DatePipe,
+  TitleCasePipe,
 } from '@angular/common';
 import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
@@ -101,6 +102,7 @@ import { StarringComponent } from '../starring/starring.component';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
 import { JsonLdComponent } from '../shared/json-ld/json-ld.component';
@@ -128,6 +130,7 @@ import { PreviewWarningComponent } from '../preview-warning/preview-warning.comp
     JsonLdComponent,
     ExtendedModule,
     MatChipsModule,
+    MatExpansionModule,
     MatFormFieldModule,
     MatSelectModule,
     FormsModule,
@@ -163,6 +166,7 @@ import { PreviewWarningComponent } from '../preview-warning/preview-warning.comp
     ShareIconsModule,
     AsyncPipe,
     DatePipe,
+    TitleCasePipe,
     BaseUrlPipe,
     DoiBadgeComponent,
     PreviewWarningComponent,

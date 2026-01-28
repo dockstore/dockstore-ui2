@@ -32,6 +32,7 @@ import { DockstoreTool, EntryType, Workflow } from '../../shared/openapi';
 import { SearchQuery } from './search.query';
 import { SearchStore } from './search.store';
 import { SearchAuthorsHtmlPipe } from '../search-authors-html.pipe';
+import { TimeSeriesService } from '../../shared/timeseries.service';
 
 export interface Hit {
   _index: string;
@@ -193,7 +194,8 @@ export class SearchService {
     private imageProviderService: ImageProviderService,
     private extendedGA4GHService: ExtendedGA4GHService,
     private alertService: AlertService,
-    private searchAuthorsHtmlPipe: SearchAuthorsHtmlPipe
+    private searchAuthorsHtmlPipe: SearchAuthorsHtmlPipe,
+    private timeSeriesService: TimeSeriesService
   ) {}
 
   static convertTabIndexToEntryType(index: number): 'tools' | 'workflows' | 'notebooks' | null {
@@ -221,6 +223,7 @@ export class SearchService {
   }
 
   /**
+   * @deprecated Currently not used because we've switched to sorting search results server-side in Elasticsearch.
    * Return a negative number if a sorts before b, positive if b sorts before a, and 0 if they are the same,
    * comparing based on the given attribute and direction
    * @param a: DockstoreTool or Workflow
@@ -334,7 +337,7 @@ export class SearchService {
   }
 
   /**
-   * Separates the 'hits' object into 'toolHits' and 'workflowHits'
+   * Separates the 'hits' object into 'toolHits', 'workflowHits', and 'notebookHits'
    * Also sets up provider information
    * @param {Array<any>} hits
    * @param {number} query_size
@@ -346,7 +349,7 @@ export class SearchService {
     const notebookHits = [];
     hits.forEach((hit) => {
       hit['_source'] = this.providerService.setUpProvider(hit['_source']);
-      if (workflowHits.length + toolHits.length < query_size - 1) {
+      if (workflowHits.length + toolHits.length + notebookHits.length < query_size - 1) {
         if (hit['_index'] === 'tools') {
           hit['_source'] = this.imageProviderService.setUpImageProvider(hit['_source']);
           toolHits.push(hit);
@@ -361,6 +364,8 @@ export class SearchService {
   }
 
   setHits(toolHits: Array<Hit>, workflowHits: Array<Hit>, notebookHits: Array<Hit>) {
+    this.processHits(toolHits, workflowHits, notebookHits);
+
     this.searchStore.update((state) => {
       return {
         ...state,
@@ -368,6 +373,25 @@ export class SearchService {
         workflowhit: workflowHits,
         notebookhit: notebookHits,
       };
+    });
+  }
+
+  private processHits(toolHits: Array<Hit>, workflowHits: Array<Hit>, notebookHits: Array<Hit>) {
+    // Adjust each time series to the current time and desired sample count.
+    const now = new Date();
+    const sampleCount = 12;
+    const hits = [...toolHits, ...workflowHits, ...notebookHits];
+    hits.forEach((hit) => {
+      const timeSeries = hit._source.weeklyExecutionCounts;
+      if (timeSeries) {
+        hit._source.weeklyExecutionCounts = this.timeSeriesService.adjustTimeSeries(timeSeries, now, sampleCount);
+      }
+    });
+    hits.forEach((hit) => {
+      const timeSeries = hit._source.monthlyExecutionCounts;
+      if (timeSeries) {
+        hit._source.monthlyExecutionCounts = this.timeSeriesService.adjustTimeSeries(timeSeries, now, sampleCount);
+      }
     });
   }
 
