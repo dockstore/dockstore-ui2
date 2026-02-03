@@ -138,7 +138,7 @@ export class QueryBuilderService {
     // otherwise, sort hits by ES-calculated score
     // if we're sorting by ES-calculated score, sort archived entries last
     if (sortValue?.active && sortValue?.direction) {
-      tableBody = tableBody.sort([{ [sortValue?.active]: { order: sortValue?.direction, missing: '_last' } }]);
+      tableBody = tableBody.sort([{ [sortValue?.active]: { order: sortValue?.direction, missing: '_last' } }, { relevance: 'desc' }]);
     } else if (this.isEmpty(values) && !this.hasInclusiveSettings(advancedSearchObject)) {
       tableBody = tableBody.sort([{ relevance: 'desc' }]);
     } else {
