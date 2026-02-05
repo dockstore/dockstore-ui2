@@ -176,6 +176,7 @@ export class SearchStubService {
   joinComma(searchTerm: string): string {
     return searchTerm.trim().split(' ').join(', ');
   }
+  setHits() {}
   haveNoHits(object: Object[]): boolean {
     if (!object || object.length === 0) {
       return true;

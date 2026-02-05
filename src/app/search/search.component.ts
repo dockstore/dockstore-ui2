@@ -261,6 +261,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     });
 
     this.hits = [];
+    this.searchService.setHits([], [], []);
 
     this.aNDSplitFilterText$ = this.advancedSearchQuery.aNDSplitFilterText$;
     this.aNDNoSplitFilterText$ = this.advancedSearchQuery.aNDNoSplitFilterText$;
