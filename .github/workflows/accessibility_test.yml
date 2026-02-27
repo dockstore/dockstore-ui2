@@ -103,7 +103,7 @@ jobs:
           fi
 
       - name: Save accessibility results
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: accessibility-results-${{ matrix.branch == github.base_ref && 'base' || 'current' }}
           path: accessibility-results/
