@@ -224,6 +224,10 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
   }
 
   ngAfterViewInit() {
+    // Re-render each of the charts, hopefully fixing the "blank chart" bug
+    // (https://ucsc-cgl.atlassian.net/browse/SEAB-7395)
+    // if the root cause is that the chart data arrives before the canvas
+    // is ready for rendering.
     this.charts.forEach((chart) => {
       chart.update();
     });
