@@ -121,7 +121,7 @@ export class RegisterOrganizationService {
         { value: displayName, disabled: organization?.status === Organization.StatusEnum.APPROVED },
         [Validators.required, Validators.maxLength(50), Validators.minLength(3), Validators.pattern(this.organizationDisplayNameRegex)],
       ],
-      topic: [topic, Validators.required],
+      topic: [topic, Validators.required, Validators.maxLength(255)],
       link: [link, Validators.pattern(this.urlRegex)],
       location: [location],
       contactEmail: [contactEmail, [Validators.email, Validators.required]],
