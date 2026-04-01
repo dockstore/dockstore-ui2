@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnChanges, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { EntryTab } from '../../shared/entry/entry-tab';
 import {
   CloudInstance,
@@ -93,7 +93,7 @@ interface ExecutionMetricsTableObject {
     BaseChartDirective,
   ],
 })
-export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChanges {
+export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChanges, AfterViewInit {
   readonly SUCCESSFUL_LABEL = 'Successful';
   readonly FAILED_LABEL = 'Failed';
   readonly ABORTED_LABEL = 'Aborted';
@@ -170,6 +170,7 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
 
   @Input() entry: BioWorkflow | Service | Notebook;
   @Input() version: WorkflowVersion;
+  @ViewChildren(BaseChartDirective) charts: QueryList<BaseChartDirective>;
 
   constructor(
     private extendedGA4GHService: ExtendedGA4GHService,
@@ -220,6 +221,16 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
           this.alertService.detailedError(error);
         }
       );
+  }
+
+  ngAfterViewInit() {
+    // Re-render each of the charts, hopefully fixing the "blank chart" bug
+    // (https://ucsc-cgl.atlassian.net/browse/SEAB-7395)
+    // if the root cause is that the chart data arrives before the canvas
+    // is ready for rendering.
+    this.charts.forEach((chart) => {
+      chart.update();
+    });
   }
 
   getMetrics(): Observable<{ [key: string]: Metrics }> {
