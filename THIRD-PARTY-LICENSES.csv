@@ -152,7 +152,7 @@
 "debug@4.4.1","MIT","https://github.com/debug-js/debug"
 "delaunator@5.0.1","ISC","https://github.com/mapbox/delaunator"
 "delegate@3.2.0","MIT","https://github.com/zenorocha/delegate"
-"dompurify@3.3.1","(MPL-2.0 OR Apache-2.0)","https://github.com/cure53/DOMPurify"
+"dompurify@3.3.3","(MPL-2.0 OR Apache-2.0)","https://github.com/cure53/DOMPurify"
 "duplexify@3.7.1","MIT","https://github.com/mafintosh/duplexify"
 "emoji-toolkit@8.0.0","MIT","https://github.com/joypixels/emoji-toolkit"
 "encoding@0.1.13","MIT","https://github.com/andris9/encoding"
