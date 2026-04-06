@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import DOMPurify from 'dompurify';
-import { MarkdownService } from 'ngx-markdown';
+import { marked } from 'marked';
+import { baseUrl } from 'marked-base-url';
 
 /**
  Wrapper for ngx-markdown's MarkdownService. Allows custom sanitization of user-input markdown through DOMPurify, which is not accessible
@@ -77,18 +78,22 @@ export class MarkdownWrapperService {
     'onunload',
   ];
 
-  constructor(private markdownService: MarkdownService) {}
+  constructor() {}
 
   /**
    * Compiles markdown into HTML with custom options.
    * @param data
-   * @param baseUrl A base url used as a prefix for relative links
+   * @param markdownBaseUrl A base url used as a prefix for relative links
    * @returns {string} HTML string
    */
-  customCompile(data, baseUrl): string {
-    const parseOptions = { markedOptions: { baseUrl: baseUrl } };
+  customCompile(data, markdownBaseUrl?): string {
+    // Use the marked-base-url extension if a base URL is specified
+    if (markdownBaseUrl) {
+      marked.use(baseUrl(markdownBaseUrl));
+    }
     const markdownData = this.removeTabsFromTableHeaders(data);
-    const html = this.markdownService.parse(markdownData, parseOptions);
+    // Set async: false so a Promise<string> is not returned and we can cast the result to a string
+    const html = marked.parse(markdownData, { async: false }) as string;
     return this.makeGitHubImagesRaw(html);
   }
 

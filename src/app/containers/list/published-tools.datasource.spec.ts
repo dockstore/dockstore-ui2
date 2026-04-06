@@ -15,25 +15,28 @@
  */
 /* eslint-disable no-unused-vars, @typescript-eslint/no-unused-vars */
 
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { inject, TestBed } from '@angular/core/testing';
 import { ImageProviderService } from '../../shared/image-provider.service';
 import { ProviderService } from '../../shared/provider.service';
 import { ContainersService } from '../../shared/openapi';
 import { ContainersStubService } from './../../test/service-stubs';
 import { PublishedToolsDataSource } from './published-tools.datasource';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('Service: PublishedToolsDataSource', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [],
       providers: [
         PublishedToolsDataSource,
         ImageProviderService,
         ProviderService,
         { provide: ContainersService, useClass: ContainersStubService },
         { provide: ContainersService, useClass: ContainersStubService },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
-      imports: [HttpClientTestingModule],
     });
   });
 

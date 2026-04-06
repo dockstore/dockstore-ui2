@@ -16,8 +16,8 @@
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Location, NgIf, NgFor, NgClass, AsyncPipe, DatePipe } from '@angular/common';
 import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
-import { MatLegacyChipInputEvent as MatChipInputEvent, MatLegacyChipsModule } from '@angular/material/legacy-chips';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
+import { MatDialog } from '@angular/material/dialog';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertService } from 'app/shared/alert/state/alert.service';
@@ -60,23 +60,23 @@ import { FilesContainerComponent } from './files/files.component';
 import { VersionsContainerComponent } from './versions/versions.component';
 import { LaunchComponent } from './launch/launch.component';
 import { InfoTabComponent } from './info-tab/info-tab.component';
-import { MatLegacyTabsModule } from '@angular/material/legacy-tabs';
+import { MatTabsModule } from '@angular/material/tabs';
 import { StargazersComponent } from '../stargazers/stargazers.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CategoryButtonComponent } from '../categories/button/category-button.component';
 import { ToolActionsComponent } from '../shared/entry-actions/tool-actions.component';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatButtonModule } from '@angular/material/button';
 import { StarringComponent } from '../starring/starring.component';
-import { MatLegacyOptionModule } from '@angular/material/legacy-core';
-import { MatLegacySelectModule } from '@angular/material/legacy-select';
-import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
-import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatOptionModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
 import { PrivateIconComponent } from '../shared/private-icon/private-icon.component';
 import { JsonLdComponent } from '../shared/json-ld/json-ld.component';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { MatCardModule } from '@angular/material/card';
 import { WorkflowComponent } from '../workflow/workflow.component';
 
 @Component({
@@ -87,27 +87,27 @@ import { WorkflowComponent } from '../workflow/workflow.component';
   imports: [
     NgIf,
     WorkflowComponent,
-    MatLegacyCardModule,
+    MatCardModule,
     MatIconModule,
     FlexModule,
     JsonLdComponent,
     PrivateIconComponent,
     ExtendedModule,
-    MatLegacyChipsModule,
-    MatLegacyTooltipModule,
-    MatLegacyFormFieldModule,
-    MatLegacySelectModule,
+    MatChipsModule,
+    MatTooltipModule,
+    MatFormFieldModule,
+    MatSelectModule,
     NgFor,
-    MatLegacyOptionModule,
+    MatOptionModule,
     StarringComponent,
-    MatLegacyButtonModule,
+    MatButtonModule,
     ToolActionsComponent,
     CategoryButtonComponent,
     FormsModule,
     ReactiveFormsModule,
     StargazersComponent,
     NgClass,
-    MatLegacyTabsModule,
+    MatTabsModule,
     InfoTabComponent,
     LaunchComponent,
     VersionsContainerComponent,

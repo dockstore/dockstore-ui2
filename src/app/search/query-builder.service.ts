@@ -15,6 +15,7 @@
  */
 
 import { Injectable } from '@angular/core';
+import { Sort } from '@angular/material/sort';
 import * as bodybuilder from 'bodybuilder';
 import { Bodybuilder } from 'bodybuilder';
 import { CategorySort } from '../shared/models/CategorySort';
@@ -22,6 +23,7 @@ import { tagCloudCommonTerms } from './../shared/constants';
 import { AdvancedSearchObject } from './../shared/models/AdvancedSearchObject';
 import { SearchService } from './state/search.service';
 import { parseTerms } from './helpers';
+import { EntryType } from 'app/shared/openapi';
 
 type Index = 'workflows' | 'tools' | 'notebooks';
 
@@ -37,9 +39,9 @@ export class QueryBuilderService {
   private shard_size = 10000;
   constructor(private searchService: SearchService) {}
 
-  getTagCloudQuery(type: string): string {
+  getTagCloudQuery(type: EntryType): string {
     const tagCloudSize = 20;
-    const index = type + 's';
+    const index = type.toLowerCase() + 's';
     // Size to 0 here because https://www.elastic.co/guide/en/elasticsearch/reference/current/search-aggregations.html#agg-caches
     let body = bodybuilder().size(0);
     body = this.excludeContent(body);
@@ -80,22 +82,30 @@ export class QueryBuilderService {
     return body.rawOption('_source', [
       'all_authors',
       'approvedAITopic',
+      'archived',
+      'categories',
       'descriptorType',
       'descriptorTypeSubclass',
+      'entryTypeMetadata',
+      'executionCount',
       'full_workflow_path',
       'gitUrl',
+      'last_modified_date',
+      'monthlyExecutionCounts',
       'name',
       'namespace',
       'organization',
       'private_access',
       'providerUrl',
       'repository',
+      'selected_concept_doi',
       'starredUsers',
       'toolname',
       'tool_path',
       'topicAutomatic',
       'topicSelection',
       'verified',
+      'weeklyExecutionCounts',
       'workflowName',
     ]);
   }
@@ -115,6 +125,7 @@ export class QueryBuilderService {
     searchTerm: boolean,
     filters: Map<string, Set<string>>,
     exclusiveFilters: Array<string>,
+    sortValue: Sort,
     index: Index
   ): string {
     let tableBody = bodybuilder().size(query_size);
@@ -122,11 +133,14 @@ export class QueryBuilderService {
     tableBody = tableBody.query('match', '_index', index);
     tableBody = this.appendQuery(tableBody, values, advancedSearchObject, searchTerm);
     tableBody = this.appendFilter(tableBody, null, filters, exclusiveFilters);
-    // if there's no inclusive search term, tell ES to sort hits by stars
-    // otherwise, sort by ES-calculated score
-    // in both cases, sort so that archived entries appear last
-    if (this.isEmpty(values) && !this.hasInclusiveSettings(advancedSearchObject)) {
-      tableBody = tableBody.sort([{ archived: 'asc' }, { stars_count: 'desc' }]);
+    // if the user has specified a search order, sort hits by it
+    // otherwise, if there's no search term, or a search term that's not inclusive, sort hits by webservice-calculated "relevance"
+    // otherwise, sort hits by ES-calculated score
+    // if we're sorting by ES-calculated score, sort archived entries last
+    if (sortValue?.active && sortValue?.direction) {
+      tableBody = tableBody.sort([{ [sortValue?.active]: { order: sortValue?.direction, missing: '_last' } }, { relevance: 'desc' }]);
+    } else if (this.isEmpty(values) && !this.hasInclusiveSettings(advancedSearchObject)) {
+      tableBody = tableBody.sort([{ relevance: 'desc' }]);
     } else {
       tableBody = tableBody.sort([{ archived: 'asc' }, { _score: 'desc' }]);
     }

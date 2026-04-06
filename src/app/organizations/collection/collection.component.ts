@@ -1,9 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import {
-  MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
-  MatLegacyDialog as MatDialog,
-  MatLegacyDialogModule,
-} from '@angular/material/legacy-dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { bootstrap4mediumModalSize } from '../../shared/constants';
 import { Dockstore } from '../../shared/dockstore.model';
@@ -30,12 +26,12 @@ import { GravatarPipe } from '../../gravatar/gravatar.pipe';
 import { MapFriendlyValuesPipe } from '../../search/map-friendly-values.pipe';
 import { MarkdownWrapperComponent } from '../../shared/markdown-wrapper/markdown-wrapper.component';
 import { CategoryButtonComponent } from '../../categories/button/category-button.component';
-import { MatLegacyChipsModule } from '@angular/material/legacy-chips';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
-import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { ImgFallbackDirective } from '../../shared/img-fallback.directive';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { MatCardModule } from '@angular/material/card';
 import { NgIf, NgFor, NgClass, AsyncPipe, DatePipe } from '@angular/common';
 import { LoadingComponent } from '../../shared/loading/loading.component';
 import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
@@ -48,7 +44,7 @@ import { AiBubbleComponent } from '../../shared/ai-bubble/ai-bubble.component';
   selector: 'app-collection-entry-confirm-remove',
   templateUrl: 'collection-entry-confirm-remove.html',
   standalone: true,
-  imports: [MatLegacyDialogModule, AlertComponent, FlexModule, MatLegacyButtonModule],
+  imports: [MatDialogModule, AlertComponent, FlexModule, MatButtonModule],
 })
 export class CollectionRemoveEntryDialogComponent {
   constructor(@Inject(MAT_DIALOG_DATA) public data: EntryDialogData, private collectionsService: CollectionsService) {}
@@ -84,13 +80,13 @@ export interface EntryDialogData {
     ExtendedModule,
     LoadingComponent,
     NgIf,
-    MatLegacyCardModule,
+    MatCardModule,
     MatIconModule,
     ImgFallbackDirective,
-    MatLegacyTooltipModule,
-    MatLegacyButtonModule,
+    MatTooltipModule,
+    MatButtonModule,
     NgFor,
-    MatLegacyChipsModule,
+    MatChipsModule,
     CategoryButtonComponent,
     NgClass,
     MarkdownWrapperComponent,

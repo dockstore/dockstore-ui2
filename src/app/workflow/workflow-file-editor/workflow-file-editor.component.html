@@ -40,9 +40,11 @@
         [entryType]="EntryType.WORKFLOW"
         [entrypath]="entrypath"
       ></app-code-editor-list>
-      <mat-card class="alert alert-info mat-elevation-z" role="alert" *ngIf="isNFL$ | async">
-        <mat-icon>warning</mat-icon>
-        &nbsp; Nextflow does not have the concept of a test parameter file.
+      <mat-card appearance="outlined" class="alert alert-info" role="alert" *ngIf="isNFL$ | async">
+        <mat-card-content>
+          <mat-icon>warning</mat-icon>
+          &nbsp; Nextflow does not have the concept of a test parameter file.
+        </mat-card-content>
       </mat-card>
     </ng-template>
   </mat-tab>
@@ -50,12 +52,10 @@
 
 <div class="editor-button-container p-2" *ngIf="!publicPage && isNewestVersion && canWrite">
   <span *ngIf="!editing">
-    <button id="editFilesButton" mat-raised-button class="accent-1-dark-btn mat-elevation-z" (click)="toggleEdit()">Edit Files</button>
+    <button id="editFilesButton" mat-flat-button class="accent-1-dark" (click)="toggleEdit()">Edit Files</button>
   </span>
   <span *ngIf="editing">
-    <button id="cancelButton" mat-flat-button class="secondary-1" (click)="toggleEdit(); resetFiles()">Cancel</button>
-    <button id="saveNewVersionButton" mat-raised-button class="accent-1-dark-btn mat-elevation-z" (click)="saveVersion()">
-      Save as New Version
-    </button>
+    <button id="cancelButton" mat-button color="accent" (click)="toggleEdit(); resetFiles()">Cancel</button>
+    <button id="saveNewVersionButton" mat-flat-button class="accent-1-dark" (click)="saveVersion()">Save as New Version</button>
   </span>
 </div>

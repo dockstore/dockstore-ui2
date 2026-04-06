@@ -34,7 +34,7 @@ mat-expansion-panel-header[aria-expanded='false'] {
   background-color: white;
 
   :hover {
-    background-color: mat.get-color-from-palette($dockstore-app-gray, 5);
+    background-color: mat.m2-get-color-from-palette($dockstore-app-gray, 5);
   }
 }
 
@@ -46,12 +46,12 @@ mat-expansion-panel-header[aria-expanded='false'] {
 // Expansion panel outlines
 mat-expansion-panel {
   margin: 0px 2px;
-  border-bottom: 0.1rem solid mat.get-color-from-palette($dockstore-app-gray, 3);
+  border-bottom: 0.1rem solid mat.m2-get-color-from-palette($dockstore-app-gray, 3);
 }
 
 //Avoid overlap with borders (only first panel gets top, all others get bottom)
 .mat-accordion .mat-expansion-panel:first-of-type {
-  border-top: 0.1rem solid mat.get-color-from-palette($dockstore-app-gray, 3);
+  border-top: 0.1rem solid mat.m2-get-color-from-palette($dockstore-app-gray, 3);
 }
 
 // Expansion panel corners
@@ -62,29 +62,11 @@ mat-expansion-panel {
 
 // Refresh button div
 .mat-action-row {
-  border-color: mat.get-color-from-palette($dockstore-app-gray, 3);
+  border-color: mat.m2-get-color-from-palette($dockstore-app-gray, 3);
   padding: 0rem 0rem 0.3rem 0rem;
 }
 
 ////////// MAT TABS ///////////
-:host ::ng-deep .mat-tab-label {
-  min-width: 0 !important;
-  padding: 0.5em !important;
-}
-
-:host ::ng-deep .mat-tab-label-content {
-  font-size: 12px;
-}
-
-// Selected tab style
-:host ::ng-deep .mat-tab-label-active {
-  opacity: 1;
-
-  .mat-tab-label-content {
-    font-weight: bold;
-    color: #181f40;
-  }
-}
 
 // Selected entry style
 .selectedTool,
@@ -93,14 +75,4 @@ mat-expansion-panel {
     color: #181f40;
     text-decoration: none;
   }
-
-  .arrow {
-    display: block;
-    margin-right: 0.5rem;
-  }
-}
-
-// Hide arrow for non-selected entry
-.arrow {
-  display: none;
 }

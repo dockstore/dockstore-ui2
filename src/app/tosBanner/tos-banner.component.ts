@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { TosBannerService } from './state/tos-banner.service';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatButtonModule } from '@angular/material/button';
 import { NgIf } from '@angular/common';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 
@@ -10,7 +10,7 @@ import { FlexModule } from '@ngbracket/ngx-layout/flex';
   templateUrl: './tos-banner.component.html',
   styleUrls: ['./tos-banner.component.css'],
   standalone: true,
-  imports: [FlexModule, NgIf, MatLegacyButtonModule, MatIconModule],
+  imports: [FlexModule, NgIf, MatButtonModule, MatIconModule],
 })
 export class TosBannerComponent {
   @Input()

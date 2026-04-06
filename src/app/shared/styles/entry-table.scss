@@ -5,7 +5,7 @@
 .mat-column-starredUsers,
 .mat-column-stars {
   max-width: 6rem;
-  color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
+  color: mat.m2-get-color-from-palette($dockstore-app-accent-1, darker);
 }
 
 .mat-column-all_authors {
@@ -37,11 +37,6 @@
 // To hide the search highlight row if there are no highlights
 .search-highlight-row {
   min-height: 0;
-}
-
-// To not have border between the entry detail row and the search highlight row
-.element-row {
-  border-bottom-width: 0;
 }
 
 th {

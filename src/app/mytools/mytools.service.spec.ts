@@ -14,9 +14,9 @@
  *    limitations under the License.
  */
 
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { inject, TestBed } from '@angular/core/testing';
-import { MatLegacySnackBarModule } from '@angular/material/legacy-snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ContainerService } from 'app/shared/container.service';
 import { UrlResolverService } from 'app/shared/url-resolver.service';
@@ -30,6 +30,7 @@ import { MyEntriesStateService } from '../shared/state/my-entries.service';
 import { MyEntriesStore } from '../shared/state/my-entries.store';
 import { OrgToolObject } from './my-tool/my-tool.component';
 import { MytoolsService } from './mytools.service';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('MytoolsService', () => {
   const tool1: DockstoreTool = {
@@ -283,6 +284,7 @@ describe('MytoolsService', () => {
   const expectedResult: OrgToolObject<DockstoreTool>[] = [expectedResult1, expectedResult2, expectedResult3];
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [RouterTestingModule, MatSnackBarModule],
       providers: [
         MytoolsService,
         ProviderService,
@@ -294,8 +296,9 @@ describe('MytoolsService', () => {
         MyWorkflowsService,
         MyEntriesStateService,
         MyEntriesStore,
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
-      imports: [RouterTestingModule, HttpClientTestingModule, MatLegacySnackBarModule],
     });
   });
   it('should ...', inject([MytoolsService], (service: MytoolsService) => {

@@ -17,6 +17,16 @@
         "_id": "52",
         "_score": 1.0,
         "_source": {
+          "entryTypeMetadata": {
+            "termPlural": "tools",
+            "sitePath": "containers",
+            "trsSupported": true,
+            "trsPrefix": "",
+            "term": "tool",
+            "searchSupported": true,
+            "type": "TOOL",
+            "searchEntryType": "tools"
+          },
           "tool_maintainer_email": "",
           "aliases": {},
           "default_dockerfile_path": "/Dockerfile",
@@ -89,6 +99,16 @@
         "_id": "5",
         "_score": 1.0,
         "_source": {
+          "entryTypeMetadata": {
+            "termPlural": "tools",
+            "sitePath": "containers",
+            "trsSupported": true,
+            "trsPrefix": "",
+            "term": "tool",
+            "searchSupported": true,
+            "type": "TOOL",
+            "searchEntryType": "tools"
+          },
           "tool_maintainer_email": "",
           "aliases": {},
           "default_dockerfile_path": "/Dockerfile",
@@ -179,6 +199,16 @@
         "_id": "4",
         "_score": 1.0,
         "_source": {
+          "entryTypeMetadata": {
+            "termPlural": "tools",
+            "sitePath": "containers",
+            "trsSupported": true,
+            "trsPrefix": "",
+            "term": "tool",
+            "searchSupported": true,
+            "type": "TOOL",
+            "searchEntryType": "tools"
+          },
           "tool_maintainer_email": "",
           "aliases": {},
           "default_dockerfile_path": "/Dockerfile",
@@ -270,6 +300,16 @@
         "_id": "11",
         "_score": 1.0,
         "_source": {
+          "entryTypeMetadata": {
+            "termPlural": "workflows",
+            "sitePath": "workflows",
+            "trsSupported": true,
+            "trsPrefix": "#workflow/",
+            "term": "workflow",
+            "searchSupported": true,
+            "type": "WORKFLOW",
+            "searchEntryType": "workflows"
+          },
           "aliases": {},
           "is_published": true,
           "last_modified_date": null,
@@ -333,6 +373,16 @@
         "_id": "61",
         "_score": 1.0,
         "_source": {
+          "entryTypeMetadata": {
+            "termPlural": "notebooks",
+            "sitePath": "notebooks",
+            "trsSupported": true,
+            "trsPrefix": "#notebook/",
+            "term": "notebook",
+            "searchSupported": true,
+            "type": "NOTEBOOK",
+            "searchEntryType": "notebooks"
+          },
           "aliases": {},
           "is_published": true,
           "last_modified_date": null,

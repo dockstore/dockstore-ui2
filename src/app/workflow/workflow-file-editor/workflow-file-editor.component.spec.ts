@@ -1,16 +1,16 @@
 import { ClipboardModule } from '@angular/cdk/clipboard';
-import { HttpClientModule } from '@angular/common/http';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
-import { MatLegacyCardModule as MatCardModule } from '@angular/material/legacy-card';
-import { MatLegacyFormFieldModule as MatFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
-import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
-import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-tabs';
+import { MatInputModule } from '@angular/material/input';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
 import { SourceFile } from '../../shared/openapi';
@@ -46,8 +46,6 @@ describe('WorkflowFileEditorComponent', () => {
           MatSnackBarModule,
           MatCardModule,
           BrowserAnimationsModule,
-          HttpClientModule,
-          HttpClientTestingModule,
           WorkflowFileEditorComponent,
           CodeEditorListComponent,
           CodeEditorComponent,
@@ -61,6 +59,8 @@ describe('WorkflowFileEditorComponent', () => {
           { provide: RefreshService, useClass: RefreshStubService },
           { provide: FileService, useClass: FileStubService },
           { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
+          provideHttpClient(withInterceptorsFromDi()),
+          provideHttpClientTesting(),
         ],
       }).compileComponents();
     })

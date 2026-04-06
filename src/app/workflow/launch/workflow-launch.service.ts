@@ -20,6 +20,7 @@ import { Dockstore } from '../../shared/dockstore.model';
 import { LaunchService } from '../../shared/launch.service';
 import { ToolDescriptor } from '../../shared/openapi';
 import { EntryType } from '../../shared/enum/entry-type';
+import { Workflow } from '../../shared/openapi/model/workflow';
 
 @Injectable()
 export class WorkflowLaunchService extends LaunchService {
@@ -74,5 +75,23 @@ export class WorkflowLaunchService extends LaunchService {
 
   getAgcFileWrapper() {
     return `echo '{\"workflowInputs\": \"${this.wesInputFile}\"}' > ${this.agcWrapperFile}`;
+  }
+
+  getToilLaunchCommand(workflow: Workflow, versionName: string) {
+    const language = String(workflow.descriptorType).toLowerCase();
+    const inputFile = 'Dockstore.json';
+    const inputArguments = language === 'wdl' ? `--input ${inputFile}` : inputFile;
+    return `toil-${language}-runner '${workflow.trsId}:${versionName}' ${inputArguments}`;
+  }
+
+  getSnakemakeGetWorkflowCommand(workflow: Workflow, versionName: string): string {
+    return [
+      `git clone --branch ${versionName} https://github.com/${workflow.organization}/${workflow.repository}`,
+      `cd ${workflow.repository}`,
+    ].join('\n');
+  }
+
+  getSnakemakeRunWorkflowCommand(workflow: Workflow, versionName: string): string {
+    return 'snakemake --cores 1';
   }
 }

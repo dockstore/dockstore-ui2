@@ -13,7 +13,7 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-import { setTokenUserViewPort } from '../../support/commands';
+import { goToAccountPreferencesTab, setTokenUserViewPort } from '../../support/commands';
 
 describe('Go to disabled Dockstore Account & Preferences', () => {
   setTokenUserViewPort();
@@ -21,7 +21,7 @@ describe('Go to disabled Dockstore Account & Preferences', () => {
     cy.visit('');
     cy.get('[data-cy=dropdown-main]:visible').click();
     cy.get('#dropdown-accounts').click();
-    cy.contains('Dockstore Account & Preferences').click();
+    goToAccountPreferencesTab();
   });
   it('Should not have the danger alert', () => {
     cy.get('.alert-danger').should('not.exist');

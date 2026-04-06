@@ -176,6 +176,7 @@ export class SearchStubService {
   joinComma(searchTerm: string): string {
     return searchTerm.trim().split(' ').join(', ');
   }
+  setHits() {}
   haveNoHits(object: Object[]): boolean {
     if (!object || object.length === 0) {
       return true;
@@ -895,6 +896,9 @@ export class WorkflowsStubService {
   secondaryDescriptors1(workflowId, descriptorType, versionName) {
     return observableOf([]);
   }
+  getPublicWorkflowVersions(workflowId, limit, offset, sortCol, sortOrder, include, observe) {
+    return observableOf([]);
+  }
 }
 
 export class ContainersStubService {
@@ -990,3 +994,5 @@ export class EntryActionsStubService {
 export class EditTopicDialogStubService {
   saveTopicChanges(entry: Workflow | DockstoreTool, topicManual: string, topicSelection: Workflow.TopicSelectionEnum) {}
 }
+
+export class TimeSeriesStubService {}

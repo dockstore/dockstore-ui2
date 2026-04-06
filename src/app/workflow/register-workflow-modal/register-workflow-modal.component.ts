@@ -15,8 +15,8 @@
  */
 import { AfterViewChecked, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm, FormsModule } from '@angular/forms';
-import { MatLegacyDialogRef as MatDialogRef, MatLegacyDialogModule } from '@angular/material/legacy-dialog';
-import { MatLegacyRadioChange as MatRadioChange, MatLegacyRadioModule } from '@angular/material/legacy-radio';
+import { MatDialogRef, MatDialogModule } from '@angular/material/dialog';
+import { MatRadioChange, MatRadioModule } from '@angular/material/radio';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 import { SessionQuery } from 'app/shared/session/session.query';
 import { UserQuery } from 'app/shared/user/user.query';
@@ -36,19 +36,21 @@ import {
 } from '../../shared/validationMessages.model';
 import { RegisterWorkflowModalService } from './register-workflow-modal.service';
 import { MapFriendlyValuesPipe } from '../../search/map-friendly-values.pipe';
-import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
-import { MatLegacyInputModule } from '@angular/material/legacy-input';
-import { MatLegacyOptionModule } from '@angular/material/legacy-core';
-import { MatLegacySelectModule } from '@angular/material/legacy-select';
-import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatInputModule } from '@angular/material/input';
+import { MatOptionModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { EntryWizardComponent } from '../../shared/entry-wizard/entry-wizard.component';
 import { RegisterGithubAppComponent } from '../../shared/register-github-app/register-github-app.component';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
-import { NgFor, NgIf, AsyncPipe } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
+import { NgFor, NgIf, AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatStepperModule } from '@angular/material/stepper';
 import { AlertComponent } from '../../shared/alert/alert.component';
+import { MatChipsModule } from '@angular/material/chips';
+import { PreviewWarningComponent } from 'app/preview-warning/preview-warning.component';
 
 export interface HostedWorkflowObject {
   name: string;
@@ -61,25 +63,28 @@ export interface HostedWorkflowObject {
   styleUrls: ['./register-workflow-modal.component.scss'],
   standalone: true,
   imports: [
-    MatLegacyDialogModule,
+    MatDialogModule,
     AlertComponent,
     MatStepperModule,
     MatIconModule,
-    MatLegacyRadioModule,
+    MatRadioModule,
     FormsModule,
     NgFor,
     NgIf,
-    MatLegacyButtonModule,
+    MatButtonModule,
     RegisterGithubAppComponent,
     EntryWizardComponent,
     FlexModule,
-    MatLegacyFormFieldModule,
-    MatLegacySelectModule,
-    MatLegacyOptionModule,
-    MatLegacyInputModule,
-    MatLegacyTooltipModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatOptionModule,
+    MatInputModule,
+    MatTooltipModule,
     AsyncPipe,
     MapFriendlyValuesPipe,
+    MatChipsModule,
+    PreviewWarningComponent,
+    NgTemplateOutlet,
   ],
 })
 export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked, OnDestroy {
@@ -133,6 +138,8 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
   private ngUnsubscribe: Subject<{}> = new Subject();
 
   Dockstore = Dockstore;
+
+  DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
 
   registerWorkflowForm: NgForm;
   @ViewChild('registerWorkflowForm') currentForm: NgForm;

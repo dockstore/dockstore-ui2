@@ -30,7 +30,7 @@ import { WorkflowsService } from '../../shared/openapi';
 import { Workflow } from '../../shared/openapi/model/workflow';
 import { UserQuery } from '../../shared/user/user.query';
 import { AsyncPipe } from '@angular/common';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-refresh-workflow-organization',
@@ -38,7 +38,7 @@ import { MatLegacyButtonModule } from '@angular/material/legacy-button';
   templateUrl: './../../shared/refresh-organization/refresh-organization.component.html',
   styleUrls: ['./../../shared/refresh-organization/refresh-organization.component.css'],
   standalone: true,
-  imports: [MatLegacyButtonModule, AsyncPipe],
+  imports: [MatButtonModule, AsyncPipe],
 })
 export class RefreshWorkflowOrganizationComponent extends RefreshOrganizationComponent implements OnInit, OnChanges {
   @Input() protected orgWorkflowObject: OrgWorkflowObject<Workflow>;

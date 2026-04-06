@@ -28,10 +28,11 @@ import { ImageProviderService } from '../../shared/image-provider.service';
 import { SubBucket } from '../../shared/models/SubBucket';
 import { ExtendedGA4GHService } from '../../shared/openapi/api/extendedGA4GH.service';
 import { ProviderService } from '../../shared/provider.service';
-import { DockstoreTool, Workflow } from '../../shared/openapi';
+import { DockstoreTool, EntryType, Workflow } from '../../shared/openapi';
 import { SearchQuery } from './search.query';
 import { SearchStore } from './search.store';
 import { SearchAuthorsHtmlPipe } from '../search-authors-html.pipe';
+import { TimeSeriesService } from '../../shared/timeseries.service';
 
 export interface Hit {
   _index: string;
@@ -71,6 +72,7 @@ export class SearchService {
   private static readonly WORKFLOWS_TAB_INDEX = 0;
   private static readonly TOOLS_TAB_INDEX = 1;
   private static readonly NOTEBOOKS_TAB_INDEX = 2;
+  public static readonly NOT_AVAILABLE = 'n/a';
   private searchInfoSource = new BehaviorSubject<any>(null);
   public toSaveSearch$ = new BehaviorSubject<boolean>(false);
   public searchTerm$ = new BehaviorSubject<boolean>(false);
@@ -192,7 +194,8 @@ export class SearchService {
     private imageProviderService: ImageProviderService,
     private extendedGA4GHService: ExtendedGA4GHService,
     private alertService: AlertService,
-    private searchAuthorsHtmlPipe: SearchAuthorsHtmlPipe
+    private searchAuthorsHtmlPipe: SearchAuthorsHtmlPipe,
+    private timeSeriesService: TimeSeriesService
   ) {}
 
   static convertTabIndexToEntryType(index: number): 'tools' | 'workflows' | 'notebooks' | null {
@@ -220,6 +223,7 @@ export class SearchService {
   }
 
   /**
+   * @deprecated Currently not used because we've switched to sorting search results server-side in Elasticsearch.
    * Return a negative number if a sorts before b, positive if b sorts before a, and 0 if they are the same,
    * comparing based on the given attribute and direction
    * @param a: DockstoreTool or Workflow
@@ -232,13 +236,13 @@ export class SearchService {
     b: DockstoreTool | Workflow,
     attribute: string,
     direction: SortDirection,
-    entryType: 'tool' | 'workflow' | 'notebook'
+    entryType: EntryType
   ) {
     // For sorting tools by name, sort tool_path
     // For sorting workflows by name, sort full_workflow_path
-    if (entryType === 'tool' && attribute === 'name') {
+    if (entryType === EntryType.TOOL && attribute === 'name') {
       attribute = 'tool_path';
-    } else if ((entryType === 'workflow' || entryType == 'notebook') && attribute === 'name') {
+    } else if ((entryType === EntryType.WORKFLOW || entryType == EntryType.NOTEBOOK) && attribute === 'name') {
       attribute = 'full_workflow_path';
     }
     let aVal = a[attribute];
@@ -260,11 +264,11 @@ export class SearchService {
         bVal = [];
       }
     } else {
-      // otherwise, regardless of sort direction, null or empty values go at the end
-      if (!aVal) {
+      // otherwise, regardless of sort direction, null, empty, or "not available" values go at the end
+      if (!aVal || aVal === SearchService.NOT_AVAILABLE) {
         return 1;
       }
-      if (!bVal) {
+      if (!bVal || bVal === SearchService.NOT_AVAILABLE) {
         return -1;
       }
     }
@@ -322,36 +326,18 @@ export class SearchService {
     this.setSearchText(suggestTerm);
   }
 
-  setShowTagCloud(entryType: 'tool' | 'workflow' | 'notebook') {
-    if (entryType === 'tool') {
-      const showTagCloud: boolean = this.searchQuery.getValue().showToolTagCloud;
-      this.searchStore.update((state) => {
-        return {
-          ...state,
-          showToolTagCloud: !showTagCloud,
-        };
-      });
-    } else if (entryType === 'workflow') {
-      const showTagCloud: boolean = this.searchQuery.getValue().showWorkflowTagCloud;
-      this.searchStore.update((state) => {
-        return {
-          ...state,
-          showWorkflowTagCloud: !showTagCloud,
-        };
-      });
-    } else {
-      const showTagCloud: boolean = this.searchQuery.getValue().showNotebookTagCloud;
-      this.searchStore.update((state) => {
-        return {
-          ...state,
-          showNotebookTagCloud: !showTagCloud,
-        };
-      });
-    }
+  setShowTagCloud(entryType: EntryType) {
+    this.searchStore.update((state) => {
+      return {
+        ...state,
+        showTagCloud: !(this.searchQuery.getValue().showTagCloud && this.searchQuery.getValue().currentEntryType === entryType),
+        currentEntryType: entryType,
+      };
+    });
   }
 
   /**
-   * Separates the 'hits' object into 'toolHits' and 'workflowHits'
+   * Separates the 'hits' object into 'toolHits', 'workflowHits', and 'notebookHits'
    * Also sets up provider information
    * @param {Array<any>} hits
    * @param {number} query_size
@@ -363,7 +349,7 @@ export class SearchService {
     const notebookHits = [];
     hits.forEach((hit) => {
       hit['_source'] = this.providerService.setUpProvider(hit['_source']);
-      if (workflowHits.length + toolHits.length < query_size - 1) {
+      if (workflowHits.length + toolHits.length + notebookHits.length < query_size - 1) {
         if (hit['_index'] === 'tools') {
           hit['_source'] = this.imageProviderService.setUpImageProvider(hit['_source']);
           toolHits.push(hit);
@@ -378,6 +364,8 @@ export class SearchService {
   }
 
   setHits(toolHits: Array<Hit>, workflowHits: Array<Hit>, notebookHits: Array<Hit>) {
+    this.processHits(toolHits, workflowHits, notebookHits);
+
     this.searchStore.update((state) => {
       return {
         ...state,
@@ -385,6 +373,25 @@ export class SearchService {
         workflowhit: workflowHits,
         notebookhit: notebookHits,
       };
+    });
+  }
+
+  private processHits(toolHits: Array<Hit>, workflowHits: Array<Hit>, notebookHits: Array<Hit>) {
+    // Adjust each time series to the current time and desired sample count.
+    const now = new Date();
+    const sampleCount = 12;
+    const hits = [...toolHits, ...workflowHits, ...notebookHits];
+    hits.forEach((hit) => {
+      const timeSeries = hit._source.weeklyExecutionCounts;
+      if (timeSeries) {
+        hit._source.weeklyExecutionCounts = this.timeSeriesService.adjustTimeSeries(timeSeries, now, sampleCount);
+      }
+    });
+    hits.forEach((hit) => {
+      const timeSeries = hit._source.monthlyExecutionCounts;
+      if (timeSeries) {
+        hit._source.monthlyExecutionCounts = this.timeSeriesService.adjustTimeSeries(timeSeries, now, sampleCount);
+      }
     });
   }
 

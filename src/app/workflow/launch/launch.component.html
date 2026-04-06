@@ -15,198 +15,255 @@
   -->
 
 <div class="p-3">
-  <mat-card *ngIf="!_selectedVersion" class="alert alert-warning mat-elevation-z" role="alert">
-    <mat-icon class="alert-warning-icon">warning</mat-icon> To see launch with, please refresh the workflow.
+  <mat-card appearance="outlined" *ngIf="!_selectedVersion" class="alert alert-warning" role="alert">
+    <mat-card-content>
+      <mat-icon class="alert-warning-icon">warning</mat-icon> To see launch with, please refresh the workflow.
+    </mat-card-content>
   </mat-card>
   <div *ngIf="_selectedVersion">
     <div *ngIf="!_selectedVersion.valid">
-      <mat-card class="alert alert-warning mat-elevation-z" role="alert">
-        <mat-icon class="alert-warning-icon">warning</mat-icon> This section is only available for valid versions. A valid version requires
-        a valid descriptor file.
+      <mat-card appearance="outlined" class="alert alert-warning" role="alert">
+        <mat-card-content>
+          <mat-icon class="alert-warning-icon">warning</mat-icon> This section is only available for valid versions. A valid version
+          requires a valid descriptor file.
+        </mat-card-content>
       </mat-card>
     </div>
     <div *ngIf="_selectedVersion.valid" fxLayout="column" fxLayoutGap="1rem">
       <div fxLayout="column" fxLayoutGap="1rem">
-        <mat-card *ngIf="entryType === EntryType.Tool" class="alert alert-info mat-elevation-z" role="alert">
-          <mat-icon>info</mat-icon> GitHub App Tools are launched in workflow mode with the Dockstore CLI
+        <mat-card appearance="outlined" *ngIf="entryType === EntryType.Tool" class="alert alert-info" role="alert">
+          <mat-card-content>
+            <mat-icon>info</mat-icon> GitHub App Tools are launched in workflow mode with the Dockstore CLI
+          </mat-card-content>
         </mat-card>
         <mat-card
-          *ngIf="(isNFL$ | async) === false && (isGalaxy$ | async) === false"
+          *ngIf="(isNFL$ | async) === false && (isGalaxy$ | async) === false && (isSMK$ | async) === false"
           matTooltip="Commands for creating a runtime JSON template"
         >
-          Make a runtime JSON template and fill in desired inputs, outputs, and other parameters
-          <button mat-icon-button color="secondary" matTooltip="Copy command" [cdkCopyToClipboard]="params" appSnackbar>
-            <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
-          </button>
-          <pre>{{ params }}</pre>
-          <span *ngIf="wgetTestJsonDescription">
-            or grab one that the workflow author has provided (if applicable)
-            <button mat-icon-button color="secondary" matTooltip="Copy command" [cdkCopyToClipboard]="wgetTestJsonDescription" appSnackbar>
-              <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
+          <mat-card-content>
+            Make a runtime JSON template and fill in desired inputs, outputs, and other parameters
+            <button mat-icon-button class="copy-button" matTooltip="Copy command" [cdkCopyToClipboard]="params" appSnackbar>
+              <mat-icon>file_copy</mat-icon>
             </button>
-            <pre>{{ wgetTestJsonDescription }}</pre>
-          </span>
+            <pre>{{ params }}</pre>
+            <span *ngIf="wgetTestJsonDescription">
+              or grab one that the workflow author has provided (if applicable)
+              <button
+                mat-icon-button
+                class="copy-button"
+                matTooltip="Copy command"
+                [cdkCopyToClipboard]="wgetTestJsonDescription"
+                appSnackbar
+              >
+                <mat-icon>file_copy</mat-icon>
+              </button>
+              <pre>{{ wgetTestJsonDescription }}</pre>
+            </span>
+          </mat-card-content>
         </mat-card>
         <mat-card *ngIf="(isGalaxy$ | async) === true" matTooltip="Commands for creating a runtime JSON template">
-          Download the workflow and other included files (such as example parameter files)
-          <button mat-icon-button color="secondary" matTooltip="Copy command" [cdkCopyToClipboard]="planemoSharedZipString" appSnackbar>
-            <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
-          </button>
-          <pre>{{ planemoSharedZipString }}</pre>
-
-          Then, create a runtime parameter template with Planemo and fill in desired inputs, outputs, and other parameters
-          <button mat-icon-button color="secondary" matTooltip="Copy command" [cdkCopyToClipboard]="planemoLocalInitString" appSnackbar>
-            <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
-          </button>
-          <pre>{{ planemoLocalInitString }}</pre>
-          <span *ngIf="wgetTestJsonDescription">
-            or grab one that the workflow author has provided (if applicable)
-            <button mat-icon-button color="secondary" matTooltip="Copy command" [cdkCopyToClipboard]="wgetTestJsonDescription" appSnackbar>
-              <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
+          <mat-card-content>
+            Download the workflow and other included files (such as example parameter files)
+            <button mat-icon-button class="copy-button" matTooltip="Copy command" [cdkCopyToClipboard]="planemoSharedZipString" appSnackbar>
+              <mat-icon>file_copy</mat-icon>
             </button>
-            <pre>{{ wgetTestJsonDescription }}</pre>
-          </span>
+            <pre>{{ planemoSharedZipString }}</pre>
+
+            Then, create a runtime parameter template with Planemo and fill in desired inputs, outputs, and other parameters
+            <button mat-icon-button class="copy-button" matTooltip="Copy command" [cdkCopyToClipboard]="planemoLocalInitString" appSnackbar>
+              <mat-icon>file_copy</mat-icon>
+            </button>
+            <pre>{{ planemoLocalInitString }}</pre>
+            <span *ngIf="wgetTestJsonDescription">
+              or grab one that the workflow author has provided (if applicable)
+              <button
+                mat-icon-button
+                class="copy-button"
+                matTooltip="Copy command"
+                [cdkCopyToClipboard]="wgetTestJsonDescription"
+                appSnackbar
+              >
+                <mat-icon>file_copy</mat-icon>
+              </button>
+              <pre>{{ wgetTestJsonDescription }}</pre>
+            </span>
+          </mat-card-content>
         </mat-card>
         <mat-card
-          *ngIf="(isNFL$ | async) === false && (isGalaxy$ | async) === false"
+          *ngIf="(isNFL$ | async) === false && (isGalaxy$ | async) === false && (isSMK$ | async) === false"
           matTooltip="Commands for launching tool through Dockstore CLI (Supports file provisioning)"
         >
-          Run locally with the Dockstore CLI
-          <button mat-icon-button color="secondary" matTooltip="Copy command" [cdkCopyToClipboard]="cli" appSnackbar>
-            <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
-          </button>
-          <pre>{{ cli }}</pre>
+          <mat-card-content>
+            Run locally with the Dockstore CLI
+            <button mat-icon-button class="copy-button" matTooltip="Copy command" [cdkCopyToClipboard]="cli" appSnackbar>
+              <mat-icon>file_copy</mat-icon>
+            </button>
+            <pre>{{ cli }}</pre>
+          </mat-card-content>
         </mat-card>
         <mat-card *ngIf="(isNFL$ | async) && DockstoreToolType.ModeEnum.HOSTED !== mode && WorkflowType.ModeEnum.HOSTED !== mode">
-          <div matTooltip="Nextflow can conveniently run a workflow off of source control">
-            Run with nextflow
-            <button
-              mat-icon-button
-              color="secondary"
-              matTooltip="Copy command"
-              [cdkCopyToClipboard]="nextflowNativeLaunchDescription"
-              appSnackbar
-            >
-              <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
-            </button>
-            <pre>{{ nextflowNativeLaunchDescription }}</pre>
-            <small>*You can override the default parameters by appending --paramName 'value' to the above command.</small>
-          </div>
+          <mat-card-content>
+            <div matTooltip="Nextflow can conveniently run a workflow off of source control">
+              Run with nextflow
+              <button
+                mat-icon-button
+                class="copy-button"
+                matTooltip="Copy command"
+                [cdkCopyToClipboard]="nextflowNativeLaunchDescription"
+                appSnackbar
+              >
+                <mat-icon>file_copy</mat-icon>
+              </button>
+              <pre>{{ nextflowNativeLaunchDescription }}</pre>
+              <small>*You can override the default parameters by appending --paramName 'value' to the above command.</small>
+            </div>
+          </mat-card-content>
         </mat-card>
 
         <mat-card *ngIf="(isGalaxy$ | async) && DockstoreToolType.ModeEnum.HOSTED !== mode && WorkflowType.ModeEnum.HOSTED !== mode">
-          <div matTooltip="Planemo can run a workflow locally">
-            Run with Planemo
-            <button mat-icon-button color="secondary" matTooltip="Copy command" [cdkCopyToClipboard]="planemoLocalLaunchString" appSnackbar>
-              <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
-            </button>
-            <pre>{{ planemoLocalLaunchString }}</pre>
-          </div>
+          <mat-card-content>
+            <div matTooltip="Planemo can run a workflow locally">
+              Run with Planemo
+              <button
+                mat-icon-button
+                class="copy-button"
+                matTooltip="Copy command"
+                [cdkCopyToClipboard]="planemoLocalLaunchString"
+                appSnackbar
+              >
+                <mat-icon>file_copy</mat-icon>
+              </button>
+              <pre>{{ planemoLocalLaunchString }}</pre>
+            </div>
+          </mat-card-content>
         </mat-card>
 
         <mat-card *ngIf="(isNFL$ | async) && (DockstoreToolType.ModeEnum.HOSTED === mode || WorkflowType.ModeEnum.HOSTED === mode)">
-          <div matTooltip="Nextflow can also run a local workflow">
-            Download the workflow files
-            <button
-              mat-icon-button
-              color="secondary"
-              matTooltip="Copy command"
-              [cdkCopyToClipboard]="nextflowDownloadFileDescription"
-              appSnackbar
-            >
-              <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
-            </button>
-            <pre>{{ nextflowDownloadFileDescription }}</pre>
+          <mat-card-content>
+            <div matTooltip="Nextflow can also run a local workflow">
+              Download the workflow files
+              <button
+                mat-icon-button
+                class="copy-button"
+                matTooltip="Copy command"
+                [cdkCopyToClipboard]="nextflowDownloadFileDescription"
+                appSnackbar
+              >
+                <mat-icon>file_copy</mat-icon>
+              </button>
+              <pre>{{ nextflowDownloadFileDescription }}</pre>
 
-            Run with nextflow
-            <button
-              mat-icon-button
-              color="secondary"
-              matTooltip="Copy command"
-              [cdkCopyToClipboard]="nextflowLocalLaunchDescription"
-              appSnackbar
-            >
-              <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
-            </button>
-            <pre>{{ nextflowLocalLaunchDescription }}</pre>
-          </div>
+              Run with nextflow
+              <button
+                mat-icon-button
+                class="copy-button"
+                matTooltip="Copy command"
+                [cdkCopyToClipboard]="nextflowLocalLaunchDescription"
+                appSnackbar
+              >
+                <mat-icon>file_copy</mat-icon>
+              </button>
+              <pre>{{ nextflowLocalLaunchDescription }}</pre>
+            </div>
+          </mat-card-content>
+        </mat-card>
+
+        <mat-card *ngIf="(isSMK$ | async) && 'github.com' === workflow.sourceControl">
+          <mat-card-content>
+            <div [matTooltip]="snakemakeTooltip">
+              Download the workflow files
+              <button
+                mat-icon-button
+                class="copy-button"
+                matTooltip="Copy command"
+                [cdkCopyToClipboard]="snakemakeGetWorkflowCommand"
+                appSnackbar
+              >
+                <mat-icon>file_copy</mat-icon>
+              </button>
+              <pre>{{ snakemakeGetWorkflowCommand }}</pre>
+              Run with Snakemake
+              <button
+                mat-icon-button
+                class="copy-button"
+                matTooltip="Copy command"
+                [cdkCopyToClipboard]="snakemakeRunWorkflowCommand"
+                appSnackbar
+              >
+                <mat-icon>file_copy</mat-icon>
+              </button>
+              <pre>{{ snakemakeRunWorkflowCommand }}</pre>
+            </div>
+          </mat-card-content>
         </mat-card>
 
         <mat-card *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL && (published$ | async)">
-          <div [matTooltip]="cwlrunnerTooltip">
-            {{ cwlrunnerDescription }}
-            <button mat-icon-button color="secondary" matTooltip="Copy command" [cdkCopyToClipboard]="cwl" appSnackbar>
-              <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
-            </button>
-            <pre>{{ cwl }}</pre>
-          </div>
+          <mat-card-content>
+            <div [matTooltip]="cwlrunnerTooltip">
+              {{ cwlrunnerDescription }}
+              <button mat-icon-button class="copy-button" matTooltip="Copy command" [cdkCopyToClipboard]="cwl" appSnackbar>
+                <mat-icon>file_copy</mat-icon>
+              </button>
+              <pre>{{ cwl }}</pre>
+            </div>
+          </mat-card-content>
         </mat-card>
         <mat-card *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL && (published$ | async)">
-          <div [matTooltip]="cwltoolTooltip">
-            Alternatively, <a href="https://github.com/common-workflow-language/cwltool">cwltool</a> can conveniently run a workflow off of
-            dockstore.org and other
-            <a href="https://github.com/common-workflow-language/cwltool#use-with-ga4gh-tool-registry-api">GA4GH tool registries</a> when
-            all inputs and outputs are available on the local filesystem or via HTTP(S):
-            <button
-              mat-icon-button
-              color="secondary"
-              matTooltip="Copy command"
-              [cdkCopyToClipboard]="dockstoreSupportedCwlLaunch"
-              appSnackbar
-            >
-              <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
-            </button>
-            <pre>{{ dockstoreSupportedCwlLaunch }}</pre>
-            cwltool can also be used to create the input template:
-            <button
-              mat-icon-button
-              color="secondary"
-              matTooltip="Copy command"
-              [cdkCopyToClipboard]="dockstoreSupportedCwlMakeTemplate"
-              appSnackbar
-            >
-              <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
-            </button>
-            <pre>{{ dockstoreSupportedCwlMakeTemplate }}</pre>
-          </div>
+          <mat-card-content>
+            <div [matTooltip]="cwltoolTooltip">
+              Alternatively, <a href="https://github.com/common-workflow-language/cwltool">cwltool</a> can conveniently run a workflow off
+              of dockstore.org and other
+              <a href="https://github.com/common-workflow-language/cwltool#use-with-ga4gh-tool-registry-api">GA4GH tool registries</a> when
+              all inputs and outputs are available on the local filesystem or via HTTP(S):
+              <button
+                mat-icon-button
+                class="copy-button"
+                matTooltip="Copy command"
+                [cdkCopyToClipboard]="dockstoreSupportedCwlLaunch"
+                appSnackbar
+              >
+                <mat-icon>file_copy</mat-icon>
+              </button>
+              <pre>{{ dockstoreSupportedCwlLaunch }}</pre>
+              cwltool can also be used to create the input template:
+              <button
+                mat-icon-button
+                class="copy-button"
+                matTooltip="Copy command"
+                [cdkCopyToClipboard]="dockstoreSupportedCwlMakeTemplate"
+                appSnackbar
+              >
+                <mat-icon>file_copy</mat-icon>
+              </button>
+              <pre>{{ dockstoreSupportedCwlMakeTemplate }}</pre>
+            </div>
+          </mat-card-content>
         </mat-card>
+
+        <mat-card
+          *ngIf="
+            ((descriptorType$ | async) === ToolDescriptor.TypeEnum.WDL || (descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL) &&
+            (published$ | async)
+          "
+        >
+          <mat-card-content>
+            <div [matTooltip]="toilTooltip">
+              Use the <a href="https://toil.ucsc-cgl.org/">Toil</a> workflow engine to run on private compute such as AWS, Kubernetes,
+              Mesos, and Slurm HPC clusters.
+              <button mat-icon-button class="copy-button" matTooltip="Copy command" [cdkCopyToClipboard]="toilLaunchCommand" appSnackbar>
+                <mat-icon>file_copy</mat-icon>
+              </button>
+              <pre>{{ toilLaunchCommand }}</pre>
+              See the Toil "<a href="https://toil.readthedocs.io/en/latest/{{ descriptorType$ | async | lowercase }}/running.html"
+                >Running {{ descriptorType$ | async }} Workflows</a
+              >" and "<a href="https://toil.readthedocs.io/en/latest/running/cliOptions.html">Commandline Options</a>" documentation for
+              more information.
+            </div>
+          </mat-card-content>
+        </mat-card>
+
         <app-launch-checker-workflow [versionName]="_selectedVersion?.name" [command]="checkEntryCommand"></app-launch-checker-workflow>
       </div>
-
-      <mat-card *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.WDL && (published$ | async)">
-        <div [matTooltip]="wesTooltip">
-          <p>Launch this workflow on Amazon Web Services' (AWS) Amazon Genomics CLI (AGC) cloud infrastructure.</p>
-
-          <!--TODO: replace with actual documentation link after https://github.com/dockstore/dockstore-documentation/pull/173-->
-          <p>
-            Learn how to configure the Dockstore CLI to communicate with AWS AGC infrastructure by reading the
-            <a [href]="Dockstore.DOCUMENTATION_URL + '/advanced-topics/wes/cli-wes-tutorial.html'">Dockstore documentation</a>. For an
-            introduction to AWS AGC, see their official
-            <a href="https://aws.github.io/amazon-genomics-cli/docs/getting-started/">quick start guide</a>.
-          </p>
-
-          <div>
-            Make a runtime JSON template and fill in desired inputs, outputs, and other parameters
-            <button mat-icon-button color="secondary" matTooltip="Copy command" [cdkCopyToClipboard]="params" appSnackbar>
-              <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
-            </button>
-            <pre>{{ params }}</pre>
-
-            Create a wrapper JSON file, which is used by AWS AGC.
-            <button mat-icon-button color="secondary" matTooltip="Copy command" [cdkCopyToClipboard]="wesWrapperJson" appSnackbar>
-              <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
-            </button>
-            <pre>{{ wesWrapperJson }}</pre>
-
-            Launch the workflow. (Note: Any input files required to run this workflow must be specified using the `--attach` or `-a` command
-            line switch.)
-            <button mat-icon-button color="secondary" matTooltip="Copy command" [cdkCopyToClipboard]="wesLaunchCommand" appSnackbar>
-              <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
-            </button>
-            <pre>{{ wesLaunchCommand }}</pre>
-          </div>
-        </div>
-      </mat-card>
     </div>
   </div>
 </div>

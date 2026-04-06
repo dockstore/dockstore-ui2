@@ -16,7 +16,7 @@
 <h4 mat-dialog-title>Add Version Tag</h4>
 <div mat-dialog-content>
   <app-alert></app-alert>
-  <form #addTagForm="ngForm" name="addTagForm">
+  <form #addTagForm="ngForm" name="addTagForm" fxLayout="column" fxLayoutGap="1.5rem">
     <mat-form-field class="w-100">
       <mat-label>Docker Image Tag Name</mat-label>
       <input
@@ -28,12 +28,13 @@
         [pattern]="validationPatterns.versionTag"
         required
         placeholder="20.04"
+        data-cy="version-tag-input"
         [disabled]="!editMode"
       />
       <mat-hint>e.g. "20.04" is the tag name of "docker pull ubuntu:20.04" </mat-hint>
       <mat-error *ngIf="formErrors.versionTag">{{ formErrors.versionTag }}</mat-error>
     </mat-form-field>
-    <mat-form-field class="w-100 my-3">
+    <mat-form-field class="w-100">
       <mat-label>Git Branch or Tag Name</mat-label>
       <input
         matInput
@@ -45,6 +46,7 @@
         placeholder="develop"
         required
         [disabled]="!editMode"
+        data-cy="git-ref-input"
       />
       <mat-hint>e.g. "develop" is the branch name of "https://github.com/dockstore/dockstore/tree/develop"</mat-hint>
       <mat-error *ngIf="formErrors.reference">{{ formErrors.reference }}</mat-error>
@@ -255,32 +257,34 @@
         <input class="form-control" placeholder="None provided" [disabled]="true" />
       </div>
     </div>
-    <div class="w-100">
-      <mat-checkbox
-        ng-if="editMode"
-        name="checkbox"
-        [disabled]="!editMode"
-        [(ngModel)]="unsavedVersion.hidden"
-        title="Hide tag from public view."
-      >
-        Hidden
-      </mat-checkbox>
-    </div>
-    <div class="w-100">
-      <mat-checkbox [value]="tool?.automated"> Automated </mat-checkbox>
+    <div>
+      <div class="w-100">
+        <mat-checkbox
+          ng-if="editMode"
+          name="checkbox"
+          [disabled]="!editMode"
+          [(ngModel)]="unsavedVersion.hidden"
+          title="Hide tag from public view."
+        >
+          Hidden
+        </mat-checkbox>
+      </div>
+      <div class="w-100">
+        <mat-checkbox [value]="tool?.automated"> Automated </mat-checkbox>
+      </div>
     </div>
   </form>
 </div>
-<div mat-dialog-actions>
-  <button type="button" mat-flat-button class="secondary-1" mat-dialog-close>Close</button>
+<mat-dialog-actions [align]="'end'">
+  <button type="button" mat-button color="accent" mat-dialog-close>Close</button>
   <button
     id="addVersionTagButton"
     type="button"
-    mat-raised-button
-    class="accent-1-dark-btn mat-elevation-z"
+    mat-flat-button
+    class="accent-1-dark"
     (click)="addTag()"
     [disabled]="!addTagForm.form.valid || hasDuplicateCWL || hasDuplicateWDL"
   >
     Add Tag
   </button>
-</div>
+</mat-dialog-actions>

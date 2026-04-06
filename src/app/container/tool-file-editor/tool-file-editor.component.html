@@ -29,7 +29,8 @@
   </mat-tab>
   <mat-tab label="Descriptor Files">
     <ng-template matTabContent>
-      <mat-form-field class="pl-2">
+      <mat-form-field class="my-3">
+        <mat-label>Descriptor Type</mat-label>
         <mat-select [(value)]="selectedDescriptorType" placeholder="Descriptor Type">
           <mat-option value="{{ ToolDescriptor.TypeEnum.CWL }}">{{ ToolDescriptor.TypeEnum.CWL }}</mat-option>
           <mat-option value="{{ ToolDescriptor.TypeEnum.WDL }}">{{ ToolDescriptor.TypeEnum.WDL }}</mat-option>
@@ -49,7 +50,8 @@
   </mat-tab>
   <mat-tab label="Test Parameter Files">
     <ng-template matTabContent>
-      <mat-form-field class="pl-2">
+      <mat-form-field class="my-3">
+        <mat-label>Descriptor Type</mat-label>
         <mat-select [(value)]="selectedDescriptorType" placeholder="Descriptor Type">
           <mat-option value="{{ ToolDescriptor.TypeEnum.CWL }}">{{ ToolDescriptor.TypeEnum.CWL }}</mat-option>
           <mat-option value="{{ ToolDescriptor.TypeEnum.WDL }}">{{ ToolDescriptor.TypeEnum.WDL }}</mat-option>
@@ -70,12 +72,10 @@
 </mat-tab-group>
 <div class="editor-button-container p-2" *ngIf="!publicPage && isNewestVersion && canWrite">
   <span *ngIf="!editing">
-    <button id="editFilesButton" mat-raised-button class="accent-1-dark-btn mat-elevation-z" (click)="toggleEdit()">Edit Files</button>
+    <button id="editFilesButton" mat-flat-button class="accent-1-dark" (click)="toggleEdit()">Edit Files</button>
   </span>
   <span *ngIf="editing">
-    <button id="cancelButton" mat-flat-button class="secondary-1" (click)="toggleEdit(); resetFiles()">Cancel</button>
-    <button id="saveNewVersionButton" mat-raised-button class="accent-1-dark-btn mat-elevation-z" (click)="saveVersion()">
-      Save as New Version
-    </button>
+    <button id="cancelButton" mat-button color="accent" (click)="toggleEdit(); resetFiles()">Cancel</button>
+    <button id="saveNewVersionButton" mat-flat-button class="accent-1-dark" (click)="saveVersion()">Save as New Version</button>
   </span>
 </div>

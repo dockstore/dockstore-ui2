@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { NgFormsManager } from '@ngneat/forms-manager';
 
@@ -121,7 +121,7 @@ export class RegisterOrganizationService {
         { value: displayName, disabled: organization?.status === Organization.StatusEnum.APPROVED },
         [Validators.required, Validators.maxLength(50), Validators.minLength(3), Validators.pattern(this.organizationDisplayNameRegex)],
       ],
-      topic: [topic, Validators.required],
+      topic: [topic, [Validators.required, Validators.maxLength(255)]],
       link: [link, Validators.pattern(this.urlRegex)],
       location: [location],
       contactEmail: [contactEmail, [Validators.email, Validators.required]],

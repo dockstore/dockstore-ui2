@@ -13,17 +13,17 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { goToTab, setTokenUserViewPort } from '../../support/commands';
+import { assertNumberOfTabs, goToVersionsTab, setTokenUserViewPort } from '../../support/commands';
 
 describe('Public Version Modal', () => {
   setTokenUserViewPort();
   beforeEach(() => {
     cy.visit('/containers/quay.io/garyluu/dockstore-cgpmap/cgpmap-cramOut');
-    cy.get('.mat-tab-label').should('have.length', 4);
+    assertNumberOfTabs(4);
   });
 
   it('Change tab to versions', () => {
-    goToTab('Versions');
+    goToVersionsTab();
     cy.contains('button', 'Info').should('be.visible').click();
     cy.get('form');
     cy.get('#dockerPullCommand').should('be.visible').should('have.value', 'docker pull quay.io/garyluu/dockstore-cgpmap:3.0.0-rc8');

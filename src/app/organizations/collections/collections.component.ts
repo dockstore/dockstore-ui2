@@ -15,7 +15,7 @@
  */
 import { KeyValue, NgIf, NgFor, AsyncPipe, JsonPipe, KeyValuePipe } from '@angular/common';
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { HashMap } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
@@ -27,11 +27,12 @@ import { CreateCollectionComponent } from './create-collection/create-collection
 import { Dockstore } from '../../shared/dockstore.model';
 import { RouterLink } from '@angular/router';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
-import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { MatCardModule } from '@angular/material/card';
 import { LoadingComponent } from '../../shared/loading/loading.component';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatButtonModule } from '@angular/material/button';
+import { MatChipsModule } from '@angular/material/chips';
 
 @Component({
   selector: 'app-collections',
@@ -40,17 +41,18 @@ import { MatLegacyButtonModule } from '@angular/material/legacy-button';
   standalone: true,
   imports: [
     NgIf,
-    MatLegacyButtonModule,
-    MatLegacyTooltipModule,
+    MatButtonModule,
+    MatTooltipModule,
     MatIconModule,
     LoadingComponent,
-    MatLegacyCardModule,
+    MatCardModule,
     FlexModule,
     NgFor,
     RouterLink,
     AsyncPipe,
     JsonPipe,
     KeyValuePipe,
+    MatChipsModule,
   ],
 })
 export class CollectionsComponent implements OnInit, OnChanges {

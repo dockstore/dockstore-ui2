@@ -14,83 +14,70 @@
    limitations under the License.
 -->
 <div *ngIf="canEdit$ | async" class="mt-3">
-  <button
-    mat-button
-    class="private-btn small-btn-structure"
-    matTooltip="Create a collection"
-    (click)="createCollection()"
-    id="createCollection"
-  >
-    <mat-icon class="info-icon accent-1-dark">add</mat-icon>Create a Collection
+  <button mat-stroked-button class="private-btn" matTooltip="Create a collection" (click)="createCollection()" id="createCollection">
+    <mat-icon class="info-icon">add</mat-icon>Create a Collection
   </button>
 </div>
 <app-loading [loading]="loading$ | async">
   <div *ngIf="(collections$ | async | json) === '{}'; else hasCollections">
-    <mat-card class="alert alert-info mat-elevation-z mx-1" role="alert"> <mat-icon>info</mat-icon> No collections found. </mat-card>
+    <mat-card appearance="outlined" class="alert alert-info mx-1" role="alert">
+      <mat-card-content> <mat-icon>info</mat-icon> No collections found. </mat-card-content>
+    </mat-card>
   </div>
   <ng-template #hasCollections>
-    <div class="pt-2" fxLayout="column" fxLayoutGap="1rem">
+    <div class="p-2" fxLayout="column" fxLayoutGap="1rem">
       <mat-card fxFlex *ngFor="let collection of collections$ | async | keyvalue">
         <a
           class="no-underline"
           [routerLink]="['/organizations/', organizationName, 'collections', collection?.value?.name]"
           data-cy="collectionName"
         >
-          <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-between">
-            <div>
-              <mat-card-header>
-                <mat-card-title fxLayoutAlign="flex-start" fxLayoutGap="1rem">
-                  <img src="../../../assets/svg/sub-nav/collections.svg" alt="collections icon" />
-                  <h4>{{ collection.value.displayName }}</h4>
-                </mat-card-title>
-                <mat-card-subtitle>{{ collection.value.topic }}</mat-card-subtitle>
-              </mat-card-header>
-            </div>
-            <div *ngIf="canEdit$ | async">
-              <mat-card-content fxLayout="row" fxLayoutGap="10px" class="m-0"></mat-card-content>
-            </div>
-          </div>
-          <div>
-            <hr />
-            <div fxLayout="row" fxLayoutAlign="space-between stretch">
-              <div fxLayout="row" fxLayoutAlign="flex-start" fxLayoutGap="1rem">
-                <span class="bubble" *ngIf="collection.value.workflowsLength > 0">
-                  {{ collection.value.workflowsLength }}
-                  <span *ngIf="collection.value.workflowsLength !== 1; else oneWorkflow"> Workflows</span>
-                  <ng-template #oneWorkflow> Workflow</ng-template>
-                </span>
-                <span class="bubble" *ngIf="collection.value.toolsLength > 0">
-                  {{ collection.value.toolsLength }}
-                  <span *ngIf="collection.value.toolsLength !== 1; else oneTool"> Tools</span>
-                  <ng-template #oneTool> Tool</ng-template>
-                </span>
-                <span class="bubble" data-cy="collections-services-count-bubble" *ngIf="collection.value.servicesLength > 0">
-                  {{ collection.value.servicesLength }}
-                  <span *ngIf="collection.value.servicesLength !== 1; else oneService"> Services</span>
-                  <ng-template #oneService> Service</ng-template>
-                </span>
-                <span class="bubble" data-cy="collections-notebooks-count-bubble" *ngIf="collection.value.notebooksLength > 0">
-                  {{ collection.value.notebooksLength }}
-                  <span *ngIf="collection.value.notebooksLength !== 1; else oneNotebook"> Notebooks</span>
-                  <ng-template #oneNotebook> Notebook</ng-template>
-                </span>
-              </div>
-              <div *ngIf="canEdit$ | async; else viewBtn">
-                <button
-                  mat-button
-                  class="private-btn small-btn-structure"
-                  (click)="editCollection(collection); $event.stopPropagation(); $event.preventDefault()"
-                  id="editCollection"
-                  matTooltip="Edit the collection"
-                >
-                  <img src="../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit collection" />Edit
-                </button>
-              </div>
-              <ng-template #viewBtn
-                ><button mat-raised-button class="small-mat-btn-skin small-btn-structure" color="accent">View</button></ng-template
+          <mat-card-header>
+            <mat-card-title class="small-card-title">
+              <img src="../../../assets/svg/sub-nav/collections.svg" alt="collections icon" class="mr-1" />
+              {{ collection.value.displayName }}
+            </mat-card-title>
+          </mat-card-header>
+          <mat-card-content>{{ collection.value.topic }}</mat-card-content>
+          <hr />
+          <mat-card-content fxLayout="row" fxLayoutAlign="space-between stretch">
+            <mat-chip-set>
+              <mat-chip *ngIf="collection.value.workflowsLength > 0">
+                {{ collection.value.workflowsLength }}
+                <span *ngIf="collection.value.workflowsLength !== 1; else oneWorkflow"> Workflows</span>
+                <ng-template #oneWorkflow> Workflow</ng-template>
+              </mat-chip>
+              <mat-chip *ngIf="collection.value.toolsLength > 0">
+                {{ collection.value.toolsLength }}
+                <span *ngIf="collection.value.toolsLength !== 1; else oneTool"> Tools</span>
+                <ng-template #oneTool> Tool</ng-template>
+              </mat-chip>
+              <mat-chip data-cy="collections-services-count-bubble" *ngIf="collection.value.servicesLength > 0">
+                {{ collection.value.servicesLength }}
+                <span *ngIf="collection.value.servicesLength !== 1; else oneService"> Services</span>
+                <ng-template #oneService> Service</ng-template>
+              </mat-chip>
+              <mat-chip data-cy="collections-notebooks-count-bubble" *ngIf="collection.value.notebooksLength > 0">
+                {{ collection.value.notebooksLength }}
+                <span *ngIf="collection.value.notebooksLength !== 1; else oneNotebook"> Notebooks</span>
+                <ng-template #oneNotebook> Notebook</ng-template>
+              </mat-chip>
+            </mat-chip-set>
+            <div *ngIf="canEdit$ | async; else viewBtn">
+              <button
+                mat-stroked-button
+                class="private-btn"
+                (click)="editCollection(collection); $event.stopPropagation(); $event.preventDefault()"
+                id="editCollection"
+                matTooltip="Edit the collection"
               >
+                <img src="../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit collection" />Edit
+              </button>
             </div>
-          </div>
+            <ng-template #viewBtn>
+              <button mat-raised-button class="small-btn-structure" color="accent">View</button>
+            </ng-template>
+          </mat-card-content>
         </a>
       </mat-card>
     </div>

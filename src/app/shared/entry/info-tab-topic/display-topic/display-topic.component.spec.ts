@@ -17,7 +17,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { DisplayTopicComponent } from './display-topic.component';
 import { EntryTypeMetadataStubService } from 'app/test/service-stubs';
-import { MatLegacyDialogModule } from '@angular/material/legacy-dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 import { EntryTypeMetadataService } from 'app/entry/type-metadata/entry-type-metadata.service';
 import { sampleWorkflow1 } from 'app/test/mocked-objects';
 
@@ -29,7 +29,7 @@ describe('DisplayTopicComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         providers: [{ provide: EntryTypeMetadataService, useClass: EntryTypeMetadataStubService }],
-        imports: [MatLegacyDialogModule, DisplayTopicComponent],
+        imports: [MatDialogModule, DisplayTopicComponent],
       }).compileComponents();
     })
   );

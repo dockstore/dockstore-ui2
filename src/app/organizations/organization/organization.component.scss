@@ -2,7 +2,7 @@
 @import 'materialColorScheme.scss';
 
 .side-icons {
-  color: mat.get-color-from-palette($dockstore-app-accent);
+  color: mat.m2-get-color-from-palette($dockstore-app-accent);
 }
 
 .tab-icons {

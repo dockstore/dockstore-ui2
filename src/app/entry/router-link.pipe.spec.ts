@@ -2,14 +2,19 @@ import { TestBed, inject } from '@angular/core/testing';
 import { sampleWorkflow1, sampleTool1, sampleCollectionEntry1, sampleCollectionEntry2 } from '../test/openapi-mocked-objects';
 import { RouterLinkPipe } from './router-link.pipe';
 import { EntryTypeMetadataService } from './type-metadata/entry-type-metadata.service';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { EntryTypeMetadataStubService } from '../test/service-stubs';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('RouterLinkPipe', () => {
   beforeEach(() =>
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [{ provide: EntryTypeMetadataService, useClass: EntryTypeMetadataStubService }],
+      imports: [],
+      providers: [
+        { provide: EntryTypeMetadataService, useClass: EntryTypeMetadataStubService },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ],
     })
   );
 

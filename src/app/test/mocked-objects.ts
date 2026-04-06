@@ -18,10 +18,10 @@ import { OrgToolObject } from '../mytools/my-tool/my-tool.component';
 import { Hit } from '../search/state/search.service';
 import { ExtendedDockstoreTool } from '../shared/models/ExtendedDockstoreTool';
 import { ExtendedWorkflow } from '../shared/models/ExtendedWorkflow';
-import { VersionVerifiedPlatform, Tag, WorkflowVersion, Author, EntryTypeMetadata } from '../shared/openapi';
-import { Notification } from '../shared/openapi/model/notification';
+import { VersionVerifiedPlatform, Tag, WorkflowVersion, Author, EntryTypeMetadata, PublicNotification } from '../shared/openapi';
 import { DockstoreTool } from './../shared/openapi/model/dockstoreTool';
 import { SourceFile } from './../shared/openapi/model/sourceFile';
+import { TimeSeriesMetric } from './../shared/openapi/model/timeSeriesMetric';
 import { TokenUser } from './../shared/openapi/model/tokenUser';
 import { Workflow } from './../shared/openapi/model/workflow';
 
@@ -639,6 +639,16 @@ export const elasticSearchResponse: Hit[] = [
     _id: '2313',
     _score: 1,
     _source: {
+      entryTypeMetadata: {
+        termPlural: 'tools',
+        sitePath: 'containers',
+        trsSupported: true,
+        trsPrefix: '',
+        term: 'tool',
+        searchSupported: true,
+        type: 'TOOL',
+        searchEntryType: 'tools',
+      },
       tool_maintainer_email: '',
       aliases: {},
       default_dockerfile_path: '/delly_docker/Dockerfile',
@@ -722,6 +732,16 @@ export const elasticSearchResponse: Hit[] = [
     _id: '2210',
     _score: 1,
     _source: {
+      entryTypeMetadata: {
+        termPlural: 'workflows',
+        sitePath: 'workflows',
+        trsSupported: true,
+        trsPrefix: '#workflow/',
+        term: 'workflow',
+        searchSupported: true,
+        type: 'WORKFLOW',
+        searchEntryType: 'workflows',
+      },
       aliases: {},
       is_published: true,
       last_modified_date: null,
@@ -843,7 +863,7 @@ export const validTool: ExtendedDockstoreTool = {
   toolname: null,
 };
 
-export const mockedNotification: Notification = {
+export const mockedNotification: PublicNotification = {
   id: 123,
   message: 'TestingTesting123',
   type: 'SITEWIDE',
@@ -851,10 +871,34 @@ export const mockedNotification: Notification = {
   expiration: null,
 };
 
-export const expiredMockNotification: Notification = {
+export const expiredMockNotification: PublicNotification = {
   id: 121,
   message: 'Testing123',
   type: 'SITEWIDE',
   priority: 'LOW',
   expiration: new Date('2018-11-25T00:00:00').getTime(),
+};
+
+export const dailyTimeSeries: TimeSeriesMetric = {
+  id: 123,
+  begins: '1764993397000',
+  ends: '1765166197000',
+  interval: 'DAY',
+  values: [1, 2],
+};
+
+export const weeklyTimeSeries: TimeSeriesMetric = {
+  id: 124,
+  begins: '1764993397000',
+  ends: '1766807797000',
+  interval: 'WEEK',
+  values: [1, 2, 3],
+};
+
+export const monthlyTimeSeries: TimeSeriesMetric = {
+  id: 125,
+  begins: '1764993397000',
+  ends: '1767671797000',
+  interval: 'MONTH',
+  values: [1],
 };

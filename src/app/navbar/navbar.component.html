@@ -73,9 +73,9 @@
           data-cy="notification-button"
           mat-button
           class="icon navbar-button"
-          [routerLink]="['/accounts']"
-          [queryParams]="{ tab: 'requests' }"
           routerLinkActive="navbar-button-active"
+          #t="matMenuTrigger"
+          [matMenuTriggerFor]="notificationsMenu"
         >
           <mat-icon
             data-cy="bell-icon"
@@ -89,6 +89,61 @@
             >notifications</mat-icon
           >
         </a>
+        <mat-menu #notificationsMenu="matMenu">
+          <button mat-menu-item [routerLink]="['/accounts']" [queryParams]="{ tab: 'requests' }">
+            <mat-icon
+              matBadge="{{ (allPendingOrganizations$ | async)?.length }}"
+              matBadgeHidden="{{ (allPendingOrganizations$ | async)?.length === 0 }}"
+              matBadgeColor="warn"
+              matBadgeSize="small"
+              matBadgeOverlap="true"
+              data-cy="notification-menu-curator-requests-button"
+              aria-label="curator requests button"
+              class="menu-icon"
+              >admin_panel_settings</mat-icon
+            >Curator Requests
+          </button>
+          <button mat-menu-item [routerLink]="['/accounts']" [queryParams]="{ tab: 'requests' }">
+            <mat-icon
+              svgIcon="organization"
+              matBadge="{{ (myRejectedOrganizationRequests$ | async)?.length }}"
+              matBadgeHidden="{{ (myRejectedOrganizationRequests$ | async)?.length === 0 }}"
+              matBadgeColor="warn"
+              matBadgeSize="small"
+              matBadgeOverlap="true"
+              data-cy="notification-menu-organization-requests-button"
+              aria-label="organization requests button"
+              class="menu-icon"
+            ></mat-icon
+            >Organization Requests
+          </button>
+          <button mat-menu-item [routerLink]="['/accounts']" [queryParams]="{ tab: 'requests' }">
+            <mat-icon
+              matBadge="{{ (myOrganizationInvites$ | async)?.length }}"
+              matBadgeHidden="{{ (myOrganizationInvites$ | async)?.length === 0 }}"
+              matBadgeColor="warn"
+              matBadgeSize="small"
+              matBadgeOverlap="true"
+              data-cy="notification-menu-organization-invites-button"
+              aria-label="organization invites button"
+              class="menu-icon"
+              >people</mat-icon
+            >Organization Invites
+          </button>
+          <button mat-menu-item [routerLink]="['/accounts']" [queryParams]="{ tab: 'recommended actions' }">
+            <mat-icon
+              matBadge="{{ userNotificationsCount }}"
+              matBadgeHidden="{{ userNotificationsCount === 0 }}"
+              matBadgeColor="warn"
+              matBadgeSize="small"
+              matBadgeOverlap="true"
+              data-cy="notification-menu-recommended-actions-button"
+              aria-label="recommended actions button"
+              class="menu-icon"
+              >lightbulb</mat-icon
+            >Recommended Actions
+          </button>
+        </mat-menu>
 
         <template [ngTemplateOutlet]="loginButton"></template>
         <mat-menu #menuLarge="matMenu">
@@ -98,7 +153,7 @@
             routerLink="/users/{{ user?.username }}"
             routerLinkActive="menu-item-active"
             data-cy="dropdown-profile-button"
-            class="weight-bold px-5"
+            class="px-5"
           >
             <mat-icon class="menu-icon">account_circle</mat-icon>Profile
           </button>
@@ -108,11 +163,11 @@
             routerLink="/accounts"
             routerLinkActive="menu-item-active"
             data-cy="dropdown-account-button"
-            class="weight-bold px-5"
+            class="px-5"
           >
             <mat-icon class="menu-icon">settings</mat-icon>Account
           </button>
-          <button mat-menu-item id="dropdown-logout" data-cy="dropdown-logout-button" (click)="logout()" class="weight-bold px-5">
+          <button mat-menu-item id="dropdown-logout" data-cy="dropdown-logout-button" (click)="logout()" class="px-5">
             <mat-icon class="menu-icon">logout</mat-icon>Log out
           </button>
         </mat-menu>

@@ -1,14 +1,14 @@
-<div>
-  <mat-card class="alert alert-info mat-elevation-z" role="alert" *ngIf="sourcefiles?.length === 0"> No files exist. </mat-card>
-  <div *ngFor="let sourcefile of sourcefiles; let i = index" style="margin-top: 10px; margin-bottom: 10px">
+<div class="p-3">
+  <mat-card appearance="outlined" class="alert alert-info" role="alert" *ngIf="sourcefiles?.length === 0">
+    <mat-card-content> No files exist. </mat-card-content>
+  </mat-card>
+  <div *ngFor="let sourcefile of sourcefiles; let i = index" class="mb-3">
     <div *ngIf="sourcefile?.content !== null && showSourcefile(sourcefile?.type)">
-      <mat-toolbar color="primary">
+      <mat-toolbar class="files-toolbar">
         <mat-toolbar-row>
-          <form
-            style="width: 100%"
-            *ngIf="editing && !isPrimaryDescriptor(sourcefile?.absolutePath) && !isDockerFile(sourcefile?.absolutePath)"
-          >
-            <mat-form-field color="accent" style="width: 40%">
+          <form class="w-100" *ngIf="editing && !isPrimaryDescriptor(sourcefile?.absolutePath) && !isDockerFile(sourcefile?.absolutePath)">
+            <mat-form-field class="white-background w-50">
+              <mat-label>File Name</mat-label>
               <input
                 matInput
                 [value]="sourcefile.absolutePath"
@@ -36,8 +36,8 @@
             <span *ngIf="!editing">
               <a
                 mat-icon-button
-                color="secondary"
-                class="mr-2 link-button"
+                color="accent"
+                class="mr-2"
                 *ngIf="published$ | async; else unpublishedDownloadLink"
                 download
                 [href]="sourcefile | publicFileDownload: entrypath:selectedVersion:descriptorType:entryType"
@@ -50,8 +50,8 @@
               <ng-template #unpublishedDownloadLink>
                 <a
                   mat-icon-button
-                  color="secondary"
-                  class="mr-2 link-button"
+                  color="accent"
+                  class="mr-2"
                   type="button"
                   matTooltip="Download {{ sourcefile?.absolutePath }}"
                   (click)="downloadFileContent(sourcefile?.content, sourcefile?.absolutePath)"
@@ -61,7 +61,7 @@
               </ng-template>
               <button
                 mat-icon-button
-                color="secondary"
+                color="accent"
                 type="button"
                 class="mr-2"
                 matTooltip="Copy to clipboard"
@@ -85,7 +85,7 @@
   <button
     class="ml-2"
     mat-raised-button
-    class="accent-1-dark-btn"
+    class="accent-1-dark"
     (click)="addFile()"
     *ngIf="editing && (fileType !== 'dockerfile' || (fileType === 'dockerfile' && sourcefiles?.length === 0))"
   >

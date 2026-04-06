@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { Query } from '@datorama/akita';
 import { combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { AppTool, DockstoreTool, Workflow, Notebook } from '../../shared/openapi';
+import { AppTool, DockstoreTool, Workflow, Notebook, EntryType } from '../../shared/openapi';
 import { SearchState, SearchStore } from './search.store';
 import { parseTerms } from '../helpers';
 
 export interface SearchResult<T = AppTool | DockstoreTool | Workflow | Notebook> {
-  source: T;
+  source: any;
   highlight: Map<string, string[]>;
 }
 
@@ -34,9 +34,8 @@ export class SearchQuery extends Query<SearchState> {
   );
   public searchText$: Observable<string> = this.select((state) => state.searchText);
   public basicSearchText$: Observable<string> = this.searchText$.pipe(map((searchText) => this.joinComma(parseTerms(searchText))));
-  public showToolTagCloud$: Observable<boolean> = this.select((state) => state.showToolTagCloud);
-  public showWorkflowTagCloud$: Observable<boolean> = this.select((state) => state.showWorkflowTagCloud);
-  public showNotebookTagCloud$: Observable<boolean> = this.select((state) => state.showNotebookTagCloud);
+  public showTagCloud$: Observable<boolean> = this.select((state) => state.showTagCloud);
+  public currentEntryType$: Observable<EntryType> = this.select((state) => state.currentEntryType);
   public filterKeys$: Observable<Array<string>> = this.select((state) => state.filterKeys);
   public autoCompleteTerms$: Observable<Array<string>> = this.select((state) => state.autocompleteTerms);
   public hasAutoCompleteTerms$: Observable<boolean> = this.autoCompleteTerms$.pipe(map((terms) => terms.length > 0));

@@ -17,12 +17,10 @@ describe('See verification information and logs', () => {
 
     cy.url().should('eq', Cypress.config().baseUrl + '/containers/quay.io/garyluu/dockstore-cgpmap/cgpmap-cramOut:3.0.0-rc8?tab=info');
     cy.get('[data-cy=verificationLogsDialog]').click();
-    cy.contains('.mat-button', 'View FULL log')
-      .should('exist')
-      .should(
-        'have.attr',
-        'href',
-        `${Dockstore.API_URI}/toolTester/logs?tool_id=quay.io%2Fgaryluu%2Fdockstore-cgpmap%2Fcgpmap-cramOut&tool_version_name=3.0.0-rc8&test_filename=Dockerfile&runner=cwl-runner&log_type=FULL&filename=1554477718978.log`
-      );
+    cy.get('[data-cy=fulllog]').should(
+      'have.attr',
+      'href',
+      `${Dockstore.API_URI}/toolTester/logs?tool_id=quay.io%2Fgaryluu%2Fdockstore-cgpmap%2Fcgpmap-cramOut&tool_version_name=3.0.0-rc8&test_filename=Dockerfile&runner=cwl-runner&log_type=FULL&filename=1554477718978.log`
+    );
   });
 });

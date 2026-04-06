@@ -23,13 +23,13 @@ import { User } from '../../../../shared/openapi/model/user';
 import { UserQuery } from '../../../../shared/user/user.query';
 import { UserService } from '../../../../shared/user/user.service';
 import { UsersService } from './../../../../shared/openapi/api/users.service';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
-import { MatLegacyInputModule } from '@angular/material/legacy-input';
-import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
-import { MatLegacyCardModule } from '@angular/material/legacy-card';
-import { MatLegacyDialogModule } from '@angular/material/legacy-dialog';
+import { MatCardModule } from '@angular/material/card';
+import { MatDialogModule } from '@angular/material/dialog';
 import { NgIf, AsyncPipe } from '@angular/common';
 
 @Component({
@@ -39,15 +39,15 @@ import { NgIf, AsyncPipe } from '@angular/common';
   standalone: true,
   imports: [
     NgIf,
-    MatLegacyDialogModule,
-    MatLegacyCardModule,
+    MatDialogModule,
+    MatCardModule,
     FlexModule,
     MatIconModule,
-    MatLegacyFormFieldModule,
-    MatLegacyInputModule,
+    MatFormFieldModule,
+    MatInputModule,
     FormsModule,
     ReactiveFormsModule,
-    MatLegacyButtonModule,
+    MatButtonModule,
     AsyncPipe,
   ],
 })

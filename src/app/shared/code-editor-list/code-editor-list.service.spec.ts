@@ -3,13 +3,19 @@ import { TestBed } from '@angular/core/testing';
 import { SourceFile, ToolDescriptor } from '../openapi';
 import { CodeEditorListService } from './code-editor-list.service';
 import { DescriptorLanguageService } from '../entry/descriptor-language.service';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('CodeEditorListService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [CodeEditorListService, { provide: DescriptorLanguageService, useClass: DescriptorLanguageService }],
+      imports: [],
+      providers: [
+        CodeEditorListService,
+        { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ],
     });
   });
 

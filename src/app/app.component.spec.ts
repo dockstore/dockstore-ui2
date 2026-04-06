@@ -1,9 +1,9 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 import { Component } from '@angular/core';
 import { TestBed, waitForAsync } from '@angular/core/testing';
-import { MatLegacyDialogModule } from '@angular/material/legacy-dialog';
-import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 import { MytoolsService } from './mytools/mytools.service';
@@ -37,6 +37,7 @@ import {
   UsersStubService,
 } from './test/service-stubs';
 import { TosBannerService } from './tosBanner/state/tos-banner.service';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 @Component({
   selector: 'app-banner',
@@ -85,9 +86,8 @@ describe('AppComponent', () => {
         declarations: [RouterLinkStubDirective, RouterOutletStubComponent],
         imports: [
           RouterTestingModule,
-          MatLegacyDialogModule,
+          MatDialogModule,
           MatSnackBarModule,
-          HttpClientTestingModule,
           NavbarStubComponent,
           FooterStubComponent,
           BannerStubComponent,
@@ -113,6 +113,8 @@ describe('AppComponent', () => {
           MytoolsService,
           MyWorkflowsService,
           PagenumberService,
+          provideHttpClient(withInterceptorsFromDi()),
+          provideHttpClientTesting(),
         ],
       }).compileComponents();
     })

@@ -1,11 +1,11 @@
-<h1 *ngIf="data?.title" mat-dialog-title>{{ data.title }}</h1>
+<h1 *ngIf="data?.title" mat-dialog-title data-cy="confirmation-dialog-title">{{ data.title }}</h1>
 
 <div *ngIf="data?.message" mat-dialog-content [innerHTML]="data.message"></div>
-<div mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px">
-  <button data-cy="cancel-dialog-button" mat-flat-button [mat-dialog-close]="false" class="secondary-1" cdkFocusInitial>
+<mat-dialog-actions [align]="'end'">
+  <button data-cy="cancel-dialog-button" mat-button [mat-dialog-close]="false" color="accent" cdkFocusInitial>
     {{ data.cancelButtonText ? data.cancelButtonText : 'CANCEL' }}
   </button>
-  <button data-cy="confirm-dialog-button" mat-raised-button [mat-dialog-close]="true" class="accent-1-dark-btn mat-elevation-z">
+  <button data-cy="confirm-dialog-button" mat-flat-button [mat-dialog-close]="true" class="accent-1-dark">
     {{ data.confirmationButtonText ? data.confirmationButtonText : 'YES' }}
   </button>
-</div>
+</mat-dialog-actions>

@@ -17,7 +17,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { MatLegacySnackBarModule } from '@angular/material/legacy-snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HeaderComponent } from './header.component';
 
@@ -28,7 +28,7 @@ describe('HeaderComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [RouterTestingModule, HeaderComponent, MatLegacySnackBarModule],
+        imports: [RouterTestingModule, HeaderComponent, MatSnackBarModule],
         schemas: [NO_ERRORS_SCHEMA],
       }).compileComponents();
     })

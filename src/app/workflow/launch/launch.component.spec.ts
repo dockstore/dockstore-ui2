@@ -31,7 +31,8 @@ import {
 import { LaunchWorkflowComponent } from './launch.component';
 import { WorkflowLaunchService } from './workflow-launch.service';
 import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('LaunchWorkflowComponent', () => {
   let component: LaunchWorkflowComponent;
@@ -41,7 +42,7 @@ describe('LaunchWorkflowComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         schemas: [NO_ERRORS_SCHEMA],
-        imports: [HttpClientTestingModule, LaunchWorkflowComponent],
+        imports: [LaunchWorkflowComponent],
         providers: [
           WorkflowLaunchService,
           { provide: ContainerService, useClass: ContainerStubService },
@@ -50,6 +51,8 @@ describe('LaunchWorkflowComponent', () => {
           { provide: WorkflowService, useClass: WorkflowStubService },
           { provide: GA4GHV20Service, useClass: GA4GHV20StubService },
           { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
+          provideHttpClient(withInterceptorsFromDi()),
+          provideHttpClientTesting(),
         ],
       }).compileComponents();
     })

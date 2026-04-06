@@ -1,11 +1,12 @@
-<h1 mat-dialog-title>Edit {{ data.type }} description</h1>
+<h1 mat-dialog-title>Edit {{ data.type | titlecase }} Description</h1>
 <div mat-dialog-content data-cy="updateOrganizationDescriptionWindow">
   <app-alert></app-alert>
   <mat-tab-group mat-stretch-tabs>
     <mat-tab label="Edit Mode">
-      <form class="p-1" [formGroup]="updateOrganizationOrCollectionDescriptionForm" fxLayout="column">
+      <form class="p-1 mt-4" [formGroup]="updateOrganizationOrCollectionDescriptionForm" fxLayout="column">
         <mat-form-field>
-          <textarea matTextareaAutosize type="text" matInput formControlName="description" placeholder="Description"></textarea>
+          <mat-label>{{ data.type | titlecase }} Description</mat-label>
+          <textarea matTextareaAutosize type="text" matInput formControlName="description" data-cy="description-input"></textarea>
         </mat-form-field>
       </form>
     </mat-tab>
@@ -14,17 +15,17 @@
     </mat-tab>
   </mat-tab-group>
 </div>
-<div mat-dialog-actions class="pull-right">
-  <button mat-flat-button class="secondary-1" mat-dialog-close>Cancel</button>
+<mat-dialog-actions [align]="'end'">
+  <button mat-button color="accent" mat-dialog-close>Cancel</button>
   <button
     id="updateOrganizationDescriptionButton"
     [matTooltip]="'Update ' + data.type + ' description'"
-    mat-raised-button
-    class="accent-1-dark-btn mat-elevation-z"
+    mat-flat-button
+    class="accent-1-dark"
     [disabled]="!updateOrganizationOrCollectionDescriptionForm.valid"
     (click)="updateOrganizationDescription()"
     cdkFocusInitial
   >
     Update
   </button>
-</div>
+</mat-dialog-actions>

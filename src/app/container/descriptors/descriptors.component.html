@@ -14,52 +14,60 @@
   ~    limitations under the License.
   -->
 <div *ngIf="!_selectedVersion" class="p-3">
-  <mat-card class="alert alert-warning mat-elevation-z" role="alert">
-    <mat-icon class="alert-warning-icon">warning</mat-icon> No versions exist for this tool.
+  <mat-card appearance="outlined" class="alert alert-warning" role="alert">
+    <mat-card-content> <mat-icon class="alert-warning-icon">warning</mat-icon> No versions exist for this tool. </mat-card-content>
   </mat-card>
 </div>
 <div *ngIf="_selectedVersion" class="p-3">
   <span *ngIf="!publicPage">
-    <mat-card *ngIf="validationMessage" class="alert alert-warning mat-elevation-z">
-      <mat-icon class="alert-warning-icon">warning</mat-icon>
-      &nbsp;
-      <span *ngFor="let item of validationMessage | keyvalue">
-        <strong>{{ item.key }}</strong
-        >: {{ item.value }}
-      </span>
+    <mat-card appearance="outlined" *ngIf="validationMessage" class="alert alert-warning">
+      <mat-card-content>
+        <mat-icon class="alert-warning-icon">warning</mat-icon>
+        &nbsp;
+        <span *ngFor="let item of validationMessage | keyvalue">
+          <strong>{{ item.key }}</strong
+          >: {{ item.value }}
+        </span>
+      </mat-card-content>
     </mat-card>
   </span>
   <mat-progress-bar mode="indeterminate" *ngIf="loading; else loaded"></mat-progress-bar>
   <ng-template #loaded>
-    <div *ngIf="content">
-      <span class="row m-0">
-        <span class="col-sm-4">
-          <app-select
-            [placeholder]="'Descriptor Type'"
-            [items]="descriptors"
-            [default]="currentDescriptor"
-            (selectionChange)="onDescriptorChange($event); checkIfValid(true, _selectedVersion)"
-          >
-          </app-select>
-        </span>
-      </span>
-    </div>
-
-    <mat-card class="alert alert-warning mat-elevation-z" role="alert" *ngIf="!content">
-      <mat-icon class="alert-warning-icon">warning</mat-icon>
-      &nbsp;A Descriptor File associated with this Docker container could not be found.
+    <mat-card appearance="outlined" class="alert alert-warning" role="alert" *ngIf="!content">
+      <mat-card-content>
+        <mat-icon class="alert-warning-icon">warning</mat-icon>
+        &nbsp;A Descriptor File associated with this Docker container could not be found.
+      </mat-card-content>
     </mat-card>
 
     <div [hidden]="!content">
-      <mat-toolbar color="primary">
-        <mat-toolbar-row>
+      <mat-toolbar class="files-toolbar">
+        <mat-toolbar-row class="files-toolbar">
           <div fxLayout="row" fxLayoutAlign="space-between center" class="w-100">
-            <app-select class="longer" [items]="files" [default]="currentFile" [field]="'path'" (selectionChange)="onFileChange($event)">
-            </app-select>
-            <div class="btn-group pull-right" role="group">
+            <div fxFlex="{{ publicPage ? '70' : '50' }}">
+              <app-select
+                fxFlex="25"
+                class="mr-2"
+                [placeholder]="'Descriptor Type'"
+                [items]="descriptors"
+                [default]="currentDescriptor"
+                (selectionChange)="onDescriptorChange($event); checkIfValid(true, _selectedVersion)"
+              >
+              </app-select>
+              <app-select
+                fxFlex="75"
+                [placeholder]="'Descriptor File'"
+                [items]="files"
+                [default]="currentFile"
+                [field]="'path'"
+                (selectionChange)="onFileChange($event)"
+              >
+              </app-select>
+            </div>
+            <div class="btn-group" role="group">
               <a
                 mat-icon-button
-                color="secondary"
+                color="accent"
                 class="mr-1"
                 *ngIf="published$ | async; else unpublishedDownloadLink"
                 download
@@ -70,11 +78,11 @@
                 <mat-icon>save_alt</mat-icon>
               </a>
               <ng-template #unpublishedDownloadLink>
-                <a mat-icon-button color="secondary" class="mr-1" type="button" title="{{ filePath }}" (click)="downloadFileContent()">
+                <a mat-icon-button color="accent" class="mr-1" type="button" title="{{ filePath }}" (click)="downloadFileContent()">
                   <mat-icon>save_alt</mat-icon>
                 </a>
               </ng-template>
-              <button mat-icon-button color="secondary" type="button" [cdkCopyToClipboard]="content" appSnackbar>
+              <button mat-icon-button color="accent" type="button" [cdkCopyToClipboard]="content" appSnackbar>
                 <mat-icon>file_copy</mat-icon>
               </button>
             </div>

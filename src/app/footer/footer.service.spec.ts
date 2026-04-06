@@ -24,16 +24,18 @@ describe('FooterService', () => {
       null,
       null,
       null,
+      'potato',
       'potato'
     );
     expect(markdown).toContain('domainurl.com');
     expect(markdown).toContain('981edd1');
     expect(markdown).toContain('potato');
     expect(markdown).toContain('checkUrlLambdaVersion');
+    expect(markdown).toContain('supportVersion');
   });
 
   it('should handle nulls', () => {
-    const markdown = service.versionsToMarkdown(null, null, null, null, null, null, null, null, null);
+    const markdown = service.versionsToMarkdown(null, null, null, null, null, null, null, null, null, null);
     expect(markdown.length).toBeGreaterThan(100);
     expect(markdown).not.toContain('compose_setup');
     expect(markdown).not.toContain('dockstore-deploy');
@@ -42,5 +44,6 @@ describe('FooterService', () => {
     expect(markdown).not.toContain('nextflowParsingLambdaVersion');
     expect(markdown).not.toContain('galaxyParsingPluginVersion');
     expect(markdown).not.toContain('checkUrlLambdaVersion');
+    expect(markdown).not.toContain('supportVersion');
   });
 });

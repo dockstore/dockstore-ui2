@@ -6,15 +6,16 @@
 
   <mat-accordion multi="true">
     <mat-expansion-panel [expanded]="orgObj.expanded" class="mat-elevation-z tool" *ngFor="let orgObj of registryObj.value.groupEntryInfo">
-      <mat-expansion-panel-header class="tool pt-2">
+      <mat-expansion-panel-header class="tool pt-2" [attr.data-cy]="orgObj?.namespace + '-panel-header'">
         {{ orgObj?.namespace }}
       </mat-expansion-panel-header>
 
       <mat-tab-group
         *ngIf="(toolId$ | async) || (appToolId$ | async)"
         mat-stretch-tabs
-        class="tool-tab-group"
+        class="tool-tab-group small-tab-header no-scroll-tabs"
         [selectedIndex]="orgObj | selectTab: (toolId$ | async)"
+        [attr.data-cy]="orgObj?.namespace + '-tab-group'"
       >
         <mat-tab label="Published">
           <ng-template *ngTemplateOutlet="items; context: { items: orgObj.published, itemState: 'published' }"></ng-template>
@@ -29,11 +30,12 @@
       <ng-template #items let-items="items" let-itemState="itemState">
         <mat-list class="org-accordion-list">
           <mat-list-item *ngFor="let toolObj of items" [ngClass]="{ selectedTool: (toolId$ | async) === toolObj?.id }">
-            <mat-icon class="arrow mat-icon-sm">arrow_forward</mat-icon>
+            <mat-icon *ngIf="(toolId$ | async) === toolObj?.id" class="mr-1 mat-icon-sm">arrow_forward</mat-icon>
             <a
               class="no-wrap"
               title="{{ toolObj?.name + (toolObj?.toolname ? '/' + toolObj?.toolname : '') }}"
               [routerLink]="'/my-tools/' + toolObj.tool_path"
+              [attr.data-cy]="toolObj.tool_path + '-link'"
             >
               {{ toolObj?.name + (toolObj?.toolname ? '/' + toolObj?.toolname : '') }}
             </a>

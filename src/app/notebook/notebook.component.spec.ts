@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { MarkdownWrapperService } from '../shared/markdown-wrapper/markdown-wrapper.service';
 import { MarkdownWrapperStubService } from '../test/service-stubs';
 import { NotebookComponent } from './notebook.component';
@@ -10,6 +10,7 @@ import { NotebookMimeBundleOutputComponent } from './notebook-mime-bundle-output
 import { SourceFile, Workflow, WorkflowVersion, WorkflowsService } from 'app/shared/openapi';
 import { of } from 'rxjs';
 import { Cell, MimeBundle, Output, OutputMetadata } from './notebook-types';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('NotebookComponent', () => {
   let notebookComponent: NotebookComponent;
@@ -21,7 +22,6 @@ describe('NotebookComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [
-          HttpClientTestingModule,
           NotebookComponent,
           NotebookMarkdownComponent,
           NotebookSourceComponent,
@@ -38,6 +38,8 @@ describe('NotebookComponent', () => {
             },
           },
           { provide: MarkdownWrapperService, useClass: MarkdownWrapperStubService },
+          provideHttpClient(withInterceptorsFromDi()),
+          provideHttpClientTesting(),
         ],
       }).compileComponents();
     })

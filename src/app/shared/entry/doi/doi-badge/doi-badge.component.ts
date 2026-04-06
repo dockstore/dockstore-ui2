@@ -1,7 +1,7 @@
 import { NgIf } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { Dockstore } from 'app/shared/dockstore.model';
 import { Doi } from 'app/shared/openapi';
 
@@ -10,7 +10,7 @@ import { Doi } from 'app/shared/openapi';
   templateUrl: './doi-badge.component.html',
   styleUrls: [],
   standalone: true,
-  imports: [MatLegacyTooltipModule, NgIf, MatIconModule],
+  imports: [MatTooltipModule, NgIf, MatIconModule],
 })
 export class DoiBadgeComponent {
   Dockstore = Dockstore;

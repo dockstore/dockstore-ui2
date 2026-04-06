@@ -15,7 +15,7 @@
  */
 import { AfterViewChecked, Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgForm, FormsModule } from '@angular/forms';
-import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogModule } from '@angular/material/legacy-dialog';
+import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { Service } from 'app/shared/openapi/model/service';
 import { Notebook } from 'app/shared/openapi/model/notebook';
 import { Observable, Subject } from 'rxjs';
@@ -35,12 +35,12 @@ import { VersionModalService } from './version-modal.service';
 import { EntryType } from '../../shared/enum/entry-type';
 import { DockstoreService } from 'app/shared/dockstore.service';
 import { VerifiedPlatformsPipe } from '../../shared/entry/verified-platforms.pipe';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatButtonModule } from '@angular/material/button';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { MatIconModule } from '@angular/material/icon';
 import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
-import { MatLegacyCardModule } from '@angular/material/legacy-card';
-import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatCardModule } from '@angular/material/card';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { NgIf, NgFor, NgClass, AsyncPipe } from '@angular/common';
 import { AlertComponent } from '../../shared/alert/alert.component';
 
@@ -58,18 +58,18 @@ export interface Dialogdata {
   styleUrls: ['./version-modal.component.css'],
   standalone: true,
   imports: [
-    MatLegacyDialogModule,
+    MatDialogModule,
     AlertComponent,
     FormsModule,
     NgIf,
-    MatLegacyTooltipModule,
-    MatLegacyCardModule,
+    MatTooltipModule,
+    MatCardModule,
     NgFor,
     NgClass,
     ExtendedModule,
     MatIconModule,
     FlexModule,
-    MatLegacyButtonModule,
+    MatButtonModule,
     AsyncPipe,
     VerifiedPlatformsPipe,
   ],

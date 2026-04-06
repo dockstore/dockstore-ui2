@@ -12,9 +12,9 @@ import { ClipboardModule } from '@angular/cdk/clipboard';
 import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
 import { SnackbarDirective } from '../../../shared/snackbar.directive';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatButtonModule } from '@angular/material/button';
 import { NgIf, NgClass } from '@angular/common';
-import { MatLegacyTabsModule } from '@angular/material/legacy-tabs';
+import { MatTabsModule } from '@angular/material/tabs';
 import { MarkdownModule } from 'ngx-markdown';
 
 @Component({
@@ -24,9 +24,9 @@ import { MarkdownModule } from 'ngx-markdown';
   standalone: true,
   imports: [
     MarkdownModule,
-    MatLegacyTabsModule,
+    MatTabsModule,
     NgIf,
-    MatLegacyButtonModule,
+    MatButtonModule,
     MatIconModule,
     SnackbarDirective,
     NgClass,
@@ -104,21 +104,21 @@ You can search for workflows or launch them with our cloud partners using the Do
 run scripts or interact programmatically against Dockstore APIs, and [run workflows via the GA4GH WES standard](${Dockstore.DOCUMENTATION_URL}/advanced-topics/wes/cli-wes-tutorial.html) in platforms such as Amazon Genomics CLI.
 
 #### Requirements
-1. Linux/Ubuntu (Recommended - Tested on 22.04 LTS) or Mac OS X machine
-2. Java 17 (Tested with OpenJDK 17 and Eclipse Temurin JDK 17; Oracle JDK may work but is untested)
+1. Linux/Ubuntu (Recommended - Tested on 24.04 LTS) or Mac OS X machine
+2. Java 21 (Tested with OpenJDK 21 and Eclipse Temurin JDK 21; Oracle JDK may work but is untested)
 3. Python3 and pipx (Required if working with CWL, optional otherwise)
     `;
 
     this.textDataUbuntuLinux = `
 #### Part 1 - Install Java
-Install Java 17 (This example installs OpenJDK 17)
+Install Java 21 (This example installs OpenJDK 21)
 \`\`\`
 sudo apt-get update -q \
-&& sudo apt install -y openjdk-17-jdk
+&& sudo apt install -y openjdk-21-jdk
 \`\`\`
 
 #### Part 2 - Install Docker
-Install Docker Engine following the instructions on [Docker's website](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository). You should have at least version 19.03.1 installed. Ensure that you install Docker Engine. The Ubuntu version of Docker Desktop does not run containers natively, so it is not compatible with the Dockstore CLI.
+Install Docker Engine following the instructions on [Docker's website](https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository). You should have at least version 25.0.14 installed. Ensure that you install Docker Engine. The Ubuntu version of Docker Desktop does not run containers natively, so it is not compatible with the Dockstore CLI.
 
 Ensure that you are able to run Docker without using sudo directly with the
 [post install instructions](https://docs.docker.com/engine/installation/linux/linux-postinstall/#manage-docker-as-a-non-root-user).
@@ -141,7 +141,7 @@ There are several ways to install Java on Mac OS. Here are some examples:
 * Downloading an archive directly
   * [OpenJDK](https://openjdk.org/install/)
 
-After you've installed Java, make sure the version is correct by running \`java -version\` in the terminal, and verifying the major version is 17 or greater.
+After you've installed Java, make sure the version is correct by running \`java -version\` in the terminal, and verifying the major version is 21 or greater.
 
 
 #### Part 2 - Install Docker
@@ -175,9 +175,9 @@ Alternatively, copy this content to your config file directly.
 Run our dependencies to verify that they have been installed properly. (Note that the precise version of openjdk may vary depending on how you installed it.)
 \`\`\`
 $ java -version
-openjdk 17.0.5 2022-10-18
-OpenJDK Runtime Environment (build 17.0.5+8-Ubuntu-2ubuntu122.04)
-OpenJDK 64-Bit Server VM (build 17.0.5+8-Ubuntu-2ubuntu122.04, mixed mode, sharing)
+openjdk version "21.0.10" 2026-01-20
+OpenJDK Runtime Environment (build 21.0.10+7-Ubuntu-124.04)
+OpenJDK 64-Bit Server VM (build 21.0.10+7-Ubuntu-124.04, mixed mode, sharing)
 $ dockstore --version
 Dockstore version ${this.dockstoreVersion}
 $ docker run hello-world
@@ -189,7 +189,7 @@ At this point, you now have the Dockstore CLI set up for interacting with the Do
 
 #### Part 6 - Install cwltool (Optional)
 Dockstore relies on [cwltool](https://github.com/common-workflow-language/cwltool) - a reference implementation of CWL - for local execution of tools and workflows described with CWL.
-You'll need to have Python 3.10+ and [pipx](https://pipx.pypa.io/latest/installation/) to be installed on your machine.
+You'll need to have Python 3.10+ and [pipx](https://pipx.pypa.io/latest/how-to/install-pipx/) to be installed on your machine.
 
 **Note:** cwltool must be available on your PATH for the Dockstore CLI to find it.
 

@@ -1,7 +1,14 @@
 <h4 mat-dialog-title>Register Checker Workflow</h4>
 <div mat-dialog-content>
   <app-alert></app-alert>
-  <form #registerCheckerWorkflowForm="ngForm" name="registerCheckerWorkflowForm" (submit)="registerCheckerWorkflow()" novalidate>
+  <form
+    #registerCheckerWorkflowForm="ngForm"
+    name="registerCheckerWorkflowForm"
+    (submit)="registerCheckerWorkflow()"
+    novalidate
+    fxLayout="column"
+    fxLayoutGap="1.5rem"
+  >
     <mat-form-field class="w-100">
       <mat-label>Default Descriptor Path</mat-label>
       <input
@@ -47,12 +54,12 @@
       </mat-select>
     </mat-form-field>
     <div class="modal-footer">
-      <button type="button" mat-flat-button class="secondary-1" data-dismiss="modal" mat-dialog-close>Close</button>
+      <button type="button" mat-button color="accent" data-dismiss="modal" mat-dialog-close>Close</button>
       <button
         id="submitButton"
         type="submit"
-        mat-raised-button
-        class="accent-1-dark-btn mat-elevation-z"
+        mat-flat-button
+        class="accent-1-dark"
         [disabled]="!registerCheckerWorkflowForm.form.valid || (isRefreshing$ | async)"
       >
         {{ (mode$ | async) === 'add' ? 'Add Checker Workflow' : 'Save Checker Workflow' }}

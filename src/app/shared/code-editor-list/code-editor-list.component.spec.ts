@@ -1,14 +1,14 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { ClipboardModule } from '@angular/cdk/clipboard';
-import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
-import { MatLegacyCardModule as MatCardModule } from '@angular/material/legacy-card';
-import { MatLegacyFormFieldModule as MatFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
-import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-tabs';
+import { MatInputModule } from '@angular/material/input';
+import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { WorkflowService } from '../state/workflow.service';
 import { PrivateFilePathPipe } from './../../shared/entry/private-file-path.pipe';
@@ -18,7 +18,8 @@ import { WorkflowStubService } from './../../test/service-stubs';
 import { CodeEditorComponent } from './../code-editor/code-editor.component';
 import { CodeEditorListComponent } from './code-editor-list.component';
 import { DescriptorLanguageService } from '../entry/descriptor-language.service';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('CodeEditorListComponent', () => {
   let component: CodeEditorListComponent;
@@ -37,7 +38,6 @@ describe('CodeEditorListComponent', () => {
           MatTooltipModule,
           MatCardModule,
           ClipboardModule,
-          HttpClientTestingModule,
           CodeEditorListComponent,
           CodeEditorComponent,
           PublicFileDownloadPipe,
@@ -47,6 +47,8 @@ describe('CodeEditorListComponent', () => {
           { provide: WorkflowService, useClass: WorkflowStubService },
           { provide: FileService, useClass: FileStubService },
           { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
+          provideHttpClient(withInterceptorsFromDi()),
+          provideHttpClientTesting(),
         ],
       }).compileComponents();
     })

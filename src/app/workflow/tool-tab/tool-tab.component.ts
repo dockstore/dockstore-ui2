@@ -24,9 +24,9 @@ import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { ToolDescriptor, WorkflowVersion } from '../../shared/openapi';
 import { WorkflowsService } from './../../shared/openapi/api/workflows.service';
 import { ToolTabService } from './tool-tab.service';
-import { MatLegacyTableModule } from '@angular/material/legacy-table';
+import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { MatCardModule } from '@angular/material/card';
 import { NgIf, AsyncPipe } from '@angular/common';
 import { LoadingComponent } from '../../shared/loading/loading.component';
 
@@ -35,7 +35,7 @@ import { LoadingComponent } from '../../shared/loading/loading.component';
   templateUrl: './tool-tab.component.html',
   styleUrls: ['./tool-tab.component.scss'],
   standalone: true,
-  imports: [LoadingComponent, NgIf, MatLegacyCardModule, MatIconModule, MatLegacyTableModule, AsyncPipe],
+  imports: [LoadingComponent, NgIf, MatCardModule, MatIconModule, MatTableModule, AsyncPipe],
 })
 export class ToolTabComponent extends EntryTab {
   workflow: BioWorkflow | Service | Notebook;

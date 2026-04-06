@@ -24,12 +24,12 @@ import { TrackLoginService } from '../shared/track-login.service';
 import { UserService } from '../shared/user/user.service';
 import { LoginService } from './login.service';
 import { NgTemplateOutlet } from '@angular/common';
-import { MatLegacyCheckboxModule } from '@angular/material/legacy-checkbox';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
-import { MatLegacyTabsModule } from '@angular/material/legacy-tabs';
-import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatCardModule } from '@angular/material/card';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { AlertComponent } from '../shared/alert/alert.component';
 
@@ -41,12 +41,12 @@ import { AlertComponent } from '../shared/alert/alert.component';
   imports: [
     AlertComponent,
     FlexModule,
-    MatLegacyCardModule,
-    MatLegacyTabsModule,
-    MatLegacyButtonModule,
-    MatLegacyTooltipModule,
+    MatCardModule,
+    MatTabsModule,
+    MatButtonModule,
+    MatTooltipModule,
     FontAwesomeModule,
-    MatLegacyCheckboxModule,
+    MatCheckboxModule,
     NgTemplateOutlet,
   ],
 })

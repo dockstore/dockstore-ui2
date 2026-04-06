@@ -19,8 +19,9 @@ import { WorkflowService } from '../../shared/state/workflow.service';
 import { WorkflowsService } from '../../shared/openapi';
 import { WorkflowsStubService, WorkflowStubService } from '../../test/service-stubs';
 import { ToolTabComponent } from './tool-tab.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('ToolTabComponent', () => {
   let component: ToolTabComponent;
@@ -29,11 +30,13 @@ describe('ToolTabComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [FormsModule, HttpClientTestingModule, ToolTabComponent],
+        imports: [FormsModule, ToolTabComponent],
         providers: [
           { provide: WorkflowService, useClass: WorkflowStubService },
           { provide: WorkflowsService, useClass: WorkflowsStubService },
           { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
+          provideHttpClient(withInterceptorsFromDi()),
+          provideHttpClientTesting(),
         ],
       }).compileComponents();
     })

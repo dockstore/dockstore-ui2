@@ -15,13 +15,13 @@
 -->
 <div *ngIf="canEditMembership$ | async" fxLayout class="pt-3">
   <button
-    mat-button
-    class="private-btn small-btn-structure"
+    mat-stroked-button
+    class="private-btn"
     matTooltip="Invite a member to the organization"
     (click)="addUser()"
-    id="addUserToOrgButton"
+    data-cy="add-user-to-org-button"
   >
-    <mat-icon class="info-icon accent-1-dark">email</mat-icon>Invite a Member
+    <mat-icon class="info-icon">email</mat-icon>Invite a Member
   </button>
 </div>
 <app-loading [loading]="loading$ | async">
@@ -32,17 +32,16 @@
       fxFlex.lt-lg="100"
       *ngFor="let organizationUser of organizationMembers$ | async; let index = index"
     >
-      <mat-card class="h-100" [id]="'organization-member-' + index">
-        <div fxLayout fxLayoutGap="1rem" fxLayoutAlign="space-between stretch">
+      <mat-card class="h-100" [attr.data-cy]="'organization-member-' + index">
+        <mat-card-content fxLayout fxLayoutGap="1rem" fxLayoutAlign="space-between stretch">
           <img
             *ngIf="organizationUser.user?.avatarUrl; else noAvatar"
             mat-card-avatar
-            class="header-image"
             [src]="organizationUser.user?.avatarUrl"
             alt="User avatar"
           />
           <ng-template #noAvatar>
-            <img mat-card-avatar class="header-image" [src]="gravatarService.gravatarUrlForMysteryPerson()" alt="User avatar" />
+            <img mat-card-avatar [src]="gravatarService.gravatarUrlForMysteryPerson()" alt="User avatar" />
           </ng-template>
           <div class="w-100" fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="0.5rem">
             <div fxLayout fxLayoutAlign="space-between center">
@@ -53,13 +52,15 @@
                   </h5>
                 </a>
               </div>
-              <div class="bubble" [ngClass]="{ 'pending-bubble': organizationUser.status !== OrganizationUser.StatusEnum.ACCEPTED }">
-                {{
-                  organizationUser.status === OrganizationUser.StatusEnum.ACCEPTED
-                    ? (organizationUser.role | titlecase)
-                    : (organizationUser.status | titlecase) + ' Invitation'
-                }}
-              </div>
+              <mat-chip-set>
+                <mat-chip [ngClass]="{ 'pending-bubble': organizationUser.status !== OrganizationUser.StatusEnum.ACCEPTED }">
+                  {{
+                    organizationUser.status === OrganizationUser.StatusEnum.ACCEPTED
+                      ? (organizationUser.role | titlecase)
+                      : (organizationUser.status | titlecase) + ' Invitation'
+                  }}
+                </mat-chip>
+              </mat-chip-set>
             </div>
             <div fxLayout fxLayoutAlign="space-between">
               <span class="orcid white-space-no-wrap" *ngIf="organizationUser.user?.orcid" fxLayout fxLayoutAlign="start">
@@ -81,29 +82,29 @@
               >
                 <button
                   mat-button
-                  class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+                  class="private-btn"
                   [matTooltip]="
                     organizationUser.status === OrganizationUser.StatusEnum.REJECTED
                       ? 'Reinvite a user'
                       : 'Edit member\'s role in organization'
                   "
-                  [id]="'edit-user-role-' + index"
+                  [attr.data-cy]="'edit-user-role-' + index"
                   (click)="editUser(organizationUser)"
                 >
-                  <mat-icon class="info-icon accent-1-dark">{{
-                    organizationUser.status === OrganizationUser.StatusEnum.REJECTED ? 'sync' : 'edit'
-                  }}</mat-icon>
+                  <mat-icon class="info-icon"
+                    >{{ organizationUser.status === OrganizationUser.StatusEnum.REJECTED ? 'sync' : 'edit' }}
+                  </mat-icon>
                   {{ organizationUser.status === OrganizationUser.StatusEnum.REJECTED ? 'Resend Invite' : 'Edit' }}
                 </button>
                 <button
                   mat-button
-                  class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+                  class="small-btn-structure"
                   [matTooltip]="
                     organizationUser.status === OrganizationUser.StatusEnum.ACCEPTED
                       ? 'Remove member from organization'
                       : 'Delete Invitation'
                   "
-                  [id]="'remove-user-' + index"
+                  [attr.data-cy]="'remove-user-' + index"
                   (click)="removeUserDialog(organizationUser)"
                 >
                   <img src="../assets/svg/icons-actions-trash.svg" class="pr-2" alt="Remove member" />
@@ -111,7 +112,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </mat-card-content>
       </mat-card>
     </div>
   </div>

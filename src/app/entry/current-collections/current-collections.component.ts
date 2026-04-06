@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
 import { AddEntryComponent } from '../../organizations/collection/add-entry/add-entry.component';
@@ -13,10 +13,10 @@ import { RouterLinkActive, RouterLink } from '@angular/router';
 import { ImgFallbackDirective } from '../../shared/img-fallback.directive';
 import { MatDividerModule } from '@angular/material/divider';
 import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
-import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatButtonModule } from '@angular/material/button';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
-import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { MatCardModule } from '@angular/material/card';
 import { NgIf, NgFor, NgTemplateOutlet, AsyncPipe } from '@angular/common';
 
 @Component({
@@ -26,10 +26,10 @@ import { NgIf, NgFor, NgTemplateOutlet, AsyncPipe } from '@angular/common';
   standalone: true,
   imports: [
     NgIf,
-    MatLegacyCardModule,
+    MatCardModule,
     FlexModule,
-    MatLegacyButtonModule,
-    MatLegacyTooltipModule,
+    MatButtonModule,
+    MatTooltipModule,
     ExtendedModule,
     MatDividerModule,
     NgFor,

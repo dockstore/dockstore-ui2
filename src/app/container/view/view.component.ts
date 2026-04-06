@@ -15,7 +15,7 @@
  */
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { ViewService } from 'app/container/view/view.service';
 import { AlertQuery } from 'app/shared/alert/state/alert.query';
 import { Observable } from 'rxjs';
@@ -33,8 +33,8 @@ import { ToolQuery } from '../../shared/tool/tool.query';
 import { View } from '../../shared/view';
 import { VersionModalComponent } from '../version-modal/version-modal.component';
 import { VersionModalService } from '../version-modal/version-modal.service';
-import { MatLegacyMenuModule } from '@angular/material/legacy-menu';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatButtonModule } from '@angular/material/button';
 import { NgIf, AsyncPipe } from '@angular/common';
 
 @Component({
@@ -42,7 +42,7 @@ import { NgIf, AsyncPipe } from '@angular/common';
   templateUrl: './view.component.html',
   styleUrls: ['./view.component.css'],
   standalone: true,
-  imports: [NgIf, MatLegacyButtonModule, MatLegacyMenuModule, AsyncPipe],
+  imports: [NgIf, MatButtonModule, MatMenuModule, AsyncPipe],
 })
 // This is actually the actions dropdown for tags
 export class ViewContainerComponent extends View<Tag> implements OnInit {

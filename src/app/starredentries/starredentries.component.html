@@ -47,11 +47,11 @@
               <span class="tab-display workflow-background">{{ starredWorkflows?.length }}</span>
             </div>
           </ng-template>
-          <mat-card class="alert alert-info mat-elevation-z starred-header" role="alert" *ngIf="starredWorkflows?.length === 0">
-            You have no starred workflows.
+          <mat-card appearance="outlined" class="alert alert-info" role="alert" *ngIf="starredWorkflows?.length === 0">
+            <mat-card-content> You have no starred workflows. </mat-card-content>
           </mat-card>
           <div fxLayout="column" fxLayoutGap="1rem" class="mb-2 mx-1">
-            <mat-card fxFlex *ngFor="let workflow of starredWorkflows; let last = last" class="pb-3">
+            <mat-card fxFlex *ngFor="let workflow of starredWorkflows; let last = last">
               <ng-container
                 *ngTemplateOutlet="workflowSummary; context: { workflow: workflow, entryType: entryType.BioWorkflow }"
               ></ng-container>
@@ -68,11 +68,11 @@
             </div>
           </ng-template>
           <div>
-            <mat-card class="alert alert-info mat-elevation-z starred-header" role="alert" *ngIf="starredTools?.length === 0">
-              You have no starred tools.
+            <mat-card appearance="outlined" class="alert alert-info" role="alert" *ngIf="starredTools?.length === 0">
+              <mat-card-content> You have no starred tools. </mat-card-content>
             </mat-card>
             <div fxLayout="column" fxLayoutGap="1rem" class="mb-2 mx-1">
-              <mat-card fxFlex *ngFor="let tool of starredTools; let last = last" class="m-1 pb-3">
+              <mat-card fxFlex *ngFor="let tool of starredTools; let last = last">
                 <ng-container
                   *ngTemplateOutlet="
                     tool.entryType === OpenApiEntryType.APPTOOL ? workflowSummary : toolSummary;
@@ -94,15 +94,16 @@
           </ng-template>
           <div>
             <mat-card
-              class="alert alert-info mat-elevation-z starred-header"
+              appearance="outlined"
+              class="alert alert-info"
               data-cy="no-notebooks-banner"
               role="alert"
               *ngIf="starredNotebooks?.length === 0"
             >
-              You have no starred notebooks.
+              <mat-card-content> You have no starred notebooks. </mat-card-content>
             </mat-card>
             <div fxLayout="column" fxLayoutGap="1rem" class="mb-2 mx-1">
-              <mat-card fxFlex *ngFor="let notebook of starredNotebooks; let last = last" class="m-1 pb-3">
+              <mat-card fxFlex *ngFor="let notebook of starredNotebooks; let last = last">
                 <ng-container
                   *ngTemplateOutlet="workflowSummary; context: { workflow: notebook, entryType: entryType.Notebook }"
                 ></ng-container>
@@ -112,23 +113,21 @@
         </mat-tab>
 
         <ng-template #workflowSummary let-workflow="workflow">
-          <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="space-between">
-            <a [routerLink]="workflow | routerLink" class="no-underline">
-              <mat-card-header class="ml-2">
-                <mat-card-title fxLayoutAlign="space-between" fxLayoutGap="1rem">
+          <mat-card-header>
+            <mat-card-title-group>
+              <a matCardTitle [routerLink]="workflow | routerLink" class="no-underline">
+                <h4>
                   <img
                     src="../../../assets/svg/sub-nav/{{ workflow?.entryTypeMetadata.term }}.svg"
                     alt="{{ workflow?.entryTypeMetadata.term }} logo"
                   />
-                  <h4>
-                    {{ workflow?.organization + '/' + workflow?.repository + (workflow?.workflowName ? '/' + workflow?.workflowName : '') }}
-                  </h4>
-                </mat-card-title>
-              </mat-card-header>
-            </a>
-            <app-starring class="pull-right" [workflow]="workflow" (starGazersChange)="starGazersChange()"></app-starring>
-          </div>
-          <div class="ml-2">
+                  {{ workflow?.organization + '/' + workflow?.repository + (workflow?.workflowName ? '/' + workflow?.workflowName : '') }}
+                </h4>
+              </a>
+              <app-starring class="pull-right" [workflow]="workflow" (starGazersChange)="starGazersChange()"></app-starring>
+            </mat-card-title-group>
+          </mat-card-header>
+          <mat-card-content>
             <div class="truncate-text-3 mb-3">
               <app-markdown-wrapper
                 [data]="workflow?.description"
@@ -136,79 +135,66 @@
               ></app-markdown-wrapper>
             </div>
             <hr />
-          </div>
-          <div fxLayout="row" fxLayoutAlign="space-between stretch">
-            <div fxLayout="row" fxLayoutAlign="flex-start" fxLayoutGap="1rem">
-              <small class="mx-2">Last updated {{ workflow?.lastUpdated | date }}</small>
-              <div fxLayout="row wrap" fxLayoutGap="1rem">
-                <span>
-                  <mat-chip-list>
-                    <mat-chip class="bubble workflow-background" *ngFor="let label of workflow?.labels | slice: 0:3">{{
-                      $any(label).value
-                    }}</mat-chip>
-                    <mat-chip class="bubble" *ngIf="workflow.versionVerified === true">
-                      <span class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">
-                        <mat-icon class="verified-icon">done</mat-icon>
-                        <span>Verified</span>
-                      </span>
-                    </mat-chip>
-                    <mat-chip class="bubble">
-                      {{ workflow?.descriptorType | descriptorLanguage }}
-                    </mat-chip>
-                    <mat-chip class="bubble" *ngIf="workflow.versionVerified === true">
-                      <span class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">
-                        <mat-icon class="verified-icon">done</mat-icon>
-                        <span>Verified</span>
-                      </span>
-                    </mat-chip>
-                  </mat-chip-list>
-                </span>
+            <div fxLayout="row" fxLayoutAlign="space-between stretch">
+              <div fxLayout="row" fxLayoutAlign="flex-start" fxLayoutGap="1rem">
+                <small class="mx-2">Last updated {{ workflow?.lastUpdated | date }}</small>
+                <div fxLayout="row wrap" fxLayoutGap="1rem">
+                  <span>
+                    <mat-chip-set>
+                      <mat-chip class="workflow-background" *ngFor="let label of workflow?.labels | slice: 0:3">{{
+                        $any(label).value
+                      }}</mat-chip>
+                      <mat-chip *ngIf="workflow.versionVerified === true">
+                        <mat-icon>done</mat-icon>
+                        <span class="ml-2">Verified</span>
+                      </mat-chip>
+                      <mat-chip>
+                        {{ workflow?.descriptorType | descriptorLanguage }}
+                      </mat-chip>
+                    </mat-chip-set>
+                  </span>
+                </div>
               </div>
+              <a [routerLink]="workflow | routerLink" class="no-underline">
+                <button mat-raised-button class="small-btn-structure" color="accent">View</button>
+              </a>
             </div>
-            <a [routerLink]="workflow | routerLink" class="no-underline">
-              <button mat-raised-button class="small-mat-btn-skin small-btn-structure" color="accent">View</button>
-            </a>
-          </div>
+          </mat-card-content>
         </ng-template>
 
         <ng-template #toolSummary let-tool="tool">
-          <div fxLayout="row" fxLayoutAlign="space-between">
-            <a [routerLink]="tool | routerLink" class="no-underline">
-              <mat-card-header class="ml-2">
-                <mat-card-title fxLayoutAlign="flex-start" fxLayoutGap="1rem">
+          <mat-card-header>
+            <mat-card-title-group>
+              <a matCardTitle [routerLink]="tool | routerLink" class="no-underline">
+                <h4>
                   <img src="../../../assets/svg/sub-nav/tool.svg" alt="tool logo" />
-                  <h4>{{ tool?.namespace + '/' + tool?.name + (tool?.toolname ? '/' + tool?.toolname : '') }}</h4>
-                </mat-card-title>
-                <div *ngIf="tool?.starredUsers.length !== 0" fxLayout="row" fxLayoutAlign="end center"></div>
-              </mat-card-header>
-            </a>
-            <app-starring class="pull-right" [tool]="tool" (starGazersChange)="starGazersChange()"></app-starring>
-          </div>
-          <div>
+                  {{ tool?.namespace + '/' + tool?.name + (tool?.toolname ? '/' + tool?.toolname : '') }}
+                </h4>
+              </a>
+              <app-starring class="pull-right" [tool]="tool" (starGazersChange)="starGazersChange()"></app-starring>
+            </mat-card-title-group>
+          </mat-card-header>
+          <mat-card-content>
             <hr />
             <div fxLayout="row" fxLayoutAlign="space-between stretch">
               <div fxLayout="row" fxLayoutAlign="flex-start" fxLayoutGap="1rem">
                 <small class="mx-2">Last updated {{ tool?.lastUpdated | date }}</small>
-                <mat-chip-list>
-                  <mat-chip class="bubble tool-background" *ngFor="let label of tool?.labels | slice: 0:3">{{
-                    $any(label).value
-                  }}</mat-chip>
-                  <mat-chip *ngIf="tool?.versionVerified" matTooltip="Verified" class="bubble">
-                    <a class="verified-check" fxLayoutGap="0.5rem" fxLayoutAlign=" center">
-                      <mat-icon class="verified-icon">done</mat-icon>
-                      <span>Verified</span>
-                    </a>
+                <mat-chip-set>
+                  <mat-chip class="tool-background" *ngFor="let label of tool?.labels | slice: 0:3">{{ $any(label).value }}</mat-chip>
+                  <mat-chip *ngIf="tool?.versionVerified" matTooltip="Verified">
+                    <mat-icon>done</mat-icon>
+                    <span class="ml-2">Verified</span>
                   </mat-chip>
-                  <mat-chip class="bubble" *ngFor="let descriptortype of tool?.descriptorType">
+                  <mat-chip *ngFor="let descriptortype of tool?.descriptorType">
                     {{ descriptortype }}
                   </mat-chip>
-                </mat-chip-list>
+                </mat-chip-set>
               </div>
               <a [routerLink]="tool | routerLink" class="no-underline">
-                <button mat-raised-button class="small-mat-btn-skin small-btn-structure" color="accent">View</button>
+                <button mat-raised-button class="small-btn-structure" color="accent">View</button>
               </a>
             </div>
-          </div>
+          </mat-card-content>
         </ng-template>
 
         <!-- Services not done -->
@@ -221,7 +207,9 @@
               <span class="tab-display service-background">0</span>
             </div>
           </ng-template>
-          <mat-card class="alert alert-info mat-elevation-z starred-header" role="alert"> You have no starred services. </mat-card>
+          <mat-card appearance="outlined" class="alert alert-info" role="alert">
+            <mat-card-content> You have no starred services. </mat-card-content>
+          </mat-card>
         </mat-tab>
 
         <mat-tab>
@@ -232,72 +220,72 @@
               <span class="tab-display org-background">{{ starredOrganizations?.length }}</span>
             </div>
           </ng-template>
-          <mat-card class="alert alert-info mat-elevation-z starred-header" role="alert" *ngIf="starredOrganizations?.length === 0">
-            You have no starred organizations.
+          <mat-card appearance="outlined" class="alert alert-info" role="alert" *ngIf="starredOrganizations?.length === 0">
+            <mat-card-content> You have no starred organizations. </mat-card-content>
           </mat-card>
           <div *ngIf="starredOrganizations?.length > 0">
             <div fxLayoutAlign="start" fxLayout="row wrap" fxLayoutGap="1rem grid" class="mb-2 mx-1">
               <div *ngFor="let org of starredOrganizations; let last = last" fxFlex="33.3" fxFlex.lt-lg="500" fxFlex.lt-md="100">
-                <mat-card class="org-style pb-3">
-                  <div class="h-100" fxLayout="column" fxLayoutAlign="space-between stretch">
-                    <div fxLayout="column" fxLayoutGap="1rem">
-                      <div fxLayout="row wrap" fxLayoutAlign="space-between start">
-                        <a routerLink="/organizations/{{ org.name }}" class="no-underline">
-                          <img
-                            *ngIf="org.avatarUrl; else placeholder"
-                            class="small-org-logo"
-                            [src]="org.avatarUrl | gravatar"
-                            alt="org logo"
-                            [appFallback]="orgLogoService.DEFAULT_URL"
-                          />
-                          <ng-template #placeholder><span class="logo-height"></span></ng-template>
-                        </a>
-                        <app-organization-starring
-                          [organization]="org"
-                          (stargazersChange)="organizationStarGazersChange()"
-                        ></app-organization-starring>
-                      </div>
-                      <div data-cy="orgName">
-                        <a routerLink="/organizations/{{ org.name }}" class="no-underline">
-                          <h5 class="text-break">{{ org.displayName }}</h5>
-                          <span class="truncate-text-3">{{ org.topic }}</span>
-                        </a>
-                      </div>
-                      <div>
-                        <div fxLayout="column" fxLayoutAlign="space-between start" class="info">
-                          <span fxLayout="row" *ngIf="org?.link">
-                            <mat-icon class="info-icon">link</mat-icon>
-                            <span class="truncate-text-1"
-                              ><a [href]="org.link" target="_blank" rel="noopener noreferrer">{{ org.link }}</a></span
-                            >
-                          </span>
-                          <span fxLayout="row" *ngIf="org?.location">
-                            <mat-icon class="info-icon">location_on</mat-icon>
-                            <span class="truncate-text-1">{{ org.location }}</span>
-                          </span>
-                          <span fxLayout="row" *ngIf="org?.email">
-                            <mat-icon class="info-icon">email</mat-icon>
-                            <span class="truncate-text-1"
-                              ><a [href]="'mailto:' + org.email" target="_top">{{ org.email }}</a></span
-                            >
-                          </span>
-                        </div>
-                      </div>
+                <mat-card class="org-style" fxLayout="column" fxLayoutAlign="space-between stretch">
+                  <mat-card-content fxLayout="column" fxLayoutGap="1rem">
+                    <div fxLayout="row wrap" fxLayoutAlign="space-between start">
+                      <a routerLink="/organizations/{{ org.name }}" class="no-underline">
+                        <img
+                          *ngIf="org.avatarUrl; else placeholder"
+                          class="small-org-logo"
+                          [src]="org.avatarUrl | gravatar"
+                          alt="org logo"
+                          [appFallback]="orgLogoService.DEFAULT_URL"
+                        />
+                        <ng-template #placeholder><span class="logo-height"></span></ng-template>
+                      </a>
+                      <app-organization-starring
+                        [organization]="org"
+                        (stargazersChange)="organizationStarGazersChange()"
+                      ></app-organization-starring>
+                    </div>
+                    <div data-cy="orgName">
+                      <a routerLink="/organizations/{{ org.name }}" class="no-underline">
+                        <h5 class="text-break">{{ org.displayName }}</h5>
+                        <span class="truncate-text-3">{{ org.topic }}</span>
+                      </a>
                     </div>
                     <div>
-                      <hr class="mb-4" />
-                      <a routerLink="/organizations/{{ org.name }}" class="no-underline">
-                        <div fxLayout="row" fxLayoutAlign="space-between center">
-                          <span class="bubble">
+                      <div fxLayout="column" fxLayoutAlign="space-between start" class="info">
+                        <span fxLayout="row" *ngIf="org?.link">
+                          <mat-icon class="info-icon">link</mat-icon>
+                          <span class="truncate-text-1"
+                            ><a [href]="org.link" target="_blank" rel="noopener noreferrer">{{ org.link }}</a></span
+                          >
+                        </span>
+                        <span fxLayout="row" *ngIf="org?.location">
+                          <mat-icon class="info-icon">location_on</mat-icon>
+                          <span class="truncate-text-1">{{ org.location }}</span>
+                        </span>
+                        <span fxLayout="row" *ngIf="org?.email">
+                          <mat-icon class="info-icon">email</mat-icon>
+                          <span class="truncate-text-1"
+                            ><a [href]="'mailto:' + org.email" target="_top">{{ org.email }}</a></span
+                          >
+                        </span>
+                      </div>
+                    </div>
+                  </mat-card-content>
+                  <mat-card-content>
+                    <hr class="mb-4" />
+                    <a routerLink="/organizations/{{ org.name }}" class="no-underline">
+                      <div fxLayout="row" fxLayoutAlign="space-between center">
+                        <mat-chip-set>
+                          <mat-chip>
                             {{ org.collectionsLength }}
                             <span *ngIf="org.collectionsLength !== 1; else oneCollection"> Collections</span>
                             <ng-template #oneCollection> Collection</ng-template>
-                          </span>
-                          <button mat-raised-button color="accent">View</button>
-                        </div>
-                      </a>
-                    </div>
-                  </div>
+                          </mat-chip>
+                        </mat-chip-set>
+                        <button mat-raised-button color="accent">View</button>
+                      </div>
+                    </a>
+                  </mat-card-content>
                 </mat-card>
               </div>
             </div>

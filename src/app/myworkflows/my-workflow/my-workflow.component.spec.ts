@@ -13,11 +13,11 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { MatLegacyDialogModule, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
-import { MatLegacySnackBarModule } from '@angular/material/legacy-snack-bar';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TrackLoginService } from 'app/shared/track-login.service';
@@ -64,6 +64,7 @@ import {
 import { RegisterWorkflowModalService } from '../../workflow/register-workflow-modal/register-workflow-modal.service';
 import { MyWorkflowsService } from '../myworkflows.service';
 import { MyWorkflowComponent } from './my-workflow.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('MyWorkflowsComponent', () => {
   let component: MyWorkflowComponent;
@@ -74,14 +75,7 @@ describe('MyWorkflowsComponent', () => {
       TestBed.configureTestingModule({
         declarations: [RouterLinkStubDirective, RouterOutletStubComponent],
         schemas: [NO_ERRORS_SCHEMA],
-        imports: [
-          RouterTestingModule,
-          HttpClientTestingModule,
-          BrowserAnimationsModule,
-          MatLegacySnackBarModule,
-          MatLegacyDialogModule,
-          MyWorkflowComponent,
-        ],
+        imports: [RouterTestingModule, BrowserAnimationsModule, MatSnackBarModule, MatDialogModule, MyWorkflowComponent],
         providers: [
           { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
           { provide: MetadataService, useClass: MetadataStubService },
@@ -114,6 +108,8 @@ describe('MyWorkflowsComponent', () => {
               close: (dialogResult: any) => {},
             },
           },
+          provideHttpClient(withInterceptorsFromDi()),
+          provideHttpClientTesting(),
         ],
       }).compileComponents();
     })

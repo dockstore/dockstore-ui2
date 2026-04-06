@@ -13,19 +13,18 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { createOrganization, resetDB, setTokenUserViewPort, setTokenUserViewPortCurator } from '../../support/commands';
+import { createOrganization, resetDB, setTokenUserViewPort, setTokenUserViewPortCurator, typeInInput } from '../../support/commands';
 
 describe('Test notification badge on navbar', () => {
-  function typeInInput(fieldName: string, text: string) {
-    cy.contains('span', fieldName).parentsUntil('.mat-form-field-wrapper').find('input').first().should('be.visible').clear().type(text);
-  }
   resetDB();
   setTokenUserViewPort();
 
   it('Notification button should link to requests page', () => {
     cy.visit('/');
     cy.get('[data-cy=notification-button]').should('be.visible').click();
+    cy.get('[data-cy=notification-menu-curator-requests-button]').should('be.visible').click();
     cy.url().should('contain', 'accounts?tab=requests');
+    cy.reload();
   });
 
   it('Red badge should not be visible when there are no notifications', () => {
@@ -41,12 +40,13 @@ describe('Test notification badge on navbar', () => {
       createOrganization('Test', 'Test Display', 'Testing Testing Testing', 'Lab', 'https://www.google.ca', 'asf@asdf.ca');
       cy.get('[data-cy=notification-button]').should('be.visible').click();
       cy.get('[data-cy=bell-icon]').should('contain.text', '1');
-      cy.get('[data-cy=notification-button]').should('be.visible').click();
+      cy.get('[data-cy=notification-menu-curator-requests-button]').should('be.visible').click();
       cy.contains('button', 'Reject').should('be.visible').click();
       cy.get('[data-cy=reject-pending-org-dialog]').should('be.visible').click();
       cy.reload();
       cy.get('[data-cy=notification-button]').should('be.visible').click();
       cy.get('[data-cy=bell-icon]').should('contain.text', '1');
+      cy.reload();
     });
   });
   describe('Should have badge count of 3 with one pending organization, one invitation, and one rejected organization request', () => {
@@ -64,9 +64,9 @@ describe('Test notification badge on navbar', () => {
         'a111sdf@asdf.ca'
       );
       cy.contains('span', 'Members').click();
-      cy.get('#addUserToOrgButton').should('be.visible').click();
-      typeInInput('Username', 'user_A');
-      cy.get('#upsertUserDialogButton').should('be.visible').should('not.be.disabled').click();
+      cy.get('[data-cy=add-user-to-org-button]').should('be.visible').click();
+      typeInInput('username-input', 'user_A');
+      cy.get('[data-cy=upsert-member-button]').should('be.visible').should('not.be.disabled').click();
       cy.reload();
     });
 

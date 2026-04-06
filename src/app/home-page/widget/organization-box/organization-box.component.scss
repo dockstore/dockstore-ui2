@@ -6,11 +6,11 @@
 }
 
 .pending-invites {
-  color: mat.get-color-from-palette($dockstore-app-error, 1);
+  color: mat.m2-get-color-from-palette($dockstore-app-error, 1);
 }
 
 .disabled {
-  color: mat.get-color-from-palette($dockstore-app-gray, 4);
+  color: mat.m2-get-color-from-palette($dockstore-app-gray, 4);
 }
 
 .pending-links {

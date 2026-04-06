@@ -22,7 +22,8 @@ export class FooterService {
     wdlParsingLambdaVersion: string | null,
     nextflowParsingLambdaVersion: string | null,
     galaxyParsingLambdaVersion: string | null,
-    checkUrlLambdaVersion: string | null
+    checkUrlLambdaVersion: string | null,
+    supportVersion: string | null
   ): string {
     let baseBuildInfo = `[Domain] - ${domain}
 
@@ -51,6 +52,10 @@ export class FooterService {
 
     if (checkUrlLambdaVersion) {
       baseBuildInfo = baseBuildInfo + `\n\ncheckUrlLambdaVersion: ${checkUrlLambdaVersion}`;
+    }
+
+    if (supportVersion) {
+      baseBuildInfo = baseBuildInfo + `\n\n[supportVersion](${this.gitHubUrl('dockstore-support', supportVersion)}) - ${supportVersion}`;
     }
     return baseBuildInfo;
   }

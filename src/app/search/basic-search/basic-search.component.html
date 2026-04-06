@@ -1,6 +1,6 @@
 <mat-expansion-panel expanded>
   <mat-expansion-panel-header> Search </mat-expansion-panel-header>
-  <mat-form-field appearance="outline" class="search-form-field w-100">
+  <mat-form-field class="w-100">
     <mat-label>Enter search term...</mat-label>
     <input
       matInput
@@ -15,8 +15,7 @@
       (keydown.enter)="this.submitSearch(); trigger.closePanel()"
       data-cy="basic-search"
     />
-    <!-- <mat-hint align="end">Press &lt;Enter&gt; to search</mat-hint> -->
-    <button mat-button *ngIf="search.value" matSuffix mat-icon-button (click)="clearSearch()">
+    <button *ngIf="search.value" matSuffix mat-icon-button (click)="clearSearch()">
       <mat-icon>close</mat-icon>
     </button>
   </mat-form-field>

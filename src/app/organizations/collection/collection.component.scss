@@ -5,16 +5,12 @@ h5:hover {
   text-decoration: underline;
 }
 
-.mat-card-title {
-  font-size: 1.7rem;
-}
-
 .update-time {
   font-size: 12px;
 }
 
 .collection-name {
-  color: mat.get-color-from-palette($dockstore-app-accent-1, darker);
+  color: mat.m2-get-color-from-palette($dockstore-app-accent-1, darker);
 }
 
 .org-name {

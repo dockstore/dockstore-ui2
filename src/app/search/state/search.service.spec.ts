@@ -13,25 +13,27 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { inject, TestBed } from '@angular/core/testing';
-import { MatLegacySnackBarModule as MatLegacySnackBarModule } from '@angular/material/legacy-snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterTestingModule } from '@angular/router/testing';
 import { first } from 'rxjs/operators';
 import { ImageProviderService } from '../../shared/image-provider.service';
 import { ProviderService } from '../../shared/provider.service';
-import { Workflow } from '../../shared/openapi';
+import { TimeSeriesService } from '../../shared/timeseries.service';
+import { EntryType, Workflow } from '../../shared/openapi';
 import { elasticSearchResponse } from '../../test/mocked-objects';
-import { ProviderStubService } from '../../test/service-stubs';
+import { ProviderStubService, TimeSeriesStubService } from '../../test/service-stubs';
 import { Hit, SearchService } from './search.service';
 import { SearchStore } from './search.store';
 import { SearchAuthorsHtmlPipe } from '../search-authors-html.pipe';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('SearchService', () => {
   let searchService: SearchService;
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule, HttpClientTestingModule, MatLegacySnackBarModule],
+      imports: [RouterTestingModule, MatSnackBarModule],
       providers: [
         ImageProviderService,
         SearchService,
@@ -41,6 +43,12 @@ describe('SearchService', () => {
           provide: ProviderService,
           useClass: ProviderStubService,
         },
+        {
+          provide: TimeSeriesService,
+          useClass: TimeSeriesStubService,
+        },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
     });
     searchService = TestBed.inject(SearchService);
@@ -148,16 +156,17 @@ describe('SearchService', () => {
     const c: Workflow = { ...a, authors: [], full_workflow_path: null, descriptorType: Workflow.DescriptorTypeEnum.WDL };
     c['all_authors'] = c['authors'];
 
-    expect(searchService.compareAttributes(a, b, 'all_authors', 'asc', 'workflow')).toEqual(-1);
-    expect(searchService.compareAttributes(a, b, 'all_authors', 'desc', 'workflow')).toEqual(1);
-    expect(searchService.compareAttributes(b, c, 'all_authors', 'asc', 'workflow')).toEqual(-1);
-    expect(searchService.compareAttributes(b, c, 'all_authors', 'desc', 'workflow')).toEqual(1);
-    expect(searchService.compareAttributes(a, c, 'descriptorType', 'asc', 'workflow')).toEqual(-1);
-    expect(searchService.compareAttributes(a, b, 'descriptorType', 'desc', 'workflow')).toEqual(-0);
-    expect(searchService.compareAttributes(a, b, 'starredUsers', 'asc', 'workflow')).toEqual(-1);
-    expect(searchService.compareAttributes(a, b, 'name', 'asc', 'workflow')).toEqual(-1);
-    expect(searchService.compareAttributes(a, b, 'name', 'desc', 'workflow')).toEqual(1);
-    expect(searchService.compareAttributes(b, c, 'name', 'asc', 'workflow')).toEqual(-1);
-    expect(searchService.compareAttributes(b, c, 'name', 'desc', 'workflow')).toEqual(-1);
+    expect(searchService.compareAttributes(a, b, 'all_authors', 'asc', EntryType.WORKFLOW)).toEqual(-1);
+    expect(searchService.compareAttributes(a, b, 'all_authors', 'desc', EntryType.WORKFLOW)).toEqual(1);
+    expect(searchService.compareAttributes(b, c, 'all_authors', 'asc', EntryType.WORKFLOW)).toEqual(-1);
+    // when all_authors is [], compareAttributes converts the value to 'n/a', which should be sorted last
+    expect(searchService.compareAttributes(b, c, 'all_authors', 'desc', EntryType.WORKFLOW)).toEqual(-1);
+    expect(searchService.compareAttributes(a, c, 'descriptorType', 'asc', EntryType.WORKFLOW)).toEqual(-1);
+    expect(searchService.compareAttributes(a, b, 'descriptorType', 'desc', EntryType.WORKFLOW)).toEqual(-0);
+    expect(searchService.compareAttributes(a, b, 'starredUsers', 'asc', EntryType.WORKFLOW)).toEqual(-1);
+    expect(searchService.compareAttributes(a, b, 'name', 'asc', EntryType.WORKFLOW)).toEqual(-1);
+    expect(searchService.compareAttributes(a, b, 'name', 'desc', EntryType.WORKFLOW)).toEqual(1);
+    expect(searchService.compareAttributes(b, c, 'name', 'asc', EntryType.WORKFLOW)).toEqual(-1);
+    expect(searchService.compareAttributes(b, c, 'name', 'desc', EntryType.WORKFLOW)).toEqual(-1);
   }));
 });

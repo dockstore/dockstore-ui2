@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { ID, Order } from '@datorama/akita';
 import { CurationService } from '../../shared/openapi/api/curation.service';
-import { Notification } from '../../shared/openapi/model/notification';
 import { NotificationsStore } from './notifications.store';
 import { NotificationsQuery } from '../../notifications/state/notifications.query';
 import { Observable } from 'rxjs';
+import { PublicNotification } from 'app/shared/openapi/model/publicNotification';
+import { GitHubAppNotification, UserNotification } from 'app/shared/openapi';
+import { HttpResponse } from '@angular/common/http';
 
 export interface DismissedNotification {
   id: number;
@@ -25,14 +27,14 @@ export class NotificationsService {
   getNotifications() {
     this.curationService
       .getActiveNotifications()
-      .subscribe((notificationsCollection: Array<Notification>) => this.notificationsStore.set(notificationsCollection));
+      .subscribe((notificationsCollection: Array<PublicNotification>) => this.notificationsStore.set(notificationsCollection));
   }
 
-  add(notification: Notification) {
+  add(notification: PublicNotification) {
     this.notificationsStore.add(notification);
   }
 
-  update(id: ID, notification: Partial<Notification>) {
+  update(id: ID, notification: Partial<PublicNotification>) {
     this.notificationsStore.update(id, notification);
   }
 
@@ -46,7 +48,7 @@ export class NotificationsService {
    * @param {Notification.TypeEnum} type    'SITEWIDE' or 'NEWSBODY'
    * @returns {Observable<Array<Notification>>}
    */
-  getActiveNotificationsByType(type: Notification.TypeEnum): Observable<Array<Notification>> {
+  getActiveNotificationsByType(type: PublicNotification.TypeEnum): Observable<Array<PublicNotification>> {
     return this.notificationsQuery.selectAll({
       sortBy: 'expiration',
       sortByOrder: Order.DESC,
@@ -68,9 +70,17 @@ export class NotificationsService {
   /**
    * Remove notification from localstorage
    */
-  dismissNotification(notification: Notification) {
+  dismissNotification(notification: PublicNotification) {
     this.dismissedNotifications.push({ id: notification.id, expiration: notification.expiration });
     localStorage.setItem(this.storageKey, JSON.stringify(this.dismissedNotifications));
     this.remove(notification.id);
+  }
+
+  getUserNotifications(pageIndex: number, pageSize: number): Observable<HttpResponse<UserNotification[]>> {
+    return this.curationService.getUserNotifications(pageIndex, pageSize, 'response');
+  }
+
+  getGitHubAppNotifications(pageIndex: number, pageSize: number): Observable<HttpResponse<GitHubAppNotification[]>> {
+    return this.curationService.getGitHubAppNotifications(pageIndex, pageSize, 'response');
   }
 }

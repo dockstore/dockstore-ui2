@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { goToTab } from '../../../support/commands';
+import { goToFilesTab, goToVersionsTab } from '../../../support/commands';
 
 function createRandomString() {
   let text = 'zenodo_test_workflow_';
@@ -77,7 +77,7 @@ describe('Create Zenodo DOI for workflow version', () => {
           // Select the Use CWL, WDL or Nextflow from GitHub, Bitbucket, etc.' option to create a hosted workflow
           cy.contains('Create and save CWL, WDL, or Nextflow on Dockstore.org').click();
           cy.contains('button', 'Next').click();
-          cy.get('#descriptorTypeRadioButtons').contains(wdlDescriptorType).find('.mat-radio-container').click();
+          cy.get(`[data-cy=${wdlDescriptorType}-radio-button]`).click();
           cy.get('[id="hostedWorkflowRepository"]').type(zenodoWorkflow);
           cy.get('[id=submitButton]').should('be.visible').click();
           // Check that the workflow was created by looking for the test workflow
@@ -86,7 +86,7 @@ describe('Create Zenodo DOI for workflow version', () => {
         }
       });
 
-    goToTab('Files');
+    goToFilesTab();
 
     cy.get('[id=editFilesButton]').click();
     cy.get('button').should('contain', 'Add File');
@@ -151,7 +151,7 @@ describe('Create Zenodo DOI for workflow version', () => {
 
     cy.get('button', { timeout: 2000 }).should('contain', 'Unpublish').should('be.visible');
 
-    goToTab('Versions');
+    goToVersionsTab();
 
     // There should be at least on unlock icon since we just added a new version
     // and haven't snapshotted it yet; but this will find any unsnapshotted version

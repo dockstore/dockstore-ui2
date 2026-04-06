@@ -13,14 +13,14 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { DateService } from '../../shared/date.service';
 import { ExtendedDockstoreToolService } from '../../shared/extended-dockstoreTool/extended-dockstoreTool.service';
 import { ProviderService } from '../../shared/provider.service';
@@ -37,6 +37,7 @@ import {
   WorkflowStubService,
 } from '../../test/service-stubs';
 import { RefreshWorkflowOrganizationComponent } from './refresh-workflow-organization.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('RefreshWorkflowOrganizationComponent', () => {
   let component: RefreshWorkflowOrganizationComponent;
@@ -52,7 +53,6 @@ describe('RefreshWorkflowOrganizationComponent', () => {
           MatButtonModule,
           MatTooltipModule,
           MatSnackBarModule,
-          HttpClientTestingModule,
           RefreshWorkflowOrganizationComponent,
         ],
         providers: [
@@ -63,6 +63,8 @@ describe('RefreshWorkflowOrganizationComponent', () => {
           { provide: DateService, useClass: DateStubService },
           { provide: ProviderService, useClass: ProviderStubService },
           { provide: MatDialog, useValue: matDialogStub },
+          provideHttpClient(withInterceptorsFromDi()),
+          provideHttpClientTesting(),
         ],
       }).compileComponents();
     })

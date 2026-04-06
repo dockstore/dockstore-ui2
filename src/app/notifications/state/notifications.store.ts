@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
-import { Notification } from '../../shared/openapi/model/notification';
+import { PublicNotification } from 'app/shared/openapi';
 
-export interface NotificationsState extends EntityState<Notification> {}
+export interface NotificationsState extends EntityState<PublicNotification> {}
 
 @Injectable({ providedIn: 'root' })
 @StoreConfig({ name: 'notifications' })

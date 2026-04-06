@@ -1,17 +1,17 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogModule } from '@angular/material/legacy-dialog';
+import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { NgFormsManager } from '@ngneat/forms-manager';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
 import { OrganizationUser } from '../../shared/openapi';
 import { FormsState, UpsertOrganizationMemberService } from '../state/upsert-organization-member.service';
-import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
-import { MatLegacyOptionModule } from '@angular/material/legacy-core';
-import { MatLegacySelectModule } from '@angular/material/legacy-select';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatButtonModule } from '@angular/material/button';
+import { MatOptionModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
 import { NgIf, NgFor, TitleCasePipe } from '@angular/common';
-import { MatLegacyInputModule } from '@angular/material/legacy-input';
-import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { AlertComponent } from '../../shared/alert/alert.component';
 
@@ -29,19 +29,19 @@ export interface UpsertOrganizationMemberComponentData {
   templateUrl: './upsert-organization-member.component.html',
   standalone: true,
   imports: [
-    MatLegacyDialogModule,
+    MatDialogModule,
     AlertComponent,
     FormsModule,
     ReactiveFormsModule,
     FlexModule,
-    MatLegacyFormFieldModule,
-    MatLegacyInputModule,
+    MatFormFieldModule,
+    MatInputModule,
     NgIf,
-    MatLegacySelectModule,
+    MatSelectModule,
     NgFor,
-    MatLegacyOptionModule,
-    MatLegacyButtonModule,
-    MatLegacyTooltipModule,
+    MatOptionModule,
+    MatButtonModule,
+    MatTooltipModule,
     TitleCasePipe,
   ],
 })

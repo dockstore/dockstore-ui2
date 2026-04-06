@@ -37,21 +37,25 @@
   <!-- Organization header -->
   <div class="container mb-5" *ngIf="organization$ | async as org" fxLayout="column" fxLayoutGap="10px">
     <app-json-ld [json]="schema$ | async" class="m-0"></app-json-ld>
-    <mat-card fxFlex class="my-3 alert alert-info mat-elevation-z" *ngIf="org?.status === 'PENDING'">
-      <mat-icon>info</mat-icon> This organization is pending approval by a Dockstore curator.
-      <span *ngIf="(isAdmin$ | async) || (isCurator$ | async); else notAdminOrCurator">
-        You can approve/reject this pending organization request on the requests tab of the
-        <a [routerLink]="'/accounts'" [queryParams]="{ tab: 'requests' }">accounts page</a>.
-      </span>
-      <ng-template #notAdminOrCurator>
-        You can view your pending organization requests on the requests tab of the
-        <a [routerLink]="'/accounts'" [queryParams]="{ tab: 'requests' }">accounts page</a>.
-      </ng-template>
+    <mat-card appearance="outlined" fxFlex class="my-3 alert alert-info" *ngIf="org?.status === 'PENDING'">
+      <mat-card-content>
+        <mat-icon>info</mat-icon> This organization is pending approval by a Dockstore curator.
+        <span *ngIf="(isAdmin$ | async) || (isCurator$ | async); else notAdminOrCurator">
+          You can approve/reject this pending organization request on the requests tab of the
+          <a [routerLink]="'/accounts'" [queryParams]="{ tab: 'requests' }">accounts page</a>.
+        </span>
+        <ng-template #notAdminOrCurator>
+          You can view your pending organization requests on the requests tab of the
+          <a [routerLink]="'/accounts'" [queryParams]="{ tab: 'requests' }">accounts page</a>.
+        </ng-template>
+      </mat-card-content>
     </mat-card>
 
-    <mat-card fxFlex class="my-3 alert alert-info mat-elevation-z" *ngIf="org?.status === 'REJECTED'">
-      <mat-icon>info</mat-icon> This organization has been rejected by a curator. Members can re-request approval on the
-      <a [routerLink]="'/accounts'" [queryParams]="{ tab: 'requests' }">accounts page</a>.
+    <mat-card appearance="outlined" fxFlex class="my-3 alert alert-info" *ngIf="org?.status === 'REJECTED'">
+      <mat-card-content>
+        <mat-icon>info</mat-icon> This organization has been rejected by a curator. Members can re-request approval on the
+        <a [routerLink]="'/accounts'" [queryParams]="{ tab: 'requests' }">accounts page</a>.
+      </mat-card-content>
     </mat-card>
 
     <div fxFlex class="my-3">
@@ -76,10 +80,10 @@
       </div>
       <mat-card-actions *ngIf="(canEdit$ | async) && !organizationStarGazersClicked" fxLayoutAlign="flex-end">
         <button
-          mat-raised-button
-          class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+          mat-button
+          class="private-btn"
           (click)="editOrganization()"
-          id="editOrgInfo"
+          data-cy="edit-org-info-button"
           matTooltip="Edit the organization"
         >
           <img src="../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit organization" />Edit
@@ -136,8 +140,8 @@
             <div fxLayout="row" fxLayoutAlign="space-between">
               <h4>About the Organization</h4>
               <button
-                mat-raised-button
-                class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+                mat-button
+                class="private-btn"
                 *ngIf="canEdit$ | async"
                 (click)="updateDescription()"
                 id="editOrgDescription"

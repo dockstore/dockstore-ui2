@@ -16,13 +16,13 @@
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { MatLegacyDialogModule } from '@angular/material/legacy-dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 
-import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { ExtendedGA4GHService } from 'app/shared/openapi';
+import { EntryType, ExtendedGA4GHService } from 'app/shared/openapi';
 import { of } from 'rxjs';
 import { DateService } from '../shared/date.service';
 import { ProviderService } from '../shared/provider.service';
@@ -78,7 +78,7 @@ describe('SearchComponent', () => {
           FontAwesomeModule,
           RouterTestingModule,
           MatSnackBarModule,
-          MatLegacyDialogModule,
+          MatDialogModule,
           SearchComponent,
           MapFriendlyValuesPipe,
           HeaderComponent,
@@ -107,9 +107,8 @@ describe('SearchComponent', () => {
       workflowhit: null,
       toolhit: null,
       notebookhit: null,
-      showToolTagCloud: false,
-      showWorkflowTagCloud: false,
-      showNotebookTagCloud: false,
+      showTagCloud: false,
+      currentEntryType: EntryType.WORKFLOW,
       searchText: '',
       filterKeys: [],
       autocompleteTerms: [],

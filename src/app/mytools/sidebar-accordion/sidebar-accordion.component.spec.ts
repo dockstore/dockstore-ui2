@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
+import { MatButtonModule } from '@angular/material/button';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyListModule as MatListModule } from '@angular/material/legacy-list';
-import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-tabs';
+import { MatListModule } from '@angular/material/list';
+import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatLegacyTooltipModule as MatTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterTestingModule } from '@angular/router/testing';
 import { RegisterToolService } from '../../container/register-tool/register-tool.service';
 import { SelectTabPipe } from '../../shared/entry/select-tab.pipe';
@@ -13,8 +13,9 @@ import { RefreshToolOrganizationComponent } from './../../container/refresh-tool
 import { ContainerService } from './../../shared/container.service';
 import { ContainerStubService, RegisterToolStubService } from './../../test/service-stubs';
 import { SidebarAccordionComponent } from './sidebar-accordion.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('SidebarAccordionComponent', () => {
   let component: SidebarAccordionComponent;
@@ -32,7 +33,6 @@ describe('SidebarAccordionComponent', () => {
           MatListModule,
           MatTooltipModule,
           RouterTestingModule,
-          HttpClientTestingModule,
           SidebarAccordionComponent,
           RefreshToolOrganizationComponent,
           SelectTabPipe,
@@ -41,6 +41,8 @@ describe('SidebarAccordionComponent', () => {
           { provide: RegisterToolService, useClass: RegisterToolStubService },
           { provide: ContainerService, useClass: ContainerStubService },
           { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
+          provideHttpClient(withInterceptorsFromDi()),
+          provideHttpClientTesting(),
         ],
       }).compileComponents();
     })

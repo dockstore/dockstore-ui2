@@ -21,7 +21,7 @@
         <mat-card-title>Tool Information</mat-card-title>
       </mat-card-header>
       <mat-divider></mat-divider>
-      <mat-card-content class="p-1 pt-3">
+      <mat-card-content>
         <ul class="list-unstyled container-info">
           <li *ngIf="tool?.providerUrl && tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">
             <strong matTooltip="Source code repository for the associated tool descriptors and Dockerfile">Source Code</strong>:
@@ -51,15 +51,15 @@
             <li *ngIf="trsLinkCWL">
               <strong matTooltip="TRS link to the main CWL descriptor for the selected tool version">TRS CWL</strong>:
               <a [href]="trsLinkCWL">{{ tool?.tool_path }}</a>
-              <button mat-icon-button color="secondary" [cdkCopyToClipboard]="tool?.tool_path" matTooltip="Copy TRS ID" appSnackbar>
-                <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
+              <button mat-icon-button [cdkCopyToClipboard]="tool?.tool_path" matTooltip="Copy TRS ID" appSnackbar class="copy-button">
+                <mat-icon>file_copy</mat-icon>
               </button>
             </li>
             <li *ngIf="trsLinkWDL">
               <strong matTooltip="TRS link to the main WDL descriptor for the selected tool version">TRS WDL</strong>:
               <a [href]="trsLinkWDL">{{ tool?.tool_path }}</a>
-              <button mat-icon-button color="secondary" [cdkCopyToClipboard]="tool?.tool_path" matTooltip="Copy TRS ID" appSnackbar>
-                <mat-icon class="mat-icon-copy-button">file_copy</mat-icon>
+              <button mat-icon-button class="copy-button" [cdkCopyToClipboard]="tool?.tool_path" matTooltip="Copy TRS ID" appSnackbar>
+                <mat-icon>file_copy</mat-icon>
               </button>
             </li>
           </span>
@@ -83,20 +83,14 @@
                 />
               </div>
               <div *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED" class="btn-group" role="group" aria-label="Basic example">
-                <button
-                  *ngIf="!isPublic && dockerFileEditing"
-                  type="button"
-                  mat-raised-button
-                  class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
-                  (click)="cancelEditing()"
-                >
+                <button *ngIf="!isPublic && dockerFileEditing" type="button" mat-button class="private-btn" (click)="cancelEditing()">
                   <img src="../assets/svg/icons-reject-small.svg" alt="Cancel" class="pr-2 pb-1" />Cancel
                 </button>
                 <button
                   *ngIf="!isPublic"
                   type="button"
-                  mat-raised-button
-                  class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+                  mat-button
+                  class="private-btn"
                   [disabled]="!(!somethingIsBeingEdited() || (dockerFileEditing && editDockerfileForm.valid)) || !canWrite"
                   (click)="toggleEditDockerFile()"
                 >
@@ -128,20 +122,14 @@
                 />
               </div>
               <div *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED" class="btn-group" role="group" aria-label="Basic example">
-                <button
-                  *ngIf="!isPublic && cwlPathEditing"
-                  type="button"
-                  mat-raised-button
-                  class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
-                  (click)="cancelEditing()"
-                >
+                <button *ngIf="!isPublic && cwlPathEditing" type="button" mat-button class="private-btn" (click)="cancelEditing()">
                   <img src="../assets/svg/icons-reject-small.svg" alt="Cancel" class="pr-2 pb-1" />Cancel
                 </button>
                 <button
                   *ngIf="!isPublic"
                   type="button"
-                  mat-raised-button
-                  class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+                  mat-button
+                  class="private-btn"
                   [disabled]="!(!somethingIsBeingEdited() || (cwlPathEditing && editCWLPathForm.valid)) || !canWrite"
                   (click)="toggleEditCWLPath()"
                 >
@@ -173,20 +161,14 @@
                 />
               </div>
               <div *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED" class="btn-group" role="group" aria-label="Basic example">
-                <button
-                  *ngIf="!isPublic && wdlPathEditing"
-                  type="button"
-                  mat-raised-button
-                  class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
-                  (click)="cancelEditing()"
-                >
+                <button *ngIf="!isPublic && wdlPathEditing" type="button" mat-button class="private-btn" (click)="cancelEditing()">
                   <img src="../assets/svg/icons-reject-small.svg" alt="Cancel" class="pr-2 pb-1" />Cancel
                 </button>
                 <button
                   *ngIf="!isPublic"
                   type="button"
-                  mat-raised-button
-                  class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+                  mat-button
+                  class="private-btn"
                   [disabled]="!(!somethingIsBeingEdited() || (wdlPathEditing && editWDLPathForm.valid)) || !canWrite"
                   (click)="toggleEditWDLPath()"
                 >
@@ -219,8 +201,8 @@
               <button
                 *ngIf="!isPublic && tool?.mode !== DockstoreToolType.ModeEnum.HOSTED"
                 type="button"
-                mat-raised-button
-                class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+                mat-button
+                class="private-btn"
                 [disabled]="!(!somethingIsBeingEdited() || (cwlTestPathEditing && editCWLTestPathForm.valid)) || !canWrite"
                 (click)="toggleEditCWLTestPath()"
               >
@@ -252,8 +234,8 @@
               <button
                 *ngIf="!isPublic && tool?.mode !== DockstoreToolType.ModeEnum.HOSTED"
                 type="button"
-                mat-raised-button
-                class="small-mat-btn-skin accent-1-dark small-btn-structure mat-elevation-z"
+                mat-button
+                class="private-btn"
                 [disabled]="!(!somethingIsBeingEdited() || (wdlTestPathEditing && editWDLTestPathForm.valid)) || !canWrite"
                 (click)="toggleEditWDLTestPath()"
               >
@@ -295,29 +277,31 @@
         <mat-card-title>Tool Version Information</mat-card-title>
       </mat-card-header>
       <mat-divider></mat-divider>
-      <mat-card-content class="p-1 pt-3">
+      <mat-card-content class="pt-3">
         <div fxLayout fxLayoutAlign="start center" fxLayoutGap="2rem">
-          <span class="bubble">
-            {{ selectedVersion?.name }}
-          </span>
+          <mat-chip-set>
+            <mat-chip>
+              {{ selectedVersion?.name }}
+            </mat-chip>
+          </mat-chip-set>
           <span *ngIf="isValidVersion" id="downloadZipButton" data-cy="downloadZip">
-            <button *ngIf="!tool?.is_published" mat-button color="accent" class="private-btn small-btn-structure" (click)="downloadZip()">
+            <button *ngIf="!tool?.is_published" mat-stroked-button color="accent" class="small-btn-structure" (click)="downloadZip()">
               <mat-icon class="mat-icon-sm">file_download</mat-icon>
               Export as ZIP
             </button>
             <a
               [href]="downloadZipLink"
               *ngIf="tool?.is_published"
-              mat-button
+              mat-stroked-button
               color="accent"
-              class="private-btn small-btn-structure no-underline"
+              class="small-btn-structure no-underline"
             >
               <mat-icon class="mat-icon-sm">file_download</mat-icon>
               Export as ZIP
             </a>
           </span>
         </div>
-        <mat-divider [inset]="true" class="mt-3"></mat-divider>
+        <mat-divider class="mt-3"></mat-divider>
         <table mat-table [dataSource]="this.authors" class="w-100 mb-5" aria-describedby="Authors">
           <ng-container matColumnDef="name">
             <th scope="col" mat-header-cell *matHeaderCellDef>Author</th>
@@ -356,8 +340,8 @@
               </span>
             </td>
           </ng-container>
-          <tr class="mat-row" *matNoDataRow>
-            <td class="mat-cell" [colSpan]="displayedColumns.length">Not Available</td>
+          <tr class="mat-mdc-row" *matNoDataRow>
+            <td class="mat-mdc-cell" [colSpan]="displayedColumns.length">Not Available</td>
           </tr>
           <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>

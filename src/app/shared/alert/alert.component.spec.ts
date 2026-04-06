@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { MatLegacyCardModule as MatCardModule } from '@angular/material/legacy-card';
+import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyProgressBarModule as MatProgressBarModule } from '@angular/material/legacy-progress-bar';
-import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { AlertComponent } from './alert.component';
 

@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { MatLegacyProgressBarModule } from '@angular/material/legacy-progress-bar';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NgIf } from '@angular/common';
 
 /**
@@ -16,7 +16,7 @@ import { NgIf } from '@angular/common';
   templateUrl: './loading.component.html',
   styleUrls: ['./loading.component.scss'],
   standalone: true,
-  imports: [NgIf, MatLegacyProgressBarModule],
+  imports: [NgIf, MatProgressBarModule],
 })
 export class LoadingComponent {
   @Input() loading = true;

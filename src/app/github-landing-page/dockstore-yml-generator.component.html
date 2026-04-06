@@ -1,0 +1,71 @@
+<mat-progress-bar *ngIf="isLoading$ | async" mode="indeterminate"></mat-progress-bar>
+<div class="p-2 container" fxLayout="column" fxLayoutGap="2rem">
+  <h3 class="text-align-center">Generate a .dockstore.yml file</h3>
+  <app-alert></app-alert>
+  <ul>
+    <li>
+      Use this tool to generate a <code>.dockstore.yml</code> file for your GitHub repository so Dockstore can
+      <a
+        target="_blank"
+        rel="noopener noreferrer"
+        [href]="Dockstore.DOCUMENTATION_URL + '/getting-started/github-apps/github-apps-landing-page.html'"
+        >register your GitHub App entries</a
+      >
+      and keep them up-to-date automatically.
+    </li>
+    <li>
+      Explore more <code>.dockstore.yml</code> fields that you can add
+      <a target="_blank" rel="noopener noreferrer" [href]="Dockstore.DOCUMENTATION_URL + '/assets/templates/template.html'">here</a>.
+    </li>
+    <li>
+      View more GitHub App
+      <a target="_blank" rel="noopener noreferrer" [href]="Dockstore.DOCUMENTATION_URL + '/assets/templates/template.html#tips-and-tricks'"
+        >Tips And Tricks</a
+      >
+      and
+      <a
+        target="_blank"
+        rel="noopener noreferrer"
+        [href]="Dockstore.DOCUMENTATION_URL + '/getting-started/github-apps/github-apps-troubleshooting-tips.html'"
+        >FAQs</a
+      >.
+    </li>
+  </ul>
+  <mat-form-field>
+    <mat-label>Select your GitHub Organization</mat-label>
+    <mat-select [(ngModel)]="selectedOrganization" (ngModelChange)="getRepositories($event)">
+      <mat-option *ngFor="let organization of gitOrganizations$ | async" [value]="organization">
+        {{ organization }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field *ngIf="selectedOrganization" fxFlex="30">
+    <mat-label>Select your GitHub Repository</mat-label>
+    <mat-select [(ngModel)]="selectedRepository" (ngModelChange)="resetGeneratedDockstoreYml()">
+      <mat-option *ngFor="let repository of gitRepositories$ | async" [value]="repository.repositoryName">{{
+        repository.repositoryName
+      }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <button mat-flat-button class="accent-1-dark" [disabled]="!(selectedOrganization && selectedRepository)" (click)="generateDockstoreYml()">
+    Generate
+  </button>
+  <mat-progress-bar *ngIf="isGeneratedDockstoreYmlLoading" mode="indeterminate"></mat-progress-bar>
+  <mat-card *ngIf="generatedDockstoreYml" class="alert-info" appearance="outlined">
+    <mat-card-content>
+      <mat-icon>info</mat-icon> This file was generated using the
+      <strong>{{ this.selectedOrganization }}/{{ this.selectedRepository }}</strong> repository's
+      <strong>{{ this.gitHubReferenceForInference }}</strong> branch.
+      <a [href]="createFileOnGitHubLink" target="_blank" rel="noopener noreferrer">
+        <button class="accent-1-dark" mat-stroked-button><mat-icon class="mat-icon-sm">open_in_new</mat-icon>Save on GitHub</button>
+      </a>
+    </mat-card-content>
+  </mat-card>
+  <app-code-editor
+    class="mb-3"
+    *ngIf="generatedDockstoreYml"
+    [content]="generatedDockstoreYml"
+    [filepath]="'.dockstore.yml'"
+    [editing]="false"
+  ></app-code-editor>
+</div>

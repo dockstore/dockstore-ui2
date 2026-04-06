@@ -25,13 +25,13 @@ import { DescriptorLanguageService } from './../../shared/entry/descriptor-langu
 import { Tag } from './../../shared/openapi/model/tag';
 import { ToolLaunchService } from './tool-launch.service';
 import { LaunchCheckerWorkflowComponent } from '../../shared/entry/launch-checker-workflow/launch-checker-workflow.component';
-import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
-import { MatLegacyOptionModule } from '@angular/material/legacy-core';
-import { MatLegacySelectModule } from '@angular/material/legacy-select';
-import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatOptionModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { MatCardModule } from '@angular/material/card';
 import { NgIf, NgFor, AsyncPipe } from '@angular/common';
 import DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
 
@@ -42,14 +42,14 @@ import DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
   standalone: true,
   imports: [
     NgIf,
-    MatLegacyCardModule,
+    MatCardModule,
     MatIconModule,
-    MatLegacyFormFieldModule,
-    MatLegacySelectModule,
+    MatFormFieldModule,
+    MatSelectModule,
     NgFor,
-    MatLegacyOptionModule,
+    MatOptionModule,
     FlexModule,
-    MatLegacyTooltipModule,
+    MatTooltipModule,
     LaunchCheckerWorkflowComponent,
     AsyncPipe,
   ],

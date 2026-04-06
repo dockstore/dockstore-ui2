@@ -8,14 +8,14 @@ import { NgIf } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
-import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-starred-box',
   templateUrl: './starred-box.component.html',
   styleUrls: ['./starred-box.component.scss', '../../../shared/styles/dashboard-boxes.scss'],
   standalone: true,
-  imports: [MatLegacyCardModule, FlexModule, MatIconModule, RouterLink, NgIf, MatDividerModule, RecentEventsComponent],
+  imports: [MatCardModule, FlexModule, MatIconModule, RouterLink, NgIf, MatDividerModule, RecentEventsComponent],
 })
 export class StarredBoxComponent extends Base implements OnInit {
   public Dockstore = Dockstore;

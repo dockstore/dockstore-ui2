@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-import { setTokenUserViewPort } from '../../support/commands';
+import { getTab, setTokenUserViewPort } from '../../support/commands';
 
 describe('Notebooks Pages', () => {
   setTokenUserViewPort();
@@ -22,7 +22,7 @@ describe('Notebooks Pages', () => {
     cy.visit('/notebooks');
     cy.url().should('contain', 'notebooks');
     cy.get('[data-cy=header]').contains('h3', 'Notebooks');
-    cy.contains('Search notebooks');
+    cy.get('[data-cy=search-input]');
     cy.contains('Format');
     cy.contains('Language');
   });
@@ -43,12 +43,12 @@ describe('Notebooks Pages', () => {
   describe('Notebooks should be visible', () => {
     it('should be included in search', () => {
       cy.visit('/search?entryType=notebooks&searchMode=files&notebooks');
-      cy.contains('.mat-tab-label', 'Notebooks');
+      getTab('Notebooks');
     });
 
     it('should exist on starred page', () => {
       cy.visit('/starred?tab=notebooks');
-      cy.contains('.mat-tab-label', 'Notebooks');
+      getTab('Notebooks');
     });
 
     it('should exist on dashboard', () => {

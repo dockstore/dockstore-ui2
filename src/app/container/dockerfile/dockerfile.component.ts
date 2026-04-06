@@ -23,11 +23,11 @@ import { Tag } from '../../shared/openapi/model/tag';
 import { ToolQuery } from '../../shared/tool/tool.query';
 import { CodeEditorComponent } from '../../shared/code-editor/code-editor.component';
 import { ClipboardModule } from '@angular/cdk/clipboard';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatLegacyProgressBarModule } from '@angular/material/legacy-progress-bar';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { MatCardModule } from '@angular/material/card';
 import { NgIf } from '@angular/common';
 
 @Component({
@@ -37,11 +37,11 @@ import { NgIf } from '@angular/common';
   standalone: true,
   imports: [
     NgIf,
-    MatLegacyCardModule,
+    MatCardModule,
     MatIconModule,
-    MatLegacyProgressBarModule,
+    MatProgressBarModule,
     MatToolbarModule,
-    MatLegacyButtonModule,
+    MatButtonModule,
     ClipboardModule,
     CodeEditorComponent,
   ],

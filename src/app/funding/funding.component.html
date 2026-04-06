@@ -9,28 +9,26 @@
       <mat-divider></mat-divider>
       <div fxLayout="row wrap" fxLayoutGap="2rem grid" class="mt-4">
         <div *ngFor="let funder of section.funders" fxFlex="33.3" fxFlex.lt-lg="50" fxFlex.lt-md="100">
-          <mat-card class="my-2">
-            <div fxLayout="column" fxLayoutAlign="space-between stretch" class="h-100">
-              <div>
-                <div fxLayout fxLayoutAlign="center center" class="image-wrapper">
-                  <a [href]="funder.website" target="_blank">
-                    <img [src]="funder.imageSource" [alt]="funder.altImageText" class="center-block funding-img" />
-                  </a>
-                </div>
-                <div>
-                  <h5 class="mt-1">{{ funder.title }}</h5>
-                  <p>{{ funder.content }}</p>
-                </div>
+          <mat-card class="my-2 funding-card" fxLayout="column" fxLayoutAlign="space-between stretch">
+            <mat-card-content>
+              <div fxLayout fxLayoutAlign="center center" class="image-wrapper">
+                <a [href]="funder.website" target="_blank">
+                  <img [src]="funder.imageSource" [alt]="funder.altImageText" class="center-block funding-img" />
+                </a>
               </div>
               <div>
-                <mat-divider></mat-divider>
-                <div fxLayout fxLayoutAlign="end" class="mt-4">
-                  <a [href]="funder.website" class="no-underline" target="_blank">
-                    <button mat-raised-button color="accent">View</button>
-                  </a>
-                </div>
+                <h5 class="mt-1">{{ funder.title }}</h5>
+                <p>{{ funder.content }}</p>
               </div>
-            </div>
+            </mat-card-content>
+            <mat-card-content>
+              <mat-divider></mat-divider>
+              <div fxLayout fxLayoutAlign="end" class="mt-4">
+                <a [href]="funder.website" class="no-underline" target="_blank">
+                  <button mat-raised-button color="accent">View</button>
+                </a>
+              </div>
+            </mat-card-content>
           </mat-card>
         </div>
       </div>

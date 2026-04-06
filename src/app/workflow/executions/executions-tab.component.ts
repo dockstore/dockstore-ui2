@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnChanges, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { EntryTab } from '../../shared/entry/entry-tab';
 import {
   CloudInstance,
@@ -27,28 +27,35 @@ import {
   Service,
   MetricsByStatus,
   RunExecution,
+  TimeSeriesMetric,
+  HistogramMetric,
 } from '../../shared/openapi';
 import { SessionQuery } from '../../shared/session/session.query';
+import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import PartnerEnum = CloudInstance.PartnerEnum;
 import ExecutionStatusEnum = RunExecution.ExecutionStatusEnum;
-import { MatLegacySelectChange as MatSelectChange, MatLegacySelectModule } from '@angular/material/legacy-select';
+import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { AlertService } from '../../shared/alert/state/alert.service';
+import { TimeSeriesService } from '../../shared/timeseries.service';
 import { UserQuery } from 'app/shared/user/user.query';
 import { combineLatest } from 'rxjs';
 import { ExecutionStatusPipe } from '../../shared/entry/execution-status.pipe';
 import { SecondsToHoursMinutesSecondsPipe } from 'app/workflow/executions/seconds-to-hours-minutes-seconds.pipe';
 import { PlatformPartnerPipe } from '../../shared/entry/platform-partner.pipe';
 import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
-import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
-import { MatLegacyTableModule } from '@angular/material/legacy-table';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatTableModule } from '@angular/material/table';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatLegacyOptionModule } from '@angular/material/legacy-core';
-import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatOptionModule } from '@angular/material/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { MatCardModule } from '@angular/material/card';
 import { NgIf, NgFor, NgClass, NgTemplateOutlet, DecimalPipe, DatePipe } from '@angular/common';
+import { BaseChartDirective } from 'ng2-charts';
+import { ChartDataset, ChartOptions } from 'chart.js';
+import { Temporal } from '@js-temporal/polyfill';
 
 interface ExecutionMetricsTableObject {
   metric: string; // Name of the execution metric
@@ -61,19 +68,20 @@ interface ExecutionMetricsTableObject {
 @Component({
   selector: 'app-executions-tab',
   templateUrl: './executions-tab.component.html',
+  styleUrls: ['./executions-tab.component.scss'],
   standalone: true,
   imports: [
     NgIf,
-    MatLegacyCardModule,
+    MatCardModule,
     MatIconModule,
     FlexModule,
-    MatLegacyFormFieldModule,
-    MatLegacySelectModule,
+    MatFormFieldModule,
+    MatSelectModule,
     NgFor,
-    MatLegacyOptionModule,
+    MatOptionModule,
     MatDividerModule,
-    MatLegacyTableModule,
-    MatLegacyTooltipModule,
+    MatTableModule,
+    MatTooltipModule,
     NgClass,
     ExtendedModule,
     NgTemplateOutlet,
@@ -82,16 +90,24 @@ interface ExecutionMetricsTableObject {
     PlatformPartnerPipe,
     SecondsToHoursMinutesSecondsPipe,
     ExecutionStatusPipe,
+    BaseChartDirective,
   ],
 })
-export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChanges {
+export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChanges, AfterViewInit {
+  readonly SUCCESSFUL_LABEL = 'Successful';
+  readonly FAILED_LABEL = 'Failed';
+  readonly ABORTED_LABEL = 'Aborted';
+  readonly SUCCESSFUL_COLOR = 'rgb(50,205,50)';
+  readonly FAILED_COLOR = 'rgb(255,0,0)';
+  readonly ABORTED_COLOR = 'rgb(255,165,0)';
+  readonly LIGHT_GRAY = 'rgb(210,210,210)';
+  readonly VERY_LIGHT_GRAY = 'rgb(240,240,240)';
   metrics: Map<PartnerEnum, Metrics>;
-  trsID: string;
   currentPartner: PartnerEnum;
   partners: PartnerEnum[];
   metricsExist: boolean;
   // Fields for the execution metrics
-  executionMetricsColumns: string[] = ['metric', 'minimum', 'average', 'maximum'];
+  executionMetricsColumns: string[] = ['metric', 'minimum', 'percentile05th', 'median', 'average', 'percentile95th', 'maximum'];
   executionMetricsTable: ExecutionMetricsTableObject[];
   totalExecutions: number;
   successfulExecutions: number;
@@ -118,15 +134,50 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
   validatorTools: string[];
   validatorToolMetricsExist: boolean;
   isAdminCuratorOrPlatformPartner: boolean;
+  pieChartDatasets: ChartDataset<'pie', number[]>[] = undefined;
+  pieChartLabels: string[] = [this.SUCCESSFUL_LABEL, this.FAILED_LABEL, this.ABORTED_LABEL];
+  pieChartOptions: ChartOptions<'pie'> = {
+    responsive: false, // non-responsive to avoid resizing when leaving tab
+    maintainAspectRatio: false,
+  };
+  executionCountTimeSeriesDatasets: ChartDataset<'bar', number[]>[] = undefined;
+  executionCountTimeSeriesLabels: string[] = undefined;
+  executionCountTimeSeriesOptions: ChartOptions<'bar'> = {
+    responsive: false, // non-responsive to avoid resizing when leaving tab
+    maintainAspectRatio: false,
+    scales: {
+      x: {
+        stacked: true,
+        ticks: {
+          font: {
+            size: 9,
+          },
+          // Use the first date in the bar label as the tick label
+          callback: function (value, index) {
+            const label = this.getLabelForValue(index);
+            return label.substring(0, label.indexOf(' '));
+          },
+        },
+      },
+      y: {
+        stacked: true,
+      },
+    },
+  };
+  executionTimeHistogramDatasets: ChartDataset<'bar', number[]>[] = undefined;
+  executionTimeHistogramLabels: string[] = undefined;
+  executionTimeHistogramOptions: ChartOptions<'bar'> = undefined;
 
   @Input() entry: BioWorkflow | Service | Notebook;
   @Input() version: WorkflowVersion;
+  @ViewChildren(BaseChartDirective) charts: QueryList<BaseChartDirective>;
 
   constructor(
     private extendedGA4GHService: ExtendedGA4GHService,
     private alertService: AlertService,
     private userQuery: UserQuery,
-    protected sessionQuery: SessionQuery
+    protected sessionQuery: SessionQuery,
+    private timeSeriesService: TimeSeriesService
   ) {
     super();
   }
@@ -141,38 +192,53 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
 
   ngOnChanges() {
     this.resetMetricsData();
-    if (this.version) {
-      this.alertService.start('Retrieving metrics data');
-      this.trsID = this.entry.entryTypeMetadata.trsPrefix + this.entry.full_workflow_path;
-      this.extendedGA4GHService
-        .aggregatedMetricsGet(this.trsID, this.version.name)
-        .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe(
-          (metrics) => {
-            if (metrics) {
-              for (const [partner, metric] of Object.entries(metrics)) {
-                this.setMetricsObject(this.metrics, partner, metric);
-              }
-              this.partners = Array.from(this.metrics.keys());
-              this.metricsExist = this.partners.length > 0;
-              if (this.metricsExist) {
-                // Remove the ALL platform if there's only one execution
-                if (this.partners.length === 2 && this.partners.filter((partner) => partner === PartnerEnum.ALL).length === 1) {
-                  this.partners = this.partners.filter((partner) => partner !== PartnerEnum.ALL);
-                }
-                const platform =
-                  this.partners.filter((partner) => partner === PartnerEnum.ALL).length === 1
-                    ? this.partners.filter((partner) => partner === PartnerEnum.ALL)[0]
-                    : this.partners[0];
-                this.selectPartner(platform);
-              }
+    this.alertService.start('Retrieving metrics data');
+    this.getMetrics()
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(
+        (metrics) => {
+          if (metrics) {
+            for (const [partner, metric] of Object.entries(metrics)) {
+              this.setMetricsObject(this.metrics, partner, metric);
             }
-            this.alertService.simpleSuccess();
-          },
-          (error) => {
-            this.alertService.detailedError(error);
+            this.partners = Array.from(this.metrics.keys());
+            this.metricsExist = this.partners.length > 0;
+            if (this.metricsExist) {
+              // Remove the ALL platform if there's only one execution
+              if (this.partners.length === 2 && this.partners.filter((partner) => partner === PartnerEnum.ALL).length === 1) {
+                this.partners = this.partners.filter((partner) => partner !== PartnerEnum.ALL);
+              }
+              const platform =
+                this.partners.filter((partner) => partner === PartnerEnum.ALL).length === 1
+                  ? this.partners.filter((partner) => partner === PartnerEnum.ALL)[0]
+                  : this.partners[0];
+              this.selectPartner(platform);
+            }
           }
-        );
+          this.alertService.simpleSuccess();
+        },
+        (error) => {
+          this.alertService.detailedError(error);
+        }
+      );
+  }
+
+  ngAfterViewInit() {
+    // Re-render each of the charts, hopefully fixing the "blank chart" bug
+    // (https://ucsc-cgl.atlassian.net/browse/SEAB-7395)
+    // if the root cause is that the chart data arrives before the canvas
+    // is ready for rendering.
+    this.charts.forEach((chart) => {
+      chart.update();
+    });
+  }
+
+  getMetrics(): Observable<{ [key: string]: Metrics }> {
+    const trsID = this.entry.entryTypeMetadata.trsPrefix + this.entry.full_workflow_path;
+    if (this.version) {
+      return this.extendedGA4GHService.aggregatedMetricsGet(trsID, this.version.name);
+    } else {
+      return this.extendedGA4GHService.aggregatedMetricsGetEntry(trsID);
     }
   }
 
@@ -235,7 +301,230 @@ export class ExecutionsTabComponent extends EntryTab implements OnInit, OnChange
       this.totalExecutions = this.successfulExecutions + this.failedExecutions + this.abortedExecutions;
       const completedExecutions = (this.successfulExecutions || 0) + (this.failedExecutions || 0); // Per schema, values could be undefined, even though in practice they currently aren't
       this.successfulExecutionRate = completedExecutions > 0 ? (100 * this.successfulExecutions) / completedExecutions : null; // Don't divide by 0
+
+      // Calculate the information for the status pie graph.
+      this.pieChartDatasets = [
+        {
+          data: [this.successfulExecutions, this.failedExecutions, this.abortedExecutions],
+          backgroundColor: [this.SUCCESSFUL_COLOR, this.FAILED_COLOR, this.ABORTED_COLOR],
+        },
+      ];
+
+      // Calculate the information for the weekly time series graph.
+      // Extract the weekly time series from the metrics object, if they exist, and then select a time series to be "representative".
+      // The "representative" time series is used to create empty replacements for any missing time series.
+      // The following code assumes that all time series bins which overlap cover the same time period.
+      let successfulCounts = metrics.executionStatusCount?.count['SUCCESSFUL']?.weeklyExecutionCounts;
+      let failedCounts = metrics.executionStatusCount?.count['FAILED']?.weeklyExecutionCounts;
+      let abortedCounts = metrics.executionStatusCount?.count['ABORTED']?.weeklyExecutionCounts;
+      const representativeCounts = successfulCounts ?? failedCounts ?? abortedCounts;
+
+      if (representativeCounts) {
+        const now = new Date();
+        const binCount = 52;
+        const emptyCounts = this.timeSeriesService.emptyTimeSeries(representativeCounts);
+        // Replace any missing time series with an empty (zero execution count) time series,
+        // and then adjust the time series so they all have the same number of bins and span the same time range.
+        successfulCounts = this.timeSeriesService.adjustTimeSeries(successfulCounts ?? emptyCounts, now, binCount);
+        failedCounts = this.timeSeriesService.adjustTimeSeries(failedCounts ?? emptyCounts, now, binCount);
+        abortedCounts = this.timeSeriesService.adjustTimeSeries(abortedCounts ?? emptyCounts, now, binCount);
+
+        // Create the labels and datasets, which will propagate to the canvas via the template.
+        this.executionCountTimeSeriesLabels = this.timeSeriesService.labelsFromTimeSeries(successfulCounts);
+        this.executionCountTimeSeriesDatasets = [
+          this.createExecutionCountTimeSeriesDataset(successfulCounts, this.SUCCESSFUL_LABEL, this.SUCCESSFUL_COLOR),
+          this.createExecutionCountTimeSeriesDataset(failedCounts, this.FAILED_LABEL, this.FAILED_COLOR),
+          this.createExecutionCountTimeSeriesDataset(abortedCounts, this.ABORTED_LABEL, this.ABORTED_COLOR),
+        ];
+      } else {
+        this.executionCountTimeSeriesDatasets = null;
+      }
+
+      // Calculate the information for the run time distribution graph.
+      // The following code assumes that all of the histograms have the same edge values.
+      let successfulHistogram = metrics.executionStatusCount?.count['SUCCESSFUL']?.executionTimeHistogram;
+      let failedHistogram = metrics.executionStatusCount?.count['FAILED']?.executionTimeHistogram;
+      let abortedHistogram = metrics.executionStatusCount?.count['ABORTED']?.executionTimeHistogram;
+      const representativeHistogram = successfulHistogram ?? failedHistogram ?? abortedHistogram;
+
+      if (representativeHistogram) {
+        const emptyHistogram = this.emptyHistogram(representativeHistogram);
+        successfulHistogram ??= emptyHistogram;
+        failedHistogram ??= emptyHistogram;
+        abortedHistogram ??= emptyHistogram;
+
+        this.executionTimeHistogramLabels = this.createExecutionTimeHistogramLabels(successfulHistogram);
+        this.executionTimeHistogramOptions = this.createExecutionTimeHistogramOptions(successfulHistogram);
+        this.executionTimeHistogramDatasets = [
+          this.createExecutionTimeHistogramDataset(successfulHistogram, this.SUCCESSFUL_LABEL, this.SUCCESSFUL_COLOR),
+          this.createExecutionTimeHistogramDataset(failedHistogram, this.FAILED_LABEL, this.FAILED_COLOR),
+          this.createExecutionTimeHistogramDataset(abortedHistogram, this.ABORTED_LABEL, this.ABORTED_COLOR),
+        ];
+      } else {
+        this.executionTimeHistogramDatasets = null;
+      }
     }
+  }
+
+  private createExecutionCountTimeSeriesDataset(
+    timeSeriesMetric: TimeSeriesMetric,
+    label: string,
+    color: string
+  ): ChartDataset<'bar', number[]> {
+    return {
+      data: timeSeriesMetric.values,
+      label: label,
+      backgroundColor: color,
+      barPercentage: 0.9,
+      categoryPercentage: 1,
+    };
+  }
+
+  private createExecutionTimeHistogramLabels(histogramMetric: HistogramMetric): string[] {
+    const count = histogramMetric.edges.length - 1;
+    const labels = [];
+    for (let i = 0; i < count; i++) {
+      const lo = histogramMetric.edges[i];
+      const hi = histogramMetric.edges[i + 1];
+      const loHoursMinutesSeconds = this.formatDuration(lo, 2);
+      const hiHoursMinutesSeconds = this.formatDuration(hi, 2);
+      if (lo <= 0) {
+        labels.push(`t < ${hiHoursMinutesSeconds}`);
+      } else if (hi == Number.POSITIVE_INFINITY) {
+        labels.push(`${loHoursMinutesSeconds} \u2264 t`);
+      } else {
+        labels.push(`${loHoursMinutesSeconds} \u2264 t < ${hiHoursMinutesSeconds}`);
+      }
+    }
+    return labels;
+  }
+
+  private createExecutionTimeHistogramDataset(
+    histogramMetric: HistogramMetric,
+    label: string,
+    color: string
+  ): ChartDataset<'bar', number[]> {
+    return {
+      data: histogramMetric.frequencies,
+      label: label,
+      backgroundColor: color,
+      barPercentage: 0.9,
+      categoryPercentage: 1,
+    };
+  }
+
+  private createExecutionTimeHistogramOptions(histogramMetric: HistogramMetric): ChartOptions<'bar'> {
+    return {
+      responsive: false, // non-responsive to avoid resizing when leaving tab
+      maintainAspectRatio: false,
+      scales: {
+        x: {
+          stacked: true,
+          display: false,
+        },
+        xLog: {
+          stacked: true,
+          grid: {
+            offset: false,
+            color: (context) => {
+              return context?.tick?.major ? this.LIGHT_GRAY : this.VERY_LIGHT_GRAY;
+            },
+          },
+          ticks: {
+            font: {
+              size: 9,
+            },
+            autoSkip: false,
+          },
+          afterTickToLabelConversion: (scale) => {
+            scale.ticks = [
+              ...this.generateLogTicks(10, 5, histogramMetric), // 10s ticks
+              ...this.generateLogTicks(60, 9, histogramMetric), // 1m ticks
+              ...this.generateLogTicks(600, 5, histogramMetric), // 10m ticks
+              ...this.generateLogTicks(3600, 9, histogramMetric), // 1h ticks
+              ...this.generateLogTicks(36000, 9, histogramMetric), // 10h ticks
+              ...this.generateLogTicks(360000, 1, histogramMetric), // 100h tick
+            ];
+          },
+        },
+        y: {
+          stacked: true,
+        },
+      },
+    };
+  }
+
+  /**
+   * Generate a list of the specified number of ticks, starting at the specified X value and including the successive integer multiples.
+   */
+  private generateLogTicks(initialX: number, tickCount: number, histogramMetric: HistogramMetric) {
+    const ticks = [];
+    for (let factor = 1; factor <= tickCount; factor++) {
+      const x = factor * initialX;
+      const barSpaceX = this.convertXToBarSpaceX(x, histogramMetric);
+      const major = factor == 1;
+      ticks.push({
+        value: barSpaceX,
+        label: major ? this.formatDuration(x) : '',
+        major: major,
+      });
+    }
+    return ticks;
+  }
+
+  /**
+   * Convert the specified x value (seconds) to a position in "bar space".
+   * "bar space" is defined by how ng2-charts (charts.js) lays out the bars
+   * on the horizontal axis, with the center of the first bar at 0, the
+   * center of the Nth bar at N - 1, and each bar and padding consuming one
+   * unit of space.  For example, in bar space, the second bar and its
+   * padding spans the range (1 - 0.5, 1 + 0.5) = (0.5, 1.5).
+   */
+  private convertXToBarSpaceX(x: number, histogramMetric: HistogramMetric) {
+    // Find the histogram bin that contains the specified X value.
+    const edges = histogramMetric.edges;
+    let binIndex = 0;
+    while (!(x >= edges[binIndex] && x < edges[binIndex + 1]) && binIndex < edges.length - 1) {
+      binIndex++;
+    }
+    const loEdge = edges[binIndex];
+    const hiEdge = edges[binIndex + 1];
+    // Handle the outliers.
+    if (loEdge == Number.NEGATIVE_INFINITY) {
+      return binIndex + 0.5; // Right edge of bar.
+    }
+    if (hiEdge == Number.POSITIVE_INFINITY) {
+      return binIndex - 0.5; // Left edge of bar.
+    }
+    // Approximate the "bar space" value.
+    // We can use linear interpolation because the difference between low and high edge values is small.
+    return binIndex - 0.5 + (x - loEdge) / (hiEdge - loEdge);
+  }
+
+  private formatDuration(seconds: number, precision: number = 1): string {
+    if (!Number.isFinite(seconds)) {
+      return `${seconds}`;
+    }
+    const duration = Temporal.Duration.from({ seconds: seconds });
+    const rounded = duration.round({ largestUnit: 'hours', smallestUnit: 'seconds' });
+    let text = '';
+    if (rounded.hours) {
+      text += `${rounded.hours}h`;
+    }
+    if (rounded.minutes || (rounded.hours && precision >= 2)) {
+      text += rounded.minutes.toLocaleString('en-US', { minimumIntegerDigits: text.length ? 2 : 1 }) + 'm';
+    }
+    if (rounded.seconds || (rounded.minutes && !rounded.hours && precision >= 2) || precision >= 3) {
+      text += rounded.seconds.toLocaleString('en-US', { minimumIntegerDigits: text.length ? 2 : 1 }) + 's';
+    }
+    return text;
+  }
+
+  private emptyHistogram(histogramMetric: HistogramMetric): HistogramMetric {
+    return {
+      edges: histogramMetric.edges.slice(),
+      frequencies: histogramMetric.frequencies.slice().fill(0),
+    };
   }
 
   /**

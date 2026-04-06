@@ -9,23 +9,24 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { AlertService } from '../shared/alert/state/alert.service';
 import { GithubAppsLogsComponent } from '../myworkflows/sidebar-accordion/github-apps-logs/github-apps-logs.component';
 import { accountInfo, bootstrap4extraLargeModalSize } from '../shared/constants';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { UserQuery } from '../shared/user/user.query';
 import { Base } from '../shared/base';
 import { AccountInfo } from '../loginComponents/accounts/external/accounts.component';
 import { UrlResolverService } from '../shared/url-resolver.service';
 import { RecentEventsComponent } from '../home-page/recent-events/recent-events.component';
-import { MatLegacyTabsModule } from '@angular/material/legacy-tabs';
-import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatButtonModule } from '@angular/material/button';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatLineModule } from '@angular/material/core';
-import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { MatCardModule } from '@angular/material/card';
 import { NgIf, NgFor } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { HeaderComponent } from '../header/header.component';
+import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
   selector: 'app-user-page',
@@ -38,14 +39,15 @@ import { HeaderComponent } from '../header/header.component';
     ExtendedModule,
     MatIconModule,
     NgIf,
-    MatLegacyCardModule,
+    MatCardModule,
     MatLineModule,
     MatBadgeModule,
-    MatLegacyButtonModule,
-    MatLegacyTooltipModule,
-    MatLegacyTabsModule,
+    MatButtonModule,
+    MatTooltipModule,
+    MatTabsModule,
     RecentEventsComponent,
     NgFor,
+    MatDividerModule,
   ],
 })
 export class UserPageComponent extends Base implements OnInit {

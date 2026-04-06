@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Base } from 'app/shared/base';
 import { takeUntil } from 'rxjs/operators';
 import { RegisterToolService } from 'app/container/register-tool/register-tool.service';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { RegisterToolComponent } from 'app/container/register-tool/register-tool.component';
 import { AlertService } from 'app/shared/alert/state/alert.service';
 import { Dockstore } from 'app/shared/dockstore.model';

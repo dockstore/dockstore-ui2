@@ -14,9 +14,11 @@
           </p>
           <a target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/channel/UCFWNYqxQvVLAuZq8rdOSE4g/videos">
             <button mat-raised-button color="accent" class="mb-5" fxLayout="row" fxLayoutGap="1rem" fxLayoutAlign="space-around center">
-              <mat-icon [ngStyle]="{ color: 'white' }">play_circle_filled</mat-icon>
-              <span fxHide fxShow.lt-sm> Video Tutorials</span>
-              <span fxHide.lt-sm> More Videos</span>
+              <span>
+                <mat-icon [ngStyle]="{ color: 'white' }">play_circle_filled</mat-icon>
+                <span fxHide fxShow.lt-sm class="align-middle"> Video Tutorials</span>
+                <span fxHide.lt-sm class="align-middle"> More Videos</span>
+              </span>
             </button>
           </a>
           <img fxHide.lt-md src="../../assets/images/about-page/truck.png" alt="truck image" class="truck-img" />
@@ -64,7 +66,7 @@
             Dockstore never requires a user to log in to search and inspect contents for workflows and tools. Links to source repositories
             are provided. Once found, analyses can be moved from environment-to-environment (e.g.
             <a target="_blank" rel="noopener noreferrer" href="https://terra.bio/">Terra</a>,
-            <a target="_blank" rel="noopener noreferrer" href="https://www.dnastack.com/">DNAstack</a>, and
+            <a target="_blank" rel="noopener noreferrer" href="https://dnastack.com/">DNAstack</a>, and
             <a target="_blank" rel="noopener noreferrer" href="https://www.dnanexus.com/">DNAnexus</a>) and yet be guaranteed to run on
             anything that supports Docker.
           </p>
@@ -176,32 +178,34 @@
           <mat-tab-group mat-align-tabs="center" class="workflow-tab-group">
             <mat-tab label="COVID-19">
               <mat-card class="about-card">
-                <div fxLayout="row" fxLayoutAlign="space-around start">
-                  <div fxLayout="column" fxLayoutAlign="space-between start">
-                    <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="2rem">
-                      <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="1rem" fxLayout.lt-sm="row">
-                        <img src="../../assets/images/sponsors/coloured/broad.svg" alt="Broad Image" />
-                        <span class="workflowlength">{{ workflowsLength$ | async }} workflows</span>
+                <mat-card-content>
+                  <div fxLayout="row" fxLayoutAlign="space-around start">
+                    <div fxLayout="column" fxLayoutAlign="space-between start">
+                      <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="2rem">
+                        <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="1rem" fxLayout.lt-sm="row">
+                          <img src="../../assets/images/sponsors/coloured/broad.svg" alt="Broad Image" />
+                          <span class="workflowlength">{{ workflowsLength$ | async }} workflows</span>
+                        </div>
+                        <span>
+                          The <strong>Broad Viral Genomics & Data Sciences Platform</strong> hit the ground running, producing a collection
+                          of <strong>viral NGS workflows for analyzing COVID-19</strong>. Learn how to use them with your own data in linked
+                          Terra workspaces.
+                        </span>
                       </div>
-                      <span>
-                        The <strong>Broad Viral Genomics & Data Sciences Platform</strong> hit the ground running, producing a collection of
-                        <strong>viral NGS workflows for analyzing COVID-19</strong>. Learn how to use them with your own data in linked
-                        Terra workspaces.
-                      </span>
+                      <span><strong>Workflows functions include:</strong></span>
+                      <ul>
+                        <li>Performing assembly, QC, kraken metagenomics and aggregating statistics.</li>
+                        <li>Going from raw reads (uBAM) through to producing a phylogenetic tree.</li>
+                        <li>Working with your own data and/or public data, such as from NCBI SRA and GenBank.</li>
+                        <li>Pulling data from SRA (via SRA accession #).</li>
+                        <li>Prepare your data files for bulk upload to GenBank.</li>
+                      </ul>
+                      <a [routerLink]="['/organizations/BroadInstitute/collections/pgs']">
+                        <button mat-raised-button color="accent">View the Collection</button>
+                      </a>
                     </div>
-                    <span><strong>Workflows functions include:</strong></span>
-                    <ul>
-                      <li>Performing assembly, QC, kraken metagenomics and aggregating statistics.</li>
-                      <li>Going from raw reads (uBAM) through to producing a phylogenetic tree.</li>
-                      <li>Working with your own data and/or public data, such as from NCBI SRA and GenBank.</li>
-                      <li>Pulling data from SRA (via SRA accession #).</li>
-                      <li>Prepare your data files for bulk upload to GenBank.</li>
-                    </ul>
-                    <a [routerLink]="['/organizations/BroadInstitute/collections/pgs']">
-                      <button mat-raised-button color="accent">View the Collection</button>
-                    </a>
                   </div>
-                </div>
+                </mat-card-content>
               </mat-card>
             </mat-tab>
             <!-- reserved when the paper is published -->

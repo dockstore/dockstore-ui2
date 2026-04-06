@@ -30,9 +30,9 @@ describe('News notifications banner', () => {
   it('News notifications banner appears on dashboard', () => {
     cy.visit('/dashboard');
     // Make sure items are in proper sort order
-    cy.get('[data-cy=news-notifications-container] > [data-cy=news-notifications-item]').eq(0).contains('First Newsbody Item');
-    cy.get('[data-cy=news-notifications-container] > [data-cy=news-notifications-item]').eq(1).contains('Middle Newsbody Item');
-    cy.get('[data-cy=news-notifications-container] > [data-cy=news-notifications-item]').eq(2).contains('Last Newsbody Item');
+    cy.get('[data-cy=news-notifications-container] [data-cy=news-notifications-item]').eq(0).contains('First Newsbody Item');
+    cy.get('[data-cy=news-notifications-container] [data-cy=news-notifications-item]').eq(1).contains('Middle Newsbody Item');
+    cy.get('[data-cy=news-notifications-container] [data-cy=news-notifications-item]').eq(2).contains('Last Newsbody Item');
     // Check for dismiss button
     cy.get('[data-cy=dismiss-notification]').should('exist');
   });

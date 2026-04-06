@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { inject, TestBed } from '@angular/core/testing';
 import { faDocker, faGitlab } from '@fortawesome/free-brands-svg-icons';
 import { validTool } from '../test/mocked-objects';
@@ -25,16 +25,19 @@ import { ExtendedDockstoreTool } from './models/ExtendedDockstoreTool';
 import { MetadataService } from './openapi';
 import { ContainersService } from './openapi/api/containers.service';
 import { DockstoreTool } from './openapi/model/dockstoreTool';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('ImageProviderService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [],
       providers: [
         ImageProviderService,
         { provide: ContainersService, useClass: ContainersStubService },
         { provide: MetadataService, useClass: MetadataStubService },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting(),
       ],
-      imports: [HttpClientTestingModule],
     });
   });
 

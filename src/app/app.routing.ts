@@ -32,6 +32,7 @@ import { SessionExpiredComponent } from './session-expired/session-expired.compo
 import { AuthGuard } from './shared/auth.guard';
 import { SitemapComponent } from './sitemap/sitemap.component';
 import { StarredEntriesComponent } from './starredentries/starredentries.component';
+import { DockstoreYmlGeneratorComponent } from './github-landing-page/dockstore-yml-generator.component';
 
 export const CLIENT_ROUTER_PROVIDERS = [AuthGuard];
 
@@ -147,6 +148,11 @@ const APP_ROUTES: Routes = [
   { path: 'funding', component: FundingComponent, data: { title: 'Dockstore | Funding' } },
   { path: 'sitemap', component: SitemapComponent, data: { title: 'Dockstore | Sitemap' } },
   { path: 'github-landing-page', component: GithubLandingPageComponent, data: { title: 'Dockstore | GitHub Apps Landing Page' } },
+  {
+    path: 'dockstore-yml-generator',
+    component: DockstoreYmlGeneratorComponent,
+    data: { title: 'Dockstore | GitHub Apps .dockstore.yml Tool' },
+  },
   { path: 'users', loadChildren: () => import('app/user-page/user-page.routing').then((m) => m.UserPageRouting) },
   {
     path: '**',

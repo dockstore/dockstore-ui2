@@ -30,14 +30,18 @@ executors:
           - network.host: 127.0.0.1
           - http.port: 9200
           - discovery.type: single-node
+    resource_class: large
 
 jobs:
-  # Specify the webpage url (https://dev.dockstore.net or https://staging.dockstore.org or https://dockstore.org)
-  # and stack (dev or staging or prod) and the no auth smoke tests will be run against the corresponding webpage.
-  no_auth_smoke_tests:
+  # Specify the webpage url (https://qa.dockstore.net or https://staging.dockstore.org or https://dockstore.org)
+  # and stack (qa or staging or prod) and the auth/no auth smoke tests will be run against the corresponding webpage.
+  smoke_tests:
     parameters:
       stack:
         type: string
+      test-name:
+        type: enum
+        enum: [ "auth", "no-auth" ]
     working_directory: ~/repo
     docker:
       - image: cimg/openjdk:<< pipeline.parameters.java-tag >>
@@ -46,64 +50,29 @@ jobs:
           password: $DOCKERHUB_PASSWORD
     steps:
       - setup_nightly_tests
+      - reset-dockstoretestuser4-resources-if-auth:
+          stack: << parameters.stack >>
+          test-name: << parameters.test-name >>
       - run:
-          name: Run remote verification test against << parameters.stack >> (no auth)
-          command: bash -i -c 'npm run test-<< parameters.stack >>-no-auth'
+          name: Run remote verification test against << parameters.stack >> (<< parameters.test-name >>)
+          command: bash -i -c 'npm run test-<< parameters.stack >>-<< parameters.test-name >>'
           environment:
-            MOCHA_FILE: nightly-test-results/junit/test-<< parameters.stack >>-no-auth-[hash].xml
-      - run:
-          name: Run remote verification of WAF against << parameters.stack >>
-          command: bash -i -c 'npm run test-<< parameters.stack >>-waf'
-          environment:
-            MOCHA_FILE: nightly-test-results/junit/test-<< parameters.stack >>-waf-[hash].xml
+            MOCHA_FILE: nightly-test-results/junit/test-<< parameters.stack >>-<< parameters.test-name >>-[hash].xml
+      - when:
+          condition:
+            equal: [ "no-auth", << parameters.test-name >> ]
+          steps:
+            - run:
+                name: Run remote verification of WAF against << parameters.stack >>
+                command: bash -i -c 'npm run test-<< parameters.stack >>-waf'
+                environment:
+                  MOCHA_FILE: nightly-test-results/junit/test-<< parameters.stack >>-waf-[hash].xml
+      - reset-dockstoretestuser4-resources-if-auth:
+          stack: << parameters.stack >>
+          test-name: << parameters.test-name >>
       - upload_nightly_artifacts
-      - slack/notify:
-          channel: $<< parameters.stack >>_id
-          event: fail
-          template: basic_fail_1
-      - slack/notify:
-          channel: $<< parameters.stack >>_id
-          event: pass
-          template: basic_success_1
-
-  # Specify the webpage url (https://dev.dockstore.net or https://staging.dockstore.org or https://dockstore.org)
-  # and stack (dev or staging or prod) and the no auth smoke tests will be run against the corresponding webpage.
-  auth_smoke_tests:
-    parameters:
-      stack:
-        type: string
-    working_directory: ~/repo
-    docker:
-        - image: cimg/openjdk:<< pipeline.parameters.java-tag >>
-          auth:
-            username: dockstoretestuser
-            password: $DOCKERHUB_PASSWORD
-    steps:
-      - setup_nightly_tests
-      - run:
-          name: Reset dockstoretestuser4's resources
-          # Reset user dockstoretestuser4's resources such that it has no registered tools and published workflows
-          command: bash scripts/reset-dockstoretestuser4-resources.sh << parameters.stack >>
-      - run:
-          name: Run remote verification test against << parameters.stack >> (with auth)
-          command: bash -i -c 'npm run test-<< parameters.stack >>-auth'
-          environment:
-            MOCHA_FILE: nightly-test-results/junit/test-<< parameters.stack >>-auth-[hash].xml
-      - run:
-          name: Reset dockstoretestuser4's resources
-          # Reset user dockstoretestuser4's resources such that it has no registered tools and published workflows
-          command: bash scripts/reset-dockstoretestuser4-resources.sh << parameters.stack >>
-          # Reset even if the tests failed
-          when: always
-      - upload_nightly_artifacts
-      - slack/notify:
-          channel: $<< parameters.stack >>_id
-          event: fail
-          template: basic_fail_1
-      - slack/notify:
-          channel: $<< parameters.stack >>_id
-          event: pass
-          template: basic_success_1
+      - notify-slack-pass-fail:
+          slack-channel-id: $<< parameters.stack >>_id
 
   lint_license_unit_test_coverage:
     working_directory: ~/repo
@@ -113,7 +82,8 @@ jobs:
           username: dockstoretestuser
           password: $DOCKERHUB_PASSWORD
     steps:
-      - checkout
+      - checkout:
+          method: full
       - install_browser_tools
       - checkout_merge_commit
       - install_ui_dependencies
@@ -139,11 +109,9 @@ jobs:
             bash scripts/detect-package-json-changes.sh
       # Override the use_snapshot in package.json to instead build against develop webservice
       - when:
-         condition: << pipeline.parameters.sanity-check-against-develop >>
-         steps:
-          - run:
-              name: set use_snapshot to true (grab snapshot artifacts)
-              command: bash -i -c 'npm config set dockstore-ui2:use_snapshot true'
+          condition: << pipeline.parameters.sanity-check-against-develop >>
+          steps:
+            - use_snapshot_artifacts
       - build_ui
       - run:
           name: Install codecov
@@ -159,31 +127,48 @@ jobs:
           command: |
             if [[ -n "${CIRCLE_BRANCH}" ]] && [[ -n "${CIRCLE_PULL_REQUEST}" || "${CIRCLE_BRANCH}" == "develop" ]]
             then
-              export SONAR_SCANNER_VERSION=5.0.1.3006
-              export SONAR_SCANNER_HOME=$HOME/.sonar/sonar-scanner-$SONAR_SCANNER_VERSION-linux
-              curl --create-dirs -sSLo $HOME/.sonar/sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-$SONAR_SCANNER_VERSION-linux.zip
-              unzip -o $HOME/.sonar/sonar-scanner.zip -d $HOME/.sonar/
-              export PATH=$SONAR_SCANNER_HOME/bin:$PATH
-              export SONAR_SCANNER_OPTS="-server"
+              mkdir -p /tmp/cache/scanner
+              export VERSION=6.2.1.4610
+              export SCANNER_DIRECTORY=/tmp/cache/scanner
+              export SONAR_USER_HOME=$SCANNER_DIRECTORY/.sonar
+              export OS="linux"
+              export ARCH="x64"
+              export VERSION_OS_ARCH="$VERSION-$OS-$ARCH"
+              echo "Sonar user home: $SONAR_USER_HOME"
+
+              if [[ ! -x "$SCANNER_DIRECTORY/sonar-scanner-$VERSION_OS_ARCH/bin/sonar-scanner" ]]; then
+                      echo "Downloading Sonar Scanner..."
+                      curl -Ol https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-$VERSION_OS_ARCH.zip
+                      unzip -qq -o sonar-scanner-cli-$VERSION_OS_ARCH.zip -d $SCANNER_DIRECTORY
+              fi
 
               if [ -n "${CIRCLE_PULL_REQUEST}" ]
               then
+                chmod +x $SCANNER_DIRECTORY/sonar-scanner-$VERSION_OS_ARCH/bin/sonar-scanner
+                chmod +x $SCANNER_DIRECTORY/sonar-scanner-$VERSION_OS_ARCH/jre/bin/java
+
+                PROJECT_ROOT=${PROJECT_ROOT:-.}
+                cd "$PROJECT_ROOT"
+                echo "Running Sonar Scanner in project root: $PROJECT_ROOT"
+                $SCANNER_DIRECTORY/sonar-scanner-$VERSION_OS_ARCH/bin/sonar-scanner
+
                 pr=$(echo https://api.github.com/repos/${CIRCLE_PULL_REQUEST:19} | sed "s/\/pull\//\/pulls\//")
                 base=$(curl -s $pr | jq '.base.ref')
                 number=$(curl -s $pr | jq '.number')
 
-                sonar-scanner \
+                $SCANNER_DIRECTORY/sonar-scanner-$VERSION_OS_ARCH/bin/sonar-scanner \
                   -Dsonar.pullrequest.key=$number \
                   -Dsonar.pullrequest.branch=$CIRCLE_BRANCH \
                   -Dsonar.pullrequest.base=$base
               else
-                sonar-scanner
+                $SCANNER_DIRECTORY/sonar-scanner-$VERSION_OS_ARCH/bin/sonar-scanner
               fi
             fi
       - persist_to_workspace:
           root: .
           paths:
             - .
+      - notify-slack-develop-fail
 
   # Reusable job to run integration tests. Specify the integration test folder name (examples: group1, group2, etc.)
   integration_test:
@@ -197,12 +182,13 @@ jobs:
       - setup_integration_test
       - run:
           name: Test
-          command: bash -i -c 'npx cypress run --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/e2e/<< parameters.integration_test_name >>/**/*'
+          command: bash -i -c 'npx cypress run --browser chrome --record --config numTestsKeptInMemory=1 --reporter junit --spec cypress/e2e/<< parameters.integration_test_name >>/**/*'
           no_output_timeout: 30m
           environment:
             MOCHA_FILE: integration-tests/test-results/junit/test-results-[hash].xml
           when: always
       - upload_artifacts
+      - notify-slack-develop-fail
 
   local_smoke_tests:
     executor: integration_test_exec
@@ -217,6 +203,7 @@ jobs:
             MOCHA_FILE: integration-tests/test-results/junit/test-local-no-auth-[hash].xml
           when: always
       - upload_artifacts
+      - notify-slack-develop-fail
   upload_to_s3:
     working_directory: ~/repo
     docker:
@@ -284,9 +271,7 @@ jobs:
             not: << pipeline.parameters.sanity-check-against-develop >>
           steps:
             - get_workspace
-            - run:
-                name: set use_snapshot to true
-                command: bash -i -c 'npm config set dockstore-ui2:use_snapshot true'
+            - use_snapshot_artifacts
             - build_ui
 
 parameters:
@@ -298,7 +283,7 @@ parameters:
     default: false
   java-tag:
     type: string
-    default: "17.0.4-browsers"
+    default: "21.0.6-browsers"
   postgres-tag:
     type: string
     default: "16.1"
@@ -326,9 +311,12 @@ workflows:
           context:
             - dockerhub
             - sonarcloud
+            - oicr-slack
       - integration_test:
-          name: integration_test_1
-          integration_test_name: group1
+          matrix:
+            parameters:
+              integration_test_name: ["group1", "group2", "group3", "immutableDatabaseTests"]
+          name: integration_test_<< matrix.integration_test_name >>
           filters:
             tags:
               only: /.*/
@@ -336,36 +324,7 @@ workflows:
             - lint_license_unit_test_coverage
           context:
             - dockerhub
-      - integration_test:
-          name: integration_test_2
-          integration_test_name: group2
-          filters:
-            tags:
-              only: /.*/
-          requires:
-            - lint_license_unit_test_coverage
-          context:
-            - dockerhub
-      - integration_test:
-          name: integration_test_3
-          integration_test_name: group3
-          filters:
-            tags:
-              only: /.*/
-          requires:
-            - lint_license_unit_test_coverage
-          context:
-            - dockerhub
-      - integration_test:
-          name: integration_test_4
-          integration_test_name: immutableDatabaseTests
-          filters:
-            tags:
-              only: /.*/
-          requires:
-            - lint_license_unit_test_coverage
-          context:
-            - dockerhub
+            - oicr-slack
       - local_smoke_tests:
           filters:
             tags:
@@ -374,6 +333,7 @@ workflows:
             - lint_license_unit_test_coverage
           context:
             - dockerhub
+            - oicr-slack
       # Upload builds for tags and branches to s3.
       - upload_to_s3:
           requires:
@@ -398,21 +358,12 @@ workflows:
   nightly_no_auth:
     when: << pipeline.parameters.run_nightly_no_auth >>
     jobs:
-      - no_auth_smoke_tests:
-          name: "no_auth_smoke_tests_qa"
-          stack: "qa"
-          context:
-            - dockerhub
-            - oicr-slack
-      - no_auth_smoke_tests:
-          name: "no_auth_smoke_tests_staging"
-          stack: "staging"
-          context:
-            - dockerhub
-            - oicr-slack
-      - no_auth_smoke_tests:
-          name: "no_auth_smoke_tests_prod"
-          stack: "prod"
+      - smoke_tests:
+          matrix:
+            parameters:
+              stack: [ "qa", "staging", "prod" ]
+              test-name: [ "no-auth" ]
+          name: no_auth_smoke_tests_<< matrix.stack >>
           context:
             - dockerhub
             - oicr-slack
@@ -420,21 +371,12 @@ workflows:
   nightly_auth:
     when: << pipeline.parameters.run_nightly_auth >>
     jobs:
-      - auth_smoke_tests:
-          name: "auth_smoke_tests_qa"
-          stack: "qa"
-          context:
-            - dockerhub
-            - oicr-slack
-      - auth_smoke_tests:
-          name: "auth_smoke_tests_staging"
-          stack: "staging"
-          context:
-            - dockerhub
-            - oicr-slack
-      - auth_smoke_tests:
-          name: "auth_smoke_tests_prod"
-          stack: "prod"
+      - smoke_tests:
+          matrix:
+            parameters:
+              stack: [ "qa", "staging", "prod" ]
+              test-name: [ "auth" ]
+          name: auth_smoke_tests_<< matrix.stack >>
           context:
             - dockerhub
             - oicr-slack
@@ -522,6 +464,11 @@ commands:
     steps:
       - browser-tools/install-chrome
       - browser-tools/install-chromedriver
+  use_snapshot_artifacts:
+    steps:
+      - run:
+          name: set use_snapshot to true (grab snapshot artifacts)
+          command: bash -i -c 'npm pkg set config.use_snapshot=true'
   build_ui:
     steps:
       - run:
@@ -545,8 +492,11 @@ commands:
           name: Install nginx
           command: sudo apt install -y nginx || true
       - run:
-          name: Prepapre nginx config
+          name: Prepare nginx config
           command: sed "s%REPLACEME%`pwd`%" .circleci/nginx.conf.tmpl > .circleci/nginx.conf
+      - run:
+          name: Give nginx permissions to everything
+          command: sudo chmod -R a+wrx /home
       - run:
           name: Run nginx
           command: sudo nginx -c `pwd`/.circleci/nginx.conf
@@ -576,3 +526,43 @@ commands:
               git fetch origin +refs/pull/${CIRCLE_PULL_REQUEST##*/}/merge:
               git checkout -qf FETCH_HEAD
             fi
+  notify-slack-pass-fail:
+    parameters:
+      slack-channel-id:
+        type: string
+    steps:
+      - slack/notify:
+          channel: << parameters.slack-channel-id >>
+          event: fail
+          template: basic_fail_1
+      - slack/notify:
+          channel: << parameters.slack-channel-id >>
+          event: pass
+          template: basic_success_1
+  notify-slack-develop-fail:
+    steps:
+      - when:
+          condition: << pipeline.parameters.sanity-check-against-develop >>
+          steps:
+            - slack/notify:
+                channel: $qa_id
+                event: fail
+                template: basic_fail_1
+  reset-dockstoretestuser4-resources-if-auth:
+    parameters:
+      stack:
+        type: string
+      test-name:
+        type: enum
+        enum: [ "auth", "no-auth" ]
+    steps:
+      - when:
+          condition:
+            equal: [ "auth", << parameters.test-name >> ]
+          steps:
+            - run:
+                name: Reset dockstoretestuser4's resources
+                # Reset user dockstoretestuser4's resources such that it has no registered tools and published workflows
+                command: bash scripts/reset-dockstoretestuser4-resources.sh << parameters.stack >>
+                # Reset even if the tests failed
+                when: always

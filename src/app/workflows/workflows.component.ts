@@ -26,12 +26,13 @@ import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { NgIf, AsyncPipe, TitleCasePipe } from '@angular/common';
 import { HeaderComponent } from '../header/header.component';
+import { MatChipsModule } from '@angular/material/chips';
 
 @Component({
   selector: 'app-workflows',
   templateUrl: './workflows.component.html',
   standalone: true,
-  imports: [HeaderComponent, NgIf, FlexModule, RouterLink, ExtendedModule, RouterOutlet, AsyncPipe, TitleCasePipe],
+  imports: [HeaderComponent, NgIf, FlexModule, RouterLink, ExtendedModule, RouterOutlet, AsyncPipe, TitleCasePipe, MatChipsModule],
 })
 export class WorkflowsComponent {
   public entryName: string;

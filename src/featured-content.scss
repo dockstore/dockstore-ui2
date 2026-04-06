@@ -20,7 +20,7 @@ The following classes are used style the featured content external html
 
   background-color: white;
   border-radius: 0.5rem;
-  border: solid 1px mat.get-color-from-palette($dockstore-app-gray, 7);
+  border: solid 1px mat.m2-get-color-from-palette($dockstore-app-gray, 7);
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1), 0 2px 3px 0 rgba(0, 0, 0, 0.08);
 }
 
@@ -32,8 +32,8 @@ a.cardClick {
 
 .feat-content-title {
   min-height: 3rem;
-  color: mat.get-color-from-palette($dockstore-app-accent);
-  border-bottom: solid 1px mat.get-color-from-palette($dockstore-app-gray, 7);
+  color: mat.m2-get-color-from-palette($dockstore-app-accent);
+  border-bottom: solid 1px mat.m2-get-color-from-palette($dockstore-app-gray, 7);
 }
 
 .feat-card-btn-container {

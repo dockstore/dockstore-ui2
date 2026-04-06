@@ -16,15 +16,15 @@
 import { Injectable } from '@angular/core';
 import { Store, StoreConfig } from '@datorama/akita';
 import { AdvancedSearchObject, initialAdvancedSearchObject } from 'app/shared/models/AdvancedSearchObject';
+import { EntryType } from 'app/shared/openapi';
 
 export interface SearchState {
   shortUrl: string;
   workflowhit: any;
   toolhit: any;
   notebookhit: any;
-  showToolTagCloud: boolean;
-  showWorkflowTagCloud: boolean;
-  showNotebookTagCloud: boolean;
+  showTagCloud: boolean;
+  currentEntryType: EntryType;
   searchText: string;
   filterKeys: Array<string>;
   autocompleteTerms: Array<string>;
@@ -42,9 +42,8 @@ export function createInitialState(): SearchState {
     workflowhit: null,
     toolhit: null,
     notebookhit: null,
-    showToolTagCloud: false,
-    showWorkflowTagCloud: false,
-    showNotebookTagCloud: false,
+    showTagCloud: false,
+    currentEntryType: EntryType.WORKFLOW,
     searchText: '',
     filterKeys: [],
     autocompleteTerms: [],

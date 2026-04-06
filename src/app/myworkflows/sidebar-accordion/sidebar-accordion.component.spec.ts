@@ -1,6 +1,6 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { MatLegacyDialogModule, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
+import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { RouterTestingModule } from '@angular/router/testing';
 import { RefreshWorkflowOrganizationComponent } from 'app/workflow/refresh-workflow-organization/refresh-workflow-organization.component';
 import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
@@ -10,6 +10,7 @@ import { WorkflowService } from '../../shared/state/workflow.service';
 import { RefreshStubService, RegisterWorkflowModalStubService, WorkflowStubService } from './../../test/service-stubs';
 import { RegisterWorkflowModalService } from './../../workflow/register-workflow-modal/register-workflow-modal.service';
 import { SidebarAccordionComponent } from './sidebar-accordion.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('SidebarAccordionComponent', () => {
   let component: SidebarAccordionComponent;
@@ -18,14 +19,7 @@ describe('SidebarAccordionComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        imports: [
-          HttpClientTestingModule,
-          RouterTestingModule,
-          SidebarAccordionComponent,
-          RefreshWorkflowOrganizationComponent,
-          SelectTabPipe,
-          MatLegacyDialogModule,
-        ],
+        imports: [RouterTestingModule, SidebarAccordionComponent, RefreshWorkflowOrganizationComponent, SelectTabPipe, MatDialogModule],
         providers: [
           {
             provide: RegisterWorkflowModalService,
@@ -43,6 +37,8 @@ describe('SidebarAccordionComponent', () => {
             useClass: RefreshStubService,
           },
           { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
+          provideHttpClient(withInterceptorsFromDi()),
+          provideHttpClientTesting(),
         ],
       }).compileComponents();
     })

@@ -1,7 +1,7 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
-import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogModule } from '@angular/material/legacy-dialog';
-import { MatLegacyPaginator as MatPaginator, MatLegacyPaginatorModule } from '@angular/material/legacy-paginator';
+import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { AlertService } from 'app/shared/alert/state/alert.service';
 import { LambdaEvent, LambdaEventsService } from 'app/shared/openapi';
@@ -13,16 +13,16 @@ import { PaginatorService } from '../../../shared/state/paginator.service';
 import { LambdaEventDataSource, ShowContent } from './lambda-events-datasource';
 import { MapFriendlyValuesPipe } from '../../../search/map-friendly-values.pipe';
 import { ClipboardModule } from '@angular/cdk/clipboard';
-import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { SnackbarDirective } from '../../../shared/snackbar.directive';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatButtonModule } from '@angular/material/button';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
-import { MatLegacyTableModule } from '@angular/material/legacy-table';
-import { MatLegacyInputModule } from '@angular/material/legacy-input';
-import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatTableModule } from '@angular/material/table';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { MatCardModule } from '@angular/material/card';
 import { NgIf, NgFor, NgSwitch, NgSwitchCase, NgSwitchDefault, AsyncPipe, TitleCasePipe, DatePipe } from '@angular/common';
 import { LoadingComponent } from '../../../shared/loading/loading.component';
 import { Dockstore } from 'app/shared/dockstore.model';
@@ -47,26 +47,26 @@ import { Dockstore } from 'app/shared/dockstore.model';
   ],
   standalone: true,
   imports: [
-    MatLegacyDialogModule,
+    MatDialogModule,
     LoadingComponent,
     NgIf,
-    MatLegacyCardModule,
+    MatCardModule,
     MatIconModule,
     RouterLink,
-    MatLegacyFormFieldModule,
-    MatLegacyInputModule,
-    MatLegacyTableModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatTableModule,
     MatSortModule,
     NgFor,
     NgSwitch,
     NgSwitchCase,
     FlexModule,
-    MatLegacyButtonModule,
+    MatButtonModule,
     SnackbarDirective,
-    MatLegacyTooltipModule,
+    MatTooltipModule,
     ClipboardModule,
     NgSwitchDefault,
-    MatLegacyPaginatorModule,
+    MatPaginatorModule,
     AsyncPipe,
     TitleCasePipe,
     DatePipe,

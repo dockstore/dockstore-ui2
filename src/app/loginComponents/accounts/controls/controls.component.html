@@ -1,14 +1,20 @@
 <div class="p-3">
-  <mat-card *ngIf="canChangeUsername$ | async" class="alert alert-danger mat-elevation-z" role="alert">
-    <mat-icon class="alert-danger-icon">error</mat-icon> Dockstore account controls have a large impact and should be used with extreme
-    caution.
+  <mat-card appearance="outlined" *ngIf="canChangeUsername$ | async" class="alert alert-danger" role="alert">
+    <mat-card-content>
+      <mat-icon class="alert-danger-icon">error</mat-icon> Dockstore account controls have a large impact and should be used with extreme
+      caution.
+    </mat-card-content>
   </mat-card>
 
   <mat-card>
-    <h3>Delete your Dockstore Account</h3>
-    <p>This action is only available for accounts with no published tools/workflows and have not shared workflows via permissions.</p>
-    <button class="mr-1" mat-flat-button color="warn" (click)="deleteAccount()" [disabled]="(canChangeUsername$ | async) === false">
-      Delete Dockstore Account
-    </button>
+    <mat-card-header>
+      <h3 matCardTitle>Delete your Dockstore Account</h3>
+    </mat-card-header>
+    <mat-card-content>
+      <p>This action is only available for accounts with no published tools/workflows and have not shared workflows via permissions.</p>
+      <button class="mr-1" mat-flat-button color="warn" (click)="deleteAccount()" [disabled]="(canChangeUsername$ | async) === false">
+        Delete Dockstore Account
+      </button>
+    </mat-card-content>
   </mat-card>
 </div>

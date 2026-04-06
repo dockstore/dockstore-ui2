@@ -5,7 +5,7 @@ import { ProviderService } from '../shared/provider.service';
 import { Entry, Organization, Workflow, EntryType as OpenApiEntryType } from '../shared/openapi';
 import { UserQuery } from '../shared/user/user.query';
 import { UsersService } from './../shared/openapi/api/users.service';
-import { MatLegacyTabChangeEvent as MatTabChangeEvent, MatLegacyTabsModule } from '@angular/material/legacy-tabs';
+import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { UntypedFormControl } from '@angular/forms';
 import { ExtendedDockstoreTool } from 'app/shared/models/ExtendedDockstoreTool';
 import { ExtendedWorkflow } from 'app/shared/models/ExtendedWorkflow';
@@ -20,15 +20,15 @@ import { RouterLinkPipe } from '../entry/router-link.pipe';
 import { GravatarPipe } from '../gravatar/gravatar.pipe';
 import { OrganizationStarringComponent } from '../organizations/organization/organization-starring/organization-starring.component';
 import { ImgFallbackDirective } from '../shared/img-fallback.directive';
-import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
-import { MatLegacyChipsModule } from '@angular/material/legacy-chips';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatChipsModule } from '@angular/material/chips';
 import { MarkdownWrapperComponent } from '../shared/markdown-wrapper/markdown-wrapper.component';
 import { StarringComponent } from '../starring/starring.component';
-import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { MatCardModule } from '@angular/material/card';
 import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
 import { OrganizationStargazersComponent } from '../organizations/organization/organization-stargazers/organization-stargazers.component';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatButtonModule } from '@angular/material/button';
 import { StargazersComponent } from '../stargazers/stargazers.component';
 import { HeaderComponent } from '../header/header.component';
 import { MySidebarComponent } from '../my-sidebar/my-sidebar.component';
@@ -45,20 +45,20 @@ import { FlexModule } from '@ngbracket/ngx-layout/flex';
     HeaderComponent,
     NgIf,
     StargazersComponent,
-    MatLegacyButtonModule,
+    MatButtonModule,
     MatIconModule,
     OrganizationStargazersComponent,
-    MatLegacyTabsModule,
+    MatTabsModule,
     NgClass,
     ExtendedModule,
-    MatLegacyCardModule,
+    MatCardModule,
     NgFor,
     NgTemplateOutlet,
     RouterLink,
     StarringComponent,
     MarkdownWrapperComponent,
-    MatLegacyChipsModule,
-    MatLegacyTooltipModule,
+    MatChipsModule,
+    MatTooltipModule,
     ImgFallbackDirective,
     OrganizationStarringComponent,
     SlicePipe,

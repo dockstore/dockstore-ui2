@@ -2,12 +2,9 @@ import { ClipboardModule } from '@angular/cdk/clipboard';
 import { HTTP_INTERCEPTORS, HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { APP_INITIALIZER, enableProdMode, importProvidersFrom } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatLegacyDialogModule } from '@angular/material/legacy-dialog';
-import {
-  MAT_LEGACY_SNACK_BAR_DEFAULT_OPTIONS as MAT_SNACK_BAR_DEFAULT_OPTIONS,
-  MatLegacySnackBarModule,
-} from '@angular/material/legacy-snack-bar';
-import { MAT_LEGACY_TOOLTIP_DEFAULT_OPTIONS as MAT_TOOLTIP_DEFAULT_OPTIONS } from '@angular/material/legacy-tooltip';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MAT_TOOLTIP_DEFAULT_OPTIONS } from '@angular/material/tooltip';
 import { bootstrapApplication, BrowserModule, Title } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { enableAkitaProdMode } from '@datorama/akita';
@@ -47,6 +44,7 @@ import { AuthConfig } from './app/shared/auth.model';
 import { BioschemaService } from './app/shared/bioschema.service';
 import { ContainerService } from './app/shared/container.service';
 import { DateService } from './app/shared/date.service';
+import { TimeSeriesService } from './app/shared/timeseries.service';
 import { EntryActionsService } from './app/shared/entry-actions/entry-actions.service';
 import { DescriptorLanguageService } from './app/shared/entry/descriptor-language.service';
 import { RegisterCheckerWorkflowService } from './app/shared/entry/register-checker-workflow/register-checker-workflow.service';
@@ -79,6 +77,8 @@ import { ViewService } from './app/workflow/view/view.service';
 import { environment } from './environments/environment';
 import { EditTopicDialogService } from 'app/shared/entry/info-tab-topic/edit-topic/edit-topic-dialog.service';
 import { ManageDoisDialogService } from 'app/shared/entry/doi/manage-dois/manage-dois-dialog.service';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 
 if (environment.production) {
   enableProdMode();
@@ -92,8 +92,8 @@ bootstrapApplication(AppComponent, {
       FontAwesomeModule,
       BrowserModule,
       FormsModule,
-      MatLegacyDialogModule,
-      MatLegacySnackBarModule,
+      MatDialogModule,
+      MatSnackBarModule,
       ClipboardModule,
       FlexLayoutModule,
       StarringModule,
@@ -152,6 +152,7 @@ bootstrapApplication(AppComponent, {
     SearchAuthorsHtmlPipe,
     SearchService,
     ServiceInfoService,
+    TimeSeriesService,
     Title,
     ToolLaunchService,
     TosBannerService,
@@ -171,8 +172,16 @@ bootstrapApplication(AppComponent, {
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: myCustomSnackbarDefaults },
     { provide: HTTP_INTERCEPTORS, useClass: WorkflowVersionsInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: CustomHeaderInterceptor, multi: true },
+    {
+      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+      useValue: {
+        subscriptSizing: 'dynamic', // Removes the hint/error space under form fields until an error or hint actually needs to get displayed
+        appearance: 'outline', // Set outlined form fields as the default instead of filled
+      },
+    },
     { provide: Window, useValue: window },
     provideAnimations(),
     provideHttpClient(withInterceptorsFromDi()),
+    provideCharts(withDefaultRegisterables()),
   ],
 });

@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { Component, OnInit } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { TagEditorMode } from '../../shared/enum/tagEditorMode.enum';
@@ -38,14 +38,14 @@ import { MarkdownWrapperComponent } from '../../shared/markdown-wrapper/markdown
 import { EventsComponent } from '../events/events.component';
 import { OrganizationMembersComponent } from '../organization-members/organization-members.component';
 import { CollectionsComponent } from '../collections/collections.component';
-import { MatLegacyTabsModule } from '@angular/material/legacy-tabs';
+import { MatTabsModule } from '@angular/material/tabs';
 import { OrganizationStargazersComponent } from './organization-stargazers/organization-stargazers.component';
-import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatButtonModule } from '@angular/material/button';
 import { OrganizationStarringComponent } from './organization-starring/organization-starring.component';
 import { ImgFallbackDirective } from '../../shared/img-fallback.directive';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { MatCardModule } from '@angular/material/card';
 import { JsonLdComponent } from '../../shared/json-ld/json-ld.component';
 import { LoadingComponent } from '../../shared/loading/loading.component';
 import { NgIf, AsyncPipe } from '@angular/common';
@@ -67,14 +67,14 @@ import { HeaderComponent } from '../../header/header.component';
     NgIf,
     LoadingComponent,
     JsonLdComponent,
-    MatLegacyCardModule,
+    MatCardModule,
     MatIconModule,
     ImgFallbackDirective,
     OrganizationStarringComponent,
-    MatLegacyButtonModule,
-    MatLegacyTooltipModule,
+    MatButtonModule,
+    MatTooltipModule,
     OrganizationStargazersComponent,
-    MatLegacyTabsModule,
+    MatTabsModule,
     CollectionsComponent,
     OrganizationMembersComponent,
     EventsComponent,

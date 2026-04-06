@@ -1,7 +1,7 @@
 import { KeyValue, NgIf, AsyncPipe } from '@angular/common';
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogModule } from '@angular/material/legacy-dialog';
+import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { NgFormsManager } from '@ngneat/forms-manager';
 import { Observable } from 'rxjs';
 import { TagEditorMode } from '../../../shared/enum/tagEditorMode.enum';
@@ -9,10 +9,10 @@ import { Collection } from '../../../shared/openapi';
 
 import { CreateCollectionQuery } from '../state/create-collection.query';
 import { CreateCollectionService, FormsState } from '../state/create-collection.service';
-import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
-import { MatLegacyInputModule } from '@angular/material/legacy-input';
-import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { AlertComponent } from '../../../shared/alert/alert.component';
 
@@ -29,15 +29,15 @@ import { AlertComponent } from '../../../shared/alert/alert.component';
   standalone: true,
   imports: [
     NgIf,
-    MatLegacyDialogModule,
+    MatDialogModule,
     AlertComponent,
     FormsModule,
     FlexModule,
     ReactiveFormsModule,
-    MatLegacyFormFieldModule,
-    MatLegacyInputModule,
-    MatLegacyButtonModule,
-    MatLegacyTooltipModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatTooltipModule,
     AsyncPipe,
   ],
 })

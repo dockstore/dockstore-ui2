@@ -1,9 +1,9 @@
 import { AsyncPipe, NgIf, TitleCasePipe } from '@angular/common';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
-import { MatLegacyDialog } from '@angular/material/legacy-dialog';
-import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialog } from '@angular/material/dialog';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { Base } from 'app/shared/base';
 import { DockstoreTool, Entry, EntryTypeMetadata, Workflow } from 'app/shared/openapi';
 import { SessionQuery } from 'app/shared/session/session.query';
@@ -12,15 +12,26 @@ import { EditTopicDialogComponent } from '../edit-topic/edit-topic-dialog.compon
 import { bootstrap4largeModalSize } from 'app/shared/constants';
 import { AiBubbleComponent } from 'app/shared/ai-bubble/ai-bubble.component';
 import { FlexModule } from '@ngbracket/ngx-layout';
+import { MatChipsModule } from '@angular/material/chips';
 
 @Component({
   selector: 'app-display-topic',
   templateUrl: './display-topic.component.html',
   styleUrls: ['../../../styles/info-tab.component.scss'],
   standalone: true,
-  imports: [NgIf, MatLegacyTooltipModule, MatLegacyButtonModule, MatIconModule, AsyncPipe, AiBubbleComponent, FlexModule, TitleCasePipe],
+  imports: [
+    NgIf,
+    MatTooltipModule,
+    MatButtonModule,
+    MatIconModule,
+    AsyncPipe,
+    AiBubbleComponent,
+    FlexModule,
+    TitleCasePipe,
+    MatChipsModule,
+  ],
 })
-export class DisplayTopicComponent extends Base implements OnInit, OnDestroy {
+export class DisplayTopicComponent extends Base implements OnInit, OnChanges, OnDestroy {
   TopicSelectionEnum = Entry.TopicSelectionEnum;
   isPublic$: Observable<boolean>;
   isGitHubAppEntry: boolean;
@@ -28,7 +39,7 @@ export class DisplayTopicComponent extends Base implements OnInit, OnDestroy {
   selectedTopic: string;
   @Input() entry: DockstoreTool | Workflow;
   @Input() disableEditing: boolean;
-  constructor(private sessionQuery: SessionQuery, private dialog: MatLegacyDialog) {
+  constructor(private readonly sessionQuery: SessionQuery, private readonly dialog: MatDialog) {
     super();
   }
 

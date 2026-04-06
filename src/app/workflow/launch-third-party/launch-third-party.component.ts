@@ -1,6 +1,6 @@
 import { HttpUrlEncodingCodec } from '@angular/common/http';
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { MatLegacyDialog as MatDialog, MatLegacyDialogModule } from '@angular/material/legacy-dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 import { combineLatest, Observable, Subscription } from 'rxjs';
 import { map, shareReplay, takeUntil } from 'rxjs/operators';
@@ -15,12 +15,12 @@ import { DescriptorsStore } from './state/descriptors-store';
 import { DescriptorsService } from './state/descriptors.service';
 import { LaunchToCodespaceDialogComponent } from './dialog/launch-to-codespace-dialog.component';
 import { bootstrap4largeModalSize } from '../../shared/constants';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
-import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { MultiCloudLaunchComponent } from './multi-cloud-launch/multi-cloud-launch.component';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { MatCardModule } from '@angular/material/card';
 import { NgIf, AsyncPipe } from '@angular/common';
 
 /* eslint-disable max-len */
@@ -103,13 +103,13 @@ import { NgIf, AsyncPipe } from '@angular/common';
   standalone: true,
   imports: [
     NgIf,
-    MatLegacyCardModule,
+    MatCardModule,
     MatDividerModule,
     FlexModule,
     MultiCloudLaunchComponent,
-    MatLegacyTooltipModule,
-    MatLegacyButtonModule,
-    MatLegacyDialogModule,
+    MatTooltipModule,
+    MatButtonModule,
+    MatDialogModule,
     AsyncPipe,
   ],
 })

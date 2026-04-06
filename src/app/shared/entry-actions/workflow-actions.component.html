@@ -3,8 +3,8 @@
     *ngIf="workflow?.is_published"
     [routerLink]="['/' + entryType + 's/', workflow.full_workflow_path]"
     data-cy="viewPublicWorkflowButton"
-    mat-flat-button
-    class="secondary-1"
+    mat-button
+    color="accent"
     [disabled]="isRefreshing$ | async"
     [matTooltip]="viewPublicMessage"
   >
@@ -13,9 +13,10 @@
   <ng-container *ngIf="!workflow?.archived">
     <div [matTooltip]="pubUnpubMessage">
       <button
-        mat-raised-button
-        class="accent-1-dark-btn mat-elevation-z"
+        mat-flat-button
+        class="accent-1-dark"
         id="publishButton"
+        [attr.data-cy]="(workflow?.is_published ? 'unpublish' : 'publish') + '-button'"
         (click)="publishToggle()"
         [disabled]="(isRefreshing$ | async) || publishDisabled"
       >
@@ -23,8 +24,8 @@
       </button>
     </div>
     <button
-      mat-raised-button
-      class="accent-1-dark-btn mat-elevation-z"
+      mat-flat-button
+      class="accent-1-dark"
       (click)="refresh()"
       [disabled]="isRefreshing$ | async"
       *ngIf="!isHosted && canWrite && workflow?.mode !== WorkflowModel.ModeEnum.DOCKSTOREYML"
@@ -35,8 +36,8 @@
     </button>
     <ng-container *ngIf="workflow?.deletable">
       <button
-        mat-raised-button
-        class="accent-1-dark-btn mat-elevation-z"
+        mat-flat-button
+        class="accent-1-dark"
         (click)="delete()"
         [disabled]="isRefreshing$ | async"
         matTooltip="Delete this {{ entryType }}"
@@ -47,8 +48,8 @@
     </ng-container>
     <ng-container *ngIf="!workflow?.deletable">
       <button
-        mat-raised-button
-        class="accent-1-dark-btn mat-elevation-z"
+        mat-flat-button
+        class="accent-1-dark"
         (click)="archive()"
         [disabled]="isRefreshing$ | async"
         matTooltip="Archive this {{ entryType }}"
@@ -60,8 +61,8 @@
   </ng-container>
   <ng-container *ngIf="workflow?.archived">
     <button
-      mat-raised-button
-      class="accent-1-dark-btn mat-elevation-z"
+      mat-flat-button
+      class="accent-1-dark"
       (click)="unarchive()"
       [disabled]="isRefreshing$ | async"
       matTooltip="Unarchive this {{ entryType }}"

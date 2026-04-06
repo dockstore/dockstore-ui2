@@ -4,12 +4,12 @@
  * https://gitlab.com/idotj/mastodon-embed-feed-timeline
  */
 
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MastodonService } from './mastodon.service'; // Import the service
 import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
 import { NgFor, NgIf, NgStyle } from '@angular/common';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { MatCardModule } from '@angular/material/card';
 
 export interface MastodonTimelineData {
   postUrl: string;
@@ -30,9 +30,9 @@ export interface MastodonTimelineData {
   templateUrl: './mastodon.component.html',
   styleUrls: ['./mastodon.component.scss'],
   standalone: true,
-  imports: [MatLegacyCardModule, MatDividerModule, NgFor, NgIf, NgStyle, ExtendedModule],
+  imports: [MatCardModule, MatDividerModule, NgFor, NgIf, NgStyle, ExtendedModule],
 })
-export class MastodonComponent {
+export class MastodonComponent implements OnInit {
   fetchedData: Map<string, (string | number | boolean)[]>;
   timelineData: MastodonTimelineData[] = [];
   containerBodyId: string = 'mt-body'; // Id of the <div> containing the timeline

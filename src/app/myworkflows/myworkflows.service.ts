@@ -16,7 +16,7 @@
 
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { transaction } from '@datorama/akita';
 import { AlertService } from 'app/shared/alert/state/alert.service';
 import { includesAuthors, includesValidation, bootstrap4largeModalSize, includesMetrics } from 'app/shared/constants';

@@ -35,14 +35,14 @@
         </button>
       </div>
       <form [formGroup]="organizationSearchForm" fxLayoutGap="1.5rem" fxLayout.lt-sm="column" fxLayoutGap.lt-sm="-1rem">
-        <mat-form-field appearance="outline" class="search-form-field">
+        <mat-form-field>
           <mat-label>Sort by...</mat-label>
           <mat-select formControlName="sort">
             <mat-option value="name">Name</mat-option>
             <mat-option value="starred">Starred</mat-option>
           </mat-select>
         </mat-form-field>
-        <mat-form-field appearance="outline" class="search-form-field">
+        <mat-form-field>
           <mat-label>Search Organizations</mat-label>
           <input #search matInput formControlName="name" />
           <button mat-button *ngIf="search.value" matSuffix mat-icon-button (click)="clearSearch()" type="button">
@@ -55,8 +55,8 @@
     <div *ngIf="organizations.length > 0; else noOrganizationsFound">
       <div fxLayoutAlign="start" fxLayout="row wrap" fxLayoutGap="2rem grid">
         <div *ngFor="let org of organizations" fxFlex="33.3" fxFlex.lt-lg="50" fxFlex.lt-md="100">
-          <mat-card style="height: 340px" class="pb-3">
-            <div class="h-100" fxLayout="column" fxLayoutAlign="space-between stretch">
+          <mat-card style="height: 340px" fxLayout="column" fxLayoutAlign="space-between stretch">
+            <mat-card-content>
               <div fxLayout="column" fxLayoutGap="2rem">
                 <a [routerLink]="org.name" class="no-underline" target="_self">
                   <div fxLayout="column" fxLayoutAlign="space-around">
@@ -101,20 +101,22 @@
                   </div>
                 </div>
               </div>
-              <div>
-                <hr class="mb-4" />
-                <a [routerLink]="org.name" class="no-underline" target="_self">
-                  <div fxLayout="row" fxLayoutAlign="space-between center">
-                    <span class="bubble">
+            </mat-card-content>
+            <mat-card-content>
+              <hr class="mb-4" />
+              <a [routerLink]="org.name" class="no-underline" target="_self">
+                <div fxLayout="row" fxLayoutAlign="space-between center">
+                  <mat-chip-set>
+                    <mat-chip>
                       {{ org.collectionsLength }}
                       <span *ngIf="org.collectionsLength !== 1; else oneCollection"> Collections</span>
                       <ng-template #oneCollection> Collection</ng-template>
-                    </span>
-                    <button mat-raised-button color="accent">View</button>
-                  </div>
-                </a>
-              </div>
-            </div>
+                    </mat-chip>
+                  </mat-chip-set>
+                  <button mat-raised-button color="accent">View</button>
+                </div>
+              </a>
+            </mat-card-content>
           </mat-card>
         </div>
       </div>
@@ -127,6 +129,8 @@
     ></mat-paginator>
   </div>
   <ng-template #noOrganizationsFound>
-    <mat-card class="alert alert-info mat-elevation-z"><mat-icon class="pr-5">info</mat-icon>No organizations found</mat-card>
+    <mat-card appearance="outlined" class="alert alert-info">
+      <mat-card-content> <mat-icon class="pr-5">info</mat-icon>No organizations found </mat-card-content>
+    </mat-card>
   </ng-template>
 </div>

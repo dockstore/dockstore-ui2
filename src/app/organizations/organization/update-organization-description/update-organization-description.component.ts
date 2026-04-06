@@ -15,32 +15,34 @@
  */
 import { Component, Inject, OnInit } from '@angular/core';
 import { UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogModule } from '@angular/material/legacy-dialog';
+import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { UpdateOrganizationOrCollectionDescriptionService } from '../state/update-organization-description.service';
-import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatButtonModule } from '@angular/material/button';
 import { MarkdownWrapperComponent } from '../../../shared/markdown-wrapper/markdown-wrapper.component';
-import { MatLegacyInputModule } from '@angular/material/legacy-input';
-import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
-import { MatLegacyTabsModule } from '@angular/material/legacy-tabs';
+import { MatTabsModule } from '@angular/material/tabs';
 import { AlertComponent } from '../../../shared/alert/alert.component';
+import { TitleCasePipe } from '@angular/common';
 
 @Component({
   templateUrl: './update-organization-description.component.html',
   standalone: true,
   imports: [
-    MatLegacyDialogModule,
+    MatDialogModule,
     AlertComponent,
-    MatLegacyTabsModule,
+    MatTabsModule,
     FormsModule,
     FlexModule,
     ReactiveFormsModule,
-    MatLegacyFormFieldModule,
-    MatLegacyInputModule,
+    MatFormFieldModule,
+    MatInputModule,
     MarkdownWrapperComponent,
-    MatLegacyButtonModule,
-    MatLegacyTooltipModule,
+    MatButtonModule,
+    MatTooltipModule,
+    TitleCasePipe,
   ],
 })
 export class UpdateOrganizationOrCollectionDescriptionComponent implements OnInit {

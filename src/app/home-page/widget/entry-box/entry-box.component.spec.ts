@@ -1,12 +1,12 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
-import { MatLegacyDialogModule as MatDialogModule } from '@angular/material/legacy-dialog';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterTestingModule } from '@angular/router/testing';
-import { MatLegacyAutocompleteModule as MatAutocompleteModule } from '@angular/material/legacy-autocomplete';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { RegisterToolService } from 'app/container/register-tool/register-tool.service';
 import { MyWorkflowsService } from 'app/myworkflows/myworkflows.service';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
@@ -26,6 +26,7 @@ import {
 } from 'app/test/service-stubs';
 import { RegisterWorkflowModalService } from 'app/workflow/register-workflow-modal/register-workflow-modal.service';
 import { EntryBoxComponent } from './entry-box.component';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('EntryBoxComponent', () => {
   let component: EntryBoxComponent;
@@ -41,7 +42,6 @@ describe('EntryBoxComponent', () => {
           MatButtonModule,
           MatIconModule,
           MatDialogModule,
-          HttpClientTestingModule,
           MatSnackBarModule,
           EntryBoxComponent,
         ],
@@ -57,6 +57,8 @@ describe('EntryBoxComponent', () => {
           MyEntriesStateService,
           MyEntriesStore,
           MyEntriesQuery,
+          provideHttpClient(withInterceptorsFromDi()),
+          provideHttpClientTesting(),
         ],
       }).compileComponents();
     })

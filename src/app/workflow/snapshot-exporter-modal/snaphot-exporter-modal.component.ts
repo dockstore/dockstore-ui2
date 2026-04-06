@@ -1,12 +1,8 @@
 import { AsyncPipe, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault, NgTemplateOutlet } from '@angular/common';
 import { Component, Inject } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
-import {
-  MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA,
-  MatLegacyDialogModule,
-  MatLegacyDialogRef as MatDialogRef,
-} from '@angular/material/legacy-dialog';
+import { MatButtonModule } from '@angular/material/button';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { faOrcid } from '@fortawesome/free-brands-svg-icons';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
@@ -20,7 +16,7 @@ import { TokenQuery } from '../../shared/state/token.query';
 import { ExporterStepComponent } from './exporter-step/exporter-step.component';
 import { SnapshotExporterModalService } from './snapshot-exporter-modal.service';
 import { StepState } from './step.state';
-import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { MatCardModule } from '@angular/material/card';
 
 export enum SnapshotExporterAction {
   SNAPSHOT,
@@ -47,18 +43,18 @@ export interface State {
   templateUrl: './snaphot-exporter-modal.component.html',
   standalone: true,
   imports: [
-    MatLegacyDialogModule,
+    MatDialogModule,
     NgSwitch,
     NgSwitchCase,
     NgIf,
     NgTemplateOutlet,
     FlexModule,
-    MatLegacyButtonModule,
+    MatButtonModule,
     NgSwitchDefault,
     ExporterStepComponent,
     MatIconModule,
     AsyncPipe,
-    MatLegacyCardModule,
+    MatCardModule,
   ],
 })
 export class SnaphotExporterModalComponent extends Base {

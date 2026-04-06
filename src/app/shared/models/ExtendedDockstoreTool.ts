@@ -1,5 +1,5 @@
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { DockstoreTool } from './../openapi/model/dockstoreTool';
+import { IconDefinition } from '@fortawesome/free-brands-svg-icons';
 
 export interface ExtendedDockstoreTool extends DockstoreTool {
   agoMessage?: string;
@@ -13,8 +13,8 @@ export interface ExtendedDockstoreTool extends DockstoreTool {
   verifiedSources?: any;
   imgProvider?: string;
   imgProviderUrl?: string;
-  providerIcon?: IconProp;
-  imgProviderIcon?: IconProp;
+  providerIcon?: IconDefinition;
+  imgProviderIcon?: IconDefinition;
   // The transformed git url
   provider?: string;
   providerUrl?: string;

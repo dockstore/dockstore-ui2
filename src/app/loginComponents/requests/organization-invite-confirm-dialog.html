@@ -6,8 +6,7 @@
     <strong>{{data.name}}</strong>?
   </p>
 </div>
-<div mat-dialog-actions>
-  <div fxFlex></div>
+<mat-dialog-actions [align]="'end'">
   <button mat-button (click)="onNoClick()">Cancel</button>
   <span *ngIf="data.approve; else rejectBlock">
     <button
@@ -29,4 +28,4 @@
       Decline
     </button>
   </ng-template>
-</div>
+</mat-dialog-actions>

@@ -13,13 +13,13 @@ import { CodeEditorComponent } from '../code-editor/code-editor.component';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { SnackbarDirective } from '../snackbar.directive';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
-import { MatLegacyInputModule } from '@angular/material/legacy-input';
-import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { MatCardModule } from '@angular/material/card';
 import { NgIf, NgFor, AsyncPipe } from '@angular/common';
 
 export type FileCategory = 'descriptor' | 'dockerfile' | 'testParam';
@@ -31,14 +31,14 @@ export type FileCategory = 'descriptor' | 'dockerfile' | 'testParam';
   standalone: true,
   imports: [
     NgIf,
-    MatLegacyCardModule,
+    MatCardModule,
     NgFor,
     MatToolbarModule,
     FormsModule,
-    MatLegacyFormFieldModule,
-    MatLegacyInputModule,
-    MatLegacyButtonModule,
-    MatLegacyTooltipModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatTooltipModule,
     MatIconModule,
     SnackbarDirective,
     ClipboardModule,

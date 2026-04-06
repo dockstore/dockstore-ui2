@@ -98,11 +98,14 @@ export class Dockstore {
   static NEXTFLOW_PARSING_LAMBDA_VERSION = '';
   static GALAXY_PARSING_PLUGIN_VERSION = '';
   static CHECK_URL_LAMBDA_VERSION = '';
+  static SUPPORT_VERSION = '';
 
   static FEATURES = {
     enableCwlViewer: true,
     enableLaunchWithGalaxy: true,
     enableMultiCloudLaunchWithDNAstack: false,
     enableOrcidExport: true,
+    enableSnakemake: true,
+    snakemakeFeatureName: 'Snakemake workflows',
   };
 }

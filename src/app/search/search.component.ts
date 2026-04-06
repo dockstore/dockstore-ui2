@@ -13,11 +13,12 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Location, NgClass, NgFor, NgIf, NgStyle, AsyncPipe, LowerCasePipe } from '@angular/common';
+import { Location, NgClass, NgFor, NgIf, NgStyle, AsyncPipe, DecimalPipe, LowerCasePipe, NgTemplateOutlet } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatAccordion, MatExpansionModule } from '@angular/material/expansion';
-import { MatLegacyTabChangeEvent as MatTabChangeEvent, MatLegacyTabsModule } from '@angular/material/legacy-tabs';
+import { Sort } from '@angular/material/sort';
+import { MatTabChangeEvent, MatTabsModule } from '@angular/material/tabs';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import {
   faAngleDoubleDown,
@@ -48,17 +49,17 @@ import { MapFriendlyValuesPipe } from './map-friendly-values.pipe';
 import { SearchResultsComponent } from './search-results/search-results.component';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { SnackbarDirective } from '../shared/snackbar.directive';
-import { MatLegacyCardModule } from '@angular/material/legacy-card';
-import { MatLegacyCheckboxModule } from '@angular/material/legacy-checkbox';
+import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { MatLegacyOptionModule } from '@angular/material/legacy-core';
-import { MatLegacyAutocompleteModule } from '@angular/material/legacy-autocomplete';
+import { MatOptionModule } from '@angular/material/core';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { FormsModule } from '@angular/forms';
-import { MatLegacyInputModule } from '@angular/material/legacy-input';
-import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
-import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { BasicSearchComponent } from './basic-search/basic-search.component';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatButtonModule } from '@angular/material/button';
 import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { HeaderComponent } from '../header/header.component';
@@ -95,33 +96,35 @@ import { HeaderComponent } from '../header/header.component';
   imports: [
     HeaderComponent,
     FlexModule,
-    MatLegacyTabsModule,
+    MatTabsModule,
     NgClass,
     ExtendedModule,
-    MatLegacyButtonModule,
+    MatButtonModule,
     MatExpansionModule,
     BasicSearchComponent,
     NgFor,
     NgIf,
-    MatLegacyTooltipModule,
-    MatLegacyFormFieldModule,
-    MatLegacyInputModule,
+    MatTooltipModule,
+    MatFormFieldModule,
+    MatInputModule,
     FormsModule,
-    MatLegacyAutocompleteModule,
-    MatLegacyOptionModule,
+    MatAutocompleteModule,
+    MatOptionModule,
     FontAwesomeModule,
     NgStyle,
-    MatLegacyCheckboxModule,
-    MatLegacyCardModule,
+    MatCheckboxModule,
+    MatCardModule,
     SnackbarDirective,
     ClipboardModule,
     SearchResultsComponent,
     AsyncPipe,
+    DecimalPipe,
     LowerCasePipe,
     MapFriendlyValuesPipe,
     GetHistogramStylePipe,
     GetFacetSearchResultsPipe,
     GetFacetSearchUpdatePipe,
+    NgTemplateOutlet,
   ],
 })
 export class SearchComponent implements OnInit, OnDestroy {
@@ -192,6 +195,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   public suggestTerm$: Observable<string>;
   public values$: Observable<string>;
   public isLoading = false;
+  private sortValue: Sort;
 
   // For search within facets
   public facetAutocompleteTerms$: Observable<Array<string>>;
@@ -257,6 +261,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     });
 
     this.hits = [];
+    this.searchService.setHits([], [], []);
 
     this.aNDSplitFilterText$ = this.advancedSearchQuery.aNDSplitFilterText$;
     this.aNDNoSplitFilterText$ = this.advancedSearchQuery.aNDNoSplitFilterText$;
@@ -299,6 +304,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     // Event is somehow triggered even though it's not the active tab
     if (matTabChangeEvent.tab.isActive) {
       this.searchService.saveCurrentTabAndClear(matTabChangeEvent.index);
+      this.sortValue = null;
     }
   }
 
@@ -497,8 +503,10 @@ export class SearchComponent implements OnInit, OnDestroy {
    *                Update Functions
    * ===============================================
    */
-  // Called from one place which is only when the URL has parsed and query non-result state has been set
-  updateQuery() {
+  // Called when:
+  // 1. The URL has changed, signaling a change in the search term, facets, etc.
+  // 2. The user has changed the sort order (via the "Sort by" dropdown menu).
+  updateQuery(updateFacets: boolean = true) {
     const tabIndex = this.searchQuery.getValue().currentTabIndex;
     const entryType = SearchService.convertTabIndexToEntryType(tabIndex);
     // Separating into 2 queries otherwise the queries interfere with each other (filter applied before aggregation)
@@ -523,11 +531,16 @@ export class SearchComponent implements OnInit, OnDestroy {
       this.searchTerm,
       this.filters,
       this.exclusiveFilters,
+      this.sortValue,
       entryType
     );
-    this.resetEntryOrder();
+    if (updateFacets) {
+      this.resetEntryOrder();
+    }
     this.resetPageIndex();
-    this.updateSideBar(sideBarQuery);
+    if (updateFacets) {
+      this.updateSideBar(sideBarQuery);
+    }
     this.updateResultsTable(tableQuery);
   }
 
@@ -732,6 +745,11 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.expandedPanels.set(key, expanded);
     this.clearExpandedPanelsState();
     this.saveExpandedPanelsState();
+  }
+
+  setSort(sortValue: Sort) {
+    this.sortValue = sortValue;
+    this.updateQuery(false);
   }
 
   /**===============================================

@@ -6,16 +6,16 @@ import { Observable } from 'rxjs';
 import { RefreshWizardQuery } from '../state/refresh-wizard.query';
 import { RefreshWizardService } from '../state/refresh-wizard.service';
 import { RefreshWizardStore } from '../state/refresh-wizard.store';
-import { MatLegacyDialogModule } from '@angular/material/legacy-dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatStepperModule } from '@angular/material/stepper';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
-import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
-import { MatLegacyOptionModule } from '@angular/material/legacy-core';
-import { MatLegacySelectModule } from '@angular/material/legacy-select';
-import { MatLegacyFormFieldModule } from '@angular/material/legacy-form-field';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatButtonModule } from '@angular/material/button';
+import { MatOptionModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyCardModule } from '@angular/material/legacy-card';
+import { MatCardModule } from '@angular/material/card';
 import { NgIf, NgFor, AsyncPipe } from '@angular/common';
 import { LoadingComponent } from '../../shared/loading/loading.component';
 
@@ -28,17 +28,17 @@ import { LoadingComponent } from '../../shared/loading/loading.component';
   imports: [
     LoadingComponent,
     NgIf,
-    MatLegacyCardModule,
+    MatCardModule,
     MatIconModule,
-    MatLegacyFormFieldModule,
-    MatLegacySelectModule,
+    MatFormFieldModule,
+    MatSelectModule,
     NgFor,
-    MatLegacyOptionModule,
-    MatLegacyButtonModule,
-    MatLegacyTooltipModule,
+    MatOptionModule,
+    MatButtonModule,
+    MatTooltipModule,
     FlexModule,
     MatStepperModule,
-    MatLegacyDialogModule,
+    MatDialogModule,
     AsyncPipe,
   ],
 })

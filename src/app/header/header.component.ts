@@ -17,12 +17,13 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { toExtendSite } from '../shared/helpers';
 import { AlertComponent } from '../shared/alert/alert.component';
+import { FlexModule } from '@ngbracket/ngx-layout';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   standalone: true,
-  imports: [AlertComponent],
+  imports: [AlertComponent, FlexModule],
 })
 export class HeaderComponent {
   isExtended = false;

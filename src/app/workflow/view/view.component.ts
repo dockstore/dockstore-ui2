@@ -15,7 +15,7 @@
  */
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { RefreshService } from 'app/shared/refresh.service';
 import { BioWorkflow } from 'app/shared/openapi/model/bioWorkflow';
@@ -41,9 +41,9 @@ import { SnaphotExporterModalComponent, SnapshotExporterAction } from '../snapsh
 import { VersionModalComponent } from '../version-modal/version-modal.component';
 import { VersionModalService } from '../version-modal/version-modal.service';
 import { ViewService } from './view.service';
-import { MatLegacyTooltipModule } from '@angular/material/legacy-tooltip';
-import { MatLegacyMenuModule } from '@angular/material/legacy-menu';
-import { MatLegacyButtonModule } from '@angular/material/legacy-button';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatButtonModule } from '@angular/material/button';
 import { NgIf, AsyncPipe } from '@angular/common';
 
 @Component({
@@ -51,7 +51,7 @@ import { NgIf, AsyncPipe } from '@angular/common';
   templateUrl: './view.component.html',
   styleUrls: ['./view.component.css'],
   standalone: true,
-  imports: [NgIf, MatLegacyButtonModule, MatLegacyMenuModule, MatLegacyTooltipModule, AsyncPipe],
+  imports: [NgIf, MatButtonModule, MatMenuModule, MatTooltipModule, AsyncPipe],
 })
 export class ViewWorkflowComponent extends View<WorkflowVersion> implements OnInit {
   @Input() workflowId: number;
