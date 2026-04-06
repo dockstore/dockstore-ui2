@@ -45,6 +45,8 @@
           <mat-form-field>
             <mat-label>Topic</mat-label>
             <input type="text" matInput formControlName="topic" required data-cy="topic-input" />
+            <mat-error *ngIf="topic.hasError('maxlength')">Topic should be at most 255 characters long</mat-error>
+            <mat-error *ngIf="topic.hasError('required')">Topic is required</mat-error>
           </mat-form-field>
         </form>
       </div>
