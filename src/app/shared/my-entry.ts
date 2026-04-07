@@ -64,7 +64,7 @@ export abstract class MyEntry extends Base implements OnDestroy {
   }
 
   link() {
-    this.accountsService.link(TokenSource.GITHUB);
+    this.accountsService.link(TokenSource.GITHUB, null, null);
   }
 
   public abstract selectEntry(entry: ExtendedDockstoreTool | ExtendedWorkflow): void;

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ID, transaction } from '@datorama/akita';
 import { Observable, throwError } from 'rxjs';
 import { Provider } from '../enum/provider.enum';
-import { TokensService, UsersService } from '../openapi';
+import { PKCE, TokensService, UsersService } from '../openapi';
 import { TokenUser } from '../openapi/model/tokenUser';
 import { TokenStore } from './token.store';
 
@@ -36,14 +36,18 @@ export class TokenService {
     this.tokenStore.remove();
   }
 
-  registerToken(token: string, provider: Provider): Observable<TokenUser> {
+  getGitHubCodeChallenge(): Observable<PKCE> {
+    return this.tokensService.getGitHubCodeChallenge();
+  }
+
+  registerToken(token: string, provider: Provider, state?: string): Observable<TokenUser> {
     switch (provider) {
       case Provider.QUAY:
         return this.tokensService.addQuayToken(token);
       case Provider.BITBUCKET:
         return this.tokensService.addBitbucketToken(token);
       case Provider.GITHUB:
-        return this.tokensService.addGithubToken(token);
+        return this.tokensService.addGithubToken(token, state);
       case Provider.GITLAB:
         return this.tokensService.addGitlabToken(token);
       case Provider.ZENODO:

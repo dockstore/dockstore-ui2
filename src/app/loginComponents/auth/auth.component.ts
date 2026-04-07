@@ -43,7 +43,9 @@ export class AuthComponent extends Base implements OnInit {
 
     const queryObservable = this.activatedRoute.queryParams;
 
-    const addGitHubToken = queryObservable.pipe(mergeMap((query) => this.tokenService.registerToken(query['code'], Provider.GITHUB)));
+    const addGitHubToken = queryObservable.pipe(
+      mergeMap((query) => this.tokenService.registerToken(query['code'], Provider.GITHUB, query['state']))
+    );
 
     const addGitLabToken = queryObservable.pipe(mergeMap((query) => this.tokenService.registerToken(query['code'], Provider.GITLAB)));
 
