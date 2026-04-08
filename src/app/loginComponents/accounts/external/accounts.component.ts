@@ -99,8 +99,6 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
   public show: boolean;
   public dockstoreToken: string;
   public orcidRootUrl: string;
-  private githubTokenChallenge: string;
-  private githubState: string;
 
   constructor(
     private trackLoginService: TrackLoginService,
@@ -123,13 +121,6 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
     });
     this.dockstoreToken = this.getDockstoreToken();
     this.orcidRootUrl = this.accountsService.getRoot(Dockstore.ORCID_AUTH_URL);
-    this.tokenService
-      .getGitHubCodeChallenge()
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((challenge) => {
-        this.githubTokenChallenge = challenge.hashedValue;
-        this.githubState = challenge.state;
-      });
   }
 
   // Delete token by id
@@ -156,7 +147,14 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
 
   link(source: string): void {
     this.matSnackBar.open('Linking ' + source + ' account', 'Dismiss');
-    this.accountsService.link(source, this.githubTokenChallenge, this.githubState);
+    this.tokenService
+      .getGitHubCodeChallenge()
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((challenge) => {
+        var githubTokenChallenge = challenge.hashedValue;
+        var githubState = challenge.state;
+        this.accountsService.link(source, githubTokenChallenge, githubState);
+      });
   }
 
   // Delete a token and unlink service in the UI
