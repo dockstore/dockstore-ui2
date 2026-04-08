@@ -118,7 +118,7 @@ export class CreateCollectionService {
         displayName,
         [Validators.required, Validators.maxLength(50), Validators.minLength(3), Validators.pattern(/^[a-zA-Z\d ,_\-&()']*$/)],
       ],
-      topic: [topic],
+      topic: [topic, [Validators.required, Validators.maxLength(255)]],
     });
     formsManager.upsert('createOrUpdateCollection', createOrUpdateCollectionForm);
     return createOrUpdateCollectionForm;
