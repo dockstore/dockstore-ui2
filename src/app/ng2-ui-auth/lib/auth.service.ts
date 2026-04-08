@@ -21,12 +21,12 @@ export class AuthService {
     return this.shared.logout();
   }
 
-  public authenticate<T extends object | string = any>(name: string, userData?: any): Observable<T> {
-    return this.oauth.authenticate<T>(name, userData);
+  public authenticate<T extends object | string = any>(name: string, state: string, tokenChallenge: string, userData?: any): Observable<T> {
+    return this.oauth.authenticate<T>(name, state, tokenChallenge, userData);
   }
 
   public link<T extends object | string = any>(name: string, userData?: any): Observable<T> {
-    return this.oauth.authenticate<T>(name, userData);
+    return this.oauth.authenticate<T>(name, null, null, userData);
   }
 
   public unlink<T = any>(provider: string, url?: string): Observable<T> {
