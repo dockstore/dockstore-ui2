@@ -29,6 +29,7 @@ import { MyEntriesQuery } from './state/my-entries.query';
 import { MyEntriesStateService } from './state/my-entries.service';
 import { TokenQuery } from './state/token.query';
 import { Configuration, User } from './openapi';
+import { TokenService } from './state/token.service';
 import { UrlResolverService } from './url-resolver.service';
 import { UserQuery } from './user/user.query';
 
@@ -44,6 +45,7 @@ export abstract class MyEntry extends Base implements OnDestroy {
 
   protected ngUnsubscribe: Subject<{}> = new Subject();
   constructor(
+    protected tokenService: TokenService,
     protected accountsService: AccountsService,
     protected authService: AuthService,
     protected configuration: Configuration,
@@ -64,7 +66,14 @@ export abstract class MyEntry extends Base implements OnDestroy {
   }
 
   link() {
-    this.accountsService.link(TokenSource.GITHUB, null, null);
+    this.tokenService
+      .getGitHubCodeChallenge()
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((challenge) => {
+        var githubTokenChallenge = challenge.hashedValue;
+        var githubState = challenge.state;
+        this.accountsService.link(TokenSource.GITHUB, githubTokenChallenge, githubState);
+      });
   }
 
   public abstract selectEntry(entry: ExtendedDockstoreTool | ExtendedWorkflow): void;

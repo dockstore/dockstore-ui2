@@ -156,13 +156,6 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
 
   link(source: string): void {
     this.matSnackBar.open('Linking ' + source + ' account', 'Dismiss');
-    this.tokenService
-      .getGitHubCodeChallenge()
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe((challenge) => {
-        this.githubTokenChallenge = challenge.hashedValue;
-        this.githubState = challenge.state;
-      });
     this.accountsService.link(source, this.githubTokenChallenge, this.githubState);
   }
 
