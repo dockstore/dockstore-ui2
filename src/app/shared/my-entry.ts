@@ -70,8 +70,8 @@ export abstract class MyEntry extends Base implements OnDestroy {
       .getGitHubCodeChallenge()
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((challenge) => {
-        var githubTokenChallenge = challenge.hashedValue;
-        var githubState = challenge.state;
+        const githubTokenChallenge = challenge.hashedValue;
+        const githubState = challenge.state;
         this.accountsService.link(TokenSource.GITHUB, githubTokenChallenge, githubState);
       });
   }

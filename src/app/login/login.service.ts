@@ -23,9 +23,13 @@ import { TokenService } from '../shared/state/token.service';
 
 @Injectable()
 export class LoginService {
-  constructor(private auth: AuthService, private alertService: AlertService, private tokenService: TokenService) {}
+  constructor(
+    private readonly auth: AuthService,
+    private readonly alertService: AlertService,
+    private readonly tokenService: TokenService
+  ) {}
 
-  private ngUnsubscribe: Subject<{}> = new Subject();
+  private readonly ngUnsubscribe: Subject<{}> = new Subject();
 
   authenticate(provider: string): Observable<any> {
     return new Observable((observable) => {
