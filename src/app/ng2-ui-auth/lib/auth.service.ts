@@ -25,6 +25,11 @@ export class AuthService {
     return this.oauth.authenticate<T>(name, state, tokenChallenge, userData);
   }
 
+  /**
+   * I suspect that nothing actually uses this. This is broken as of adding PKCE support
+   * @param name
+   * @param userData
+   */
   public link<T extends object | string = any>(name: string, userData?: any): Observable<T> {
     return this.oauth.authenticate<T>(name, null, null, userData);
   }
