@@ -84,7 +84,7 @@
     "split-string": "^3.1.0",
     "ts-md5": "^1.2.8",
     "tslib": "^2.3.0",
-    "uuid": "^8.3.2",
+    "uuid": "^14.0.0",
     "zone.js": "~0.14.10"
   },
   "devDependencies": {
