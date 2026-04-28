@@ -288,7 +288,7 @@ export class SearchStubService {
         ['has_checker', false],
         ['organization', true],
         ['verified_platforms.keyword', false],
-        ['categories.name.keyword', true],
+        ['categories.displayName.keyword', true],
         ['descriptor_type_versions.keyword', false],
         ['openData', false],
       ]);
