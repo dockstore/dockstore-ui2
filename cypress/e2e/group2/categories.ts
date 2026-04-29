@@ -85,13 +85,13 @@ describe('Dockstore Categories', () => {
     it('appear in search sidebar', () => {
       cy.visit('/search?entryType=tools');
       cy.get('.search-container').get('mat-accordion').contains('Category');
-      cy.get('.search-container').get('mat-accordion').contains(categoryName);
+      cy.get('.search-container').get('mat-accordion').contains(categoryDisplayName);
     });
     it('appear exclusively in search results if Category checkbox is clicked', () => {
       cy.visit('/search?entryType=tools');
       cy.get('app-search-results').contains(toolSnippet);
       cy.get('app-search-results').contains('A2/a');
-      cy.contains('mat-checkbox', categoryName).click();
+      cy.contains('mat-checkbox', categoryDisplayName).click();
       cy.get('app-search-results').contains(toolSnippet);
       cy.get('app-search-results').contains('A2/a').should('not.exist');
     });
@@ -124,7 +124,7 @@ describe('Dockstore Categories', () => {
       cy.visit('/organizations/dockstore/collections/' + categoryName);
       cy.get('app-category-button').contains(categoryDisplayName).click();
       cy.url().should('include', '/search');
-      cy.url().should('include', categoryName);
+      cy.url().should('include', categoryDisplayName);
     });
   });
 });
