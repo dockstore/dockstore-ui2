@@ -434,7 +434,12 @@
         <mat-divider></mat-divider>
         <mat-card-content>
           <div class="container-sharing pt-3">
-            <share-buttons [include]="['facebook', 'x', 'linkedin', 'reddit']" [show]="5" [url]="shareURL"></share-buttons>
+            <share-buttons
+              [include]="['linkedin', 'bluesky', 'email', 'whatsapp', 'facebook', 'x', 'reddit', 'copy']"
+              [show]="3"
+              [url]="shareURL"
+            >
+            </share-buttons>
           </div>
         </mat-card-content>
       </mat-card>
