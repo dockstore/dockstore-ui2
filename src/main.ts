@@ -13,7 +13,9 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FlexLayoutModule } from '@ngbracket/ngx-layout';
 import { MarkdownModule } from 'ngx-markdown';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { provideShareButtonsOptions } from 'ngx-sharebuttons';
 import { AppComponent } from './app/app.component';
+import { withIcons } from 'ngx-sharebuttons/icons';
 
 import { getApiConfig, initializerFactory, myCustomSnackbarDefaults, myCustomTooltipDefaults } from './app/app.module';
 import { CLIENT_ROUTER_PROVIDERS, routing } from './app/app.routing';
@@ -109,6 +111,7 @@ bootstrapApplication(AppComponent, {
       PipeModule,
       Ng2UiAuthModule.forRoot(AuthConfig)
     ),
+    provideShareButtonsOptions(withIcons()),
     AccountsService,
     BioschemaService,
     CLIENT_ROUTER_PROVIDERS,
