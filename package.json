@@ -78,7 +78,7 @@
     "ng2-charts": "^7.0.0",
     "ngx-markdown": "^18.1.0",
     "ngx-mat-select-search": "^7.0.2",
-    "ngx-sharebuttons": "^14.0.0",
+    "ngx-sharebuttons": "^15.0.6",
     "prismjs": "^1.30.0",
     "rxjs": "^6.6.7",
     "split-string": "^3.1.0",
