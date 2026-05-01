@@ -123,7 +123,6 @@ bootstrapApplication(AppComponent, {
         },
         params: {
           url: 'text',
-          // define the needed parameters here
         },
       }),
       shareIcons()
