@@ -22,7 +22,7 @@ export class GetFacetSearchResultsPipe implements PipeTransform {
         facet !== 'organization' &&
         facet !== 'labels.value.keyword' &&
         facet !== 'namespace' &&
-        facet !== 'categories.name.keyword')
+        facet !== 'categories.displayName.keyword')
     ) {
       return items;
     }
