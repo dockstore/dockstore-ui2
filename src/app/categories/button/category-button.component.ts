@@ -39,7 +39,7 @@ export class CategoryButtonComponent implements OnChanges {
     this.className = isWorkflow ? 'workflow-background' : 'tool-background';
     this.routerLink = ['/search'];
     this.queryParams = {
-      'categories.name.keyword': this.category.name,
+      'categories.displayName.keyword': this.category.displayName,
       entryType: isWorkflow ? 'workflows' : 'tools',
       searchMode: 'files',
     };

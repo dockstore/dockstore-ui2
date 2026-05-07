@@ -20,8 +20,7 @@ import { FlexLayoutModule } from '@ngbracket/ngx-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
-import { ShareButtonsModule } from 'ngx-sharebuttons/buttons';
-import { ShareIconsModule } from 'ngx-sharebuttons/icons';
+import { ShareButtons } from 'ngx-sharebuttons/buttons';
 
 import { BioschemaService } from '../bioschema.service';
 import { CodeEditorListComponent } from '../code-editor-list/code-editor-list.component';
@@ -72,7 +71,7 @@ import { VersionProviderUrlPipe } from './versionProviderUrl.pipe';
     VerifiedPlatformsPipe,
     VersionProviderUrlPipe,
     PublicFileDownloadPipe,
-    ShareButtonsModule,
+    ShareButtons,
     ShareIconsModule,
     UrlDeconstructPipe,
     RouterModule,
