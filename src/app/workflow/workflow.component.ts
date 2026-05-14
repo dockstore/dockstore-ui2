@@ -35,7 +35,6 @@ import { AlertService } from 'app/shared/alert/state/alert.service';
 import { BioWorkflow } from 'app/shared/openapi/model/bioWorkflow';
 import { Service } from 'app/shared/openapi/model/service';
 import { Notebook } from 'app/shared/openapi/model/notebook';
-import { ShareIconsModule } from 'ngx-sharebuttons/icons';
 import { Observable, ReplaySubject } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
 import { AlertQuery } from '../shared/alert/state/alert.query';
@@ -79,7 +78,7 @@ import { EntryCategoriesService } from '../categories/state/entry-categories.ser
 import RoleEnum = Permission.RoleEnum;
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BaseUrlPipe } from '../shared/entry/base-url.pipe';
-import { ShareButtonsModule } from 'ngx-sharebuttons/buttons';
+import { ShareButtons } from 'ngx-sharebuttons/buttons';
 import { VerifiedByComponent } from '../shared/entry/verified-by/verified-by.component';
 import { CurrentCollectionsComponent } from '../entry/current-collections/current-collections.component';
 import { MatDividerModule } from '@angular/material/divider';
@@ -162,8 +161,7 @@ import { PreviewWarningComponent } from '../preview-warning/preview-warning.comp
     MatDividerModule,
     CurrentCollectionsComponent,
     VerifiedByComponent,
-    ShareButtonsModule,
-    ShareIconsModule,
+    ShareButtons,
     AsyncPipe,
     DatePipe,
     TitleCasePipe,

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ID, transaction } from '@datorama/akita';
 import { Observable, throwError } from 'rxjs';
 import { Provider } from '../enum/provider.enum';
-import { PKCE, TokensService, UsersService } from '../openapi';
+import { ClientPKCE, TokensService, UsersService } from '../openapi';
 import { TokenUser } from '../openapi/model/tokenUser';
 import { TokenStore } from './token.store';
 
@@ -36,7 +36,7 @@ export class TokenService {
     this.tokenStore.remove();
   }
 
-  getGitHubCodeChallenge(): Observable<PKCE> {
+  getGitHubCodeChallenge(): Observable<ClientPKCE> {
     return this.tokensService.getGitHubCodeChallenge();
   }
 

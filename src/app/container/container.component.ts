@@ -49,7 +49,7 @@ import { UrlResolverService } from './../shared/url-resolver.service';
 import { AddTagComponent } from './add-tag/add-tag.component';
 import { EmailService } from './email.service';
 import { EntryCategoriesService } from '../categories/state/entry-categories.service';
-import { ShareButtonsModule } from 'ngx-sharebuttons/buttons';
+import { ShareButtons } from 'ngx-sharebuttons/buttons';
 import { VerifiedByComponent } from '../shared/entry/verified-by/verified-by.component';
 import { CurrentCollectionsComponent } from '../entry/current-collections/current-collections.component';
 import { ClipboardModule } from '@angular/cdk/clipboard';
@@ -118,7 +118,7 @@ import { WorkflowComponent } from '../workflow/workflow.component';
     ClipboardModule,
     CurrentCollectionsComponent,
     VerifiedByComponent,
-    ShareButtonsModule,
+    ShareButtons,
     AsyncPipe,
     DatePipe,
   ],
