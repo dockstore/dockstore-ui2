@@ -147,7 +147,14 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
 
   link(source: string): void {
     this.matSnackBar.open('Linking ' + source + ' account', 'Dismiss');
-    this.accountsService.link(source);
+    this.tokenService
+      .getGitHubCodeChallenge()
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((challenge) => {
+        var githubTokenChallenge = challenge.hashedValue;
+        var githubState = challenge.state;
+        this.accountsService.link(source, githubTokenChallenge, githubState);
+      });
   }
 
   // Delete a token and unlink service in the UI
