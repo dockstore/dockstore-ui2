@@ -132,6 +132,7 @@ export class SearchEntryTableComponent extends Base implements OnInit {
     ['topicAutomatic', 'Topic'],
     ['categories.topic', 'Category Topic'],
     ['categories.displayName', 'Category'],
+    ['operation.displayName', 'Operation'],
   ]);
   public defaultSortOption: SortOption = {
     label: 'Relevance',

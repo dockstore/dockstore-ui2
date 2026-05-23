@@ -111,7 +111,8 @@
               key === 'labels.value.keyword' ||
               key === 'namespace' ||
               key === 'organization' ||
-              key === 'categories.displayName.keyword'
+              key === 'categories.displayName.keyword' ||
+              key === 'operation.displayName.keyword'
             "
           >
             <mat-form-field>
@@ -204,7 +205,8 @@
                       key !== 'labels.value.keyword' &&
                       key !== 'namespace' &&
                       key !== 'organization' &&
-                      key !== 'categories.displayName.keyword';
+                      key !== 'categories.displayName.keyword' &&
+                      key !== 'operation.displayName.keyword';
                     else facetLoading
                   "
                   >{{ fullyExpandMap.get(key) ? 'Hide' : orderedBuckets.get(key).Items.size - 5 + ' more' }}</span

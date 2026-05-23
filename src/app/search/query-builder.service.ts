@@ -94,6 +94,7 @@ export class QueryBuilderService {
       'monthlyExecutionCounts',
       'name',
       'namespace',
+      'operation',
       'organization',
       'private_access',
       'providerUrl',
@@ -159,6 +160,7 @@ export class QueryBuilderService {
         topicAutomatic: {},
         'categories.topic': {},
         'categories.displayName': {},
+        'operation.displayName': {},
       },
     });
     const builtTableBody = tableBody.build();
@@ -302,7 +304,8 @@ export class QueryBuilderService {
         .orQuery(matchOp, 'all_authors.name', { query: term, boost: 3 })
         .orQuery(matchOp, 'topicAutomatic', { query: term, boost: 4 })
         .orQuery(matchOp, 'categories.topic', { query: term, boost: 2 })
-        .orQuery(matchOp, 'categories.displayName', { query: term, boost: 3 });
+        .orQuery(matchOp, 'categories.displayName', { query: term, boost: 3 })
+        .orQuery(matchOp, 'operation.displayName', { query: term, boost: 3 });
     });
     body.queryMinimumShouldMatch(1);
     return body;

@@ -89,6 +89,7 @@ export class SearchService {
   private getOrderedFacetInfos(tabIndex: number): Array<FacetInfo> {
     const facetInfos = [
       { friendlyName: 'Category', esName: 'categories.displayName.keyword', initiallyExpanded: true },
+      { friendlyName: 'Operation', esName: 'operation.displayName.keyword', initiallyExpanded: false },
       {
         friendlyName: tabIndex === SearchService.NOTEBOOKS_TAB_INDEX ? 'Format' : 'Language',
         esName: 'descriptorType',
