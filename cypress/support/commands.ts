@@ -250,11 +250,11 @@ export function createPotatoMembership() {
 }
 
 export function approvePotatoMembership() {
-  invokeSql("update organization_user set status='ACCEPTED' where userid=2 and organizationid=2");
+  invokeSql("update organization_user set status='ACCEPTED' where userid=2 and organizationid=3");
 }
 
 export function rejectPotatoMembership() {
-  invokeSql("update organization_user set status='REJECTED' where userid=2 and organizationid=2");
+  invokeSql("update organization_user set status='REJECTED' where userid=2 and organizationid=3");
 }
 
 export function approvePotatoOrganization() {
