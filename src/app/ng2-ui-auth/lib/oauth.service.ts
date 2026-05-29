@@ -48,6 +48,7 @@ export class OauthService {
     }
     if (tokenChallenge) {
       providerNamed.additionalUrlParams.code_challenge = tokenChallenge;
+      providerNamed.additionalUrlParams.code_challenge_method = 'S256';
     }
 
     const provider: IOauthService =
