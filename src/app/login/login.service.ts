@@ -38,28 +38,37 @@ export class LoginService {
       this.tokenService
         .getGitHubCodeChallenge()
         .pipe(takeUntil(this.ngUnsubscribe))
-        .subscribe((challenge) => {
-          const githubTokenChallenge = challenge.hashedValue;
-          const githubState = challenge.state;
+        .subscribe(
+          (challenge) => {
+            const githubTokenChallenge = challenge.hashedValue;
+            const githubState = challenge.state;
 
-          return this.auth.authenticate(provider, githubState, githubTokenChallenge, { register: false }).subscribe(
-            (user) => {
-              this.alertService.simpleSuccess();
-              observable.next(user);
-              observable.complete();
-            },
-            (error: HttpErrorResponse | {}) => {
-              // Error will be an HttpErrorResponse, typically from the webservice,
-              // or an empty object, indicating that the user closed the login window.
-              // For more info, see https://github.com/dockstore/dockstore-ui2/pull/1888
-              if ('status' in error) {
-                this.alertService.detailedError(error);
-              } else {
-                this.alertService.customDetailedError('Login failed', 'Could not login to Dockstore.');
+            return this.auth.authenticate(provider, githubState, githubTokenChallenge, { register: false }).subscribe(
+              (user) => {
+                this.alertService.simpleSuccess();
+                observable.next(user);
+                observable.complete();
+              },
+              (error: HttpErrorResponse | {}) => {
+                // Error will be an HttpErrorResponse, typically from the webservice,
+                // or an empty object, indicating that the user closed the login window.
+                // For more info, see https://github.com/dockstore/dockstore-ui2/pull/1888
+                this.finishAlert(error);
               }
-            }
-          );
-        });
+            );
+          },
+          (error: HttpErrorResponse | {}) => {
+            this.finishAlert(error);
+          }
+        );
     });
+  }
+
+  private finishAlert(error: HttpErrorResponse | {}) {
+    if ('status' in error) {
+      this.alertService.detailedError(error);
+    } else {
+      this.alertService.customDetailedError('Login failed', 'Could not login to Dockstore.');
+    }
   }
 }
