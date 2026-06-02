@@ -329,8 +329,8 @@
         matTooltip="{{ (num | number: '1.2-2') + ' ' + executionMetric.unit }}"
         >{{ num | number: '1.2-2' }} {{ executionMetric.unit }}</span
       >
-      <span *ngIf="executionMetric.metric === 'CPU'" matTooltip="{{ num + ' ' + (executionMetric.unit ?? 'cores') }}"
-        >{{ num }} {{ executionMetric.unit ?? 'cores' }}</span
+      <span *ngIf="executionMetric.metric === 'CPU'" matTooltip="{{ num + ' ' + (executionMetric.unit ?? (num > 1 ? 'cores' : 'core')) }}"
+        >{{ num }} {{ executionMetric.unit ?? (num > 1 ? 'cores' : 'core') }}</span
       >
       <span
         *ngIf="executionMetric.metric !== 'Run Time' && executionMetric.metric !== 'Cost' && executionMetric.metric !== 'CPU'"
