@@ -40,18 +40,27 @@ export class OauthService {
 
   constructor(private http: HttpClient, private shared: SharedService, private config: ConfigService, private popup: PopupService) {}
 
-  public authenticate<T extends object | string>(name: string, userData?: any): Observable<T> {
+  public authenticate<T extends object | string>(name: string, state: string, tokenChallenge: string, userData?: any): Observable<T> {
+    let providerNamed = this.config.options.providers[name];
+    // override state and token challenge if provided
+    if (state) {
+      providerNamed.state = state;
+    }
+    if (tokenChallenge) {
+      providerNamed.additionalUrlParams.code_challenge = tokenChallenge;
+    }
+
     const provider: IOauthService =
-      this.config.options.providers[name].oauthType === '1.0'
+      providerNamed.oauthType === '1.0'
         ? Injector.create([...this.depProviders, { provide: Oauth1Service, deps: this.deps }]).get(Oauth1Service)
         : Injector.create([...this.depProviders, { provide: Oauth2Service, deps: this.deps }]).get(Oauth2Service);
 
-    return provider.open<T>(this.config.options.providers[name], userData || {}).pipe(
+    return provider.open<T>(providerNamed, userData || {}).pipe(
       tap((response) => {
         // this is for a scenario when someone wishes to opt out from
         // satellizer's magic by doing authorization code exchange and
         // saving a token manually.
-        if (this.config.options.providers[name].url) {
+        if (providerNamed.url) {
           this.shared.setToken(response);
         }
       })

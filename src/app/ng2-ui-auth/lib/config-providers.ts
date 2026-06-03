@@ -57,10 +57,15 @@ export const defaultProviders: IProviders = {
     name: 'github',
     url: '/auth/github',
     authorizationEndpoint: 'https://github.com/login/oauth/authorize',
+    additionalUrlParams: {
+      code_challenge: undefined,
+      code_challenge_method: 'S256',
+    },
     scope: ['user:email'],
     scopeDelimiter: ' ',
     oauthType: '2.0',
     popupOptions: { width: 1020, height: 618 },
+    state: undefined,
   },
   instagram: {
     name: 'instagram',
