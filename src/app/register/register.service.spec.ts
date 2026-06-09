@@ -17,15 +17,20 @@
 import { inject, TestBed } from '@angular/core/testing';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AuthService } from '../ng2-ui-auth/public_api';
+import { TokenService } from '../shared/state/token.service';
 
-import { AuthStubService } from '../test/service-stubs';
+import { AuthStubService, TokenStubService } from '../test/service-stubs';
 import { RegisterService } from './register.service';
 
 describe('RegisterService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [MatSnackBarModule],
-      providers: [RegisterService, { provide: AuthService, useClass: AuthStubService }],
+      providers: [
+        RegisterService,
+        { provide: TokenService, useClass: TokenStubService },
+        { provide: AuthService, useClass: AuthStubService },
+      ],
     });
   });
 

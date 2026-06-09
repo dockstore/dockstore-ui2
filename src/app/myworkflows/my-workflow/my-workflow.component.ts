@@ -133,7 +133,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
     protected tokenQuery: TokenQuery,
     protected workflowQuery: WorkflowQuery,
     private alertQuery: AlertQuery,
-    private tokenService: TokenService,
+    protected tokenService: TokenService,
     protected sessionService: SessionService,
     protected sessionQuery: SessionQuery,
     private myWorkflowsService: MyWorkflowsService,
@@ -141,6 +141,7 @@ export class MyWorkflowComponent extends MyEntry implements OnInit {
     protected myEntriesStateService: MyEntriesStateService
   ) {
     super(
+      tokenService,
       accountsService,
       authService,
       configuration,

@@ -23,6 +23,7 @@ import {
   ToolDescriptor,
   CloudInstance,
   TRSService,
+  ClientPKCE,
 } from 'app/shared/openapi';
 import { BehaviorSubject, EMPTY, Observable, of as observableOf } from 'rxjs';
 import { SearchFields } from '../search/state/search.service';
@@ -610,6 +611,10 @@ export class TokenStubService {
   tokens$: BehaviorSubject<DockstoreTool[]> = new BehaviorSubject([]);
   hasGitHubToken$ = observableOf(false);
   updateTokens(): void {}
+
+  public getGitHubCodeChallenge(): Observable<ClientPKCE> {
+    return observableOf({});
+  }
 }
 
 export class TokensStubService {

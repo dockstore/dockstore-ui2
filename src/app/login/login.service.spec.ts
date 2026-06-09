@@ -16,15 +16,16 @@
 import { inject, TestBed } from '@angular/core/testing';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AuthService } from '../ng2-ui-auth/public_api';
+import { TokenService } from '../shared/state/token.service';
 
-import { AuthStubService } from '../test/service-stubs';
+import { AuthStubService, TokenStubService } from '../test/service-stubs';
 import { LoginService } from './login.service';
 
 describe('LoginService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [MatSnackBarModule],
-      providers: [LoginService, { provide: AuthService, useClass: AuthStubService }],
+      providers: [LoginService, { provide: TokenService, useClass: TokenStubService }, { provide: AuthService, useClass: AuthStubService }],
     });
   });
 

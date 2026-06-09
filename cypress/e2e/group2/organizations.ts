@@ -184,7 +184,7 @@ describe('Dockstore Organizations', () => {
           id: 1,
           role: 'MAINTAINER',
           status: 'ACCEPTED',
-          organization: { id: 2, status: 'APPROVED', name: 'Potatoe', displayName: 'Potatoe' },
+          organization: { id: 3, status: 'APPROVED', name: 'Potatoe', displayName: 'Potatoe' },
         },
       ];
       cy.intercept('GET', '*/users/user/memberships', {
