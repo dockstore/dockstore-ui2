@@ -39,7 +39,6 @@ export class CategoryButtonComponent implements OnChanges {
     this.className = isWorkflow ? 'workflow-background' : 'tool-background';
     this.routerLink = ['/search'];
     this.queryParams = {
-      // TODO modify this to search for the appropriate field
       [this.searchField()]: this.category.displayName,
       entryType: isWorkflow ? 'workflows' : 'tools',
       searchMode: 'files',
@@ -47,9 +46,13 @@ export class CategoryButtonComponent implements OnChanges {
   }
 
   private searchField(): string {
-    if (this.category.name.startsWith('operation-')) {
-      return 'operation.displayName.keyword';
-    }
+    const name = this.category.name;
+    if (name.startsWith('operation-')) return 'operation.displayName.keyword';
+    if (name.startsWith('topic-')) return 'topic.displayName.keyword';
+    if (name.startsWith('input-data-')) return 'input-data.displayName.keyword';
+    if (name.startsWith('input-format-')) return 'input-format.displayName.keyword';
+    if (name.startsWith('output-data-')) return 'output-data.displayName.keyword';
+    if (name.startsWith('output-format-')) return 'output-format.displayName.keyword';
     return 'categories.displayName.keyword';
   }
 }

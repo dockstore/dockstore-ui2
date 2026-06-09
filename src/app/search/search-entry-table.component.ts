@@ -133,6 +133,11 @@ export class SearchEntryTableComponent extends Base implements OnInit {
     ['categories.topic', 'Category Topic'],
     ['categories.displayName', 'Category'],
     ['operation.displayName', 'Operation'],
+    ['topic.displayName', 'Topic'],
+    ['input-format.displayName', 'Input Format'],
+    ['input-data.displayName', 'Input Data'],
+    ['output-format.displayName', 'Output Format'],
+    ['output-data.displayName', 'Output Data'],
   ]);
   public defaultSortOption: SortOption = {
     label: 'Relevance',

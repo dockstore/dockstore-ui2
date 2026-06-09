@@ -686,6 +686,11 @@ export class SearchComponent implements OnInit, OnDestroy {
       ['organization', ''],
       ['categories.displayName.keyword', ''],
       ['operation.displayName.keyword', ''],
+      ['topic.displayName.keyword', ''],
+      ['input-format.displayName.keyword', ''],
+      ['input-data.displayName.keyword', ''],
+      ['output-format.displayName.keyword', ''],
+      ['output-data.displayName.keyword', ''],
     ]);
   }
 
