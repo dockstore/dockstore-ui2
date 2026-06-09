@@ -40,9 +40,16 @@ export class CategoryButtonComponent implements OnChanges {
     this.routerLink = ['/search'];
     this.queryParams = {
       // TODO modify this to search for the appropriate field
-      'categories.displayName.keyword': this.category.displayName,
+      [this.searchField()]: this.category.displayName,
       entryType: isWorkflow ? 'workflows' : 'tools',
       searchMode: 'files',
     };
+  }
+
+  private searchField(): string {
+    if (this.category.name.startsWith('operation-')) {
+      return 'operation.displayName.keyword';
+    }
+    return 'categories.displayName.keyword';
   }
 }
