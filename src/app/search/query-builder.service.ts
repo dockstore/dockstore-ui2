@@ -319,6 +319,8 @@ export class QueryBuilderService {
         .orQuery(matchOp, 'labels', { query: term, boost: 2 })
         .orQuery(matchOp, 'all_authors.name', { query: term, boost: 3 })
         .orQuery(matchOp, 'topicAutomatic', { query: term, boost: 4 })
+        // For each set of categories, search the category topic (description) and category displayName (title)
+        // Weight matches in the title slightly more strongly than matches in the description
         .orQuery(matchOp, 'categories.topic', { query: term, boost: 2 })
         .orQuery(matchOp, 'categories.displayName', { query: term, boost: 3 })
         .orQuery(matchOp, 'operation.topic', { query: term, boost: 2 })
