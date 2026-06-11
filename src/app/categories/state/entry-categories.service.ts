@@ -15,13 +15,13 @@
  */
 import { Injectable } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
-import { Category, EntriesService } from '../../shared/openapi';
+import { CategorySummary, EntriesService } from '../../shared/openapi';
 import { EntryCategoriesStore } from './entry-categories.store';
 import { EntryCategoriesQuery } from './entry-categories.query';
 
 @Injectable({ providedIn: 'root' })
 export class EntryCategoriesService {
-  public categories$: Observable<Array<Category>>;
+  public categories$: Observable<Array<CategorySummary>>;
 
   constructor(
     private entryCategoriesStore: EntryCategoriesStore,
@@ -52,8 +52,8 @@ export class EntryCategoriesService {
     this.entryCategoriesStore.setLoading(false);
     if (published) {
       this.entryCategoriesStore.setLoading(true);
-      this.currentSubscription = this.entriesService.entryCategories(entryId).subscribe(
-        (categories: Array<Category>) => {
+      this.currentSubscription = this.entriesService.entryCategorySummaries(entryId).subscribe(
+        (categories: Array<CategorySummary>) => {
           this.entryCategoriesStore.setLoading(false);
           this.entryCategoriesStore.setError(false);
           this.entryCategoriesStore.set(categories);
