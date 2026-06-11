@@ -91,10 +91,15 @@ export class QueryBuilderService {
       'full_workflow_path',
       'gitUrl',
       'last_modified_date',
+      'input-data',
+      'input-format',
       'monthlyExecutionCounts',
       'name',
       'namespace',
+      'operation',
       'organization',
+      'output-data',
+      'output-format',
       'private_access',
       'providerUrl',
       'repository',
@@ -102,6 +107,7 @@ export class QueryBuilderService {
       'starredUsers',
       'toolname',
       'tool_path',
+      'topic',
       'topicAutomatic',
       'topicSelection',
       'verified',
@@ -159,6 +165,18 @@ export class QueryBuilderService {
         topicAutomatic: {},
         'categories.topic': {},
         'categories.displayName': {},
+        'operation.topic': {},
+        'operation.displayName': {},
+        'topic.topic': {},
+        'topic.displayName': {},
+        'input-format.topic': {},
+        'input-format.displayName': {},
+        'input-data.topic': {},
+        'input-data.displayName': {},
+        'output-format.topic': {},
+        'output-format.displayName': {},
+        'output-data.topic': {},
+        'output-data.displayName': {},
       },
     });
     const builtTableBody = tableBody.build();
@@ -301,8 +319,22 @@ export class QueryBuilderService {
         .orQuery(matchOp, 'labels', { query: term, boost: 2 })
         .orQuery(matchOp, 'all_authors.name', { query: term, boost: 3 })
         .orQuery(matchOp, 'topicAutomatic', { query: term, boost: 4 })
+        // For each set of categories, search the category topic (description) and category displayName (title)
+        // Weight matches in the title slightly more strongly than matches in the description
         .orQuery(matchOp, 'categories.topic', { query: term, boost: 2 })
-        .orQuery(matchOp, 'categories.displayName', { query: term, boost: 3 });
+        .orQuery(matchOp, 'categories.displayName', { query: term, boost: 3 })
+        .orQuery(matchOp, 'operation.topic', { query: term, boost: 2 })
+        .orQuery(matchOp, 'operation.displayName', { query: term, boost: 3 })
+        .orQuery(matchOp, 'topic.topic', { query: term, boost: 2 })
+        .orQuery(matchOp, 'topic.displayName', { query: term, boost: 3 })
+        .orQuery(matchOp, 'input-format.topic', { query: term, boost: 2 })
+        .orQuery(matchOp, 'input-format.displayName', { query: term, boost: 3 })
+        .orQuery(matchOp, 'input-data.topic', { query: term, boost: 2 })
+        .orQuery(matchOp, 'input-data.displayName', { query: term, boost: 3 })
+        .orQuery(matchOp, 'output-format.topic', { query: term, boost: 2 })
+        .orQuery(matchOp, 'output-format.displayName', { query: term, boost: 3 })
+        .orQuery(matchOp, 'output-data.topic', { query: term, boost: 2 })
+        .orQuery(matchOp, 'output-data.displayName', { query: term, boost: 3 });
     });
     body.queryMinimumShouldMatch(1);
     return body;

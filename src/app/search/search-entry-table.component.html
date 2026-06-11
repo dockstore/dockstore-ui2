@@ -114,11 +114,15 @@
                   >
                 </span>
                 <mat-chip-set>
+                  @for (categories of [entry?.source.categories, entry?.source.operation, entry?.source.topic,
+                  entry?.source['input-format'], entry?.source['input-data'], entry?.source['output-format'], entry?.source['output-data']];
+                  track categories) {
                   <app-category-button
-                    *ngFor="let category of entry?.source.categories"
+                    *ngFor="let category of categories"
                     [category]="category"
                     [entryType]="entryType | lowercase"
                   ></app-category-button>
+                  }
                   <mat-chip data-cy="descriptorType" *ngIf="entry?.source.entryTypeMetadata.type !== EntryType.TOOL">
                     {{ entry?.source.descriptorType | descriptorLanguage }}
                   </mat-chip>
