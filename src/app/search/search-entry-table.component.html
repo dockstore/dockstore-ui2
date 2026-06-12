@@ -93,15 +93,10 @@
 
             <div>
               @for (categories of [sort_categories(entry?.source.categories), sort_categories(entry?.source.operation),
-              sort_categories(entry?.source.topic), sort_categories(entry?.source['input-format']),
-              sort_categories(entry?.source['input-data']), sort_categories(entry?.source['output-format']),
-              sort_categories(entry?.source['output-data'])]; track $index) {
+              sort_categories(entry?.source.topic), sort_categories((entry?.source['input-format'] || []).concat(entry?.source['input-data']
+              || [])), sort_categories((entry?.source['output-format'] || []).concat(entry?.source['output-data'] || []))]; track $index) {
               <div *ngIf="categories.length" style="display: block">
-                <span style="font-size: 12px" class="mr-2"
-                  >{{
-                    ['Categories', 'Operations', 'Topics', 'Input Formats', 'Input Data', 'Output Formats', 'Output Data'][$index]
-                  }}:</span
-                >
+                <span style="font-size: 12px" class="mr-2">{{ ['Categories', 'Operations', 'Topics', 'Inputs', 'Outputs'][$index] }}:</span>
                 <mat-chip-set class="ml-2">
                   <app-category-button
                     *ngFor="let category of categories"
