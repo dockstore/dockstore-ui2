@@ -20,7 +20,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Base } from '../shared/base';
 import { SearchQuery, SearchResult } from './state/search.query';
 import { SearchService } from './state/search.service';
-import { EntryType, ExtendedGA4GHService, Workflow } from 'app/shared/openapi';
+import { CategorySummary, EntryType, ExtendedGA4GHService, Workflow } from 'app/shared/openapi';
 import { AsyncPipe, DatePipe, DecimalPipe, KeyValuePipe, LowerCasePipe, NgFor, NgIf } from '@angular/common';
 import TopicSelectionEnum = Workflow.TopicSelectionEnum;
 import { RouterLink } from '@angular/router';
@@ -56,6 +56,17 @@ import { ThumbnailTimeSeriesGraphComponent } from '../shared/graphs/thumbnail-ti
 export interface SortOption {
   label: string;
   sort: Sort;
+}
+
+function sort_categories(categories: CategorySummary[]): CategorySummary[] {
+  return [...categories].sort((a, b) => (a.displayName ?? '').localeCompare(b.displayName ?? ''));
+}
+
+function to_list<T>(value: T | Iterable<T>): T[] {
+  if (value != null && typeof value !== 'string' && typeof (value as any)[Symbol.iterator] === 'function') {
+    return Array.from(value as Iterable<T>);
+  }
+  return [value as T];
 }
 
 /**
@@ -108,6 +119,8 @@ export interface SortOption {
 export class SearchEntryTableComponent extends Base implements OnInit {
   faPlus = faPlus;
   faMinus = faMinus;
+  protected readonly sort_categories = sort_categories;
+  protected readonly to_list = to_list;
   public EntryType = EntryType;
   protected readonly TopicSelectionEnum = TopicSelectionEnum;
   protected readonly DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
