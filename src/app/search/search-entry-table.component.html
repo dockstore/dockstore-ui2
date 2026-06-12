@@ -54,14 +54,16 @@
               <div>
                 <img
                   src="../../../../assets/svg/{{ entry?.source.entryTypeMetadata.term }}-circle.svg"
-                  class="mr-2_5 site-icons-small"
+                  class="mr-2_5 site-icons-medium-small"
                   alt="{{ entry?.source.entryTypeMetadata.term }} icon"
                 />
                 <a
                   [matTooltip]="entry?.source | entryToDisplayName: true"
                   matTooltipPosition="left"
                   [routerLink]="entry?.source | routerLink"
-                  >{{ entry?.source | entryToDisplayName: true }}</a
+                  ><span style="font-size: 15px"
+                    ><b>{{ entry?.source | entryToDisplayName: true }}</b></span
+                  ></a
                 >
                 <mat-chip *ngIf="entry?.source?.archived" class="alert-warning ml-3">Archived</mat-chip>
               </div>
