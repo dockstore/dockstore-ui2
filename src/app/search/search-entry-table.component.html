@@ -95,16 +95,18 @@
               @for (categories of [entry?.source.categories, entry?.source.operation, entry?.source.topic, entry?.source['input-format'],
               entry?.source['input-data'], entry?.source['output-format'], entry?.source['output-data']]; track $index) {
               <div *ngIf="categories.length" style="display: block">
-                <span style="font-size: 12px"
+                <span style="font-size: 12px" class="mr-2"
                   >{{
                     ['Categories', 'Operations', 'Topics', 'Input Formats', 'Input Data', 'Output Formats', 'Output Data'][$index]
                   }}:</span
                 >
-                <app-category-button
-                  *ngFor="let category of categories"
-                  [category]="category"
-                  [entryType]="entryType | lowercase"
-                ></app-category-button>
+                <mat-chip-set class="ml-2">
+                  <app-category-button
+                    *ngFor="let category of categories"
+                    [category]="category"
+                    [entryType]="entryType | lowercase"
+                  ></app-category-button>
+                </mat-chip-set>
               </div>
               }
             </div>
