@@ -173,7 +173,7 @@
 "graceful-fs@4.2.11","ISC","https://github.com/isaacs/node-graceful-fs"
 "graphlib@2.1.8","MIT","https://github.com/dagrejs/graphlib"
 "hachure-fill@0.5.2","MIT","https://github.com/pshihn/hachure-fill"
-"hasown@2.0.2","MIT","https://github.com/inspect-js/hasOwn"
+"hasown@2.0.4","MIT","https://github.com/inspect-js/hasOwn"
 "hosted-git-info@2.8.9","ISC","https://github.com/npm/hosted-git-info"
 "http-cache-semantics@3.8.1","BSD-2-Clause","https://github.com/pornel/http-cache-semantics"
 "http-proxy-agent@2.1.0","MIT","https://github.com/TooTallNate/node-http-proxy-agent"
