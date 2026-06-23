@@ -149,8 +149,11 @@
                       </span>
                       <app-ai-bubble *ngIf="entry.topicSelection === TopicSelectionEnum.AI && !entry.isApprovedAITopic"></app-ai-bubble>
                     </div>
-                    <hr />
-                    <app-entry-categories [categories]="entry.categories" [entryType]="$any(entry.entryType)"></app-entry-categories>
+                    <app-entry-categories
+                      class="mt-2 mb-2"
+                      [categories]="entry.categories"
+                      [entryType]="$any(entry.entryType)"
+                    ></app-entry-categories>
                     <div fxLayout="row" fxLayoutAlign="space-between center">
                       <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="1rem">
                         <span class="update-time"> Last updated {{ entry.dbUpdateDate | date }} </span>
