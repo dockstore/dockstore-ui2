@@ -95,7 +95,7 @@ import { NotebookComponent } from '../notebook/notebook.component';
 import { InfoTabComponent } from './info-tab/info-tab.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { StargazersComponent } from '../stargazers/stargazers.component';
-import { CategoryButtonComponent } from '../categories/button/category-button.component';
+import { EntryCategoriesComponent } from '../categories/entry/entry-categories.component';
 import { WorkflowActionsComponent } from '../shared/entry-actions/workflow-actions.component';
 import { StarringComponent } from '../starring/starring.component';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
@@ -139,7 +139,7 @@ import { PreviewWarningComponent } from '../preview-warning/preview-warning.comp
     NgFor,
     StarringComponent,
     WorkflowActionsComponent,
-    CategoryButtonComponent,
+    EntryCategoriesComponent,
     StargazersComponent,
     NgClass,
     MatTabsModule,

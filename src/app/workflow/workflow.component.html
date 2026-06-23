@@ -199,16 +199,7 @@
           Manage DOIs
         </button>
       </div>
-      <span *ngIf="(categories$ | async)?.length > 0" class="inline-block mr-5 mt-1 mb-1">
-        <span class="size-small mr-2">Categories:</span>
-        <mat-chip-set>
-          <app-category-button
-            *ngFor="let category of categories$ | async"
-            [category]="category"
-            entryType="workflow"
-          ></app-category-button>
-        </mat-chip-set>
-      </span>
+      <app-entry-categories [categories]="categories$ | async" entryType="WORKFLOW"></app-entry-categories>
       <span *ngIf="!labelsEditMode && !starGazersClicked" class="inline-block mt-1 mb-1">
         <span *ngIf="workflowEditData?.labels.length > 0 || !isWorkflowPublic" class="size-small mr-2">
           <span>Labels:{{ workflowEditData?.labels.length === 0 ? ' n/a' : '' }}</span>
