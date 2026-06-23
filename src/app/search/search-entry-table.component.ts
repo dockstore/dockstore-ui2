@@ -20,7 +20,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Base } from '../shared/base';
 import { SearchQuery, SearchResult } from './state/search.query';
 import { SearchService } from './state/search.service';
-import { CategorySummary, EntryType, ExtendedGA4GHService, Workflow } from 'app/shared/openapi';
+import { EntryType, ExtendedGA4GHService, Workflow } from 'app/shared/openapi';
 import { AsyncPipe, DatePipe, DecimalPipe, KeyValuePipe, LowerCasePipe, NgFor, NgIf } from '@angular/common';
 import TopicSelectionEnum = Workflow.TopicSelectionEnum;
 import { RouterLink } from '@angular/router';
@@ -38,7 +38,7 @@ import { SearchAuthorsHtmlPipe } from './search-authors-html.pipe';
 import { CloudData, CloudOptions, TagCloudComponent } from 'angular-tag-cloud-module';
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 import { QueryBuilderService } from './query-builder.service';
-import { CategoryButtonComponent } from 'app/categories/button/category-button.component';
+import { EntryCategoriesComponent } from 'app/categories/entry/entry-categories.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
@@ -56,10 +56,6 @@ import { ThumbnailTimeSeriesGraphComponent } from '../shared/graphs/thumbnail-ti
 export interface SortOption {
   label: string;
   sort: Sort;
-}
-
-function sort_categories(categories: CategorySummary[]): CategorySummary[] {
-  return [...categories].sort((a, b) => (a.displayName ?? '').localeCompare(b.displayName ?? ''));
 }
 
 function to_list<T>(value: T | Iterable<T>): T[] {
@@ -110,7 +106,7 @@ function to_list<T>(value: T | Iterable<T>): T[] {
     AsyncPipe,
     MatButtonModule,
     LowerCasePipe,
-    CategoryButtonComponent,
+    EntryCategoriesComponent,
     MatChipsModule,
     PreviewWarningComponent,
     ThumbnailTimeSeriesGraphComponent,
@@ -119,7 +115,6 @@ function to_list<T>(value: T | Iterable<T>): T[] {
 export class SearchEntryTableComponent extends Base implements OnInit {
   faPlus = faPlus;
   faMinus = faMinus;
-  protected readonly sort_categories = sort_categories;
   protected readonly to_list = to_list;
   public EntryType = EntryType;
   protected readonly TopicSelectionEnum = TopicSelectionEnum;
