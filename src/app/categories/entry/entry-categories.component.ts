@@ -13,64 +13,22 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { ExtendedModule, FlexLayoutModule } from '@ngbracket/ngx-layout';
 import { CategorySummary, EntryType } from 'app/shared/openapi';
 import { CategoryButtonsComponent } from 'app/categories/buttons/category-buttons.component';
-
-interface CategoryGroup {
-  label: string;
-  categories: CategorySummary[];
-}
-
-const GROUP_ORDER = ['Categories', 'Operations', 'Topics', 'Inputs', 'Outputs'] as const;
-type GroupLabel = typeof GROUP_ORDER[number];
-
-function getGroupLabel(name: string): GroupLabel {
-  if (name.startsWith('operation-')) return 'Operations';
-  if (name.startsWith('topic-')) return 'Topics';
-  if (name.startsWith('input-')) return 'Inputs';
-  if (name.startsWith('output-')) return 'Outputs';
-  return 'Categories';
-}
-
-function sortCategories(categories: CategorySummary[]): CategorySummary[] {
-  return [...categories].sort((a, b) => (a.displayName ?? '').localeCompare(b.displayName ?? ''));
-}
-
-function sortIOCategories(categories: CategorySummary[]): CategorySummary[] {
-  const formats = categories.filter((c) => (c.name ?? '').startsWith('input-format-') || (c.name ?? '').startsWith('output-format-'));
-  const data = categories.filter((c) => (c.name ?? '').startsWith('input-data-') || (c.name ?? '').startsWith('output-data-'));
-  return [...sortCategories(formats), ...sortCategories(data)];
-}
-
-const IO_LABELS = new Set<GroupLabel>(['Inputs', 'Outputs']);
-
-function groupCategories(categories: CategorySummary[]): CategoryGroup[] {
-  const map = new Map<GroupLabel, CategorySummary[]>(GROUP_ORDER.map((label) => [label, []]));
-  for (const cat of categories) {
-    map.get(getGroupLabel(cat.name ?? ''))!.push(cat);
-  }
-  return GROUP_ORDER.filter((label) => map.get(label)!.length > 0).map((label) => ({
-    label,
-    categories: (IO_LABELS.has(label) ? sortIOCategories : sortCategories)(map.get(label)!),
-  }));
-}
+import { ExtractCategoriesPipe, GROUP_ORDER } from 'app/categories/extract-categories.pipe';
 
 @Component({
   selector: 'app-entry-categories',
   templateUrl: './entry-categories.component.html',
   styleUrls: ['./entry-categories.component.scss'],
   standalone: true,
-  imports: [ExtendedModule, FlexLayoutModule, CategoryButtonsComponent],
+  imports: [ExtendedModule, FlexLayoutModule, CategoryButtonsComponent, ExtractCategoriesPipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class EntryCategoriesComponent implements OnChanges {
+export class EntryCategoriesComponent {
   @Input() categories: CategorySummary[] = [];
   @Input() entryType: EntryType;
-  protected groups: CategoryGroup[] = [];
-
-  ngOnChanges(): void {
-    this.groups = groupCategories(this.categories ?? []);
-  }
+  protected readonly groupOrder = GROUP_ORDER;
 }
