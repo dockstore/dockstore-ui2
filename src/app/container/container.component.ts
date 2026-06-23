@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { Location, NgIf, NgFor, NgClass, AsyncPipe, DatePipe } from '@angular/common';
+import { Location, NgIf, NgFor, NgClass, NgSwitch, NgSwitchCase, AsyncPipe, DatePipe } from '@angular/common';
 import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
 import { MatDialog } from '@angular/material/dialog';
@@ -63,7 +63,8 @@ import { InfoTabComponent } from './info-tab/info-tab.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { StargazersComponent } from '../stargazers/stargazers.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CategoryButtonComponent } from '../categories/button/category-button.component';
+import { EntryCategoriesComponent } from '../categories/entry/entry-categories.component';
+import { AiBubbleComponent } from '../shared/ai-bubble/ai-bubble.component';
 import { ToolActionsComponent } from '../shared/entry-actions/tool-actions.component';
 import { MatButtonModule } from '@angular/material/button';
 import { StarringComponent } from '../starring/starring.component';
@@ -86,6 +87,8 @@ import { WorkflowComponent } from '../workflow/workflow.component';
   standalone: true,
   imports: [
     NgIf,
+    NgSwitch,
+    NgSwitchCase,
     WorkflowComponent,
     MatCardModule,
     MatIconModule,
@@ -102,7 +105,8 @@ import { WorkflowComponent } from '../workflow/workflow.component';
     StarringComponent,
     MatButtonModule,
     ToolActionsComponent,
-    CategoryButtonComponent,
+    EntryCategoriesComponent,
+    AiBubbleComponent,
     FormsModule,
     ReactiveFormsModule,
     StargazersComponent,

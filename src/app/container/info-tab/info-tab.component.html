@@ -63,6 +63,15 @@
               </button>
             </li>
           </span>
+          @for (group of groupOrder; track group) { @let cats = categories | extractCategories:group; @if (cats.length > 0) {
+          <li fxLayout="row" fxLayoutAlign="start start">
+            <span class="mr-2"
+              ><strong>{{ group }}</strong
+              >:</span
+            >
+            <app-category-buttons class="ml-2" [categories]="cats" entryType="TOOL"></app-category-buttons>
+          </li>
+          } }
           <li *ngIf="tool?.default_dockerfile_path || !isPublic">
             <form #editDockerfileForm="ngForm" class="form-inline" fxLayout>
               <div class="form-group" fxFlex="noshrink" fxLayout fxLayoutAlign=" center">
@@ -372,6 +381,13 @@
             </span>
           </div>
         </div>
+        <ul class="list-unstyled container-info">
+          <li [matTooltip]="selectedVersion.last_built | date: 'medium'">
+            <strong *ngIf="TagModel.ReferenceTypeEnum.TAG === selectedVersion.referenceType">Tag created</strong>
+            <strong *ngIf="TagModel.ReferenceTypeEnum.TAG !== selectedVersion.referenceType">Last update to this tool version</strong>:
+            {{ versionAgoMessage || 'n/a' }}
+          </li>
+        </ul>
       </mat-card-content>
     </mat-card>
   </div>
