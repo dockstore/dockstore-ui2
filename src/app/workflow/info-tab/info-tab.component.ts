@@ -13,9 +13,11 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+import { DatePipe } from '@angular/common';
 import { HttpResponse } from '@angular/common/http';
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { MatRadioModule } from '@angular/material/radio';
+import { DateService } from '../../shared/date.service';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { FileService } from 'app/shared/file.service';
@@ -87,6 +89,7 @@ import { CategoryButtonsComponent } from 'app/categories/buttons/category-button
     NgSwitchCase,
     NgSwitchDefault,
     AsyncPipe,
+    DatePipe,
     TitleCasePipe,
     MapFriendlyValuesPipe,
     BaseUrlPipe,
@@ -137,6 +140,8 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   ToolDescriptor = ToolDescriptor;
   public hasHttpImports: boolean = false;
   public entryType$: Observable<EntryType>;
+  public versionAgoMessage: string;
+  public WorkflowVersionModel = WorkflowVersion;
   public isRefreshing$: Observable<boolean>;
   modeTooltipContent = `STUB: Basic metadata pulled from source control.
   FULL: Full content synced from source control.
@@ -150,7 +155,8 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
     private alertQuery: AlertQuery,
     private workflowQuery: WorkflowQuery,
     private descriptorLanguageService: DescriptorLanguageService,
-    private fileService: FileService
+    private fileService: FileService,
+    private dateService: DateService
   ) {
     super();
     this.entryType$ = this.sessionQuery.entryType$.pipe(shareReplay());
@@ -186,6 +192,7 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
       const found = this.validVersions.find((version: WorkflowVersion) => version.id === this.selectedVersion.id);
       this.isValidVersion = found ? true : false;
       this.downloadZipLink = Dockstore.API_URI + '/workflows/' + this.workflow.id + '/zip/' + this.currentVersion.id;
+      this.versionAgoMessage = this.dateService.getAgoMessage(this.selectedVersion.last_modified);
       this.authors = []; // Clear authors so the previous authors are not displayed if the getWorkflowVersionOrcidAuthors call is slow or fails
       this.workflowsService.getWorkflowVersionOrcidAuthors(this.workflow.id, this.selectedVersion.id).subscribe((orcidAuthors) => {
         this.authors = [...this.selectedVersion.authors, ...orcidAuthors];

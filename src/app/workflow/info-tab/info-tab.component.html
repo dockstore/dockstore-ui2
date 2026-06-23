@@ -315,6 +315,11 @@
             </div>
           </li>
         </div>
+        <li *ngIf="extendedWorkflow?.agoMessage">
+          <span [matTooltip]="extendedWorkflow?.last_modified_date | date: 'medium'"
+            ><strong>Last update to source repository</strong>: {{ extendedWorkflow?.agoMessage }}</span
+          >
+        </li>
       </ul>
     </mat-card-content>
   </mat-card>
@@ -460,6 +465,14 @@
           </div>
         </div>
       </div>
+      <ul class="list-unstyled container-info">
+        <li [matTooltip]="selectedVersion.last_modified | date: 'medium'">
+          <strong *ngIf="WorkflowVersionModel.ReferenceTypeEnum.TAG === selectedVersion.referenceType">Tag created</strong>
+          <strong *ngIf="WorkflowVersionModel.ReferenceTypeEnum.TAG !== selectedVersion.referenceType"
+            >Last update to this {{ entryType$ | async }} version</strong
+          >: {{ versionAgoMessage || 'n/a' }}
+        </li>
+      </ul>
     </mat-card-content>
   </mat-card>
 </div>
