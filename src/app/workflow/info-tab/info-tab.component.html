@@ -408,12 +408,6 @@
         <strong matTooltip="Required engine versions" data-cy="engine-versions">Engine Versions</strong>:
         {{ selectedVersion.versionMetadata.engineVersions }}
       </div>
-      <div *ngIf="publicAccessibleTestParameterFile !== null && publicAccessibleTestParameterFile !== undefined">
-        <strong matTooltip="Version either has a test parameter file where all URLs are publicly accessible or does not require test data"
-          >Open</strong
-        >:
-        {{ publicAccessibleTestParameterFile ? 'Yes' : 'No' }}
-      </div>
       <div>
         <div *ngIf="description || !isPublic">
           <label matTooltip="Description of workflow obtained from workflow descriptor"> Description </label>:
@@ -464,6 +458,12 @@
             </span>
           </div>
         </div>
+      </div>
+      <div *ngIf="publicAccessibleTestParameterFile !== null && publicAccessibleTestParameterFile !== undefined">
+        <strong matTooltip="Version either has a test parameter file where all URLs are publicly accessible or does not require test data"
+          >Open</strong
+        >:
+        {{ publicAccessibleTestParameterFile ? 'Yes' : 'No' }}
       </div>
       <ul class="list-unstyled container-info">
         <li [matTooltip]="selectedVersion.last_modified | date: 'medium'">

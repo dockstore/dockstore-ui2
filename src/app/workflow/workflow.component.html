@@ -109,7 +109,7 @@
           </a>
         </mat-chip-set>
       </h3>
-      <div [ngSwitch]="workflow?.topicSelection" class="h5">
+      <div [ngSwitch]="workflow?.topicSelection" style="font-size: 16px">
         <span *ngSwitchCase="'MANUAL'">{{ workflow?.topicManual }}</span>
         <span *ngSwitchCase="'AUTOMATIC'">{{ workflow?.topicAutomatic }}</span>
         <span *ngSwitchCase="'AI'"
