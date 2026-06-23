@@ -20,7 +20,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Base } from '../shared/base';
 import { SearchQuery, SearchResult } from './state/search.query';
 import { SearchService } from './state/search.service';
-import { CategorySummary, EntryType, ExtendedGA4GHService, Workflow } from 'app/shared/openapi';
+import { EntryType, ExtendedGA4GHService, Workflow } from 'app/shared/openapi';
 import { AsyncPipe, DatePipe, DecimalPipe, KeyValuePipe, LowerCasePipe, NgFor, NgIf } from '@angular/common';
 import TopicSelectionEnum = Workflow.TopicSelectionEnum;
 import { RouterLink } from '@angular/router';
@@ -39,6 +39,7 @@ import { CloudData, CloudOptions, TagCloudComponent } from 'angular-tag-cloud-mo
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 import { QueryBuilderService } from './query-builder.service';
 import { EntryCategoriesComponent } from 'app/categories/entry/entry-categories.component';
+import { EntryCategoriesPipe } from 'app/search/categories/entry-categories.pipe';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
@@ -107,6 +108,7 @@ function to_list<T>(value: T | Iterable<T>): T[] {
     MatButtonModule,
     LowerCasePipe,
     EntryCategoriesComponent,
+    EntryCategoriesPipe,
     MatChipsModule,
     PreviewWarningComponent,
     ThumbnailTimeSeriesGraphComponent,
@@ -307,19 +309,5 @@ export class SearchEntryTableComponent extends Base implements OnInit {
     this.searchService.searchTerm$.next(true);
     this.searchService.setSearchText(clicked.text);
     this.searchService.tagClicked$.next(true);
-  }
-
-  protected entryCategories(entry: SearchResult): CategorySummary[] {
-    const src = entry?.source;
-    if (!src) return [];
-    return [
-      ...(src.categories ?? []),
-      ...(src.operation ?? []),
-      ...(src.topic ?? []),
-      ...(src['input-format'] ?? []),
-      ...(src['input-data'] ?? []),
-      ...(src['output-format'] ?? []),
-      ...(src['output-data'] ?? []),
-    ];
   }
 }

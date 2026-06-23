@@ -91,7 +91,7 @@
               </table>
             </div>
 
-            <app-entry-categories [categories]="entryCategories(entry)" [entryType]="entryType"></app-entry-categories>
+            <app-entry-categories [categories]="entry | entryCategories" [entryType]="entryType"></app-entry-categories>
             <div fxLayout="row" fxLayoutGap="1rem">
               <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="1rem" fxFlex>
                 <span *ngIf="entry?.source?.all_authors">
