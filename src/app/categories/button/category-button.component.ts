@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, OnChanges, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnChanges, Input } from '@angular/core';
 import { Category, CategorySummary } from '../../shared/openapi';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { NgClass } from '@angular/common';
@@ -28,6 +28,7 @@ const EDAM_PREFIX = 'http://edamontology.org/';
   styleUrls: ['./category-button.component.scss'],
   standalone: true,
   imports: [MatChipsModule, RouterLink, NgClass, MatTooltipModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CategoryButtonComponent implements OnChanges {
   @Input() category: Category | CategorySummary;
