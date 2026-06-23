@@ -19,7 +19,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { FileService } from 'app/shared/file.service';
-import { Author, WorkflowsService, ToolDescriptor } from 'app/shared/openapi';
+import { Author, CategorySummary, WorkflowsService, ToolDescriptor } from 'app/shared/openapi';
 import { OrcidAuthorInformation } from 'app/shared/openapi/model/orcidAuthorInformation';
 import { Observable } from 'rxjs';
 import { shareReplay, takeUntil } from 'rxjs/operators';
@@ -56,6 +56,8 @@ import { NgIf, NgFor, NgClass, NgSwitch, NgSwitchCase, NgSwitchDefault, AsyncPip
 import { DisplayTopicComponent } from 'app/shared/entry/info-tab-topic/display-topic/display-topic.component';
 import { MatChipsModule } from '@angular/material/chips';
 import { PreviewWarningComponent } from 'app/preview-warning/preview-warning.component';
+import { ExtractCategoriesPipe, GROUP_ORDER } from 'app/categories/extract-categories.pipe';
+import { CategoryButtonsComponent } from 'app/categories/buttons/category-buttons.component';
 
 @Component({
   selector: 'app-info-tab',
@@ -92,11 +94,15 @@ import { PreviewWarningComponent } from 'app/preview-warning/preview-warning.com
     DisplayTopicComponent,
     MatChipsModule,
     PreviewWarningComponent,
+    ExtractCategoriesPipe,
+    CategoryButtonsComponent,
   ],
 })
 export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   @Input() validVersions;
   @Input() defaultVersion;
+  @Input() categories: CategorySummary[] = [];
+  protected readonly groupOrder = GROUP_ORDER;
   // This should represent what's in the database
   @Input() extendedWorkflow: ExtendedWorkflow;
   // This is what the user is currently seeing/editing

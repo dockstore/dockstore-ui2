@@ -71,6 +71,15 @@
             <mat-icon>file_copy</mat-icon>
           </button>
         </li>
+        @for (group of groupOrder; track group) { @let cats = categories | extractCategories:group; @if (cats.length > 0) {
+        <li fxLayout="row" fxLayoutAlign="start center">
+          <span class="mr-2"
+            ><strong>{{ group }}</strong
+            >:</span
+          >
+          <app-category-buttons class="ml-2" [categories]="cats" [entryType]="$any(entryType$ | async)"></app-category-buttons>
+        </li>
+        } }
         <div
           *ngIf="
             (entryType$ | async) === EntryType.BioWorkflow ||

@@ -199,7 +199,6 @@
           Manage DOIs
         </button>
       </div>
-      <app-entry-categories [categories]="categories$ | async" entryType="WORKFLOW" class="layout-entry"></app-entry-categories>
       <span *ngIf="!labelsEditMode && !starGazersClicked" class="inline-block mt-1 mb-1">
         <span *ngIf="workflowEditData?.labels.length > 0 || !isWorkflowPublic" class="size-small mr-2">
           <span>Labels:{{ workflowEditData?.labels.length === 0 ? ' n/a' : '' }}</span>
@@ -298,6 +297,7 @@
               [canRead]="canRead"
               [canWrite]="canWrite"
               [isOwner]="isOwner"
+              [categories]="categories$ | async"
             ></app-info-tab>
           </mat-tab>
           <div *ngIf="entryType === EntryType.Notebook">
