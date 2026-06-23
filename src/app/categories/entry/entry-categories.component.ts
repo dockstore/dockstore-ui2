@@ -1,5 +1,5 @@
 /*
- *     Copyright 2025 OICR and UCSC
+ *     Copyright 2026 OICR and UCSC
  *
  *     Licensed under the Apache License, Version 2.0 (the "License")
  *     you may not use this file except in compliance with the License.
@@ -40,6 +40,14 @@ function sortCategories(categories: CategorySummary[]): CategorySummary[] {
   return [...categories].sort((a, b) => (a.displayName ?? '').localeCompare(b.displayName ?? ''));
 }
 
+function sortIOCategories(categories: CategorySummary[]): CategorySummary[] {
+  const formats = categories.filter((c) => (c.name ?? '').startsWith('input-format-') || (c.name ?? '').startsWith('output-format-'));
+  const data = categories.filter((c) => (c.name ?? '').startsWith('input-data-') || (c.name ?? '').startsWith('output-data-'));
+  return [...sortCategories(formats), ...sortCategories(data)];
+}
+
+const IO_LABELS = new Set<GroupLabel>(['Inputs', 'Outputs']);
+
 function groupCategories(categories: CategorySummary[]): CategoryGroup[] {
   const map = new Map<GroupLabel, CategorySummary[]>(GROUP_ORDER.map((label) => [label, []]));
   for (const cat of categories) {
@@ -47,7 +55,7 @@ function groupCategories(categories: CategorySummary[]): CategoryGroup[] {
   }
   return GROUP_ORDER.filter((label) => map.get(label)!.length > 0).map((label) => ({
     label,
-    categories: sortCategories(map.get(label)!),
+    categories: (IO_LABELS.has(label) ? sortIOCategories : sortCategories)(map.get(label)!),
   }));
 }
 
