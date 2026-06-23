@@ -113,6 +113,7 @@ import { MatCardModule } from '@angular/material/card';
 import { ManageDoisDialogComponent } from 'app/shared/entry/doi/manage-dois/manage-dois-dialog.component';
 import { DoiBadgeComponent } from 'app/shared/entry/doi/doi-badge/doi-badge.component';
 import { PreviewWarningComponent } from '../preview-warning/preview-warning.component';
+import { AiBubbleComponent } from '../shared/ai-bubble/ai-bubble.component';
 
 @Component({
   selector: 'app-workflow',
@@ -168,6 +169,7 @@ import { PreviewWarningComponent } from '../preview-warning/preview-warning.comp
     BaseUrlPipe,
     DoiBadgeComponent,
     PreviewWarningComponent,
+    AiBubbleComponent,
   ],
 })
 export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterViewInit, OnInit {
