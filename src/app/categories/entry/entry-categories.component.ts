@@ -13,27 +13,57 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { NgFor, NgIf, LowerCasePipe } from '@angular/common';
+import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
+import { NgFor, LowerCasePipe } from '@angular/common';
 import { ExtendedModule, FlexLayoutModule } from '@ngbracket/ngx-layout';
 import { MatChipsModule } from '@angular/material/chips';
 import { CategorySummary, EntryType } from 'app/shared/openapi';
-import { SearchResult } from 'app/search/state/search.query';
 import { CategoryButtonComponent } from 'app/categories/button/category-button.component';
 
-function sort_categories(categories: CategorySummary[]): CategorySummary[] {
+interface CategoryGroup {
+  label: string;
+  categories: CategorySummary[];
+}
+
+const GROUP_ORDER = ['Categories', 'Operations', 'Topics', 'Inputs', 'Outputs'] as const;
+type GroupLabel = typeof GROUP_ORDER[number];
+
+function getGroupLabel(name: string): GroupLabel {
+  if (name.startsWith('operation-')) return 'Operations';
+  if (name.startsWith('topic-')) return 'Topics';
+  if (name.startsWith('input-')) return 'Inputs';
+  if (name.startsWith('output-')) return 'Outputs';
+  return 'Categories';
+}
+
+function sortCategories(categories: CategorySummary[]): CategorySummary[] {
   return [...categories].sort((a, b) => (a.displayName ?? '').localeCompare(b.displayName ?? ''));
+}
+
+function groupCategories(categories: CategorySummary[]): CategoryGroup[] {
+  const map = new Map<GroupLabel, CategorySummary[]>(GROUP_ORDER.map((label) => [label, []]));
+  for (const cat of categories) {
+    map.get(getGroupLabel(cat.name ?? ''))!.push(cat);
+  }
+  return GROUP_ORDER.filter((label) => map.get(label)!.length > 0).map((label) => ({
+    label,
+    categories: sortCategories(map.get(label)!),
+  }));
 }
 
 @Component({
   selector: 'app-entry-categories',
   templateUrl: './entry-categories.component.html',
   standalone: true,
-  imports: [NgIf, NgFor, LowerCasePipe, ExtendedModule, FlexLayoutModule, MatChipsModule, CategoryButtonComponent],
+  imports: [NgFor, LowerCasePipe, ExtendedModule, FlexLayoutModule, MatChipsModule, CategoryButtonComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class EntryCategoriesComponent {
-  @Input() entry: SearchResult;
+export class EntryCategoriesComponent implements OnChanges {
+  @Input() categories: CategorySummary[] = [];
   @Input() entryType: EntryType;
-  protected readonly sort_categories = sort_categories;
+  protected groups: CategoryGroup[] = [];
+
+  ngOnChanges(): void {
+    this.groups = groupCategories(this.categories ?? []);
+  }
 }

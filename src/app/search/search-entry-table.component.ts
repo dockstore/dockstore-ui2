@@ -20,7 +20,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Base } from '../shared/base';
 import { SearchQuery, SearchResult } from './state/search.query';
 import { SearchService } from './state/search.service';
-import { EntryType, ExtendedGA4GHService, Workflow } from 'app/shared/openapi';
+import { CategorySummary, EntryType, ExtendedGA4GHService, Workflow } from 'app/shared/openapi';
 import { AsyncPipe, DatePipe, DecimalPipe, KeyValuePipe, LowerCasePipe, NgFor, NgIf } from '@angular/common';
 import TopicSelectionEnum = Workflow.TopicSelectionEnum;
 import { RouterLink } from '@angular/router';
@@ -307,5 +307,19 @@ export class SearchEntryTableComponent extends Base implements OnInit {
     this.searchService.searchTerm$.next(true);
     this.searchService.setSearchText(clicked.text);
     this.searchService.tagClicked$.next(true);
+  }
+
+  protected entryCategories(entry: SearchResult): CategorySummary[] {
+    const src = entry?.source;
+    if (!src) return [];
+    return [
+      ...(src.categories ?? []),
+      ...(src.operation ?? []),
+      ...(src.topic ?? []),
+      ...(src['input-format'] ?? []),
+      ...(src['input-data'] ?? []),
+      ...(src['output-format'] ?? []),
+      ...(src['output-data'] ?? []),
+    ];
   }
 }

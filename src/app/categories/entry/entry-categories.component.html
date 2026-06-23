@@ -1,15 +1,10 @@
 <div>
-  @for (categories of [sort_categories(entry?.source.categories), sort_categories(entry?.source.operation),
-  sort_categories(entry?.source.topic), sort_categories(entry?.source['input-format'] ||
-  []).concat(sort_categories(entry?.source['input-data'] || [])), sort_categories(entry?.source['output-format'] ||
-  []).concat(sort_categories(entry?.source['output-data'] || []))]; track $index) {
-  <div *ngIf="categories.length" fxLayout="row" fxLayoutAlign="start start">
-    <span style="font-size: 12px; text-align: right" fxFlex="0 0 8rem" class="mr-2"
-      >{{ ['Categories', 'Operations', 'Topics', 'Inputs', 'Outputs'][$index] }}:</span
-    >
+  @for (group of groups; track group.label) {
+  <div fxLayout="row" fxLayoutAlign="start start">
+    <span style="font-size: 12px; text-align: right" fxFlex="0 0 8rem" class="mr-2">{{ group.label }}:</span>
     <mat-chip-set class="ml-2" fxFlex>
       <app-category-button
-        *ngFor="let category of categories"
+        *ngFor="let category of group.categories"
         [category]="category"
         [entryType]="entryType | lowercase"
       ></app-category-button>
