@@ -1,7 +1,7 @@
 <div>
   @for (group of groups; track group.label) {
-  <div fxLayout="row" fxLayoutAlign="start start">
-    <span style="font-size: 12px; text-align: right" fxFlex="0 0 8rem" class="mr-2">{{ group.label }}:</span>
+  <div class="group-row" fxLayout="row" fxLayoutAlign="start start">
+    <span class="group-label mr-2">{{ group.label }}:</span>
     <mat-chip-set class="ml-2" fxFlex>
       <app-category-button
         *ngFor="let category of group.categories"

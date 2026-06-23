@@ -62,6 +62,7 @@ function groupCategories(categories: CategorySummary[]): CategoryGroup[] {
 @Component({
   selector: 'app-entry-categories',
   templateUrl: './entry-categories.component.html',
+  styleUrls: ['./entry-categories.component.scss'],
   standalone: true,
   imports: [NgFor, LowerCasePipe, ExtendedModule, FlexLayoutModule, MatChipsModule, CategoryButtonComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
