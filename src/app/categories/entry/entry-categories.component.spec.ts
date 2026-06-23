@@ -29,7 +29,7 @@ describe('EntryCategoriesComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('exposes groupOrder matching GROUP_ORDER', () => {
-    expect(component['groupOrder']).toEqual(GROUP_ORDER);
+  it('exposes groups matching GROUP_ORDER', () => {
+    expect(component['groups']).toEqual(GROUP_ORDER);
   });
 });

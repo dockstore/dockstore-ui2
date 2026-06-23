@@ -59,13 +59,6 @@ export interface SortOption {
   sort: Sort;
 }
 
-function to_list<T>(value: T | Iterable<T>): T[] {
-  if (value != null && typeof value !== 'string' && typeof (value as any)[Symbol.iterator] === 'function') {
-    return Array.from(value as Iterable<T>);
-  }
-  return [value as T];
-}
-
 /**
  * this component refers to search page not workflow listing search
  */
@@ -117,7 +110,6 @@ function to_list<T>(value: T | Iterable<T>): T[] {
 export class SearchEntryTableComponent extends Base implements OnInit {
   faPlus = faPlus;
   faMinus = faMinus;
-  protected readonly to_list = to_list;
   public EntryType = EntryType;
   protected readonly TopicSelectionEnum = TopicSelectionEnum;
   protected readonly DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
