@@ -30,5 +30,5 @@ import { ExtractCategoriesPipe, GROUP_ORDER } from 'app/categories/extract-categ
 export class EntryCategoriesComponent {
   @Input() categories: CategorySummary[] = [];
   @Input() entryType: EntryType;
-  protected readonly groupOrder = GROUP_ORDER;
+  @Input() groups: readonly string[] = GROUP_ORDER;
 }

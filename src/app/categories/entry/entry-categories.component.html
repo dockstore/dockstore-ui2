@@ -1,5 +1,5 @@
 <div>
-  @for (label of groupOrder; track label) { @let cats = categories | extractCategories:label; @if (cats.length > 0) {
+  @for (label of groups; track label) { @let cats = categories | extractCategories:$any(label); @if (cats.length > 0) {
   <div class="group-row" fxLayout="row" fxLayoutAlign="start start">
     <span class="group-label mr-2" fxFlex="0 0 8rem">{{ label }}:</span>
     <app-category-buttons class="ml-2" fxFlex [categories]="cats" [entryType]="entryType"></app-category-buttons>
