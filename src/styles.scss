@@ -882,8 +882,7 @@ img.align-middle {
 }
 
 .tool-background.ai-managed {
-  background: mix(white, $tool-selection-color, 60%) !important;
-  border: 1px solid darken($tool-selection-color, 2%) !important;
+  background: mix(#f4f4f4, $tool-selection-color, 80%) !important;
 }
 
 // Set the background to the color associated with workflows (green).
@@ -893,8 +892,7 @@ img.align-middle {
 }
 
 .workflow-background.ai-managed {
-  background: mix(white, $workflow-selection-color, 60%) !important;
-  border: 1px solid darken($workflow-selection-color, 2%) !important;
+  background: mix(#f4f4f4, $workflow-selection-color, 80%) !important;
 }
 
 // Set the background to the color associated with notebooks (purple).
