@@ -1,14 +1,8 @@
 <div>
   @for (group of groups; track group.label) {
   <div class="group-row" fxLayout="row" fxLayoutAlign="start start">
-    <span class="group-label mr-2">{{ group.label }}:</span>
-    <mat-chip-set class="ml-2" fxFlex>
-      <app-category-button
-        *ngFor="let category of group.categories"
-        [category]="category"
-        [entryType]="entryType | lowercase"
-      ></app-category-button>
-    </mat-chip-set>
+    <span class="group-label mr-2" fxFlex="0 0 8rem">{{ group.label }}:</span>
+    <app-category-buttons class="ml-2" fxFlex [categories]="group.categories" [entryType]="entryType"></app-category-buttons>
   </div>
   }
 </div>

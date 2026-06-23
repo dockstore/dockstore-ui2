@@ -14,11 +14,9 @@
  *     limitations under the License.
  */
 import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
-import { NgFor, LowerCasePipe } from '@angular/common';
 import { ExtendedModule, FlexLayoutModule } from '@ngbracket/ngx-layout';
-import { MatChipsModule } from '@angular/material/chips';
 import { CategorySummary, EntryType } from 'app/shared/openapi';
-import { CategoryButtonComponent } from 'app/categories/button/category-button.component';
+import { CategoryButtonsComponent } from 'app/categories/buttons/category-buttons.component';
 
 interface CategoryGroup {
   label: string;
@@ -64,7 +62,7 @@ function groupCategories(categories: CategorySummary[]): CategoryGroup[] {
   templateUrl: './entry-categories.component.html',
   styleUrls: ['./entry-categories.component.scss'],
   standalone: true,
-  imports: [NgFor, LowerCasePipe, ExtendedModule, FlexLayoutModule, MatChipsModule, CategoryButtonComponent],
+  imports: [ExtendedModule, FlexLayoutModule, CategoryButtonsComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EntryCategoriesComponent implements OnChanges {
