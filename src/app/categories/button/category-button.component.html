@@ -5,7 +5,8 @@
   [routerLink]="routerLink"
   [queryParams]="queryParams"
   [ngClass]="className"
-  [matTooltip]="category.topic"
+  [matTooltip]="tooltip"
+  matTooltipClass="multiline-tooltip"
   (click)="$event.stopPropagation(); $event.preventDefault()"
 >
   {{ category.displayName }}

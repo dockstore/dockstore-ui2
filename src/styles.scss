@@ -344,6 +344,10 @@ h3.available-containers {
   overflow-wrap: break-word;
 }
 
+.multiline-tooltip .mdc-tooltip__surface {
+  white-space: pre-line;
+}
+
 h4.title.caption {
   font-size: 20px;
   color: #a0adcc;
