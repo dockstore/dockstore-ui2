@@ -88,7 +88,7 @@ export class SearchService {
 
   private getOrderedFacetInfos(tabIndex: number): Array<FacetInfo> {
     const facetInfos = [
-      { friendlyName: 'Category', esName: 'categories.displayName.keyword', initiallyExpanded: true },
+      { friendlyName: 'Category', esName: 'categories.displayName.keyword', initiallyExpanded: false },
       { friendlyName: 'Operation', esName: 'operation.displayName.keyword', initiallyExpanded: false },
       { friendlyName: 'Topic', esName: 'topic.displayName.keyword', initiallyExpanded: false },
       { friendlyName: 'Input Format', esName: 'input-format.displayName.keyword', initiallyExpanded: false },
@@ -140,7 +140,6 @@ export class SearchService {
         tooltip: 'Indicates which platform a tool or workflow (at least one version) was successfully run on.',
         initiallyExpanded: false,
       },
-      { friendlyName: 'Input File Formats', esName: 'input_file_formats.value.keyword', initiallyExpanded: false },
       { friendlyName: 'Output File Formats', esName: 'output_file_formats.value.keyword', initiallyExpanded: false },
       {
         friendlyName: 'Verified',
