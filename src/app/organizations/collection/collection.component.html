@@ -150,15 +150,11 @@
                       <app-ai-bubble *ngIf="entry.topicSelection === TopicSelectionEnum.AI && !entry.isApprovedAITopic"></app-ai-bubble>
                     </div>
                     <hr />
+                    <app-entry-categories [categories]="entry.categories" [entryType]="$any(entry.entryType)"></app-entry-categories>
                     <div fxLayout="row" fxLayoutAlign="space-between center">
                       <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="1rem">
                         <span class="update-time"> Last updated {{ entry.dbUpdateDate | date }} </span>
                         <mat-chip-set>
-                          <app-category-button
-                            *ngFor="let category of entry.categories"
-                            [category]="category"
-                            [entryType]="entry.entryType"
-                          ></app-category-button>
                           <mat-chip
                             [ngClass]="entry.entryType === 'workflow' ? 'workflow-background' : 'tool-background'"
                             *ngIf="entry.verified"
