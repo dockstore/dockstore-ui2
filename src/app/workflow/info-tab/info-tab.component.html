@@ -72,7 +72,7 @@
           </button>
         </li>
         @for (group of groupOrder; track group) { @let cats = categories | extractCategories:group; @if (cats.length > 0) {
-        <li fxLayout="row" fxLayoutAlign="start center">
+        <li fxLayout="row" fxLayoutAlign="start start">
           <span class="mr-2"
             ><strong>{{ group }}</strong
             >:</span
