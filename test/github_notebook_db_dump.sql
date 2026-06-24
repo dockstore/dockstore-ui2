@@ -106,3 +106,11 @@ COPY public.workflowversion (id, dirtybit, lastmodified, name, reference, valid,
 1000	f	2023-02-14 14:43:15	simple-published-v1	simple-published-v1	t	/notebook.ipynb	2023-03-16 16:38:14.957	2023-03-16 16:38:14.957	TAG	\N	a69804f0c1ce5b7a260238ea5883c3876ab6b56d	f	1000	f	\N	\N	t	\N	\N	\N
 \.
 
+--
+-- Data for Name: entry_metadata; Type: TABLE DATA; Schema: public; Owner: dockstore
+--
+
+COPY public.entry_metadata (id) FROM stdin;
+1000
+\.
+
