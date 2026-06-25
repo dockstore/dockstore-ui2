@@ -41,7 +41,7 @@ export class CategoryButtonComponent implements OnChanges {
   ngOnChanges(): void {
     const isWorkflow: boolean = this.entryType.startsWith('workflow');
     this.className = isWorkflow ? 'workflow-background' : 'tool-background';
-    if ((this.category as CategorySummary).aiManaged) this.className += ' ai-managed';
+    if ((this.category as CategorySummary).curator == CategorySummary.CuratorEnum.AI) this.className += ' ai-managed';
     this.routerLink = ['/search'];
     this.queryParams = {
       [this.searchField()]: this.category.displayName,
@@ -62,13 +62,13 @@ export class CategoryButtonComponent implements OnChanges {
       parts.push(this.category.topic);
       parts.push('');
     }
-    const source = (this.category as Category).metadata?.['source'];
+    const source = this.category.metadata?.['source'];
     if (source === 'ai') {
       parts.push('Category created by AI.');
     } else if (source?.startsWith(EDAM_PREFIX)) {
       parts.push(`Derived from EDAM: ${source}`);
     } else {
-      parts.push('Category created by a Dockstore curator.');
+      parts.push('Category created by Dockstore.');
     }
     const curator = (this.category as CategorySummary).curator;
     if (curator === CategorySummary.CuratorEnum.USER) {
