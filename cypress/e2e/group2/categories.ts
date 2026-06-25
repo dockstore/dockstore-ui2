@@ -190,14 +190,14 @@ describe('Dockstore Categories', () => {
       });
     });
 
-    describe('should have the ai-managed CSS class', () => {
-      it('EDAM category bubbles have ai-managed class', () => {
+    describe('should have the ai-curated CSS class', () => {
+      it('EDAM category bubbles have ai-curated class', () => {
         cy.visit(toolPath);
-        cy.contains('[data-cy=categoriesBubble]', 'Sort').should('have.class', 'ai-managed');
+        cy.contains('[data-cy=categoriesBubble]', 'Sort').should('have.class', 'ai-curated');
       });
-      it('curator-created category bubbles do not have ai-managed class', () => {
+      it('curator-created category bubbles do not have ai-curated class', () => {
         cy.visit(toolPath);
-        cy.contains('[data-cy=categoriesBubble]', categoryDisplayName).should('not.have.class', 'ai-managed');
+        cy.contains('[data-cy=categoriesBubble]', categoryDisplayName).should('not.have.class', 'ai-curated');
       });
     });
 

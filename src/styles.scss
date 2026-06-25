@@ -886,7 +886,7 @@ img.align-middle {
   background: $tool-selection-color !important;
 }
 
-.tool-background.ai-managed {
+.tool-background.ai-curated {
   background: mix(#f4f4f4, $tool-selection-color, 80%) !important;
 }
 
@@ -896,7 +896,7 @@ img.align-middle {
   background: $workflow-selection-color !important;
 }
 
-.workflow-background.ai-managed {
+.workflow-background.ai-curated {
   background: mix(#f4f4f4, $workflow-selection-color, 80%) !important;
 }
 
