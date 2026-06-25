@@ -22,7 +22,7 @@
 
 INSERT INTO collection (name, displayname, topic, organizationid, dtype, deleted, dbcreatedate, dbupdatedate, metadata)
 VALUES
-  ('operation-sort',           'Sort',            'Sorting of sequences',           (SELECT id FROM organization WHERE name = 'dockstoreai'), 'Category', false, LOCALTIMESTAMP, LOCALTIMESTAMP, '{"source":"http://edamontology.org/operation_3802"}'),
+  ('operation-sort',           'Sort',            'Sorting of sequences',            (SELECT id FROM organization WHERE name = 'dockstoreai'), 'Category', false, LOCALTIMESTAMP, LOCALTIMESTAMP, '{"source":"http://edamontology.org/operation_3802"}'),
   ('topic-genomics',           'Genomics',        'Genomics and genome biology',     (SELECT id FROM organization WHERE name = 'dockstoreai'), 'Category', false, LOCALTIMESTAMP, LOCALTIMESTAMP, '{"source":"http://edamontology.org/topic_0622"}'),
   ('input-format-bam',         'BAM',             'BAM sequence alignment format',   (SELECT id FROM organization WHERE name = 'dockstoreai'), 'Category', false, LOCALTIMESTAMP, LOCALTIMESTAMP, '{"source":"http://edamontology.org/format_2572"}'),
   ('input-data-sequence-reads','Sequence reads',  'Sequencing read data',            (SELECT id FROM organization WHERE name = 'dockstoreai'), 'Category', false, LOCALTIMESTAMP, LOCALTIMESTAMP, '{"source":"http://edamontology.org/data_0848"}'),
