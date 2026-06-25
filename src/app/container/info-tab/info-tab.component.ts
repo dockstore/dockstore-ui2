@@ -13,7 +13,6 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { DatePipe } from '@angular/common';
 import { HttpResponse } from '@angular/common/http';
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { Base } from 'app/shared/base';
@@ -50,7 +49,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatCardModule } from '@angular/material/card';
-import { NgIf, NgClass } from '@angular/common';
+import { DatePipe, NgIf, NgClass } from '@angular/common';
 
 import DescriptorTypeEnum = ToolVersion.DescriptorTypeEnum;
 import { DisplayTopicComponent } from 'app/shared/entry/info-tab-topic/display-topic/display-topic.component';
@@ -121,11 +120,11 @@ export class InfoTabComponent extends Base implements OnInit, OnChanges {
   public versionAgoMessage: string;
   public TagModel = Tag;
   constructor(
-    private infoTabService: InfoTabService,
-    private sessionQuery: SessionQuery,
-    private containersService: ExtendedToolsService,
-    private containerTagsService: ContainertagsService,
-    private dateService: DateService
+    private readonly infoTabService: InfoTabService,
+    private readonly sessionQuery: SessionQuery,
+    private readonly containersService: ExtendedToolsService,
+    private readonly containerTagsService: ContainertagsService,
+    private readonly dateService: DateService
   ) {
     super();
   }

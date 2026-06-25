@@ -20,6 +20,7 @@ import { NgClass } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { MatChipsModule } from '@angular/material/chips';
 
+// eslint-disable-next-line
 const EDAM_PREFIX = 'http://edamontology.org/';
 
 @Component({

@@ -13,7 +13,6 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { DatePipe } from '@angular/common';
 import { HttpResponse } from '@angular/common/http';
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { MatRadioModule } from '@angular/material/radio';
@@ -54,7 +53,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatCardModule } from '@angular/material/card';
-import { NgIf, NgFor, NgClass, NgSwitch, NgSwitchCase, NgSwitchDefault, AsyncPipe, TitleCasePipe } from '@angular/common';
+import { DatePipe, NgIf, NgFor, NgClass, NgSwitch, NgSwitchCase, NgSwitchDefault, AsyncPipe, TitleCasePipe } from '@angular/common';
 import { DisplayTopicComponent } from 'app/shared/entry/info-tab-topic/display-topic/display-topic.component';
 import { MatChipsModule } from '@angular/material/chips';
 import { PreviewWarningComponent } from 'app/preview-warning/preview-warning.component';
@@ -148,15 +147,15 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   HOSTED: Workflow metadata and files hosted on Dockstore.`;
   Dockstore = Dockstore;
   constructor(
-    private extendedWorkflowsService: ExtendedWorkflowsService,
-    private workflowsService: WorkflowsService,
-    private sessionQuery: SessionQuery,
-    private infoTabService: InfoTabService,
-    private alertQuery: AlertQuery,
-    private workflowQuery: WorkflowQuery,
-    private descriptorLanguageService: DescriptorLanguageService,
-    private fileService: FileService,
-    private dateService: DateService
+    private readonly extendedWorkflowsService: ExtendedWorkflowsService,
+    private readonly workflowsService: WorkflowsService,
+    private readonly sessionQuery: SessionQuery,
+    private readonly infoTabService: InfoTabService,
+    private readonly alertQuery: AlertQuery,
+    private readonly workflowQuery: WorkflowQuery,
+    private readonly descriptorLanguageService: DescriptorLanguageService,
+    private readonly fileService: FileService,
+    private readonly dateService: DateService
   ) {
     super();
     this.entryType$ = this.sessionQuery.entryType$.pipe(shareReplay());
