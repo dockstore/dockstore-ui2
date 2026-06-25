@@ -41,7 +41,7 @@ export class CategoryButtonComponent implements OnChanges {
   ngOnChanges(): void {
     const isWorkflow: boolean = this.entryType.startsWith('workflow');
     this.className = isWorkflow ? 'workflow-background' : 'tool-background';
-    if ((this.category as CategorySummary).curator == CategorySummary.CuratorEnum.AI) this.className += ' ai-managed';
+    if ((this.category as CategorySummary).curator === CategorySummary.CuratorEnum.AI) this.className += ' ai-managed';
     this.routerLink = ['/search'];
     this.queryParams = {
       [this.searchField()]: this.category.displayName,
