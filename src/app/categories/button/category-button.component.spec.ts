@@ -32,11 +32,11 @@ describe('CategoryButtonComponent tooltip', () => {
     });
 
     it('reports Dockstore curator attribution when metadata is absent', () => {
-      expect(tooltip({})).toContain('Category created by a Dockstore curator.');
+      expect(tooltip({})).toContain('Category created by Dockstore.');
     });
 
     it('reports Dockstore curator attribution when source is an unrecognized value', () => {
-      expect(tooltip({ metadata: { source: 'unknown' } })).toContain('Category created by a Dockstore curator.');
+      expect(tooltip({ metadata: { source: 'unknown' } })).toContain('Category created by Dockstore.');
     });
   });
 
