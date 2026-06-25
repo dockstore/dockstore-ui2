@@ -127,4 +127,38 @@ describe('Dockstore Categories', () => {
       cy.url().should('include', categoryDisplayName);
     });
   });
+
+  describe('Category group labels should be visible', () => {
+    it('appear on collection page entry summary', () => {
+      cy.visit('/organizations/dockstore/collections/' + categoryName);
+      cy.get('.group-label').should('contain', 'Categories');
+    });
+    it('appear on tool page', () => {
+      cy.visit(toolPath);
+      cy.contains('strong', 'Categories');
+    });
+    it('appear on workflow page', () => {
+      cy.visit(workflowPath);
+      cy.contains('strong', 'Categories');
+    });
+  });
+
+  describe('Category bubble routing should encode category type', () => {
+    it('clickthrough URL encodes curator category search field', () => {
+      cy.visit('/organizations/dockstore/collections/' + categoryName);
+      cy.get('app-category-button').contains(categoryDisplayName).click();
+      cy.url().should('include', 'categories.displayName.keyword');
+    });
+  });
+
+  describe('Category bubble should be styled by entry type', () => {
+    it('tool entry gets tool-background class', () => {
+      cy.visit(toolPath);
+      cy.get('[data-cy=categoriesBubble]').should('have.class', 'tool-background');
+    });
+    it('workflow entry gets workflow-background class', () => {
+      cy.visit(workflowPath);
+      cy.get('[data-cy=categoriesBubble]').should('have.class', 'workflow-background');
+    });
+  });
 });
