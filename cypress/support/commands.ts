@@ -163,6 +163,10 @@ export function insertNotebooks() {
   addBeforeSqlFromFile('test/github_notebook_db_dump.sql');
 }
 
+export function insertEdamCategories() {
+  addBeforeSqlFromFile('test/edam_categories_db_dump.sql');
+}
+
 export function insertAuthors() {
   addBeforeSqlFromFile('test/authors_db_dump.sql');
 }

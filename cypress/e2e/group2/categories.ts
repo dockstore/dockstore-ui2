@@ -17,6 +17,7 @@ import {
   resetDB,
   setTokenUserViewPort,
   insertNotebooks,
+  insertEdamCategories,
   addOrganizationAdminUser,
   addToCollection,
   typeInInput,
@@ -159,6 +160,78 @@ describe('Dockstore Categories', () => {
     it('workflow entry gets workflow-background class', () => {
       cy.visit(workflowPath);
       cy.get('[data-cy=categoriesBubble]').should('have.class', 'workflow-background');
+    });
+  });
+
+  describe('AI-curated EDAM categories', () => {
+    insertEdamCategories();
+
+    describe('should appear in the correct group on entry pages', () => {
+      it('show Operations group on tool page', () => {
+        cy.visit(toolPath);
+        cy.contains('strong', 'Operations').closest('li').find('[data-cy=categoriesBubble]').should('contain', 'Sort');
+      });
+      it('show Topics group on tool page', () => {
+        cy.visit(toolPath);
+        cy.contains('strong', 'Topics').closest('li').find('[data-cy=categoriesBubble]').should('contain', 'Genomics');
+      });
+      it('show Inputs group on tool page', () => {
+        cy.visit(toolPath);
+        cy.contains('strong', 'Inputs').closest('li').find('[data-cy=categoriesBubble]').should('contain', 'BAM');
+      });
+      it('show Outputs group on workflow page', () => {
+        cy.visit(workflowPath);
+        cy.contains('strong', 'Outputs').closest('li').find('[data-cy=categoriesBubble]').should('contain', 'VCF');
+      });
+      it('show Operations and Topics on collection page entry summary', () => {
+        cy.visit('/organizations/dockstore/collections/' + categoryName);
+        cy.contains('.group-label', 'Operations').closest('.group-row').find('[data-cy=categoriesBubble]').should('contain', 'Sort');
+        cy.contains('.group-label', 'Topics').closest('.group-row').find('[data-cy=categoriesBubble]').should('contain', 'Genomics');
+      });
+    });
+
+    describe('should have the ai-managed CSS class', () => {
+      it('EDAM category bubbles have ai-managed class', () => {
+        cy.visit(toolPath);
+        cy.get('[data-cy=categoriesBubble]').contains('Sort').should('have.class', 'ai-managed');
+      });
+      it('curator-created category bubbles do not have ai-managed class', () => {
+        cy.visit(toolPath);
+        cy.get('[data-cy=categoriesBubble]').contains(categoryDisplayName).should('not.have.class', 'ai-managed');
+      });
+    });
+
+    describe('bubble routing should encode the EDAM category type', () => {
+      it('operation encodes operation search field', () => {
+        cy.visit(toolPath);
+        cy.get('[data-cy=categoriesBubble]').contains('Sort').click();
+        cy.url().should('include', 'operation.displayName.keyword');
+      });
+      it('topic encodes topic search field', () => {
+        cy.visit(toolPath);
+        cy.get('[data-cy=categoriesBubble]').contains('Genomics').click();
+        cy.url().should('include', 'topic.displayName.keyword');
+      });
+      it('input-format encodes input-format search field', () => {
+        cy.visit(toolPath);
+        cy.get('[data-cy=categoriesBubble]').contains('BAM').click();
+        cy.url().should('include', 'input-format.displayName.keyword');
+      });
+      it('input-data encodes input-data search field', () => {
+        cy.visit(toolPath);
+        cy.get('[data-cy=categoriesBubble]').contains('Sequence reads').click();
+        cy.url().should('include', 'input-data.displayName.keyword');
+      });
+      it('output-format encodes output-format search field', () => {
+        cy.visit(workflowPath);
+        cy.get('[data-cy=categoriesBubble]').contains('VCF').click();
+        cy.url().should('include', 'output-format.displayName.keyword');
+      });
+      it('output-data encodes output-data search field', () => {
+        cy.visit(workflowPath);
+        cy.get('[data-cy=categoriesBubble]').contains('Variants').click();
+        cy.url().should('include', 'output-data.displayName.keyword');
+      });
     });
   });
 });
