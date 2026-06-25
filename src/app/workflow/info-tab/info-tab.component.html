@@ -71,6 +71,15 @@
             <mat-icon>file_copy</mat-icon>
           </button>
         </li>
+        @for (group of groupOrder; track group) { @let cats = categories | extractCategories:group; @if (cats.length > 0) {
+        <li fxLayout="row" fxLayoutAlign="start start">
+          <span class="mr-2"
+            ><strong>{{ group }}</strong
+            >:</span
+          >
+          <app-category-buttons class="ml-2" [categories]="cats" [entryType]="$any(entryType$ | async)"></app-category-buttons>
+        </li>
+        } }
         <div
           *ngIf="
             (entryType$ | async) === EntryType.BioWorkflow ||
@@ -306,6 +315,11 @@
             </div>
           </li>
         </div>
+        <li *ngIf="extendedWorkflow?.agoMessage">
+          <span [matTooltip]="extendedWorkflow?.last_modified_date | date: 'medium'"
+            ><strong>Last update to source repository</strong>: {{ extendedWorkflow?.agoMessage }}</span
+          >
+        </li>
       </ul>
     </mat-card-content>
   </mat-card>
@@ -394,12 +408,6 @@
         <strong matTooltip="Required engine versions" data-cy="engine-versions">Engine Versions</strong>:
         {{ selectedVersion.versionMetadata.engineVersions }}
       </div>
-      <div *ngIf="publicAccessibleTestParameterFile !== null && publicAccessibleTestParameterFile !== undefined">
-        <strong matTooltip="Version either has a test parameter file where all URLs are publicly accessible or does not require test data"
-          >Open</strong
-        >:
-        {{ publicAccessibleTestParameterFile ? 'Yes' : 'No' }}
-      </div>
       <div>
         <div *ngIf="description || !isPublic">
           <label matTooltip="Description of workflow obtained from workflow descriptor"> Description </label>:
@@ -451,6 +459,20 @@
           </div>
         </div>
       </div>
+      <div *ngIf="publicAccessibleTestParameterFile !== null && publicAccessibleTestParameterFile !== undefined">
+        <strong matTooltip="Version either has a test parameter file where all URLs are publicly accessible or does not require test data"
+          >Open</strong
+        >:
+        {{ publicAccessibleTestParameterFile ? 'Yes' : 'No' }}
+      </div>
+      <ul class="list-unstyled container-info">
+        <li [matTooltip]="selectedVersion.last_modified | date: 'medium'">
+          <strong *ngIf="WorkflowVersionModel.ReferenceTypeEnum.TAG === selectedVersion.referenceType">Tag created</strong>
+          <strong *ngIf="WorkflowVersionModel.ReferenceTypeEnum.TAG !== selectedVersion.referenceType"
+            >Last update to this {{ entryType$ | async }} version</strong
+          >: {{ versionAgoMessage || 'n/a' }}
+        </li>
+      </ul>
     </mat-card-content>
   </mat-card>
 </div>

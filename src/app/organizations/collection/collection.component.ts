@@ -25,7 +25,7 @@ import { RouterLinkPipe } from '../../entry/router-link.pipe';
 import { GravatarPipe } from '../../gravatar/gravatar.pipe';
 import { MapFriendlyValuesPipe } from '../../search/map-friendly-values.pipe';
 import { MarkdownWrapperComponent } from '../../shared/markdown-wrapper/markdown-wrapper.component';
-import { CategoryButtonComponent } from '../../categories/button/category-button.component';
+import { EntryCategoriesComponent } from '../../categories/entry/entry-categories.component';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -87,7 +87,7 @@ export interface EntryDialogData {
     MatButtonModule,
     NgFor,
     MatChipsModule,
-    CategoryButtonComponent,
+    EntryCategoriesComponent,
     NgClass,
     MarkdownWrapperComponent,
     AsyncPipe,

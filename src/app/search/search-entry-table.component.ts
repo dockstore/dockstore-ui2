@@ -38,7 +38,8 @@ import { SearchAuthorsHtmlPipe } from './search-authors-html.pipe';
 import { CloudData, CloudOptions, TagCloudComponent } from 'angular-tag-cloud-module';
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 import { QueryBuilderService } from './query-builder.service';
-import { CategoryButtonComponent } from 'app/categories/button/category-button.component';
+import { EntryCategoriesComponent } from 'app/categories/entry/entry-categories.component';
+import { EntryCategoriesPipe } from 'app/search/categories/entry-categories.pipe';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
@@ -99,7 +100,8 @@ export interface SortOption {
     AsyncPipe,
     MatButtonModule,
     LowerCasePipe,
-    CategoryButtonComponent,
+    EntryCategoriesComponent,
+    EntryCategoriesPipe,
     MatChipsModule,
     PreviewWarningComponent,
     ThumbnailTimeSeriesGraphComponent,

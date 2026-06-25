@@ -18,13 +18,16 @@ import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { Base } from 'app/shared/base';
 import { takeUntil } from 'rxjs/operators';
 import { ga4ghPath } from '../../shared/constants';
+import { DateService } from '../../shared/date.service';
 import { Dockstore } from '../../shared/dockstore.model';
 import { ExtendedToolsService } from '../../shared/extended-tools.service';
 import { ExtendedDockstoreTool } from '../../shared/models/ExtendedDockstoreTool';
 import { SessionQuery } from '../../shared/session/session.query';
-import { ToolDescriptor, ToolVersion, WorkflowVersion, Author, ContainertagsService } from '../../shared/openapi';
+import { ToolDescriptor, ToolVersion, WorkflowVersion, Author, CategorySummary, ContainertagsService } from '../../shared/openapi';
 import { DockstoreTool } from '../../shared/openapi/model/dockstoreTool';
 import { Tag } from '../../shared/openapi/model/tag';
+import { ExtractCategoriesPipe, GROUP_ORDER } from 'app/categories/extract-categories.pipe';
+import { CategoryButtonsComponent } from 'app/categories/buttons/category-buttons.component';
 import { exampleDescriptorPatterns, validationDescriptorPatterns } from '../../shared/validationMessages.model';
 import { InfoTabService } from './info-tab.service';
 import { BaseUrlPipe } from '../../shared/entry/base-url.pipe';
@@ -46,7 +49,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatCardModule } from '@angular/material/card';
-import { NgIf, NgClass } from '@angular/common';
+import { DatePipe, NgIf, NgClass } from '@angular/common';
 
 import DescriptorTypeEnum = ToolVersion.DescriptorTypeEnum;
 import { DisplayTopicComponent } from 'app/shared/entry/info-tab-topic/display-topic/display-topic.component';
@@ -81,6 +84,9 @@ import { MatChipsModule } from '@angular/material/chips';
     BaseUrlPipe,
     DisplayTopicComponent,
     MatChipsModule,
+    DatePipe,
+    ExtractCategoriesPipe,
+    CategoryButtonsComponent,
   ],
 })
 export class InfoTabComponent extends Base implements OnInit, OnChanges {
@@ -89,6 +95,8 @@ export class InfoTabComponent extends Base implements OnInit, OnChanges {
   @Input() selectedVersion: Tag;
   @Input() privateOnlyRegistry: boolean;
   @Input() extendedDockstoreTool: ExtendedDockstoreTool;
+  @Input() categories: CategorySummary[] = [];
+  protected readonly groupOrder = GROUP_ORDER;
   public description: string | null;
   public validationPatterns = validationDescriptorPatterns;
   public exampleDescriptorPatterns = exampleDescriptorPatterns;
@@ -109,11 +117,14 @@ export class InfoTabComponent extends Base implements OnInit, OnChanges {
   downloadZipLink: string;
   isValidVersion = false;
   Dockstore = Dockstore;
+  public versionAgoMessage: string;
+  public TagModel = Tag;
   constructor(
-    private infoTabService: InfoTabService,
-    private sessionQuery: SessionQuery,
-    private containersService: ExtendedToolsService,
-    private containerTagsService: ContainertagsService
+    private readonly infoTabService: InfoTabService,
+    private readonly sessionQuery: SessionQuery,
+    private readonly containersService: ExtendedToolsService,
+    private readonly containerTagsService: ContainertagsService,
+    private readonly dateService: DateService
   ) {
     super();
   }
@@ -127,6 +138,7 @@ export class InfoTabComponent extends Base implements OnInit, OnChanges {
       this.currentVersion = this.selectedVersion;
       this.isValidVersion = this.validVersions.some((version: Tag) => version.id === this.selectedVersion.id);
       this.downloadZipLink = Dockstore.API_URI + '/containers/' + this.tool.id + '/zip/' + this.currentVersion.id;
+      this.versionAgoMessage = this.dateService.getAgoMessage(this.selectedVersion.last_built);
       if (this.tool.descriptorType.includes(DescriptorTypeEnum.CWL)) {
         this.trsLinkCWL = this.getTRSLink(
           this.tool.tool_path,

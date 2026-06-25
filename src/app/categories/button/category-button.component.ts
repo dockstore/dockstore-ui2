@@ -13,12 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, OnChanges, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnChanges, Input } from '@angular/core';
 import { Category, CategorySummary } from '../../shared/openapi';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { NgClass } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { MatChipsModule } from '@angular/material/chips';
+
+// eslint-disable-next-line
+const EDAM_PREFIX = 'http://edamontology.org/';
 
 @Component({
   selector: 'app-category-button',
@@ -26,6 +29,7 @@ import { MatChipsModule } from '@angular/material/chips';
   styleUrls: ['./category-button.component.scss'],
   standalone: true,
   imports: [MatChipsModule, RouterLink, NgClass, MatTooltipModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CategoryButtonComponent implements OnChanges {
   @Input() category: Category | CategorySummary;
@@ -37,12 +41,55 @@ export class CategoryButtonComponent implements OnChanges {
   ngOnChanges(): void {
     const isWorkflow: boolean = this.entryType.startsWith('workflow');
     this.className = isWorkflow ? 'workflow-background' : 'tool-background';
+    if ((this.category as CategorySummary).curator === CategorySummary.CuratorEnum.AI) this.className += ' ai-curated';
     this.routerLink = ['/search'];
     this.queryParams = {
       [this.searchField()]: this.category.displayName,
       entryType: isWorkflow ? 'workflows' : 'tools',
       searchMode: 'files',
     };
+  }
+
+  get tooltip(): string {
+    const parts: string[] = [];
+    if (this.category.displayName) {
+      const label = (this.category as CategorySummary).aiManaged ? this.categoryTypeLabel() : 'Category';
+      parts.push(`${label}:`);
+      parts.push(this.category.displayName);
+    }
+    parts.push('');
+    if (this.category.topic) {
+      parts.push(this.category.topic);
+      parts.push('');
+    }
+    const source = this.category.metadata?.['source'];
+    if (source === 'ai') {
+      parts.push('Category created by AI.');
+    } else if (source?.startsWith(EDAM_PREFIX)) {
+      parts.push(`Derived from EDAM: ${source}`);
+    } else {
+      parts.push('Category created by Dockstore.');
+    }
+    const curator = (this.category as CategorySummary).curator;
+    if (curator === CategorySummary.CuratorEnum.USER) {
+      parts.push('Category membership approved by entry owner.');
+    } else if (curator === CategorySummary.CuratorEnum.DOCKSTORE) {
+      parts.push('Category membership curated by Dockstore.');
+    } else if (curator === CategorySummary.CuratorEnum.AI) {
+      parts.push('Category membership curated by AI.');
+    }
+    return parts.join('\n');
+  }
+
+  private categoryTypeLabel(): string {
+    const name = this.category.name;
+    if (name.startsWith('operation-')) return 'Operation';
+    if (name.startsWith('topic-')) return 'Topic';
+    if (name.startsWith('input-data-')) return 'Input Data';
+    if (name.startsWith('input-format-')) return 'Input Format';
+    if (name.startsWith('output-data-')) return 'Output Data';
+    if (name.startsWith('output-format-')) return 'Output Format';
+    return 'Category';
   }
 
   private searchField(): string {
