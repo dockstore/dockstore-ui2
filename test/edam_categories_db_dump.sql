@@ -20,14 +20,14 @@
 --   workflow id=11 github.com/A/l                                    (published)
 -- Both have entry_metadata rows inserted by the 1.20.0 Liquibase migration.
 
-INSERT INTO collection (name, displayname, topic, organizationid, dtype, deleted, dbcreatedate, dbupdatedate)
+INSERT INTO collection (name, displayname, topic, organizationid, dtype, deleted, dbcreatedate, dbupdatedate, metadata)
 VALUES
-  ('operation-sort',           'Sort',            'Sorting of sequences',           (SELECT id FROM organization WHERE name = 'dockstoreai'), 'Category', false, LOCALTIMESTAMP, LOCALTIMESTAMP),
-  ('topic-genomics',           'Genomics',        'Genomics and genome biology',     (SELECT id FROM organization WHERE name = 'dockstoreai'), 'Category', false, LOCALTIMESTAMP, LOCALTIMESTAMP),
-  ('input-format-bam',         'BAM',             'BAM sequence alignment format',   (SELECT id FROM organization WHERE name = 'dockstoreai'), 'Category', false, LOCALTIMESTAMP, LOCALTIMESTAMP),
-  ('input-data-sequence-reads','Sequence reads',  'Sequencing read data',            (SELECT id FROM organization WHERE name = 'dockstoreai'), 'Category', false, LOCALTIMESTAMP, LOCALTIMESTAMP),
-  ('output-format-vcf',        'VCF',             'VCF variant call format',         (SELECT id FROM organization WHERE name = 'dockstoreai'), 'Category', false, LOCALTIMESTAMP, LOCALTIMESTAMP),
-  ('output-data-variants',     'Variants',        'Genomic variant data',            (SELECT id FROM organization WHERE name = 'dockstoreai'), 'Category', false, LOCALTIMESTAMP, LOCALTIMESTAMP);
+  ('operation-sort',           'Sort',            'Sorting of sequences',           (SELECT id FROM organization WHERE name = 'dockstoreai'), 'Category', false, LOCALTIMESTAMP, LOCALTIMESTAMP, '{"source":"http://edamontology.org/operation_3802"}'),
+  ('topic-genomics',           'Genomics',        'Genomics and genome biology',     (SELECT id FROM organization WHERE name = 'dockstoreai'), 'Category', false, LOCALTIMESTAMP, LOCALTIMESTAMP, '{"source":"http://edamontology.org/topic_0622"}'),
+  ('input-format-bam',         'BAM',             'BAM sequence alignment format',   (SELECT id FROM organization WHERE name = 'dockstoreai'), 'Category', false, LOCALTIMESTAMP, LOCALTIMESTAMP, '{"source":"http://edamontology.org/format_2572"}'),
+  ('input-data-sequence-reads','Sequence reads',  'Sequencing read data',            (SELECT id FROM organization WHERE name = 'dockstoreai'), 'Category', false, LOCALTIMESTAMP, LOCALTIMESTAMP, '{"source":"http://edamontology.org/data_0848"}'),
+  ('output-format-vcf',        'VCF',             'VCF variant call format',         (SELECT id FROM organization WHERE name = 'dockstoreai'), 'Category', false, LOCALTIMESTAMP, LOCALTIMESTAMP, '{"source":"http://edamontology.org/format_3016"}'),
+  ('output-data-variants',     'Variants',        'Genomic variant data',            (SELECT id FROM organization WHERE name = 'dockstoreai'), 'Category', false, LOCALTIMESTAMP, LOCALTIMESTAMP, '{"source":"http://edamontology.org/data_3498"}');
 
 -- Add tool (cgpmap-cramOut) to operation, topic, and both input subontologies.
 INSERT INTO collection_entry_version (collection_id, entry_id, curator, dbcreatedate, dbupdatedate)
