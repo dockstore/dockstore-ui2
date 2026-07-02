@@ -111,11 +111,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { ManageDoisDialogComponent } from 'app/shared/entry/doi/manage-dois/manage-dois-dialog.component';
-import { ManageCategoriesDialogComponent } from 'app/categories/manage/manage-categories-dialog.component';
 import { DoiBadgeComponent } from 'app/shared/entry/doi/doi-badge/doi-badge.component';
 import { PreviewWarningComponent } from '../preview-warning/preview-warning.component';
 import { AiBubbleComponent } from '../shared/ai-bubble/ai-bubble.component';
-import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-workflow',
@@ -172,7 +170,6 @@ import { take } from 'rxjs/operators';
     DoiBadgeComponent,
     PreviewWarningComponent,
     AiBubbleComponent,
-    ManageCategoriesDialogComponent,
   ],
 })
 export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterViewInit, OnInit {
@@ -664,22 +661,6 @@ export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterVi
     this.dialog.open(ManageDoisDialogComponent, {
       width: bootstrap4largeModalSize,
       data: { entry: this.workflow, version: this.selectedVersion },
-    });
-  }
-
-  manageCategories() {
-    this.categories$.pipe(take(1)).subscribe((categories) => {
-      this.dialog
-        .open(ManageCategoriesDialogComponent, {
-          width: bootstrap4largeModalSize,
-          data: { categories: categories ?? [], entryId: this.workflow.id },
-        })
-        .afterClosed()
-        .subscribe((changed) => {
-          if (changed) {
-            this.updateCategories(this.workflow.id, this.workflow.is_published);
-          }
-        });
     });
   }
 
