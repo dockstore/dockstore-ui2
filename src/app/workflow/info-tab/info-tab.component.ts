@@ -18,7 +18,7 @@ import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/cor
 import { MatDialog } from '@angular/material/dialog';
 import { MatRadioModule } from '@angular/material/radio';
 import { DateService } from '../../shared/date.service';
-import { bootstrap4largeModalSize } from '../../shared/constants';
+import { bootstrap4mediumModalSize } from '../../shared/constants';
 import { EntryCategoriesService } from '../../categories/state/entry-categories.service';
 import { ManageCategoriesDialogComponent } from '../../categories/manage/manage-categories-dialog.component';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
@@ -247,7 +247,7 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   manageCategories() {
     this.dialog
       .open(ManageCategoriesDialogComponent, {
-        width: bootstrap4largeModalSize,
+        width: bootstrap4mediumModalSize,
         data: { categories: this.categories ?? [], entryId: this.workflow.id },
       })
       .afterClosed()

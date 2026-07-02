@@ -43,7 +43,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatRadioModule } from '@angular/material/radio';
 import { AiBubbleComponent } from '../../shared/ai-bubble/ai-bubble.component';
 import { AlertQuery } from '../../shared/alert/state/alert.query';
-import { bootstrap4largeModalSize } from '../../shared/constants';
+import { bootstrap4mediumModalSize } from '../../shared/constants';
 import { EntryCategoriesService } from '../../categories/state/entry-categories.service';
 import { ManageCategoriesDialogComponent } from '../../categories/manage/manage-categories-dialog.component';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
@@ -198,7 +198,7 @@ export class InfoTabComponent extends Base implements OnInit, OnChanges {
   manageCategories() {
     this.dialog
       .open(ManageCategoriesDialogComponent, {
-        width: bootstrap4largeModalSize,
+        width: bootstrap4mediumModalSize,
         data: { categories: this.categories ?? [], entryId: this.tool.id },
       })
       .afterClosed()
