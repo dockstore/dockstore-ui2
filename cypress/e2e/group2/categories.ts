@@ -233,5 +233,129 @@ describe('Dockstore Categories', () => {
         cy.url().should('include', 'output-data.displayName.keyword');
       });
     });
+
+    describe('Manage Categories dialog', () => {
+      const ownedWorkflowWithCategories = '/my-workflows/github.com/A/l';
+      const ownedWorkflowWithoutCategories = '/my-workflows/github.com/A/g';
+
+      function categoryRow(displayName: string) {
+        return cy.contains('span', displayName).closest('.mt-2');
+      }
+
+      function clickRemoveButton(displayName: string) {
+        categoryRow(displayName).find('button').first().click();
+      }
+
+      function clickApproveButton(displayName: string) {
+        categoryRow(displayName).find('button').eq(1).click();
+      }
+
+      it('does not show the Manage Categories button for an owned entry with no categories', () => {
+        cy.visit(ownedWorkflowWithoutCategories);
+        cy.contains('button', 'Manage Categories').should('not.exist');
+      });
+
+      it('shows the Manage Categories button for an owned entry with categories', () => {
+        cy.visit(ownedWorkflowWithCategories);
+        cy.contains('button', 'Manage Categories').should('be.visible');
+      });
+
+      it('lists the AI-curated categories with approve/remove controls', () => {
+        cy.visit(ownedWorkflowWithCategories);
+        cy.contains('button', 'Manage Categories').click();
+        cy.contains('h1', 'Manage Categories').should('be.visible');
+        cy.get('mat-dialog-content').within(() => {
+          ['Sort', 'Genomics', 'VCF', 'Variants'].forEach((name) => {
+            categoryRow(name).should('contain', 'AI-curated');
+            categoryRow(name).find('button').should('have.length', 2);
+          });
+        });
+        cy.contains('button', 'Cancel').click();
+        cy.get('mat-dialog-content').should('not.exist');
+      });
+
+      it('toggles a pending removal decision and can undo it before saving', () => {
+        cy.visit(ownedWorkflowWithCategories);
+        cy.contains('button', 'Manage Categories').click();
+        cy.get('mat-dialog-content').within(() => {
+          clickRemoveButton('Genomics');
+          categoryRow('Genomics').should('contain', 'Removing');
+          cy.contains('Pending Changes').should('be.visible');
+          cy.contains('li', 'Remove from').should('contain', 'Genomics');
+
+          // Clicking remove again undoes the pending decision
+          clickRemoveButton('Genomics');
+          categoryRow('Genomics').should('contain', 'AI-curated');
+          cy.contains('Pending Changes').should('not.exist');
+        });
+        cy.contains('button', 'Cancel').click();
+      });
+
+      it('toggles a pending approval decision and can undo it before saving', () => {
+        cy.visit(ownedWorkflowWithCategories);
+        cy.contains('button', 'Manage Categories').click();
+        cy.get('mat-dialog-content').within(() => {
+          clickApproveButton('VCF');
+          categoryRow('VCF').should('contain', 'Approved');
+          cy.contains('li', 'Approve membership in').should('contain', 'VCF');
+
+          // Clicking approve again undoes the pending decision
+          clickApproveButton('VCF');
+          categoryRow('VCF').should('contain', 'AI-curated');
+          cy.contains('Pending Changes').should('not.exist');
+        });
+        cy.contains('button', 'Cancel').click();
+      });
+
+      it('does not persist pending decisions when Cancel is clicked', () => {
+        cy.visit(ownedWorkflowWithCategories);
+        cy.contains('button', 'Manage Categories').click();
+        cy.get('mat-dialog-content').within(() => {
+          clickRemoveButton('Variants');
+        });
+        cy.contains('button', 'Cancel').click();
+        cy.get('mat-dialog-content').should('not.exist');
+        cy.get('[data-cy=categoriesBubble]').contains('Variants').should('exist');
+      });
+
+      it('saves with no API calls when there are no pending changes', () => {
+        cy.intercept('PUT', '**/categories/*/entry*').as('approveCategory');
+        cy.intercept('DELETE', '**/categories/*/entry*').as('removeCategory');
+        cy.visit(ownedWorkflowWithCategories);
+        cy.contains('button', 'Manage Categories').click();
+        cy.contains('button', 'Save').click();
+        cy.get('mat-dialog-content').should('not.exist');
+        cy.get('@approveCategory.all').should('have.length', 0);
+        cy.get('@removeCategory.all').should('have.length', 0);
+      });
+
+      it('removes a category from the entry after Save', () => {
+        cy.intercept('DELETE', '**/categories/*/entry*').as('removeCategory');
+        cy.visit(ownedWorkflowWithCategories);
+        cy.get('[data-cy=categoriesBubble]').contains('Sort').should('exist');
+        cy.contains('button', 'Manage Categories').click();
+        cy.get('mat-dialog-content').within(() => {
+          clickRemoveButton('Sort');
+        });
+        cy.contains('button', 'Save').click();
+        cy.wait('@removeCategory');
+        cy.get('mat-dialog-content').should('not.exist');
+        cy.get('[data-cy=categoriesBubble]').contains('Sort').should('not.exist');
+      });
+
+      it('approves a category, clearing its ai-curated styling on the entry page after Save', () => {
+        cy.intercept('PUT', '**/categories/*/entry*').as('approveCategory');
+        cy.visit(ownedWorkflowWithCategories);
+        cy.contains('[data-cy=categoriesBubble]', 'Genomics').should('have.class', 'ai-curated');
+        cy.contains('button', 'Manage Categories').click();
+        cy.get('mat-dialog-content').within(() => {
+          clickApproveButton('Genomics');
+        });
+        cy.contains('button', 'Save').click();
+        cy.wait('@approveCategory');
+        cy.get('mat-dialog-content').should('not.exist');
+        cy.contains('[data-cy=categoriesBubble]', 'Genomics').should('not.have.class', 'ai-curated');
+      });
+    });
   });
 });
