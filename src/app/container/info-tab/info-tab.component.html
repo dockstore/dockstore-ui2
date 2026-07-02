@@ -72,7 +72,7 @@
             <app-category-buttons class="ml-2" [categories]="cats" entryType="TOOL"></app-category-buttons>
           </li>
           } }
-          <li *ngIf="!isPublic && canWrite">
+          <li *ngIf="!isPublic && canWrite && categories?.length">
             <button
               type="button"
               mat-stroked-button

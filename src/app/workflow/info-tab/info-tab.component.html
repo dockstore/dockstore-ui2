@@ -80,7 +80,7 @@
           <app-category-buttons class="ml-2" [categories]="cats" [entryType]="$any(entryType$ | async)"></app-category-buttons>
         </li>
         } }
-        <li *ngIf="isOwner">
+        <li *ngIf="isOwner && categories?.length">
           <button
             type="button"
             mat-stroked-button
