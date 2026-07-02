@@ -21,15 +21,17 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDividerModule } from '@angular/material/divider';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
-import { forkJoin } from 'rxjs';
+import { forkJoin, of } from 'rxjs';
+import { concatMap } from 'rxjs/operators';
 import { AlertService } from 'app/shared/alert/state/alert.service';
 import { AlertComponent } from 'app/shared/alert/alert.component';
-import { CategoriesService, CategorySummary } from 'app/shared/openapi';
+import { CategoriesService, CategorySummary, EntryTypeMetadata } from 'app/shared/openapi';
 import { getGroupLabel, GROUP_ORDER } from 'app/categories/extract-categories.pipe';
 
 export interface ManageCategoriesDialogData {
   categories: CategorySummary[];
   entryId: number;
+  entryTypeMetadata: EntryTypeMetadata;
 }
 
 type CategoryDecision = 'approve' | 'remove';
@@ -56,6 +58,7 @@ type CategoryDecision = 'approve' | 'remove';
 export class ManageCategoriesDialogComponent {
   categories: CategorySummary[];
   entryId: number;
+  entryTypeMetadata: EntryTypeMetadata;
   decisions = new Map<number, CategoryDecision>();
   readonly CuratorEnum = CategorySummary.CuratorEnum;
   readonly groupOrder = GROUP_ORDER;
@@ -68,6 +71,7 @@ export class ManageCategoriesDialogComponent {
   ) {
     this.categories = data.categories;
     this.entryId = data.entryId;
+    this.entryTypeMetadata = data.entryTypeMetadata;
   }
 
   categoriesForGroup(group: string): CategorySummary[] {
@@ -106,7 +110,12 @@ export class ManageCategoriesDialogComponent {
     }
 
     this.alertService.start('Saving category changes');
-    forkJoin(calls).subscribe({
+    // Run all but one call in parallel, then run the remaining call once those complete.
+    // This lets the database converge to a consistent state before the final call,
+    // which triggers Elasticsearch indexing, is made.
+    const lastCall = calls.pop();
+    const parallelCalls$ = calls.length > 0 ? forkJoin(calls) : of(null);
+    parallelCalls$.pipe(concatMap(() => lastCall)).subscribe({
       next: () => {
         this.alertService.detailedSuccess();
         this.dialogRef.close(true);

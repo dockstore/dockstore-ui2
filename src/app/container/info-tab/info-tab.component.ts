@@ -199,7 +199,7 @@ export class InfoTabComponent extends Base implements OnInit, OnChanges {
     this.dialog
       .open(ManageCategoriesDialogComponent, {
         width: bootstrap4mediumModalSize,
-        data: { categories: this.categories ?? [], entryId: this.tool.id },
+        data: { categories: this.categories ?? [], entryId: this.tool.id, entryTypeMetadata: this.tool.entryTypeMetadata },
       })
       .afterClosed()
       .subscribe((changed) => {

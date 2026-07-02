@@ -248,7 +248,7 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
     this.dialog
       .open(ManageCategoriesDialogComponent, {
         width: bootstrap4mediumModalSize,
-        data: { categories: this.categories ?? [], entryId: this.workflow.id },
+        data: { categories: this.categories ?? [], entryId: this.workflow.id, entryTypeMetadata: this.workflow.entryTypeMetadata },
       })
       .afterClosed()
       .subscribe((changed) => {
