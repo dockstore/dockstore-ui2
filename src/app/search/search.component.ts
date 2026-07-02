@@ -363,6 +363,14 @@ export class SearchComponent implements OnInit, OnDestroy {
 
     this.filters = newFilters;
     this.searchService.setFilterKeys(this.filters);
+    // Expand any facet panels that have an active filter from the URL
+    if (this.expandedPanels) {
+      newFilters.forEach((values, key) => {
+        if (values.size > 0) {
+          this.expandedPanels.set(key, true);
+        }
+      });
+    }
     this.updateQuery();
   }
 
