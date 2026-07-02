@@ -72,6 +72,19 @@
             <app-category-buttons class="ml-2" [categories]="cats" entryType="TOOL"></app-category-buttons>
           </li>
           } }
+          <li *ngIf="!isPublic && canWrite">
+            <button
+              type="button"
+              mat-stroked-button
+              class="private-btn"
+              matTooltip="Manage category assignments for this tool"
+              (click)="manageCategories()"
+              [disabled]="isRefreshing$ | async"
+            >
+              <mat-icon class="mat-icon-sm pr-1">category</mat-icon>
+              Manage Categories
+            </button>
+          </li>
           <li *ngIf="tool?.default_dockerfile_path || !isPublic">
             <form #editDockerfileForm="ngForm" class="form-inline" fxLayout>
               <div class="form-group" fxFlex="noshrink" fxLayout fxLayoutAlign=" center">
