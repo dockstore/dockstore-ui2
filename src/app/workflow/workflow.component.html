@@ -190,6 +190,18 @@
           <img src="../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Manage DOIs" />
           Manage DOIs
         </button>
+        <button
+          *ngIf="isOwner"
+          type="button"
+          mat-stroked-button
+          class="private-btn ml-2"
+          matTooltip="Manage category assignments for this workflow"
+          (click)="manageCategories()"
+          [disabled]="isRefreshing$ | async"
+        >
+          <mat-icon class="mat-icon-sm pr-1">category</mat-icon>
+          Manage Categories
+        </button>
       </div>
       <span *ngIf="!labelsEditMode && !starGazersClicked" class="inline-block mt-1 mb-1">
         <span *ngIf="workflowEditData?.labels.length > 0 || !isWorkflowPublic" class="size-small mr-2">
