@@ -15,8 +15,12 @@
  */
 import { HttpResponse } from '@angular/common/http';
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatRadioModule } from '@angular/material/radio';
 import { DateService } from '../../shared/date.service';
+import { bootstrap4mediumModalSize } from '../../shared/constants';
+import { EntryCategoriesService } from '../../categories/state/entry-categories.service';
+import { ManageCategoriesDialogComponent } from '../../categories/manage/manage-categories-dialog.component';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { FileService } from 'app/shared/file.service';
@@ -98,6 +102,7 @@ import { CategoryButtonsComponent } from 'app/categories/buttons/category-button
     PreviewWarningComponent,
     ExtractCategoriesPipe,
     CategoryButtonsComponent,
+    ManageCategoriesDialogComponent,
   ],
 })
 export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
@@ -155,7 +160,9 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
     private readonly workflowQuery: WorkflowQuery,
     private readonly descriptorLanguageService: DescriptorLanguageService,
     private readonly fileService: FileService,
-    private readonly dateService: DateService
+    private readonly dateService: DateService,
+    private readonly dialog: MatDialog,
+    private readonly entryCategoriesService: EntryCategoriesService
   ) {
     super();
     this.entryType$ = this.sessionQuery.entryType$.pipe(shareReplay());
@@ -234,6 +241,20 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
         const blob = new Blob([data.body], { type: 'application/zip' });
         const url = window.URL.createObjectURL(blob);
         window.open(url);
+      });
+  }
+
+  manageCategories() {
+    this.dialog
+      .open(ManageCategoriesDialogComponent, {
+        width: bootstrap4mediumModalSize,
+        data: { categories: this.categories ?? [], entryId: this.workflow.id, entryTypeMetadata: this.workflow.entryTypeMetadata },
+      })
+      .afterClosed()
+      .subscribe((changed) => {
+        if (changed) {
+          this.entryCategoriesService.updateEntryCategories(this.workflow.id, this.workflow.is_published);
+        }
       });
   }
 
