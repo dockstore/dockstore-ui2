@@ -66,7 +66,8 @@ export class CategoryButtonComponent implements OnChanges {
     if (source === 'ai') {
       parts.push('Category created by AI.');
     } else if (source?.startsWith(EDAM_PREFIX)) {
-      parts.push(`Derived from EDAM: ${source}`);
+      parts.push('Derived from EDAM:');
+      parts.push(source);
     } else {
       parts.push('Category created by Dockstore.');
     }
