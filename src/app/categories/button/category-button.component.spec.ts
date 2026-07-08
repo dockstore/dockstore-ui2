@@ -22,8 +22,9 @@ describe('CategoryButtonComponent tooltip', () => {
 
   describe('source attribution', () => {
     it('reports EDAM URL when metadata.source is an edamontology.org URL', () => {
+      expect(tooltip({ metadata: { source: 'http://edamontology.org/operation_3802' } })).toContain('Derived from EDAM:');
       expect(tooltip({ metadata: { source: 'http://edamontology.org/operation_3802' } })).toContain(
-        'Derived from EDAM: http://edamontology.org/operation_3802'
+        'http://edamontology.org/operation_3802'
       );
     });
 
