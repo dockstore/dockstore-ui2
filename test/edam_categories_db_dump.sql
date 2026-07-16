@@ -20,7 +20,7 @@
 --   workflow id=11 github.com/A/l                                    (published)
 -- Both have entry_metadata rows inserted by the 1.20.0 Liquibase migration.
 
-INSERT INTO collection (name, displayname, topic, organizationid, dtype, deleted, dbcreatedate, dbupdatedate, metadata)
+INSERT INTO collection (name, title, topic, organizationid, dtype, deleted, dbcreatedate, dbupdatedate, metadata)
 VALUES
   ('operation-sort',           'Sort',            'Sorting of sequences',            (SELECT id FROM organization WHERE name = 'dockstoreai'), 'Category', false, LOCALTIMESTAMP, LOCALTIMESTAMP, '{"source":"http://edamontology.org/operation_3802"}'),
   ('topic-genomics',           'Genomics',        'Genomics and genome biology',     (SELECT id FROM organization WHERE name = 'dockstoreai'), 'Category', false, LOCALTIMESTAMP, LOCALTIMESTAMP, '{"source":"http://edamontology.org/topic_0622"}'),
