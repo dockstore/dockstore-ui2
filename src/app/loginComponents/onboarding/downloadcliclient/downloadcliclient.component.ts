@@ -203,7 +203,7 @@ pipx runpip cwltool install -r requirements.txt # this ensures that your version
 
 **Note:** If you receive a warning saying \`'/YOUR_HOME_DIR/.local/bin' is not on your PATH environment variable.\`, use \`pipx ensurepath\` to add it to your shell's config. Then open a new shell or run \`source ~/.bashrc\`.
 
-2. Verify using that the installed python packages match the ones specified in the downloaded requirements.txt. Confirm cwltool installation by checking the version.
+2. Verify that the installed python packages match the ones specified in the downloaded requirements.txt. Confirm cwltool installation by checking the version.
 \`\`\`
 $ pipx runpip cwltool list
 $ cwltool --version
