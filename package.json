@@ -107,7 +107,7 @@
     "@types/node": "^18.19.39",
     "@typescript-eslint/eslint-plugin": "^7.2.0",
     "@typescript-eslint/parser": "^7.2.0",
-    "cypress": "^13.7.2",
+    "cypress": "^15.19.0",
     "eslint": "^8.57.0",
     "husky": "^7.0.0",
     "jasmine-core": "^3.7.1",
