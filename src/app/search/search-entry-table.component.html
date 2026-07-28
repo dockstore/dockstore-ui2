@@ -54,14 +54,16 @@
               <div>
                 <img
                   src="../../../../assets/svg/{{ entry?.source.entryTypeMetadata.term }}-circle.svg"
-                  class="mr-2_5 site-icons-small"
+                  class="mr-2_5 site-icons-medium-small"
                   alt="{{ entry?.source.entryTypeMetadata.term }} icon"
                 />
                 <a
                   [matTooltip]="entry?.source | entryToDisplayName: true"
                   matTooltipPosition="left"
                   [routerLink]="entry?.source | routerLink"
-                  >{{ entry?.source | entryToDisplayName: true }}</a
+                  ><span style="font-size: 15px"
+                    ><b>{{ entry?.source | entryToDisplayName: true }}</b></span
+                  ></a
                 >
                 <mat-chip *ngIf="entry?.source?.archived" class="alert-warning ml-3">Archived</mat-chip>
               </div>
@@ -89,6 +91,7 @@
               </table>
             </div>
 
+            <app-entry-categories [categories]="entry | entryCategories" [entryType]="entryType"></app-entry-categories>
             <div fxLayout="row" fxLayoutGap="1rem">
               <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="1rem" fxFlex>
                 <span *ngIf="entry?.source?.all_authors">
@@ -114,11 +117,6 @@
                   >
                 </span>
                 <mat-chip-set>
-                  <app-category-button
-                    *ngFor="let category of entry?.source.categories"
-                    [category]="category"
-                    [entryType]="entryType | lowercase"
-                  ></app-category-button>
                   <mat-chip data-cy="descriptorType" *ngIf="entry?.source.entryTypeMetadata.type !== EntryType.TOOL">
                     {{ entry?.source.descriptorType | descriptorLanguage }}
                   </mat-chip>

@@ -37,10 +37,10 @@ export class AccountsService {
   }
 
   // Open a window for the user to login to the appropriate service
-  link(source: string) {
+  link(source: string, codeChallenge: string, state: string) {
     switch (source) {
       case TokenSource.GITHUB:
-        this.openWindow(Links.GITHUB());
+        this.openWindow(Links.GITHUB() + `&code_challenge=${encodeURIComponent(codeChallenge)}&code_challenge_method=S256&state=${state}`);
         break;
       case TokenSource.BITBUCKET:
         this.openWindow(Links.BITBUCKET());
@@ -82,6 +82,6 @@ export class AccountsService {
    * {@link https://stackoverflow.com/questions/1368264/how-to-extract-the-hostname-portion-of-a-url-in-javascript}
    */
   getRoot(url: string): string {
-    return url.replace(/^(.*\/\/[^\/?#]*).*$/,"$1");
+    return url.replace(/^(.*\/\/[^\/?#]*).*$/, '$1');
   }
 }

@@ -66,7 +66,16 @@
           </mat-chip-set>
         </span>
       </h3>
-
+      <div [ngSwitch]="tool?.topicSelection" style="font-size: 16px">
+        <span *ngSwitchCase="'MANUAL'">{{ tool?.topicManual }}</span>
+        <span *ngSwitchCase="'AUTOMATIC'">{{ tool?.topicAutomatic }}</span>
+        <span *ngSwitchCase="'AI'"
+          >{{ tool?.topicAI }}
+          <mat-chip-set *ngIf="!tool?.approvedAITopic">
+            <app-ai-bubble [isPublic]="isToolPublic"></app-ai-bubble>
+          </mat-chip-set>
+        </span>
+      </div>
       <div *ngIf="!publicPage && tool?.workflowVersions.length > 0">
         <mat-form-field class="my-3">
           <mat-label>Current Version</mat-label>
@@ -75,11 +84,6 @@
           </mat-select>
         </mat-form-field>
       </div>
-      <p class="update">
-        <span [matTooltip]="(extendedTool$ | async)?.lastBuild | date: 'medium'"
-          >Last build: {{ (extendedTool$ | async)?.agoMessage || 'n/a' }}</span
-        >
-      </p>
     </div>
     <div fxFlex>
       <app-starring
@@ -110,12 +114,6 @@
   </div>
   <div class="row m-1">
     <div *ngIf="tool">
-      <span *ngIf="(categories$ | async).length > 0" class="mr-5 mt-1 mb-1">
-        <span class="size-small mr-2">Categories:</span>
-        <mat-chip-set>
-          <app-category-button *ngFor="let category of categories$ | async" [category]="category" entryType="tool"></app-category-button>
-        </mat-chip-set>
-      </span>
       <span *ngIf="!labelsEditMode && !starGazersClicked" class="mt-1 mb-1">
         <span *ngIf="containerEditData?.labels.length > 0" class="size-small mr-3">
           Labels:
@@ -213,6 +211,7 @@
               [privateOnlyRegistry]="privateOnlyRegistry"
               [extendedDockstoreTool]="extendedTool$ | async"
               [validVersions]="validVersions"
+              [categories]="categories$ | async"
             ></app-info-tab-container>
           </mat-tab>
           <mat-tab label="Launch">
@@ -435,11 +434,11 @@
         <mat-card-content>
           <div class="container-sharing pt-3">
             <share-buttons
-              [include]="['facebook', 'twitter', 'linkedin', 'reddit']"
-              [show]="5"
+              [include]="['linkedin', 'bluesky', 'email', 'whatsapp', 'facebook', 'x', 'reddit', 'copy']"
+              [show]="3"
               [url]="shareURL"
-              [autoSetMeta]="false"
-            ></share-buttons>
+            >
+            </share-buttons>
           </div>
         </mat-card-content>
       </mat-card>

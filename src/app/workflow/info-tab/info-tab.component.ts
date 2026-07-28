@@ -15,11 +15,16 @@
  */
 import { HttpResponse } from '@angular/common/http';
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatRadioModule } from '@angular/material/radio';
+import { DateService } from '../../shared/date.service';
+import { bootstrap4mediumModalSize } from '../../shared/constants';
+import { EntryCategoriesService } from '../../categories/state/entry-categories.service';
+import { ManageCategoriesDialogComponent } from '../../categories/manage/manage-categories-dialog.component';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { FileService } from 'app/shared/file.service';
-import { Author, WorkflowsService, ToolDescriptor } from 'app/shared/openapi';
+import { Author, CategorySummary, WorkflowsService, ToolDescriptor } from 'app/shared/openapi';
 import { OrcidAuthorInformation } from 'app/shared/openapi/model/orcidAuthorInformation';
 import { Observable } from 'rxjs';
 import { shareReplay, takeUntil } from 'rxjs/operators';
@@ -52,10 +57,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatCardModule } from '@angular/material/card';
-import { NgIf, NgFor, NgClass, NgSwitch, NgSwitchCase, NgSwitchDefault, AsyncPipe, TitleCasePipe } from '@angular/common';
+import { DatePipe, NgIf, NgFor, NgClass, NgSwitch, NgSwitchCase, NgSwitchDefault, AsyncPipe, TitleCasePipe } from '@angular/common';
 import { DisplayTopicComponent } from 'app/shared/entry/info-tab-topic/display-topic/display-topic.component';
 import { MatChipsModule } from '@angular/material/chips';
 import { PreviewWarningComponent } from 'app/preview-warning/preview-warning.component';
+import { ExtractCategoriesPipe, GROUP_ORDER } from 'app/categories/extract-categories.pipe';
+import { CategoryButtonsComponent } from 'app/categories/buttons/category-buttons.component';
 
 @Component({
   selector: 'app-info-tab',
@@ -85,6 +92,7 @@ import { PreviewWarningComponent } from 'app/preview-warning/preview-warning.com
     NgSwitchCase,
     NgSwitchDefault,
     AsyncPipe,
+    DatePipe,
     TitleCasePipe,
     MapFriendlyValuesPipe,
     BaseUrlPipe,
@@ -92,11 +100,16 @@ import { PreviewWarningComponent } from 'app/preview-warning/preview-warning.com
     DisplayTopicComponent,
     MatChipsModule,
     PreviewWarningComponent,
+    ExtractCategoriesPipe,
+    CategoryButtonsComponent,
+    ManageCategoriesDialogComponent,
   ],
 })
 export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   @Input() validVersions;
   @Input() defaultVersion;
+  @Input() categories: CategorySummary[] = [];
+  protected readonly groupOrder = GROUP_ORDER;
   // This should represent what's in the database
   @Input() extendedWorkflow: ExtendedWorkflow;
   // This is what the user is currently seeing/editing
@@ -131,20 +144,25 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
   ToolDescriptor = ToolDescriptor;
   public hasHttpImports: boolean = false;
   public entryType$: Observable<EntryType>;
+  public versionAgoMessage: string;
+  public WorkflowVersionModel = WorkflowVersion;
   public isRefreshing$: Observable<boolean>;
   modeTooltipContent = `STUB: Basic metadata pulled from source control.
   FULL: Full content synced from source control.
   HOSTED: Workflow metadata and files hosted on Dockstore.`;
   Dockstore = Dockstore;
   constructor(
-    private extendedWorkflowsService: ExtendedWorkflowsService,
-    private workflowsService: WorkflowsService,
-    private sessionQuery: SessionQuery,
-    private infoTabService: InfoTabService,
-    private alertQuery: AlertQuery,
-    private workflowQuery: WorkflowQuery,
-    private descriptorLanguageService: DescriptorLanguageService,
-    private fileService: FileService
+    private readonly extendedWorkflowsService: ExtendedWorkflowsService,
+    private readonly workflowsService: WorkflowsService,
+    private readonly sessionQuery: SessionQuery,
+    private readonly infoTabService: InfoTabService,
+    private readonly alertQuery: AlertQuery,
+    private readonly workflowQuery: WorkflowQuery,
+    private readonly descriptorLanguageService: DescriptorLanguageService,
+    private readonly fileService: FileService,
+    private readonly dateService: DateService,
+    private readonly dialog: MatDialog,
+    private readonly entryCategoriesService: EntryCategoriesService
   ) {
     super();
     this.entryType$ = this.sessionQuery.entryType$.pipe(shareReplay());
@@ -180,6 +198,7 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
       const found = this.validVersions.find((version: WorkflowVersion) => version.id === this.selectedVersion.id);
       this.isValidVersion = found ? true : false;
       this.downloadZipLink = Dockstore.API_URI + '/workflows/' + this.workflow.id + '/zip/' + this.currentVersion.id;
+      this.versionAgoMessage = this.dateService.getAgoMessage(this.selectedVersion.last_modified);
       this.authors = []; // Clear authors so the previous authors are not displayed if the getWorkflowVersionOrcidAuthors call is slow or fails
       this.workflowsService.getWorkflowVersionOrcidAuthors(this.workflow.id, this.selectedVersion.id).subscribe((orcidAuthors) => {
         this.authors = [...this.selectedVersion.authors, ...orcidAuthors];
@@ -222,6 +241,20 @@ export class InfoTabComponent extends EntryTab implements OnInit, OnChanges {
         const blob = new Blob([data.body], { type: 'application/zip' });
         const url = window.URL.createObjectURL(blob);
         window.open(url);
+      });
+  }
+
+  manageCategories() {
+    this.dialog
+      .open(ManageCategoriesDialogComponent, {
+        width: bootstrap4mediumModalSize,
+        data: { categories: this.categories ?? [], entryId: this.workflow.id, entryTypeMetadata: this.workflow.entryTypeMetadata },
+      })
+      .afterClosed()
+      .subscribe((changed) => {
+        if (changed) {
+          this.entryCategoriesService.updateEntryCategories(this.workflow.id, this.workflow.is_published);
+        }
       });
   }
 

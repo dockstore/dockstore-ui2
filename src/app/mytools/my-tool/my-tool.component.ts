@@ -121,7 +121,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
     private toolQuery: ToolQuery,
     private alertQuery: AlertQuery,
     private alertService: AlertService,
-    private tokenService: TokenService,
+    protected tokenService: TokenService,
     protected sessionQuery: SessionQuery,
     protected myEntriesQuery: MyEntriesQuery,
     protected myEntriesStateService: MyEntriesStateService,
@@ -131,6 +131,7 @@ export class MyToolComponent extends MyEntry implements OnInit {
     private userService: UserService
   ) {
     super(
+      tokenService,
       accountsService,
       authService,
       configuration,

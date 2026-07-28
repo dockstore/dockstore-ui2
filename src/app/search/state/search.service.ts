@@ -88,7 +88,13 @@ export class SearchService {
 
   private getOrderedFacetInfos(tabIndex: number): Array<FacetInfo> {
     const facetInfos = [
-      { friendlyName: 'Category', esName: 'categories.name.keyword', initiallyExpanded: true },
+      { friendlyName: 'Category', esName: 'categories.displayName.keyword', initiallyExpanded: false },
+      { friendlyName: 'Operation', esName: 'operation.displayName.keyword', initiallyExpanded: false },
+      { friendlyName: 'Topic', esName: 'topic.displayName.keyword', initiallyExpanded: false },
+      { friendlyName: 'Input Format', esName: 'input-format.displayName.keyword', initiallyExpanded: false },
+      { friendlyName: 'Input Data', esName: 'input-data.displayName.keyword', initiallyExpanded: false },
+      { friendlyName: 'Output Format', esName: 'output-format.displayName.keyword', initiallyExpanded: false },
+      { friendlyName: 'Output Data', esName: 'output-data.displayName.keyword', initiallyExpanded: false },
       {
         friendlyName: tabIndex === SearchService.NOTEBOOKS_TAB_INDEX ? 'Format' : 'Language',
         esName: 'descriptorType',
@@ -134,7 +140,6 @@ export class SearchService {
         tooltip: 'Indicates which platform a tool or workflow (at least one version) was successfully run on.',
         initiallyExpanded: false,
       },
-      { friendlyName: 'Input File Formats', esName: 'input_file_formats.value.keyword', initiallyExpanded: false },
       { friendlyName: 'Output File Formats', esName: 'output_file_formats.value.keyword', initiallyExpanded: false },
       {
         friendlyName: 'Verified',

@@ -10,10 +10,13 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 import { enableAkitaProdMode } from '@datorama/akita';
 import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faBluesky } from '@fortawesome/free-brands-svg-icons';
 import { FlexLayoutModule } from '@ngbracket/ngx-layout';
 import { MarkdownModule } from 'ngx-markdown';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { customShareButton, provideShareButtonsOptions } from 'ngx-sharebuttons';
 import { AppComponent } from './app/app.component';
+import { shareIcons } from 'ngx-sharebuttons/icons';
 
 import { getApiConfig, initializerFactory, myCustomSnackbarDefaults, myCustomTooltipDefaults } from './app/app.module';
 import { CLIENT_ROUTER_PROVIDERS, routing } from './app/app.routing';
@@ -108,6 +111,21 @@ bootstrapApplication(AppComponent, {
       ApiModule2.forRoot(getApiConfig),
       PipeModule,
       Ng2UiAuthModule.forRoot(AuthConfig)
+    ),
+    provideShareButtonsOptions(
+      customShareButton('bluesky', {
+        type: 'bluesky',
+        text: 'bluesky',
+        icon: faBluesky,
+        color: 'blue',
+        share: {
+          desktop: 'https://bsky.app/intent/compose',
+        },
+        params: {
+          url: 'text',
+        },
+      }),
+      shareIcons()
     ),
     AccountsService,
     BioschemaService,

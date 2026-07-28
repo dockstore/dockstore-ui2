@@ -24,7 +24,7 @@ import { Observable, Subject } from 'rxjs';
 import { filter, map, takeUntil } from 'rxjs/operators';
 import { EntryCategoriesService } from '../categories/state/entry-categories.service';
 import { Dockstore } from '../shared/dockstore.model';
-import { Category, EntriesService, VersionVerifiedPlatform, SourceFile } from '../shared/openapi';
+import { CategorySummary, EntriesService, VersionVerifiedPlatform, SourceFile } from '../shared/openapi';
 import { Tag } from '../shared/openapi/model/tag';
 import { WorkflowVersion } from '../shared/openapi/model/workflowVersion';
 import { TrackLoginService } from '../shared/track-login.service';
@@ -70,7 +70,7 @@ export abstract class Entry<V extends WorkflowVersion | Tag> implements OnDestro
   protected selected = new UntypedFormControl(0);
   labelFormControl = new UntypedFormControl('', [Validators.pattern('^[a-zA-Z0-9]+(-[a-zA-Z0-9]+)*$')]);
   public verifiedLink: string;
-  public categories$: Observable<Array<Category>>;
+  public categories$: Observable<Array<CategorySummary>>;
   constructor(
     private trackLoginService: TrackLoginService,
     public providerService: ProviderService,

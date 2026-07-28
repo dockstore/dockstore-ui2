@@ -35,7 +35,6 @@ import { AlertService } from 'app/shared/alert/state/alert.service';
 import { BioWorkflow } from 'app/shared/openapi/model/bioWorkflow';
 import { Service } from 'app/shared/openapi/model/service';
 import { Notebook } from 'app/shared/openapi/model/notebook';
-import { ShareIconsModule } from 'ngx-sharebuttons/icons';
 import { Observable, ReplaySubject } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
 import { AlertQuery } from '../shared/alert/state/alert.query';
@@ -79,7 +78,7 @@ import { EntryCategoriesService } from '../categories/state/entry-categories.ser
 import RoleEnum = Permission.RoleEnum;
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BaseUrlPipe } from '../shared/entry/base-url.pipe';
-import { ShareButtonsModule } from 'ngx-sharebuttons/buttons';
+import { ShareButtons } from 'ngx-sharebuttons/buttons';
 import { VerifiedByComponent } from '../shared/entry/verified-by/verified-by.component';
 import { CurrentCollectionsComponent } from '../entry/current-collections/current-collections.component';
 import { MatDividerModule } from '@angular/material/divider';
@@ -96,7 +95,7 @@ import { NotebookComponent } from '../notebook/notebook.component';
 import { InfoTabComponent } from './info-tab/info-tab.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { StargazersComponent } from '../stargazers/stargazers.component';
-import { CategoryButtonComponent } from '../categories/button/category-button.component';
+import { EntryCategoriesComponent } from '../categories/entry/entry-categories.component';
 import { WorkflowActionsComponent } from '../shared/entry-actions/workflow-actions.component';
 import { StarringComponent } from '../starring/starring.component';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
@@ -114,6 +113,7 @@ import { MatCardModule } from '@angular/material/card';
 import { ManageDoisDialogComponent } from 'app/shared/entry/doi/manage-dois/manage-dois-dialog.component';
 import { DoiBadgeComponent } from 'app/shared/entry/doi/doi-badge/doi-badge.component';
 import { PreviewWarningComponent } from '../preview-warning/preview-warning.component';
+import { AiBubbleComponent } from '../shared/ai-bubble/ai-bubble.component';
 
 @Component({
   selector: 'app-workflow',
@@ -140,7 +140,7 @@ import { PreviewWarningComponent } from '../preview-warning/preview-warning.comp
     NgFor,
     StarringComponent,
     WorkflowActionsComponent,
-    CategoryButtonComponent,
+    EntryCategoriesComponent,
     StargazersComponent,
     NgClass,
     MatTabsModule,
@@ -162,14 +162,14 @@ import { PreviewWarningComponent } from '../preview-warning/preview-warning.comp
     MatDividerModule,
     CurrentCollectionsComponent,
     VerifiedByComponent,
-    ShareButtonsModule,
-    ShareIconsModule,
+    ShareButtons,
     AsyncPipe,
     DatePipe,
     TitleCasePipe,
     BaseUrlPipe,
     DoiBadgeComponent,
     PreviewWarningComponent,
+    AiBubbleComponent,
   ],
 })
 export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterViewInit, OnInit {

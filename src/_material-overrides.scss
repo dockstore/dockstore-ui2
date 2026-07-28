@@ -90,6 +90,15 @@
     vertical-align: text-bottom;
   }
 }
+.mat-mdc-standard-chip.small-chip {
+  --mdc-chip-container-height: 20px !important;
+  --mdc-chip-label-text-size: 11px !important;
+  margin: 0 2px !important;
+}
+
+.small-chip .mdc-evolution-chip__action--primary {
+  padding: 0 8px !important;
+}
 
 a.mat-mdc-chip {
   text-decoration: none !important;

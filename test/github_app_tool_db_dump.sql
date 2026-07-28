@@ -193,6 +193,9 @@ INSERT INTO public.user_entry (userid, entryid) VALUES (1, 50);
 INSERT INTO public.user_entry (userid, entryid) VALUES (1, 51);
 
 
+INSERT INTO public.entry_metadata (id) VALUES (50);
+
+
 
 
 

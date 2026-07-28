@@ -113,6 +113,6 @@ export class RecommendedActionsComponent extends Base implements OnInit, AfterVi
   }
 
   private loadEvents() {
-    this.dataSource.loadEvents(this.paginator.pageIndex, this.paginator.pageSize);
+    this.dataSource.loadEvents(this.paginator.pageIndex * this.paginator.pageSize, this.paginator.pageSize);
   }
 }

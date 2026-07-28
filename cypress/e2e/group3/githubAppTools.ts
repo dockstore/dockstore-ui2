@@ -78,6 +78,7 @@ describe('GitHub App Tools', () => {
       cy.get('[data-cy=install-dockstore-app]');
       cy.contains('Tool storage type').click();
       cy.contains('Close').click();
+      cy.contains('Close').should('not.exist'); // Wait for dialog to close before proceeding
 
       cy.intercept('GET', '/api/lambdaEvents/**').as('lambdaEvents1');
       // GitHub App Logs

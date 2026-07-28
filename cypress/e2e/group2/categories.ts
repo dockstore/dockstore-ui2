@@ -17,6 +17,7 @@ import {
   resetDB,
   setTokenUserViewPort,
   insertNotebooks,
+  insertEdamCategories,
   addOrganizationAdminUser,
   addToCollection,
   typeInInput,
@@ -85,13 +86,13 @@ describe('Dockstore Categories', () => {
     it('appear in search sidebar', () => {
       cy.visit('/search?entryType=tools');
       cy.get('.search-container').get('mat-accordion').contains('Category');
-      cy.get('.search-container').get('mat-accordion').contains(categoryName);
+      cy.get('.search-container').get('mat-accordion').contains(categoryDisplayName);
     });
     it('appear exclusively in search results if Category checkbox is clicked', () => {
       cy.visit('/search?entryType=tools');
       cy.get('app-search-results').contains(toolSnippet);
       cy.get('app-search-results').contains('A2/a');
-      cy.contains('mat-checkbox', categoryName).click();
+      cy.contains('mat-checkbox', categoryDisplayName).click();
       cy.get('app-search-results').contains(toolSnippet);
       cy.get('app-search-results').contains('A2/a').should('not.exist');
     });
@@ -124,7 +125,237 @@ describe('Dockstore Categories', () => {
       cy.visit('/organizations/dockstore/collections/' + categoryName);
       cy.get('app-category-button').contains(categoryDisplayName).click();
       cy.url().should('include', '/search');
-      cy.url().should('include', categoryName);
+      cy.url().should('include', categoryDisplayName);
+    });
+  });
+
+  describe('Category group labels should be visible', () => {
+    it('appear on collection page entry summary', () => {
+      cy.visit('/organizations/dockstore/collections/' + categoryName);
+      cy.get('.group-label').should('contain', 'Categories');
+    });
+    it('appear on tool page', () => {
+      cy.visit(toolPath);
+      cy.contains('strong', 'Categories');
+    });
+    it('appear on workflow page', () => {
+      cy.visit(workflowPath);
+      cy.contains('strong', 'Categories');
+    });
+  });
+
+  describe('Category bubble routing should encode category type', () => {
+    it('clickthrough URL encodes curator category search field', () => {
+      cy.visit('/organizations/dockstore/collections/' + categoryName);
+      cy.get('app-category-button').contains(categoryDisplayName).click();
+      cy.url().should('include', 'categories.displayName.keyword');
+    });
+  });
+
+  describe('Category bubble should be styled by entry type', () => {
+    it('tool entry gets tool-background class', () => {
+      cy.visit(toolPath);
+      cy.get('[data-cy=categoriesBubble]').should('have.class', 'tool-background');
+    });
+    it('workflow entry gets workflow-background class', () => {
+      cy.visit(workflowPath);
+      cy.get('[data-cy=categoriesBubble]').should('have.class', 'workflow-background');
+    });
+  });
+
+  describe('AI-curated EDAM categories', () => {
+    insertEdamCategories();
+
+    describe('should appear in the correct group on entry pages', () => {
+      it('show Operations group on tool page', () => {
+        cy.visit(toolPath);
+        cy.contains('strong', 'Operations').closest('li').find('[data-cy=categoriesBubble]').should('contain', 'Sort');
+      });
+      it('show Topics group on tool page', () => {
+        cy.visit(toolPath);
+        cy.contains('strong', 'Topics').closest('li').find('[data-cy=categoriesBubble]').should('contain', 'Genomics');
+      });
+      it('show Inputs group on tool page', () => {
+        cy.visit(toolPath);
+        cy.contains('strong', 'Inputs').closest('li').find('[data-cy=categoriesBubble]').should('contain', 'BAM');
+      });
+      it('show Outputs group on workflow page', () => {
+        cy.visit(workflowPath);
+        cy.contains('strong', 'Outputs').closest('li').find('[data-cy=categoriesBubble]').should('contain', 'VCF');
+      });
+      it('show Operations and Topics on collection page entry summary', () => {
+        cy.visit('/organizations/dockstore/collections/' + categoryName);
+        cy.contains('.group-label', 'Operations').closest('.group-row').find('[data-cy=categoriesBubble]').should('contain', 'Sort');
+        cy.contains('.group-label', 'Topics').closest('.group-row').find('[data-cy=categoriesBubble]').should('contain', 'Genomics');
+      });
+    });
+
+    describe('should have the ai-curated CSS class', () => {
+      it('EDAM category bubbles have ai-curated class', () => {
+        cy.visit(toolPath);
+        cy.contains('[data-cy=categoriesBubble]', 'Sort').should('have.class', 'ai-curated');
+      });
+      it('curator-created category bubbles do not have ai-curated class', () => {
+        cy.visit(toolPath);
+        cy.contains('[data-cy=categoriesBubble]', categoryDisplayName).should('not.have.class', 'ai-curated');
+      });
+    });
+
+    describe('bubble routing should encode the EDAM category type', () => {
+      it('operation encodes operation search field', () => {
+        cy.visit(toolPath);
+        cy.get('[data-cy=categoriesBubble]').contains('Sort').click();
+        cy.url().should('include', 'operation.displayName.keyword');
+      });
+      it('topic encodes topic search field', () => {
+        cy.visit(toolPath);
+        cy.get('[data-cy=categoriesBubble]').contains('Genomics').click();
+        cy.url().should('include', 'topic.displayName.keyword');
+      });
+      it('input-format encodes input-format search field', () => {
+        cy.visit(toolPath);
+        cy.get('[data-cy=categoriesBubble]').contains('BAM').click();
+        cy.url().should('include', 'input-format.displayName.keyword');
+      });
+      it('input-data encodes input-data search field', () => {
+        cy.visit(toolPath);
+        cy.get('[data-cy=categoriesBubble]').contains('Sequence reads').click();
+        cy.url().should('include', 'input-data.displayName.keyword');
+      });
+      it('output-format encodes output-format search field', () => {
+        cy.visit(workflowPath);
+        cy.get('[data-cy=categoriesBubble]').contains('VCF').click();
+        cy.url().should('include', 'output-format.displayName.keyword');
+      });
+      it('output-data encodes output-data search field', () => {
+        cy.visit(workflowPath);
+        cy.get('[data-cy=categoriesBubble]').contains('Variants').click();
+        cy.url().should('include', 'output-data.displayName.keyword');
+      });
+    });
+
+    describe('Manage Categories dialog', () => {
+      const ownedWorkflowWithCategories = '/my-workflows/github.com/A/l';
+      const ownedWorkflowWithoutCategories = '/my-workflows/github.com/A/g';
+
+      function categoryRow(displayName: string) {
+        return cy.contains('span', displayName).closest('.mt-2');
+      }
+
+      function clickRemoveButton(displayName: string) {
+        categoryRow(displayName).find('button').first().click();
+      }
+
+      function clickApproveButton(displayName: string) {
+        categoryRow(displayName).find('button').eq(1).click();
+      }
+
+      it('does not show the Manage Categories button for an owned entry with no categories', () => {
+        cy.visit(ownedWorkflowWithoutCategories);
+        cy.contains('button', 'Manage Categories').should('not.exist');
+      });
+
+      it('shows the Manage Categories button for an owned entry with categories', () => {
+        cy.visit(ownedWorkflowWithCategories);
+        cy.contains('button', 'Manage Categories').should('be.visible');
+      });
+
+      it('lists the AI-curated categories with approve/remove controls', () => {
+        cy.visit(ownedWorkflowWithCategories);
+        cy.contains('button', 'Manage Categories').click();
+        cy.contains('h1', 'Manage Categories').should('be.visible');
+        cy.get('mat-dialog-content').within(() => {
+          ['Sort', 'Genomics', 'VCF', 'Variants'].forEach((name) => {
+            categoryRow(name).should('contain', 'AI-curated');
+            categoryRow(name).find('button').should('have.length', 2);
+          });
+        });
+        cy.contains('button', 'Cancel').click();
+        cy.get('mat-dialog-content').should('not.exist');
+      });
+
+      it('toggles a pending removal decision and can undo it before saving', () => {
+        cy.visit(ownedWorkflowWithCategories);
+        cy.contains('button', 'Manage Categories').click();
+        cy.get('mat-dialog-content').within(() => {
+          clickRemoveButton('Genomics');
+          categoryRow('Genomics').should('contain', 'Removing');
+          cy.contains('Pending Changes').should('be.visible');
+          cy.contains('li', 'Remove from').should('contain', 'Genomics');
+
+          // Clicking remove again undoes the pending decision
+          clickRemoveButton('Genomics');
+          categoryRow('Genomics').should('contain', 'AI-curated');
+          cy.contains('Pending Changes').should('not.exist');
+        });
+        cy.contains('button', 'Cancel').click();
+      });
+
+      it('toggles a pending approval decision and can undo it before saving', () => {
+        cy.visit(ownedWorkflowWithCategories);
+        cy.contains('button', 'Manage Categories').click();
+        cy.get('mat-dialog-content').within(() => {
+          clickApproveButton('VCF');
+          categoryRow('VCF').should('contain', 'Approved');
+          cy.contains('li', 'Approve membership in').should('contain', 'VCF');
+
+          // Clicking approve again undoes the pending decision
+          clickApproveButton('VCF');
+          categoryRow('VCF').should('contain', 'AI-curated');
+          cy.contains('Pending Changes').should('not.exist');
+        });
+        cy.contains('button', 'Cancel').click();
+      });
+
+      it('does not persist pending decisions when Cancel is clicked', () => {
+        cy.visit(ownedWorkflowWithCategories);
+        cy.contains('button', 'Manage Categories').click();
+        cy.get('mat-dialog-content').within(() => {
+          clickRemoveButton('Variants');
+        });
+        cy.contains('button', 'Cancel').click();
+        cy.get('mat-dialog-content').should('not.exist');
+        cy.get('[data-cy=categoriesBubble]').contains('Variants').should('exist');
+      });
+
+      it('saves with no API calls when there are no pending changes', () => {
+        cy.intercept('PUT', '**/categories/*/entry*').as('approveCategory');
+        cy.intercept('DELETE', '**/categories/*/entry*').as('removeCategory');
+        cy.visit(ownedWorkflowWithCategories);
+        cy.contains('button', 'Manage Categories').click();
+        cy.contains('button', 'Save').click();
+        cy.get('mat-dialog-content').should('not.exist');
+        cy.get('@approveCategory.all').should('have.length', 0);
+        cy.get('@removeCategory.all').should('have.length', 0);
+      });
+
+      it('removes a category from the entry after Save', () => {
+        cy.intercept('DELETE', '**/categories/*/entry*').as('removeCategory');
+        cy.visit(ownedWorkflowWithCategories);
+        cy.get('[data-cy=categoriesBubble]').contains('Sort').should('exist');
+        cy.contains('button', 'Manage Categories').click();
+        cy.get('mat-dialog-content').within(() => {
+          clickRemoveButton('Sort');
+        });
+        cy.contains('button', 'Save').click();
+        cy.wait('@removeCategory');
+        cy.get('mat-dialog-content').should('not.exist');
+        cy.get('[data-cy=categoriesBubble]').contains('Sort').should('not.exist');
+      });
+
+      it('approves a category, clearing its ai-curated styling on the entry page after Save', () => {
+        cy.intercept('PUT', '**/categories/*/entry*').as('approveCategory');
+        cy.visit(ownedWorkflowWithCategories);
+        cy.contains('[data-cy=categoriesBubble]', 'Genomics').should('have.class', 'ai-curated');
+        cy.contains('button', 'Manage Categories').click();
+        cy.get('mat-dialog-content').within(() => {
+          clickApproveButton('Genomics');
+        });
+        cy.contains('button', 'Save').click();
+        cy.wait('@approveCategory');
+        cy.get('mat-dialog-content').should('not.exist');
+        cy.contains('[data-cy=categoriesBubble]', 'Genomics').should('not.have.class', 'ai-curated');
+      });
     });
   });
 });

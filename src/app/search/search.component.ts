@@ -261,6 +261,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     });
 
     this.hits = [];
+    this.searchService.setHits([], [], []);
 
     this.aNDSplitFilterText$ = this.advancedSearchQuery.aNDSplitFilterText$;
     this.aNDNoSplitFilterText$ = this.advancedSearchQuery.aNDNoSplitFilterText$;
@@ -362,6 +363,14 @@ export class SearchComponent implements OnInit, OnDestroy {
 
     this.filters = newFilters;
     this.searchService.setFilterKeys(this.filters);
+    // Expand any facet panels that have an active filter from the URL
+    if (this.expandedPanels) {
+      newFilters.forEach((values, key) => {
+        if (values.size > 0) {
+          this.expandedPanels.set(key, true);
+        }
+      });
+    }
     this.updateQuery();
   }
 
@@ -683,7 +692,13 @@ export class SearchComponent implements OnInit, OnDestroy {
       ['labels.value.keyword', ''],
       ['namespace', ''],
       ['organization', ''],
-      ['categories.name.keyword', ''],
+      ['categories.displayName.keyword', ''],
+      ['operation.displayName.keyword', ''],
+      ['topic.displayName.keyword', ''],
+      ['input-format.displayName.keyword', ''],
+      ['input-data.displayName.keyword', ''],
+      ['output-format.displayName.keyword', ''],
+      ['output-data.displayName.keyword', ''],
     ]);
   }
 

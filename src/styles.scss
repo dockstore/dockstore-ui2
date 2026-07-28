@@ -20,7 +20,6 @@ $material-design-icons-font-directory-path: '~material-design-icons-iconfont/dis
 @import 'material-design-icons-iconfont/src/material-design-icons';
 @import 'ds-style-fix.scss';
 @import 'bootstrap4.scss';
-@import 'ngx-sharebuttons/themes/default/default-theme';
 @import 'featured-content.scss';
 @import '/src/materialColorScheme.scss';
 @import '/src/functions';
@@ -345,6 +344,11 @@ h3.available-containers {
   overflow-wrap: break-word;
 }
 
+.multiline-tooltip .mdc-tooltip__surface {
+  white-space: pre-line;
+  max-width: 260px;
+}
+
 h4.title.caption {
   font-size: 20px;
   color: #a0adcc;
@@ -387,6 +391,11 @@ ul.more li a {
 img.site-icons-small {
   width: 16px;
   height: 16px;
+}
+
+img.site-icons-medium-small {
+  width: 24px;
+  height: 24px;
 }
 
 img.site-icons-medium {
@@ -877,10 +886,18 @@ img.align-middle {
   background: $tool-selection-color !important;
 }
 
+.tool-background.ai-curated {
+  background: mix(#f4f4f4, $tool-selection-color, 80%) !important;
+}
+
 // Set the background to the color associated with workflows (green).
 // Used to set the background color in bubbles.
 .workflow-background {
   background: $workflow-selection-color !important;
+}
+
+.workflow-background.ai-curated {
+  background: mix(#f4f4f4, $workflow-selection-color, 80%) !important;
 }
 
 // Set the background to the color associated with notebooks (purple).

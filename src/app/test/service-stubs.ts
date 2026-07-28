@@ -23,6 +23,7 @@ import {
   ToolDescriptor,
   CloudInstance,
   TRSService,
+  ClientPKCE,
 } from 'app/shared/openapi';
 import { BehaviorSubject, EMPTY, Observable, of as observableOf } from 'rxjs';
 import { SearchFields } from '../search/state/search.service';
@@ -176,6 +177,7 @@ export class SearchStubService {
   joinComma(searchTerm: string): string {
     return searchTerm.trim().split(' ').join(', ');
   }
+  setHits() {}
   haveNoHits(object: Object[]): boolean {
     if (!object || object.length === 0) {
       return true;
@@ -287,7 +289,13 @@ export class SearchStubService {
         ['has_checker', false],
         ['organization', true],
         ['verified_platforms.keyword', false],
-        ['categories.name.keyword', true],
+        ['categories.displayName.keyword', true],
+        ['operation.displayName.keyword', false],
+        ['topic.displayName.keyword', false],
+        ['input-format.displayName.keyword', false],
+        ['input-data.displayName.keyword', false],
+        ['output-format.displayName.keyword', false],
+        ['output-data.displayName.keyword', false],
         ['descriptor_type_versions.keyword', false],
         ['openData', false],
       ]);
@@ -608,6 +616,10 @@ export class TokenStubService {
   tokens$: BehaviorSubject<DockstoreTool[]> = new BehaviorSubject([]);
   hasGitHubToken$ = observableOf(false);
   updateTokens(): void {}
+
+  public getGitHubCodeChallenge(): Observable<ClientPKCE> {
+    return observableOf({});
+  }
 }
 
 export class TokensStubService {

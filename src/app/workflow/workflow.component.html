@@ -109,6 +109,16 @@
           </a>
         </mat-chip-set>
       </h3>
+      <div [ngSwitch]="workflow?.topicSelection" style="font-size: 16px">
+        <span *ngSwitchCase="'MANUAL'">{{ workflow?.topicManual }}</span>
+        <span *ngSwitchCase="'AUTOMATIC'">{{ workflow?.topicAutomatic }}</span>
+        <span *ngSwitchCase="'AI'"
+          >{{ workflow?.topicAI }}
+          <mat-chip-set *ngIf="!workflow?.approvedAITopic">
+            <app-ai-bubble [isPublic]="isWorkflowPublic"></app-ai-bubble>
+          </mat-chip-set>
+        </span>
+      </div>
       <div *ngIf="!publicPage && workflow.workflowVersions && workflow.workflowVersions.length > 0" class="input-group">
         <mat-form-field data-cy="version-dropdown" class="my-3">
           <mat-label>Current Version</mat-label>
@@ -132,24 +142,6 @@
           </mat-select>
         </mat-form-field>
       </div>
-      <p class="update">
-        <span *ngIf="selectedVersion !== null">
-          <span
-            *ngIf="WorkflowVersionModel.ReferenceTypeEnum.TAG === selectedVersion.referenceType"
-            [matTooltip]="selectedVersion.last_modified | date: 'medium'"
-            >Tag created: {{ versionAgoMessage || 'n/a' }}</span
-          >
-          <span
-            *ngIf="WorkflowVersionModel.ReferenceTypeEnum.TAG !== selectedVersion.referenceType"
-            [matTooltip]="selectedVersion.last_modified | date: 'medium'"
-            >Last update to this {{ entryType }} version: {{ versionAgoMessage || 'n/a' }}</span
-          >
-          <br />
-          <span [matTooltip]="(extendedWorkflow$ | async)?.last_modified_date | date: 'medium'"
-            >Last update to source repository: {{ (extendedWorkflow$ | async)?.agoMessage || 'n/a' }}</span
-          >
-        </span>
-      </p>
     </div>
 
     <div fxFlex>
@@ -199,16 +191,6 @@
           Manage DOIs
         </button>
       </div>
-      <span *ngIf="(categories$ | async)?.length > 0" class="inline-block mr-5 mt-1 mb-1">
-        <span class="size-small mr-2">Categories:</span>
-        <mat-chip-set>
-          <app-category-button
-            *ngFor="let category of categories$ | async"
-            [category]="category"
-            entryType="workflow"
-          ></app-category-button>
-        </mat-chip-set>
-      </span>
       <span *ngIf="!labelsEditMode && !starGazersClicked" class="inline-block mt-1 mb-1">
         <span *ngIf="workflowEditData?.labels.length > 0 || !isWorkflowPublic" class="size-small mr-2">
           <span>Labels:{{ workflowEditData?.labels.length === 0 ? ' n/a' : '' }}</span>
@@ -307,6 +289,7 @@
               [canRead]="canRead"
               [canWrite]="canWrite"
               [isOwner]="isOwner"
+              [categories]="categories$ | async"
             ></app-info-tab>
           </mat-tab>
           <div *ngIf="entryType === EntryType.Notebook">
@@ -619,11 +602,11 @@
         <mat-card-content>
           <div class="container-sharing pt-3">
             <share-buttons
-              [include]="['facebook', 'twitter', 'linkedin', 'reddit']"
-              [show]="5"
+              [include]="['linkedin', 'bluesky', 'email', 'whatsapp', 'facebook', 'x', 'reddit', 'copy']"
+              [show]="3"
               [url]="shareURL"
-              [autoSetMeta]="false"
-            ></share-buttons>
+            >
+            </share-buttons>
           </div>
         </mat-card-content>
       </mat-card>
