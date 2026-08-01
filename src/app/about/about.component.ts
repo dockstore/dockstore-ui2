@@ -20,7 +20,6 @@ import { FlexModule } from '@ngbracket/ngx-layout/flex';
   templateUrl: './about.component.html',
   styleUrls: ['./about.component.scss'],
   providers: [FundingComponent],
-  standalone: true,
   imports: [
     FlexModule,
     MatButtonModule,

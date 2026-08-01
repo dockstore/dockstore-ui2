@@ -8,7 +8,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 @Component({
   selector: 'app-preview-warning',
   templateUrl: './preview-warning.component.html',
-  standalone: true,
   imports: [MatCardModule, MatIconModule, MatChipsModule, MatTooltipModule, NgIf],
 })
 export class PreviewWarningComponent implements OnInit {

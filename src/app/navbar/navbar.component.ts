@@ -45,7 +45,6 @@ import { HttpResponse } from '@angular/common/http';
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss'],
-  standalone: true,
   imports: [
     MatToolbarModule,
     NgClass,

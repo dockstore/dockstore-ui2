@@ -92,7 +92,6 @@ import { HeaderComponent } from '../header/header.component';
   selector: 'app-search',
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss'],
-  standalone: true,
   imports: [
     HeaderComponent,
     FlexModule,

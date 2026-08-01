@@ -21,7 +21,6 @@ import { MatExpansionModule } from '@angular/material/expansion';
   selector: 'app-basic-search',
   templateUrl: './basic-search.component.html',
   styleUrls: ['./basic-search.component.scss'],
-  standalone: true,
   imports: [
     MatExpansionModule,
     MatFormFieldModule,

@@ -29,7 +29,6 @@ import { AlertComponent } from '../../../shared/alert/alert.component';
   selector: 'app-delete-entry-dialog',
   templateUrl: './delete-entry-dialog.component.html',
   styleUrls: ['./delete-entry-dialog.component.scss'],
-  standalone: true,
   imports: [MatDialogModule, AlertComponent, NgIf, FlexModule, MatButtonModule, TitleCasePipe],
 })
 export class DeleteEntryDialogComponent {

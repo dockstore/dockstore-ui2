@@ -42,7 +42,6 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 @Component({
   selector: 'app-banner',
   template: '',
-  standalone: true,
   imports: [RouterTestingModule, MatSnackBarModule],
 })
 class BannerStubComponent {}
@@ -50,7 +49,6 @@ class BannerStubComponent {}
 @Component({
   selector: 'app-navbar',
   template: '',
-  standalone: true,
   imports: [RouterTestingModule, MatSnackBarModule],
 })
 class NavbarStubComponent {}
@@ -58,7 +56,6 @@ class NavbarStubComponent {}
 @Component({
   selector: 'app-footer',
   template: '',
-  standalone: true,
   imports: [RouterTestingModule, MatSnackBarModule],
 })
 class FooterStubComponent {}
@@ -66,7 +63,6 @@ class FooterStubComponent {}
 @Component({
   selector: 'app-tos-banner',
   template: '',
-  standalone: true,
   imports: [RouterTestingModule, MatSnackBarModule],
 })
 class TosBannerStubComponent {}
@@ -74,7 +70,6 @@ class TosBannerStubComponent {}
 @Component({
   selector: 'app-sitewide-notifications',
   template: '',
-  standalone: true,
   imports: [RouterTestingModule, MatSnackBarModule],
 })
 class NotificationStubComponent {}

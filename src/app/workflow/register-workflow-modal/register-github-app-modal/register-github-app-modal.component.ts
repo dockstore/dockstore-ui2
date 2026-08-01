@@ -30,7 +30,6 @@ import { RegisterGithubAppComponent } from '../../../shared/register-github-app/
   selector: 'app-register-github-app-modal',
   templateUrl: './register-github-app-modal.component.html',
   styleUrls: ['../register-workflow-modal.component.scss'],
-  standalone: true,
   imports: [MatDialogModule, RegisterGithubAppComponent, MatButtonModule, TitleCasePipe],
 })
 export class RegisterGithubAppModalComponent implements OnInit {

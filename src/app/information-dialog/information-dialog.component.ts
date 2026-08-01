@@ -13,7 +13,6 @@ export class InformationDialogData {
 @Component({
   selector: 'app-information-dialog',
   templateUrl: './information-dialog.component.html',
-  standalone: true,
   imports: [NgIf, MatDialogModule, FlexModule, MatButtonModule],
 })
 export class InformationDialogComponent {

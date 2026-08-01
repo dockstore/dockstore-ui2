@@ -27,7 +27,6 @@ const EDAM_PREFIX = 'http://edamontology.org/';
   selector: 'app-category-button',
   templateUrl: './category-button.component.html',
   styleUrls: ['./category-button.component.scss'],
-  standalone: true,
   imports: [MatChipsModule, RouterLink, NgClass, MatTooltipModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

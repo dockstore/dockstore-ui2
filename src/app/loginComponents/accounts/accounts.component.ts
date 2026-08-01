@@ -19,7 +19,6 @@ import { RecommendedActionsComponent } from 'app/myworkflows/sidebar-accordion/g
   selector: 'app-accounts',
   templateUrl: './accounts.component.html',
   styleUrls: ['./accounts.component.scss'],
-  standalone: true,
   imports: [
     FlexModule,
     MySidebarComponent,

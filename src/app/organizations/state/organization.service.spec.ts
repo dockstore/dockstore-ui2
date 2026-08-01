@@ -26,7 +26,6 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 
 @Component({
   template: ` <router-outlet></router-outlet> `,
-  standalone: true,
   imports: [MatSnackBarModule],
   providers: [provideHttpClientTesting()],
 })

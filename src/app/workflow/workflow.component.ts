@@ -119,7 +119,6 @@ import { AiBubbleComponent } from '../shared/ai-bubble/ai-bubble.component';
   selector: 'app-workflow',
   templateUrl: './workflow.component.html',
   styleUrls: ['../shared/styles/workflow-container.component.scss'],
-  standalone: true,
   imports: [
     NgIf,
     MatCardModule,

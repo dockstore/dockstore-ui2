@@ -33,7 +33,6 @@ import { LoadingComponent } from '../../shared/loading/loading.component';
   selector: 'app-recent-events',
   templateUrl: './recent-events.component.html',
   styleUrls: ['../../shared/styles/dashboard-boxes.scss'],
-  standalone: true,
   imports: [
     LoadingComponent,
     NgIf,

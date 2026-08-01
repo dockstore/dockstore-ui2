@@ -26,6 +26,7 @@ import { NavigationExtras } from '@angular/router';
   host: {
     '(click)': 'onClick()',
   },
+  standalone: false,
 })
 export class RouterLinkStubDirective {
   @Input('routerLink') linkParams: any;
@@ -36,7 +37,11 @@ export class RouterLinkStubDirective {
   }
 }
 
-@Component({ selector: 'router-outlet', template: '' })
+@Component({
+  selector: 'router-outlet',
+  template: '',
+  standalone: false,
+})
 export class RouterOutletStubComponent {}
 
 @Injectable()

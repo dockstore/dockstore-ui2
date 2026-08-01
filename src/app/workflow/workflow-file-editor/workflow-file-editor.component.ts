@@ -37,7 +37,6 @@ import { MatTabsModule } from '@angular/material/tabs';
   selector: 'app-workflow-file-editor',
   templateUrl: './workflow-file-editor.component.html',
   styleUrls: ['./workflow-file-editor.component.scss'],
-  standalone: true,
   imports: [MatTabsModule, CodeEditorListComponent, NgIf, MatCardModule, MatIconModule, MatButtonModule, AsyncPipe],
 })
 export class WorkflowFileEditorComponent extends FileEditing {

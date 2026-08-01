@@ -14,7 +14,6 @@ import { NgIf, AsyncPipe } from '@angular/common';
   selector: 'app-controls',
   templateUrl: './controls.component.html',
   styleUrls: ['./controls.component.scss'],
-  standalone: true,
   imports: [NgIf, MatCardModule, MatIconModule, MatButtonModule, AsyncPipe],
 })
 export class ControlsComponent implements OnInit {

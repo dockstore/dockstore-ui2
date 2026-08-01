@@ -39,7 +39,6 @@ import DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
   selector: 'app-container-launch',
   templateUrl: './launch.component.html',
   styleUrls: ['./launch.component.css'],
-  standalone: true,
   imports: [
     NgIf,
     MatCardModule,

@@ -26,7 +26,6 @@ interface DocObject {
 @Component({
   selector: 'app-docs',
   templateUrl: './docs.component.html',
-  standalone: true,
   imports: [HeaderComponent],
 })
 export class DocsComponent implements OnInit {

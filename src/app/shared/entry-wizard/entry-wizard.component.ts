@@ -18,7 +18,6 @@ import { FlexModule } from '@ngbracket/ngx-layout';
   selector: 'app-entry-wizard',
   templateUrl: './entry-wizard.component.html',
   styleUrls: ['./entry-wizard.component.scss'],
-  standalone: true,
   imports: [
     NgIf,
     MatProgressBarModule,

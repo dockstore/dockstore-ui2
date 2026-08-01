@@ -22,7 +22,6 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 @Component({
   selector: 'app-organization-request-confirm-dialog',
   templateUrl: 'organization-request-confirm-dialog.html',
-  standalone: true,
   imports: [MatDialogModule, FlexModule, MatButtonModule, NgIf],
 })
 export class OrganizationRequestConfirmDialogComponent {
@@ -39,7 +38,6 @@ export class OrganizationRequestConfirmDialogComponent {
 @Component({
   selector: 'app-organization-invite-confirm-dialog',
   templateUrl: 'organization-invite-confirm-dialog.html',
-  standalone: true,
   imports: [MatDialogModule, FlexModule, MatButtonModule, NgIf],
 })
 export class OrganizationInviteConfirmDialogComponent {
@@ -60,7 +58,6 @@ export interface DialogData {
   selector: 'app-requests',
   templateUrl: './requests.component.html',
   styleUrls: ['./requests.component.scss'],
-  standalone: true,
   imports: [
     MatProgressBarModule,
     NgIf,

@@ -23,7 +23,6 @@ import { TosBannerComponent } from './tosBanner/tos-banner.component';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
-  standalone: true,
   imports: [
     NgIf,
     TosBannerComponent,

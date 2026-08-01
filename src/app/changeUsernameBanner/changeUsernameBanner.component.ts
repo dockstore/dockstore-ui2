@@ -19,7 +19,6 @@ import { FlexModule } from '@ngbracket/ngx-layout/flex';
 @Component({
   selector: 'app-change-username-banner',
   templateUrl: './changeUsernameBanner.component.html',
-  standalone: true,
   imports: [FlexModule],
 })
 export class ChangeUsernameBannerComponent {}

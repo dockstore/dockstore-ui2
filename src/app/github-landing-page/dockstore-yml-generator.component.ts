@@ -24,7 +24,6 @@ import { FormsModule } from '@angular/forms';
   selector: 'app-dockstore-yml-generator',
   templateUrl: './dockstore-yml-generator.component.html',
   styleUrls: [],
-  standalone: true,
   imports: [
     FlexModule,
     MatCardModule,

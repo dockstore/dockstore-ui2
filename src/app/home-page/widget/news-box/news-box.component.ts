@@ -9,7 +9,6 @@ import { MatChipsModule } from '@angular/material/chips';
   selector: 'app-news-box',
   templateUrl: './news-box.component.html',
   styleUrls: ['../../../shared/styles/dashboard-boxes.scss'],
-  standalone: true,
   imports: [MatCardModule, FlexModule, MatDividerModule, NewsAndUpdatesComponent, MatChipsModule],
 })
 export class NewsBoxComponent {}

@@ -43,7 +43,6 @@ import { NgIf, AsyncPipe, LowerCasePipe } from '@angular/common';
   selector: 'app-launch',
   templateUrl: './launch.component.html',
   styleUrls: ['./launch.component.css'],
-  standalone: true,
   imports: [
     NgIf,
     MatCardModule,

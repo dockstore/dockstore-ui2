@@ -21,7 +21,6 @@ import { HeaderComponent } from '../../header/header.component';
   selector: 'app-onboarding',
   templateUrl: './onboarding.component.html',
   styleUrls: ['./onboarding.component.scss'],
-  standalone: true,
   imports: [
     HeaderComponent,
     MatIconModule,

@@ -84,7 +84,6 @@ import { WorkflowComponent } from '../workflow/workflow.component';
   selector: 'app-container',
   templateUrl: './container.component.html',
   styleUrls: ['../shared/styles/workflow-container.component.scss'],
-  standalone: true,
   imports: [
     NgIf,
     NgSwitch,

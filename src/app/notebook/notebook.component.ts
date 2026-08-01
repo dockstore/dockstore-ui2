@@ -21,7 +21,6 @@ const ERROR_MESSAGE = 'The notebook could not be displayed.';
 @Component({
   selector: 'app-notebook',
   templateUrl: './notebook.component.html',
-  standalone: true,
   imports: [
     NgIf,
     NgFor,

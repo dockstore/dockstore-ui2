@@ -30,7 +30,6 @@ export interface DoiInfo {
   selector: 'app-manage-dois-dialog',
   templateUrl: './manage-dois-dialog.component.html',
   styleUrls: ['../../../styles/radio-button-cards.scss'],
-  standalone: true,
   imports: [
     MatDialogModule,
     MatButtonModule,

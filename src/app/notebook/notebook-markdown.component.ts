@@ -9,7 +9,6 @@ import './mathjax';
 @Component({
   selector: 'app-notebook-markdown',
   templateUrl: './notebook-markdown.component.html',
-  standalone: true,
   imports: [NgIf],
 })
 export class NotebookMarkdownComponent implements OnChanges {

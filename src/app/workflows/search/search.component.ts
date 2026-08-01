@@ -20,7 +20,6 @@ import { ListWorkflowsComponent } from '../list/list.component';
 @Component({
   selector: 'app-search-workflows',
   templateUrl: './search.component.html',
-  standalone: true,
   imports: [ListWorkflowsComponent],
 })
 export class SearchWorkflowsComponent {}

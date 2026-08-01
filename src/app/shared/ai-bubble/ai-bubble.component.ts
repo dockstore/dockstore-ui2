@@ -27,7 +27,6 @@ import { MatChipsModule } from '@angular/material/chips';
 @Component({
   selector: 'app-ai-bubble',
   templateUrl: './ai-bubble.component.html',
-  standalone: true,
   imports: [MatTooltipModule, MatChipsModule],
 })
 export class AiBubbleComponent {

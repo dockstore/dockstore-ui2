@@ -52,7 +52,6 @@ export interface TopicOption {
   selector: 'app-edit-topic-dialog',
   templateUrl: './edit-topic-dialog.component.html',
   styleUrls: ['./edit-topic-dialog.component.scss', '../../../styles/radio-button-cards.scss'],
-  standalone: true,
   imports: [
     MatDialogModule,
     AlertComponent,

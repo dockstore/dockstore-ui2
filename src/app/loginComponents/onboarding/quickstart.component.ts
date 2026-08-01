@@ -23,7 +23,6 @@ import { HeaderComponent } from '../../header/header.component';
 @Component({
   selector: 'app-onboarding',
   templateUrl: './quickstart.component.html',
-  standalone: true,
   imports: [HeaderComponent, MatIconModule, NgIf, DownloadCLIClientComponent],
 })
 export class QuickStartComponent implements OnInit {

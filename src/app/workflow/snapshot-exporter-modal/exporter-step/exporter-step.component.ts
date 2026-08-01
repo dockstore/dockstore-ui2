@@ -11,7 +11,6 @@ import { StepState } from '../step.state';
   selector: 'app-exporter-step',
   templateUrl: './exporter-step.component.html',
   styleUrls: ['./exporter-step.component.scss'],
-  standalone: true,
   imports: [FlexModule, NgIf, MatIconModule, FontAwesomeModule, MatProgressSpinnerModule, NgSwitch, NgSwitchCase, NgSwitchDefault],
 })
 export class ExporterStepComponent {

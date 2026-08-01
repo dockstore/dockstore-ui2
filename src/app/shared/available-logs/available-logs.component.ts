@@ -28,7 +28,6 @@ interface VersionVerifiedInformation {
   selector: 'app-available-logs',
   templateUrl: './available-logs.component.html',
   styleUrls: ['./available-logs.component.scss'],
-  standalone: true,
   imports: [
     MatDialogModule,
     LoadingComponent,

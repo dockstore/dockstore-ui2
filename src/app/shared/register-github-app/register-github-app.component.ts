@@ -14,7 +14,6 @@ import { MatIconModule } from '@angular/material/icon';
 @Component({
   selector: 'app-register-github-app',
   templateUrl: './register-github-app.component.html',
-  standalone: true,
   imports: [MatIconModule, FlexModule, MatButtonModule, MatTooltipModule, AsyncPipe, TitleCasePipe],
 })
 export class RegisterGithubAppComponent extends Base implements OnInit {

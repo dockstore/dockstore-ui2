@@ -13,7 +13,6 @@ import { PublicNotification } from 'app/shared/openapi';
   selector: 'app-news-notifications',
   templateUrl: './news-notifications.component.html',
   styleUrls: ['./news-notifications.component.scss'],
-  standalone: true,
   imports: [NgFor, MatCardModule, FlexModule, MarkdownWrapperComponent, MatButtonModule, MatIconModule, AsyncPipe],
 })
 export class NewsNotificationsComponent implements OnInit {

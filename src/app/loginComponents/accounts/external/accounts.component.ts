@@ -66,7 +66,6 @@ export interface AccountInfo {
   selector: 'app-accounts-external',
   templateUrl: './accounts.component.html',
   styleUrls: ['./accounts.component.scss'],
-  standalone: true,
   imports: [
     FlexModule,
     NgIf,

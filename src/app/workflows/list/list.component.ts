@@ -47,7 +47,6 @@ import { MatChipsModule } from '@angular/material/chips';
   selector: 'app-list-workflows',
   templateUrl: './list.component.html',
   styleUrls: ['../../shared/styles/entry-table.scss', './list.component.scss'],
-  standalone: true,
   imports: [
     NgIf,
     MatProgressBarModule,

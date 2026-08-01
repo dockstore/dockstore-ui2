@@ -27,7 +27,6 @@ import { MatButtonModule } from '@angular/material/button';
   selector: 'app-deregister-modal',
   templateUrl: './deregister-modal.component.html',
   styleUrls: ['./deregister-modal.component.css'],
-  standalone: true,
   imports: [MatButtonModule, MatTooltipModule],
 })
 export class ModalComponent {

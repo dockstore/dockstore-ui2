@@ -32,7 +32,6 @@ import { MatTabsModule } from '@angular/material/tabs';
   selector: 'app-tool-file-editor',
   templateUrl: './tool-file-editor.component.html',
   styleUrls: ['./tool-file-editor.component.scss'],
-  standalone: true,
   imports: [MatTabsModule, CodeEditorListComponent, MatFormFieldModule, MatSelectModule, MatOptionModule, NgIf, MatButtonModule],
 })
 export class ToolFileEditorComponent extends FileEditing {

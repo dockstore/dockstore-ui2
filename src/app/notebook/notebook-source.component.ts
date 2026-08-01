@@ -7,7 +7,6 @@ import './prism';
 @Component({
   selector: 'app-notebook-source',
   templateUrl: './notebook-source.component.html',
-  standalone: true,
   imports: [NgIf],
 })
 export class NotebookSourceComponent implements OnChanges {

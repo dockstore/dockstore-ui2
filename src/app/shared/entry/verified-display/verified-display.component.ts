@@ -22,7 +22,6 @@ import { VersionVerifiedPlatform, Tag, VerificationInformation, WorkflowVersion 
   selector: 'app-verified-display',
   templateUrl: './verified-display.component.html',
   styleUrls: ['./verified-display.component.scss'],
-  standalone: true,
   imports: [MatTableModule, MatSortModule],
 })
 export class VerifiedDisplayComponent implements OnInit, OnChanges {

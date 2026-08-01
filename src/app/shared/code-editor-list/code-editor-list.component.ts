@@ -28,7 +28,6 @@ export type FileCategory = 'descriptor' | 'dockerfile' | 'testParam';
   selector: 'app-code-editor-list',
   templateUrl: './code-editor-list.component.html',
   styleUrls: ['./code-editor-list.component.scss'],
-  standalone: true,
   imports: [
     NgIf,
     MatCardModule,

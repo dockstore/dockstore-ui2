@@ -29,7 +29,6 @@ import { SearchEntryTableComponent } from '../search-entry-table.component';
   selector: 'app-search-results',
   templateUrl: './search-results.component.html',
   styleUrls: ['./search-results.component.scss'],
-  standalone: true,
   imports: [NgIf, FlexModule, FontAwesomeModule, MatDividerModule, SearchEntryTableComponent, AsyncPipe],
 })
 export class SearchResultsComponent {

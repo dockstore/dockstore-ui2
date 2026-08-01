@@ -34,7 +34,6 @@ import { NgIf } from '@angular/common';
   selector: 'app-dockerfile',
   templateUrl: './dockerfile.component.html',
   styleUrls: ['./dockerfile.component.scss'],
-  standalone: true,
   imports: [
     NgIf,
     MatCardModule,

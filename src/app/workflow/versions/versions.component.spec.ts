@@ -46,7 +46,6 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 @Component({
   selector: 'app-view-workflow',
   template: '<p>App View Component</p>',
-  standalone: true,
   imports: [FormsModule, FontAwesomeModule],
   providers: [provideHttpClientTesting()],
 })
@@ -63,7 +62,6 @@ class MockViewWorkflowComponent {
 @Component({
   selector: 'app-version-modal',
   template: '<p>Version Modal Component</p>',
-  standalone: true,
   imports: [FormsModule, FontAwesomeModule],
   providers: [provideHttpClientTesting()],
 })

@@ -13,7 +13,6 @@ import { FlexModule } from '@ngbracket/ngx-layout/flex';
 @Component({
   selector: 'app-require-accounts-modal',
   templateUrl: './require-accounts-modal.component.html',
-  standalone: true,
   imports: [MatDialogModule, FlexModule, MatButtonModule, RouterLink, AsyncPipe, I18nPluralPipe],
 })
 export class RequireAccountsModalComponent implements OnInit {

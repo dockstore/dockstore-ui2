@@ -49,7 +49,6 @@ import { AlertComponent } from '../../shared/alert/alert.component';
   selector: 'app-version-modal',
   templateUrl: './version-modal.component.html',
   styleUrls: ['./version-modal.component.css'],
-  standalone: true,
   imports: [
     MatDialogModule,
     AlertComponent,

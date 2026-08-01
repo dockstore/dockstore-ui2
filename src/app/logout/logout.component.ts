@@ -6,7 +6,6 @@ import { HeaderComponent } from '../header/header.component';
   selector: 'app-logout',
   templateUrl: './logout.component.html',
   styleUrls: ['./logout.component.scss'],
-  standalone: true,
   imports: [HeaderComponent, FlexModule],
 })
 export class LogoutComponent {}

@@ -33,7 +33,6 @@ import { NgClass, NgIf } from '@angular/common';
   selector: 'app-organization-starring',
   templateUrl: '../../../starring/starring.component.html',
   styleUrls: ['../../../starring/starring.component.scss'],
-  standalone: true,
   imports: [NgClass, NgIf, MatIconModule, MatTooltipModule],
 })
 export class OrganizationStarringComponent extends Base implements OnInit, OnDestroy, OnChanges {

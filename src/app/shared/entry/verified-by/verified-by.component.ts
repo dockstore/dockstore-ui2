@@ -14,7 +14,6 @@ import { NgIf, NgFor } from '@angular/common';
   selector: 'app-verified-by',
   templateUrl: './verified-by.component.html',
   styleUrls: ['./verified-by.component.scss'],
-  standalone: true,
   imports: [NgIf, MatCardModule, FlexModule, MatButtonModule, MatDividerModule, NgFor, MatDialogModule],
 })
 export class VerifiedByComponent implements OnChanges {

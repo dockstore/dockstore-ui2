@@ -22,7 +22,6 @@ import { TimeSeriesService } from '../timeseries.service';
 @Component({
   selector: 'app-thumbnail-time-series-graph',
   templateUrl: './thumbnail-time-series-graph.component.html',
-  standalone: true,
   imports: [NgIf, BaseChartDirective],
 })
 export class ThumbnailTimeSeriesGraphComponent implements OnChanges {

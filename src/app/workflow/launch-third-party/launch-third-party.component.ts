@@ -100,7 +100,6 @@ import { NgIf, AsyncPipe } from '@angular/common';
   templateUrl: './launch-third-party.component.html',
   styleUrls: ['./launch-third-party.component.scss'],
   providers: [DescriptorsService, DescriptorsQuery, DescriptorsStore],
-  standalone: true,
   imports: [
     NgIf,
     MatCardModule,

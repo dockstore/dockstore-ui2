@@ -60,7 +60,6 @@ export class YoutubeComponent {
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
-  standalone: true,
   imports: [
     FlexModule,
     JsonLdComponent,

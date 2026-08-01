@@ -10,7 +10,6 @@ import { MatChipsModule } from '@angular/material/chips';
   selector: 'app-my-organizations-dialog',
   templateUrl: './my-organizations-dialog.component.html',
   styleUrls: ['../../../../shared/styles/dashboard-boxes.scss'],
-  standalone: true,
   imports: [FlexModule, MatDialogModule, NgFor, MatButtonModule, DatePipe, MatChipsModule],
 })
 export class MyOrganizationsDialogComponent {

@@ -28,7 +28,6 @@ import { HeaderComponent } from '../header/header.component';
 @Component({
   selector: 'app-containers',
   templateUrl: './containers.component.html',
-  standalone: true,
   imports: [HeaderComponent, NgIf, FlexModule, RouterLink, ExtendedModule, RouterOutlet, AsyncPipe, TitleCasePipe],
 })
 export class ContainersComponent {

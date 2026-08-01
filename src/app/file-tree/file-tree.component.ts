@@ -40,7 +40,6 @@ export interface FlatTreeNode {
 @Component({
   selector: 'app-file-tree',
   templateUrl: './file-tree.component.html',
-  standalone: true,
   imports: [MatDialogModule, MatFormFieldModule, MatInputModule, MatTreeModule, NgIf, MatButtonModule, MatIconModule, MatChipsModule],
 })
 export class FileTreeComponent {

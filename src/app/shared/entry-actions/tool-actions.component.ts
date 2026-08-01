@@ -15,7 +15,6 @@ import { NgIf, AsyncPipe } from '@angular/common';
   selector: 'app-tool-actions',
   templateUrl: './tool-actions.component.html',
   styleUrls: ['./entry-actions.component.scss'],
-  standalone: true,
   imports: [NgIf, FlexModule, MatButtonModule, RouterLink, MatTooltipModule, ModalComponent, AsyncPipe],
 })
 export class ToolActionsComponent extends EntryActionsComponent implements OnInit, OnChanges {

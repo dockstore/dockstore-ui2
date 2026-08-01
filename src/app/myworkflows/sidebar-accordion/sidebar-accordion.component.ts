@@ -51,7 +51,6 @@ interface GroupEntriesBySource {
     '../../mytools/sidebar-accordion/sidebar-accordion.component.scss',
     '../../shared/styles/my-entry-sidebar.scss',
   ],
-  standalone: true,
   imports: [
     NgFor,
     NgIf,

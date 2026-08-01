@@ -24,7 +24,6 @@ import { MatChipsModule } from '@angular/material/chips';
   selector: 'app-organization-box',
   templateUrl: './organization-box.component.html',
   styleUrls: ['./organization-box.component.scss', '../../../shared/styles/dashboard-boxes.scss'],
-  standalone: true,
   imports: [
     MatCardModule,
     FlexModule,

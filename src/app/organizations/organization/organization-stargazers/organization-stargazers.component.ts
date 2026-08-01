@@ -32,7 +32,6 @@ import { NgIf, NgFor } from '@angular/common';
   selector: 'app-organization-stargazers',
   templateUrl: '../../../stargazers/stargazers.component.html',
   styleUrls: ['../../../stargazers/stargazers.component.css'],
-  standalone: true,
   imports: [NgIf, MatCardModule, MatIconModule, FlexModule, NgFor, RouterLink],
 })
 export class OrganizationStargazersComponent extends Base implements OnInit {

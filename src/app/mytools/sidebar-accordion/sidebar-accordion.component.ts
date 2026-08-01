@@ -24,7 +24,6 @@ interface GroupEntriesByRegistry {
   selector: 'app-sidebar-accordion',
   templateUrl: './sidebar-accordion.component.html',
   styleUrls: ['./sidebar-accordion.component.scss', '../../shared/styles/my-entry-sidebar.scss'],
-  standalone: true,
   imports: [
     NgFor,
     NgIf,

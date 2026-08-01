@@ -9,7 +9,6 @@ import { Doi } from 'app/shared/openapi';
   selector: 'app-doi-badge',
   templateUrl: './doi-badge.component.html',
   styleUrls: [],
-  standalone: true,
   imports: [MatTooltipModule, NgIf, MatIconModule],
 })
 export class DoiBadgeComponent {

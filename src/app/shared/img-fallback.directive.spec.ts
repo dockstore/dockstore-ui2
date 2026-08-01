@@ -6,7 +6,6 @@ import { ImgFallbackDirective } from './img-fallback.directive';
 @Component({
   template: '<img src="original.jpg" appFallback="fallback.jpg">',
   imports: [ImgFallbackDirective],
-  standalone: true,
 })
 class TestComponent {}
 

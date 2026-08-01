@@ -15,7 +15,6 @@ import { MatCardModule } from '@angular/material/card';
   selector: 'app-events',
   templateUrl: './events.component.html',
   styleUrls: ['./events.component.scss'],
-  standalone: true,
   imports: [MatCardModule, LoadingComponent, FlexModule, NgFor, MatChipsModule, MatTooltipModule, RouterLink, NgIf, AsyncPipe, DatePipe],
 })
 export class EventsComponent implements OnInit, OnChanges {

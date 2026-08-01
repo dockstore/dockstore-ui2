@@ -32,7 +32,6 @@ import { CurationService } from 'app/shared/openapi';
   selector: 'app-recommended-actions',
   templateUrl: './recommended-actions.component.html',
   styleUrls: [],
-  standalone: true,
   imports: [
     LoadingComponent,
     NgIf,

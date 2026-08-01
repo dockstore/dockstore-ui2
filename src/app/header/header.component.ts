@@ -22,7 +22,6 @@ import { FlexModule } from '@ngbracket/ngx-layout';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  standalone: true,
   imports: [AlertComponent, FlexModule],
 })
 export class HeaderComponent {

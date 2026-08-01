@@ -18,7 +18,6 @@ import { MatChipsModule } from '@angular/material/chips';
   selector: 'app-display-topic',
   templateUrl: './display-topic.component.html',
   styleUrls: ['../../../styles/info-tab.component.scss'],
-  standalone: true,
   imports: [
     NgIf,
     MatTooltipModule,

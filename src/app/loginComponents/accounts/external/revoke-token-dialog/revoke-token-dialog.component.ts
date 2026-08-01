@@ -41,7 +41,6 @@ import { AlertComponent } from '../../../../shared/alert/alert.component';
   selector: 'app-revoke-token-dialog',
   templateUrl: './revoke-token-dialog.component.html',
   styleUrls: ['./revoke-token-dialog.component.scss'],
-  standalone: true,
   imports: [
     MatDialogModule,
     AlertComponent,

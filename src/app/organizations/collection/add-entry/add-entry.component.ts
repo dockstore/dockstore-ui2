@@ -18,7 +18,6 @@ import { LoadingComponent } from '../../../shared/loading/loading.component';
   selector: 'app-add-entry',
   templateUrl: './add-entry.component.html',
   styleUrls: ['./add-entry.component.scss'],
-  standalone: true,
   imports: [
     MatDialogModule,
     LoadingComponent,

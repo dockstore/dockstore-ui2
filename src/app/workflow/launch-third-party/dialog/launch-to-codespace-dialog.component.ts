@@ -28,7 +28,6 @@ import { AlertComponent } from '../../../shared/alert/alert.component';
   selector: 'app-launch-to-codespace-dialog',
   templateUrl: './launch-to-codespace-dialog.component.html',
   styleUrls: ['./launch-to-codespace-dialog.component.scss'],
-  standalone: true,
   imports: [MatDialogModule, AlertComponent, NgIf, FlexModule, MatButtonModule, TitleCasePipe],
 })
 export class LaunchToCodespaceDialogComponent {

@@ -38,7 +38,6 @@ import { FlexModule } from '@ngbracket/ngx-layout/flex';
   selector: 'app-starredentries',
   templateUrl: './starredentries.component.html',
   styleUrls: ['./starredentries.component.scss'],
-  standalone: true,
   imports: [
     FlexModule,
     MySidebarComponent,

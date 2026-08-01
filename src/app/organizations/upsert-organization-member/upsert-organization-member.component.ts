@@ -27,7 +27,6 @@ export interface UpsertOrganizationMemberComponentData {
 @Component({
   selector: 'app-upsert-organization-member',
   templateUrl: './upsert-organization-member.component.html',
-  standalone: true,
   imports: [
     MatDialogModule,
     AlertComponent,

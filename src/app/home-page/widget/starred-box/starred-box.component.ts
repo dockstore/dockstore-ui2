@@ -14,7 +14,6 @@ import { MatCardModule } from '@angular/material/card';
   selector: 'app-starred-box',
   templateUrl: './starred-box.component.html',
   styleUrls: ['./starred-box.component.scss', '../../../shared/styles/dashboard-boxes.scss'],
-  standalone: true,
   imports: [MatCardModule, FlexModule, MatIconModule, RouterLink, NgIf, MatDividerModule, RecentEventsComponent],
 })
 export class StarredBoxComponent extends Base implements OnInit {

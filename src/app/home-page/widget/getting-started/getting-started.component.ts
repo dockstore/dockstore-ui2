@@ -8,7 +8,6 @@ import { MatButtonModule } from '@angular/material/button';
   selector: 'app-getting-started',
   templateUrl: './getting-started.component.html',
   styleUrls: ['./getting-started.component.scss'],
-  standalone: true,
   imports: [MatButtonModule, RouterLink, MatIconModule],
 })
 export class GettingStartedComponent {

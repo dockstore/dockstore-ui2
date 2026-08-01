@@ -27,7 +27,6 @@ import { AlertComponent } from '../../../shared/alert/alert.component';
 @Component({
   selector: 'app-collection-confirm-remove',
   templateUrl: './remove-collection.component.html',
-  standalone: true,
   imports: [MatDialogModule, AlertComponent, FlexModule, MatButtonModule, MatTooltipModule, AsyncPipe],
 })
 export class RemoveCollectionDialogComponent {

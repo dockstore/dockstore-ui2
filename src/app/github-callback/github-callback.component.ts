@@ -11,7 +11,6 @@ import { FlexModule } from '@ngbracket/ngx-layout/flex';
   selector: 'app-github-callback',
   templateUrl: './github-callback.component.html',
   styleUrls: ['./github-callback.component.scss'],
-  standalone: true,
   imports: [FlexModule, MatProgressSpinnerModule],
 })
 export class GithubCallbackComponent extends Base implements OnInit {

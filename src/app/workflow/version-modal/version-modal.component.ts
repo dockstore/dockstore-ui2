@@ -56,7 +56,6 @@ export interface Dialogdata {
   selector: 'app-version-modal',
   templateUrl: './version-modal.component.html',
   styleUrls: ['./version-modal.component.css'],
-  standalone: true,
   imports: [
     MatDialogModule,
     AlertComponent,
