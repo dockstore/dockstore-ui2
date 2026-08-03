@@ -519,7 +519,7 @@ describe('Dockstore my workflows part 2', () => {
     cy.visit('/my-workflows/github.com/A/l');
     cy.url().should('eq', Cypress.config().baseUrl + '/my-workflows/github.com/A/l');
     goToVersionsTab();
-    cy.get('table>tbody>tr').should('have.length', 2); // 2 Versions and no warning line
+    cy.get('[data-cy=app-versions-workflow] table>tbody>tr').should('have.length', 2); // 2 Versions and no warning line
     cy.get('[data-cy=refreshOrganization]:visible').should('be.visible').click();
     cy.get('[data-cy=confirm-dialog-button]').contains('Refresh').click();
     cy.wait('@refreshWorkflow');
@@ -531,7 +531,7 @@ describe('Dockstore my workflows part 2', () => {
     });
     goToVersionsTab();
     cy.wait('@getVersion');
-    cy.get('table>tbody>tr').should('have.length', 1); // 2 Versions and no warning line
+    cy.get('[data-cy=app-versions-workflow] table>tbody>tr').should('have.length', 1); // 2 Versions and no warning line
   });
 
   describe('Look at an invalid workflow', () => {
@@ -675,7 +675,7 @@ describe('Dockstore my workflows part 3', () => {
         goToTab(tab);
         isActiveTab(tab);
         if (tab === 'Versions') {
-          cy.get('table>tbody>tr').should('have.length', 2); // 2 Versions and no warning line
+          cy.get('[data-cy=app-versions-workflow] table>tbody>tr').should('have.length', 2); // 2 Versions and no warning line
         }
       });
 
