@@ -108,11 +108,12 @@ export class EntryActionsService {
     }
     // WDL 1.1 special case (version is not blank and doesn't start with draft and is 1.1 or higher)
     if (
-      entry.workflowVersions.some(
-        (version) =>
-          version.versionMetadata.descriptorTypeVersions?.length > 0 &&
-          version.versionMetadata.descriptorTypeVersions.some((dtv) => dtv && !dtv.startsWith('draft') && !dtv.startsWith('1.0'))
-      )
+      entry.workflowVersions.some((version) => {
+        if (version.versionMetadata && version.versionMetadata.descriptorTypeVersions) {
+          return version.versionMetadata.descriptorTypeVersions.some((dtv) => dtv && !dtv.startsWith('draft') && !dtv.startsWith('1.0'));
+        }
+        return false;
+      })
     ) {
       return true;
     }
