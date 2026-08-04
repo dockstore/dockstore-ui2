@@ -23,7 +23,6 @@ import { NgIf, AsyncPipe } from '@angular/common';
   selector: 'app-workflow-actions',
   templateUrl: './workflow-actions.component.html',
   styleUrls: ['./entry-actions.component.scss'],
-  standalone: true,
   imports: [NgIf, FlexModule, MatButtonModule, RouterLink, MatTooltipModule, AsyncPipe],
 })
 export class WorkflowActionsComponent extends EntryActionsComponent implements OnInit, OnChanges {

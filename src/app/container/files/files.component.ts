@@ -30,7 +30,6 @@ import { MatTabsModule } from '@angular/material/tabs';
 @Component({
   selector: 'app-files-container',
   templateUrl: './files.component.html',
-  standalone: true,
   imports: [MatTabsModule, DockerfileComponent, DescriptorsComponent, ParamfilesComponent, NgIf, MatCardModule, MatIconModule],
 })
 export class FilesContainerComponent extends Files implements OnChanges {

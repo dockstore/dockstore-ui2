@@ -29,7 +29,6 @@ import { TitleCasePipe } from '@angular/common';
 
 @Component({
   templateUrl: './update-organization-description.component.html',
-  standalone: true,
   imports: [
     MatDialogModule,
     AlertComponent,

@@ -34,7 +34,6 @@ import { LoadingComponent } from '../../shared/loading/loading.component';
   selector: 'app-tool-tab',
   templateUrl: './tool-tab.component.html',
   styleUrls: ['./tool-tab.component.scss'],
-  standalone: true,
   imports: [LoadingComponent, NgIf, MatCardModule, MatIconModule, MatTableModule, AsyncPipe],
 })
 export class ToolTabComponent extends EntryTab {

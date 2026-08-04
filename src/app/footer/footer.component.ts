@@ -37,7 +37,6 @@ import { FlexModule } from '@ngbracket/ngx-layout/flex';
   selector: 'app-footer',
   templateUrl: './footer.component.html',
   styleUrls: ['./footer.component.scss'],
-  standalone: true,
   imports: [FlexModule, RouterLink, MatButtonModule, SnackbarDirective, ClipboardModule, MatIconModule, NgFor, GitTagPipe],
 })
 export class FooterComponent extends Base implements OnInit {

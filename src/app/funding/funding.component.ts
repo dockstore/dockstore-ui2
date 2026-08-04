@@ -23,7 +23,6 @@ export interface FundingSections {
   selector: 'app-funding',
   templateUrl: './funding.component.html',
   styleUrls: ['./funding.component.scss'],
-  standalone: true,
   imports: [HeaderComponent, NgFor, MatDividerModule, FlexModule, MatCardModule, MatButtonModule],
 })
 @Injectable()

@@ -65,7 +65,6 @@ import { MatChipsModule } from '@angular/material/chips';
   selector: 'app-info-tab-container',
   templateUrl: './info-tab.component.html',
   styleUrls: ['../../shared/styles/info-tab.component.scss'],
-  standalone: true,
   imports: [
     NgIf,
     MatCardModule,

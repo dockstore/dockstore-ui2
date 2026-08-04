@@ -20,7 +20,6 @@ import { HeaderComponent } from '../header/header.component';
 @Component({
   selector: 'app-policy-update',
   templateUrl: './session-expired.component.html',
-  standalone: true,
   imports: [HeaderComponent, RouterLink],
 })
 export class SessionExpiredComponent {}

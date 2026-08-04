@@ -77,7 +77,6 @@ import { MatChipsModule } from '@angular/material/chips';
   selector: 'app-my-workflow',
   templateUrl: './my-workflow.component.html',
   styleUrls: ['../../shared/styles/my-entry.component.scss'],
-  standalone: true,
   imports: [
     FlexModule,
     MySidebarComponent,

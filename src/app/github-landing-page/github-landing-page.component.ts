@@ -16,7 +16,6 @@ import { GenerateDockstoreYmlButtonComponent } from './generate-dockstore-yml-bu
   selector: 'app-github-landing-page',
   templateUrl: './github-landing-page.component.html',
   styleUrls: ['./github-landing-page.component.scss'],
-  standalone: true,
   imports: [
     FlexModule,
     MatCardModule,

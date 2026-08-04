@@ -29,7 +29,6 @@ import { MatChipsModule } from '@angular/material/chips';
   selector: 'app-source-file-tabs',
   templateUrl: './source-file-tabs.component.html',
   styleUrls: ['./source-file-tabs.component.scss'],
-  standalone: true,
   imports: [
     LoadingComponent,
     NgIf,

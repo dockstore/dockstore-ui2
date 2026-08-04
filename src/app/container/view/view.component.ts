@@ -41,7 +41,6 @@ import { NgIf, AsyncPipe } from '@angular/common';
   selector: 'app-view-container',
   templateUrl: './view.component.html',
   styleUrls: ['./view.component.css'],
-  standalone: true,
   imports: [NgIf, MatButtonModule, MatMenuModule, AsyncPipe],
 })
 // This is actually the actions dropdown for tags

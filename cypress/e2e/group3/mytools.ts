@@ -526,11 +526,11 @@ describe('Dockstore my tools', () => {
     cy.visit('/my-tools/quay.io/A2/a');
     cy.url().should('eq', Cypress.config().baseUrl + '/my-tools/quay.io/A2/a');
     goToVersionsTab();
-    cy.get('table>tbody>tr').should('have.length.greaterThan', 0); // More than one version
+    cy.get('[data-cy=app-versions-container] table>tbody>tr').should('have.length.greaterThan', 0); // More than one version
     cy.get('[data-cy=refreshOrganization]:visible').click();
     cy.wait('@refreshEntry');
     goToVersionsTab();
-    cy.get('table>tbody>tr').should('have.length', 0); // No versions
+    cy.get('[data-cy=app-versions-container] table>tbody>tr').should('have.length', 0); // No versions
   });
   // Refresh org button does not have tool tip, re-enable test when feature is added
   if (false) {

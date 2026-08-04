@@ -67,7 +67,6 @@ import { Dockstore } from 'app/shared/dockstore.model';
   selector: 'app-my-tool',
   templateUrl: './my-tool.component.html',
   styleUrls: ['../../shared/styles/my-entry.component.scss'],
-  standalone: true,
   imports: [
     FlexModule,
     MySidebarComponent,

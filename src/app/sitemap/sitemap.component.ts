@@ -8,7 +8,6 @@ import { MatChipsModule } from '@angular/material/chips';
   selector: 'app-sitemap',
   templateUrl: './sitemap.component.html',
   styleUrls: ['./sitemap.component.css'],
-  standalone: true,
   imports: [FlexModule, RouterLink, MatChipsModule],
 })
 export class SitemapComponent {

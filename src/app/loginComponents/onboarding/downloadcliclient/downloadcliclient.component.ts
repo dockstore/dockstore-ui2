@@ -21,7 +21,6 @@ import { MarkdownModule } from 'ngx-markdown';
   selector: 'app-downloadcliclient',
   templateUrl: './downloadcliclient.component.html',
   styleUrls: ['./downloadcliclient.component.scss'],
-  standalone: true,
   imports: [
     MarkdownModule,
     MatTabsModule,

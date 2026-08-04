@@ -68,7 +68,6 @@ import { CategoryButtonsComponent } from 'app/categories/buttons/category-button
   selector: 'app-info-tab',
   templateUrl: './info-tab.component.html',
   styleUrls: ['../../shared/styles/info-tab.component.scss', './info-tab.component.css'],
-  standalone: true,
   imports: [
     NgIf,
     MatCardModule,

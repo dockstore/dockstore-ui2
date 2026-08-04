@@ -9,7 +9,6 @@ import { FlexModule } from '@ngbracket/ngx-layout/flex';
   selector: 'app-tos-banner',
   templateUrl: './tos-banner.component.html',
   styleUrls: ['./tos-banner.component.css'],
-  standalone: true,
   imports: [FlexModule, NgIf, MatButtonModule, MatIconModule],
 })
 export class TosBannerComponent {

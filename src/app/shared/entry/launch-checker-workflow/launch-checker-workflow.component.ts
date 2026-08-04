@@ -30,7 +30,6 @@ import { NgIf, AsyncPipe } from '@angular/common';
   selector: 'app-launch-checker-workflow',
   templateUrl: './launch-checker-workflow.component.html',
   styleUrls: ['./launch-checker-workflow.component.scss'],
-  standalone: true,
   imports: [NgIf, MatCardModule, MatTooltipModule, MatButtonModule, SnackbarDirective, ClipboardModule, MatIconModule, AsyncPipe],
 })
 export class LaunchCheckerWorkflowComponent {

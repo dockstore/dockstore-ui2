@@ -38,7 +38,6 @@ import { MatChipsModule } from '@angular/material/chips';
   selector: 'app-collections',
   templateUrl: './collections.component.html',
   styleUrls: ['./collections.component.scss'],
-  standalone: true,
   imports: [
     NgIf,
     MatButtonModule,

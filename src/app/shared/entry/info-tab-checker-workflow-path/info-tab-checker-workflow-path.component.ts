@@ -36,7 +36,6 @@ import { NgIf, AsyncPipe } from '@angular/common';
   selector: 'app-info-tab-checker-workflow-path',
   templateUrl: './info-tab-checker-workflow-path.component.html',
   styleUrls: ['./info-tab-checker-workflow-path.component.scss'],
-  standalone: true,
   imports: [NgIf, FormsModule, FlexModule, MatTooltipModule, MatButtonModule, RouterLink, MatIconModule, AsyncPipe],
 })
 export class InfoTabCheckerWorkflowPathComponent extends Base implements OnInit, OnDestroy {

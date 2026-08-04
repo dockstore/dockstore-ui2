@@ -24,7 +24,6 @@ import { MatChipsModule } from '@angular/material/chips';
   selector: 'app-account-sidebar',
   templateUrl: './account-sidebar.component.html',
   styleUrls: ['./account-sidebar.component.scss'],
-  standalone: true,
   imports: [FlexModule, NgIf, MatIconModule, MatTooltipModule, MatButtonModule, RouterLink, MatChipsModule],
 })
 export class AccountSidebarComponent implements OnInit {

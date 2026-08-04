@@ -23,7 +23,6 @@ import { FlexModule } from '@ngbracket/ngx-layout/flex';
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
-  standalone: true,
   imports: [
     FlexModule,
     MySidebarComponent,

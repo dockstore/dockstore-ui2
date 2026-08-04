@@ -152,7 +152,7 @@ describe('GitHub App Tools', () => {
 
       goToVersionsTab();
       isActiveTab('Versions');
-      cy.get('table>tbody>tr').should('have.length', 1);
+      cy.get('[data-cy=app-versions-workflow] table>tbody>tr').should('have.length', 1);
       cy.contains('button', 'Actions').click();
       cy.contains('button', 'Refresh Version').should('be.disabled');
 

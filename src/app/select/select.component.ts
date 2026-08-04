@@ -24,7 +24,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 @Component({
   selector: 'app-select',
   templateUrl: './select.component.html',
-  standalone: true,
   imports: [MatFormFieldModule, MatSelectModule, NgFor, MatOptionModule, MatTooltipModule, NgIf],
 })
 export class SelectComponent implements OnChanges {

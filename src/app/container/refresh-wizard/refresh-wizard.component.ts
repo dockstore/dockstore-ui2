@@ -24,7 +24,6 @@ import { LoadingComponent } from '../../shared/loading/loading.component';
   templateUrl: './refresh-wizard.component.html',
   styleUrls: ['./refresh-wizard.component.scss'],
   providers: [RefreshWizardQuery, RefreshWizardStore, RefreshWizardService],
-  standalone: true,
   imports: [
     LoadingComponent,
     NgIf,

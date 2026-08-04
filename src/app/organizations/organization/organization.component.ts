@@ -58,7 +58,6 @@ import { HeaderComponent } from '../../header/header.component';
   selector: 'app-organization',
   templateUrl: './organization.component.html',
   styleUrls: ['./organization.component.scss'],
-  standalone: true,
   imports: [
     HeaderComponent,
     FlexModule,

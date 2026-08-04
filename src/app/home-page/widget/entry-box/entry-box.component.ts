@@ -44,7 +44,6 @@ import { MatChipsModule } from '@angular/material/chips';
   selector: 'app-entry-box',
   templateUrl: './entry-box.component.html',
   styleUrls: ['../../../shared/styles/dashboard-boxes.scss'],
-  standalone: true,
   imports: [
     MatCardModule,
     FlexModule,

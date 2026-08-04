@@ -23,7 +23,6 @@ import { CategoryButtonComponent } from 'app/categories/button/category-button.c
   selector: 'app-category-buttons',
   templateUrl: './category-buttons.component.html',
   styleUrls: ['./category-buttons.component.scss'],
-  standalone: true,
   imports: [NgFor, LowerCasePipe, MatChipsModule, CategoryButtonComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

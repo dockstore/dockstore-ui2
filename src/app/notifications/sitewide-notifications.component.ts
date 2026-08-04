@@ -12,7 +12,6 @@ import { PublicNotification } from 'app/shared/openapi';
   selector: 'app-sitewide-notifications',
   templateUrl: './sitewide-notifications.component.html',
   styleUrls: ['./sitewide-notifications.component.scss'],
-  standalone: true,
   imports: [NgFor, FlexModule, MarkdownWrapperComponent, MatButtonModule, MatIconModule, AsyncPipe],
 })
 export class SitewideNotificationsComponent implements OnInit {

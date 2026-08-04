@@ -44,7 +44,6 @@ import { FlexModule } from '@ngbracket/ngx-layout';
 
 @Component({
   templateUrl: './register-checker-workflow.component.html',
-  standalone: true,
   imports: [
     MatDialogModule,
     AlertComponent,

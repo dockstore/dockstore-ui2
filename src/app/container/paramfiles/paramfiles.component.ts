@@ -42,7 +42,6 @@ import { NgIf, NgFor, AsyncPipe, KeyValuePipe } from '@angular/common';
   selector: 'app-paramfiles-container',
   templateUrl: './paramfiles.component.html',
   styleUrls: ['./paramfiles.component.scss'],
-  standalone: true,
   imports: [
     NgIf,
     MatCardModule,

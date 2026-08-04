@@ -34,7 +34,6 @@ import { NgIf, AsyncPipe } from '@angular/common';
   selector: 'app-alert',
   templateUrl: './alert.component.html',
   styleUrls: ['./alert.component.css'],
-  standalone: true,
   imports: [NgIf, MatCardModule, MatIconModule, MatProgressBarModule, AsyncPipe],
 })
 export class AlertComponent implements OnInit {

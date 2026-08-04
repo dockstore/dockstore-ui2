@@ -44,7 +44,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   selector: 'app-versions-container',
   templateUrl: './versions.component.html',
   styleUrls: ['./../../workflow/versions/versions.component.scss'],
-  standalone: true,
   imports: [
     MatTableModule,
     MatSortModule,

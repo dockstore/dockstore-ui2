@@ -7,7 +7,6 @@ import { NgIf } from '@angular/common';
 @Component({
   selector: 'app-notebook-mime-bundle-output',
   templateUrl: './notebook-mime-bundle-output.component.html',
-  standalone: true,
   imports: [NgIf],
 })
 export class NotebookMimeBundleOutputComponent implements OnChanges {

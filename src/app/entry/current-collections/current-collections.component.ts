@@ -23,7 +23,6 @@ import { NgIf, NgFor, NgTemplateOutlet, AsyncPipe } from '@angular/common';
   selector: 'app-current-collections',
   templateUrl: './current-collections.component.html',
   styleUrls: ['./current-collections.component.scss'],
-  standalone: true,
   imports: [
     NgIf,
     MatCardModule,

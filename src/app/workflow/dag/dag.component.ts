@@ -55,7 +55,6 @@ import { LoadingComponent } from '../../shared/loading/loading.component';
   templateUrl: './dag.component.html',
   styleUrls: ['./dag.component.scss'],
   providers: [DagStore, DagQuery, DagService],
-  standalone: true,
   imports: [
     LoadingComponent,
     FlexModule,

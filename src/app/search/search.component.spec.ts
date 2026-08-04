@@ -42,7 +42,6 @@ import { SearchService } from './state/search.service';
 @Component({
   selector: 'app-search-results',
   template: '',
-  standalone: true,
   imports: [ClipboardModule, FontAwesomeModule, RouterTestingModule, MatSnackBarModule],
 })
 class SearchResultsComponent {}
@@ -50,7 +49,6 @@ class SearchResultsComponent {}
 @Component({
   selector: 'app-basic-search',
   template: '',
-  standalone: true,
   imports: [ClipboardModule, FontAwesomeModule, RouterTestingModule, MatSnackBarModule],
 })
 class BasicSearchComponent {}
@@ -58,7 +56,6 @@ class BasicSearchComponent {}
 @Component({
   selector: 'app-header',
   template: '',
-  standalone: true,
   imports: [ClipboardModule, FontAwesomeModule, RouterTestingModule, MatSnackBarModule],
 })
 class HeaderComponent {}

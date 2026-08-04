@@ -29,7 +29,6 @@ import { AlertComponent } from '../../../../shared/alert/alert.component';
   selector: 'app-delete-account-dialog',
   templateUrl: './delete-account-dialog.component.html',
   styleUrls: ['./delete-account-dialog.component.scss'],
-  standalone: true,
   imports: [
     MatDialogModule,
     AlertComponent,

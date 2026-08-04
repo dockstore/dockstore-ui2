@@ -22,7 +22,6 @@ import { MatIconModule } from '@angular/material/icon';
   selector: 'app-generate-dockstore-yml-button',
   templateUrl: './generate-dockstore-yml-button.component.html',
   styleUrls: [],
-  standalone: true,
   imports: [MatButtonModule, MatIconModule, RouterLink],
 })
 export class GenerateDockstoreYmlButtonComponent implements OnInit {

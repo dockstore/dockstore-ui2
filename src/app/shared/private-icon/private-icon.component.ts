@@ -6,7 +6,6 @@ import { MatIconModule } from '@angular/material/icon';
 @Component({
   selector: 'app-private-icon',
   templateUrl: './private-icon.component.html',
-  standalone: true,
   imports: [MatIconModule, MatTooltipModule],
 })
 export class PrivateIconComponent {

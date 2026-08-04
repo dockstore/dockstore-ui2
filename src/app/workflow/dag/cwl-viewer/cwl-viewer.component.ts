@@ -31,7 +31,6 @@ import { NgIf } from '@angular/common';
   templateUrl: './cwl-viewer.html',
   providers: [CwlViewerService],
   styleUrls: ['./cwl-viewer.scss'],
-  standalone: true,
   imports: [NgIf, MatCardModule, MatIconModule, MatProgressBarModule],
 })
 export class CwlViewerComponent implements OnInit, OnChanges, OnDestroy {

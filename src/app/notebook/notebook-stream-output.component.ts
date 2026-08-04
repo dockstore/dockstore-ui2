@@ -6,7 +6,6 @@ import { NgIf } from '@angular/common';
 @Component({
   selector: 'app-notebook-stream-output',
   templateUrl: './notebook-stream-output.component.html',
-  standalone: true,
   imports: [NgIf],
 })
 export class NotebookStreamOutputComponent implements OnChanges {

@@ -41,7 +41,6 @@ import { NgIf } from '@angular/common';
   selector: 'app-register-organization',
   templateUrl: './register-organization.component.html',
   styleUrls: ['./register-organization.component.scss'],
-  standalone: true,
   imports: [
     MatDialogModule,
     NgIf,

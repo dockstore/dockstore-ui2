@@ -27,7 +27,7 @@
         *ngFor="let instance of cloudInstances | filterCloudInstances: languagePartner"
         name="launchWithUrl"
         value="{{ instance.url }}"
-        [checked]="this.defaultLaunchWith === instance.url"
+        [checked]="defaultLaunchWith === instance.url"
         data-cy="multiCloudLaunchOption"
       >
         {{ instance.displayName }}
@@ -39,7 +39,7 @@
       <!--        *ngFor="let usersInstance of usersCloudInstances | filterCloudInstances: languagePartner"-->
       <!--        name="launchWithUrl"-->
       <!--        value="{{ usersInstance.url }}"-->
-      <!--        [checked]="this.defaultLaunchWith === usersInstance.url"-->
+      <!--        [checked]="defaultLaunchWith === usersInstance.url"-->
       <!--      >-->
       <!--        {{ usersInstance.displayName }} (Custom)-->
       <!--      </mat-radio-button>-->
@@ -62,7 +62,7 @@
       rel="noopener"
       [attr.href]="launchWith.url + appendToLaunchUrl"
       color="accent"
-      [disabled]="(!this.defaultLaunchWith && !this.launchWith.url) || (this.presetLaunchWithOption === 'other' && !customLaunchWithOption)"
+      [disabled]="(!defaultLaunchWith && !launchWith.url) || (presetLaunchWithOption === 'other' && !customLaunchWithOption)"
       (click)="selectDefault()"
       data-cy="multiCloudLaunchButton"
     >

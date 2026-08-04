@@ -41,7 +41,6 @@ export interface State {
 @Component({
   selector: 'app-snapshot-exporter-modal-component',
   templateUrl: './snaphot-exporter-modal.component.html',
-  standalone: true,
   imports: [
     MatDialogModule,
     NgSwitch,

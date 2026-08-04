@@ -43,7 +43,6 @@ import { AiBubbleComponent } from '../../shared/ai-bubble/ai-bubble.component';
 @Component({
   selector: 'app-collection-entry-confirm-remove',
   templateUrl: 'collection-entry-confirm-remove.html',
-  standalone: true,
   imports: [MatDialogModule, AlertComponent, FlexModule, MatButtonModule],
 })
 export class CollectionRemoveEntryDialogComponent {
@@ -72,7 +71,6 @@ export interface EntryDialogData {
   selector: 'app-collection',
   templateUrl: './collection.component.html',
   styleUrls: ['./collection.component.scss', '../organization/organization.component.scss'],
-  standalone: true,
   imports: [
     HeaderComponent,
     FlexModule,

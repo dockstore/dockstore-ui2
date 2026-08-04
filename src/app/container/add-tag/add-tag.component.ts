@@ -43,7 +43,6 @@ import { FlexModule } from '@ngbracket/ngx-layout';
   selector: 'app-add-tag',
   templateUrl: './add-tag.component.html',
   styleUrls: ['./add-tag.component.css'],
-  standalone: true,
   imports: [
     MatDialogModule,
     AlertComponent,

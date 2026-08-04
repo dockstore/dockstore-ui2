@@ -8,7 +8,6 @@ import { MatButtonModule } from '@angular/material/button';
   selector: 'app-my-sidebar',
   templateUrl: './my-sidebar.component.html',
   styleUrls: ['./my-sidebar.component.scss'],
-  standalone: true,
   imports: [MatButtonModule, RouterLink, RouterLinkActive, NgIf],
 })
 export class MySidebarComponent {

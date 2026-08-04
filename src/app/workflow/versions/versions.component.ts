@@ -50,7 +50,6 @@ import { CommitUrlPipe } from 'app/shared/entry/commit-url.pipe';
   selector: 'app-versions-workflow',
   templateUrl: './versions.component.html',
   styleUrls: ['./versions.component.scss'],
-  standalone: true,
   imports: [
     MatTableModule,
     MatSortModule,

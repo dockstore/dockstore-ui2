@@ -19,7 +19,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   selector: 'app-multi-cloud-launch',
   templateUrl: './multi-cloud-launch.component.html',
   styleUrls: ['./multi-cloud-launch.component.scss', '../launch-third-party.component.scss'],
-  standalone: true,
   imports: [
     MatTooltipModule,
     MatButtonModule,

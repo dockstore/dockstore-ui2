@@ -67,7 +67,6 @@ export interface SortOption {
   selector: 'app-search-entry-table',
   templateUrl: './search-entry-table.component.html',
   styleUrls: ['../shared/styles/entry-table.scss', './search-entry-table.component.scss'],
-  standalone: true,
   imports: [
     NgIf,
     MatProgressBarModule,

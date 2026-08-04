@@ -49,7 +49,6 @@ import { MatChipsModule } from '@angular/material/chips';
   selector: 'app-organizations',
   templateUrl: './organizations.component.html',
   styleUrls: ['./organizations.component.scss'],
-  standalone: true,
   imports: [
     HeaderComponent,
     FlexModule,

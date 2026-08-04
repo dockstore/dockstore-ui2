@@ -18,12 +18,7 @@
       />
     </div>
     <div class="tag-cloud-dropdown">
-      <button
-        mat-button
-        fxFlex="21rem"
-        class="tagCloud-btn {{ entryType | lowercase }}-background"
-        (click)="clickTagCloudBtn(this.entryType)"
-      >
+      <button mat-button fxFlex="21rem" class="tagCloud-btn {{ entryType | lowercase }}-background" (click)="clickTagCloudBtn(entryType)">
         <div fxLayout="row" fxLayoutAlign="space-between center">
           <div>
             <img class="tag-cloud" src="../assets/images/dockstore/tag-cloud.svg" alt="Popular keywords icon" />
@@ -85,7 +80,7 @@
             <div *ngIf="entry.highlight">
               <table class="search-highlighting size-small horizontal-table">
                 <tr *ngFor="let highlight of entry.highlight | keyvalue">
-                  <th>{{ this.searchEverythingFriendlyNames.get(highlight.key.toString()) }}:</th>
+                  <th>{{ searchEverythingFriendlyNames.get(highlight.key.toString()) }}:</th>
                   <td class="single-spaced"><span [innerHTML]="highlight.value | joinWithEllipses"></span></td>
                 </tr>
               </table>

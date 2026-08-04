@@ -26,7 +26,6 @@ import { AlertComponent } from '../../../shared/alert/alert.component';
  */
 @Component({
   templateUrl: './create-collection.component.html',
-  standalone: true,
   imports: [
     NgIf,
     MatDialogModule,

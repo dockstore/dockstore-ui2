@@ -29,7 +29,6 @@ export interface MastodonTimelineData {
   selector: 'app-mastodon-timeline',
   templateUrl: './mastodon.component.html',
   styleUrls: ['./mastodon.component.scss'],
-  standalone: true,
   imports: [MatCardModule, MatDividerModule, NgFor, NgIf, NgStyle, ExtendedModule],
 })
 export class MastodonComponent implements OnInit {

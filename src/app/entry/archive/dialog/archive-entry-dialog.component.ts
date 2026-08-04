@@ -29,7 +29,6 @@ import { AlertComponent } from '../../../shared/alert/alert.component';
   selector: 'app-archive-entry-dialog',
   templateUrl: './archive-entry-dialog.component.html',
   styleUrls: ['./archive-entry-dialog.component.scss'],
-  standalone: true,
   imports: [MatDialogModule, AlertComponent, FlexModule, MatButtonModule, TitleCasePipe],
 })
 export class ArchiveEntryDialogComponent {

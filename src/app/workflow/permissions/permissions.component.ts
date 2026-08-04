@@ -20,7 +20,6 @@ import { FlexModule } from '@ngbracket/ngx-layout';
   selector: 'app-permissions',
   templateUrl: './permissions.component.html',
   styleUrls: ['./permissions.component.scss'],
-  standalone: true,
   imports: [NgIf, MatProgressBarModule, MatFormFieldModule, MatChipsModule, NgFor, MatIconModule, FlexModule],
 })
 export class PermissionsComponent implements OnInit {

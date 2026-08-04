@@ -42,7 +42,6 @@ import { NgIf, NgFor, AsyncPipe, KeyValuePipe } from '@angular/common';
   selector: 'app-descriptors-container',
   templateUrl: './descriptors.component.html',
   styleUrls: ['./descriptors.component.scss'],
-  standalone: true,
   imports: [
     NgIf,
     MatCardModule,

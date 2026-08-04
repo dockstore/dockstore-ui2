@@ -33,7 +33,6 @@ import { NgIf } from '@angular/common';
   selector: 'app-advancedsearch',
   templateUrl: './advancedsearch.component.html',
   styleUrls: ['./advancedsearch.component.scss'],
-  standalone: true,
   imports: [
     MatDialogModule,
     NgIf,

@@ -50,7 +50,6 @@ import { NgIf, AsyncPipe } from '@angular/common';
   selector: 'app-view-workflow',
   templateUrl: './view.component.html',
   styleUrls: ['./view.component.css'],
-  standalone: true,
   imports: [NgIf, MatButtonModule, MatMenuModule, MatTooltipModule, AsyncPipe],
 })
 export class ViewWorkflowComponent extends View<WorkflowVersion> implements OnInit {

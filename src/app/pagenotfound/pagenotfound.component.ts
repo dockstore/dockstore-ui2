@@ -6,7 +6,6 @@ import { FlexModule } from '@ngbracket/ngx-layout/flex';
 @Component({
   selector: 'app-pagenotfound',
   templateUrl: './pagenotfound.component.html',
-  standalone: true,
   imports: [FlexModule, ExtendedModule],
 })
 export class PageNotFoundComponent {

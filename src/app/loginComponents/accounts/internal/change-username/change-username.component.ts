@@ -36,7 +36,6 @@ import { NgIf, AsyncPipe } from '@angular/common';
   selector: 'app-change-username',
   templateUrl: './change-username.component.html',
   styleUrls: ['./change-username.component.scss'],
-  standalone: true,
   imports: [
     NgIf,
     MatDialogModule,

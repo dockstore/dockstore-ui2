@@ -23,7 +23,6 @@ import { ExtractCategoriesPipe, GROUP_ORDER } from 'app/categories/extract-categ
   selector: 'app-entry-categories',
   templateUrl: './entry-categories.component.html',
   styleUrls: ['./entry-categories.component.scss'],
-  standalone: true,
   imports: [ExtendedModule, FlexLayoutModule, CategoryButtonsComponent, ExtractCategoriesPipe],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

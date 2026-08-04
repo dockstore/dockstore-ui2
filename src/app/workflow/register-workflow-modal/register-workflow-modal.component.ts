@@ -61,7 +61,6 @@ export interface HostedWorkflowObject {
   selector: 'app-register-workflow-modal',
   templateUrl: './register-workflow-modal.component.html',
   styleUrls: ['./register-workflow-modal.component.scss'],
-  standalone: true,
   imports: [
     MatDialogModule,
     AlertComponent,

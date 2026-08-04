@@ -54,8 +54,8 @@
   <mat-card *ngIf="generatedDockstoreYml" class="alert-info" appearance="outlined">
     <mat-card-content>
       <mat-icon>info</mat-icon> This file was generated using the
-      <strong>{{ this.selectedOrganization }}/{{ this.selectedRepository }}</strong> repository's
-      <strong>{{ this.gitHubReferenceForInference }}</strong> branch.
+      <strong>{{ selectedOrganization }}/{{ selectedRepository }}</strong> repository's
+      <strong>{{ gitHubReferenceForInference }}</strong> branch.
       <a [href]="createFileOnGitHubLink" target="_blank" rel="noopener noreferrer">
         <button class="accent-1-dark" mat-stroked-button><mat-icon class="mat-icon-sm">open_in_new</mat-icon>Save on GitHub</button>
       </a>

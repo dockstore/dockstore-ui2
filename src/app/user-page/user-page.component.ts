@@ -32,7 +32,6 @@ import { MatDividerModule } from '@angular/material/divider';
   selector: 'app-user-page',
   templateUrl: './user-page.component.html',
   styleUrls: ['./user-page.component.scss'],
-  standalone: true,
   imports: [
     HeaderComponent,
     FlexModule,

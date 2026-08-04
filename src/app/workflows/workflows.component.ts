@@ -31,7 +31,6 @@ import { MatChipsModule } from '@angular/material/chips';
 @Component({
   selector: 'app-workflows',
   templateUrl: './workflows.component.html',
-  standalone: true,
   imports: [HeaderComponent, NgIf, FlexModule, RouterLink, ExtendedModule, RouterOutlet, AsyncPipe, TitleCasePipe, MatChipsModule],
 })
 export class WorkflowsComponent {

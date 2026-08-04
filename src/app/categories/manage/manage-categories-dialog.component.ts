@@ -39,7 +39,6 @@ type CategoryDecision = 'approve' | 'remove';
 @Component({
   selector: 'app-manage-categories-dialog',
   templateUrl: './manage-categories-dialog.component.html',
-  standalone: true,
   imports: [
     MatDialogModule,
     MatButtonModule,

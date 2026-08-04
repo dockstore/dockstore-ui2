@@ -17,7 +17,6 @@ import { HeaderComponent } from '../header/header.component';
   selector: 'app-aliases',
   templateUrl: './aliases.component.html',
   styleUrls: ['./aliases.component.scss'],
-  standalone: true,
   imports: [HeaderComponent, NgIf, MatCardModule, MatIconModule, MatProgressBarModule, AsyncPipe],
 })
 export class AliasesComponent extends Base implements OnInit {

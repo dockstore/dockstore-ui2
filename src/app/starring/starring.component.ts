@@ -33,7 +33,6 @@ import { NgClass, NgIf } from '@angular/common';
   selector: 'app-starring',
   templateUrl: './starring.component.html',
   styleUrls: ['./starring.component.scss'],
-  standalone: true,
   imports: [NgClass, NgIf, MatIconModule, MatTooltipModule],
 })
 export class StarringComponent implements OnInit, OnDestroy, OnChanges {

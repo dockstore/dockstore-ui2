@@ -6,7 +6,6 @@ import { MatCardModule } from '@angular/material/card';
   selector: 'app-maintenance',
   templateUrl: './maintenance.component.html',
   styleUrls: ['./maintenance.component.scss'],
-  standalone: true,
   imports: [MatCardModule, MatIconModule],
 })
 export class MaintenanceComponent {}
