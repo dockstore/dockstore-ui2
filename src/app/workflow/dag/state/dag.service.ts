@@ -13,8 +13,8 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { DOCUMENT } from '@angular/common';
-import { ElementRef, Inject, Injectable, Renderer2 } from '@angular/core';
+
+import { ElementRef, Inject, Injectable, Renderer2, DOCUMENT } from '@angular/core';
 import cytoscape from 'cytoscape';
 import { CytoscapeOptions } from 'cytoscape';
 import dagreExtension from 'cytoscape-dagre';

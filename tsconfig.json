@@ -6,7 +6,7 @@
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "noUnusedLocals": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
@@ -17,7 +17,7 @@
     ],
     "lib": [
       "es2021",
-      "dom",
+      "dom"
     ],
     "baseUrl": "./src",
     "paths": {

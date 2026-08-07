@@ -919,16 +919,16 @@ img.align-middle {
 }
 
 .preview-bubble {
-  --mdc-chip-label-text-color: white;
-  --mdc-chip-elevated-container-color: #{mat.m2-get-color-from-palette($kim-primary, 3)};
+  --mat-chip-label-text-color: white;
+  --mat-chip-elevated-container-color: #{mat.m2-get-color-from-palette($kim-primary, 3)};
 }
 
 // mat chips with a white checkmark and white text and a green background
 // Used for the Approved and Synced bubbles
 .checkmark {
-  --mdc-chip-label-text-color: white;
-  --mdc-chip-with-icon-icon-color: white;
-  --mdc-chip-elevated-container-color: #{$accent-3-dark};
+  --mat-chip-label-text-color: white;
+  --mat-chip-with-icon-icon-color: white;
+  --mat-chip-elevated-container-color: #{$accent-3-dark};
 }
 
 // Change the cursor to a pointer for a mat-chip
@@ -972,7 +972,7 @@ mat-icon.star-icon {
 
 // Makes the mat-tab text size smaller than the default
 mat-tab-group.small-tab-header .mat-mdc-tab-header {
-  --mat-tab-header-label-text-size: 12px;
+  --mat-tab-label-text-size: 12px;
 }
 
 // Makes the tabs shrink if necessary to avoid scrolling.
@@ -1061,7 +1061,7 @@ hr {
   background: white;
   // Set the border-radius to the border radius of the text field otherwise the background
   // will exceed the form field border
-  border-radius: var(--mdc-outlined-text-field-container-shape);
+  border-radius: var(--mat-form-field-outlined-container-shape);
 }
 
 // Used for smaller than usual forms
@@ -1150,7 +1150,7 @@ table.horizontal-table th {
   @include small-btn();
 
   // Outline color for mat-stroked-button
-  --mdc-outlined-button-outline-color: #d8d8d8;
+  --mat-button-outlined-outline-color: #d8d8d8;
 }
 
 // Following 4 items are for stepper/stepper-like dialogs as well as other places for unclear reasons (like the unlink account button)
