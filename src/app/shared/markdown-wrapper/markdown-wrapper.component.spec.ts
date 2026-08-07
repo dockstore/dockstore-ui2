@@ -1,6 +1,6 @@
 import { SecurityContext } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { MarkdownModule, MarkdownService, SECURITY_CONTEXT } from 'ngx-markdown';
+import { MarkdownModule, MarkdownService, SANITIZE } from 'ngx-markdown';
 import { BaseUrlPipe } from '../entry/base-url.pipe';
 import { MarkdownWrapperComponent } from './markdown-wrapper.component';
 
@@ -12,7 +12,7 @@ describe('MarkdownWrapperComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [MarkdownModule, MarkdownWrapperComponent],
-        providers: [MarkdownService, { provide: SECURITY_CONTEXT, useValue: SecurityContext.HTML }],
+        providers: [MarkdownService, { provide: SANITIZE, useValue: SecurityContext.HTML }],
       }).compileComponents();
     })
   );
