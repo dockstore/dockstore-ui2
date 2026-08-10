@@ -1,12 +1,12 @@
 import { inject, TestBed } from '@angular/core/testing';
 import { SecurityContext } from '@angular/core';
 import { MarkdownWrapperService } from './markdown-wrapper.service';
-import { MarkdownService, SECURITY_CONTEXT } from 'ngx-markdown';
+import { MarkdownService, SANITIZE } from 'ngx-markdown';
 
 describe('MarkdownWrapperService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [MarkdownWrapperService, MarkdownService, { provide: SECURITY_CONTEXT, useValue: SecurityContext.HTML }],
+      providers: [MarkdownWrapperService, MarkdownService, { provide: SANITIZE, useValue: SecurityContext.HTML }],
     });
   });
 

@@ -35,11 +35,11 @@
   &.mdc-button--unelevated:not(:disabled),
   &.mat-mdc-raised-button:not(:disabled) {
     // mat-flat-button has $color background and white text
-    --mdc-filled-button-container-color: #{$color};
-    --mdc-filled-button-label-text-color: white;
+    --mat-button-filled-container-color: #{$color};
+    --mat-button-filled-label-text-color: white;
     // mat-raise-button has $color background and white text
-    --mdc-protected-button-container-color: #{$color};
-    --mdc-protected-button-label-text-color: white;
+    --mat-button-protected-container-color: #{$color};
+    --mat-button-protected-label-text-color: white;
 
     mat-icon {
       color: white;
@@ -50,9 +50,9 @@
   &.mdc-button--outlined:not(:disabled) {
     // The other types of buttons have $color text with the default white background
     // mat-stroked-button
-    --mdc-outlined-button-label-text-color: #{$color};
+    --mat-button-outlined-label-text-color: #{$color};
     // mat-button
-    --mdc-text-button-label-text-color: #{$color};
+    --mat-button-text-label-text-color: #{$color};
 
     mat-icon {
       color: $color;
@@ -83,8 +83,8 @@
 @mixin tab-group-indicator-color($color) {
   &.mat-mdc-tab-group,
   .mat-mdc-tab-group {
-    --mdc-tab-indicator-active-indicator-color: #{$color};
-    --mat-tab-header-active-hover-indicator-color: #{$color};
-    --mat-tab-header-active-focus-indicator-color: #{$color};
+    --mat-tab-active-indicator-color: #{$color};
+    --mat-tab-active-hover-indicator-color: #{$color};
+    --mat-tab-active-focus-indicator-color: #{$color};
   }
 }

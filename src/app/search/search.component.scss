@@ -17,7 +17,7 @@
 @import '/src/materialColorScheme.scss';
 
 .mat-mdc-tab-group {
-  --mat-tab-header-active-label-text-color: #{$header-color};
+  --mat-tab-active-label-text-color: #{$header-color};
 }
 
 .hits {

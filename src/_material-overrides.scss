@@ -32,7 +32,7 @@
 .mat-mdc-form-field {
   --mat-form-field-container-text-size: 14px;
   // <mat-label> text size for outlined form fields
-  --mdc-outlined-text-field-label-text-size: 14px;
+  --mat-form-field-outlined-label-text-size: 14px;
 
   // Decrease the mat-icon side inside form fields so that the mat form field text is aligned properly
   .mat-icon {
@@ -43,11 +43,11 @@
   .mdc-floating-label--float-above {
     // Only set label text color when the form field has a value and the label is "floating"
     // (as opposed to when the label is the placeholder value when the form field has no value)
-    --mdc-outlined-text-field-label-text-color: #{$accent-1-dark};
+    --mat-form-field-outlined-label-text-color: #{$accent-1-dark};
   }
-  --mdc-outlined-text-field-focus-label-text-color: #{$accent-1-dark};
-  --mdc-outlined-text-field-focus-outline-color: #{$accent-1-dark};
-  --mdc-outlined-text-field-caret-color: #{accent-1-dark};
+  --mat-form-field-outlined-focus-label-text-color: #{$accent-1-dark};
+  --mat-form-field-outlined-focus-outline-color: #{$accent-1-dark};
+  --mat-form-field-outlined-caret-color: #{accent-1-dark};
 }
 
 // Select
@@ -64,8 +64,8 @@
 
 // Dialogs
 .mat-mdc-dialog-container {
-  --mdc-dialog-supporting-text-color: black; // Set to black instead of the default grey
-  --mdc-dialog-supporting-text-size: 14px; // Make it smaller than default
+  --mat-dialog-supporting-text-color: black; // Set to black instead of the default grey
+  --mat-dialog-supporting-text-size: 14px; // Make it smaller than default
 }
 
 // Chips
@@ -77,12 +77,12 @@
   margin-bottom: 0 !important;
 
   // Styles for mat-chip container
-  --mdc-chip-elevated-container-color: #{mat.m2-get-color-from-palette($dockstore-app-gray, lighter)};
-  --mdc-chip-container-height: 26px !important;
+  --mat-chip-elevated-container-color: #{mat.m2-get-color-from-palette($dockstore-app-gray, lighter)};
+  --mat-chip-container-height: 26px !important;
   // Styles for mat-chip text
-  --mdc-chip-label-text-color: black;
-  --mdc-chip-label-text-size: 12px;
-  --mdc-chip-label-text-weight: 500;
+  --mat-chip-label-text-color: black;
+  --mat-chip-label-text-size: 12px;
+  --mat-chip-label-text-weight: 500;
 
   .mat-icon,
   img {
@@ -91,8 +91,8 @@
   }
 }
 .mat-mdc-standard-chip.small-chip {
-  --mdc-chip-container-height: 20px !important;
-  --mdc-chip-label-text-size: 11px !important;
+  --mat-chip-container-height: 20px !important;
+  --mat-chip-label-text-size: 11px !important;
   margin: 0 2px !important;
 }
 
@@ -151,17 +151,17 @@ table th {
 .mat-mdc-slide-toggle {
   $accent-color: mat.m2-get-color-from-palette($dockstore-app-accent, 2);
   // Variables taken from https://github.com/angular/components/issues/26818#issuecomment-1726616513
-  --mdc-switch-selected-handle-color: #{$accent-color};
-  --mdc-switch-selected-pressed-handle-color: #{$accent-color};
-  --mdc-switch-selected-pressed-state-layer-color: #{$accent-color};
-  --mdc-switch-selected-hover-state-layer-color: #{$accent-color};
-  --mdc-switch-selected-hover-handle-color: #{$accent-color};
-  --mdc-switch-selected-focus-state-layer-color: #{$accent-color};
-  --mdc-switch-selected-focus-handle-color: #{$accent-color};
-  --mdc-switch-selected-track-color: #e0e0e0;
-  --mdc-switch-selected-pressed-track-color: #e0e0e0;
-  --mdc-switch-selected-hover-track-color: #e0e0e0;
-  --mdc-switch-selected-focus-track-color: #e0e0e0;
+  --mat-slide-toggle-selected-handle-color: #{$accent-color};
+  --mat-slide-toggle-selected-pressed-handle-color: #{$accent-color};
+  --mat-slide-toggle-selected-pressed-state-layer-color: #{$accent-color};
+  --mat-slide-toggle-selected-hover-state-layer-color: #{$accent-color};
+  --mat-slide-toggle-selected-hover-handle-color: #{$accent-color};
+  --mat-slide-toggle-selected-focus-state-layer-color: #{$accent-color};
+  --mat-slide-toggle-selected-focus-handle-color: #{$accent-color};
+  --mat-slide-toggle-selected-track-color: #e0e0e0;
+  --mat-slide-toggle-selected-pressed-track-color: #e0e0e0;
+  --mat-slide-toggle-selected-hover-track-color: #e0e0e0;
+  --mat-slide-toggle-selected-focus-track-color: #e0e0e0;
 }
 
 // Cards
@@ -174,5 +174,5 @@ table th {
 .mat-mdc-checkbox {
   // Make the checkbox size smaller than the default.
   // Especially important for the search page facets so that they aren't too large.
-  --mdc-checkbox-state-layer-size: 24px;
+  --mat-checkbox-state-layer-size: 24px;
 }
