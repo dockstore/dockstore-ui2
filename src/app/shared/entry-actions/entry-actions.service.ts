@@ -97,11 +97,11 @@ export class EntryActionsService {
   }
 
   private isWorkflow(entry: Entry): entry is Workflow {
-    return 'descriptorType' in entry;
+    return entry.entryType === 'WORKFLOW';
   }
 
   private isTool(entry: Entry): entry is DockstoreTool {
-    return 'descriptorType' in entry;
+    return entry.entryType === 'TOOL' || entry.entryType === 'APPTOOL';
   }
 
   private isEntryValid(entry: Entry | null): boolean {
