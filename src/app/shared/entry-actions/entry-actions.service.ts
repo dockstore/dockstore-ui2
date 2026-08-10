@@ -97,11 +97,11 @@ export class EntryActionsService {
   }
 
   private isWorkflow(entry: Entry): entry is Workflow {
-    return entry.entryType === 'WORKFLOW';
+    return entry.entryType === OpenApiEntryType.WORKFLOW;
   }
 
   private isTool(entry: Entry): entry is DockstoreTool {
-    return entry.entryType === 'TOOL' || entry.entryType === 'APPTOOL';
+    return entry.entryType === OpenApiEntryType.TOOL || entry.entryType === OpenApiEntryType.APPTOOL;
   }
 
   private isEntryValid(entry: Entry | null): boolean {
