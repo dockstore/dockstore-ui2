@@ -98,11 +98,11 @@ export class DagComponent extends EntryTab implements OnInit, OnChanges, AfterVi
    * Listen to when the document enters or exits fullscreen.
    * Refreshes cytoscape because it is not centered.  Set styling based on whether it's fullscreen or not.
    *
-   * @param {KeyboardEvent} event
+   * @param {Event} event
    * @memberof DagComponent
    */
   @HostListener('document:fullscreenchange', ['$event'])
-  FSHandler(event: KeyboardEvent) {
+  FSHandler(event: Event) {
     // expanded is used for HTML styling and depends solely on whether the screen is actually fullscreen or not
     this.expanded = this.dagService.isFullScreen();
     this.refreshDocument(this.cy);
