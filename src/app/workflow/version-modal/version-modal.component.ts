@@ -41,7 +41,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
 import { MatCardModule } from '@angular/material/card';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { NgIf, NgFor, NgClass, AsyncPipe } from '@angular/common';
+import { NgClass, AsyncPipe } from '@angular/common';
 import { AlertComponent } from '../../shared/alert/alert.component';
 
 export interface Dialogdata {
@@ -60,10 +60,8 @@ export interface Dialogdata {
     MatDialogModule,
     AlertComponent,
     FormsModule,
-    NgIf,
     MatTooltipModule,
     MatCardModule,
-    NgFor,
     NgClass,
     ExtendedModule,
     MatIconModule,

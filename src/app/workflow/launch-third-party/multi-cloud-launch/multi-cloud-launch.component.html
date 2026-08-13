@@ -23,8 +23,8 @@
       [(ngModel)]="presetLaunchWith"
       (click)="$event.stopPropagation()"
     >
+      @for (instance of cloudInstances | filterCloudInstances: languagePartner; track instance) {
       <mat-radio-button
-        *ngFor="let instance of cloudInstances | filterCloudInstances: languagePartner"
         name="launchWithUrl"
         value="{{ instance.url }}"
         [checked]="defaultLaunchWith === instance.url"
@@ -32,6 +32,7 @@
       >
         {{ instance.displayName }}
       </mat-radio-button>
+      }
       <!--     Uncomment when we want to get the users custom cloud instances-->
       <!--      <ng-container *ngIf="user">-->
 

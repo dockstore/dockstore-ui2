@@ -1,23 +1,23 @@
 <!--
-  ~    Copyright 2023 OICR
-  ~
-  ~    Licensed under the Apache License, Version 2.0 (the "License");
-  ~    you may not use this file except in compliance with the License.
-  ~    You may obtain a copy of the License at
-  ~
-  ~        http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~    Unless required by applicable law or agreed to in writing, software
-  ~    distributed under the License is distributed on an "AS IS" BASIS,
-  ~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~    See the License for the specific language governing permissions and
-  ~    limitations under the License.
-  -->
+~    Copyright 2023 OICR
+~
+~    Licensed under the Apache License, Version 2.0 (the "License");
+~    you may not use this file except in compliance with the License.
+~    You may obtain a copy of the License at
+~
+~        http://www.apache.org/licenses/LICENSE-2.0
+~
+~    Unless required by applicable law or agreed to in writing, software
+~    distributed under the License is distributed on an "AS IS" BASIS,
+~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+~    See the License for the specific language governing permissions and
+~    limitations under the License.
+-->
 
 <!--
-  ~    Adapted from the Mastodon embed feed timeline v3.8.2
-  ~    More info at: https://gitlab.com/idotj/mastodon-embed-feed-timeline
-  -->
+~    Adapted from the Mastodon embed feed timeline v3.8.2
+~    More info at: https://gitlab.com/idotj/mastodon-embed-feed-timeline
+-->
 
 <div class="mt-timeline">
   <mat-card class="h-100">
@@ -29,17 +29,10 @@
     <mat-divider></mat-divider>
     <mat-card-content class="mt-3 h-75">
       <div id="mt-body" role="feed" class="mt-body">
-        <article
-          *ngFor="let data of timelineData"
-          class="mt-toot"
-          data-cy="mt-toot"
-          aria-posinset="1"
-          aria-setsize="2"
-          [attr.data-location]="data.postUrl"
-          tabindex="0"
-        >
+        @for (data of timelineData; track data) {
+        <article class="mt-toot" data-cy="mt-toot" aria-posinset="1" aria-setsize="2" [attr.data-location]="data.postUrl" tabindex="0">
+          @if (data.reblogAccountAvatar === null) {
           <a
-            *ngIf="data.reblogAccountAvatar === null"
             [href]="data.accountUrl"
             class="mt-avatar"
             [ngStyle]="{ 'background-image': 'url(' + data.accountAvatar + ')' }"
@@ -48,8 +41,8 @@
           >
             <span class="visually-hidden">dockstore avatar</span>
           </a>
+          } @if (data.reblogAccountAvatar) {
           <a
-            *ngIf="data.reblogAccountAvatar"
             [href]="data.accountUrl"
             class="mt-avatar mt-avatar-boosted"
             [ngStyle]="{ 'background-image': 'url(' + data.reblogAccountAvatar + ')' }"
@@ -59,6 +52,7 @@
             <div class="mt-avatar mt-avatar-booster" [ngStyle]="{ 'background-image': 'url(' + data.accountAvatar + ')' }"></div>
             <span class="visually-hidden">dockstore avatar</span></a
           >
+          }
           <div class="mt-user">
             <a [href]="data.accountUrl" rel="nofollow noopener noreferrer" target="_blank"
               >{{ data.accountUsername }}<span class="visually-hidden"> post</span></a
@@ -67,32 +61,48 @@
           <div class="toot-text">
             <div [innerHTML]="data.postContent"></div>
           </div>
-          <div class="toot-media" *ngIf="data.mediaContent.length > 0">
-            <img *ngFor="let media of data.mediaContent" src="{{ media.preview_url }}" alt="{{ media.description }}" />
+          @if (data.mediaContent.length > 0) {
+          <div class="toot-media">
+            @for (media of data.mediaContent; track media) {
+            <img src="{{ media.preview_url }}" alt="{{ media.description }}" />
+            }
           </div>
-          <a *ngIf="data.previewLink" [href]="data.previewLink['url']" class="toot-preview-link" target="_blank" rel="noopener noreferrer">
-            <div *ngIf="!data.previewLink['image']" class="toot-preview-noImage">📄</div>
-            <div *ngIf="data.previewLink['image']" class="toot-preview-content">
+          } @if (data.previewLink) {
+          <a [href]="data.previewLink['url']" class="toot-preview-link" target="_blank" rel="noopener noreferrer">
+            @if (!data.previewLink['image']) {
+            <div class="toot-preview-noImage">📄</div>
+            } @if (data.previewLink['image']) {
+            <div class="toot-preview-content">
               <img src="{{ data.previewLink['image'] }}" alt="" />
             </div>
+            }
             <div class="toot-preview-content">
-              <span *ngIf="data.previewLink['provider_name']">{{ data.previewLink['provider_name'] }}</span>
-              <span *ngIf="data.previewLink['title']" class="toot-preview-title">{{ data.previewLink['title'] }}</span>
-              <span *ngIf="data.previewLink['author_name']">By {{ data.previewLink['author_name'] }}</span>
+              @if (data.previewLink['provider_name']) {
+              <span>{{ data.previewLink['provider_name'] }}</span>
+              } @if (data.previewLink['title']) {
+              <span class="toot-preview-title">{{ data.previewLink['title'] }}</span>
+              } @if (data.previewLink['author_name']) {
+              <span>By {{ data.previewLink['author_name'] }}</span>
+              }
             </div>
           </a>
-          <div *ngIf="data.poll" class="toot-poll">
-            <ul *ngFor="let pollOption of data.poll['options']">
+          } @if (data.poll) {
+          <div class="toot-poll">
+            @for (pollOption of data.poll['options']; track pollOption) {
+            <ul>
               '
               {{
                 pollOption
               }}
             </ul>
+            }
           </div>
+          }
           <div class="toot-date">
             <a [href]="data.postUrl" rel="nofollow noopener noreferrer" tabindex="-1" target="_blank">{{ data.postDate }}</a>
           </div>
         </article>
+        }
       </div>
       <mat-divider></mat-divider>
     </mat-card-content>

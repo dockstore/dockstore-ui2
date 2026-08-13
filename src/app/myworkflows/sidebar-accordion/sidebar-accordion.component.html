@@ -1,42 +1,36 @@
 <!--
-  ~    Copyright 2022 OICR, UCSC
-  ~
-  ~    Licensed under the Apache License, Version 2.0 (the "License");
-  ~    you may not use this file except in compliance with the License.
-  ~    You may obtain a copy of the License at
-  ~
-  ~        http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~    Unless required by applicable law or agreed to in writing, software
-  ~    distributed under the License is distributed on an "AS IS" BASIS,
-  ~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~    See the License for the specific language governing permissions and
-  ~    limitations under the License.
-  -->
+~    Copyright 2022 OICR, UCSC
+~
+~    Licensed under the Apache License, Version 2.0 (the "License");
+~    you may not use this file except in compliance with the License.
+~    You may obtain a copy of the License at
+~
+~        http://www.apache.org/licenses/LICENSE-2.0
+~
+~    Unless required by applicable law or agreed to in writing, software
+~    distributed under the License is distributed on an "AS IS" BASIS,
+~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+~    See the License for the specific language governing permissions and
+~    limitations under the License.
+-->
 
-<div *ngFor="let sourceObj of sourceControlToWorkflows | keyvalue: defaultOrdering">
-  <div *ngIf="sourceObj.value.groupEntryInfo.length" class="sourceTitle">
+@for (sourceObj of sourceControlToWorkflows | keyvalue: defaultOrdering; track sourceObj) {
+<div>
+  @if (sourceObj.value.groupEntryInfo.length) {
+  <div class="sourceTitle">
     <img src="../../../assets/images/registries/{{ sourceObj.value.sourceControlTitle }}.svg" class="mb-2 mr-1" alt="Source Control" />
     {{ sourceObj.value?.sourceControlTitle }}
   </div>
-
+  }
   <mat-accordion multi="true">
-    <mat-expansion-panel
-      [expanded]="orgObj.expanded"
-      class="mat-elevation-z"
-      *ngFor="let orgObj of sourceObj.value.groupEntryInfo; trackBy: trackByOrgWorkflowObject"
-      [class.tool]="isTool$ | async"
-    >
+    @for (orgObj of sourceObj.value.groupEntryInfo; track trackByOrgWorkflowObject($index, orgObj)) {
+    <mat-expansion-panel [expanded]="orgObj.expanded" class="mat-elevation-z" [class.tool]="isTool$ | async">
       <mat-expansion-panel-header class="pt-2" [class.tool]="isTool$ | async" [attr.data-cy]="orgObj?.organization + '-panel-header'">
         {{ orgObj?.organization }}
       </mat-expansion-panel-header>
-
+      @if ( (workflowId$ | async) || (entryType$ | async) === EntryType.Tool || (orgObj?.unpublished.length === 0 &&
+      orgObj?.published.length === 0) ) {
       <mat-tab-group
-        *ngIf="
-          (workflowId$ | async) ||
-          (entryType$ | async) === EntryType.Tool ||
-          (orgObj?.unpublished.length === 0 && orgObj?.published.length === 0)
-        "
         mat-stretch-tabs
         [ngClass]="((isTool$ | async) ? 'tool-tab-group' : 'workflow-tab-group') + ' small-tab-header no-scroll-tabs'"
         [selectedIndex]="orgObj | selectTab: (workflowId$ | async)"
@@ -48,20 +42,25 @@
         <mat-tab label="Unpublished">
           <ng-template *ngTemplateOutlet="items; context: { items: orgObj.unpublished, itemState: 'unpublished' }"></ng-template>
         </mat-tab>
-        <mat-tab *ngIf="orgObj?.archived.length" label="Archived">
+        @if (orgObj?.archived.length) {
+        <mat-tab label="Archived">
           <ng-template *ngTemplateOutlet="items; context: { items: orgObj.archived, itemState: 'archived' }"></ng-template>
         </mat-tab>
+        }
       </mat-tab-group>
+      }
       <ng-template #items let-items="items" let-itemState="itemState">
         <mat-list class="org-accordion-list">
+          @for (workflowObj of items; track trackByWorkflowId($index, workflowObj)) {
           <mat-list-item
-            *ngFor="let workflowObj of items; trackBy: trackByWorkflowId"
             [ngClass]="{
               selectedWorkflow: (isTool$ | async) === false && (workflowId$ | async) === workflowObj?.id,
               selectedTool: (isTool$ | async) && (workflowId$ | async) === workflowObj?.id
             }"
           >
-            <mat-icon *ngIf="(workflowId$ | async) === workflowObj?.id" class="mr-1 mat-icon-sm">arrow_forward</mat-icon>
+            @if ((workflowId$ | async) === workflowObj?.id) {
+            <mat-icon class="mr-1 mat-icon-sm">arrow_forward</mat-icon>
+            }
             <a
               class="no-wrap"
               title="{{ workflowObj?.repository + (workflowObj?.workflowName ? '/' + workflowObj?.workflowName : '') }}"
@@ -71,43 +70,38 @@
               {{ workflowObj?.repository + (workflowObj?.workflowName ? '/' + workflowObj?.workflowName : '') }}
             </a>
           </mat-list-item>
-          <mat-list-item *ngIf="items.length === 0">
+          } @if (items.length === 0) {
+          <mat-list-item>
             <p [attr.data-cy]="'no-' + itemState + '-' + pageEntryType + '-message'" class="text-center size-small">
               No {{ itemState }} {{ pageEntryType === EntryType.AppTool ? 'tool' : pageEntryType }}s.
             </p>
           </mat-list-item>
+          }
         </mat-list>
       </ng-template>
-      <mat-action-row
-        *ngIf="
-          ((entryType$ | async) === EntryType.BioWorkflow ||
-            (entryType$ | async) === EntryType.Tool ||
-            (entryType$ | async) === EntryType.Notebook) &&
-          (orgObj.sourceControl.startsWith('github.com') ||
-            (!orgObj?.sourceControl.startsWith('dockstore.org') && (entryType$ | async) !== EntryType.Tool))
-        "
-      >
+      @if ( ((entryType$ | async) === EntryType.BioWorkflow || (entryType$ | async) === EntryType.Tool || (entryType$ | async) ===
+      EntryType.Notebook) && (orgObj.sourceControl.startsWith('github.com') || (!orgObj?.sourceControl.startsWith('dockstore.org') &&
+      (entryType$ | async) !== EntryType.Tool)) ) {
+      <mat-action-row>
         <div fxFlex>
-          <span fxLayout fxLayoutAlign="start" *ngIf="orgObj.sourceControl.startsWith('github.com')">
+          @if (orgObj.sourceControl.startsWith('github.com')) {
+          <span fxLayout fxLayoutAlign="start">
             <button mat-button class="private-btn mr-1 mt-2 mb-2" (click)="openGitHubAppsLogs(orgObj.organization)">
               <img src="../../../assets/svg/git-hub.svg" alt="GitHub app logs" class="pr-2" />
               Apps Logs
             </button>
           </span>
-          <span
-            fxFlex
-            fxLayout
-            fxLayoutAlign="end"
-            *ngIf="
-              !orgObj?.sourceControl.startsWith('dockstore.org') &&
-              (entryType$ | async) !== EntryType.Tool &&
-              (entryType$ | async) !== EntryType.Notebook
-            "
-          >
+          } @if ( !orgObj?.sourceControl.startsWith('dockstore.org') && (entryType$ | async) !== EntryType.Tool && (entryType$ | async) !==
+          EntryType.Notebook ) {
+          <span fxFlex fxLayout fxLayoutAlign="end">
             <app-refresh-workflow-organization [orgWorkflowObject]="orgObj"></app-refresh-workflow-organization>
           </span>
+          }
         </div>
       </mat-action-row>
+      }
     </mat-expansion-panel>
+    }
   </mat-accordion>
 </div>
+}

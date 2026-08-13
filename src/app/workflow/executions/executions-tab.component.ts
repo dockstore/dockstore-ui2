@@ -52,7 +52,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
-import { NgIf, NgFor, NgClass, NgTemplateOutlet, DecimalPipe, DatePipe } from '@angular/common';
+import { NgClass, NgTemplateOutlet, DecimalPipe, DatePipe } from '@angular/common';
 import { BaseChartDirective } from 'ng2-charts';
 import { ChartDataset, ChartOptions } from 'chart.js';
 import { Temporal } from '@js-temporal/polyfill';
@@ -70,13 +70,11 @@ interface ExecutionMetricsTableObject {
   templateUrl: './executions-tab.component.html',
   styleUrls: ['./executions-tab.component.scss'],
   imports: [
-    NgIf,
     MatCardModule,
     MatIconModule,
     FlexModule,
     MatFormFieldModule,
     MatSelectModule,
-    NgFor,
     MatOptionModule,
     MatDividerModule,
     MatTableModule,

@@ -10,14 +10,14 @@ import { EntryTypeMetadataService } from '../entry/type-metadata/entry-type-meta
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
-import { NgIf, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { HeaderComponent } from '../header/header.component';
 
 @Component({
   selector: 'app-aliases',
   templateUrl: './aliases.component.html',
   styleUrls: ['./aliases.component.scss'],
-  imports: [HeaderComponent, NgIf, MatCardModule, MatIconModule, MatProgressBarModule, AsyncPipe],
+  imports: [HeaderComponent, MatCardModule, MatIconModule, MatProgressBarModule, AsyncPipe],
 })
 export class AliasesComponent extends Base implements OnInit {
   loading$: Observable<boolean>;

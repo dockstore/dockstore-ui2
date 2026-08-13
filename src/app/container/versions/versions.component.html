@@ -1,18 +1,18 @@
 <!--
-  ~    Copyright 2017 OICR
-  ~
-  ~    Licensed under the Apache License, Version 2.0 (the "License");
-  ~    you may not use this file except in compliance with the License.
-  ~    You may obtain a copy of the License at
-  ~
-  ~        http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~    Unless required by applicable law or agreed to in writing, software
-  ~    distributed under the License is distributed on an "AS IS" BASIS,
-  ~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~    See the License for the specific language governing permissions and
-  ~    limitations under the License.
-  -->
+~    Copyright 2017 OICR
+~
+~    Licensed under the Apache License, Version 2.0 (the "License");
+~    you may not use this file except in compliance with the License.
+~    You may obtain a copy of the License at
+~
+~        http://www.apache.org/licenses/LICENSE-2.0
+~
+~    Unless required by applicable law or agreed to in writing, software
+~    distributed under the License is distributed on an "AS IS" BASIS,
+~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+~    See the License for the specific language governing permissions and
+~    limitations under the License.
+-->
 
 <div class="p-3" data-cy="app-versions-container">
   <table
@@ -35,18 +35,19 @@
           to populate the Info tab including 'Launch With'"
         matTooltipPosition="above"
       >
-        Version
+        Version @if (!publicPage) {
         <a
-          *ngIf="!publicPage"
           [href]="Dockstore.DOCUMENTATION_URL + '/faq.html#what-is-a-default-version-of-a-tool-or-workflow'"
           target="_blank"
           rel="noopener noreferrer"
           ><mat-icon>info</mat-icon></a
         >
+        }
       </th>
       <td mat-cell *matCellDef="let version">
         <span fxLayout="row wrap" fxLayoutGap="0.5rem" fxLayoutAlign="start center">
-          <mat-chip-set *ngIf="defaultVersion === version.name" class="mr-2">
+          @if (defaultVersion === version.name) {
+          <mat-chip-set class="mr-2">
             <a
               mat-chip
               target="_blank"
@@ -57,37 +58,38 @@
               <span style="word-break: normal">Default</span>
             </a>
           </mat-chip-set>
+          }
           <!-- The href is so that the cursor changes to pointer on hover while not actually going anymore when clicked -->
-          <a
-            href="javascript:undefined"
-            *ngIf="selectedTag?.name !== version?.name"
-            matTooltip="Click to select version"
-            (click)="setVersion(version)"
-            >{{ version?.name }}</a
-          >
-          <span *ngIf="selectedTag?.name === version?.name">{{ version?.name }}</span>
+          @if (selectedTag?.name !== version?.name) {
+          <a href="javascript:undefined" matTooltip="Click to select version" (click)="setVersion(version)">{{ version?.name }}</a>
+          } @if (selectedTag?.name === version?.name) {
+          <span>{{ version?.name }}</span>
+          }
         </span>
       </td>
     </ng-container>
     <ng-container matColumnDef="reference">
       <th scope="col" mat-header-cell *matHeaderCellDef mat-sort-header matTooltip="" matTooltipPosition="above">Git Reference</th>
       <td mat-cell *matCellDef="let version">
-        <div *ngIf="tool?.mode === DockstoreToolType.ModeEnum.HOSTED">
+        @if (tool?.mode === DockstoreToolType.ModeEnum.HOSTED) {
+        <div>
           {{ version?.versionEditor?.name }}
         </div>
-        <div *ngIf="tool?.mode !== DockstoreToolType.ModeEnum.HOSTED">
-          <fa-icon *ngIf="version.referenceType === 'BRANCH'" [icon]="faCodeBranch" aria-hidden="true" title="Branch"></fa-icon>
-          <fa-icon *ngIf="version.referenceType === 'TAG'" [icon]="faTag" aria-hidden="true" title="Tag"></fa-icon>
-          <span
-            *ngIf="version.commitID && (version.commitID | commitUrl: tool?.providerUrl); else noCommitID"
-            [matTooltip]="version.commitID ? 'Commit ID: ' + version.commitID : ''"
-          >
+        } @if (tool?.mode !== DockstoreToolType.ModeEnum.HOSTED) {
+        <div>
+          @if (version.referenceType === 'BRANCH') {
+          <fa-icon [icon]="faCodeBranch" aria-hidden="true" title="Branch"></fa-icon>
+          } @if (version.referenceType === 'TAG') {
+          <fa-icon [icon]="faTag" aria-hidden="true" title="Tag"></fa-icon>
+          } @if (version.commitID && (version.commitID | commitUrl: tool?.providerUrl)) {
+          <span [matTooltip]="version.commitID ? 'Commit ID: ' + version.commitID : ''">
             &nbsp;<a [href]="version.commitID | commitUrl: tool?.providerUrl">{{ version.reference || 'n/a' }}</a>
           </span>
-          <ng-template #noCommitID
-            ><span>{{ version.reference || 'n/a' }}</span></ng-template
-          >
+          } @else {
+          <span>{{ version.reference || 'n/a' }}</span>
+          }
         </div>
+        }
       </td>
     </ng-container>
     <ng-container matColumnDef="last_built">
@@ -109,21 +111,25 @@
       </th>
       <td mat-cell *matCellDef="let version">
         <!-- Only display descriptor type versions if there's one descriptor type otherwise we can't tell which version belongs to which type without looking at the source files -->
-        <span *ngIf="tool?.descriptorType.length === 1">{{
-          tool.descriptorType[0] | descriptorLanguageVersions: version.versionMetadata?.descriptorTypeVersions
-        }}</span>
+        @if (tool?.descriptorType.length === 1) {
+        <span>{{ tool.descriptorType[0] | descriptorLanguageVersions: version.versionMetadata?.descriptorTypeVersions }}</span>
+        }
       </td>
     </ng-container>
     <ng-container matColumnDef="valid">
       <th scope="col" mat-header-cell *matHeaderCellDef mat-sort-header matTooltip="" matTooltipPosition="above">Valid</th>
       <td mat-cell *matCellDef="let version">
-        <mat-icon *ngIf="version.valid">check</mat-icon>
+        @if (version.valid) {
+        <mat-icon>check</mat-icon>
+        }
       </td>
     </ng-container>
     <ng-container matColumnDef="hidden">
       <th scope="col" mat-header-cell *matHeaderCellDef mat-sort-header matTooltip="" matTooltipPosition="above">Hidden</th>
       <td mat-cell *matCellDef="let version">
-        <mat-icon data-cy="hidden-column-check" *ngIf="version.hidden">check</mat-icon>
+        @if (version.hidden) {
+        <mat-icon data-cy="hidden-column-check">check</mat-icon>
+        }
       </td>
     </ng-container>
     <ng-container matColumnDef="verified">

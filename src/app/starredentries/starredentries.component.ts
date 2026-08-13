@@ -12,7 +12,7 @@ import { ExtendedWorkflow } from 'app/shared/models/ExtendedWorkflow';
 import { OrgLogoService } from '../shared/org-logo.service';
 import { EntryType } from '../shared/enum/entry-type';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { Location, NgIf, NgClass, NgFor, NgTemplateOutlet, SlicePipe, DatePipe } from '@angular/common';
+import { Location, NgClass, NgTemplateOutlet, SlicePipe, DatePipe } from '@angular/common';
 import { Dockstore } from 'app/shared/dockstore.model';
 import { DescriptorLanguagePipe } from '../shared/entry/descriptor-language.pipe';
 import { BaseUrlPipe } from '../shared/entry/base-url.pipe';
@@ -42,7 +42,6 @@ import { FlexModule } from '@ngbracket/ngx-layout/flex';
     FlexModule,
     MySidebarComponent,
     HeaderComponent,
-    NgIf,
     StargazersComponent,
     MatButtonModule,
     MatIconModule,
@@ -51,7 +50,6 @@ import { FlexModule } from '@ngbracket/ngx-layout/flex';
     NgClass,
     ExtendedModule,
     MatCardModule,
-    NgFor,
     NgTemplateOutlet,
     RouterLink,
     StarringComponent,

@@ -2,14 +2,14 @@ import { Component, Input } from '@angular/core';
 import { TosBannerService } from './state/tos-banner.service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { NgIf } from '@angular/common';
+
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 
 @Component({
   selector: 'app-tos-banner',
   templateUrl: './tos-banner.component.html',
   styleUrls: ['./tos-banner.component.css'],
-  imports: [FlexModule, NgIf, MatButtonModule, MatIconModule],
+  imports: [FlexModule, MatButtonModule, MatIconModule],
 })
 export class TosBannerComponent {
   @Input()

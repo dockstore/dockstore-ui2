@@ -16,7 +16,7 @@ import { RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
-import { NgIf } from '@angular/common';
+
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { MatChipsModule } from '@angular/material/chips';
 
@@ -24,7 +24,7 @@ import { MatChipsModule } from '@angular/material/chips';
   selector: 'app-account-sidebar',
   templateUrl: './account-sidebar.component.html',
   styleUrls: ['./account-sidebar.component.scss'],
-  imports: [FlexModule, NgIf, MatIconModule, MatTooltipModule, MatButtonModule, RouterLink, MatChipsModule],
+  imports: [FlexModule, MatIconModule, MatTooltipModule, MatButtonModule, RouterLink, MatChipsModule],
 })
 export class AccountSidebarComponent implements OnInit {
   user: User;

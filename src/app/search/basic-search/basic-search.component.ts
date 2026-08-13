@@ -10,7 +10,7 @@ import { SearchQuery } from '../state/search.query';
 import { MatOptionModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
@@ -29,10 +29,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
     FormsModule,
     MatTooltipModule,
     ReactiveFormsModule,
-    NgIf,
     MatButtonModule,
     MatIconModule,
-    NgFor,
     MatOptionModule,
     AsyncPipe,
   ],

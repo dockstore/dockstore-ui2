@@ -3,17 +3,13 @@
     <strong matTooltip="Short description of the {{ entryTypeMetadata.term }}">Topic: </strong>
     <span data-cy="selected-topic">{{ selectedTopic || 'n/a' }}</span>
     <mat-chip-set class="ml-2">
-      <!-- Display a bubble indicating the topic selection. AI bubble is always displayed privately. Publicly, AI bubble is only displayed if the topic is not user-approved. 
+      <!-- Display a bubble indicating the topic selection. AI bubble is always displayed privately. Publicly, AI bubble is only displayed if the topic is not user-approved.
       Bubbles for other topic types are only displayed for the non-public view -->
-      <app-ai-bubble
-        *ngIf="entry.topicSelection === TopicSelectionEnum.AI && (!entry.approvedAITopic || (isPublic$ | async) === false)"
-        [isPublic]="isPublic$ | async"
-      ></app-ai-bubble>
+      @if (entry.topicSelection === TopicSelectionEnum.AI && (!entry.approvedAITopic || (isPublic$ | async) === false)) {
+      <app-ai-bubble [isPublic]="isPublic$ | async"></app-ai-bubble>
+      } @if ( (entry.topicSelection === TopicSelectionEnum.MANUAL || entry.topicSelection === TopicSelectionEnum.AUTOMATIC) && (isPublic$ |
+      async) === false ) {
       <mat-chip
-        *ngIf="
-          (entry.topicSelection === TopicSelectionEnum.MANUAL || entry.topicSelection === TopicSelectionEnum.AUTOMATIC) &&
-          (isPublic$ | async) === false
-        "
         matTooltip="Short description of the {{ entryTypeMetadata.term }}, {{
           entry.topicSelection === TopicSelectionEnum.MANUAL
             ? 'entered manually by the user'
@@ -21,14 +17,18 @@
         }}"
         data-cy="topic-selection-bubble"
       >
-        <mat-icon *ngIf="entry.topicSelection === TopicSelectionEnum.MANUAL">edit</mat-icon>
-        <img *ngIf="entry.topicSelection === TopicSelectionEnum.AUTOMATIC" src="../assets/images/thirdparty/github.svg" alt="GitHub icon" />
+        @if (entry.topicSelection === TopicSelectionEnum.MANUAL) {
+        <mat-icon>edit</mat-icon>
+        } @if (entry.topicSelection === TopicSelectionEnum.AUTOMATIC) {
+        <img src="../assets/images/thirdparty/github.svg" alt="GitHub icon" />
+        }
         <span class="ml-2">{{ entry.topicSelection === TopicSelectionEnum.MANUAL ? 'Manual' : 'GitHub' }}</span>
       </mat-chip>
+      }
     </mat-chip-set>
   </div>
+  @if ((isPublic$ | async) === false) {
   <button
-    *ngIf="(isPublic$ | async) === false"
     [disabled]="disableEditing"
     mat-button
     class="private-btn"
@@ -39,4 +39,5 @@
     <img src="../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit Topic" />
     Edit
   </button>
+  }
 </div>

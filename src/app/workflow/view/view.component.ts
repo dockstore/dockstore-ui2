@@ -44,13 +44,13 @@ import { ViewService } from './view.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
-import { NgIf, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-view-workflow',
   templateUrl: './view.component.html',
   styleUrls: ['./view.component.css'],
-  imports: [NgIf, MatButtonModule, MatMenuModule, MatTooltipModule, AsyncPipe],
+  imports: [MatButtonModule, MatMenuModule, MatTooltipModule, AsyncPipe],
 })
 export class ViewWorkflowComponent extends View<WorkflowVersion> implements OnInit {
   @Input() workflowId: number;

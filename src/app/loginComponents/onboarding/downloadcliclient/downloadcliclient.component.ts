@@ -13,7 +13,7 @@ import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
 import { SnackbarDirective } from '../../../shared/snackbar.directive';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { NgIf, NgClass } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MarkdownModule } from 'ngx-markdown';
 
@@ -21,17 +21,7 @@ import { MarkdownModule } from 'ngx-markdown';
   selector: 'app-downloadcliclient',
   templateUrl: './downloadcliclient.component.html',
   styleUrls: ['./downloadcliclient.component.scss'],
-  imports: [
-    MarkdownModule,
-    MatTabsModule,
-    NgIf,
-    MatButtonModule,
-    MatIconModule,
-    SnackbarDirective,
-    NgClass,
-    ExtendedModule,
-    ClipboardModule,
-  ],
+  imports: [MarkdownModule, MatTabsModule, MatButtonModule, MatIconModule, SnackbarDirective, NgClass, ExtendedModule, ClipboardModule],
 })
 export class DownloadCLIClientComponent extends Base implements OnInit {
   public downloadCli = 'dummy-start-value';

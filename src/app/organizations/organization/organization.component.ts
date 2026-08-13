@@ -48,7 +48,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { JsonLdComponent } from '../../shared/json-ld/json-ld.component';
 import { LoadingComponent } from '../../shared/loading/loading.component';
-import { NgIf, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
 import { RouterLink } from '@angular/router';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
@@ -63,7 +63,6 @@ import { HeaderComponent } from '../../header/header.component';
     FlexModule,
     RouterLink,
     ExtendedModule,
-    NgIf,
     LoadingComponent,
     JsonLdComponent,
     MatCardModule,

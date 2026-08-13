@@ -10,12 +10,14 @@
     <span>Date Created</span>
   </div>
   <div>
-    <div *ngFor="let org of data" fxLayout="row" fxLayoutAlign="space-between center" class="widget-list-items w-100 py-3">
+    @for (org of data; track org) {
+    <div fxLayout="row" fxLayoutAlign="space-between center" class="widget-list-items w-100 py-3">
       <a class="pointer no-wrap" (click)="dialogNavigate(org.name)">
         {{ org.displayName }}
       </a>
       <div class="date-display">{{ org.lastUpdateDate | date: 'MMM d, yyyy' }}</div>
     </div>
+    }
   </div>
 </mat-dialog-content>
 <mat-dialog-actions [align]="'end'">

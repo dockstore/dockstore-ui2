@@ -27,7 +27,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { AlertComponent } from '../../shared/alert/alert.component';
-import { NgIf } from '@angular/common';
 
 /**
  * This is actually create and update organization dialog
@@ -43,7 +42,6 @@ import { NgIf } from '@angular/common';
   styleUrls: ['./register-organization.component.scss'],
   imports: [
     MatDialogModule,
-    NgIf,
     AlertComponent,
     FormsModule,
     ReactiveFormsModule,

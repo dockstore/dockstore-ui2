@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { NgFor, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
+
 import { Component, Inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
@@ -39,20 +39,7 @@ type CategoryDecision = 'approve' | 'remove';
 @Component({
   selector: 'app-manage-categories-dialog',
   templateUrl: './manage-categories-dialog.component.html',
-  imports: [
-    MatDialogModule,
-    MatButtonModule,
-    MatIconModule,
-    MatTooltipModule,
-    MatDividerModule,
-    FlexModule,
-    NgFor,
-    NgIf,
-    NgSwitch,
-    NgSwitchCase,
-    NgSwitchDefault,
-    AlertComponent,
-  ],
+  imports: [MatDialogModule, MatButtonModule, MatIconModule, MatTooltipModule, MatDividerModule, FlexModule, AlertComponent],
 })
 export class ManageCategoriesDialogComponent {
   categories: CategorySummary[];

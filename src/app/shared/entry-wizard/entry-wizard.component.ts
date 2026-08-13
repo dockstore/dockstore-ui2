@@ -11,7 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { FlexModule } from '@ngbracket/ngx-layout';
 
 @Component({
@@ -19,12 +19,10 @@ import { FlexModule } from '@ngbracket/ngx-layout';
   templateUrl: './entry-wizard.component.html',
   styleUrls: ['./entry-wizard.component.scss'],
   imports: [
-    NgIf,
     MatProgressBarModule,
     MatFormFieldModule,
     MatSelectModule,
     FormsModule,
-    NgFor,
     MatOptionModule,
     MatSlideToggleModule,
     MatTooltipModule,

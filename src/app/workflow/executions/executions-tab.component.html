@@ -1,4 +1,5 @@
-<div *ngIf="!metricsExist" class="w-100">
+@if (!metricsExist) {
+<div class="w-100">
   <mat-card appearance="outlined" class="alert alert-info mt-3" role="alert" data-cy="no-metrics-banner">
     <mat-card-content>
       <mat-icon class="alert-info-icon">info</mat-icon> No metrics data exist for this
@@ -6,15 +7,17 @@
     </mat-card-content>
   </mat-card>
 </div>
-
-<div *ngIf="metricsExist" class="my-3 px-2">
+} @if (metricsExist) {
+<div class="my-3 px-2">
   <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1rem">
     <mat-form-field class="mb-3">
       <mat-label>Select a Platform</mat-label>
       <mat-select data-cy="metrics-partner-dropdown" [value]="currentPartner" (selectionChange)="matSelectChange($event)">
-        <mat-option data-cy="metrics-partner-options" [value]="partner" *ngFor="let partner of partners">
+        @for (partner of partners; track partner) {
+        <mat-option data-cy="metrics-partner-options" [value]="partner">
           {{ partner | platformPartner }}
         </mat-option>
+        }
       </mat-select>
     </mat-form-field>
   </div>
@@ -24,8 +27,10 @@
     </mat-card-header>
     <mat-divider></mat-divider>
     <mat-card-content class="pt-3">
-      <div *ngIf="!executionMetricsExist">No execution metrics exist</div>
-      <div *ngIf="executionMetricsExist">
+      @if (!executionMetricsExist) {
+      <div>No execution metrics exist</div>
+      } @if (executionMetricsExist) {
+      <div>
         <div
           data-cy="execution-metrics-total-executions-div"
           fxLayout="row"
@@ -35,8 +40,9 @@
         >
           <div><strong>Total executions: </strong>{{ totalExecutions | number }}</div>
           <div>
-            <strong>Successful: </strong>{{ successfulExecutions | number
-            }}<span *ngIf="successfulExecutionRate !== null"> ({{ successfulExecutionRate | number: '1.0-2' }}%)</span>
+            <strong>Successful: </strong>{{ successfulExecutions | number }}@if (successfulExecutionRate !== null) {
+            <span> ({{ successfulExecutionRate | number: '1.0-2' }}%)</span>
+            }
           </div>
           <div><strong>Failed: </strong>{{ failedExecutions | number }}</div>
           <div><strong>Aborted: </strong>{{ abortedExecutions | number }}</div>
@@ -98,13 +104,11 @@
         <mat-form-field class="metrics-execution-status-dropdown" data-cy="metrics-execution-status-dropdown">
           <mat-label>Select an Execution Status</mat-label>
           <mat-select [value]="currentExecutionStatus" (selectionChange)="onSelectedExecutionStatusChange($event.value)">
-            <mat-option
-              data-cy="metrics-execution-status-options"
-              [value]="executionStatus"
-              *ngFor="let executionStatus of executionStatuses"
-            >
+            @for (executionStatus of executionStatuses; track executionStatus) {
+            <mat-option data-cy="metrics-execution-status-options" [value]="executionStatus">
               {{ executionStatus | executionStatus }}
             </mat-option>
+            }
           </mat-select>
         </mat-form-field>
         <table
@@ -118,17 +122,17 @@
             <th mat-header-cell *matHeaderCellDef>Metric</th>
             <td mat-cell *matCellDef="let executionMetric">
               {{ executionMetric.metric }}
+              @if (isAdminCuratorOrPlatformPartner && executionMetric.numberOfSkippedExecutions) {
               <mat-icon
-                *ngIf="isAdminCuratorOrPlatformPartner && executionMetric.numberOfSkippedExecutions"
                 class="mat-icon-sm"
                 matTooltip="{{
                   executionMetric.numberOfSkippedExecutions
                 }} executions were skipped while aggregating this metric. Executions are skipped if the metric value is invalid."
                 >info_outline</mat-icon
               >
+              }
             </td>
           </ng-container>
-
           <ng-container matColumnDef="minimum">
             <th mat-header-cell *matHeaderCellDef [ngClass]="{ 'inactive-table-header': executionMetricsTable.length === 0 }">Minimum</th>
             <td mat-cell *matCellDef="let executionMetric">
@@ -137,7 +141,6 @@
               ></ng-template>
             </td>
           </ng-container>
-
           <ng-container matColumnDef="percentile05th">
             <th mat-header-cell *matHeaderCellDef [ngClass]="{ 'inactive-table-header': executionMetricsTable.length === 0 }">
               5th Percentile
@@ -151,7 +154,6 @@
               ></ng-template>
             </td>
           </ng-container>
-
           <ng-container matColumnDef="median">
             <th mat-header-cell *matHeaderCellDef [ngClass]="{ 'inactive-table-header': executionMetricsTable.length === 0 }">Median</th>
             <td mat-cell *matCellDef="let executionMetric">
@@ -160,7 +162,6 @@
               ></ng-template>
             </td>
           </ng-container>
-
           <ng-container matColumnDef="average">
             <th mat-header-cell *matHeaderCellDef [ngClass]="{ 'inactive-table-header': executionMetricsTable.length === 0 }">Average</th>
             <td mat-cell *matCellDef="let executionMetric">
@@ -169,7 +170,6 @@
               ></ng-template>
             </td>
           </ng-container>
-
           <ng-container matColumnDef="percentile95th">
             <th mat-header-cell *matHeaderCellDef [ngClass]="{ 'inactive-table-header': executionMetricsTable.length === 0 }">
               95th Percentile
@@ -183,7 +183,6 @@
               ></ng-template>
             </td>
           </ng-container>
-
           <ng-container matColumnDef="maximum">
             <th mat-header-cell *matHeaderCellDef [ngClass]="{ 'inactive-table-header': executionMetricsTable.length === 0 }">Maximum</th>
             <td mat-cell *matCellDef="let executionMetric">
@@ -192,7 +191,6 @@
               ></ng-template>
             </td>
           </ng-container>
-
           <tr mat-header-row *matHeaderRowDef="executionMetricsColumns"></tr>
           <tr mat-row *matRowDef="let row; columns: executionMetricsColumns"></tr>
           <tr class="mat-mdc-row" *matNoDataRow>
@@ -200,6 +198,7 @@
           </tr>
         </table>
       </div>
+      }
     </mat-card-content>
   </mat-card>
   <div class="mt-5">
@@ -209,14 +208,18 @@
       </mat-card-header>
       <mat-divider></mat-divider>
       <mat-card-content class="pt-3">
-        <div *ngIf="!validatorToolMetricsExist">No validator tool metrics exist</div>
-        <div *ngIf="validatorToolMetricsExist">
+        @if (!validatorToolMetricsExist) {
+        <div>No validator tool metrics exist</div>
+        } @if (validatorToolMetricsExist) {
+        <div>
           <mat-form-field data-cy="metrics-validator-tool-dropdown" class="my-3">
             <mat-label>Select a Validator Tool</mat-label>
             <mat-select [value]="currentValidatorTool" (selectionChange)="onSelectedValidatorToolChange($event.value)">
-              <mat-option data-cy="metrics-validator-tool-options" [value]="validatorTool" *ngFor="let validatorTool of validatorTools">
+              @for (validatorTool of validatorTools; track validatorTool) {
+              <mat-option data-cy="metrics-validator-tool-options" [value]="validatorTool">
                 {{ validatorTool }}
               </mat-option>
+              }
             </mat-select>
           </mat-form-field>
           <div fxLayout="row" fxLayoutGap="2rem">
@@ -228,13 +231,11 @@
               >
             </span>
           </div>
-
           <table mat-table class="w-100" aria-label="validations-table" [dataSource]="validationsTable" data-cy="validations-table">
             <ng-container matColumnDef="validatorToolVersionName">
               <th mat-header-cell *matHeaderCellDef matTooltip="The name of the validator tool version">Validator Tool Version</th>
               <td mat-cell *matCellDef="let validatorToolVersion">{{ validatorToolVersion.name }}</td>
             </ng-container>
-
             <ng-container matColumnDef="isValid">
               <th
                 mat-header-cell
@@ -243,9 +244,12 @@
               >
                 Valid
               </th>
-              <td mat-cell *matCellDef="let validatorToolVersion"><mat-icon *ngIf="validatorToolVersion.isValid">check</mat-icon></td>
+              <td mat-cell *matCellDef="let validatorToolVersion">
+                @if (validatorToolVersion.isValid) {
+                <mat-icon>check</mat-icon>
+                }
+              </td>
             </ng-container>
-
             <ng-container matColumnDef="errorMessage">
               <th
                 mat-header-cell
@@ -260,7 +264,6 @@
                 }}</span>
               </td>
             </ng-container>
-
             <ng-container matColumnDef="isMostRecentVersion">
               <th
                 mat-header-cell
@@ -270,26 +273,23 @@
                 Most Recent Version
               </th>
               <td mat-cell *matCellDef="let validatorToolVersion">
-                <mat-icon *ngIf="validatorToolVersion.name === validatorToolToValidatorInfo.get(currentValidatorTool).mostRecentVersionName"
-                  >check</mat-icon
-                >
+                @if (validatorToolVersion.name === validatorToolToValidatorInfo.get(currentValidatorTool).mostRecentVersionName) {
+                <mat-icon>check</mat-icon>
+                }
               </td>
             </ng-container>
-
             <ng-container matColumnDef="dateExecuted">
               <th mat-header-cell *matHeaderCellDef matTooltip="The date that this validator tool version was most recently executed">
                 Most Recent Execution Date
               </th>
               <td mat-cell *matCellDef="let validatorToolVersion">{{ validatorToolVersion.dateExecuted | date }}</td>
             </ng-container>
-
             <ng-container matColumnDef="numberOfRuns">
               <th mat-header-cell *matHeaderCellDef matTooltip="The number of times this validator tool version was executed">
                 Number of Runs
               </th>
               <td mat-cell *matCellDef="let validatorToolVersion">{{ validatorToolVersion.numberOfRuns }}</td>
             </ng-container>
-
             <ng-container matColumnDef="passingRate">
               <th
                 mat-header-cell
@@ -302,33 +302,35 @@
                 {{ validatorToolVersion.passingRate | number: '1.0-4' }}%
               </td>
             </ng-container>
-
             <tr mat-header-row *matHeaderRowDef="validationsColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: validationsColumns"></tr>
           </table>
         </div>
+        }
       </mat-card-content>
     </mat-card>
   </div>
   <ng-template #displayExecutionMetricStat let-num="num" let-executionMetric="executionMetric">
     <!-- checking for null because average could be zero which is falsy -->
-    <span *ngIf="num !== null">
-      <span *ngIf="executionMetric.metric === 'Run Time'" matTooltip="{{ num | secondsToHoursMinutesSeconds }}">{{
-        num | secondsToHoursMinutesSeconds
-      }}</span>
-      <span
-        *ngIf="executionMetric.metric !== 'Run Time' && executionMetric.metric === 'Cost'"
-        matTooltip="{{ (num | number: '1.2-2') + ' ' + executionMetric.unit }}"
+    @if (num !== null) {
+    <span>
+      @if (executionMetric.metric === 'Run Time') {
+      <span matTooltip="{{ num | secondsToHoursMinutesSeconds }}">{{ num | secondsToHoursMinutesSeconds }}</span>
+      } @if (executionMetric.metric !== 'Run Time' && executionMetric.metric === 'Cost') {
+      <span matTooltip="{{ (num | number: '1.2-2') + ' ' + executionMetric.unit }}"
         >{{ num | number: '1.2-2' }} {{ executionMetric.unit }}</span
       >
-      <span *ngIf="executionMetric.metric === 'CPU'" matTooltip="{{ num + ' ' + (executionMetric.unit ?? (num > 1 ? 'cores' : 'core')) }}"
+      } @if (executionMetric.metric === 'CPU') {
+      <span matTooltip="{{ num + ' ' + (executionMetric.unit ?? (num > 1 ? 'cores' : 'core')) }}"
         >{{ num }} {{ executionMetric.unit ?? (num > 1 ? 'cores' : 'core') }}</span
       >
-      <span
-        *ngIf="executionMetric.metric !== 'Run Time' && executionMetric.metric !== 'Cost' && executionMetric.metric !== 'CPU'"
-        matTooltip="{{ (num | number: '1.0-2') + ' ' + executionMetric.unit }}"
+      } @if (executionMetric.metric !== 'Run Time' && executionMetric.metric !== 'Cost' && executionMetric.metric !== 'CPU') {
+      <span matTooltip="{{ (num | number: '1.0-2') + ' ' + executionMetric.unit }}"
         >{{ num | number: '1.0-2' }} {{ executionMetric.unit }}</span
       >
+      }
     </span>
+    }
   </ng-template>
 </div>
+}

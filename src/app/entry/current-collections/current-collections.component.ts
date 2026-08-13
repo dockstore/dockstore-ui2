@@ -17,21 +17,19 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonModule } from '@angular/material/button';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { MatCardModule } from '@angular/material/card';
-import { NgIf, NgFor, NgTemplateOutlet, AsyncPipe } from '@angular/common';
+import { NgTemplateOutlet, AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-current-collections',
   templateUrl: './current-collections.component.html',
   styleUrls: ['./current-collections.component.scss'],
   imports: [
-    NgIf,
     MatCardModule,
     FlexModule,
     MatButtonModule,
     MatTooltipModule,
     ExtendedModule,
     MatDividerModule,
-    NgFor,
     ImgFallbackDirective,
     NgTemplateOutlet,
     RouterLinkActive,

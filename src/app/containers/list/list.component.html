@@ -1,25 +1,26 @@
 <!--
-  ~    Copyright 2017 OICR
-  ~
-  ~    Licensed under the Apache License, Version 2.0 (the "License");
-  ~    you may not use this file except in compliance with the License.
-  ~    You may obtain a copy of the License at
-  ~
-  ~        http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~    Unless required by applicable law or agreed to in writing, software
-  ~    distributed under the License is distributed on an "AS IS" BASIS,
-  ~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~    See the License for the specific language governing permissions and
-  ~    limitations under the License.
-  -->
+~    Copyright 2017 OICR
+~
+~    Licensed under the Apache License, Version 2.0 (the "License");
+~    you may not use this file except in compliance with the License.
+~    You may obtain a copy of the License at
+~
+~        http://www.apache.org/licenses/LICENSE-2.0
+~
+~    Unless required by applicable law or agreed to in writing, software
+~    distributed under the License is distributed on an "AS IS" BASIS,
+~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+~    See the License for the specific language governing permissions and
+~    limitations under the License.
+-->
 <div>
-  <div *ngIf="dataSource.loading$ | async; else placeholder">
+  @if (dataSource.loading$ | async) {
+  <div>
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
   </div>
-  <ng-template #placeholder>
-    <div class="pt-2"></div>
-  </ng-template>
+  } @else {
+  <div class="pt-2"></div>
+  }
   <div [hidden]="previewMode">
     <mat-form-field>
       <mat-label>Search tools</mat-label>
@@ -30,9 +31,11 @@
     <ng-container matColumnDef="name">
       <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
       <mat-cell *matCellDef="let tool">
-        <span *ngIf="tool.private_access" fxHide.xs>
+        @if (tool.private_access) {
+        <span fxHide.xs>
           <app-private-icon></app-private-icon>
         </span>
+        }
         <a [routerLink]="'/containers/' + tool.tool_path">{{
           tool?.namespace + '/' + tool?.name + (tool?.toolname ? '/' + tool?.toolname : '')
         }}</a>
@@ -41,15 +44,19 @@
     <ng-container matColumnDef="verified">
       <mat-header-cell *matHeaderCellDef fxHide.xs>Verified</mat-header-cell>
       <mat-cell *matCellDef="let tool" fxHide.xs>
-        <a *ngIf="getVerified(tool)" [href]="verifiedLink">
+        @if (getVerified(tool)) {
+        <a [href]="verifiedLink">
           <mat-icon matTooltip="Verified">check</mat-icon>
         </a>
+        }
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="stars">
       <mat-header-cell *matHeaderCellDef mat-sort-header fxHide.xs>Stars</mat-header-cell>
       <mat-cell class="description-cell weight-bold" *matCellDef="let tool" fxHide.xs>
-        <mat-icon class="star-icon" *ngIf="tool?.starredUsers?.length > 0">star_rate</mat-icon>
+        @if (tool?.starredUsers?.length > 0) {
+        <mat-icon class="star-icon">star_rate</mat-icon>
+        }
         {{ tool?.starredUsers.length === 0 ? '' : tool?.starredUsers.length }}
       </mat-cell>
     </ng-container>
@@ -61,22 +68,26 @@
       <mat-header-cell *matHeaderCellDef>Format</mat-header-cell>
       <mat-cell *matCellDef="let tool">
         <mat-chip-set>
-          <mat-chip *ngFor="let language of tool?.descriptorType">
+          @for (language of tool?.descriptorType; track language) {
+          <mat-chip>
             {{ language ? (language.toString() | uppercase) : '' }}
           </mat-chip>
+          }
         </mat-chip-set>
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="projectLinks">
       <mat-header-cell *matHeaderCellDef>Links</mat-header-cell>
       <mat-cell *matCellDef="let tool">
-        <a [href]="tool?.providerUrl" *ngIf="tool?.providerUrl">
+        @if (tool?.providerUrl) {
+        <a [href]="tool?.providerUrl">
           <fa-icon class="fa-lg" [icon]="tool.providerIcon" [matTooltip]="tool?.provider"> </fa-icon>
         </a>
-        &nbsp;
-        <a [href]="tool?.imgProviderUrl" *ngIf="tool?.imgProviderUrl">
+        } &nbsp; @if (tool?.imgProviderUrl) {
+        <a [href]="tool?.imgProviderUrl">
           <fa-icon class="fa-lg" [icon]="tool.imgProviderIcon" [matTooltip]="tool?.imgProvider"> </fa-icon>
         </a>
+        }
       </mat-cell>
     </ng-container>
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

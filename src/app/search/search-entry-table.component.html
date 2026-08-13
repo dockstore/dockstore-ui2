@@ -1,13 +1,17 @@
 <div>
-  <div *ngIf="!dataSource">
+  @if (!dataSource) {
+  <div>
     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
   </div>
+  }
   <div fxLayout="row" fxLayoutAlign="space-between center" class="py-2">
     <div fxLayout="row" fxLayoutAlign="start center">
       <mat-form-field>
         <mat-label>Sort by</mat-label>
         <mat-select [value]="defaultSortOption.sort" (selectionChange)="setSort($event.value)">
-          <mat-option *ngFor="let sortOption of sortOptions" [value]="sortOption.sort">{{ sortOption.label }}</mat-option>
+          @for (sortOption of sortOptions; track sortOption) {
+          <mat-option [value]="sortOption.sort">{{ sortOption.label }}</mat-option>
+          }
         </mat-select>
       </mat-form-field>
       <img
@@ -27,7 +31,8 @@
           <fa-icon [icon]="showTagCloudForEntryType ? faMinus : faPlus" aria-hidden="true"></fa-icon>
         </div>
       </button>
-      <div class="tagCloud {{ entryType | lowercase }}" *ngIf="showTagCloudForEntryType && tagCloudData" data-cy="tagCloud">
+      @if (showTagCloudForEntryType && tagCloudData) {
+      <div class="tagCloud {{ entryType | lowercase }}" data-cy="tagCloud">
         <angular-tag-cloud
           [data]="tagCloudData"
           [width]="options.width"
@@ -37,6 +42,7 @@
         >
         </angular-tag-cloud>
       </div>
+      }
     </div>
   </div>
   <mat-table [hidden]="!dataSource" [dataSource]="dataSource" matSort data-cy="search-entry-results-table" multiTemplateDataRows>
@@ -60,82 +66,92 @@
                     ><b>{{ entry?.source | entryToDisplayName: true }}</b></span
                   ></a
                 >
-                <mat-chip *ngIf="entry?.source?.archived" class="alert-warning ml-3">Archived</mat-chip>
+                @if (entry?.source?.archived) {
+                <mat-chip class="alert-warning ml-3">Archived</mat-chip>
+                }
               </div>
-              <div *ngIf="entry?.source.starredUsers?.length" data-cy="starredUsers" class="accent-1-dark">
+              @if (entry?.source.starredUsers?.length) {
+              <div data-cy="starredUsers" class="accent-1-dark">
                 <mat-icon class="mat-icon-sm">star_rate</mat-icon>
                 <span class="weight-bold align-middle">{{ entry?.source.starredUsers.length }}</span>
               </div>
+              }
             </div>
             <div class="single-spaced">
               <span
                 >{{ entry?.source.topicAutomatic }}
-                <mat-chip-set *ngIf="entry?.source.topicSelection === TopicSelectionEnum.AI && !entry?.source.approvedAITopic">
+                @if (entry?.source.topicSelection === TopicSelectionEnum.AI && !entry?.source.approvedAITopic) {
+                <mat-chip-set>
                   <app-ai-bubble [isPublic]="true"></app-ai-bubble>
                 </mat-chip-set>
+                }
               </span>
             </div>
 
             <!-- Search highlighting results-->
-            <div *ngIf="entry.highlight">
+            @if (entry.highlight) {
+            <div>
               <table class="search-highlighting size-small horizontal-table">
-                <tr *ngFor="let highlight of entry.highlight | keyvalue">
+                @for (highlight of entry.highlight | keyvalue; track highlight) {
+                <tr>
                   <th>{{ searchEverythingFriendlyNames.get(highlight.key.toString()) }}:</th>
                   <td class="single-spaced"><span [innerHTML]="highlight.value | joinWithEllipses"></span></td>
                 </tr>
+                }
               </table>
             </div>
+            }
 
             <app-entry-categories [categories]="entry | entryCategories" [entryType]="entryType"></app-entry-categories>
             <div fxLayout="row" fxLayoutGap="1rem">
               <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="1rem" fxFlex>
-                <span *ngIf="entry?.source?.all_authors">
+                @if (entry?.source?.all_authors) {
+                <span>
                   <mat-icon color="primary" class="mat-icon-sm mr-1">person</mat-icon
                   ><span class="size-small" [innerHTML]="entry?.source?.all_authors | getSearchAuthorsHtml"></span>
                 </span>
+                }
                 <span>
                   <mat-icon color="primary" class="mat-icon-sm mr-1">history</mat-icon>
                   <span class="size-small"
                     >Last updated {{ entry?.source.last_modified_date ? (entry?.source.last_modified_date | date) : 'n/a' }}</span
                   >
                 </span>
-                <app-doi-badge
-                  *ngIf="entry?.source?.selected_concept_doi"
-                  [doi]="entry.source.selected_concept_doi"
-                  [displayInitiator]="false"
-                ></app-doi-badge>
-                @let executionCount = entry?.source.executionCount;
-                <span *ngIf="executionCount > 0">
+                @if (entry?.source?.selected_concept_doi) {
+                <app-doi-badge [doi]="entry.source.selected_concept_doi" [displayInitiator]="false"></app-doi-badge>
+                } @let executionCount = entry?.source.executionCount; @if (executionCount > 0) {
+                <span>
                   <mat-icon color="primary" class="mat-icon-sm">play_arrow</mat-icon
                   ><span class="size-small mr-1"
                     >{{ executionCount | number }} {{ executionCount === 1 ? 'execution' : 'executions' }}</span
                   >
                 </span>
+                }
                 <mat-chip-set>
-                  <mat-chip data-cy="descriptorType" *ngIf="entry?.source.entryTypeMetadata.type !== EntryType.TOOL">
+                  @if (entry?.source.entryTypeMetadata.type !== EntryType.TOOL) {
+                  <mat-chip data-cy="descriptorType">
                     {{ entry?.source.descriptorType | descriptorLanguage }}
                   </mat-chip>
-                  <ng-container *ngIf="entry?.source.entryTypeMetadata.type === EntryType.TOOL">
-                    <mat-chip data-cy="descriptorType" *ngFor="let language of entry?.source.descriptorType">
-                      {{ language ? language : '' }}
-                    </mat-chip>
-                  </ng-container>
-                  <mat-chip *ngIf="entry?.source.entryTypeMetadata.type === EntryType.NOTEBOOK" data-cy="descriptorTypeSubclass">{{
-                    entry?.source.descriptorTypeSubclass
-                  }}</mat-chip>
-                  <app-preview-warning
-                    *ngIf="entry?.source.descriptorType === DescriptorTypeEnum.SMK"
-                    [featureName]="Dockstore.FEATURES.snakemakeFeatureName"
-                    [isBubble]="true"
-                  ></app-preview-warning>
+                  } @if (entry?.source.entryTypeMetadata.type === EntryType.TOOL) { @for (language of entry?.source.descriptorType; track
+                  language) {
+                  <mat-chip data-cy="descriptorType">
+                    {{ language ? language : '' }}
+                  </mat-chip>
+                  } } @if (entry?.source.entryTypeMetadata.type === EntryType.NOTEBOOK) {
+                  <mat-chip data-cy="descriptorTypeSubclass">{{ entry?.source.descriptorTypeSubclass }}</mat-chip>
+                  } @if (entry?.source.descriptorType === DescriptorTypeEnum.SMK) {
+                  <app-preview-warning [featureName]="Dockstore.FEATURES.snakemakeFeatureName" [isBubble]="true"></app-preview-warning>
+                  }
                 </mat-chip-set>
               </div>
-              <div *ngIf="entry?.source.monthlyExecutionCounts" fxLayout="column" fxLayoutAlign="end">
+              @if (entry?.source.monthlyExecutionCounts) {
+              <div fxLayout="column" fxLayoutAlign="end">
                 <app-thumbnail-time-series-graph
                   style="position: relative; bottom: 1px"
                   [timeSeries]="entry?.source.monthlyExecutionCounts"
                 ></app-thumbnail-time-series-graph>
               </div>
+              }
             </div>
           </mat-card-content>
         </mat-card>

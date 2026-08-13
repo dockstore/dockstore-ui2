@@ -1,27 +1,30 @@
 <!--
-  ~    Copyright 2017 OICR
-  ~
-  ~    Licensed under the Apache License, Version 2.0 (the "License");
-  ~    you may not use this file except in compliance with the License.
-  ~    You may obtain a copy of the License at
-  ~
-  ~        http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~    Unless required by applicable law or agreed to in writing, software
-  ~    distributed under the License is distributed on an "AS IS" BASIS,
-  ~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~    See the License for the specific language governing permissions and
-  ~    limitations under the License.
-  -->
+~    Copyright 2017 OICR
+~
+~    Licensed under the Apache License, Version 2.0 (the "License");
+~    you may not use this file except in compliance with the License.
+~    You may obtain a copy of the License at
+~
+~        http://www.apache.org/licenses/LICENSE-2.0
+~
+~    Unless required by applicable law or agreed to in writing, software
+~    distributed under the License is distributed on an "AS IS" BASIS,
+~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+~    See the License for the specific language governing permissions and
+~    limitations under the License.
+-->
 
 <div class="p-3">
-  <mat-card appearance="outlined" *ngIf="!_selectedVersion" class="alert alert-warning" role="alert">
+  @if (!_selectedVersion) {
+  <mat-card appearance="outlined" class="alert alert-warning" role="alert">
     <mat-card-content>
       <mat-icon class="alert-warning-icon">warning</mat-icon> To see launch with, please refresh the workflow.
     </mat-card-content>
   </mat-card>
-  <div *ngIf="_selectedVersion">
-    <div *ngIf="!_selectedVersion.valid">
+  } @if (_selectedVersion) {
+  <div>
+    @if (!_selectedVersion.valid) {
+    <div>
       <mat-card appearance="outlined" class="alert alert-warning" role="alert">
         <mat-card-content>
           <mat-icon class="alert-warning-icon">warning</mat-icon> This section is only available for valid versions. A valid version
@@ -29,24 +32,25 @@
         </mat-card-content>
       </mat-card>
     </div>
-    <div *ngIf="_selectedVersion.valid" fxLayout="column" fxLayoutGap="1rem">
+    } @if (_selectedVersion.valid) {
+    <div fxLayout="column" fxLayoutGap="1rem">
       <div fxLayout="column" fxLayoutGap="1rem">
-        <mat-card appearance="outlined" *ngIf="entryType === EntryType.Tool" class="alert alert-info" role="alert">
+        @if (entryType === EntryType.Tool) {
+        <mat-card appearance="outlined" class="alert alert-info" role="alert">
           <mat-card-content>
             <mat-icon>info</mat-icon> GitHub App Tools are launched in workflow mode with the Dockstore CLI
           </mat-card-content>
         </mat-card>
-        <mat-card
-          *ngIf="(isNFL$ | async) === false && (isGalaxy$ | async) === false && (isSMK$ | async) === false"
-          matTooltip="Commands for creating a runtime JSON template"
-        >
+        } @if ((isNFL$ | async) === false && (isGalaxy$ | async) === false && (isSMK$ | async) === false) {
+        <mat-card matTooltip="Commands for creating a runtime JSON template">
           <mat-card-content>
             Make a runtime JSON template and fill in desired inputs, outputs, and other parameters
             <button mat-icon-button class="copy-button" matTooltip="Copy command" [cdkCopyToClipboard]="params" appSnackbar>
               <mat-icon>file_copy</mat-icon>
             </button>
             <pre>{{ params }}</pre>
-            <span *ngIf="wgetTestJsonDescription">
+            @if (wgetTestJsonDescription) {
+            <span>
               or grab one that the workflow author has provided (if applicable)
               <button
                 mat-icon-button
@@ -59,22 +63,24 @@
               </button>
               <pre>{{ wgetTestJsonDescription }}</pre>
             </span>
+            }
           </mat-card-content>
         </mat-card>
-        <mat-card *ngIf="(isGalaxy$ | async) === true" matTooltip="Commands for creating a runtime JSON template">
+        } @if ((isGalaxy$ | async) === true) {
+        <mat-card matTooltip="Commands for creating a runtime JSON template">
           <mat-card-content>
             Download the workflow and other included files (such as example parameter files)
             <button mat-icon-button class="copy-button" matTooltip="Copy command" [cdkCopyToClipboard]="planemoSharedZipString" appSnackbar>
               <mat-icon>file_copy</mat-icon>
             </button>
             <pre>{{ planemoSharedZipString }}</pre>
-
             Then, create a runtime parameter template with Planemo and fill in desired inputs, outputs, and other parameters
             <button mat-icon-button class="copy-button" matTooltip="Copy command" [cdkCopyToClipboard]="planemoLocalInitString" appSnackbar>
               <mat-icon>file_copy</mat-icon>
             </button>
             <pre>{{ planemoLocalInitString }}</pre>
-            <span *ngIf="wgetTestJsonDescription">
+            @if (wgetTestJsonDescription) {
+            <span>
               or grab one that the workflow author has provided (if applicable)
               <button
                 mat-icon-button
@@ -87,12 +93,11 @@
               </button>
               <pre>{{ wgetTestJsonDescription }}</pre>
             </span>
+            }
           </mat-card-content>
         </mat-card>
-        <mat-card
-          *ngIf="(isNFL$ | async) === false && (isGalaxy$ | async) === false && (isSMK$ | async) === false"
-          matTooltip="Commands for launching tool through Dockstore CLI (Supports file provisioning)"
-        >
+        } @if ((isNFL$ | async) === false && (isGalaxy$ | async) === false && (isSMK$ | async) === false) {
+        <mat-card matTooltip="Commands for launching tool through Dockstore CLI (Supports file provisioning)">
           <mat-card-content>
             Run locally with the Dockstore CLI
             <button mat-icon-button class="copy-button" matTooltip="Copy command" [cdkCopyToClipboard]="cli" appSnackbar>
@@ -101,7 +106,8 @@
             <pre>{{ cli }}</pre>
           </mat-card-content>
         </mat-card>
-        <mat-card *ngIf="(isNFL$ | async) && DockstoreToolType.ModeEnum.HOSTED !== mode && WorkflowType.ModeEnum.HOSTED !== mode">
+        } @if ((isNFL$ | async) && DockstoreToolType.ModeEnum.HOSTED !== mode && WorkflowType.ModeEnum.HOSTED !== mode) {
+        <mat-card>
           <mat-card-content>
             <div matTooltip="Nextflow can conveniently run a workflow off of source control">
               Run with nextflow
@@ -119,8 +125,8 @@
             </div>
           </mat-card-content>
         </mat-card>
-
-        <mat-card *ngIf="(isGalaxy$ | async) && DockstoreToolType.ModeEnum.HOSTED !== mode && WorkflowType.ModeEnum.HOSTED !== mode">
+        } @if ((isGalaxy$ | async) && DockstoreToolType.ModeEnum.HOSTED !== mode && WorkflowType.ModeEnum.HOSTED !== mode) {
+        <mat-card>
           <mat-card-content>
             <div matTooltip="Planemo can run a workflow locally">
               Run with Planemo
@@ -137,8 +143,8 @@
             </div>
           </mat-card-content>
         </mat-card>
-
-        <mat-card *ngIf="(isNFL$ | async) && (DockstoreToolType.ModeEnum.HOSTED === mode || WorkflowType.ModeEnum.HOSTED === mode)">
+        } @if ((isNFL$ | async) && (DockstoreToolType.ModeEnum.HOSTED === mode || WorkflowType.ModeEnum.HOSTED === mode)) {
+        <mat-card>
           <mat-card-content>
             <div matTooltip="Nextflow can also run a local workflow">
               Download the workflow files
@@ -152,7 +158,6 @@
                 <mat-icon>file_copy</mat-icon>
               </button>
               <pre>{{ nextflowDownloadFileDescription }}</pre>
-
               Run with nextflow
               <button
                 mat-icon-button
@@ -167,8 +172,8 @@
             </div>
           </mat-card-content>
         </mat-card>
-
-        <mat-card *ngIf="(isSMK$ | async) && 'github.com' === workflow.sourceControl">
+        } @if ((isSMK$ | async) && 'github.com' === workflow.sourceControl) {
+        <mat-card>
           <mat-card-content>
             <div [matTooltip]="snakemakeTooltip">
               Download the workflow files
@@ -196,8 +201,8 @@
             </div>
           </mat-card-content>
         </mat-card>
-
-        <mat-card *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL && (published$ | async)">
+        } @if ((descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL && (published$ | async)) {
+        <mat-card>
           <mat-card-content>
             <div [matTooltip]="cwlrunnerTooltip">
               {{ cwlrunnerDescription }}
@@ -208,7 +213,8 @@
             </div>
           </mat-card-content>
         </mat-card>
-        <mat-card *ngIf="(descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL && (published$ | async)">
+        } @if ((descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL && (published$ | async)) {
+        <mat-card>
           <mat-card-content>
             <div [matTooltip]="cwltoolTooltip">
               Alternatively, <a href="https://github.com/common-workflow-language/cwltool">cwltool</a> can conveniently run a workflow off
@@ -239,13 +245,9 @@
             </div>
           </mat-card-content>
         </mat-card>
-
-        <mat-card
-          *ngIf="
-            ((descriptorType$ | async) === ToolDescriptor.TypeEnum.WDL || (descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL) &&
-            (published$ | async)
-          "
-        >
+        } @if ( ((descriptorType$ | async) === ToolDescriptor.TypeEnum.WDL || (descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL) &&
+        (published$ | async) ) {
+        <mat-card>
           <mat-card-content>
             <div [matTooltip]="toilTooltip">
               Use the <a href="https://toil.ucsc-cgl.org/">Toil</a> workflow engine to run on private compute such as AWS, Kubernetes,
@@ -261,9 +263,11 @@
             </div>
           </mat-card-content>
         </mat-card>
-
+        }
         <app-launch-checker-workflow [versionName]="_selectedVersion?.name" [command]="checkEntryCommand"></app-launch-checker-workflow>
       </div>
     </div>
+    }
   </div>
+  }
 </div>

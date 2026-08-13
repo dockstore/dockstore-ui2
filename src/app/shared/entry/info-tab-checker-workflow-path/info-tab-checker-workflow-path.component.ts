@@ -30,13 +30,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { FormsModule } from '@angular/forms';
-import { NgIf, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-info-tab-checker-workflow-path',
   templateUrl: './info-tab-checker-workflow-path.component.html',
   styleUrls: ['./info-tab-checker-workflow-path.component.scss'],
-  imports: [NgIf, FormsModule, FlexModule, MatTooltipModule, MatButtonModule, RouterLink, MatIconModule, AsyncPipe],
+  imports: [FormsModule, FlexModule, MatTooltipModule, MatButtonModule, RouterLink, MatIconModule, AsyncPipe],
 })
 export class InfoTabCheckerWorkflowPathComponent extends Base implements OnInit, OnDestroy {
   isPublic$: Observable<boolean>;

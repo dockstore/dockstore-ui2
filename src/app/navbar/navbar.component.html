@@ -1,18 +1,18 @@
 <!--
-  ~    Copyright 2018 OICR
-  ~
-  ~    Licensed under the Apache License, Version 2.0 (the "License");
-  ~    you may not use this file except in compliance with the License.
-  ~    You may obtain a copy of the License at
-  ~
-  ~        http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~    Unless required by applicable law or agreed to in writing, software
-  ~    distributed under the License is distributed on an "AS IS" BASIS,
-  ~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~    See the License for the specific language governing permissions and
-  ~    limitations under the License.
-  -->
+~    Copyright 2018 OICR
+~
+~    Licensed under the Apache License, Version 2.0 (the "License");
+~    you may not use this file except in compliance with the License.
+~    You may obtain a copy of the License at
+~
+~        http://www.apache.org/licenses/LICENSE-2.0
+~
+~    Unless required by applicable law or agreed to in writing, software
+~    distributed under the License is distributed on an "AS IS" BASIS,
+~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+~    See the License for the specific language governing permissions and
+~    limitations under the License.
+-->
 <mat-toolbar color="primary">
   <mat-toolbar-row class="toolbar-holder hidden-sm hidden-xs">
     <div [ngClass]="'container navbar-fluid'">
@@ -47,8 +47,8 @@
           <img class="site-icons-small hidden-sm" src="../assets/svg/main-nav/icons-navigation-forum.svg" alt="stacked pages" /> Forum
         </a>
         <span class="spacer"></span>
+        @if (isLoggedIn) {
         <a
-          *ngIf="isLoggedIn"
           mat-button
           class="icon navbar-button"
           (click)="resetPageNumber()"
@@ -57,8 +57,8 @@
         >
           <img src="../assets/svg/main-nav/icons-navigation-dashboard.svg" alt="dashboard" class="mr-1 mb-1" /> My Dockstore
         </a>
-
-        <div fxLayoutGap="1rem" *ngIf="!isLoggedIn">
+        } @if (!isLoggedIn) {
+        <div fxLayoutGap="1rem">
           <a routerLink="/login">
             <button mat-raised-button color="accent">Login</button>
           </a>
@@ -66,9 +66,8 @@
             <button mat-raised-button color="accent">Register</button>
           </a>
         </div>
-
+        } @if (isLoggedIn) {
         <a
-          *ngIf="isLoggedIn"
           id="notifButton"
           data-cy="notification-button"
           mat-button
@@ -89,6 +88,7 @@
             >notifications</mat-icon
           >
         </a>
+        }
         <mat-menu #notificationsMenu="matMenu">
           <button mat-menu-item [routerLink]="['/accounts']" [queryParams]="{ tab: 'requests' }">
             <mat-icon
@@ -180,7 +180,9 @@
         <a fxFlex id="home-nav-button-mobile" (click)="resetPageNumber()" routerLink="">
           <img src="../assets/svg/Dockstore-logo-horizontal-white.svg" height="49" alt="dockstore logo" />
         </a>
-        <a *ngIf="!isLoggedIn" mat-raised-button color="accent" routerLink="/login">Login</a>
+        @if (!isLoggedIn) {
+        <a mat-raised-button color="accent" routerLink="/login">Login</a>
+        }
         <template [ngTemplateOutlet]="loginButton"></template>
       </div>
     </div>
@@ -195,20 +197,25 @@
 </mat-toolbar>
 <!-- This is the login button used in both navbar sizes -->
 <ng-template #loginButton>
+  @if (isLoggedIn) {
   <mat-button
     [ngClass]="{ 'navbar-button-active': t.menuOpen === true }"
     data-cy="dropdown-main"
     class="navbar-button pointer"
-    *ngIf="isLoggedIn"
     id="dropdown-main"
     #t="matMenuTrigger"
     [matMenuTriggerFor]="menuLarge"
   >
-    <mat-icon class="hidden-sm hidden-md hidden-lg" *ngIf="user?.isAdmin">lock</mat-icon>
-    <mat-icon class="hidden-sm hidden-md hidden-lg" *ngIf="user?.curator && !user?.isAdmin">edit</mat-icon>
-    <mat-icon class="hidden-sm hidden-md hidden-lg" *ngIf="!user?.isAdmin && !user?.curator">account_circle</mat-icon>
+    @if (user?.isAdmin) {
+    <mat-icon class="hidden-sm hidden-md hidden-lg">lock</mat-icon>
+    } @if (user?.curator && !user?.isAdmin) {
+    <mat-icon class="hidden-sm hidden-md hidden-lg">edit</mat-icon>
+    } @if (!user?.isAdmin && !user?.curator) {
+    <mat-icon class="hidden-sm hidden-md hidden-lg">account_circle</mat-icon>
+    }
     <img class="navbar-avatar" src="{{ user?.avatarUrl }}" alt="Dockstore avatar" />
     <span class="hidden-xs dropdown-username">{{ user?.username }} </span>
     <mat-icon>keyboard_arrow_down</mat-icon>
   </mat-button>
+  }
 </ng-template>

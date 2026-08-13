@@ -14,19 +14,7 @@
  *    limitations under the License.
  */
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import {
-  Location,
-  NgIf,
-  NgFor,
-  NgClass,
-  NgSwitch,
-  NgSwitchCase,
-  NgSwitchDefault,
-  NgTemplateOutlet,
-  AsyncPipe,
-  DatePipe,
-  TitleCasePipe,
-} from '@angular/common';
+import { Location, NgClass, NgTemplateOutlet, AsyncPipe, DatePipe, TitleCasePipe } from '@angular/common';
 import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
 import { MatDialog } from '@angular/material/dialog';
@@ -120,7 +108,6 @@ import { AiBubbleComponent } from '../shared/ai-bubble/ai-bubble.component';
   templateUrl: './workflow.component.html',
   styleUrls: ['../shared/styles/workflow-container.component.scss'],
   imports: [
-    NgIf,
     MatCardModule,
     MatIconModule,
     MatButtonModule,
@@ -136,7 +123,6 @@ import { AiBubbleComponent } from '../shared/ai-bubble/ai-bubble.component';
     ReactiveFormsModule,
     MatOptionModule,
     NgxMatSelectSearchModule,
-    NgFor,
     StarringComponent,
     WorkflowActionsComponent,
     EntryCategoriesComponent,
@@ -147,9 +133,6 @@ import { AiBubbleComponent } from '../shared/ai-bubble/ai-bubble.component';
     NotebookComponent,
     LaunchWorkflowComponent,
     VersionsWorkflowComponent,
-    NgSwitch,
-    NgSwitchCase,
-    NgSwitchDefault,
     NgTemplateOutlet,
     SourceFileTabsComponent,
     WorkflowFileEditorComponent,

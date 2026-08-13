@@ -21,7 +21,7 @@ import { MultiCloudLaunchComponent } from './multi-cloud-launch/multi-cloud-laun
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatCardModule } from '@angular/material/card';
-import { NgIf, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 
 /* eslint-disable max-len */
 /**
@@ -101,7 +101,6 @@ import { NgIf, AsyncPipe } from '@angular/common';
   styleUrls: ['./launch-third-party.component.scss'],
   providers: [DescriptorsService, DescriptorsQuery, DescriptorsStore],
   imports: [
-    NgIf,
     MatCardModule,
     MatDividerModule,
     FlexModule,

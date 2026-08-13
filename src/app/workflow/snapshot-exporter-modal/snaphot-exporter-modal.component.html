@@ -3,12 +3,13 @@
     {{ title }}: <span class="accent-1-dark">Version {{ version.name }}</span>
   </h4>
 
-  <div [ngSwitch]="action">
-    <div *ngSwitchCase="SnapshotExporterAction.SNAPSHOT">
+  <div>
+    @switch (action) { @case (SnapshotExporterAction.SNAPSHOT) {
+    <div>
       <mat-dialog-content>
-        <ng-container *ngIf="!version.authors?.length && !version.orcidAuthors?.length">
-          <ng-template *ngTemplateOutlet="warning; context: { innerTemplate: noAuthors }"></ng-template>
-        </ng-container>
+        @if (!version.authors?.length && !version.orcidAuthors?.length) {
+        <ng-template *ngTemplateOutlet="warning; context: { innerTemplate: noAuthors }"></ng-template>
+        }
         <ng-template *ngTemplateOutlet="snapshotBlurb"></ng-template>
       </mat-dialog-content>
       <mat-dialog-actions [align]="'end'">
@@ -24,8 +25,8 @@
         </button>
       </mat-dialog-actions>
     </div>
-
-    <div *ngSwitchDefault>
+    } @default {
+    <div>
       <mat-dialog-content>
         <div fxLayout="row" fxLayoutAlign="space-evenly center">
           <app-exporter-step
@@ -37,43 +38,45 @@
           ></app-exporter-step>
           <app-exporter-step [stepState]="state.doi" aiIcon="ai-doi" successText="DOI created" errorText="DOI error" defaultText="DOI">
           </app-exporter-step>
+          @if (action === SnapshotExporterAction.ORCID) {
           <app-exporter-step
-            *ngIf="action === SnapshotExporterAction.ORCID"
             [stepState]="state.orcid"
             [faIcon]="faOrcid"
             successText="ORCID created"
             errorText="ORCID error"
             defaultText="ORCID"
           ></app-exporter-step>
+          }
         </div>
-
-        <ng-container
-          *ngIf="action === SnapshotExporterAction.DOI && (hasZenodoToken$ | async) === false && !version.dois[DoiInitiatorEnum.USER]"
-        >
-          <ng-template *ngTemplateOutlet="warning; context: { innerTemplate: zenodoNotLinked }"></ng-template>
-        </ng-container>
-        <div *ngIf="action === SnapshotExporterAction.ORCID && (hasOrcidToken$ | async) === false">
+        @if (action === SnapshotExporterAction.DOI && (hasZenodoToken$ | async) === false && !version.dois[DoiInitiatorEnum.USER]) {
+        <ng-template *ngTemplateOutlet="warning; context: { innerTemplate: zenodoNotLinked }"></ng-template>
+        } @if (action === SnapshotExporterAction.ORCID && (hasOrcidToken$ | async) === false) {
+        <div>
           <ng-template *ngTemplateOutlet="warning; context: { innerTemplate: orcidNotLinked }"></ng-template>
         </div>
-
-        <div *ngIf="action === SnapshotExporterAction.DOI">
+        } @if (action === SnapshotExporterAction.DOI) {
+        <div>
           <ng-template *ngTemplateOutlet="doiBlurb"></ng-template>
         </div>
-        <div *ngIf="action === SnapshotExporterAction.ORCID">
+        } @if (action === SnapshotExporterAction.ORCID) {
+        <div>
           <ng-template *ngTemplateOutlet="orcidBlurb"></ng-template>
         </div>
+        }
       </mat-dialog-content>
-
       <mat-dialog-actions [align]="'end'">
-        <div *ngIf="promptToConfirmSnapshot && state.overall === StepState.INITIAL" fxLayout="row" fxLayoutAlign="end" class="mb-3 w-100">
+        @if (promptToConfirmSnapshot && state.overall === StepState.INITIAL) {
+        <div fxLayout="row" fxLayoutAlign="end" class="mb-3 w-100">
           <mat-card appearance="outlined" fxFlex="50" class="alert-warning size-small weight-bold">
             <mat-card-content>
               Are you sure you want to snapshot this version, making it uneditable? This cannot be undone.
             </mat-card-content>
           </mat-card>
         </div>
+        }
         <div fxLayoutAlign="end" fxLayout="row" fxFlex="50">
           <button mat-button mat-dialog-close color="accent">Cancel</button>
+          @if (!promptToConfirmSnapshot) {
           <button
             [disabled]="
               ((hasZenodoToken$ | async) === false && !version.dois[DoiInitiatorEnum.USER]) ||
@@ -84,22 +87,18 @@
             mat-flat-button
             data-cy="export-button"
             (click)="export(false)"
-            *ngIf="!promptToConfirmSnapshot"
           >
             {{ action === SnapshotExporterAction.DOI ? 'Request DOI' : 'Export' }}
           </button>
-          <button
-            class="accent-1-dark"
-            mat-flat-button
-            [disabled]="state.overall !== StepState.INITIAL"
-            (click)="export(true)"
-            *ngIf="promptToConfirmSnapshot"
-          >
+          } @if (promptToConfirmSnapshot) {
+          <button class="accent-1-dark" mat-flat-button [disabled]="state.overall !== StepState.INITIAL" (click)="export(true)">
             Confirm
           </button>
+          }
         </div>
       </mat-dialog-actions>
     </div>
+    } }
   </div>
 
   <ng-template #snapshotBlurb>

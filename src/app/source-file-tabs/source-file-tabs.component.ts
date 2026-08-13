@@ -1,4 +1,4 @@
-import { KeyValue, Location, NgIf, NgFor, AsyncPipe, KeyValuePipe } from '@angular/common';
+import { KeyValue, Location, AsyncPipe, KeyValuePipe } from '@angular/common';
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
@@ -31,10 +31,8 @@ import { MatChipsModule } from '@angular/material/chips';
   styleUrls: ['./source-file-tabs.component.scss'],
   imports: [
     LoadingComponent,
-    NgIf,
     MatCardModule,
     MatIconModule,
-    NgFor,
     MatTabsModule,
     MatToolbarModule,
     FlexModule,

@@ -1,4 +1,6 @@
-<mat-progress-bar *ngIf="isLoading$ | async" mode="indeterminate"></mat-progress-bar>
+@if (isLoading$ | async) {
+<mat-progress-bar mode="indeterminate"></mat-progress-bar>
+}
 <div>
   <p>Toggle repositories on to create workflows from the associated Git repository. Once added, these workflows can be customized.</p>
   <p>This approach is best for Git repositories with only one workflow.</p>
@@ -6,24 +8,30 @@
     <mat-form-field class="w-100">
       <mat-label>Git Registry</mat-label>
       <mat-select [(ngModel)]="selectedGitRegistry" name="registry" (ngModelChange)="getOrganizations($event)">
-        <mat-option *ngFor="let registry of gitRegistries$ | async" [value]="registry">
+        @for (registry of gitRegistries$ | async; track registry) {
+        <mat-option [value]="registry">
           {{ registry }}
         </mat-option>
+        }
       </mat-select>
     </mat-form-field>
-    <div *ngIf="selectedGitRegistry && (gitOrganizations$ | async)">
+    @if (selectedGitRegistry && (gitOrganizations$ | async)) {
+    <div>
       <mat-form-field class="w-100">
         <mat-label>Organization</mat-label>
         <mat-select [(ngModel)]="selectedGitOrganization" name="organization" (ngModelChange)="getRepositories($event)">
-          <mat-option *ngFor="let organization of gitOrganizations$ | async" [value]="organization">
+          @for (organization of gitOrganizations$ | async; track organization) {
+          <mat-option [value]="organization">
             {{ organization }}
           </mat-option>
+          }
         </mat-select>
       </mat-form-field>
-
       <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="1rem">
-        <mat-label *ngIf="gitRepositories$ | async">Repositories</mat-label>
-        <div *ngFor="let repo of gitRepositories$ | async">
+        @if (gitRepositories$ | async) {
+        <mat-label>Repositories</mat-label>
+        } @for (repo of gitRepositories$ | async; track repo) {
+        <div>
           <mat-slide-toggle
             (change)="toggleRepo($event, repo)"
             [name]="repo.repositoryName"
@@ -34,7 +42,9 @@
             >{{ repo.path }}</mat-slide-toggle
           >
         </div>
+        }
       </div>
     </div>
+    }
   </div>
 </div>

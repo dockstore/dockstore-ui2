@@ -26,13 +26,12 @@ import { RouterLink } from '@angular/router';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
-import { NgIf, NgFor } from '@angular/common';
 
 @Component({
   selector: 'app-stargazers',
   templateUrl: './stargazers.component.html',
   styleUrls: ['./stargazers.component.css'],
-  imports: [NgIf, MatCardModule, MatIconModule, FlexModule, NgFor, RouterLink],
+  imports: [MatCardModule, MatIconModule, FlexModule, RouterLink],
 })
 export class StargazersComponent extends Base implements OnInit {
   starGazers: User[];

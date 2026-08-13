@@ -25,7 +25,9 @@
         matTooltipPosition="after"
         [placeholder]="descriptorPathPlaceholder"
       />
-      <mat-error *ngIf="formErrors.workflow_path"> {{ formErrors.workflow_path }} </mat-error>
+      @if (formErrors.workflow_path) {
+      <mat-error> {{ formErrors.workflow_path }} </mat-error>
+      }
     </mat-form-field>
     <mat-form-field class="w-100">
       <mat-label>Default Test Parameter File Path:</mat-label>
@@ -43,16 +45,20 @@
         matTooltipPosition="after"
         placeholder="e.g. /test.json"
       />
-      <mat-error *ngIf="formErrors.testParameterFilePath"> {{ formErrors.testParameterFilePath }} </mat-error>
+      @if (formErrors.testParameterFilePath) {
+      <mat-error> {{ formErrors.testParameterFilePath }} </mat-error>
+      }
     </mat-form-field>
-    <mat-form-field *ngIf="!isWorkflow" class="w-100">
+    @if (!isWorkflow) {
+    <mat-form-field class="w-100">
       <mat-label>Descriptor Type</mat-label>
       <mat-select [(ngModel)]="descriptorType" (ngModelChange)="onDescriptorTypeChange($event)" name="descriptorType">
-        <mat-option *ngFor="let descriptorLanguage of descriptorLanguages" value="{{ descriptorLanguage }}">{{
-          descriptorLanguage
-        }}</mat-option>
+        @for (descriptorLanguage of descriptorLanguages; track descriptorLanguage) {
+        <mat-option value="{{ descriptorLanguage }}">{{ descriptorLanguage }}</mat-option>
+        }
       </mat-select>
     </mat-form-field>
+    }
     <div class="modal-footer">
       <button type="button" mat-button color="accent" data-dismiss="modal" mat-dialog-close>Close</button>
       <button

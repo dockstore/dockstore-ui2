@@ -13,29 +13,26 @@
     fxLayoutAlign="start stretch"
     fxLayoutGap="1rem"
   >
-    <mat-card *ngFor="let topicOption of topicOptions" [class]="topicOption.type === selectedOption ? 'selected-card' : ''">
+    @for (topicOption of topicOptions; track topicOption) {
+    <mat-card [class]="topicOption.type === selectedOption ? 'selected-card' : ''">
       <mat-card-content>
         <div fxLayout="row" fxLayoutAlign="space-between center">
           <mat-radio-button [value]="topicOption.type" [attr.data-cy]="topicOption.label + '-radio-button'">
             <mat-chip-set>
               <mat-chip disableRipple>
-                <mat-icon *ngIf="topicOption.type === TopicSelectionEnum.MANUAL">edit</mat-icon>
-                <img
-                  *ngIf="topicOption.type === TopicSelectionEnum.AUTOMATIC"
-                  src="../assets/images/thirdparty/github.svg"
-                  alt="GitHub icon"
-                />
-                <img
-                  *ngIf="topicOption.type === TopicSelectionEnum.AI"
-                  class="site-icons-small"
-                  src="../../../assets/svg/ai-icon.svg"
-                  alt="AI generation icon"
-                />
+                @if (topicOption.type === TopicSelectionEnum.MANUAL) {
+                <mat-icon>edit</mat-icon>
+                } @if (topicOption.type === TopicSelectionEnum.AUTOMATIC) {
+                <img src="../assets/images/thirdparty/github.svg" alt="GitHub icon" />
+                } @if (topicOption.type === TopicSelectionEnum.AI) {
+                <img class="site-icons-small" src="../../../assets/svg/ai-icon.svg" alt="AI generation icon" />
+                }
               </mat-chip>
             </mat-chip-set>
             <strong class="ml-2">{{ topicOption.label }}</strong>
           </mat-radio-button>
-          <mat-chip-set *ngIf="topicOption.type === TopicSelectionEnum.AI && entry.approvedAITopic">
+          @if (topicOption.type === TopicSelectionEnum.AI && entry.approvedAITopic) {
+          <mat-chip-set>
             <mat-chip
               disableRipple
               class="checkmark"
@@ -43,12 +40,13 @@
               ><mat-icon>checkmark</mat-icon>Approved</mat-chip
             >
           </mat-chip-set>
+          }
         </div>
         <div class="ml-5">
           <div class="size-small gray-caption">
             {{ topicOption.description }}
+            @if (topicOption.type === TopicSelectionEnum.MANUAL && isGitHubAppEntry) {
             <a
-              *ngIf="topicOption.type === TopicSelectionEnum.MANUAL && isGitHubAppEntry"
               class="ds-green"
               href="{{ Dockstore.DOCUMENTATION_URL }}/assets/templates/{{ entryTypeMetadata.termPlural }}/{{
                 entryTypeMetadata.termPlural
@@ -58,55 +56,46 @@
               matTooltip="View more information about the topic field"
               ><mat-icon>info</mat-icon></a
             >
+            }
           </div>
-
           <!-- Display an info card if the AI topic was automatically set as the topic selection but it hasn't been approved by the user -->
-          <mat-card
-            appearance="outlined"
-            *ngIf="topicOption.type === TopicSelectionEnum.AI && !entry.approvedAITopic && entry.topicSelection === TopicSelectionEnum.AI"
-            class="alert-info size-small py-1 my-3"
-            data-cy="unapprovedAITopicCard"
-          >
+          @if (topicOption.type === TopicSelectionEnum.AI && !entry.approvedAITopic && entry.topicSelection === TopicSelectionEnum.AI) {
+          <mat-card appearance="outlined" class="alert-info size-small py-1 my-3" data-cy="unapprovedAITopicCard">
             <mat-card-content>
               <mat-icon class="mat-icon-sm">info</mat-icon> You have not approved this topic. Click <strong>Save</strong> to confirm that
               you have reviewed and approved the topic. Otherwise, select another topic.
             </mat-card-content>
           </mat-card>
-
-          <div
-            *ngIf="topicOption.type !== TopicSelectionEnum.MANUAL || isGitHubAppEntry; else editableManualField"
-            [class]="topicOption.value ? '' : 'gray-caption'"
-          >
+          } @if (topicOption.type !== TopicSelectionEnum.MANUAL || isGitHubAppEntry) {
+          <div [class]="topicOption.value ? '' : 'gray-caption'">
             {{ topicOption.value || 'Not Available' }}
-            <button
-              mat-icon-button
-              *ngIf="topicOption.type === TopicSelectionEnum.AI && topicOption.value"
-              [cdkCopyToClipboard]="topicOption.value"
-              matTooltip="Copy AI topic"
-              appSnackbar
-            >
+            @if (topicOption.type === TopicSelectionEnum.AI && topicOption.value) {
+            <button mat-icon-button [cdkCopyToClipboard]="topicOption.value" matTooltip="Copy AI topic" appSnackbar>
               <mat-icon>file_copy</mat-icon>
             </button>
+            }
           </div>
-          <ng-template #editableManualField>
-            <mat-form-field class="w-100" matTooltip="Edit the manual topic for this {{ entryTypeMetadata.term }}">
-              <textarea
-                matInput
-                [(ngModel)]="editedTopicManual"
-                placeholder="Short description of the {{ entryTypeMetadata.term }}"
-                data-cy="topicInput"
-                cdkTextareaAutosize
-              >
-              </textarea>
-            </mat-form-field>
-          </ng-template>
+          } @else {
+          <mat-form-field class="w-100" matTooltip="Edit the manual topic for this {{ entryTypeMetadata.term }}">
+            <textarea
+              matInput
+              [(ngModel)]="editedTopicManual"
+              placeholder="Short description of the {{ entryTypeMetadata.term }}"
+              data-cy="topicInput"
+              cdkTextareaAutosize
+            >
+            </textarea>
+          </mat-form-field>
+          }
         </div>
       </mat-card-content>
     </mat-card>
+    }
   </mat-radio-group>
 </mat-dialog-content>
 <mat-dialog-actions [align]="'end'">
-  <div *ngIf="promptToConfirmAISelection" fxLayout="row" fxLayoutAlign="end" class="mb-3">
+  @if (promptToConfirmAISelection) {
+  <div fxLayout="row" fxLayoutAlign="end" class="mb-3">
     <mat-card appearance="outlined" data-cy="confirmAISelectionPrompt" class="alert-warning size-small weight-bold py-1" fxFlex="50">
       <mat-card-content
         >By selecting the AI topic, you are confirming that you have reviewed and approved it. There will be no
@@ -115,6 +104,7 @@
       </mat-card-content>
     </mat-card>
   </div>
+  }
   <button mat-button mat-dialog-close color="accent" data-cy="topicCancelButton" cdkFocusInitial>Cancel</button>
   <button
     mat-flat-button

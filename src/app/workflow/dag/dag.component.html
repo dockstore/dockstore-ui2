@@ -1,21 +1,22 @@
 <!--
-  ~    Copyright 2017 OICR
-  ~
-  ~    Licensed under the Apache License, Version 2.0 (the "License");
-  ~    you may not use this file except in compliance with the License.
-  ~    You may obtain a copy of the License at
-  ~
-  ~        http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~    Unless required by applicable law or agreed to in writing, software
-  ~    distributed under the License is distributed on an "AS IS" BASIS,
-  ~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~    See the License for the specific language governing permissions and
-  ~    limitations under the License.
-  -->
+~    Copyright 2017 OICR
+~
+~    Licensed under the Apache License, Version 2.0 (the "License");
+~    you may not use this file except in compliance with the License.
+~    You may obtain a copy of the License at
+~
+~        http://www.apache.org/licenses/LICENSE-2.0
+~
+~    Unless required by applicable law or agreed to in writing, software
+~    distributed under the License is distributed on an "AS IS" BASIS,
+~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+~    See the License for the specific language governing permissions and
+~    limitations under the License.
+-->
 <app-loading class="w-100" [loading]="dagLoading$ | async">
   <div class="p-3" fxLayout="column" fxLayoutGap="10px">
-    <div fxFlex *ngIf="(isNFL$ | async) && dagType === 'classic'">
+    @if ((isNFL$ | async) && dagType === 'classic') {
+    <div fxFlex>
       <!-- alert class not present because it adds too much margin above a DAG that actually exists -->
       <mat-card appearance="outlined" class="alert-warning" role="alert">
         <mat-card-content>
@@ -23,12 +24,15 @@
         </mat-card-content>
       </mat-card>
     </div>
-    <div fxFlex *ngIf="dagType === 'classic' && (isNFL$ | async) === false && (missingTool$ | async)">
+    } @if (dagType === 'classic' && (isNFL$ | async) === false && (missingTool$ | async)) {
+    <div fxFlex>
       <!-- This covers CWL, WDL, Service, and other plugin languages (everything except NFL) -->
-      <mat-card appearance="outlined" class="alert alert-warning" role="alert" *ngIf="!selectedVersion?.valid">
+      @if (!selectedVersion?.valid) {
+      <mat-card appearance="outlined" class="alert alert-warning" role="alert">
         <mat-card-content>
-          <mat-icon class="alert-warning-icon">warning</mat-icon>&nbsp;
-          <span *ngIf="(descriptorType$ | async) !== ToolDescriptor.TypeEnum.SERVICE">
+          <mat-icon class="alert-warning-icon">warning</mat-icon>&nbsp; @if ((descriptorType$ | async) !== ToolDescriptor.TypeEnum.SERVICE)
+          {
+          <span>
             The DAG cannot be displayed because the descriptor is either missing or not valid.
             {{
               (isPublic$ | async)
@@ -36,33 +40,34 @@
                 : 'Ensure the descriptor exists and is valid. Click on the Files tab for more information.'
             }}
           </span>
+          }
         </mat-card-content>
       </mat-card>
-      <mat-card appearance="outlined" class="alert alert-warning" role="alert" *ngIf="selectedVersion?.valid">
+      } @if (selectedVersion?.valid) {
+      <mat-card appearance="outlined" class="alert alert-warning" role="alert">
         <mat-card-content>
           <mat-icon class="alert-warning-icon">warning</mat-icon>&nbsp; DAG cannot be created because some required tools are missing from
           GitHub repo.
         </mat-card-content>
       </mat-card>
+      }
     </div>
+    }
     <div fxFlex #dagHolder id="dag-holder">
-      <div [ngClass]="{ 'p-3': expanded }" *ngIf="selectedVersion?.valid && (missingTool$ | async) === false">
+      @if (selectedVersion?.valid && (missingTool$ | async) === false) {
+      <div [ngClass]="{ 'p-3': expanded }">
         <div fxLayout="row" fxLayoutAlign="space-between start">
           <div fxFlex>
-            <div
-              *ngIf="
-                enableCwlViewer &&
-                (descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL &&
-                (workflow$ | async)?.source_control_provider === 'GITHUB'
-              "
-              style="line-height: 20px"
-            >
+            @if ( enableCwlViewer && (descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL && (workflow$ |
+            async)?.source_control_provider === 'GITHUB' ) {
+            <div style="line-height: 20px">
               <label class="radio-inline"> <input type="radio" name="dagType" [(ngModel)]="dagType" value="classic" />Classic </label>
               <label class="radio-inline">
                 <input type="radio" name="dagType" [(ngModel)]="dagType" value="cwlviewer" />Common Workflow Language Viewer
               </label>
             </div>
-            <div *ngIf="isWDL$ | async" style="line-height: 20px">
+            } @if (isWDL$ | async) {
+            <div style="line-height: 20px">
               Classic
               <!--ALLOW WDL VIEWER AGAIN -->
               <!--              <label class="radio-inline"> <input type="radio" name="dagType" [(ngModel)]="dagType" value="classic" />Classic </label>-->
@@ -70,16 +75,13 @@
               <!--                <input type="radio" name="dagType" [(ngModel)]="dagType" value="wdlviewer" />EPAM WDL Visualizer-->
               <!--              </label>-->
             </div>
+            }
             <div>
-              <a
-                *ngIf="(dagType === 'classic' && (dagResult$ | async)) || (dagType === 'wdlviewer' && (wdlViewerResult$ | async))"
-                href
-                #exportLink
-                id="exportLink"
-                (click)="download()"
-              >
+              @if ((dagType === 'classic' && (dagResult$ | async)) || (dagType === 'wdlviewer' && (wdlViewerResult$ | async))) {
+              <a href #exportLink id="exportLink" (click)="download()">
                 <mat-icon>save</mat-icon>Save as {{ dagType === 'classic' ? 'PNG' : 'SVG' }}
               </a>
+              }
             </div>
           </div>
           <!-- This following div is shared by both viewers -->
@@ -87,8 +89,11 @@
             <div id="DAGButtonGroup" fxLayout="row" fxLayoutAlign="end start">
               <button mat-stroked-button id="dag_fullscreen" (click)="toggleExpand()" matTooltip="Toggle fullscreen">
                 <span>
-                  <mat-icon id="resize-full-button" *ngIf="!expanded">fullscreen</mat-icon>
-                  <mat-icon id="resize-small-button" *ngIf="expanded">fullscreen_exit</mat-icon>
+                  @if (!expanded) {
+                  <mat-icon id="resize-full-button">fullscreen</mat-icon>
+                  } @if (expanded) {
+                  <mat-icon id="resize-small-button">fullscreen_exit</mat-icon>
+                  }
                 </span>
               </button>
               <button mat-stroked-button id="dag_reload" (click)="reset()" matTooltip="Reset">
@@ -100,19 +105,18 @@
           </div>
         </div>
       </div>
+      }
       <div #dagDisplay data-cy="dag-holder" [className]="expanded ? 'big' : 'small'">
+        @if ( enableCwlViewer && (descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL && (workflow$ | async)?.source_control_provider
+        === 'GITHUB' ) {
         <app-cwl-viewer
-          *ngIf="
-            enableCwlViewer &&
-            (descriptorType$ | async) === ToolDescriptor.TypeEnum.CWL &&
-            (workflow$ | async)?.source_control_provider === 'GITHUB'
-          "
           [hidden]="dagType !== 'cwlviewer'"
           [selectedVersion]="selectedVersion"
           [refresh]="refreshCounter"
           [expanded]="expanded"
         >
         </app-cwl-viewer>
+        }
         <!--ALLOW WDL VIEWER AGAIN -->
         <!--        <app-wdl-viewer-->
         <!--          *ngIf="(isWDL$ | async) && dagType === 'wdlviewer'"-->
@@ -120,13 +124,9 @@
         <!--          [selectedVersion]="selectedVersion"-->
         <!--          [expanded]="expanded"-->
         <!--        </app-wdl-viewer>-->
-        <div
-          #cy
-          id="cy"
-          *ngIf="(dagResult$ | async) && (missingTool$ | async) === false"
-          class="h-100 w-100"
-          [hidden]="dagType !== 'classic'"
-        ></div>
+        @if ((dagResult$ | async) && (missingTool$ | async) === false) {
+        <div #cy id="cy" class="h-100 w-100" [hidden]="dagType !== 'classic'"></div>
+        }
       </div>
     </div>
   </div>

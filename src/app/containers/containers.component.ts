@@ -22,13 +22,13 @@ import { Observable } from 'rxjs';
 import { UrlResolverService } from '../shared/url-resolver.service';
 import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
-import { NgIf, AsyncPipe, TitleCasePipe } from '@angular/common';
+import { AsyncPipe, TitleCasePipe } from '@angular/common';
 import { HeaderComponent } from '../header/header.component';
 
 @Component({
   selector: 'app-containers',
   templateUrl: './containers.component.html',
-  imports: [HeaderComponent, NgIf, FlexModule, RouterLink, ExtendedModule, RouterOutlet, AsyncPipe, TitleCasePipe],
+  imports: [HeaderComponent, FlexModule, RouterLink, ExtendedModule, RouterOutlet, AsyncPipe, TitleCasePipe],
 })
 export class ContainersComponent {
   public entryName: string = '';

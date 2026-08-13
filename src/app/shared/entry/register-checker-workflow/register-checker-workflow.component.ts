@@ -34,7 +34,7 @@ import { RegisterCheckerWorkflowService } from './register-checker-workflow.serv
 import { MatButtonModule } from '@angular/material/button';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
-import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -51,9 +51,7 @@ import { FlexModule } from '@ngbracket/ngx-layout';
     MatFormFieldModule,
     MatInputModule,
     MatTooltipModule,
-    NgIf,
     MatSelectModule,
-    NgFor,
     MatOptionModule,
     MatButtonModule,
     AsyncPipe,

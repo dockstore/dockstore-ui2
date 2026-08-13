@@ -35,7 +35,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonModule } from '@angular/material/button';
-import { NgIf, NgFor, TitleCasePipe, DatePipe } from '@angular/common';
+import { TitleCasePipe, DatePipe } from '@angular/common';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
@@ -47,7 +47,6 @@ import { MatChipsModule } from '@angular/material/chips';
   imports: [
     MatCardModule,
     FlexModule,
-    NgIf,
     MatButtonModule,
     MatTooltipModule,
     MatDividerModule,
@@ -56,7 +55,6 @@ import { MatChipsModule } from '@angular/material/chips';
     FormsModule,
     MatAutocompleteModule,
     MatIconModule,
-    NgFor,
     MatOptionModule,
     RouterLink,
     TitleCasePipe,

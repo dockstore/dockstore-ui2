@@ -1,19 +1,20 @@
 <!--
-   Copyright 2019 OICR
- *
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
- *
-       http://www.apache.org/licenses/LICENSE-2.0
- *
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+Copyright 2019 OICR
+*
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+*
+http://www.apache.org/licenses/LICENSE-2.0
+*
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 -->
-<div *ngIf="canEditMembership$ | async" fxLayout class="pt-3">
+@if (canEditMembership$ | async) {
+<div fxLayout class="pt-3">
   <button
     mat-stroked-button
     class="private-btn"
@@ -24,25 +25,18 @@
     <mat-icon class="info-icon">email</mat-icon>Invite a Member
   </button>
 </div>
+}
 <app-loading [loading]="loading$ | async">
   <div fxLayout="row wrap">
-    <div
-      class="p-2"
-      fxFlex="{{ (canEditMembership$ | async) ? '100' : '50' }}"
-      fxFlex.lt-lg="100"
-      *ngFor="let organizationUser of organizationMembers$ | async; let index = index"
-    >
+    @for (organizationUser of organizationMembers$ | async; track organizationUser; let index = $index) {
+    <div class="p-2" fxFlex="{{ (canEditMembership$ | async) ? '100' : '50' }}" fxFlex.lt-lg="100">
       <mat-card class="h-100" [attr.data-cy]="'organization-member-' + index">
         <mat-card-content fxLayout fxLayoutGap="1rem" fxLayoutAlign="space-between stretch">
-          <img
-            *ngIf="organizationUser.user?.avatarUrl; else noAvatar"
-            mat-card-avatar
-            [src]="organizationUser.user?.avatarUrl"
-            alt="User avatar"
-          />
-          <ng-template #noAvatar>
-            <img mat-card-avatar [src]="gravatarService.gravatarUrlForMysteryPerson()" alt="User avatar" />
-          </ng-template>
+          @if (organizationUser.user?.avatarUrl) {
+          <img mat-card-avatar [src]="organizationUser.user?.avatarUrl" alt="User avatar" />
+          } @else {
+          <img mat-card-avatar [src]="gravatarService.gravatarUrlForMysteryPerson()" alt="User avatar" />
+          }
           <div class="w-100" fxLayout="column" fxLayoutAlign="start stretch" fxLayoutGap="0.5rem">
             <div fxLayout fxLayoutAlign="space-between center">
               <div>
@@ -63,7 +57,8 @@
               </mat-chip-set>
             </div>
             <div fxLayout fxLayoutAlign="space-between">
-              <span class="orcid white-space-no-wrap" *ngIf="organizationUser.user?.orcid" fxLayout fxLayoutAlign="start">
+              @if (organizationUser.user?.orcid) {
+              <span class="orcid white-space-no-wrap" fxLayout fxLayoutAlign="start">
                 <div>
                   ORCID
                   <img
@@ -74,12 +69,8 @@
                 </div>
                 <a href="https://orcid.org/{{ organizationUser.user?.orcid }}">{{ organizationUser.user?.orcid }}</a>
               </span>
-              <div
-                fxLayout
-                fxLayoutAlign="end"
-                *ngIf="(canEditMembership$ | async) && organizationUser.user.id !== (userId$ | async)"
-                fxFlex="noshrink"
-              >
+              } @if ((canEditMembership$ | async) && organizationUser.user.id !== (userId$ | async)) {
+              <div fxLayout fxLayoutAlign="end" fxFlex="noshrink">
                 <button
                   mat-button
                   class="private-btn"
@@ -110,10 +101,12 @@
                   <img src="../assets/svg/icons-actions-trash.svg" class="pr-2" alt="Remove member" />
                 </button>
               </div>
+              }
             </div>
           </div>
         </mat-card-content>
       </mat-card>
     </div>
+    }
   </div>
 </app-loading>

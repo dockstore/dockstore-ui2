@@ -12,7 +12,7 @@ import { Permission, Workflow, WorkflowsService, WorkflowSubClass } from '../../
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { NgIf, NgFor } from '@angular/common';
+
 import RoleEnum = Permission.RoleEnum;
 import { FlexModule } from '@ngbracket/ngx-layout';
 
@@ -20,7 +20,7 @@ import { FlexModule } from '@ngbracket/ngx-layout';
   selector: 'app-permissions',
   templateUrl: './permissions.component.html',
   styleUrls: ['./permissions.component.scss'],
-  imports: [NgIf, MatProgressBarModule, MatFormFieldModule, MatChipsModule, NgFor, MatIconModule, FlexModule],
+  imports: [MatProgressBarModule, MatFormFieldModule, MatChipsModule, MatIconModule, FlexModule],
 })
 export class PermissionsComponent implements OnInit {
   public Role = RoleEnum;

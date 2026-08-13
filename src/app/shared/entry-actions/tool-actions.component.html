@@ -1,6 +1,7 @@
-<div *ngIf="showButtons" class="flex-wrap-gap" fxLayout="row wrap" fxLayoutAlign="end start" fxLayoutGap="0.5rem">
+@if (showButtons) {
+<div class="flex-wrap-gap" fxLayout="row wrap" fxLayoutAlign="end start" fxLayoutGap="0.5rem">
+  @if (tool?.is_published) {
   <a
-    *ngIf="tool?.is_published"
     [routerLink]="['/tools/', tool.tool_path]"
     data-cy="viewPublicToolButton"
     mat-button
@@ -10,58 +11,56 @@
   >
     View public page
   </a>
-  <ng-container *ngIf="!tool?.archived">
-    <div [matTooltip]="pubUnpubMessage">
-      <button
-        id="publishToolButton"
-        [attr.data-cy]="(tool?.is_published ? 'unpublish' : 'publish') + '-button'"
-        mat-flat-button
-        class="accent-1-dark"
-        (click)="publishToggle()"
-        [disabled]="(isRefreshing$ | async) || publishDisabled"
-      >
-        {{ tool?.is_published ? 'Unpublish' : 'Publish' }}
-      </button>
-    </div>
-    <ng-container *ngIf="tool?.is_published; then disabledDeleteButton; else enabledDeleteButton"></ng-container>
-    <ng-template #disabledDeleteButton>
-      <button *ngIf="tool?.is_published" mat-flat-button color="warn" disabled matTooltip="Delete the tool">Delete</button>
-    </ng-template>
-    <ng-template #enabledDeleteButton>
-      <app-deregister-modal *ngIf="!tool?.is_published" [refreshMessage]="isRefreshing$ | async"></app-deregister-modal>
-    </ng-template>
+  } @if (!tool?.archived) {
+  <div [matTooltip]="pubUnpubMessage">
     <button
+      id="publishToolButton"
+      [attr.data-cy]="(tool?.is_published ? 'unpublish' : 'publish') + '-button'"
       mat-flat-button
       class="accent-1-dark"
-      (click)="archive()"
-      [disabled]="isRefreshing$ | async"
-      matTooltip="Archive this tool"
-      data-cy="archiveButton"
+      (click)="publishToggle()"
+      [disabled]="(isRefreshing$ | async) || publishDisabled"
     >
-      Archive
+      {{ tool?.is_published ? 'Unpublish' : 'Publish' }}
     </button>
-    <button
-      *ngIf="!isHosted"
-      mat-flat-button
-      class="accent-1-dark"
-      (click)="refresh()"
-      [disabled]="isRefreshing$ | async"
-      matTooltip="Sync the tool with the Docker image repository, etc"
-      data-cy="refreshButton"
-    >
-      Refresh
-    </button>
-  </ng-container>
-  <ng-container *ngIf="tool?.archived">
-    <button
-      mat-flat-button
-      class="accent-1-dark"
-      (click)="unarchive()"
-      [disabled]="isRefreshing$ | async"
-      matTooltip="Unarchive this tool"
-      data-cy="unarchiveButton"
-    >
-      Unarchive
-    </button>
-  </ng-container>
+  </div>
+  @if (tool?.is_published) { @if (tool?.is_published) {
+  <button mat-flat-button color="warn" disabled matTooltip="Delete the tool">Delete</button>
+  } } @else { @if (!tool?.is_published) {
+  <app-deregister-modal [refreshMessage]="isRefreshing$ | async"></app-deregister-modal>
+  } }
+  <button
+    mat-flat-button
+    class="accent-1-dark"
+    (click)="archive()"
+    [disabled]="isRefreshing$ | async"
+    matTooltip="Archive this tool"
+    data-cy="archiveButton"
+  >
+    Archive
+  </button>
+  @if (!isHosted) {
+  <button
+    mat-flat-button
+    class="accent-1-dark"
+    (click)="refresh()"
+    [disabled]="isRefreshing$ | async"
+    matTooltip="Sync the tool with the Docker image repository, etc"
+    data-cy="refreshButton"
+  >
+    Refresh
+  </button>
+  } } @if (tool?.archived) {
+  <button
+    mat-flat-button
+    class="accent-1-dark"
+    (click)="unarchive()"
+    [disabled]="isRefreshing$ | async"
+    matTooltip="Unarchive this tool"
+    data-cy="unarchiveButton"
+  >
+    Unarchive
+  </button>
+  }
 </div>
+}

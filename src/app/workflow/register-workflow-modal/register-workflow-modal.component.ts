@@ -45,7 +45,7 @@ import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { EntryWizardComponent } from '../../shared/entry-wizard/entry-wizard.component';
 import { RegisterGithubAppComponent } from '../../shared/register-github-app/register-github-app.component';
 import { MatButtonModule } from '@angular/material/button';
-import { NgFor, NgIf, AsyncPipe, NgTemplateOutlet } from '@angular/common';
+import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatStepperModule } from '@angular/material/stepper';
 import { AlertComponent } from '../../shared/alert/alert.component';
@@ -68,8 +68,6 @@ export interface HostedWorkflowObject {
     MatIconModule,
     MatRadioModule,
     FormsModule,
-    NgFor,
-    NgIf,
     MatButtonModule,
     RegisterGithubAppComponent,
     EntryWizardComponent,

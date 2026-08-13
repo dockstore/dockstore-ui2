@@ -1,31 +1,32 @@
 <!--
-  ~    Copyright 2017 OICR
-  ~
-  ~    Licensed under the Apache License, Version 2.0 (the "License");
-  ~    you may not use this file except in compliance with the License.
-  ~    You may obtain a copy of the License at
-  ~
-  ~        http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~    Unless required by applicable law or agreed to in writing, software
-  ~    distributed under the License is distributed on an "AS IS" BASIS,
-  ~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~    See the License for the specific language governing permissions and
-  ~    limitations under the License.
-  -->
+~    Copyright 2017 OICR
+~
+~    Licensed under the Apache License, Version 2.0 (the "License");
+~    you may not use this file except in compliance with the License.
+~    You may obtain a copy of the License at
+~
+~        http://www.apache.org/licenses/LICENSE-2.0
+~
+~    Unless required by applicable law or agreed to in writing, software
+~    distributed under the License is distributed on an "AS IS" BASIS,
+~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+~    See the License for the specific language governing permissions and
+~    limitations under the License.
+-->
 
 <!-- Display public workflow button design -->
-<div *ngIf="isPublic; else displayPrivateButton">
+@if (isPublic) {
+<div>
   <button mat-raised-button class="small-btn-structure" color="accent" (click)="showVersionModal()" data-cy="info-button">Info</button>
 </div>
+} @else {
+<button mat-stroked-button class="private-btn" [matMenuTriggerFor]="menu" data-cy="actions-button">
+  <img src="../assets/svg/gear-icon.svg" alt="Gear icon" class="pb-1" />
+  Actions
+  <img src="../assets/svg/drop-down-arrow.svg" alt="Drop down menu icon" />
+</button>
+}
 <!-- Display private workflow button design-->
-<ng-template #displayPrivateButton>
-  <button mat-stroked-button class="private-btn" [matMenuTriggerFor]="menu" data-cy="actions-button">
-    <img src="../assets/svg/gear-icon.svg" alt="Gear icon" class="pb-1" />
-    Actions
-    <img src="../assets/svg/drop-down-arrow.svg" alt="Drop down menu icon" />
-  </button>
-</ng-template>
 
 <mat-menu #menu="matMenu">
   <button
@@ -37,87 +38,84 @@
   >
     {{ !canWrite ? 'View' : 'Edit Info' }}
   </button>
-  <ng-container *ngIf="!isPublic">
+  @if (!isPublic) { @if (workflow?.mode === WorkflowType.ModeEnum.HOSTED && canWrite) {
+  <button
+    type="button"
+    mat-menu-item
+    color="warn"
+    class="btn-block deleteVersionButton"
+    [disabled]="(isRefreshing$ | async) || !canWrite"
+    (click)="deleteHostedVersion(); (false)"
+  >
+    Delete
+  </button>
+  }
+  <button
+    type="button"
+    mat-menu-item
+    color="accent"
+    [disabled]="(isRefreshing$ | async) || !canWrite || !(!version.frozen && version.referenceType !== 'BRANCH')"
+    (click)="snapshotVersion()"
+    data-cy="dockstore-snapshot"
+    matTooltip="Snapshotting a version makes it read-only."
+    matTooltipPosition="left"
+  >
+    Snapshot
+  </button>
+  @if (version.referenceType !== 'BRANCH' && !version.dois[DoiInitiatorEnum.USER] && workflow?.is_published) {
+  <button
+    mat-menu-item
+    id="DOIButton"
+    color="accent"
+    (click)="requestDOIForWorkflowVersion()"
+    [disabled]="(isRefreshing$ | async) || !canWrite"
+    data-cy="dockstore-request-doi-button"
+    matTooltip="Request a Digital Object Identifier (DOI) for this version."
+    matTooltipPosition="left"
+  >
+    Request DOI
+  </button>
+  } @if ( enableExportToOrcid && version.referenceType !== 'BRANCH' && !version.versionMetadata?.userIdToOrcidPutCode[userId] &&
+  workflow?.is_published ) {
+  <button
+    mat-menu-item
+    id="OrcidButton"
+    color="accent"
+    (click)="exportToOrcid()"
+    [disabled]="(isRefreshing$ | async) || !canWrite"
+    data-cy="dockstore-export-orcid-button"
+    matTooltip="Export this version to ORCID."
+    matTooltipPosition="left"
+  >
+    Export to ORCID
+  </button>
+  }
+  <button
+    data-cy="set-default-version-button"
+    mat-menu-item
+    [disabled]="(isRefreshing$ | async) || !canWrite || version.name === workflow.defaultVersion"
+    (click)="updateDefaultVersion()"
+  >
+    Set as Default Version
+  </button>
+  <div
+    matTooltip="Refresh an individual version. Disabled for GitHub App workflows, hosted workflows, and frozen versions."
+    matTooltipPosition="left"
+  >
     <button
-      type="button"
-      mat-menu-item
-      color="warn"
-      class="btn-block deleteVersionButton"
-      [disabled]="(isRefreshing$ | async) || !canWrite"
-      *ngIf="workflow?.mode === WorkflowType.ModeEnum.HOSTED && canWrite"
-      (click)="deleteHostedVersion(); (false)"
-    >
-      Delete
-    </button>
-    <button
-      type="button"
       mat-menu-item
       color="accent"
-      [disabled]="(isRefreshing$ | async) || !canWrite || !(!version.frozen && version.referenceType !== 'BRANCH')"
-      (click)="snapshotVersion()"
-      data-cy="dockstore-snapshot"
-      matTooltip="Snapshotting a version makes it read-only."
-      matTooltipPosition="left"
-    >
-      Snapshot
-    </button>
-    <button
-      mat-menu-item
-      id="DOIButton"
-      color="accent"
-      (click)="requestDOIForWorkflowVersion()"
-      [disabled]="(isRefreshing$ | async) || !canWrite"
-      data-cy="dockstore-request-doi-button"
-      *ngIf="version.referenceType !== 'BRANCH' && !version.dois[DoiInitiatorEnum.USER] && workflow?.is_published"
-      matTooltip="Request a Digital Object Identifier (DOI) for this version."
-      matTooltipPosition="left"
-    >
-      Request DOI
-    </button>
-    <button
-      mat-menu-item
-      id="OrcidButton"
-      color="accent"
-      (click)="exportToOrcid()"
-      [disabled]="(isRefreshing$ | async) || !canWrite"
-      data-cy="dockstore-export-orcid-button"
-      *ngIf="
-        enableExportToOrcid &&
-        version.referenceType !== 'BRANCH' &&
-        !version.versionMetadata?.userIdToOrcidPutCode[userId] &&
-        workflow?.is_published
+      [disabled]="
+        (isRefreshing$ | async) ||
+        !canWrite ||
+        version.frozen ||
+        (workflow?.mode === WorkflowType.ModeEnum.DOCKSTOREYML && !version.legacyVersion) ||
+        workflow?.mode === WorkflowType.ModeEnum.HOSTED
       "
-      matTooltip="Export this version to ORCID."
-      matTooltipPosition="left"
+      (click)="refreshVersion()"
     >
-      Export to ORCID
+      Refresh Version
     </button>
-    <button
-      data-cy="set-default-version-button"
-      mat-menu-item
-      [disabled]="(isRefreshing$ | async) || !canWrite || version.name === workflow.defaultVersion"
-      (click)="updateDefaultVersion()"
-    >
-      Set as Default Version
-    </button>
-    <div
-      matTooltip="Refresh an individual version. Disabled for GitHub App workflows, hosted workflows, and frozen versions."
-      matTooltipPosition="left"
-    >
-      <button
-        mat-menu-item
-        color="accent"
-        [disabled]="
-          (isRefreshing$ | async) ||
-          !canWrite ||
-          version.frozen ||
-          (workflow?.mode === WorkflowType.ModeEnum.DOCKSTOREYML && !version.legacyVersion) ||
-          workflow?.mode === WorkflowType.ModeEnum.HOSTED
-        "
-        (click)="refreshVersion()"
-      >
-        Refresh Version
-      </button>
-    </div>
-  </ng-container>
+  </div>
+  }
 </mat-menu>

@@ -1,23 +1,25 @@
 <!--
-   Copyright 2019 OICR
- *
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
- *
-       http://www.apache.org/licenses/LICENSE-2.0
- *
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+Copyright 2019 OICR
+*
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+*
+http://www.apache.org/licenses/LICENSE-2.0
+*
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 -->
-<mat-card *ngIf="(isLoggedIn$ | async) || (currentCollections$ | async).length > 0">
+@if ((isLoggedIn$ | async) || (currentCollections$ | async).length > 0) {
+<mat-card>
   <mat-card-header>
     <mat-card-title-group>
       <h5 matCardTitle>Collections</h5>
-      <div *ngIf="isLoggedIn$ | async">
+      @if (isLoggedIn$ | async) {
+      <div>
         <button
           mat-stroked-button
           class="private-btn"
@@ -31,43 +33,44 @@
           <span fxHide fxShow.lt-lg>Add to mine</span>
         </button>
       </div>
+      }
     </mat-card-title-group>
   </mat-card-header>
   <mat-divider></mat-divider>
   <mat-card-content class="pt-3">
-    <ng-container *ngFor="let collectionOrganization of currentCollections$ | async; last as last">
-      <div class="mb-1 single-spaced">
-        <ng-container *ngIf="collectionOrganization.organizationAvatarUrl; then withAvatar; else withoutAvatar"></ng-container>
-        <ng-template #withAvatar>
-          <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1rem">
-            <img
-              class="tiny-org-logo"
-              [src]="collectionOrganization.organizationAvatarUrl | gravatar"
-              alt="Org logo for {{ collectionOrganization.organizationDisplayName }}"
-              [appFallback]="orgLogoService.DEFAULT_URL"
-            />
-            <div class="pt-2 pb-2">
-              <ng-container *ngTemplateOutlet="collectionLink"></ng-container>
-            </div>
-          </div>
-        </ng-template>
-        <ng-template #withoutAvatar>
-          <div class="pt-2 pb-2">
-            <span class="weight-bold">{{ collectionOrganization.organizationDisplayName }}: </span>
-            <ng-container *ngTemplateOutlet="collectionLink"></ng-container>
-          </div>
-        </ng-template>
-        <ng-template #collectionLink>
-          <a
-            matTooltip="View the collection"
-            [routerLink]="['/organizations', collectionOrganization.organizationName, 'collections', collectionOrganization.collectionName]"
-            routerLinkActive="router-link-active"
-            data-cy="collectionLink"
-            >{{ collectionOrganization.collectionDisplayName }}</a
-          >
-        </ng-template>
+    @for (collectionOrganization of currentCollections$ | async; track collectionOrganization; let last = $last) {
+    <div class="mb-1 single-spaced">
+      @if (collectionOrganization.organizationAvatarUrl) {
+      <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1rem">
+        <img
+          class="tiny-org-logo"
+          [src]="collectionOrganization.organizationAvatarUrl | gravatar"
+          alt="Org logo for {{ collectionOrganization.organizationDisplayName }}"
+          [appFallback]="orgLogoService.DEFAULT_URL"
+        />
+        <div class="pt-2 pb-2">
+          <ng-container *ngTemplateOutlet="collectionLink"></ng-container>
+        </div>
       </div>
-      <mat-divider *ngIf="!last" class="my-2"></mat-divider>
-    </ng-container>
+      } @else {
+      <div class="pt-2 pb-2">
+        <span class="weight-bold">{{ collectionOrganization.organizationDisplayName }}: </span>
+        <ng-container *ngTemplateOutlet="collectionLink"></ng-container>
+      </div>
+      }
+      <ng-template #collectionLink>
+        <a
+          matTooltip="View the collection"
+          [routerLink]="['/organizations', collectionOrganization.organizationName, 'collections', collectionOrganization.collectionName]"
+          routerLinkActive="router-link-active"
+          data-cy="collectionLink"
+          >{{ collectionOrganization.collectionDisplayName }}</a
+        >
+      </ng-template>
+    </div>
+    @if (!last) {
+    <mat-divider class="my-2"></mat-divider>
+    } }
   </mat-card-content>
 </mat-card>
+}

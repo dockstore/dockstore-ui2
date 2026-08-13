@@ -8,81 +8,81 @@
 
   <app-alert></app-alert>
 
-  <div *ngIf="categories.length === 0" class="mt-2 mb-2">
+  @if (categories.length === 0) {
+  <div class="mt-2 mb-2">
     <p class="gray-caption">This entry is not in any categories.</p>
   </div>
-
-  <ng-container *ngFor="let group of groupOrder">
-    <ng-container *ngIf="categoriesForGroup(group).length > 0">
-      <p class="mt-3 mb-1">
-        <strong>{{ group }}</strong>
-      </p>
-      <mat-divider></mat-divider>
-      <div
-        *ngFor="let category of categoriesForGroup(group)"
-        fxLayout="row"
-        fxLayoutAlign="start center"
-        fxLayoutGap="0.5rem"
-        class="mt-2 mb-1"
-      >
-        <span
-          fxFlex
-          [class.text-muted]="getDecision(category) === 'remove'"
-          [style.text-decoration]="getDecision(category) === 'remove' ? 'line-through' : 'none'"
-          [style.font-weight]="getDecision(category) === 'approve' ? 'bold' : 'normal'"
-        >
-          {{ category.displayName || category.name }}
-        </span>
-
-        <span class="size-small gray-caption" *ngIf="category.curator !== CuratorEnum.AI">
-          <ng-container [ngSwitch]="category.curator">
-            <span *ngSwitchCase="CuratorEnum.USER">Approved by owner</span>
-            <span *ngSwitchCase="CuratorEnum.DOCKSTORE">Curated by Dockstore</span>
-            <span *ngSwitchDefault>{{ category.curator }}</span>
-          </ng-container>
-        </span>
-
-        <ng-container *ngIf="category.curator === CuratorEnum.AI">
-          <span class="size-small gray-caption" *ngIf="getDecision(category) === null">AI-curated</span>
-          <span class="size-small ds-green" *ngIf="getDecision(category) === 'approve'">Approved</span>
-          <span class="size-small" style="color: var(--ds-warn, #f44336)" *ngIf="getDecision(category) === 'remove'">Removing</span>
-          <button
-            mat-icon-button
-            [color]="getDecision(category) === 'remove' ? 'warn' : ''"
-            (click)="decide(category, 'remove')"
-            matTooltip="{{ getDecision(category) === 'remove' ? 'Undo removal' : 'Remove from this category' }}"
-          >
-            <mat-icon>close</mat-icon>
-          </button>
-          <button
-            mat-icon-button
-            [color]="getDecision(category) === 'approve' ? 'primary' : ''"
-            (click)="decide(category, 'approve')"
-            matTooltip="{{ getDecision(category) === 'approve' ? 'Undo approval' : 'Approve membership in this category' }}"
-          >
-            <mat-icon>check</mat-icon>
-          </button>
-        </ng-container>
-      </div>
-    </ng-container>
-  </ng-container>
-
-  <div *ngIf="pendingChanges().length > 0" class="mt-4">
+  } @for (group of groupOrder; track group) { @if (categoriesForGroup(group).length > 0) {
+  <p class="mt-3 mb-1">
+    <strong>{{ group }}</strong>
+  </p>
+  <mat-divider></mat-divider>
+  @for (category of categoriesForGroup(group); track category) {
+  <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="0.5rem" class="mt-2 mb-1">
+    <span
+      fxFlex
+      [class.text-muted]="getDecision(category) === 'remove'"
+      [style.text-decoration]="getDecision(category) === 'remove' ? 'line-through' : 'none'"
+      [style.font-weight]="getDecision(category) === 'approve' ? 'bold' : 'normal'"
+    >
+      {{ category.displayName || category.name }}
+    </span>
+    @if (category.curator !== CuratorEnum.AI) {
+    <span class="size-small gray-caption">
+      @switch (category.curator) { @case (CuratorEnum.USER) {
+      <span>Approved by owner</span>
+      } @case (CuratorEnum.DOCKSTORE) {
+      <span>Curated by Dockstore</span>
+      } @default {
+      <span>{{ category.curator }}</span>
+      } }
+    </span>
+    } @if (category.curator === CuratorEnum.AI) { @if (getDecision(category) === null) {
+    <span class="size-small gray-caption">AI-curated</span>
+    } @if (getDecision(category) === 'approve') {
+    <span class="size-small ds-green">Approved</span>
+    } @if (getDecision(category) === 'remove') {
+    <span class="size-small" style="color: var(--ds-warn, #f44336)">Removing</span>
+    }
+    <button
+      mat-icon-button
+      [color]="getDecision(category) === 'remove' ? 'warn' : ''"
+      (click)="decide(category, 'remove')"
+      matTooltip="{{ getDecision(category) === 'remove' ? 'Undo removal' : 'Remove from this category' }}"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+    <button
+      mat-icon-button
+      [color]="getDecision(category) === 'approve' ? 'primary' : ''"
+      (click)="decide(category, 'approve')"
+      matTooltip="{{ getDecision(category) === 'approve' ? 'Undo approval' : 'Approve membership in this category' }}"
+    >
+      <mat-icon>check</mat-icon>
+    </button>
+    }
+  </div>
+  } } } @if (pendingChanges().length > 0) {
+  <div class="mt-4">
     <p><strong>Pending Changes</strong></p>
     <mat-divider></mat-divider>
     <ul class="mt-2">
-      <li *ngFor="let category of pendingChanges()">
-        <ng-container [ngSwitch]="getDecision(category)">
-          <span *ngSwitchCase="'approve'"
-            >Approve membership in <strong>{{ category.displayName || category.name }}</strong></span
-          >
-          <span *ngSwitchCase="'remove'"
-            >Remove from <strong>{{ category.displayName || category.name }}</strong></span
-          >
-        </ng-container>
+      @for (category of pendingChanges(); track category) {
+      <li>
+        @switch (getDecision(category)) { @case ('approve') {
+        <span
+          >Approve membership in <strong>{{ category.displayName || category.name }}</strong></span
+        >
+        } @case ('remove') {
+        <span
+          >Remove from <strong>{{ category.displayName || category.name }}</strong></span
+        >
+        } }
       </li>
+      }
     </ul>
   </div>
+  }
 </mat-dialog-content>
 <mat-dialog-actions [align]="'end'">
   <button mat-button mat-dialog-close>Cancel</button>

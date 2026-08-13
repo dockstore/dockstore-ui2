@@ -1,21 +1,22 @@
-<h1 mat-dialog-title *ngIf="!noDialog">Edit Dockstore Username</h1>
+@if (!noDialog) {
+<h1 mat-dialog-title>Edit Dockstore Username</h1>
+}
 
 <mat-dialog-content>
   <p>
     Your current username is <strong>{{ user?.username }}</strong
-    >. It may have been auto-generated when you initially created a Dockstore account.
-    <span *ngIf="(canChangeUsername$ | async) === true; else cannotChange"
+    >. It may have been auto-generated when you initially created a Dockstore account. @if ((canChangeUsername$ | async) === true) {
+    <span
       >You <strong>can</strong> update your username since you have no published workflows/tools and have shared no workflows via
       permissions.</span
     >
-    <ng-template #cannotChange
-      >You <strong>cannot</strong> update your username since you have published workflows/tools or have shared workflows via
-      permissions.</ng-template
-    >
+    } @else { You <strong>cannot</strong> update your username since you have published workflows/tools or have shared workflows via
+    permissions. }
   </p>
 
   <!-- Alert -->
-  <mat-card appearance="outlined" *ngIf="showEmailWarning" class="alert alert-danger p-2" role="alert">
+  @if (showEmailWarning) {
+  <mat-card appearance="outlined" class="alert alert-danger p-2" role="alert">
     <mat-card-content fxLayout fxLayoutGap="1rem">
       <mat-icon class="alert-danger-icon">warning</mat-icon>
       <div>
@@ -25,9 +26,11 @@
       </div>
     </mat-card-content>
   </mat-card>
+  }
 
   <!-- Warnings -->
-  <mat-card appearance="outlined" *ngIf="(canChangeUsername$ | async) === true && !noDialog" class="alert alert-warning p-2" role="alert">
+  @if ((canChangeUsername$ | async) === true && !noDialog) {
+  <mat-card appearance="outlined" class="alert alert-warning p-2" role="alert">
     <mat-card-content fxLayout fxLayoutGap="1rem">
       <mat-icon class="alert-warning-icon">warning</mat-icon>
       <div>
@@ -36,7 +39,8 @@
       </div>
     </mat-card-content>
   </mat-card>
-  <mat-card appearance="outlined" *ngIf="isUsernameChangeRequired$ | async" class="alert alert-warning p-2" role="alert">
+  } @if (isUsernameChangeRequired$ | async) {
+  <mat-card appearance="outlined" class="alert alert-warning p-2" role="alert">
     <mat-card-content fxLayout fxLayoutGap="1rem">
       <mat-icon class="alert-warning-icon">warning</mat-icon>
       <div>
@@ -45,6 +49,7 @@
       </div>
     </mat-card-content>
   </mat-card>
+  }
 
   <div class="change-username-form">
     <mat-form-field>
@@ -57,17 +62,18 @@
         name="username"
         [(ngModel)]="username"
       />
-      <mat-error *ngIf="usernameFormControl.hasError('pattern'); else checkRequired" class="mt-2"
+      @if (usernameFormControl.hasError('pattern')) {
+      <mat-error class="mt-2"
         >Invalid Username Pattern (Only alphanumeric characters and internal underscores and dashes allowed)</mat-error
       >
-      <ng-template #checkRequired>
-        <mat-error *ngIf="usernameFormControl.hasError('required'); else checkMaxLength" class="mt-2">Username is required</mat-error>
-        <ng-template #checkMaxLength>
-          <mat-error *ngIf="usernameFormControl.hasError('maxlength')" class="mt-2">Username is too long (Max 39 characters)</mat-error>
-        </ng-template>
-      </ng-template>
+      } @else { @if (usernameFormControl.hasError('required')) {
+      <mat-error class="mt-2">Username is required</mat-error>
+      } @else { @if (usernameFormControl.hasError('maxlength')) {
+      <mat-error class="mt-2">Username is too long (Max 39 characters)</mat-error>
+      } } }
     </mat-form-field>
-    <span fxLayout="row wrap" *ngIf="noDialog">
+    @if (noDialog) {
+    <span fxLayout="row wrap">
       <button
         mat-flat-button
         class="accent-1-dark"
@@ -78,10 +84,12 @@
         Update Username
       </button>
     </span>
+    }
   </div>
 </mat-dialog-content>
 <!-- Dialog actions -->
-<mat-dialog-actions *ngIf="!noDialog" [align]="'end'">
+@if (!noDialog) {
+<mat-dialog-actions [align]="'end'">
   <button mat-button color="accent" class="mb-3" mat-dialog-close>Close</button>
   <button
     class="accent-1-dark mb-3"
@@ -94,3 +102,4 @@
     Save
   </button>
 </mat-dialog-actions>
+}

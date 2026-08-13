@@ -36,17 +36,15 @@ import { SelectComponent } from '../../select/select.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
-import { NgIf, NgFor, AsyncPipe, KeyValuePipe } from '@angular/common';
+import { AsyncPipe, KeyValuePipe } from '@angular/common';
 
 @Component({
   selector: 'app-paramfiles-container',
   templateUrl: './paramfiles.component.html',
   styleUrls: ['./paramfiles.component.scss'],
   imports: [
-    NgIf,
     MatCardModule,
     MatIconModule,
-    NgFor,
     MatProgressBarModule,
     SelectComponent,
     MatToolbarModule,

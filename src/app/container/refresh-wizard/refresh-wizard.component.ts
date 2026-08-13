@@ -16,7 +16,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
-import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { LoadingComponent } from '../../shared/loading/loading.component';
 
 @Component({
@@ -26,12 +26,10 @@ import { LoadingComponent } from '../../shared/loading/loading.component';
   providers: [RefreshWizardQuery, RefreshWizardStore, RefreshWizardService],
   imports: [
     LoadingComponent,
-    NgIf,
     MatCardModule,
     MatIconModule,
     MatFormFieldModule,
     MatSelectModule,
-    NgFor,
     MatOptionModule,
     MatButtonModule,
     MatTooltipModule,

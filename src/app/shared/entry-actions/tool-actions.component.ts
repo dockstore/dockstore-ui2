@@ -9,13 +9,13 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
-import { NgIf, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-tool-actions',
   templateUrl: './tool-actions.component.html',
   styleUrls: ['./entry-actions.component.scss'],
-  imports: [NgIf, FlexModule, MatButtonModule, RouterLink, MatTooltipModule, ModalComponent, AsyncPipe],
+  imports: [FlexModule, MatButtonModule, RouterLink, MatTooltipModule, ModalComponent, AsyncPipe],
 })
 export class ToolActionsComponent extends EntryActionsComponent implements OnInit, OnChanges {
   @Input() tool: DockstoreTool;

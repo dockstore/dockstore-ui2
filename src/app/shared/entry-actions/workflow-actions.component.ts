@@ -17,13 +17,13 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
-import { NgIf, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-workflow-actions',
   templateUrl: './workflow-actions.component.html',
   styleUrls: ['./entry-actions.component.scss'],
-  imports: [NgIf, FlexModule, MatButtonModule, RouterLink, MatTooltipModule, AsyncPipe],
+  imports: [FlexModule, MatButtonModule, RouterLink, MatTooltipModule, AsyncPipe],
 })
 export class WorkflowActionsComponent extends EntryActionsComponent implements OnInit, OnChanges {
   @Input() workflow: BioWorkflow | Service | Notebook;

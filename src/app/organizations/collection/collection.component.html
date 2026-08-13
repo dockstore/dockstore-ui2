@@ -1,17 +1,17 @@
 <!--
-   Copyright 2019 OICR
- *
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
- *
-       http://www.apache.org/licenses/LICENSE-2.0
- *
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+Copyright 2019 OICR
+*
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+*
+http://www.apache.org/licenses/LICENSE-2.0
+*
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 -->
 <app-header>
   <div fxLayout="row" fxLayoutAlign="space-between stretch">
@@ -29,31 +29,35 @@
 </app-header>
 <!-- Beware of double loading bar (from page and from loading component) -->
 <app-loading [loading]="(loadingCollection$ | async) || (loadingOrganization$ | async)">
-  <div *ngIf="organization$ | async as organization">
-    <div class="container mb-5" *ngIf="collection$ | async as collection" fxLayout="column">
-      <mat-card appearance="outlined" fxFlex class="my-3 alert alert-info" *ngIf="organization?.status === pendingEnum">
+  @if (organization$ | async; as organization) {
+  <div>
+    @if (collection$ | async; as collection) {
+    <div class="container mb-5" fxLayout="column">
+      @if (organization?.status === pendingEnum) {
+      <mat-card appearance="outlined" fxFlex class="my-3 alert alert-info">
         <mat-card-content>
-          <mat-icon>info</mat-icon> This collection is part of an organization that is pending approval by a Dockstore curator.
-          <span *ngIf="(isAdmin$ | async) || (isCurator$ | async); else notAdminOrCurator">
+          <mat-icon>info</mat-icon> This collection is part of an organization that is pending approval by a Dockstore curator. @if
+          ((isAdmin$ | async) || (isCurator$ | async)) {
+          <span>
             You can approve/reject this pending organization request on the requests tab of the
             <a [routerLink]="'/accounts'" style="text-decoration: underline">accounts page</a>.
           </span>
-          <ng-template #notAdminOrCurator>
-            You can view your pending organization requests on the requests tab of the
-            <a [routerLink]="'/accounts'" style="text-decoration: underline">accounts page</a>.
-          </ng-template>
+          } @else { You can view your pending organization requests on the requests tab of the
+          <a [routerLink]="'/accounts'" style="text-decoration: underline">accounts page</a>. }
         </mat-card-content>
       </mat-card>
-
-      <mat-card appearance="outlined" fxFlex class="my-3 alert alert-info" *ngIf="organization?.status === 'REJECTED'">
+      } @if (organization?.status === 'REJECTED') {
+      <mat-card appearance="outlined" fxFlex class="my-3 alert alert-info">
         <mat-card-content>
           <mat-icon>info</mat-icon> This collection is part of an organization that has been rejected by a curator. Members can re-request
           approval on the <a [routerLink]="'/accounts'" style="text-decoration: underline">accounts page</a>.
         </mat-card-content>
       </mat-card>
+      }
       <div fxFlex class="my-3">
         <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="2rem" fxLayoutAlign="start center">
-          <div *ngIf="organization?.avatarUrl" fxHide.lt-sm>
+          @if (organization?.avatarUrl) {
+          <div fxHide.lt-sm>
             <a [routerLink]="['/organizations/', (organization$ | async)?.name]">
               <img
                 [src]="organization.avatarUrl | gravatar"
@@ -63,6 +67,7 @@
               />
             </a>
           </div>
+          }
           <div>
             <h2>
               <span [matTooltip]="organization?.name" class="org-name">Collection:</span
@@ -71,11 +76,10 @@
             <span>{{ collection.topic }}</span>
           </div>
         </div>
-
         <mat-card-actions>
           <div fxFlex></div>
+          @if (canDelete$ | async) {
           <button
-            *ngIf="canDelete$ | async"
             mat-button
             class="private-btn"
             (click)="removeCollection(organization, collection)"
@@ -84,29 +88,27 @@
           >
             <img src="../assets/svg/icons-actions-trash.svg" class="pr-2" alt="Remove collection" />Remove
           </button>
-          <button
-            *ngIf="canEdit$ | async"
-            mat-button
-            class="private-btn"
-            (click)="editCollection(collection)"
-            id="editCollection"
-            matTooltip="Edit the collection"
-          >
+          } @if (canEdit$ | async) {
+          <button mat-button class="private-btn" (click)="editCollection(collection)" id="editCollection" matTooltip="Edit the collection">
             <img src="../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit collection" />Edit
           </button>
+          }
         </mat-card-actions>
       </div>
-      <mat-card appearance="outlined" class="alert alert-info" *ngIf="collection?.entries?.length === 0">
+      @if (collection?.entries?.length === 0) {
+      <mat-card appearance="outlined" class="alert alert-info">
         <mat-card-content>
           <mat-icon>info</mat-icon> This collection has no associated entries. To add an entry, navigate to the public page of the tool or
           workflow you want to add and select `Add to collection`
         </mat-card-content>
       </mat-card>
+      }
       <div fxLayout="row wrap" class="my-3">
         <div fxFlex="1 0 45%" class="mb-4">
           <div fxLayout="column" fxLayoutGap="15px">
             <h3>Workflows, Notebooks, Services, and Tools</h3>
-            <div data-cy="collectionEntry" *ngFor="let entry of collection?.entries">
+            @for (entry of collection?.entries; track entry) {
+            <div data-cy="collectionEntry">
               <mat-card>
                 <mat-card-content>
                   <a [routerLink]="entry | routerLink" class="no-underline">
@@ -117,7 +119,8 @@
                           {{ entry.entryPath + (entry.versionName ? ':' + entry.versionName : '') }}
                         </h5>
                       </div>
-                      <div *ngIf="canEdit$ | async" fxLayout="row" fxLayoutAlign="end center">
+                      @if (canEdit$ | async) {
+                      <div fxLayout="row" fxLayoutAlign="end center">
                         <span>
                           <button
                             mat-button
@@ -142,12 +145,15 @@
                           </button>
                         </span>
                       </div>
+                      }
                     </div>
                     <div class="truncate-text-2">
                       <span class="size-small" [matTooltip]="entry.topic" matTooltipPosition="left">
                         {{ entry.topic }}
                       </span>
-                      <app-ai-bubble *ngIf="entry.topicSelection === TopicSelectionEnum.AI && !entry.isApprovedAITopic"></app-ai-bubble>
+                      @if (entry.topicSelection === TopicSelectionEnum.AI && !entry.isApprovedAITopic) {
+                      <app-ai-bubble></app-ai-bubble>
+                      }
                     </div>
                     <app-entry-categories
                       class="mt-2 mb-2"
@@ -159,16 +165,14 @@
                       <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="1rem">
                         <span class="update-time"> Last updated {{ entry.dbUpdateDate | date }} </span>
                         <mat-chip-set>
-                          <mat-chip
-                            [ngClass]="entry.entryType === 'workflow' ? 'workflow-background' : 'tool-background'"
-                            *ngIf="entry.verified"
-                          >
+                          @if (entry.verified) {
+                          <mat-chip [ngClass]="entry.entryType === 'workflow' ? 'workflow-background' : 'tool-background'">
                             <mat-icon>done</mat-icon>
                             <span class="ml-2">Verified</span>
                           </mat-chip>
-                          <mat-chip *ngFor="let descriptorType of entry.descriptorTypes">{{
-                            'descriptor_type' | mapFriendlyValue: descriptorType
-                          }}</mat-chip>
+                          } @for (descriptorType of entry.descriptorTypes; track descriptorType) {
+                          <mat-chip>{{ 'descriptor_type' | mapFriendlyValue: descriptorType }}</mat-chip>
+                          }
                         </mat-chip-set>
                       </div>
                       <button mat-raised-button class="small-btn-structure" color="accent">View</button>
@@ -177,38 +181,48 @@
                 >
               </mat-card>
             </div>
+            }
           </div>
         </div>
-
         <div fxFlex="1 0 45%">
           <div fxLayout="column" fxLayoutGap="15px">
             <div fxLayout="column" fxLayoutGap="15px">
               <div fxLayout="row" fxLayoutAlign="end center">
+                @if (canEdit$ | async) {
                 <button
                   mat-button
                   class="private-btn"
-                  *ngIf="canEdit$ | async"
                   (click)="updateDescription(collection.description, collection.id)"
                   id="editCollectionDescription"
                   matTooltip="Edit the description"
                 >
                   <img src="../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit collection description" />Edit
                 </button>
+                }
               </div>
               <div fxLayout="row" fxLayoutAlign="start center">
                 <h3>About the Collection</h3>
               </div>
-              <div *ngIf="!collection.description" fxFlex>
-                <div *ngIf="canEdit$ | async" class="text-muted">Select edit to add a markdown description</div>
-                <div *ngIf="(canEdit$ | async) === false" class="text-muted">This collection does not have a description</div>
+              @if (!collection.description) {
+              <div fxFlex>
+                @if (canEdit$ | async) {
+                <div class="text-muted">Select edit to add a markdown description</div>
+                } @if ((canEdit$ | async) === false) {
+                <div class="text-muted">This collection does not have a description</div>
+                }
               </div>
+              }
             </div>
             <div>
-              <app-markdown-wrapper *ngIf="collection.description" fxFlex [data]="collection.description"></app-markdown-wrapper>
+              @if (collection.description) {
+              <app-markdown-wrapper fxFlex [data]="collection.description"></app-markdown-wrapper>
+              }
             </div>
           </div>
         </div>
       </div>
     </div>
+    }
   </div>
+  }
 </app-loading>

@@ -7,7 +7,7 @@ import { CloudInstance, Language, User, UsersService } from '../../../shared/ope
 import { FilterCloudInstancesPipe } from '../filterCloudInstances.pipe';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { NgFor } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 import { MatRadioModule } from '@angular/material/radio';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
@@ -27,7 +27,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     FlexModule,
     MatRadioModule,
     FormsModule,
-    NgFor,
     MatFormFieldModule,
     MatInputModule,
     FilterCloudInstancesPipe,

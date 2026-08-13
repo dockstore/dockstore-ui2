@@ -40,7 +40,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { NgIf, AsyncPipe, TitleCasePipe } from '@angular/common';
+import { AsyncPipe, TitleCasePipe } from '@angular/common';
 import { MatChipsModule } from '@angular/material/chips';
 
 @Component({
@@ -48,7 +48,6 @@ import { MatChipsModule } from '@angular/material/chips';
   templateUrl: './list.component.html',
   styleUrls: ['../../shared/styles/entry-table.scss', './list.component.scss'],
   imports: [
-    NgIf,
     MatProgressBarModule,
     MatFormFieldModule,
     MatInputModule,

@@ -1,12 +1,11 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { join } from './notebook-helpers';
 import { Output } from './notebook-types';
-import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-notebook-stream-output',
   templateUrl: './notebook-stream-output.component.html',
-  imports: [NgIf],
+  imports: [],
 })
 export class NotebookStreamOutputComponent implements OnChanges {
   @Input() output: Output;

@@ -34,7 +34,7 @@ import { FormsModule } from '@angular/forms';
 import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
-import { NgIf, NgClass, AsyncPipe } from '@angular/common';
+import { NgClass, AsyncPipe } from '@angular/common';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { LoadingComponent } from '../../shared/loading/loading.component';
 
@@ -58,7 +58,6 @@ import { LoadingComponent } from '../../shared/loading/loading.component';
   imports: [
     LoadingComponent,
     FlexModule,
-    NgIf,
     MatCardModule,
     MatIconModule,
     NgClass,

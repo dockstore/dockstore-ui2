@@ -1,22 +1,23 @@
 <!--
-   Copyright 2022 OICR, UCSC
- *
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
- *
-       http://www.apache.org/licenses/LICENSE-2.0
- *
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+Copyright 2022 OICR, UCSC
+*
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+*
+http://www.apache.org/licenses/LICENSE-2.0
+*
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 -->
 
 <div fxLayout="row wrap">
   <div class="p-3" fxFlex="50" fxFlex.lt-md="100">
-    <mat-card class="mb-2 h-100" *ngIf="dockstoreToken" fxLayout="column" fxLayoutAlign="space-between stretch">
+    @if (dockstoreToken) {
+    <mat-card class="mb-2 h-100" fxLayout="column" fxLayoutAlign="space-between stretch">
       <mat-card-header>
         <div mat-card-avatar matBadge="✓" class="mr-4 verified-badge">
           <img src="../../../../assets/images/dockstore/dockstore.png" alt="Dockstore logo" class="w-100" />
@@ -69,9 +70,11 @@
         </div>
       </mat-card-content>
     </mat-card>
+    }
   </div>
 
-  <div *ngFor="let row of accountsInfo" class="p-3" fxFlex="50" fxFlex.lt-md="100">
+  @for (row of accountsInfo; track row) {
+  <div class="p-3" fxFlex="50" fxFlex.lt-md="100">
     <mat-card class="mb-2 h-100" fxLayout="column" fxLayoutAlign="space-between stretch">
       <div>
         <mat-card-header>
@@ -81,31 +84,35 @@
           <mat-card-title-group>
             <mat-card-title>{{ row.name }} Account&nbsp;</mat-card-title>
             <!-- TODO: Reduce margin bottom from subtitle's default 16px to 7px -->
-            <mat-card-subtitle class="accent-1-dark" *ngIf="row.isLinked; else placeholder">
+            @if (row.isLinked) {
+            <mat-card-subtitle class="accent-1-dark">
               <strong>Username: {{ row.source | getTokenUsername: tokens }} </strong>
-              <span *ngIf="row.name === 'ORCID'">
+              @if (row.name === 'ORCID') {
+              <span>
                 <img src="../../assets/images/account-logos/{{ row.logo }}" alt="ORCID iD logo" class="orcid-id-logo site-icons-small" />
                 <a href="{{ orcidRootUrl }}/{{ orcidId$ | async }}">{{ orcidId$ | async }}</a>
               </span>
+              }
             </mat-card-subtitle>
-            <ng-template #placeholder><br /></ng-template>
+            } @else {
+            <br />
+            }
             <mat-chip-set>
-              <mat-chip *ngIf="row.control" matTooltip="Pull your workflows from cloud source control to make them available on Dockstore">
+              @if (row.control) {
+              <mat-chip matTooltip="Pull your workflows from cloud source control to make them available on Dockstore">
                 Source Control
               </mat-chip>
-              <mat-chip *ngIf="row.bold" matTooltip="A method of logging into Dockstore"> Login Method </mat-chip>
-              <mat-chip
-                *ngIf="row.docker"
-                matTooltip="Link Docker repository accounts to help Dockstore find information on your Docker containers"
-              >
+              } @if (row.bold) {
+              <mat-chip matTooltip="A method of logging into Dockstore"> Login Method </mat-chip>
+              } @if (row.docker) {
+              <mat-chip matTooltip="Link Docker repository accounts to help Dockstore find information on your Docker containers">
                 Docker Repository
               </mat-chip>
-              <mat-chip
-                *ngIf="row.research"
-                matTooltip="Services popular among scientific researchers to aid with publications and citation"
-              >
+              } @if (row.research) {
+              <mat-chip matTooltip="Services popular among scientific researchers to aid with publications and citation">
                 Research
               </mat-chip>
+              }
             </mat-chip-set>
           </mat-card-title-group>
         </mat-card-header>
@@ -114,11 +121,13 @@
             {{ row.message }}
             <strong>{{ row.bold }}</strong>
           </p>
-          <div *ngIf="row.source === TokenSource.ORCID">
+          @if (row.source === TokenSource.ORCID) {
+          <div>
             See <a target="_blank" rel="noopener noreferrer" href="https://info.orcid.org/what-is-orcid/">ORCID</a> and
             <a target="_blank" rel="noopener noreferrer" [href]="Dockstore.DOCUMENTATION_URL + '/end-user-topics/ORCID.html'">docs</a> for
             information on what is ORCID.
           </div>
+          }
         </mat-card-content>
       </div>
       <mat-card-content>
@@ -126,19 +135,22 @@
           <hr />
           <span class="pull-right" fxLayoutAlign="end end">
             <!-- This button needs to be vertically centered -->
+            @if (row.isLinked === false) {
             <button
-              *ngIf="row.isLinked === false; else linked"
               mat-stroked-button
               class="private-btn mt-2"
               [attr.id]="'link-' + row.name"
               (click)="link(row.source)"
               matTooltip="Link the account"
             >
-              <mat-icon class="mat-icon-sm" *ngIf="row.name !== 'ORCID'; else orcid">link</mat-icon>
+              @if (row.name !== 'ORCID') {
+              <mat-icon class="mat-icon-sm">link</mat-icon>
+              } @else {
+              <img src="../../assets/images/account-logos/{{ row.logo }}" alt="ORCID iD logo" class="orcid-id-logo site-icons-small" />
+              }
               <span> Link Account</span>
             </button>
-          </span>
-          <ng-template #linked>
+            } @else {
             <button
               mat-raised-button
               class="private-btn mt-2"
@@ -146,15 +158,18 @@
               (click)="unlink(row.source)"
               matTooltip="Unlink the account"
             >
-              <mat-icon class="mat-icon-sm" *ngIf="row.name !== 'ORCID'; else orcid">link_off </mat-icon>
+              @if (row.name !== 'ORCID') {
+              <mat-icon class="mat-icon-sm">link_off </mat-icon>
+              } @else {
+              <img src="../../assets/images/account-logos/{{ row.logo }}" alt="ORCID iD logo" class="orcid-id-logo site-icons-small" />
+              }
               <span> Unlink Account</span>
             </button>
-          </ng-template>
-          <ng-template #orcid>
-            <img src="../../assets/images/account-logos/{{ row.logo }}" alt="ORCID iD logo" class="orcid-id-logo site-icons-small" />
-          </ng-template>
+            }
+          </span>
         </div>
       </mat-card-content>
     </mat-card>
   </div>
+  }
 </div>

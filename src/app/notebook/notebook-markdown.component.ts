@@ -3,13 +3,13 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { MarkdownWrapperService } from '../shared/markdown-wrapper/markdown-wrapper.service';
 import { join, replaceAll, selectBestFromMimeBundle } from './notebook-helpers';
 import { Attachments, Cell } from './notebook-types';
-import { NgIf } from '@angular/common';
+
 import './mathjax';
 
 @Component({
   selector: 'app-notebook-markdown',
   templateUrl: './notebook-markdown.component.html',
-  imports: [NgIf],
+  imports: [],
 })
 export class NotebookMarkdownComponent implements OnChanges {
   @Input() cell: Cell;

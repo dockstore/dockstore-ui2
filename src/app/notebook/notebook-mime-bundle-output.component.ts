@@ -2,12 +2,11 @@ import { Component, Input, OnChanges } from '@angular/core';
 import { MarkdownWrapperService } from '../shared/markdown-wrapper/markdown-wrapper.service';
 import { escape, selectBestFromMimeBundle } from './notebook-helpers';
 import { MimeBundle, Output, OutputMetadata } from './notebook-types';
-import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-notebook-mime-bundle-output',
   templateUrl: './notebook-mime-bundle-output.component.html',
-  imports: [NgIf],
+  imports: [],
 })
 export class NotebookMimeBundleOutputComponent implements OnChanges {
   @Input() output: Output;

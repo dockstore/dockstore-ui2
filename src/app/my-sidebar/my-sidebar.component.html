@@ -1,18 +1,18 @@
 <!--
-  ~    Copyright 2022 OICR
-  ~
-  ~    Licensed under the Apache License, Version 2.0 (the "License");
-  ~    you may not use this file except in compliance with the License.
-  ~    You may obtain a copy of the License at
-  ~
-  ~        http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~    Unless required by applicable law or agreed to in writing, software
-  ~    distributed under the License is distributed on an "AS IS" BASIS,
-  ~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~    See the License for the specific language governing permissions and
-  ~    limitations under the License.
-  -->
+~    Copyright 2022 OICR
+~
+~    Licensed under the Apache License, Version 2.0 (the "License");
+~    you may not use this file except in compliance with the License.
+~    You may obtain a copy of the License at
+~
+~        http://www.apache.org/licenses/LICENSE-2.0
+~
+~    Unless required by applicable law or agreed to in writing, software
+~    distributed under the License is distributed on an "AS IS" BASIS,
+~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+~    See the License for the specific language governing permissions and
+~    limitations under the License.
+-->
 
 <div fxFlex="0 0 auto">
   <!-- My Dashboard -->
@@ -53,13 +53,15 @@
   </div>
 
   <!-- My Organizations page does not exist, framework is hidden for the time being -->
-  <div *ngIf="false">
+  @if (false) {
+  <div>
     <button mat-flat-button class="purple" routerLink="/my-organizations" routerLinkActive="active">
       <div><img src="../assets/svg/my-nav/organization.svg" class="pb-1" alt="my organizations" /></div>
       Organizations
     </button>
     <hr routerLink="/my-organizations" routerLinkActive="active" />
   </div>
+  }
 
   <!-- My Starred -->
   <button mat-flat-button class="purple" routerLink="/starred" routerLinkActive="active">

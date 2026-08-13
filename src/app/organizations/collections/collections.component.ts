@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { KeyValue, NgIf, NgFor, AsyncPipe, JsonPipe, KeyValuePipe } from '@angular/common';
+import { KeyValue, AsyncPipe, JsonPipe, KeyValuePipe } from '@angular/common';
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { HashMap } from '@datorama/akita';
@@ -39,14 +39,12 @@ import { MatChipsModule } from '@angular/material/chips';
   templateUrl: './collections.component.html',
   styleUrls: ['./collections.component.scss'],
   imports: [
-    NgIf,
     MatButtonModule,
     MatTooltipModule,
     MatIconModule,
     LoadingComponent,
     MatCardModule,
     FlexModule,
-    NgFor,
     RouterLink,
     AsyncPipe,
     JsonPipe,

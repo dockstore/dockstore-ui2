@@ -1,38 +1,40 @@
 <!--
-  ~    Copyright 2017 OICR
-  ~
-  ~    Licensed under the Apache License, Version 2.0 (the "License");
-  ~    you may not use this file except in compliance with the License.
-  ~    You may obtain a copy of the License at
-  ~
-  ~        http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~    Unless required by applicable law or agreed to in writing, software
-  ~    distributed under the License is distributed on an "AS IS" BASIS,
-  ~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~    See the License for the specific language governing permissions and
-  ~    limitations under the License.
-  -->
-<div *ngIf="getTabIndex() === 0">
+~    Copyright 2017 OICR
+~
+~    Licensed under the Apache License, Version 2.0 (the "License");
+~    you may not use this file except in compliance with the License.
+~    You may obtain a copy of the License at
+~
+~        http://www.apache.org/licenses/LICENSE-2.0
+~
+~    Unless required by applicable law or agreed to in writing, software
+~    distributed under the License is distributed on an "AS IS" BASIS,
+~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+~    See the License for the specific language governing permissions and
+~    limitations under the License.
+-->
+@if (getTabIndex() === 0) {
+<div>
   <span>
     <p>A <b>Workflow</b> can use multiple containers and executes multiple actions or steps, outlined by one or more descriptors.</p>
   </span>
   <mat-divider class="my-2"></mat-divider>
   <app-search-entry-table [entryType]="EntryType.WORKFLOW" (sortChange)="setSort($event)"></app-search-entry-table>
 </div>
-
-<div *ngIf="getTabIndex() === 1">
+} @if (getTabIndex() === 1) {
+<div>
   <span>
     <p>A <b>Tool</b> uses a single container and performs a single action or step that is outlined by a descriptor.</p>
   </span>
   <mat-divider class="my-2"></mat-divider>
   <app-search-entry-table [entryType]="EntryType.TOOL" (sortChange)="setSort($event)"></app-search-entry-table>
 </div>
-
-<div *ngIf="getTabIndex() === 2">
+} @if (getTabIndex() === 2) {
+<div>
   <span>
     <p>A <b>Notebook</b> is a document containing code and text that can be interactively edited and run.</p>
   </span>
   <mat-divider class="my-2"></mat-divider>
   <app-search-entry-table [entryType]="EntryType.NOTEBOOK" (sortChange)="setSort($event)"></app-search-entry-table>
 </div>
+}

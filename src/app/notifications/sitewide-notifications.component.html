@@ -1,4 +1,5 @@
-<div *ngFor="let notification of activeNotifications$ | async">
+@for (notification of activeNotifications$ | async; track notification) {
+<div>
   <div class="container text-center notification-bar {{ notification.priority?.toLowerCase() }}">
     <div class="container-fluid text-center" fxLayoutAlign="center center" data-cy="notification-banner">
       <div class="notification-display">
@@ -10,3 +11,4 @@
     </div>
   </div>
 </div>
+}

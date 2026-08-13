@@ -24,14 +24,13 @@ import { CwlViewerDescriptor, CwlViewerService } from './cwl-viewer.service';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
-import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-cwl-viewer',
   templateUrl: './cwl-viewer.html',
   providers: [CwlViewerService],
   styleUrls: ['./cwl-viewer.scss'],
-  imports: [NgIf, MatCardModule, MatIconModule, MatProgressBarModule],
+  imports: [MatCardModule, MatIconModule, MatProgressBarModule],
 })
 export class CwlViewerComponent implements OnInit, OnChanges, OnDestroy {
   @Input() selectedVersion: WorkflowVersion;

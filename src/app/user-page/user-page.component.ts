@@ -21,7 +21,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatLineModule } from '@angular/material/core';
 import { MatCardModule } from '@angular/material/card';
-import { NgIf, NgFor } from '@angular/common';
+
 import { MatIconModule } from '@angular/material/icon';
 import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
@@ -37,7 +37,6 @@ import { MatDividerModule } from '@angular/material/divider';
     FlexModule,
     ExtendedModule,
     MatIconModule,
-    NgIf,
     MatCardModule,
     MatLineModule,
     MatBadgeModule,
@@ -45,7 +44,6 @@ import { MatDividerModule } from '@angular/material/divider';
     MatTooltipModule,
     MatTabsModule,
     RecentEventsComponent,
-    NgFor,
     MatDividerModule,
   ],
 })

@@ -57,7 +57,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatCardModule } from '@angular/material/card';
-import { DatePipe, NgIf, NgFor, NgClass, NgSwitch, NgSwitchCase, NgSwitchDefault, AsyncPipe, TitleCasePipe } from '@angular/common';
+import { DatePipe, NgClass, AsyncPipe, TitleCasePipe } from '@angular/common';
 import { DisplayTopicComponent } from 'app/shared/entry/info-tab-topic/display-topic/display-topic.component';
 import { MatChipsModule } from '@angular/material/chips';
 import { PreviewWarningComponent } from 'app/preview-warning/preview-warning.component';
@@ -69,7 +69,6 @@ import { CategoryButtonsComponent } from 'app/categories/buttons/category-button
   templateUrl: './info-tab.component.html',
   styleUrls: ['../../shared/styles/info-tab.component.scss', './info-tab.component.css'],
   imports: [
-    NgIf,
     MatCardModule,
     MatDividerModule,
     MatTooltipModule,
@@ -82,14 +81,10 @@ import { CategoryButtonsComponent } from 'app/categories/buttons/category-button
     AiBubbleComponent,
     MatRadioModule,
     InfoTabCheckerWorkflowPathComponent,
-    NgFor,
     MatTableModule,
     ExtendedModule,
     NgClass,
     MarkdownWrapperComponent,
-    NgSwitch,
-    NgSwitchCase,
-    NgSwitchDefault,
     AsyncPipe,
     DatePipe,
     TitleCasePipe,

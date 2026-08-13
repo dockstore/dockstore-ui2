@@ -7,7 +7,6 @@ import { NotebookMimeBundleOutputComponent } from './notebook-mime-bundle-output
 import { NotebookStreamOutputComponent } from './notebook-stream-output.component';
 import { NotebookSourceComponent } from './notebook-source.component';
 import { NotebookMarkdownComponent } from './notebook-markdown.component';
-import { NgIf, NgFor } from '@angular/common';
 
 /**
  * Convert the specified notebook to user-friendly preview that represents it.
@@ -21,14 +20,7 @@ const ERROR_MESSAGE = 'The notebook could not be displayed.';
 @Component({
   selector: 'app-notebook',
   templateUrl: './notebook.component.html',
-  imports: [
-    NgIf,
-    NgFor,
-    NotebookMarkdownComponent,
-    NotebookSourceComponent,
-    NotebookStreamOutputComponent,
-    NotebookMimeBundleOutputComponent,
-  ],
+  imports: [NotebookMarkdownComponent, NotebookSourceComponent, NotebookStreamOutputComponent, NotebookMimeBundleOutputComponent],
 })
 export class NotebookComponent implements OnChanges {
   constructor(private workflowsService: WorkflowsService) {}

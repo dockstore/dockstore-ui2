@@ -3,7 +3,7 @@ import { DockstoreTool } from 'app/shared/openapi';
 import { Observable } from 'rxjs';
 import { ToolQuery } from '../../shared/tool/tool.query';
 import { OrgToolObject } from '../my-tool/my-tool.component';
-import { KeyValue, NgFor, NgIf, NgTemplateOutlet, NgClass, AsyncPipe, KeyValuePipe } from '@angular/common';
+import { KeyValue, NgTemplateOutlet, NgClass, AsyncPipe, KeyValuePipe } from '@angular/common';
 import { MetadataService } from '../../shared/openapi/api/metadata.service';
 import { WorkflowQuery } from 'app/shared/state/workflow.query';
 import { SelectTabPipe } from '../../shared/entry/select-tab.pipe';
@@ -25,8 +25,6 @@ interface GroupEntriesByRegistry {
   templateUrl: './sidebar-accordion.component.html',
   styleUrls: ['./sidebar-accordion.component.scss', '../../shared/styles/my-entry-sidebar.scss'],
   imports: [
-    NgFor,
-    NgIf,
     MatExpansionModule,
     MatTabsModule,
     NgTemplateOutlet,

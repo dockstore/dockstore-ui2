@@ -6,7 +6,7 @@ import { EventsService } from '../state/events.service';
 import { RouterLink } from '@angular/router';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatChipsModule } from '@angular/material/chips';
-import { NgFor, NgIf, AsyncPipe, DatePipe } from '@angular/common';
+import { AsyncPipe, DatePipe } from '@angular/common';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { LoadingComponent } from '../../shared/loading/loading.component';
 import { MatCardModule } from '@angular/material/card';
@@ -15,7 +15,7 @@ import { MatCardModule } from '@angular/material/card';
   selector: 'app-events',
   templateUrl: './events.component.html',
   styleUrls: ['./events.component.scss'],
-  imports: [MatCardModule, LoadingComponent, FlexModule, NgFor, MatChipsModule, MatTooltipModule, RouterLink, NgIf, AsyncPipe, DatePipe],
+  imports: [MatCardModule, LoadingComponent, FlexModule, MatChipsModule, MatTooltipModule, RouterLink, AsyncPipe, DatePipe],
 })
 export class EventsComponent implements OnInit, OnChanges {
   @Input() organizationID: number;

@@ -33,7 +33,7 @@ import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
 import { MatTabsModule } from '@angular/material/tabs';
 import { CategoryButtonComponent } from '../../categories/button/category-button.component';
 import { MatChipsModule } from '@angular/material/chips';
-import { NgIf, NgFor, AsyncPipe, SlicePipe } from '@angular/common';
+import { AsyncPipe, SlicePipe } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -68,9 +68,7 @@ export class YoutubeComponent {
     MatIconModule,
     MatFormFieldModule,
     MatInputModule,
-    NgIf,
     MatChipsModule,
-    NgFor,
     CategoryButtonComponent,
     MatTabsModule,
     ExtendedModule,

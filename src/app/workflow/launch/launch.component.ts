@@ -37,14 +37,13 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
-import { NgIf, AsyncPipe, LowerCasePipe } from '@angular/common';
+import { AsyncPipe, LowerCasePipe } from '@angular/common';
 
 @Component({
   selector: 'app-launch',
   templateUrl: './launch.component.html',
   styleUrls: ['./launch.component.css'],
   imports: [
-    NgIf,
     MatCardModule,
     MatIconModule,
     FlexModule,

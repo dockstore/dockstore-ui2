@@ -49,7 +49,7 @@ import { SidebarAccordionComponent } from '../sidebar-accordion/sidebar-accordio
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { NgIf, AsyncPipe, TitleCasePipe } from '@angular/common';
+import { AsyncPipe, TitleCasePipe } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { HeaderComponent } from '../../header/header.component';
@@ -83,7 +83,6 @@ import { MatChipsModule } from '@angular/material/chips';
     HeaderComponent,
     MatButtonModule,
     MatIconModule,
-    NgIf,
     MatSidenavModule,
     MatTooltipModule,
     MatMenuModule,

@@ -21,7 +21,7 @@ import { UserQuery } from '../../../../shared/user/user.query';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { NgIf } from '@angular/common';
+
 import { MatDividerModule } from '@angular/material/divider';
 import { AlertComponent } from '../../../../shared/alert/alert.component';
 
@@ -33,7 +33,6 @@ import { AlertComponent } from '../../../../shared/alert/alert.component';
     MatDialogModule,
     AlertComponent,
     MatDividerModule,
-    NgIf,
     FormsModule,
     ReactiveFormsModule,
     MatFormFieldModule,

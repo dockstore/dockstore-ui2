@@ -38,7 +38,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonModule } from '@angular/material/button';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
-import { NgIf, NgFor, NgClass, AsyncPipe, TitleCasePipe } from '@angular/common';
+import { NgClass, AsyncPipe, TitleCasePipe } from '@angular/common';
 import { MatChipsModule } from '@angular/material/chips';
 
 @Component({
@@ -46,13 +46,11 @@ import { MatChipsModule } from '@angular/material/chips';
   templateUrl: './organization-members.component.html',
   styleUrls: ['./organization-members.component.scss'],
   imports: [
-    NgIf,
     FlexModule,
     MatButtonModule,
     MatTooltipModule,
     MatIconModule,
     LoadingComponent,
-    NgFor,
     MatCardModule,
     RouterLink,
     NgClass,

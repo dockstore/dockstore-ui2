@@ -9,24 +9,30 @@
 
 <div class="container">
   <div fxLayout fxLayout.lt-md="column" fxLayoutAlign="center" fxLayoutGap="1rem" class="my-5">
-    <mat-card *ngIf="user" fxFlex.gt-md="25" fxFlex.lt-md="100" fxLayout="column" fxLayoutAlign="center">
+    @if (user) {
+    <mat-card fxFlex.gt-md="25" fxFlex.lt-md="100" fxLayout="column" fxLayoutAlign="center">
       <img mat-card-image [src]="user?.avatarUrl" class="mt-4 mx-auto mb-3" alt="Dockstore avatar" />
       <mat-card-content fxLayout="column" fxLayoutAlign="center center">
         <mat-card-title class="accent-1-dark small-card-title">{{ user?.username }}</mat-card-title>
         <mat-card-subtitle class="text-break" class="accent-1-dark">
-          <span *ngIf="gitHubProfile?.bio">
+          @if (gitHubProfile?.bio) {
+          <span>
             {{ gitHubProfile.bio }}
           </span>
-          <a *ngIf="gitHubProfile?.link" rel="noopener noreferrer" href="{{ gitHubProfile?.link }}" target="_blank">
+          } @if (gitHubProfile?.link) {
+          <a rel="noopener noreferrer" href="{{ gitHubProfile?.link }}" target="_blank">
             {{ gitHubProfile.link }}
           </a>
+          }
         </mat-card-subtitle>
       </mat-card-content>
     </mat-card>
+    }
 
     <div fxLayout="column" fxLayoutGap="1rem" fxFlex>
       <!-- GitHub -->
-      <mat-card *ngIf="gitHubProfile" class="h-100">
+      @if (gitHubProfile) {
+      <mat-card class="h-100">
         <mat-card-content fxLayout fxLayoutAlign="start center">
           <div mat-card-avatar matBadge="✓" class="mr-4 verified-badge">
             <img src="../../assets/images/account-logos/github.svg" alt="GitHub logo" class="w-100" />
@@ -34,16 +40,19 @@
           <mat-card-title-group fxLayoutAlign="space-between center">
             <mat-card-title class="small-card-title">GitHub Account</mat-card-title>
             <mat-card-subtitle class="accent-1-dark" fxLayout.lt-md="column" fxLayoutGap="1rem">
-              <span *ngIf="gitHubProfile.name"
+              @if (gitHubProfile.name) {
+              <span
                 >Account Name: <span>{{ gitHubProfile.name }}</span></span
               >
+              }
               <span>
                 Username:
                 <a href="https://github.com/{{ gitHubProfile.username }}" target="_blank">
                   <span>{{ gitHubProfile.username }}</span>
                 </a>
               </span>
-              <span *ngIf="loggedInUserIsAdminOrCurator">
+              @if (loggedInUserIsAdminOrCurator) {
+              <span>
                 <button
                   matTooltip="View the user's GitHub App Logs"
                   mat-stroked-button
@@ -54,12 +63,15 @@
                   Apps Logs
                 </button>
               </span>
+              }
             </mat-card-subtitle>
             <img mat-card-avatar [src]="gitHubProfile.avatarURL" alt="GitHub avatar" />
           </mat-card-title-group>
         </mat-card-content>
-        <mat-divider *ngIf="!user?.orcid && !googleProfile" class="mt-2"></mat-divider>
-        <mat-card-actions *ngIf="!user?.orcid && !googleProfile" [align]="'end'">
+        @if (!user?.orcid && !googleProfile) {
+        <mat-divider class="mt-2"></mat-divider>
+        } @if (!user?.orcid && !googleProfile) {
+        <mat-card-actions [align]="'end'">
           <a href="https://github.com/{{ gitHubProfile?.username }}" target="_blank">
             <button mat-flat-button class="private-btn">
               <mat-icon class="mat-icon-sm">open_in_new</mat-icon>
@@ -67,9 +79,12 @@
             </button>
           </a>
         </mat-card-actions>
+        }
       </mat-card>
+      }
       <!-- ORCID -->
-      <mat-card *ngIf="user?.orcid" class="h-100">
+      @if (user?.orcid) {
+      <mat-card class="h-100">
         <mat-card-content fxLayout fxLayoutAlign="start center">
           <div mat-card-avatar matBadge="✓" class="mr-4 verified-badge">
             <img src="../../assets/images/account-logos/orcid.svg" alt="ORCID logo" />
@@ -84,8 +99,10 @@
           </mat-card-title-group>
         </mat-card-content>
       </mat-card>
+      }
       <!-- Google -->
-      <mat-card *ngIf="googleProfile" class="h-100">
+      @if (googleProfile) {
+      <mat-card class="h-100">
         <mat-card-content fxLayout fxLayoutAlign="start center">
           <div mat-card-avatar matBadge="✓" class="mr-4 verified-badge">
             <img src="../../assets/images/account-logos/google.svg" alt="Google logo" class="w-100" />
@@ -99,6 +116,7 @@
           </mat-card-title-group>
         </mat-card-content>
       </mat-card>
+      }
     </div>
   </div>
   <mat-tab-group class="pb-5 purple-tab-group">
@@ -114,19 +132,22 @@
         <app-recent-events></app-recent-events>
       </div>
     </mat-tab>
-    <mat-tab *ngIf="loggedInUserIsAdminOrCurator">
+    @if (loggedInUserIsAdminOrCurator) {
+    <mat-tab>
       <ng-template mat-tab-label>
         <div fxLayoutGap="0.5rem">
           <span>Other Linked Accounts</span>
         </div>
       </ng-template>
       <div class="w-100">
-        <div *ngIf="otherLinkedAccountsInfo.length === 0">
+        @if (otherLinkedAccountsInfo.length === 0) {
+        <div>
           <mat-card appearance="outlined" class="alert alert-info" role="alert" data-cy="no-other-linked-accounts-banner">
             <mat-card-content> This user has no other linked accounts. </mat-card-content>
           </mat-card>
         </div>
-        <div *ngFor="let row of otherLinkedAccountsInfo" class="p-3" fxFlex.lt-md="100">
+        } @for (row of otherLinkedAccountsInfo; track row) {
+        <div class="p-3" fxFlex.lt-md="100">
           <mat-card [attr.data-cy]="'other-linked-accounts-' + row.name">
             <mat-card-content fxLayout fxLayoutAlign="start center">
               <div mat-card-avatar matBadge="✓" class="mr-4 verified-badge">
@@ -141,8 +162,10 @@
             </mat-card-content>
           </mat-card>
         </div>
+        }
       </div>
     </mat-tab>
+    }
     <!-- TODO: Comment back in once we have the required resources to display user specific tools, workflows etc. -->
     <!-- When commented back in, also add mat-stretch-tabs to the tab-group -->
     <!-- <mat-tab>

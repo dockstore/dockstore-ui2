@@ -1,25 +1,23 @@
-<span *ngIf="displayInitiator" [class]="displayDoi ? 'mr-2' : ''" [attr.data-cy]="doi.initiator.toLowerCase() + '-DOI-icon'">
+@if (displayInitiator) {
+<span [class]="displayDoi ? 'mr-2' : ''" [attr.data-cy]="doi.initiator.toLowerCase() + '-DOI-icon'">
+  @if (doi.initiator === DoiInitiator.DOCKSTORE) {
   <img
-    *ngIf="doi.initiator === DoiInitiator.DOCKSTORE"
     src="../../../../../assets/images/registries/DOCKSTORE.svg"
     alt="small Dockstore logo"
     matTooltip="This DOI was automatically created by Dockstore"
   />
+  } @if (doi.initiator === DoiInitiator.GITHUB) {
   <img
-    *ngIf="doi.initiator === DoiInitiator.GITHUB"
     src="../../../../../assets/images/registries/GITHUB.svg"
     alt="small GitHub logo"
     matTooltip="This DOI was created via Zenodo's integration with GitHub"
   />
-  <mat-icon
-    *ngIf="doi.initiator === DoiInitiator.USER"
-    class="primary-3"
-    matTooltip="This DOI was manually created by a user in the Dockstore UI"
-    >account_circle</mat-icon
-  >
+  } @if (doi.initiator === DoiInitiator.USER) {
+  <mat-icon class="primary-3" matTooltip="This DOI was manually created by a user in the Dockstore UI">account_circle</mat-icon>
+  }
 </span>
+} @if (displayDoi) {
 <a
-  *ngIf="displayDoi"
   [href]="'https://doi.org/' + doi.name"
   [attr.data-cy]="doi.type.toLowerCase() + '-DOI-badge'"
   matTooltip="Click to view {{
@@ -30,3 +28,4 @@
 >
   <img src="{{ zenodoUrl }}/badge/DOI/{{ doi.name }}.svg" alt="{{ doi.name }}" />
 </a>
+}

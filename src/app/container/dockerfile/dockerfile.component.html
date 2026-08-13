@@ -1,19 +1,20 @@
 <!--
-  ~    Copyright 2017 OICR
-  ~
-  ~    Licensed under the Apache License, Version 2.0 (the "License");
-  ~    you may not use this file except in compliance with the License.
-  ~    You may obtain a copy of the License at
-  ~
-  ~        http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~    Unless required by applicable law or agreed to in writing, software
-  ~    distributed under the License is distributed on an "AS IS" BASIS,
-  ~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~    See the License for the specific language governing permissions and
-  ~    limitations under the License.
-  -->
-<div *ngIf="!_selectedVersion" class="p-3">
+~    Copyright 2017 OICR
+~
+~    Licensed under the Apache License, Version 2.0 (the "License");
+~    you may not use this file except in compliance with the License.
+~    You may obtain a copy of the License at
+~
+~        http://www.apache.org/licenses/LICENSE-2.0
+~
+~    Unless required by applicable law or agreed to in writing, software
+~    distributed under the License is distributed on an "AS IS" BASIS,
+~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+~    See the License for the specific language governing permissions and
+~    limitations under the License.
+-->
+@if (!_selectedVersion) {
+<div class="p-3">
   <mat-card appearance="outlined" class="alert alert-warning" role="alert">
     <mat-card-content>
       <mat-icon class="alert-warning-icon">warning</mat-icon>
@@ -21,32 +22,35 @@
     </mat-card-content>
   </mat-card>
 </div>
-<div *ngIf="_selectedVersion" class="p-3">
-  <mat-card appearance="outlined" class="alert alert-warning" role="alert" *ngIf="!content">
+} @if (_selectedVersion) {
+<div class="p-3">
+  @if (!content) {
+  <mat-card appearance="outlined" class="alert alert-warning" role="alert">
     <mat-card-content>
       <mat-icon class="alert-warning-icon">warning</mat-icon>
       &nbsp;A Dockerfile associated with this Docker container could not be found.
     </mat-card-content>
   </mat-card>
-
-  <mat-progress-bar mode="indeterminate" *ngIf="loading; else loaded"></mat-progress-bar>
-  <ng-template #loaded>
-    <div [hidden]="!content">
-      <mat-toolbar class="files-toolbar">
-        <mat-toolbar-row>
-          <span>{{ filePath }}</span>
-          <span class="spacer"></span>
-          <div class="btn-group pull-right" role="group">
-            <a mat-icon-button color="accent" class="mr-1" type="button" title="{{ filePath }}" (click)="downloadFileContent()">
-              <mat-icon>save_alt</mat-icon>
-            </a>
-            <button mat-icon-button color="accent" type="button" [cdkCopyToClipboard]="content">
-              <mat-icon>file_copy</mat-icon>
-            </button>
-          </div>
-        </mat-toolbar-row>
-      </mat-toolbar>
-      <app-code-editor [(content)]="content" [filepath]="filePath"></app-code-editor>
-    </div>
-  </ng-template>
+  } @if (loading) {
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  } @else {
+  <div [hidden]="!content">
+    <mat-toolbar class="files-toolbar">
+      <mat-toolbar-row>
+        <span>{{ filePath }}</span>
+        <span class="spacer"></span>
+        <div class="btn-group pull-right" role="group">
+          <a mat-icon-button color="accent" class="mr-1" type="button" title="{{ filePath }}" (click)="downloadFileContent()">
+            <mat-icon>save_alt</mat-icon>
+          </a>
+          <button mat-icon-button color="accent" type="button" [cdkCopyToClipboard]="content">
+            <mat-icon>file_copy</mat-icon>
+          </button>
+        </div>
+      </mat-toolbar-row>
+    </mat-toolbar>
+    <app-code-editor [(content)]="content" [filepath]="filePath"></app-code-editor>
+  </div>
+  }
 </div>
+}

@@ -11,7 +11,7 @@ import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
-import { NgIf, NgFor, AsyncPipe, TitleCasePipe, DatePipe } from '@angular/common';
+import { AsyncPipe, TitleCasePipe, DatePipe } from '@angular/common';
 import { LoadingComponent } from '../../../shared/loading/loading.component';
 import { Dockstore } from 'app/shared/dockstore.model';
 import { CodeEditorComponent } from 'app/shared/code-editor/code-editor.component';
@@ -34,11 +34,9 @@ import { CurationService } from 'app/shared/openapi';
   styleUrls: [],
   imports: [
     LoadingComponent,
-    NgIf,
     MatCardModule,
     MatIconModule,
     MatTableModule,
-    NgFor,
     FlexModule,
     MatButtonModule,
     MatTooltipModule,

@@ -5,14 +5,14 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MarkdownWrapperComponent } from '../shared/markdown-wrapper/markdown-wrapper.component';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
-import { NgFor, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { PublicNotification } from 'app/shared/openapi';
 
 @Component({
   selector: 'app-sitewide-notifications',
   templateUrl: './sitewide-notifications.component.html',
   styleUrls: ['./sitewide-notifications.component.scss'],
-  imports: [NgFor, FlexModule, MarkdownWrapperComponent, MatButtonModule, MatIconModule, AsyncPipe],
+  imports: [FlexModule, MarkdownWrapperComponent, MatButtonModule, MatIconModule, AsyncPipe],
 })
 export class SitewideNotificationsComponent implements OnInit {
   public activeNotifications$: Observable<Array<PublicNotification>>;

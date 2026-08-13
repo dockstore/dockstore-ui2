@@ -1,36 +1,37 @@
 <!--
-  ~    Copyright 2017 OICR
-  ~
-  ~    Licensed under the Apache License, Version 2.0 (the "License");
-  ~    you may not use this file except in compliance with the License.
-  ~    You may obtain a copy of the License at
-  ~
-  ~        http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~    Unless required by applicable law or agreed to in writing, software
-  ~    distributed under the License is distributed on an "AS IS" BASIS,
-  ~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~    See the License for the specific language governing permissions and
-  ~    limitations under the License.
-  -->
-<div *ngIf="workflow">
-  <div class="row m-1" *ngIf="error || missingWarning">
-    <div class="col-md-12" *ngIf="!isWorkflowPublic">
-      <mat-card
-        appearance="outlined"
-        class="alert alert-warning"
-        ng-class="!editMode ? 'push-top' : ''"
-        role="alert"
-        *ngIf="missingWarning"
-      >
+~    Copyright 2017 OICR
+~
+~    Licensed under the Apache License, Version 2.0 (the "License");
+~    you may not use this file except in compliance with the License.
+~    You may obtain a copy of the License at
+~
+~        http://www.apache.org/licenses/LICENSE-2.0
+~
+~    Unless required by applicable law or agreed to in writing, software
+~    distributed under the License is distributed on an "AS IS" BASIS,
+~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+~    See the License for the specific language governing permissions and
+~    limitations under the License.
+-->
+@if (workflow) {
+<div>
+  @if (error || missingWarning) {
+  <div class="row m-1">
+    @if (!isWorkflowPublic) {
+    <div class="col-md-12">
+      @if (missingWarning) {
+      <mat-card appearance="outlined" class="alert alert-warning" ng-class="!editMode ? 'push-top' : ''" role="alert">
         <mat-card-content>
           <button type="button" class="close" data-dismiss="alert" ng-click="missingWarning = false">&times;</button>
           <mat-icon class="alert-warning-icon">warning</mat-icon>
         </mat-card-content>
       </mat-card>
+      }
     </div>
+    }
   </div>
-  <div class="row m-1" *ngIf="showRedirect">
+  } @if (showRedirect) {
+  <div class="row m-1">
     <div class="col-md-10 col-md-offset-1">
       <h2 class="text-center">The workflow linked to could not be found!</h2>
       <p class="text-center">
@@ -50,14 +51,16 @@
       </ul>
     </div>
   </div>
-  <div class="row m-1 mt-3 mb-0" *ngIf="workflow.archived">
+  } @if (workflow.archived) {
+  <div class="row m-1 mt-3 mb-0">
     <mat-card appearance="outlined" class="alert alert-warning m-0">
       <mat-card-content>
         This {{ workflow.entryTypeMetadata.term }} was archived on {{ workflow.dbUpdateDate | date: 'yyyy-MM-dd' }}. It is now read-only.
       </mat-card-content>
     </mat-card>
   </div>
-  <div class="row m-1 mt-3 mb-0" *ngIf="!isWorkflowPublic && workflow.mode === 'DOCKSTORE_YML' && gitHubAppInstalled === false">
+  } @if (!isWorkflowPublic && workflow.mode === 'DOCKSTORE_YML' && gitHubAppInstalled === false) {
+  <div class="row m-1 mt-3 mb-0">
     <mat-card appearance="outlined" class="alert alert-warning m-0">
       <mat-card-content>
         <mat-icon class="alert-warning-icon">warning</mat-icon> This {{ workflow.entryTypeMetadata.term }} may not be automatically updating
@@ -79,47 +82,54 @@
       </mat-card-content>
     </mat-card>
   </div>
-  <div *ngIf="workflow?.descriptorType === DescriptorTypeEnum.SMK" class="mt-3">
+  } @if (workflow?.descriptorType === DescriptorTypeEnum.SMK) {
+  <div class="mt-3">
     <app-preview-warning [featureName]="Dockstore.FEATURES.snakemakeFeatureName"></app-preview-warning>
   </div>
-  <div class="row m-1" *ngIf="!showRedirect" fxLayout.lt-sm="column" fxLayout.gt-sm="row">
+  } @if (!showRedirect) {
+  <div class="row m-1" fxLayout.lt-sm="column" fxLayout.gt-sm="row">
     <app-json-ld [json]="schema"></app-json-ld>
-
     <div fxFlex="80">
       <h3 id="workflow-path" data-cy="entry-title" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="1rem">
         <span [attr.data-cy]="entryType + '-icon'">
           <img src="../../assets/svg/{{ entryType }}-circle.svg" alt="{{ entryType }} icon" />
         </span>
         <span fxLayout.lt-sm="column" style="word-break: break-word">
-          {{ title
-          }}<span *ngIf="workflow?.workflowVersions.length > 0"
+          {{ title }}@if (workflow?.workflowVersions.length > 0) {
+          <span
             >:<span class="ds-steelblue">{{ selectedVersion?.name }}</span>
           </span>
+          }
         </span>
-        <mat-chip-set *ngIf="(extendedWorkflow$ | async)?.versionVerified" fxHide.lt-sm>
-          <a
-            mat-chip
-            *ngIf="(extendedWorkflow$ | async)?.versionVerified"
-            [href]="verifiedLink"
-            matTooltip="Verified"
-            class="workflow-background"
-          >
+        @if ((extendedWorkflow$ | async)?.versionVerified) {
+        <mat-chip-set fxHide.lt-sm>
+          @if ((extendedWorkflow$ | async)?.versionVerified) {
+          <a mat-chip [href]="verifiedLink" matTooltip="Verified" class="workflow-background">
             <mat-icon>done</mat-icon>
             <span class="ml-2">Verified</span>
           </a>
+          }
         </mat-chip-set>
+        }
       </h3>
-      <div [ngSwitch]="workflow?.topicSelection" style="font-size: 16px">
-        <span *ngSwitchCase="'MANUAL'">{{ workflow?.topicManual }}</span>
-        <span *ngSwitchCase="'AUTOMATIC'">{{ workflow?.topicAutomatic }}</span>
-        <span *ngSwitchCase="'AI'"
+      <div style="font-size: 16px">
+        @switch (workflow?.topicSelection) { @case ('MANUAL') {
+        <span>{{ workflow?.topicManual }}</span>
+        } @case ('AUTOMATIC') {
+        <span>{{ workflow?.topicAutomatic }}</span>
+        } @case ('AI') {
+        <span
           >{{ workflow?.topicAI }}
-          <mat-chip-set *ngIf="!workflow?.approvedAITopic">
+          @if (!workflow?.approvedAITopic) {
+          <mat-chip-set>
             <app-ai-bubble [isPublic]="isWorkflowPublic"></app-ai-bubble>
           </mat-chip-set>
+          }
         </span>
+        } }
       </div>
-      <div *ngIf="!publicPage && workflow.workflowVersions && workflow.workflowVersions.length > 0" class="input-group">
+      @if (!publicPage && workflow.workflowVersions && workflow.workflowVersions.length > 0) {
+      <div class="input-group">
         <mat-form-field data-cy="version-dropdown" class="my-3">
           <mat-label>Current Version</mat-label>
           <mat-select
@@ -136,26 +146,26 @@
                 noEntriesFoundLabel="No matching version found"
               ></ngx-mat-select-search>
             </mat-option>
-            <mat-option *ngFor="let version of filteredVersions | async" [value]="version">
+            @for (version of filteredVersions | async; track version) {
+            <mat-option [value]="version">
               {{ version.name }}
             </mat-option>
+            }
           </mat-select>
         </mat-form-field>
       </div>
+      }
     </div>
-
     <div fxFlex>
-      <app-starring
-        [workflow]="workflow"
-        class="pull-right starring-button"
-        *ngIf="isWorkflowPublic && workflow"
-        (starGazersChange)="starGazersChange()"
-      ></app-starring>
+      @if (isWorkflowPublic && workflow) {
+      <app-starring [workflow]="workflow" class="pull-right starring-button" (starGazersChange)="starGazersChange()"></app-starring>
+      }
     </div>
-    <div *ngIf="!publicPage">
+    @if (!publicPage) {
+    <div>
       <h3>
+        @if (showWorkflowActions) {
         <app-workflow-actions
-          *ngIf="showWorkflowActions"
           [entryType]="entryType"
           [workflow]="workflow"
           [selectedVersion]="selectedVersion"
@@ -163,21 +173,32 @@
           [canWrite]="canWrite"
           (showVersions)="selectVersionsTab()"
         ></app-workflow-actions>
+        }
       </h3>
     </div>
+    }
   </div>
-  <div class="row m-1" *ngIf="!showRedirect">
-    <div *ngIf="workflow">
-      <div *ngIf="!isWorkflowPublic" class="mt-1 mb-1 size-small">
+  } @if (!showRedirect) {
+  <div class="row m-1">
+    @if (workflow) {
+    <div>
+      @if (!isWorkflowPublic) {
+      <div class="mt-1 mb-1 size-small">
         <span class="mr-4">
           <span>Version DOI: </span>
-          <app-doi-badge *ngIf="selectedVersionDoi" [doi]="selectedVersionDoi"></app-doi-badge>
-          <span *ngIf="!selectedVersionDoi">n/a</span>
+          @if (selectedVersionDoi) {
+          <app-doi-badge [doi]="selectedVersionDoi"></app-doi-badge>
+          } @if (!selectedVersionDoi) {
+          <span>n/a</span>
+          }
         </span>
         <span>
           <span>Concept DOI: </span>
-          <app-doi-badge *ngIf="selectedConceptDoi" [doi]="selectedConceptDoi"></app-doi-badge>
-          <span *ngIf="!selectedConceptDoi">n/a</span>
+          @if (selectedConceptDoi) {
+          <app-doi-badge [doi]="selectedConceptDoi"></app-doi-badge>
+          } @if (!selectedConceptDoi) {
+          <span>n/a</span>
+          }
         </span>
         <button
           type="button"
@@ -191,21 +212,21 @@
           Manage DOIs
         </button>
       </div>
-      <span *ngIf="!labelsEditMode && !starGazersClicked" class="inline-block mt-1 mb-1">
-        <span *ngIf="workflowEditData?.labels.length > 0 || !isWorkflowPublic" class="size-small mr-2">
+      } @if (!labelsEditMode && !starGazersClicked) {
+      <span class="inline-block mt-1 mb-1">
+        @if (workflowEditData?.labels.length > 0 || !isWorkflowPublic) {
+        <span class="size-small mr-2">
           <span>Labels:{{ workflowEditData?.labels.length === 0 ? ' n/a' : '' }}</span>
         </span>
-        <mat-chip-set *ngIf="workflowEditData?.labels.length" class="mr-2">
-          <mat-chip
-            class="workflow-background pointer"
-            *ngFor="let label of workflowEditData?.labels"
-            (click)="goToSearch(label, entryType)"
-            >{{ label }}</mat-chip
-          >
+        } @if (workflowEditData?.labels.length) {
+        <mat-chip-set class="mr-2">
+          @for (label of workflowEditData?.labels; track label) {
+          <mat-chip class="workflow-background pointer" (click)="goToSearch(label, entryType)">{{ label }}</mat-chip>
+          }
         </mat-chip-set>
+        } @if (!labelsEditMode && !isWorkflowPublic) {
         <button
           type="button"
-          *ngIf="!labelsEditMode && !isWorkflowPublic"
           mat-stroked-button
           class="private-btn"
           (click)="toggleLabelsEditMode()"
@@ -214,15 +235,21 @@
           <img src="../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit labels" />
           Manage labels
         </button>
+        }
       </span>
-      <span *ngIf="labelsEditMode && !isWorkflowPublic">
+      } @if (labelsEditMode && !isWorkflowPublic) {
+      <span>
         <mat-form-field class="my-3 w-100">
           <mat-label>Labels</mat-label>
           <mat-chip-grid #chipList>
-            <mat-chip-row *ngFor="let label of workflowEditData?.labels" [removable]="true" (removed)="removeLabel(label)">
+            @for (label of workflowEditData?.labels; track label) {
+            <mat-chip-row [removable]="true" (removed)="removeLabel(label)">
               {{ label }}
-              <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
+              @if (true) {
+              <mat-icon matChipRemove>cancel</mat-icon>
+              }
             </mat-chip-row>
+            }
             <input
               data-cy="workflowLabelInput"
               placeholder="New label..."
@@ -232,42 +259,42 @@
               [matChipInputAddOnBlur]="false"
               (matChipInputTokenEnd)="addToLabels($event)"
             />
-            <mat-error *ngIf="labelFormControl.hasError('pattern')"
-              >Only comma-separated labels with alphanumeric characters and internal dashes allowed</mat-error
-            >
+            @if (labelFormControl.hasError('pattern')) {
+            <mat-error>Only comma-separated labels with alphanumeric characters and internal dashes allowed</mat-error>
+            }
           </mat-chip-grid>
         </mat-form-field>
-        <button
-          type="button"
-          (click)="cancelLabelChanges()"
-          mat-stroked-button
-          class="private-btn mr-2"
-          *ngIf="labelsEditMode && !isWorkflowPublic"
-        >
+        @if (labelsEditMode && !isWorkflowPublic) {
+        <button type="button" (click)="cancelLabelChanges()" mat-stroked-button class="private-btn mr-2">
           <img src="../assets/svg/icons-reject.svg" alt="Cancel" class="pr-1 pb-1" />
           Cancel
         </button>
+        } @if (labelsEditMode && !isWorkflowPublic) {
         <button
           data-cy="saveLabelButton"
           mat-stroked-button
           type="button"
           (click)="submitWorkflowEdits()"
           class="private-btn"
-          *ngIf="labelsEditMode && !isWorkflowPublic"
           [disabled]="labelFormControl.hasError('pattern')"
         >
           <mat-icon class="mat-icon-sm">save</mat-icon> Save
         </button>
+        }
       </span>
+      }
     </div>
+    }
   </div>
-  <div class="row ml-4 mr-4 mb-4" *ngIf="starGazersClicked">
+  } @if (starGazersClicked) {
+  <div class="row ml-4 mr-4 mb-4">
     <app-stargazers></app-stargazers>
     <button id="backButton" type="button" (click)="starGazersClicked = false" mat-flat-button color="primary">
       <mat-icon>chevron_left</mat-icon>Back to details
     </button>
   </div>
-  <div class="row m-1" *ngIf="!starGazersClicked && !showRedirect">
+  } @if (!starGazersClicked && !showRedirect) {
+  <div class="row m-1">
     <div class="col-sm-12 p-0" [ngClass]="{ 'col-md-9 col-lg-9': isWorkflowPublic }">
       <div [ngClass]="{ 'mr-3': isWorkflowPublic }">
         <mat-tab-group
@@ -292,23 +319,27 @@
               [categories]="categories$ | async"
             ></app-info-tab>
           </mat-tab>
-          <div *ngIf="entryType === EntryType.Notebook">
+          @if (entryType === EntryType.Notebook) {
+          <div>
             <mat-tab label="Preview">
               <ng-template matTabContent>
                 <div class="mt-4 ml-4 mr-4">
+                  @if (workflow && selectedVersion && (extendedWorkflow$ | async)) {
                   <app-notebook
-                    *ngIf="workflow && selectedVersion && (extendedWorkflow$ | async)"
                     [notebook]="workflow"
                     [version]="selectedVersion"
                     [baseUrl]="(extendedWorkflow$ | async).providerUrl | baseUrl: selectedVersion.name:selectedVersion.workflow_path"
                   ></app-notebook>
+                  }
                 </div>
               </ng-template>
             </mat-tab>
           </div>
-          <div *ngIf="entryType === EntryType.BioWorkflow || entryType === EntryType.Tool">
+          } @if (entryType === EntryType.BioWorkflow || entryType === EntryType.Tool) {
+          <div>
             <mat-tab label="Launch">
-              <div *ngIf="(launchSupport$ | async) === false; else launchSupported">
+              @if ((launchSupport$ | async) === false) {
+              <div>
                 <div class="p-3">
                   <mat-card appearance="outlined" class="alert alert-warning" role="alert">
                     <mat-card-content>
@@ -318,33 +349,33 @@
                   </mat-card>
                 </div>
               </div>
-              <ng-template #launchSupported>
-                <app-launch
-                  *ngIf="workflow?.workflowVersions?.length > 0; else noVersions"
-                  [workflow]="workflow"
-                  [selectedVersion]="selectedVersion"
-                  [basePath]="workflow?.path"
-                  [path]="workflow?.full_workflow_path"
-                  [canRead]="canRead"
-                  [canWrite]="canWrite"
-                  [isOwner]="isOwner"
-                  [mode]="workflow?.mode"
-                  [entryType]="entryType"
-                ></app-launch>
-              </ng-template>
-              <ng-template #noVersions>
-                <div class="p-3">
-                  <mat-card appearance="outlined" class="alert alert-warning" role="alert">
-                    <mat-card-content>
-                      <mat-icon class="alert-warning-icon">warning</mat-icon> No versions exist for this workflow.
-                    </mat-card-content>
-                  </mat-card>
-                </div>
-              </ng-template>
+              } @else { @if (workflow?.workflowVersions?.length > 0) {
+              <app-launch
+                [workflow]="workflow"
+                [selectedVersion]="selectedVersion"
+                [basePath]="workflow?.path"
+                [path]="workflow?.full_workflow_path"
+                [canRead]="canRead"
+                [canWrite]="canWrite"
+                [isOwner]="isOwner"
+                [mode]="workflow?.mode"
+                [entryType]="entryType"
+              ></app-launch>
+              } @else {
+              <div class="p-3">
+                <mat-card appearance="outlined" class="alert alert-warning" role="alert">
+                  <mat-card-content>
+                    <mat-icon class="alert-warning-icon">warning</mat-icon> No versions exist for this workflow.
+                  </mat-card-content>
+                </mat-card>
+              </div>
+              } }
             </mat-tab>
           </div>
+          }
           <mat-tab label="Versions">
-            <div *ngIf="(extendedWorkflow$ | async)?.workflowVersions.length > 0; else noVersionsVersionTab">
+            @if ((extendedWorkflow$ | async)?.workflowVersions.length > 0) {
+            <div>
               <app-versions-workflow
                 (selectedVersionChange)="onSelectedVersionChange($event)"
                 [verifiedSource]="(extendedWorkflow$ | async)?.verifiedSources"
@@ -358,71 +389,42 @@
               >
               </app-versions-workflow>
             </div>
-            <ng-template #noVersionsVersionTab>
-              <div [ngSwitch]="workflow.mode" class="p-3">
-                <mat-card appearance="outlined" *ngSwitchCase="WorkflowModel.ModeEnum.HOSTED" class="alert alert-info" role="alert">
-                  <mat-card-content>
-                    <mat-icon>info</mat-icon> To see versions, please add a new version in the Files tab.
-                  </mat-card-content>
-                </mat-card>
-                <mat-card appearance="outlined" *ngSwitchCase="WorkflowModel.ModeEnum.STUB" class="alert alert-info" role="alert">
-                  <mat-card-content> <mat-icon>info</mat-icon> To see versions, please refresh the workflow. </mat-card-content>
-                </mat-card>
-                <mat-card appearance="outlined" *ngSwitchCase="WorkflowModel.ModeEnum.DOCKSTOREYML" class="alert alert-info" role="alert">
-                  <mat-card-content>
-                    <mat-icon>info</mat-icon> This {{ entryType }} does not have any versions because there are no GitHub branches or
-                    releases/tags with a .dockstore.yml that references this {{ entryType }}. Create a valid .dockstore.yml on GitHub that
-                    references this {{ entryType }} to add a new version.
-                  </mat-card-content>
-                </mat-card>
-                <!-- This also handles FULL -->
-                <mat-card appearance="outlined" *ngSwitchDefault class="alert alert-info" role="alert">
-                  <mat-card-content> <mat-icon>info</mat-icon> This {{ entryType }} does not have any versions. </mat-card-content>
-                </mat-card>
-              </div>
-            </ng-template>
+            } @else {
+            <div class="p-3">
+              @switch (workflow.mode) { @case (WorkflowModel.ModeEnum.HOSTED) {
+              <mat-card appearance="outlined" class="alert alert-info" role="alert">
+                <mat-card-content> <mat-icon>info</mat-icon> To see versions, please add a new version in the Files tab. </mat-card-content>
+              </mat-card>
+              } @case (WorkflowModel.ModeEnum.STUB) {
+              <mat-card appearance="outlined" class="alert alert-info" role="alert">
+                <mat-card-content> <mat-icon>info</mat-icon> To see versions, please refresh the workflow. </mat-card-content>
+              </mat-card>
+              } @case (WorkflowModel.ModeEnum.DOCKSTOREYML) {
+              <mat-card appearance="outlined" class="alert alert-info" role="alert">
+                <mat-card-content>
+                  <mat-icon>info</mat-icon> This {{ entryType }} does not have any versions because there are no GitHub branches or
+                  releases/tags with a .dockstore.yml that references this {{ entryType }}. Create a valid .dockstore.yml on GitHub that
+                  references this {{ entryType }} to add a new version.
+                </mat-card-content>
+              </mat-card>
+              }
+              <!-- This also handles FULL -->
+              @default {
+              <mat-card appearance="outlined" class="alert alert-info" role="alert">
+                <mat-card-content> <mat-icon>info</mat-icon> This {{ entryType }} does not have any versions. </mat-card-content>
+              </mat-card>
+              } }
+            </div>
+            }
           </mat-tab>
           <mat-tab label="Files">
             <!-- See https://docs.google.com/spreadsheets/d/1tDsm87okoWwaeO9Ae4cc5vapWbTSbXI5eqNSWEOrUcE/edit#gid=0 for all combinations -->
             <ng-template matTabContent>
               <!-- Check if there's versions, then check workflow mode, then check descriptor type -->
-              <div *ngIf="(extendedWorkflow$ | async)?.workflowVersions.length > 0; else noVersionsFilesTab">
-                <ng-container
-                  *ngIf="workflow.mode === WorkflowModel.ModeEnum.HOSTED; then hostedComponent; else dockstoreYmlComponent"
-                ></ng-container>
-              </div>
-              <ng-template #noVersionsFilesTab>
-                <div [ngSwitch]="workflow.mode" class="p-3">
-                  <mat-card appearance="outlined" *ngSwitchCase="WorkflowModel.ModeEnum.STUB" class="alert alert-info" role="alert">
-                    <mat-card-content> <mat-icon>info</mat-icon> To see files, please refresh the {{ entryType }}. </mat-card-content>
-                  </mat-card>
-                  <div *ngSwitchCase="WorkflowModel.ModeEnum.HOSTED">
-                    <ng-container *ngTemplateOutlet="hostedComponent"></ng-container>
-                  </div>
-                  <mat-card appearance="outlined" *ngSwitchCase="WorkflowModel.ModeEnum.DOCKSTOREYML" class="alert alert-info" role="alert">
-                    <mat-card-content>
-                      <mat-icon>info</mat-icon> This {{ entryType }} does not have any versions because there are no GitHub branches or
-                      releases/tags with a .dockstore.yml that references this {{ entryType }}. Create a valid .dockstore.yml on GitHub that
-                      references this {{ entryType }} to add a new version.
-                    </mat-card-content>
-                  </mat-card>
-                  <!-- This also handles FULL -->
-                  <mat-card appearance="outlined" *ngSwitchDefault class="alert alert-info" role="alert">
-                    <mat-card-content> <mat-icon>info</mat-icon> This {{ entryType }} does not have any versions. </mat-card-content>
-                  </mat-card>
-                </div>
-              </ng-template>
-              <ng-template #dockstoreYmlComponent>
-                <app-source-file-tabs
-                  [entry]="workflow"
-                  [version]="selectedVersion"
-                  [descriptorType]="descriptorType$ | async"
-                ></app-source-file-tabs>
-              </ng-template>
-
-              <ng-template #hostedComponent>
+              @if ((extendedWorkflow$ | async)?.workflowVersions.length > 0) {
+              <div>
+                @if (workflow.mode === WorkflowModel.ModeEnum.HOSTED) { @if (currentTab === 'files') {
                 <app-workflow-file-editor
-                  *ngIf="currentTab === 'files'"
                   [entrypath]="workflow.full_workflow_path"
                   [id]="workflow?.id"
                   [versions]="validVersions"
@@ -434,27 +436,81 @@
                   [isOwner]="isOwner"
                 >
                 </app-workflow-file-editor>
+                } } @else {
+                <app-source-file-tabs
+                  [entry]="workflow"
+                  [version]="selectedVersion"
+                  [descriptorType]="descriptorType$ | async"
+                ></app-source-file-tabs>
+                }
+              </div>
+              } @else {
+              <div class="p-3">
+                @switch (workflow.mode) { @case (WorkflowModel.ModeEnum.STUB) {
+                <mat-card appearance="outlined" class="alert alert-info" role="alert">
+                  <mat-card-content> <mat-icon>info</mat-icon> To see files, please refresh the {{ entryType }}. </mat-card-content>
+                </mat-card>
+                } @case (WorkflowModel.ModeEnum.HOSTED) {
+                <div>
+                  <ng-container *ngTemplateOutlet="hostedComponent"></ng-container>
+                </div>
+                } @case (WorkflowModel.ModeEnum.DOCKSTOREYML) {
+                <mat-card appearance="outlined" class="alert alert-info" role="alert">
+                  <mat-card-content>
+                    <mat-icon>info</mat-icon> This {{ entryType }} does not have any versions because there are no GitHub branches or
+                    releases/tags with a .dockstore.yml that references this {{ entryType }}. Create a valid .dockstore.yml on GitHub that
+                    references this {{ entryType }} to add a new version.
+                  </mat-card-content>
+                </mat-card>
+                }
+                <!-- This also handles FULL -->
+                @default {
+                <mat-card appearance="outlined" class="alert alert-info" role="alert">
+                  <mat-card-content> <mat-icon>info</mat-icon> This {{ entryType }} does not have any versions. </mat-card-content>
+                </mat-card>
+                } }
+              </div>
+              }
+              <ng-template #hostedComponent>
+                @if (currentTab === 'files') {
+                <app-workflow-file-editor
+                  [entrypath]="workflow.full_workflow_path"
+                  [id]="workflow?.id"
+                  [versions]="validVersions"
+                  [default]="defaultVersion"
+                  [selectedVersion]="selectedVersion"
+                  [publicPage]="publicPage"
+                  [canRead]="canRead"
+                  [canWrite]="canWrite"
+                  [isOwner]="isOwner"
+                >
+                </app-workflow-file-editor>
+                }
               </ng-template>
             </ng-template>
           </mat-tab>
-          <div *ngIf="entryType === EntryType.BioWorkflow">
+          @if (entryType === EntryType.BioWorkflow) {
+          <div>
             <mat-tab label="Tools">
-              <div *ngIf="!isStub()">
+              @if (!isStub()) {
+              <div>
                 <app-tool-tab [selectedVersion]="selectedVersion" [canRead]="canRead" [canWrite]="canWrite" [isOwner]="isOwner">
                 </app-tool-tab>
               </div>
-              <div *ngIf="isStub()" class="p-3">
+              } @if (isStub()) {
+              <div class="p-3">
                 <mat-card appearance="outlined" class="alert alert-warning" role="alert">
                   <mat-card-content>
                     <mat-icon class="alert-warning-icon">warning</mat-icon> To see tools, please refresh the workflow.
                   </mat-card-content>
                 </mat-card>
               </div>
+              }
             </mat-tab>
             <mat-tab label="DAG">
               <ng-template matTabContent>
+                @if (selectedVersion) {
                 <app-dag
-                  *ngIf="selectedVersion"
                   [id]="workflow?.id"
                   [selectedVersion]="selectedVersion"
                   [canRead]="canRead"
@@ -462,21 +518,25 @@
                   [isOwner]="isOwner"
                 >
                 </app-dag>
-                <div *ngIf="!selectedVersion">
+                } @if (!selectedVersion) {
+                <div>
                   <mat-card appearance="outlined" class="alert alert-warning" role="alert">
                     <mat-card-content> <mat-icon class="alert-warning-icon">warning</mat-icon> No version selected. </mat-card-content>
                   </mat-card>
                 </div>
-                <div *ngIf="isStub()" class="p-3">
+                } @if (isStub()) {
+                <div class="p-3">
                   <mat-card appearance="outlined" class="alert alert-warning" role="alert">
                     <mat-card-content>
                       <mat-icon class="alert-warning-icon">warning</mat-icon> To see the DAG, please refresh the workflow.
                     </mat-card-content>
                   </mat-card>
                 </div>
+                }
               </ng-template>
             </mat-tab>
           </div>
+          }
           <mat-tab label="Metrics">
             <mat-card class="mt-3">
               <mat-expansion-panel>
@@ -489,7 +549,8 @@
                 <app-executions-tab [entry]="workflow"></app-executions-tab>
               </mat-expansion-panel>
             </mat-card>
-            <mat-card class="mt-3" *ngIf="selectedVersion">
+            @if (selectedVersion) {
+            <mat-card class="mt-3">
               <mat-expansion-panel [expanded]="true">
                 <mat-expansion-panel-header>
                   <mat-panel-title>Version Metrics</mat-panel-title>
@@ -498,38 +559,49 @@
                 <app-executions-tab [entry]="workflow" [version]="selectedVersion"></app-executions-tab>
               </mat-expansion-panel>
             </mat-card>
+            }
           </mat-tab>
-          <mat-tab *ngIf="!isPublic() && isHosted() && isOwner" id="permissionsTab" label="Permissions">
+          @if (!isPublic() && isHosted() && isOwner) {
+          <mat-tab id="permissionsTab" label="Permissions">
             <app-permissions [workflow]="workflow"></app-permissions>
           </mat-tab>
+          }
         </mat-tab-group>
       </div>
-      <div *ngIf="publicPage" class="mt-2 mr-3">
-        <div *ngIf="workflow?.topicId !== null; else noTopicId" id="discourse-comments"></div>
-        <ng-template #noTopicId>
-          <mat-card appearance="outlined" class="alert alert-warning" role="alert">
-            <mat-card-content>
-              <mat-icon class="alert-warning-icon">info</mat-icon> No Discourse topic exists for this {{ entryType }}.
-            </mat-card-content>
-          </mat-card>
-        </ng-template>
+      @if (publicPage) {
+      <div class="mt-2 mr-3">
+        @if (workflow?.topicId !== null) {
+        <div id="discourse-comments"></div>
+        } @else {
+        <mat-card appearance="outlined" class="alert alert-warning" role="alert">
+          <mat-card-content>
+            <mat-icon class="alert-warning-icon">info</mat-icon> No Discourse topic exists for this {{ entryType }}.
+          </mat-card-content>
+        </mat-card>
+        }
       </div>
+      }
     </div>
-    <div fxLayout="column" fxLayoutGap="1rem" class="p-0 col-sm-12 col-md-3 col-lg-3 ng-scope" *ngIf="isWorkflowPublic && workflow">
+    @if (isWorkflowPublic && workflow) {
+    <div fxLayout="column" fxLayoutGap="1rem" class="p-0 col-sm-12 col-md-3 col-lg-3 ng-scope">
       <app-launch-third-party [workflow]="workflow" [selectedVersion]="selectedVersion"></app-launch-third-party>
-      <mat-card *ngIf="selectedVersion && selectedConceptDoi">
+      @if (selectedVersion && selectedConceptDoi) {
+      <mat-card>
         <mat-card-header>
           <h5 matCardTitle>Cite this {{ workflow.entryTypeMetadata.term }}</h5>
         </mat-card-header>
         <mat-divider></mat-divider>
         <mat-card-content>
-          <p *ngIf="selectedVersionDoi" class="pt-2">
+          @if (selectedVersionDoi) {
+          <p class="pt-2">
             Cite version <strong>{{ selectedVersion.name }}</strong> using DOI
             <app-doi-badge [doi]="selectedVersionDoi" [displayInitiator]="false"></app-doi-badge>.
           </p>
-          <p *ngIf="!selectedVersionDoi" class="pt-2">
+          } @if (!selectedVersionDoi) {
+          <p class="pt-2">
             Version <strong>{{ selectedVersion.name }}</strong> has no DOI.
           </p>
+          }
           <p>
             Cite all versions using the DOI
             <app-doi-badge [doi]="selectedConceptDoi" [displayInitiator]="false"></app-doi-badge>. This DOI represents all versions, and
@@ -537,13 +609,15 @@
           </p>
         </mat-card-content>
       </mat-card>
+      }
       <mat-card>
         <mat-card-header>
           <h5 matCardTitle>Recent Versions</h5>
         </mat-card-header>
         <mat-divider></mat-divider>
         <mat-card-content class="pt-2">
-          <div *ngFor="let sortedVersion of sortedVersions">
+          @for (sortedVersion of sortedVersions; track sortedVersion) {
+          <div>
             <div
               fxLayout
               fxLayoutAlign="space-between"
@@ -553,28 +627,32 @@
             >
               <div>
                 <a (click)="onSelectedVersionChange(sortedVersion)" class="pointer panel-body-anchor">{{ sortedVersion.name }}</a
-                >&nbsp;
-                <mat-chip-set *ngIf="sortedVersion?.verified">
+                >&nbsp; @if (sortedVersion?.verified) {
+                <mat-chip-set>
                   <a mat-chip matTooltip="Verified" [href]="verifiedLink">
                     <mat-icon>done</mat-icon>
                   </a>
                 </mat-chip-set>
+                }
               </div>
               <small class="white-space-no-wrap">{{ sortedVersion.last_modified | date }}</small>
             </div>
             <mat-divider></mat-divider>
           </div>
+          }
           <a (click)="selectVersionsTab()" class="pointer">See all versions</a>
         </mat-card-content>
       </mat-card>
-      <mat-card *ngIf="!isStub() && !isHosted()">
+      @if (!isStub() && !isHosted()) {
+      <mat-card>
         <mat-card-header>
           <h5 matCardTitle>Source Repositories</h5>
         </mat-card-header>
         <mat-divider></mat-divider>
         <mat-card-content class="container-source-repos pt-3">
           <p>
-            <span *ngIf="(extendedWorkflow$ | async).provider">
+            @if ((extendedWorkflow$ | async).provider) {
+            <span>
               Git Repository
               <a
                 [href]="(extendedWorkflow$ | async).providerUrl"
@@ -588,13 +666,16 @@
                 {{ (extendedWorkflow$ | async).provider }}
               </a>
             </span>
+            }
           </p>
         </mat-card-content>
       </mat-card>
+      }
       <app-current-collections [id]="workflow.id" [versions]="workflow.workflowVersions"></app-current-collections>
-      <app-verified-by *ngIf="selectedVersion" [version]="selectedVersion" [verifiedByPlatform]="versionsWithVerifiedPlatforms">
-      </app-verified-by>
-      <mat-card *ngIf="workflow" class="mb-2">
+      @if (selectedVersion) {
+      <app-verified-by [version]="selectedVersion" [verifiedByPlatform]="versionsWithVerifiedPlatforms"> </app-verified-by>
+      } @if (workflow) {
+      <mat-card class="mb-2">
         <mat-card-header>
           <h5 matCardTitle>Share on</h5>
         </mat-card-header>
@@ -610,17 +691,20 @@
           </div>
         </mat-card-content>
       </mat-card>
+      }
       <!-- Re-enable the below and change to material once ga4gh/dockstore#442 is complete -->
       <!-- <div class="panel panel-default mb-3">
-      <div class="panel-heading">
-        <h3>DOI</h3>
-      </div>
-      <div class="p-3 panel-body">
-        <div class="input-group">
-
-        </div>
-      </div>
-    </div> -->
+                  <div class="panel-heading">
+                    <h3>DOI</h3>
+                  </div>
+                  <div class="p-3 panel-body">
+                    <div class="input-group">
+                    </div>
+                  </div>
+                </div> -->
     </div>
+    }
   </div>
+  }
 </div>
+}

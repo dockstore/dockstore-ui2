@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, NavigationEnd, Router, RouterOutlet } from '@angular/router';
@@ -24,7 +24,6 @@ import { TosBannerComponent } from './tosBanner/tos-banner.component';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
   imports: [
-    NgIf,
     TosBannerComponent,
     ChangeUsernameBannerComponent,
     SitewideNotificationsComponent,

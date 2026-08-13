@@ -6,14 +6,14 @@ import { MatButtonModule } from '@angular/material/button';
 import { MarkdownWrapperComponent } from '../../../shared/markdown-wrapper/markdown-wrapper.component';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { MatCardModule } from '@angular/material/card';
-import { NgFor, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { PublicNotification } from 'app/shared/openapi';
 
 @Component({
   selector: 'app-news-notifications',
   templateUrl: './news-notifications.component.html',
   styleUrls: ['./news-notifications.component.scss'],
-  imports: [NgFor, MatCardModule, FlexModule, MarkdownWrapperComponent, MatButtonModule, MatIconModule, AsyncPipe],
+  imports: [MatCardModule, FlexModule, MarkdownWrapperComponent, MatButtonModule, MatIconModule, AsyncPipe],
 })
 export class NewsNotificationsComponent implements OnInit {
   public activeNotifications$: Observable<Array<PublicNotification>>;

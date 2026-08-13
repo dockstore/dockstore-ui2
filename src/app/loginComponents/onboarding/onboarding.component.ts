@@ -13,7 +13,7 @@ import { AccountsExternalComponent } from '../accounts/external/accounts.compone
 import { MatButtonModule } from '@angular/material/button';
 import { ChangeUsernameComponent } from '../accounts/internal/change-username/change-username.component';
 import { MatStepperModule } from '@angular/material/stepper';
-import { NgIf } from '@angular/common';
+
 import { MatIconModule } from '@angular/material/icon';
 import { HeaderComponent } from '../../header/header.component';
 
@@ -24,7 +24,6 @@ import { HeaderComponent } from '../../header/header.component';
   imports: [
     HeaderComponent,
     MatIconModule,
-    NgIf,
     MatStepperModule,
     ChangeUsernameComponent,
     MatButtonModule,

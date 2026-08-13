@@ -39,7 +39,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatIconModule } from '@angular/material/icon';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { AlertComponent } from '../../shared/alert/alert.component';
 import { MatDialogModule } from '@angular/material/dialog';
 
@@ -64,13 +64,11 @@ enum OptionChoice {
   imports: [
     MatDialogModule,
     AlertComponent,
-    NgIf,
     MatProgressBarModule,
     MatStepperModule,
     MatIconModule,
     MatRadioModule,
     FormsModule,
-    NgFor,
     MatButtonModule,
     RefreshWizardComponent,
     RegisterGithubAppComponent,

@@ -37,7 +37,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MatChipsModule } from '@angular/material/chips';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { MatIconModule } from '@angular/material/icon';
-import { NgIf, NgClass, DatePipe } from '@angular/common';
+import { NgClass, DatePipe } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
@@ -48,7 +48,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatTableModule,
     MatSortModule,
     MatTooltipModule,
-    NgIf,
     MatIconModule,
     FlexModule,
     MatChipsModule,

@@ -40,7 +40,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonModule } from '@angular/material/button';
 import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
-import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { HeaderComponent } from '../../header/header.component';
 import { MatChipsModule } from '@angular/material/chips';
@@ -52,7 +52,6 @@ import { MatChipsModule } from '@angular/material/chips';
   imports: [
     HeaderComponent,
     FlexModule,
-    NgIf,
     ExtendedModule,
     MatButtonModule,
     MatTooltipModule,
@@ -63,7 +62,6 @@ import { MatChipsModule } from '@angular/material/chips';
     MatOptionModule,
     MatInputModule,
     MatIconModule,
-    NgFor,
     MatCardModule,
     RouterLink,
     ImgFallbackDirective,

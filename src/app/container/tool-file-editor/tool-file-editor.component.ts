@@ -21,7 +21,7 @@ import { ContainerService } from './../../shared/container.service';
 import { HostedService } from './../../shared/openapi/api/hosted.service';
 import { Tag } from './../../shared/openapi/model/tag';
 import { MatButtonModule } from '@angular/material/button';
-import { NgIf } from '@angular/common';
+
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -32,7 +32,7 @@ import { MatTabsModule } from '@angular/material/tabs';
   selector: 'app-tool-file-editor',
   templateUrl: './tool-file-editor.component.html',
   styleUrls: ['./tool-file-editor.component.scss'],
-  imports: [MatTabsModule, CodeEditorListComponent, MatFormFieldModule, MatSelectModule, MatOptionModule, NgIf, MatButtonModule],
+  imports: [MatTabsModule, CodeEditorListComponent, MatFormFieldModule, MatSelectModule, MatOptionModule, MatButtonModule],
 })
 export class ToolFileEditorComponent extends FileEditing {
   public EntryType = EntryType;

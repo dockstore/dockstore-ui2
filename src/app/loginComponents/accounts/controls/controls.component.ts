@@ -8,13 +8,13 @@ import { DeleteAccountDialogComponent } from './delete-account-dialog/delete-acc
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
-import { NgIf, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-controls',
   templateUrl: './controls.component.html',
   styleUrls: ['./controls.component.scss'],
-  imports: [NgIf, MatCardModule, MatIconModule, MatButtonModule, AsyncPipe],
+  imports: [MatCardModule, MatIconModule, MatButtonModule, AsyncPipe],
 })
 export class ControlsComponent implements OnInit {
   public canChangeUsername$: Observable<boolean>;

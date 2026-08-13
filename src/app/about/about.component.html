@@ -210,7 +210,7 @@
             </mat-tab>
             <!-- reserved when the paper is published -->
             <!-- <mat-tab label="AnVIL"></mat-tab>
-            <mat-tab label="PCAWG"></mat-tab> -->
+                      <mat-tab label="PCAWG"></mat-tab> -->
           </mat-tab-group>
         </div>
       </div>
@@ -235,14 +235,18 @@
           </div>
           <div fxLayout="column">
             <div fxLayout="row wrap" fxLayoutAlign="center center" fxLayoutGap="6rem" fxLayoutGap.lt-sm="4rem" fxFlex>
-              <a *ngFor="let funder of funders | slice: 0:4" [href]="funder.website" target="_blank" rel="noopener noreferrer" class="py-4">
+              @for (funder of funders | slice: 0:4; track funder) {
+              <a [href]="funder.website" target="_blank" rel="noopener noreferrer" class="py-4">
                 <img class="funders" [src]="funder.imageSource" [alt]="funder.altImageText" />
               </a>
+              }
             </div>
             <div fxLayout="row wrap" fxLayoutAlign="center center" fxLayoutGap="6rem" fxLayoutGap.lt-sm="4rem" fxFlex>
-              <a *ngFor="let funder of funders | slice: 4" [href]="funder.website" target="_blank" rel="noopener noreferrer" class="py-2">
+              @for (funder of funders | slice: 4; track funder) {
+              <a [href]="funder.website" target="_blank" rel="noopener noreferrer" class="py-2">
                 <img class="funders" [src]="funder.imageSource" [alt]="funder.altImageText" />
               </a>
+              }
             </div>
           </div>
         </div>
@@ -251,14 +255,16 @@
           <div fxLayout="column" fxHide.lt-md fxFlex="10">
             <h3>Contributors</h3>
             <!-- <span>
-              Meet the Team
-              <mat-icon>keyboard_arrow_right</mat-icon>
-            </span> -->
+                      Meet the Team
+                      <mat-icon>keyboard_arrow_right</mat-icon>
+                    </span> -->
           </div>
           <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="4rem" fxFlex>
-            <a *ngFor="let contributor of contributors" [href]="contributor.url" target="_blank" rel="noopener noreferrer" class="py-2">
+            @for (contributor of contributors; track contributor) {
+            <a [href]="contributor.url" target="_blank" rel="noopener noreferrer" class="py-2">
               <img class="contributors" [src]="contributor.current" [alt]="contributor.name" />
             </a>
+            }
           </div>
         </div>
         <hr />
@@ -267,9 +273,11 @@
             <h3 class="text-break">Integration Partners</h3>
           </div>
           <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="4rem" fxFlex>
-            <a *ngFor="let partner of partners" [href]="partner.url" target="_blank" rel="noopener noreferrer">
+            @for (partner of partners; track partner) {
+            <a [href]="partner.url" target="_blank" rel="noopener noreferrer">
               <img class="contributors" [src]="partner.current" [alt]="partner.name" />
             </a>
+            }
           </div>
         </div>
       </div>

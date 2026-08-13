@@ -1,18 +1,18 @@
 <!--
-  ~    Copyright 2023 OICR
-  ~
-  ~    Licensed under the Apache License, Version 2.0 (the "License");
-  ~    you may not use this file except in compliance with the License.
-  ~    You may obtain a copy of the License at
-  ~
-  ~        http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~    Unless required by applicable law or agreed to in writing, software
-  ~    distributed under the License is distributed on an "AS IS" BASIS,
-  ~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~    See the License for the specific language governing permissions and
-  ~    limitations under the License.
-  -->
+~    Copyright 2023 OICR
+~
+~    Licensed under the Apache License, Version 2.0 (the "License");
+~    you may not use this file except in compliance with the License.
+~    You may obtain a copy of the License at
+~
+~        http://www.apache.org/licenses/LICENSE-2.0
+~
+~    Unless required by applicable law or agreed to in writing, software
+~    distributed under the License is distributed on an "AS IS" BASIS,
+~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+~    See the License for the specific language governing permissions and
+~    limitations under the License.
+-->
 
 <div fxLayout="column" fxLayoutGap="0rem" class="mb-5">
   <app-json-ld [json]="orgSchema"></app-json-ld>
@@ -49,39 +49,42 @@
           <mat-form-field class="w-100 white-background">
             <mat-icon class="search-icon" matPrefix>search</mat-icon>
             <input #search matInput id="searchBar" placeholder="Search..." (keyup.enter)="goToSearch(search.value)" />
-            <button *ngIf="search.value" matSuffix mat-icon-button (click)="search.value = ''">
+            @if (search.value) {
+            <button matSuffix mat-icon-button (click)="search.value = ''">
               <mat-icon>close</mat-icon>
             </button>
+            }
           </mat-form-field>
         </div>
       </div>
     </div>
   </div>
-  <div *ngIf="(toolCategories$ | async).length + (workflowCategories$ | async).length > 0" class="categories">
+  @if ((toolCategories$ | async).length + (workflowCategories$ | async).length > 0) {
+  <div class="categories">
     <div class="container">
       <span>Browse popular categories</span>
-      <div *ngIf="(workflowCategories$ | async).length > 0" class="inline-block">
+      @if ((workflowCategories$ | async).length > 0) {
+      <div class="inline-block">
         <img src="../../../assets/svg/sub-nav/workflow.svg" class="ml-4 mr-2" alt="workflow icon" />
         <mat-chip-set>
-          <app-category-button
-            *ngFor="let category of workflowCategories$ | async | slice: 0:4"
-            [category]="category"
-            entryType="workflow"
-          ></app-category-button>
+          @for (category of workflowCategories$ | async | slice: 0:4; track category) {
+          <app-category-button [category]="category" entryType="workflow"></app-category-button>
+          }
         </mat-chip-set>
       </div>
-      <div *ngIf="(toolCategories$ | async).length > 0" class="inline-block">
+      } @if ((toolCategories$ | async).length > 0) {
+      <div class="inline-block">
         <img src="../../../assets/svg/sub-nav/tool.svg" class="ml-3 mr-2" alt="tool icon" />
         <mat-chip-set>
-          <app-category-button
-            *ngFor="let category of toolCategories$ | async | slice: 0:4"
-            [category]="category"
-            entryType="tool"
-          ></app-category-button>
+          @for (category of toolCategories$ | async | slice: 0:4; track category) {
+          <app-category-button [category]="category" entryType="tool"></app-category-button>
+          }
         </mat-chip-set>
       </div>
+      }
     </div>
   </div>
+  }
   <div fxLayout="column" fxLayoutGap="5rem" class="mt-5">
     <div class="container">
       <mat-tab-group mat-align-tabs="center" class="purple-tab-group">
@@ -169,15 +172,15 @@
             </div>
             <div fxFlex>
               <pre>
-                <span class="code primary-3">## Make a runtime JSON template and fill in desired inputs, outputs, and</span>
-                <span class="code primary-3">## other parameters</span>
-                <span class="code"><span style="color: #3f51b5">dockstore</span> <span style="color: #0277bd">workflow convert entry2json --entry </span><span class="warn-1">github.com/dockstore/bcc2020-training/HelloWorld:master > Dockstore.json</span></span>
-                <span class="code"><span style="color: #3f51b5">vim</span> <span class="warn-1">Dockstore.json</span></span>
-                <span class="code primary-3">## or grab one that the workflow author has provided (if applicable)</span>
-                <span class="code"><span style="color: #3f51b5">wget --header=</span><span style="color: #0277bd">'Accept: text/plain' </span><span class="warn-1">https://dockstore.org/api/api/ga4gh/v2/tools/%23workflow%2Fgithub.com%2Fdockstore%2Fbcc2020-training%2FHelloWorld/versions/master/PLAIN_WDL/descriptor/..%2F..%2Ftest.json -O Dockstore.json</span></span>
-                <span class="code primary-3">## Run locally with the Dockstore CLI</span>
-                <span class="code"><span style="color: #3f51b5">dockstore</span> <span style="color: #0277bd">workflow launch --entry </span><span class="warn-1">github.com/dockstore/bcc2020-training/HelloWorld:master --json Dockstore.json</span></span>
-              </pre>
+                              <span class="code primary-3">## Make a runtime JSON template and fill in desired inputs, outputs, and</span>
+                              <span class="code primary-3">## other parameters</span>
+                              <span class="code"><span style="color: #3f51b5">dockstore</span> <span style="color: #0277bd">workflow convert entry2json --entry </span><span class="warn-1">github.com/dockstore/bcc2020-training/HelloWorld:master > Dockstore.json</span></span>
+                              <span class="code"><span style="color: #3f51b5">vim</span> <span class="warn-1">Dockstore.json</span></span>
+                              <span class="code primary-3">## or grab one that the workflow author has provided (if applicable)</span>
+                              <span class="code"><span style="color: #3f51b5">wget --header=</span><span style="color: #0277bd">'Accept: text/plain' </span><span class="warn-1">https://dockstore.org/api/api/ga4gh/v2/tools/%23workflow%2Fgithub.com%2Fdockstore%2Fbcc2020-training%2FHelloWorld/versions/master/PLAIN_WDL/descriptor/..%2F..%2Ftest.json -O Dockstore.json</span></span>
+                              <span class="code primary-3">## Run locally with the Dockstore CLI</span>
+                              <span class="code"><span style="color: #3f51b5">dockstore</span> <span style="color: #0277bd">workflow launch --entry </span><span class="warn-1">github.com/dockstore/bcc2020-training/HelloWorld:master --json Dockstore.json</span></span>
+                            </pre>
             </div>
           </div>
         </mat-tab>
@@ -219,9 +222,11 @@
               <a target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/watch?v=shMr_Bd01Ko"
                 ><button mat-raised-button color="accent">Tutorial</button></a
               >
-              <button *ngIf="(user$ | async) === null" mat-raised-button color="accent" routerLink="/register" data-cy="register-button">
+              @if ((user$ | async) === null) {
+              <button mat-raised-button color="accent" routerLink="/register" data-cy="register-button">
                 Register with <fa-icon [icon]="faGithub"></fa-icon> or <fa-icon [icon]="faGoogle"></fa-icon>
               </button>
+              }
             </div>
           </div>
         </div>

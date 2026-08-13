@@ -1,4 +1,3 @@
-import { NgIf } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
@@ -8,7 +7,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 @Component({
   selector: 'app-preview-warning',
   templateUrl: './preview-warning.component.html',
-  imports: [MatCardModule, MatIconModule, MatChipsModule, MatTooltipModule, NgIf],
+  imports: [MatCardModule, MatIconModule, MatChipsModule, MatTooltipModule],
 })
 export class PreviewWarningComponent implements OnInit {
   @Input() featureName: string;
