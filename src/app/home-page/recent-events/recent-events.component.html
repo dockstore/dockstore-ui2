@@ -1,7 +1,8 @@
+<!-- eslint-disable @angular-eslint/template/prefer-control-flow -->
 <app-loading [loading]="loading$ | async">
   <div *ngIf="events?.length > 0 || isLoading; else noEvents">
     <div
-      *ngFor="let event of events | slice: 0:displayLimit"
+      *ngFor="let event of events | slice : 0 : displayLimit"
       class="size-small widget-list-items event"
       fxLayout
       fxLayoutAlign="space-between center"
@@ -34,12 +35,12 @@
             </span>
             <!-- Entries -->
             <span *ngSwitchCase="EventType.PUBLISHENTRY">
-              published the {{ event | recentEvents: 'entryType' }}
-              <a [routerLink]="event | recentEvents: 'entryLink'">{{ event | recentEvents: 'displayName' }}</a>
+              published the {{ event | recentEvents : 'entryType' }}
+              <a [routerLink]="event | recentEvents : 'entryLink'">{{ event | recentEvents : 'displayName' }}</a>
             </span>
             <span *ngSwitchCase="EventType.UNPUBLISHENTRY">
               <!-- Do not link to an entry that doesn't exist - 404 -->
-              unpublished the {{ event | recentEvents: 'entryType' }} <strong>{{ event | recentEvents: 'displayName' }}</strong>
+              unpublished the {{ event | recentEvents : 'entryType' }} <strong>{{ event | recentEvents : 'displayName' }}</strong>
             </span>
             <span *ngSwitchCase="EventType.ADDVERSIONTOENTRY">
               created
@@ -47,73 +48,73 @@
                 >the {{ event.version.referenceType | lowercase }} <strong>{{ event.version.name }}</strong></span
               >
               <span *ngIf="!event.version">a tag</span>
-              in {{ event | recentEvents: 'entryType' }}
-              <a [routerLink]="event | recentEvents: 'entryLink'">{{ event | recentEvents: 'displayName' }}</a>
+              in {{ event | recentEvents : 'entryType' }}
+              <a [routerLink]="event | recentEvents : 'entryLink'">{{ event | recentEvents : 'displayName' }}</a>
             </span>
             <!-- Organizations -->
             <span *ngSwitchCase="EventType.CREATEORG">
               created the organization
-              <a [routerLink]="event | recentEvents: 'orgLink'">{{ event.organization?.displayName }}</a>
+              <a [routerLink]="event | recentEvents : 'orgLink'">{{ event.organization?.displayName }}</a>
             </span>
             <span *ngSwitchCase="EventType.APPROVEORG">
               The organization
-              <a [routerLink]="event | recentEvents: 'orgLink'">{{ event.organization?.displayName }}</a>
+              <a [routerLink]="event | recentEvents : 'orgLink'">{{ event.organization?.displayName }}</a>
               was approved.
             </span>
             <span *ngSwitchCase="EventType.REJECTORG">
               The organization
-              <a [routerLink]="event | recentEvents: 'orgLink'">{{ event.organization?.displayName }}</a>
+              <a [routerLink]="event | recentEvents : 'orgLink'">{{ event.organization?.displayName }}</a>
               was rejected.
             </span>
             <span *ngSwitchCase="EventType.REREQUESTORG">
               The organization
-              <a [routerLink]="event | recentEvents: 'orgLink'">{{ event.organization?.displayName }}</a>
+              <a [routerLink]="event | recentEvents : 'orgLink'">{{ event.organization?.displayName }}</a>
               was re-requested for review.
             </span>
             <span *ngSwitchCase="EventType.ADDUSERTOORG">
               added <a [routerLink]="'/users/' + event.user?.username">{{ event.user?.username }}</a> to the organization
-              <a [routerLink]="event | recentEvents: 'orgLink'">{{ event.organization?.displayName }}</a>
+              <a [routerLink]="event | recentEvents : 'orgLink'">{{ event.organization?.displayName }}</a>
             </span>
             <span *ngSwitchCase="EventType.APPROVEORGINVITE">
               joined the organization
-              <a [routerLink]="event | recentEvents: 'orgLink'">{{ event.organization?.displayName }}</a>
+              <a [routerLink]="event | recentEvents : 'orgLink'">{{ event.organization?.displayName }}</a>
             </span>
             <span *ngSwitchCase="EventType.MODIFYORG">
               updated the organization
-              <a [routerLink]="event | recentEvents: 'orgLink'">{{ event.organization?.displayName }}</a>
+              <a [routerLink]="event | recentEvents : 'orgLink'">{{ event.organization?.displayName }}</a>
             </span>
             <!-- Collections -->
             <span *ngSwitchCase="EventType.CREATECOLLECTION">
               created the collection
-              <a [routerLink]="event | recentEvents: 'collectionLink'">{{ event.collection?.displayName }}</a>
+              <a [routerLink]="event | recentEvents : 'collectionLink'">{{ event.collection?.displayName }}</a>
               in organization
-              <a [routerLink]="event | recentEvents: 'orgLink'">{{ event.organization?.displayName }}</a>
+              <a [routerLink]="event | recentEvents : 'orgLink'">{{ event.organization?.displayName }}</a>
             </span>
             <span *ngSwitchCase="EventType.DELETECOLLECTION">
               <!-- Do not link to a collection that doesn't exist - 404 -->
               removed the collection <strong>{{ event.collection?.displayName }}</strong> in organization
-              <a [routerLink]="event | recentEvents: 'orgLink'">{{ event.organization?.displayName }}</a>
+              <a [routerLink]="event | recentEvents : 'orgLink'">{{ event.organization?.displayName }}</a>
             </span>
             <span *ngSwitchCase="EventType.ADDTOCOLLECTION">
-              added the {{ event | recentEvents: 'entryType' }}
-              <a [routerLink]="event | recentEvents: 'entryLink'">{{ event | recentEvents: 'displayName' }}</a>
+              added the {{ event | recentEvents : 'entryType' }}
+              <a [routerLink]="event | recentEvents : 'entryLink'">{{ event | recentEvents : 'displayName' }}</a>
               to the collection
-              <a [routerLink]="event | recentEvents: 'collectionLink'">{{ event.collection?.displayName }}</a>
+              <a [routerLink]="event | recentEvents : 'collectionLink'">{{ event.collection?.displayName }}</a>
               in organization
-              <a [routerLink]="event | recentEvents: 'orgLink'">{{ event.organization?.displayName }}</a>
+              <a [routerLink]="event | recentEvents : 'orgLink'">{{ event.organization?.displayName }}</a>
             </span>
             <span *ngSwitchCase="EventType.MODIFYCOLLECTION">
               edited the collection
-              <a [routerLink]="event | recentEvents: 'collectionLink'">{{ event.collection?.displayName }}</a>
+              <a [routerLink]="event | recentEvents : 'collectionLink'">{{ event.collection?.displayName }}</a>
             </span>
             <span *ngSwitchCase="EventType.REMOVEFROMCOLLECTION">
-              removed the {{ event | recentEvents: 'entryType' }}
-              <a [routerLink]="event | recentEvents: 'entryLink'">{{ event | recentEvents: 'displayName' }}</a>
+              removed the {{ event | recentEvents : 'entryType' }}
+              <a [routerLink]="event | recentEvents : 'entryLink'">{{ event | recentEvents : 'displayName' }}</a>
               from the collection
-              <a [routerLink]="event | recentEvents: 'collectionLink'">{{ event.collection?.displayName }}</a>
+              <a [routerLink]="event | recentEvents : 'collectionLink'">{{ event.collection?.displayName }}</a>
             </span>
           </div>
-          <div class="subtitle">{{ event.dbCreateDate | date: 'medium' }}</div>
+          <div class="subtitle">{{ event.dbCreateDate | date : 'medium' }}</div>
         </div>
       </div>
       <div
@@ -122,24 +123,24 @@
           else orgImg
         "
       >
-        <a *ngIf="event.type !== EventType.UNPUBLISHENTRY; else noLink" [routerLink]="event | recentEvents: 'entryLink'">
+        <a *ngIf="event.type !== EventType.UNPUBLISHENTRY; else noLink" [routerLink]="event | recentEvents : 'entryLink'">
           <img
-            src="../../../assets/svg/sub-nav/{{ event | recentEvents: 'entryType' }}.svg"
+            src="../../../assets/svg/sub-nav/{{ event | recentEvents : 'entryType' }}.svg"
             class="site-icons-medium mx-3"
-            alt="{{ event | recentEvents: 'entryType' }} icon"
+            alt="{{ event | recentEvents : 'entryType' }} icon"
           />
         </a>
         <!-- Do not link to an entry that doesn't exist - 404 -->
         <ng-template #noLink>
           <img
-            src="../../../assets/svg/sub-nav/{{ event | recentEvents: 'entryType' }}.svg"
+            src="../../../assets/svg/sub-nav/{{ event | recentEvents : 'entryType' }}.svg"
             class="site-icons-medium mx-3"
-            alt="{{ event | recentEvents: 'entryType' }} icon"
+            alt="{{ event | recentEvents : 'entryType' }} icon"
           />
         </ng-template>
       </div>
       <ng-template #orgImg>
-        <a *ngIf="event.organization?.avatarUrl; else orgIcon" [routerLink]="event | recentEvents: 'orgLink'">
+        <a *ngIf="event.organization?.avatarUrl; else orgIcon" [routerLink]="event | recentEvents : 'orgLink'">
           <img
             class="entry-img p-2"
             [src]="event.organization.avatarUrl | gravatar"
@@ -148,7 +149,7 @@
           />
         </a>
         <ng-template #orgIcon>
-          <a [routerLink]="event | recentEvents: 'orgLink'">
+          <a [routerLink]="event | recentEvents : 'orgLink'">
             <img src="../../../assets/svg/sub-nav/organization.svg" class="site-icons-medium mx-3" alt="Org icon" />
           </a>
         </ng-template>
