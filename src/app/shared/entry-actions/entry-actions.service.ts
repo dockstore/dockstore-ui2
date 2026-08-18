@@ -12,6 +12,7 @@ import { InformationDialogData } from '../../information-dialog/information-dial
 import { InformationDialogService } from '../../information-dialog/information-dialog.service';
 import { ArchiveEntryDialogComponent } from '../../entry/archive/dialog/archive-entry-dialog.component';
 import { bootstrap4mediumModalSize, bootstrap4largeModalSize } from '../../shared/constants';
+import DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
 
 @Injectable()
 export class EntryActionsService {
@@ -95,6 +96,14 @@ export class EntryActionsService {
     }
   }
 
+  private isWorkflow(entry: Entry): entry is Workflow {
+    return entry.entryType === OpenApiEntryType.WORKFLOW;
+  }
+
+  private isTool(entry: Entry): entry is DockstoreTool {
+    return entry.entryType === OpenApiEntryType.TOOL || entry.entryType === OpenApiEntryType.APPTOOL;
+  }
+
   private isEntryValid(entry: Entry | null): boolean {
     if (!entry) {
       return false;
@@ -105,6 +114,20 @@ export class EntryActionsService {
     const versionTags = entry.workflowVersions;
     if (!versionTags) {
       return false;
+    }
+    // WDL 1.1 special case (version is not blank and doesn't start with draft and is 1.1 or higher)
+    if (this.isWorkflow(entry) || this.isTool(entry)) {
+      if (
+        entry.descriptorType === DescriptorTypeEnum.WDL &&
+        entry.workflowVersions.some((version) => {
+          if (version.versionMetadata?.descriptorTypeVersions) {
+            return version.versionMetadata.descriptorTypeVersions.some((dtv) => dtv && !dtv.startsWith('draft') && !dtv.startsWith('1.0'));
+          }
+          return false;
+        })
+      ) {
+        return true;
+      }
     }
     return versionTags.some((version) => version.valid);
   }
