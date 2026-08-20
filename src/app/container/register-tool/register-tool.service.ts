@@ -318,7 +318,7 @@ export class RegisterToolService {
 
   friendlyRepositoryKeys(): Array<string> {
     if (this.sourceControlMap) {
-      return this.sourceControlMap.map((a) => a.friendlyName);
+      return this.sourceControlMap.filter((a) => a.value !== 'bitbucket.org').map((a) => a.friendlyName);
     }
   }
 }
