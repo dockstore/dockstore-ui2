@@ -29,15 +29,8 @@
     <mat-form-field class="mb-3">
       <mat-label class="dropdown-display"> {{ searchMode }} </mat-label>
       <mat-select data-cy="dropdown">
-        @if (searchMode !== 'description') {
-        <a>
-          <mat-option data-cy="desc_select" class="dropdown-item" (click)="switchSearchMode('description')">description</mat-option>
-        </a>
-        } @if (searchMode !== 'files') {
-        <a>
-          <mat-option data-cy="file_select" class="dropdown-item" (click)="switchSearchMode('files')">files</mat-option>
-        </a>
-        }
+        <mat-option data-cy="desc_select" class="dropdown-item" (click)="switchSearchMode('description')">description</mat-option>
+        <mat-option data-cy="file_select" class="dropdown-item" (click)="switchSearchMode('files')">files</mat-option>
       </mat-select>
     </mat-form-field>
     that @if (searchMode === 'description') {
