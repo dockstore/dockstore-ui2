@@ -87,7 +87,7 @@ describe('Dropdown test', () => {
       cy.get('#dropdown-accounts').click();
     });
 
-    it('Should show all accounts as linked (except GitLab and Bitbucket)', () => {
+    it('Should show all accounts as linked (except GitLab)', () => {
       everythingOk();
     });
     setTokenUserViewPort();
@@ -368,7 +368,6 @@ describe('Dropdown test', () => {
   const everythingOk = () => {
     cy.get('#unlink-GitHub').should('be.visible');
     cy.get('#unlink-Quay').should('be.visible');
-    cy.get('#link-Bitbucket').should('be.visible');
     cy.get('#link-GitLab').should('be.visible');
   };
 
@@ -390,7 +389,7 @@ describe('Dropdown test', () => {
       cy.get('#updateUsername').should('be.disabled');
     });
 
-    it('Should show all accounts as linked (except GitLab and Bitbucket)', () => {
+    it('Should show all accounts as linked (except GitLab)', () => {
       // everythingOk();
       // goToAccountsOnboarding();
       // cy.visit( '/auth/gitlab.com?code=somefakeid', {'failOnStatusCode': false}).then((resp) => {
@@ -402,10 +401,6 @@ describe('Dropdown test', () => {
 
       goToAccountsOnboarding();
       everythingOk();
-      goToAccountsOnboarding();
-      cy.visit('/auth/bitbucket.org?code=somefakeid', { failOnStatusCode: false }).then((resp) => {
-        expect(resp.status).to.eq('');
-      });
       goToAccountsOnboarding();
       everythingOk();
       goToAccountsOnboarding();
