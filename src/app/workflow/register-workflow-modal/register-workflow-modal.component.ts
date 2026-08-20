@@ -111,12 +111,12 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
   private baseOptions = [
     {
       label: 'Quickly register remote workflows',
-      extendedLabel: 'Toggle repositories from GitHub, Bitbucket, and GitLab to quickly create workflows on Dockstore.',
+      extendedLabel: 'Toggle repositories from GitHub and GitLab to quickly create workflows on Dockstore.',
       value: 1,
     },
     {
       label: 'Register custom remote workflows',
-      extendedLabel: 'Manually add individual workflows at custom file paths from repositories on GitHub, Bitbucket, and GitLab.',
+      extendedLabel: 'Manually add individual workflows at custom file paths from repositories on GitHub and GitLab.',
       value: 2,
     },
     {
@@ -153,7 +153,7 @@ export class RegisterWorkflowModalComponent implements OnInit, AfterViewChecked,
   ) {}
 
   friendlyRepositoryKeys(): Array<string> {
-    return this.registerWorkflowModalService.friendlyRepositoryKeys().filter((key) => key !== 'Dockstore');
+    return this.registerWorkflowModalService.friendlyRepositoryKeys().filter((key) => key !== 'Dockstore' && key !== 'BitBucket');
   }
 
   clearWorkflowRegisterError(): void {
