@@ -91,7 +91,7 @@ export class AccountsExternalComponent implements OnInit, OnDestroy {
   public TokenSource = TokenSource;
   public username$: Observable<string>;
   Dockstore = Dockstore;
-  accountsInfo: Array<AccountInfo> = accountInfo;
+  accountsInfo: Array<AccountInfo> = accountInfo.filter((item) => item.name !== 'Bitbucket');
 
   public tokens: TokenUser[];
   private ngUnsubscribe: Subject<{}> = new Subject();
