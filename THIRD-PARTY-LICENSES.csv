@@ -114,7 +114,7 @@
 "lodash.isobject@3.0.2","MIT","https://github.com/lodash/lodash"
 "lodash.isplainobject@4.0.6","MIT","https://github.com/lodash/lodash"
 "lodash.merge@4.6.2","MIT","https://github.com/lodash/lodash"
-"lodash.unset@4.5.2","MIT","https://github.com/lodash/lodash"
+"lodash.unset@4.18.0","MIT","https://github.com/lodash/lodash"
 "lodash@4.18.1","MIT","https://github.com/lodash/lodash"
 "lru-cache@5.1.1","ISC","https://github.com/isaacs/node-lru-cache"
 "magic-string@0.25.3","MIT","https://github.com/rich-harris/magic-string"
