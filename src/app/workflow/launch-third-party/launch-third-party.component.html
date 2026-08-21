@@ -1,12 +1,7 @@
-<mat-card
-  *ngIf="
-    workflow?.descriptorType === WorkflowModel.DescriptorTypeEnum.WDL ||
-    workflow?.descriptorType === WorkflowModel.DescriptorTypeEnum.CWL ||
-    workflow.descriptorType === WorkflowModel.DescriptorTypeEnum.NFL ||
-    workflow.descriptorType === WorkflowModel.DescriptorTypeEnum.Gxformat2 ||
-    workflow.descriptorType === WorkflowModel.DescriptorTypeEnum.Jupyter
-  "
->
+@if ( workflow?.descriptorType === WorkflowModel.DescriptorTypeEnum.WDL || workflow?.descriptorType === WorkflowModel.DescriptorTypeEnum.CWL
+|| workflow.descriptorType === WorkflowModel.DescriptorTypeEnum.NFL || workflow.descriptorType ===
+WorkflowModel.DescriptorTypeEnum.Gxformat2 || workflow.descriptorType === WorkflowModel.DescriptorTypeEnum.Jupyter ) {
+<mat-card>
   <mat-card-header>
     <h5 matCardTitle>Launch with</h5>
   </mat-card-header>
@@ -14,13 +9,10 @@
   <mat-card-content>
     <div class="container-source-repos">
       <div class="container-launch-with">
-        <div *ngIf="workflow?.descriptorType === WorkflowModel.DescriptorTypeEnum.WDL">
-          <div
-            *ngIf="config.FEATURES.enableMultiCloudLaunchWithDNAstack; else oldWdlLaunch"
-            fxLayout="column"
-            fxLayoutAlign="space-between center"
-            fxLayoutGap="0.625rem"
-          >
+        @if (workflow?.descriptorType === WorkflowModel.DescriptorTypeEnum.WDL) {
+        <div>
+          @if (config.FEATURES.enableMultiCloudLaunchWithDNAstack) {
+          <div fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="0.625rem">
             <app-multi-cloud-launch
               [cloudInstances]="cloudInstances"
               [usersCloudInstances]="usersCloudInstances"
@@ -102,90 +94,86 @@
               ><span>NHLBI BioData Catalyst®</span></a
             >
           </div>
-          <ng-template #oldWdlLaunch>
-            <div fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="0.625rem">
-              <!--              Commenting out as part of https://ucsc-cgl.atlassian.net/browse/SEAB-3800. We can keep this around in case DNAStack spins up another instance.-->
-              <!--              <a-->
-              <!--                mat-raised-button-->
-              <!--                class="old-launch-with-button"-->
-              <!--                [matTooltip]="!(hasContent$ | async) ? 'The WDL workflow has no content.' : ''"-->
-              <!--                target="_blank"-->
-              <!--                rel="noopener"-->
-              <!--                [attr.href]="config.DNASTACK_IMPORT_URL + '?descriptorType=wdl&path=' + workflowPathAsQueryValue"-->
-              <!--                [disabled]="!(hasContent$ | async) === false"-->
-              <!--                color="primary"-->
-              <!--                data-cy="dnastackLaunchWith"-->
-              <!--              ><img class="partner-icon" src="../assets/images/thirdparty/dnastack.png" alt="DNAstack icon" /> DNAstack &raquo;</a-->
-              <!--              >-->
-              <a
-                mat-stroked-button
-                class="launch-with-button"
-                [matTooltip]="(hasContent$ | async) ? '' : 'The WDL workflow has no content.'"
-                matTooltipPosition="left"
-                target="_blank"
-                rel="noopener"
-                [attr.href]="config.DNANEXUS_IMPORT_URL + '?source=' + trsUrl"
-                [disabled]="(hasContent$ | async) === false"
-                data-cy="dnanexusLaunchWith"
-                ><img class="partner-launch" src="../assets/images/thirdparty/dnanexus.png" alt="DNAnexus launch with logo"
-              /></a>
-              <a
-                mat-stroked-button
-                class="launch-with-button"
-                [matTooltip]="terraTooltip$ | async"
-                matTooltipPosition="left"
-                target="_blank"
-                rel="noopener"
-                [disabled]="disableTerraPlatform$ | async"
-                [attr.href]="config.TERRA_IMPORT_URL + '/' + workflow?.full_workflow_path + ':' + selectedVersion?.name"
-                data-cy="terraLaunchWith"
-                ><img class="partner-icon mr-2" src="../assets/images/thirdparty/terra.png" alt="Terra launch with logo" />Terra</a
-              >
-              <a
-                mat-stroked-button
-                class="launch-with-button"
-                [matTooltip]="elwaziToolTip$ | async"
-                matTooltipPosition="left"
-                target="_blank"
-                rel="noopener"
-                [disabled]="disableTerraPlatform$ | async"
-                [attr.href]="config.ELWAZI_IMPORT_URL + '/' + workflow?.full_workflow_path + ':' + selectedVersion?.name"
-                data-cy="elwaziLaunchWith"
-                ><img class="partner-launch" src="../assets/images/thirdparty/elwazi.png" alt="eLwazi launch with logo"
-              /></a>
-              <a
-                mat-stroked-button
-                class="launch-with-button"
-                [matTooltip]="anvilTooltip$ | async"
-                matTooltipPosition="left"
-                target="_blank"
-                rel="noopener"
-                [disabled]="disableTerraPlatform$ | async"
-                [attr.href]="config.ANVIL_IMPORT_URL + '/' + workflow?.full_workflow_path + ':' + selectedVersion?.name"
-                data-cy="anvilLaunchWith"
-                ><img class="partner-launch pb-2" src="../assets/images/thirdparty/anvil.png" alt="AnVIL launch with logo"
-              /></a>
-              <a
-                mat-stroked-button
-                class="launch-with-button"
-                [matTooltip]="bdCatalystTerraTooltip$ | async"
-                matTooltipPosition="left"
-                target="_blank"
-                rel="noopener"
-                [disabled]="disableTerraPlatform$ | async"
-                [attr.href]="config.BD_CATALYST_TERRA_IMPORT_URL + '/' + workflow?.full_workflow_path + ':' + selectedVersion?.name"
-                data-cy="nhlbiLaunchWith"
-                >NHLBI BioData Catalyst®</a
-              >
-            </div>
-          </ng-template>
+          } @else {
+          <div fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="0.625rem">
+            <!--              Commenting out as part of https://ucsc-cgl.atlassian.net/browse/SEAB-3800. We can keep this around in case DNAStack spins up another instance.-->
+            <!--              <a-->
+            <!--                mat-raised-button-->
+            <!--                class="old-launch-with-button"-->
+            <!--                [matTooltip]="!(hasContent$ | async) ? 'The WDL workflow has no content.' : ''"-->
+            <!--                target="_blank"-->
+            <!--                rel="noopener"-->
+            <!--                [attr.href]="config.DNASTACK_IMPORT_URL + '?descriptorType=wdl&path=' + workflowPathAsQueryValue"-->
+            <!--                [disabled]="!(hasContent$ | async) === false"-->
+            <!--                color="primary"-->
+            <!--                data-cy="dnastackLaunchWith"-->
+            <!--              ><img class="partner-icon" src="../assets/images/thirdparty/dnastack.png" alt="DNAstack icon" /> DNAstack &raquo;</a-->
+            <!--              >-->
+            <a
+              mat-stroked-button
+              class="launch-with-button"
+              [matTooltip]="(hasContent$ | async) ? '' : 'The WDL workflow has no content.'"
+              matTooltipPosition="left"
+              target="_blank"
+              rel="noopener"
+              [attr.href]="config.DNANEXUS_IMPORT_URL + '?source=' + trsUrl"
+              [disabled]="(hasContent$ | async) === false"
+              data-cy="dnanexusLaunchWith"
+              ><img class="partner-launch" src="../assets/images/thirdparty/dnanexus.png" alt="DNAnexus launch with logo"
+            /></a>
+            <a
+              mat-stroked-button
+              class="launch-with-button"
+              [matTooltip]="terraTooltip$ | async"
+              matTooltipPosition="left"
+              target="_blank"
+              rel="noopener"
+              [disabled]="disableTerraPlatform$ | async"
+              [attr.href]="config.TERRA_IMPORT_URL + '/' + workflow?.full_workflow_path + ':' + selectedVersion?.name"
+              data-cy="terraLaunchWith"
+              ><img class="partner-icon mr-2" src="../assets/images/thirdparty/terra.png" alt="Terra launch with logo" />Terra</a
+            >
+            <a
+              mat-stroked-button
+              class="launch-with-button"
+              [matTooltip]="elwaziToolTip$ | async"
+              matTooltipPosition="left"
+              target="_blank"
+              rel="noopener"
+              [disabled]="disableTerraPlatform$ | async"
+              [attr.href]="config.ELWAZI_IMPORT_URL + '/' + workflow?.full_workflow_path + ':' + selectedVersion?.name"
+              data-cy="elwaziLaunchWith"
+              ><img class="partner-launch" src="../assets/images/thirdparty/elwazi.png" alt="eLwazi launch with logo"
+            /></a>
+            <a
+              mat-stroked-button
+              class="launch-with-button"
+              [matTooltip]="anvilTooltip$ | async"
+              matTooltipPosition="left"
+              target="_blank"
+              rel="noopener"
+              [disabled]="disableTerraPlatform$ | async"
+              [attr.href]="config.ANVIL_IMPORT_URL + '/' + workflow?.full_workflow_path + ':' + selectedVersion?.name"
+              data-cy="anvilLaunchWith"
+              ><img class="partner-launch pb-2" src="../assets/images/thirdparty/anvil.png" alt="AnVIL launch with logo"
+            /></a>
+            <a
+              mat-stroked-button
+              class="launch-with-button"
+              [matTooltip]="bdCatalystTerraTooltip$ | async"
+              matTooltipPosition="left"
+              target="_blank"
+              rel="noopener"
+              [disabled]="disableTerraPlatform$ | async"
+              [attr.href]="config.BD_CATALYST_TERRA_IMPORT_URL + '/' + workflow?.full_workflow_path + ':' + selectedVersion?.name"
+              data-cy="nhlbiLaunchWith"
+              >NHLBI BioData Catalyst®</a
+            >
+          </div>
+          }
         </div>
-        <div
-          fxLayout="column"
-          fxLayoutAlign="space-between center"
-          fxLayoutGap="0.625rem"
-          *ngIf="workflow?.descriptorType === WorkflowModel.DescriptorTypeEnum.CWL"
-        >
+        } @if (workflow?.descriptorType === WorkflowModel.DescriptorTypeEnum.CWL) {
+        <div fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="0.625rem">
           <a
             mat-stroked-button
             class="launch-with-button"
@@ -223,7 +211,8 @@
             ><img class="partner-icon mr-1" src="../assets/images/thirdparty/cavatica-colour.png" alt="Cavatica icon" /> Cavatica
           </a>
         </div>
-        <div *ngIf="config.FEATURES.enableLaunchWithGalaxy && workflow?.descriptorType === WorkflowModel.DescriptorTypeEnum.Gxformat2">
+        } @if (config.FEATURES.enableLaunchWithGalaxy && workflow?.descriptorType === WorkflowModel.DescriptorTypeEnum.Gxformat2) {
+        <div>
           <app-multi-cloud-launch
             [cloudInstances]="cloudInstances"
             [usersCloudInstances]="usersCloudInstances"
@@ -238,7 +227,8 @@
             data-cy="galaxyLaunchWith"
           ></app-multi-cloud-launch>
         </div>
-        <div *ngIf="workflow?.descriptorType === WorkflowModel.DescriptorTypeEnum.NFL">
+        } @if (workflow?.descriptorType === WorkflowModel.DescriptorTypeEnum.NFL) {
+        <div>
           <a
             mat-stroked-button
             class="launch-with-button"
@@ -263,8 +253,10 @@
             <img class="partner-launch mr-2" src="../assets/images/thirdparty/seqera_logo_color.svg" alt="Seqera icon" />
           </a>
         </div>
+        }
       </div>
-      <div *ngIf="workflow?.descriptorType === WorkflowModel.DescriptorTypeEnum.Jupyter">
+      @if (workflow?.descriptorType === WorkflowModel.DescriptorTypeEnum.Jupyter) {
+      <div>
         <div fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="0.625rem">
           <a
             mat-stroked-button
@@ -321,6 +313,8 @@
           >
         </div>
       </div>
+      }
     </div>
   </mat-card-content>
 </mat-card>
+}

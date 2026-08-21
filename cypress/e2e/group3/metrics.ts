@@ -42,10 +42,12 @@ describe('Dockstore Metrics', () => {
     cy.get('[data-cy=metrics-validator-tool-dropdown]').click();
     cy.get('[data-cy=metrics-validator-tool-options]').should('contain', 'WOMTOOL');
     cy.get('[data-cy=metrics-validator-tool-options]').contains('WOMTOOL').click();
+    cy.get('.cdk-overlay-backdrop').should('not.exist');
     cy.get('[data-cy=validations-table]').should('be.visible');
     // Change partner to Galaxy, which only has validator tool metrics
     cy.get('[data-cy=metrics-partner-dropdown]').click();
     cy.get('[data-cy=metrics-partner-options]').contains('Galaxy').click();
+    cy.get('.cdk-overlay-backdrop').should('not.exist');
     cy.get('[data-cy=metrics-partner-dropdown]').should('contain', 'Galaxy');
     cy.get('[data-cy=execution-metrics-table]').should('not.exist');
     cy.get('[data-cy=execution-metrics-total-executions-div]').should('not.exist');
@@ -54,10 +56,12 @@ describe('Dockstore Metrics', () => {
     cy.get('[data-cy=metrics-validator-tool-dropdown]').click();
     cy.get('[data-cy=metrics-validator-tool-options]').should('contain', 'WOMTOOL');
     cy.get('[data-cy=metrics-validator-tool-options]').contains('WOMTOOL').click();
+    cy.get('.cdk-overlay-backdrop').should('not.exist');
     cy.get('[data-cy=validations-table]').should('be.visible');
     cy.get('[data-cy=metrics-partner-dropdown]').click();
     //change partner to AGC
     cy.get('[data-cy=metrics-partner-options]').contains('AGC').click();
+    cy.get('.cdk-overlay-backdrop').should('not.exist');
     // Successful status is selected by default
     cy.get('[data-cy=metrics-execution-status-dropdown]').should('contain', 'Successful');
     cy.get('[data-cy=execution-metrics-table]').should('be.visible');
@@ -68,12 +72,14 @@ describe('Dockstore Metrics', () => {
     // Change execution status to All Statuses
     cy.get('[data-cy=metrics-execution-status-dropdown]').click();
     cy.get('[data-cy=metrics-execution-status-options]').contains('All Statuses').click();
+    cy.get('.cdk-overlay-backdrop').should('not.exist');
     cy.get('[data-cy=metrics-execution-status-dropdown]').should('contain', 'All Statuses');
     cy.get('[data-cy=execution-metrics-table]').should('be.visible');
     cy.get('[data-cy=execution-metrics-table]').contains('td', 'Not Available').should('not.exist');
     // Change execution status to FAILED_RUNTIME_INVALID
     cy.get('[data-cy=metrics-execution-status-dropdown]').click();
     cy.get('[data-cy=metrics-execution-status-options]').contains('Failed Runtime Invalid').click();
+    cy.get('.cdk-overlay-backdrop').should('not.exist');
     cy.get('[data-cy=metrics-execution-status-dropdown]').should('contain', 'Failed Runtime Invalid');
     cy.get('[data-cy=execution-metrics-table]').should('exist');
     cy.get('[data-cy=execution-metrics-table]').contains('td', 'Not Available').should('be.visible'); // There were no other metrics for the FAILED_RUNTIME_INVALID executions

@@ -1,6 +1,5 @@
 import { Component, Input } from '@angular/core';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { NgIf } from '@angular/common';
 
 /**
  * To use this component, wrap your original component with this component's <app-loading> tags
@@ -15,7 +14,7 @@ import { NgIf } from '@angular/common';
   selector: 'app-loading',
   templateUrl: './loading.component.html',
   styleUrls: ['./loading.component.scss'],
-  imports: [NgIf, MatProgressBarModule],
+  imports: [MatProgressBarModule],
 })
 export class LoadingComponent {
   @Input() loading = true;

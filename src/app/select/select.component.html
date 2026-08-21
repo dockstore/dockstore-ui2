@@ -1,28 +1,35 @@
 <!--
-  ~    Copyright 2017 OICR
-  ~
-  ~    Licensed under the Apache License, Version 2.0 (the "License");
-  ~    you may not use this file except in compliance with the License.
-  ~    You may obtain a copy of the License at
-  ~
-  ~        http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~    Unless required by applicable law or agreed to in writing, software
-  ~    distributed under the License is distributed on an "AS IS" BASIS,
-  ~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~    See the License for the specific language governing permissions and
-  ~    limitations under the License.
-  -->
+~    Copyright 2017 OICR
+~
+~    Licensed under the Apache License, Version 2.0 (the "License");
+~    you may not use this file except in compliance with the License.
+~    You may obtain a copy of the License at
+~
+~        http://www.apache.org/licenses/LICENSE-2.0
+~
+~    Unless required by applicable law or agreed to in writing, software
+~    distributed under the License is distributed on an "AS IS" BASIS,
+~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+~    See the License for the specific language governing permissions and
+~    limitations under the License.
+-->
 <mat-form-field class="w-100 white-background">
-  <mat-label *ngIf="placeholder">{{ placeholder }}</mat-label>
+  @if (placeholder) {
+  <mat-label>{{ placeholder }}</mat-label>
+  }
   <mat-select [(value)]="obj" (selectionChange)="changedSelect(obj)">
-    <mat-option [matTooltip]="field ? obj[field] : obj" *ngFor="let obj of items" [value]="obj">
-      <div *ngIf="field">
+    @for (obj of items; track obj) {
+    <mat-option [matTooltip]="field ? obj[field] : obj" [value]="obj">
+      @if (field) {
+      <div>
         {{ obj[field] }}
       </div>
-      <div *ngIf="!field">
+      } @if (!field) {
+      <div>
         {{ obj }}
       </div>
+      }
     </mat-option>
+    }
   </mat-select>
 </mat-form-field>

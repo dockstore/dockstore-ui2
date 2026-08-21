@@ -55,7 +55,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatCardModule } from '@angular/material/card';
-import { AsyncPipe, DatePipe, NgIf, NgClass } from '@angular/common';
+import { AsyncPipe, DatePipe, NgClass } from '@angular/common';
 
 import DescriptorTypeEnum = ToolVersion.DescriptorTypeEnum;
 import { DisplayTopicComponent } from 'app/shared/entry/info-tab-topic/display-topic/display-topic.component';
@@ -66,7 +66,6 @@ import { MatChipsModule } from '@angular/material/chips';
   templateUrl: './info-tab.component.html',
   styleUrls: ['../../shared/styles/info-tab.component.scss'],
   imports: [
-    NgIf,
     MatCardModule,
     MatDividerModule,
     MatTooltipModule,

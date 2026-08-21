@@ -32,7 +32,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
-import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
 
 @Component({
@@ -40,12 +40,10 @@ import DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
   templateUrl: './launch.component.html',
   styleUrls: ['./launch.component.css'],
   imports: [
-    NgIf,
     MatCardModule,
     MatIconModule,
     MatFormFieldModule,
     MatSelectModule,
-    NgFor,
     MatOptionModule,
     FlexModule,
     MatTooltipModule,

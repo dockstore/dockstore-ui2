@@ -6,14 +6,17 @@
     <a href="https://containers.dev" target="_blank" rel="noopener noreferrer">development container</a> ("dev container") file from the
     repository, which specifies the files to use and software to run.
   </p>
-  <p *ngIf="!hasDevcontainer">
+  @if (!hasDevcontainer) {
+  <p>
     <b>No dev container files were detected in this repository.</b> When GitHub can't find a dev container file, it creates a default
     Codespace environment that may not automatically run the {{ term }} or the software required to support it.
   </p>
-  <p *ngIf="hasDevcontainer">
+  } @if (hasDevcontainer) {
+  <p>
     This repository contains dev container files, but Dockstore could not confirm that they will automatically run the {{ term }} when the
     Codespace starts.
   </p>
+  }
   <p>
     After the Codespace UI loads, to run the {{ term }},
     <b>you may need to click on the {{ term }} file and select the appropriate menu options to enable the required extensions.</b>

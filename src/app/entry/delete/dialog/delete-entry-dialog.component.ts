@@ -22,14 +22,14 @@ import { Entry, EntryType, EntriesService, DockstoreTool, Workflow } from '../..
 import { AlertService } from '../../../shared/alert/state/alert.service';
 import { MatButtonModule } from '@angular/material/button';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
-import { NgIf, TitleCasePipe } from '@angular/common';
+import { TitleCasePipe } from '@angular/common';
 import { AlertComponent } from '../../../shared/alert/alert.component';
 
 @Component({
   selector: 'app-delete-entry-dialog',
   templateUrl: './delete-entry-dialog.component.html',
   styleUrls: ['./delete-entry-dialog.component.scss'],
-  imports: [MatDialogModule, AlertComponent, NgIf, FlexModule, MatButtonModule, TitleCasePipe],
+  imports: [MatDialogModule, AlertComponent, FlexModule, MatButtonModule, TitleCasePipe],
 })
 export class DeleteEntryDialogComponent {
   clicked: boolean;

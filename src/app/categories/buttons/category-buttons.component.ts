@@ -14,7 +14,7 @@
  *     limitations under the License.
  */
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { NgFor, LowerCasePipe } from '@angular/common';
+import { LowerCasePipe } from '@angular/common';
 import { MatChipsModule } from '@angular/material/chips';
 import { CategorySummary, EntryType } from 'app/shared/openapi';
 import { CategoryButtonComponent } from 'app/categories/button/category-button.component';
@@ -23,7 +23,7 @@ import { CategoryButtonComponent } from 'app/categories/button/category-button.c
   selector: 'app-category-buttons',
   templateUrl: './category-buttons.component.html',
   styleUrls: ['./category-buttons.component.scss'],
-  imports: [NgFor, LowerCasePipe, MatChipsModule, CategoryButtonComponent],
+  imports: [LowerCasePipe, MatChipsModule, CategoryButtonComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CategoryButtonsComponent {

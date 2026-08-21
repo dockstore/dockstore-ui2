@@ -15,7 +15,7 @@ import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 import { VerifiedDisplayComponent } from '../entry/verified-display/verified-display.component';
-import { NgIf, AsyncPipe, DatePipe } from '@angular/common';
+import { AsyncPipe, DatePipe } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { LoadingComponent } from '../loading/loading.component';
 
@@ -32,7 +32,6 @@ interface VersionVerifiedInformation {
     MatDialogModule,
     LoadingComponent,
     MatCardModule,
-    NgIf,
     VerifiedDisplayComponent,
     MatTableModule,
     MatButtonModule,

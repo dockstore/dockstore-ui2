@@ -21,7 +21,7 @@ import { Base } from '../shared/base';
 import { SearchQuery, SearchResult } from './state/search.query';
 import { SearchService } from './state/search.service';
 import { EntryType, ExtendedGA4GHService, Workflow } from 'app/shared/openapi';
-import { AsyncPipe, DatePipe, DecimalPipe, KeyValuePipe, LowerCasePipe, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe, DatePipe, DecimalPipe, KeyValuePipe, LowerCasePipe } from '@angular/common';
 import TopicSelectionEnum = Workflow.TopicSelectionEnum;
 import { RouterLink } from '@angular/router';
 import { AiBubbleComponent } from 'app/shared/ai-bubble/ai-bubble.component';
@@ -68,7 +68,6 @@ export interface SortOption {
   templateUrl: './search-entry-table.component.html',
   styleUrls: ['../shared/styles/entry-table.scss', './search-entry-table.component.scss'],
   imports: [
-    NgIf,
     MatProgressBarModule,
     MatTableModule,
     MatSortModule,
@@ -78,7 +77,6 @@ export interface SortOption {
     ExtendedModule,
     MatIconModule,
     FontAwesomeModule,
-    NgFor,
     MatPaginatorModule,
     KeyValuePipe,
     DescriptorLanguagePipe,

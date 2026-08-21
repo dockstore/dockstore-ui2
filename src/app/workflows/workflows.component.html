@@ -1,47 +1,43 @@
 <!--
-  ~    Copyright 2017 OICR
-  ~
-  ~    Licensed under the Apache License, Version 2.0 (the "License");
-  ~    you may not use this file except in compliance with the License.
-  ~    You may obtain a copy of the License at
-  ~
-  ~        http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~    Unless required by applicable law or agreed to in writing, software
-  ~    distributed under the License is distributed on an "AS IS" BASIS,
-  ~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~    See the License for the specific language governing permissions and
-  ~    limitations under the License.
-  -->
+~    Copyright 2017 OICR
+~
+~    Licensed under the Apache License, Version 2.0 (the "License");
+~    you may not use this file except in compliance with the License.
+~    You may obtain a copy of the License at
+~
+~        http://www.apache.org/licenses/LICENSE-2.0
+~
+~    Unless required by applicable law or agreed to in writing, software
+~    distributed under the License is distributed on an "AS IS" BASIS,
+~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+~    See the License for the specific language governing permissions and
+~    limitations under the License.
+-->
 
 <app-header>
-  <div fxLayout fxLayoutAlign="start center" *ngIf="searchPage === false; else search">
+  @if (searchPage === false) {
+  <div fxLayout fxLayoutAlign="start center">
     <img src="../../assets/svg/search.svg" class="site-icons-small mr-3" alt="search icon" />
     <div fxLayout fxLayoutGap="1rem">
-      <a
-        *ngIf="(entryType$ | async) === EntryType.BioWorkflow || (entryType$ | async) === EntryType.Notebook; else service"
-        [routerLink]="['/search']"
-        [queryParams]="{ entryType: (entryTypeMetadata$ | async).searchEntryType }"
-        class="white-space-no-wrap"
+      @if ((entryType$ | async) === EntryType.BioWorkflow || (entryType$ | async) === EntryType.Notebook) {
+      <a [routerLink]="['/search']" [queryParams]="{ entryType: (entryTypeMetadata$ | async).searchEntryType }" class="white-space-no-wrap"
         >Explore {{ (entryTypeMetadata$ | async).termPlural | titlecase }}</a
       >
-      <ng-template #service>
-        <a [routerLink]="['/', entryPageTitle$ | async]">Explore {{ entryPageTitle$ | async | titlecase }}</a>
-      </ng-template>
+      } @else {
+      <a [routerLink]="['/', entryPageTitle$ | async]">Explore {{ entryPageTitle$ | async | titlecase }}</a>
+      }
       <span fxHide.lt-sm>/</span>
       <span fxHide.lt-sm class="truncate-text-1">{{ entryName }}</span>
     </div>
   </div>
-  <ng-template #search>
-    <img
-      [src]="'../assets/svg/sub-nav/' + (entryTypeMetadata$ | async).term + '.svg'"
-      [alt]="(entryTypeMetadata$ | async).term + ' icon'"
-    />
-    <span class="mx-1">{{ entryPageTitle$ | async | titlecase }}</span>
-    <mat-chip-set *ngIf="(entryType$ | async) === EntryType.Service">
-      <mat-chip class="preview-bubble">PREVIEW</mat-chip>
-    </mat-chip-set>
-  </ng-template>
+  } @else {
+  <img [src]="'../assets/svg/sub-nav/' + (entryTypeMetadata$ | async).term + '.svg'" [alt]="(entryTypeMetadata$ | async).term + ' icon'" />
+  <span class="mx-1">{{ entryPageTitle$ | async | titlecase }}</span>
+  @if ((entryType$ | async) === EntryType.Service) {
+  <mat-chip-set>
+    <mat-chip class="preview-bubble">PREVIEW</mat-chip>
+  </mat-chip-set>
+  } }
 </app-header>
 <div class="container">
   <router-outlet></router-outlet>

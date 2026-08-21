@@ -52,7 +52,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { NgIf, AsyncPipe, TitleCasePipe } from '@angular/common';
+import { AsyncPipe, TitleCasePipe } from '@angular/common';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -74,7 +74,6 @@ import { Dockstore } from 'app/shared/dockstore.model';
     MatButtonModule,
     MatIconModule,
     MatSidenavModule,
-    NgIf,
     MatTooltipModule,
     MatMenuModule,
     SidebarAccordionComponent,

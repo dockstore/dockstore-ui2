@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault, NgTemplateOutlet } from '@angular/common';
+import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { Component, Inject } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -41,20 +41,7 @@ export interface State {
 @Component({
   selector: 'app-snapshot-exporter-modal-component',
   templateUrl: './snaphot-exporter-modal.component.html',
-  imports: [
-    MatDialogModule,
-    NgSwitch,
-    NgSwitchCase,
-    NgIf,
-    NgTemplateOutlet,
-    FlexModule,
-    MatButtonModule,
-    NgSwitchDefault,
-    ExporterStepComponent,
-    MatIconModule,
-    AsyncPipe,
-    MatCardModule,
-  ],
+  imports: [MatDialogModule, NgTemplateOutlet, FlexModule, MatButtonModule, ExporterStepComponent, MatIconModule, AsyncPipe, MatCardModule],
 })
 export class SnaphotExporterModalComponent extends Base {
   public hasZenodoToken$: Observable<boolean> = this.tokenQuery.hasZenodoToken$;

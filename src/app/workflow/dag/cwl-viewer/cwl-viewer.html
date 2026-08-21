@@ -1,26 +1,33 @@
 <div class="cwl-viewer">
-  <mat-card appearance="outlined" *ngIf="cwlViewerError" class="alert alert-warning">
+  @if (cwlViewerError) {
+  <mat-card appearance="outlined" class="alert alert-warning">
     <mat-card-content>
       <mat-icon class="alert-warning-icon">warning</mat-icon>&nbsp;
       <div>
-        The Common Workflow Language Viewer was unable to process the CWL.
-        <span *ngIf="errorMessage">It returned the following error:</span>
+        The Common Workflow Language Viewer was unable to process the CWL. @if (errorMessage) {
+        <span>It returned the following error:</span>
+        }
       </div>
       <div>{{errorMessage}}</div>
     </mat-card-content>
   </mat-card>
+  }
   <div>
-    <span *ngIf="!cwlViewerError"
+    @if (!cwlViewerError) {
+    <span
       >See on
       <a [href]="cwlViewerDescriptor?.webPageUrl" target="_blank" rel="noopener"
         >Common Workflow Language Viewer <mat-icon>open_in_new</mat-icon></a
       ></span
     >
+    }
   </div>
   <div class="image">
-    <div *ngIf="loading" class="text-center viewer-loading">
+    @if (loading) {
+    <div class="text-center viewer-loading">
       <mat-progress-bar mode="indeterminate"></mat-progress-bar>
     </div>
+    }
     <img
       [hidden]="!cwlViewerDescriptor"
       [style.width.%]="cwlViewerPercentageZoom"

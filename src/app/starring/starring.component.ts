@@ -27,13 +27,13 @@ import { StarEntry } from './StarEntry';
 import { StarringService } from './starring.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
-import { NgClass, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-starring',
   templateUrl: './starring.component.html',
   styleUrls: ['./starring.component.scss'],
-  imports: [NgClass, NgIf, MatIconModule, MatTooltipModule],
+  imports: [NgClass, MatIconModule, MatTooltipModule],
 })
 export class StarringComponent implements OnInit, OnDestroy, OnChanges {
   @Input() tool: any;

@@ -27,22 +27,12 @@ import { FormsModule } from '@angular/forms';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-advancedsearch',
   templateUrl: './advancedsearch.component.html',
   styleUrls: ['./advancedsearch.component.scss'],
-  imports: [
-    MatDialogModule,
-    NgIf,
-    MatFormFieldModule,
-    MatSelectModule,
-    MatOptionModule,
-    FormsModule,
-    MatTooltipModule,
-    SearchAuthorsHtmlPipe,
-  ],
+  imports: [MatDialogModule, MatFormFieldModule, MatSelectModule, MatOptionModule, FormsModule, MatTooltipModule, SearchAuthorsHtmlPipe],
 })
 export class AdvancedSearchComponent extends Base implements OnInit {
   NOTFilter: string;

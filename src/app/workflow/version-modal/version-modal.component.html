@@ -1,18 +1,18 @@
 <!--
-  ~    Copyright 2017 OICR
-  ~
-  ~    Licensed under the Apache License, Version 2.0 (the "License");
-  ~    you may not use this file except in compliance with the License.
-  ~    You may obtain a copy of the License at
-  ~
-  ~        http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~    Unless required by applicable law or agreed to in writing, software
-  ~    distributed under the License is distributed on an "AS IS" BASIS,
-  ~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~    See the License for the specific language governing permissions and
-  ~    limitations under the License.
-  -->
+~    Copyright 2017 OICR
+~
+~    Licensed under the Apache License, Version 2.0 (the "License");
+~    you may not use this file except in compliance with the License.
+~    You may obtain a copy of the License at
+~
+~        http://www.apache.org/licenses/LICENSE-2.0
+~
+~    Unless required by applicable law or agreed to in writing, software
+~    distributed under the License is distributed on an "AS IS" BASIS,
+~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+~    See the License for the specific language governing permissions and
+~    limitations under the License.
+-->
 <div>
   <h4 mat-dialog-title>{{ isPublic || !canWrite ? 'View' : 'Edit' }} {{ entryTypeText }} Version</h4>
   <div mat-dialog-content>
@@ -23,17 +23,19 @@
           <div class="form-group form-group-sm">
             <label class="col-sm-3 col-md-3 col-lg-3 control-label"> Git Reference: </label>
             <div class="col-sm-9 col-md-9 col-lg-9">
+              @if ((isService$ | async) === false && (isNotebook$ | async) === false) {
               <input
-                *ngIf="(isService$ | async) === false && (isNotebook$ | async) === false"
                 type="text"
                 class="form-control"
                 name="reference"
                 ngModel="{{ version.reference ? version.reference : 'n/a' }}"
                 disabled
               />
-              <div *ngIf="(isService$ | async) || (isNotebook$ | async)" class="label-value">
+              } @if ((isService$ | async) || (isNotebook$ | async)) {
+              <div class="label-value">
                 {{ version.reference ? version.reference : 'n/a' }}
               </div>
+              }
             </div>
           </div>
           <div class="form-group form-group-sm">
@@ -41,8 +43,8 @@
               {{ entryTypeText + ' Path:' }}
             </label>
             <div class="col-sm-9 col-md-9 col-lg-9">
+              @if ((isService$ | async) === false && (isNotebook$ | async) === false) {
               <input
-                *ngIf="(isService$ | async) === false && (isNotebook$ | async) === false"
                 type="text"
                 class="form-control"
                 name="workflow_path"
@@ -63,32 +65,26 @@
                   version.dois[DoiInitiatorEnum.USER]
                 "
               />
-              <div *ngIf="(isService$ | async) || (isNotebook$ | async)" class="label-value">
+              } @if ((isService$ | async) || (isNotebook$ | async)) {
+              <div class="label-value">
                 {{ version.workflow_path }}
               </div>
-              <mat-card
-                appearance="outlined"
-                *ngIf="formErrors.workflow_path && (isService$ | async) === false && (isNotebook$ | async) === false"
-                class="alert alert-danger"
-              >
+              } @if (formErrors.workflow_path && (isService$ | async) === false && (isNotebook$ | async) === false) {
+              <mat-card appearance="outlined" class="alert alert-danger">
                 <mat-card-content>
                   {{ formErrors.workflow_path }}
                 </mat-card-content>
               </mat-card>
+              }
             </div>
           </div>
-          <div
-            class="form-group form-group-sm"
-            *ngIf="(isService$ | async) === false && (descriptorType$ | async) !== ToolDescriptor.TypeEnum.NFL"
-          >
+          @if ((isService$ | async) === false && (descriptorType$ | async) !== ToolDescriptor.TypeEnum.NFL) {
+          <div class="form-group form-group-sm">
             <label class="col-sm-3 col-md-3 col-lg-3 control-label">
               {{ (isNotebook$ | async) ? 'Test File(s)' : 'Test Parameter File(s)' }}:
             </label>
-            <div
-              class="col-sm-9 col-md-9 col-lg-9 form-margin"
-              [ngClass]="{ 'col-sm-offset-3': i > 0 }"
-              *ngFor="let item of testParameterFilePaths; let i = index"
-            >
+            @for (item of testParameterFilePaths; track item; let i = $index) {
+            <div class="col-sm-9 col-md-9 col-lg-9 form-margin" [ngClass]="{ 'col-sm-offset-3': i > 0 }">
               <div class="input-group">
                 <input
                   [ngClass]="{ 'input-right-button': !isPublic, 'input-no-button': isPublic }"
@@ -103,26 +99,27 @@
                   disabled
                   readonly
                 />
-                <span class="input-group-btn" *ngIf="workflow?.mode !== WorkflowType.ModeEnum.DOCKSTOREYML">
+                @if (workflow?.mode !== WorkflowType.ModeEnum.DOCKSTOREYML) {
+                <span class="input-group-btn">
+                  @if (!isPublic && !version.frozen) {
                   <button
                     data-cy="remove-test-parameter-file-button"
                     title="Remove test parameter file"
                     type="button"
                     class="btn btn-default form-sm-button"
-                    *ngIf="!isPublic && !version.frozen"
                     (click)="removeTestParameterFile(i)"
                   >
                     <mat-icon>clear</mat-icon>
                   </button>
+                  }
                 </span>
+                }
               </div>
             </div>
-            <div
-              class="col-sm-9 col-md-9 col-lg-9"
-              [ngClass]="{ 'col-sm-offset-3': testParameterFilePaths.length > 0 }"
-              *ngIf="!isPublic && (isService$ | async) === false && !version.frozen"
-            >
-              <div class="input-group" *ngIf="workflow?.mode !== WorkflowType.ModeEnum.DOCKSTOREYML">
+            } @if (!isPublic && (isService$ | async) === false && !version.frozen) {
+            <div class="col-sm-9 col-md-9 col-lg-9" [ngClass]="{ 'col-sm-offset-3': testParameterFilePaths.length > 0 }">
+              @if (workflow?.mode !== WorkflowType.ModeEnum.DOCKSTOREYML) {
+              <div class="input-group">
                 <input
                   data-cy="test-parameter-file-input"
                   [ngClass]="{ 'input-right-button': !isPublic }"
@@ -139,16 +136,17 @@
                   [matTooltip]="tooltip.testParameterFile"
                 />
                 <span class="input-group-btn">
+                  @if (!isPublic && !(model1.invalid || testParameterFilePath.length === 0)) {
                   <button
                     title="Add test parameter file"
                     type="button"
                     class="btn btn-default form-sm-button"
                     [disabled]="hasDuplicateTestJson() || workflow?.mode === WorkflowType.ModeEnum.HOSTED"
                     (click)="addTestParameterFile()"
-                    *ngIf="!isPublic && !(model1.invalid || testParameterFilePath.length === 0)"
                   >
                     <mat-icon>add</mat-icon>
                   </button>
+                  } @if (!isPublic && (model1.invalid || testParameterFilePath.length === 0)) {
                   <button
                     title="Enter a valid path"
                     type="button"
@@ -159,25 +157,32 @@
                       workflow?.mode === WorkflowType.ModeEnum.HOSTED ||
                       workflow?.mode === WorkflowType.ModeEnum.DOCKSTOREYML
                     "
-                    *ngIf="!isPublic && (model1.invalid || testParameterFilePath.length === 0)"
                   >
                     <mat-icon>add</mat-icon>
                   </button>
+                  }
                 </span>
               </div>
-              <div *ngIf="formErrors.testParameterFilePath" class="form-error-messages alert alert-danger">
+              } @if (formErrors.testParameterFilePath) {
+              <div class="form-error-messages alert alert-danger">
                 {{ formErrors.testParameterFilePath }}
               </div>
-              <mat-card appearance="outlined" *ngIf="hasDuplicateTestJson()" class="alert alert-danger">
+              } @if (hasDuplicateTestJson()) {
+              <mat-card appearance="outlined" class="alert alert-danger">
                 <mat-card-content> Duplicate test json files are not allowed. </mat-card-content>
               </mat-card>
+              }
             </div>
-            <div class="col-sm-9 col-md-9 col-lg-9" *ngIf="testParameterFilePaths.length === 0 && isPublic">
+            } @if (testParameterFilePaths.length === 0 && isPublic) {
+            <div class="col-sm-9 col-md-9 col-lg-9">
               <input class="form-control" placeholder="None provided" disabled />
             </div>
+            }
           </div>
+          }
           <div class="col-sm-9 col-md-9 col-lg-9 col-sm-offset-3"></div>
-          <div class="form-group form-group-sm" *ngIf="!isPublic" style="clear: both">
+          @if (!isPublic) {
+          <div class="form-group form-group-sm" style="clear: both">
             <label class="col-sm-3 col-md-3 col-lg-3 control-label" data-cy="hiddenLabel"> Hidden: </label>
             <div class="col-sm-9 col-md-9 col-lg-9">
               <div>
@@ -194,6 +199,7 @@
               </div>
             </div>
           </div>
+          }
           <div class="form-group form-group-sm">
             <label class="col-sm-3 col-md-3 col-lg-3 control-label"> Last Modified: </label>
             <div class="col-sm-9 col-md-9 col-lg-9">
@@ -218,7 +224,8 @@
               </div>
             </div>
           </div>
-          <div class="form-group form-group-sm" *ngIf="version.verified">
+          @if (version.verified) {
+          <div class="form-group form-group-sm">
             <label class="col-sm-3 col-md-3 col-lg-3 control-label"> Verified Platforms: </label>
             <div class="col-sm-9 col-md-9 col-lg-9">
               <div class="label-value">
@@ -228,25 +235,27 @@
               </div>
             </div>
           </div>
+          }
         </div>
       </form>
     </fieldset>
   </div>
   <mat-dialog-actions [align]="'end'">
-    <button type="button" mat-button color="accent" mat-dialog-close *ngIf="!isPublic && canWrite" data-cy="cancel-edit-version-button">
-      Cancel
-    </button>
-    <button type="button" mat-flat-button class="accent-1-dark" mat-dialog-close *ngIf="isPublic || !canWrite">OK</button>
+    @if (!isPublic && canWrite) {
+    <button type="button" mat-button color="accent" mat-dialog-close data-cy="cancel-edit-version-button">Cancel</button>
+    } @if (isPublic || !canWrite) {
+    <button type="button" mat-flat-button class="accent-1-dark" mat-dialog-close>OK</button>
+    } @if (!isPublic && canWrite) {
     <button
       data-cy="save-version"
       type="button"
       (click)="saveChanges()"
       mat-flat-button
       class="accent-1-dark"
-      *ngIf="!isPublic && canWrite"
       [disabled]="!versionEditorForm.form.valid"
     >
       Save Changes
     </button>
+    }
   </mat-dialog-actions>
 </div>

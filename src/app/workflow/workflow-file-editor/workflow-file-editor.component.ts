@@ -29,7 +29,7 @@ import { WorkflowVersion } from './../../shared/openapi/model/workflowVersion';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
-import { NgIf, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { CodeEditorListComponent } from '../../shared/code-editor-list/code-editor-list.component';
 import { MatTabsModule } from '@angular/material/tabs';
 
@@ -37,7 +37,7 @@ import { MatTabsModule } from '@angular/material/tabs';
   selector: 'app-workflow-file-editor',
   templateUrl: './workflow-file-editor.component.html',
   styleUrls: ['./workflow-file-editor.component.scss'],
-  imports: [MatTabsModule, CodeEditorListComponent, NgIf, MatCardModule, MatIconModule, MatButtonModule, AsyncPipe],
+  imports: [MatTabsModule, CodeEditorListComponent, MatCardModule, MatIconModule, MatButtonModule, AsyncPipe],
 })
 export class WorkflowFileEditorComponent extends FileEditing {
   public EntryType = EntryType;

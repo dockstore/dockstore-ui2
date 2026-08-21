@@ -1,12 +1,16 @@
 <div class="p-3">
-  <mat-card appearance="outlined" class="alert alert-info" role="alert" *ngIf="sourcefiles?.length === 0">
+  @if (sourcefiles?.length === 0) {
+  <mat-card appearance="outlined" class="alert alert-info" role="alert">
     <mat-card-content> No files exist. </mat-card-content>
   </mat-card>
-  <div *ngFor="let sourcefile of sourcefiles; let i = index" class="mb-3">
-    <div *ngIf="sourcefile?.content !== null && showSourcefile(sourcefile?.type)">
+  } @for (sourcefile of sourcefiles; track sourcefile; let i = $index) {
+  <div class="mb-3">
+    @if (sourcefile?.content !== null && showSourcefile(sourcefile?.type)) {
+    <div>
       <mat-toolbar class="files-toolbar">
         <mat-toolbar-row>
-          <form class="w-100" *ngIf="editing && !isPrimaryDescriptor(sourcefile?.absolutePath) && !isDockerFile(sourcefile?.absolutePath)">
+          @if (editing && !isPrimaryDescriptor(sourcefile?.absolutePath) && !isDockerFile(sourcefile?.absolutePath)) {
+          <form class="w-100">
             <mat-form-field class="white-background w-50">
               <mat-label>File Name</mat-label>
               <input
@@ -18,27 +22,24 @@
               />
             </mat-form-field>
           </form>
-          <span *ngIf="!editing || isPrimaryDescriptor(sourcefile?.absolutePath) || isDockerFile(sourcefile?.absolutePath)">
+          } @if (!editing || isPrimaryDescriptor(sourcefile?.absolutePath) || isDockerFile(sourcefile?.absolutePath)) {
+          <span>
             {{ sourcefile.absolutePath }}
           </span>
+          }
           <span class="spacer"></span>
           <span>
-            <button
-              mat-icon-button
-              class="delete-editor-file mr-2"
-              color="warn"
-              (click)="deleteFile(i)"
-              *ngIf="editing && !isPrimaryDescriptor(sourcefile?.absolutePath) && !isDockerFile(sourcefile?.absolutePath)"
-              matTooltip="Delete the file"
-            >
+            @if (editing && !isPrimaryDescriptor(sourcefile?.absolutePath) && !isDockerFile(sourcefile?.absolutePath)) {
+            <button mat-icon-button class="delete-editor-file mr-2" color="warn" (click)="deleteFile(i)" matTooltip="Delete the file">
               <mat-icon>delete</mat-icon>
             </button>
-            <span *ngIf="!editing">
+            } @if (!editing) {
+            <span>
+              @if (published$ | async) {
               <a
                 mat-icon-button
                 color="accent"
                 class="mr-2"
-                *ngIf="published$ | async; else unpublishedDownloadLink"
                 download
                 [href]="sourcefile | publicFileDownload: entrypath:selectedVersion:descriptorType:entryType"
                 [download]="sourcefile?.absolutePath | privateFilePath"
@@ -47,18 +48,18 @@
               >
                 <mat-icon>save_alt</mat-icon>
               </a>
-              <ng-template #unpublishedDownloadLink>
-                <a
-                  mat-icon-button
-                  color="accent"
-                  class="mr-2"
-                  type="button"
-                  matTooltip="Download {{ sourcefile?.absolutePath }}"
-                  (click)="downloadFileContent(sourcefile?.content, sourcefile?.absolutePath)"
-                >
-                  <mat-icon>save_alt</mat-icon>
-                </a>
-              </ng-template>
+              } @else {
+              <a
+                mat-icon-button
+                color="accent"
+                class="mr-2"
+                type="button"
+                matTooltip="Download {{ sourcefile?.absolutePath }}"
+                (click)="downloadFileContent(sourcefile?.content, sourcefile?.absolutePath)"
+              >
+                <mat-icon>save_alt</mat-icon>
+              </a>
+              }
               <button
                 mat-icon-button
                 color="accent"
@@ -71,6 +72,7 @@
                 <mat-icon>file_copy</mat-icon>
               </button>
             </span>
+            }
           </span>
         </mat-toolbar-row>
       </mat-toolbar>
@@ -81,14 +83,9 @@
         [entryType]="entryType"
       ></app-code-editor>
     </div>
+    }
   </div>
-  <button
-    class="ml-2"
-    mat-raised-button
-    class="accent-1-dark"
-    (click)="addFile()"
-    *ngIf="editing && (fileType !== 'dockerfile' || (fileType === 'dockerfile' && sourcefiles?.length === 0))"
-  >
-    Add File
-  </button>
+  } @if (editing && (fileType !== 'dockerfile' || (fileType === 'dockerfile' && sourcefiles?.length === 0))) {
+  <button class="ml-2" mat-raised-button class="accent-1-dark" (click)="addFile()">Add File</button>
+  }
 </div>

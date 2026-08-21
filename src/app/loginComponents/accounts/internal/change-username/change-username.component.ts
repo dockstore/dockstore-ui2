@@ -30,14 +30,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
-import { NgIf, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-change-username',
   templateUrl: './change-username.component.html',
   styleUrls: ['./change-username.component.scss'],
   imports: [
-    NgIf,
     MatDialogModule,
     MatCardModule,
     FlexModule,

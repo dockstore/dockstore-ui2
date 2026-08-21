@@ -28,22 +28,12 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
-import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-dockerfile',
   templateUrl: './dockerfile.component.html',
   styleUrls: ['./dockerfile.component.scss'],
-  imports: [
-    NgIf,
-    MatCardModule,
-    MatIconModule,
-    MatProgressBarModule,
-    MatToolbarModule,
-    MatButtonModule,
-    ClipboardModule,
-    CodeEditorComponent,
-  ],
+  imports: [MatCardModule, MatIconModule, MatProgressBarModule, MatToolbarModule, MatButtonModule, ClipboardModule, CodeEditorComponent],
 })
 export class DockerfileComponent {
   @Input() id: number;

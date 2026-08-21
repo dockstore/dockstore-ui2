@@ -21,7 +21,7 @@ import { AlertService } from './state/alert.service';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
-import { NgIf, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 
 /**
  * Stick this component into any location you want to potentially display a progress bar or alert.
@@ -34,7 +34,7 @@ import { NgIf, AsyncPipe } from '@angular/common';
   selector: 'app-alert',
   templateUrl: './alert.component.html',
   styleUrls: ['./alert.component.css'],
-  imports: [NgIf, MatCardModule, MatIconModule, MatProgressBarModule, AsyncPipe],
+  imports: [MatCardModule, MatIconModule, MatProgressBarModule, AsyncPipe],
 })
 export class AlertComponent implements OnInit {
   public showError$: Observable<boolean>;

@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { AsyncPipe, DatePipe, JsonPipe, KeyValue, KeyValuePipe, NgClass, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe, DatePipe, JsonPipe, KeyValue, KeyValuePipe, NgClass } from '@angular/common';
 import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
@@ -56,8 +56,6 @@ import { CommitUrlPipe } from 'app/shared/entry/commit-url.pipe';
     MatTooltipModule,
     MatIconModule,
     FlexModule,
-    NgIf,
-    NgFor,
     MatChipsModule,
     FontAwesomeModule,
     ViewWorkflowComponent,

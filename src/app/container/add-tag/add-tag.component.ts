@@ -33,7 +33,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
-import { NgIf, NgFor, NgClass } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { AlertComponent } from '../../shared/alert/alert.component';
@@ -49,8 +49,6 @@ import { FlexModule } from '@ngbracket/ngx-layout';
     FormsModule,
     MatFormFieldModule,
     MatInputModule,
-    NgIf,
-    NgFor,
     NgClass,
     ExtendedModule,
     MatIconModule,

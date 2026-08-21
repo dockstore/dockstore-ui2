@@ -45,7 +45,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatCardModule } from '@angular/material/card';
-import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 
 export interface AccountInfo {
@@ -68,7 +68,6 @@ export interface AccountInfo {
   styleUrls: ['./accounts.component.scss'],
   imports: [
     FlexModule,
-    NgIf,
     MatCardModule,
     MatBadgeModule,
     MatChipsModule,
@@ -80,7 +79,6 @@ export interface AccountInfo {
     SnackbarDirective,
     ClipboardModule,
     MatIconModule,
-    NgFor,
     AsyncPipe,
     GetTokenUsernamePipe,
   ],

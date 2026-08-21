@@ -20,7 +20,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
-import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 
 export type FileCategory = 'descriptor' | 'dockerfile' | 'testParam';
 
@@ -29,9 +29,7 @@ export type FileCategory = 'descriptor' | 'dockerfile' | 'testParam';
   templateUrl: './code-editor-list.component.html',
   styleUrls: ['./code-editor-list.component.scss'],
   imports: [
-    NgIf,
     MatCardModule,
-    NgFor,
     MatToolbarModule,
     FormsModule,
     MatFormFieldModule,

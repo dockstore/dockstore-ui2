@@ -11,7 +11,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
-import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { EntryWizardQuery } from 'app/shared/state/entry-wizard.query';
 import { EntryWizardService } from 'app/shared/state/entry-wizard.service';
 import { Observable } from 'rxjs';
@@ -34,9 +34,7 @@ import { FormsModule } from '@angular/forms';
     MatFormFieldModule,
     MatSelectModule,
     FormsModule,
-    NgIf,
     AsyncPipe,
-    NgFor,
     MatProgressBar,
     AlertComponent,
   ],

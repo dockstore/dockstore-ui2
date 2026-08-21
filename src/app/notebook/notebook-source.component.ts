@@ -1,13 +1,13 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { escape, join } from './notebook-helpers';
 import { Cell } from './notebook-types';
-import { NgIf } from '@angular/common';
+
 import './prism';
 
 @Component({
   selector: 'app-notebook-source',
   templateUrl: './notebook-source.component.html',
-  imports: [NgIf],
+  imports: [],
 })
 export class NotebookSourceComponent implements OnChanges {
   @Input() cell: Cell;

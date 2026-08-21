@@ -21,7 +21,7 @@ import { SourceFile } from '../../shared/openapi';
 import { Tag } from '../../shared/openapi/model/tag';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
-import { NgIf } from '@angular/common';
+
 import { ParamfilesComponent } from '../paramfiles/paramfiles.component';
 import { DescriptorsComponent } from '../descriptors/descriptors.component';
 import { DockerfileComponent } from '../dockerfile/dockerfile.component';
@@ -30,7 +30,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 @Component({
   selector: 'app-files-container',
   templateUrl: './files.component.html',
-  imports: [MatTabsModule, DockerfileComponent, DescriptorsComponent, ParamfilesComponent, NgIf, MatCardModule, MatIconModule],
+  imports: [MatTabsModule, DockerfileComponent, DescriptorsComponent, ParamfilesComponent, MatCardModule, MatIconModule],
 })
 export class FilesContainerComponent extends Files implements OnChanges {
   @Input() selectedVersion: Tag;

@@ -4,7 +4,8 @@
     Requires a Quay.io account linked on Dockstore and also Git build triggers to be present on the repository.
   </p>
   <app-loading [loading]="loading$ | async">
-    <mat-card appearance="outlined" class="alert alert-danger" role="alert" *ngIf="error$ | async as error">
+    @if (error$ | async; as error) {
+    <mat-card appearance="outlined" class="alert alert-danger" role="alert">
       <mat-card-content>
         <button type="button" class="close" data-dismiss="alert" (click)="clearError()">&times;</button>
         <p>
@@ -23,24 +24,32 @@
         </p>
       </mat-card-content>
     </mat-card>
-    <div *ngIf="organizations$ | async as organizations">
-      <div *ngIf="organizations === undefined">Encountering an issue with the website.</div>
-      <div *ngIf="organizations === null">Problems getting organizations.</div>
-      <div *ngIf="organizations && organizations.length === 0">
-        Could not get any organizations, try relinking the Quay.io token in the accounts page.
-      </div>
-      <div *ngIf="organizations && organizations.length > 0">
+    } @if (organizations$ | async; as organizations) {
+    <div>
+      @if (organizations === undefined) {
+      <div>Encountering an issue with the website.</div>
+      } @if (organizations === null) {
+      <div>Problems getting organizations.</div>
+      } @if (organizations && organizations.length === 0) {
+      <div>Could not get any organizations, try relinking the Quay.io token in the accounts page.</div>
+      } @if (organizations && organizations.length > 0) {
+      <div>
         <mat-form-field class="w-100" data-cy="select-namespace">
           <mat-label>Select namespace</mat-label>
           <mat-select (selectionChange)="selectOrganization($event.value)">
-            <mat-option *ngFor="let organization of organizations" [value]="organization" [attr.data-cy]="organization + '-option'">
+            @for (organization of organizations; track organization) {
+            <mat-option [value]="organization" [attr.data-cy]="organization + '-option'">
               {{ organization }}
             </mat-option>
+            }
           </mat-select>
         </mat-form-field>
-        <div *ngIf="repositories$ | async as repositories">
-          <div *ngIf="repositories">
-            <div *ngFor="let repository of repositories">
+        @if (repositories$ | async; as repositories) {
+        <div>
+          @if (repositories) {
+          <div>
+            @for (repository of repositories; track repository) {
+            <div>
               <button
                 mat-icon-button
                 color="primary"
@@ -54,10 +63,15 @@
               </button>
               {{ repository }}
             </div>
+            }
           </div>
+          }
         </div>
+        }
       </div>
+      }
     </div>
+    }
   </app-loading>
 
   <div class="modal-footer" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="1rem">

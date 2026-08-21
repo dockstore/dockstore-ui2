@@ -11,10 +11,12 @@
 </mat-tab-group>
 
 <markdown [data]="textDataInstallCLI"></markdown>
-<a mat-raised-button color="primary" *ngIf="downloadCli" class="hori-offset-12 indent" [attr.href]="downloadCli">
+@if (downloadCli) {
+<a mat-raised-button color="primary" class="hori-offset-12 indent" [attr.href]="downloadCli">
   <mat-icon>save_alt</mat-icon>
   Download CLI
 </a>
+}
 <markdown [data]="textDataCLIConfig"></markdown>
 <div class="input-group textarea indent">
   <textarea type="textarea" class="form-control textarea clip" readonly #inputTarget>

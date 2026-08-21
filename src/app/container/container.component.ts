@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { Location, NgIf, NgFor, NgClass, NgSwitch, NgSwitchCase, AsyncPipe, DatePipe } from '@angular/common';
+import { Location, NgClass, AsyncPipe, DatePipe } from '@angular/common';
 import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
 import { MatDialog } from '@angular/material/dialog';
@@ -85,9 +85,6 @@ import { WorkflowComponent } from '../workflow/workflow.component';
   templateUrl: './container.component.html',
   styleUrls: ['../shared/styles/workflow-container.component.scss'],
   imports: [
-    NgIf,
-    NgSwitch,
-    NgSwitchCase,
     WorkflowComponent,
     MatCardModule,
     MatIconModule,
@@ -99,7 +96,6 @@ import { WorkflowComponent } from '../workflow/workflow.component';
     MatTooltipModule,
     MatFormFieldModule,
     MatSelectModule,
-    NgFor,
     MatOptionModule,
     StarringComponent,
     MatButtonModule,

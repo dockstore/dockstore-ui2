@@ -1,4 +1,6 @@
-<mat-progress-bar *ngIf="isLoading$ | async" mode="indeterminate"></mat-progress-bar>
+@if (isLoading$ | async) {
+<mat-progress-bar mode="indeterminate"></mat-progress-bar>
+}
 <div class="p-2 container" fxLayout="column" fxLayoutGap="2rem">
   <h3 class="text-align-center">Generate a .dockstore.yml file</h3>
   <app-alert></app-alert>
@@ -34,24 +36,30 @@
   <mat-form-field>
     <mat-label>Select your GitHub Organization</mat-label>
     <mat-select [(ngModel)]="selectedOrganization" (ngModelChange)="getRepositories($event)">
-      <mat-option *ngFor="let organization of gitOrganizations$ | async" [value]="organization">
+      @for (organization of gitOrganizations$ | async; track organization) {
+      <mat-option [value]="organization">
         {{ organization }}
       </mat-option>
+      }
     </mat-select>
   </mat-form-field>
-  <mat-form-field *ngIf="selectedOrganization" fxFlex="30">
+  @if (selectedOrganization) {
+  <mat-form-field fxFlex="30">
     <mat-label>Select your GitHub Repository</mat-label>
     <mat-select [(ngModel)]="selectedRepository" (ngModelChange)="resetGeneratedDockstoreYml()">
-      <mat-option *ngFor="let repository of gitRepositories$ | async" [value]="repository.repositoryName">{{
-        repository.repositoryName
-      }}</mat-option>
+      @for (repository of gitRepositories$ | async; track repository) {
+      <mat-option [value]="repository.repositoryName">{{ repository.repositoryName }}</mat-option>
+      }
     </mat-select>
   </mat-form-field>
+  }
   <button mat-flat-button class="accent-1-dark" [disabled]="!(selectedOrganization && selectedRepository)" (click)="generateDockstoreYml()">
     Generate
   </button>
-  <mat-progress-bar *ngIf="isGeneratedDockstoreYmlLoading" mode="indeterminate"></mat-progress-bar>
-  <mat-card *ngIf="generatedDockstoreYml" class="alert-info" appearance="outlined">
+  @if (isGeneratedDockstoreYmlLoading) {
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+  } @if (generatedDockstoreYml) {
+  <mat-card class="alert-info" appearance="outlined">
     <mat-card-content>
       <mat-icon>info</mat-icon> This file was generated using the
       <strong>{{ selectedOrganization }}/{{ selectedRepository }}</strong> repository's
@@ -61,11 +69,7 @@
       </a>
     </mat-card-content>
   </mat-card>
-  <app-code-editor
-    class="mb-3"
-    *ngIf="generatedDockstoreYml"
-    [content]="generatedDockstoreYml"
-    [filepath]="'.dockstore.yml'"
-    [editing]="false"
-  ></app-code-editor>
+  } @if (generatedDockstoreYml) {
+  <app-code-editor class="mb-3" [content]="generatedDockstoreYml" [filepath]="'.dockstore.yml'" [editing]="false"></app-code-editor>
+  }
 </div>

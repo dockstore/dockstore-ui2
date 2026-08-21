@@ -1,4 +1,5 @@
-<div *ngIf="!hasGoogleAccount">
+@if (!hasGoogleAccount) {
+<div>
   <p>
     You need to link your account with Google in order to share this workflow. Please go to the accounts page to link your account with
     Google.
@@ -9,8 +10,10 @@
   </p>
   <p>Any emails that you share the workflow with must also be registered with Terra.</p>
 </div>
-<div *ngIf="hasGoogleAccount">
-  <div *ngIf="!canViewPermissions">
+} @if (hasGoogleAccount) {
+<div>
+  @if (!canViewPermissions) {
+  <div>
     <p>
       During the limited beta of sharing functionality, your Google account must also be registered with
       <a [href]="terraUrl" target="_blank" rel="noopener">Terra</a>.
@@ -20,18 +23,25 @@
       Accounts page.
     </p>
   </div>
-  <div style="font-style: italic; font-size: smaller; line-height: 1.5" *ngIf="canViewPermissions">
+  } @if (canViewPermissions) {
+  <div style="font-style: italic; font-size: smaller; line-height: 1.5">
     Workflows can only be shared with users and user groups who are registered with <a [href]="terraUrl">Terra</a>.
   </div>
-  <mat-progress-bar mode="indeterminate" *ngIf="updating"> </mat-progress-bar>
-  <ul class="list-unstyled container-info" *ngIf="canViewPermissions" fxLayout="column" fxLayoutGap="1rem">
+  } @if (updating) {
+  <mat-progress-bar mode="indeterminate"> </mat-progress-bar>
+  } @if (canViewPermissions) {
+  <ul class="list-unstyled container-info" fxLayout="column" fxLayoutGap="1rem">
     <li>
       <mat-form-field class="w-100">
         <mat-chip-grid #ownerlist>
-          <mat-chip-row *ngFor="let owner of owners" (removed)="remove(owner, Role.OWNER)" [removable]="owners.length > 1">
+          @for (owner of owners; track owner) {
+          <mat-chip-row (removed)="remove(owner, Role.OWNER)" [removable]="owners.length > 1">
             {{ owner }}
-            <mat-icon matChipRemove *ngIf="owners.length > 1">cancel</mat-icon>
+            @if (owners.length > 1) {
+            <mat-icon matChipRemove>cancel</mat-icon>
+            }
           </mat-chip-row>
+          }
           <input
             placeholder="Owners"
             [matChipInputFor]="ownerlist"
@@ -45,10 +55,12 @@
     <li>
       <mat-form-field class="w-100">
         <mat-chip-grid #writerlist>
-          <mat-chip-row *ngFor="let writer of writers" (removed)="remove(writer, Role.WRITER)" [removable]="true">
+          @for (writer of writers; track writer) {
+          <mat-chip-row (removed)="remove(writer, Role.WRITER)" [removable]="true">
             {{ writer }}
             <mat-icon matChipRemove>cancel</mat-icon>
           </mat-chip-row>
+          }
           <input
             placeholder="Writers"
             [matChipInputFor]="writerlist"
@@ -62,10 +74,12 @@
     <li>
       <mat-form-field class="w-100">
         <mat-chip-grid #readerlist>
-          <mat-chip-row *ngFor="let reader of readers" (removed)="remove(reader, Role.READER)" [removable]="true">
+          @for (reader of readers; track reader) {
+          <mat-chip-row (removed)="remove(reader, Role.READER)" [removable]="true">
             {{ reader }}
             <mat-icon matChipRemove>cancel</mat-icon>
           </mat-chip-row>
+          }
           <input
             placeholder="Readers"
             [matChipInputFor]="readerlist"
@@ -77,4 +91,6 @@
       </mat-form-field>
     </li>
   </ul>
+  }
 </div>
+}

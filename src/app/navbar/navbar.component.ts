@@ -35,7 +35,7 @@ import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { MatButtonModule } from '@angular/material/button';
 import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
-import { NgClass, NgIf, NgTemplateOutlet, AsyncPipe } from '@angular/common';
+import { NgClass, NgTemplateOutlet, AsyncPipe } from '@angular/common';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { DomSanitizer } from '@angular/platform-browser';
 import { NotificationsService } from 'app/notifications/state/notifications.service';
@@ -52,7 +52,6 @@ import { HttpResponse } from '@angular/common/http';
     RouterLink,
     MatButtonModule,
     RouterLinkActive,
-    NgIf,
     FlexModule,
     MatIconModule,
     MatBadgeModule,

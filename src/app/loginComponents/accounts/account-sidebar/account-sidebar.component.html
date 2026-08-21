@@ -1,19 +1,24 @@
 <div fxFlex.lt-md="100" class="p-3">
   <mat-chip-set class="ml-2">
-    <mat-chip *ngIf="user?.isAdmin" class="role" data-cy="account-is-admin">Administrator</mat-chip>
-    <mat-chip *ngIf="user?.curator" class="role" data-cy="account-is-curator">Curator</mat-chip>
-    <mat-chip *ngIf="user?.platformPartner" class="role" data-cy="account-is-platform-partner">Platform Partner</mat-chip>
+    @if (user?.isAdmin) {
+    <mat-chip class="role" data-cy="account-is-admin">Administrator</mat-chip>
+    } @if (user?.curator) {
+    <mat-chip class="role" data-cy="account-is-curator">Curator</mat-chip>
+    } @if (user?.platformPartner) {
+    <mat-chip class="role" data-cy="account-is-platform-partner">Platform Partner</mat-chip>
+    }
   </mat-chip-set>
   <div fxLayout="column" fxLayoutAlign="space-between center" fxLayoutGap="1rem" class="pt-3 pb-4">
     <img src="{{ user?.avatarUrl }}" alt="Dockstore avatar" />
     <h4>{{ user?.name }}</h4>
     <span fxLayoutGap="1rem" class="w-60">
+      @if (showEmailWarning) {
       <mat-icon
         class="alert-danger-icon"
-        *ngIf="showEmailWarning"
         matTooltip="We strongly suggest you change your username to something other than an email address."
         >warning</mat-icon
       >
+      }
       <button mat-stroked-button class="private-btn w-100" (click)="editUsernameModal()">
         <img src="../../../../assets/svg/icons-actions-edit.svg" class="pr-2" alt="Edit Dockstore Username" />
         Edit Dockstore Username
@@ -28,38 +33,45 @@
   </div>
   <hr />
 
-  <div *ngIf="gitHubProfile" class="pl-2 pr-2">
+  @if (gitHubProfile) {
+  <div class="pl-2 pr-2">
     <div fxLayout fxLayoutAlign="space-between center">
       <div fxLayout>
         <h5 class="weight-bold">
-          GitHub Profile
-          <mat-chip-set *ngIf="syncBadgeGit">
+          GitHub Profile @if (syncBadgeGit) {
+          <mat-chip-set>
             <mat-chip class="checkmark">
               <mat-icon alt="Synced">done</mat-icon>
               Synced
             </mat-chip>
           </mat-chip-set>
+          }
         </h5>
       </div>
       <img src="{{ gitHubProfile.avatarURL }}" alt="GitHub avatar" />
     </div>
     <table class="size-small horizontal-table">
-      <tr *ngIf="gitHubProfile.name">
+      @if (gitHubProfile.name) {
+      <tr>
         <th>Name</th>
         <td>{{ gitHubProfile.name }}</td>
       </tr>
-      <tr *ngIf="gitHubProfile.company">
+      } @if (gitHubProfile.company) {
+      <tr>
         <th>Company</th>
         <td>{{ gitHubProfile.company }}</td>
       </tr>
-      <tr *ngIf="gitHubProfile.location">
+      } @if (gitHubProfile.location) {
+      <tr>
         <th>Location</th>
         <td>{{ gitHubProfile.location }}</td>
       </tr>
-      <tr *ngIf="gitHubProfile.bio">
+      } @if (gitHubProfile.bio) {
+      <tr>
         <th>Bio</th>
         <td>{{ gitHubProfile.bio }}</td>
       </tr>
+      }
     </table>
     <button
       mat-stroked-button
@@ -73,27 +85,30 @@
     </button>
     <hr class="mt-3" />
   </div>
-
-  <div *ngIf="googleProfile" class="pl-2 pr-2">
+  } @if (googleProfile) {
+  <div class="pl-2 pr-2">
     <div fxLayout fxLayoutAlign="space-between center">
       <div fxLayout>
         <h5 class="weight-bold">
-          Google Profile
-          <mat-chip-set *ngIf="syncBadgeGoogle">
+          Google Profile @if (syncBadgeGoogle) {
+          <mat-chip-set>
             <mat-chip class="checkmark">
               <mat-icon alt="Synced">done</mat-icon>
               Synced
             </mat-chip>
           </mat-chip-set>
+          }
         </h5>
       </div>
       <img src="{{ googleProfile.avatarURL }}" alt="Google avatar" />
     </div>
     <table class="size-small horizontal-table">
-      <tr *ngIf="googleProfile.name">
+      @if (googleProfile.name) {
+      <tr>
         <th>Name</th>
         <td>{{ googleProfile.name }}</td>
       </tr>
+      }
     </table>
     <button
       mat-stroked-button
@@ -107,4 +122,5 @@
     </button>
     <hr class="mt-3" />
   </div>
+  }
 </div>

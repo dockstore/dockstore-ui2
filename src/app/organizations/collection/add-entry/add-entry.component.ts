@@ -10,7 +10,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
-import { NgIf, NgFor, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { LoadingComponent } from '../../../shared/loading/loading.component';
 
@@ -22,12 +22,10 @@ import { LoadingComponent } from '../../../shared/loading/loading.component';
     MatDialogModule,
     LoadingComponent,
     FlexModule,
-    NgIf,
     MatCardModule,
     MatIconModule,
     MatFormFieldModule,
     MatSelectModule,
-    NgFor,
     MatOptionModule,
     MatButtonModule,
     AsyncPipe,

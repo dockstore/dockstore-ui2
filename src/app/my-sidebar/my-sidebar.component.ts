@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Dockstore } from '../shared/dockstore.model';
-import { NgIf } from '@angular/common';
+
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 
@@ -8,7 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
   selector: 'app-my-sidebar',
   templateUrl: './my-sidebar.component.html',
   styleUrls: ['./my-sidebar.component.scss'],
-  imports: [MatButtonModule, RouterLink, RouterLinkActive, NgIf],
+  imports: [MatButtonModule, RouterLink, RouterLinkActive],
 })
 export class MySidebarComponent {
   Dockstore = Dockstore;

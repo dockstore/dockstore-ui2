@@ -28,16 +28,20 @@
       </p>
       <div class="modal-body">
         <mat-radio-group [(ngModel)]="selectedOption">
-          <div *ngFor="let option of options">
+          @for (option of options; track option) {
+          <div>
             <mat-radio-button [value]="option" [id]="option.value + '-register-workflow-option'" data-cy="storage-type-choice">
               <span class="text-wrap">
                 {{ option.label }}
-                <div *ngIf="selectedOption.value === option.value" class="extended-label mat-small">
+                @if (selectedOption.value === option.value) {
+                <div class="extended-label mat-small">
                   {{ selectedOption.extendedLabel }}
                 </div>
+                }
               </span>
             </mat-radio-button>
           </div>
+          }
         </mat-radio-group>
       </div>
       <div class="modal-footer">
@@ -47,7 +51,8 @@
     </mat-step>
     <mat-step>
       <ng-template matStepLabel>Create a workflow</ng-template>
-      <div *ngIf="selectedOption?.value === 0">
+      @if (selectedOption?.value === 0) {
+      <div>
         <app-register-github-app [entryType]="EntryType.WORKFLOW"></app-register-github-app>
         <div class="modal-footer mt-4">
           <button mat-button color="accent" matStepperPrevious>Back</button>
@@ -63,7 +68,8 @@
           </button>
         </div>
       </div>
-      <div *ngIf="selectedOption?.value === 1">
+      } @if (selectedOption?.value === 1) {
+      <div>
         <app-entry-wizard></app-entry-wizard>
         <div class="modal-footer">
           <button mat-button color="accent" matStepperPrevious>Back</button>
@@ -72,11 +78,11 @@
           </button>
         </div>
       </div>
+      } @if (selectedOption?.value === 2) {
       <form
         fxLayout="column"
         fxLayoutAlign="space-evenly stretch"
         fxLayoutGap="1rem"
-        *ngIf="selectedOption?.value === 2"
         #registerWorkflowForm="ngForm"
         name="registerWorkflowForm"
         (submit)="registerWorkflow()"
@@ -92,9 +98,11 @@
         <mat-form-field class="w-100">
           <mat-label>Source Code Provider</mat-label>
           <mat-select class="radio-group" [(ngModel)]="workflow.repository" name="repository">
-            <mat-option *ngFor="let repository of friendlyRepositoryKeys()" [value]="repository">
+            @for (repository of friendlyRepositoryKeys(); track repository) {
+            <mat-option [value]="repository">
               {{ repository }}
             </mat-option>
+            }
           </mat-select>
         </mat-form-field>
         <mat-form-field class="w-100">
@@ -113,7 +121,9 @@
             placeholder="e.g. CancerCollaboratory/dockstore-tool-liftover"
           />
           <!-- TODO: Actually return 3 separate sets of form error messages depending on the descriptor type selected -->
-          <mat-error *ngIf="formErrors.gitPath">{{ formErrors.gitPath }}</mat-error>
+          @if (formErrors.gitPath) {
+          <mat-error>{{ formErrors.gitPath }}</mat-error>
+          }
         </mat-form-field>
         <mat-radio-group
           class="w-100 radio-group"
@@ -123,9 +133,9 @@
           (change)="radioButtonChange($event)"
         >
           <mat-label>Descriptor Type: </mat-label>
+          @for (descriptorType of descriptorLanguages$ | async; track descriptorType) {
           <mat-radio-button
             class="radio-button"
-            *ngFor="let descriptorType of descriptorLanguages$ | async"
             [value]="descriptorType"
             [attr.data-cy]="('descriptor_type' | mapFriendlyValue: descriptorType) + '-radio-button'"
           >
@@ -134,6 +144,7 @@
               *ngTemplateOutlet="snakemakePreviewBubble; context: { isSnakemakeSelected: descriptorType === DescriptorTypeEnum.SMK }"
             ></ng-template>
           </mat-radio-button>
+          }
         </mat-radio-group>
         <mat-form-field class="w-100">
           <mat-label>Workflow Path</mat-label>
@@ -151,7 +162,9 @@
             [placeholder]="workflowPathPlaceholder"
           />
           <!-- TODO: Actually return 3 separate sets of form error messages depending on the descriptor type selected -->
-          <mat-error *ngIf="formErrors.workflow_path">{{ workflowPathError }}</mat-error>
+          @if (formErrors.workflow_path) {
+          <mat-error>{{ workflowPathError }}</mat-error>
+          }
         </mat-form-field>
         <mat-form-field class="w-100">
           <mat-label>Test Parameter File Path</mat-label>
@@ -165,7 +178,9 @@
             matTooltip="Relative path to a Test Parameter File in the Git repository."
             placeholder="e.g. /test.json"
           />
-          <mat-error *ngIf="formErrors.testParameterFilePath">{{ formErrors.testParameterFilePath }} </mat-error>
+          @if (formErrors.testParameterFilePath) {
+          <mat-error>{{ formErrors.testParameterFilePath }} </mat-error>
+          }
         </mat-form-field>
         <mat-form-field class="w-100">
           <mat-label>Workflow Name</mat-label>
@@ -178,7 +193,9 @@
             [matTooltip]="Tooltip.workflowName"
             placeholder="e.g. liftover-fast (optional)"
           />
-          <mat-error *ngIf="formErrors.workflowName">{{ formErrors.workflowName }} </mat-error>
+          @if (formErrors.workflowName) {
+          <mat-error>{{ formErrors.workflowName }} </mat-error>
+          }
         </mat-form-field>
         <div class="modal-footer">
           <button
@@ -201,11 +218,11 @@
           </button>
         </div>
       </form>
+      } @if (selectedOption?.value === 3) {
       <form
         fxLayout="column"
         fxLayoutAlign="space-evenly stretch"
         fxLayoutGap="1rem"
-        *ngIf="selectedOption?.value === 3"
         #registerHostedWorkflowForm="ngForm"
         name="registerHostedWorkflowForm"
         (ngSubmit)="registerHostedWorkflow()"
@@ -226,10 +243,10 @@
           (change)="radioButtonChange($event)"
         >
           <mat-label>Descriptor Type: </mat-label>
+          @for (descriptorType of descriptorLanguages$ | async; track descriptorType) {
           <mat-radio-button
             matTooltipPosition="after"
             [matTooltip]="'descriptor_tooltip' | mapFriendlyValue: descriptorType"
-            *ngFor="let descriptorType of descriptorLanguages$ | async"
             [value]="descriptorType"
           >
             {{ 'descriptor_type' | mapFriendlyValue: descriptorType }}
@@ -237,8 +254,8 @@
               *ngTemplateOutlet="snakemakePreviewBubble; context: { isSnakemakeSelected: descriptorType === DescriptorTypeEnum.SMK }"
             ></ng-template>
           </mat-radio-button>
+          }
         </mat-radio-group>
-
         <mat-form-field class="w-100">
           <mat-label>Repository</mat-label>
           <input
@@ -253,9 +270,10 @@
             required
             [matTooltip]="Tooltip.repository"
           />
-          <mat-error *ngIf="hostedWorkflowRepository?.errors?.pattern">{{ validationMessage.repository.pattern }}</mat-error>
+          @if (hostedWorkflowRepository?.errors?.pattern) {
+          <mat-error>{{ validationMessage.repository.pattern }}</mat-error>
+          }
         </mat-form-field>
-
         <!-- Optional workflow name, uncomment if implemented -->
         <!-- <mat-form-field class="w-100">
           <mat-label>Workflow Name</mat-label>
@@ -263,11 +281,9 @@
             placeholder="e.g. liftover-fast (optional)" />
           <mat-error *ngIf="hostedWorkflowName?.errors?.pattern">{{validationMessage.workflowName.pattern}}</mat-error>
         </mat-form-field> -->
-
-        <div *ngIf="hostedWorkflow.repository">
-          Final workflow path: dockstore.org/{{ username$ | async }}/{{ hostedWorkflow.repository }}
-        </div>
-
+        @if (hostedWorkflow.repository) {
+        <div>Final workflow path: dockstore.org/{{ username$ | async }}/{{ hostedWorkflow.repository }}</div>
+        }
         <div class="modal-footer">
           <button type="button" mat-button color="accent" (click)="hideModal(); clearWorkflowRegisterError()">Close</button>
           <button id="submitButton" type="submit" mat-flat-button class="accent-1-dark" [disabled]="!registerHostedWorkflowForm.form.valid">
@@ -275,15 +291,20 @@
           </button>
         </div>
       </form>
+      }
       <ng-template #snakemakePreviewBanner let-isSnakemakeSelected="isSnakemakeSelected">
-        <div *ngIf="Dockstore.FEATURES.enableSnakemake && isSnakemakeSelected" class="mt-2">
+        @if (Dockstore.FEATURES.enableSnakemake && isSnakemakeSelected) {
+        <div class="mt-2">
           <app-preview-warning [featureName]="Dockstore.FEATURES.snakemakeFeatureName"></app-preview-warning>
         </div>
+        }
       </ng-template>
       <ng-template #snakemakePreviewBubble let-isSnakemakeSelected="isSnakemakeSelected">
-        <mat-chip-set class="ml-2" *ngIf="Dockstore.FEATURES.enableSnakemake && isSnakemakeSelected">
+        @if (Dockstore.FEATURES.enableSnakemake && isSnakemakeSelected) {
+        <mat-chip-set class="ml-2">
           <app-preview-warning [featureName]="Dockstore.FEATURES.snakemakeFeatureName" [isBubble]="true"></app-preview-warning>
         </mat-chip-set>
+        }
       </ng-template>
     </mat-step>
   </mat-horizontal-stepper>

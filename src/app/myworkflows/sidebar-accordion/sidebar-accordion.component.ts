@@ -25,7 +25,7 @@ import { Observable } from 'rxjs';
 import { WorkflowQuery } from '../../shared/state/workflow.query';
 import { OrgWorkflowObject } from '../my-workflow/my-workflow.component';
 import { GithubAppsLogsComponent } from './github-apps-logs/github-apps-logs.component';
-import { KeyValue, NgFor, NgIf, NgClass, NgTemplateOutlet, AsyncPipe, KeyValuePipe } from '@angular/common';
+import { KeyValue, NgClass, NgTemplateOutlet, AsyncPipe, KeyValuePipe } from '@angular/common';
 import { MetadataService } from '../../shared/openapi/api/metadata.service';
 import { SelectTabPipe } from '../../shared/entry/select-tab.pipe';
 import { RefreshWorkflowOrganizationComponent } from '../../workflow/refresh-workflow-organization/refresh-workflow-organization.component';
@@ -52,8 +52,6 @@ interface GroupEntriesBySource {
     '../../shared/styles/my-entry-sidebar.scss',
   ],
   imports: [
-    NgFor,
-    NgIf,
     MatExpansionModule,
     MatTabsModule,
     ExtendedModule,

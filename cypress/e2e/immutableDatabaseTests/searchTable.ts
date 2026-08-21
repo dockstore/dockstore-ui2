@@ -439,7 +439,7 @@ describe('search table items per page', () => {
     cy.get('[data-cy=advanced-search]').click();
 
     cy.get('[data-cy=dropdown]').click();
-    cy.get('[data-cy=file_select]').should('not.exist');
+    cy.get('[data-cy=file_select]').should('be.visible');
     cy.get('[data-cy=desc_select]').should('be.visible').click();
 
     cy.get('[data-cy=NOTFilter]').click().type('garyluu');
@@ -455,9 +455,10 @@ describe('search table items per page', () => {
 
     cy.get('[data-cy=dropdown]').click();
     cy.get('[data-cy=desc_select]').should('be.visible').click();
+    cy.contains('Find tools, workflows, and notebooks').click();
 
     cy.get('[data-cy=dropdown]').click();
-    cy.get('[data-cy=desc_select]').should('not.exist');
+    cy.get('[data-cy=desc_select]').should('be.visible');
     cy.get('[data-cy=file_select]').should('be.visible').click();
 
     cy.get('[data-cy=ANDNoSplitFilter]').click().type('gary');

@@ -6,19 +6,27 @@
   <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
     <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle matTreeNodePadding>
       <!-- The already selected file -->
-      <button *ngIf="!node.child && data.selectedFile.absolutePath === node.absolutePath" mat-raised-button disabled>
+      @if (!node.child && data.selectedFile.absolutePath === node.absolutePath) {
+      <button mat-raised-button disabled>
         <mat-icon class="mr-2" [attr.aria-label]="'file icon'">description</mat-icon>{{ node.name }}
-        <mat-chip-set *ngIf="primaryDescriptorPath === node.absolutePath" class="ml-2">
+        @if (primaryDescriptorPath === node.absolutePath) {
+        <mat-chip-set class="ml-2">
           <mat-chip class="preview-bubble" data-cy="primary-descriptor-bubble">Primary</mat-chip>
         </mat-chip-set>
+        }
       </button>
+      }
       <!-- The not-selected files -->
-      <button (click)="selectFile(node)" *ngIf="!(!node.child && data.selectedFile.absolutePath === node.absolutePath)" mat-stroked-button>
+      @if (!(!node.child && data.selectedFile.absolutePath === node.absolutePath)) {
+      <button (click)="selectFile(node)" mat-stroked-button>
         <mat-icon color="primary" class="mr-2" [attr.aria-label]="'file icon'">description</mat-icon>{{ node.name }}
-        <mat-chip-set class="ml-2" *ngIf="primaryDescriptorPath === node.absolutePath">
+        @if (primaryDescriptorPath === node.absolutePath) {
+        <mat-chip-set class="ml-2">
           <mat-chip class="preview-bubble" data-cy="primary-descriptor-bubble">Primary</mat-chip>
         </mat-chip-set>
+        }
       </button>
+      }
     </mat-tree-node>
 
     <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>

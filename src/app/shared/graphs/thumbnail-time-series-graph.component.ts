@@ -14,7 +14,7 @@
  *     limitations under the License.
  */
 import { Component, Input, OnChanges } from '@angular/core';
-import { NgIf } from '@angular/common';
+
 import { BaseChartDirective } from 'ng2-charts';
 import { TimeSeriesMetric } from '../openapi';
 import { TimeSeriesService } from '../timeseries.service';
@@ -22,7 +22,7 @@ import { TimeSeriesService } from '../timeseries.service';
 @Component({
   selector: 'app-thumbnail-time-series-graph',
   templateUrl: './thumbnail-time-series-graph.component.html',
-  imports: [NgIf, BaseChartDirective],
+  imports: [BaseChartDirective],
 })
 export class ThumbnailTimeSeriesGraphComponent implements OnChanges {
   @Input() timeSeries: TimeSeriesMetric;

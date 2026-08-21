@@ -13,7 +13,7 @@ import { Router, RouterLink } from '@angular/router';
 import { RecentEventsComponent } from '../../recent-events/recent-events.component';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
-import { NgIf, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
@@ -30,7 +30,6 @@ import { MatChipsModule } from '@angular/material/chips';
     MatIconModule,
     RouterLink,
     MatTooltipModule,
-    NgIf,
     MatButtonModule,
     MatDividerModule,
     RecentEventsComponent,

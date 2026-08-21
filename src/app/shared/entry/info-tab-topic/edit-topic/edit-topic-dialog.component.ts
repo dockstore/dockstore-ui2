@@ -20,7 +20,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { NgFor, NgIf } from '@angular/common';
+
 import { MatDividerModule } from '@angular/material/divider';
 import { AlertComponent } from 'app/shared/alert/alert.component';
 import { DockstoreTool, Entry, EntryType, EntryTypeMetadata, Workflow } from 'app/shared/openapi';
@@ -56,7 +56,6 @@ export interface TopicOption {
     MatDialogModule,
     AlertComponent,
     MatDividerModule,
-    NgIf,
     MatFormFieldModule,
     MatInputModule,
     FlexModule,
@@ -67,7 +66,6 @@ export interface TopicOption {
     MatRadioModule,
     MatIconModule,
     MatCardModule,
-    NgFor,
     ClipboardModule,
     SnackbarDirective,
     MatChipsModule,

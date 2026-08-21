@@ -15,12 +15,16 @@
       (keydown.enter)="submitSearch(); trigger.closePanel()"
       data-cy="basic-search"
     />
-    <button *ngIf="search.value" matSuffix mat-icon-button (click)="clearSearch()">
+    @if (search.value) {
+    <button matSuffix mat-icon-button (click)="clearSearch()">
       <mat-icon>close</mat-icon>
     </button>
+    }
   </mat-form-field>
   <mat-autocomplete #auto="matAutocomplete" (optionSelected)="submitSearch()">
-    <mat-option *ngFor="let option of autocompleteTerms$ | async" [value]="option">{{ option }}</mat-option>
+    @for (option of autocompleteTerms$ | async; track option) {
+    <mat-option [value]="option">{{ option }}</mat-option>
+    }
   </mat-autocomplete>
   <div class="mt-2"><a data-cy="advanced-search" (click)="openAdvancedSearch()"> Open Advanced Search </a></div>
 </mat-expansion-panel>

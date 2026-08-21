@@ -21,14 +21,14 @@ import { Dockstore } from '../../../shared/dockstore.model';
 import { DockstoreTool, Entry, Workflow } from '../../../shared/openapi';
 import { MatButtonModule } from '@angular/material/button';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
-import { NgIf, TitleCasePipe } from '@angular/common';
+import { TitleCasePipe } from '@angular/common';
 import { AlertComponent } from '../../../shared/alert/alert.component';
 
 @Component({
   selector: 'app-launch-to-codespace-dialog',
   templateUrl: './launch-to-codespace-dialog.component.html',
   styleUrls: ['./launch-to-codespace-dialog.component.scss'],
-  imports: [MatDialogModule, AlertComponent, NgIf, FlexModule, MatButtonModule, TitleCasePipe],
+  imports: [MatDialogModule, AlertComponent, FlexModule, MatButtonModule, TitleCasePipe],
 })
 export class LaunchToCodespaceDialogComponent {
   clicked: boolean;

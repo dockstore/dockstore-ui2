@@ -7,13 +7,12 @@ import { versions } from '../footer/versions';
 import { ServiceInfoService } from '../service-info/service-info.service';
 import { Base } from '../shared/base';
 import { TRSService } from 'app/shared/openapi';
-import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-banner',
   templateUrl: './banner.component.html',
   styleUrls: ['./banner.component.scss'],
-  imports: [NgIf],
+  imports: [],
 })
 export class BannerComponent extends Base implements OnInit {
   showBanner: boolean;

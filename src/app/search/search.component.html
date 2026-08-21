@@ -1,21 +1,21 @@
 <!--
-  ~
-  ~  Copyright 2023 OICR and UCSC
-  ~
-  ~ Licensed under the Apache License, Version 2.0 (the "License");
-  ~ you may not use this file except in compliance with the License.
-  ~ You may obtain a copy of the License at
-  ~
-  ~         http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~ Unless required by applicable law or agreed to in writing, software
-  ~ distributed under the License is distributed on an "AS IS" BASIS,
-  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~ See the License for the specific language governing permissions and
-  ~ limitations under the License.
-  ~
-  ~
-  -->
+~
+~  Copyright 2023 OICR and UCSC
+~
+~ Licensed under the Apache License, Version 2.0 (the "License");
+~ you may not use this file except in compliance with the License.
+~ You may obtain a copy of the License at
+~
+~         http://www.apache.org/licenses/LICENSE-2.0
+~
+~ Unless required by applicable law or agreed to in writing, software
+~ distributed under the License is distributed on an "AS IS" BASIS,
+~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+~ See the License for the specific language governing permissions and
+~ limitations under the License.
+~
+~
+-->
 
 <app-header>
   <div fxLayout fxLayoutAlign="start center">
@@ -88,38 +88,24 @@
           (changedDebounced)="handleChangedDebounced($event)"
           (submitted)="handleSubmitted($event)"
         ></app-basic-search>
+        @for (key of getKeys(orderedBuckets); track key) {
         <mat-expansion-panel
-          *ngFor="let key of getKeys(orderedBuckets)"
           [expanded]="expandedPanels.get(key)"
           (afterExpand)="updateExpandedPanels(key, true)"
           (afterCollapse)="updateExpandedPanels(key, false)"
         >
           <mat-expansion-panel-header>
             {{ friendlyNames.get(key) }}
-            <img
-              *ngIf="toolTips.get(key)"
-              matTooltip="{{ toolTips.get(key) }}"
-              src="../../../../assets/svg/help.svg"
-              alt="help"
-              class="pl-2"
-            />
+            @if (toolTips.get(key)) {
+            <img matTooltip="{{ toolTips.get(key) }}" src="../../../../assets/svg/help.svg" alt="help" class="pl-2" />
+            }
           </mat-expansion-panel-header>
           <!-- watch out for GetFacetSearchResultsPipe when adding facets with search -->
-          <div
-            *ngIf="
-              key === 'all_authors.name.keyword' ||
-              key === 'labels.value.keyword' ||
-              key === 'namespace' ||
-              key === 'organization' ||
-              key === 'categories.displayName.keyword' ||
-              key === 'operation.displayName.keyword' ||
-              key === 'topic.displayName.keyword' ||
-              key === 'input-format.displayName.keyword' ||
-              key === 'input-data.displayName.keyword' ||
-              key === 'output-format.displayName.keyword' ||
-              key === 'output-data.displayName.keyword'
-            "
-          >
+          @if ( key === 'all_authors.name.keyword' || key === 'labels.value.keyword' || key === 'namespace' || key === 'organization' || key
+          === 'categories.displayName.keyword' || key === 'operation.displayName.keyword' || key === 'topic.displayName.keyword' || key ===
+          'input-format.displayName.keyword' || key === 'input-data.displayName.keyword' || key === 'output-format.displayName.keyword' ||
+          key === 'output-data.displayName.keyword' ) {
+          <div>
             <mat-form-field>
               <mat-label>Search for {{ friendlyNames.get(key) | lowercase }}</mat-label>
               <input
@@ -133,11 +119,15 @@
               />
             </mat-form-field>
             <mat-autocomplete #auto="matAutocomplete">
-              <mat-option *ngFor="let option of facetAutocompleteTerms$ | async" [value]="option">{{ option }}</mat-option>
+              @for (option of facetAutocompleteTerms$ | async; track option) {
+              <mat-option [value]="option">{{ option }}</mat-option>
+              }
             </mat-autocomplete>
           </div>
+          }
           <!-- overflow-hidden because buttons are using floats causing the parent div to be 0 height -->
-          <div class="overflow-hidden my-2" *ngIf="orderedBuckets.get(key).Items.size > 10">
+          @if (orderedBuckets.get(key).Items.size > 10) {
+          <div class="overflow-hidden my-2">
             <button
               mat-stroked-button
               (click)="clickSortMode(key, false)"
@@ -155,7 +145,8 @@
               <fa-icon [icon]="sortModeMap.get(key).CountOrderBy ? faSortNumericUp : faSortNumericDown"></fa-icon>
             </button>
           </div>
-          <div class="my-1" *ngFor="let subBucket of getBucketKeys(key); let i = index">
+          } @for (subBucket of getBucketKeys(key); track subBucket; let i = $index) {
+          <div class="my-1">
             <!-- Priority: Hover > histogram > selected -->
             <div class="selected-item">
               <!-- TODO: Somehow make this re-useable, and make it so that the histogram is slightly thinner (less height) than the selected background -->
@@ -164,22 +155,18 @@
               </div>
             </div>
           </div>
-          <div
-            class="my-1"
-            *ngFor="
-              let subBucket of getKeys(orderedBuckets.get(key).Items) | getFacetSearchResults: facetSearchTextMap.get(key):key;
-              let i = index
-            "
-          >
+          } @for ( subBucket of getKeys(orderedBuckets.get(key).Items) | getFacetSearchResults: facetSearchTextMap.get(key):key; track
+          subBucket; let i = $index) {
+          <div class="my-1">
             <div [ngStyle]="orderedBuckets.get(key) | getHistogramStyle: subBucket:(selectedIndex$ | async)">
-              <ng-container *ngIf="i < 5">
-                <ng-template *ngTemplateOutlet="facet; context: { key: key, subBucket: subBucket, isSelectedFacet: false }"></ng-template>
-              </ng-container>
-              <ng-container *ngIf="i >= 5 && fullyExpandMap.get(key)">
-                <ng-template *ngTemplateOutlet="facet; context: { key: key, subBucket: subBucket, isSelectedFacet: false }"></ng-template>
-              </ng-container>
+              @if (i < 5) {
+              <ng-template *ngTemplateOutlet="facet; context: { key: key, subBucket: subBucket, isSelectedFacet: false }"></ng-template>
+              } @if (i >= 5 && fullyExpandMap.get(key)) {
+              <ng-template *ngTemplateOutlet="facet; context: { key: key, subBucket: subBucket, isSelectedFacet: false }"></ng-template>
+              }
             </div>
           </div>
+          }
           <ng-template #facet let-key="key" let-subBucket="subBucket" let-isSelectedFacet="isSelectedFacet">
             <div class="panel-container-label" fxLayout="row" fxLayoutAlign="space-between center">
               <span fxFlex="80">
@@ -199,61 +186,58 @@
               }}</span>
             </div>
           </ng-template>
-          <div *ngIf="orderedBuckets.get(key).Items.size > 5">
+          @if (orderedBuckets.get(key).Items.size > 5) {
+          <div>
             <span style="cursor: pointer" class="pull-right" (click)="clickExpand(key)">
               <!-- The anchor is an easy way to change the color of the icon and "more" -->
               <a>
                 <fa-icon [icon]="fullyExpandMap.get(key) ? faAngleDoubleUp : faAngleDoubleDown" aria-hidden="true"></fa-icon>
-                <span
-                  *ngIf="
-                    key !== 'all_authors.name.keyword' &&
-                      key !== 'labels.value.keyword' &&
-                      key !== 'namespace' &&
-                      key !== 'organization' &&
-                      key !== 'categories.displayName.keyword' &&
-                      key !== 'operation.displayName.keyword' &&
-                      key !== 'topic.displayName.keyword' &&
-                      key !== 'input-format.displayName.keyword' &&
-                      key !== 'input-data.displayName.keyword' &&
-                      key !== 'output-format.displayName.keyword' &&
-                      key !== 'output-data.displayName.keyword';
-                    else facetLoading
-                  "
-                  >{{ fullyExpandMap.get(key) ? 'Hide' : orderedBuckets.get(key).Items.size - 5 + ' more' }}</span
-                >
-                <ng-template #facetLoading>
-                  <span>{{
-                    fullyExpandMap.get(key)
-                      ? 'Hide'
-                      : (getKeys(orderedBuckets.get(key).Items) | getFacetSearchUpdate: facetSearchTextMap.get(key))
-                  }}</span>
-                </ng-template>
+                @if ( key !== 'all_authors.name.keyword' && key !== 'labels.value.keyword' && key !== 'namespace' && key !== 'organization'
+                && key !== 'categories.displayName.keyword' && key !== 'operation.displayName.keyword' && key !==
+                'topic.displayName.keyword' && key !== 'input-format.displayName.keyword' && key !== 'input-data.displayName.keyword' && key
+                !== 'output-format.displayName.keyword' && key !== 'output-data.displayName.keyword') {
+                <span>{{ fullyExpandMap.get(key) ? 'Hide' : orderedBuckets.get(key).Items.size - 5 + ' more' }}</span>
+                } @else {
+                <span>{{
+                  fullyExpandMap.get(key)
+                    ? 'Hide'
+                    : (getKeys(orderedBuckets.get(key).Items) | getFacetSearchUpdate: facetSearchTextMap.get(key))
+                }}</span>
+                }
               </a>
             </span>
           </div>
+          }
         </mat-expansion-panel>
+        }
       </mat-accordion>
     </div>
 
-    <div class="col-md-9 containers-rsb" *ngIf="advancedSearchObject$ | async as advancedSearchObject">
+    @if (advancedSearchObject$ | async; as advancedSearchObject) {
+    <div class="col-md-9 containers-rsb">
       <div class="hits">
-        <mat-card appearance="outlined" *ngIf="!isLoading && hits?.length === 0" class="alert alert-warning text-break">
+        @if (!isLoading && hits?.length === 0) {
+        <mat-card appearance="outlined" class="alert alert-warning text-break">
           <mat-card-content>
-            <div *ngIf="searchTerm" data-cy="no-searchTerm-results">
+            @if (searchTerm) {
+            <div data-cy="no-searchTerm-results">
               Sorry, no matches found for <strong>{{ basicSearchText$ | async }}</strong
-              >.
-              <span *ngIf="suggestTerm$ | async"
+              >. @if (suggestTerm$ | async) {
+              <span
                 >Do you mean: <strong class="suggestTerm" (click)="searchSuggestTerm()">{{ suggestTerm$ | async }}</strong
                 >?</span
               >
+              }
             </div>
-            <div *ngIf="!searchTerm" data-cy="no-results">
+            } @if (!searchTerm) {
+            <div data-cy="no-results">
               <p>Your search has returned no results. Click the Reset button to restart your search.</p>
             </div>
+            }
           </mat-card-content>
         </mat-card>
-
-        <div *ngIf="searchService.hasSearchText(advancedSearchObject, searchTerm, hits) || searchService.hasFilters(filters)">
+        } @if (searchService.hasSearchText(advancedSearchObject, searchTerm, hits) || searchService.hasFilters(filters)) {
+        <div>
           <mat-card appearance="outlined" class="alert alert-info text-break">
             <mat-card-content>
               <div>
@@ -268,54 +252,64 @@
                   <fa-icon [icon]="faCopy" aria-hidden="true"></fa-icon>
                   Copy search link
                 </button>
-
-                <span *ngIf="searchService.hasResults(searchTerm, hits)">
+                @if (searchService.hasResults(searchTerm, hits)) {
+                <span>
                   <strong>Search: </strong> contains one of <strong>"{{ basicSearchText$ | async }}"</strong>
                 </span>
-
-                <span *ngIf="hasAdvancedSearchText$ | async">
+                } @if (hasAdvancedSearchText$ | async) {
+                <span>
                   <strong>Search: </strong>
-                  <span *ngIf="advancedSearchObject.ANDSplitFilter"
-                    >contains all of <strong>"{{ aNDSplitFilterText$ | async }}"</strong
-                    ><span *ngIf="advancedSearchObject.ANDNoSplitFilter || advancedSearchObject.ORFilter || advancedSearchObject.NOTFilter">
-                      AND
-                    </span></span
+                  @if (advancedSearchObject.ANDSplitFilter) {
+                  <span
+                    >contains all of <strong>"{{ aNDSplitFilterText$ | async }}"</strong>@if (advancedSearchObject.ANDNoSplitFilter ||
+                    advancedSearchObject.ORFilter || advancedSearchObject.NOTFilter) {
+                    <span> AND </span>
+                    }</span
                   >
-                  <span *ngIf="advancedSearchObject.ANDNoSplitFilter"
-                    >contains exactly <strong>"{{ aNDNoSplitFilterText$ | async }}"</strong
-                    ><span *ngIf="advancedSearchObject.ORFilter || advancedSearchObject.NOTFilter"> AND </span></span
+                  } @if (advancedSearchObject.ANDNoSplitFilter) {
+                  <span
+                    >contains exactly <strong>"{{ aNDNoSplitFilterText$ | async }}"</strong>@if (advancedSearchObject.ORFilter ||
+                    advancedSearchObject.NOTFilter) {
+                    <span> AND </span>
+                    }</span
                   >
-                  <span *ngIf="advancedSearchObject.ORFilter"
-                    >contains one of <strong>"{{ oRFilterText$ | async }}"</strong
-                    ><span *ngIf="advancedSearchObject.NOTFilter"> AND </span></span
+                  } @if (advancedSearchObject.ORFilter) {
+                  <span
+                    >contains one of <strong>"{{ oRFilterText$ | async }}"</strong>@if (advancedSearchObject.NOTFilter) {
+                    <span> AND </span>
+                    }</span
                   >
-                  <span *ngIf="advancedSearchObject.NOTFilter"
+                  } @if (advancedSearchObject.NOTFilter) {
+                  <span
                     >does not contain <strong>"{{ nOTFilterText$ | async }}"</strong></span
                   >
+                  }
                 </span>
-                <span *ngIf="searchService.hasSearchText(advancedSearchObject, searchTerm, hits) && searchService.hasFilters(filters)"
-                  >&nbsp;AND
-                </span>
-                <strong *ngIf="!searchService.hasSearchText(advancedSearchObject, searchTerm, hits) && searchService.hasFilters(filters)"
-                  >Search:
-                </strong>
-                <span *ngFor="let key of filterKeys$ | async; let i = index">
-                  the <strong>{{ friendlyNames.get(key) }}</strong> is
-                  <span *ngFor="let subBucket of filters.get(key); let j = index">
+                } @if (searchService.hasSearchText(advancedSearchObject, searchTerm, hits) && searchService.hasFilters(filters)) {
+                <span>&nbsp;AND </span>
+                } @if (!searchService.hasSearchText(advancedSearchObject, searchTerm, hits) && searchService.hasFilters(filters)) {
+                <strong>Search: </strong>
+                } @for (key of filterKeys$ | async; track key; let i = $index) {
+                <span>
+                  the <strong>{{ friendlyNames.get(key) }}</strong> is @for (subBucket of filters.get(key); track subBucket; let j = $index)
+                  {
+                  <span>
                     <strong>{{ key | mapFriendlyValue: subBucket }}</strong>
-                    <span *ngIf="j < filters.get(key).size - 1"> OR </span>
+                    @if (j < filters.get(key).size - 1) {
+                    <span> OR </span>
+                    }
                   </span>
-                  <span *ngIf="i < filters.size - 1"> AND </span>
+                  } @if (i < filters.size - 1) {
+                  <span> AND </span>
+                  }
                 </span>
+                }
               </div>
             </mat-card-content>
           </mat-card>
         </div>
-        <mat-card
-          appearance="outlined"
-          class="alert alert-info"
-          *ngIf="hits?.length > query_size - 1 && searchService.hasNarrowedSearch(advancedSearchObject, searchTerm, hits, filters)"
-        >
+        } @if (hits?.length > query_size - 1 && searchService.hasNarrowedSearch(advancedSearchObject, searchTerm, hits, filters)) {
+        <mat-card appearance="outlined" class="alert alert-info">
           <mat-card-content>
             <p>
               <strong>Notice: </strong>Your search has returned greater than {{ query_size - 1 }} results, however only
@@ -323,8 +317,10 @@
             </p>
           </mat-card-content>
         </mat-card>
+        }
         <app-search-results (sortChange)="setSort($event)"></app-search-results>
       </div>
     </div>
+    }
   </div>
 </div>

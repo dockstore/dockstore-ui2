@@ -41,7 +41,7 @@ import { SnackbarDirective } from '../../shared/snackbar.directive';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
-import { NgIf, NgFor, NgClass } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { LoadingComponent } from '../../shared/loading/loading.component';
 import { AlertComponent } from '../../shared/alert/alert.component';
 
@@ -53,9 +53,7 @@ import { AlertComponent } from '../../shared/alert/alert.component';
     MatDialogModule,
     AlertComponent,
     LoadingComponent,
-    NgIf,
     FormsModule,
-    NgFor,
     NgClass,
     ExtendedModule,
     MatIconModule,

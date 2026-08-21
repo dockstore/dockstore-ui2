@@ -22,14 +22,14 @@ import { SearchService } from '../state/search.service';
 import { MatDividerModule } from '@angular/material/divider';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
-import { NgIf, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { SearchEntryTableComponent } from '../search-entry-table.component';
 
 @Component({
   selector: 'app-search-results',
   templateUrl: './search-results.component.html',
   styleUrls: ['./search-results.component.scss'],
-  imports: [NgIf, FlexModule, FontAwesomeModule, MatDividerModule, SearchEntryTableComponent, AsyncPipe],
+  imports: [FlexModule, FontAwesomeModule, MatDividerModule, SearchEntryTableComponent, AsyncPipe],
 })
 export class SearchResultsComponent {
   public EntryType = EntryType;

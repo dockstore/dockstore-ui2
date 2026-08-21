@@ -1,24 +1,25 @@
 <!--
-  ~    Copyright 2022 OICR, UCSC
-  ~
-  ~    Licensed under the Apache License, Version 2.0 (the "License");
-  ~    you may not use this file except in compliance with the License.
-  ~    You may obtain a copy of the License at
-  ~
-  ~        http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~    Unless required by applicable law or agreed to in writing, software
-  ~    distributed under the License is distributed on an "AS IS" BASIS,
-  ~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~    See the License for the specific language governing permissions and
-  ~    limitations under the License.
-  -->
+~    Copyright 2022 OICR, UCSC
+~
+~    Licensed under the Apache License, Version 2.0 (the "License");
+~    you may not use this file except in compliance with the License.
+~    You may obtain a copy of the License at
+~
+~        http://www.apache.org/licenses/LICENSE-2.0
+~
+~    Unless required by applicable law or agreed to in writing, software
+~    distributed under the License is distributed on an "AS IS" BASIS,
+~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+~    See the License for the specific language governing permissions and
+~    limitations under the License.
+-->
 <div data-cy="editToolVersionDialog">
   <h4 mat-dialog-title>{{ TagEditorMode[mode] }} Version Tag</h4>
   <div mat-dialog-content>
     <app-alert></app-alert>
     <app-loading [loading]="loading">
-      <form *ngIf="unsavedVersion" #tagEditorForm="ngForm" class="form-horizontal" name="tagEditorForm">
+      @if (unsavedVersion) {
+      <form #tagEditorForm="ngForm" class="form-horizontal" name="tagEditorForm">
         <div class="modal-body tagEditor">
           <div class="form-group form-group-sm">
             <label class="col-sm-3 col-md-3 col-lg-3 control-label"> Version Tag: </label>
@@ -53,9 +54,11 @@
                 placeholder="e.g. 1.0.0"
                 [disabled]="!editMode || (editMode && unsavedVersion.automated) || tool?.mode === DockstoreToolType.ModeEnum.HOSTED"
               />
-              <div *ngIf="formErrors.reference" class="form-error-messages alert alert-danger">
+              @if (formErrors.reference) {
+              <div class="form-error-messages alert alert-danger">
                 {{ formErrors.reference }}
               </div>
+              }
             </div>
           </div>
           <div class="form-group form-group-sm">
@@ -91,9 +94,11 @@
                 placeholder="e.g. /Dockerfile"
                 [disabled]="!editMode || tool?.mode === DockstoreToolType.ModeEnum.HOSTED"
               />
-              <div *ngIf="formErrors.dockerfilePath" class="form-error-messages alert alert-danger">
+              @if (formErrors.dockerfilePath) {
+              <div class="form-error-messages alert alert-danger">
                 {{ formErrors.dockerfilePath }}
               </div>
+              }
             </div>
           </div>
           <div class="form-group form-group-sm">
@@ -112,9 +117,11 @@
                 placeholder="e.g. /Dockstore.cwl"
                 [disabled]="!editMode || tool?.mode === DockstoreToolType.ModeEnum.HOSTED"
               />
-              <div *ngIf="formErrors.cwlPath" class="form-error-messages alert alert-danger">
+              @if (formErrors.cwlPath) {
+              <div class="form-error-messages alert alert-danger">
                 {{ formErrors.cwlPath }}
               </div>
+              }
             </div>
           </div>
           <div class="form-group form-group-sm">
@@ -133,19 +140,17 @@
                 placeholder="e.g. /Dockstore.wdl"
                 [disabled]="!editMode || tool?.mode === DockstoreToolType.ModeEnum.HOSTED"
               />
-              <div *ngIf="formErrors.wdlPath" class="form-error-messages alert alert-danger">
+              @if (formErrors.wdlPath) {
+              <div class="form-error-messages alert alert-danger">
                 {{ formErrors.wdlPath }}
               </div>
+              }
             </div>
           </div>
-
           <div class="form-group form-group-sm">
             <label class="col-sm-3 col-md-3 col-lg-3 control-label"> CWL Test Parameter File(s): </label>
-            <div
-              class="col-sm-9 col-md-9 col-lg-9 form-margin"
-              [ngClass]="{ 'col-sm-offset-3': i > 0 }"
-              *ngFor="let item of unsavedCWLTestParameterFilePaths; let i = index; trackBy: trackByIdx"
-            >
+            @for (item of unsavedCWLTestParameterFilePaths; track trackByIdx(i, item); let i = $index) {
+            <div class="col-sm-9 col-md-9 col-lg-9 form-margin" [ngClass]="{ 'col-sm-offset-3': i > 0 }">
               <div class="input-group">
                 <input
                   [ngClass]="{ 'input-right-button': editMode, 'input-no-button': !editMode }"
@@ -162,24 +167,22 @@
                   ng-class="editMode ? 'test_parameter_input' : ''"
                 />
                 <span class="input-group-btn">
+                  @if (editMode && tool?.mode !== DockstoreToolType.ModeEnum.HOSTED) {
                   <button
                     id="removeCWLTestParameterFileButton"
                     title="Remove CWL test parameter file"
                     type="button"
                     class="btn btn-default form-sm-button"
-                    *ngIf="editMode && tool?.mode !== DockstoreToolType.ModeEnum.HOSTED"
                     (click)="removeTestParameterFile(i, DescriptorType.CWL)"
                   >
                     <mat-icon>clear</mat-icon>
                   </button>
+                  }
                 </span>
               </div>
             </div>
-            <div
-              class="col-sm-9 col-md-9 col-lg-9"
-              [ngClass]="{ 'col-sm-offset-3': unsavedCWLTestParameterFilePaths.length > 0 }"
-              *ngIf="editMode"
-            >
+            } @if (editMode) {
+            <div class="col-sm-9 col-md-9 col-lg-9" [ngClass]="{ 'col-sm-offset-3': unsavedCWLTestParameterFilePaths.length > 0 }">
               <div class="input-group">
                 <input
                   data-cy="addCWLField"
@@ -198,54 +201,56 @@
                   ng-class="editMode ? 'test_parameter_input' : ''"
                 />
                 <span class="input-group-btn">
+                  @if (editMode && !(model1.invalid || unsavedTestCWLFile.length === 0)) {
                   <button
                     title="Add CWL test parameter file"
                     type="button"
                     class="btn btn-default form-sm-button"
                     [disabled]="hasDuplicateTestJson(DescriptorType.CWL) || tool?.mode === DockstoreToolType.ModeEnum.HOSTED"
                     (click)="addTestParameterFile(DescriptorType.CWL)"
-                    *ngIf="editMode && !(model1.invalid || unsavedTestCWLFile.length === 0)"
                   >
                     <mat-icon>add</mat-icon>
                   </button>
+                  } @if (editMode && (model1.invalid || unsavedTestCWLFile.length === 0)) {
                   <button
                     title="Enter a valid path"
                     type="button"
                     class="btn btn-default form-sm-button"
                     [disabled]="model1.invalid || unsavedTestCWLFile.length === 0 || tool?.mode === DockstoreToolType.ModeEnum.HOSTED"
-                    *ngIf="editMode && (model1.invalid || unsavedTestCWLFile.length === 0)"
                   >
                     <mat-icon>add</mat-icon>
                   </button>
+                  }
                 </span>
               </div>
-              <div *ngIf="formErrors.cwlTestParameterFilePath" class="form-error-messages">
+              @if (formErrors.cwlTestParameterFilePath) {
+              <div class="form-error-messages">
                 <mat-card appearance="outlined" class="alert alert-danger" role="alert">
                   <mat-card-content>
                     <mat-icon class="alert-danger-icon">error</mat-icon> {{ formErrors.cwlTestParameterFilePath }}
                   </mat-card-content>
                 </mat-card>
               </div>
-              <div *ngIf="hasDuplicateTestJson(DescriptorType.CWL)">
+              } @if (hasDuplicateTestJson(DescriptorType.CWL)) {
+              <div>
                 <mat-card appearance="outlined" class="alert alert-danger" role="alert">
                   <mat-card-content>
                     <mat-icon class="alert-danger-icon">error</mat-icon> Duplicate test json files are not allowed.
                   </mat-card-content>
                 </mat-card>
               </div>
+              }
             </div>
-            <div class="col-sm-9 col-md-9 col-lg-9" *ngIf="unsavedCWLTestParameterFilePaths.length === 0 && !editMode">
+            } @if (unsavedCWLTestParameterFilePaths.length === 0 && !editMode) {
+            <div class="col-sm-9 col-md-9 col-lg-9">
               <input class="form-control" placeholder="None provided" [disabled]="true" />
             </div>
+            }
           </div>
-
           <div class="form-group form-group form-group-sm">
             <label class="col-sm-3 col-md-3 col-lg-3 control-label"> WDL Test Parameter File(s): </label>
-            <div
-              class="col-sm-9 col-md-9 col-lg-9 form-margin"
-              [ngClass]="{ 'col-sm-offset-3': i > 0 }"
-              *ngFor="let item of unsavedWDLTestParameterFilePaths; let i = index; trackBy: trackByIdx"
-            >
+            @for (item of unsavedWDLTestParameterFilePaths; track trackByIdx(i, item); let i = $index) {
+            <div class="col-sm-9 col-md-9 col-lg-9 form-margin" [ngClass]="{ 'col-sm-offset-3': i > 0 }">
               <div class="input-group">
                 <input
                   [ngClass]="{ 'input-right-button': editMode, 'input-no-button': !editMode }"
@@ -262,24 +267,22 @@
                   ng-class="editMode ? 'test_parameter_input' : ''"
                 />
                 <span class="input-group-btn">
+                  @if (editMode && tool?.mode !== DockstoreToolType.ModeEnum.HOSTED) {
                   <button
                     id="removeWDLTestParameterFileButton"
                     title="Remove WDL test parameter file"
                     type="button"
                     class="btn btn-default form-sm-button"
-                    *ngIf="editMode && tool?.mode !== DockstoreToolType.ModeEnum.HOSTED"
                     (click)="removeTestParameterFile(i, DescriptorType.WDL)"
                   >
                     <mat-icon>clear</mat-icon>
                   </button>
+                  }
                 </span>
               </div>
             </div>
-            <div
-              class="col-sm-9 col-md-9 col-lg-9"
-              [ngClass]="{ 'col-sm-offset-3': unsavedWDLTestParameterFilePaths.length > 0 }"
-              *ngIf="editMode"
-            >
+            } @if (editMode) {
+            <div class="col-sm-9 col-md-9 col-lg-9" [ngClass]="{ 'col-sm-offset-3': unsavedWDLTestParameterFilePaths.length > 0 }">
               <div class="input-group">
                 <input
                   data-cy="addWDLField"
@@ -298,48 +301,54 @@
                   ng-class="editMode ? 'test_parameter_input' : ''"
                 />
                 <span class="input-group-btn">
+                  @if (editMode && !(model1.invalid || unsavedTestWDLFile.length === 0)) {
                   <button
                     title="Add WDL test parameter file"
                     type="button"
                     class="btn btn-default form-sm-button"
                     [disabled]="hasDuplicateTestJson(DescriptorType.WDL) || tool?.mode === DockstoreToolType.ModeEnum.HOSTED"
                     (click)="addTestParameterFile(DescriptorType.WDL)"
-                    *ngIf="editMode && !(model1.invalid || unsavedTestWDLFile.length === 0)"
                   >
                     <mat-icon>add</mat-icon>
                   </button>
+                  } @if (editMode && (model1.invalid || unsavedTestWDLFile.length === 0)) {
                   <button
                     title="Enter a valid path"
                     type="button"
                     class="btn btn-default form-sm-button"
                     [disabled]="model1.invalid || unsavedTestWDLFile.length === 0 || tool?.mode === DockstoreToolType.ModeEnum.HOSTED"
-                    *ngIf="editMode && (model1.invalid || unsavedTestWDLFile.length === 0)"
                   >
                     <mat-icon>add</mat-icon>
                   </button>
+                  }
                 </span>
               </div>
-              <div *ngIf="formErrors.wdlTestParameterFilePath" class="form-error-messages">
+              @if (formErrors.wdlTestParameterFilePath) {
+              <div class="form-error-messages">
                 <mat-card appearance="outlined" class="alert alert-danger" role="alert">
                   <mat-card-content>
                     <mat-icon class="alert-danger-icon">error</mat-icon> {{ formErrors.wdlTestParameterFilePath }}
                   </mat-card-content>
                 </mat-card>
               </div>
-              <div *ngIf="hasDuplicateTestJson(DescriptorType.WDL)">
+              } @if (hasDuplicateTestJson(DescriptorType.WDL)) {
+              <div>
                 <mat-card appearance="outlined" class="alert alert-danger" role="alert">
                   <mat-card-content>
                     <mat-icon class="alert-danger-icon">error</mat-icon> Duplicate test json files are not allowed.
                   </mat-card-content>
                 </mat-card>
               </div>
+              }
             </div>
-            <div class="col-sm-9 col-md-9 col-lg-9" *ngIf="unsavedWDLTestParameterFilePaths.length === 0 && !editMode">
+            } @if (unsavedWDLTestParameterFilePaths.length === 0 && !editMode) {
+            <div class="col-sm-9 col-md-9 col-lg-9">
               <input class="form-control" placeholder="None provided" [disabled]="true" />
             </div>
+            }
           </div>
-
-          <div class="form-group form-group-sm" *ngIf="editMode" style="clear: both">
+          @if (editMode) {
+          <div class="form-group form-group-sm" style="clear: both">
             <label class="col-sm-3 col-md-3 col-lg-3 control-label"> Hidden: </label>
             <div class="col-sm-9 col-md-9 col-lg-9">
               <div>
@@ -356,6 +365,7 @@
               </div>
             </div>
           </div>
+          }
           <div class="form-group form-group-sm">
             <label class="col-sm-3 col-md-3 col-lg-3 control-label"> Automated: </label>
             <div class="col-sm-9 col-md-9 col-lg-9">
@@ -390,7 +400,8 @@
           </div>
           <div class="form-group form-group-sm">
             <label class="col-sm-3 col-md-3 col-lg-3 control-label"> Docker Pull: </label>
-            <div class="col-sm-9 col-md-9 col-lg-9" *ngIf="tool">
+            @if (tool) {
+            <div class="col-sm-9 col-md-9 col-lg-9">
               <div class="input-group">
                 <input
                   type="text"
@@ -407,38 +418,40 @@
                 </span>
               </div>
             </div>
+            }
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" data-cy="cancel-edit-version-button" mat-button color="accent" *ngIf="editMode" (click)="onHidden()">
-            Cancel
-          </button>
+          @if (editMode) {
+          <button type="button" data-cy="cancel-edit-version-button" mat-button color="accent" (click)="onHidden()">Cancel</button>
+          } @if (!editMode) {
           <button
             type="button"
             mat-flat-button
             class="accent-1-dark"
             mat-dialog-close
             data-cy="ok-dialog-close-button"
-            *ngIf="!editMode"
             (click)="onHidden()"
           >
             OK
           </button>
+          } @if (mode === TagEditorMode.Edit) {
           <button
             id="saveVersionModal"
             type="button"
             (click)="onSubmit()"
             mat-flat-button
             class="accent-1-dark"
-            *ngIf="mode === TagEditorMode.Edit"
             [disabled]="!tagEditorForm.form.valid || hasDuplicateTestJson(DescriptorType.WDL) || hasDuplicateTestJson(DescriptorType.CWL)"
             data-dismiss="modal"
             data-cy="save-version"
           >
             Save Changes
           </button>
+          }
         </div>
       </form>
+      }
     </app-loading>
   </div>
 </div>

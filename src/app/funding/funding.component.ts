@@ -3,7 +3,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { MatDividerModule } from '@angular/material/divider';
-import { NgFor } from '@angular/common';
+
 import { HeaderComponent } from '../header/header.component';
 
 export interface Funder {
@@ -23,7 +23,7 @@ export interface FundingSections {
   selector: 'app-funding',
   templateUrl: './funding.component.html',
   styleUrls: ['./funding.component.scss'],
-  imports: [HeaderComponent, NgFor, MatDividerModule, FlexModule, MatCardModule, MatButtonModule],
+  imports: [HeaderComponent, MatDividerModule, FlexModule, MatCardModule, MatButtonModule],
 })
 @Injectable()
 export class FundingComponent {

@@ -23,7 +23,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
-import { NgIf, NgFor, NgSwitch, NgSwitchCase, NgSwitchDefault, AsyncPipe, TitleCasePipe, DatePipe } from '@angular/common';
+import { AsyncPipe, TitleCasePipe, DatePipe } from '@angular/common';
 import { LoadingComponent } from '../../../shared/loading/loading.component';
 import { Dockstore } from 'app/shared/dockstore.model';
 
@@ -48,7 +48,6 @@ import { Dockstore } from 'app/shared/dockstore.model';
   imports: [
     MatDialogModule,
     LoadingComponent,
-    NgIf,
     MatCardModule,
     MatIconModule,
     RouterLink,
@@ -56,15 +55,11 @@ import { Dockstore } from 'app/shared/dockstore.model';
     MatInputModule,
     MatTableModule,
     MatSortModule,
-    NgFor,
-    NgSwitch,
-    NgSwitchCase,
     FlexModule,
     MatButtonModule,
     SnackbarDirective,
     MatTooltipModule,
     ClipboardModule,
-    NgSwitchDefault,
     MatPaginatorModule,
     AsyncPipe,
     TitleCasePipe,

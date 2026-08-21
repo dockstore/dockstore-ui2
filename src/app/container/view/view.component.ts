@@ -35,13 +35,13 @@ import { VersionModalComponent } from '../version-modal/version-modal.component'
 import { VersionModalService } from '../version-modal/version-modal.service';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
-import { NgIf, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-view-container',
   templateUrl: './view.component.html',
   styleUrls: ['./view.component.css'],
-  imports: [NgIf, MatButtonModule, MatMenuModule, AsyncPipe],
+  imports: [MatButtonModule, MatMenuModule, AsyncPipe],
 })
 // This is actually the actions dropdown for tags
 export class ViewContainerComponent extends View<Tag> implements OnInit {

@@ -10,7 +10,7 @@ import { RouterLink } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatTabsModule } from '@angular/material/tabs';
 import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
-import { NgStyle, NgFor, AsyncPipe, SlicePipe } from '@angular/common';
+import { NgStyle, AsyncPipe, SlicePipe } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
@@ -29,7 +29,6 @@ import { FlexModule } from '@ngbracket/ngx-layout/flex';
     MatTabsModule,
     MatCardModule,
     RouterLink,
-    NgFor,
     AsyncPipe,
     SlicePipe,
   ],

@@ -32,7 +32,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { ImgFallbackDirective } from '../../shared/img-fallback.directive';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
-import { NgIf, NgFor, NgClass, AsyncPipe, DatePipe } from '@angular/common';
+import { NgClass, AsyncPipe, DatePipe } from '@angular/common';
 import { LoadingComponent } from '../../shared/loading/loading.component';
 import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
 import { RouterLink } from '@angular/router';
@@ -77,13 +77,11 @@ export interface EntryDialogData {
     RouterLink,
     ExtendedModule,
     LoadingComponent,
-    NgIf,
     MatCardModule,
     MatIconModule,
     ImgFallbackDirective,
     MatTooltipModule,
     MatButtonModule,
-    NgFor,
     MatChipsModule,
     EntryCategoriesComponent,
     NgClass,

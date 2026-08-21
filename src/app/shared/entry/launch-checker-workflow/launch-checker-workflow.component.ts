@@ -24,13 +24,13 @@ import { SnackbarDirective } from '../../snackbar.directive';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatCardModule } from '@angular/material/card';
-import { NgIf, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-launch-checker-workflow',
   templateUrl: './launch-checker-workflow.component.html',
   styleUrls: ['./launch-checker-workflow.component.scss'],
-  imports: [NgIf, MatCardModule, MatTooltipModule, MatButtonModule, SnackbarDirective, ClipboardModule, MatIconModule, AsyncPipe],
+  imports: [MatCardModule, MatTooltipModule, MatButtonModule, SnackbarDirective, ClipboardModule, MatIconModule, AsyncPipe],
 })
 export class LaunchCheckerWorkflowComponent {
   @Input() command: string;

@@ -25,7 +25,7 @@ import { TRSService } from 'app/shared/openapi';
 import { FooterService } from './footer.service';
 import { versions } from './versions';
 import { GitTagPipe } from './git-tag.pipe';
-import { NgFor } from '@angular/common';
+
 import { MatIconModule } from '@angular/material/icon';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { SnackbarDirective } from '../shared/snackbar.directive';
@@ -37,7 +37,7 @@ import { FlexModule } from '@ngbracket/ngx-layout/flex';
   selector: 'app-footer',
   templateUrl: './footer.component.html',
   styleUrls: ['./footer.component.scss'],
-  imports: [FlexModule, RouterLink, MatButtonModule, SnackbarDirective, ClipboardModule, MatIconModule, NgFor, GitTagPipe],
+  imports: [FlexModule, RouterLink, MatButtonModule, SnackbarDirective, ClipboardModule, MatIconModule, GitTagPipe],
 })
 export class FooterComponent extends Base implements OnInit {
   domain: string;

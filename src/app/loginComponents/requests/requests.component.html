@@ -1,31 +1,35 @@
-<ng-template #loading>
-  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-</ng-template>
-
-<div *ngIf="(isLoading$ | async) === false; else loading">
+@if ((isLoading$ | async) === false) {
+<div>
   <!-- Curator/Admin Pending Organizations -->
-  <div *ngIf="(isAdmin$ | async) || (isCurator$ | async)" class="p-3">
+  @if ((isAdmin$ | async) || (isCurator$ | async)) {
+  <div class="p-3">
     <h3>Curator Requests</h3>
     <p>As a curator/admin, you can approve and reject organization requests.</p>
-    <mat-card appearance="outlined" class="alert alert-info" role="alert" *ngIf="(allPendingOrganizations$ | async)?.length === 0">
+    @if ((allPendingOrganizations$ | async)?.length === 0) {
+    <mat-card appearance="outlined" class="alert alert-info" role="alert">
       <mat-card-content> <mat-icon>info</mat-icon> There are no organizations waiting for approval. </mat-card-content>
     </mat-card>
-
+    }
     <div fxLayout="column" fxLayoutGap="32px">
-      <mat-card *ngFor="let org of allPendingOrganizations$ | async; let i = index; trackBy: trackByOrg" [id]="'pending-org-card-' + i">
+      @for (org of allPendingOrganizations$ | async; track trackByOrg(i, org); let i = $index) {
+      <mat-card [id]="'pending-org-card-' + i">
         <mat-card-header>
           <mat-card-title>
             <a [routerLink]="'/organizations/' + org.name" [matTooltip]="org?.name">{{ org.displayName }}</a>
           </mat-card-title>
           <mat-card-subtitle>
             <p>
-              Requested by user(s)
-              <span *ngFor="let user of org?.users; let last = last">
-                <a *ngIf="user?.status === OrganizationUser.StatusEnum.ACCEPTED" [routerLink]="'/users/' + user.user.username"
-                  >{{ user.user.username }}<span *ngIf="!last">, </span></a
+              Requested by user(s) @for (user of org?.users; track user; let last = $last) {
+              <span>
+                @if (user?.status === OrganizationUser.StatusEnum.ACCEPTED) {
+                <a [routerLink]="'/users/' + user.user.username"
+                  >{{ user.user.username }}@if (!last) {
+                  <span>, </span>
+                  }</a
                 >
+                }
               </span>
-              on {{ org.dbCreateDate | date }}
+              } on {{ org.dbCreateDate | date }}
             </p>
           </mat-card-subtitle>
         </mat-card-header>
@@ -62,22 +66,22 @@
           </button>
         </mat-card-actions>
       </mat-card>
+      }
     </div>
   </div>
-
+  }
   <!-- My Pending Organization Requests -->
   <div class="p-3">
     <h3>My Requests</h3>
     <p>The following organizations that you have created are pending approval.</p>
-    <mat-card appearance="outlined" class="alert alert-info" role="alert" *ngIf="(myPendingOrganizationRequests$ | async)?.length === 0">
+    @if ((myPendingOrganizationRequests$ | async)?.length === 0) {
+    <mat-card appearance="outlined" class="alert alert-info" role="alert">
       <mat-card-content> <mat-icon>info</mat-icon> You have no organizations pending approval. </mat-card-content>
     </mat-card>
-
+    }
     <div fxLayout="column" fxLayoutGap="32px">
-      <mat-card
-        *ngFor="let membership of myPendingOrganizationRequests$ | async; let i = index; trackBy: trackByOrgUser"
-        [id]="'my-pending-org-card-' + i"
-      >
+      @for (membership of myPendingOrganizationRequests$ | async; track trackByOrgUser(i, membership); let i = $index) {
+      <mat-card [id]="'my-pending-org-card-' + i">
         <mat-card-header>
           <mat-card-title>
             <a [routerLink]="'/organizations/' + membership.organization?.name" [matTooltip]="membership.organization?.name">{{
@@ -102,17 +106,17 @@
           </button>
         </mat-card-actions>
       </mat-card>
+      }
     </div>
-
     <p class="pt-2">The following organizations that you have created are rejected.</p>
-    <mat-card appearance="outlined" class="alert alert-info" role="alert" *ngIf="(myRejectedOrganizationRequests$ | async)?.length === 0">
+    @if ((myRejectedOrganizationRequests$ | async)?.length === 0) {
+    <mat-card appearance="outlined" class="alert alert-info" role="alert">
       <mat-card-content> <mat-icon>info</mat-icon> You have no rejected organizations. </mat-card-content>
     </mat-card>
+    }
     <div fxLayout="column" fxLayoutGap="32px">
-      <mat-card
-        *ngFor="let membership of myRejectedOrganizationRequests$ | async; let i = index; trackBy: trackByOrgUser"
-        [id]="'my-rejected-org-card-' + i"
-      >
+      @for (membership of myRejectedOrganizationRequests$ | async; track trackByOrgUser(i, membership); let i = $index) {
+      <mat-card [id]="'my-rejected-org-card-' + i">
         <mat-card-header>
           <mat-card-title>
             <mat-icon color="primary" matTooltip="This organization has been rejected">warning</mat-icon>
@@ -149,22 +153,21 @@
           </button>
         </mat-card-actions>
       </mat-card>
+      }
     </div>
   </div>
-
   <!-- Pending Organization Invites -->
   <div class="p-3">
     <h3>Organization Invites</h3>
     <p>Accept and decline invitations to join organizations.</p>
-    <mat-card appearance="outlined" class="alert alert-info" role="alert" *ngIf="(myOrganizationInvites$ | async)?.length === 0">
+    @if ((myOrganizationInvites$ | async)?.length === 0) {
+    <mat-card appearance="outlined" class="alert alert-info" role="alert">
       <mat-card-content> <mat-icon>info</mat-icon> You have no pending organization invites. </mat-card-content>
     </mat-card>
-
+    }
     <div fxLayout="column" fxLayoutGap="32px">
-      <mat-card
-        *ngFor="let membership of myOrganizationInvites$ | async; let i = index; trackBy: trackByOrgUser"
-        [id]="'my-org-invites-card-' + i"
-      >
+      @for (membership of myOrganizationInvites$ | async; track trackByOrgUser(i, membership); let i = $index) {
+      <mat-card [id]="'my-org-invites-card-' + i">
         <mat-card-header>
           <mat-card-title>
             <a [routerLink]="'/organizations/' + membership.organization?.name" [matTooltip]="membership.organization?.name">{{
@@ -199,6 +202,10 @@
           </button>
         </mat-card-actions>
       </mat-card>
+      }
     </div>
   </div>
 </div>
+} @else {
+<mat-progress-bar mode="indeterminate"></mat-progress-bar>
+}

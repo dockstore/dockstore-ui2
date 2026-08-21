@@ -8,13 +8,12 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { MatCardModule } from '@angular/material/card';
-import { NgIf, NgFor } from '@angular/common';
 
 @Component({
   selector: 'app-verified-by',
   templateUrl: './verified-by.component.html',
   styleUrls: ['./verified-by.component.scss'],
-  imports: [NgIf, MatCardModule, FlexModule, MatButtonModule, MatDividerModule, NgFor, MatDialogModule],
+  imports: [MatCardModule, FlexModule, MatButtonModule, MatDividerModule, MatDialogModule],
 })
 export class VerifiedByComponent implements OnChanges {
   @Input() version: WorkflowVersion | Tag;

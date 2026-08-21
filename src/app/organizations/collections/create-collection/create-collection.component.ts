@@ -1,4 +1,4 @@
-import { KeyValue, NgIf, AsyncPipe } from '@angular/common';
+import { KeyValue, AsyncPipe } from '@angular/common';
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
@@ -27,7 +27,6 @@ import { AlertComponent } from '../../../shared/alert/alert.component';
 @Component({
   templateUrl: './create-collection.component.html',
   imports: [
-    NgIf,
     MatDialogModule,
     AlertComponent,
     FormsModule,

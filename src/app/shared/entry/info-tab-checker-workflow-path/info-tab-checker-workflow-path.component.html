@@ -1,40 +1,34 @@
-<li *ngIf="(checkerId$ | async) || (canAdd$ | async)">
+@if ((checkerId$ | async) || (canAdd$ | async)) {
+<li>
   <form #editCheckerWorkflowPathForm="ngForm" class="form-inline">
     <div class="form-group" fxFlex="noshrink" fxLayout fxLayoutAlign=" center">
       <strong matTooltip="Checker workflow of this tool/workflow that tests it">Checker Workflow</strong>:
     </div>
-    <span *ngIf="(noChecker$ | async) && ((isPublic$ | async) || (canRead && !canWrite))"> n/a</span>
+    @if ((noChecker$ | async) && ((isPublic$ | async) || (canRead && !canWrite))) {
+    <span> n/a</span>
+    }
     <div class="btn-group" role="group">
-      <a
-        [routerLink]="checkerWorkflowURL$ | async"
-        id="viewCheckerWorkflowButton"
-        *ngIf="(checkerWorkflowURL$ | async) && (isRefreshing$ | async) === false"
-        type="button"
-        mat-button
-        class="private-btn"
-      >
+      @if ((checkerWorkflowURL$ | async) && (isRefreshing$ | async) === false) {
+      <a [routerLink]="checkerWorkflowURL$ | async" id="viewCheckerWorkflowButton" type="button" mat-button class="private-btn">
         <mat-icon class="mat-icon-sm">visibility</mat-icon> View
       </a>
-      <span *ngIf="(isPublic$ | async) === false && (isRefreshing$ | async) === false">
-        <button
-          id="addCheckerWorkflowButton"
-          #addCheckerWorkflowButton
-          *ngIf="(canAdd$ | async) && canWrite"
-          type="button"
-          mat-button
-          class="private-btn"
-          (click)="add()"
-        >
+      } @if ((isPublic$ | async) === false && (isRefreshing$ | async) === false) {
+      <span>
+        @if ((canAdd$ | async) && canWrite) {
+        <button id="addCheckerWorkflowButton" #addCheckerWorkflowButton type="button" mat-button class="private-btn" (click)="add()">
           <img src="../assets/svg/icons-plus.svg" class="pr-2 pb-1" alt="Plus sign" />Add
         </button>
+        }
         <!-- <button *ngIf="checkerWorkflowPath" type="button" class="btn btn-link" (click)="delete()">
-          <mat-icon>clear</mat-icon> Delete
-        </button> -->
+            <mat-icon>clear</mat-icon> Delete
+          </button> -->
       </span>
+      }
     </div>
   </form>
 </li>
-<li *ngIf="parentId$ | async">
+} @if (parentId$ | async) {
+<li>
   <form class="form-inline">
     <div>
       <div class="form-group"><strong matTooltip="The parent entry of this checker workflow">Parent Entry</strong>:</div>
@@ -48,3 +42,4 @@
     </div>
   </form>
 </li>
+}

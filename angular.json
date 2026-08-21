@@ -140,7 +140,12 @@
             ],
             "assets": [
               "src/assets",
-              "src/favicon.ico"
+              "src/favicon.ico",
+              {
+                "glob": "**/worker-*.js",
+                "input": "./node_modules/ace-builds/src-noconflict/",
+                "output": "/assets/ace"
+              }
             ]
           }
         },

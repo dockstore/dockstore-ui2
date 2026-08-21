@@ -8,7 +8,8 @@
 </div>
 <mat-dialog-actions [align]="'end'">
   <button mat-button (click)="onNoClick()">Cancel</button>
-  <span *ngIf="data.approve; else rejectBlock">
+  @if (data.approve) {
+  <span>
     <button
       mat-flat-button
       id="accept-pending-org-dialog"
@@ -18,14 +19,14 @@
       Accept
     </button>
   </span>
-  <ng-template #rejectBlock>
-    <button
-      mat-flat-button
-      id="reject-pending-org-dialog"
-      data-cy="reject-pending-org-dialog"
-      [mat-dialog-close]="{ 'id': data.id, 'approve': data.approve }"
-    >
-      Decline
-    </button>
-  </ng-template>
+  } @else {
+  <button
+    mat-flat-button
+    id="reject-pending-org-dialog"
+    data-cy="reject-pending-org-dialog"
+    [mat-dialog-close]="{ 'id': data.id, 'approve': data.approve }"
+  >
+    Decline
+  </button>
+  }
 </mat-dialog-actions>

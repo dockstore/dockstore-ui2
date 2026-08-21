@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf, TitleCasePipe } from '@angular/common';
+import { AsyncPipe, TitleCasePipe } from '@angular/common';
 import { Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -18,17 +18,7 @@ import { MatChipsModule } from '@angular/material/chips';
   selector: 'app-display-topic',
   templateUrl: './display-topic.component.html',
   styleUrls: ['../../../styles/info-tab.component.scss'],
-  imports: [
-    NgIf,
-    MatTooltipModule,
-    MatButtonModule,
-    MatIconModule,
-    AsyncPipe,
-    AiBubbleComponent,
-    FlexModule,
-    TitleCasePipe,
-    MatChipsModule,
-  ],
+  imports: [MatTooltipModule, MatButtonModule, MatIconModule, AsyncPipe, AiBubbleComponent, FlexModule, TitleCasePipe, MatChipsModule],
 })
 export class DisplayTopicComponent extends Base implements OnInit, OnChanges, OnDestroy {
   TopicSelectionEnum = Entry.TopicSelectionEnum;

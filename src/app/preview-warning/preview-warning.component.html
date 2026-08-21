@@ -1,7 +1,10 @@
-<mat-card *ngIf="!isBubble" appearance="outlined" class="alert alert-warning w-100 mb-0" data-cy="preview-warning">
+@if (!isBubble) {
+<mat-card appearance="outlined" class="alert alert-warning w-100 mb-0" data-cy="preview-warning">
   <mat-card-content>
     <mat-icon class="alert-warning-icon">warning</mat-icon>
     <strong> Notice:</strong> {{ previewMessage }}
   </mat-card-content>
 </mat-card>
-<mat-chip *ngIf="isBubble" class="preview-bubble" [matTooltip]="previewMessage">PREVIEW</mat-chip>
+} @if (isBubble) {
+<mat-chip class="preview-bubble" [matTooltip]="previewMessage">PREVIEW</mat-chip>
+}

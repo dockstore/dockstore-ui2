@@ -1,7 +1,10 @@
-<div *ngIf="loading">
+@if (loading) {
+<div>
   <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </div>
-<div *ngIf="!loading || retainContent">
+} @if (!loading || retainContent) {
+<div>
   <div class="pt-2"></div>
   <ng-content></ng-content>
 </div>
+}

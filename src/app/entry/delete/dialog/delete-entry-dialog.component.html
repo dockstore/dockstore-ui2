@@ -9,13 +9,17 @@
   <ul>
     <li>Has never been published.</li>
     <li>Was created on/after April 1, 2022.</li>
-    <li *ngIf="!(isNotebook || isService)">Is not checked or a checker workflow.</li>
+    @if (!(isNotebook || isService)) {
+    <li>Is not checked or a checker workflow.</li>
+    }
   </ul>
-  <p *ngIf="fromDockstoreYml">
+  @if (fromDockstoreYml) {
+  <p>
     After you delete the {{ term }}, you must uninstall the Dockstore GitHub App from the source GitHub repo, or edit/remove the
     .dockstore.yml file so that it no longer describes the {{ term }}. If you do not, the {{ term }} may reappear on Dockstore the next time
     you push to the repo.
   </p>
+  }
   <p>Are you sure you want to delete this {{ term }}?</p>
 </div>
 <mat-dialog-actions [align]="'end'">

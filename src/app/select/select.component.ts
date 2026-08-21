@@ -17,14 +17,14 @@
 import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatOptionModule } from '@angular/material/core';
-import { NgFor, NgIf } from '@angular/common';
+
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
   selector: 'app-select',
   templateUrl: './select.component.html',
-  imports: [MatFormFieldModule, MatSelectModule, NgFor, MatOptionModule, MatTooltipModule, NgIf],
+  imports: [MatFormFieldModule, MatSelectModule, MatOptionModule, MatTooltipModule],
 })
 export class SelectComponent implements OnChanges {
   @Input() items: Array<any>;

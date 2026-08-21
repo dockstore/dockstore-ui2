@@ -3,7 +3,7 @@ import { IconDefinition } from '@fortawesome/free-brands-svg-icons';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MatIconModule } from '@angular/material/icon';
-import { NgIf, NgSwitch, NgSwitchCase, NgSwitchDefault } from '@angular/common';
+
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { StepState } from '../step.state';
 
@@ -11,7 +11,7 @@ import { StepState } from '../step.state';
   selector: 'app-exporter-step',
   templateUrl: './exporter-step.component.html',
   styleUrls: ['./exporter-step.component.scss'],
-  imports: [FlexModule, NgIf, MatIconModule, FontAwesomeModule, MatProgressSpinnerModule, NgSwitch, NgSwitchCase, NgSwitchDefault],
+  imports: [FlexModule, MatIconModule, FontAwesomeModule, MatProgressSpinnerModule],
 })
 export class ExporterStepComponent {
   @Input() stepState: StepState;

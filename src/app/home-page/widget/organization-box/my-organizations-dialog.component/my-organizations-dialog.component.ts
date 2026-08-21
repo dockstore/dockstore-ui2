@@ -2,7 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { OrganizationUpdateTime } from 'app/shared/openapi';
 import { MatButtonModule } from '@angular/material/button';
-import { NgFor, DatePipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { MatChipsModule } from '@angular/material/chips';
 
@@ -10,7 +10,7 @@ import { MatChipsModule } from '@angular/material/chips';
   selector: 'app-my-organizations-dialog',
   templateUrl: './my-organizations-dialog.component.html',
   styleUrls: ['../../../../shared/styles/dashboard-boxes.scss'],
-  imports: [FlexModule, MatDialogModule, NgFor, MatButtonModule, DatePipe, MatChipsModule],
+  imports: [FlexModule, MatDialogModule, MatButtonModule, DatePipe, MatChipsModule],
 })
 export class MyOrganizationsDialogComponent {
   constructor(
