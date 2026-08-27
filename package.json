@@ -109,6 +109,7 @@
     "@types/node": "^22.20.1",
     "@typescript-eslint/eslint-plugin": "^8.67.0",
     "@typescript-eslint/parser": "^8.67.0",
+    "angular-eslint": "^22.1.0",
     "cypress": "^13.7.2",
     "eslint": "^8.57.0",
     "husky": "^7.0.0",
@@ -124,7 +125,8 @@
     "pa11y-ci": "^4.1.1",
     "prettier": "^2.3.1",
     "ts-node": "^10.9.2",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.68.0"
   },
   "overrides": {
     "@schematics/update": {

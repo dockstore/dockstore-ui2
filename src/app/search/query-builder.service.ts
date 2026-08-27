@@ -16,7 +16,7 @@
 
 import { Injectable } from '@angular/core';
 import { Sort } from '@angular/material/sort';
-import * as bodybuilder from 'bodybuilder';
+import bodybuilder from 'bodybuilder';
 import { Bodybuilder } from 'bodybuilder';
 import { CategorySort } from '../shared/models/CategorySort';
 import { tagCloudCommonTerms } from './../shared/constants';

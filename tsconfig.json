@@ -1,6 +1,8 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "ignoreDeprecations": "6.0",
+    "strict": false,
     "downlevelIteration": true,
     "module": "es2020",
     "outDir": "./dist/out-tsc",
