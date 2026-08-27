@@ -13,6 +13,7 @@
     "allowSyntheticDefaultImports": true,
     "target": "ES2020",
     "typeRoots": ["node_modules/@types"],
+    "types": ["node"],
     "baseUrl": "./src",
     "paths": {
       "jszip": ["../node_modules/jszip/dist/jszip.min.js"]
