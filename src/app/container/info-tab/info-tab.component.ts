@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { HttpResponse } from '@angular/common/http';
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Base } from 'app/shared/base';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -65,6 +65,7 @@ import { MatChipsModule } from '@angular/material/chips';
   selector: 'app-info-tab-container',
   templateUrl: './info-tab.component.html',
   styleUrls: ['../../shared/styles/info-tab.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatCardModule,
     MatDividerModule,

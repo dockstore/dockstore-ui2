@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { OrganizationsService } from 'app/shared/openapi';
 import { Observable } from 'rxjs';
@@ -20,6 +20,7 @@ import { FlexModule } from '@ngbracket/ngx-layout/flex';
   templateUrl: './about.component.html',
   styleUrls: ['./about.component.scss'],
   providers: [FundingComponent],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     FlexModule,
     MatButtonModule,

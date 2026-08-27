@@ -81,9 +81,11 @@
           <fa-icon [icon]="faCodeBranch" aria-hidden="true" title="Branch"></fa-icon>
           } @if (version.referenceType === 'TAG') {
           <fa-icon [icon]="faTag" aria-hidden="true" title="Tag"></fa-icon>
-          } @if (version.commitID && (version.commitID | commitUrl: tool?.providerUrl)) {
+          } @if (version.commitID && (version.commitID | commitUrl: $safeNavigationMigration(tool?.providerUrl))) {
           <span [matTooltip]="version.commitID ? 'Commit ID: ' + version.commitID : ''">
-            &nbsp;<a [href]="version.commitID | commitUrl: tool?.providerUrl">{{ version.reference || 'n/a' }}</a>
+            &nbsp;<a [href]="version.commitID | commitUrl : $safeNavigationMigration(tool?.providerUrl)">{{
+              version.reference || 'n/a'
+            }}</a>
           </span>
           } @else {
           <span>{{ version.reference || 'n/a' }}</span>
@@ -95,7 +97,7 @@
     <ng-container matColumnDef="last_built">
       <th scope="col" mat-header-cell *matHeaderCellDef mat-sort-header matTooltip="" matTooltipPosition="above">Date Built</th>
       <td mat-cell *matCellDef="let version">
-        {{ version.last_built | date: 'yyyy-MM-dd HH:mm' }}
+        {{ version.last_built | date : 'yyyy-MM-dd HH:mm' }}
       </td>
     </ng-container>
     <ng-container matColumnDef="descriptorTypeVersions">
@@ -112,7 +114,9 @@
       <td mat-cell *matCellDef="let version">
         <!-- Only display descriptor type versions if there's one descriptor type otherwise we can't tell which version belongs to which type without looking at the source files -->
         @if (tool?.descriptorType.length === 1) {
-        <span>{{ tool.descriptorType[0] | descriptorLanguageVersions: version.versionMetadata?.descriptorTypeVersions }}</span>
+        <span>{{
+          tool.descriptorType[0] | descriptorLanguageVersions : $safeNavigationMigration(version.versionMetadata?.descriptorTypeVersions)
+        }}</span>
         }
       </td>
     </ng-container>
@@ -137,7 +141,7 @@
         Verified Platforms
       </th>
       <td mat-cell *matCellDef="let version">
-        <span matTooltip="{{ getVerifiedSource(version.name) }}">{{ version.id | verifiedPlatforms: verifiedVersionPlatforms }}</span>
+        <span matTooltip="{{ getVerifiedSource(version.name) }}">{{ version.id | verifiedPlatforms : verifiedVersionPlatforms }}</span>
       </td>
     </ng-container>
     <ng-container matColumnDef="actions">

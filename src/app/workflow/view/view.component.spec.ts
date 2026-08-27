@@ -37,32 +37,30 @@ import { ViewWorkflowComponent } from './view.component';
 import { ViewService } from './view.service';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('ViewWorkflowComponent', () => {
   let component: ViewWorkflowComponent;
   let fixture: ComponentFixture<ViewWorkflowComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [ViewWorkflowComponent, MatSnackBarModule, MatDialogModule],
-        providers: [
-          { provide: ViewService },
-          { provide: AccountsService, useClass: AccountsStubService },
-          { provide: WorkflowService, useClass: WorkflowStubService },
-          { provide: VersionModalService, useClass: VersionModalStubService },
-          { provide: WorkflowsService, useClass: WorkflowsStubService },
-          { provide: DateService, useClass: DateStubService },
-          { provide: HostedService, useClass: HostedStubService },
-          { provide: RefreshService, useClass: RefreshStubService },
-          { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
-          provideHttpClient(withInterceptorsFromDi()),
-          provideHttpClientTesting(),
-        ],
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [ViewWorkflowComponent, MatSnackBarModule, MatDialogModule],
+      providers: [
+        { provide: ViewService },
+        { provide: AccountsService, useClass: AccountsStubService },
+        { provide: WorkflowService, useClass: WorkflowStubService },
+        { provide: VersionModalService, useClass: VersionModalStubService },
+        { provide: WorkflowsService, useClass: WorkflowsStubService },
+        { provide: DateService, useClass: DateStubService },
+        { provide: HostedService, useClass: HostedStubService },
+        { provide: RefreshService, useClass: RefreshStubService },
+        { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ViewWorkflowComponent);

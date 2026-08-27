@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { MatMenuTrigger, MatMenuModule } from '@angular/material/menu';
 import { AlertService } from '../../../shared/alert/state/alert.service';
 import { Base } from '../../../shared/base';
@@ -19,6 +19,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   selector: 'app-multi-cloud-launch',
   templateUrl: './multi-cloud-launch.component.html',
   styleUrls: ['./multi-cloud-launch.component.scss', '../launch-third-party.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatTooltipModule,
     MatButtonModule,

@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
 import { finalize, first } from 'rxjs/operators';
 
@@ -33,6 +33,7 @@ import { MatCardModule } from '@angular/material/card';
   selector: 'app-dockerfile',
   templateUrl: './dockerfile.component.html',
   styleUrls: ['./dockerfile.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MatCardModule, MatIconModule, MatProgressBarModule, MatToolbarModule, MatButtonModule, ClipboardModule, CodeEditorComponent],
 })
 export class DockerfileComponent {

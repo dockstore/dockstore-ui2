@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 
 import { ServiceInfoService } from '../service-info/service-info.service';
@@ -37,6 +37,7 @@ import { FlexModule } from '@ngbracket/ngx-layout/flex';
   selector: 'app-footer',
   templateUrl: './footer.component.html',
   styleUrls: ['./footer.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [FlexModule, RouterLink, MatButtonModule, SnackbarDirective, ClipboardModule, MatIconModule, GitTagPipe],
 })
 export class FooterComponent extends Base implements OnInit {

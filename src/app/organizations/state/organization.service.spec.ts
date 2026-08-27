@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { Routes } from '@angular/router';
@@ -22,11 +22,12 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { OrganizationService } from './organization.service';
 import { OrganizationStore } from './organization.store';
 import { UrlResolverService } from '../../shared/url-resolver.service';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 @Component({
   template: ` <router-outlet></router-outlet> `,
   imports: [MatSnackBarModule],
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [provideHttpClientTesting()],
 })
 export class OrganizationsComponent {}
@@ -42,7 +43,7 @@ describe('OrganizationService', () => {
         OrganizationService,
         OrganizationStore,
         UrlResolverService,
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
     });

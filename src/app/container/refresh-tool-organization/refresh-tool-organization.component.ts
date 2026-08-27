@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ContainersService } from 'app/shared/openapi';
 import { ToolQuery } from 'app/shared/tool/tool.query';
 import { ToolService } from 'app/shared/tool/tool.service';
@@ -33,6 +33,7 @@ import { MatButtonModule } from '@angular/material/button';
   // Note that the template and style is actually from the shared one (used by both my-workflows and my-tools)
   templateUrl: './../../shared/refresh-organization/refresh-organization.component.html',
   styleUrls: ['./../../shared/refresh-organization/refresh-organization.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MatButtonModule, AsyncPipe],
 })
 export class RefreshToolOrganizationComponent extends RefreshOrganizationComponent implements OnInit {

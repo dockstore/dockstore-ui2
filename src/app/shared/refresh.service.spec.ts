@@ -44,7 +44,7 @@ import { WorkflowsService } from './openapi/api/workflows.service';
 import { ToolQuery } from './tool/tool.query';
 import { DescriptorLanguageService } from './entry/descriptor-language.service';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('RefreshService', () => {
   beforeEach(() => {
@@ -65,7 +65,7 @@ describe('RefreshService', () => {
         { provide: WorkflowService, useClass: WorkflowService },
         { provide: UsersService, useClass: UsersStubService },
         { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
     });

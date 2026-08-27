@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Base } from 'app/shared/base';
 import { Dockstore } from 'app/shared/dockstore.model';
 import { UsersService } from 'app/shared/openapi';
@@ -14,6 +14,7 @@ import { MatCardModule } from '@angular/material/card';
   selector: 'app-starred-box',
   templateUrl: './starred-box.component.html',
   styleUrls: ['./starred-box.component.scss', '../../../shared/styles/dashboard-boxes.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MatCardModule, FlexModule, MatIconModule, RouterLink, MatDividerModule, RecentEventsComponent],
 })
 export class StarredBoxComponent extends Base implements OnInit {

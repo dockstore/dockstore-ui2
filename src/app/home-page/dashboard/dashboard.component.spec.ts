@@ -20,43 +20,41 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ContainerService } from '../../shared/container.service';
 import { ContainerStubService, DateStubService, OrgLogoStubService, UrlResolverStubService } from '../../test/service-stubs';
 import { MastodonService } from '../../shared/mastodon/mastodon.service';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('DashboardComponent', () => {
   let component: DashboardComponent;
   let fixture: ComponentFixture<DashboardComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        schemas: [NO_ERRORS_SCHEMA],
-        imports: [
-          RouterTestingModule,
-          MatButtonModule,
-          MatIconModule,
-          MatDialogModule,
-          MatSnackBarModule,
-          DashboardComponent,
-          NoopAnimationsModule,
-        ],
-        providers: [
-          MastodonService,
-          RegisterToolService,
-          MyWorkflowsService,
-          ProviderService,
-          { provide: DateService, useClass: DateStubService },
-          { provide: ContainerService, useClass: ContainerStubService },
-          { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
-          { provide: UrlResolverService, useClass: UrlResolverStubService },
-          { provide: OrgLogoService, useClass: OrgLogoStubService },
-          MyEntriesStateService,
-          MyEntriesStore,
-          provideHttpClient(withInterceptorsFromDi()),
-          provideHttpClientTesting(),
-        ],
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      schemas: [NO_ERRORS_SCHEMA],
+      imports: [
+        RouterTestingModule,
+        MatButtonModule,
+        MatIconModule,
+        MatDialogModule,
+        MatSnackBarModule,
+        DashboardComponent,
+        NoopAnimationsModule,
+      ],
+      providers: [
+        MastodonService,
+        RegisterToolService,
+        MyWorkflowsService,
+        ProviderService,
+        { provide: DateService, useClass: DateStubService },
+        { provide: ContainerService, useClass: ContainerStubService },
+        { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
+        { provide: UrlResolverService, useClass: UrlResolverStubService },
+        { provide: OrgLogoService, useClass: OrgLogoStubService },
+        MyEntriesStateService,
+        MyEntriesStore,
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(DashboardComponent);

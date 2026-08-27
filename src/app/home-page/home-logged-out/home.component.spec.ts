@@ -23,21 +23,24 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 import { HomeComponent } from './home.component';
 import { MastodonService } from '../../shared/mastodon/mastodon.service';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
   let fixture: ComponentFixture<HomeComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        schemas: [NO_ERRORS_SCHEMA],
-        imports: [RouterTestingModule, BrowserAnimationsModule, HomeComponent, MatDialogModule, MatSnackBarModule],
-        providers: [MastodonService, DescriptorLanguageService, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      schemas: [NO_ERRORS_SCHEMA],
+      imports: [RouterTestingModule, BrowserAnimationsModule, HomeComponent, MatDialogModule, MatSnackBarModule],
+      providers: [
+        MastodonService,
+        DescriptorLanguageService,
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(HomeComponent);

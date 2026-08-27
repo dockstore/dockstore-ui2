@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, RouterLink, RouterOutlet } from '@angular/router';
 import { SessionQuery } from 'app/shared/session/session.query';
 import { SessionService } from 'app/shared/session/session.service';
@@ -28,6 +28,7 @@ import { HeaderComponent } from '../header/header.component';
 @Component({
   selector: 'app-containers',
   templateUrl: './containers.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [HeaderComponent, FlexModule, RouterLink, ExtendedModule, RouterOutlet, AsyncPipe, TitleCasePipe],
 })
 export class ContainersComponent {

@@ -59,11 +59,11 @@
                   alt="{{ entry?.source.entryTypeMetadata.term }} icon"
                 />
                 <a
-                  [matTooltip]="entry?.source | entryToDisplayName: true"
+                  [matTooltip]="$safeNavigationMigration(entry?.source) | entryToDisplayName : true"
                   matTooltipPosition="left"
-                  [routerLink]="entry?.source | routerLink"
+                  [routerLink]="$safeNavigationMigration(entry?.source) | routerLink"
                   ><span style="font-size: 15px"
-                    ><b>{{ entry?.source | entryToDisplayName: true }}</b></span
+                    ><b>{{ $safeNavigationMigration(entry?.source) | entryToDisplayName : true }}</b></span
                   ></a
                 >
                 @if (entry?.source?.archived) {
@@ -108,18 +108,24 @@
                 @if (entry?.source?.all_authors) {
                 <span>
                   <mat-icon color="primary" class="mat-icon-sm mr-1">person</mat-icon
-                  ><span class="size-small" [innerHTML]="entry?.source?.all_authors | getSearchAuthorsHtml"></span>
+                  ><span
+                    class="size-small"
+                    [innerHTML]="$safeNavigationMigration(entry?.source?.all_authors) | getSearchAuthorsHtml"
+                  ></span>
                 </span>
                 }
                 <span>
                   <mat-icon color="primary" class="mat-icon-sm mr-1">history</mat-icon>
                   <span class="size-small"
-                    >Last updated {{ entry?.source.last_modified_date ? (entry?.source.last_modified_date | date) : 'n/a' }}</span
+                    >Last updated
+                    {{
+                      entry?.source.last_modified_date ? ($safeNavigationMigration(entry?.source.last_modified_date) | date) : 'n/a'
+                    }}</span
                   >
                 </span>
                 @if (entry?.source?.selected_concept_doi) {
                 <app-doi-badge [doi]="entry.source.selected_concept_doi" [displayInitiator]="false"></app-doi-badge>
-                } @let executionCount = entry?.source.executionCount; @if (executionCount > 0) {
+                } @let executionCount = $safeNavigationMigration(entry?.source.executionCount); @if (executionCount > 0) {
                 <span>
                   <mat-icon color="primary" class="mat-icon-sm">play_arrow</mat-icon
                   ><span class="size-small mr-1"
@@ -130,7 +136,7 @@
                 <mat-chip-set>
                   @if (entry?.source.entryTypeMetadata.type !== EntryType.TOOL) {
                   <mat-chip data-cy="descriptorType">
-                    {{ entry?.source.descriptorType | descriptorLanguage }}
+                    {{ $safeNavigationMigration(entry?.source.descriptorType) | descriptorLanguage }}
                   </mat-chip>
                   } @if (entry?.source.entryTypeMetadata.type === EntryType.TOOL) { @for (language of entry?.source.descriptorType; track
                   language) {
@@ -148,7 +154,7 @@
               <div fxLayout="column" fxLayoutAlign="end">
                 <app-thumbnail-time-series-graph
                   style="position: relative; bottom: 1px"
-                  [timeSeries]="entry?.source.monthlyExecutionCounts"
+                  [timeSeries]="$safeNavigationMigration(entry?.source.monthlyExecutionCounts)"
                 ></app-thumbnail-time-series-graph>
               </div>
               }

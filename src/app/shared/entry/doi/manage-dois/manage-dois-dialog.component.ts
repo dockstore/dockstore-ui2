@@ -1,5 +1,5 @@
 import { KeyValue, KeyValuePipe, TitleCasePipe } from '@angular/common';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -30,6 +30,7 @@ export interface DoiInfo {
   selector: 'app-manage-dois-dialog',
   templateUrl: './manage-dois-dialog.component.html',
   styleUrls: ['../../../styles/radio-button-cards.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatDialogModule,
     MatButtonModule,

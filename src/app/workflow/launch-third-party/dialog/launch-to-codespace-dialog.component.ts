@@ -13,7 +13,7 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
@@ -28,6 +28,7 @@ import { AlertComponent } from '../../../shared/alert/alert.component';
   selector: 'app-launch-to-codespace-dialog',
   templateUrl: './launch-to-codespace-dialog.component.html',
   styleUrls: ['./launch-to-codespace-dialog.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MatDialogModule, AlertComponent, FlexModule, MatButtonModule, TitleCasePipe],
 })
 export class LaunchToCodespaceDialogComponent {

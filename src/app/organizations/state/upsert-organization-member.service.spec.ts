@@ -5,7 +5,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { UpsertOrganizationMemberService } from './upsert-organization-member.service';
 import { UpsertOrganizationMemberStore } from './upsert-organization-member.store';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('UpsertOrganizationMemberService', () => {
   let upsertOrganizationMemberService: UpsertOrganizationMemberService;
@@ -17,7 +17,7 @@ describe('UpsertOrganizationMemberService', () => {
         UpsertOrganizationMemberService,
         UpsertOrganizationMemberStore,
         UntypedFormBuilder,
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
     });

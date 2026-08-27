@@ -22,7 +22,7 @@ WorkflowModel.DescriptorTypeEnum.Gxformat2 || workflow.descriptorType === Workfl
                 '%23workflow/' +
                 workflowPathAsQueryValue +
                 '&trs_version_id=' +
-                selectedVersion?.name +
+                $safeNavigationMigration(selectedVersion?.name) +
                 '&trs_type=' +
                 WorkflowModel.DescriptorTypeEnum.WDL
               "
@@ -217,7 +217,7 @@ WorkflowModel.DescriptorTypeEnum.Gxformat2 || workflow.descriptorType === Workfl
             [cloudInstances]="cloudInstances"
             [usersCloudInstances]="usersCloudInstances"
             [languagePartner]="partner.GALAXY"
-            [appendToLaunchUrl]="config.GALAXY_IMPORT_PATH_PORTION + workflow?.full_workflow_path"
+            [appendToLaunchUrl]="config.GALAXY_IMPORT_PATH_PORTION + $safeNavigationMigration(workflow?.full_workflow_path)"
             [user]="user$ | async"
             [imagePath]="'../assets/images/thirdparty/galaxy.png'"
             [className]="'galaxy-launch'"

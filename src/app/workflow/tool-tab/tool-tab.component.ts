@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { BioWorkflow } from 'app/shared/openapi/model/bioWorkflow';
 import { Service } from 'app/shared/openapi/model/service';
 import { Notebook } from 'app/shared/openapi/model/notebook';
@@ -34,6 +34,7 @@ import { LoadingComponent } from '../../shared/loading/loading.component';
   selector: 'app-tool-tab',
   templateUrl: './tool-tab.component.html',
   styleUrls: ['./tool-tab.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [LoadingComponent, MatCardModule, MatIconModule, MatTableModule, AsyncPipe],
 })
 export class ToolTabComponent extends EntryTab {

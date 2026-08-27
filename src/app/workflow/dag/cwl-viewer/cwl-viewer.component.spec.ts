@@ -9,29 +9,27 @@ import { WorkflowService } from '../../../shared/state/workflow.service';
 import { sampleCwlExtendedWorkflow, sampleWorkflowVersion } from '../../../test/mocked-objects';
 import { CwlViewerComponent } from './cwl-viewer.component';
 import { DescriptorLanguageService } from '../../../shared/entry/descriptor-language.service';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('cwl-viewerComponent', () => {
   let component: CwlViewerComponent;
   let fixture: ComponentFixture<CwlViewerComponent>;
   let workflowService: WorkflowService;
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        schemas: [NO_ERRORS_SCHEMA],
-        imports: [FormsModule, CwlViewerComponent],
-        providers: [
-          DockstoreService,
-          DateService,
-          ProviderService,
-          WorkflowService,
-          DescriptorLanguageService,
-          provideHttpClient(withInterceptorsFromDi()),
-          provideHttpClientTesting(),
-        ],
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      schemas: [NO_ERRORS_SCHEMA],
+      imports: [FormsModule, CwlViewerComponent],
+      providers: [
+        DockstoreService,
+        DateService,
+        ProviderService,
+        WorkflowService,
+        DescriptorLanguageService,
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CwlViewerComponent);

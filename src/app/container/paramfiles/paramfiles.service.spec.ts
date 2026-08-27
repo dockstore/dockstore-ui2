@@ -25,7 +25,7 @@ import { ContainersStubService, RefreshStubService, WorkflowsStubService } from 
 import { ParamfilesService } from './paramfiles.service';
 import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('Service: paramFiles.service.ts', () => {
   beforeEach(() => {
@@ -37,7 +37,7 @@ describe('Service: paramFiles.service.ts', () => {
         { provide: ContainersService, useClass: ContainersStubService },
         { provide: RefreshService, useClass: RefreshStubService },
         { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
     });

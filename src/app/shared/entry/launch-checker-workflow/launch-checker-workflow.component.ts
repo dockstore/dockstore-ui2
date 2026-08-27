@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -30,6 +30,7 @@ import { AsyncPipe } from '@angular/common';
   selector: 'app-launch-checker-workflow',
   templateUrl: './launch-checker-workflow.component.html',
   styleUrls: ['./launch-checker-workflow.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MatCardModule, MatTooltipModule, MatButtonModule, SnackbarDirective, ClipboardModule, MatIconModule, AsyncPipe],
 })
 export class LaunchCheckerWorkflowComponent {

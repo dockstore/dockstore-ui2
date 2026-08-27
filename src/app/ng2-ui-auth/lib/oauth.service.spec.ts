@@ -25,7 +25,7 @@ import { OauthService } from './oauth.service';
 import { PopupService } from './popup.service';
 import { SharedService } from './shared.service';
 import { StorageService } from './storage-service';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('OauthService', () => {
   beforeEach(() => {
@@ -38,7 +38,7 @@ describe('OauthService', () => {
         StorageService,
         { provide: CONFIG_OPTIONS, useValue: {} },
         ConfigService,
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
     });

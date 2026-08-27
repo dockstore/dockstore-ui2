@@ -30,37 +30,35 @@ import { PagenumberService } from '../shared/pagenumber.service';
 import { TrackLoginService } from '../shared/track-login.service';
 import { LogoutStubService, TrackLoginStubService } from '../test/service-stubs';
 import { NavbarComponent } from './navbar.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('NavbarComponent', () => {
   let component: NavbarComponent;
   let fixture: ComponentFixture<NavbarComponent>;
   let pagenumberService: PagenumberService;
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        schemas: [NO_ERRORS_SCHEMA],
-        imports: [
-          RouterTestingModule,
-          MatMenuModule,
-          MatSnackBarModule,
-          MatButtonModule,
-          MatIconModule,
-          MatDividerModule,
-          MatToolbarModule,
-          NavbarComponent,
-        ],
-        providers: [
-          PagenumberService,
-          { provide: TrackLoginService, useClass: TrackLoginStubService },
-          { provide: LogoutService, useClass: LogoutStubService },
-          RequestsService,
-          provideHttpClient(withInterceptorsFromDi()),
-          provideHttpClientTesting(),
-        ],
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      schemas: [NO_ERRORS_SCHEMA],
+      imports: [
+        RouterTestingModule,
+        MatMenuModule,
+        MatSnackBarModule,
+        MatButtonModule,
+        MatIconModule,
+        MatDividerModule,
+        MatToolbarModule,
+        NavbarComponent,
+      ],
+      providers: [
+        PagenumberService,
+        { provide: TrackLoginService, useClass: TrackLoginStubService },
+        { provide: LogoutService, useClass: LogoutStubService },
+        RequestsService,
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ],
+    }).compileComponents();
+  }));
   beforeEach(() => {
     fixture = TestBed.createComponent(NavbarComponent);
     component = fixture.componentInstance;

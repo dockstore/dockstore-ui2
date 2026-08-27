@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { AlertQuery } from '../../../shared/alert/state/alert.query';
@@ -24,6 +24,7 @@ import { MatChipsModule } from '@angular/material/chips';
   selector: 'app-account-sidebar',
   templateUrl: './account-sidebar.component.html',
   styleUrls: ['./account-sidebar.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [FlexModule, MatIconModule, MatTooltipModule, MatButtonModule, RouterLink, MatChipsModule],
 })
 export class AccountSidebarComponent implements OnInit {

@@ -4,7 +4,7 @@ import { RequestsService } from '../../../loginComponents/state/requests.service
 import { OrganizationsService, UsersService } from '../../../shared/openapi';
 import { OrganizationsStubService, UsersStubService } from '../../../test/service-stubs';
 import { OrganizationStarringService } from './organization-starring.service';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('OrganizationStarringService', () => {
   beforeEach(() => {
@@ -15,7 +15,7 @@ describe('OrganizationStarringService', () => {
         RequestsService,
         { provide: UsersService, useClass: UsersStubService },
         { provide: OrganizationsService, useClass: OrganizationsStubService },
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
     });

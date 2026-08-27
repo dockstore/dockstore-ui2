@@ -37,38 +37,36 @@ import {
   WorkflowStubService,
 } from '../../test/service-stubs';
 import { RefreshWorkflowOrganizationComponent } from './refresh-workflow-organization.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('RefreshWorkflowOrganizationComponent', () => {
   let component: RefreshWorkflowOrganizationComponent;
   let fixture: ComponentFixture<RefreshWorkflowOrganizationComponent>;
   const matDialogStub = jasmine.createSpyObj('MatDialog', ['closeAll']);
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          MatToolbarModule,
-          MatIconModule,
-          MatButtonModule,
-          MatTooltipModule,
-          MatSnackBarModule,
-          RefreshWorkflowOrganizationComponent,
-        ],
-        providers: [
-          { provide: UsersService, useClass: UsersStubService },
-          { provide: WorkflowService, useClass: WorkflowStubService },
-          { provide: RefreshService, useClass: RefreshStubService },
-          { provide: ExtendedDockstoreToolService, useClass: ExtendedDockstoreToolStubService },
-          { provide: DateService, useClass: DateStubService },
-          { provide: ProviderService, useClass: ProviderStubService },
-          { provide: MatDialog, useValue: matDialogStub },
-          provideHttpClient(withInterceptorsFromDi()),
-          provideHttpClientTesting(),
-        ],
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        MatToolbarModule,
+        MatIconModule,
+        MatButtonModule,
+        MatTooltipModule,
+        MatSnackBarModule,
+        RefreshWorkflowOrganizationComponent,
+      ],
+      providers: [
+        { provide: UsersService, useClass: UsersStubService },
+        { provide: WorkflowService, useClass: WorkflowStubService },
+        { provide: RefreshService, useClass: RefreshStubService },
+        { provide: ExtendedDockstoreToolService, useClass: ExtendedDockstoreToolStubService },
+        { provide: DateService, useClass: DateStubService },
+        { provide: ProviderService, useClass: ProviderStubService },
+        { provide: MatDialog, useValue: matDialogStub },
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(RefreshWorkflowOrganizationComponent);

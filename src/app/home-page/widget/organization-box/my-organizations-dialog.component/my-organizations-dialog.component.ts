@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { OrganizationUpdateTime } from 'app/shared/openapi';
 import { MatButtonModule } from '@angular/material/button';
@@ -10,6 +10,7 @@ import { MatChipsModule } from '@angular/material/chips';
   selector: 'app-my-organizations-dialog',
   templateUrl: './my-organizations-dialog.component.html',
   styleUrls: ['../../../../shared/styles/dashboard-boxes.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [FlexModule, MatDialogModule, MatButtonModule, DatePipe, MatChipsModule],
 })
 export class MyOrganizationsDialogComponent {

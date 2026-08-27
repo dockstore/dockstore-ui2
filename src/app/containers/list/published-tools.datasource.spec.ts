@@ -22,7 +22,7 @@ import { ProviderService } from '../../shared/provider.service';
 import { ContainersService } from '../../shared/openapi';
 import { ContainersStubService } from './../../test/service-stubs';
 import { PublishedToolsDataSource } from './published-tools.datasource';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('Service: PublishedToolsDataSource', () => {
   beforeEach(() => {
@@ -34,7 +34,7 @@ describe('Service: PublishedToolsDataSource', () => {
         ProviderService,
         { provide: ContainersService, useClass: ContainersStubService },
         { provide: ContainersService, useClass: ContainersStubService },
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
     });

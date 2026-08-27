@@ -7,7 +7,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { UpdateOrganizationOrCollectionDescriptionService } from './update-organization-description.service';
 import { UpdateOrganizationOrCollectionDescriptionStore } from './update-organization-description.store';
 import { UrlResolverService } from '../../../shared/url-resolver.service';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('UpdateOrganizationOrcolelctionDescriptionService', () => {
   let updateOrganizationOrCollectionDescriptionService: UpdateOrganizationOrCollectionDescriptionService;
@@ -20,7 +20,7 @@ describe('UpdateOrganizationOrcolelctionDescriptionService', () => {
         UpdateOrganizationOrCollectionDescriptionStore,
         UntypedFormBuilder,
         UrlResolverService,
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
     });

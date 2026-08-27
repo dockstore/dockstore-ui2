@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ImgFallbackDirective } from './img-fallback.directive';
 
 @Component({
   template: '<img src="original.jpg" appFallback="fallback.jpg">',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ImgFallbackDirective],
 })
 class TestComponent {}

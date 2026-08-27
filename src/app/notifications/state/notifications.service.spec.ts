@@ -3,7 +3,7 @@ import { TestBed, inject } from '@angular/core/testing';
 import { NotificationsService } from './notifications.service';
 import { NotificationsStore } from './notifications.store';
 import { expiredMockNotification, mockedNotification } from '../../test/mocked-objects';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('NotificationsService', () => {
   let notificationsService: NotificationsService;
@@ -11,7 +11,12 @@ describe('NotificationsService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [],
-      providers: [NotificationsService, NotificationsStore, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
+      providers: [
+        NotificationsService,
+        NotificationsStore,
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ],
     });
 
     notificationsService = TestBed.inject(NotificationsService);

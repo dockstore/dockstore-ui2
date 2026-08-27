@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { Dockstore } from '../dockstore.model';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatChipsModule } from '@angular/material/chips';
@@ -27,6 +27,7 @@ import { MatChipsModule } from '@angular/material/chips';
 @Component({
   selector: 'app-ai-bubble',
   templateUrl: './ai-bubble.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MatTooltipModule, MatChipsModule],
 })
 export class AiBubbleComponent {

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ChangeDetectionStrategy } from '@angular/core';
 import { UntypedFormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
@@ -21,6 +21,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
   selector: 'app-basic-search',
   templateUrl: './basic-search.component.html',
   styleUrls: ['./basic-search.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatExpansionModule,
     MatFormFieldModule,

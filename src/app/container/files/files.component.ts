@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, ChangeDetectionStrategy } from '@angular/core';
 
 import { Files } from '../../shared/files';
 import { GA4GHFilesService } from '../../shared/ga4gh-files/ga4gh-files.service';
@@ -30,6 +30,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 @Component({
   selector: 'app-files-container',
   templateUrl: './files.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MatTabsModule, DockerfileComponent, DescriptorsComponent, ParamfilesComponent, MatCardModule, MatIconModule],
 })
 export class FilesContainerComponent extends Files implements OnChanges {

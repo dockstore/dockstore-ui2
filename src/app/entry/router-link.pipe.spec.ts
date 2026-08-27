@@ -4,7 +4,7 @@ import { RouterLinkPipe } from './router-link.pipe';
 import { EntryTypeMetadataService } from './type-metadata/entry-type-metadata.service';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { EntryTypeMetadataStubService } from '../test/service-stubs';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('RouterLinkPipe', () => {
   beforeEach(() =>
@@ -12,7 +12,7 @@ describe('RouterLinkPipe', () => {
       imports: [],
       providers: [
         { provide: EntryTypeMetadataService, useClass: EntryTypeMetadataStubService },
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
     })

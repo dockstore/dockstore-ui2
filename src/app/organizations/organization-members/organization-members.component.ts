@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ID } from '@datorama/akita';
 import { ConfirmationDialogService } from 'app/confirmation-dialog/confirmation-dialog.service';
@@ -45,6 +45,7 @@ import { MatChipsModule } from '@angular/material/chips';
   selector: 'app-organization-members',
   templateUrl: './organization-members.component.html',
   styleUrls: ['./organization-members.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     FlexModule,
     MatButtonModule,

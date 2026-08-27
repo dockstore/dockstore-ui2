@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { WorkflowQuery } from '../state/workflow.query';
@@ -28,6 +28,7 @@ export type FileCategory = 'descriptor' | 'dockerfile' | 'testParam';
   selector: 'app-code-editor-list',
   templateUrl: './code-editor-list.component.html',
   styleUrls: ['./code-editor-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatCardModule,
     MatToolbarModule,

@@ -7,7 +7,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { EntryType } from '../openapi';
 import { EntryTypeMetadataService } from 'app/entry/type-metadata/entry-type-metadata.service';
 import { EntryTypeMetadataStubService } from 'app/test/service-stubs';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('RegisterGithubAppComponent', () => {
   let component: RegisterGithubAppComponent;
@@ -22,7 +22,7 @@ describe('RegisterGithubAppComponent', () => {
           useValue: {},
         },
         { provide: EntryTypeMetadataService, useClass: EntryTypeMetadataStubService },
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
     }).compileComponents();

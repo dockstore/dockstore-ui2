@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, ChangeDetectionStrategy } from '@angular/core';
 import { escape, join } from './notebook-helpers';
 import { Cell } from './notebook-types';
 
@@ -7,6 +7,7 @@ import './prism';
 @Component({
   selector: 'app-notebook-source',
   templateUrl: './notebook-source.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [],
 })
 export class NotebookSourceComponent implements OnChanges {

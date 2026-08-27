@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { TosBannerService } from './state/tos-banner.service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -9,6 +9,7 @@ import { FlexModule } from '@ngbracket/ngx-layout/flex';
   selector: 'app-tos-banner',
   templateUrl: './tos-banner.component.html',
   styleUrls: ['./tos-banner.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [FlexModule, MatButtonModule, MatIconModule],
 })
 export class TosBannerComponent {

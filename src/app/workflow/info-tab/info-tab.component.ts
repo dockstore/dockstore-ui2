@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { HttpResponse } from '@angular/common/http';
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatRadioModule } from '@angular/material/radio';
 import { DateService } from '../../shared/date.service';
@@ -68,6 +68,7 @@ import { CategoryButtonsComponent } from 'app/categories/buttons/category-button
   selector: 'app-info-tab',
   templateUrl: './info-tab.component.html',
   styleUrls: ['../../shared/styles/info-tab.component.scss', './info-tab.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatCardModule,
     MatDividerModule,

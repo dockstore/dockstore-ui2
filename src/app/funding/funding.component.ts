@@ -1,4 +1,4 @@
-import { Component, Injectable } from '@angular/core';
+import { Component, Injectable, ChangeDetectionStrategy } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
@@ -23,6 +23,7 @@ export interface FundingSections {
   selector: 'app-funding',
   templateUrl: './funding.component.html',
   styleUrls: ['./funding.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [HeaderComponent, MatDividerModule, FlexModule, MatCardModule, MatButtonModule],
 })
 @Injectable()

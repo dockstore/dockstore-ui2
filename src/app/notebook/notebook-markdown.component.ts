@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SecurityContext } from '@angular/core';
+import { Component, Input, OnChanges, SecurityContext, ChangeDetectionStrategy } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { MarkdownWrapperService } from '../shared/markdown-wrapper/markdown-wrapper.service';
 import { join, replaceAll, selectBestFromMimeBundle } from './notebook-helpers';
@@ -9,6 +9,7 @@ import './mathjax';
 @Component({
   selector: 'app-notebook-markdown',
   templateUrl: './notebook-markdown.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [],
 })
 export class NotebookMarkdownComponent implements OnChanges {

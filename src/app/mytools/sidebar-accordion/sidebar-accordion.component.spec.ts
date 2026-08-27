@@ -15,38 +15,36 @@ import { ContainerStubService, RegisterToolStubService } from './../../test/serv
 import { SidebarAccordionComponent } from './sidebar-accordion.component';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('SidebarAccordionComponent', () => {
   let component: SidebarAccordionComponent;
   let fixture: ComponentFixture<SidebarAccordionComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          MatTabsModule,
-          MatToolbarModule,
-          MatIconModule,
-          MatButtonModule,
-          MatExpansionModule,
-          MatListModule,
-          MatTooltipModule,
-          RouterTestingModule,
-          SidebarAccordionComponent,
-          RefreshToolOrganizationComponent,
-          SelectTabPipe,
-        ],
-        providers: [
-          { provide: RegisterToolService, useClass: RegisterToolStubService },
-          { provide: ContainerService, useClass: ContainerStubService },
-          { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
-          provideHttpClient(withInterceptorsFromDi()),
-          provideHttpClientTesting(),
-        ],
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        MatTabsModule,
+        MatToolbarModule,
+        MatIconModule,
+        MatButtonModule,
+        MatExpansionModule,
+        MatListModule,
+        MatTooltipModule,
+        RouterTestingModule,
+        SidebarAccordionComponent,
+        RefreshToolOrganizationComponent,
+        SelectTabPipe,
+      ],
+      providers: [
+        { provide: RegisterToolService, useClass: RegisterToolStubService },
+        { provide: ContainerService, useClass: ContainerStubService },
+        { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SidebarAccordionComponent);

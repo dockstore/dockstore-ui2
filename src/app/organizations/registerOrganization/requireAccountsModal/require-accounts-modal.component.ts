@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { TokenQuery } from '../../../shared/state/token.query';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { RegisterOrganizationComponent } from '../register-organization.component';
@@ -13,6 +13,7 @@ import { FlexModule } from '@ngbracket/ngx-layout/flex';
 @Component({
   selector: 'app-require-accounts-modal',
   templateUrl: './require-accounts-modal.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MatDialogModule, FlexModule, MatButtonModule, RouterLink, AsyncPipe, I18nPluralPipe],
 })
 export class RequireAccountsModalComponent implements OnInit {

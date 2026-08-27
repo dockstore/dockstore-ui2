@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Dockstore } from '../shared/dockstore.model';
 import { ActivatedRoute, Params, RouterLink } from '@angular/router';
 import { takeUntil } from 'rxjs/operators';
@@ -16,6 +16,7 @@ import { GenerateDockstoreYmlButtonComponent } from './generate-dockstore-yml-bu
   selector: 'app-github-landing-page',
   templateUrl: './github-landing-page.component.html',
   styleUrls: ['./github-landing-page.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     FlexModule,
     MatCardModule,

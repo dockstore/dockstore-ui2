@@ -23,7 +23,7 @@ import { DagService } from './dag.service';
 import { DagStore } from './dag.store';
 import { DescriptorLanguageService } from '../../../shared/entry/descriptor-language.service';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 /* eslint-disable no-unused-vars, @typescript-eslint/no-unused-vars */
 
@@ -38,7 +38,7 @@ describe('Service: Dag', () => {
         Renderer2,
         { provide: WorkflowsService, useClass: WorkflowsStubService },
         { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
     });

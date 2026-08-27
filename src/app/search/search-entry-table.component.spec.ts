@@ -11,27 +11,25 @@ import { SearchEntryTableComponent } from './search-entry-table.component';
 import { EntryType } from 'app/shared/openapi';
 import { QueryBuilderService } from './query-builder.service';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('SearchEntryTableComponent', () => {
   let component: SearchEntryTableComponent;
   let fixture: ComponentFixture<SearchEntryTableComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        schemas: [NO_ERRORS_SCHEMA],
-        imports: [BrowserAnimationsModule, RouterTestingModule, SearchEntryTableComponent],
-        providers: [
-          { provide: DockstoreService, useClass: DockstoreStubService },
-          { provide: SearchService, useClass: SearchStubService },
-          { provide: QueryBuilderService, useClass: QueryBuilderStubService },
-          provideHttpClient(withInterceptorsFromDi()),
-          provideHttpClientTesting(),
-        ],
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      schemas: [NO_ERRORS_SCHEMA],
+      imports: [BrowserAnimationsModule, RouterTestingModule, SearchEntryTableComponent],
+      providers: [
+        { provide: DockstoreService, useClass: DockstoreStubService },
+        { provide: SearchService, useClass: SearchStubService },
+        { provide: QueryBuilderService, useClass: QueryBuilderStubService },
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SearchEntryTableComponent);

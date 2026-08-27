@@ -14,12 +14,13 @@
  *    limitations under the License.
  */
 
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { ListWorkflowsComponent } from '../list/list.component';
 
 @Component({
   selector: 'app-search-workflows',
   templateUrl: './search.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ListWorkflowsComponent],
 })
 export class SearchWorkflowsComponent {}

@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { AlertService } from '../../../shared/alert/state/alert.service';
 import { Dockstore } from '../../../shared/dockstore.model';
 
@@ -7,6 +7,7 @@ import { Dockstore } from '../../../shared/dockstore.model';
   selector: 'app-news-and-updates',
   template: ` <span [innerHTML]="myExternalHTML"></span> `,
   styleUrls: ['../../../shared/styles/dashboard-boxes.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true,
 })
 export class NewsAndUpdatesComponent {

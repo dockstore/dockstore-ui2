@@ -64,7 +64,7 @@
       <mat-cell *matCellDef="let workflow">
         <mat-chip-set>
           <mat-chip>
-            {{ workflow?.descriptorType | descriptorLanguage }}
+            {{ $safeNavigationMigration(workflow?.descriptorType) | descriptorLanguage }}
           </mat-chip>
         </mat-chip-set>
       </mat-cell>
@@ -77,8 +77,8 @@
       <mat-header-cell *matHeaderCellDef>Links</mat-header-cell>
       <mat-cell *matCellDef="let entry">
         @if (entry.providerUrl) {
-        <a [href]="entry?.providerUrl">
-          <fa-icon class="fa-lg" [icon]="entry.providerIcon" [matTooltip]="entry?.provider"> </fa-icon>
+        <a [href]="$safeNavigationMigration(entry?.providerUrl)">
+          <fa-icon class="fa-lg" [icon]="entry.providerIcon" [matTooltip]="$safeNavigationMigration(entry?.provider)"> </fa-icon>
         </a>
         }
       </mat-cell>

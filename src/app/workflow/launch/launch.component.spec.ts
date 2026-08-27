@@ -32,31 +32,29 @@ import { LaunchWorkflowComponent } from './launch.component';
 import { WorkflowLaunchService } from './workflow-launch.service';
 import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('LaunchWorkflowComponent', () => {
   let component: LaunchWorkflowComponent;
   let fixture: ComponentFixture<LaunchWorkflowComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        schemas: [NO_ERRORS_SCHEMA],
-        imports: [LaunchWorkflowComponent],
-        providers: [
-          WorkflowLaunchService,
-          { provide: ContainerService, useClass: ContainerStubService },
-          { provide: DescriptorService, useClass: DescriptorsStubService },
-          { provide: CheckerWorkflowService, useClass: CheckerWorkflowStubService },
-          { provide: WorkflowService, useClass: WorkflowStubService },
-          { provide: GA4GHV20Service, useClass: GA4GHV20StubService },
-          { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
-          provideHttpClient(withInterceptorsFromDi()),
-          provideHttpClientTesting(),
-        ],
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      schemas: [NO_ERRORS_SCHEMA],
+      imports: [LaunchWorkflowComponent],
+      providers: [
+        WorkflowLaunchService,
+        { provide: ContainerService, useClass: ContainerStubService },
+        { provide: DescriptorService, useClass: DescriptorsStubService },
+        { provide: CheckerWorkflowService, useClass: CheckerWorkflowStubService },
+        { provide: WorkflowService, useClass: WorkflowStubService },
+        { provide: GA4GHV20Service, useClass: GA4GHV20StubService },
+        { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LaunchWorkflowComponent);

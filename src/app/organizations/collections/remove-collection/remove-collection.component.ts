@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { CollectionsService } from '../../state/collections.service';
@@ -27,6 +27,7 @@ import { AlertComponent } from '../../../shared/alert/alert.component';
 @Component({
   selector: 'app-collection-confirm-remove',
   templateUrl: './remove-collection.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MatDialogModule, AlertComponent, FlexModule, MatButtonModule, MatTooltipModule, AsyncPipe],
 })
 export class RemoveCollectionDialogComponent {

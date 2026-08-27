@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Base } from '../base';
 import { Dockstore } from '../dockstore.model';
 import { UserQuery } from '../user/user.query';
@@ -14,6 +14,7 @@ import { MatIconModule } from '@angular/material/icon';
 @Component({
   selector: 'app-register-github-app',
   templateUrl: './register-github-app.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MatIconModule, FlexModule, MatButtonModule, MatTooltipModule, AsyncPipe, TitleCasePipe],
 })
 export class RegisterGithubAppComponent extends Base implements OnInit {

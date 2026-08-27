@@ -11,7 +11,7 @@
   <div fxLayout fxLayout.lt-md="column" fxLayoutAlign="center" fxLayoutGap="1rem" class="my-5">
     @if (user) {
     <mat-card fxFlex.gt-md="25" fxFlex.lt-md="100" fxLayout="column" fxLayoutAlign="center">
-      <img mat-card-image [src]="user?.avatarUrl" class="mt-4 mx-auto mb-3" alt="Dockstore avatar" />
+      <img mat-card-image [src]="$safeNavigationMigration(user?.avatarUrl)" class="mt-4 mx-auto mb-3" alt="Dockstore avatar" />
       <mat-card-content fxLayout="column" fxLayoutAlign="center center">
         <mat-card-title class="accent-1-dark small-card-title">{{ user?.username }}</mat-card-title>
         <mat-card-subtitle class="text-break" class="accent-1-dark">

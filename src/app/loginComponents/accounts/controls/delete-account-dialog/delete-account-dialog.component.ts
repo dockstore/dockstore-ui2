@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import {
   AbstractControl,
   UntypedFormBuilder,
@@ -29,6 +29,7 @@ import { AlertComponent } from '../../../../shared/alert/alert.component';
   selector: 'app-delete-account-dialog',
   templateUrl: './delete-account-dialog.component.html',
   styleUrls: ['./delete-account-dialog.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatDialogModule,
     AlertComponent,

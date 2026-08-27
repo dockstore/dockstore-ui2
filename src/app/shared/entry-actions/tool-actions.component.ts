@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges, OnInit, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 import { AlertQuery } from '../alert/state/alert.query';
 import { RefreshService } from '../refresh.service';
 import { DockstoreTool, Tag } from '../openapi';
@@ -15,6 +15,7 @@ import { AsyncPipe } from '@angular/common';
   selector: 'app-tool-actions',
   templateUrl: './tool-actions.component.html',
   styleUrls: ['./entry-actions.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [FlexModule, MatButtonModule, RouterLink, MatTooltipModule, ModalComponent, AsyncPipe],
 })
 export class ToolActionsComponent extends EntryActionsComponent implements OnInit, OnChanges {

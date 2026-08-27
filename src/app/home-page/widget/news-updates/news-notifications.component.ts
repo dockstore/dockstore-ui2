@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
 import { NotificationsService } from '../../../notifications/state/notifications.service';
 import { MatIconModule } from '@angular/material/icon';
@@ -13,6 +13,7 @@ import { PublicNotification } from 'app/shared/openapi';
   selector: 'app-news-notifications',
   templateUrl: './news-notifications.component.html',
   styleUrls: ['./news-notifications.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MatCardModule, FlexModule, MarkdownWrapperComponent, MatButtonModule, MatIconModule, AsyncPipe],
 })
 export class NewsNotificationsComponent implements OnInit {

@@ -10,7 +10,7 @@ import { UntypedFormBuilder } from '@angular/forms';
 import { OrganizationsService } from '../../shared/openapi';
 import { RegisterOrganizationService } from './register-organization.service';
 import { UrlResolverService } from '../../shared/url-resolver.service';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 let organizationsServiceSpy: jasmine.SpyObj<OrganizationsService>;
 let matDialogSpy: jasmine.SpyObj<MatDialog>;
@@ -29,7 +29,7 @@ describe('RegisterOrganizationService', () => {
         UrlResolverService,
         { provide: OrganizationsService, useValue: organizationsServiceStub },
         { provide: MatDialog, useValue: matDialogStub },
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
     });

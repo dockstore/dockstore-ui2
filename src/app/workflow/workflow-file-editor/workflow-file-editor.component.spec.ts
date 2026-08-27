@@ -1,5 +1,5 @@
 import { ClipboardModule } from '@angular/cdk/clipboard';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatButtonModule } from '@angular/material/button';
@@ -31,40 +31,38 @@ describe('WorkflowFileEditorComponent', () => {
   let component: WorkflowFileEditorComponent;
   let fixture: ComponentFixture<WorkflowFileEditorComponent>;
   class FileStubService {}
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          MatButtonModule,
-          MatTabsModule,
-          MatToolbarModule,
-          MatIconModule,
-          MatInputModule,
-          MatFormFieldModule,
-          MatTooltipModule,
-          ClipboardModule,
-          MatSnackBarModule,
-          MatCardModule,
-          BrowserAnimationsModule,
-          WorkflowFileEditorComponent,
-          CodeEditorListComponent,
-          CodeEditorComponent,
-          PublicFileDownloadPipe,
-          PrivateFilePathPipe,
-        ],
-        providers: [
-          { provide: HostedService, useClass: HostedStubService },
-          { provide: WorkflowService, useClass: WorkflowStubService },
-          { provide: WorkflowsService, useClass: WorkflowsStubService },
-          { provide: RefreshService, useClass: RefreshStubService },
-          { provide: FileService, useClass: FileStubService },
-          { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
-          provideHttpClient(withInterceptorsFromDi()),
-          provideHttpClientTesting(),
-        ],
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        MatButtonModule,
+        MatTabsModule,
+        MatToolbarModule,
+        MatIconModule,
+        MatInputModule,
+        MatFormFieldModule,
+        MatTooltipModule,
+        ClipboardModule,
+        MatSnackBarModule,
+        MatCardModule,
+        BrowserAnimationsModule,
+        WorkflowFileEditorComponent,
+        CodeEditorListComponent,
+        CodeEditorComponent,
+        PublicFileDownloadPipe,
+        PrivateFilePathPipe,
+      ],
+      providers: [
+        { provide: HostedService, useClass: HostedStubService },
+        { provide: WorkflowService, useClass: WorkflowStubService },
+        { provide: WorkflowsService, useClass: WorkflowsStubService },
+        { provide: RefreshService, useClass: RefreshStubService },
+        { provide: FileService, useClass: FileStubService },
+        { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(WorkflowFileEditorComponent);

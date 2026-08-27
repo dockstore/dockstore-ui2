@@ -13,7 +13,7 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, ChangeDetectionStrategy } from '@angular/core';
 
 import { BaseChartDirective } from 'ng2-charts';
 import { TimeSeriesMetric } from '../openapi';
@@ -22,6 +22,7 @@ import { TimeSeriesService } from '../timeseries.service';
 @Component({
   selector: 'app-thumbnail-time-series-graph',
   templateUrl: './thumbnail-time-series-graph.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [BaseChartDirective],
 })
 export class ThumbnailTimeSeriesGraphComponent implements OnChanges {

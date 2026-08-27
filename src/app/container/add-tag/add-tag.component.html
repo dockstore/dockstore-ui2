@@ -298,7 +298,7 @@
         </mat-checkbox>
       </div>
       <div class="w-100">
-        <mat-checkbox [value]="tool?.automated"> Automated </mat-checkbox>
+        <mat-checkbox [value]="$safeNavigationMigration(tool?.automated)"> Automated </mat-checkbox>
       </div>
     </div>
   </form>

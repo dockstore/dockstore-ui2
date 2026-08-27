@@ -2,13 +2,13 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { inject, TestBed } from '@angular/core/testing';
 import { EntryTypeMetadataService } from './entry-type-metadata.service';
 import { EntryType, EntryTypeMetadata } from '../../shared/openapi';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('EntryTypeMetadataService', () => {
   beforeEach(() =>
     TestBed.configureTestingModule({
       imports: [],
-      providers: [EntryTypeMetadataService, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
+      providers: [EntryTypeMetadataService, provideHttpClient(withXhr(), withInterceptorsFromDi()), provideHttpClientTesting()],
     })
   );
 

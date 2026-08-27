@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
@@ -12,6 +12,7 @@ export class InformationDialogData {
 @Component({
   selector: 'app-information-dialog',
   templateUrl: './information-dialog.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MatDialogModule, FlexModule, MatButtonModule],
 })
 export class InformationDialogComponent {

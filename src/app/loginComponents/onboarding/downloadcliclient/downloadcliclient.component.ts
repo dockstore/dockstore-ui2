@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { AuthService } from '../../../ng2-ui-auth/public_api';
 import { Dockstore } from '../../../shared/dockstore.model';
 import { MetadataService, TRSService } from '../../../shared/openapi';
@@ -21,6 +21,7 @@ import { MarkdownModule } from 'ngx-markdown';
   selector: 'app-downloadcliclient',
   templateUrl: './downloadcliclient.component.html',
   styleUrls: ['./downloadcliclient.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MarkdownModule, MatTabsModule, MatButtonModule, MatIconModule, SnackbarDirective, NgClass, ExtendedModule, ClipboardModule],
 })
 export class DownloadCLIClientComponent extends Base implements OnInit {

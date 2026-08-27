@@ -6,7 +6,7 @@ import { ProviderService } from '../../shared/provider.service';
 
 import { SnapshotExporterModalService } from './snapshot-exporter-modal.service';
 import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('SnapshotExporterModalService', () => {
   let service: SnapshotExporterModalService;
@@ -18,7 +18,7 @@ describe('SnapshotExporterModalService', () => {
         DateService,
         ProviderService,
         DescriptorLanguageService,
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
     });

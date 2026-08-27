@@ -135,18 +135,18 @@
           <mat-card-content>
             <div class="truncate-text-3 mb-3">
               <app-markdown-wrapper
-                [data]="workflow?.description"
-                [baseUrl]="workflow?.providerUrl | baseUrl: workflow?.defaultVersion"
+                [data]="$safeNavigationMigration(workflow?.description)"
+                [baseUrl]="$safeNavigationMigration(workflow?.providerUrl) | baseUrl : $safeNavigationMigration(workflow?.defaultVersion)"
               ></app-markdown-wrapper>
             </div>
             <hr />
             <div fxLayout="row" fxLayoutAlign="space-between stretch">
               <div fxLayout="row" fxLayoutAlign="flex-start" fxLayoutGap="1rem">
-                <small class="mx-2">Last updated {{ workflow?.lastUpdated | date }}</small>
+                <small class="mx-2">Last updated {{ $safeNavigationMigration(workflow?.lastUpdated) | date }}</small>
                 <div fxLayout="row wrap" fxLayoutGap="1rem">
                   <span>
                     <mat-chip-set>
-                      @for (label of workflow?.labels | slice: 0:3; track label) {
+                      @for (label of $safeNavigationMigration(workflow?.labels) | slice: 0:3; track label) {
                       <mat-chip class="workflow-background">{{ $any(label).value }}</mat-chip>
                       } @if (workflow.versionVerified === true) {
                       <mat-chip>
@@ -155,7 +155,7 @@
                       </mat-chip>
                       }
                       <mat-chip>
-                        {{ workflow?.descriptorType | descriptorLanguage }}
+                        {{ $safeNavigationMigration(workflow?.descriptorType) | descriptorLanguage }}
                       </mat-chip>
                     </mat-chip-set>
                   </span>
@@ -183,9 +183,9 @@
             <hr />
             <div fxLayout="row" fxLayoutAlign="space-between stretch">
               <div fxLayout="row" fxLayoutAlign="flex-start" fxLayoutGap="1rem">
-                <small class="mx-2">Last updated {{ tool?.lastUpdated | date }}</small>
+                <small class="mx-2">Last updated {{ $safeNavigationMigration(tool?.lastUpdated) | date }}</small>
                 <mat-chip-set>
-                  @for (label of tool?.labels | slice: 0:3; track label) {
+                  @for (label of $safeNavigationMigration(tool?.labels) | slice: 0:3; track label) {
                   <mat-chip class="tool-background">{{ $any(label).value }}</mat-chip>
                   } @if (tool?.versionVerified) {
                   <mat-chip matTooltip="Verified">

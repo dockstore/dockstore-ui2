@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { EntryUpdateTime, UsersService, EntryType as NewEntryType } from 'app/shared/openapi';
 import { debounceTime, finalize, takeUntil } from 'rxjs/operators';
@@ -44,6 +44,7 @@ import { MatChipsModule } from '@angular/material/chips';
   selector: 'app-entry-box',
   templateUrl: './entry-box.component.html',
   styleUrls: ['../../../shared/styles/dashboard-boxes.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatCardModule,
     FlexModule,

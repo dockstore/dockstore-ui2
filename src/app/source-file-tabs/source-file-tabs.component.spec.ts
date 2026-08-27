@@ -10,27 +10,25 @@ import { SourceFileTabsComponent } from './source-file-tabs.component';
 import { SourceFileTabsService } from './source-file-tabs.service';
 import { MatDialogModule } from '@angular/material/dialog';
 import { DescriptorLanguageService } from '../shared/entry/descriptor-language.service';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('SourceFileTabsComponent', () => {
   let component: SourceFileTabsComponent;
   let fixture: ComponentFixture<SourceFileTabsComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        schemas: [NO_ERRORS_SCHEMA],
-        imports: [MatDialogModule, RouterTestingModule, SourceFileTabsComponent, MapFriendlyValuesPipe],
-        providers: [
-          { provide: SourceFileTabsService, useClass: SourceFileTabsStubService },
-          { provide: FileService, useClass: FileStubService },
-          { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
-          provideHttpClient(withInterceptorsFromDi()),
-          provideHttpClientTesting(),
-        ],
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      schemas: [NO_ERRORS_SCHEMA],
+      imports: [MatDialogModule, RouterTestingModule, SourceFileTabsComponent, MapFriendlyValuesPipe],
+      providers: [
+        { provide: SourceFileTabsService, useClass: SourceFileTabsStubService },
+        { provide: FileService, useClass: FileStubService },
+        { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SourceFileTabsComponent);

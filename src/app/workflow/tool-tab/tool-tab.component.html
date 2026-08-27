@@ -52,7 +52,7 @@
           <strong>docker</strong>:&nbsp;{{ tool?.docker }}
           <br />
           <strong>link</strong>:&nbsp;@if (tool?.link !== 'Not Specified') {
-          <a [href]="tool?.link" target="_blank" rel="noopener noreferrer">{{ tool?.link }}</a>
+          <a [href]="$safeNavigationMigration(tool?.link)" target="_blank" rel="noopener noreferrer">{{ tool?.link }}</a>
           } @if (tool?.link === 'Not Specified') {
           <span>Not Specified</span>
           }

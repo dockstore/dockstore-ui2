@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, ChangeDetectionStrategy } from '@angular/core';
 import { finalize } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { SourceFile, Workflow, WorkflowVersion, WorkflowsService } from 'app/shared/openapi';
@@ -20,6 +20,7 @@ const ERROR_MESSAGE = 'The notebook could not be displayed.';
 @Component({
   selector: 'app-notebook',
   templateUrl: './notebook.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [NotebookMarkdownComponent, NotebookSourceComponent, NotebookStreamOutputComponent, NotebookMimeBundleOutputComponent],
 })
 export class NotebookComponent implements OnChanges {

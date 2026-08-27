@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
@@ -28,6 +28,7 @@ interface VersionVerifiedInformation {
   selector: 'app-available-logs',
   templateUrl: './available-logs.component.html',
   styleUrls: ['./available-logs.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatDialogModule,
     LoadingComponent,

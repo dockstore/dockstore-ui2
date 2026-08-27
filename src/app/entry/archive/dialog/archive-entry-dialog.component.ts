@@ -14,7 +14,7 @@
  *     limitations under the License.
  */
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
@@ -29,6 +29,7 @@ import { AlertComponent } from '../../../shared/alert/alert.component';
   selector: 'app-archive-entry-dialog',
   templateUrl: './archive-entry-dialog.component.html',
   styleUrls: ['./archive-entry-dialog.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MatDialogModule, AlertComponent, FlexModule, MatButtonModule, TitleCasePipe],
 })
 export class ArchiveEntryDialogComponent {

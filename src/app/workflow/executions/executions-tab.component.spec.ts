@@ -24,27 +24,25 @@ import { PipeModule } from '../../shared/pipe/pipe.module';
 
 import { DescriptorLanguageStubService, TimeSeriesStubService } from '../../test/service-stubs';
 import { ExecutionsTabComponent } from './executions-tab.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('ExecutionsTabComponent', () => {
   let component: ExecutionsTabComponent;
   let fixture: ComponentFixture<ExecutionsTabComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        schemas: [NO_ERRORS_SCHEMA],
-        imports: [PipeModule, ExecutionsTabComponent, MatSnackBarModule],
-        providers: [
-          { provide: DescriptorLanguageService, useClass: DescriptorLanguageStubService },
-          { provide: TimeSeriesService, useClass: TimeSeriesStubService },
-          AlertService,
-          provideHttpClient(withInterceptorsFromDi()),
-          provideHttpClientTesting(),
-        ],
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      schemas: [NO_ERRORS_SCHEMA],
+      imports: [PipeModule, ExecutionsTabComponent, MatSnackBarModule],
+      providers: [
+        { provide: DescriptorLanguageService, useClass: DescriptorLanguageStubService },
+        { provide: TimeSeriesService, useClass: TimeSeriesStubService },
+        AlertService,
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ExecutionsTabComponent);

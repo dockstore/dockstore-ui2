@@ -1,10 +1,11 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, ChangeDetectionStrategy } from '@angular/core';
 import { join } from './notebook-helpers';
 import { Output } from './notebook-types';
 
 @Component({
   selector: 'app-notebook-stream-output',
   templateUrl: './notebook-stream-output.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [],
 })
 export class NotebookStreamOutputComponent implements OnChanges {

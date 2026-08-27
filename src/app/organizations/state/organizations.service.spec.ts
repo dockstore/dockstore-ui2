@@ -4,7 +4,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { OrganizationsStateService } from './organizations.service';
 import { OrganizationsStore } from './organizations.store';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('OrganizationsStateService', () => {
   let organizationsStateService: OrganizationsStateService;
@@ -12,7 +12,12 @@ describe('OrganizationsStateService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [MatSnackBarModule],
-      providers: [OrganizationsStateService, OrganizationsStore, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
+      providers: [
+        OrganizationsStateService,
+        OrganizationsStore,
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ],
     });
 
     organizationsStateService = TestBed.inject(OrganizationsStateService);

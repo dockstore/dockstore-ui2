@@ -74,8 +74,12 @@
           } @if (_selectedVersion?.name === version?.name) {
           <span>{{ version?.name }}</span>
           }
-          <a target="_blank" rel="noopener noreferrer" [href]="version.commitID | commitUrl: workflow?.providerUrl">
-            @if (version.commitID && (version.commitID | commitUrl: workflow?.providerUrl)) {
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            [href]="version.commitID | commitUrl : $safeNavigationMigration(workflow?.providerUrl)"
+          >
+            @if (version.commitID && (version.commitID | commitUrl: $safeNavigationMigration(workflow?.providerUrl))) {
             <mat-icon [matTooltip]="version.commitID ? 'Commit ID: ' + version.commitID : ''">open_in_new</mat-icon>
             }</a
           >
@@ -98,8 +102,8 @@
       </th>
       <td mat-cell *matCellDef="let version">
         <!-- ISO 8601 format -->
-        <span matTooltip="{{ version.last_modified | date: 'yyyy-MM-dd HH:mm' }}">{{
-          version.last_modified | date: 'yyyy-MM-dd HH:mm'
+        <span matTooltip="{{ version.last_modified | date : 'yyyy-MM-dd HH:mm' }}">{{
+          version.last_modified | date : 'yyyy-MM-dd HH:mm'
         }}</span>
       </td>
     </ng-container>
@@ -118,7 +122,9 @@
       </th>
       <td mat-cell *matCellDef="let version">
         <span>{{
-          workflow.descriptorType | descriptorLanguage | descriptorLanguageVersions: version.versionMetadata?.descriptorTypeVersions
+          workflow.descriptorType
+            | descriptorLanguage
+            | descriptorLanguageVersions : $safeNavigationMigration(version.versionMetadata?.descriptorTypeVersions)
         }}</span>
       </td>
     </ng-container>
@@ -135,7 +141,9 @@
       </th>
       <td mat-cell *matCellDef="let version">
         <span>{{
-          workflow.descriptorType | descriptorLanguage | descriptorLanguageVersions: version.versionMetadata?.engineVersions:false
+          workflow.descriptorType
+            | descriptorLanguage
+            | descriptorLanguageVersions : $safeNavigationMigration(version.versionMetadata?.engineVersions) : false
         }}</span>
       </td>
     </ng-container>
@@ -224,7 +232,8 @@
         >
       </th>
       <td mat-cell *matCellDef="let version">
-        @let timeSeries = version?.metricsByPlatform?.['ALL']?.executionStatusCount?.count?.['ALL']?.monthlyExecutionCounts;
+        @let timeSeries =
+        $safeNavigationMigration(version?.metricsByPlatform?.['ALL']?.executionStatusCount?.count?.['ALL']?.monthlyExecutionCounts);
         <div class="ml-4">
           @if (timeSeries && maxMonthlyExecutionCount !== undefined) {
           <app-thumbnail-time-series-graph

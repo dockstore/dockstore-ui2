@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ID } from '@datorama/akita';
 import { Observable } from 'rxjs';
@@ -23,6 +23,7 @@ import { NgTemplateOutlet, AsyncPipe } from '@angular/common';
   selector: 'app-current-collections',
   templateUrl: './current-collections.component.html',
   styleUrls: ['./current-collections.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatCardModule,
     FlexModule,

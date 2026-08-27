@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Dockstore } from '../../shared/dockstore.model';
 import { DownloadCLIClientComponent } from './downloadcliclient/downloadcliclient.component';
 
@@ -23,6 +23,7 @@ import { HeaderComponent } from '../../header/header.component';
 @Component({
   selector: 'app-onboarding',
   templateUrl: './quickstart.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [HeaderComponent, MatIconModule, DownloadCLIClientComponent],
 })
 export class QuickStartComponent implements OnInit {

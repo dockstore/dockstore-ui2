@@ -25,29 +25,27 @@ import { DagComponent } from './dag.component';
 import { DagQuery } from './state/dag.query';
 import { DagStore } from './state/dag.store';
 import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('DagComponent', () => {
   let component: DagComponent;
   let fixture: ComponentFixture<DagComponent>;
   let dagQuery: DagQuery;
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        schemas: [NO_ERRORS_SCHEMA],
-        imports: [FormsModule, DagComponent, CwlViewerComponent],
-        providers: [
-          DagStore,
-          DagQuery,
-          { provide: WorkflowsService, useClass: WorkflowsStubService },
-          { provide: WorkflowService, useClass: WorkflowStubService },
-          { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
-          provideHttpClient(withInterceptorsFromDi()),
-          provideHttpClientTesting(),
-        ],
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      schemas: [NO_ERRORS_SCHEMA],
+      imports: [FormsModule, DagComponent, CwlViewerComponent],
+      providers: [
+        DagStore,
+        DagQuery,
+        { provide: WorkflowsService, useClass: WorkflowsStubService },
+        { provide: WorkflowService, useClass: WorkflowStubService },
+        { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(DagComponent);

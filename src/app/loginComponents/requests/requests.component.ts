@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -22,6 +22,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 @Component({
   selector: 'app-organization-request-confirm-dialog',
   templateUrl: 'organization-request-confirm-dialog.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MatDialogModule, FlexModule, MatButtonModule],
 })
 export class OrganizationRequestConfirmDialogComponent {
@@ -38,6 +39,7 @@ export class OrganizationRequestConfirmDialogComponent {
 @Component({
   selector: 'app-organization-invite-confirm-dialog',
   templateUrl: 'organization-invite-confirm-dialog.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MatDialogModule, FlexModule, MatButtonModule],
 })
 export class OrganizationInviteConfirmDialogComponent {
@@ -58,6 +60,7 @@ export interface DialogData {
   selector: 'app-requests',
   templateUrl: './requests.component.html',
   styleUrls: ['./requests.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatProgressBarModule,
     MatCardModule,

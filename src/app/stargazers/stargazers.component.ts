@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { StarEntry } from 'app/starring/StarEntry';
 import { takeUntil } from 'rxjs/operators';
 import { Base } from '../shared/base';
@@ -31,6 +31,7 @@ import { MatCardModule } from '@angular/material/card';
   selector: 'app-stargazers',
   templateUrl: './stargazers.component.html',
   styleUrls: ['./stargazers.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MatCardModule, MatIconModule, FlexModule, RouterLink],
 })
 export class StargazersComponent extends Base implements OnInit {

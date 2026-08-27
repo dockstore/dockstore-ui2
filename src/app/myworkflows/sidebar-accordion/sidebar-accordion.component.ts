@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AlertQuery } from 'app/shared/alert/state/alert.query';
 import { bootstrap4extraLargeModalSize } from 'app/shared/constants';
@@ -51,6 +51,7 @@ interface GroupEntriesBySource {
     '../../mytools/sidebar-accordion/sidebar-accordion.component.scss',
     '../../shared/styles/my-entry-sidebar.scss',
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatExpansionModule,
     MatTabsModule,

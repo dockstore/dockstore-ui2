@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges, OnInit, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { AlertQuery } from '../alert/state/alert.query';
@@ -23,6 +23,7 @@ import { AsyncPipe } from '@angular/common';
   selector: 'app-workflow-actions',
   templateUrl: './workflow-actions.component.html',
   styleUrls: ['./entry-actions.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [FlexModule, MatButtonModule, RouterLink, MatTooltipModule, AsyncPipe],
 })
 export class WorkflowActionsComponent extends EntryActionsComponent implements OnInit, OnChanges {

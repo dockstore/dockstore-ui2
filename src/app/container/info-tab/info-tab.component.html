@@ -31,9 +31,15 @@
             <a
               id="sourceRepository"
               data-cy="sourceRepository"
-              [href]="tool?.providerUrl | versionProviderUrl: (isPublic ? selectedVersion?.reference : '')"
+              [href]="
+                $safeNavigationMigration(tool?.providerUrl)
+                  | versionProviderUrl : (isPublic ? $safeNavigationMigration(selectedVersion?.reference) : '')
+              "
             >
-              {{ tool?.providerUrl | urlDeconstruct: (isPublic ? selectedVersion?.reference : '') }}
+              {{
+                $safeNavigationMigration(tool?.providerUrl)
+                  | urlDeconstruct : (isPublic ? $safeNavigationMigration(selectedVersion?.reference) : '')
+              }}
             </a>
             }
           </li>
@@ -45,7 +51,7 @@
           } @if (tool?.imgProviderUrl) {
           <li>
             <strong matTooltip="Docker registry for the associated Docker images">Docker Image</strong>: @if (!tool?.private_access) {
-            <a id="imageRegistry" [href]="tool?.imgProviderUrl">
+            <a id="imageRegistry" [href]="$safeNavigationMigration(tool?.imgProviderUrl)">
               {{ tool?.path }}
             </a>
             } @if (tool?.private_access) {
@@ -60,7 +66,13 @@
             <li>
               <strong matTooltip="TRS link to the main CWL descriptor for the selected tool version">TRS CWL</strong>:
               <a [href]="trsLinkCWL">{{ tool?.tool_path }}</a>
-              <button mat-icon-button [cdkCopyToClipboard]="tool?.tool_path" matTooltip="Copy TRS ID" appSnackbar class="copy-button">
+              <button
+                mat-icon-button
+                [cdkCopyToClipboard]="$safeNavigationMigration(tool?.tool_path)"
+                matTooltip="Copy TRS ID"
+                appSnackbar
+                class="copy-button"
+              >
                 <mat-icon>file_copy</mat-icon>
               </button>
             </li>
@@ -68,7 +80,13 @@
             <li>
               <strong matTooltip="TRS link to the main WDL descriptor for the selected tool version">TRS WDL</strong>:
               <a [href]="trsLinkWDL">{{ tool?.tool_path }}</a>
-              <button mat-icon-button class="copy-button" [cdkCopyToClipboard]="tool?.tool_path" matTooltip="Copy TRS ID" appSnackbar>
+              <button
+                mat-icon-button
+                class="copy-button"
+                [cdkCopyToClipboard]="$safeNavigationMigration(tool?.tool_path)"
+                matTooltip="Copy TRS ID"
+                appSnackbar
+              >
                 <mat-icon>file_copy</mat-icon>
               </button>
             </li>
@@ -328,7 +346,10 @@
           @if (tool?.mode === DockstoreToolType.ModeEnum.HOSTED) {
           <div><strong matTooltip="Currently disabled for Hosted Tools">Checker Workflow</strong>: n/a</div>
           } @if (tool?.mode) {
-          <li><strong matTooltip="{{ tool?.buildModeTooltip }}">Build Mode</strong>: {{ 'mode' | mapFriendlyValue: tool?.mode }}</li>
+          <li>
+            <strong matTooltip="{{ tool?.buildModeTooltip }}">Build Mode</strong>:
+            {{ 'mode' | mapFriendlyValue : $safeNavigationMigration(tool?.mode) }}
+          </li>
           } @if (tool?.lastBuildDate && tool?.mode !== DockstoreToolType.ModeEnum.HOSTED) {
           <li><strong matTooltip="Date and time of the last build of the Docker image">Last Build</strong>: {{ tool?.lastBuildDate }}</li>
           } @if (tool?.lastUpdatedDate) {
@@ -409,7 +430,7 @@
           <div class="well well-sm">
             <app-markdown-wrapper
               [data]="description"
-              [baseUrl]="tool?.providerUrl | baseUrl: selectedVersion?.reference"
+              [baseUrl]="$safeNavigationMigration(tool?.providerUrl) | baseUrl : $safeNavigationMigration(selectedVersion?.reference)"
             ></app-markdown-wrapper>
           </div>
           } @if (!description && !isPublic) {
@@ -434,7 +455,7 @@
         </div>
         }
         <ul class="list-unstyled container-info">
-          <li [matTooltip]="selectedVersion.last_built | date: 'medium'">
+          <li [matTooltip]="selectedVersion.last_built | date : 'medium'">
             @if (TagModel.ReferenceTypeEnum.TAG === selectedVersion.referenceType) {
             <strong>Tag created</strong>
             } @if (TagModel.ReferenceTypeEnum.TAG !== selectedVersion.referenceType) {

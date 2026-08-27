@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { includesAuthors } from 'app/shared/constants';
 import { SourceFile, WorkflowsService as OpenApiWorkflowServices, ToolDescriptor, Workflow, EntryType } from 'app/shared/openapi';
 import { Observable } from 'rxjs';
@@ -37,6 +37,7 @@ import { MatTabsModule } from '@angular/material/tabs';
   selector: 'app-workflow-file-editor',
   templateUrl: './workflow-file-editor.component.html',
   styleUrls: ['./workflow-file-editor.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MatTabsModule, CodeEditorListComponent, MatCardModule, MatIconModule, MatButtonModule, AsyncPipe],
 })
 export class WorkflowFileEditorComponent extends FileEditing {

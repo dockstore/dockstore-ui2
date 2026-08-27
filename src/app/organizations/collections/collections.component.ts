@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { KeyValue, AsyncPipe, JsonPipe, KeyValuePipe } from '@angular/common';
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { HashMap } from '@datorama/akita';
 import { Observable } from 'rxjs';
@@ -38,6 +38,7 @@ import { MatChipsModule } from '@angular/material/chips';
   selector: 'app-collections',
   templateUrl: './collections.component.html',
   styleUrls: ['./collections.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatButtonModule,
     MatTooltipModule,

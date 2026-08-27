@@ -33,7 +33,7 @@ limitations under the License.
       <mat-card class="h-100" [attr.data-cy]="'organization-member-' + index">
         <mat-card-content fxLayout fxLayoutGap="1rem" fxLayoutAlign="space-between stretch">
           @if (organizationUser.user?.avatarUrl) {
-          <img mat-card-avatar [src]="organizationUser.user?.avatarUrl" alt="User avatar" />
+          <img mat-card-avatar [src]="$safeNavigationMigration(organizationUser.user?.avatarUrl)" alt="User avatar" />
           } @else {
           <img mat-card-avatar [src]="gravatarService.gravatarUrlForMysteryPerson()" alt="User avatar" />
           }
@@ -41,7 +41,10 @@ limitations under the License.
             <div fxLayout fxLayoutAlign="space-between center">
               <div>
                 <a class="no-underline" routerLink="/users/{{ organizationUser.user?.username }}">
-                  <h5 class="weight-bold truncate-text-1 mt-0 mb-0" [matTooltip]="organizationUser.user?.username">
+                  <h5
+                    class="weight-bold truncate-text-1 mt-0 mb-0"
+                    [matTooltip]="$safeNavigationMigration(organizationUser.user?.username)"
+                  >
                     {{ organizationUser.user?.username }}
                   </h5>
                 </a>

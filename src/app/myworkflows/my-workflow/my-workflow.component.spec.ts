@@ -64,56 +64,54 @@ import {
 import { RegisterWorkflowModalService } from '../../workflow/register-workflow-modal/register-workflow-modal.service';
 import { MyWorkflowsService } from '../myworkflows.service';
 import { MyWorkflowComponent } from './my-workflow.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('MyWorkflowsComponent', () => {
   let component: MyWorkflowComponent;
   let fixture: ComponentFixture<MyWorkflowComponent>;
   let registerWorkflowModalService: RegisterWorkflowModalService;
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [RouterLinkStubDirective, RouterOutletStubComponent],
-        schemas: [NO_ERRORS_SCHEMA],
-        imports: [RouterTestingModule, BrowserAnimationsModule, MatSnackBarModule, MatDialogModule, MyWorkflowComponent],
-        providers: [
-          { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
-          { provide: MetadataService, useClass: MetadataStubService },
-          UserQuery,
-          { provide: Configuration, useClass: ConfigurationStub },
-          { provide: UsersService, useClass: UsersStubService },
-          { provide: AuthService, useClass: AuthStubService },
-          { provide: WorkflowService, useClass: WorkflowStubService },
-          { provide: ContainerService, useClass: ContainerStubService },
-          { provide: RefreshService, useClass: RefreshStubService },
-          { provide: RegisterWorkflowModalService, useClass: RegisterWorkflowModalStubService },
-          { provide: DateService, useClass: DateStubService },
-          BioschemaService,
-          ExtendedToolsService,
-          ExtendedWorkflowsService,
-          MyEntriesQuery,
-          MyEntriesStateService,
-          MyEntriesStore,
-          MyWorkflowsService,
-          MytoolsService,
-          TokenQuery,
-          { provide: AccountsService, useClass: AccountsStubService },
-          { provide: ProviderService, useClass: ProviderStubService },
-          { provide: WorkflowsService, useClass: WorkflowsStubService },
-          { provide: UrlResolverService, useClass: UrlResolverStubService },
-          { provide: TrackLoginService, useClass: TrackLoginStubService },
-          {
-            provide: MatDialogRef,
-            useValue: {
-              close: (dialogResult: any) => {},
-            },
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [RouterLinkStubDirective, RouterOutletStubComponent],
+      schemas: [NO_ERRORS_SCHEMA],
+      imports: [RouterTestingModule, BrowserAnimationsModule, MatSnackBarModule, MatDialogModule, MyWorkflowComponent],
+      providers: [
+        { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
+        { provide: MetadataService, useClass: MetadataStubService },
+        UserQuery,
+        { provide: Configuration, useClass: ConfigurationStub },
+        { provide: UsersService, useClass: UsersStubService },
+        { provide: AuthService, useClass: AuthStubService },
+        { provide: WorkflowService, useClass: WorkflowStubService },
+        { provide: ContainerService, useClass: ContainerStubService },
+        { provide: RefreshService, useClass: RefreshStubService },
+        { provide: RegisterWorkflowModalService, useClass: RegisterWorkflowModalStubService },
+        { provide: DateService, useClass: DateStubService },
+        BioschemaService,
+        ExtendedToolsService,
+        ExtendedWorkflowsService,
+        MyEntriesQuery,
+        MyEntriesStateService,
+        MyEntriesStore,
+        MyWorkflowsService,
+        MytoolsService,
+        TokenQuery,
+        { provide: AccountsService, useClass: AccountsStubService },
+        { provide: ProviderService, useClass: ProviderStubService },
+        { provide: WorkflowsService, useClass: WorkflowsStubService },
+        { provide: UrlResolverService, useClass: UrlResolverStubService },
+        { provide: TrackLoginService, useClass: TrackLoginStubService },
+        {
+          provide: MatDialogRef,
+          useValue: {
+            close: (dialogResult: any) => {},
           },
-          provideHttpClient(withInterceptorsFromDi()),
-          provideHttpClientTesting(),
-        ],
-      }).compileComponents();
-    })
-  );
+        },
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(MyWorkflowComponent);

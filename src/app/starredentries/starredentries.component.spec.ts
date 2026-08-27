@@ -37,41 +37,39 @@ import {
   DateStubService,
 } from './../test/service-stubs';
 import { StarredEntriesComponent } from './starredentries.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('StarredEntriesComponent', () => {
   let component: StarredEntriesComponent;
   let fixture: ComponentFixture<StarredEntriesComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        schemas: [NO_ERRORS_SCHEMA],
-        imports: [RouterTestingModule, StarredEntriesComponent, MatSnackBarModule, NoopAnimationsModule, MatDialogModule],
-        providers: [
-          { provide: StarringService, useClass: StarringStubService },
-          { provide: ImageProviderService, useClass: ImageProviderStubService },
-          { provide: DateService, useClass: DateStubService },
-          MyEntriesStateService,
-          MyEntriesStore,
-          MytoolsService,
-          MyWorkflowsService,
-          ProviderService,
-          { provide: Configuration, useClass: ConfigurationStub },
-          { provide: AuthService, useClass: AuthStubService },
-          { provide: ContainerService, useClass: ContainerStubService },
-          { provide: StarentryService, useClass: StarEntryStubService },
-          { provide: UsersService, useClass: UsersStubService },
-          { provide: OrgLogoService, useClass: OrgLogoStubService },
-          { provide: DescriptorLanguageService, useClass: DescriptorLanguageStubService },
-          { provide: UrlResolverService, useClass: UrlResolverStubService },
-          { provide: TrackLoginService, useClass: TrackLoginStubService },
-          provideHttpClient(withInterceptorsFromDi()),
-          provideHttpClientTesting(),
-        ],
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      schemas: [NO_ERRORS_SCHEMA],
+      imports: [RouterTestingModule, StarredEntriesComponent, MatSnackBarModule, NoopAnimationsModule, MatDialogModule],
+      providers: [
+        { provide: StarringService, useClass: StarringStubService },
+        { provide: ImageProviderService, useClass: ImageProviderStubService },
+        { provide: DateService, useClass: DateStubService },
+        MyEntriesStateService,
+        MyEntriesStore,
+        MytoolsService,
+        MyWorkflowsService,
+        ProviderService,
+        { provide: Configuration, useClass: ConfigurationStub },
+        { provide: AuthService, useClass: AuthStubService },
+        { provide: ContainerService, useClass: ContainerStubService },
+        { provide: StarentryService, useClass: StarEntryStubService },
+        { provide: UsersService, useClass: UsersStubService },
+        { provide: OrgLogoService, useClass: OrgLogoStubService },
+        { provide: DescriptorLanguageService, useClass: DescriptorLanguageStubService },
+        { provide: UrlResolverService, useClass: UrlResolverStubService },
+        { provide: TrackLoginService, useClass: TrackLoginStubService },
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(StarredEntriesComponent);

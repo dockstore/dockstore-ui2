@@ -30,7 +30,7 @@ import { MyEntriesStateService } from '../shared/state/my-entries.service';
 import { MyEntriesStore } from '../shared/state/my-entries.store';
 import { OrgToolObject } from './my-tool/my-tool.component';
 import { MytoolsService } from './mytools.service';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('MytoolsService', () => {
   const tool1: DockstoreTool = {
@@ -296,7 +296,7 @@ describe('MytoolsService', () => {
         MyWorkflowsService,
         MyEntriesStateService,
         MyEntriesStore,
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
     });

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Dockstore } from '../../shared/dockstore.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from 'app/shared/user/user.service';
@@ -13,6 +13,7 @@ import { TokenService } from '../../shared/state/token.service';
 @Component({
   selector: 'app-auth',
   templateUrl: './auth.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true,
 })
 export class AuthComponent extends Base implements OnInit {

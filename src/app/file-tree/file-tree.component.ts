@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { MatTreeFlatDataSource, MatTreeFlattener, MatTreeModule } from '@angular/material/tree';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
@@ -40,6 +40,7 @@ export interface FlatTreeNode {
 @Component({
   selector: 'app-file-tree',
   templateUrl: './file-tree.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MatDialogModule, MatFormFieldModule, MatInputModule, MatTreeModule, MatButtonModule, MatIconModule, MatChipsModule],
 })
 export class FileTreeComponent {

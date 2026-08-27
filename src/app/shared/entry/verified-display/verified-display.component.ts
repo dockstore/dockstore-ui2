@@ -13,7 +13,7 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-import { Component, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { VersionVerifiedPlatform, Tag, VerificationInformation, WorkflowVersion } from '../../openapi';
@@ -22,6 +22,7 @@ import { VersionVerifiedPlatform, Tag, VerificationInformation, WorkflowVersion 
   selector: 'app-verified-display',
   templateUrl: './verified-display.component.html',
   styleUrls: ['./verified-display.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MatTableModule, MatSortModule],
 })
 export class VerifiedDisplayComponent implements OnInit, OnChanges {
