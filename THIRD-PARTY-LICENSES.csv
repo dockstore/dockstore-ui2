@@ -172,7 +172,7 @@
 "rimraf@2.7.1","ISC","https://github.com/isaacs/rimraf"
 "run-queue@1.0.3","ISC","https://github.com/iarna/run-queue"
 "rxjs@6.4.0","Apache-2.0","https://github.com/reactivex/rxjs"
-"rxjs@6.6.7","Apache-2.0","https://github.com/reactivex/rxjs"
+"rxjs@7.8.2","Apache-2.0","https://github.com/reactivex/rxjs"
 "safe-buffer@5.1.2","MIT","https://github.com/feross/safe-buffer"
 "safe-buffer@5.2.1","MIT","https://github.com/feross/safe-buffer"
 "safer-buffer@2.1.2","MIT","https://github.com/ChALkeR/safer-buffer"
