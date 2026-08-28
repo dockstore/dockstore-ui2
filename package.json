@@ -101,6 +101,7 @@
     "@types/elasticsearch": "^5.0.37",
     "@types/jasmine": "^3.7.7",
     "@types/jquery": "^3.5.5",
+    "@angular-eslint/builder": "^22.1.0",
     "@types/node": "^22.20.1",
     "@typescript-eslint/eslint-plugin": "^8.67.0",
     "@typescript-eslint/parser": "^8.67.0",
