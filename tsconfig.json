@@ -5,6 +5,7 @@
     "strict": false,
     "downlevelIteration": true,
     "module": "es2020",
+    "rootDir": ".",
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
