@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Dockstore } from '../shared/dockstore.model';
 
 import { RouterLink, RouterLinkActive } from '@angular/router';
@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
   selector: 'app-my-sidebar',
   templateUrl: './my-sidebar.component.html',
   styleUrls: ['./my-sidebar.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MatButtonModule, RouterLink, RouterLinkActive],
 })
 export class MySidebarComponent {

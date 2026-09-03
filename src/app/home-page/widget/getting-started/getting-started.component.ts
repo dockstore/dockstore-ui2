@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Dockstore } from '../../../shared/dockstore.model';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
   selector: 'app-getting-started',
   templateUrl: './getting-started.component.html',
   styleUrls: ['./getting-started.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MatButtonModule, RouterLink, MatIconModule],
 })
 export class GettingStartedComponent {

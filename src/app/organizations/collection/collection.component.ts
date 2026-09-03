@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { bootstrap4mediumModalSize } from '../../shared/constants';
@@ -43,6 +43,7 @@ import { AiBubbleComponent } from '../../shared/ai-bubble/ai-bubble.component';
 @Component({
   selector: 'app-collection-entry-confirm-remove',
   templateUrl: 'collection-entry-confirm-remove.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MatDialogModule, AlertComponent, FlexModule, MatButtonModule],
 })
 export class CollectionRemoveEntryDialogComponent {
@@ -71,6 +72,7 @@ export interface EntryDialogData {
   selector: 'app-collection',
   templateUrl: './collection.component.html',
   styleUrls: ['./collection.component.scss', '../organization/organization.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     HeaderComponent,
     FlexModule,

@@ -21,26 +21,24 @@ import { WorkflowsStubService, WorkflowStubService } from '../../test/service-st
 import { ToolTabComponent } from './tool-tab.component';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('ToolTabComponent', () => {
   let component: ToolTabComponent;
   let fixture: ComponentFixture<ToolTabComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [FormsModule, ToolTabComponent],
-        providers: [
-          { provide: WorkflowService, useClass: WorkflowStubService },
-          { provide: WorkflowsService, useClass: WorkflowsStubService },
-          { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
-          provideHttpClient(withInterceptorsFromDi()),
-          provideHttpClientTesting(),
-        ],
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [FormsModule, ToolTabComponent],
+      providers: [
+        { provide: WorkflowService, useClass: WorkflowStubService },
+        { provide: WorkflowsService, useClass: WorkflowsStubService },
+        { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ToolTabComponent);

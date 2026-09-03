@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { ID } from '@datorama/akita';
 import { Dockstore } from 'app/shared/dockstore.model';
@@ -33,6 +33,7 @@ import { LoadingComponent } from '../../shared/loading/loading.component';
   selector: 'app-recent-events',
   templateUrl: './recent-events.component.html',
   styleUrls: ['../../shared/styles/dashboard-boxes.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     LoadingComponent,
     NgIf,

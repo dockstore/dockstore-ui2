@@ -13,12 +13,13 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
 
 @Component({
   selector: 'app-change-username-banner',
   templateUrl: './changeUsernameBanner.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [FlexModule],
 })
 export class ChangeUsernameBannerComponent {}

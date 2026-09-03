@@ -14,7 +14,17 @@
  *    limitations under the License.
  */
 import { AsyncPipe, DatePipe, JsonPipe, KeyValue, KeyValuePipe, NgClass } from '@angular/common';
-import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  ViewChild,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
@@ -50,6 +60,7 @@ import { CommitUrlPipe } from 'app/shared/entry/commit-url.pipe';
   selector: 'app-versions-workflow',
   templateUrl: './versions.component.html',
   styleUrls: ['./versions.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatTableModule,
     MatSortModule,

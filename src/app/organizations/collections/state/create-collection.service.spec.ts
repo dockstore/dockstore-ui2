@@ -25,7 +25,7 @@ import { CollectionsService } from '../../state/collections.service';
 import { OrganizationQuery } from '../../state/organization.query';
 import { CreateCollectionService } from './create-collection.service';
 import { CreateCollectionStore } from './create-collection.store';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 let organizationsServiceSpy: jasmine.SpyObj<OrganizationsService>;
 let organizationQuerySpy: jasmine.SpyObj<OrganizationQuery>;
@@ -50,7 +50,7 @@ describe('CreateCollectionService', () => {
         { provide: CollectionsService, useValue: collectionsServiceStub },
         { provide: OrganizationsService, useValue: organizationsServiceStub },
         { provide: OrganizationQuery, useValue: organizationQueryStub },
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
     });

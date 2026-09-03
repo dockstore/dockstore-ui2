@@ -13,7 +13,7 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router, RouterLink } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
@@ -66,6 +66,7 @@ export interface AccountInfo {
   selector: 'app-accounts-external',
   templateUrl: './accounts.component.html',
   styleUrls: ['./accounts.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     FlexModule,
     MatCardModule,

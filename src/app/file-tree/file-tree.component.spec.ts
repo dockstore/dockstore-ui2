@@ -12,35 +12,25 @@ import { SourceFileTabsService } from '../source-file-tabs/source-file-tabs.serv
 import { DescriptorLanguageStubService, SourceFileTabsStubService } from '../test/service-stubs';
 
 import { FileTreeComponent } from './file-tree.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('FileTreeComponent', () => {
   let component: FileTreeComponent;
   let fixture: ComponentFixture<FileTreeComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          MatButtonModule,
-          MatIconModule,
-          MatTreeModule,
-          MatDialogModule,
-          MatInputModule,
-          BrowserAnimationsModule,
-          FileTreeComponent,
-        ],
-        providers: [
-          { provide: MatDialogRef, useValue: {} },
-          { provide: MAT_DIALOG_DATA, useValue: [] },
-          { provide: SourceFileTabsService, useClass: SourceFileTabsStubService },
-          { provide: DescriptorLanguageService, useClass: DescriptorLanguageStubService },
-          provideHttpClient(withInterceptorsFromDi()),
-          provideHttpClientTesting(),
-        ],
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [MatButtonModule, MatIconModule, MatTreeModule, MatDialogModule, MatInputModule, BrowserAnimationsModule, FileTreeComponent],
+      providers: [
+        { provide: MatDialogRef, useValue: {} },
+        { provide: MAT_DIALOG_DATA, useValue: [] },
+        { provide: SourceFileTabsService, useClass: SourceFileTabsStubService },
+        { provide: DescriptorLanguageService, useClass: DescriptorLanguageStubService },
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(FileTreeComponent);

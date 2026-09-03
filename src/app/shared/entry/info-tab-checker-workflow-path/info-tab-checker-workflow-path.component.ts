@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Workflow } from 'app/shared/openapi';
 import { Observable } from 'rxjs';
@@ -36,6 +36,7 @@ import { AsyncPipe } from '@angular/common';
   selector: 'app-info-tab-checker-workflow-path',
   templateUrl: './info-tab-checker-workflow-path.component.html',
   styleUrls: ['./info-tab-checker-workflow-path.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [FormsModule, FlexModule, MatTooltipModule, MatButtonModule, RouterLink, MatIconModule, AsyncPipe],
 })
 export class InfoTabCheckerWorkflowPathComponent extends Base implements OnInit, OnDestroy {

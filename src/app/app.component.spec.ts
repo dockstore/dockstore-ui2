@@ -1,6 +1,6 @@
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { TestBed, waitForAsync } from '@angular/core/testing';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -37,11 +37,12 @@ import {
   UsersStubService,
 } from './test/service-stubs';
 import { TosBannerService } from './tosBanner/state/tos-banner.service';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 @Component({
   selector: 'app-banner',
   template: '',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [RouterTestingModule, MatSnackBarModule],
 })
 class BannerStubComponent {}
@@ -49,6 +50,7 @@ class BannerStubComponent {}
 @Component({
   selector: 'app-navbar',
   template: '',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [RouterTestingModule, MatSnackBarModule],
 })
 class NavbarStubComponent {}
@@ -56,6 +58,7 @@ class NavbarStubComponent {}
 @Component({
   selector: 'app-footer',
   template: '',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [RouterTestingModule, MatSnackBarModule],
 })
 class FooterStubComponent {}
@@ -63,6 +66,7 @@ class FooterStubComponent {}
 @Component({
   selector: 'app-tos-banner',
   template: '',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [RouterTestingModule, MatSnackBarModule],
 })
 class TosBannerStubComponent {}
@@ -70,57 +74,53 @@ class TosBannerStubComponent {}
 @Component({
   selector: 'app-sitewide-notifications',
   template: '',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [RouterTestingModule, MatSnackBarModule],
 })
 class NotificationStubComponent {}
 
 describe('AppComponent', () => {
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [RouterLinkStubDirective, RouterOutletStubComponent],
-        imports: [
-          RouterTestingModule,
-          MatDialogModule,
-          MatSnackBarModule,
-          NavbarStubComponent,
-          FooterStubComponent,
-          BannerStubComponent,
-          TosBannerStubComponent,
-          NotificationStubComponent,
-          AppComponent,
-        ],
-        providers: [
-          { provide: TrackLoginService, useClass: TrackLoginStubService },
-          { provide: TosBannerService, useClass: TosBannerStubService },
-          { provide: AuthService, useClass: AuthStubService },
-          { provide: Configuration, useClass: ConfigurationStub },
-          { provide: ContainerService, useClass: ContainerStubService },
-          { provide: ServiceInfoService, useClass: GA4GHV20StubService },
-          { provide: DateService, useClass: DateStubService },
-          { provide: ProviderService, useClass: ProviderStubService },
-          { provide: DescriptorLanguageService, useClass: DescriptorLanguageStubService },
-          { provide: UrlResolverService, useClass: UrlResolverStubService },
-          { provide: UsersService, useClass: UsersStubService },
-          { provide: LogoutService, useClass: LogoutStubService },
-          MyEntriesStateService,
-          MyEntriesStore,
-          MytoolsService,
-          MyWorkflowsService,
-          PagenumberService,
-          provideHttpClient(withInterceptorsFromDi()),
-          provideHttpClientTesting(),
-        ],
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [RouterLinkStubDirective, RouterOutletStubComponent],
+      imports: [
+        RouterTestingModule,
+        MatDialogModule,
+        MatSnackBarModule,
+        NavbarStubComponent,
+        FooterStubComponent,
+        BannerStubComponent,
+        TosBannerStubComponent,
+        NotificationStubComponent,
+        AppComponent,
+      ],
+      providers: [
+        { provide: TrackLoginService, useClass: TrackLoginStubService },
+        { provide: TosBannerService, useClass: TosBannerStubService },
+        { provide: AuthService, useClass: AuthStubService },
+        { provide: Configuration, useClass: ConfigurationStub },
+        { provide: ContainerService, useClass: ContainerStubService },
+        { provide: ServiceInfoService, useClass: GA4GHV20StubService },
+        { provide: DateService, useClass: DateStubService },
+        { provide: ProviderService, useClass: ProviderStubService },
+        { provide: DescriptorLanguageService, useClass: DescriptorLanguageStubService },
+        { provide: UrlResolverService, useClass: UrlResolverStubService },
+        { provide: UsersService, useClass: UsersStubService },
+        { provide: LogoutService, useClass: LogoutStubService },
+        MyEntriesStateService,
+        MyEntriesStore,
+        MytoolsService,
+        MyWorkflowsService,
+        PagenumberService,
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ],
+    }).compileComponents();
+  }));
 
-  it(
-    'should create the app',
-    waitForAsync(() => {
-      const fixture = TestBed.createComponent(AppComponent);
-      const app = fixture.debugElement.componentInstance;
-      expect(app).toBeTruthy();
-    })
-  );
+  it('should create the app', waitForAsync(() => {
+    const fixture = TestBed.createComponent(AppComponent);
+    const app = fixture.debugElement.componentInstance;
+    expect(app).toBeTruthy();
+  }));
 });

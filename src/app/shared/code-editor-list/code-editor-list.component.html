@@ -5,11 +5,12 @@
   </mat-card>
   } @for (sourcefile of sourcefiles; track sourcefile; let i = $index) {
   <div class="mb-3">
-    @if (sourcefile?.content !== null && showSourcefile(sourcefile?.type)) {
+    @if ($safeNavigationMigration(sourcefile?.content) !== null && showSourcefile($safeNavigationMigration(sourcefile?.type))) {
     <div>
       <mat-toolbar class="files-toolbar">
         <mat-toolbar-row>
-          @if (editing && !isPrimaryDescriptor(sourcefile?.absolutePath) && !isDockerFile(sourcefile?.absolutePath)) {
+          @if (editing && !isPrimaryDescriptor($safeNavigationMigration(sourcefile?.absolutePath)) &&
+          !isDockerFile($safeNavigationMigration(sourcefile?.absolutePath))) {
           <form class="w-100">
             <mat-form-field class="white-background w-50">
               <mat-label>File Name</mat-label>
@@ -22,14 +23,16 @@
               />
             </mat-form-field>
           </form>
-          } @if (!editing || isPrimaryDescriptor(sourcefile?.absolutePath) || isDockerFile(sourcefile?.absolutePath)) {
+          } @if (!editing || isPrimaryDescriptor($safeNavigationMigration(sourcefile?.absolutePath)) ||
+          isDockerFile($safeNavigationMigration(sourcefile?.absolutePath))) {
           <span>
             {{ sourcefile.absolutePath }}
           </span>
           }
           <span class="spacer"></span>
           <span>
-            @if (editing && !isPrimaryDescriptor(sourcefile?.absolutePath) && !isDockerFile(sourcefile?.absolutePath)) {
+            @if (editing && !isPrimaryDescriptor($safeNavigationMigration(sourcefile?.absolutePath)) &&
+            !isDockerFile($safeNavigationMigration(sourcefile?.absolutePath))) {
             <button mat-icon-button class="delete-editor-file mr-2" color="warn" (click)="deleteFile(i)" matTooltip="Delete the file">
               <mat-icon>delete</mat-icon>
             </button>
@@ -41,8 +44,8 @@
                 color="accent"
                 class="mr-2"
                 download
-                [href]="sourcefile | publicFileDownload: entrypath:selectedVersion:descriptorType:entryType"
-                [download]="sourcefile?.absolutePath | privateFilePath"
+                [href]="sourcefile | publicFileDownload : entrypath : selectedVersion : descriptorType : entryType"
+                [download]="$safeNavigationMigration(sourcefile?.absolutePath) | privateFilePath"
                 type="button"
                 matTooltip="Download {{ sourcefile?.absolutePath }}"
               >
@@ -55,7 +58,9 @@
                 class="mr-2"
                 type="button"
                 matTooltip="Download {{ sourcefile?.absolutePath }}"
-                (click)="downloadFileContent(sourcefile?.content, sourcefile?.absolutePath)"
+                (click)="
+                  downloadFileContent($safeNavigationMigration(sourcefile?.content), $safeNavigationMigration(sourcefile?.absolutePath))
+                "
               >
                 <mat-icon>save_alt</mat-icon>
               </a>
@@ -66,7 +71,7 @@
                 type="button"
                 class="mr-2"
                 matTooltip="Copy to clipboard"
-                [cdkCopyToClipboard]="sourcefile?.content"
+                [cdkCopyToClipboard]="$safeNavigationMigration(sourcefile?.content)"
                 appSnackbar
               >
                 <mat-icon>file_copy</mat-icon>

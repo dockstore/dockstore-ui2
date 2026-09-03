@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Dockstore } from 'app/shared/dockstore.model';
@@ -8,6 +8,7 @@ import { Doi } from 'app/shared/openapi';
   selector: 'app-doi-badge',
   templateUrl: './doi-badge.component.html',
   styleUrls: [],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MatTooltipModule, MatIconModule],
 })
 export class DoiBadgeComponent {

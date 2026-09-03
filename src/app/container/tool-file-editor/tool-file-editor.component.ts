@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { FileEditing } from '../../shared/file-editing';
 import { ContainertagsService, SourceFile, DockstoreTool, ToolDescriptor, EntryType } from '../../shared/openapi';
@@ -32,6 +32,7 @@ import { MatTabsModule } from '@angular/material/tabs';
   selector: 'app-tool-file-editor',
   templateUrl: './tool-file-editor.component.html',
   styleUrls: ['./tool-file-editor.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MatTabsModule, CodeEditorListComponent, MatFormFieldModule, MatSelectModule, MatOptionModule, MatButtonModule],
 })
 export class ToolFileEditorComponent extends FileEditing {

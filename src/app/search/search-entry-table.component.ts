@@ -13,7 +13,7 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
 import { combineLatest, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -67,6 +67,7 @@ export interface SortOption {
   selector: 'app-search-entry-table',
   templateUrl: './search-entry-table.component.html',
   styleUrls: ['../shared/styles/entry-table.scss', './search-entry-table.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatProgressBarModule,
     MatTableModule,

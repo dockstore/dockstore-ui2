@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
 import { first, takeUntil } from 'rxjs/operators';
 import { AlertService } from '../../../shared/alert/state/alert.service';
@@ -33,6 +33,7 @@ import { NgClass, NgIf } from '@angular/common';
   selector: 'app-organization-starring',
   templateUrl: '../../../starring/starring.component.html',
   styleUrls: ['../../../starring/starring.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [NgClass, NgIf, MatIconModule, MatTooltipModule],
 })
 export class OrganizationStarringComponent extends Base implements OnInit, OnDestroy, OnChanges {

@@ -21,7 +21,7 @@
   <div class="row m-1 mt-3 mb-0">
     <mat-card appearance="outlined" class="alert alert-warning m-0">
       <mat-card-content>
-        This {{ tool.entryTypeMetadata.term }} was archived on {{ tool.dbUpdateDate | date: 'yyyy-MM-dd' }}. It is now read-only.
+        This {{ tool.entryTypeMetadata.term }} was archived on {{ tool.dbUpdateDate | date : 'yyyy-MM-dd' }}. It is now read-only.
       </mat-card-content>
     </mat-card>
   </div>
@@ -233,11 +233,11 @@
           <mat-tab label="Launch">
             @if (tool?.workflowVersions.length > 0) {
             <app-container-launch
-              [basePath]="tool?.path"
+              [basePath]="$safeNavigationMigration(tool?.path)"
               [selectedVersion]="selectedVersion"
-              [path]="tool?.tool_path"
-              [toolname]="tool?.toolname"
-              [mode]="tool?.mode"
+              [path]="$safeNavigationMigration(tool?.tool_path)"
+              [toolname]="$safeNavigationMigration(tool?.toolname)"
+              [mode]="$safeNavigationMigration(tool?.mode)"
               [versionsFileTypes]="versionsFileTypes"
             ></app-container-launch>
             } @else {
@@ -254,10 +254,10 @@
               @if (tool?.workflowVersions?.length > 0) {
               <div>
                 <app-versions-container
-                  [versions]="tool?.workflowVersions"
+                  [versions]="$safeNavigationMigration(tool?.workflowVersions)"
                   (selectedVersionChange)="onSelectedVersionChange($event)"
                   id="versionsTab"
-                  [verifiedSource]="(extendedTool$ | async)?.verifiedSources"
+                  [verifiedSource]="$safeNavigationMigration((extendedTool$ | async)?.verifiedSources)"
                   [selectedVersion]="selectedVersion"
                   [verifiedVersionPlatforms]="versionsWithVerifiedPlatforms"
                 >
@@ -301,8 +301,8 @@
                 @if (tool?.mode !== DockstoreToolType.ModeEnum.HOSTED) {
                 <div>
                   <app-files-container
-                    [entrypath]="tool?.tool_path"
-                    [id]="tool?.id"
+                    [entrypath]="$safeNavigationMigration(tool?.tool_path)"
+                    [id]="$safeNavigationMigration(tool?.id)"
                     [versions]="validVersions"
                     [default]="defaultVersion"
                     [selectedVersion]="selectedVersion"
@@ -316,7 +316,7 @@
                   @if (currentTab === 'files') {
                   <app-tool-file-editor
                     [entrypath]="tool.tool_path"
-                    [id]="tool?.id"
+                    [id]="$safeNavigationMigration(tool?.id)"
                     [versions]="validVersions"
                     [default]="defaultVersion"
                     [selectedVersion]="selectedVersion"
@@ -335,7 +335,7 @@
       </div>
       @if (publicPage) {
       <div class="mt-2 mr-3">
-        @if (tool?.topicId !== null) {
+        @if ($safeNavigationMigration(tool?.topicId) !== null) {
         <div id="discourse-comments"></div>
         } @else {
         <mat-card appearance="outlined" class="alert alert-warning" role="alert">
@@ -465,7 +465,7 @@
                 </a>
                 @if ((extendedTool$ | async).imgProvider === 'Quay.io') {
                 <div>
-                  <a [href]="(extendedTool$ | async)?.imgProviderUrl" target="_blank" rel="noopener">
+                  <a [href]="$safeNavigationMigration((extendedTool$ | async)?.imgProviderUrl)" target="_blank" rel="noopener">
                     <img src="{{ (extendedTool$ | async).imgProviderUrl }}/status" alt="{{ (extendedTool$ | async).imgProvider }} Status" />
                   </a>
                 </div>

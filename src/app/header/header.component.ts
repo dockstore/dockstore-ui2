@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Router } from '@angular/router';
 import { toExtendSite } from '../shared/helpers';
 import { AlertComponent } from '../shared/alert/alert.component';
@@ -22,6 +22,7 @@ import { FlexModule } from '@ngbracket/ngx-layout';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [AlertComponent, FlexModule],
 })
 export class HeaderComponent {

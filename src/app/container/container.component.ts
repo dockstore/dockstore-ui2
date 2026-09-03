@@ -15,7 +15,7 @@
  */
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { Location, NgClass, AsyncPipe, DatePipe } from '@angular/common';
-import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
 import { MatDialog } from '@angular/material/dialog';
 import { Title } from '@angular/platform-browser';
@@ -84,6 +84,7 @@ import { WorkflowComponent } from '../workflow/workflow.component';
   selector: 'app-container',
   templateUrl: './container.component.html',
   styleUrls: ['../shared/styles/workflow-container.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     WorkflowComponent,
     MatCardModule,

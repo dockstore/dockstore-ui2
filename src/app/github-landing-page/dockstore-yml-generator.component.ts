@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Dockstore } from '../shared/dockstore.model';
 import { ActivatedRoute, Params, RouterLink } from '@angular/router';
 import { finalize, map, takeUntil } from 'rxjs/operators';
@@ -24,6 +24,7 @@ import { FormsModule } from '@angular/forms';
   selector: 'app-dockstore-yml-generator',
   templateUrl: './dockstore-yml-generator.component.html',
   styleUrls: [],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     FlexModule,
     MatCardModule,

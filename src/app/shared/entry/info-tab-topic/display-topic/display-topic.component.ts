@@ -1,5 +1,5 @@
 import { AsyncPipe, TitleCasePipe } from '@angular/common';
-import { Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
@@ -18,6 +18,7 @@ import { MatChipsModule } from '@angular/material/chips';
   selector: 'app-display-topic',
   templateUrl: './display-topic.component.html',
   styleUrls: ['../../../styles/info-tab.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MatTooltipModule, MatButtonModule, MatIconModule, AsyncPipe, AiBubbleComponent, FlexModule, TitleCasePipe, MatChipsModule],
 })
 export class DisplayTopicComponent extends Base implements OnInit, OnChanges, OnDestroy {

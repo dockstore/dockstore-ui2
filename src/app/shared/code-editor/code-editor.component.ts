@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { AfterViewInit, Component, EventEmitter, Input, Output } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, Output, ChangeDetectionStrategy } from '@angular/core';
 
 import { ace } from './../grammars/custom-grammars.js';
 import { EntryType } from '../openapi/model/entryType';
@@ -10,6 +10,7 @@ let ACE_EDITOR_INSTANCE = 0;
   selector: 'app-code-editor',
   templateUrl: './code-editor.component.html',
   styleUrls: ['./code-editor.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true,
 })
 export class CodeEditorComponent implements AfterViewInit {

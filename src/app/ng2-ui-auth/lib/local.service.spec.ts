@@ -24,7 +24,7 @@ import { CONFIG_OPTIONS, ConfigService } from './config.service';
 import { LocalService } from './local.service';
 import { SharedService } from './shared.service';
 import { StorageService } from './storage-service';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('LocalService', () => {
   beforeEach(() => {
@@ -36,7 +36,7 @@ describe('LocalService', () => {
         StorageService,
         ConfigService,
         { provide: CONFIG_OPTIONS, useValue: {} },
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
     });

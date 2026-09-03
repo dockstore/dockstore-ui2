@@ -27,7 +27,7 @@ import { ProviderStubService, TimeSeriesStubService } from '../../test/service-s
 import { Hit, SearchService } from './search.service';
 import { SearchStore } from './search.store';
 import { SearchAuthorsHtmlPipe } from '../search-authors-html.pipe';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('SearchService', () => {
   let searchService: SearchService;
@@ -47,7 +47,7 @@ describe('SearchService', () => {
           provide: TimeSeriesService,
           useClass: TimeSeriesStubService,
         },
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
     });

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { Dockstore } from '../../shared/dockstore.model';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
@@ -6,6 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 @Component({
   selector: 'app-private-icon',
   templateUrl: './private-icon.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MatIconModule, MatTooltipModule],
 })
 export class PrivateIconComponent {

@@ -46,12 +46,18 @@
             <a
               id="sourceRepository"
               data-cy="sourceRepository"
-              [href]="workflow?.providerUrl | versionProviderUrl: selectedVersion?.name + '/' + sourceCodeFile"
+              [href]="
+                $safeNavigationMigration(workflow?.providerUrl)
+                  | versionProviderUrl : $safeNavigationMigration(selectedVersion?.name) + '/' + sourceCodeFile
+              "
             >
-              {{ workflow?.providerUrl | versionProviderUrl: selectedVersion?.name + '/' + sourceCodeFile }}
+              {{
+                $safeNavigationMigration(workflow?.providerUrl)
+                  | versionProviderUrl : $safeNavigationMigration(selectedVersion?.name) + '/' + sourceCodeFile
+              }}
             </a>
             } @else {
-            <a id="sourceRepository" data-cy="sourceRepository" [href]="workflow?.providerUrl">
+            <a id="sourceRepository" data-cy="sourceRepository" [href]="$safeNavigationMigration(workflow?.providerUrl)">
               {{ workflow?.providerUrl }}
             </a>
             }
@@ -221,7 +227,7 @@
               <form class="form-inline" fxLayout>
                 <div class="form-group" fxFlex="noshrink" fxLayout fxLayoutAlign=" center">
                   <strong matTooltip="Link to a discussion forum for this workflow">Discussion Forum</strong>: @if (!forumUrlEditing) {
-                  <a [href]="'//' + workflow?.forumUrl" fxFlexOffset="4px"> {{ workflow?.forumUrl }} </a>
+                  <a [href]="'//' + $safeNavigationMigration(workflow?.forumUrl)" fxFlexOffset="4px"> {{ workflow?.forumUrl }} </a>
                   } @if (forumUrlEditing) {
                   <input
                     maxlength="256"
@@ -286,7 +292,8 @@
           } @if (!isPublic) {
           <li>
             <div fxFlex="noshrink" fxLayoutAlign="start center">
-              <strong [matTooltip]="modeTooltipContent">Mode</strong>: {{ 'mode' | mapFriendlyValue: workflow?.mode }}
+              <strong [matTooltip]="modeTooltipContent">Mode</strong>:
+              {{ 'mode' | mapFriendlyValue : $safeNavigationMigration(workflow?.mode) }}
             </div>
           </li>
           } @if ((entryType$ | async) === EntryType.Notebook) {
@@ -305,7 +312,7 @@
               <select class="form-control input-sm" (change)="updateDescriptorType()" [(ngModel)]="temporaryDescriptorType">
                 @for (descriptorLanguage of descriptorLanguages$ | async; track descriptorLanguage) {
                 <option [value]="descriptorLanguage">
-                  {{ 'descriptor_type' | mapFriendlyValue: descriptorLanguage }}
+                  {{ 'descriptor_type' | mapFriendlyValue : descriptorLanguage }}
                 </option>
                 }
               </select>
@@ -323,7 +330,7 @@
                 matTooltip="{{ (entryType$ | async) === EntryType.Notebook ? 'Format of notebook' : 'Type of descriptor language used' }}"
                 >{{ (entryType$ | async) === EntryType.Notebook ? 'Format' : 'Descriptor Type' }}</Strong
               >:
-              {{ 'descriptor_type' | mapFriendlyValue: workflow?.descriptorType }}
+              {{ 'descriptor_type' | mapFriendlyValue : $safeNavigationMigration(workflow?.descriptorType) }}
               @if (workflow?.descriptorType === DescriptorTypeEnum.SMK) {
               <app-preview-warning [featureName]="Dockstore.FEATURES.snakemakeFeatureName" [isBubble]="true"></app-preview-warning>
               }
@@ -333,7 +340,7 @@
         </div>
         } @if (extendedWorkflow?.agoMessage) {
         <li>
-          <span [matTooltip]="extendedWorkflow?.last_modified_date | date: 'medium'"
+          <span [matTooltip]="$safeNavigationMigration(extendedWorkflow?.last_modified_date) | date : 'medium'"
             ><strong>Last update to source repository</strong>: {{ extendedWorkflow?.agoMessage }}</span
           >
         </li>
@@ -442,7 +449,10 @@
           <div class="well well-sm">
             <app-markdown-wrapper
               [data]="description"
-              [baseUrl]="workflow?.providerUrl | baseUrl: selectedVersion?.name:selectedVersion?.readMePath"
+              [baseUrl]="
+                $safeNavigationMigration(workflow?.providerUrl)
+                  | baseUrl : $safeNavigationMigration(selectedVersion?.name) : $safeNavigationMigration(selectedVersion?.readMePath)
+              "
             ></app-markdown-wrapper>
           </div>
           } @if (!description && !isPublic) {
@@ -503,7 +513,7 @@
       </div>
       }
       <ul class="list-unstyled container-info">
-        <li [matTooltip]="selectedVersion.last_modified | date: 'medium'">
+        <li [matTooltip]="selectedVersion.last_modified | date : 'medium'">
           @if (WorkflowVersionModel.ReferenceTypeEnum.TAG === selectedVersion.referenceType) {
           <strong>Tag created</strong>
           } @if (WorkflowVersionModel.ReferenceTypeEnum.TAG !== selectedVersion.referenceType) {

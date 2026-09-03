@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { TokenSource } from 'app/shared/enum/token-source.enum';
 import { SessionQuery } from 'app/shared/session/session.query';
 import { Observable } from 'rxjs';
@@ -24,6 +24,7 @@ import { LoadingComponent } from '../../shared/loading/loading.component';
   templateUrl: './refresh-wizard.component.html',
   styleUrls: ['./refresh-wizard.component.scss'],
   providers: [RefreshWizardQuery, RefreshWizardStore, RefreshWizardService],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     LoadingComponent,
     MatCardModule,

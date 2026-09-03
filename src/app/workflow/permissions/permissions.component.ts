@@ -1,6 +1,6 @@
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -20,6 +20,7 @@ import { FlexModule } from '@ngbracket/ngx-layout';
   selector: 'app-permissions',
   templateUrl: './permissions.component.html',
   styleUrls: ['./permissions.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MatProgressBarModule, MatFormFieldModule, MatChipsModule, MatIconModule, FlexModule],
 })
 export class PermissionsComponent implements OnInit {

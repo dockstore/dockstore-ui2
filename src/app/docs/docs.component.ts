@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Dockstore } from '../shared/dockstore.model';
 import { HeaderComponent } from '../header/header.component';
 
@@ -26,6 +26,7 @@ interface DocObject {
 @Component({
   selector: 'app-docs',
   templateUrl: './docs.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [HeaderComponent],
 })
 export class DocsComponent implements OnInit {

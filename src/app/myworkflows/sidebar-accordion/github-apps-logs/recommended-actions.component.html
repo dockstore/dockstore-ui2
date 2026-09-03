@@ -10,7 +10,7 @@
   <mat-divider></mat-divider>
 
   <mat-card-content class="h-100">
-    <app-loading [loading]="dataSource?.loading$ | async" class="h-100">
+    <app-loading [loading]="$safeNavigationMigration(dataSource?.loading$) | async" class="h-100">
       @if ((showContent$ | async) === 'error') {
       <mat-card appearance="outlined" class="alert alert-warning" role="alert">
         <mat-card-content>
@@ -40,7 +40,7 @@
                   >, but a .dockstore.yml file was not found.
                 </div>
                 <div fxLayout="row" fxLayoutAlign="space-between center">
-                  <div class="subtitle">{{ notification.dbCreateDate | date: 'medium' }}</div>
+                  <div class="subtitle">{{ notification.dbCreateDate | date : 'medium' }}</div>
                   <div>
                     <button mat-stroked-button class="private-btn mr-2" (click)="deleteGitHubAppNotification(notification.id)">
                       <mat-icon>delete</mat-icon><span> Dismiss</span>

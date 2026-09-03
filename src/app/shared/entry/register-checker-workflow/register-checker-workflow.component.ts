@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { HttpErrorResponse } from '@angular/common/http';
-import { AfterViewChecked, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewChecked, Component, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { NgForm, FormsModule } from '@angular/forms';
 import { ExtendedDescriptorLanguageBean } from 'app/entry/extendedDescriptorLanguage';
 import { Observable } from 'rxjs';
@@ -44,6 +44,7 @@ import { FlexModule } from '@ngbracket/ngx-layout';
 
 @Component({
   templateUrl: './register-checker-workflow.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatDialogModule,
     AlertComponent,

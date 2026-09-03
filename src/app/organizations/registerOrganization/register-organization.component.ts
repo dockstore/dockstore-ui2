@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { AbstractControl, UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { NgFormsManager } from '@ngneat/forms-manager';
@@ -40,6 +40,7 @@ import { AlertComponent } from '../../shared/alert/alert.component';
   selector: 'app-register-organization',
   templateUrl: './register-organization.component.html',
   styleUrls: ['./register-organization.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatDialogModule,
     AlertComponent,

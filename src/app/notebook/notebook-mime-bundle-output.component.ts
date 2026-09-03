@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, ChangeDetectionStrategy } from '@angular/core';
 import { MarkdownWrapperService } from '../shared/markdown-wrapper/markdown-wrapper.service';
 import { escape, selectBestFromMimeBundle } from './notebook-helpers';
 import { MimeBundle, Output, OutputMetadata } from './notebook-types';
@@ -6,6 +6,7 @@ import { MimeBundle, Output, OutputMetadata } from './notebook-types';
 @Component({
   selector: 'app-notebook-mime-bundle-output',
   templateUrl: './notebook-mime-bundle-output.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [],
 })
 export class NotebookMimeBundleOutputComponent implements OnChanges {

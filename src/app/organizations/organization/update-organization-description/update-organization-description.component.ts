@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { UpdateOrganizationOrCollectionDescriptionService } from '../state/update-organization-description.service';
@@ -29,6 +29,7 @@ import { TitleCasePipe } from '@angular/common';
 
 @Component({
   templateUrl: './update-organization-description.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatDialogModule,
     AlertComponent,

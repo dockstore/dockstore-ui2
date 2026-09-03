@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { UsersService } from '../../../shared/openapi';
@@ -14,6 +14,7 @@ import { AsyncPipe } from '@angular/common';
   selector: 'app-controls',
   templateUrl: './controls.component.html',
   styleUrls: ['./controls.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MatCardModule, MatIconModule, MatButtonModule, AsyncPipe],
 })
 export class ControlsComponent implements OnInit {

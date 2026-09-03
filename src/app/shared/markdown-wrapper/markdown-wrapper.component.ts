@@ -1,10 +1,11 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, ChangeDetectionStrategy } from '@angular/core';
 import { MarkdownWrapperService } from './markdown-wrapper.service';
 
 @Component({
   selector: 'app-markdown-wrapper',
   templateUrl: './markdown-wrapper.component.html',
   styleUrls: ['./markdown-wrapper.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true,
 })
 export class MarkdownWrapperComponent implements OnChanges {

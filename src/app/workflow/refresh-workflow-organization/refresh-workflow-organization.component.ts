@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ConfirmationDialogData } from 'app/confirmation-dialog/confirmation-dialog.component';
 import { ConfirmationDialogService } from 'app/confirmation-dialog/confirmation-dialog.service';
 import { bootstrap4mediumModalSize } from 'app/shared/constants';
@@ -37,6 +37,7 @@ import { MatButtonModule } from '@angular/material/button';
   // Note that the template and style is actually from the shared one (used by both my-workflows and my-tools)
   templateUrl: './../../shared/refresh-organization/refresh-organization.component.html',
   styleUrls: ['./../../shared/refresh-organization/refresh-organization.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MatButtonModule, AsyncPipe],
 })
 export class RefreshWorkflowOrganizationComponent extends RefreshOrganizationComponent implements OnInit, OnChanges {

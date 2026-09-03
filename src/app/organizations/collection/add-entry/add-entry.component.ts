@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { Collection, OrganizationUser } from '../../../shared/openapi';
@@ -18,6 +18,7 @@ import { LoadingComponent } from '../../../shared/loading/loading.component';
   selector: 'app-add-entry',
   templateUrl: './add-entry.component.html',
   styleUrls: ['./add-entry.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatDialogModule,
     LoadingComponent,

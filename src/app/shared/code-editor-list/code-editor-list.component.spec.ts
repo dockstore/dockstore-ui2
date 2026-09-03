@@ -19,40 +19,38 @@ import { CodeEditorComponent } from './../code-editor/code-editor.component';
 import { CodeEditorListComponent } from './code-editor-list.component';
 import { DescriptorLanguageService } from '../entry/descriptor-language.service';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('CodeEditorListComponent', () => {
   let component: CodeEditorListComponent;
   let fixture: ComponentFixture<CodeEditorListComponent>;
   class FileStubService {}
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          MatButtonModule,
-          MatTabsModule,
-          MatToolbarModule,
-          MatIconModule,
-          MatInputModule,
-          MatFormFieldModule,
-          MatTooltipModule,
-          MatCardModule,
-          ClipboardModule,
-          CodeEditorListComponent,
-          CodeEditorComponent,
-          PublicFileDownloadPipe,
-          PrivateFilePathPipe,
-        ],
-        providers: [
-          { provide: WorkflowService, useClass: WorkflowStubService },
-          { provide: FileService, useClass: FileStubService },
-          { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
-          provideHttpClient(withInterceptorsFromDi()),
-          provideHttpClientTesting(),
-        ],
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        MatButtonModule,
+        MatTabsModule,
+        MatToolbarModule,
+        MatIconModule,
+        MatInputModule,
+        MatFormFieldModule,
+        MatTooltipModule,
+        MatCardModule,
+        ClipboardModule,
+        CodeEditorListComponent,
+        CodeEditorComponent,
+        PublicFileDownloadPipe,
+        PrivateFilePathPipe,
+      ],
+      providers: [
+        { provide: WorkflowService, useClass: WorkflowStubService },
+        { provide: FileService, useClass: FileStubService },
+        { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CodeEditorListComponent);

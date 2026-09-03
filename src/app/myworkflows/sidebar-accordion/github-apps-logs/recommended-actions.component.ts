@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { AlertService } from 'app/shared/alert/state/alert.service';
 import { merge, Observable } from 'rxjs';
@@ -32,6 +32,7 @@ import { CurationService } from 'app/shared/openapi';
   selector: 'app-recommended-actions',
   templateUrl: './recommended-actions.component.html',
   styleUrls: [],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     LoadingComponent,
     MatCardModule,

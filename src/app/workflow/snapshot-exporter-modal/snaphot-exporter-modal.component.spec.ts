@@ -12,7 +12,7 @@ import { AccountsStubService, AuthStubService, DateStubService } from '../../tes
 
 import { SnaphotExporterModalComponent, SnapshotExporterAction } from './snaphot-exporter-modal.component';
 import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('SnapshotDoiOrcidComponent', () => {
   let component: SnaphotExporterModalComponent;
@@ -50,7 +50,7 @@ describe('SnapshotDoiOrcidComponent', () => {
         { provide: DateService, useClass: DateStubService },
         ProviderService,
         { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
     }).compileComponents();

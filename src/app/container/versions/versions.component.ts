@@ -13,7 +13,17 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  ViewChild,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { faCodeBranch, faTag } from '@fortawesome/free-solid-svg-icons';
@@ -44,6 +54,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   selector: 'app-versions-container',
   templateUrl: './versions.component.html',
   styleUrls: ['./../../workflow/versions/versions.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatTableModule,
     MatSortModule,

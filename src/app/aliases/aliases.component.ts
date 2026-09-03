@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Base } from '../shared/base';
@@ -17,6 +17,7 @@ import { HeaderComponent } from '../header/header.component';
   selector: 'app-aliases',
   templateUrl: './aliases.component.html',
   styleUrls: ['./aliases.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [HeaderComponent, MatCardModule, MatIconModule, MatProgressBarModule, AsyncPipe],
 })
 export class AliasesComponent extends Base implements OnInit {

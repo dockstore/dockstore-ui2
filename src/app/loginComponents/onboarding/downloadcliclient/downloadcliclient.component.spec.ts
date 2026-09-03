@@ -14,37 +14,35 @@ import { RouterLinkStubDirective, RouterOutletStubComponent } from './../../../t
 import { AuthStubService, GA4GHV20StubService } from './../../../test/service-stubs';
 import { DownloadCLIClientComponent } from './downloadcliclient.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('DownloadCLIClientComponent', () => {
   let component: DownloadCLIClientComponent;
   let fixture: ComponentFixture<DownloadCLIClientComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [RouterLinkStubDirective, RouterOutletStubComponent],
-        imports: [
-          ClipboardModule,
-          MarkdownModule.forRoot(),
-          MatIconModule,
-          MatButtonModule,
-          MatSnackBarModule,
-          MatTabsModule,
-          NoopAnimationsModule,
-          DownloadCLIClientComponent,
-        ],
-        providers: [
-          { provide: AuthService, useClass: AuthStubService },
-          { provide: GA4GHV20Service, useClass: GA4GHV20StubService },
-          MetadataService,
-          ServiceInfoService,
-          provideHttpClient(withInterceptorsFromDi()),
-          provideHttpClientTesting(),
-        ],
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [RouterLinkStubDirective, RouterOutletStubComponent],
+      imports: [
+        ClipboardModule,
+        MarkdownModule.forRoot(),
+        MatIconModule,
+        MatButtonModule,
+        MatSnackBarModule,
+        MatTabsModule,
+        NoopAnimationsModule,
+        DownloadCLIClientComponent,
+      ],
+      providers: [
+        { provide: AuthService, useClass: AuthStubService },
+        { provide: GA4GHV20Service, useClass: GA4GHV20StubService },
+        MetadataService,
+        ServiceInfoService,
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(DownloadCLIClientComponent);

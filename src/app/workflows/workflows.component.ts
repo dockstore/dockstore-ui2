@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { SessionQuery } from 'app/shared/session/session.query';
 import { SessionService } from 'app/shared/session/session.service';
@@ -31,6 +31,7 @@ import { MatChipsModule } from '@angular/material/chips';
 @Component({
   selector: 'app-workflows',
   templateUrl: './workflows.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [HeaderComponent, FlexModule, RouterLink, ExtendedModule, RouterOutlet, AsyncPipe, TitleCasePipe, MatChipsModule],
 })
 export class WorkflowsComponent {

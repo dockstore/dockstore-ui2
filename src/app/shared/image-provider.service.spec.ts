@@ -25,7 +25,7 @@ import { ExtendedDockstoreTool } from './models/ExtendedDockstoreTool';
 import { MetadataService } from './openapi';
 import { ContainersService } from './openapi/api/containers.service';
 import { DockstoreTool } from './openapi/model/dockstoreTool';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('ImageProviderService', () => {
   beforeEach(() => {
@@ -35,7 +35,7 @@ describe('ImageProviderService', () => {
         ImageProviderService,
         { provide: ContainersService, useClass: ContainersStubService },
         { provide: MetadataService, useClass: MetadataStubService },
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
     });

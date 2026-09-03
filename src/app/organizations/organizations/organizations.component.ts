@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { PageEvent, MatPaginatorModule } from '@angular/material/paginator';
@@ -49,6 +49,7 @@ import { MatChipsModule } from '@angular/material/chips';
   selector: 'app-organizations',
   templateUrl: './organizations.component.html',
   styleUrls: ['./organizations.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     HeaderComponent,
     FlexModule,

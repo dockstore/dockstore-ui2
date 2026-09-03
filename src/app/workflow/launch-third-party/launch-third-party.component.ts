@@ -1,5 +1,5 @@
 import { HttpUrlEncodingCodec } from '@angular/common/http';
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 import { combineLatest, Observable, Subscription } from 'rxjs';
@@ -100,6 +100,7 @@ import { AsyncPipe } from '@angular/common';
   templateUrl: './launch-third-party.component.html',
   styleUrls: ['./launch-third-party.component.scss'],
   providers: [DescriptorsService, DescriptorsQuery, DescriptorsStore],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatCardModule,
     MatDividerModule,

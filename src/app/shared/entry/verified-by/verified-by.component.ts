@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { AvailableLogsComponent } from '../../available-logs/available-logs.component';
 import { bootstrap4largeModalSize } from '../../constants';
@@ -13,6 +13,7 @@ import { MatCardModule } from '@angular/material/card';
   selector: 'app-verified-by',
   templateUrl: './verified-by.component.html',
   styleUrls: ['./verified-by.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MatCardModule, FlexModule, MatButtonModule, MatDividerModule, MatDialogModule],
 })
 export class VerifiedByComponent implements OnChanges {

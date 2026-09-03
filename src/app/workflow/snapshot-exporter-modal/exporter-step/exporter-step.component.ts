@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { IconDefinition } from '@fortawesome/free-brands-svg-icons';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -11,6 +11,7 @@ import { StepState } from '../step.state';
   selector: 'app-exporter-step',
   templateUrl: './exporter-step.component.html',
   styleUrls: ['./exporter-step.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [FlexModule, MatIconModule, FontAwesomeModule, MatProgressSpinnerModule],
 })
 export class ExporterStepComponent {

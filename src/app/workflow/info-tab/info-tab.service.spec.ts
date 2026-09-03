@@ -12,7 +12,7 @@ import { WorkflowService } from 'app/shared/state/workflow.service';
 import { WorkflowsStubService, WorkflowStubService } from 'app/test/service-stubs';
 import { sampleWorkflow3, appToolEntryTypeMetadata, serviceEntryTypeMetadata, notebookEntryTypeMetadata } from '../../test/mocked-objects';
 import { InfoTabService } from './info-tab.service';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('ValueService', () => {
   let service: InfoTabService;
@@ -33,7 +33,7 @@ describe('ValueService', () => {
         ExtendedWorkflowQuery,
         DescriptorTypeCompatService,
         DescriptorLanguageService,
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
     });

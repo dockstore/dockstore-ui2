@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -41,6 +41,7 @@ import { AlertComponent } from '../../../../shared/alert/alert.component';
   selector: 'app-revoke-token-dialog',
   templateUrl: './revoke-token-dialog.component.html',
   styleUrls: ['./revoke-token-dialog.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatDialogModule,
     AlertComponent,

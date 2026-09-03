@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
@@ -39,6 +39,7 @@ type CategoryDecision = 'approve' | 'remove';
 @Component({
   selector: 'app-manage-categories-dialog',
   templateUrl: './manage-categories-dialog.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MatDialogModule, MatButtonModule, MatIconModule, MatTooltipModule, MatDividerModule, FlexModule, AlertComponent],
 })
 export class ManageCategoriesDialogComponent {

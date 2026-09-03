@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { RequestsService } from './requests.service';
 import { RequestsStore } from './requests.store';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('RequestsService', () => {
   let requestsService: RequestsService;
@@ -11,7 +11,7 @@ describe('RequestsService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [MatSnackBarModule],
-      providers: [RequestsService, RequestsStore, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
+      providers: [RequestsService, RequestsStore, provideHttpClient(withXhr(), withInterceptorsFromDi()), provideHttpClientTesting()],
     });
 
     requestsService = TestBed.inject(RequestsService);

@@ -1,5 +1,5 @@
 import { KeyValue, Location, AsyncPipe, KeyValuePipe } from '@angular/common';
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
@@ -29,6 +29,7 @@ import { MatChipsModule } from '@angular/material/chips';
   selector: 'app-source-file-tabs',
   templateUrl: './source-file-tabs.component.html',
   styleUrls: ['./source-file-tabs.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     LoadingComponent,
     MatCardModule,

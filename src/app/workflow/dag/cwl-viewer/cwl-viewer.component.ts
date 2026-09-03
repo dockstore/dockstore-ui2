@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-import { Component, Input, OnChanges, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ExtendedWorkflow } from '../../../shared/models/ExtendedWorkflow';
@@ -30,6 +30,7 @@ import { MatCardModule } from '@angular/material/card';
   templateUrl: './cwl-viewer.html',
   providers: [CwlViewerService],
   styleUrls: ['./cwl-viewer.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MatCardModule, MatIconModule, MatProgressBarModule],
 })
 export class CwlViewerComponent implements OnInit, OnChanges, OnDestroy {

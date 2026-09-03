@@ -13,7 +13,11 @@
             *ngIf="event.type !== EventType.APPROVEORG && event.type !== EventType.REJECTORG && event.type !== EventType.REREQUESTORG"
             [routerLink]="'/users/' + event.initiatorUser.username"
           >
-            <img *ngIf="event?.initiatorUser?.avatarUrl; else defaultAvatar" [src]="event?.initiatorUser?.avatarUrl" alt="User avatar" />
+            <img
+              *ngIf="event?.initiatorUser?.avatarUrl; else defaultAvatar"
+              [src]="$safeNavigationMigration(event?.initiatorUser?.avatarUrl)"
+              alt="User avatar"
+            />
           </a>
         </div>
         <ng-template #defaultAvatar>
@@ -25,7 +29,7 @@
               *ngIf="event.type !== EventType.APPROVEORG && event.type !== EventType.REJECTORG && event.type !== EventType.REREQUESTORG"
             >
               <strong *ngIf="event.initiatorUser?.username; else unknownUser">
-                <a class="no-underline" [routerLink]="'/users/' + event.initiatorUser?.username">
+                <a class="no-underline" [routerLink]="'/users/' + $safeNavigationMigration(event.initiatorUser?.username)">
                   {{ event.initiatorUser?.username }}
                 </a>
               </strong>
@@ -72,7 +76,8 @@
               was re-requested for review.
             </span>
             <span *ngSwitchCase="EventType.ADDUSERTOORG">
-              added <a [routerLink]="'/users/' + event.user?.username">{{ event.user?.username }}</a> to the organization
+              added <a [routerLink]="'/users/' + $safeNavigationMigration(event.user?.username)">{{ event.user?.username }}</a> to the
+              organization
               <a [routerLink]="event | recentEvents : 'orgLink'">{{ event.organization?.displayName }}</a>
             </span>
             <span *ngSwitchCase="EventType.APPROVEORGINVITE">

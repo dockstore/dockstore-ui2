@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 
 import { Base } from '../../../shared/base';
@@ -32,6 +32,7 @@ import { NgIf, NgFor } from '@angular/common';
   selector: 'app-organization-stargazers',
   templateUrl: '../../../stargazers/stargazers.component.html',
   styleUrls: ['../../../stargazers/stargazers.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [NgIf, MatCardModule, MatIconModule, FlexModule, NgFor, RouterLink],
 })
 export class OrganizationStargazersComponent extends Base implements OnInit {

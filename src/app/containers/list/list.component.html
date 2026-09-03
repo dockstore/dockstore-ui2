@@ -80,12 +80,12 @@
       <mat-header-cell *matHeaderCellDef>Links</mat-header-cell>
       <mat-cell *matCellDef="let tool">
         @if (tool?.providerUrl) {
-        <a [href]="tool?.providerUrl">
-          <fa-icon class="fa-lg" [icon]="tool.providerIcon" [matTooltip]="tool?.provider"> </fa-icon>
+        <a [href]="$safeNavigationMigration(tool?.providerUrl)">
+          <fa-icon class="fa-lg" [icon]="tool.providerIcon" [matTooltip]="$safeNavigationMigration(tool?.provider)"> </fa-icon>
         </a>
         } &nbsp; @if (tool?.imgProviderUrl) {
-        <a [href]="tool?.imgProviderUrl">
-          <fa-icon class="fa-lg" [icon]="tool.imgProviderIcon" [matTooltip]="tool?.imgProvider"> </fa-icon>
+        <a [href]="$safeNavigationMigration(tool?.imgProviderUrl)">
+          <fa-icon class="fa-lg" [icon]="tool.imgProviderIcon" [matTooltip]="$safeNavigationMigration(tool?.imgProvider)"> </fa-icon>
         </a>
         }
       </mat-cell>

@@ -1,11 +1,12 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { AlertService } from '../../../shared/alert/state/alert.service';
 import { Dockstore } from '../../../shared/dockstore.model';
 
 @Component({
   selector: 'app-featured-content',
   template: ` <div [innerHTML]="myExternalHTML"></div> `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true,
 })
 export class FeaturedContentComponent implements OnInit {

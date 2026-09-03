@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 import { DockstoreTool } from 'app/shared/openapi';
 import { Observable } from 'rxjs';
 import { ToolQuery } from '../../shared/tool/tool.query';
@@ -24,6 +24,7 @@ interface GroupEntriesByRegistry {
   selector: 'app-sidebar-accordion',
   templateUrl: './sidebar-accordion.component.html',
   styleUrls: ['./sidebar-accordion.component.scss', '../../shared/styles/my-entry-sidebar.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatExpansionModule,
     MatTabsModule,

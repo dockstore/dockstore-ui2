@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
 import { NotificationsService } from './state/notifications.service';
 import { MatIconModule } from '@angular/material/icon';
@@ -12,6 +12,7 @@ import { PublicNotification } from 'app/shared/openapi';
   selector: 'app-sitewide-notifications',
   templateUrl: './sitewide-notifications.component.html',
   styleUrls: ['./sitewide-notifications.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [FlexModule, MarkdownWrapperComponent, MatButtonModule, MatIconModule, AsyncPipe],
 })
 export class SitewideNotificationsComponent implements OnInit {

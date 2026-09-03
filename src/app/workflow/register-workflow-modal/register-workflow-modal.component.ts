@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { AfterViewChecked, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewChecked, Component, OnDestroy, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { NgForm, FormsModule } from '@angular/forms';
 import { MatDialogRef, MatDialogModule } from '@angular/material/dialog';
 import { MatRadioChange, MatRadioModule } from '@angular/material/radio';
@@ -61,6 +61,7 @@ export interface HostedWorkflowObject {
   selector: 'app-register-workflow-modal',
   templateUrl: './register-workflow-modal.component.html',
   styleUrls: ['./register-workflow-modal.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatDialogModule,
     AlertComponent,

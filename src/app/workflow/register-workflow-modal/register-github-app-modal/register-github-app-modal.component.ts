@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { UserQuery } from 'app/shared/user/user.query';
 import { Observable } from 'rxjs';
 import { AlertQuery } from '../../../shared/alert/state/alert.query';
@@ -30,6 +30,7 @@ import { RegisterGithubAppComponent } from '../../../shared/register-github-app/
   selector: 'app-register-github-app-modal',
   templateUrl: './register-github-app-modal.component.html',
   styleUrls: ['../register-workflow-modal.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MatDialogModule, RegisterGithubAppComponent, MatButtonModule, TitleCasePipe],
 })
 export class RegisterGithubAppModalComponent implements OnInit {

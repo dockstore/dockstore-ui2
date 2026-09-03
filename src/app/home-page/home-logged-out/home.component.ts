@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { faGithub, faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { HomePageService } from 'app/home-page/home-page.service';
@@ -50,6 +50,7 @@ import { FlexModule } from '@ngbracket/ngx-layout/flex';
  */
 @Component({
   template: '<iframe id="youtubeModal" width="560" height="315" src="https://www.youtube.com/embed/RYHUX9jGx24" frameborder="0"></iframe>',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true,
 })
 export class YoutubeComponent {
@@ -60,6 +61,7 @@ export class YoutubeComponent {
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     FlexModule,
     JsonLdComponent,

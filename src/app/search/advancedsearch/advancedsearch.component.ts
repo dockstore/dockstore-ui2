@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { takeUntil } from 'rxjs/operators';
 import { Base } from '../../shared/base';
@@ -32,6 +32,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
   selector: 'app-advancedsearch',
   templateUrl: './advancedsearch.component.html',
   styleUrls: ['./advancedsearch.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MatDialogModule, MatFormFieldModule, MatSelectModule, MatOptionModule, FormsModule, MatTooltipModule, SearchAuthorsHtmlPipe],
 })
 export class AdvancedSearchComponent extends Base implements OnInit {

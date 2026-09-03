@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, ChangeDetectionStrategy } from '@angular/core';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { Observable, Subject } from 'rxjs';
 import { first, takeUntil } from 'rxjs/operators';
@@ -33,6 +33,7 @@ import { NgClass } from '@angular/common';
   selector: 'app-starring',
   templateUrl: './starring.component.html',
   styleUrls: ['./starring.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [NgClass, MatIconModule, MatTooltipModule],
 })
 export class StarringComponent implements OnInit, OnDestroy, OnChanges {

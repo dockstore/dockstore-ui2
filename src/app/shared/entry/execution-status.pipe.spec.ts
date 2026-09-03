@@ -2,14 +2,14 @@ import { TestBed } from '@angular/core/testing';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ExecutionStatusPipe } from './execution-status.pipe';
 import { RunExecution } from '../openapi';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import ExecutionStatusEnum = RunExecution.ExecutionStatusEnum;
 
 describe('Pipe: ExecutionStatus', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [],
-      providers: [ExecutionStatusPipe, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
+      providers: [ExecutionStatusPipe, provideHttpClient(withXhr(), withInterceptorsFromDi()), provideHttpClientTesting()],
     });
   });
 

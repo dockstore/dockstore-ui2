@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialogRef, MatDialogModule, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { FlexModule } from '@ngbracket/ngx-layout/flex';
@@ -52,6 +52,7 @@ export interface TopicOption {
   selector: 'app-edit-topic-dialog',
   templateUrl: './edit-topic-dialog.component.html',
   styleUrls: ['./edit-topic-dialog.component.scss', '../../../styles/radio-button-cards.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatDialogModule,
     AlertComponent,

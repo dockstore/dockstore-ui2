@@ -1,13 +1,13 @@
 import { PlatformPartnerPipe } from './platform-partner.pipe';
 import { TestBed } from '@angular/core/testing';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('Pipe: PlatformPartner', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [],
-      providers: [PlatformPartnerPipe, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
+      providers: [PlatformPartnerPipe, provideHttpClient(withXhr(), withInterceptorsFromDi()), provideHttpClientTesting()],
     });
   });
 

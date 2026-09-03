@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { EntryType } from 'app/shared/enum/entry-type';
 import { RefreshService } from 'app/shared/refresh.service';
@@ -50,6 +50,7 @@ import { AsyncPipe } from '@angular/common';
   selector: 'app-view-workflow',
   templateUrl: './view.component.html',
   styleUrls: ['./view.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MatButtonModule, MatMenuModule, MatTooltipModule, AsyncPipe],
 })
 export class ViewWorkflowComponent extends View<WorkflowVersion> implements OnInit {

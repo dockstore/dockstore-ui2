@@ -2,7 +2,7 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { CurrentCollectionsService } from './current-collections.service';
 import { CurrentCollectionsStore } from './current-collections.store';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('CurrentCollectionsService', () => {
   let currentCollectionsService: CurrentCollectionsService;
@@ -13,7 +13,7 @@ describe('CurrentCollectionsService', () => {
       providers: [
         CurrentCollectionsService,
         CurrentCollectionsStore,
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
     });

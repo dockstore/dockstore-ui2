@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -22,6 +22,7 @@ import { MatIconModule } from '@angular/material/icon';
   selector: 'app-generate-dockstore-yml-button',
   templateUrl: './generate-dockstore-yml-button.component.html',
   styleUrls: [],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MatButtonModule, MatIconModule, RouterLink],
 })
 export class GenerateDockstoreYmlButtonComponent implements OnInit {

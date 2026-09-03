@@ -33,7 +33,7 @@ limitations under the License.
     <mat-card fxFlex>
       <a
         class="no-underline"
-        [routerLink]="['/organizations/', organizationName, 'collections', collection?.value?.name]"
+        [routerLink]="['/organizations/', organizationName, 'collections', $safeNavigationMigration(collection?.value?.name)]"
         data-cy="collectionName"
       >
         <mat-card-header>

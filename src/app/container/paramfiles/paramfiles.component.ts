@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AlertService } from '../../shared/alert/state/alert.service';
 import { FileService } from '../../shared/file.service';
@@ -42,6 +42,7 @@ import { AsyncPipe, KeyValuePipe } from '@angular/common';
   selector: 'app-paramfiles-container',
   templateUrl: './paramfiles.component.html',
   styleUrls: ['./paramfiles.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatCardModule,
     MatIconModule,

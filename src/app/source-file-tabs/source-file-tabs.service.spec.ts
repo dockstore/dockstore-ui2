@@ -8,7 +8,7 @@ import { DescriptorTypeCompatStubService, FileStubService, ProviderStubService, 
 import { ProviderService } from '../shared/provider.service';
 import { SourceFileTabsService } from './source-file-tabs.service';
 import { DescriptorLanguageService } from '../shared/entry/descriptor-language.service';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('SourceFileTabsService', () => {
   beforeEach(() =>
@@ -20,7 +20,7 @@ describe('SourceFileTabsService', () => {
         { provide: DescriptorTypeCompatService, useClass: DescriptorTypeCompatStubService },
         { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
         { provide: ProviderService, useClass: ProviderStubService },
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
     })

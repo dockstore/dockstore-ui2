@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, ChangeDetectionStrategy } from '@angular/core';
 import { Sort } from '@angular/material/sort';
 import { EntryType } from 'app/shared/openapi';
 import { Observable } from 'rxjs';
@@ -29,6 +29,7 @@ import { SearchEntryTableComponent } from '../search-entry-table.component';
   selector: 'app-search-results',
   templateUrl: './search-results.component.html',
   styleUrls: ['./search-results.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [FlexModule, FontAwesomeModule, MatDividerModule, SearchEntryTableComponent, AsyncPipe],
 })
 export class SearchResultsComponent {

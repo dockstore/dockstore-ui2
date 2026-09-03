@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
@@ -77,6 +77,7 @@ import { MatChipsModule } from '@angular/material/chips';
   selector: 'app-my-workflow',
   templateUrl: './my-workflow.component.html',
   styleUrls: ['../../shared/styles/my-entry.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     FlexModule,
     MySidebarComponent,

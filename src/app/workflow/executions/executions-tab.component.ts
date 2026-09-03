@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { AfterViewInit, Component, Input, OnChanges, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, Input, OnChanges, OnInit, QueryList, ViewChildren, ChangeDetectionStrategy } from '@angular/core';
 import { EntryTab } from '../../shared/entry/entry-tab';
 import {
   CloudInstance,
@@ -69,6 +69,7 @@ interface ExecutionMetricsTableObject {
   selector: 'app-executions-tab',
   templateUrl: './executions-tab.component.html',
   styleUrls: ['./executions-tab.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatCardModule,
     MatIconModule,

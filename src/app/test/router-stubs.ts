@@ -18,7 +18,7 @@
 // export for convenience.
 export { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/router';
 
-import { Component, Directive, Injectable, Input } from '@angular/core';
+import { Component, Directive, Injectable, Input, ChangeDetectionStrategy } from '@angular/core';
 import { NavigationExtras } from '@angular/router';
 
 @Directive({
@@ -40,6 +40,7 @@ export class RouterLinkStubDirective {
 @Component({
   selector: 'router-outlet',
   template: '',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class RouterOutletStubComponent {}

@@ -1,5 +1,5 @@
 import { KeyValue, AsyncPipe } from '@angular/common';
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { AbstractControl, UntypedFormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { NgFormsManager } from '@ngneat/forms-manager';
@@ -26,6 +26,7 @@ import { AlertComponent } from '../../../shared/alert/alert.component';
  */
 @Component({
   templateUrl: './create-collection.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatDialogModule,
     AlertComponent,

@@ -150,7 +150,7 @@
             <!-- Priority: Hover > histogram > selected -->
             <div class="selected-item">
               <!-- TODO: Somehow make this re-useable, and make it so that the histogram is slightly thinner (less height) than the selected background -->
-              <div [ngStyle]="orderedBuckets.get(key) | getHistogramStyle: subBucket:(selectedIndex$ | async)">
+              <div [ngStyle]="orderedBuckets.get(key) | getHistogramStyle : subBucket : (selectedIndex$ | async)">
                 <ng-template *ngTemplateOutlet="facet; context: { key: key, subBucket: subBucket, isSelectedFacet: true }"></ng-template>
               </div>
             </div>
@@ -158,7 +158,7 @@
           } @for ( subBucket of getKeys(orderedBuckets.get(key).Items) | getFacetSearchResults: facetSearchTextMap.get(key):key; track
           subBucket; let i = $index) {
           <div class="my-1">
-            <div [ngStyle]="orderedBuckets.get(key) | getHistogramStyle: subBucket:(selectedIndex$ | async)">
+            <div [ngStyle]="orderedBuckets.get(key) | getHistogramStyle : subBucket : (selectedIndex$ | async)">
               @if (i < 5) {
               <ng-template *ngTemplateOutlet="facet; context: { key: key, subBucket: subBucket, isSelectedFacet: false }"></ng-template>
               } @if (i >= 5 && fullyExpandMap.get(key)) {
@@ -171,13 +171,13 @@
             <div class="panel-container-label" fxLayout="row" fxLayoutAlign="space-between center">
               <span fxFlex="80">
                 <mat-checkbox
-                  matTooltip="{{ key | mapFriendlyValue: subBucket }}"
+                  matTooltip="{{ key | mapFriendlyValue : subBucket }}"
                   [matTooltipPosition]="'after'"
                   type="checkbox"
-                  [checked]="checkboxMap?.get(key)?.get(subBucket)"
+                  [checked]="$safeNavigationMigration(checkboxMap?.get(key)?.get(subBucket))"
                   (change)="onClick(key, subBucket)"
                 >
-                  <span class="truncate-text-1">{{ key | mapFriendlyValue: subBucket }}</span>
+                  <span class="truncate-text-1">{{ key | mapFriendlyValue : subBucket }}</span>
                 </mat-checkbox>
               </span>
               <span class="mr-2">{{
@@ -201,7 +201,7 @@
                 <span>{{
                   fullyExpandMap.get(key)
                     ? 'Hide'
-                    : (getKeys(orderedBuckets.get(key).Items) | getFacetSearchUpdate: facetSearchTextMap.get(key))
+                    : (getKeys(orderedBuckets.get(key).Items) | getFacetSearchUpdate : facetSearchTextMap.get(key))
                 }}</span>
                 }
               </a>
@@ -294,7 +294,7 @@
                   the <strong>{{ friendlyNames.get(key) }}</strong> is @for (subBucket of filters.get(key); track subBucket; let j = $index)
                   {
                   <span>
-                    <strong>{{ key | mapFriendlyValue: subBucket }}</strong>
+                    <strong>{{ key | mapFriendlyValue : subBucket }}</strong>
                     @if (j < filters.get(key).size - 1) {
                     <span> OR </span>
                     }

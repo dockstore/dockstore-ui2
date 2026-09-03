@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -41,12 +41,13 @@ import {
 import { VersionsWorkflowComponent } from './versions.component';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 @Component({
   selector: 'app-view-workflow',
   template: '<p>App View Component</p>',
   imports: [FormsModule, FontAwesomeModule],
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [provideHttpClientTesting()],
 })
 class MockViewWorkflowComponent {
@@ -63,6 +64,7 @@ class MockViewWorkflowComponent {
   selector: 'app-version-modal',
   template: '<p>Version Modal Component</p>',
   imports: [FormsModule, FontAwesomeModule],
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [provideHttpClientTesting()],
 })
 class MockVersionModalComponent {
@@ -74,38 +76,36 @@ class MockVersionModalComponent {
 describe('VersionsWorkflowComponent', () => {
   let component: VersionsWorkflowComponent;
   let fixture: ComponentFixture<VersionsWorkflowComponent>;
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          FormsModule,
-          FontAwesomeModule,
-          BrowserAnimationsModule,
-          VersionsWorkflowComponent,
-          MatSnackBarModule,
-          OrderBy,
-          CommitUrlPipe,
-          VerifiedPlatformsPipe,
-          MockViewWorkflowComponent,
-          MockVersionModalComponent,
-        ],
-        providers: [
-          DockstoreService,
-          { provide: DateService, useClass: DateStubService },
-          { provide: WorkflowService, useClass: WorkflowStubService },
-          { provide: WorkflowsService, useClass: WorkflowsStubService },
-          AlertQuery,
-          ProviderService,
-          WorkflowQuery,
-          { provide: ImageProviderService, useClass: ImageProviderStubService },
-          { provide: RefreshService, useClass: RefreshStubService },
-          { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
-          provideHttpClient(withInterceptorsFromDi()),
-          provideHttpClientTesting(),
-        ],
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        FormsModule,
+        FontAwesomeModule,
+        BrowserAnimationsModule,
+        VersionsWorkflowComponent,
+        MatSnackBarModule,
+        OrderBy,
+        CommitUrlPipe,
+        VerifiedPlatformsPipe,
+        MockViewWorkflowComponent,
+        MockVersionModalComponent,
+      ],
+      providers: [
+        DockstoreService,
+        { provide: DateService, useClass: DateStubService },
+        { provide: WorkflowService, useClass: WorkflowStubService },
+        { provide: WorkflowsService, useClass: WorkflowsStubService },
+        AlertQuery,
+        ProviderService,
+        WorkflowQuery,
+        { provide: ImageProviderService, useClass: ImageProviderStubService },
+        { provide: RefreshService, useClass: RefreshStubService },
+        { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(VersionsWorkflowComponent);

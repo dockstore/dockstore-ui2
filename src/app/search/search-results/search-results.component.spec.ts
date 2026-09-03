@@ -24,26 +24,24 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { SearchService } from '../state/search.service';
 import { SearchResultsComponent } from './search-results.component';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('SearchResultsComponent', () => {
   let component: SearchResultsComponent;
   let fixture: ComponentFixture<SearchResultsComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        schemas: [NO_ERRORS_SCHEMA],
-        imports: [RouterTestingModule, SearchResultsComponent, NoopAnimationsModule],
-        providers: [
-          { provide: SearchService, useClass: SearchStubService },
-          { provide: QueryBuilderService, useClass: QueryBuilderStubService },
-          provideHttpClient(withInterceptorsFromDi()),
-          provideHttpClientTesting(),
-        ],
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      schemas: [NO_ERRORS_SCHEMA],
+      imports: [RouterTestingModule, SearchResultsComponent, NoopAnimationsModule],
+      providers: [
+        { provide: SearchService, useClass: SearchStubService },
+        { provide: QueryBuilderService, useClass: QueryBuilderStubService },
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SearchResultsComponent);

@@ -3,13 +3,18 @@ import { ToolDescriptor } from '../../shared/openapi';
 import { ToolTabService } from './tool-tab.service';
 import { DescriptorLanguageService } from '../../shared/entry/descriptor-language.service';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('Service: ToolTab', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [],
-      providers: [ToolTabService, DescriptorLanguageService, provideHttpClient(withInterceptorsFromDi()), provideHttpClientTesting()],
+      providers: [
+        ToolTabService,
+        DescriptorLanguageService,
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ],
     });
   });
 

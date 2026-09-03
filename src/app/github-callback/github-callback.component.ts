@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Params } from '@angular/router';
 import { Base } from 'app/shared/base';
 import { ActivatedRoute } from 'app/test';
@@ -11,6 +11,7 @@ import { FlexModule } from '@ngbracket/ngx-layout/flex';
   selector: 'app-github-callback',
   templateUrl: './github-callback.component.html',
   styleUrls: ['./github-callback.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [FlexModule, MatProgressSpinnerModule],
 })
 export class GithubCallbackComponent extends Base implements OnInit {

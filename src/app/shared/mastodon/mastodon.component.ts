@@ -4,7 +4,7 @@
  * https://gitlab.com/idotj/mastodon-embed-feed-timeline
  */
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MastodonService } from './mastodon.service'; // Import the service
 import { ExtendedModule } from '@ngbracket/ngx-layout/extended';
 import { NgStyle } from '@angular/common';
@@ -29,6 +29,7 @@ export interface MastodonTimelineData {
   selector: 'app-mastodon-timeline',
   templateUrl: './mastodon.component.html',
   styleUrls: ['./mastodon.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MatCardModule, MatDividerModule, NgStyle, ExtendedModule],
 })
 export class MastodonComponent implements OnInit {

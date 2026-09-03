@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 import { Base } from 'app/shared/base';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
@@ -39,6 +39,7 @@ import DescriptorTypeEnum = Workflow.DescriptorTypeEnum;
   selector: 'app-container-launch',
   templateUrl: './launch.component.html',
   styleUrls: ['./launch.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatCardModule,
     MatIconModule,

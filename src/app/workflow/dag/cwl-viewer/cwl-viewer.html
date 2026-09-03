@@ -16,7 +16,7 @@
     @if (!cwlViewerError) {
     <span
       >See on
-      <a [href]="cwlViewerDescriptor?.webPageUrl" target="_blank" rel="noopener"
+      <a [href]="$safeNavigationMigration(cwlViewerDescriptor?.webPageUrl)" target="_blank" rel="noopener"
         >Common Workflow Language Viewer <mat-icon>open_in_new</mat-icon></a
       ></span
     >
@@ -32,7 +32,7 @@
       [hidden]="!cwlViewerDescriptor"
       [style.width.%]="cwlViewerPercentageZoom"
       [style.height.%]="cwlViewerPercentageZoom"
-      [src]="cwlViewerDescriptor?.svgUrl"
+      [src]="$safeNavigationMigration(cwlViewerDescriptor?.svgUrl)"
       (wheel)="onWheel($event)"
       alt="CWL Viewer"
     />

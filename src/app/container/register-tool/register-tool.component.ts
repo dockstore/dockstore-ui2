@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { AfterViewChecked, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewChecked, Component, OnDestroy, OnInit, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { NgForm, FormsModule } from '@angular/forms';
 import { SessionQuery } from 'app/shared/session/session.query';
 import { Observable, Subject } from 'rxjs';
@@ -61,6 +61,7 @@ enum OptionChoice {
   selector: 'app-register-tool',
   templateUrl: './register-tool.component.html',
   styleUrls: ['./register-tool.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     MatDialogModule,
     AlertComponent,

@@ -26,43 +26,41 @@ import {
 } from 'app/test/service-stubs';
 import { RegisterWorkflowModalService } from 'app/workflow/register-workflow-modal/register-workflow-modal.service';
 import { EntryBoxComponent } from './entry-box.component';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('EntryBoxComponent', () => {
   let component: EntryBoxComponent;
   let fixture: ComponentFixture<EntryBoxComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        schemas: [NO_ERRORS_SCHEMA],
-        imports: [
-          MatAutocompleteModule,
-          RouterTestingModule,
-          MatButtonModule,
-          MatIconModule,
-          MatDialogModule,
-          MatSnackBarModule,
-          EntryBoxComponent,
-        ],
-        providers: [
-          { provide: RegisterToolService, useClass: RegisterToolStubService },
-          { provide: WorkflowService, useClass: WorkflowStubService },
-          { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
-          { provide: RegisterWorkflowModalService, useClass: RegisterWorkflowModalStubService },
-          { provide: WorkflowsService, useClass: WorkflowsStubService },
-          { provide: UrlResolverService, useClass: UrlResolverStubService },
-          { provide: UsersService, useClass: UsersStubService },
-          MyWorkflowsService,
-          MyEntriesStateService,
-          MyEntriesStore,
-          MyEntriesQuery,
-          provideHttpClient(withInterceptorsFromDi()),
-          provideHttpClientTesting(),
-        ],
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      schemas: [NO_ERRORS_SCHEMA],
+      imports: [
+        MatAutocompleteModule,
+        RouterTestingModule,
+        MatButtonModule,
+        MatIconModule,
+        MatDialogModule,
+        MatSnackBarModule,
+        EntryBoxComponent,
+      ],
+      providers: [
+        { provide: RegisterToolService, useClass: RegisterToolStubService },
+        { provide: WorkflowService, useClass: WorkflowStubService },
+        { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
+        { provide: RegisterWorkflowModalService, useClass: RegisterWorkflowModalStubService },
+        { provide: WorkflowsService, useClass: WorkflowsStubService },
+        { provide: UrlResolverService, useClass: UrlResolverStubService },
+        { provide: UsersService, useClass: UsersStubService },
+        MyWorkflowsService,
+        MyEntriesStateService,
+        MyEntriesStore,
+        MyEntriesQuery,
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(EntryBoxComponent);

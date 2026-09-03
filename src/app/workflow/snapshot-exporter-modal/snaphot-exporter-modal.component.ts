@@ -1,5 +1,5 @@
 import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
@@ -41,6 +41,7 @@ export interface State {
 @Component({
   selector: 'app-snapshot-exporter-modal-component',
   templateUrl: './snaphot-exporter-modal.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MatDialogModule, NgTemplateOutlet, FlexModule, MatButtonModule, ExporterStepComponent, MatIconModule, AsyncPipe, MatCardModule],
 })
 export class SnaphotExporterModalComponent extends Base {

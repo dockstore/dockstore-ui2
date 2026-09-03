@@ -6,7 +6,11 @@
   <app-notebook-markdown class="markdown" [cell]="cell" [baseUrl]="baseUrl"></app-notebook-markdown>
   } @if (cell.cell_type === 'code') { @if (!cell.metadata?.source_hidden) {
   <div class="count">[{{ cell.execution_count ?? ' ' }}]:</div>
-  <app-notebook-source class="source" [cell]="cell" [language]="notebook?.descriptorTypeSubclass"></app-notebook-source>
+  <app-notebook-source
+    class="source"
+    [cell]="cell"
+    [language]="$safeNavigationMigration(notebook?.descriptorTypeSubclass)"
+  ></app-notebook-source>
   } @if (!cell.metadata?.outputs_hidden && isArray(cell.outputs)) { @for (output of cell.outputs; track output) { @if (output.output_type
   === 'stream') {
   <app-notebook-stream-output class="output" [output]="output"></app-notebook-stream-output>

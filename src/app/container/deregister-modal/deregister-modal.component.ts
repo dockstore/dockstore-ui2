@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-import { Component, Input } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { first } from 'rxjs/operators';
 import { ConfirmationDialogData } from '../../confirmation-dialog/confirmation-dialog.component';
 import { ConfirmationDialogService } from '../../confirmation-dialog/confirmation-dialog.service';
@@ -27,6 +27,7 @@ import { MatButtonModule } from '@angular/material/button';
   selector: 'app-deregister-modal',
   templateUrl: './deregister-modal.component.html',
   styleUrls: ['./deregister-modal.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MatButtonModule, MatTooltipModule],
 })
 export class ModalComponent {

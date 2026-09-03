@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ViewService } from 'app/container/view/view.service';
 import { AlertQuery } from 'app/shared/alert/state/alert.query';
@@ -41,6 +41,7 @@ import { AsyncPipe } from '@angular/common';
   selector: 'app-view-container',
   templateUrl: './view.component.html',
   styleUrls: ['./view.component.css'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MatButtonModule, MatMenuModule, AsyncPipe],
 })
 // This is actually the actions dropdown for tags

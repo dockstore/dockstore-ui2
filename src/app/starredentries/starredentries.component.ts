@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Base } from '../shared/base';
 import { ImageProviderService } from '../shared/image-provider.service';
 import { ProviderService } from '../shared/provider.service';
@@ -38,6 +38,7 @@ import { FlexModule } from '@ngbracket/ngx-layout/flex';
   selector: 'app-starredentries',
   templateUrl: './starredentries.component.html',
   styleUrls: ['./starredentries.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     FlexModule,
     MySidebarComponent,

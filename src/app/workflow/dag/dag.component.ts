@@ -13,7 +13,18 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { AfterViewInit, Component, ElementRef, HostListener, Input, NgZone, OnChanges, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  HostListener,
+  Input,
+  NgZone,
+  OnChanges,
+  OnInit,
+  ViewChild,
+  ChangeDetectionStrategy,
+} from '@angular/core';
 import { filterNil } from '@datorama/akita';
 import { BioWorkflow } from 'app/shared/openapi/model/bioWorkflow';
 import { Observable } from 'rxjs';
@@ -55,6 +66,7 @@ import { LoadingComponent } from '../../shared/loading/loading.component';
   templateUrl: './dag.component.html',
   styleUrls: ['./dag.component.scss'],
   providers: [DagStore, DagQuery, DagService],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     LoadingComponent,
     FlexModule,

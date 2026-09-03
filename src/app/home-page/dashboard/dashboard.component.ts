@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, ChangeDetectionStrategy } from '@angular/core';
 import { Base } from 'app/shared/base';
 import { takeUntil } from 'rxjs/operators';
 import { RegisterToolService } from 'app/container/register-tool/register-tool.service';
@@ -23,6 +23,7 @@ import { FlexModule } from '@ngbracket/ngx-layout/flex';
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     FlexModule,
     MySidebarComponent,

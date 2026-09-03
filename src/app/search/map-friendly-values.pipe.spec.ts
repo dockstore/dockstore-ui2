@@ -4,7 +4,7 @@ import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.
 import { TestBed } from '@angular/core/testing';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { SourceFile } from '../shared/openapi/model/sourceFile';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('Pipe: MapFriendlyValuese', () => {
   beforeEach(() => {
@@ -14,7 +14,7 @@ describe('Pipe: MapFriendlyValuese', () => {
         MapFriendlyValuesPipe,
         { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
         PlatformPartnerPipe,
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
     });

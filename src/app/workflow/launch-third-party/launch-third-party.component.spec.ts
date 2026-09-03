@@ -1,4 +1,4 @@
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { CUSTOM_ELEMENTS_SCHEMA, SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
@@ -17,25 +17,23 @@ describe('LaunchThirdPartyComponent', () => {
   let component: LaunchThirdPartyComponent;
   let fixture: ComponentFixture<LaunchThirdPartyComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        schemas: [CUSTOM_ELEMENTS_SCHEMA],
-        imports: [LaunchThirdPartyComponent],
-        providers: [
-          GA4GHFilesService,
-          GA4GHV20Service,
-          GA4GHFilesStore,
-          { provide: WorkflowsService, useClass: WorkflowsStubService },
-          { provide: CloudInstancesService, useClass: CloudInstancesStubService },
-          { provide: UsersService, useClass: UsersStubService },
-          { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
-          provideHttpClient(withInterceptorsFromDi()),
-          provideHttpClientTesting(),
-        ],
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      imports: [LaunchThirdPartyComponent],
+      providers: [
+        GA4GHFilesService,
+        GA4GHV20Service,
+        GA4GHFilesStore,
+        { provide: WorkflowsService, useClass: WorkflowsStubService },
+        { provide: CloudInstancesService, useClass: CloudInstancesStubService },
+        { provide: UsersService, useClass: UsersStubService },
+        { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     TestBed.inject(WorkflowsService);

@@ -13,7 +13,7 @@
  *     See the License for the specific language governing permissions and
  *     limitations under the License.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, NavigationEnd, Router, RouterEvent } from '@angular/router';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
@@ -67,6 +67,7 @@ import { Dockstore } from 'app/shared/dockstore.model';
   selector: 'app-my-tool',
   templateUrl: './my-tool.component.html',
   styleUrls: ['../../shared/styles/my-entry.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     FlexModule,
     MySidebarComponent,

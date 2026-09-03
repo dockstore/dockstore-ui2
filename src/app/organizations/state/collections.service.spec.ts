@@ -6,7 +6,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { UrlResolverService } from '../../shared/url-resolver.service';
 import { CollectionsService } from './collections.service';
 import { CollectionsStore } from './collections.store';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('CollectionsService', () => {
   let collectionsService: CollectionsService;
@@ -18,7 +18,7 @@ describe('CollectionsService', () => {
         CollectionsService,
         CollectionsStore,
         UrlResolverService,
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
     });

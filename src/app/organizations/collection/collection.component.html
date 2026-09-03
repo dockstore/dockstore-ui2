@@ -19,7 +19,7 @@ limitations under the License.
       <img src="../../../assets/svg/sub-nav/organization.svg" alt="organization icon" />
       <a class="category-text" [routerLink]="['/organizations/']">Organizations</a>
       <span fxHide.lt-sm>/</span>
-      <a class="category-text" [routerLink]="['/organizations/', (organization$ | async)?.name]" fxHide.lt-sm>{{
+      <a class="category-text" [routerLink]="['/organizations/', $safeNavigationMigration((organization$ | async)?.name)]" fxHide.lt-sm>{{
         (organization$ | async)?.displayName
       }}</a>
       <span fxHide.lt-md>/</span>
@@ -58,7 +58,7 @@ limitations under the License.
         <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="2rem" fxLayoutAlign="start center">
           @if (organization?.avatarUrl) {
           <div fxHide.lt-sm>
-            <a [routerLink]="['/organizations/', (organization$ | async)?.name]">
+            <a [routerLink]="['/organizations/', $safeNavigationMigration((organization$ | async)?.name)]">
               <img
                 [src]="organization.avatarUrl | gravatar"
                 class="big-org-logo"
@@ -70,8 +70,8 @@ limitations under the License.
           }
           <div>
             <h2>
-              <span [matTooltip]="organization?.name" class="org-name">Collection:</span
-              ><span [matTooltip]="collection?.name" class="collection-name"> {{ collection.displayName }}</span>
+              <span [matTooltip]="$safeNavigationMigration(organization?.name)" class="org-name">Collection:</span
+              ><span [matTooltip]="$safeNavigationMigration(collection?.name)" class="collection-name"> {{ collection.displayName }}</span>
             </h2>
             <span>{{ collection.topic }}</span>
           </div>
@@ -171,7 +171,7 @@ limitations under the License.
                             <span class="ml-2">Verified</span>
                           </mat-chip>
                           } @for (descriptorType of entry.descriptorTypes; track descriptorType) {
-                          <mat-chip>{{ 'descriptor_type' | mapFriendlyValue: descriptorType }}</mat-chip>
+                          <mat-chip>{{ 'descriptor_type' | mapFriendlyValue : descriptorType }}</mat-chip>
                           }
                         </mat-chip-set>
                       </div>

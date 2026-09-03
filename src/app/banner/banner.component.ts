@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { takeUntil } from 'rxjs/operators';
 
 import { environment } from '../../environments/environment';
@@ -12,6 +12,7 @@ import { TRSService } from 'app/shared/openapi';
   selector: 'app-banner',
   templateUrl: './banner.component.html',
   styleUrls: ['./banner.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [],
 })
 export class BannerComponent extends Base implements OnInit {

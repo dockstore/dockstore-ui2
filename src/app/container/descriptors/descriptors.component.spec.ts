@@ -13,7 +13,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -38,25 +38,23 @@ describe('DescriptorsComponent', () => {
   let fixture: ComponentFixture<DescriptorsComponent>;
 
   class FileStubService {}
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        schemas: [NO_ERRORS_SCHEMA],
-        imports: [MatSnackBarModule, DescriptorsComponent],
-        providers: [
-          DescriptorService,
-          { provide: ContainersService, useClass: ContainersStubService },
-          { provide: ContainerService, useClass: ContainerStubService },
-          { provide: FileService, useClass: FileStubService },
-          { provide: GA4GHV20Service, useClass: GA4GHV20StubService },
-          { provide: EntriesService, useClass: EntriesStubService },
-          { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
-          provideHttpClient(withInterceptorsFromDi()),
-          provideHttpClientTesting(),
-        ],
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      schemas: [NO_ERRORS_SCHEMA],
+      imports: [MatSnackBarModule, DescriptorsComponent],
+      providers: [
+        DescriptorService,
+        { provide: ContainersService, useClass: ContainersStubService },
+        { provide: ContainerService, useClass: ContainerStubService },
+        { provide: FileService, useClass: FileStubService },
+        { provide: GA4GHV20Service, useClass: GA4GHV20StubService },
+        { provide: EntriesService, useClass: EntriesStubService },
+        { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(DescriptorsComponent);

@@ -10,7 +10,7 @@ import { NotebookMimeBundleOutputComponent } from './notebook-mime-bundle-output
 import { SourceFile, Workflow, WorkflowVersion, WorkflowsService } from 'app/shared/openapi';
 import { of } from 'rxjs';
 import { Cell, MimeBundle, Output, OutputMetadata } from './notebook-types';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('NotebookComponent', () => {
   let notebookComponent: NotebookComponent;
@@ -18,32 +18,30 @@ describe('NotebookComponent', () => {
   let element: any;
   let mockSourceFiles: SourceFile[] = [];
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          NotebookComponent,
-          NotebookMarkdownComponent,
-          NotebookSourceComponent,
-          NotebookStreamOutputComponent,
-          NotebookMimeBundleOutputComponent,
-        ],
-        providers: [
-          {
-            provide: WorkflowsService,
-            useValue: {
-              getWorkflowVersionsSourcefiles: function () {
-                return of(mockSourceFiles);
-              },
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        NotebookComponent,
+        NotebookMarkdownComponent,
+        NotebookSourceComponent,
+        NotebookStreamOutputComponent,
+        NotebookMimeBundleOutputComponent,
+      ],
+      providers: [
+        {
+          provide: WorkflowsService,
+          useValue: {
+            getWorkflowVersionsSourcefiles: function () {
+              return of(mockSourceFiles);
             },
           },
-          { provide: MarkdownWrapperService, useClass: MarkdownWrapperStubService },
-          provideHttpClient(withInterceptorsFromDi()),
-          provideHttpClientTesting(),
-        ],
-      }).compileComponents();
-    })
-  );
+        },
+        { provide: MarkdownWrapperService, useClass: MarkdownWrapperStubService },
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
+        provideHttpClientTesting(),
+      ],
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(NotebookComponent);

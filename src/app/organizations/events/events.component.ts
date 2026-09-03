@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Event } from '../../shared/openapi';
 import { EventsQuery } from '../state/events.query';
@@ -15,6 +15,7 @@ import { MatCardModule } from '@angular/material/card';
   selector: 'app-events',
   templateUrl: './events.component.html',
   styleUrls: ['./events.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [MatCardModule, LoadingComponent, FlexModule, MatChipsModule, MatTooltipModule, RouterLink, AsyncPipe, DatePipe],
 })
 export class EventsComponent implements OnInit, OnChanges {

@@ -2,7 +2,7 @@ import { DescriptorLanguagePipe } from './descriptor-language.pipe';
 import { DescriptorLanguageService } from 'app/shared/entry/descriptor-language.service';
 import { TestBed } from '@angular/core/testing';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
 describe('Pipe: DescriptorLanguagePipe', () => {
   beforeEach(() => {
@@ -11,7 +11,7 @@ describe('Pipe: DescriptorLanguagePipe', () => {
       providers: [
         DescriptorLanguagePipe,
         { provide: DescriptorLanguageService, useClass: DescriptorLanguageService },
-        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClient(withXhr(), withInterceptorsFromDi()),
         provideHttpClientTesting(),
       ],
     });
