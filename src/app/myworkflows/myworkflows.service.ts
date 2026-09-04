@@ -208,12 +208,10 @@ export class MyWorkflowsService extends MyEntriesService<Workflow, OrgWorkflowOb
    */
   selectEntry(workflow: DockstoreTool | Workflow | null, entryType: EntryType | null): void {
     if (workflow && entryType && workflow.id) {
-      this.workflowsService
-        .getWorkflow(workflow.id, [includesValidation, includesAuthors, includesMetrics].join(','))
-        .subscribe((result: Workflow) => {
-          this.location.go('/my-' + entryType + 's/' + result.full_workflow_path);
-          this.workflowService.setWorkflow(result);
-        });
+      this.workflowsService.getWorkflow(workflow.id, '').subscribe((result: Workflow) => {
+        this.location.go('/my-' + entryType + 's/' + result.full_workflow_path);
+        this.workflowService.setWorkflow(result);
+      });
     }
   }
 

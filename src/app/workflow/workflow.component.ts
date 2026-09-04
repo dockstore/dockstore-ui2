@@ -492,31 +492,29 @@ export class WorkflowComponent extends Entry<WorkflowVersion> implements AfterVi
 
   public setupPublicEntry(url: string) {
     const subclass: WorkflowSubClass = this.getWorkflowSubclass(this.entryType);
-    this.workflowsService
-      .getPublishedWorkflowByPath(this.title, subclass, [includesValidation, includesAuthors, includesMetrics].toString(), this.urlVersion)
-      .subscribe(
-        (workflow) => {
-          this.workflowService.setWorkflow(workflow);
-          this.selectTab(this.validTabs.indexOf(this.currentTab));
-          this.updateWorkflowUrl(this.workflow);
-        },
-        (error) => {
-          if (!this.workflow) {
-            this.urlResolverService.showPageNotFound();
-          } else {
-            this.showRedirect = true;
-            // Retrieve the workflow path from the URL
-            const splitPath = this.resourcePath.split('/');
-            const workflowPath = splitPath.slice(2, 5);
-            const pathSuffix = workflowPath.join('/');
+    this.workflowsService.getPublishedWorkflowByPath(this.title, subclass, '', this.urlVersion).subscribe(
+      (workflow) => {
+        this.workflowService.setWorkflow(workflow);
+        this.selectTab(this.validTabs.indexOf(this.currentTab));
+        this.updateWorkflowUrl(this.workflow);
+      },
+      (error) => {
+        if (!this.workflow) {
+          this.urlResolverService.showPageNotFound();
+        } else {
+          this.showRedirect = true;
+          // Retrieve the workflow path from the URL
+          const splitPath = this.resourcePath.split('/');
+          const workflowPath = splitPath.slice(2, 5);
+          const pathSuffix = workflowPath.join('/');
 
-            // Create suggested paths
-            this.gitlabPath += pathSuffix;
-            this.githubPath += pathSuffix;
-            this.bitbucketPath += pathSuffix;
-          }
+          // Create suggested paths
+          this.gitlabPath += pathSuffix;
+          this.githubPath += pathSuffix;
+          this.bitbucketPath += pathSuffix;
         }
-      );
+      }
+    );
   }
   /**
    * Updates the workflow (bio workflow or service) url and also checks for the null
