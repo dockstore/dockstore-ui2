@@ -253,6 +253,7 @@ Before running the tests make sure you:
 - have the Dockstore webservice jar in the root directory and run it (see scripts/run-webservice-script.sh for guideline)
 
 ### Running smoke tests
+
 Smoke tests are part of the end-to-end testing suite and are located under `cypress/integration/smokeTests/`. The smoke tests
 can be executed alongside other integration tests when running `npx cypress open` or `npx cypress run`.
 
