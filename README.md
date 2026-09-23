@@ -45,7 +45,7 @@ Otherwise, prepend `npx` to every command in this README if a global @angular/cl
 Before installing, follow https://docs.npmjs.com/getting-started/fixing-npm-permissions#option-two-change-npms-default-directory to fix permissions if needed.
 
 ```
-$npm i -g @angular/cli@14.2.8		
+$npm i -g @angular/cli@22
 ```
 
 #### NPM
@@ -72,42 +72,8 @@ ghusky > pre-commit (node v10.13.0)
 ```
 
 
-Check to make sure Angular CLI has been properly set up
-```
- ng v
-
-     _                      _                 ____ _     ___
-    / \   _ __   __ _ _   _| | __ _ _ __     / ___| |   |_ _|
-   / △ \ | '_ \ / _` | | | | |/ _` | '__|   | |   | |    | |
-  / ___ \| | | | (_| | |_| | | (_| | |      | |___| |___ | |
- /_/   \_\_| |_|\__, |\__,_|_|\__,_|_|       \____|_____|___|
-                |___/
-    
-
-Angular CLI: 14.2.7
-Node: 16.18.1
-Package Manager: npm 8.19.2 
-OS: darwin arm64
-
-Angular: 14.2.8
-... animations, common, compiler, compiler-cli, core, forms
-... language-service, platform-browser, platform-browser-dynamic
-... router
-
-Package                         Version
----------------------------------------------------------
-@angular-devkit/architect       0.1402.7
-@angular-devkit/build-angular   14.2.7
-@angular-devkit/core            14.2.7
-@angular-devkit/schematics      14.2.7
-@angular/cdk                    14.2.6
-@angular/cli                    14.2.7
-@angular/flex-layout            14.0.0-beta.41
-@angular/material               14.2.6
-@schematics/angular             14.2.7
-rxjs                            6.6.7
-typescript                      4.8.4
-```
+Check to make sure Angular CLI has been properly set up with `ng version`. The reported `@angular/*` package versions
+should match the ones in [package.json](package.json) (currently Angular 22).
 
 If you wish to serve the dist folder in a VM, make sure you have nginx and security rules set up properly.
 [Nginx](https://www.digitalocean.com/community/tutorials/how-to-install-nginx-on-ubuntu-16-04)
@@ -170,7 +136,7 @@ To build against a release version on artifactory, set `use_snapshot` to `false`
 
 You can optionally override these config values on the CLI using `npm pkg set config.<config-key>=<config-value>`. For example, to override `webservice_version`, you would run `npm pkg set config.webservice_version=${WEBSERVICE_VERSION}`.
 
-Run `npm run build` to build the project. The build artifacts will be stored in the `dist/` directory. 
+Run `npm run build` to build the project. The `prebuild` step downloads the webservice's `openapi.yaml` (as configured above) and generates the TypeScript API client into `src/app/shared/openapi/` using `scripts/generate-openapi-script.sh`. This directory is gitignored and should not be edited by hand; Java is required to run the generator. The build artifacts will be stored in the `dist/` directory. 
 
 ### Angular Production Build
 
@@ -242,6 +208,18 @@ Use `npm run build.prod` for an Angular Production Build and start it with `ngin
 
 Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
+Run `npm run build` (or at least `npm run prebuild`) first, because the tests depend on the generated OpenAPI client in `src/app/shared/openapi/`.
+
+To run once in a headless browser, as CI does:
+```
+npx ng test --progress=false --watch=false --code-coverage --browsers ChromeHeadless --source-map=false
+```
+
+To run a single spec file, or every spec in a directory:
+```
+npx ng test --watch=false --browsers ChromeHeadless --include src/app/path/to/foo.component.spec.ts
+```
+
 ## Running end-to-end tests
 
 Cypress is no longer specified in the package.json, check the `.circleci/config.yml` for the version and how to install it.
@@ -253,7 +231,7 @@ Before running the tests make sure you:
 - have the Dockstore webservice jar in the root directory and run it (see scripts/run-webservice-script.sh for guideline)
 
 ### Running smoke tests
-Smoke tests are part of the end-to-end testing suite and are located under `cypress/integration/smokeTests/`. The smoke tests
+Smoke tests are part of the end-to-end testing suite and are located under `cypress/e2e/smokeTests/`. The smoke tests
 can be executed alongside other integration tests when running `npx cypress open` or `npx cypress run`.
 
 Various sets of smoke tests are runnable from scripts in `package.json`. To run smoke tests against your local service,
@@ -262,7 +240,7 @@ run `npm run test-local-no-auth`. Before running the tests make sure you have Do
 `npm run test-local-no-auth` is also executed in CircleCI when a branch is pushed, or a pull request is made. When run on CircleCI,
 the smoke tests leverage a dummy database stored in `test/smoke_test_db.sql`. If a smoke test fails on CircleCI, there are two main scenarios
 to consider:
-1. The smoke tests are failing due to a change in the UI. This can be fixed by modifying the tests in `cypress/integration/smokeTests/`.
+1. The smoke tests are failing due to a change in the UI. This can be fixed by modifying the tests in `cypress/e2e/smokeTests/`.
 2. The dummy smoke test database does not have the proper data for the tested version of the UI. This can be fixed by modifying the data in `test/smoke_test_db.sql`.
 
 #### Modifying the smoke test database

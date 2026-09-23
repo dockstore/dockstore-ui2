@@ -25,6 +25,7 @@ src/app/shared/descriptor.service.spec.ts:.*image_id:*
 
 # README.md
 README.md:.*https://api.codacy.com/project/badge/Grade/58c43301d4b84c8ab74bdbeb2a962973
+README.md:.*https://app.codacy.com/project/badge/Grade/37aa92c1fff9407fb47b426d1be1f7f0
 
 # src/app/shared/entry/commit-url.pipe.spec.ts
 src/app/shared/entry/commit-url.pipe.spec.ts:.*868a1c6b02344dd679eb0548889de03e6affef99
