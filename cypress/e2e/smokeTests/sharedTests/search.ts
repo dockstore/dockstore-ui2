@@ -1,7 +1,7 @@
 import { typeInInput } from '../../../support/commands';
 
 describe('Admin UI', () => {
-  before(() => {
+  beforeEach(() => {
     cy.visit('');
     cy.get('a').contains('Search').click();
   });
@@ -23,14 +23,20 @@ describe('Admin UI', () => {
       cy.contains(/Do[ ]you[ ]mean:[ ].+/);
       cy.url().should('include', 'search=dhockstore');
 
+      cy.intercept('POST', '**/extended/tools/entry/_search').as('search');
       cy.contains('Reset').click();
+      cy.wait('@search');
       cy.url().should('not.include', 'search=dhockstore');
 
       cy.contains('Items per page');
       const searchPaginatorDataCy = '[data-cy=search-entry-table-paginator] mat-form-field';
       cy.get(searchPaginatorDataCy).contains(10).should('be.visible');
       cy.get(searchPaginatorDataCy).click();
-      cy.get('mat-option').contains(20).click();
+      // Change "Items per page" from the default 10 to 20, then check below that the choice survives navigating away and back.
+      // Match only options in the open dropdown panel, and exactly "20".
+      cy.get('.mat-mdc-select-panel mat-option')
+        .contains(/^\s*20\s*$/)
+        .click();
       cy.get(searchPaginatorDataCy).contains(20);
       cy.get('a').contains('Organizations').click();
       cy.go('back');
