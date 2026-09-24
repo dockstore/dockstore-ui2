@@ -25,6 +25,7 @@ describe('FooterService', () => {
       null,
       null,
       'potato',
+      'potato',
       'potato'
     );
     expect(markdown).toContain('domainurl.com');
@@ -32,10 +33,11 @@ describe('FooterService', () => {
     expect(markdown).toContain('potato');
     expect(markdown).toContain('checkUrlLambdaVersion');
     expect(markdown).toContain('supportVersion');
+    expect(markdown).toContain('mcpVersion');
   });
 
   it('should handle nulls', () => {
-    const markdown = service.versionsToMarkdown(null, null, null, null, null, null, null, null, null, null);
+    const markdown = service.versionsToMarkdown(null, null, null, null, null, null, null, null, null, null, null);
     expect(markdown.length).toBeGreaterThan(100);
     expect(markdown).not.toContain('compose_setup');
     expect(markdown).not.toContain('dockstore-deploy');
@@ -45,5 +47,6 @@ describe('FooterService', () => {
     expect(markdown).not.toContain('galaxyParsingPluginVersion');
     expect(markdown).not.toContain('checkUrlLambdaVersion');
     expect(markdown).not.toContain('supportVersion');
+    expect(markdown).not.toContain('mcpVersion');
   });
 });

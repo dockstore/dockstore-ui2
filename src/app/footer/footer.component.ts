@@ -99,7 +99,8 @@ export class FooterComponent extends Base implements OnInit {
               Dockstore.NEXTFLOW_PARSING_LAMBDA_VERSION,
               Dockstore.GALAXY_PARSING_PLUGIN_VERSION,
               Dockstore.CHECK_URL_LAMBDA_VERSION,
-              Dockstore.SUPPORT_VERSION
+              Dockstore.SUPPORT_VERSION,
+              Dockstore.MCP_VERSION
             );
           } else {
             throw new Error('Version undefined');

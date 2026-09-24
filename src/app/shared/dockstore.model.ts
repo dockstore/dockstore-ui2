@@ -99,6 +99,7 @@ export class Dockstore {
   static GALAXY_PARSING_PLUGIN_VERSION = '';
   static CHECK_URL_LAMBDA_VERSION = '';
   static SUPPORT_VERSION = '';
+  static MCP_VERSION = '';
 
   static FEATURES = {
     enableCwlViewer: true,
