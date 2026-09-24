@@ -14,6 +14,12 @@ describe('GitTagPipe', () => {
     const pipe = new GitTagPipe();
     expect(pipe.transform('2.6.1')).toEqual('2.6.1');
     expect(pipe.transform('2.6.1', true)).toEqual('releases/tag/2.6.1');
+    expect(pipe.transform('0.1-alpha.3', true)).toEqual('releases/tag/0.1-alpha.3');
+  });
+  it('handles a branch name', () => {
+    const pipe = new GitTagPipe();
+    expect(pipe.transform('develop')).toEqual('develop');
+    expect(pipe.transform('develop', true)).toEqual('tree/develop');
   });
   it('handles a plain old commit id', () => {
     const pipe = new GitTagPipe();

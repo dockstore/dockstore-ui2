@@ -7,6 +7,7 @@ import { Pipe, PipeTransform } from '@angular/core';
  * If you run `git describe --tag` when the GIT HEAD is not a tag, then it returns
  * the most recent tag name in the branch, the number of commits since the tag, and the
  * commit id, preceded by `g`, e.g., 2.6.1-26-geb3771b6.
+ * Some deploys (e.g. dev/qa) use a branch name such as `develop` instead of a tag.
  */
 @Pipe({
   name: 'gitTag',
@@ -23,6 +24,11 @@ export class GitTagPipe implements PipeTransform {
    * @private
    */
   private readonly gitShaRegEx = /[a-f0-9]{7,}/;
+  /**
+   * Release tags start with a digit, e.g. 2.6.1 or 0.1-alpha.3; anything else is treated as a branch
+   * @private
+   */
+  private readonly releaseTagRegEx = /^\d/;
 
   transform(tag: string | null, withPath?: boolean): string {
     if (!tag) {
@@ -32,6 +38,9 @@ export class GitTagPipe implements PipeTransform {
     if (execArray || this.gitShaRegEx.test(tag)) {
       const actualTag = execArray ? execArray[1] : tag;
       return withPath ? `commits/${actualTag}` : actualTag;
+    }
+    if (!this.releaseTagRegEx.test(tag)) {
+      return withPath ? `tree/${tag}` : tag;
     }
     return withPath ? `releases/tag/${tag}` : tag;
   }

@@ -3,9 +3,9 @@
   "version": "2.15.0",
   "license": "Apache License 2.0",
   "config": {
-    "webservice_version_prefix": "1.20.0",
+    "webservice_version_prefix": "1.21.0-feature-expose_mcp_version",
     "webservice_version": "1.20.0",
-    "use_snapshot": false
+    "use_snapshot": true
   },
   "scripts": {
     "ng": "npx ng",

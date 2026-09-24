@@ -23,7 +23,8 @@ export class FooterService {
     nextflowParsingLambdaVersion: string | null,
     galaxyParsingLambdaVersion: string | null,
     checkUrlLambdaVersion: string | null,
-    supportVersion: string | null
+    supportVersion: string | null,
+    mcpVersion: string | null
   ): string {
     let baseBuildInfo = `[Domain] - ${domain}
 
@@ -56,6 +57,10 @@ export class FooterService {
 
     if (supportVersion) {
       baseBuildInfo = baseBuildInfo + `\n\n[supportVersion](${this.gitHubUrl('dockstore-support', supportVersion)}) - ${supportVersion}`;
+    }
+
+    if (mcpVersion) {
+      baseBuildInfo = baseBuildInfo + `\n\n[mcpVersion](${this.gitHubUrl('mcp', mcpVersion)}) - ${mcpVersion}`;
     }
     return baseBuildInfo;
   }

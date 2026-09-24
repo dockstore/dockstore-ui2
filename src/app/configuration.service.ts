@@ -94,6 +94,7 @@ export class ConfigurationService {
     Dockstore.GALAXY_PARSING_PLUGIN_VERSION = config.galaxyParsingPluginVersion;
     Dockstore.CHECK_URL_LAMBDA_VERSION = config.checkUrlLambdaVersion;
     Dockstore.SUPPORT_VERSION = config.supportVersion;
+    Dockstore.MCP_VERSION = config.mcpVersion;
   }
 
   /**
