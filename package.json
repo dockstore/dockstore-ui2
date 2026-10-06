@@ -91,7 +91,7 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^22.1.6",
-    "@angular/cli": "^22.1.6",
+    "@angular/cli": "^22.2.1",
     "@angular/compiler-cli": "^22.1.4",
     "@angular/language-service": "^22.1.4",
     "@cypress/webpack-batteries-included-preprocessor": "^3.0.5",
