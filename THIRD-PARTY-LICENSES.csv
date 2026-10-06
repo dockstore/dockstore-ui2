@@ -60,7 +60,7 @@
 "cytoscape@3.34.1","MIT","https://github.com/cytoscape/cytoscape.js"
 "dagre@0.8.5","MIT","https://github.com/dagrejs/dagre"
 "debug@3.1.0","MIT","https://github.com/visionmedia/debug"
-"dompurify@3.4.13","(MPL-2.0 OR Apache-2.0)","https://github.com/cure53/DOMPurify"
+"dompurify@3.4.16","(MPL-2.0 OR Apache-2.0)","https://github.com/cure53/DOMPurify"
 "duplexify@3.7.1","MIT","https://github.com/mafintosh/duplexify"
 "encoding@0.1.13","MIT","https://github.com/andris9/encoding"
 "end-of-stream@1.4.5","MIT","https://github.com/mafintosh/end-of-stream"
