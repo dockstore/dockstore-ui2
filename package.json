@@ -49,7 +49,7 @@
     "@angular/material": "^22.1.4",
     "@angular/platform-browser": "^22.1.4",
     "@angular/platform-browser-dynamic": "^22.1.4",
-    "@angular/router": "^22.1.4",
+    "@angular/router": "^22.2.0",
     "@datorama/akita": "^7.0.0",
     "@fortawesome/angular-fontawesome": "^5.1.0",
     "@fortawesome/fontawesome-svg-core": "^7.2.0",
