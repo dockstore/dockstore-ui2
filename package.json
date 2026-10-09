@@ -71,7 +71,7 @@
     "file-saver": "^2.0.5",
     "ini": "^4.1.1",
     "jquery": "^3.6.0",
-    "katex": "^0.16.0",
+    "katex": "^0.18.2",
     "marked": "^17.0.0",
     "marked-base-url": "^1.1.7",
     "marked-katex-extension": "^5.0.0",
