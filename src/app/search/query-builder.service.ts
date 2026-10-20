@@ -30,11 +30,11 @@ type Index = 'workflows' | 'tools' | 'notebooks';
 /**
  * Define a Painless script (https://www.elastic.co/docs/explore-analyze/scripting/modules-scripting-painless)
  * that scores an entry by combining the ES-calculated `_score` with the webservice-calculated `relevance`.
- * Squaring the score and taking the log of the relevance let how well an entry matches outweigh how relevant it is,
- * without discarding either.  The term `Math.log(1.05 + relevance)` increases with relevance without being overwhelming
- * for very high relevance values, and is about 0.05 for entries with zero relevance, so entries with very low relevance
- * (for example, because they haven't been updated in a long time) can still compete if they have a very high ES `_score`.
- * This is the same formula used by the search_entries tool in the Dockstore MCP server.
+ * Squaring the score amplifies differences in how well entries match, so that match quality tends to outweigh relevance,
+ * although both still contribute.  The term `0.2 + relevance` increases linearly with relevance, and is about 0.2 for entries
+ * with zero or missing relevance, so entries with very low relevance (for example, because they haven't been updated
+ * in a long time) can still compete if they have a very high ES `_score`.
+ * This should be the same formula used by the search_entries tool in the Dockstore MCP server, so keep the two in sync.
  */
 const RELEVANCE_SCRIPT =
   "double relevance = doc.containsKey('relevance') && !doc['relevance'].empty ? doc['relevance'].value : params.missing;" +
