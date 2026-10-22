@@ -28,6 +28,22 @@ import { EntryType } from 'app/shared/openapi';
 type Index = 'workflows' | 'tools' | 'notebooks';
 
 /**
+ * Define a Painless script (https://www.elastic.co/docs/explore-analyze/scripting/modules-scripting-painless)
+ * that scores an entry by combining the ES-calculated `_score` with the webservice-calculated `relevance`.
+ * Squaring the score amplifies differences in how well entries match, so that match quality tends to outweigh relevance,
+ * although both still contribute.  The term `0.2 + relevance` increases linearly with relevance, and is about 0.2 for entries
+ * with zero or missing relevance, so entries with very low relevance (for example, because they haven't been updated
+ * in a long time) can still compete if they have a very high ES `_score`.
+ * This should be the same formula used by the search_entries tool in the Dockstore MCP server, so keep the two in sync.
+ */
+const RELEVANCE_SCRIPT =
+  "double relevance = doc.containsKey('relevance') && !doc['relevance'].empty ? doc['relevance'].value : params.missing;" +
+  ' return _score * _score * (0.2 + relevance);';
+
+/** The relevance an entry without one is scored with. */
+const MISSING_RELEVANCE = 1e-9;
+
+/**
  * This service constructs all the querys and should be only class that interacts with the bodybuilder library.
  *
  * @export
@@ -136,20 +152,25 @@ export class QueryBuilderService {
   ): string {
     let tableBody = bodybuilder().size(query_size);
     tableBody = this.sourceOptions(tableBody);
-    tableBody = tableBody.query('match', '_index', index);
-    tableBody = this.appendQuery(tableBody, values, advancedSearchObject, searchTerm);
-    tableBody = this.appendFilter(tableBody, null, filters, exclusiveFilters);
+    // Filter, rather than query, by index, so that the index match doesn't contribute to the ES-calculated score
+    tableBody = tableBody.filter('term', '_index', index);
     // if the user has specified a search order, sort hits by it
     // otherwise, if there's no search term, or a search term that's not inclusive, sort hits by webservice-calculated "relevance"
-    // otherwise, sort hits by ES-calculated score
-    // if we're sorting by ES-calculated score, sort archived entries last
+    // otherwise, sort hits by combining ES-calculated score and our "relevance" measure
     if (sortValue?.active && sortValue?.direction) {
       tableBody = tableBody.sort([{ [sortValue?.active]: { order: sortValue?.direction, missing: '_last' } }, { relevance: 'desc' }]);
+      tableBody = this.appendQuery(tableBody, values, advancedSearchObject, searchTerm);
     } else if (this.isEmpty(values) && !this.hasInclusiveSettings(advancedSearchObject)) {
       tableBody = tableBody.sort([{ relevance: 'desc' }]);
+      tableBody = this.appendQuery(tableBody, values, advancedSearchObject, searchTerm);
     } else {
-      tableBody = tableBody.sort([{ archived: 'asc' }, { _score: 'desc' }]);
+      tableBody = tableBody.sort([{ _score: 'desc' }]);
+      // Specify a query wrapped by a Painless script that modifies the ES _score by our "relevance" measure
+      tableBody = tableBody.query('script_score', { script: { source: RELEVANCE_SCRIPT, params: { missing: MISSING_RELEVANCE } } }, (q) =>
+        this.appendQuery(q, values, advancedSearchObject, searchTerm)
+      );
     }
+    tableBody = this.appendFilter(tableBody, null, filters, exclusiveFilters);
     tableBody.rawOption('highlight', {
       type: 'unified',
       pre_tags: ['<b>'],
