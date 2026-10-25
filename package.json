@@ -91,7 +91,7 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^22.1.6",
-    "@angular/cli": "^22.2.1",
+    "@angular/cli": "^22.2.4",
     "@angular/compiler-cli": "^22.1.4",
     "@angular/language-service": "^22.1.4",
     "@cypress/webpack-batteries-included-preprocessor": "^3.0.5",
@@ -118,7 +118,7 @@
     "karma-jasmine-html-reporter": "^1.7.0",
     "license-checker": "^25.0.1",
     "lint-staged": "^11.0.0",
-    "pa11y-ci": "^4.1.1",
+    "pa11y-ci": "^5.0.0",
     "prettier": "^2.3.1",
     "ts-node": "^10.9.2",
     "typescript": "^6.0.3",
