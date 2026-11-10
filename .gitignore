@@ -56,3 +56,6 @@ cypress/downloads
 # System Files
 .DS_Store
 Thumbs.db
+
+# Maven wrapper jar is downloaded by mvnw
+.mvn/wrapper/maven-wrapper.jar
