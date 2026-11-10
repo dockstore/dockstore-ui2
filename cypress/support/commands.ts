@@ -16,10 +16,6 @@
 
 import { configurationTabName, descriptorFilesTabName, testParameterFilesTabName } from '../../src/app/shared/constants';
 
-// Set the following variable to an appropriate value for your postgres setup.
-// const psqlInvocation: string = 'PASSWORD=dockstore docker exec -i postgres1 psql';
-const psqlInvocation: string = 'PASSWORD=dockstore psql';
-
 export function isStagingOrProd() {
   const baseUrl = Cypress.config('baseUrl');
   return baseUrl === 'https://staging.dockstore.org' || baseUrl === 'https://dockstore.org';
@@ -129,29 +125,26 @@ export function assertNoTab(tabName: string): void {
   getTab(tabName).should('not.exist');
 }
 
+const migrations =
+  '1.5.0,1.6.0,1.7.0,1.8.0,1.9.0,1.10.0,alter_test_user_1.10.2,1.11.0,1.12.0,1.13.0,1.14.0,1.15.0,1.16.0,1.17.0,1.18.0,1.19.0,1.20.0';
+const migrationsWithService =
+  '1.5.0,1.6.0,1.7.0,add_service_1.7.0,1.8.0,1.9.0,1.10.0,alter_test_user_1.10.2,1.11.0,1.12.0,1.13.0,1.14.0,1.15.0,1.16.0,1.17.0,1.18.0,1.19.0,1.20.0';
+
 export function resetDB() {
   before(() => {
-    cy.exec('java -jar dockstore-webservice.jar db drop-all --confirm-delete-everything test/web.yml');
-    cy.exec(psqlInvocation + ' -h localhost webservice_test -U dockstore < test/db_dump.sql');
-    cy.exec(
-      'java -jar dockstore-webservice.jar db migrate -i 1.5.0,1.6.0,1.7.0,1.8.0,1.9.0,1.10.0,alter_test_user_1.10.2,1.11.0,1.12.0,1.13.0,1.14.0,1.15.0,1.16.0,1.17.0,1.18.0,1.19.0,1.20.0 test/web.yml'
-    );
+    cy.task('resetDb', migrations);
   });
 }
 
 export function resetDBWithService() {
   before(() => {
-    cy.exec('java -jar dockstore-webservice.jar db drop-all --confirm-delete-everything test/web.yml');
-    cy.exec(psqlInvocation + ' -h localhost webservice_test -U dockstore < test/db_dump.sql');
-    cy.exec(
-      'java -jar dockstore-webservice.jar db migrate -i 1.5.0,1.6.0,1.7.0,add_service_1.7.0,1.8.0,1.9.0,1.10.0,alter_test_user_1.10.2,1.11.0,1.12.0,1.13.0,1.14.0,1.15.0,1.16.0,1.17.0,1.18.0,1.19.0,1.20.0 test/web.yml'
-    );
+    cy.task('resetDb', migrationsWithService);
   });
 }
 
 export function addBeforeSqlFromFile(fileName: string) {
   before(() => {
-    cy.exec(psqlInvocation + ' -h localhost webservice_test -U dockstore < ' + fileName);
+    cy.task('psqlFile', fileName);
   });
 }
 
@@ -243,7 +236,7 @@ export function selectSidebarEntry(entryPath: string) {
 }
 
 export function invokeSql(sqlStatement: string) {
-  cy.exec(psqlInvocation + ' -h localhost webservice_test -U dockstore -c "' + sqlStatement + '"');
+  cy.task('psqlCommand', sqlStatement);
 }
 
 export function createPotatoMembership() {

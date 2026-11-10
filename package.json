@@ -106,7 +106,7 @@
     "@typescript-eslint/eslint-plugin": "^8.67.0",
     "@typescript-eslint/parser": "^8.67.0",
     "angular-eslint": "^22.1.0",
-    "cypress": "^13.7.2",
+    "cypress": "^16.1.1",
     "eslint": "10.9.1",
     "husky": "^7.0.0",
     "istanbul-lib-instrument": "^6.0.3",
