@@ -48,11 +48,14 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
+import { MatSlideToggleChange, MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { PreviewWarningComponent } from 'app/preview-warning/preview-warning.component';
 import { Dockstore } from 'app/shared/dockstore.model';
 import { ThumbnailTimeSeriesGraphComponent } from '../shared/graphs/thumbnail-time-series-graph.component';
+
+const SHOW_DETAILS_STORAGE_KEY = 'searchShowDetails';
 
 export interface SortOption {
   label: string;
@@ -91,6 +94,7 @@ export interface SortOption {
     MatFormFieldModule,
     MatOptionModule,
     MatSelectModule,
+    MatSlideToggleModule,
     EntryToDisplayNamePipe,
     RouterLinkPipe,
     MatDividerModule,
@@ -182,6 +186,8 @@ export class SearchEntryTableComponent extends Base implements OnInit {
   ];
 
   dataSource: MatTableDataSource<SearchResult>;
+  // Whether to show the categories and matching text excerpts in each result
+  showDetails: boolean = this.loadShowDetails();
   tagCloudData: Array<CloudData>;
   showTagCloudForEntryType: boolean;
   options: CloudOptions = {
@@ -251,6 +257,22 @@ export class SearchEntryTableComponent extends Base implements OnInit {
     // Emit a sortChange event if the user triggered the change.
     if (this.sortChangeCount++ > 0) {
       this.sortChange.emit(sortValue);
+    }
+  }
+
+  setShowDetails($event: MatSlideToggleChange) {
+    this.showDetails = $event.checked;
+    // Browser storage can be unavailable (private browsing, blocked site data), so this preference is best-effort.
+    try {
+      localStorage.setItem(SHOW_DETAILS_STORAGE_KEY, String(this.showDetails));
+    } catch (e) {}
+  }
+
+  private loadShowDetails(): boolean {
+    try {
+      return localStorage.getItem(SHOW_DETAILS_STORAGE_KEY) !== 'false';
+    } catch (e) {
+      return true;
     }
   }
 

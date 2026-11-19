@@ -20,6 +20,14 @@
         alt="help"
         class="pl-2"
       />
+      <mat-slide-toggle
+        class="ml-4"
+        [checked]="showDetails"
+        (change)="setShowDetails($event)"
+        matTooltip="Show categories and matching text excerpts in each result"
+        data-cy="search-show-details-toggle"
+        >Show details</mat-slide-toggle
+      >
     </div>
     <div class="tag-cloud-dropdown">
       <button mat-button fxFlex="21rem" class="tagCloud-btn {{ entryType | lowercase }}-background" (click)="clickTagCloudBtn(entryType)">
@@ -89,7 +97,7 @@
             </div>
 
             <!-- Search highlighting results-->
-            @if (entry.highlight) {
+            @if (showDetails && entry.highlight) {
             <div>
               <table class="search-highlighting size-small horizontal-table">
                 @for (highlight of entry.highlight | keyvalue; track highlight) {
@@ -100,9 +108,9 @@
                 }
               </table>
             </div>
-            }
-
+            } @if (showDetails) {
             <app-entry-categories [categories]="entry | entryCategories" [entryType]="entryType"></app-entry-categories>
+            }
             <div fxLayout="row" fxLayoutGap="1rem">
               <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="1rem" fxFlex>
                 @if (entry?.source?.all_authors) {

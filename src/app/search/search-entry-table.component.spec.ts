@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars, @typescript-eslint/no-unused-vars */
+ 
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
@@ -10,6 +10,7 @@ import { SearchService } from './state/search.service';
 import { SearchEntryTableComponent } from './search-entry-table.component';
 import { EntryType } from 'app/shared/openapi';
 import { QueryBuilderService } from './query-builder.service';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
@@ -40,5 +41,16 @@ describe('SearchEntryTableComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should show details by default and remember the toggle setting', () => {
+    localStorage.removeItem('searchShowDetails');
+    expect(TestBed.createComponent(SearchEntryTableComponent).componentInstance.showDetails).toBeTrue();
+    component.setShowDetails({ checked: false } as MatSlideToggleChange);
+    expect(component.showDetails).toBeFalse();
+    expect(TestBed.createComponent(SearchEntryTableComponent).componentInstance.showDetails).toBeFalse();
+    component.setShowDetails({ checked: true } as MatSlideToggleChange);
+    expect(TestBed.createComponent(SearchEntryTableComponent).componentInstance.showDetails).toBeTrue();
+    localStorage.removeItem('searchShowDetails');
   });
 });
