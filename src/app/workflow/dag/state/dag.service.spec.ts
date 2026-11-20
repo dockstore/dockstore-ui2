@@ -25,8 +25,6 @@ import { DescriptorLanguageService } from '../../../shared/entry/descriptor-lang
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideHttpClient, withInterceptorsFromDi, withXhr } from '@angular/common/http';
 
- 
-
 describe('Service: Dag', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -54,18 +52,18 @@ describe('Service: Dag', () => {
   it('should set dynamic popover with lots of n/a', inject([DagService], (service: DagService) => {
     const tooltipText = `
     <div>
-    <div><b>Type: </b>n/a</div>
-    <div><b>Run: </b>n/a</div>
-    <div><b>Docker: </b>n/a</div>
+    <div><b>Type: </b>n&#x2F;a</div>
+    <div><b>Run: </b>n&#x2F;a</div>
+    <div><b>Docker: </b>n&#x2F;a</div>
     </div>`;
     expect(service.getTooltipText(undefined, '', undefined, undefined, undefined)).toEqual(tooltipText);
   }));
   it('should set dynamic popover with lots of other info', inject([DagService], (service: DagService) => {
     expect(service.getTooltipText(undefined, 'http://validlink.com', undefined, 'valid link', 'http://fakewebsite.com')).toEqual(`
     <div>
-    <div><b>Type: </b>n/a</div>
-    <div><b>Run: </b> <a href='http://fakewebsite.com'>http://fakewebsite.com</a></div>
-    <div><b>Docker: </b> <a href='http://validlink.com'>valid link</a></div>
+    <div><b>Type: </b>n&#x2F;a</div>
+    <div><b>Run: </b> <a href='http:&#x2F;&#x2F;fakewebsite.com'>http:&#x2F;&#x2F;fakewebsite.com</a></div>
+    <div><b>Docker: </b> <a href='http:&#x2F;&#x2F;validlink.com'>valid link</a></div>
     </div>`);
   }));
 
@@ -81,9 +79,9 @@ describe('Service: Dag', () => {
       service.getTooltipText(payload, `https://example.com/'onmouseover='alert(1)`, payload, payload, `http://example.com/'><img src=x>`)
     ).toEqual(`
     <div>
-    <div><b>Type: </b>alpine:3.19&lt;img src=x onerror=alert(1)&gt;</div>
-    <div><b>Run: </b> <a href='http://example.com/&#39;&gt;&lt;img src=x&gt;'>http://example.com/&#39;&gt;&lt;img src=x&gt;</a></div>
-    <div><b>Docker: </b> <a href='https://example.com/&#39;onmouseover=&#39;alert(1)'>alpine:3.19&lt;img src=x onerror=alert(1)&gt;</a></div>
+    <div><b>Type: </b>alpine:3.19&lt;img src&#x3D;x onerror&#x3D;alert(1)&gt;</div>
+    <div><b>Run: </b> <a href='http:&#x2F;&#x2F;example.com&#x2F;&#39;&gt;&lt;img src&#x3D;x&gt;'>http:&#x2F;&#x2F;example.com&#x2F;&#39;&gt;&lt;img src&#x3D;x&gt;</a></div>
+    <div><b>Docker: </b> <a href='https:&#x2F;&#x2F;example.com&#x2F;&#39;onmouseover&#x3D;&#39;alert(1)'>alpine:3.19&lt;img src&#x3D;x onerror&#x3D;alert(1)&gt;</a></div>
     </div>`);
   }));
   it('should not link to non-http(s) URLs', inject([DagService], (service: DagService) => {

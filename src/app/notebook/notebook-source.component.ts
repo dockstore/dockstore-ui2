@@ -1,5 +1,6 @@
 import { Component, Input, OnChanges, ChangeDetectionStrategy } from '@angular/core';
-import { escape, join } from './notebook-helpers';
+import { escape } from '../shared/helpers';
+import { join } from './notebook-helpers';
 import { Cell } from './notebook-types';
 
 import './prism';

@@ -23,6 +23,7 @@ import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { WorkflowQuery } from '../../../shared/state/workflow.query';
 import { WorkflowsService, WorkflowVersion } from '../../../shared/openapi';
+import { escape } from '../../../shared/helpers';
 import { DynamicPopover } from '../dynamicPopover.model';
 import { DagQuery } from './dag.query';
 import { DagStore } from './dag.store';
@@ -128,7 +129,7 @@ export class DagService {
     const dynamicPopover = this.setDynamicPopover(name, tool, type, docker, run);
     return `
     <div>
-    <div><b>Type: </b>${this.escapeHtml(dynamicPopover.type)}</div>
+    <div><b>Type: </b>${escape(dynamicPopover.type)}</div>
     ${this.getRunText(dynamicPopover.run)}
     ${this.getDockerText(dynamicPopover.link, dynamicPopover.docker)}
     </div>`;
@@ -145,7 +146,7 @@ export class DagService {
   }
 
   getRunText(run: string) {
-    const escapedRun = this.escapeHtml(run);
+    const escapedRun = escape(run);
     if (this.isValidUrl(run)) {
       return `<div><b>Run: </b> <a href='` + escapedRun + `'>` + escapedRun + `</a></div>`;
     } else {
@@ -208,9 +209,9 @@ export class DagService {
   getDockerText(link: string, docker: string) {
     const validLink = this.isValidUrl(link);
     if (validLink) {
-      return `<div><b>Docker: </b> <a href='` + this.escapeHtml(link) + `'>` + this.escapeHtml(docker) + `</a></div>`;
+      return `<div><b>Docker: </b> <a href='` + escape(link) + `'>` + escape(docker) + `</a></div>`;
     } else {
-      return `<div><b>Docker: </b>` + this.escapeHtml(docker) + `</div>`;
+      return `<div><b>Docker: </b>` + escape(docker) + `</div>`;
     }
   }
 
@@ -225,19 +226,6 @@ export class DagService {
     } catch (_) {
       return false;
     }
-  }
-
-  /**
-   * Escapes a string so that it can be safely interpolated into HTML text or a quoted attribute value.
-   * DAG node data comes from user-controlled workflow descriptors, so it must never be interpreted as markup.
-   */
-  escapeHtml(text: string | null | undefined): string {
-    return String(text ?? '')
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#39;');
   }
 
   setDagResults(results: any): void {
@@ -295,7 +283,7 @@ export class DagService {
     const div = document.createElement('div');
     const dagTooltipAttribute = 'dag-tooltip';
     div.innerHTML = `
-    <div class="qtip-titlebar">${this.escapeHtml(name)}</div>
+    <div class="qtip-titlebar">${escape(name)}</div>
     <div class="qtip-content">${runText}</div>
     `;
     div.setAttribute('class', `opaq qtip-bootstrap bootstrap-tooltip-z-index ${dagTooltipAttribute}`);
