@@ -16,6 +16,37 @@
 @use '@angular/material' as mat;
 @import '/src/materialColorScheme.scss';
 
+// Mimics the outlined "Sort by" mat-form-field
+.details-field {
+  display: flex;
+  align-items: center;
+  // The top border is drawn through the middle of the 14px legend, so shift the box up and enlarge it by half
+  // the legend height to line up the border with the 40px "Sort by" outline, then pad the bottom to center the toggle
+  margin-top: -7px;
+  height: 47px;
+  padding: 0 16px 7px;
+  border: 1px solid rgba(0, 0, 0, 0.38);
+  border-radius: 4px;
+
+  legend {
+    // Override Bootstrap's legend styles and match the floating mat-label
+    width: auto;
+    margin: 0 0 0 -5px;
+    padding: 0 4px;
+    border: 0;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    line-height: normal;
+    color: $accent-1-dark;
+  }
+
+  ::ng-deep label {
+    // Bootstrap applies bold font-weight and a bottom margin to labels
+    font-weight: normal;
+    margin-bottom: 0;
+  }
+}
+
 .tag-cloud-dropdown {
   position: relative;
   display: inline-block !important;
