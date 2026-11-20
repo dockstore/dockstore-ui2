@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { Author, OrcidAuthorInformation } from 'app/shared/openapi';
 import { SearchService } from 'app/search/state/search.service';
-import { escape } from 'app/notebook/notebook-helpers';
+import { escape } from 'app/shared/helpers';
 
 @Pipe({
   name: 'getSearchAuthorsHtml',

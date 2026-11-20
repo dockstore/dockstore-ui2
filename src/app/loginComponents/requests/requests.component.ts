@@ -5,7 +5,7 @@ import { takeUntil } from 'rxjs/operators';
 import { ConfirmationDialogData } from '../../confirmation-dialog/confirmation-dialog.component';
 import { ConfirmationDialogService } from '../../confirmation-dialog/confirmation-dialog.service';
 import { Base } from '../../shared/base';
-import { escape } from 'app/notebook/notebook-helpers';
+import { escape } from 'app/shared/helpers';
 import { bootstrap4mediumModalSize } from '../../shared/constants';
 import { Organization, OrganizationUser } from '../../shared/openapi';
 import { UserQuery } from '../../shared/user/user.query';

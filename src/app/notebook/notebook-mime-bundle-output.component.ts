@@ -1,6 +1,7 @@
 import { Component, Input, OnChanges, ChangeDetectionStrategy } from '@angular/core';
 import { MarkdownWrapperService } from '../shared/markdown-wrapper/markdown-wrapper.service';
-import { escape, selectBestFromMimeBundle } from './notebook-helpers';
+import { escape } from '../shared/helpers';
+import { selectBestFromMimeBundle } from './notebook-helpers';
 import { MimeBundle, Output, OutputMetadata } from './notebook-types';
 
 @Component({

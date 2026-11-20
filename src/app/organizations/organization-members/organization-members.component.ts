@@ -17,7 +17,7 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ID } from '@datorama/akita';
 import { ConfirmationDialogService } from 'app/confirmation-dialog/confirmation-dialog.service';
-import { escape } from 'app/notebook/notebook-helpers';
+import { escape } from 'app/shared/helpers';
 import { Base } from 'app/shared/base';
 import { bootstrap4mediumModalSize } from 'app/shared/constants';
 import { Observable } from 'rxjs';
