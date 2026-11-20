@@ -16,10 +16,14 @@
 @use '@angular/material' as mat;
 @import '/src/materialColorScheme.scss';
 
-.details-field ::ng-deep label {
-  // Bootstrap applies bold font-weight and a bottom margin to the slide toggle's label
-  font-weight: normal;
-  margin-bottom: 0;
+.details-field ::ng-deep .mat-mdc-form-field-infix {
+  // Fit the checkboxes instead of using the default form field width
+  width: auto;
+}
+
+.details-field mat-checkbox {
+  // Without this, the line box around the inline-flex checkbox adds height, making the field taller than "Sort by"
+  display: flex;
 }
 
 .tag-cloud-dropdown {

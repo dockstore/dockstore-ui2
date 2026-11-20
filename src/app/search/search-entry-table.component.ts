@@ -48,15 +48,16 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
-import { MatSlideToggleChange, MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { SlideToggleFormFieldControlDirective } from 'app/shared/slide-toggle-form-field-control.directive';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { FormFieldControlGroupDirective } from 'app/shared/form-field-control-group.directive';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { PreviewWarningComponent } from 'app/preview-warning/preview-warning.component';
 import { Dockstore } from 'app/shared/dockstore.model';
 import { ThumbnailTimeSeriesGraphComponent } from '../shared/graphs/thumbnail-time-series-graph.component';
 
-const SHOW_DETAILS_STORAGE_KEY = 'searchShowDetails';
+const SHOW_CATEGORIES_STORAGE_KEY = 'searchShowCategories';
+const SHOW_MATCHING_TEXT_STORAGE_KEY = 'searchShowMatchingText';
 
 export interface SortOption {
   label: string;
@@ -95,8 +96,8 @@ export interface SortOption {
     MatFormFieldModule,
     MatOptionModule,
     MatSelectModule,
-    MatSlideToggleModule,
-    SlideToggleFormFieldControlDirective,
+    MatCheckboxModule,
+    FormFieldControlGroupDirective,
     EntryToDisplayNamePipe,
     RouterLinkPipe,
     MatDividerModule,
@@ -188,8 +189,9 @@ export class SearchEntryTableComponent extends Base implements OnInit {
   ];
 
   dataSource: MatTableDataSource<SearchResult>;
-  // Whether to show the categories and matching text excerpts in each result
-  showDetails: boolean = this.loadShowDetails();
+  // Whether to show the categories and the matching text excerpts in each result
+  showCategories: boolean = this.loadSetting(SHOW_CATEGORIES_STORAGE_KEY);
+  showMatchingText: boolean = this.loadSetting(SHOW_MATCHING_TEXT_STORAGE_KEY);
   tagCloudData: Array<CloudData>;
   showTagCloudForEntryType: boolean;
   options: CloudOptions = {
@@ -262,17 +264,26 @@ export class SearchEntryTableComponent extends Base implements OnInit {
     }
   }
 
-  setShowDetails($event: MatSlideToggleChange) {
-    this.showDetails = $event.checked;
-    // Browser storage can be unavailable (private browsing, blocked site data), so this preference is best-effort.
+  setShowCategories(show: boolean) {
+    this.showCategories = show;
+    this.saveSetting(SHOW_CATEGORIES_STORAGE_KEY, show);
+  }
+
+  setShowMatchingText(show: boolean) {
+    this.showMatchingText = show;
+    this.saveSetting(SHOW_MATCHING_TEXT_STORAGE_KEY, show);
+  }
+
+  // Browser storage can be unavailable (private browsing, blocked site data), so these settings are best-effort and default to true.
+  private saveSetting(key: string, value: boolean) {
     try {
-      localStorage.setItem(SHOW_DETAILS_STORAGE_KEY, String(this.showDetails));
+      localStorage.setItem(key, String(value));
     } catch (e) {}
   }
 
-  private loadShowDetails(): boolean {
+  private loadSetting(key: string): boolean {
     try {
-      return localStorage.getItem(SHOW_DETAILS_STORAGE_KEY) !== 'false';
+      return localStorage.getItem(key) !== 'false';
     } catch (e) {
       return true;
     }
