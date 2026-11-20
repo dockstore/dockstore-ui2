@@ -16,6 +16,18 @@
 @use '@angular/material' as mat;
 @import '/src/materialColorScheme.scss';
 
+.details-field ::ng-deep .mat-mdc-form-field-infix {
+  // Fit the checkboxes instead of using the default form field width
+  width: auto;
+}
+
+.details-field mat-checkbox {
+  // Without this, the line box around the inline-flex checkbox adds height, making the field taller than "Sort by"
+  display: flex;
+  // Match the floating "Include" label, which is 16px scaled by 0.75
+  --mat-checkbox-label-text-size: 12px;
+}
+
 .tag-cloud-dropdown {
   position: relative;
   display: inline-block !important;

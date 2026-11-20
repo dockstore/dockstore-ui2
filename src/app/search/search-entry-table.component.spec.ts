@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars, @typescript-eslint/no-unused-vars */
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
@@ -40,5 +39,22 @@ describe('SearchEntryTableComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should show categories and matching text by default and remember each setting', () => {
+    const keys = ['searchShowCategories', 'searchShowMatchingText'];
+    const create = () => TestBed.createComponent(SearchEntryTableComponent).componentInstance;
+    keys.forEach((key) => localStorage.removeItem(key));
+    expect(create().showCategories).toBeTrue();
+    expect(create().showMatchingText).toBeTrue();
+    component.setShowCategories(false);
+    expect(component.showCategories).toBeFalse();
+    expect(create().showCategories).toBeFalse();
+    expect(create().showMatchingText).toBeTrue();
+    component.setShowMatchingText(false);
+    expect(create().showMatchingText).toBeFalse();
+    component.setShowCategories(true);
+    expect(create().showCategories).toBeTrue();
+    keys.forEach((key) => localStorage.removeItem(key));
   });
 });

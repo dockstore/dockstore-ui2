@@ -20,6 +20,26 @@
         alt="help"
         class="pl-2"
       />
+      <mat-form-field class="details-field ml-4">
+        <mat-label>Include</mat-label>
+        <div appFormFieldControlGroup aria-label="Include" fxLayout="row" fxLayoutGap="1rem">
+          <mat-checkbox [checked]="showCategories" (change)="setShowCategories($event.checked)" data-cy="search-show-categories-checkbox"
+            >Categories</mat-checkbox
+          >
+          <mat-checkbox
+            [checked]="showMatchingText"
+            (change)="setShowMatchingText($event.checked)"
+            data-cy="search-show-matching-text-checkbox"
+            >Matching Text</mat-checkbox
+          >
+        </div>
+      </mat-form-field>
+      <img
+        matTooltip="Select whether to display the categories or matching text excerpts for each search result"
+        src="../../../../assets/svg/help.svg"
+        alt="help"
+        class="pl-2"
+      />
     </div>
     <div class="tag-cloud-dropdown">
       <button mat-button fxFlex="21rem" class="tagCloud-btn {{ entryType | lowercase }}-background" (click)="clickTagCloudBtn(entryType)">
@@ -89,7 +109,7 @@
             </div>
 
             <!-- Search highlighting results-->
-            @if (entry.highlight) {
+            @if (showMatchingText && entry.highlight) {
             <div>
               <table class="search-highlighting size-small horizontal-table">
                 @for (highlight of entry.highlight | keyvalue; track highlight) {
@@ -100,9 +120,9 @@
                 }
               </table>
             </div>
-            }
-
+            } @if (showCategories) {
             <app-entry-categories [categories]="entry | entryCategories" [entryType]="entryType"></app-entry-categories>
+            }
             <div fxLayout="row" fxLayoutGap="1rem">
               <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="1rem" fxFlex>
                 @if (entry?.source?.all_authors) {
