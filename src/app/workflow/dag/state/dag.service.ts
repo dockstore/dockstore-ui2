@@ -128,7 +128,7 @@ export class DagService {
     const dynamicPopover = this.setDynamicPopover(name, tool, type, docker, run);
     return `
     <div>
-    <div><b>Type: </b>${dynamicPopover.type}</div>
+    <div><b>Type: </b>${this.escapeHtml(dynamicPopover.type)}</div>
     ${this.getRunText(dynamicPopover.run)}
     ${this.getDockerText(dynamicPopover.link, dynamicPopover.docker)}
     </div>`;
@@ -145,11 +145,11 @@ export class DagService {
   }
 
   getRunText(run: string) {
-    const isHttp = this.isHttp(run);
-    if (isHttp) {
-      return `<div><b>Run: </b> <a href='` + run + `'>` + run + `</a></div>`;
+    const escapedRun = this.escapeHtml(run);
+    if (this.isValidUrl(run)) {
+      return `<div><b>Run: </b> <a href='` + escapedRun + `'>` + escapedRun + `</a></div>`;
     } else {
-      return `<div><b>Run: </b>` + run + `</div>`;
+      return `<div><b>Run: </b>` + escapedRun + `</div>`;
     }
   }
 
@@ -208,28 +208,36 @@ export class DagService {
   getDockerText(link: string, docker: string) {
     const validLink = this.isValidUrl(link);
     if (validLink) {
-      return `<div><b>Docker: </b> <a href='` + link + `'>` + docker + `</a></div>`;
+      return `<div><b>Docker: </b> <a href='` + this.escapeHtml(link) + `'>` + this.escapeHtml(docker) + `</a></div>`;
     } else {
-      return `<div><b>Docker: </b>` + docker + `</div>`;
+      return `<div><b>Docker: </b>` + this.escapeHtml(docker) + `</div>`;
     }
   }
 
+  /**
+   * Determines whether the string is an absolute http(s) URL, the only kind of URL that is safe to link to or navigate to.
+   * Other schemes, such as javascript:, are rejected.
+   */
   isValidUrl(possibleUrl: string | null | undefined): boolean {
     try {
-      // eslint-disable-next-line no-unused-expressions, @typescript-eslint/no-unused-expressions
-      new URL(possibleUrl);
+      const url = new URL(possibleUrl);
+      return url.protocol === 'http:' || url.protocol === 'https:';
     } catch (_) {
       return false;
     }
-    return true;
   }
 
-  isHttp(run: string) {
-    if (run.match('^http') || run.match('^https')) {
-      return true;
-    } else {
-      return false;
-    }
+  /**
+   * Escapes a string so that it can be safely interpolated into HTML text or a quoted attribute value.
+   * DAG node data comes from user-controlled workflow descriptors, so it must never be interpreted as markup.
+   */
+  escapeHtml(text: string | null | undefined): string {
+    return String(text ?? '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
   }
 
   setDagResults(results: any): void {
@@ -287,7 +295,7 @@ export class DagService {
     const div = document.createElement('div');
     const dagTooltipAttribute = 'dag-tooltip';
     div.innerHTML = `
-    <div class="qtip-titlebar">${name}</div>
+    <div class="qtip-titlebar">${this.escapeHtml(name)}</div>
     <div class="qtip-content">${runText}</div>
     `;
     div.setAttribute('class', `opaq qtip-bootstrap bootstrap-tooltip-z-index ${dagTooltipAttribute}`);
@@ -419,17 +427,19 @@ export class DagService {
         );
       });
 
+      const dagService = this;
       cy.on('tap', 'node[id!="UniqueBeginKey"][id!="UniqueEndKey"]', function () {
+        const tool = this.data('tool');
+        // Only navigate to http(s) URLs, the tool comes from user-controlled workflow descriptors
+        if (tool === 'https://hub.docker.com/_/' || !dagService.isValidUrl(tool)) {
+          return;
+        }
         try {
           // your browser may block popups
-          if (this.data('tool') !== 'https://hub.docker.com/_/' && this.data('tool') !== '' && this.data('tool') !== undefined) {
-            window.open(this.data('tool'));
-          }
+          window.open(tool, '_blank', 'noopener');
         } catch (e) {
           // fall back on url change
-          if (this.data('tool') !== 'https://hub.docker.com/_/' && this.data('tool') !== '' && this.data('tool') !== undefined) {
-            window.location.href = this.data('tool');
-          }
+          window.location.href = tool;
         }
       });
     }
