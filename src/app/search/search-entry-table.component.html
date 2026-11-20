@@ -30,10 +30,16 @@
             [checked]="showMatchingText"
             (change)="setShowMatchingText($event.checked)"
             data-cy="search-show-matching-text-checkbox"
-            >Matching Text</mat-checkbox
+            >File Excerpts</mat-checkbox
           >
         </div>
       </mat-form-field>
+      <img
+        matTooltip="Select whether to display the categories or matching file excerpts for each search result"
+        src="../../../../assets/svg/help.svg"
+        alt="help"
+        class="pl-2"
+      />
     </div>
     <div class="tag-cloud-dropdown">
       <button mat-button fxFlex="21rem" class="tagCloud-btn {{ entryType | lowercase }}-background" (click)="clickTagCloudBtn(entryType)">

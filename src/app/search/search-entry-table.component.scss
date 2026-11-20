@@ -24,6 +24,8 @@
 .details-field mat-checkbox {
   // Without this, the line box around the inline-flex checkbox adds height, making the field taller than "Sort by"
   display: flex;
+  // Match the floating "Details" label, which is 16px scaled by 0.75
+  --mat-checkbox-label-text-size: 12px;
 }
 
 .tag-cloud-dropdown {
