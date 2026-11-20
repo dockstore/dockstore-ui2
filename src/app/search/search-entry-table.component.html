@@ -20,17 +20,18 @@
         alt="help"
         class="pl-2"
       />
-      <!-- Styled to match the outlined "Sort by" mat-form-field, which can't host a slide toggle -->
-      <fieldset class="details-field ml-4">
-        <legend>Details</legend>
+      <mat-form-field class="details-field ml-4">
+        <mat-label>Details</mat-label>
         <mat-slide-toggle
+          appSlideToggleFormFieldControl
+          aria-label="Show details"
           [checked]="showDetails"
           (change)="setShowDetails($event)"
           matTooltip="Show categories and matching text excerpts in each result"
           data-cy="search-show-details-toggle"
           >Show</mat-slide-toggle
         >
-      </fieldset>
+      </mat-form-field>
     </div>
     <div class="tag-cloud-dropdown">
       <button mat-button fxFlex="21rem" class="tagCloud-btn {{ entryType | lowercase }}-background" (click)="clickTagCloudBtn(entryType)">

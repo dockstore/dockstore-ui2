@@ -49,6 +49,7 @@ import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/p
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleChange, MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { SlideToggleFormFieldControlDirective } from 'app/shared/slide-toggle-form-field-control.directive';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { PreviewWarningComponent } from 'app/preview-warning/preview-warning.component';
@@ -95,6 +96,7 @@ export interface SortOption {
     MatOptionModule,
     MatSelectModule,
     MatSlideToggleModule,
+    SlideToggleFormFieldControlDirective,
     EntryToDisplayNamePipe,
     RouterLinkPipe,
     MatDividerModule,
