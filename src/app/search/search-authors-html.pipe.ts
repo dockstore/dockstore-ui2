@@ -1,6 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { Author, OrcidAuthorInformation } from 'app/shared/openapi';
 import { SearchService } from 'app/search/state/search.service';
+import { escape } from 'app/notebook/notebook-helpers';
 
 @Pipe({
   name: 'getSearchAuthorsHtml',
@@ -28,8 +29,12 @@ export class SearchAuthorsHtmlPipe implements PipeTransform {
       let orcidAuthor = author as OrcidAuthorInformation;
       if (orcidAuthor.orcid && formatAsInnerHtml) {
         authorNames.push(
-          `<a href="https://orcid.org/${orcidAuthor.orcid}" target="_blank" rel="noopener noreferrer">${orcidAuthor.name}</a>`
+          `<a href="https://orcid.org/${escape(orcidAuthor.orcid)}" target="_blank" rel="noopener noreferrer">${escape(
+            orcidAuthor.name
+          )}</a>`
         );
+      } else if (formatAsInnerHtml) {
+        authorNames.push(escape(author.name));
       } else {
         authorNames.push(author.name);
       }
