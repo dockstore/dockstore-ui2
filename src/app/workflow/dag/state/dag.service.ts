@@ -23,7 +23,7 @@ import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 import { WorkflowQuery } from '../../../shared/state/workflow.query';
 import { WorkflowsService, WorkflowVersion } from '../../../shared/openapi';
-import { escape } from '../../../shared/helpers';
+import { escapeHtml } from '../../../shared/helpers';
 import { DynamicPopover } from '../dynamicPopover.model';
 import { DagQuery } from './dag.query';
 import { DagStore } from './dag.store';
@@ -129,7 +129,7 @@ export class DagService {
     const dynamicPopover = this.setDynamicPopover(name, tool, type, docker, run);
     return `
     <div>
-    <div><b>Type: </b>${escape(dynamicPopover.type)}</div>
+    <div><b>Type: </b>${escapeHtml(dynamicPopover.type)}</div>
     ${this.getRunText(dynamicPopover.run)}
     ${this.getDockerText(dynamicPopover.link, dynamicPopover.docker)}
     </div>`;
@@ -146,7 +146,7 @@ export class DagService {
   }
 
   getRunText(run: string) {
-    const escapedRun = escape(run);
+    const escapedRun = escapeHtml(run);
     if (this.isValidUrl(run)) {
       return `<div><b>Run: </b> <a href='` + escapedRun + `'>` + escapedRun + `</a></div>`;
     } else {
@@ -209,9 +209,9 @@ export class DagService {
   getDockerText(link: string, docker: string) {
     const validLink = this.isValidUrl(link);
     if (validLink) {
-      return `<div><b>Docker: </b> <a href='` + escape(link) + `'>` + escape(docker) + `</a></div>`;
+      return `<div><b>Docker: </b> <a href='` + escapeHtml(link) + `'>` + escapeHtml(docker) + `</a></div>`;
     } else {
-      return `<div><b>Docker: </b>` + escape(docker) + `</div>`;
+      return `<div><b>Docker: </b>` + escapeHtml(docker) + `</div>`;
     }
   }
 
@@ -283,7 +283,7 @@ export class DagService {
     const div = document.createElement('div');
     const dagTooltipAttribute = 'dag-tooltip';
     div.innerHTML = `
-    <div class="qtip-titlebar">${escape(name)}</div>
+    <div class="qtip-titlebar">${escapeHtml(name)}</div>
     <div class="qtip-content">${runText}</div>
     `;
     div.setAttribute('class', `opaq qtip-bootstrap bootstrap-tooltip-z-index ${dagTooltipAttribute}`);

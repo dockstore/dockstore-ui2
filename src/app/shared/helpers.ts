@@ -13,7 +13,7 @@ export function toExtendSite(url: string): boolean {
   );
 }
 
-// The below escape() implementation is adapted from mustache.js
+// The below escapeHtml() implementation is adapted from mustache.js
 // https://github.com/janl/mustache.js/blob/972fd2b27a036888acfcb60d6119317744fac7ee/mustache.js#L60
 export const escapeCharToEntity = {
   '&': '&amp;',
@@ -26,7 +26,7 @@ export const escapeCharToEntity = {
   '=': '&#x3D;',
 };
 
-export function escape(text: string | null | undefined): string {
+export function escapeHtml(text: string | null | undefined): string {
   return String(text ?? '').replace(/[&<>"'`=\/]/g, (c) => {
     return escapeCharToEntity[c];
   });
