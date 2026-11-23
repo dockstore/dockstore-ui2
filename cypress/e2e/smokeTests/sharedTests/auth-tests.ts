@@ -6,7 +6,7 @@ import { addToCollection, goToInfoTab, goToVersionsTab } from '../../../support/
  *    2. DockstoreTestUser4 registered on dev.dockstore.net with github and quay accounts linked (at minimum)
  *        -- must have the entries on their github and quay accounts (dockstore-tool-md5sum and hello-dockstore-workflow)
  *    3. Dockstore token for DockstoreTestUser4 must be passed to cypress using the TOKEN environment variable. The token environment variable should
- *    match the target Dockstore stage. DEV_TOKEN, STAGING_TOKEN, and PROD_TOKEN for the respective stages. Cypress env variables must be
+ *    match the target Dockstore stage. DEV_TOKEN, STAGING_TOKEN, and PROD_TOKEN for the respective stages. Cypress env variables (read via cy.env) must be
  *    prepended with 'CYPRESS_', so to set the token for dev, you would make an environment variable named CYPRESS_DEV_TOKEN.
  *    4. The 'DockstoreAuthTestOrg' dockstore organization must exist with 'SimpleCollection' Collection and DockstoreTestUser4 as member
  *    5. Tests will either fail or be flaky if artifacts are left behind from a failed run (ie tool not deleted or workflow unpublished)
@@ -25,19 +25,24 @@ const registerAliasName = 'register';
 const registerAlias = '@' + registerAliasName;
 
 // get the dockstore token from env variable and put it in local storage
+// Cypress 16 removed Cypress.env(); sensitive values must be read asynchronously with cy.env(), which queues like any other command
 function storeToken() {
   const baseUrl = Cypress.config('baseUrl');
+  let tokenName: string;
   if (baseUrl === 'https://dockstore.org') {
-    window.localStorage.setItem('ng2-ui-auth_token', Cypress.env('PROD_TOKEN'));
+    tokenName = 'PROD_TOKEN';
   } else if (baseUrl === 'https://staging.dockstore.org') {
-    window.localStorage.setItem('ng2-ui-auth_token', Cypress.env('STAGING_TOKEN'));
+    tokenName = 'STAGING_TOKEN';
   } else if (baseUrl === 'https://qa.dockstore.org') {
-    window.localStorage.setItem('ng2-ui-auth_token', Cypress.env('QA_TOKEN'));
+    tokenName = 'QA_TOKEN';
   } else if (baseUrl === 'https://dev.dockstore.net') {
-    window.localStorage.setItem('ng2-ui-auth_token', Cypress.env('DEV_TOKEN'));
+    tokenName = 'DEV_TOKEN';
   } else {
-    window.localStorage.setItem('ng2-ui-auth_token', Cypress.env('LOCAL_TOKEN'));
+    tokenName = 'LOCAL_TOKEN';
   }
+  cy.env([tokenName]).then((values) => {
+    window.localStorage.setItem('ng2-ui-auth_token', values[tokenName]);
+  });
 }
 
 function unpublishTool() {
