@@ -26,8 +26,8 @@ export const escapeCharToEntity = {
   '=': '&#x3D;',
 };
 
-export function escapeHtml(text: string): string {
-  return String(text).replace(/[&<>"'`=\/]/g, (c) => {
+export function escapeHtml(text: string | null | undefined): string {
+  return String(text ?? '').replace(/[&<>"'`=\/]/g, (c) => {
     return escapeCharToEntity[c];
   });
 }
