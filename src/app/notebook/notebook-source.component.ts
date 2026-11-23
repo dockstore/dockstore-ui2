@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, ChangeDetectionStrategy } from '@angular/core';
-import { escape } from '../shared/helpers';
+import { escapeHtml } from '../shared/helpers';
 import { join } from './notebook-helpers';
 import { Cell } from './notebook-types';
 
@@ -27,7 +27,7 @@ export class NotebookSourceComponent implements OnChanges {
     const Prism = (<any>window)?.Prism;
     const module = Prism?.languages[language];
     if (module === undefined || module === null) {
-      return escape(code);
+      return escapeHtml(code);
     }
     return Prism.highlight(code, module, language);
   }

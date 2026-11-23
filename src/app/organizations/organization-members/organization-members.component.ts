@@ -17,7 +17,7 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ID } from '@datorama/akita';
 import { ConfirmationDialogService } from 'app/confirmation-dialog/confirmation-dialog.service';
-import { escape } from 'app/shared/helpers';
+import { escapeHtml } from 'app/shared/helpers';
 import { Base } from 'app/shared/base';
 import { bootstrap4mediumModalSize } from 'app/shared/constants';
 import { Observable } from 'rxjs';
@@ -122,8 +122,8 @@ export class OrganizationMembersComponent extends Base implements OnInit {
       username: organizationUser.user.username,
       role: organizationUser.role,
       title: 'Resend Invitation',
-      descriptionPrefix: `Resend an invitation to the user <strong>${escape(organizationUser.user.username)}</strong>
-          who rejected the invitation to the organization <strong>${escape(
+      descriptionPrefix: `Resend an invitation to the user <strong>${escapeHtml(organizationUser.user.username)}</strong>
+          who rejected the invitation to the organization <strong>${escapeHtml(
             organizationUser.organization.displayName
           )}</strong>. You may optionally edit the role.`,
       confirmationButtonText: 'Resend Invitation',
@@ -165,17 +165,17 @@ export class OrganizationMembersComponent extends Base implements OnInit {
   removeUserDialog(organizationUser: OrganizationUser) {
     const removeMemberDialogData = {
       title: 'Remove Member from Organization',
-      message: `Are you sure you want to <strong>remove</strong> the member <strong>${escape(organizationUser.user.username)}</strong>
-        from the organization <strong>${escape(organizationUser.organization.displayName)}</strong>?`,
+      message: `Are you sure you want to <strong>remove</strong> the member <strong>${escapeHtml(organizationUser.user.username)}</strong>
+        from the organization <strong>${escapeHtml(organizationUser.organization.displayName)}</strong>?`,
       cancelButtonText: 'Cancel',
       confirmationButtonText: 'Remove Member',
     };
     const deleteInvitationDialogData = {
       title: 'Delete Invitation',
-      message: `The member has a <strong>${organizationUser.status.toLowerCase()}</strong> invitation to the organization <strong>${escape(
+      message: `The member has a <strong>${organizationUser.status.toLowerCase()}</strong> invitation to the organization <strong>${escapeHtml(
         organizationUser.organization.displayName
       )}</strong>.
-        Are you sure you want to <strong>delete</strong> the invitation to the member <strong>${escape(
+        Are you sure you want to <strong>delete</strong> the invitation to the member <strong>${escapeHtml(
           organizationUser.user.username
         )}</strong>?`,
       cancelButtonText: 'Cancel',
