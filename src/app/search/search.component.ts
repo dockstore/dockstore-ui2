@@ -365,6 +365,10 @@ export class SearchComponent implements OnInit, OnDestroy {
     if (this.expandedPanels) {
       newFilters.forEach((values, key) => {
         if (values.size > 0) {
+          if (!this.expandedPanels.get(key)) {
+            // When reopening a closed panel, show the abbreviated list of choices rather than the full list
+            this.fullyExpandMap.set(key, false);
+          }
           this.expandedPanels.set(key, true);
         }
       });
