@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output, ChangeDetectionStrategy } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ChangeDetectionStrategy, ViewChild } from '@angular/core';
 import { UntypedFormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
@@ -15,7 +15,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatExpansionModule } from '@angular/material/expansion';
+import { MatExpansionModule, MatExpansionPanel } from '@angular/material/expansion';
 
 @Component({
   selector: 'app-basic-search',
@@ -46,6 +46,7 @@ export class BasicSearchComponent extends Base implements OnInit {
   @Output() changed: EventEmitter<string> = new EventEmitter<string>();
   @Output() changedDebounced: EventEmitter<string> = new EventEmitter<string>();
   @Output() submitted: EventEmitter<string> = new EventEmitter<string>();
+  @ViewChild(MatExpansionPanel, { static: true }) panel: MatExpansionPanel;
   ngOnInit() {
     this.searchQuery.searchText$.pipe(takeUntil(this.ngUnsubscribe)).subscribe((searchText) => {
       // This keeps the state and the view in sync but this is slightly awkward
@@ -65,6 +66,13 @@ export class BasicSearchComponent extends Base implements OnInit {
     valueChanges.pipe(debounceTime(formInputDebounceTime), distinctUntilChanged()).subscribe((searchText) => {
       this.changedDebounced.emit(searchText);
     });
+  }
+
+  /**
+   * Expands the search panel
+   */
+  expand(): void {
+    this.panel.open();
   }
 
   /**

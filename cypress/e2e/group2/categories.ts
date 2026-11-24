@@ -21,6 +21,7 @@ import {
   addOrganizationAdminUser,
   addToCollection,
   typeInInput,
+  expandFacetPanel,
 } from '../../support/commands';
 
 describe('Dockstore Categories', () => {
@@ -92,6 +93,7 @@ describe('Dockstore Categories', () => {
       cy.visit('/search?entryType=tools');
       cy.get('app-search-results').contains(toolSnippet);
       cy.get('app-search-results').contains('A2/a');
+      expandFacetPanel('Category');
       cy.contains('mat-checkbox', categoryDisplayName).click();
       cy.get('app-search-results').contains(toolSnippet);
       cy.get('app-search-results').contains('A2/a').should('not.exist');

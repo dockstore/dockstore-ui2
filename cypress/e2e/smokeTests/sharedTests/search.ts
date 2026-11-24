@@ -1,4 +1,4 @@
-import { typeInInput } from '../../../support/commands';
+import { expandFacetPanel, typeInInput } from '../../../support/commands';
 
 describe('Admin UI', () => {
   beforeEach(() => {
@@ -9,6 +9,7 @@ describe('Admin UI', () => {
   describe('Basic search functions', () => {
     it('should arrive on the correct page', () => {
       cy.url().should('include', '/search');
+      expandFacetPanel('Language');
       cy.get('mat-checkbox').parent().contains('WDL').click();
       cy.contains('the Language is WDL');
       cy.url().should('include', '/search?descriptorType=WDL');

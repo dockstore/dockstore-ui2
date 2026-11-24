@@ -65,6 +65,16 @@ import { FlexModule } from '@ngbracket/ngx-layout/flex';
 import { HeaderComponent } from '../header/header.component';
 
 /**
+ * An expansion panel in the facet sidebar, which displays either a single facet or a group of facets
+ */
+interface FacetPanel {
+  id: string;
+  title: string;
+  keys: Array<string>;
+  isGroup: boolean;
+}
+
+/**
  *
  * In general, the search works like this:
  * There's the "view" which is what the user clicks which includes facet checkboxes and tab (tools/workflows), etc
@@ -136,6 +146,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   faCopy = faCopy;
   private ngUnsubscribe: Subject<{}> = new Subject();
   @ViewChild(MatAccordion, { static: true }) accordion: MatAccordion;
+  @ViewChild(BasicSearchComponent, { static: true }) basicSearch: BasicSearchComponent;
   public advancedSearchObject$: Observable<AdvancedSearchObject>;
   public hasAdvancedSearchText$: Observable<boolean>;
   public shortUrl$: Observable<string>;
@@ -184,6 +195,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   private bucketStubs: Map<string, string>;
   public friendlyNames: Map<string, string>;
   public toolTips: Map<string, string>;
+  public facetGroups: Map<string, string> = new Map<string, string>();
   private entryOrder: Map<string, SubBucket>;
   public expandedPanels: Map<string, boolean>;
   private exclusiveFilters: Array<string>;
@@ -231,6 +243,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       this.friendlyNames = this.searchService.initializeFriendlyNames(newTabIndex);
       this.entryOrder = this.searchService.initializeEntryOrder(newTabIndex);
       this.toolTips = this.searchService.initializeToolTips(newTabIndex);
+      this.facetGroups = this.searchService.initializeFacetGroups(newTabIndex);
       this.expandedPanels = this.searchService.initializeExpandedPanels(newTabIndex);
       this.exclusiveFilters = this.searchService.initializeExclusiveFilters(newTabIndex);
     }
@@ -238,6 +251,28 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   getKeys(bucketMap: Map<any, any>): Array<string> {
     return Array.from(bucketMap.keys());
+  }
+
+  /**
+   * Arrange the displayed facets into expansion panels, in facet order.
+   * An ungrouped facet gets its own panel, and the facets in a group share a panel, positioned where the group's first displayed facet would be.
+   */
+  getFacetPanels(): Array<FacetPanel> {
+    const panels: Array<FacetPanel> = [];
+    const groupPanels = new Map<string, FacetPanel>();
+    this.getKeys(this.orderedBuckets).forEach((key) => {
+      const group = this.facetGroups.get(key);
+      if (!group) {
+        panels.push({ id: key, title: this.friendlyNames.get(key), keys: [key], isGroup: false });
+      } else if (groupPanels.has(group)) {
+        groupPanels.get(group).keys.push(key);
+      } else {
+        const panel = { id: SearchService.getGroupPanelId(group), title: group, keys: [key], isGroup: true };
+        groupPanels.set(group, panel);
+        panels.push(panel);
+      }
+    });
+    return panels;
   }
 
   ngOnDestroy() {
@@ -365,7 +400,12 @@ export class SearchComponent implements OnInit, OnDestroy {
     if (this.expandedPanels) {
       newFilters.forEach((values, key) => {
         if (values.size > 0) {
-          this.expandedPanels.set(key, true);
+          const panelId = SearchService.getFacetPanelId(key, this.facetGroups);
+          if (!this.expandedPanels.get(panelId)) {
+            // When reopening a closed panel, show the abbreviated list of choices rather than the full list
+            this.fullyExpandMap.set(key, false);
+          }
+          this.expandedPanels.set(panelId, true);
         }
       });
     }
@@ -620,6 +660,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   resetExpansionPanels() {
     this.clearExpandedPanelsState();
     this.expandedPanels = this.searchService.initializeExpandedPanels(this.tabIndex);
+    this.basicSearch.expand();
   }
 
   /**===============================================

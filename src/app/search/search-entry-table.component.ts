@@ -16,9 +16,10 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild, ChangeDetectionStrategy } from '@angular/core';
 import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
 import { combineLatest, Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { map, takeUntil } from 'rxjs/operators';
 import { Base } from '../shared/base';
 import { SearchQuery, SearchResult } from './state/search.query';
+import { AdvancedSearchQuery } from './advancedsearch/state/advanced-search.query';
 import { SearchService } from './state/search.service';
 import { EntryType, ExtendedGA4GHService, Workflow } from 'app/shared/openapi';
 import { AsyncPipe, DatePipe, DecimalPipe, KeyValuePipe, LowerCasePipe } from '@angular/common';
@@ -192,6 +193,7 @@ export class SearchEntryTableComponent extends Base implements OnInit {
   // Whether to show the categories and the matching text excerpts in each result
   showCategories: boolean = this.loadSetting(SHOW_CATEGORIES_STORAGE_KEY);
   showMatchingText: boolean = this.loadSetting(SHOW_MATCHING_TEXT_STORAGE_KEY);
+  hasSearchText$: Observable<boolean>;
   tagCloudData: Array<CloudData>;
   showTagCloudForEntryType: boolean;
   options: CloudOptions = {
@@ -217,9 +219,14 @@ export class SearchEntryTableComponent extends Base implements OnInit {
     private readonly searchQuery: SearchQuery,
     private readonly searchService: SearchService,
     private readonly queryBuilderService: QueryBuilderService,
-    private readonly extendedGA4GHService: ExtendedGA4GHService
+    private readonly extendedGA4GHService: ExtendedGA4GHService,
+    private readonly advancedSearchQuery: AdvancedSearchQuery
   ) {
     super();
+    // Matching text excerpts only exist when there's a basic or advanced search term
+    this.hasSearchText$ = combineLatest([this.searchQuery.searchText$, this.advancedSearchQuery.hasAdvancedSearchText$]).pipe(
+      map(([searchText, hasAdvancedSearchText]) => !!searchText || hasAdvancedSearchText)
+    );
   }
 
   ngOnInit(): void {

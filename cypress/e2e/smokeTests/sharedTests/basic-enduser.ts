@@ -6,6 +6,7 @@ import {
   checkMastodonFeed,
   isStagingOrProd,
   typeInInput,
+  expandFacetPanel,
   goToLaunchTab,
   goToInfoTab,
   goToVersionsTab,
@@ -123,6 +124,7 @@ describe('Test search page functionality', () => {
   it('filters and unfilters by facets', () => {
     cy.visit('/search');
     cy.wait(2500); // Wait less than ideal, facets keep getting rerendered is the problem
+    expandFacetPanel('Language');
     cy.contains('mat-checkbox', 'Nextflow').click();
     cy.get(`[data-cy=${getSearchDataCy()}] a`);
     cy.wait(2500); // Wait less than ideal, facets keep getting rerendered is the problem
@@ -138,6 +140,7 @@ describe('Test search page functionality', () => {
   });
   it('boolean facet filters', () => {
     cy.visit('/search');
+    expandFacetPanel('Verification');
     cy.contains('mat-checkbox', /^[ ]*verified/).click();
     cy.url().should('contain', 'verified=1');
     cy.get(`[data-cy=${getSearchDataCy()}] a`);
@@ -152,6 +155,7 @@ describe('Test workflow page functionality', () => {
     cy.get(`[data-cy=${getSearchDataCy()}]`).should('have.length.of.at.least', 1);
 
     // Use facet to find WDL workflow
+    expandFacetPanel('Language');
     cy.contains('mat-checkbox', 'WDL').click();
     cy.get(`[data-cy=${getSearchDataCy()}] a`).first().click();
   });
