@@ -173,6 +173,8 @@ export class QueryBuilderService {
     tableBody = this.appendFilter(tableBody, null, filters, exclusiveFilters);
     tableBody.rawOption('highlight', {
       type: 'unified',
+      // HTML-encode the highlighted text, because it is displayed as HTML and may contain user-controlled content
+      encoder: 'html',
       pre_tags: ['<b>'],
       post_tags: ['</b>'],
       fields: {

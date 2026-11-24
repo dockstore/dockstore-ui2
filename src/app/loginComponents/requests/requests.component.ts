@@ -5,6 +5,7 @@ import { takeUntil } from 'rxjs/operators';
 import { ConfirmationDialogData } from '../../confirmation-dialog/confirmation-dialog.component';
 import { ConfirmationDialogService } from '../../confirmation-dialog/confirmation-dialog.service';
 import { Base } from '../../shared/base';
+import { escapeHtml } from 'app/shared/helpers';
 import { bootstrap4mediumModalSize } from '../../shared/constants';
 import { Organization, OrganizationUser } from '../../shared/openapi';
 import { UserQuery } from '../../shared/user/user.query';
@@ -155,7 +156,7 @@ export class RequestsComponent extends Base implements OnInit {
     const confirmationDialogData: ConfirmationDialogData = {
       title: 'Delete Organization',
       message: `Are you sure you wish to delete this ${organizationStatus.toLowerCase()} organization?
-                All information associated with <b>${organizationName}</b> will be deleted.`,
+                All information associated with <b>${escapeHtml(organizationName)}</b> will be deleted.`,
       cancelButtonText: 'Cancel',
       confirmationButtonText: 'Delete',
     };
