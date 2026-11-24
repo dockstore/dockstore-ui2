@@ -146,6 +146,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   faCopy = faCopy;
   private ngUnsubscribe: Subject<{}> = new Subject();
   @ViewChild(MatAccordion, { static: true }) accordion: MatAccordion;
+  @ViewChild(BasicSearchComponent, { static: true }) basicSearch: BasicSearchComponent;
   public advancedSearchObject$: Observable<AdvancedSearchObject>;
   public hasAdvancedSearchText$: Observable<boolean>;
   public shortUrl$: Observable<string>;
@@ -659,6 +660,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   resetExpansionPanels() {
     this.clearExpandedPanelsState();
     this.expandedPanels = this.searchService.initializeExpandedPanels(this.tabIndex);
+    this.basicSearch.expand();
   }
 
   /**===============================================

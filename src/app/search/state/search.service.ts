@@ -101,7 +101,7 @@ export class SearchService {
       {
         friendlyName: tabIndex === SearchService.NOTEBOOKS_TAB_INDEX ? 'Format' : 'Language',
         esName: 'descriptorType',
-        initiallyExpanded: true,
+        initiallyExpanded: false,
         group: languageGroup,
       },
       {
@@ -112,7 +112,7 @@ export class SearchService {
         group: languageGroup,
       },
       ...(tabIndex === SearchService.NOTEBOOKS_TAB_INDEX
-        ? [{ friendlyName: 'Language', esName: 'descriptorTypeSubclass', initiallyExpanded: true, group: languageGroup }]
+        ? [{ friendlyName: 'Language', esName: 'descriptorTypeSubclass', initiallyExpanded: false, group: languageGroup }]
         : []),
       {
         friendlyName: 'Engine Versions',
@@ -121,11 +121,11 @@ export class SearchService {
         initiallyExpanded: false,
         group: languageGroup,
       },
-      { friendlyName: 'Author', esName: 'all_authors.name.keyword', initiallyExpanded: true },
-      { friendlyName: 'Registry', esName: 'registry', initiallyExpanded: true },
-      { friendlyName: 'Source Control', esName: 'source_control_provider.keyword', initiallyExpanded: true },
-      { friendlyName: 'Namespace', esName: 'namespace', initiallyExpanded: true },
-      { friendlyName: 'Organization', esName: 'organization', initiallyExpanded: true },
+      { friendlyName: 'Author', esName: 'all_authors.name.keyword', initiallyExpanded: false },
+      { friendlyName: 'Registry', esName: 'registry', initiallyExpanded: false },
+      { friendlyName: 'Source Control', esName: 'source_control_provider.keyword', initiallyExpanded: false },
+      { friendlyName: 'Namespace', esName: 'namespace', initiallyExpanded: false },
+      { friendlyName: 'Organization', esName: 'organization', initiallyExpanded: false },
       { friendlyName: 'Labels', esName: 'labels.value.keyword', initiallyExpanded: false },
       {
         friendlyName: 'Private Access',
@@ -145,7 +145,7 @@ export class SearchService {
         friendlyName: 'Verified',
         esName: 'verified',
         tooltip: 'Indicates that at least one version of a tool or workflow has been successfully run by our team or an outside party.',
-        initiallyExpanded: true,
+        initiallyExpanded: false,
         exclusive: true,
         group: 'Verification',
       },

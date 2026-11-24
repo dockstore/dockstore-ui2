@@ -172,6 +172,19 @@ export function typeInInput(dataCyName: string, text: string) {
   cy.get(specifier).type(text);
 }
 
+/**
+ * Expands the search sidebar panel with the specified title (a facet or facet group name), if it isn't already expanded
+ */
+export function expandFacetPanel(title: string) {
+  const escapedTitle = title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  cy.contains('mat-expansion-panel-header', new RegExp(`^\\s*${escapedTitle}\\s*$`)).then(($header) => {
+    if ($header.attr('aria-expanded') !== 'true') {
+      cy.wrap($header).click();
+    }
+  });
+  cy.contains('mat-expansion-panel-header', new RegExp(`^\\s*${escapedTitle}\\s*$`)).should('have.attr', 'aria-expanded', 'true');
+}
+
 export function selectRadioButton(dataCyName: string) {
   cy.get(`[data-cy="${dataCyName}"] [type="radio"]`).check();
 }
