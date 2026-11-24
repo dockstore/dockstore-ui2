@@ -65,6 +65,8 @@ interface FacetInfo {
   tooltip?: string;
   initiallyExpanded: boolean;
   exclusive?: boolean;
+  /** If set, the facet is displayed as a subsection of a parent panel with this title, along with the other facets in the same group */
+  group?: string;
 }
 
 @Injectable()
@@ -87,33 +89,37 @@ export class SearchService {
    */
 
   private getOrderedFacetInfos(tabIndex: number): Array<FacetInfo> {
+    const languageGroup = tabIndex === SearchService.NOTEBOOKS_TAB_INDEX ? 'Format & Language' : 'Language';
     const facetInfos = [
       { friendlyName: 'Category', esName: 'categories.displayName.keyword', initiallyExpanded: false },
       { friendlyName: 'Operation', esName: 'operation.displayName.keyword', initiallyExpanded: false },
       { friendlyName: 'Topic', esName: 'topic.displayName.keyword', initiallyExpanded: false },
-      { friendlyName: 'Input Format', esName: 'input-format.displayName.keyword', initiallyExpanded: false },
-      { friendlyName: 'Input Data', esName: 'input-data.displayName.keyword', initiallyExpanded: false },
-      { friendlyName: 'Output Format', esName: 'output-format.displayName.keyword', initiallyExpanded: false },
-      { friendlyName: 'Output Data', esName: 'output-data.displayName.keyword', initiallyExpanded: false },
+      { friendlyName: 'Input Format', esName: 'input-format.displayName.keyword', initiallyExpanded: false, group: 'Input' },
+      { friendlyName: 'Input Data', esName: 'input-data.displayName.keyword', initiallyExpanded: false, group: 'Input' },
+      { friendlyName: 'Output Format', esName: 'output-format.displayName.keyword', initiallyExpanded: false, group: 'Output' },
+      { friendlyName: 'Output Data', esName: 'output-data.displayName.keyword', initiallyExpanded: false, group: 'Output' },
       {
         friendlyName: tabIndex === SearchService.NOTEBOOKS_TAB_INDEX ? 'Format' : 'Language',
         esName: 'descriptorType',
         initiallyExpanded: true,
+        group: languageGroup,
       },
       {
         friendlyName: 'Language Versions',
         esName: 'descriptor_type_versions.keyword',
         tooltip: 'Indicates that the tool or workflow contains at least one version that is written with the workflow language version',
         initiallyExpanded: false,
+        group: languageGroup,
       },
       ...(tabIndex === SearchService.NOTEBOOKS_TAB_INDEX
-        ? [{ friendlyName: 'Language', esName: 'descriptorTypeSubclass', initiallyExpanded: true }]
+        ? [{ friendlyName: 'Language', esName: 'descriptorTypeSubclass', initiallyExpanded: true, group: languageGroup }]
         : []),
       {
         friendlyName: 'Engine Versions',
         esName: 'engine_versions.keyword',
         tooltip: 'The workflow engine versions required to run a workflow or tool',
         initiallyExpanded: false,
+        group: languageGroup,
       },
       { friendlyName: 'Author', esName: 'all_authors.name.keyword', initiallyExpanded: true },
       { friendlyName: 'Registry', esName: 'registry', initiallyExpanded: true },
@@ -134,12 +140,6 @@ export class SearchService {
         tooltip: 'Indicates which party performed the verification process on a tool or workflow.',
         initiallyExpanded: false,
       },
-      {
-        friendlyName: 'Verified Platforms',
-        esName: 'verified_platforms.keyword',
-        tooltip: 'Indicates which platform a tool or workflow (at least one version) was successfully run on.',
-        initiallyExpanded: false,
-      },
       { friendlyName: 'Output File Formats', esName: 'output_file_formats.value.keyword', initiallyExpanded: false },
       {
         friendlyName: 'Verified',
@@ -147,11 +147,19 @@ export class SearchService {
         tooltip: 'Indicates that at least one version of a tool or workflow has been successfully run by our team or an outside party.',
         initiallyExpanded: true,
         exclusive: true,
+        group: 'Verification',
+      },
+      {
+        friendlyName: 'Verified Platforms',
+        esName: 'verified_platforms.keyword',
+        tooltip: 'Indicates which platform a tool or workflow (at least one version) was successfully run on.',
+        initiallyExpanded: false,
+        group: 'Verification',
       },
       ...(tabIndex !== SearchService.NOTEBOOKS_TAB_INDEX
         ? [
             {
-              friendlyName: 'Has Checker Workflow',
+              friendlyName: 'Checker Workflow',
               esName: 'has_checker',
               tooltip:
                 'Checker workflows are additional workflows you can associate with a tool or workflow to ensure ' +
@@ -179,12 +187,14 @@ export class SearchService {
         friendlyName: 'Execution Metrics',
         esName: 'execution_partners.keyword',
         initiallyExpanded: false,
+        group: 'Metrics',
         tooltip: 'Indicates there are execution metrics from a partner for the entry.',
       },
       {
         friendlyName: 'Validation Metrics',
         esName: 'validation_partners.keyword',
         initiallyExpanded: false,
+        group: 'Metrics',
         tooltip: 'Indicates there are validation metrics from a partner for the entry.',
       },
     ];
@@ -666,6 +676,29 @@ export class SearchService {
     );
   }
 
+  /**
+   * Map of facet ES name to the title of the group that the facet is displayed in, for facets that are grouped
+   */
+  initializeFacetGroups(tabIndex: number): Map<string, string> {
+    return new Map(
+      this.getOrderedFacetInfos(tabIndex)
+        .filter((facetInfo) => facetInfo.group)
+        .map((facetInfo) => [facetInfo.esName, facetInfo.group])
+    );
+  }
+
+  /**
+   * The key of the expansion panel that displays the specified facet: the facet's own key, or a group key if the facet is grouped
+   */
+  static getFacetPanelId(esName: string, facetGroups: Map<string, string>): string {
+    const group = facetGroups.get(esName);
+    return group ? SearchService.getGroupPanelId(group) : esName;
+  }
+
+  static getGroupPanelId(group: string): string {
+    return 'group:' + group;
+  }
+
   initializeEntryOrder(tabIndex: number) {
     return new Map(this.getOrderedFacetInfos(tabIndex).map((facetInfo) => [facetInfo.esName, new SubBucket()]));
   }
@@ -675,7 +708,15 @@ export class SearchService {
    */
   initializeExpandedPanels(tabIndex: number) {
     // Use the "canned" facet information to determine which panels should be expanded
-    const expandedPanels = new Map(this.getOrderedFacetInfos(tabIndex).map((facetInfo) => [facetInfo.esName, facetInfo.initiallyExpanded]));
+    const facetInfos = this.getOrderedFacetInfos(tabIndex);
+    const expandedPanels = new Map(facetInfos.map((facetInfo) => [facetInfo.esName, facetInfo.initiallyExpanded]));
+    // A group panel is initially expanded if any of its facets is
+    facetInfos
+      .filter((facetInfo) => facetInfo.group)
+      .forEach((facetInfo) => {
+        const groupPanelId = SearchService.getGroupPanelId(facetInfo.group);
+        expandedPanels.set(groupPanelId, expandedPanels.get(groupPanelId) || facetInfo.initiallyExpanded);
+      });
     // Override with any stored values
     const storedValue = localStorage.getItem(this.expandedPanelsStorageKey);
     if (storedValue) {
