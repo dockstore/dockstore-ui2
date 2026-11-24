@@ -116,7 +116,8 @@ mat-expansion-panel,
 .facet-group-heading {
   clear: both; // the preceding facet's "more" link is floated
   font-weight: bold;
-  padding-top: 0.5rem;
+  // Horizontal padding aligns with the panel header text: the header's 1rem padding minus the panel body's 0.7rem
+  padding: 0.5rem 0.3rem 0;
   &:not(:first-child) {
     margin-top: 0.5rem;
     border-top: 1px solid mat.m2-get-color-from-palette($dockstore-app-gray, 4);
