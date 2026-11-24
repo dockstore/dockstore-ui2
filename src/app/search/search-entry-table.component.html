@@ -28,6 +28,7 @@
           >
           <mat-checkbox
             [checked]="showMatchingText"
+            [disabled]="(hasSearchText$ | async) === false"
             (change)="setShowMatchingText($event.checked)"
             data-cy="search-show-matching-text-checkbox"
             >Matching Text</mat-checkbox
