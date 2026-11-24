@@ -15,6 +15,7 @@ describe('Find broken anchor links', () => {
   // These links should be intentionally skipped
   const skippedUrls: string[] = [
     'https://twitter.com/DockstoreOrg', // Test only fails because it redirects to login page if not logged in
+    'https://doi.org/10.5281/zenodo.592056', // Zenodo's bot protection returns 403 to automated browser-like requests
   ];
 
   let visitedUrls: string[] = [];
