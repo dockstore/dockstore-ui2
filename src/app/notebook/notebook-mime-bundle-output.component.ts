@@ -1,6 +1,7 @@
 import { Component, Input, OnChanges, ChangeDetectionStrategy } from '@angular/core';
 import { MarkdownWrapperService } from '../shared/markdown-wrapper/markdown-wrapper.service';
-import { escape, selectBestFromMimeBundle } from './notebook-helpers';
+import { escapeHtml } from '../shared/helpers';
+import { selectBestFromMimeBundle } from './notebook-helpers';
 import { MimeBundle, Output, OutputMetadata } from './notebook-types';
 
 @Component({
@@ -39,14 +40,14 @@ export class NotebookMimeBundleOutputComponent implements OnChanges {
       return this.markdownWrapperService.customSanitize(data);
     }
     if (mimeType?.startsWith('text/')) {
-      return `<pre>${escape(data)}</pre>`;
+      return `<pre>${escapeHtml(data)}</pre>`;
     }
     return undefined;
   }
 
   createAttribute(name: string, value: string | number): string {
     if (value !== undefined && value !== null) {
-      return ` ${name}="${escape(String(value))}"`;
+      return ` ${name}="${escapeHtml(String(value))}"`;
     } else {
       return '';
     }
